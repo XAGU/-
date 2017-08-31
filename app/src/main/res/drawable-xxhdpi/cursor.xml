@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <!--这里设置光标宽度（粗细）-->
+    <size android:width="2dp" android:height="29dp"/>
+    <!--这里设置光标颜色-->
+    <solid android:color="#ff5555" />
+
+</shape>
