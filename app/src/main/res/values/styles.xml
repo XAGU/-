@@ -17,4 +17,27 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="SchoolDialog">
+        <!-- 是否有边框 -->
+        <item name="android:windowFrame">@null</item>
+        <!--是否在悬浮Activity之上  -->
+        <item name="android:windowIsFloating">true</item>
+        <!--标题  -->
+        <item name="android:windowNoTitle">true</item>
+        <!--阴影  -->
+        <item name="android:windowIsTranslucent">false</item><!--半透明-->
+        <!-- 进入和退出的动画 -->
+        <item name="android:windowAnimationStyle">@style/SchoolDialogAnimation</item>
+        <!-- 点外边可以消失  -->
+        <item name="android:windowCloseOnTouchOutside">true</item>
+    </style>
+
+    <style name="SchoolDialogAnimation">
+        <!--进入 -->
+        <item name="android:windowEnterAnimation">@anim/school_dialog_enter</item>
+        <!--退出-->
+        <item name="android:windowExitAnimation">@anim/school_dialog_exit</item>
+    </style>
+
+
 </resources>
