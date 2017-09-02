@@ -22,7 +22,7 @@ import butterknife.OnTextChanged;
  * Created by caidong on 2017/9/1.
  */
 
-public class UserRegistryActivity extends AppCompatActivity {
+public class RegistryActivity extends AppCompatActivity {
 
     @BindView(R.id.tv_school)
     TextView tv_school;
@@ -34,7 +34,7 @@ public class UserRegistryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_registry);
+        setContentView(R.layout.activity_registry);
         ButterKnife.bind(this);
 
         bt_submit.getBackground().setAlpha(100);

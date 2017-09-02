@@ -3,13 +3,17 @@ package com.xiaolian.amigo.activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 
+import org.w3c.dom.Text;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.OnTextChanged;
 
 /**
@@ -44,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
     void inputPassword() {
         toggleSubmitBtnStatus();
     }
+
 
     /**
      * 根据用户名和密码输入框对登录按钮做点击控制

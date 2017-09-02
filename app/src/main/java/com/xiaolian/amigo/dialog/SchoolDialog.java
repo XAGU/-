@@ -5,16 +5,11 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.View;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.activity.UserRegistryActivity;
+import com.xiaolian.amigo.activity.RegistryActivity;
 import com.xiaolian.amigo.component.PickerView;
 
 import java.util.ArrayList;
@@ -93,9 +88,9 @@ public class SchoolDialog extends Dialog {
     @OnClick(R.id.tv_select_school)
     void selectSchool() {
         Log.e("===========>", selectedSchool);
-        TextView school = (TextView) ((UserRegistryActivity) context).findViewById(R.id.tv_school);
+        TextView school = (TextView) ((RegistryActivity) context).findViewById(R.id.tv_school);
         school.setText(selectedSchool);
-        ((UserRegistryActivity) context).toggleSumbitBtnStatus();
+        ((RegistryActivity) context).toggleSumbitBtnStatus();
         this.dismiss();
     }
 
