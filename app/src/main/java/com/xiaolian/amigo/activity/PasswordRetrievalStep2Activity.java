@@ -10,6 +10,7 @@ import com.xiaolian.amigo.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.OnTextChanged;
 
 /**
@@ -55,5 +56,10 @@ public class PasswordRetrievalStep2Activity extends AppCompatActivity {
                 && et_userpwd.getText().toString().equals(et_confirm_userpwd.getText().toString());
         bt_submit.setEnabled(condition);
         bt_submit.getBackground().setAlpha(condition ? 255 : 100);
+    }
+
+    @OnClick(R.id.iv_back)
+    void back() {
+        finish();
     }
 }

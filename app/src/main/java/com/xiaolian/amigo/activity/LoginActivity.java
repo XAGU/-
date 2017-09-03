@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -27,7 +28,8 @@ public class LoginActivity extends AppCompatActivity {
     TextView et_userpwd;
     @BindView(R.id.bt_submit)
     Button bt_submit;
-
+    @BindView(R.id.tv_password_retrieval_link)
+    TextView tv_password_retrieval_link;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,12 @@ public class LoginActivity extends AppCompatActivity {
         toggleSubmitBtnStatus();
     }
 
+    @OnClick(R.id.tv_password_retrieval_link)
+    void retrievalPassword() {
+        Intent intent = new Intent();
+        intent.setClass(this, PasswordRetrievalStep1Activity.class);
+        startActivity(intent);
+    }
 
     /**
      * 根据用户名和密码输入框对登录按钮做点击控制

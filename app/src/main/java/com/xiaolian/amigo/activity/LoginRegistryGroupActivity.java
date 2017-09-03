@@ -27,6 +27,7 @@ public class LoginRegistryGroupActivity extends ActivityGroup {
     @BindView(R.id.sv_container)
     ScrollView sc_container;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,5 +65,10 @@ public class LoginRegistryGroupActivity extends ActivityGroup {
 
         tv_login.setTextColor(Color.parseColor("#222222"));
         tv_registry.setTextColor(Color.parseColor("#bbbbbb"));
+    }
+
+    @OnClick(R.id.iv_close)
+    void close() {
+        finish();
     }
 }

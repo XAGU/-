@@ -60,6 +60,7 @@
         android:textSize="22sp" />
 
     <TextView
+        android:id="@+id/tv_password_retrieval_link"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="21dp"

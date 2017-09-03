@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.activity;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -90,5 +91,20 @@ public class PasswordRetrievalStep1Activity extends AppCompatActivity {
         boolean condition = !TextUtils.isEmpty(et_mobile.getText()) && !TextUtils.isEmpty(et_verificationCode.getText());
         bt_submit.setEnabled(condition);
         bt_submit.getBackground().setAlpha(condition ? 255 : 100);
+    }
+
+    /**
+     * 跳转至找回密码第二步
+     */
+    @OnClick(R.id.bt_submit)
+    void jump2Step2() {
+        Intent intent = new Intent();
+        intent.setClass(this, PasswordRetrievalStep2Activity.class);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.iv_back)
+    void back() {
+        finish();
     }
 }
