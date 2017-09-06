@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/colorBackgroundGray"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/mainMarginLeftRight"
+    android:paddingRight="@dimen/mainMarginLeftRight"
+    android:paddingTop="14dp">
+
+    <ImageView
+        android:id="@+id/iv_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingRight="40dp"
+        android:src="@drawable/back" />
+
+    <TextView
+        style="@style/TitleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="21dp"
+        android:layout_marginTop="24dp"
+
+        android:text="昵称"
+
+        />
+
+    <com.xiaolian.amigo.component.ClearableEditText
+        style="@style/EditText"
+        android:id="@+id/edit_nickname"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:hint="请输入昵称"
+        android:drawableEnd="@drawable/clear"
+        android:drawableRight="@drawable/clear"
+        android:imeOptions="actionDone" />
+
+    <Button
+        android:id="@+id/bt_submit"
+        style="@style/Button"
+        android:layout_marginTop="34dp"
+        android:enabled="false"
+        android:text="确定" />
+
+
+</LinearLayout>

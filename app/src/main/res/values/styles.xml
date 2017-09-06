@@ -78,7 +78,7 @@
 
     </style>
 
-    <style name="ListItemText">
+    <style name="ListItemMainText">
 
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -89,7 +89,16 @@
 
     </style>
 
+    <style name="ListItemSubText">
 
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:textColor">@color/colorDark9</item>
+        <item name="android:textSize">@dimen/itemMainText</item>
+
+    </style>
 
     <style name="ListItemImage">
 
@@ -100,4 +109,30 @@
 
     </style>
 
+
+    <style name="EditText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/colorDark2</item>
+        <item name="android:textColorHint">@color/colorDarkB</item>
+        <item name="android:textCursorDrawable">@drawable/cursor_small</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:paddingLeft">14dp</item>
+        <item name="android:paddingRight">14dp</item>
+        <item name="android:maxLength">6</item>
+        <item name="android:background">@drawable/edittext_default</item>
+
+    </style>
+
+
+
+    <style name="Button">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">@drawable/button_shape</item>
+    </style>
 </resources>

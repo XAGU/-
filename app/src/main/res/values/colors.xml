@@ -7,17 +7,19 @@
     <color name="profileButton">#fff5f5f5</color>
     <color name="shadowProfileButtonStart">#ffe5e5e5</color>
     <color name="shadowProfileButtonEnd">#00e5e5e5</color>
-    
+
     <color name="colorBackgroundWhite">#ffffff</color>
     <color name="colorBackgroundGray">#f5f5f5</color>
     <color name="colorDividingLine">#eee</color>
     <color name="colorDark2">#222</color>
+    <color name="colorDarkB">#bbb</color>
     <color name="colorDark6">#666</color>
     <color name="colorDark9">#999</color>
 
 
-    <color name="colorWhite">#fff</color>
-
-
-
+    <color name="colorWhite">#ffffffff</color>
+    <color name="colorShadowWhite">#4dffffff</color>
+    <color name="colorBorder">#e5e5e5</color>
+    <color name="colorFullRed">#ffff5555</color>
+    <color name="colorShadowRed">#4dff5555</color>
 </resources>
