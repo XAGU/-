@@ -1,3 +1,16 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="titleText">19sp</dimen>
+
+    <dimen name="profileSchoolText">12sp</dimen>
+
+    <dimen name="mainPaddingTop">29dp</dimen>
+    <dimen name="subMarginTop">18dp</dimen>
+
+    <dimen name="mainMarginLeftRight">21dp</dimen>
+    <dimen name="avatarWidth">67dp</dimen>
+    <dimen name="avatarHeight">67dp</dimen>
+
+    <dimen name="itemMainText">14sp</dimen>
 </resources>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="18dp"
-    >
+    android:layout_marginTop="@dimen/subMarginTop"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -17,35 +17,27 @@
 
         <TextView
             android:id="@+id/showerTextView"
+            style="@style/HomeButtonMainText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/showerImageView"
             android:layout_alignLeft="@+id/showerImageView"
             android:layout_alignRight="@+id/showerImageView"
             android:layout_alignTop="@+id/showerImageView"
-            android:layout_marginRight="44dp"
-            android:layout_marginTop="28dp"
-            android:gravity="right"
-            android:text="热水器"
-            android:textColor="#fff"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+            android:text="热水器" />
 
         <TextView
+            style="@style/HomeButtonSubText"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
 
+            android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/showerImageView"
             android:layout_alignLeft="@+id/showerImageView"
             android:layout_alignRight="@+id/showerImageView"
+
             android:layout_alignTop="@+id/showerImageView"
-            android:layout_marginRight="44dp"
-            android:layout_marginTop="49dp"
-            android:gravity="right"
             android:text="TAKE A SHOWER"
-            android:textColor="#ffb6c5"
-            android:textSize="11sp"
-            android:textStyle="bold" />
+            android:textColor="#ffb6c5" />
     </RelativeLayout>
 
 
@@ -61,35 +53,29 @@
 
         <TextView
             android:id="@+id/waterTextView"
+            style="@style/HomeButtonMainText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/waterImageView"
             android:layout_alignLeft="@+id/waterImageView"
             android:layout_alignRight="@+id/waterImageView"
+
             android:layout_alignTop="@+id/waterImageView"
-            android:layout_marginRight="44dp"
-            android:layout_marginTop="28dp"
-            android:gravity="right"
-            android:text="饮水机"
-            android:textColor="#fff"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+            android:text="饮水机" />
 
         <TextView
+            style="@style/HomeButtonSubText"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
 
+            android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/waterImageView"
             android:layout_alignLeft="@+id/waterImageView"
             android:layout_alignRight="@+id/waterImageView"
+
             android:layout_alignTop="@+id/waterImageView"
-            android:layout_marginRight="44dp"
-            android:layout_marginTop="49dp"
-            android:gravity="right"
             android:text="DRINK A WATER"
-            android:textColor="#aaebe4"
-            android:textSize="11sp"
-            android:textStyle="bold" />
+
+            android:textColor="#aaebe4" />
     </RelativeLayout>
 
 
@@ -105,35 +91,28 @@
 
         <TextView
             android:id="@+id/lostTextView"
+            style="@style/HomeButtonMainText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/lostImageView"
             android:layout_alignLeft="@+id/lostImageView"
             android:layout_alignRight="@+id/lostImageView"
+
             android:layout_alignTop="@+id/lostImageView"
-            android:layout_marginRight="44dp"
-            android:layout_marginTop="28dp"
-            android:gravity="right"
-            android:text="失物招领"
-            android:textColor="#fff"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+            android:text="失物招领" />
 
         <TextView
+            style="@style/HomeButtonSubText"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
 
+            android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/lostImageView"
             android:layout_alignLeft="@+id/lostImageView"
             android:layout_alignRight="@+id/lostImageView"
+
             android:layout_alignTop="@+id/lostImageView"
-            android:layout_marginRight="44dp"
-            android:layout_marginTop="49dp"
-            android:gravity="right"
             android:text="DRINK A WATER"
-            android:textColor="#b3d4ff"
-            android:textSize="11sp"
-            android:textStyle="bold" />
+            android:textColor="#b3d4ff" />
     </RelativeLayout>
 
 </LinearLayout>

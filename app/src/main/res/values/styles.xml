@@ -39,5 +39,65 @@
         <item name="android:windowExitAnimation">@anim/school_dialog_exit</item>
     </style>
 
+    <style name="TitleText">
+        <item name="android:textColor">@color/colorDark2</item>
+        <item name="android:textSize">@dimen/titleText</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="ProfileSchoolText">
+        <item name="android:textColor">@color/colorDark6</item>
+        <item name="android:textSize">@dimen/profileSchoolText</item>
+    </style>
+
+    <style name="HomeButtonMainText">
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textSize">@dimen/itemMainText</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">right</item>
+        <item name="android:layout_marginRight">44dp</item>
+        <item name="android:layout_marginTop">28dp</item>
+    </style>
+
+    <style name="HomeButtonSubText">
+        <item name="android:textSize">11sp</item>
+        <item name="android:gravity">right</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_marginRight">44dp</item>
+        <item name="android:layout_marginTop">49dp</item>
+    </style>
+
+
+    <style name="ListItemRel">
+
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">58dp</item>
+        <item name="android:layout_alignParentLeft">true</item>
+        <item name="android:clickable">true</item>
+
+
+    </style>
+
+    <style name="ListItemText">
+
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_marginLeft">14dp</item>
+        <item name="android:textColor">@color/colorDark2</item>
+        <item name="android:textSize">@dimen/itemMainText</item>
+
+    </style>
+
+
+
+    <style name="ListItemImage">
+
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerVertical">true</item>
+
+
+    </style>
 
 </resources>
