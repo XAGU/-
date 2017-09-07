@@ -33,6 +33,7 @@ public class ProfileFragment extends Fragment {
     @BindView(R.id.profileMenuListView)
     ListView profileMenuListView;
     List<MenuListViewAdapter.Item> listData = new ArrayList<>();
+    boolean inited = false;
 
     @Nullable
     @Override
@@ -41,20 +42,22 @@ public class ProfileFragment extends Fragment {
         View homeView = inflater.inflate(R.layout.activity_tab_profile, container, false);
         ButterKnife.bind(this, homeView);
 
-        MenuListViewAdapter.Item editItem = new MenuListViewAdapter.Item(R.drawable.profile_edit, "编辑个人信息", EditProfileActivity.class);
-        listData.add(editItem);
+        if (!inited) {
+            MenuListViewAdapter.Item editItem = new MenuListViewAdapter.Item(R.drawable.profile_edit, "编辑个人信息", EditProfileActivity.class);
+            listData.add(editItem);
 
-        MenuListViewAdapter.Item walletItem = new MenuListViewAdapter.Item(R.drawable.profile_wallet, "我的钱包", EditProfileActivity.class);
-        listData.add(walletItem);
-
-        listData.add(walletItem);
+            MenuListViewAdapter.Item walletItem = new MenuListViewAdapter.Item(R.drawable.profile_wallet, "我的钱包", EditProfileActivity.class);
+            listData.add(walletItem);
+            
+            inited = true;
+        }
 
         MenuListViewAdapter menuListViewAdapter = new MenuListViewAdapter(this.getActivity().getApplicationContext(), listData);
         profileMenuListView.setAdapter(menuListViewAdapter);
 
-
         return homeView;
     }
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
