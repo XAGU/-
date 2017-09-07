@@ -52,7 +52,8 @@ public class ClearableEditText extends AppCompatEditText implements View.OnFocus
             mDrawableRight = getResources().getDrawable(R.drawable.clear);
         }
 
-        mDrawableRight.setBounds(0, 0, mDrawableRight.getIntrinsicWidth(), mDrawableRight.getIntrinsicHeight());//设置Drawable的宽高和TextSize的大小一致
+        mDrawableRight.setBounds(0, 0, mDrawableRight.getIntrinsicWidth(), mDrawableRight.getIntrinsicHeight());
+
         setClearIconVisible(true);
         setOnFocusChangeListener(this);
         addTextChangedListener(this);
@@ -70,9 +71,11 @@ public class ClearableEditText extends AppCompatEditText implements View.OnFocus
             int x = (int) event.getX();
             // 判断触摸点是否在水平范围内
             boolean isInnerWidth = (x > (getWidth() - getTotalPaddingRight()))
-                    && (x < (getWidth() - getPaddingRight()));
+                    && (x < (getWidth() - getPaddingRight() ));
             // 获取删除图标的边界，返回一个Rect对象
             Rect rect = mDrawableRight.getBounds();
+
+            /*
             // 获取删除图标的高度
             int height = rect.height();
             int y = (int) event.getY();
@@ -80,8 +83,10 @@ public class ClearableEditText extends AppCompatEditText implements View.OnFocus
             int distance = (getHeight() - height) / 2;
             // 判断触摸点是否在竖直范围内(可能会有点误差)
             // 触摸点的纵坐标在distance到（distance+图标自身的高度）之内，则视为点中删除图标
-            boolean isInnerHeight = (y > distance) && (y < (distance + height));
-            if (isInnerHeight && isInnerWidth) {
+
+            */
+            // boolean isInnerHeight = (y > distance) && (y < (distance + height));
+            if (isInnerWidth) {
                 this.setText("");
                 Toast.makeText(getContext(), "一键清除", Toast.LENGTH_SHORT).show();//为了看清效果，测试
             }
@@ -100,25 +105,25 @@ public class ClearableEditText extends AppCompatEditText implements View.OnFocus
 
     }
 
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
     /**
      * 当输入框里面内容发生变化的时候回调的方法
      */
     @Override
     public void onTextChanged(CharSequence text, int start, int lengthBefore, int lengthAfter) {
+        super.onTextChanged(text, start, lengthBefore, lengthAfter);
         if (hasFocus) {
             setClearIconVisible(text.length() > 0);
         }
-    }
-
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void afterTextChanged(Editable s) {
-        // TODO Auto-generated method stub
 
     }
 

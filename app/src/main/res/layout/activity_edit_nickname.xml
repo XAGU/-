@@ -27,13 +27,13 @@
         />
 
     <com.xiaolian.amigo.component.ClearableEditText
-        style="@style/EditText"
         android:id="@+id/edit_nickname"
+        style="@style/EditText"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:hint="请输入昵称"
         android:drawableEnd="@drawable/clear"
         android:drawableRight="@drawable/clear"
+        android:hint="请输入昵称"
         android:imeOptions="actionDone" />
 
     <Button
