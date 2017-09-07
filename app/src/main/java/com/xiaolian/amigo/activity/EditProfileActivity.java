@@ -21,7 +21,7 @@ import butterknife.OnTouch;
  * Created by guoyi on 2017/9/6.
  */
 
-public class EditProfileActivity extends AppCompatActivity {
+public class EditProfileActivity extends BaseActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,7 +38,6 @@ public class EditProfileActivity extends AppCompatActivity {
                 Toast.makeText(this.getApplicationContext(), "修改头像", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.rel_edit_nickname:
-                Toast.makeText(this.getApplicationContext(), "修改昵称", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), EditNicknameActivity.class);
                 startActivity(intent);
                 break;
@@ -62,8 +61,4 @@ public class EditProfileActivity extends AppCompatActivity {
 
     }
 
-    @OnClick(R.id.iv_back)
-    void back() {
-        finish();
-    }
 }

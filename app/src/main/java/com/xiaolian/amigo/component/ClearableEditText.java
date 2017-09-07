@@ -5,15 +5,14 @@ import android.content.res.TypedArray;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.v4.graphics.drawable.DrawableCompat;
+
 import android.support.v7.widget.AppCompatEditText;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
+
 
 import com.xiaolian.amigo.R;
 
@@ -28,6 +27,8 @@ public class ClearableEditText extends AppCompatEditText implements View.OnFocus
      */
     private Drawable mDrawableRight;
     private boolean hasFocus;// 控件是否有焦点
+
+    boolean validated = false;
 
     // 构造方法 1->2->3
     public ClearableEditText(Context context) {
@@ -71,7 +72,7 @@ public class ClearableEditText extends AppCompatEditText implements View.OnFocus
             int x = (int) event.getX();
             // 判断触摸点是否在水平范围内
             boolean isInnerWidth = (x > (getWidth() - getTotalPaddingRight()))
-                    && (x < (getWidth() - getPaddingRight() ));
+                    && (x < (getWidth() - getPaddingRight()));
             // 获取删除图标的边界，返回一个Rect对象
             Rect rect = mDrawableRight.getBounds();
 
@@ -88,7 +89,6 @@ public class ClearableEditText extends AppCompatEditText implements View.OnFocus
             // boolean isInnerHeight = (y > distance) && (y < (distance + height));
             if (isInnerWidth) {
                 this.setText("");
-                Toast.makeText(getContext(), "一键清除", Toast.LENGTH_SHORT).show();//为了看清效果，测试
             }
         }
         return super.onTouchEvent(event);
