@@ -48,7 +48,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:src="@drawable/recharge" />
+            android:src="@drawable/wallet_recharge"
+            android:layout_centerVertical="true"/>
     </RelativeLayout>
 
     <View
@@ -90,7 +91,6 @@
         android:layout_width="match_parent"
         android:layout_height="1dip"
         android:layout_centerVertical="true"
-        android:layout_marginTop="21dp"
         android:background="#eee" />
 
     <RelativeLayout
@@ -117,7 +117,6 @@
         android:layout_width="match_parent"
         android:layout_height="1dip"
         android:layout_centerVertical="true"
-        android:layout_marginTop="21dp"
         android:background="#eee" />
 
 </LinearLayout>

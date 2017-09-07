@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp">
+
+        <RelativeLayout
+            android:id="@+id/iv_recharge_0"
+            android:layout_width="0dp"
+            android:layout_height="86dp"
+            android:layout_weight="1"
+            android:visibility="invisible"
+            android:background="@drawable/recharge_shape">
+
+            <ImageView
+                android:id="@+id/iv_recharge_0_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:src="@drawable/wallet_ticket"
+                android:visibility="gone" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true">
+
+                <TextView
+                    android:id="@+id/tv_recharge_0_main"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="20元"
+                    android:textColor="@color/colorFullRed"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_recharge_0_sub"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_recharge_0_main"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="7dp"
+                    android:text="售价18.9元"
+                    android:textColor="@color/colorDark9"
+                    android:textSize="11sp"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="10dp"
+            android:layout_height="86dp" />
+
+        <RelativeLayout
+            android:id="@+id/iv_recharge_1"
+            android:layout_width="0dp"
+            android:layout_height="86dp"
+            android:layout_weight="1"
+            android:visibility="invisible"
+            android:background="@drawable/recharge_shape">
+
+            <ImageView
+                android:id="@+id/iv_recharge_1_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:src="@drawable/wallet_ticket"
+                android:visibility="gone" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true">
+
+                <TextView
+                    android:id="@+id/tv_recharge_1_main"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="20元"
+                    android:textColor="@color/colorFullRed"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_recharge_1_sub"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_recharge_1_main"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="7dp"
+                    android:text="售价18.9元"
+                    android:textColor="@color/colorDark9"
+                    android:textSize="11sp"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="10dp"
+            android:layout_height="86dp" />
+
+        <RelativeLayout
+            android:id="@+id/iv_recharge_2"
+            android:layout_width="0dp"
+            android:layout_height="86dp"
+            android:layout_weight="1"
+            android:visibility="invisible"
+            android:background="@drawable/recharge_shape">
+
+            <ImageView
+                android:id="@+id/iv_recharge_2_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:src="@drawable/wallet_ticket"
+                android:visibility="gone" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true">
+
+                <TextView
+                    android:id="@+id/tv_recharge_2_main"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="20元"
+                    android:textColor="@color/colorFullRed"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_recharge_2_sub"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_recharge_2_main"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="7dp"
+                    android:text="售价18.9元"
+                    android:textColor="@color/colorDark9"
+                    android:textSize="11sp"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>
