@@ -18,17 +18,20 @@
         <font size="20">点击选择您的学校</font>
     </string>
 
-    <string name="forget_password">
+    <string name="forget_password_tip">
         <u>忘记密码?</u>
     </string>
-    <string name="user_protocal">
+    <string name="user_protocal_tip">
         <u>用户协议</u>
     </string>
     <string name="prepay_order_tip">
         <u>设备使用结束，长时间未找零？</u>
     </string>
-    <string name="withdrawal_total">
+    <string name="withdrawal_total_tip">
         <u>全部提现</u>
+    </string>
+    <string name="query_expired_bonus_tip">
+        <u>查看过期红包</u>
     </string>
 
 

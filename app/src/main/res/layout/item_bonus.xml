@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="86dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/content_border"
+        android:layout_marginBottom="14dp">
+
+        <TextView
+            android:id="@+id/tv_amount"
+            android:layout_width="86dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="￥10"
+            android:textColor="@color/colorFullRed"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/tv_amount">
+
+            <TextView
+                android:id="@+id/tv_type"
+                style="@style/ContentText_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="新人红包" />
+
+            <TextView
+                android:id="@+id/tv_time_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_type"
+                android:layout_marginTop="10dp"
+                android:text="2018-01-01到期"
+                android:textColor="#222"
+                android:textSize="9sp" />
+
+            <TextView
+                android:id="@+id/tv_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_time_end"
+                android:layout_marginTop="4dp"
+                android:text="约一吨水/限热水器一次性使用"
+                android:textColor="#222"
+                android:textSize="9sp" />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="14dp">
+
+
+            <TextView
+                android:id="@+id/tv_time_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="4dp"
+                android:text="剩2日"
+                android:textColor="@color/colorFullRed"
+                android:textSize="10sp" />
+
+            <Button
+                android:id="@+id/bt_bonus_use"
+                android:layout_width="38dp"
+                android:layout_height="17dp"
+                android:layout_below="@id/tv_time_left"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/button_bonus_use"
+                android:text="立即使用"
+                android:textColor="@color/colorFullRed"
+                android:textSize="9sp" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+</RelativeLayout>
