@@ -17,8 +17,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:focusableInTouchMode="true">
+            android:focusableInTouchMode="true"
+            android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/iv_back"
@@ -27,28 +27,15 @@
                 android:paddingRight="40dp"
                 android:src="@drawable/back" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
+
+            <TextView
+                style="@style/TitleText"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="21dp"
-                android:layout_marginTop="24dp">
+                android:layout_marginTop="24dp"
+                android:text="过期红包" />
 
-                <TextView
-                    style="@style/TitleText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:text="我的红包" />
-
-                <TextView
-                    style="@style/ContentText_main"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:text="兑换红包" />
-
-            </RelativeLayout>
 
             <com.xiaolian.amigo.component.UnScrollListView
                 android:id="@+id/lv_bonuses"
@@ -56,14 +43,6 @@
                 android:layout_height="wrap_content"
                 android:divider="@null"
                 android:scrollbars="none" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/query_expired_bonus_tip"
-                android:layout_marginTop="7dp"
-                android:layout_marginBottom="21dp"/>
 
         </LinearLayout>
 
