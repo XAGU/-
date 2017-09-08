@@ -15,7 +15,7 @@
             android:layout_height="86dp"
             android:layout_weight="1"
             android:visibility="invisible"
-            android:background="@drawable/recharge_shape">
+            android:background="@drawable/wallet_recharge_shape">
 
             <ImageView
                 android:id="@+id/iv_recharge_0_img"
@@ -65,7 +65,7 @@
             android:layout_height="86dp"
             android:layout_weight="1"
             android:visibility="invisible"
-            android:background="@drawable/recharge_shape">
+            android:background="@drawable/wallet_recharge_shape">
 
             <ImageView
                 android:id="@+id/iv_recharge_1_img"
@@ -115,7 +115,7 @@
             android:layout_height="86dp"
             android:layout_weight="1"
             android:visibility="invisible"
-            android:background="@drawable/recharge_shape">
+            android:background="@drawable/wallet_recharge_shape">
 
             <ImageView
                 android:id="@+id/iv_recharge_2_img"

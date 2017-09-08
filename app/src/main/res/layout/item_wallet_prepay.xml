@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/wallet_recharge_shape"
+    android:paddingBottom="18dp"
+    android:paddingLeft="14dp"
+    android:paddingRight="14dp"
+    android:paddingTop="18dp"
+    android:layout_marginBottom="14dp">
+
+    <TextView
+        android:id="@+id/tv_prepay_device"
+        style="@style/ContentText_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:text="热水器：viplkb-12" />
+
+    <TextView
+        android:id="@+id/tv_prepay_amount"
+        style="@style/Money_Normal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_prepay_device"
+        android:layout_marginTop="10dp"
+        android:text="预付￥12" />
+
+    <TextView
+        android:id="@+id/tv_prepay_time"
+        style="@style/ContentText_sub"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_prepay_amount"
+        android:layout_marginTop="10dp"
+        android:text="今天12:30" />
+
+    <TextView
+        android:id="@+id/tv_prepay_title"
+        style="@style/ContentText_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:text="待找零" />
+
+</RelativeLayout>

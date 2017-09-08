@@ -30,7 +30,7 @@
         android:background="#eee" />
 
     <TextView
-        style="@style/ContentText"
+        style="@style/ContentText_main"
         android:layout_marginTop="21dp"
         android:text="可用余额" />
 
@@ -80,7 +80,7 @@
 
 
         <TextView
-            style="@style/ContentText"
+            style="@style/ContentText_main"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:text="预付金额" />
@@ -106,7 +106,7 @@
             android:src="@drawable/forward" />
 
         <TextView
-            style="@style/ContentText"
+            style="@style/ContentText_main"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:text="我要提现" />
