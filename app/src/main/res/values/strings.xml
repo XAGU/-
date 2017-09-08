@@ -27,6 +27,9 @@
     <string name="prepay_order_tip">
         <u>设备使用结束，长时间未找零？</u>
     </string>
+    <string name="withdrawal_total">
+        <u>全部提现</u>
+    </string>
 
 
 </resources>
