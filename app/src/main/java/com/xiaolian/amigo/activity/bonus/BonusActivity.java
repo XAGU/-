@@ -14,6 +14,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * 我的红包
@@ -48,5 +49,17 @@ public class BonusActivity extends BaseActivity {
 
         BonusAdaptor adapter = new BonusAdaptor(this, R.layout.item_bonus, bonuses);
         lv_bonuses.setAdapter(adapter);
+    }
+
+    // 兑换红包
+    @OnClick(R.id.tv_exchage)
+    void exchange() {
+        startActivity(this, BonusExchangeActivity.class);
+    }
+
+    // 查看过期红包
+    @OnClick(R.id.tv_expired_entry)
+    void queryExpiredBonus() {
+        startActivity(this, ExpiredBonusActivity.class);
     }
 }

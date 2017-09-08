@@ -45,6 +45,7 @@
             android:text="￥120" />
 
         <ImageView
+            android:id="@+id/iv_recharge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -60,6 +61,7 @@
         android:background="#eee" />
 
     <RelativeLayout
+        android:id="@+id/rl_prepay"
         android:layout_width="wrap_content"
         android:layout_height="58dp">
 
@@ -94,6 +96,7 @@
         android:background="#eee" />
 
     <RelativeLayout
+        android:id="@+id/rl_withdrawal"
         android:layout_width="wrap_content"
         android:layout_height="58dp">
 

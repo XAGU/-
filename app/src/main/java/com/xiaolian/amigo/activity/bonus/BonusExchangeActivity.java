@@ -15,7 +15,7 @@ import butterknife.ButterKnife;
  * Created by guoyi on 2017/9/6.
  */
 
-public class BonusChangeActivity extends BaseActivity {
+public class BonusExchangeActivity extends BaseActivity {
 
 
     @BindView(R.id.et_change_code)

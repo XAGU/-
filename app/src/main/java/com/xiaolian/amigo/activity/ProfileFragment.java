@@ -13,6 +13,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.activity.bonus.BonusActivity;
+import com.xiaolian.amigo.activity.wallet.WalletActivty;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,8 +48,11 @@ public class ProfileFragment extends Fragment {
             MenuListViewAdapter.Item editItem = new MenuListViewAdapter.Item(R.drawable.profile_edit, "编辑个人信息", EditProfileActivity.class);
             listData.add(editItem);
 
-            MenuListViewAdapter.Item walletItem = new MenuListViewAdapter.Item(R.drawable.profile_wallet, "我的钱包", EditProfileActivity.class);
+            MenuListViewAdapter.Item walletItem = new MenuListViewAdapter.Item(R.drawable.profile_wallet, "我的钱包", WalletActivty.class);
             listData.add(walletItem);
+
+            MenuListViewAdapter.Item BonusItem = new MenuListViewAdapter.Item(R.drawable.profile_luck, "我的红包", BonusActivity.class);
+            listData.add(BonusItem);
             
             inited = true;
         }

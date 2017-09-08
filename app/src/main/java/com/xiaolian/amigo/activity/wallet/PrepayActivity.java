@@ -12,6 +12,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnItemClick;
 
 /**
  * Created by caidong on 2017/9/8.
@@ -38,5 +39,11 @@ public class PrepayActivity extends BaseActivity {
 
         PrepayAdaptor adapter = new PrepayAdaptor(this, R.layout.item_wallet_prepay, prepays);
         lv_prepays.setAdapter(adapter);
+    }
+
+    // 查看待找零账单
+    @OnItemClick(R.id.lv_prepays)
+    void queryPrepayOrder() {
+        startActivity(this, PrepayOrderActivity.class);
     }
 }
