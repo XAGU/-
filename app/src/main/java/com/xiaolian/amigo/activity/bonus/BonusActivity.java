@@ -40,7 +40,9 @@ public class BonusActivity extends BaseActivity implements PullToRefreshBase.OnR
         }
     };
 
+    @BindView(R.id.sv_scrollview)
     PullToRefreshScrollView sv_scrollview;
+    BonusAdaptor adapter;
 
     Handler mHandler = new Handler() {
         @Override
@@ -48,6 +50,8 @@ public class BonusActivity extends BaseActivity implements PullToRefreshBase.OnR
             super.handleMessage(msg);
             switch (msg.what) {
                 case 0:
+                    bonuses.add(0, new BonusAdaptor.Bonus(2, 2, "xxxx", "yyyy", 3));
+                    adapter.notifyDataSetChanged();
                     sv_scrollview.onRefreshComplete();
                     break;
             }
@@ -63,8 +67,17 @@ public class BonusActivity extends BaseActivity implements PullToRefreshBase.OnR
         setContentView(R.layout.activity_bonus);
         ButterKnife.bind(this);
 
-        BonusAdaptor adapter = new BonusAdaptor(this, R.layout.item_bonus, bonuses);
+        adapter = new BonusAdaptor(this, R.layout.item_bonus, bonuses);
         lv_bonuses.setAdapter(adapter);
+
+        sv_scrollview.getLoadingLayoutProxy().setLastUpdatedLabel(
+                "上次刷新时间" );
+        sv_scrollview.getLoadingLayoutProxy()
+                .setPullLabel( "下拉刷新");
+        sv_scrollview.getLoadingLayoutProxy().setReleaseLabel(
+                "松开即可刷新" );
+
+        sv_scrollview.setOnRefreshListener(this);
     }
 
     // 兑换红包

@@ -51,11 +51,11 @@ public class BonusAdaptor extends ArrayAdapter<BonusAdaptor.Bonus> {
             view = convertView;
             viewHolder = (ViewHolder) view.getTag();
         }
-//        viewHolder.tv_amount.setText(bonus.amount.toString());
-//        viewHolder.tv_type.setText(bonus.type.toString());
-//        viewHolder.tv_time_end.setText(bonus.timeEnd);
-//        viewHolder.tv_desc.setText(bonus.desc);
-//        viewHolder.tv_time_left.setText(bonus.timeLeft.toString());
+        viewHolder.tv_amount.setText(bonus.amount.toString());
+        viewHolder.tv_type.setText(bonus.type.toString());
+        viewHolder.tv_time_end.setText(bonus.timeEnd);
+        viewHolder.tv_desc.setText(bonus.desc);
+        viewHolder.tv_time_left.setText(bonus.timeLeft.toString());
         return view;
     }
 
