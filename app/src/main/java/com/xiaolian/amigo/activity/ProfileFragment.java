@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.activity.bonus.BonusActivity;
+import com.xiaolian.amigo.activity.favorite.FavoriteActivity;
 import com.xiaolian.amigo.activity.order.OrderActivity;
 import com.xiaolian.amigo.activity.wallet.WalletActivty;
 
@@ -57,6 +58,9 @@ public class ProfileFragment extends Fragment {
 
             MenuListViewAdapter.Item orderItem = new MenuListViewAdapter.Item(R.drawable.profile_order, "消费记录", OrderActivity.class);
             listData.add(orderItem);
+
+            MenuListViewAdapter.Item collectionItem = new MenuListViewAdapter.Item(R.drawable.profile_favorite, "我收藏的设备", FavoriteActivity.class);
+            listData.add(collectionItem);
             
             inited = true;
         }
