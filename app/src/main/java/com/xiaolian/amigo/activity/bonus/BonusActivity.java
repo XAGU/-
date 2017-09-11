@@ -1,11 +1,20 @@
 package com.xiaolian.amigo.activity.bonus;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.Nullable;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.animation.TranslateAnimation;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ScrollView;
 
+import com.handmark.pulltorefresh.library.ILoadingLayout;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.activity.BaseActivity;
@@ -40,9 +49,15 @@ public class BonusActivity extends BaseActivity implements PullToRefreshBase.OnR
         }
     };
 
-    @BindView(R.id.sv_scrollview)
-    PullToRefreshScrollView sv_scrollview;
+    @BindView(R.id.lv_bonuses)
+    ListView lv_bonuses;
+    @BindView(R.id.sc_refresh)
+    PullToRefreshScrollView sc_refresh;
+    @BindView(R.id.ll_header)
+    LinearLayout ll_header;
+
     BonusAdaptor adapter;
+    float endY;
 
     Handler mHandler = new Handler() {
         @Override
@@ -52,14 +67,11 @@ public class BonusActivity extends BaseActivity implements PullToRefreshBase.OnR
                 case 0:
                     bonuses.add(0, new BonusAdaptor.Bonus(2, 2, "xxxx", "yyyy", 3));
                     adapter.notifyDataSetChanged();
-                    sv_scrollview.onRefreshComplete();
+                    sc_refresh.onRefreshComplete();
                     break;
             }
         }
     };
-
-    @BindView(R.id.lv_bonuses)
-    ListView lv_bonuses;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,14 +82,13 @@ public class BonusActivity extends BaseActivity implements PullToRefreshBase.OnR
         adapter = new BonusAdaptor(this, R.layout.item_bonus, bonuses);
         lv_bonuses.setAdapter(adapter);
 
-        sv_scrollview.getLoadingLayoutProxy().setLastUpdatedLabel(
-                "上次刷新时间" );
-        sv_scrollview.getLoadingLayoutProxy()
-                .setPullLabel( "下拉刷新");
-        sv_scrollview.getLoadingLayoutProxy().setReleaseLabel(
-                "松开即可刷新" );
+        ILoadingLayout loadingLayout = sc_refresh.getLoadingLayoutProxy();
+        loadingLayout.setLastUpdatedLabel("上次刷新时间");
+        loadingLayout.setPullLabel("下拉刷新");
+        loadingLayout.setReleaseLabel("松开即可刷新");
 
-        sv_scrollview.setOnRefreshListener(this);
+        ScrollView scrollView = sc_refresh.getRefreshableView();
+        sc_refresh.setOnRefreshListener(this);
     }
 
     // 兑换红包

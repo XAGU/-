@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:ptr="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackgroundGray"
@@ -8,16 +10,17 @@
     android:paddingRight="@dimen/mainMarginLeftRight"
     android:paddingTop="14dp">
 
-    <ScrollView
-        android:id="@+id/sv_refresh"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scrollbars="none">
+        android:focusableInTouchMode="true"
+        android:orientation="vertical">
+
 
         <LinearLayout
+            android:id="@+id/ll_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:focusableInTouchMode="true"
             android:orientation="vertical">
 
             <ImageView
@@ -27,25 +30,28 @@
                 android:paddingRight="40dp"
                 android:src="@drawable/back" />
 
-
             <TextView
                 style="@style/TitleText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="21dp"
                 android:layout_marginTop="24dp"
-                android:text="过期红包" />
-
-
-            <com.xiaolian.amigo.component.UnScrollListView
-                android:id="@+id/lv_bonuses"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:divider="@null"
-                android:scrollbars="none" />
-
+                android:text="消费记录"
+                />
         </LinearLayout>
 
-    </ScrollView>
+        <com.handmark.pulltorefresh.library.PullToRefreshListView
+            android:id="@+id/lv_orders"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@null"
+            android:scrollbars="none"
+            app:ptrMode="both"
+            ptr:ptrAnimationStyle="flip"
+            ptr:ptrDrawable="@drawable/default_ptr_flip"
+            ptr:ptrOverScroll="false"
+            ptr:ptrShowIndicator="false" />
+
+    </LinearLayout>
 
 </LinearLayout>

@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.activity.bonus.BonusActivity;
+import com.xiaolian.amigo.activity.order.OrderActivity;
 import com.xiaolian.amigo.activity.wallet.WalletActivty;
 
 import java.util.ArrayList;
@@ -53,6 +54,9 @@ public class ProfileFragment extends Fragment {
 
             MenuListViewAdapter.Item BonusItem = new MenuListViewAdapter.Item(R.drawable.profile_luck, "我的红包", BonusActivity.class);
             listData.add(BonusItem);
+
+            MenuListViewAdapter.Item orderItem = new MenuListViewAdapter.Item(R.drawable.profile_order, "消费记录", OrderActivity.class);
+            listData.add(orderItem);
             
             inited = true;
         }
