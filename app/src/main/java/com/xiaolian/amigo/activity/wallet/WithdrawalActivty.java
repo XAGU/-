@@ -3,7 +3,7 @@ package com.xiaolian.amigo.activity.wallet;
 import android.os.Bundle;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.activity.BaseActivity;
+import com.xiaolian.amigo.base.BaseActivity;
 
 import butterknife.ButterKnife;
 

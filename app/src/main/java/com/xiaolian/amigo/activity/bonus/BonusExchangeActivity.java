@@ -6,7 +6,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.activity.BaseActivity;
+import com.xiaolian.amigo.base.BaseActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

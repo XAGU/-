@@ -4,8 +4,8 @@ import android.os.Bundle;
 import android.widget.ListView;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.activity.BaseActivity;
 import com.xiaolian.amigo.activity.wallet.adaptor.RechargeAdaptor;
+import com.xiaolian.amigo.base.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;

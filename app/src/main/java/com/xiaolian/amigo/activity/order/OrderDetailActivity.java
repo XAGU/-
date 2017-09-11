@@ -10,8 +10,8 @@ import com.handmark.pulltorefresh.library.ILoadingLayout;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.activity.BaseActivity;
 import com.xiaolian.amigo.activity.order.adaptor.OrderAdaptor;
+import com.xiaolian.amigo.base.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
