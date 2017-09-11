@@ -11,6 +11,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.base.BaseActivity;
+import com.xiaolian.amigo.base.BeanFactory;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,6 +29,7 @@ public class EditNicknameActivity extends BaseActivity {
 
     @BindView(R.id.bt_submit)
     Button button;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.base.BaseActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

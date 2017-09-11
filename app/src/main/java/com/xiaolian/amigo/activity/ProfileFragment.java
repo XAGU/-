@@ -54,7 +54,7 @@ public class ProfileFragment extends Fragment {
             MenuListViewAdapter.Item BonusItem = new MenuListViewAdapter.Item(R.drawable.profile_luck, "我的红包", BonusActivity.class);
             listData.add(BonusItem);
 
-            
+
             inited = true;
         }
 
