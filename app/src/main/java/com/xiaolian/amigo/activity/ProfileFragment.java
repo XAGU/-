@@ -48,7 +48,7 @@ public class ProfileFragment extends Fragment {
 
             MenuListViewAdapter.Item walletItem = new MenuListViewAdapter.Item(R.drawable.profile_wallet, "我的钱包", EditProfileActivity.class);
             listData.add(walletItem);
-            
+
             inited = true;
         }
 
