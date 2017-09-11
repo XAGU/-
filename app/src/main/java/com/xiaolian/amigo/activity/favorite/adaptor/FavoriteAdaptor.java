@@ -39,21 +39,16 @@ public class FavoriteAdaptor extends BaseSwipeAdapter {
         View v = LayoutInflater.from(mContext).inflate(R.layout.item_favorite, parent, false);
         SwipeLayout swipeLayout = (SwipeLayout)v.findViewById(getSwipeLayoutResourceId(position));
 
-        //set show mode.
         swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
-
-//add drag edge.(If the BottomView has 'layout_gravity' attribute, this line is unnecessary)
         swipeLayout.addDrag(SwipeLayout.DragEdge.Left, v.findViewById(R.id.ll_operator));
 
         swipeLayout.addSwipeListener(new SwipeLayout.SwipeListener() {
             @Override
             public void onClose(SwipeLayout layout) {
-                //when the SurfaceView totally cover the BottomView.
             }
 
             @Override
             public void onUpdate(SwipeLayout layout, int leftOffset, int topOffset) {
-                //you are swiping.
             }
 
             @Override
@@ -63,7 +58,6 @@ public class FavoriteAdaptor extends BaseSwipeAdapter {
 
             @Override
             public void onOpen(SwipeLayout layout) {
-                //when the BottomView totally show.
             }
 
             @Override
@@ -73,7 +67,6 @@ public class FavoriteAdaptor extends BaseSwipeAdapter {
 
             @Override
             public void onHandRelease(SwipeLayout layout, float xvel, float yvel) {
-                //when user's hand released.
             }
         });
 

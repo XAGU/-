@@ -10,7 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.dialog.SchoolDialog;
+import com.xiaolian.amigo.component.SchoolDialog;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

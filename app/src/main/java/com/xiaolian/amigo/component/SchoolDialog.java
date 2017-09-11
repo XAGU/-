@@ -1,4 +1,4 @@
-package com.xiaolian.amigo.dialog;
+package com.xiaolian.amigo.component;
 
 import android.app.Dialog;
 import android.content.Context;
