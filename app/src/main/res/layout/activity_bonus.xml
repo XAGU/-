@@ -22,6 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:focusableInTouchMode="true"
+        app:elevation="0dp"
         android:orientation="vertical">
 
 
@@ -65,18 +66,33 @@
         </LinearLayout>
 
     </android.support.design.widget.AppBarLayout>
-    <cn.bingoogolapple.refreshlayout.BGARefreshLayout
-        android:id="@+id/refreshLayout"
+    <RelativeLayout
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:overScrollMode="never"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_alignParentBottom="true"
+            android:id="@+id/tv_expired_entry"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-    </cn.bingoogolapple.refreshlayout.BGARefreshLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="21dp"
+            android:layout_marginTop="7dp"
+            android:gravity="center"
+            android:text="@string/query_expired_bonus_tip" />
+        <cn.bingoogolapple.refreshlayout.BGARefreshLayout
+            android:layout_above="@id/tv_expired_entry"
+            android:id="@+id/refreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:overScrollMode="never"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </cn.bingoogolapple.refreshlayout.BGARefreshLayout>
+
+    </RelativeLayout>
 
     <!--<com.handmark.pulltorefresh.library.PullToRefreshScrollView-->
         <!--app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
@@ -101,14 +117,6 @@
                 <!--android:layout_width="match_parent"-->
                 <!--android:layout_height="wrap_content" />-->
 
-            <!--<TextView-->
-                <!--android:id="@+id/tv_expired_entry"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginBottom="21dp"-->
-                <!--android:layout_marginTop="7dp"-->
-                <!--android:gravity="center"-->
-                <!--android:text="@string/query_expired_bonus_tip" />-->
         <!--</LinearLayout>-->
 
     <!--</com.handmark.pulltorefresh.library.PullToRefreshScrollView>-->
