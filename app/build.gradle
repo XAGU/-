@@ -18,6 +18,7 @@ android {
         }
     }
     lintOptions {
+        disable 'MissingTranslation'
         checkReleaseBuilds false
         // Or, if you prefer, you can continue to check for errors in release builds,
         // but continue the build even when errors are found:
@@ -45,6 +46,10 @@ dependencies {
     compile 'com.daimajia.easing:library:1.0.0@aar'
     compile 'com.daimajia.androidanimations:library:1.1.2@aar'
     compile 'com.nineoldandroids:library:2.4.0'
+    compile 'cn.bingoogolapple:bga-refreshlayout:1.1.7@aar'
+    // recyclerview adapter
+    compile 'com.zhy:base-rvadapter:3.0.3'
+    compile 'com.huxq17.xrefreshview:xrefreshview:3.6.9'
 
     compile project(path: ':library')
 }
