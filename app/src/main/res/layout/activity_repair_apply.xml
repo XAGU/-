@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackgroundWhite"
+    android:orientation="vertical"
+    android:paddingBottom="14dp"
+    android:paddingLeft="@dimen/mainMarginLeftRight"
+    android:paddingRight="@dimen/mainMarginLeftRight"
+    android:paddingTop="14dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="40dp"
+            android:src="@drawable/back" />
+
+        <TextView
+            style="@style/TitleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="21dp"
+            android:layout_marginTop="24dp"
+            android:text="报修申请" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:layout_centerVertical="true"
+            android:background="#eee" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="58dp">
+
+            <TextView
+                style="@style/ContentText_main"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="设备信息：" />
+
+            <ImageView
+                android:id="@+id/iv_forward"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/forward" />
+
+            <TextView
+                style="@style/ContentText_value_grey"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:layout_toLeftOf="@id/iv_forward"
+                android:text="未选择" />
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:layout_centerVertical="true"
+            android:background="#eee" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="102dp"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/ContentText_main"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:text="添加图片：" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:orientation="horizontal">
+                
+                <ImageView
+                    android:layout_width="57dp"
+                    android:layout_height="57dp"
+                    android:background="#dddddd"
+                    android:src="@drawable/device_picture_add"
+                    android:scaleType="centerInside"
+                    android:layout_gravity="center_vertical"/>
+
+                <ImageView
+                    android:layout_width="57dp"
+                    android:layout_height="57dp"
+                    android:background="#dddddd"
+                    android:src="@drawable/device_picture_add"
+                    android:scaleType="centerInside"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:visibility="gone"/>
+
+                <ImageView
+                    android:layout_width="57dp"
+                    android:layout_height="57dp"
+                    android:background="#dddddd"
+                    android:src="@drawable/device_picture_add"
+                    android:scaleType="centerInside"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:visibility="gone"/>
+                
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:layout_centerVertical="true"
+            android:background="#eee" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="58dp"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/ContentText_main"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:text="联系电话：" />
+
+            <EditText
+                style="@style/EditText_No_Border"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@null"
+                android:paddingLeft="10dp"
+                android:imeOptions="actionNext"
+                android:inputType="phone"
+                android:hint="请输入您的电话号码" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:layout_centerVertical="true"
+            android:background="#eee" />
+
+        <EditText
+            style="@style/EditText_No_Border"
+            android:layout_width="match_parent"
+            android:layout_height="134dp"
+            android:background="#f5f5f5"
+            android:gravity="start"
+            android:hint="请简要填写报修内容"
+            android:padding="14dp"
+            android:layout_marginTop="21dp"/>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/bt_submit"
+        style="@style/Button"
+        android:layout_alignParentBottom="true"
+        android:enabled="false"
+        android:text="提交申请" />
+</RelativeLayout>

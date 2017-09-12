@@ -26,7 +26,7 @@ public class RepairNavActivity extends BaseActivity {
     // 申请报修
     @OnClick(R.id.rl_repair_apply_entry)
     void applyRepair() {
-        startActivity(this, RepairActivity.class);
+        startActivity(this, RepairApplyActivity.class);
     }
 
     // 报修记录

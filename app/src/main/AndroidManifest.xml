@@ -118,6 +118,11 @@
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"/>
 
+        <activity
+            android:name=".activity.repair.RepairApplyActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
 
         <activity
             android:name=".activity.MainActivity"

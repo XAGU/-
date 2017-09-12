@@ -125,6 +125,12 @@
 
     </style>
 
+    <style name="EditText_No_Border">
+        <item name="android:cacheColorHint">#bbb</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#222</item>
+    </style>
+
 
 
     <style name="Button">
