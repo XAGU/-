@@ -15,6 +15,7 @@
     <color name="colorDarkB">#bbb</color>
     <color name="colorDark6">#666</color>
     <color name="colorDark9">#999</color>
+    <color name="colorDarke">#eee</color>
 
 
     <color name="colorWhite">#ffffffff</color>
@@ -22,4 +23,5 @@
     <color name="colorBorder">#e5e5e5</color>
     <color name="colorFullRed">#ffff5555</color>
     <color name="colorShadowRed">#4dff5555</color>
+    <color name="colorGreen">#00d3c7</color>
 </resources>

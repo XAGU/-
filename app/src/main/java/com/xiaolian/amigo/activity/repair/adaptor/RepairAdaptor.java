@@ -1,5 +1,7 @@
 package com.xiaolian.amigo.activity.repair.adaptor;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.activity.repair.RepairDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +52,7 @@ public class RepairAdaptor extends RecyclerView.Adapter<RepairAdaptor.ViewHolder
         return null == repairs ? 0 : repairs.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @BindView(R.id.tv_device)
         TextView tv_device;
         @BindView(R.id.tv_time)
@@ -57,9 +60,19 @@ public class RepairAdaptor extends RecyclerView.Adapter<RepairAdaptor.ViewHolder
         @BindView(R.id.tv_status)
         TextView tv_status;
 
+        Context context;
+
         public ViewHolder(View itemView) {
             super(itemView);
+            this.context = itemView.getContext();
+            itemView.setOnClickListener(this);
             ButterKnife.bind(this, itemView);
+        }
+
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(context, RepairDetailActivity.class);
+            context.startActivity(intent);
         }
     }
 
