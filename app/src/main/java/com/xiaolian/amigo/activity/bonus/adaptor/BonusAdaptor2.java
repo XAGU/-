@@ -5,11 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.activity.bonus.viewmodel.Bonus;
+import com.xiaolian.amigo.component.BaseWrapperRecyclerAdapter;
 
 import java.util.List;
 

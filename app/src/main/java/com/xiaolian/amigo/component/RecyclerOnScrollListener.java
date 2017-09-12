@@ -1,4 +1,4 @@
-package com.xiaolian.amigo.activity.bonus.adaptor;
+package com.xiaolian.amigo.component;
 
 import android.support.v7.widget.RecyclerView;
 

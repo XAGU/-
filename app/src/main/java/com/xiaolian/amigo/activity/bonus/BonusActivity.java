@@ -11,18 +11,18 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.activity.bonus.adaptor.BaseLoadMoreFooterView;
+import com.xiaolian.amigo.component.BaseLoadMoreFooterView;
 import com.xiaolian.amigo.activity.bonus.adaptor.BonusAdaptor2;
-import com.xiaolian.amigo.activity.bonus.adaptor.LinearLayoutWithRecyclerOnScrollListener;
+import com.xiaolian.amigo.component.LinearLayoutWithRecyclerOnScrollListener;
 import com.xiaolian.amigo.activity.bonus.viewmodel.Bonus;
 import com.xiaolian.amigo.base.BaseActivity;
-import com.zhy.adapter.recyclerview.wrapper.LoadMoreWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
 
@@ -32,7 +32,7 @@ import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
  * Created by caidong on 2017/9/8.
  */
 public class BonusActivity extends BaseActivity
-//        implements BGARefreshLayout.BGARefreshLayoutDelegate
+        implements BGARefreshLayout.BGARefreshLayoutDelegate
 {
 
     static List<Bonus> bonuses = new ArrayList<Bonus>() {
@@ -40,11 +40,11 @@ public class BonusActivity extends BaseActivity
             add(new Bonus(1, 1, "xxxx", "yyyy", 3));
             add(new Bonus(1, 1, "xxxx", "yyyy", 3));
             add(new Bonus(1, 1, "xxxx", "yyyy", 3));
-//            add(new Bonus(1, 1, "xxxx", "yyyy", 3));
-//            add(new Bonus(1, 1, "xxxx", "yyyy", 3));
-//            add(new Bonus(1, 1, "xxxx", "yyyy", 3));
-//            add(new Bonus(1, 1, "xxxx", "yyyy", 3));
-//            add(new Bonus(1, 1, "xxxx", "yyyy", 3));
+            add(new Bonus(1, 1, "xxxx", "yyyy", 3));
+            add(new Bonus(1, 1, "xxxx", "yyyy", 3));
+            add(new Bonus(1, 1, "xxxx", "yyyy", 3));
+            add(new Bonus(1, 1, "xxxx", "yyyy", 3));
+            add(new Bonus(1, 1, "xxxx", "yyyy", 3));
 //            add(new Bonus(1, 1, "xxxx", "yyyy", 3));
 //            add(new Bonus(1, 1, "xxxx", "yyyy", 3));
         }
@@ -62,11 +62,11 @@ public class BonusActivity extends BaseActivity
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
 
-//    @BindView(R.id.refreshLayout)
-//    BGARefreshLayout mRefreshLayout;
+    @BindView(R.id.refreshLayout)
+    BGARefreshLayout mRefreshLayout;
 
     BonusAdaptor2 adapter;
-    private final int MAX_ITEM_COUNT = 100;
+    private final int MAX_ITEM_COUNT = 20;
     private LinearLayoutWithRecyclerOnScrollListener mLoadMoreListener;
     float endY;
 
@@ -103,14 +103,14 @@ public class BonusActivity extends BaseActivity
 
 
     private void initRecyclerView() {
-//        BGAStickinessRefreshViewHolder stickinessRefreshViewHolder = new BGAStickinessRefreshViewHolder(this, false);
-//        stickinessRefreshViewHolder.setStickinessColor(R.color.colorPrimary);
-//        stickinessRefreshViewHolder.setRotateImage(R.drawable.default_avatar);
-//        mRefreshLayout.setRefreshViewHolder(stickinessRefreshViewHolder);
-//
-////        mRefreshLayout.setPullDownRefreshEnable(false);
-//
-//        mRefreshLayout.setDelegate(this);
+        BGAStickinessRefreshViewHolder stickinessRefreshViewHolder = new BGAStickinessRefreshViewHolder(this, false);
+        stickinessRefreshViewHolder.setStickinessColor(R.color.colorPrimary);
+        stickinessRefreshViewHolder.setRotateImage(R.drawable.default_avatar);
+        mRefreshLayout.setRefreshViewHolder(stickinessRefreshViewHolder);
+
+//        mRefreshLayout.setPullDownRefreshEnable(false);
+
+        mRefreshLayout.setDelegate(this);
 
         adapter = new BonusAdaptor2(bonuses);
 
@@ -147,7 +147,8 @@ public class BonusActivity extends BaseActivity
                         if (adapter.getItemCount() >= MAX_ITEM_COUNT) {
                             adapter.showNoMoreDataView();
                         } else {
-                            mHandler.sendEmptyMessageDelayed(0, 200);
+//                            mHandler.sendEmptyMessageDelayed(0, 200);
+                            adapter.append(new Bonus(2, 2, "xxxx", "yyyy", 3));
                             adapter.hideFooterView();
                         }
                         //java.lang.IndexOutOfBoundsException: Inconsistency detected. Invalid view holder adapter positionViewHolder
@@ -164,84 +165,84 @@ public class BonusActivity extends BaseActivity
 
     }
 
-//    @Override
-//    public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
-//        new AsyncTask<Void, Void, Void>() {
-//
-//            @Override
-//            protected void onPreExecute() {
-////                showLoadingDialog();
-//            }
-//
-//            @Override
-//            protected Void doInBackground(Void... params) {
-//                try {
-//                    Thread.sleep(2000);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//                return null;
-//            }
-//
-//            @Override
-//            protected void onPostExecute(Void aVoid) {
-////                dismissLoadingDialog();
-//                mRefreshLayout.endRefreshing();
-////                mClickableLabelTv.setText("加载最新数据完成");
-//            }
-//        }.execute();
-//
-//    }
-//
-//    @Override
-//    public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
-//        new AsyncTask<Void, Void, Void>() {
-//
-//            @Override
-//            protected void onPreExecute() {
-////                showLoadingDialog();
-//                if (mRecyclerView.getAdapter() != null && mRecyclerView.getAdapter().getItemCount() > 1) {
-//                    mRecyclerView.post(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            mRecyclerView.smoothScrollToPosition(mRecyclerView.getAdapter().getItemCount() - 2);
-//                        }
-//                    });
-//                }
-//            }
-//
-//            @Override
-//            protected Void doInBackground(Void... params) {
-//                try {
-//                    Thread.sleep(2000);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//                return null;
-//            }
-//
-//            @Override
-//            protected void onPostExecute(Void aVoid) {
-////                dismissLoadingDialog();
-//                mRefreshLayout.endLoadingMore();
-//                mHandler.sendEmptyMessageDelayed(0, 200);
-////                Log.i(TAG, "上拉加载更多完成");
-//            }
-//        }.execute();
-//        return true;
-//    }
+    @Override
+    public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
+        new AsyncTask<Void, Void, Void>() {
 
-//    // 兑换红包
-//    @OnClick(R.id.tv_exchage)
-//    void exchange() {
-//        startActivity(this, BonusExchangeActivity.class);
-//    }
+            @Override
+            protected void onPreExecute() {
+//                showLoadingDialog();
+            }
 
-//    // 查看过期红包
-//    @OnClick(R.id.tv_expired_entry)
-//    void queryExpiredBonus() {
-//        startActivity(this, ExpiredBonusActivity.class);
-//    }
+            @Override
+            protected Void doInBackground(Void... params) {
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+//                dismissLoadingDialog();
+                mRefreshLayout.endRefreshing();
+//                mClickableLabelTv.setText("加载最新数据完成");
+            }
+        }.execute();
+
+    }
+
+    @Override
+    public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
+        new AsyncTask<Void, Void, Void>() {
+
+            @Override
+            protected void onPreExecute() {
+//                showLoadingDialog();
+                if (mRecyclerView.getAdapter() != null && mRecyclerView.getAdapter().getItemCount() > 1) {
+                    mRecyclerView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            mRecyclerView.smoothScrollToPosition(mRecyclerView.getAdapter().getItemCount() - 2);
+                        }
+                    });
+                }
+            }
+
+            @Override
+            protected Void doInBackground(Void... params) {
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+//                dismissLoadingDialog();
+                mRefreshLayout.endLoadingMore();
+                mHandler.sendEmptyMessageDelayed(0, 200);
+//                Log.i(TAG, "上拉加载更多完成");
+            }
+        }.execute();
+        return true;
+    }
+
+    // 兑换红包
+    @OnClick(R.id.tv_exchage)
+    void exchange() {
+        startActivity(this, BonusExchangeActivity.class);
+    }
+
+    // 查看过期红包
+    @OnClick(R.id.tv_expired_entry)
+    void queryExpiredBonus() {
+        startActivity(this, ExpiredBonusActivity.class);
+    }
 
 //    @Override
 //    public void onPullDownToRefresh(PullToRefreshBase refreshView) {

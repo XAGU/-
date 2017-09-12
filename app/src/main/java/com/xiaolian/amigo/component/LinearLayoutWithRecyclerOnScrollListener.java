@@ -1,4 +1,4 @@
-package com.xiaolian.amigo.activity.bonus.adaptor;
+package com.xiaolian.amigo.component;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +13,7 @@ public abstract class LinearLayoutWithRecyclerOnScrollListener extends RecyclerO
 
 
     // The minimum amount of items to have below your current scroll position before loading more.
-    private int visibleThreshold = 1;
+    private int visibleThreshold = 5;
     int firstVisibleItem, visibleItemCount, totalItemCount;
     private LinearLayoutManager mLinearLayoutManager;
 
