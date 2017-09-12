@@ -66,21 +66,18 @@
         </LinearLayout>
 
     </android.support.design.widget.AppBarLayout>
-    <cn.bingoogolapple.refreshlayout.BGARefreshLayout
-        android:id="@+id/refreshLayout"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+    <!--<cn.bingoogolapple.refreshlayout.BGARefreshLayout-->
+        <!--android:id="@+id/refreshLayout"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--&gt;-->
         <android.support.v7.widget.RecyclerView
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:id="@+id/recyclerView"
             android:overScrollMode="never"
-            android:overScrollFooter="@android:color/transparent"
-            android:overScrollHeader="@android:color/transparent"
-            android:fadingEdge="none"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
-    </cn.bingoogolapple.refreshlayout.BGARefreshLayout>
+    <!--</cn.bingoogolapple.refreshlayout.BGARefreshLayout>-->
 
     <!--<com.handmark.pulltorefresh.library.PullToRefreshScrollView-->
         <!--app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
