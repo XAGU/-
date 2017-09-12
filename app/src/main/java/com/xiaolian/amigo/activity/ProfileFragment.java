@@ -8,25 +8,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.activity.bonus.BonusActivity;
 import com.xiaolian.amigo.activity.favorite.FavoriteActivity;
 import com.xiaolian.amigo.activity.order.OrderActivity;
-import com.xiaolian.amigo.activity.repair.RepairActivity;
+import com.xiaolian.amigo.activity.repair.RepairNavActivity;
 import com.xiaolian.amigo.activity.wallet.WalletActivty;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnItemClick;
-import butterknife.OnItemSelected;
 
 /**
  * Created by yik on 2017/9/5.
@@ -63,7 +59,7 @@ public class ProfileFragment extends Fragment {
             MenuListViewAdapter.Item collectionItem = new MenuListViewAdapter.Item(R.drawable.profile_favorite, "我收藏的设备", FavoriteActivity.class);
             listData.add(collectionItem);
 
-            MenuListViewAdapter.Item repairItem = new MenuListViewAdapter.Item(R.drawable.profile_repair, "设备报修", RepairActivity.class);
+            MenuListViewAdapter.Item repairItem = new MenuListViewAdapter.Item(R.drawable.profile_repair, "设备报修", RepairNavActivity.class);
             listData.add(repairItem);
             
             inited = true;

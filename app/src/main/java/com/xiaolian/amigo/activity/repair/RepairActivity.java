@@ -27,6 +27,11 @@ public class RepairActivity extends BaseActivity{
             add(new RepairAdaptor.Repair("", "", 1));
             add(new RepairAdaptor.Repair("", "", 1));
             add(new RepairAdaptor.Repair("", "", 1));
+            add(new RepairAdaptor.Repair("", "", 1));
+            add(new RepairAdaptor.Repair("", "", 1));
+            add(new RepairAdaptor.Repair("", "", 1));
+            add(new RepairAdaptor.Repair("", "", 1));
+            add(new RepairAdaptor.Repair("", "", 1));
         }
     };
 
