@@ -22,6 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:focusableInTouchMode="true"
+        app:elevation="0dp"
         android:orientation="vertical">
 
 
@@ -74,6 +75,9 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:overScrollMode="never"
+            android:overScrollFooter="@android:color/transparent"
+            android:overScrollHeader="@android:color/transparent"
+            android:fadingEdge="none"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </cn.bingoogolapple.refreshlayout.BGARefreshLayout>
