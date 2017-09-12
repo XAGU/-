@@ -83,7 +83,7 @@
         <View
             android:layout_width="6dp"
             android:layout_height="6dp"
-            android:background="@drawable/circle"
+            android:background="@drawable/dot_circle"
             android:layout_toLeftOf="@id/iv_forward"
             android:layout_marginRight="10dp"
             android:layout_centerVertical="true"/>
