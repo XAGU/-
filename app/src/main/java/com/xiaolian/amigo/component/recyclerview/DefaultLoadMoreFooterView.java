@@ -6,7 +6,7 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.component.recyclerview.BaseLoadMoreFooterView;
 
 /**
- * Created by adamzfc on 9/12/17.
+ * DefaultLoadMoreFooterView
  */
 
 public class DefaultLoadMoreFooterView extends BaseLoadMoreFooterView {

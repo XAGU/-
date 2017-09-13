@@ -13,4 +13,6 @@
     <dimen name="avatarHeight">67dp</dimen>
 
     <dimen name="itemMainText">14sp</dimen>
+
+    <dimen name="toolBarHeight">42dp</dimen>
 </resources>

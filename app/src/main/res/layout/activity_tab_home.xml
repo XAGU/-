@@ -6,6 +6,8 @@
     android:orientation="vertical">
 
     <RelativeLayout
+        android:background="@drawable/bg_tag_onclick"
+        android:id="@+id/rl_geyser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
@@ -42,6 +44,8 @@
 
 
     <RelativeLayout
+        android:background="@drawable/bg_tag_onclick"
+        android:id="@+id/rl_water_fountain"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 

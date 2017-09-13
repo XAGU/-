@@ -1,0 +1,6 @@
+<resources>
+    <style name="DeviceTheme" parent="AppTheme.NoActionBar">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="colorControlNormal">#fff</item>
+    </style>
+</resources>

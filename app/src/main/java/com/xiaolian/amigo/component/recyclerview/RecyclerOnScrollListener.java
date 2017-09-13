@@ -3,7 +3,7 @@ package com.xiaolian.amigo.component.recyclerview;
 import android.support.v7.widget.RecyclerView;
 
 /**
- * Created by adamzfc on 9/12/17.
+ * RecyclerOnScrollListener
  */
 
 public abstract class RecyclerOnScrollListener extends RecyclerView.OnScrollListener{
