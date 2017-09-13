@@ -19,10 +19,10 @@ import butterknife.ButterKnife;
 
 /**
  * 维修列表
- *
+ * <p>
  * Created by caidong on 2017/9/12.
  */
-public class BuildingActivity extends BaseActivity{
+public class BuildingActivity extends BaseActivity {
 
     static List<LocationAdaptor.Location> buildings = new ArrayList<LocationAdaptor.Location>() {
         {
@@ -44,8 +44,7 @@ public class BuildingActivity extends BaseActivity{
         ButterKnife.bind(this);
         manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         adapter = new LocationAdaptor(buildings, FloorActivity.class);
-        rv_buildings.addItemDecoration(new RecycleViewDivider(
-                this, LinearLayoutManager.VERTICAL, 1, getResources().getColor(R.color.colorDarke)));
+        rv_buildings.addItemDecoration(new RecycleViewDivider(this, RecycleViewDivider.VERTICAL_LIST));
         rv_buildings.setLayoutManager(manager);
         rv_buildings.setAdapter(adapter);
     }

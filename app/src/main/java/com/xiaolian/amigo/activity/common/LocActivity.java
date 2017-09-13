@@ -45,8 +45,7 @@ public class LocActivity extends BaseActivity {
         ButterKnife.bind(this);
         manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         adapter = new LocationAdaptor(locs, RepairApplyActivity.class);
-        rv_locs.addItemDecoration(new RecycleViewDivider(
-                this, LinearLayoutManager.VERTICAL, 1, getResources().getColor(R.color.colorDarke)));
+        rv_locs.addItemDecoration(new RecycleViewDivider(this, RecycleViewDivider.VERTICAL_LIST));
         rv_locs.setLayoutManager(manager);
         rv_locs.setAdapter(adapter);
     }

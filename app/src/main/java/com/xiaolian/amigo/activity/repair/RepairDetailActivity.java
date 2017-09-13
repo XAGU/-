@@ -46,8 +46,7 @@ public class RepairDetailActivity extends BaseActivity {
         ButterKnife.bind(this);
         manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         adapter = new RepairProgressAdaptor(progresses);
-        rv_repairProgresses.addItemDecoration(new RecycleViewDivider(
-                this, LinearLayoutManager.VERTICAL, 1, getResources().getColor(R.color.colorDarke)));
+        rv_repairProgresses.addItemDecoration(new RecycleViewDivider(this, RecycleViewDivider.VERTICAL_LIST));
         rv_repairProgresses.setLayoutManager(manager);
         rv_repairProgresses.setAdapter(adapter);
     }
