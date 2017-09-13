@@ -38,7 +38,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
             style="@style/ContentText_main"
             android:text="报修申请"
             android:layout_centerVertical="true"/>
@@ -67,7 +66,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
             style="@style/ContentText_main"
             android:text="报修记录"
             android:layout_centerVertical="true"/>
