@@ -32,6 +32,15 @@ public class LostAndFoundActivity extends BaseActivity {
             add(new LostAndFoundAdaptor.Info("", "", "", "", ""));
             add(new LostAndFoundAdaptor.Info("", "", "", "", ""));
             add(new LostAndFoundAdaptor.Info("", "", "", "", ""));
+            add(new LostAndFoundAdaptor.Info("", "", "", "", ""));
+            add(new LostAndFoundAdaptor.Info("", "", "", "", ""));
+            add(new LostAndFoundAdaptor.Info("", "", "", "", ""));
+            add(new LostAndFoundAdaptor.Info("", "", "", "", ""));
+            add(new LostAndFoundAdaptor.Info("", "", "", "", ""));
+            add(new LostAndFoundAdaptor.Info("", "", "", "", ""));
+            add(new LostAndFoundAdaptor.Info("", "", "", "", ""));
+            add(new LostAndFoundAdaptor.Info("", "", "", "", ""));
+            add(new LostAndFoundAdaptor.Info("", "", "", "", ""));
         }
     };
 
