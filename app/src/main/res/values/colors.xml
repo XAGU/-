@@ -44,5 +44,6 @@
     <color name="actionsheet_orange">#f77600</color>
 
     <color name="colorTextGray">#bbb</color>
+    <color name="transparent">#00000000</color>
 
 </resources>
