@@ -8,8 +8,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <!--android:fitsSystemWindows="true"-->
-    <LinearLayout
-        android:id="@+id/ll_header"
+    <RelativeLayout
+        android:id="@+id/rl_header"
         android:background="@drawable/bg_rect_red"
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -28,10 +28,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-    </LinearLayout>
+        <com.xiaolian.amigo.component.BezierWaveView
+            android:layout_alignParentBottom="true"
+            android:id="@+id/bsv_wave"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@android:color/transparent"
+            />
+
+    </RelativeLayout>
 
     <LinearLayout
-        android:layout_marginTop="16dp"
         android:id="@+id/ll_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -41,6 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
+                android:paddingTop="16dp"
                 android:id="@+id/tv_money_pay"
                 android:drawableBottom="@drawable/line_red"
                 android:drawablePadding="5dp"
@@ -53,6 +61,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"/>
             <TextView
+                android:paddingTop="16dp"
                 android:id="@+id/tv_bonus_pay"
                 android:drawablePadding="5dp"
                 android:text="红包支付"
@@ -61,7 +70,8 @@
                 android:textSize="12sp"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                />
 
         </LinearLayout>
 
