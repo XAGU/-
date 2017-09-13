@@ -25,7 +25,7 @@ nbdist/
 .nb-gradle/
 .gradle/
 
-*.properties
+local.properties
 
 .DS_Store
 app/.DS_Store
