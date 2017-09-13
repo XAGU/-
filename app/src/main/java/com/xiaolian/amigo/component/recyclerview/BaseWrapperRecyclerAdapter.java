@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by adamzfc on 9/12/17.
+ * BaseWrapperRecyclerAdapter
  */
 
 public abstract class BaseWrapperRecyclerAdapter<T, VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter{

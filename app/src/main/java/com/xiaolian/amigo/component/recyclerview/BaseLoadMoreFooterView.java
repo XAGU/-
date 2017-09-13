@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.xiaolian.amigo.R;
 
 /**
- * Created by adamzfc on 9/12/17.
+ * BaseLoadMoreFooterView
  */
 
 public abstract class BaseLoadMoreFooterView extends FrameLayout {

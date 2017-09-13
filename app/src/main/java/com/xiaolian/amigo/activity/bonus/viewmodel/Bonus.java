@@ -1,7 +1,8 @@
 package com.xiaolian.amigo.activity.bonus.viewmodel;
 
 /**
- * Created by adamzfc on 9/12/17.
+ * Bonus模型
+ * @author zcd
  */
 
 public class Bonus {

@@ -13,7 +13,7 @@ import com.xiaolian.amigo.R;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 /**
- * Created by adamzfc on 9/12/17.
+ * LoadMoreAdapter
  */
 @Deprecated
 public class LoadMoreAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {

@@ -1,4 +1,8 @@
-package com.xiaolian.amigo.activity.bonus.adaptor;
+package com.xiaolian.amigo.activity.device.geyser;
+
+/**
+ * Created by adamzfc on 9/13/17.
+ */
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,27 +18,27 @@ import com.xiaolian.amigo.component.recyclerview.BaseWrapperRecyclerAdapter;
 import java.util.List;
 
 /**
- * BonusAdaptor2
+ * BonusAdapter
  * @author zcd
  */
 
-public class BonusAdaptor2 extends BaseWrapperRecyclerAdapter<Bonus, BonusAdaptor2.ItemViewHolder> {
+public class BonusAdaptor extends BaseWrapperRecyclerAdapter<Bonus, BonusAdaptor.ItemViewHolder> {
 
-    public BonusAdaptor2(List<Bonus> items) {
+    public BonusAdaptor(List<Bonus> items) {
         appendToList(items);
     }
 
     @Override
-    public ItemViewHolder onCreateItemViewHolder(ViewGroup parent, int viewType) {
+    public BonusAdaptor.ItemViewHolder onCreateItemViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_bonus, parent, false);
 
-        return new BonusAdaptor2.ItemViewHolder(view);
+        return new BonusAdaptor.ItemViewHolder(view);
     }
 
 
     @Override
-    public void onBindItemViewHolder(BonusAdaptor2.ItemViewHolder viewHolder, int position) {
+    public void onBindItemViewHolder(BonusAdaptor.ItemViewHolder viewHolder, int position) {
         Bonus bonus = getItem(position);
         viewHolder.tv_amount.setText(bonus.getAmount().toString());
         viewHolder.tv_type.setText(bonus.getType().toString());
@@ -45,8 +49,14 @@ public class BonusAdaptor2 extends BaseWrapperRecyclerAdapter<Bonus, BonusAdapto
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder vh, int position, List payloads) {
-        if(payloads != null && payloads.size() > 0 && vh instanceof BonusAdaptor2.ItemViewHolder){
+    public void onBindViewHolder(RecyclerView.ViewHolder vh, final int position, List payloads) {
+        vh.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mItemClickListener.onItemClick(v, position);
+            }
+        });
+        if(payloads != null && payloads.size() > 0 && vh instanceof com.xiaolian.amigo.activity.bonus.adaptor.BonusAdaptor2.ItemViewHolder){
             for(Object o : payloads){
                 if(o != null && o instanceof Integer) {
 //                    ((BonusAdaptor2.ItemViewHolder) vh).mTvContent.setTextColor((Integer) o);
@@ -77,6 +87,16 @@ public class BonusAdaptor2 extends BaseWrapperRecyclerAdapter<Bonus, BonusAdapto
 //            addOnItemViewClickListener();
 //            addOnViewClickListener(mTvContent);
         }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(View view, int position);
+    }
+
+    private OnItemClickListener mItemClickListener;
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.mItemClickListener = listener;
     }
 
 }
