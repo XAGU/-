@@ -44,6 +44,7 @@
         android:id="@+id/ll_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:orientation="vertical">
         <LinearLayout
             android:paddingTop="16dp"
@@ -193,16 +194,15 @@
         android:id="@+id/ll_content_unconnected"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
+        android:visibility="visible"
         android:orientation="vertical">
 
-        <TextView
-            android:textColor="#bbb"
-            android:textSize="10sp"
-            android:text="(消费金额以实际用水量为准)"
-            android:gravity="center"
+        <com.xiaolian.amigo.component.DotFlashView
+            android:id="@+id/dfv_dot"
+            app:firstColor="#4cff5555"
+            app:secondColor="#ff5555"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="10dp"/>
 
         <View
             android:layout_marginTop="20dp"
@@ -213,7 +213,7 @@
             android:layout_height="1dp"/>
         <TextView
             android:textSize="14sp"
-            android:text="以预付10元，请尽快放水洗澡（100s）"
+            android:text="与热水器断开连接，请重连"
             android:textColor="#ff5555"
             android:gravity="center"
             android:layout_width="match_parent"
@@ -255,7 +255,7 @@
             android:layout_height="1dp"/>
         <TextView
             android:textSize="14sp"
-            android:text="与热水器断开连接，请重连"
+            android:text="与饮水机断开连接，请重连"
             android:textColor="#ff5555"
             android:gravity="center"
             android:layout_width="match_parent"

@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.base.BaseActivity;
 import com.xiaolian.amigo.component.BezierWaveView;
+import com.xiaolian.amigo.component.DotFlashView;
 import com.xiaolian.amigo.component.dialog.ActionSheetDialog;
 import com.xiaolian.amigo.component.dialog.IOSAlertDialog;
 
@@ -85,6 +86,11 @@ public class GeyserActivity extends BaseActivity {
     @BindView(R.id.bsv_wave)
     BezierWaveView bsv_wave;
 
+    /**
+     * 加载进度控件
+     */
+    @BindView(R.id.dfv_dot)
+    DotFlashView dfv_dot;
 
     /**
      * 设备名称
@@ -182,6 +188,14 @@ public class GeyserActivity extends BaseActivity {
                         iosAlertDialog.dismiss();
                     }
                 }).show();
+    }
+
+    /**
+     * 重新连接
+     */
+    @OnClick(R.id.bt_reconnect)
+    void onReconnectClick() {
+        dfv_dot.startAnimation();
     }
 
     @Override
