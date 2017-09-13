@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/android_amigo.iml" filepath="$PROJECT_DIR$/android_amigo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Android_amigo.iml" filepath="$PROJECT_DIR$/Android_amigo.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
     </modules>

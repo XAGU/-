@@ -61,6 +61,9 @@ public class ProfileFragment extends Fragment {
 
             MenuListViewAdapter.Item repairItem = new MenuListViewAdapter.Item(R.drawable.profile_repair, "设备报修", RepairNavActivity.class);
             listData.add(repairItem);
+
+            MenuListViewAdapter.Item moreItem = new MenuListViewAdapter.Item(R.drawable.profile_more, "更多", this.getActivity().getClass());
+            listData.add(moreItem);
             
             inited = true;
         }
