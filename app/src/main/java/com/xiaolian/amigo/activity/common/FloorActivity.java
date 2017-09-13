@@ -44,8 +44,7 @@ public class FloorActivity extends BaseActivity{
         ButterKnife.bind(this);
         manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         adapter = new LocationAdaptor(floors, LocActivity.class);
-        rv_floors.addItemDecoration(new RecycleViewDivider(
-                this, LinearLayoutManager.VERTICAL, 1, getResources().getColor(R.color.colorDarke)));
+        rv_floors.addItemDecoration(new RecycleViewDivider(this, RecycleViewDivider.VERTICAL_LIST));
         rv_floors.setLayoutManager(manager);
         rv_floors.setAdapter(adapter);
     }
