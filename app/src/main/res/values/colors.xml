@@ -26,7 +26,6 @@
     <color name="colorGreen">#00d3c7</color>
     <color name="colorBlue">#00d3c7</color>
 
-    <color name="white">#ffffff</color>
     <color name="black">#000000</color>
     <color name="black50">#7f000000</color>
     <color name="black60">#99000000</color>
@@ -36,6 +35,19 @@
     <color name="black7">#10000000</color>
     <color name="black10">#16000000</color>
     <color name="black80">#cc000000</color>
+
+    <color name="white">#FFFFFFFF</color>
+    <color name="white_10">#eeeeee</color>
+    <color name="white10">#16ffffff</color>
+    <color name="white50">#7fffffff</color>
+    <color name="white60">#99ffffff</color>
+    <color name="white70">#aaffffff</color>
+    <color name="white20">#33ffffff</color>
+    <color name="white25">#3fffffff</color>
+    <color name="white40">#7fffffff</color>
+    <color name="white33">#55ffffff</color>
+    <color name="white80">#ccffffff</color>
+
 
     <color name="tag_edit_text_left">#aa000000</color>
     <color name="tag_edit_text_right">#aa000000</color>

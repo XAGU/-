@@ -2,18 +2,18 @@ package com.xiaolian.amigo.activity.device.geyser;
 
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.base.BaseActivity;
+import com.xiaolian.amigo.component.BezierWaveView;
+import com.xiaolian.amigo.component.DotFlashView;
 import com.xiaolian.amigo.component.dialog.ActionSheetDialog;
 import com.xiaolian.amigo.component.dialog.IOSAlertDialog;
 
@@ -50,8 +50,8 @@ public class GeyserActivity extends BaseActivity {
     /**
      * 布局头部
      */
-    @BindView(R.id.ll_header)
-    LinearLayout ll_header;
+    @BindView(R.id.rl_header)
+    RelativeLayout rl_header;
 
     /**
      * 余额支付
@@ -83,6 +83,14 @@ public class GeyserActivity extends BaseActivity {
     @BindView(R.id.tv_water_right)
     TextView tv_water_right;
 
+    @BindView(R.id.bsv_wave)
+    BezierWaveView bsv_wave;
+
+    /**
+     * 加载进度控件
+     */
+    @BindView(R.id.dfv_dot)
+    DotFlashView dfv_dot;
 
     /**
      * 设备名称
@@ -116,6 +124,7 @@ public class GeyserActivity extends BaseActivity {
                             mItemIndex = 1;
                         }
                     }).setTitle("选择水量上限")
+                    .setItemGravity(Gravity.LEFT)
                     .setShowCanceleButton(false)
                     .addFooter(R.layout.view_actionsheet_foot)
                     .setSelectItem(mItemIndex).show();
@@ -181,28 +190,37 @@ public class GeyserActivity extends BaseActivity {
                 }).show();
     }
 
+    /**
+     * 重新连接
+     */
+    @OnClick(R.id.bt_reconnect)
+    void onReconnectClick() {
+        dfv_dot.startAnimation();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_geyser);
         ButterKnife.bind(this);
 
-        if (Build.VERSION.SDK_INT < 19) {
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT);
-            layoutParams.setMargins(0, 0, 0, 0);
-            ll_header.setLayoutParams(layoutParams);
-            LinearLayout contentView = (LinearLayout) findViewById(R.id.ll_content);
-            LinearLayout.LayoutParams layoutParams1 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.MATCH_PARENT);
-            contentView.setLayoutParams(layoutParams1);
-        }
+//        if (Build.VERSION.SDK_INT < 19) {
+//            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+//                    LinearLayout.LayoutParams.WRAP_CONTENT);
+//            layoutParams.setMargins(0, 0, 0, 0);
+//            ll_header.setLayoutParams(layoutParams);
+//            LinearLayout contentView = (LinearLayout) findViewById(R.id.ll_content);
+//            LinearLayout.LayoutParams layoutParams1 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+//                    LinearLayout.LayoutParams.MATCH_PARENT);
+//            contentView.setLayoutParams(layoutParams1);
+//        }
         initView();
     }
 
 
     private void initView() {
         tv_device_name.setText("3栋－5楼－510");
+        bsv_wave.startAnim();
     }
 
     @Override
