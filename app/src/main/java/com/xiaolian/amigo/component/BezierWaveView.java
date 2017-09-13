@@ -206,12 +206,18 @@ public class BezierWaveView extends View {
     }
 
     private void endAnimation() {
-        mAnimator1.cancel();
-        mAnimator1.end();
-        mAnimator2.cancel();
-        mAnimator2.end();
-        mAnimator3.cancel();
-        mAnimator3.end();
+        if (mAnimator1 != null) {
+            mAnimator1.cancel();
+            mAnimator1.end();
+        }
+        if (mAnimator2 != null) {
+            mAnimator2.cancel();
+            mAnimator2.end();
+        }
+        if (mAnimator3 != null) {
+            mAnimator3.cancel();
+            mAnimator3.end();
+        }
     }
 
     @Override

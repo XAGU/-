@@ -213,7 +213,7 @@
             android:layout_height="1dp"/>
         <TextView
             android:textSize="14sp"
-            android:text="与热水器断开连接，请重连"
+            android:text="与饮水机断开连接，请重连"
             android:textColor="#ff5555"
             android:gravity="center"
             android:layout_width="match_parent"

@@ -15,7 +15,8 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.common.util.ScreenUtils;
 
 /**
- * Created by adamzfc on 9/13/17.
+ * 设备重连加载View
+ * @author zcd
  */
 
 public class DotFlashView extends View {
@@ -146,8 +147,10 @@ public class DotFlashView extends View {
     }
 
     public void endAnimation() {
-        valueAnimator.cancel();
-        valueAnimator.end();
+        if (valueAnimator != null) {
+            valueAnimator.cancel();
+            valueAnimator.end();
+        }
 
     }
 
