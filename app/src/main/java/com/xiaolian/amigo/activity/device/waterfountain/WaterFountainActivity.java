@@ -5,13 +5,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.base.BaseActivity;
+import com.xiaolian.amigo.component.dialog.IOSAlertDialog;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * 饮水机页面
@@ -34,6 +37,45 @@ public class WaterFountainActivity extends BaseActivity {
      */
     @BindView(R.id.iv_collect)
     ImageView iv_collect;
+
+    /**
+     * 选择水温
+     */
+    @BindView(R.id.rl_water_temp)
+    RelativeLayout rl_water_temp;
+
+    /**
+     * 选择水温
+     */
+    @OnClick(R.id.rl_water_temp)
+    void chooseWaterTemp() {
+
+    }
+
+    /**
+     * 支付方式状态
+     */
+    private boolean isMoneyPay = true;
+
+    /**
+     * 确认支付点击事件
+     */
+    @OnClick(R.id.bt_pay)
+    void onOkButtonClick() {
+        new IOSAlertDialog(this).builder()
+                .setMsg("sorry,您的账户余额不足xx元~")
+                .setPositiveButton("前往充值", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                    }
+                })
+                .setNegativeClickListener("取消", new IOSAlertDialog.OnDialogClickListener() {
+                    @Override
+                    public void onDialogClickListener(IOSAlertDialog iosAlertDialog) {
+                        iosAlertDialog.dismiss();
+                    }
+                }).show();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
