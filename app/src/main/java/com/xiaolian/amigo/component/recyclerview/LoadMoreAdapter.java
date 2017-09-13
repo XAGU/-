@@ -1,4 +1,4 @@
-package com.xiaolian.amigo.activity.bonus.adaptor;
+package com.xiaolian.amigo.component.recyclerview;
 
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
@@ -7,17 +7,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
-import com.zhy.adapter.recyclerview.wrapper.LoadMoreWrapper;
 
 /**
  * Created by adamzfc on 9/12/17.
  */
-
+@Deprecated
 public class LoadMoreAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     /**
      * 是否正在加载

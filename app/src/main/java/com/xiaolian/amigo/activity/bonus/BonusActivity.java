@@ -11,9 +11,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.component.BaseLoadMoreFooterView;
+import com.xiaolian.amigo.component.recyclerview.BaseLoadMoreFooterView;
 import com.xiaolian.amigo.activity.bonus.adaptor.BonusAdaptor2;
-import com.xiaolian.amigo.component.LinearLayoutWithRecyclerOnScrollListener;
+import com.xiaolian.amigo.component.recyclerview.LinearLayoutWithRecyclerOnScrollListener;
 import com.xiaolian.amigo.activity.bonus.viewmodel.Bonus;
 import com.xiaolian.amigo.base.BaseActivity;
 

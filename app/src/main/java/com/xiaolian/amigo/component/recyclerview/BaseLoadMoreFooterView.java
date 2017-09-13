@@ -1,4 +1,4 @@
-package com.xiaolian.amigo.component;
+package com.xiaolian.amigo.component.recyclerview;
 
 import android.annotation.TargetApi;
 import android.content.Context;

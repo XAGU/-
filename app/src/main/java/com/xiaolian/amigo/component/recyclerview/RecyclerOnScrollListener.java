@@ -1,4 +1,4 @@
-package com.xiaolian.amigo.component;
+package com.xiaolian.amigo.component.recyclerview;
 
 import android.support.v7.widget.RecyclerView;
 

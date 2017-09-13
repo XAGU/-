@@ -1,8 +1,9 @@
-package com.xiaolian.amigo.component;
+package com.xiaolian.amigo.component.recyclerview;
 
 import android.content.Context;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.component.recyclerview.BaseLoadMoreFooterView;
 
 /**
  * Created by adamzfc on 9/12/17.

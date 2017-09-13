@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.activity.bonus.viewmodel.Bonus;
-import com.xiaolian.amigo.component.BaseWrapperRecyclerAdapter;
+import com.xiaolian.amigo.component.recyclerview.BaseWrapperRecyclerAdapter;
 
 import java.util.List;
 
