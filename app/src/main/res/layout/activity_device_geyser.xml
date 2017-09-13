@@ -16,11 +16,13 @@
         android:layout_weight="1"
         android:layout_height="0dp">
         <include
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="42dp"
             layout="@layout/view_device_toolbar"
             />
         <TextView
+            android:layout_below="@id/toolbar"
             android:textSize="12sp"
             android:text="已连接热水器：ZLG9021P"
             android:textColor="#8fff"

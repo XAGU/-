@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.activity.device.geyser.ChooseBonusActivity;
 import com.xiaolian.amigo.base.BaseActivity;
+import com.xiaolian.amigo.component.BezierWaveView;
 import com.xiaolian.amigo.component.dialog.ActionSheetDialog;
 import com.xiaolian.amigo.component.dialog.IOSAlertDialog;
 
@@ -29,8 +31,11 @@ import butterknife.OnClick;
 public class WaterFountainActivity extends BaseActivity {
 
     private static final int CHOOSE_BONUS_CODE = 0x0011;
-    @BindView(R.id.ll_header)
-    LinearLayout ll_header;
+    @BindView(R.id.rl_header)
+    RelativeLayout rl_header;
+
+    @BindView(R.id.bsv_wave)
+    BezierWaveView bsv_wave;
 
     /**
      * 设备名称
@@ -158,6 +163,7 @@ public class WaterFountainActivity extends BaseActivity {
                             mItemIndex = 1;
                         }
                     }).setTitle("选择水量上限")
+                    .setItemGravity(Gravity.LEFT)
                     .setShowCanceleButton(false)
                     .addFooter(R.layout.view_actionsheet_foot)
                     .setSelectItem(mItemIndex).show();
@@ -192,23 +198,19 @@ public class WaterFountainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_water_fountain);
         ButterKnife.bind(this);
-
-        if (Build.VERSION.SDK_INT < 19) {
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT);
-            layoutParams.setMargins(0, 0, 0, 0);
-            ll_header.setLayoutParams(layoutParams);
-            LinearLayout contentView = (LinearLayout) findViewById(R.id.ll_content);
-            LinearLayout.LayoutParams layoutParams1 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.MATCH_PARENT);
-            contentView.setLayoutParams(layoutParams1);
-        }
         initView();
     }
 
     private void initView() {
         tv_device_name.setText("XX楼X层具体位置");
         iv_collect.setVisibility(View.VISIBLE);
+        iv_collect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                iv_collect.setImageResource(R.drawable.collected);
+            }
+        });
+        bsv_wave.startAnim();
     }
 
 }
