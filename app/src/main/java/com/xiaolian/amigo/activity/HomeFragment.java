@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.activity.device.geyser.GeyserActivity;
 import com.xiaolian.amigo.activity.device.waterfountain.WaterFountainActivity;
+import com.xiaolian.amigo.activity.lostandfound.LostAndFoundActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,6 +51,11 @@ public class HomeFragment extends Fragment {
     @OnClick(R.id.rl_water_fountain)
     public void gotoWaterFountain() {
         startActivity(new Intent(getActivity(), WaterFountainActivity.class));
+    }
+
+    @OnClick(R.id.rl_lost_and_found)
+    public void gotoLostAndFound() {
+        startActivity(new Intent(getActivity(), LostAndFoundActivity.class));
     }
 
     @Nullable
