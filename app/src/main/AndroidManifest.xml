@@ -157,13 +157,9 @@
         <activity
             android:name=".activity.lostandfound.LostAndFoundActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"
-            >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
+
         <activity android:name=".activity.device.geyser.GeyserActivity"
                   android:label="@string/app_name"
                   android:theme="@style/AppTheme.NoActionBar"
