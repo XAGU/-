@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
 
-    <com.xiaolian.amigo.component.PickerView
+    <com.xiaolian.amigo.tmp.component.PickerView
         android:id="@+id/pv_schools"
         android:layout_width="match_parent"
         android:layout_height="0dp"

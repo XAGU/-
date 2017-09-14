@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.xiaolian.amigo.component.Formlayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.xiaolian.amigo.tmp.component.Formlayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/colorBackgroundGray"
@@ -24,7 +24,7 @@
         android:text="兑换红包"
         />
 
-    <com.xiaolian.amigo.component.ClearableEditText
+    <com.xiaolian.amigo.tmp.component.ClearableEditText
         android:id="@+id/et_change_code"
         style="@style/EditText"
         android:layout_width="match_parent"
@@ -43,4 +43,4 @@
         android:text="兑换" />
 
 
-</com.xiaolian.amigo.component.Formlayout>
+</com.xiaolian.amigo.tmp.component.Formlayout>

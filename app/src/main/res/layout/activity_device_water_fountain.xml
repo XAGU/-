@@ -30,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-        <com.xiaolian.amigo.component.BezierWaveView
+        <com.xiaolian.amigo.tmp.component.BezierWaveView
             android:layout_alignParentBottom="true"
             android:id="@+id/bsv_wave"
             android:layout_width="match_parent"
@@ -197,7 +197,7 @@
         android:visibility="visible"
         android:orientation="vertical">
 
-        <com.xiaolian.amigo.component.DotFlashView
+        <com.xiaolian.amigo.tmp.component.DotFlashView
             android:id="@+id/dfv_dot"
             app:firstColor="#4cff5555"
             app:secondColor="#ff5555"

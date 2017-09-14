@@ -50,7 +50,7 @@
             android:layout_alignParentRight="true"
             android:src="@drawable/arrow_right" />
 
-        <com.xiaolian.amigo.component.CircleImageView
+        <com.xiaolian.amigo.tmp.component.CircleImageView
             android:layout_width="37dp"
             android:layout_height="37dp"
             android:layout_centerVertical="true"

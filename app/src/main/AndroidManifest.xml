@@ -13,167 +13,167 @@
         tools:replace="android:icon, android:theme">
 
         <activity
-            android:name=".activity.LoginRegistryGroupActivity"
+            android:name=".tmp.activity.LoginRegistryGroupActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateVisible|adjustResize" />
 
         <activity
-            android:name=".activity.LoginActivity"
+            android:name=".tmp.activity.LoginActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateVisible|adjustResize" />
 
         <activity
-            android:name=".activity.RegistryActivity"
+            android:name=".tmp.activity.RegistryActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateVisible|adjustResize" />
 
         <activity
-            android:name=".activity.PasswordRetrievalStep1Activity"
+            android:name=".tmp.activity.PasswordRetrievalStep1Activity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateVisible|adjustResize" />
 
         <activity
-            android:name=".activity.PasswordRetrievalStep2Activity"
+            android:name=".tmp.activity.PasswordRetrievalStep2Activity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateVisible|adjustResize" />
 
         <activity
-            android:name=".activity.EditProfileActivity"
+            android:name=".tmp.activity.EditProfileActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".activity.EditNicknameActivity"
+            android:name=".tmp.activity.EditNicknameActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateVisible|adjustResize" />
 
         <activity
-            android:name=".activity.wallet.WalletActivty"
+            android:name=".tmp.activity.wallet.WalletActivty"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".activity.wallet.RechargeActivty"
+            android:name=".tmp.activity.wallet.RechargeActivty"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".activity.wallet.PrepayActivity"
+            android:name=".tmp.activity.wallet.PrepayActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".activity.wallet.PrepayOrderActivity"
+            android:name=".tmp.activity.wallet.PrepayOrderActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".activity.wallet.WithdrawalActivty"
+            android:name=".tmp.activity.wallet.WithdrawalActivty"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".activity.bonus.BonusActivity"
+            android:name=".tmp.activity.bonus.BonusActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".activity.bonus.ExpiredBonusActivity"
+            android:name=".tmp.activity.bonus.ExpiredBonusActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".activity.bonus.BonusExchangeActivity"
+            android:name=".tmp.activity.bonus.BonusExchangeActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".activity.order.OrderActivity"
+            android:name=".tmp.activity.order.OrderActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".activity.order.OrderDetailActivity"
+            android:name=".tmp.activity.order.OrderDetailActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".activity.favorite.FavoriteActivity"
+            android:name=".tmp.activity.favorite.FavoriteActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".activity.repair.RepairActivity"
+            android:name=".tmp.activity.repair.RepairActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".activity.repair.RepairNavActivity"
+            android:name=".tmp.activity.repair.RepairNavActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".activity.repair.RepairApplyActivity"
+            android:name=".tmp.activity.repair.RepairApplyActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTask"/>
 
         <activity
-            android:name=".activity.repair.RepairDetailActivity"
+            android:name=".tmp.activity.repair.RepairDetailActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
         <activity
-            android:name=".activity.common.DeviceTypeActivity"
+            android:name=".tmp.activity.common.DeviceTypeActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
         <activity
-            android:name=".activity.common.BuildingActivity"
+            android:name=".tmp.activity.common.BuildingActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
         <activity
-            android:name=".activity.common.FloorActivity"
+            android:name=".tmp.activity.common.FloorActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
         <activity
-            android:name=".activity.common.LocActivity"
+            android:name=".tmp.activity.common.LocActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
         <activity
-            android:name=".activity.lostandfound.LostAndFoundActivity"
+            android:name=".tmp.activity.lostandfound.LostAndFoundActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
-        <activity android:name=".activity.device.geyser.GeyserActivity"
+        <activity android:name=".tmp.activity.device.geyser.GeyserActivity"
                   android:label="@string/app_name"
                   android:theme="@style/AppTheme.NoActionBar"
             />
-        <activity android:name=".activity.device.waterfountain.WaterFountainActivity"
+        <activity android:name=".tmp.activity.device.waterfountain.WaterFountainActivity"
                   android:label="@string/app_name"
                   android:theme="@style/AppTheme.NoActionBar"
             />
-        <activity android:name=".activity.device.geyser.ChooseBonusActivity"
+        <activity android:name=".tmp.activity.device.geyser.ChooseBonusActivity"
                   android:label="@string/app_name"
                   android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity
-            android:name=".activity.MainActivity"
+            android:name=".tmp.activity.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

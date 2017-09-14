@@ -37,7 +37,7 @@
                 android:text="过期红包" />
 
 
-            <com.xiaolian.amigo.component.UnScrollListView
+            <com.xiaolian.amigo.tmp.component.UnScrollListView
                 android:id="@+id/lv_bonuses"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
