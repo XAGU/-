@@ -3,8 +3,8 @@ package com.xiaolian.amigo.data.manager;
 import com.xiaolian.amigo.data.network.ILoginService;
 
 /**
- * Created by adamzfc on 9/14/17.
+ * LoginDataManager接口
+ * @author zcd
  */
-
 public interface ILoginDataManager extends ILoginService {
 }

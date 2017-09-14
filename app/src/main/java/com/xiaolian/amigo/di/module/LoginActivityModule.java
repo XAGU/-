@@ -18,6 +18,8 @@ package com.xiaolian.amigo.di.module;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
+import com.xiaolian.amigo.data.manager.ILoginDataManager;
+import com.xiaolian.amigo.data.manager.LoginDataManager;
 import com.xiaolian.amigo.di.LoginActivityContext;
 import com.xiaolian.amigo.ui.login.intf.ILoginPresenter;
 import com.xiaolian.amigo.ui.login.intf.ILoginView;
@@ -51,6 +53,12 @@ public class LoginActivityModule {
     ILoginPresenter<ILoginView> provideLoginPresenter(
             LoginPresenter<ILoginView> presenter) {
         return presenter;
+    }
+
+    @Provides
+    @LoginActivityContext
+    ILoginDataManager provideLoginDataManager(LoginDataManager manager) {
+        return manager;
     }
 
 }

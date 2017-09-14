@@ -16,6 +16,9 @@
 package com.xiaolian.amigo.ui.login;
 
 
+import com.xiaolian.amigo.data.manager.ILoginDataManager;
+import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.LoginRespDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.login.intf.ILoginPresenter;
 import com.xiaolian.amigo.ui.login.intf.ILoginView;
@@ -23,8 +26,16 @@ import com.xiaolian.amigo.util.MessageConstant;
 
 import javax.inject.Inject;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
+
 public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
         implements ILoginPresenter<V> {
+
+    @Inject
+    ILoginDataManager mLoginDataManager;
 
     @Inject
     public LoginPresenter() {
@@ -35,5 +46,18 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
     @Override
     public void onLoginClick(String mobile, String password) {
         getMvpView().onError(MessageConstant.PASSWORD_INVALID);
+        register("1", "1", "1", "1");
+    }
+
+    @Override
+    public void register(String code, String mobile, String password, String schoolld) {
+        mLoginDataManager.register(code, mobile, password, schoolld)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<ApiResult<LoginRespDTO>>() {
+                    @Override
+                    public void accept(@NonNull ApiResult<LoginRespDTO> loginRespDTOApiResult) throws Exception {
+                        getMvpView().showMessage(loginRespDTOApiResult.getError().getDebugMessage());
+                    }
+                }).dispose();
     }
 }
