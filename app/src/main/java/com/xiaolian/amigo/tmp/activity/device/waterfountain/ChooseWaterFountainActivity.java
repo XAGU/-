@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.tmp.base.BaseActivity;
 import com.xiaolian.amigo.tmp.component.recyclerview.BaseLoadMoreFooterView;
@@ -23,10 +24,8 @@ import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
  * 附近饮水机页面
  * @author zcd
  */
-
 public class ChooseWaterFountainActivity extends BaseActivity
-        implements BGARefreshLayout.BGARefreshLayoutDelegate
-{
+        implements BGARefreshLayout.BGARefreshLayoutDelegate {
 
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
@@ -36,21 +35,21 @@ public class ChooseWaterFountainActivity extends BaseActivity
 
     private final int MAX_ITEM_COUNT = 20;
 
-    static List<WaterFuntainAdaptor.WaterFuntation> funtationList = new ArrayList<WaterFuntainAdaptor.WaterFuntation>() {
+    static List<WaterFountainAdaptor.WaterFountain> funtationList = new ArrayList<WaterFountainAdaptor.WaterFountain>() {
         {
-            add(new WaterFuntainAdaptor.WaterFuntation(1,  "xxxx"));
-            add(new WaterFuntainAdaptor.WaterFuntation(1,  "xxxx"));
-            add(new WaterFuntainAdaptor.WaterFuntation(1,  "xxxx"));
-            add(new WaterFuntainAdaptor.WaterFuntation(1,  "xxxx"));
-            add(new WaterFuntainAdaptor.WaterFuntation(1,  "xxxx"));
-            add(new WaterFuntainAdaptor.WaterFuntation(1,  "xxxx"));
-            add(new WaterFuntainAdaptor.WaterFuntation(1,  "xxxx"));
+            add(new WaterFountainAdaptor.WaterFountain(1,  "xxxx"));
+            add(new WaterFountainAdaptor.WaterFountain(1,  "xxxx"));
+            add(new WaterFountainAdaptor.WaterFountain(1,  "xxxx"));
+            add(new WaterFountainAdaptor.WaterFountain(1,  "xxxx"));
+            add(new WaterFountainAdaptor.WaterFountain(1,  "xxxx"));
+            add(new WaterFountainAdaptor.WaterFountain(1,  "xxxx"));
+            add(new WaterFountainAdaptor.WaterFountain(1,  "xxxx"));
 //            add(new Bonus(1, 1, "xxxx", "yyyy", 3));
 //            add(new Bonus(1, 1, "xxxx", "yyyy", 3));
         }
     };
 
-    WaterFuntainAdaptor adapter;
+    WaterFountainAdaptor adapter;
     private LinearLayoutWithRecyclerOnScrollListener mLoadMoreListener;
 
     @Override
@@ -71,7 +70,7 @@ public class ChooseWaterFountainActivity extends BaseActivity
 
         mRefreshLayout.setDelegate(this);
 
-        adapter = new WaterFuntainAdaptor(funtationList);
+        adapter = new WaterFountainAdaptor(funtationList);
 
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(linearLayoutManager);
@@ -107,7 +106,7 @@ public class ChooseWaterFountainActivity extends BaseActivity
                             adapter.showNoMoreDataView();
                         } else {
 //                            mHandler.sendEmptyMessageDelayed(0, 200);
-                            adapter.append(new WaterFuntainAdaptor.WaterFuntation(2, "xxxx"));
+                            adapter.append(new WaterFountainAdaptor.WaterFountain(2, "xxxx"));
                             adapter.hideFooterView();
                         }
                         //java.lang.IndexOutOfBoundsException: Inconsistency detected. Invalid view holder adapter positionViewHolder
@@ -121,7 +120,7 @@ public class ChooseWaterFountainActivity extends BaseActivity
             }
         };
         mRecyclerView.addOnScrollListener(mLoadMoreListener);
-        adapter.setOnItemClickListener(new WaterFuntainAdaptor.OnItemClickListener() {
+        adapter.setOnItemClickListener(new WaterFountainAdaptor.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
             }

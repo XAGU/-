@@ -16,7 +16,6 @@ import butterknife.ButterKnife;
  * web页面
  * @author zcd
  */
-
 public class WebActivity extends AppCompatActivity {
 
     @BindView(R.id.webview)

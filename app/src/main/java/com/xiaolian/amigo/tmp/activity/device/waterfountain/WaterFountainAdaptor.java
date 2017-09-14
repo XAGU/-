@@ -6,20 +6,18 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.tmp.base.BaseActivity;
 import com.xiaolian.amigo.tmp.component.recyclerview.BaseWrapperRecyclerAdapter;
 
 import java.util.List;
 
-import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
-
 /**
- * Created by adamzfc on 9/13/17.
+ * 饮水机适配器
+ * @author zcd
  */
 
-public class WaterFuntainAdaptor extends BaseWrapperRecyclerAdapter<WaterFuntainAdaptor.WaterFuntation, WaterFuntainAdaptor.ItemViewHolder> {
+public class WaterFountainAdaptor extends BaseWrapperRecyclerAdapter<WaterFountainAdaptor.WaterFountain, WaterFountainAdaptor.ItemViewHolder> {
 
-    public WaterFuntainAdaptor(List<WaterFuntation> items) {
+    public WaterFountainAdaptor(List<WaterFountain> items) {
         appendToList(items);
     }
 
@@ -30,20 +28,20 @@ public class WaterFuntainAdaptor extends BaseWrapperRecyclerAdapter<WaterFuntain
 
     @Override
     public void onBindItemViewHolder(ItemViewHolder holder, int position) {
-        WaterFuntation waterFuntation = getItem(position);
-        holder.tv_device.setText(waterFuntation.type == 0 ? "饮水机" : "");
-        holder.tv_location.setText(waterFuntation.location);
+        WaterFountain waterFountain = getItem(position);
+        holder.tv_device.setText(waterFountain.type == 0 ? "饮水机" : "");
+        holder.tv_location.setText(waterFountain.location);
 
 
     }
 
-    public static class WaterFuntation {
+    public static class WaterFountain {
         // 设备类型
         Integer type;
         // 设备位置
         String location;
 
-        public WaterFuntation(Integer type, String location) {
+        public WaterFountain(Integer type, String location) {
             this.type = type;
             this.location = location;
         }
@@ -69,6 +67,4 @@ public class WaterFuntainAdaptor extends BaseWrapperRecyclerAdapter<WaterFuntain
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.mItemClickListener = listener;
     }
-
-
 }

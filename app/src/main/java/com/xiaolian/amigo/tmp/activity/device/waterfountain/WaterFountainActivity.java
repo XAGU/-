@@ -26,13 +26,18 @@ import butterknife.OnClick;
  * 饮水机页面
  * @author zcd
  */
-
 public class WaterFountainActivity extends BaseActivity {
 
+    /**
+     * 跳转到选择红包的request code
+     */
     private static final int CHOOSE_BONUS_CODE = 0x0011;
     @BindView(R.id.rl_header)
     RelativeLayout rl_header;
 
+    /**
+     * 波浪控件
+     */
     @BindView(R.id.bsv_wave)
     BezierWaveView bsv_wave;
 
@@ -108,7 +113,6 @@ public class WaterFountainActivity extends BaseActivity {
      */
     private boolean isMoneyPay = true;
 
-
     /**
      * 选择余额支付
      */
@@ -141,6 +145,9 @@ public class WaterFountainActivity extends BaseActivity {
         tv_water_right2.setText("2个可用");
     }
 
+    /**
+     * 清除状态
+     */
     void clearPayTabStatus() {
         tv_money_pay.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
         tv_bonus_pay.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
@@ -150,6 +157,9 @@ public class WaterFountainActivity extends BaseActivity {
         tv_bonus_pay.setTypeface(null, Typeface.NORMAL);
     }
 
+    /**
+     * 选中的item
+     */
     private int mItemIndex = 0;
 
     @OnClick(R.id.rl_water_amount)
