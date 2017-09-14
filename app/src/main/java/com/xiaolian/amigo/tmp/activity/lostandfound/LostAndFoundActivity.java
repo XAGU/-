@@ -1,9 +1,10 @@
 package com.xiaolian.amigo.tmp.activity.lostandfound;
 
-import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.tmp.activity.lostandfound.adaptor.LostAndFoundAdaptor;
@@ -41,6 +42,46 @@ public class LostAndFoundActivity extends BaseActivity {
 
     @BindView(R.id.rv_infos)
     RecyclerView rv_infos;
+
+    /**
+     * 发布招领
+     */
+    @BindView(R.id.tv_publish_found)
+    TextView tv_publish_found;
+
+    /**
+     * 打开发布招领页面
+     */
+    @OnClick(R.id.tv_publish_found)
+    void gotoPublishFound() {
+        startActivity(new Intent(this, PublishFoundActivity.class));
+    }
+
+    /**
+     * 发布失物
+     */
+    @BindView(R.id.tv_publish_lost)
+    TextView tv_publish_lost;
+
+    /**
+     * 打开发布招领页面
+     */
+    @OnClick(R.id.tv_publish_lost)
+    void gotoPublishLost() {
+        startActivity(new Intent(this, PublishLostActivity.class));
+    }
+    /**
+     * 我的发布
+     */
+    @BindView(R.id.tv_my_publish)
+    TextView tv_my_publish;
+    /**
+     * 打开发布招领页面
+     */
+    @OnClick(R.id.tv_my_publish)
+    void gotoMyPublish() {
+        startActivity(new Intent(this, MyPublishActivity.class));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
