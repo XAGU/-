@@ -19,8 +19,8 @@ import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
 import com.xiaolian.amigo.di.LoginActivityContext;
-import com.xiaolian.amigo.ui.login.intf.LoginPresenterIntf;
-import com.xiaolian.amigo.ui.login.intf.LoginViewIntf;
+import com.xiaolian.amigo.ui.login.intf.ILoginPresenter;
+import com.xiaolian.amigo.ui.login.intf.ILoginView;
 import com.xiaolian.amigo.ui.login.LoginPresenter;
 
 import dagger.Module;
@@ -48,8 +48,8 @@ public class LoginActivityModule {
 
     @Provides
     @LoginActivityContext
-    LoginPresenterIntf<LoginViewIntf> provideLoginPresenter(
-            LoginPresenter<LoginViewIntf> presenter) {
+    ILoginPresenter<ILoginView> provideLoginPresenter(
+            LoginPresenter<ILoginView> presenter) {
         return presenter;
     }
 

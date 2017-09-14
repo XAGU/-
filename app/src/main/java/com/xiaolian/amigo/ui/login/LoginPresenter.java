@@ -17,14 +17,14 @@ package com.xiaolian.amigo.ui.login;
 
 
 import com.xiaolian.amigo.ui.base.BasePresenter;
-import com.xiaolian.amigo.ui.login.intf.LoginPresenterIntf;
-import com.xiaolian.amigo.ui.login.intf.LoginViewIntf;
+import com.xiaolian.amigo.ui.login.intf.ILoginPresenter;
+import com.xiaolian.amigo.ui.login.intf.ILoginView;
 import com.xiaolian.amigo.util.MessageConstant;
 
 import javax.inject.Inject;
 
-public class LoginPresenter<V extends LoginViewIntf> extends BasePresenter<V>
-        implements LoginPresenterIntf<V> {
+public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
+        implements ILoginPresenter<V> {
 
     @Inject
     public LoginPresenter() {

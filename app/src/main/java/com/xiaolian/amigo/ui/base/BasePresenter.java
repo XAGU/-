@@ -16,15 +16,15 @@
 package com.xiaolian.amigo.ui.base;
 
 
-import com.xiaolian.amigo.ui.base.intf.BasePresenterIntf;
-import com.xiaolian.amigo.ui.base.intf.BaseViewIntf;
+import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
+import com.xiaolian.amigo.ui.base.intf.IBaseView;
 
 /**
  * Base class that implements the Presenter interface and provides a base implementation for
  * onAttach() and onDetach(). It also handles keeping a reference to the mvpView that
  * can be accessed from the children classes by calling getMvpView().
  */
-public class BasePresenter<V extends BaseViewIntf> implements BasePresenterIntf<V> {
+public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
 
     private V mMvpView;
 

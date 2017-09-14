@@ -16,31 +16,17 @@
 package com.xiaolian.amigo.ui.base.intf;
 
 
-import android.support.annotation.StringRes;
-
 /**
- * Base interface that any class that wants to act as a View in the MVP (Model View Presenter)
- * pattern must implement. Generally this interface will be extended by a more specific interface
- * that then usually will be implemented by an Activity or Fragment.
+ * Every presenter in the app must either implement this interface or extend BasePresenter
+ * indicating the IBaseView type that wants to be attached with.
  */
-public interface BaseViewIntf {
+public interface IBasePresenter<V extends IBaseView> {
 
-    void showLoading();
+    void onAttach(V mvpView);
 
-    void hideLoading();
+    void onDetach();
 
-    void openActivityOnTokenExpire();
+//    void handleApiError(ANError error);
 
-    void onError(@StringRes int resId);
-
-    void onError(String message);
-
-    void showMessage(String message);
-
-    void showMessage(@StringRes int resId);
-
-    boolean isNetworkConnected();
-
-    void hideKeyboard();
-
+    void BasePresenter();
 }

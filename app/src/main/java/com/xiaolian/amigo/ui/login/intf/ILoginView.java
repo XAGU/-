@@ -16,8 +16,8 @@
 package com.xiaolian.amigo.ui.login.intf;
 
 
-import com.xiaolian.amigo.ui.base.intf.BaseViewIntf;
+import com.xiaolian.amigo.ui.base.intf.IBaseView;
 
-public interface LoginViewIntf extends BaseViewIntf {
+public interface ILoginView extends IBaseView {
 
 }

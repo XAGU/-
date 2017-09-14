@@ -17,10 +17,10 @@ package com.xiaolian.amigo.ui.login.intf;
 
 
 import com.xiaolian.amigo.di.LoginActivityContext;
-import com.xiaolian.amigo.ui.base.intf.BasePresenterIntf;
+import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 
 @LoginActivityContext
-public interface LoginPresenterIntf<V extends LoginViewIntf> extends BasePresenterIntf<V> {
+public interface ILoginPresenter<V extends ILoginView> extends IBasePresenter<V> {
 
     // 点击登录
     void onLoginClick(String mobile, String password);
