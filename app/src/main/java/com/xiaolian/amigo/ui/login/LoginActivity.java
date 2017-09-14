@@ -12,6 +12,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Retrofit;
 
 /**
  * Created by caidong on 2017/9/14.

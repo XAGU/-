@@ -55,7 +55,8 @@ public class ApplicationModule {
     @Provides
     Retrofit provideRetrofit() {
         OkHttpClient client = new OkHttpClient().newBuilder()
-                .addInterceptor(new LogInterceptor()).build();
+//                .addInterceptor(new LogInterceptor())
+                .build();
         return new Retrofit.Builder()
                 .baseUrl("http://116.62.236.67:5081")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -63,5 +64,4 @@ public class ApplicationModule {
                 .client(client)
                 .build();
     }
-
 }

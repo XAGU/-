@@ -26,6 +26,7 @@ import com.xiaolian.amigo.di.module.ApplicationModule;
 import javax.inject.Singleton;
 
 import dagger.Component;
+import retrofit2.Retrofit;
 
 
 @Singleton
@@ -36,6 +37,8 @@ public interface ApplicationComponent {
     Context context();
 
     Application application();
+
+    Retrofit retrofit();
 
     void inject(MvpApp app);
 

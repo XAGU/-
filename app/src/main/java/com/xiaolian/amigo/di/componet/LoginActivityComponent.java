@@ -16,6 +16,8 @@
 package com.xiaolian.amigo.di.componet;
 
 
+import com.xiaolian.amigo.data.manager.ILoginDataManager;
+import com.xiaolian.amigo.data.manager.LoginDataManager;
 import com.xiaolian.amigo.di.LoginActivityContext;
 import com.xiaolian.amigo.di.module.LoginActivityModule;
 import com.xiaolian.amigo.ui.login.LoginActivity;
@@ -26,6 +28,8 @@ import dagger.Component;
 @LoginActivityContext
 @Component(dependencies = ApplicationComponent.class, modules = LoginActivityModule.class)
 public interface LoginActivityComponent {
+
+//    ILoginDataManager loginDataManager(LoginDataManager manage);
 
     void inject(LoginActivity activity);
 }

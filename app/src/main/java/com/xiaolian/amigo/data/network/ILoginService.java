@@ -4,6 +4,8 @@ import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.LoginRespDTO;
 
 import io.reactivex.Flowable;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 
 /**
@@ -13,5 +15,9 @@ import retrofit2.http.POST;
 
 public interface ILoginService {
     @POST("/login/register")
-    Flowable<ApiResult<LoginRespDTO>> register(String code, String mobile, String password, String schoolld);
+    @FormUrlEncoded
+    Flowable<ApiResult<LoginRespDTO>> register(@Field("code") String code,
+                                               @Field("mobile") String mobile,
+                                               @Field("password") String password,
+                                               @Field("schoolId") String schoolId);
 }

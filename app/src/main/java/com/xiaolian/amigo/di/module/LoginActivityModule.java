@@ -56,7 +56,6 @@ public class LoginActivityModule {
     }
 
     @Provides
-    @LoginActivityContext
     ILoginDataManager provideLoginDataManager(LoginDataManager manager) {
         return manager;
     }

@@ -16,9 +16,14 @@
 package com.xiaolian.amigo.ui.login;
 
 
+import android.app.Application;
+
+import com.xiaolian.amigo.data.base.LogInterceptor;
 import com.xiaolian.amigo.data.manager.ILoginDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.LoginRespDTO;
+import com.xiaolian.amigo.di.componet.ApplicationComponent;
+import com.xiaolian.amigo.di.module.ApplicationModule;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.login.intf.ILoginPresenter;
 import com.xiaolian.amigo.ui.login.intf.ILoginView;
@@ -30,16 +35,20 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.OkHttpClient;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
         implements ILoginPresenter<V> {
 
-    @Inject
-    ILoginDataManager mLoginDataManager;
+    private ILoginDataManager mLoginDataManager;
 
     @Inject
-    public LoginPresenter() {
+    public LoginPresenter(ILoginDataManager manager) {
         super();
+        mLoginDataManager = manager;
     }
 
 
@@ -52,12 +61,13 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
     @Override
     public void register(String code, String mobile, String password, String schoolld) {
         mLoginDataManager.register(code, mobile, password, schoolld)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<ApiResult<LoginRespDTO>>() {
                     @Override
                     public void accept(@NonNull ApiResult<LoginRespDTO> loginRespDTOApiResult) throws Exception {
                         getMvpView().showMessage(loginRespDTOApiResult.getError().getDebugMessage());
                     }
-                }).dispose();
+                });
     }
 }
