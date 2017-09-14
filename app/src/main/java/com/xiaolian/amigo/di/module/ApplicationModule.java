@@ -18,10 +18,17 @@ package com.xiaolian.amigo.di.module;
 import android.app.Application;
 import android.content.Context;
 
+import com.xiaolian.amigo.data.base.LogInterceptor;
 import com.xiaolian.amigo.di.ApplicationContext;
+
+import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import okhttp3.OkHttpClient;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 @Module
@@ -42,6 +49,19 @@ public class ApplicationModule {
     @Provides
     Application provideApplication() {
         return mApplication;
+    }
+
+    @Singleton
+    @Provides
+    Retrofit provideRetrofit() {
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .addInterceptor(new LogInterceptor()).build();
+        return new Retrofit.Builder()
+                .baseUrl("http://116.62.236.67:5081")
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .client(client)
+                .build();
     }
 
 }

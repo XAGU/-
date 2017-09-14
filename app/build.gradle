@@ -35,6 +35,9 @@ android {
 //    schemaVersion 1
 //}
 
+// greendao plugin
+apply plugin: 'org.greenrobot.greendao'
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -69,6 +72,8 @@ dependencies {
 
     // network
     compile "com.squareup.retrofit2:retrofit:$rootProject.retrofit"
+    compile "com.squareup.retrofit2:converter-gson:$rootProject.retrofit"
+    compile "com.squareup.retrofit2:adapter-rxjava2:$rootProject.retrofit"
 
     // debug database
     // debugCompile "com.amitshekhar.android:debug-db:$rootProject.debugDBVersion"
