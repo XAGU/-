@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.xiaolian.amigo">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -21,10 +21,15 @@
             android:windowSoftInputMode="stateVisible|adjustResize" />
 
         <activity
-            android:name=".tmp.activity.LoginActivity"
+            android:name=".ui.login.LoginActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateVisible|adjustResize" />
+            android:windowSoftInputMode="stateVisible|adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".tmp.activity.RegistryActivity"
@@ -123,79 +128,72 @@
         <activity
             android:name=".tmp.activity.repair.RepairApplyActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".tmp.activity.repair.RepairDetailActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <activity
             android:name=".tmp.activity.common.DeviceTypeActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <activity
             android:name=".tmp.activity.common.BuildingActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <activity
             android:name=".tmp.activity.common.FloorActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <activity
             android:name=".tmp.activity.common.LocActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <activity
             android:name=".tmp.activity.lostandfound.LostAndFoundActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
-        <activity android:name=".tmp.activity.device.geyser.GeyserActivity"
-                  android:label="@string/app_name"
-                  android:theme="@style/AppTheme.NoActionBar"
-            />
-        <activity android:name=".tmp.activity.device.waterfountain.WaterFountainActivity"
-                  android:label="@string/app_name"
-                  android:theme="@style/AppTheme.NoActionBar"
-            />
-        <activity android:name=".tmp.activity.device.geyser.ChooseBonusActivity"
-                  android:label="@string/app_name"
-                  android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".tmp.activity.device.geyser.GeyserActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".tmp.activity.device.waterfountain.WaterFountainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".tmp.activity.device.geyser.ChooseBonusActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar" />
 
-        <activity android:name=".tmp.activity.WebActivity"
-                  android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+        <activity
+            android:name=".tmp.activity.WebActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
-        <activity android:name=".tmp.activity.lostandfound.PublishFoundActivity"
-                  android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".tmp.activity.lostandfound.PublishFoundActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
-        <activity android:name=".tmp.activity.lostandfound.PublishLostActivity"
-                  android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".tmp.activity.lostandfound.MyPublishActivity"
-                  android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".tmp.activity.lostandfound.PublishLostActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".tmp.activity.lostandfound.MyPublishActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
 
         <activity
             android:name=".tmp.activity.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

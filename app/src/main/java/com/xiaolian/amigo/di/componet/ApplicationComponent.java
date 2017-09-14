@@ -19,6 +19,7 @@ import android.app.Application;
 import android.content.Context;
 
 
+import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.di.ApplicationContext;
 import com.xiaolian.amigo.di.module.ApplicationModule;
 
@@ -35,5 +36,7 @@ public interface ApplicationComponent {
     Context context();
 
     Application application();
+
+    void inject(MvpApp app);
 
 }

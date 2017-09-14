@@ -13,19 +13,20 @@
  * limitations under the License
  */
 
-package com.xiaolian.amigo.di.componet;
+package com.xiaolian.amigo.ui.base;
 
 
-import com.xiaolian.amigo.di.PerActivity;
-import com.xiaolian.amigo.di.module.ActivityModule;
-import com.xiaolian.amigo.ui.login.LoginActivity;
+/**
+ * Every presenter in the app must either implement this interface or extend BasePresenter
+ * indicating the MvpView type that wants to be attached with.
+ */
+public interface MvpPresenter<V extends MvpView> {
 
-import dagger.Component;
+    void onAttach(V mvpView);
 
+    void onDetach();
 
-@PerActivity
-@Component(dependencies = ApplicationComponent.class, modules = ActivityModule.class)
-public interface ActivityComponent {
+//    void handleApiError(ANError error);
 
-    void inject(LoginActivity activity);
+    void BasePresenter();
 }

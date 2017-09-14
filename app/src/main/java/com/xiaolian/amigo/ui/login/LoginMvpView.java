@@ -13,19 +13,11 @@
  * limitations under the License
  */
 
-package com.xiaolian.amigo.di.componet;
+package com.xiaolian.amigo.ui.login;
 
 
-import com.xiaolian.amigo.di.PerActivity;
-import com.xiaolian.amigo.di.module.ActivityModule;
-import com.xiaolian.amigo.ui.login.LoginActivity;
+import com.xiaolian.amigo.ui.base.MvpView;
 
-import dagger.Component;
+public interface LoginMvpView extends MvpView {
 
-
-@PerActivity
-@Component(dependencies = ApplicationComponent.class, modules = ActivityModule.class)
-public interface ActivityComponent {
-
-    void inject(LoginActivity activity);
 }

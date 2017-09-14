@@ -13,35 +13,26 @@
  * limitations under the License
  */
 
-package com.xiaolian.amigo.di.module;
+package com.xiaolian.amigo.util;
 
-import android.app.Application;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
-import com.xiaolian.amigo.di.ApplicationContext;
+/**
+ * Created by janisharali on 27/01/17.
+ */
 
-import dagger.Module;
-import dagger.Provides;
+public final class NetworkUtil {
 
-
-@Module
-public class ApplicationModule {
-
-    private final Application mApplication;
-
-    public ApplicationModule(Application application) {
-        mApplication = application;
+    private NetworkUtil() {
+        // This utility class is not publicly instantiable
     }
 
-    @Provides
-    @ApplicationContext
-    Context provideContext() {
-        return mApplication;
+    public static boolean isNetworkConnected(Context context) {
+        ConnectivityManager cm =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
     }
-
-    @Provides
-    Application provideApplication() {
-        return mApplication;
-    }
-
 }
