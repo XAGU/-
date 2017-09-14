@@ -1,9 +1,5 @@
 package com.xiaolian.amigo.tmp.activity.device.geyser;
 
-/**
- * Created by adamzfc on 9/13/17.
- */
-
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +8,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.tmp.activity.bonus.adaptor.BonusAdaptor2;
 import com.xiaolian.amigo.tmp.activity.bonus.viewmodel.Bonus;
 import com.xiaolian.amigo.tmp.component.recyclerview.BaseWrapperRecyclerAdapter;
 
@@ -56,7 +53,7 @@ public class BonusAdaptor extends BaseWrapperRecyclerAdapter<Bonus, BonusAdaptor
                 mItemClickListener.onItemClick(v, position);
             }
         });
-        if(payloads != null && payloads.size() > 0 && vh instanceof com.xiaolian.amigo.tmp.activity.bonus.adaptor.BonusAdaptor2.ItemViewHolder){
+        if(payloads != null && payloads.size() > 0 && vh instanceof BonusAdaptor2.ItemViewHolder){
             for(Object o : payloads){
                 if(o != null && o instanceof Integer) {
 //                    ((BonusAdaptor2.ItemViewHolder) vh).mTvContent.setTextColor((Integer) o);

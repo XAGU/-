@@ -25,11 +25,13 @@ import butterknife.OnClick;
  * 热水器设备页
  * @author zcd
  */
-
 public class GeyserActivity extends BaseActivity {
 
-
+    /**
+     * 跳转到选择红包页面的request code
+     */
     private static final int CHOOSE_BONUS_CODE = 0x0010;
+
     /**
      * 确认支付
      */
@@ -41,6 +43,7 @@ public class GeyserActivity extends BaseActivity {
      */
     @BindView(R.id.bt_stop_shower)
     Button bt_stop_shower;
+
     /**
      * 重新连接
      */
@@ -83,6 +86,9 @@ public class GeyserActivity extends BaseActivity {
     @BindView(R.id.tv_water_right)
     TextView tv_water_right;
 
+    /**
+     * 波浪控件
+     */
     @BindView(R.id.bsv_wave)
     BezierWaveView bsv_wave;
 
@@ -108,6 +114,9 @@ public class GeyserActivity extends BaseActivity {
      */
     private boolean isMoneyPay = true;
 
+    /**
+     * 点击选择用水量或选择红包
+     */
     @OnClick(R.id.rl_pay_way)
     void onPayWayClick() {
         if (isMoneyPay) {
@@ -161,6 +170,9 @@ public class GeyserActivity extends BaseActivity {
         tv_water_right.setText("2个可用");
     }
 
+    /**
+     * 清除状态
+     */
     void clearPayTabStatus() {
         tv_money_pay.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
         tv_bonus_pay.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
@@ -203,20 +215,8 @@ public class GeyserActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_geyser);
         ButterKnife.bind(this);
-
-//        if (Build.VERSION.SDK_INT < 19) {
-//            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-//                    LinearLayout.LayoutParams.WRAP_CONTENT);
-//            layoutParams.setMargins(0, 0, 0, 0);
-//            ll_header.setLayoutParams(layoutParams);
-//            LinearLayout contentView = (LinearLayout) findViewById(R.id.ll_content);
-//            LinearLayout.LayoutParams layoutParams1 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-//                    LinearLayout.LayoutParams.MATCH_PARENT);
-//            contentView.setLayoutParams(layoutParams1);
-//        }
         initView();
     }
-
 
     private void initView() {
         tv_device_name.setText("3栋－5楼－510");

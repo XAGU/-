@@ -27,14 +27,23 @@ import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
  */
 
 public class ChooseBonusActivity extends BaseActivity
-        implements BGARefreshLayout.BGARefreshLayoutDelegate
-{
+        implements BGARefreshLayout.BGARefreshLayoutDelegate {
 
+    /**
+     * 页面头部
+     */
     @BindView(R.id.ll_header)
     LinearLayout ll_header;
+
+    /**
+     * 红包列表
+     */
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
 
+    /**
+     * 刷新加载控件
+     */
     @BindView(R.id.refreshLayout)
     BGARefreshLayout mRefreshLayout;
 
@@ -54,6 +63,10 @@ public class ChooseBonusActivity extends BaseActivity
     };
 
     BonusAdaptor adapter;
+
+    /**
+     * 最大item个数
+     */
     private final int MAX_ITEM_COUNT = 20;
     private LinearLayoutWithRecyclerOnScrollListener mLoadMoreListener;
 
