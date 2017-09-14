@@ -13,14 +13,38 @@
  * limitations under the License
  */
 
-package com.xiaolian.amigo.di;
+package com.xiaolian.amigo.di.module;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import android.app.Application;
+import android.content.Context;
 
-import javax.inject.Qualifier;
 
-@Qualifier
-@Retention(RetentionPolicy.RUNTIME)
-public @interface ApplicationContext {
+import com.xiaolian.amigo.di.ApplicationContext;
+
+import javax.inject.Singleton;
+
+import dagger.Module;
+import dagger.Provides;
+
+
+@Module
+public class ApplicationModule {
+
+    private final Application mApplication;
+
+    public ApplicationModule(Application application) {
+        mApplication = application;
+    }
+
+    @Provides
+    @ApplicationContext
+    Context provideContext() {
+        return mApplication;
+    }
+
+    @Provides
+    Application provideApplication() {
+        return mApplication;
+    }
+
 }

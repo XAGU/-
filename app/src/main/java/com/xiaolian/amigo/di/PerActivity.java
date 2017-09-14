@@ -18,9 +18,14 @@ package com.xiaolian.amigo.di;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import javax.inject.Qualifier;
+import javax.inject.Scope;
 
-@Qualifier
+/**
+ * Created by janisharali on 27/01/17.
+ */
+
+@Scope
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ApplicationContext {
+public @interface PerActivity {
 }
+
