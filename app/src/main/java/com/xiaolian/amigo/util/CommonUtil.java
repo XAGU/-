@@ -33,16 +33,11 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Created by janisharali on 27/01/17.
- */
-
 public final class CommonUtil {
 
     private static final String TAG = "CommonUtil";
 
     private CommonUtil() {
-        // This utility class is not publicly instantiable
     }
 
     public static ProgressDialog showLoadingDialog(Context context) {

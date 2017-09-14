@@ -16,10 +16,6 @@
 package com.xiaolian.amigo.ui.base.intf;
 
 
-/**
- * Every presenter in the app must either implement this interface or extend BasePresenter
- * indicating the IBaseView type that wants to be attached with.
- */
 public interface IBasePresenter<V extends IBaseView> {
 
     void onAttach(V mvpView);

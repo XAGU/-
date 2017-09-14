@@ -19,14 +19,9 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-/**
- * Created by janisharali on 27/01/17.
- */
-
 public final class NetworkUtil {
 
     private NetworkUtil() {
-        // This utility class is not publicly instantiable
     }
 
     public static boolean isNetworkConnected(Context context) {

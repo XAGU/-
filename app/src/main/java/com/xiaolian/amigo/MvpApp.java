@@ -17,12 +17,9 @@ package com.xiaolian.amigo;
 
 import android.app.Application;
 
-
 import com.xiaolian.amigo.di.componet.ApplicationComponent;
-import com.xiaolian.amigo.di.module.ApplicationModule;
 import com.xiaolian.amigo.di.componet.DaggerApplicationComponent;
-
-import javax.inject.Inject;
+import com.xiaolian.amigo.di.module.ApplicationModule;
 
 
 public class MvpApp extends Application {
@@ -46,7 +43,6 @@ public class MvpApp extends Application {
     }
 
 
-    // Needed to replace the component with a test specific one
     public void setComponent(ApplicationComponent applicationComponent) {
         mApplicationComponent = applicationComponent;
     }
