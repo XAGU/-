@@ -179,6 +179,14 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".activity.lostandfound.PublishFoundActivity"
+                  android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity android:name=".activity.lostandfound.PublishLostActivity"
+                  android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".activity.lostandfound.MyPublishActivity"
+                  android:theme="@style/AppTheme.NoActionBar"/>
+
 
         <activity
             android:name=".activity.MainActivity"
