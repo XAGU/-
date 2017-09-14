@@ -117,8 +117,8 @@ public abstract class BaseActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean isNetworkConnected() {
-        return NetworkUtil.isNetworkConnected(getApplicationContext());
+    public boolean isWifiConnected() {
+        return NetworkUtil.isWifiConnected(getApplicationContext());
     }
 
     public void hideKeyboard() {

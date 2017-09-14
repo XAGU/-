@@ -34,7 +34,7 @@ public interface IBaseView {
 
     void showMessage(@StringRes int resId);
 
-    boolean isNetworkConnected();
+    boolean isWifiConnected();
 
     void hideKeyboard();
 
