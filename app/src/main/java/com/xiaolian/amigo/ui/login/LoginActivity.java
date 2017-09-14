@@ -1,11 +1,13 @@
 package com.xiaolian.amigo.ui.login;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.di.componet.LoginActivityComponent;
 import com.xiaolian.amigo.ui.base.BaseActivity;
+import com.xiaolian.amigo.ui.login.intf.LoginPresenterIntf;
+import com.xiaolian.amigo.ui.login.intf.LoginViewIntf;
 
 import javax.inject.Inject;
 
@@ -17,10 +19,10 @@ import butterknife.OnClick;
  * Created by caidong on 2017/9/14.
  */
 
-public class LoginActivity extends BaseActivity implements LoginMvpView {
+public class LoginActivity extends LoginBaseActivity implements LoginViewIntf {
 
     @Inject
-    LoginMvpPresenter<LoginMvpView> mPresenter;
+    LoginPresenterIntf<LoginViewIntf> mPresenter;
     @BindView(R.id.et_mobile)
     TextView et_mobile;
     @BindView(R.id.et_userpwd)
@@ -52,6 +54,6 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
     // 登录
     @OnClick(R.id.bt_submit)
     void login() {
-        mPresenter.onServerLoginClick(et_mobile.getText().toString(), et_userpwd.getText().toString());
+        mPresenter.onLoginClick(et_mobile.getText().toString(), et_userpwd.getText().toString());
     }
 }

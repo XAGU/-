@@ -17,12 +17,14 @@ package com.xiaolian.amigo.ui.login;
 
 
 import com.xiaolian.amigo.ui.base.BasePresenter;
+import com.xiaolian.amigo.ui.login.intf.LoginPresenterIntf;
+import com.xiaolian.amigo.ui.login.intf.LoginViewIntf;
 import com.xiaolian.amigo.util.MessageConstant;
 
 import javax.inject.Inject;
 
-public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V>
-        implements LoginMvpPresenter<V> {
+public class LoginPresenter<V extends LoginViewIntf> extends BasePresenter<V>
+        implements LoginPresenterIntf<V> {
 
     @Inject
     public LoginPresenter() {
@@ -31,7 +33,7 @@ public class LoginPresenter<V extends LoginMvpView> extends BasePresenter<V>
 
 
     @Override
-    public void onServerLoginClick(String mobile, String password) {
+    public void onLoginClick(String mobile, String password) {
         getMvpView().onError(MessageConstant.PASSWORD_INVALID);
     }
 }

@@ -18,26 +18,25 @@ package com.xiaolian.amigo.di.module;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
-import com.xiaolian.amigo.di.ActivityContext;
-import com.xiaolian.amigo.di.PerActivity;
-import com.xiaolian.amigo.ui.login.LoginMvpPresenter;
-import com.xiaolian.amigo.ui.login.LoginMvpView;
+import com.xiaolian.amigo.di.LoginActivityContext;
+import com.xiaolian.amigo.ui.login.intf.LoginPresenterIntf;
+import com.xiaolian.amigo.ui.login.intf.LoginViewIntf;
 import com.xiaolian.amigo.ui.login.LoginPresenter;
 
 import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class ActivityModule {
+public class LoginActivityModule {
 
     private AppCompatActivity mActivity;
 
-    public ActivityModule(AppCompatActivity activity) {
+    public LoginActivityModule(AppCompatActivity activity)
+    {
         this.mActivity = activity;
     }
 
     @Provides
-    @ActivityContext
     Context provideContext() {
         return mActivity;
     }
@@ -48,9 +47,9 @@ public class ActivityModule {
     }
 
     @Provides
-    @PerActivity
-    LoginMvpPresenter<LoginMvpView> provideLoginPresenter(
-            LoginPresenter<LoginMvpView> presenter) {
+    @LoginActivityContext
+    LoginPresenterIntf<LoginViewIntf> provideLoginPresenter(
+            LoginPresenter<LoginViewIntf> presenter) {
         return presenter;
     }
 

@@ -13,14 +13,11 @@
  * limitations under the License
  */
 
-package com.xiaolian.amigo.di;
+package com.xiaolian.amigo.ui.login.intf;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 
-import javax.inject.Qualifier;
+import com.xiaolian.amigo.ui.base.intf.BaseViewIntf;
 
-@Qualifier
-@Retention(RetentionPolicy.RUNTIME)
-public @interface ActivityContext {
+public interface LoginViewIntf extends BaseViewIntf {
+
 }

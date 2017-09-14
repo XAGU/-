@@ -13,11 +13,16 @@
  * limitations under the License
  */
 
-package com.xiaolian.amigo.ui.login;
+package com.xiaolian.amigo.ui.login.intf;
 
 
-import com.xiaolian.amigo.ui.base.MvpView;
+import com.xiaolian.amigo.di.LoginActivityContext;
+import com.xiaolian.amigo.ui.base.intf.BasePresenterIntf;
 
-public interface LoginMvpView extends MvpView {
+@LoginActivityContext
+public interface LoginPresenterIntf<V extends LoginViewIntf> extends BasePresenterIntf<V> {
+
+    // 点击登录
+    void onLoginClick(String mobile, String password);
 
 }

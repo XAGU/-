@@ -13,7 +13,7 @@
  * limitations under the License
  */
 
-package com.xiaolian.amigo.ui.base;
+package com.xiaolian.amigo.ui.base.intf;
 
 
 import android.support.annotation.StringRes;
@@ -23,7 +23,7 @@ import android.support.annotation.StringRes;
  * pattern must implement. Generally this interface will be extended by a more specific interface
  * that then usually will be implemented by an Activity or Fragment.
  */
-public interface MvpView {
+public interface BaseViewIntf {
 
     void showLoading();
 

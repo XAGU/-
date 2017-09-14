@@ -16,16 +16,16 @@
 package com.xiaolian.amigo.di.componet;
 
 
-import com.xiaolian.amigo.di.PerActivity;
-import com.xiaolian.amigo.di.module.ActivityModule;
+import com.xiaolian.amigo.di.LoginActivityContext;
+import com.xiaolian.amigo.di.module.LoginActivityModule;
 import com.xiaolian.amigo.ui.login.LoginActivity;
 
 import dagger.Component;
 
 
-@PerActivity
-@Component(dependencies = ApplicationComponent.class, modules = ActivityModule.class)
-public interface ActivityComponent {
+@LoginActivityContext
+@Component(dependencies = ApplicationComponent.class, modules = LoginActivityModule.class)
+public interface LoginActivityComponent {
 
     void inject(LoginActivity activity);
 }

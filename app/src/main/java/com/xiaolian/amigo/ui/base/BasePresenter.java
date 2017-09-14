@@ -16,23 +16,15 @@
 package com.xiaolian.amigo.ui.base;
 
 
-import android.util.Log;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonSyntaxException;
-
-import javax.inject.Inject;
-import javax.net.ssl.HttpsURLConnection;
-
-import io.reactivex.disposables.CompositeDisposable;
+import com.xiaolian.amigo.ui.base.intf.BasePresenterIntf;
+import com.xiaolian.amigo.ui.base.intf.BaseViewIntf;
 
 /**
  * Base class that implements the Presenter interface and provides a base implementation for
  * onAttach() and onDetach(). It also handles keeping a reference to the mvpView that
  * can be accessed from the children classes by calling getMvpView().
  */
-public class BasePresenter<V extends MvpView> implements MvpPresenter<V> {
+public class BasePresenter<V extends BaseViewIntf> implements BasePresenterIntf<V> {
 
     private V mMvpView;
 

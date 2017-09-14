@@ -31,12 +31,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.di.componet.ActivityComponent;
-import com.xiaolian.amigo.di.componet.DaggerActivityComponent;
-import com.xiaolian.amigo.di.module.ActivityModule;
+import com.xiaolian.amigo.ui.base.intf.BaseViewIntf;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.NetworkUtil;
 
@@ -44,27 +40,21 @@ import butterknife.Unbinder;
 
 
 public abstract class BaseActivity extends AppCompatActivity
-        implements MvpView, BaseFragment.Callback {
+        implements BaseViewIntf {
 
     private ProgressDialog mProgressDialog;
-
-    private ActivityComponent mActivityComponent;
 
     private Unbinder mUnBinder;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mActivityComponent = DaggerActivityComponent.builder()
-                .activityModule(new ActivityModule(this))
-                .applicationComponent(((MvpApp) getApplication()).getComponent())
-                .build();
-
+//        mActivityComponent = DaggerActivityComponent.builder()
+//                .activityModule(new ActivityModule(this))
+//                .applicationComponent(((MvpApp) getApplication()).getComponent())
+//                .build();
     }
 
-    public ActivityComponent getActivityComponent() {
-        return mActivityComponent;
-    }
 
 //    @Override
 //    protected void attachBaseContext(Context newBase) {
@@ -137,16 +127,6 @@ public abstract class BaseActivity extends AppCompatActivity
     @Override
     public boolean isNetworkConnected() {
         return NetworkUtil.isNetworkConnected(getApplicationContext());
-    }
-
-    @Override
-    public void onFragmentAttached() {
-
-    }
-
-    @Override
-    public void onFragmentDetached(String tag) {
-
     }
 
     public void hideKeyboard() {

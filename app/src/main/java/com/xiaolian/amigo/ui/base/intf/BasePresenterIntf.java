@@ -13,14 +13,14 @@
  * limitations under the License
  */
 
-package com.xiaolian.amigo.ui.base;
+package com.xiaolian.amigo.ui.base.intf;
 
 
 /**
  * Every presenter in the app must either implement this interface or extend BasePresenter
- * indicating the MvpView type that wants to be attached with.
+ * indicating the BaseViewIntf type that wants to be attached with.
  */
-public interface MvpPresenter<V extends MvpView> {
+public interface BasePresenterIntf<V extends BaseViewIntf> {
 
     void onAttach(V mvpView);
 
