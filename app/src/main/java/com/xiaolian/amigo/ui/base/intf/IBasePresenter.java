@@ -17,7 +17,7 @@ package com.xiaolian.amigo.ui.base.intf;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.Error;
-import com.xiaolian.amigo.data.network.model.NetworkObserver;
+import com.xiaolian.amigo.ui.base.BasePresenter;
 
 import io.reactivex.Observable;
 import io.reactivex.observers.DisposableObserver;
@@ -40,7 +40,7 @@ public interface IBasePresenter<V extends IBaseView> {
     void onBizCodeError(Error error);
 
     // 添加观察者
-    void addObserver(Observable<ApiResult<?>> observable, NetworkObserver<ApiResult<?>> observer);
+    void addObserver(Observable observable, BasePresenter.NetworkObserver observer);
 
     // 清空观察者列表
     void clearObservers();

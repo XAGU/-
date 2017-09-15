@@ -13,7 +13,7 @@ import retrofit2.http.POST;
  * @author zcd
  */
 
-public interface ILoginService {
+public interface ILoginApi {
     @POST("/login/register")
     Flowable<ApiResult<LoginRespDTO>> register(@Body RegisterReqDTO body);
 }

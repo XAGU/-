@@ -9,5 +9,5 @@ import lombok.Data;
 @Data
 public class MobileUpdateReqDTO {
     private String code;
-    private int mobile;
+    private Integer mobile;
 }

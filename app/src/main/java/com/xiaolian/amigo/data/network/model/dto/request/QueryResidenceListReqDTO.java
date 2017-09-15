@@ -8,10 +8,10 @@ import lombok.Data;
  */
 @Data
 public class QueryResidenceListReqDTO {
-    int buildingType;
-    int page;
-    int parentId;
-    int residenceLevel;
-    int schoolId;
-    int size;
+    Integer buildingType;
+    Integer page;
+    Integer parentId;
+    Integer residenceLevel;
+    Integer schoolId;
+    Integer size;
 }
