@@ -2,7 +2,12 @@ package com.xiaolian.amigo.data.base;
 
 import android.util.Log;
 
+import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
+import com.xiaolian.amigo.data.prefs.SharedPreferencesHelp;
+
 import java.io.IOException;
+
+import javax.inject.Inject;
 
 import okhttp3.Interceptor;
 import okhttp3.Request;
@@ -26,7 +31,7 @@ public class LogInterceptor implements Interceptor {
         Request request = chain.request();
         Request newRequest;
         newRequest = request.newBuilder()
-                // 添加token
+                 // 添加token
                 .addHeader("token", TOKEN)
                 .build();
         String url = newRequest.url().toString();
