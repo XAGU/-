@@ -19,6 +19,8 @@ import android.app.Application;
 import android.content.Context;
 
 import com.xiaolian.amigo.data.base.LogInterceptor;
+import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
+import com.xiaolian.amigo.data.prefs.SharedPreferencesHelp;
 import com.xiaolian.amigo.di.ApplicationContext;
 
 import javax.inject.Singleton;
@@ -63,5 +65,11 @@ public class ApplicationModule {
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(client)
                 .build();
+    }
+
+    @Singleton
+    @Provides
+    ISharedPreferencesHelp providerSharedPreferencesHelp(SharedPreferencesHelp sharedPreferencesHelp) {
+        return sharedPreferencesHelp;
     }
 }
