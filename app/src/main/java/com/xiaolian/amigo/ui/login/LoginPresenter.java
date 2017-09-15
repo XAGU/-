@@ -16,14 +16,21 @@
 package com.xiaolian.amigo.ui.login;
 
 
+import android.util.Log;
+
 import com.xiaolian.amigo.data.manager.intf.ILoginDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.LoginRespDTO;
 import com.xiaolian.amigo.data.network.model.RegisterReqDTO;
+import com.xiaolian.amigo.ui.base.BaseDisposableObserver;
 import com.xiaolian.amigo.ui.base.BasePresenter;
+import com.xiaolian.amigo.ui.base.intf.IBaseView;
 import com.xiaolian.amigo.ui.login.intf.ILoginPresenter;
 import com.xiaolian.amigo.ui.login.intf.ILoginView;
 import com.xiaolian.amigo.util.MessageConstant;
+
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
 
 import javax.inject.Inject;
 
@@ -31,6 +38,10 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subscribers.DisposableSubscriber;
+import okhttp3.ResponseBody;
+import retrofit2.HttpException;
+import retrofit2.Response;
 
 public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
         implements ILoginPresenter<V> {
@@ -52,14 +63,37 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
 
     @Override
     public void register(String code, int mobile, String password, int schoolld) {
-        mLoginDataManager.register(new RegisterReqDTO(code, mobile, password, schoolld))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<ApiResult<LoginRespDTO>>() {
-                    @Override
-                    public void accept(@NonNull ApiResult<LoginRespDTO> loginRespDTOApiResult) throws Exception {
-                        getMvpView().showMessage(loginRespDTOApiResult.getError().getDebugMessage());
-                    }
-                });
+//        mLoginDataManager.register(new RegisterReqDTO(code, mobile, password, schoolld))
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Consumer<Response<ApiResult<LoginRespDTO>>>() {
+//                    @Override
+//                    public void accept(@NonNull Response<ApiResult<LoginRespDTO>> apiResultResponse) throws Exception {
+//                        getMvpView().showMessage(apiResultResponse.body().getError().getDebugMessage() + "");
+//                        Log.d("test", "onNext:" + apiResultResponse.code());
+//                    }
+//                });
+//                .subscribe(new DisposableSubscriber<ApiResult<LoginRespDTO>>() {
+//
+//                    @Override
+//                    public void onNext(ApiResult<LoginRespDTO> apiResultResponse) {
+////                        getMvpView().showMessage(apiResultResponse.body().getError().getDebugMessage() + "");
+//                        Log.d("test", "onNext:");
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable t) {
+//                        if (t instanceof HttpException) {
+//                            HttpException exception = (HttpException) t;
+//                            Response response = exception.response();
+//                            Log.d("test", response.code() + "");
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onComplete() {
+//
+//                    }
+//                });
     }
 }

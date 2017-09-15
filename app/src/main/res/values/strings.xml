@@ -40,4 +40,11 @@
     <string name="excepted_water">预计用水量</string>
     <string name="some_error">错误</string>
 
+    <string name="confirm">确定</string>
+    <string name="please_enter_nickname">请输入昵称</string>
+    <string name="nickname">昵称</string>
+    <string name="edit_mobile">修改手机号</string>
+    <string name="please_enter_new_mobile">请输入新的手机号</string>
+    <string name="please_enter_verify_code">请输入收到的验证码</string>
+
 </resources>
