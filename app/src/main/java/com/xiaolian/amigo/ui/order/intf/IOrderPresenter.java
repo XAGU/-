@@ -22,7 +22,7 @@ import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 @LoginActivityContext
 public interface IOrderPresenter<V extends IOrderView> extends IBasePresenter<V> {
 
-    // 查看消费记录
-    void queryOrders();
+    // 刷新个人消费账单
+    void requestNetWork(int page);
 
 }

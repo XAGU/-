@@ -12,19 +12,22 @@ import okio.Buffer;
 
 /**
  * Log拦截器
+ *
  * @author zcd
  */
 
 public class LogInterceptor implements Interceptor {
     private final static String TAG = LogInterceptor.class.getSimpleName();
     private final static boolean DEBUG = true;
+    private final static String TOKEN = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaXNzIjoiaHR0cHM6Ly94aWFvbGlhbi5pbyIsImlhdCI6MTUwNTQ1ODM5NCwiZXhwIjoxNTA1NTQ0Nzk0fQ.0J_1XMqNCnU2LKv2Ne2u3l_z-52PCHfrDugfabbdES3jUTkQ9lovR4h9ssbeqmh1hd4q9-IDw8zdz-S66or0-g";
+
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
         Request newRequest;
         newRequest = request.newBuilder()
                 // 添加token
-                .addHeader("Authorization", "1234")
+                .addHeader("token", TOKEN)
                 .build();
         String url = newRequest.url().toString();
         String header = newRequest.headers().toString();

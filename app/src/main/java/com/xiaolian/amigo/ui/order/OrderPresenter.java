@@ -20,11 +20,14 @@ import android.util.Log;
 
 import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.Error;
 import com.xiaolian.amigo.data.network.model.NetworkObserver;
+import com.xiaolian.amigo.data.network.model.dto.request.OrderReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.OrderRespDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.order.intf.IOrderPresenter;
 import com.xiaolian.amigo.ui.order.intf.IOrderView;
+import com.xiaolian.amigo.util.Constant;
 
 import javax.inject.Inject;
 
@@ -42,27 +45,30 @@ public class OrderPresenter<V extends IOrderView> extends BasePresenter<V>
 
 
     @Override
-    public void queryOrders() {
-        manager.queryOrders(new NetworkObserver<ApiResult<OrderRespDTO>>() {
+    public void requestNetWork(int page) {
+        OrderReqDTO reqDTO = new OrderReqDTO();
+        reqDTO.setPage(page);
+        reqDTO.setSize(Constant.PAGE_SIZE);
+        // 查看已结束账单
+        reqDTO.setOrderStatus(2);
+        addObserver(manager.queryOrders(reqDTO), new NetworkObserver<ApiResult<OrderRespDTO>>() {
 
             @Override
-            public void onStart() {
-                super.onStart();
-            }
-
-            @Override
-            public void onNext(ApiResult<OrderRespDTO> t) {
-                Log.i(TAG, "------------------");
+            public void onNext(ApiResult<OrderRespDTO> result) {
+                Error error = result.getError();
+                if (null != error) {
+                    onBizCodeError(error);
+                }
             }
 
             @Override
             public void onError(Throwable e) {
-                Log.e(TAG, e.getMessage());
+                onRemoteInvocationError(e);
             }
 
             @Override
             public void onComplete() {
-                Log.i(TAG, "+++++++++++++++++++++++++");
+
             }
         });
     }

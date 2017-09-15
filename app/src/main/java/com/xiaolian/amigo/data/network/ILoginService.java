@@ -1,8 +1,8 @@
 package com.xiaolian.amigo.data.network;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.LoginRespDTO;
-import com.xiaolian.amigo.data.network.model.RegisterReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.LoginRespDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.RegisterReqDTO;
 
 import io.reactivex.Flowable;
 import retrofit2.http.Body;

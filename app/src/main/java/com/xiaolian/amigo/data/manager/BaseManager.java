@@ -17,7 +17,7 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class BaseManager {
 
-    // 添加网络请求时间观察者
+    // 添加网络请求事件观察者
     static <M> void addObservable(Observable<M> observable, DisposableObserver<M> observer) {
 
         observable.subscribeOn(Schedulers.io())

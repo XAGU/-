@@ -16,30 +16,67 @@
 package com.xiaolian.amigo.ui.base;
 
 
+import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.Error;
+import com.xiaolian.amigo.data.network.model.NetworkObserver;
 import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
+
 public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
 
-    private V mMvpView;
+    // 统一管理observer，防止内存泄露
+    private CompositeDisposable disposable;
+    private V view;
 
     @Override
-    public void onAttach(V mvpView) {
-        mMvpView = mvpView;
+    public void onAttach(V view) {
+        this.view = view;
     }
 
     @Override
     public void onDetach() {
-        mMvpView = null;
+        view = null;
+    }
+
+    public BasePresenter() {
+        disposable = new CompositeDisposable();
     }
 
     @Override
-    public void BasePresenter() {
+    public void onRemoteInvocationError(Throwable e) {
+        // TODO 和mMvpView关联
+    }
 
+    @Override
+    public void onBizCodeError(Error error) {
+        // TODO 和mMvpView关联
+    }
+
+    @Override
+    public void addObserver(Observable observable, NetworkObserver observer) {
+        if (null != disposable) {
+            observable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(observer);
+
+            this.disposable.add(observer);
+        }
+    }
+
+    public void clearObservers() {
+        if (null != disposable && !disposable.isDisposed()) {
+            disposable.clear();
+        }
     }
 
     public V getMvpView() {
-        return mMvpView;
+        return view;
     }
 
 }

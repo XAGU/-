@@ -16,32 +16,13 @@
 package com.xiaolian.amigo.ui.login;
 
 
-import android.util.Log;
-
+import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.manager.intf.ILoginDataManager;
-import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.LoginRespDTO;
-import com.xiaolian.amigo.data.network.model.RegisterReqDTO;
-import com.xiaolian.amigo.ui.base.BaseDisposableObserver;
 import com.xiaolian.amigo.ui.base.BasePresenter;
-import com.xiaolian.amigo.ui.base.intf.IBaseView;
 import com.xiaolian.amigo.ui.login.intf.ILoginPresenter;
 import com.xiaolian.amigo.ui.login.intf.ILoginView;
-import com.xiaolian.amigo.util.MessageConstant;
-
-import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
 
 import javax.inject.Inject;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
-import io.reactivex.subscribers.DisposableSubscriber;
-import okhttp3.ResponseBody;
-import retrofit2.HttpException;
-import retrofit2.Response;
 
 public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
         implements ILoginPresenter<V> {
@@ -57,7 +38,7 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
 
     @Override
     public void onLoginClick(String mobile, String password) {
-        getMvpView().onError(MessageConstant.PASSWORD_INVALID);
+        getMvpView().onError(R.string.password_invalid);
         register("1", 1, "1", 1);
     }
 

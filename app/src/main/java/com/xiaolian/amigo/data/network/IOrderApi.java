@@ -1,7 +1,6 @@
 package com.xiaolian.amigo.data.network;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.RegisterReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.OrderReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.OrderRespDTO;
 

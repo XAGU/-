@@ -15,14 +15,34 @@
 
 package com.xiaolian.amigo.ui.base.intf;
 
+import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.Error;
+import com.xiaolian.amigo.data.network.model.NetworkObserver;
 
+import io.reactivex.Observable;
+import io.reactivex.observers.DisposableObserver;
+
+/**
+ * Created by caidong on 2017/9/15.
+ */
 public interface IBasePresenter<V extends IBaseView> {
 
+    // 绑定视图
     void onAttach(V mvpView);
 
+    // 解绑视图
     void onDetach();
 
-//    void handleApiError(ANError error);
+    // 处理http远程调用异常
+    void onRemoteInvocationError(Throwable e);
 
-    void BasePresenter();
+    // 处理业务层面异常
+    void onBizCodeError(Error error);
+
+    // 添加观察者
+    void addObserver(Observable<ApiResult<?>> observable, NetworkObserver<ApiResult<?>> observer);
+
+    // 清空观察者列表
+    void clearObservers();
+
 }

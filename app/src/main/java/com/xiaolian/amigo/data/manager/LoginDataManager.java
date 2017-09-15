@@ -3,13 +3,12 @@ package com.xiaolian.amigo.data.manager;
 import com.xiaolian.amigo.data.manager.intf.ILoginDataManager;
 import com.xiaolian.amigo.data.network.ILoginService;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.LoginRespDTO;
-import com.xiaolian.amigo.data.network.model.RegisterReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.LoginRespDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.RegisterReqDTO;
 
 import javax.inject.Inject;
 
 import io.reactivex.Flowable;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 
 /**

@@ -1,4 +1,4 @@
-package com.xiaolian.amigo.data.network.model;
+package com.xiaolian.amigo.data.network.model.dto.response;
 
 import lombok.Data;
 
