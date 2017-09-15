@@ -24,7 +24,7 @@ public class LogInterceptor implements Interceptor {
         Request newRequest;
         newRequest = request.newBuilder()
                 // 添加token
-//                .addHeader("Authorization", token)
+                .addHeader("Authorization", "1234")
                 .build();
         String url = newRequest.url().toString();
         String header = newRequest.headers().toString();

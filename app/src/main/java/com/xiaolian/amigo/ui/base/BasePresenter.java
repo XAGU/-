@@ -41,4 +41,5 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
     public V getMvpView() {
         return mMvpView;
     }
+
 }

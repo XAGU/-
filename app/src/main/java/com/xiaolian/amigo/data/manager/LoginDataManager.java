@@ -9,6 +9,7 @@ import com.xiaolian.amigo.data.network.model.RegisterReqDTO;
 import javax.inject.Inject;
 
 import io.reactivex.Flowable;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 
 /**

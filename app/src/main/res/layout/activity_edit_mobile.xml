@@ -21,19 +21,30 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="21dp"
         android:layout_marginTop="24dp"
-        android:text="@string/nickname"
+        android:text="@string/edit_mobile"
         />
 
     <com.xiaolian.amigo.tmp.component.ClearableEditText
-        android:id="@+id/edit_nickname"
+        android:id="@+id/edit_mobile"
         style="@style/EditText"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:drawableEnd="@drawable/clear"
         android:drawableRight="@drawable/clear"
-        android:hint="@string/please_enter_nickname"
+        android:hint="@string/please_enter_new_mobile"
         android:imeOptions="actionDone"
-        android:tag="nickname" />
+        android:tag="mobile" />
+
+    <com.xiaolian.amigo.tmp.component.ClearableEditText
+        android:id="@+id/edit_verify_code"
+        style="@style/EditText"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:drawableEnd="@drawable/clear"
+        android:drawableRight="@drawable/clear"
+        android:hint="@string/please_enter_verify_code"
+        android:imeOptions="actionDone"
+        android:tag="verify_code" />
 
     <Button
         android:id="@+id/bt_submit"

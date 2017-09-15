@@ -44,7 +44,7 @@ public class ProfileFragment extends Fragment {
         ButterKnife.bind(this, homeView);
 
         if (!inited) {
-            MenuListViewAdapter.Item editItem = new MenuListViewAdapter.Item(R.drawable.profile_edit, "编辑个人信息", EditProfileActivity.class);
+            MenuListViewAdapter.Item editItem = new MenuListViewAdapter.Item(R.drawable.profile_edit, "编辑个人信息", com.xiaolian.amigo.ui.user.EditProfileActivity.class);
             listData.add(editItem);
 
             MenuListViewAdapter.Item walletItem = new MenuListViewAdapter.Item(R.drawable.profile_wallet, "我的钱包", WalletActivty.class);
