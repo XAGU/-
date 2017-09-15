@@ -193,6 +193,7 @@
 
         <!--编辑个人信息页面-->
         <activity android:name=".ui.user.EditProfileActivity"
+                  android:launchMode="singleTask"
                   android:theme="@style/AppTheme.NoActionBar"/>
 
         <!--编辑昵称页面-->
@@ -201,6 +202,14 @@
 
         <!--修改手机号-->
         <activity android:name=".ui.user.EditMobileActivity"
+                  android:theme="@style/AppTheme.NoActionBar"/>
+
+        <!--修改账户密码-->
+        <activity android:name=".ui.user.EditPasswordActivity"
+                  android:theme="@style/AppTheme.NoActionBar"/>
+
+        <!--列表选择页面-->
+        <activity android:name=".ui.user.ListChooseActivity"
                   android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity

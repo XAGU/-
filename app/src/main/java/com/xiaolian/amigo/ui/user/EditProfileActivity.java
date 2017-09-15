@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.tmp.activity.EditNicknameActivity;
 import com.xiaolian.amigo.ui.user.intf.IEditProfilePresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditProfileView;
 
@@ -77,10 +76,22 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
                 }
                 break;
             case R.id.rel_edit_password:
-                Toast.makeText(this.getApplicationContext(), "修改密码", Toast.LENGTH_SHORT).show();
+                intent = new Intent(getApplicationContext(), EditPasswordActivity.class);
+                intent.putExtra("nickName", "");
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    startActivityForResult(intent, 1, new Bundle());
+                } else {
+                    startActivityForResult(intent, 1);
+                }
                 break;
             case R.id.rel_edit_school:
-                Toast.makeText(this.getApplicationContext(), "修改学校", Toast.LENGTH_SHORT).show();
+                intent = new Intent(getApplicationContext(), ListChooseActivity.class);
+                intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE, "jfkdjf");
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    startActivityForResult(intent, 1, new Bundle());
+                } else {
+                    startActivityForResult(intent, 1);
+                }
                 break;
             case R.id.rel_edit_room:
                 Toast.makeText(this.getApplicationContext(), "修改宿舍", Toast.LENGTH_SHORT).show();

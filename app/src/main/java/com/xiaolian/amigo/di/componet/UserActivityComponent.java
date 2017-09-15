@@ -4,6 +4,7 @@ import com.xiaolian.amigo.di.UserActivityContext;
 import com.xiaolian.amigo.di.module.UserActivityModule;
 import com.xiaolian.amigo.ui.user.EditMobileActivity;
 import com.xiaolian.amigo.ui.user.EditNickNameActivity;
+import com.xiaolian.amigo.ui.user.EditPasswordActivity;
 import com.xiaolian.amigo.ui.user.EditProfileActivity;
 
 import dagger.Component;
@@ -21,4 +22,6 @@ public interface UserActivityComponent {
     void inject(EditNickNameActivity activity);
 
     void inject(EditMobileActivity activity);
+
+    void inject(EditPasswordActivity activity);
 }

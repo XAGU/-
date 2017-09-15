@@ -42,6 +42,7 @@ public class ClearableEditText extends AppCompatEditText implements View.OnFocus
     public ClearableEditText(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initClearDrawable();
+        setClearIconVisible(false);
     }
 
 

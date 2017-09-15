@@ -4,7 +4,10 @@ import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.MobileUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.PasswordUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.PersonalUpdateReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.request.SimpleQueryReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.EntireUserDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.QueryBriefSchoolListRespDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.QuerySchoolBizListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.SimpleRespDTO;
 
 import io.reactivex.Flowable;
@@ -31,5 +34,13 @@ public interface IUserService {
     // 更新用户密码
     @POST("/user/password/update")
     Flowable<ApiResult<SimpleRespDTO>> updatePassword(@Body PasswordUpdateReqDTO body);
+
+    // 获取学校列表
+    @POST("/school/brief/list")
+    Flowable<ApiResult<QueryBriefSchoolListRespDTO>> getSchoolList(@Body SimpleQueryReqDTO body);
+
+    // 获取学校业务列表
+    @POST("/school/bussiness/list")
+    Flowable<ApiResult<QuerySchoolBizListRespDTO>> getSchoolBizList();
 
 }
