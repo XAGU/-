@@ -1,8 +1,0 @@
-package com.xiaolian.amigo.data.network.model.dto.response;
-
-/**
- * Created by caidong on 2017/9/15.
- */
-
-public class SampleReponseDTO {
-}
