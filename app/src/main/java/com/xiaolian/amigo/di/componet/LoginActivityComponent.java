@@ -16,8 +16,6 @@
 package com.xiaolian.amigo.di.componet;
 
 
-import com.xiaolian.amigo.data.manager.ILoginDataManager;
-import com.xiaolian.amigo.data.manager.LoginDataManager;
 import com.xiaolian.amigo.di.LoginActivityContext;
 import com.xiaolian.amigo.di.module.LoginActivityModule;
 import com.xiaolian.amigo.ui.login.LoginActivity;

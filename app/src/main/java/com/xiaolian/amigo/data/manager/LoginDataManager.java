@@ -1,8 +1,10 @@
 package com.xiaolian.amigo.data.manager;
 
+import com.xiaolian.amigo.data.manager.intf.ILoginDataManager;
 import com.xiaolian.amigo.data.network.ILoginService;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.LoginRespDTO;
+import com.xiaolian.amigo.data.network.model.RegisterReqDTO;
 
 import javax.inject.Inject;
 
@@ -25,7 +27,7 @@ public class LoginDataManager implements ILoginDataManager {
     }
 
     @Override
-    public Flowable<ApiResult<LoginRespDTO>> register(String code, String mobile, String password, String schoolld) {
-        return mLoginService.register(code, mobile, password, schoolld);
+    public Flowable<ApiResult<LoginRespDTO>> register(RegisterReqDTO registerReqDTO) {
+        return mLoginService.register(registerReqDTO);
     }
 }
