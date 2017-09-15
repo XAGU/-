@@ -1,34 +1,15 @@
 package com.xiaolian.amigo.data.network.model;
 
+import lombok.Data;
+
 /**
- * Created by adamzfc on 9/14/17.
+ * @author zcd
  */
-
+@Data
 public class LoginRespDTO {
-
-    /**
-     * token : string
-     * user : {"building":"string","buildingId":0,"floor":"string","floorId":0,"id":0,"mobile":0,"nickName":"string","pictureUrl":"string","room":"string","roomId":0,"schoolId":0,"schoolName":"string","sex":0,"type":0}
-     */
 
     private String token;
     private UserBean user;
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public UserBean getUser() {
-        return user;
-    }
-
-    public void setUser(UserBean user) {
-        this.user = user;
-    }
 
     public static class UserBean {
         /**

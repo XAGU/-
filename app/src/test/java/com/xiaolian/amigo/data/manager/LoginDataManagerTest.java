@@ -1,5 +1,7 @@
 package com.xiaolian.amigo.data.manager;
 
+import com.xiaolian.amigo.data.manager.intf.ILoginDataManager;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;

@@ -1,4 +1,4 @@
-package com.xiaolian.amigo.data.manager;
+package com.xiaolian.amigo.data.manager.intf;
 
 import com.xiaolian.amigo.data.network.ILoginService;
 
