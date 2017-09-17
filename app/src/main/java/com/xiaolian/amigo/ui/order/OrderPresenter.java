@@ -21,7 +21,6 @@ import android.util.Log;
 import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.Error;
-import com.xiaolian.amigo.data.network.model.NetworkObserver;
 import com.xiaolian.amigo.data.network.model.dto.request.OrderReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.OrderRespDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
@@ -52,22 +51,8 @@ public class OrderPresenter<V extends IOrderView> extends BasePresenter<V>
         // 查看已结束账单
         reqDTO.setOrderStatus(2);
         addObserver(manager.queryOrders(reqDTO), new NetworkObserver<ApiResult<OrderRespDTO>>() {
-
             @Override
-            public void onNext(ApiResult<OrderRespDTO> result) {
-                Error error = result.getError();
-                if (null != error) {
-                    onBizCodeError(error);
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                onRemoteInvocationError(e);
-            }
-
-            @Override
-            public void onComplete() {
+            public void onReady(ApiResult<OrderRespDTO> orderRespDTOApiResult) {
 
             }
         });

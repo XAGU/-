@@ -16,9 +16,10 @@
 package com.xiaolian.amigo.ui.base;
 
 
+import android.util.Log;
+
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.Error;
-import com.xiaolian.amigo.data.network.model.NetworkObserver;
 import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 
@@ -29,6 +30,7 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
 public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
+    private static final String TAG = BasePresenter.class.getSimpleName();
 
     // 统一管理observer，防止内存泄露
     private CompositeDisposable disposable;
@@ -77,6 +79,39 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
 
     public V getMvpView() {
         return view;
+    }
+
+    public abstract class NetworkObserver<T extends ApiResult> extends DisposableObserver<T> {
+
+        @Override
+        public void onStart() {
+            super.onStart();
+            view.showLoading();
+        }
+
+        @Override
+        public void onNext(T t) {
+            Error error = t.getError();
+            if (null != error) {
+                onBizCodeError(error);
+            }
+            onReady(t);
+            view.hideLoading();
+        }
+
+        public abstract void onReady(T t);
+
+        @Override
+        public void onError(Throwable e) {
+            Log.d(TAG, e.getMessage());
+            onRemoteInvocationError(e);
+            view.hideLoading();
+        }
+
+        @Override
+        public void onComplete() {
+            view.hideLoading();
+        }
     }
 
 }

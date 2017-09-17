@@ -101,6 +101,7 @@ dependencies {
     compile "com.mindorks:placeholderview:$rootProject.placeholderviewVersion"
 
     provided "org.projectlombok:lombok:1.16.18"
+//    compile "org.projectlombok:lombok:1.16.18"
 
     // logger
     // compile "com.jakewharton.timber:timber:$rootProject.timberVersion"

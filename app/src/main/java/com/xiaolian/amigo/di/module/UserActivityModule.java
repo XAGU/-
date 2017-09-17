@@ -8,11 +8,14 @@ import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.di.UserActivityContext;
 import com.xiaolian.amigo.ui.user.EditMobilePresenter;
 import com.xiaolian.amigo.ui.user.EditNickNamePresenter;
+import com.xiaolian.amigo.ui.user.EditPasswordPresenter;
 import com.xiaolian.amigo.ui.user.EditProfilePresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditMobilePresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditMobileView;
 import com.xiaolian.amigo.ui.user.intf.IEditNickNamePresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditNickNameView;
+import com.xiaolian.amigo.ui.user.intf.IEditPasswordPresenter;
+import com.xiaolian.amigo.ui.user.intf.IEditPasswordView;
 import com.xiaolian.amigo.ui.user.intf.IEditProfilePresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditProfileView;
 
@@ -67,6 +70,13 @@ public class UserActivityModule {
     @UserActivityContext
     IEditMobilePresenter<IEditMobileView> provideEditMobilePresenter(
             EditMobilePresenter<IEditMobileView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    @UserActivityContext
+    IEditPasswordPresenter<IEditPasswordView> provideEditPasswordPresenter(
+            EditPasswordPresenter<IEditPasswordView> presenter) {
         return presenter;
     }
 }
