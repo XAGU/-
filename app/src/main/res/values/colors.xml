@@ -59,4 +59,7 @@
     <color name="transparent">#00000000</color>
 
     <color name="black_effective">#2a2a2a</color>
+    
+    <color name="device_heator">#fe557d</color>
+    <color name="device_dispenser">#00d3c7</color>
 </resources>

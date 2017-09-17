@@ -11,9 +11,10 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 
 /**
+ * 订单列表
+ * <p>
  * Created by caidong on 2017/9/14.
  */
-
 public class OrderActivity extends OrderBaseActivity implements IOrderView {
 
     @Inject
