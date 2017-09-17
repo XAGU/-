@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.network.model.order.Order;
+import com.xiaolian.amigo.util.CommonUtil;
 
 import java.util.List;
 
@@ -47,7 +48,7 @@ public class OrderAdaptor extends RecyclerView.Adapter<OrderAdaptor.ViewHolder> 
                 holder.v_type.setBackgroundColor(context.getResources().getColor(R.color.device_dispenser));
             }
             holder.tv_device.setText(order.getDevice());
-            holder.tv_time.setText(order.getTime());
+            holder.tv_time.setText(CommonUtil.stampToDate(order.getTime()));
             holder.tv_amount.setText(order.getAmount().toString());
         }
     }
@@ -96,16 +97,9 @@ public class OrderAdaptor extends RecyclerView.Adapter<OrderAdaptor.ViewHolder> 
 
         public OrderWrapper(Order order) {
             this.type = order.getDeviceType();
-            this.device = Device.getDevice(order.getDeviceType()).getDesc() + ":" + order.getDeviceNo();
+            this.device = Device.getDevice(order.getDeviceType()).getDesc() + "：" + order.getDeviceNo();
             this.time = order.getCreateTime();
-            this.amount  = order.getConsume();
-        }
-
-        public OrderWrapper(Integer type, String device, String time, Integer amount) {
-            this.type = type;
-            this.device = device;
-            this.time = time;
-            this.amount = amount;
+            this.amount = order.getConsume();
         }
     }
 }
