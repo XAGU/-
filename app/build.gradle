@@ -12,6 +12,9 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
+//        jackOptions {
+//            enabled true
+//        }
     }
     buildTypes {
         debug {
@@ -28,6 +31,10 @@ android {
         disable 'MissingTranslation'
         checkReleaseBuilds false
         abortOnError false
+    }
+    compileOptions {
+//        targetCompatibility JavaVersion.VERSION_1_8
+//        sourceCompatibility JavaVersion.VERSION_1_8
     }
 }
 
@@ -96,6 +103,9 @@ dependencies {
     // code generator for view
     compile "com.jakewharton:butterknife:$rootProject.butterKnifeVersion"
     annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.butterKnifeVersion"
+
+    // lambda
+//    compile "me.tatarka:gradle-retrolambda:$rootProject.retrolambda"
 
     // swipe view
     compile "com.mindorks:placeholderview:$rootProject.placeholderviewVersion"

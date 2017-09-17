@@ -1,27 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:ptr="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackgroundGray"
     android:orientation="vertical"
     android:paddingLeft="@dimen/mainMarginLeftRight"
-    android:paddingRight="@dimen/mainMarginLeftRight"
-    android:paddingTop="14dp">
+    android:paddingRight="@dimen/mainMarginLeftRight">
 
-    <LinearLayout
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/ll_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/colorBackgroundGray"
         android:focusableInTouchMode="true"
-        android:orientation="vertical">
-
+        android:orientation="vertical"
+        app:elevation="0dp">
 
         <LinearLayout
-            android:id="@+id/ll_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingTop="14dp"
+            app:layout_scrollFlags="scroll|enterAlways">
 
             <ImageView
                 android:id="@+id/iv_back"
@@ -36,22 +38,33 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="21dp"
                 android:layout_marginTop="24dp"
-                android:text="消费记录"
-                />
+                android:text="消费记录" />
         </LinearLayout>
 
-        <com.handmark.pulltorefresh.library.PullToRefreshListView
-            android:id="@+id/lv_orders"
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:divider="@null"
-            android:scrollbars="none"
-            app:ptrMode="both"
-            ptr:ptrAnimationStyle="flip"
-            ptr:ptrDrawable="@drawable/default_ptr_flip"
-            ptr:ptrOverScroll="false"
-            ptr:ptrShowIndicator="false" />
+            android:orientation="vertical">
 
-    </LinearLayout>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_orders"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:overScrollMode="never"
+                android:scrollbars="none"/>
 
-</LinearLayout>
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="14dp" />
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+
+</android.support.design.widget.CoordinatorLayout>

@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
+import com.xiaolian.amigo.data.network.model.order.Order;
 
 import java.util.List;
 
@@ -21,24 +22,24 @@ import lombok.Data;
  */
 public class OrderAdaptor extends RecyclerView.Adapter<OrderAdaptor.ViewHolder> {
 
-    private List<Order> orders;
+    private List<OrderWrapper> orders;
     private Context context;
 
-    public OrderAdaptor(List<Order> orders) {
+    public OrderAdaptor(List<OrderWrapper> orders) {
         this.orders = orders;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         context = parent.getContext();
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_repair, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_order, parent, false);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Order order = orders.get(position);
+        OrderWrapper order = orders.get(position);
         if (null != order) {
             if (Device.getDevice(order.getType()) == Device.HEARTER) {
                 holder.v_type.setBackgroundColor(context.getResources().getColor(R.color.device_heator));
@@ -47,7 +48,7 @@ public class OrderAdaptor extends RecyclerView.Adapter<OrderAdaptor.ViewHolder> 
             }
             holder.tv_device.setText(order.getDevice());
             holder.tv_time.setText(order.getTime());
-            holder.tv_amount.setText(order.getAmount());
+            holder.tv_amount.setText(order.getAmount().toString());
         }
     }
 
@@ -83,7 +84,7 @@ public class OrderAdaptor extends RecyclerView.Adapter<OrderAdaptor.ViewHolder> 
     }
 
     @Data
-    public static class Order {
+    public static class OrderWrapper {
         // 订单类型
         Integer type;
         // 设备
@@ -93,7 +94,14 @@ public class OrderAdaptor extends RecyclerView.Adapter<OrderAdaptor.ViewHolder> 
         // 金额
         Integer amount;
 
-        public Order(Integer type, String device, String time, Integer amount) {
+        public OrderWrapper(Order order) {
+            this.type = order.getDeviceType();
+            this.device = Device.getDevice(order.getDeviceType()).getDesc() + ":" + order.getDeviceNo();
+            this.time = order.getCreateTime();
+            this.amount  = order.getConsume();
+        }
+
+        public OrderWrapper(Integer type, String device, String time, Integer amount) {
             this.type = type;
             this.device = device;
             this.time = time;

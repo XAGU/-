@@ -24,7 +24,7 @@ import okio.Buffer;
 public class LogInterceptor implements Interceptor {
     private final static String TAG = LogInterceptor.class.getSimpleName();
     private final static boolean DEBUG = true;
-    private final static String TOKEN = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaXNzIjoiaHR0cHM6Ly94aWFvbGlhbi5pbyIsImlhdCI6MTUwNTQ1ODM5NCwiZXhwIjoxNTA1NTQ0Nzk0fQ.0J_1XMqNCnU2LKv2Ne2u3l_z-52PCHfrDugfabbdES3jUTkQ9lovR4h9ssbeqmh1hd4q9-IDw8zdz-S66or0-g";
+    private final static String TOKEN = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaXNzIjoiaHR0cHM6Ly94aWFvbGlhbi5pbyIsImlhdCI6MTUwNTY1MTg2MCwiZXhwIjoxNTA1NzM4MjYwfQ.USrg5Xj3puklyCEJFgJbZ4Wpd8azh2Iex1197lgpgl5qWR2Lu4ut2-kXMpmMWMEfcGnPKB6wfkihYjKSdD_rTA";
 
     @Override
     public Response intercept(Chain chain) throws IOException {

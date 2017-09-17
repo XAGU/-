@@ -9,4 +9,7 @@ public final class Constant {
 
     // 页内内容条数
     public static final int PAGE_SIZE = 10;
+
+    // 起始页数
+    public static final int PAGE_START_NUM = 1;
 }

@@ -7,9 +7,21 @@ package com.xiaolian.amigo.data.enumeration;
  */
 
 public enum Device {
-    HEARTER(1), DISPENSER(2);
+    HEARTER(1) {
+        @Override
+        public String getDesc() {
+            return "热水器";
+        }
+    }, DISPENSER(2) {
+        @Override
+        public String getDesc() {
+            return "饮水机";
+        }
+    };
 
     private int type;
+
+    public abstract String getDesc();
 
     Device(int type) {
         this.type = type;
