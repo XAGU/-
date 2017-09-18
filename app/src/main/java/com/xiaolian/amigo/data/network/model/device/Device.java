@@ -18,11 +18,11 @@ public class Device {
     // 设备id
     private int id;
     // 纬度
-    private int lat;
+    private double lat;
     // 位置
     private String location;
     // 经度
-    private int lon;
+    private double lon;
     // 设备所在宿舍id
     private int residenceId;
     // 设备所在学校id
