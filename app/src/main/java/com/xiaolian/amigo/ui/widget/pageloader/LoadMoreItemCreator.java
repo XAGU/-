@@ -39,7 +39,6 @@ public interface LoadMoreItemCreator {
         @Override
         public void showLoadMoreView() {
             if (loadMoreView != null) {
-                loadMoreView.setVisibility(View.VISIBLE);
                 loadMoreView.showLoading();
             }
         }
@@ -47,7 +46,6 @@ public interface LoadMoreItemCreator {
         @Override
         public void showNoMoreDataView() {
             if (loadMoreView != null) {
-                loadMoreView.setVisibility(View.VISIBLE);
                 loadMoreView.showNoMoreData();
             }
         }

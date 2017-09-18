@@ -22,14 +22,11 @@ public abstract class BonusBaseActivity extends BaseListActivity {
 
     private BonusActivityComponent mActivityComponent;
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected  void initInject() {
         mActivityComponent = DaggerBonusActivityComponent.builder()
                 .bonusActivityModule(new BonusActivityModule(this))
                 .applicationComponent(((MvpApp) getApplication()).getComponent())
                 .build();
-
     }
 
     public BonusActivityComponent getActivityComponent() {

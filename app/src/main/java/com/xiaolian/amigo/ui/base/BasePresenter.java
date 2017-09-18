@@ -23,6 +23,8 @@ import com.xiaolian.amigo.data.network.model.Error;
 import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 
+import java.util.concurrent.TimeUnit;
+
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;

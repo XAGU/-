@@ -57,8 +57,8 @@ public class ChooseBonusActivity extends BaseActivity
             add(new Bonus(1, 1, "xxxx", "yyyy", 3));
             add(new Bonus(1, 1, "xxxx", "yyyy", 3));
             add(new Bonus(1, 1, "xxxx", "yyyy", 3));
-//            add(new Bonus(1, 1, "xxxx", "yyyy", 3));
-//            add(new Bonus(1, 1, "xxxx", "yyyy", 3));
+//            add(new BonusWrap(1, 1, "xxxx", "yyyy", 3));
+//            add(new BonusWrap(1, 1, "xxxx", "yyyy", 3));
         }
     };
 
@@ -95,7 +95,7 @@ public class ChooseBonusActivity extends BaseActivity
 
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(linearLayoutManager);
-//        LoadMoreWrapper<Bonus> loadMoreWrapper = new LoadMoreWrapper<>(adapter);
+//        LoadMoreWrapper<BonusWrap> loadMoreWrapper = new LoadMoreWrapper<>(adapter);
 //        loadMoreWrapper.setLoadMoreView(R.layout.item_loadmore);
 
         adapter.setLoadMoreFooterView(new BaseLoadMoreFooterView(this) {
