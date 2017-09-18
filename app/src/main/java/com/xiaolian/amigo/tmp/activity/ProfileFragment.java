@@ -46,7 +46,7 @@ public class ProfileFragment extends Fragment {
             MenuListViewAdapter.Item editItem = new MenuListViewAdapter.Item(R.drawable.profile_edit, "编辑个人信息", com.xiaolian.amigo.ui.user.EditProfileActivity.class);
             listData.add(editItem);
 
-            MenuListViewAdapter.Item walletItem = new MenuListViewAdapter.Item(R.drawable.profile_wallet, "我的钱包", WalletActivty.class);
+            MenuListViewAdapter.Item walletItem = new MenuListViewAdapter.Item(R.drawable.profile_wallet, "我的钱包", com.xiaolian.amigo.ui.wallet.WalletActivity.class);
             listData.add(walletItem);
 
             MenuListViewAdapter.Item BonusItem = new MenuListViewAdapter.Item(R.drawable.profile_luck, "我的红包", com.xiaolian.amigo.ui.bonus.BonusActivity.class);

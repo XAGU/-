@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.user;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -19,9 +20,10 @@ import butterknife.ButterKnife;
  * @author zcd
  */
 public class EditNickNameActivity extends UserBaseActivity implements IEditNickNameView {
+    private static final String TAG = EditNickNameActivity.class.getSimpleName();
 
     @Inject
-    IEditNickNamePresenter<IEditNickNameView> mPresenter;
+    IEditNickNamePresenter<IEditNickNameView> presenter;
 
 
     @BindView(R.id.edit_nickname)
@@ -44,12 +46,12 @@ public class EditNickNameActivity extends UserBaseActivity implements IEditNickN
 
         getActivityComponent().inject(this);
 
-        mPresenter.onAttach(EditNickNameActivity.this);
+        presenter.onAttach(EditNickNameActivity.this);
     }
 
     @Override
     protected void onDestroy() {
-        mPresenter.onDetach();
+        presenter.onDetach();
         super.onDestroy();
     }
 
@@ -61,7 +63,8 @@ public class EditNickNameActivity extends UserBaseActivity implements IEditNickN
     public void onclick(View v) {
         switch (v.getId()) {
             case R.id.bt_submit:
-                mPresenter.updateNickName(edit_nickname.getText().toString());
+                Log.d(TAG, edit_nickname.getText().toString());
+                presenter.updateNickName(edit_nickname.getText().toString());
                 break;
         }
     }

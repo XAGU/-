@@ -51,6 +51,7 @@
             android:src="@drawable/arrow_right" />
 
         <com.xiaolian.amigo.tmp.component.CircleImageView
+            android:id="@+id/iv_avatar"
             android:layout_width="37dp"
             android:layout_height="37dp"
             android:layout_centerVertical="true"
@@ -79,7 +80,8 @@
             android:id="@+id/text_wallet"
             style="@style/ListItemMainText"
             android:layout_marginLeft="10dp"
-            android:text="昵称" />
+            android:text="昵称"
+            />
 
 
         <ImageView
@@ -90,9 +92,10 @@
             android:src="@drawable/arrow_right" />
 
         <TextView
+            android:id="@+id/tv_nickname"
             style="@style/ListItemSubText"
             android:layout_toLeftOf="@id/imageView2"
-            android:text="某某某" />
+            />
 
         <View
             android:layout_width="match_parent"
@@ -124,9 +127,10 @@
             android:src="@drawable/arrow_right" />
 
         <TextView
+            android:id="@+id/tv_sex"
             style="@style/ListItemSubText"
             android:layout_toLeftOf="@id/imageView3"
-            android:text="男" />
+            />
 
         <View
             android:layout_width="match_parent"
@@ -158,9 +162,10 @@
             android:src="@drawable/arrow_right" />
 
         <TextView
+            android:id="@+id/tv_mobile"
             style="@style/ListItemSubText"
             android:layout_toLeftOf="@id/imageView4"
-            android:text="135******0192" />
+            />
 
         <View
             android:layout_width="match_parent"
@@ -193,7 +198,8 @@
         <TextView
             style="@style/ListItemSubText"
             android:layout_toLeftOf="@id/imageView5"
-            android:text="修改密码" />
+            android:text="修改密码"
+            />
 
         <View
             android:layout_width="match_parent"
@@ -225,9 +231,10 @@
             android:src="@drawable/arrow_right" />
 
         <TextView
+            android:id="@+id/tv_school"
             style="@style/ListItemSubText"
             android:layout_toLeftOf="@id/imageView6"
-            android:text="某某某学校" />
+            />
 
         <View
             android:layout_width="match_parent"
@@ -257,9 +264,11 @@
             android:src="@drawable/arrow_right" />
 
         <TextView
+            android:id="@+id/tv_residence"
             style="@style/ListItemSubText"
             android:layout_toLeftOf="@id/imageView7"
-            android:text="未绑定" />
+            android:text="未绑定"
+            />
 
         <View
             android:layout_width="match_parent"

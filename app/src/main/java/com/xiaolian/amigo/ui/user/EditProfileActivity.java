@@ -3,15 +3,21 @@ package com.xiaolian.amigo.ui.user;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.tmp.component.CircleImageView;
 import com.xiaolian.amigo.ui.user.intf.IEditProfilePresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditProfileView;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -22,7 +28,40 @@ import butterknife.ButterKnife;
 public class EditProfileActivity extends UserBaseActivity implements IEditProfileView {
 
     @Inject
-    IEditProfilePresenter<IEditProfileView> mPresenter;
+    IEditProfilePresenter<IEditProfileView> presenter;
+
+    /**
+     * 宿舍
+     */
+    @BindView(R.id.tv_residence)
+    TextView tv_residence;
+
+    /**
+     * 学校
+     */
+    @BindView(R.id.tv_school)
+    TextView tv_school;
+
+    /**
+     * 手机
+     */
+    @BindView(R.id.tv_mobile)
+    TextView tv_mobile;
+
+    /**
+     * 性别
+     */
+    @BindView(R.id.tv_sex)
+    TextView tv_sex;
+
+    /**
+     * 昵称
+     */
+    @BindView(R.id.tv_nickname)
+    TextView tv_nickname;
+
+    @BindView(R.id.iv_avatar)
+    CircleImageView iv_avatar;
 
     @Override
     protected void setUp() {
@@ -38,12 +77,14 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
 
         getActivityComponent().inject(this);
 
-        mPresenter.onAttach(EditProfileActivity.this);
+        presenter.onAttach(EditProfileActivity.this);
+
+        presenter.getPersonProfile();
     }
 
     @Override
     protected void onDestroy() {
-        mPresenter.onDetach();
+        presenter.onDetach();
         super.onDestroy();
     }
 
@@ -97,5 +138,37 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
                 Toast.makeText(this.getApplicationContext(), "修改宿舍", Toast.LENGTH_SHORT).show();
                 break;
         }
+    }
+
+    @Override
+    public void setAvatar(String pictureUrl) {
+        if (!TextUtils.isEmpty(pictureUrl)) {
+            Glide.with(this).load(pictureUrl).into(iv_avatar);
+        }
+    }
+
+    @Override
+    public void setNickName(String nickName) {
+        tv_nickname.setText(nickName);
+    }
+
+    @Override
+    public void setSex(int sex) {
+        tv_sex.setText(sex == 0 ? "男" : "女");
+    }
+
+    @Override
+    public void setMobile(String mobile) {
+        tv_mobile.setText(mobile);
+    }
+
+    @Override
+    public void setSchoolName(String schoolName) {
+        tv_school.setText(schoolName);
+    }
+
+    @Override
+    public void setResidenceName(String residenceName) {
+        tv_residence.setText(residenceName);
     }
 }

@@ -9,11 +9,9 @@ import lombok.Data;
 @Data
 public class PersonalUpdateReqDTO {
 
-    private Integer buildingId;
-    private Integer floorId;
+    private Integer residneceId;
     private String nickName;
     private String pictureUrl;
-    private Integer roomId;
     private Integer schoolId;
     private Integer sex;
 }

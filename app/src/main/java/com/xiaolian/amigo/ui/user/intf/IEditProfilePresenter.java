@@ -8,4 +8,5 @@ import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
  */
 
 public interface IEditProfilePresenter <V extends IEditProfileView> extends IBasePresenter<V> {
+    void getPersonProfile();
 }

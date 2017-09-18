@@ -29,13 +29,16 @@ public class EditNickNamePresenter<V extends IEditNickNameView> extends BasePres
 
     @Override
     public void updateNickName(String nickName) {
-        getMvpView().showLoading();
         PersonalUpdateReqDTO dto = new PersonalUpdateReqDTO();
         dto.setNickName(nickName);
         addObserver(manager.updateUserInfo(dto), new NetworkObserver<ApiResult<EntireUserDTO>>() {
             @Override
-            public void onReady(ApiResult<EntireUserDTO> entireUserDTOApiResult) {
-                getMvpView().showMessage(entireUserDTOApiResult.getError().getDebugMessage());
+            public void onReady(ApiResult<EntireUserDTO> result) {
+                if (null == result.getError()) {
+                    getMvpView().showMessage("修改成功");
+                } else {
+                    getMvpView().showMessage(result.getError().getDebugMessage());
+                }
             }
         });
     }
