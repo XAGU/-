@@ -60,6 +60,12 @@ public class EditNickNameActivity extends UserBaseActivity implements IEditNickN
         edit_nickname.setText("");
     }
 
+    @Override
+    public void finishView() {
+        setResult(RESULT_OK);
+        finish();
+    }
+
     public void onclick(View v) {
         switch (v.getId()) {
             case R.id.bt_submit:

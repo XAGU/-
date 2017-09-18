@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +26,8 @@ import butterknife.ButterKnife;
 
 public class EditProfileActivity extends UserBaseActivity implements IEditProfileView {
 
+    private static final int REQUEST_CODE_EDIT_MOBILE = 0x0101;
+    private static final int REQUEST_CODE_EDIT_NICKNAME = 0x0102;
     @Inject
     IEditProfilePresenter<IEditProfileView> presenter;
 
@@ -99,9 +100,9 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
                 intent = new Intent(getApplicationContext(), com.xiaolian.amigo.ui.user.EditNickNameActivity.class);
                 intent.putExtra("nickName", "");
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    startActivityForResult(intent, 1, new Bundle());
+                    startActivityForResult(intent, REQUEST_CODE_EDIT_NICKNAME, new Bundle());
                 } else {
-                    startActivityForResult(intent, 1);
+                    startActivityForResult(intent, REQUEST_CODE_EDIT_NICKNAME);
                 }
                 break;
             case R.id.rel_edit_sex:
@@ -111,9 +112,9 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
                 intent = new Intent(getApplicationContext(), EditMobileActivity.class);
                 intent.putExtra("nickName", "");
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    startActivityForResult(intent, 1, new Bundle());
+                    startActivityForResult(intent, REQUEST_CODE_EDIT_MOBILE, new Bundle());
                 } else {
-                    startActivityForResult(intent, 1);
+                    startActivityForResult(intent, REQUEST_CODE_EDIT_MOBILE);
                 }
                 break;
             case R.id.rel_edit_password:
@@ -137,6 +138,14 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
             case R.id.rel_edit_room:
                 Toast.makeText(this.getApplicationContext(), "修改宿舍", Toast.LENGTH_SHORT).show();
                 break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            presenter.getPersonProfile();
         }
     }
 

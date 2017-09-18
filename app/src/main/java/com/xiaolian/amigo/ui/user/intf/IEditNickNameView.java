@@ -8,4 +8,5 @@ import com.xiaolian.amigo.ui.base.intf.IBaseView;
  */
 public interface IEditNickNameView extends IBaseView {
     void clearEditText();
+    void finishView();
 }
