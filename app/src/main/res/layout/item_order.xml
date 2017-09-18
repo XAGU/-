@@ -1,51 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:background="@drawable/content_border"
+    android:orientation="horizontal">
 
-    <LinearLayout
+    <View
+        android:id="@+id/v_type"
+        android:layout_width="6dp"
+        android:layout_height="match_parent"
+        android:background="#fe557d" />
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/content_border"
-        android:orientation="horizontal"
-        android:layout_marginBottom="14dp">
-        <View
-            android:id="@+id/v_type"
-            android:layout_width="6dp"
-            android:layout_height="match_parent"
-            android:background="#fe557d"/>
+        android:paddingBottom="19dp"
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp"
+        android:paddingTop="19dp">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tv_device"
+            style="@style/ContentText_main"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="14dp"
-            android:paddingRight="14dp"
-            android:paddingTop="19dp"
-            android:paddingBottom="19dp">
-            <TextView
-                android:id="@+id/tv_device"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/ContentText_main"
-                android:text="热水器：VIPLKB-17"/>
+            android:text="热水器：VIPLKB-17" />
 
-            <TextView
-                android:id="@+id/tv_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/ContentText_sub"
-                android:layout_below="@id/tv_device"
-                android:layout_marginTop="10dp"
-                android:text="今天12:30"/>
+        <TextView
+            android:id="@+id/tv_time"
+            style="@style/ContentText_sub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_device"
+            android:layout_marginTop="10dp"
+            android:text="今天12:30" />
 
-            <TextView
-                android:id="@+id/tv_amount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                style="@style/ContentText_title"
-                android:text="-￥3.9"/>
-        </RelativeLayout>
-    </LinearLayout>
+        <TextView
+            android:id="@+id/tv_amount"
+            style="@style/ContentText_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="3.9" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/ContentText_title"
+            android:layout_toLeftOf="@id/tv_amount"
+            android:text="-￥"/>
+    </RelativeLayout>
 </LinearLayout>

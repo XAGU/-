@@ -16,17 +16,19 @@
 package com.xiaolian.amigo.ui.order;
 
 
-import android.util.Log;
-
 import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.Error;
 import com.xiaolian.amigo.data.network.model.dto.request.OrderReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.OrderRespDTO;
+import com.xiaolian.amigo.data.network.model.order.Order;
 import com.xiaolian.amigo.ui.base.BasePresenter;
+import com.xiaolian.amigo.ui.order.adaptor.OrderAdaptor;
 import com.xiaolian.amigo.ui.order.intf.IOrderPresenter;
 import com.xiaolian.amigo.ui.order.intf.IOrderView;
 import com.xiaolian.amigo.util.Constant;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -52,8 +54,20 @@ public class OrderPresenter<V extends IOrderView> extends BasePresenter<V>
         reqDTO.setOrderStatus(2);
         addObserver(manager.queryOrders(reqDTO), new NetworkObserver<ApiResult<OrderRespDTO>>() {
             @Override
-            public void onReady(ApiResult<OrderRespDTO> orderRespDTOApiResult) {
-
+            public void onReady(ApiResult<OrderRespDTO> result) {
+                if (null == result.getError()) {
+//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//                        getMvpView().addMore(result.getData().getOrders().stream().
+//                                map(OrderAdaptor.OrderWrapper::new).collect(Collectors.toList()));
+//                    }
+                    List<OrderAdaptor.OrderWrapper> wrappers = new ArrayList<OrderAdaptor.OrderWrapper>();
+                    if (null != result.getData().getOrders() && result.getData().getOrders().size() > 0) {
+                        for (Order order : result.getData().getOrders()) {
+                            wrappers.add(new OrderAdaptor.OrderWrapper(order));
+                        }
+                        getMvpView().addMore(wrappers);
+                    }
+                }
             }
         });
     }
