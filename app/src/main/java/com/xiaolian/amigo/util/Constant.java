@@ -15,4 +15,7 @@ public final class Constant {
 
     // activity通过intent跳转之间传递的extra key
     public static final String EXTRA_KEY = "detail";
+
+    // 中文冒号分隔符
+    public static final String CHINEASE_COLON = "：";
 }

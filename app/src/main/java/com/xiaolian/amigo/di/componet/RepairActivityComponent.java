@@ -17,13 +17,14 @@ package com.xiaolian.amigo.di.componet;
 
 
 import com.xiaolian.amigo.di.OrderActivityContext;
+import com.xiaolian.amigo.di.RepairActivityContext;
 import com.xiaolian.amigo.di.module.RepairActivityModule;
 import com.xiaolian.amigo.ui.repair.RepairActivity;
 
 import dagger.Component;
 
 
-@OrderActivityContext
+@RepairActivityContext
 @Component(dependencies = ApplicationComponent.class, modules = RepairActivityModule.class)
 public interface RepairActivityComponent {
 

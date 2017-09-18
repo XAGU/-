@@ -109,17 +109,17 @@
         <activity
             android:name=".ui.favorite.FavoriteActivity"
             android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity
+            android:name=".tmp.activity.repair.RepairActivity"
+            android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity
-            android:name=".tmp.activity.repair.RepairActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".tmp.activity.repair.RepairNavActivity"
@@ -233,8 +233,9 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <!--我的钱包-->
-        <activity android:name=".ui.wallet.WalletActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".ui.wallet.WalletActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".tmp.activity.MainActivity"

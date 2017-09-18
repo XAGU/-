@@ -62,4 +62,8 @@
     
     <color name="device_heator">#fe557d</color>
     <color name="device_dispenser">#00d3c7</color>
+
+    <color name="repair_todo">#ff5555</color>
+    <color name="repair_doing">#45b0ff</color>
+    <color name="repair_done">#00d3c7</color>
 </resources>
