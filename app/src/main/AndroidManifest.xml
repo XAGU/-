@@ -99,12 +99,7 @@
         <activity
             android:name=".ui.order.OrderActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".ui.order.OrderDetailActivity"
@@ -114,7 +109,12 @@
         <activity
             android:name=".tmp.activity.favorite.FavoriteActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".tmp.activity.repair.RepairActivity"
@@ -192,29 +192,35 @@
 
 
         <!--编辑个人信息页面-->
-        <activity android:name=".ui.user.EditProfileActivity"
-                  android:launchMode="singleTask"
-                  android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".ui.user.EditProfileActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <!--编辑昵称页面-->
-        <activity android:name=".ui.user.EditNickNameActivity"
-                  android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".ui.user.EditNickNameActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <!--修改手机号-->
-        <activity android:name=".ui.user.EditMobileActivity"
-                  android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".ui.user.EditMobileActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <!--修改账户密码-->
-        <activity android:name=".ui.user.EditPasswordActivity"
-                  android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".ui.user.EditPasswordActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <!--列表选择页面-->
-        <activity android:name=".ui.user.ListChooseActivity"
-                  android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".ui.user.ListChooseActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <!--红包页面-->
-        <activity android:name=".ui.bonus.BonusActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".ui.bonus.BonusActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".tmp.activity.MainActivity"
