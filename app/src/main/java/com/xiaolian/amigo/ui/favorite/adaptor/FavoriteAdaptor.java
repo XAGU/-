@@ -1,6 +1,5 @@
 package com.xiaolian.amigo.ui.favorite.adaptor;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,10 +24,9 @@ import lombok.Data;
 public class FavoriteAdaptor extends RecyclerView.Adapter<FavoriteAdaptor.ViewHolder> {
 
     private List<FavoriteWrapper> favorites;
-    private Context context;
     private IFavoritePresenter<IFavoriteView> presenter;
 
-    public FavoriteAdaptor(List<FavoriteWrapper> favorites) {
+    private FavoriteAdaptor(List<FavoriteWrapper> favorites) {
         this.favorites = favorites;
     }
 
@@ -39,10 +37,8 @@ public class FavoriteAdaptor extends RecyclerView.Adapter<FavoriteAdaptor.ViewHo
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        context = parent.getContext();
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_favorite, parent, false);
-        ViewHolder viewHolder = new ViewHolder(view, presenter);
-        return viewHolder;
+        return new ViewHolder(view, presenter);
     }
 
     @Override

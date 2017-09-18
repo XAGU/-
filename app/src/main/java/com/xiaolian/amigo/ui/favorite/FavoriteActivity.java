@@ -70,7 +70,8 @@ public class FavoriteActivity extends FavoriteBaseActivity implements IFavoriteV
 
     @Override
     public void deleteOne(Long deviceId) {
-        
+        this.favorites.removeIf(favorite -> favorite.getId() == deviceId);
+        adaptor.notifyDataSetChanged();
     }
 
     @Override
