@@ -54,12 +54,12 @@
                         android:text="使用时间" />
 
                     <TextView
+                        android:id="@+id/tv_time"
                         style="@style/ContentText_main"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:text="2017-08-30 12:30" />
+                        android:layout_centerVertical="true"/>
                 </RelativeLayout>
 
                 <View
@@ -81,12 +81,12 @@
                         android:text="设备编号" />
 
                     <TextView
+                        android:id="@+id/tv_device_no"
                         style="@style/ContentText_main"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:text="热水器ZLG9021P" />
+                        android:layout_centerVertical="true"/>
                 </RelativeLayout>
 
                 <View
@@ -108,12 +108,12 @@
                         android:text="设备位置" />
 
                     <TextView
+                        android:id="@+id/tv_device_location"
                         style="@style/ContentText_main"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:text="xxd栋xx层763" />
+                        android:layout_centerVertical="true"/>
                 </RelativeLayout>
 
                 <View
@@ -135,12 +135,12 @@
                         android:text="订单号" />
 
                     <TextView
+                        android:id="@+id/tv_order_no"
                         style="@style/ContentText_main"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:text="13838383838" />
+                        android:layout_centerVertical="true"/>
                 </RelativeLayout>
 
                 <View
@@ -162,12 +162,12 @@
                         android:text="支付方式" />
 
                     <TextView
+                        android:id="@+id/tv_pay_method"
                         style="@style/ContentText_main"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:text="预付10元/1吨水" />
+                        android:layout_centerVertical="true"/>
                 </RelativeLayout>
 
                 <View
@@ -189,12 +189,21 @@
                         android:text="实际用水量" />
 
                     <TextView
+                        android:id="@+id/tv_water_usage_unit"
                         style="@style/ContentText_main"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:text="0.9吨" />
+                        android:text="吨"/>
+
+                    <TextView
+                        android:id="@+id/tv_water_usage"
+                        style="@style/ContentText_main"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toLeftOf="@id/tv_water_usage_unit"
+                        android:layout_centerVertical="true"/>
                 </RelativeLayout>
 
                 <View
@@ -216,15 +225,26 @@
                         android:text="实际消费" />
 
                     <TextView
+                        android:id="@+id/tv_amount"
                         style="@style/ContentText_main"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:text="￥99"
                         android:textColor="@color/colorFullRed"
                         android:textSize="16sp"
                         android:textStyle="bold" />
+
+                    <TextView
+                        style="@style/ContentText_main"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="￥"
+                        android:textColor="@color/colorFullRed"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:layout_toLeftOf="@id/tv_amount"/>
                 </RelativeLayout>
 
                 <View
