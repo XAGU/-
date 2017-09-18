@@ -9,6 +9,7 @@ import com.xiaolian.amigo.data.enumeration.Payment;
 import com.xiaolian.amigo.data.network.model.order.Order;
 import com.xiaolian.amigo.ui.order.intf.IOrderDetailView;
 import com.xiaolian.amigo.ui.order.intf.IOrderView;
+import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 
 import butterknife.BindView;
@@ -19,7 +20,7 @@ import butterknife.ButterKnife;
  * <p>
  * Created by caidong on 2017/9/18.
  */
-public class OrderDetailActivity extends OrderBaseActivity implements IOrderDetailView{
+public class OrderDetailActivity extends OrderBaseActivity implements IOrderDetailView {
 
     @BindView(R.id.tv_time)
     TextView tv_time;
@@ -54,7 +55,7 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
 
     @Override
     public void render() {
-        tv_time.setText(order.getCreateTime());
+        tv_time.setText(CommonUtil.stampToDate(order.getCreateTime()));
         tv_device_no.setText(order.getDeviceNo());
         tv_device_location.setText(order.getLocation());
         tv_order_no.setText(order.getOrderNo());

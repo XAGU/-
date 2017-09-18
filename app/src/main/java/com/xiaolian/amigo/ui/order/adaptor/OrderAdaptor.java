@@ -85,6 +85,7 @@ public class OrderAdaptor extends RecyclerView.Adapter<OrderAdaptor.ViewHolder> 
 
         @Override
         public void onClick(View v) {
+            // 跳转至订单详情
             Intent intent = new Intent(context, OrderDetailActivity.class);
             intent.putExtra(Constant.EXTRA_KEY, order);
             context.startActivity(intent);
