@@ -18,6 +18,7 @@ package com.xiaolian.amigo.ui.base;
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -149,6 +150,14 @@ public abstract class BaseActivity extends AppCompatActivity
     }
 
     protected abstract void setUp();
+
+    // 启动activity完成跳转
+    public void startActivity(AppCompatActivity activity, Class<?> clazz) {
+        Intent intent = new Intent();
+        intent.setClass(activity, clazz);
+        startActivity(intent);
+    }
+
 
     // 单击回退按钮返回
     @OnClick(R.id.iv_back)

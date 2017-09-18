@@ -224,6 +224,10 @@
         <activity android:name=".ui.bonus.ExpiredBonusActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
 
+        <!--我的钱包-->
+        <activity android:name=".ui.wallet.WalletActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
         <activity
             android:name=".tmp.activity.MainActivity"
             android:label="@string/app_name"

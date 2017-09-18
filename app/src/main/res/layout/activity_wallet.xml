@@ -40,9 +40,10 @@
         android:layout_marginTop="14dp">
 
         <TextView
+            android:id="@+id/tv_balance"
             style="@style/Money_Upper"
             android:layout_alignParentLeft="true"
-            android:text="￥120" />
+            />
 
         <ImageView
             android:id="@+id/iv_recharge"
@@ -74,11 +75,12 @@
             android:src="@drawable/forward" />
 
         <TextView
+            android:id="@+id/tv_prepay"
             style="@style/Money_Normal"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
             android:layout_toLeftOf="@id/iv_prepay_forward"
-            android:text="￥10" />
+            />
 
 
         <TextView

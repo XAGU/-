@@ -7,4 +7,15 @@ import com.xiaolian.amigo.ui.base.intf.IBaseView;
  * @author zcd
  */
 public interface IEditProfileView extends IBaseView {
+    void setAvatar(String pictureUrl);
+
+    void setNickName(String nickName);
+
+    void setSex(int sex);
+
+    void setMobile(int mobile);
+
+    void setSchoolName(String schoolName);
+
+    void setResidenceName(String residenceName);
 }

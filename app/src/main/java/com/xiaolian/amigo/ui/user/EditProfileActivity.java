@@ -22,7 +22,7 @@ import butterknife.ButterKnife;
 public class EditProfileActivity extends UserBaseActivity implements IEditProfileView {
 
     @Inject
-    IEditProfilePresenter<IEditProfileView> mPresenter;
+    IEditProfilePresenter<IEditProfileView> presenter;
 
     @Override
     protected void setUp() {
@@ -38,12 +38,12 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
 
         getActivityComponent().inject(this);
 
-        mPresenter.onAttach(EditProfileActivity.this);
+        presenter.onAttach(EditProfileActivity.this);
     }
 
     @Override
     protected void onDestroy() {
-        mPresenter.onDetach();
+        presenter.onDetach();
         super.onDestroy();
     }
 
@@ -97,5 +97,35 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
                 Toast.makeText(this.getApplicationContext(), "修改宿舍", Toast.LENGTH_SHORT).show();
                 break;
         }
+    }
+
+    @Override
+    public void setAvatar(String pictureUrl) {
+
+    }
+
+    @Override
+    public void setNickName(String nickName) {
+
+    }
+
+    @Override
+    public void setSex(int sex) {
+
+    }
+
+    @Override
+    public void setMobile(int mobile) {
+
+    }
+
+    @Override
+    public void setSchoolName(String schoolName) {
+
+    }
+
+    @Override
+    public void setResidenceName(String residenceName) {
+
     }
 }
