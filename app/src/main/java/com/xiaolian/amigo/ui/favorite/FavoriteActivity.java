@@ -4,19 +4,13 @@ package com.xiaolian.amigo.ui.favorite;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.ListView;
+import android.util.Log;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.tmp.common.config.RecycleViewDivider;
-import com.xiaolian.amigo.tmp.common.config.SpaceItemDecoration;
-import com.xiaolian.amigo.tmp.common.util.ScreenUtils;
 import com.xiaolian.amigo.ui.favorite.adaptor.FavoriteAdaptor;
 import com.xiaolian.amigo.ui.favorite.intf.IFavoritePresenter;
 import com.xiaolian.amigo.ui.favorite.intf.IFavoriteView;
-import com.xiaolian.amigo.ui.order.OrderActivity;
-import com.xiaolian.amigo.ui.order.adaptor.OrderAdaptor;
-import com.xiaolian.amigo.ui.order.intf.IOrderPresenter;
-import com.xiaolian.amigo.ui.order.intf.IOrderView;
 import com.xiaolian.amigo.util.Constant;
 
 import java.util.ArrayList;
@@ -32,6 +26,8 @@ import butterknife.ButterKnife;
  */
 
 public class FavoriteActivity extends FavoriteBaseActivity implements IFavoriteView {
+
+    private static final String TAG = FavoriteActivity.class.getSimpleName();
 
     @Inject
     IFavoritePresenter<IFavoriteView> presenter;
@@ -69,9 +65,14 @@ public class FavoriteActivity extends FavoriteBaseActivity implements IFavoriteV
     }
 
     @Override
-    public void deleteOne(Long deviceId) {
-        this.favorites.removeIf(favorite -> favorite.getId() == deviceId);
-        adaptor.notifyDataSetChanged();
+    public void deleteOne(Integer index) {
+        Log.i(TAG, String.format("删除收藏设备前列表数量为：%d", this.favorites.size()));
+        FavoriteAdaptor.FavoriteWrapper result = this.favorites.remove(index.intValue());
+        Log.i(TAG, String.format("删除收藏设备后列表数量为：%d", this.favorites.size()));
+        if (null != result) {
+            Log.i(TAG, "删除收藏设备成功！deviceId=" + result.getId());
+            adaptor.notifyDataSetChanged();
+        }
     }
 
     @Override

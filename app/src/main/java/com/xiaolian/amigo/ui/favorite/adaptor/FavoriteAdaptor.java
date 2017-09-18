@@ -47,7 +47,8 @@ public class FavoriteAdaptor extends RecyclerView.Adapter<FavoriteAdaptor.ViewHo
         if (null != wrapper) {
             holder.tv_device.setText(com.xiaolian.amigo.data.enumeration.Device.getDevice(wrapper.getType()).getDesc());
             holder.tv_location.setText(wrapper.getLocation());
-            holder.deviceId = wrapper.id;
+            holder.deviceId = wrapper.getId();
+            holder.index = position;
         }
     }
 
@@ -63,7 +64,10 @@ public class FavoriteAdaptor extends RecyclerView.Adapter<FavoriteAdaptor.ViewHo
         TextView tv_location;
 
         IFavoritePresenter<IFavoriteView> presenter;
+        // 设备id
         Long deviceId;
+        // 设备在设备列表中的索引位置
+        Integer index;
 
         public ViewHolder(View itemView, IFavoritePresenter<IFavoriteView> presenter) {
             super(itemView);
@@ -74,7 +78,7 @@ public class FavoriteAdaptor extends RecyclerView.Adapter<FavoriteAdaptor.ViewHo
         // 点击删除按钮删除设备
         @OnClick(R.id.tv_delete)
         void delete() {
-            presenter.onDelete(deviceId);
+            presenter.onDelete(deviceId, index);
         }
     }
 

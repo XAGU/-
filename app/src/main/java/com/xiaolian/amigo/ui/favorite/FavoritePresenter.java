@@ -69,7 +69,7 @@ public class FavoritePresenter<V extends IFavoriteView> extends BasePresenter<V>
     }
 
     @Override
-    public void onDelete(final Long deviceId) {
+    public void onDelete(final Long deviceId, Integer index) {
         UnFavoriteReqDTO reqDTO = new UnFavoriteReqDTO();
         reqDTO.setId(deviceId);
         // 查看收藏设备列表
@@ -77,7 +77,7 @@ public class FavoritePresenter<V extends IFavoriteView> extends BasePresenter<V>
             @Override
             public void onReady(ApiResult<UnFavoriteRespDTO> result) {
                 if (null == result.getError()) {
-                    getMvpView().deleteOne(deviceId);
+                    getMvpView().deleteOne(index);
                 }
             }
         });
