@@ -8,7 +8,8 @@
     android:orientation="vertical"
     android:paddingLeft="@dimen/mainMarginLeftRight"
     android:paddingRight="@dimen/mainMarginLeftRight"
-    android:paddingTop="14dp">
+    android:paddingTop="14dp"
+    >
 
     <!--<ScrollView-->
     <!--android:id="@+id/sv_refresh"-->

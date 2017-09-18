@@ -44,8 +44,7 @@ public class ExpiredBonusActivity extends BonusBaseListActivity implements IBonu
         presenter.onAttach(ExpiredBonusActivity.this);
     }
 
-    @Override
-    protected RecyclerView.Adapter getAdapter() {
+    protected RecyclerView.Adapter getAdaptor() {
         adaptor = new ExpiredBonusAdaptor(this, R.layout.item_bonus_expired, bonuses);
         return adaptor;
     }

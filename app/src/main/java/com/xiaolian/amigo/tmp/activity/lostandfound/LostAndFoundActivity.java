@@ -40,7 +40,7 @@ public class LostAndFoundActivity extends BaseActivity {
     RecyclerView.Adapter adapter;
     RecyclerView.LayoutManager manager;
 
-    @BindView(R.id.rv_infos)
+//    @BindView(R.id.rv_infos)
     RecyclerView rv_infos;
 
     /**

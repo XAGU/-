@@ -67,8 +67,7 @@ public class BonusActivity extends BonusBaseListActivity implements IBonusView {
         }
     }
 
-    @Override
-    protected RecyclerView.Adapter getAdapter() {
+    protected RecyclerView.Adapter getAdaptor() {
         adaptor = new BonusAdaptor(this, R.layout.item_bonus, bonuses);
         return adaptor;
     }

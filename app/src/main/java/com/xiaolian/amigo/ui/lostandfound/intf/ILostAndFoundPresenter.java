@@ -9,4 +9,5 @@ import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
  */
 
 public interface ILostAndFoundPresenter<V extends ILostAndFoundView> extends IBasePresenter<V> {
+    void queryLostAndFoundList(int page, Integer schoolId, String selectKey, int size, int type);
 }

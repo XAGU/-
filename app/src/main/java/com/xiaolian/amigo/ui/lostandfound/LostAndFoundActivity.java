@@ -1,8 +1,6 @@
 package com.xiaolian.amigo.ui.lostandfound;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
@@ -10,41 +8,37 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.tmp.activity.lostandfound.MyPublishActivity;
 import com.xiaolian.amigo.tmp.activity.lostandfound.PublishFoundActivity;
 import com.xiaolian.amigo.tmp.activity.lostandfound.PublishLostActivity;
-import com.xiaolian.amigo.tmp.activity.lostandfound.adaptor.LostAndFoundAdaptor;
-import com.xiaolian.amigo.tmp.base.BaseActivity;
 import com.xiaolian.amigo.tmp.common.config.SpaceItemDecoration;
 import com.xiaolian.amigo.tmp.common.util.ScreenUtils;
 import com.xiaolian.amigo.tmp.component.dialog.SearchDialog;
+import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundAdaptor;
+import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundPresenter;
+import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundView;
+import com.xiaolian.amigo.util.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 
 /**
  * 失物招领
  * <p>
  * Created by caidong on 2017/9/13.
  */
-public class LostAndFoundActivity extends BaseActivity {
-    static List<LostAndFoundAdaptor.Info> infos = new ArrayList<LostAndFoundAdaptor.Info>() {
-        {
-            add(new LostAndFoundAdaptor.Info("", "", "", "", ""));
-            add(new LostAndFoundAdaptor.Info("", "", "", "", ""));
-            add(new LostAndFoundAdaptor.Info("", "", "", "", ""));
-            add(new LostAndFoundAdaptor.Info("", "", "", "", ""));
-            add(new LostAndFoundAdaptor.Info("", "", "", "", ""));
-        }
-    };
+public class LostAndFoundActivity extends LostAndFoundBaseListActivity implements ILostAndFoundView {
+    // 失物招领列表
+    List<LostAndFoundAdaptor.LostAndFoundWapper> lostAndFounds = new ArrayList<>();
 
-    RecyclerView.Adapter adapter;
-    RecyclerView.LayoutManager manager;
+    LostAndFoundAdaptor adaptor;
 
-    @BindView(R.id.rv_infos)
-    RecyclerView rv_infos;
-
+    @Inject
+    ILostAndFoundPresenter<ILostAndFoundView> presenter;
     /**
      * 发布招领
      */
@@ -86,16 +80,26 @@ public class LostAndFoundActivity extends BaseActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_lost_and_found);
-        ButterKnife.bind(this);
+    protected void initData() {
+        presenter.queryLostAndFoundList(page, null, null, Constant.PAGE_SIZE, 1);
+    }
 
-        manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        adapter = new LostAndFoundAdaptor(infos);
-        rv_infos.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 10)));
-        rv_infos.setLayoutManager(manager);
-        rv_infos.setAdapter(adapter);
+    @Override
+    protected void initPresenter() {
+        setUnBinder(ButterKnife.bind(this));
+        getActivityComponent().inject(this);
+        presenter.onAttach(LostAndFoundActivity.this);
+    }
+
+    protected RecyclerView.Adapter getAdaptor() {
+        adaptor = new LostAndFoundAdaptor(this, R.layout.item_lost_and_found, lostAndFounds);
+        mRecyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 10)));
+        return adaptor;
+    }
+
+    @Override
+    protected int getLayout() {
+        return R.layout.activity_lost_and_found;
     }
 
     // 点击搜索
@@ -105,5 +109,32 @@ public class LostAndFoundActivity extends BaseActivity {
         dialog.show();
         dialog.setCanceledOnTouchOutside(true);
         dialog.setCancelable(true);
+    }
+
+    @Override
+    public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
+
+    }
+
+    @Override
+    public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
+        return false;
+    }
+
+    @Override
+    public void onLoadMore() {
+
+    }
+
+    @Override
+    public void addMoreLost(List<LostAndFoundAdaptor.LostAndFoundWapper> lost) {
+        this.lostAndFounds.addAll(lost);
+        adaptor.notifyDataSetChanged();
+    }
+
+    @Override
+    public void addMoreFound(List<LostAndFoundAdaptor.LostAndFoundWapper> found) {
+        this.lostAndFounds.addAll(found);
+        adaptor.notifyDataSetChanged();
     }
 }

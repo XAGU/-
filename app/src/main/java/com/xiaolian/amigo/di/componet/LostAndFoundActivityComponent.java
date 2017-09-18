@@ -16,6 +16,7 @@
 package com.xiaolian.amigo.di.componet;
 
 
+import com.xiaolian.amigo.di.LostAndFoundActivityContext;
 import com.xiaolian.amigo.di.OrderActivityContext;
 import com.xiaolian.amigo.di.module.LostAndFoundActivityModule;
 import com.xiaolian.amigo.di.module.OrderActivityModule;
@@ -25,7 +26,7 @@ import com.xiaolian.amigo.ui.order.OrderActivity;
 import dagger.Component;
 
 
-@OrderActivityContext
+@LostAndFoundActivityContext
 @Component(dependencies = ApplicationComponent.class, modules = LostAndFoundActivityModule.class)
 public interface LostAndFoundActivityComponent {
 

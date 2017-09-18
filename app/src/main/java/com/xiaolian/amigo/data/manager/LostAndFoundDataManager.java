@@ -4,7 +4,11 @@ import com.xiaolian.amigo.data.manager.intf.ILostAndFoundDataManager;
 import com.xiaolian.amigo.data.network.ILostAndFoundApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.QueryLostAndFoundListReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.request.SaveLostAndFoundDTO;
+import com.xiaolian.amigo.data.network.model.dto.request.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryLostAndFoundListRespDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.SimpleRespDTO;
+import com.xiaolian.amigo.data.network.model.lostandfound.LostAndFound;
 
 import javax.inject.Inject;
 
@@ -30,5 +34,25 @@ public class LostAndFoundDataManager implements ILostAndFoundDataManager {
     @Override
     public Observable<ApiResult<QueryLostAndFoundListRespDTO>> queryLostAndFounds(@Body QueryLostAndFoundListReqDTO reqDTO) {
         return lostAndFoundApi.queryLostAndFounds(reqDTO);
+    }
+
+    @Override
+    public Observable<ApiResult<SimpleRespDTO>> saveLostAndFounds(@Body SaveLostAndFoundDTO reqDTO) {
+        return lostAndFoundApi.saveLostAndFounds(reqDTO);
+    }
+
+    @Override
+    public Observable<ApiResult<LostAndFound>> getLostAndFound(@Body SimpleReqDTO reqDTO) {
+        return lostAndFoundApi.getLostAndFound(reqDTO);
+    }
+
+    @Override
+    public Observable<ApiResult<QueryLostAndFoundListRespDTO>> getMyLostAndFounds() {
+        return lostAndFoundApi.getMyLostAndFounds();
+    }
+
+    @Override
+    public Observable<ApiResult<SimpleRespDTO>> updateLostAndFounds(@Body SaveLostAndFoundDTO reqDTO) {
+        return lostAndFoundApi.updateLostAndFounds(reqDTO);
     }
 }
