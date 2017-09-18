@@ -1,8 +1,10 @@
 package com.xiaolian.amigo.ui.bonus.intf;
 
-/**
- * Created by adamzfc on 9/17/17.
- */
+import com.xiaolian.amigo.ui.base.intf.IBaseView;
 
-public class IBonusView {
+/**
+ * 红包View接口
+ * @author zcd
+ */
+public interface IBonusView extends IBaseView {
 }

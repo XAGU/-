@@ -1,8 +1,17 @@
 package com.xiaolian.amigo.di.componet;
 
-/**
- * Created by adamzfc on 9/17/17.
- */
+import com.xiaolian.amigo.di.BonusActivityContext;
+import com.xiaolian.amigo.di.module.BonusActivityModule;
+import com.xiaolian.amigo.ui.bonus.BonusActivity;
 
-public class BonusActivityComponent {
+import dagger.Component;
+
+/**
+ * BonusActivityComponent
+ * @author zcd
+ */
+@BonusActivityContext
+@Component(dependencies = ApplicationComponent.class, modules = BonusActivityModule.class)
+public interface BonusActivityComponent {
+    void inject(BonusActivity activity);
 }

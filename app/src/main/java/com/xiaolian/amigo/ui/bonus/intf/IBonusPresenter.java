@@ -1,8 +1,12 @@
 package com.xiaolian.amigo.ui.bonus.intf;
 
-/**
- * Created by adamzfc on 9/17/17.
- */
+import com.xiaolian.amigo.di.BonusActivityContext;
+import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 
-public class IBonusPresenter {
+/**
+ * 红包Presenter接口
+ * @author zcd
+ */
+@BonusActivityContext
+public interface IBonusPresenter<V extends IBonusView> extends IBasePresenter<V> {
 }

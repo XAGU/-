@@ -212,6 +212,10 @@
         <activity android:name=".ui.user.ListChooseActivity"
                   android:theme="@style/AppTheme.NoActionBar"/>
 
+        <!--红包页面-->
+        <activity android:name=".ui.bonus.BonusActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
         <activity
             android:name=".tmp.activity.MainActivity"
             android:label="@string/app_name"

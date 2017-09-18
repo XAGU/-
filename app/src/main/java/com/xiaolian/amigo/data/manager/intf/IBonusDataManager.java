@@ -1,8 +1,9 @@
 package com.xiaolian.amigo.data.manager.intf;
 
 /**
- * Created by adamzfc on 9/17/17.
+ * 红包数据接口
+ * @author zcd
  */
 
-public class IBonusDataManager {
+public interface IBonusDataManager {
 }

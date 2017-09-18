@@ -1,4 +1,4 @@
-package com.xiaolian.amigo.tmp.activity.bonus.adaptor;
+package com.xiaolian.amigo.ui.bonus;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,9 +18,9 @@ import java.util.List;
  * @author zcd
  */
 
-public class BonusAdaptor2 extends BaseWrapperRecyclerAdapter<Bonus, BonusAdaptor2.ItemViewHolder> {
+public class BonusAdaptor extends BaseWrapperRecyclerAdapter<Bonus, BonusAdaptor.ItemViewHolder> {
 
-    public BonusAdaptor2(List<Bonus> items) {
+    public BonusAdaptor(List<Bonus> items) {
         appendToList(items);
     }
 
@@ -29,12 +29,12 @@ public class BonusAdaptor2 extends BaseWrapperRecyclerAdapter<Bonus, BonusAdapto
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_bonus, parent, false);
 
-        return new BonusAdaptor2.ItemViewHolder(view);
+        return new BonusAdaptor.ItemViewHolder(view);
     }
 
 
     @Override
-    public void onBindItemViewHolder(BonusAdaptor2.ItemViewHolder viewHolder, int position) {
+    public void onBindItemViewHolder(BonusAdaptor.ItemViewHolder viewHolder, int position) {
         Bonus bonus = getItem(position);
         viewHolder.tv_amount.setText(bonus.getAmount().toString());
         viewHolder.tv_type.setText(bonus.getType().toString());
@@ -46,7 +46,7 @@ public class BonusAdaptor2 extends BaseWrapperRecyclerAdapter<Bonus, BonusAdapto
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder vh, int position, List payloads) {
-        if(payloads != null && payloads.size() > 0 && vh instanceof BonusAdaptor2.ItemViewHolder){
+        if(payloads != null && payloads.size() > 0 && vh instanceof BonusAdaptor.ItemViewHolder){
             for(Object o : payloads){
                 if(o != null && o instanceof Integer) {
 //                    ((BonusAdaptor2.ItemViewHolder) vh).mTvContent.setTextColor((Integer) o);
@@ -78,5 +78,6 @@ public class BonusAdaptor2 extends BaseWrapperRecyclerAdapter<Bonus, BonusAdapto
 //            addOnViewClickListener(mTvContent);
         }
     }
+
 
 }

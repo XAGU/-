@@ -31,6 +31,12 @@ public abstract class PageLoader {
 
     public abstract void unbind();
 
+    public abstract void showLoadMoreView();
+
+    public abstract void showNoMoreDataView();
+
+    public abstract void hideLoadMoreView();
+
 
     public static RecyclerPageLoader.Builder with(RecyclerView recyclerView, Callbacks callbacks) {
         return new RecyclerPageLoader.Builder(recyclerView, callbacks);

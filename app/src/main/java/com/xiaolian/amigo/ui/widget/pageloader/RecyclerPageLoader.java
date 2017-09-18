@@ -118,7 +118,21 @@ public final class RecyclerPageLoader extends PageLoader {
         checkLoadMore();
     }
 
-    public static class Builder {
+
+    public void showLoadMoreView() {
+        wrapperAdapter.showLoadMoreView();
+    }
+
+    public void showNoMoreDataView() {
+        wrapperAdapter.showNoMoreDataView();
+    }
+
+    public void hideLoadMoreView() {
+        wrapperAdapter.hideLoadMoreView();
+    }
+
+
+        public static class Builder {
         private final RecyclerView recyclerView;
         private final Callbacks callbacks;
         private boolean showLoadMoreItem = true;

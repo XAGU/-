@@ -1,8 +1,15 @@
 package com.xiaolian.amigo.di;
 
-/**
- * Created by adamzfc on 9/17/17.
- */
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
-public class BonusActivityContext {
+import javax.inject.Scope;
+
+/**
+ * BonusActivityContext
+ * @author zcd
+ */
+@Scope
+@Retention(RetentionPolicy.RUNTIME)
+public @interface BonusActivityContext {
 }

@@ -8,22 +8,21 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.widget.pageloader.LoadMoreItemCreator;
 import com.xiaolian.amigo.ui.widget.pageloader.PageLoader;
 
-import butterknife.BindView;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
+import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
 
 /**
  * 含有List的Activity继承此Activity
  * @author zcd
  */
 
-public abstract class BaseListActivity extends BaseActivity implements PageLoader.Callbacks {
+public abstract class BaseListActivity extends BaseActivity
+        implements PageLoader.Callbacks, BGARefreshLayout.BGARefreshLayoutDelegate{
 
 
-    @BindView(R.id.recyclerView)
-    RecyclerView mRecyclerView;
+    protected RecyclerView mRecyclerView;
 
-    @BindView(R.id.refreshLayout)
-    BGARefreshLayout mRefreshLayout;
+    protected BGARefreshLayout mRefreshLayout;
 
     protected int threshold = 5;
     protected boolean loading = false;
@@ -34,10 +33,34 @@ public abstract class BaseListActivity extends BaseActivity implements PageLoade
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(getLayout());
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        mRefreshLayout = (BGARefreshLayout) findViewById(R.id.refreshLayout);
         initRecyclerView();
         if (enableLoadMore()) {
             setupPageLoader();
         }
+        initRefreshLayout();
+    }
+
+    private void initRefreshLayout() {
+        BGAStickinessRefreshViewHolder stickinessRefreshViewHolder = new BGAStickinessRefreshViewHolder(this, false);
+        stickinessRefreshViewHolder.setStickinessColor(R.color.colorPrimary);
+        stickinessRefreshViewHolder.setRotateImage(R.drawable.default_avatar);
+        mRefreshLayout.setRefreshViewHolder(stickinessRefreshViewHolder);
+
+//        mRefreshLayout.setPullDownRefreshEnable(false);
+
+        mRefreshLayout.setDelegate(this);
+    }
+
+    @Override
+    public boolean isLoading() {
+        return loading;
+    }
+
+    public void setLoading(boolean loading) {
+        this.loading = loading;
     }
 
     protected void setupPageLoader() {
@@ -66,7 +89,29 @@ public abstract class BaseListActivity extends BaseActivity implements PageLoade
 
     }
 
+    protected void hideLoadMoreView() {
+        pageLoader.hideLoadMoreView();
+    }
+
+    protected void showLoadMoreView() {
+        pageLoader.showLoadMoreView();
+    }
+
+    protected void showNoMoreDataView() {
+        pageLoader.showNoMoreDataView();
+    }
+
+    protected void loadStart() {
+        loading = true;
+    }
+
+    protected void loadComplete() {
+        loading = false;
+    }
+
     protected abstract RecyclerView.Adapter getAdapter();
+
+    protected abstract int getLayout();
 
     protected LoadMoreItemCreator getLoadMoreItemCreator() {
         return null;
