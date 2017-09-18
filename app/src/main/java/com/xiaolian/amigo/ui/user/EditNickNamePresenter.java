@@ -36,6 +36,7 @@ public class EditNickNamePresenter<V extends IEditNickNameView> extends BasePres
             public void onReady(ApiResult<EntireUserDTO> result) {
                 if (null == result.getError()) {
                     getMvpView().showMessage("修改成功");
+                    getMvpView().finishView();
                 } else {
                     getMvpView().showMessage(result.getError().getDebugMessage());
                 }

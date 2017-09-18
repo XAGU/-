@@ -9,4 +9,7 @@ import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
  */
 @UserActivityContext
 public interface IEditMobilePresenter<V extends IEditMobileView> extends IBasePresenter<V> {
+    void getVerifyCode(String mobile);
+
+    void updateMobile(String mobile, String code);
 }

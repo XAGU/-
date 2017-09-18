@@ -8,4 +8,6 @@ import com.xiaolian.amigo.ui.base.intf.IBaseView;
  */
 
 public interface IEditMobileView extends IBaseView {
+    void startTimer();
+    void finishView();
 }

@@ -3,11 +3,12 @@ package com.xiaolian.amigo.data.network.model.dto.request;
 import lombok.Data;
 
 /**
- * 更新用户手机号DTO
- * @author zcd
+ * 验证码
+ * <p>
+ * Created by zcd on 9/18/17.
  */
+
 @Data
-public class MobileUpdateReqDTO {
-    private String code;
+public class VerificationCodeGetReqDTO {
     private String mobile;
 }
