@@ -6,8 +6,7 @@
     android:background="@color/colorBackgroundWhite"
     android:orientation="vertical"
     android:paddingLeft="@dimen/mainMarginLeftRight"
-    android:paddingRight="@dimen/mainMarginLeftRight"
-    android:paddingTop="14dp">
+    android:paddingRight="@dimen/mainMarginLeftRight">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/ll_header"
@@ -60,12 +59,12 @@
                 android:layout_centerVertical="true"
                 android:background="#eee" />
 
-            <ListView
-                android:id="@+id/lv_collections"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_favorites"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:divider="#eee"
-                android:dividerHeight="1dp" />
+                android:overScrollMode="never"
+                android:scrollbars="none"/>
 
             <View
                 android:layout_width="match_parent"
@@ -73,8 +72,11 @@
                 android:layout_centerVertical="true"
                 android:background="#eee" />
 
-        </LinearLayout>
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="14dp" />
 
+        </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 
 </android.support.design.widget.CoordinatorLayout>

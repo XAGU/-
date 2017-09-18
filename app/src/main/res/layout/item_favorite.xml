@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<com.daimajia.swipe.SwipeLayout
+<com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:swipe="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/sl_collection"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -9,41 +8,41 @@
     swipe:rightEdgeSwipeOffset="0dp">
 
     <LinearLayout
+        android:id="@+id/ll_operator"
         android:layout_width="78dp"
         android:layout_height="78dp"
-        android:gravity="center"
         android:background="@color/colorFullRed"
-        android:id="@+id/ll_operator">
+        android:gravity="center">
 
         <TextView
             android:id="@+id/tv_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="删除"
             android:layout_gravity="center"
+            android:text="删除"
             android:textColor="#fff"
             android:textSize="14sp" />
 
     </LinearLayout>
 
-    <LinearLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorBackgroundWhite"
+        android:layout_height="78dp"
         android:paddingLeft="10dp">
 
         <RelativeLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical">
+
             <TextView
                 android:id="@+id/tv_device"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="饮水机"
-                android:textSize="14sp"
+                android:text="aaa"
                 android:textColor="#00d3c7"
-                android:textStyle="bold"/>
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tv_location"
@@ -51,10 +50,12 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_device"
                 android:layout_marginTop="10dp"
-                android:text="图书馆二楼休闲室"
+                android:text="bbb"
                 android:textColor="#666"
-                android:textSize="12sp"/>
+                android:textSize="12sp" />
         </RelativeLayout>
 
     </LinearLayout>
+
+
 </com.daimajia.swipe.SwipeLayout>

@@ -107,7 +107,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".tmp.activity.favorite.FavoriteActivity"
+            android:name=".ui.favorite.FavoriteActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -223,12 +223,14 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <!--兑换红包-->
-        <activity android:name=".ui.bonus.BonusExchangeActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".ui.bonus.BonusExchangeActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <!--过期红包-->
-        <activity android:name=".ui.bonus.ExpiredBonusActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".ui.bonus.ExpiredBonusActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".tmp.activity.MainActivity"
