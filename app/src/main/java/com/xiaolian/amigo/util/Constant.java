@@ -12,4 +12,7 @@ public final class Constant {
 
     // 起始页数
     public static final int PAGE_START_NUM = 1;
+
+    // activity通过intent跳转之间传递的extra key
+    public static final String EXTRA_KEY = "detail";
 }

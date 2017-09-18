@@ -1,5 +1,7 @@
 package com.xiaolian.amigo.data.network.model.order;
 
+import java.io.Serializable;
+
 import lombok.Data;
 
 /**
@@ -8,7 +10,7 @@ import lombok.Data;
  * Created by caidong on 2017/9/15.
  */
 @Data
-public class Order {
+public class Order implements Serializable {
     private int id;
     // 消费金额
     private int consume;
