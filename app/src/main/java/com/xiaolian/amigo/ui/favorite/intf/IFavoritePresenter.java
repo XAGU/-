@@ -24,7 +24,10 @@ import com.xiaolian.amigo.ui.order.intf.IOrderView;
 @FavoriteActivityContext
 public interface IFavoritePresenter<V extends IFavoriteView> extends IBasePresenter<V> {
 
-    // 刷新个人消费账单
+    // 刷新个人收藏设备列表
     void requestNetWork(int page);
+
+    // 删除某一收藏设备
+    void onDelete(Long deviceId);
 
 }

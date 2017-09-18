@@ -4,7 +4,9 @@ import com.xiaolian.amigo.data.manager.intf.IFavoriteManager;
 import com.xiaolian.amigo.data.network.IFavoriteApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.FavoriteReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.request.UnFavoriteReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.FavoriteRespDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.UnFavoriteRespDTO;
 
 import javax.inject.Inject;
 
@@ -29,5 +31,10 @@ public class FavoriteManager implements IFavoriteManager {
     @Override
     public Observable<ApiResult<FavoriteRespDTO>> queryFavorites(@Body FavoriteReqDTO reqDTO) {
         return favoriteApi.queryFavorites(reqDTO);
+    }
+
+    @Override
+    public Observable<ApiResult<UnFavoriteRespDTO>> deleteFavorite(@Body UnFavoriteReqDTO reqDTO) {
+        return favoriteApi.deleteFavorite(reqDTO);
     }
 }

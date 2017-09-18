@@ -20,7 +20,9 @@ import com.xiaolian.amigo.data.manager.intf.IFavoriteManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.device.Device;
 import com.xiaolian.amigo.data.network.model.dto.request.FavoriteReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.request.UnFavoriteReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.FavoriteRespDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.UnFavoriteRespDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.favorite.adaptor.FavoriteAdaptor;
 import com.xiaolian.amigo.ui.favorite.intf.IFavoritePresenter;
@@ -61,6 +63,21 @@ public class FavoritePresenter<V extends IFavoriteView> extends BasePresenter<V>
                         }
                         getMvpView().addMore(wrappers);
                     }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onDelete(final Long deviceId) {
+        UnFavoriteReqDTO reqDTO = new UnFavoriteReqDTO();
+        reqDTO.setId(deviceId);
+        // 查看收藏设备列表
+        addObserver(manager.deleteFavorite(reqDTO), new NetworkObserver<ApiResult<UnFavoriteRespDTO>>() {
+            @Override
+            public void onReady(ApiResult<UnFavoriteRespDTO> result) {
+                if (null == result.getError()) {
+                    getMvpView().deleteOne(deviceId);
                 }
             }
         });

@@ -9,11 +9,14 @@ import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.device.Device;
+import com.xiaolian.amigo.ui.favorite.intf.IFavoritePresenter;
+import com.xiaolian.amigo.ui.favorite.intf.IFavoriteView;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import lombok.Data;
 
 /**
@@ -23,16 +26,22 @@ public class FavoriteAdaptor extends RecyclerView.Adapter<FavoriteAdaptor.ViewHo
 
     private List<FavoriteWrapper> favorites;
     private Context context;
+    private IFavoritePresenter<IFavoriteView> presenter;
 
     public FavoriteAdaptor(List<FavoriteWrapper> favorites) {
         this.favorites = favorites;
+    }
+
+    public FavoriteAdaptor(List<FavoriteWrapper> favorites, IFavoritePresenter<IFavoriteView> presenter) {
+        this(favorites);
+        this.presenter = presenter;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         context = parent.getContext();
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_favorite, parent, false);
-        ViewHolder viewHolder = new ViewHolder(view);
+        ViewHolder viewHolder = new ViewHolder(view, presenter);
         return viewHolder;
     }
 
@@ -42,6 +51,7 @@ public class FavoriteAdaptor extends RecyclerView.Adapter<FavoriteAdaptor.ViewHo
         if (null != wrapper) {
             holder.tv_device.setText(com.xiaolian.amigo.data.enumeration.Device.getDevice(wrapper.getType()).getDesc());
             holder.tv_location.setText(wrapper.getLocation());
+            holder.deviceId = wrapper.id;
         }
     }
 
@@ -56,20 +66,33 @@ public class FavoriteAdaptor extends RecyclerView.Adapter<FavoriteAdaptor.ViewHo
         @BindView(R.id.tv_location)
         TextView tv_location;
 
-        public ViewHolder(View itemView) {
+        IFavoritePresenter<IFavoriteView> presenter;
+        Long deviceId;
+
+        public ViewHolder(View itemView, IFavoritePresenter<IFavoriteView> presenter) {
             super(itemView);
+            this.presenter = presenter;
             ButterKnife.bind(this, itemView);
+        }
+
+        // 点击删除按钮删除设备
+        @OnClick(R.id.tv_delete)
+        void delete() {
+            presenter.onDelete(deviceId);
         }
     }
 
     @Data
     public static class FavoriteWrapper {
+        // 设备id
+        Long id;
         // 设备类型
         Integer type;
         // 设备
         String location;
 
         public FavoriteWrapper(Device device) {
+            this.id = device.getId();
             this.type = device.getType();
             this.location = device.getLocation();
         }

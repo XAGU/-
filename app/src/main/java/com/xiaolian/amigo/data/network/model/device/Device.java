@@ -14,9 +14,9 @@ public class Device {
     // 硬件编号
     private String hardwareNo;
     // 健康状态 1 - 正常， 2 - 报修中
-    private int healthStatus;
+    private Integer healthStatus;
     // 设备id
-    private int id;
+    private Long id;
     // 纬度
     private double lat;
     // 位置
@@ -24,13 +24,13 @@ public class Device {
     // 经度
     private double lon;
     // 设备所在宿舍id
-    private int residenceId;
+    private Long residenceId;
     // 设备所在学校id
-    private int schoolId;
+    private Long schoolId;
     // 设备所在学校名称
     private String schoolName;
     // 设备类型，1 - 热水器， 2 - 饮水机
-    private int type;
+    private Integer type;
     // 设备用途
-    private int usefor;
+    private Integer usefor;
 }

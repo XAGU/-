@@ -30,4 +30,11 @@ public interface IFavoriteView extends IBaseView {
      * @param favorites 收藏设备列表
      */
     void addMore(List<FavoriteAdaptor.FavoriteWrapper> favorites);
+
+    /**
+     * 删除收藏设备
+     *
+     * @param deviceId 待删除的设备id
+     */
+    void deleteOne(Long deviceId);
 }

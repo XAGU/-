@@ -53,7 +53,7 @@ public class FavoriteActivity extends FavoriteBaseActivity implements IFavoriteV
 
         presenter.onAttach(this);
 
-        adaptor = new FavoriteAdaptor(favorites);
+        adaptor = new FavoriteAdaptor(favorites, presenter);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rv_favorites.addItemDecoration(new RecycleViewDivider(this, RecycleViewDivider.VERTICAL_LIST));
         rv_favorites.setLayoutManager(manager);
@@ -66,6 +66,11 @@ public class FavoriteActivity extends FavoriteBaseActivity implements IFavoriteV
     public void addMore(List<FavoriteAdaptor.FavoriteWrapper> favorites) {
         this.favorites.addAll(favorites);
         adaptor.notifyDataSetChanged();
+    }
+
+    @Override
+    public void deleteOne(Long deviceId) {
+        
     }
 
     @Override
