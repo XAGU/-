@@ -11,4 +11,6 @@ import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 public interface IBonusPresenter<V extends IBonusView> extends IBasePresenter<V> {
 
     void requestBonusList(int page);
+
+    void requestExpiredBonusList(int page);
 }

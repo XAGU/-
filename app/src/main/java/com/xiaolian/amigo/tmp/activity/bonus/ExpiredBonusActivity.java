@@ -29,7 +29,7 @@ public class ExpiredBonusActivity extends BaseActivity {
         }
     };
 
-    @BindView(R.id.lv_bonuses)
+//    @BindView(R.id.lv_bonuses)
     ListView lv_bonuses;
 
     @Override
