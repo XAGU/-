@@ -36,6 +36,7 @@ import com.xiaolian.amigo.ui.base.intf.IBaseView;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.NetworkUtil;
 
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 
@@ -148,4 +149,10 @@ public abstract class BaseActivity extends AppCompatActivity
     }
 
     protected abstract void setUp();
+
+    // 单击回退按钮返回
+    @OnClick(R.id.iv_back)
+    void back() {
+        finish();
+    }
 }
