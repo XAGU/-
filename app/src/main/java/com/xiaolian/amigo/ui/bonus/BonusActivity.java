@@ -1,15 +1,12 @@
 package com.xiaolian.amigo.ui.bonus;
 
-import android.os.AsyncTask;
-import android.os.Bundle;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.bonus.adaptor.BonusAdaptor;
 import com.xiaolian.amigo.ui.bonus.intf.IBonusPresenter;
 import com.xiaolian.amigo.ui.bonus.intf.IBonusView;
-import com.zhy.adapter.recyclerview.CommonAdapter;
-import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,22 +22,22 @@ import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
  * @author zcd
  */
 
-public class BonusActivity extends BonusBaseActivity implements IBonusView {
+public class BonusActivity extends BonusBaseListActivity implements IBonusView {
 
     @Inject
     IBonusPresenter<IBonusView> presenter;
 
-//    // 兑换红包
-//    @OnClick(R.id.tv_exchage)
-//    void exchange() {
-//        startActivity(this, BonusExchangeActivity.class);
-//    }
-//
-//    // 查看过期红包
-//    @OnClick(R.id.tv_expired_entry)
-//    void queryExpiredBonus() {
-//        startActivity(new this, ExpiredBonusActivity.class);
-//    }
+    // 兑换红包
+    @OnClick(R.id.tv_exchage)
+    void exchange() {
+        startActivity(new Intent(this, BonusExchangeActivity.class));
+    }
+
+    // 查看过期红包
+    @OnClick(R.id.tv_expired_entry)
+    void queryExpiredBonus() {
+        startActivity(new Intent(this, ExpiredBonusActivity.class));
+    }
 
     // 订单列表
     List<BonusAdaptor.BonusWrapper> bonuses = new ArrayList<>();

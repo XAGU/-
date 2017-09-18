@@ -7,27 +7,26 @@ import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.di.componet.BonusActivityComponent;
 import com.xiaolian.amigo.di.componet.DaggerBonusActivityComponent;
 import com.xiaolian.amigo.di.module.BonusActivityModule;
-import com.xiaolian.amigo.ui.base.BaseActivity;
+import com.xiaolian.amigo.ui.base.BaseListActivity;
 
 /**
- * BonusBaseActivity
- * Created by zcd on 9/18/17.
+ * BonusBaseListActivity
+ * @author zcd
  */
 
-public abstract class BonusBaseActivity extends BaseActivity {
+public abstract class BonusBaseListActivity extends BaseListActivity {
+    @Override
+    protected void setUp() {
 
+    }
 
     private BonusActivityComponent mActivityComponent;
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setUp();
+    protected  void initInject() {
         mActivityComponent = DaggerBonusActivityComponent.builder()
                 .bonusActivityModule(new BonusActivityModule(this))
                 .applicationComponent(((MvpApp) getApplication()).getComponent())
                 .build();
-
     }
 
     public BonusActivityComponent getActivityComponent() {

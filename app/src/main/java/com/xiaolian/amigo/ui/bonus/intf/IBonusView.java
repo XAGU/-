@@ -1,7 +1,6 @@
 package com.xiaolian.amigo.ui.bonus.intf;
 
 import com.xiaolian.amigo.ui.base.intf.IBaseListView;
-import com.xiaolian.amigo.ui.base.intf.IBaseView;
 import com.xiaolian.amigo.ui.bonus.adaptor.BonusAdaptor;
 
 import java.util.List;

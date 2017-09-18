@@ -6,7 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 import com.xiaolian.amigo.data.manager.BonusDataManager;
 import com.xiaolian.amigo.data.manager.intf.IBonusDataManager;
 import com.xiaolian.amigo.di.BonusActivityContext;
+import com.xiaolian.amigo.ui.bonus.BonusExchangePresenter;
 import com.xiaolian.amigo.ui.bonus.BonusPresenter;
+import com.xiaolian.amigo.ui.bonus.intf.IBonusExchangePresenter;
+import com.xiaolian.amigo.ui.bonus.intf.IBonusExchangeView;
 import com.xiaolian.amigo.ui.bonus.intf.IBonusPresenter;
 import com.xiaolian.amigo.ui.bonus.intf.IBonusView;
 
@@ -39,6 +42,13 @@ public class BonusActivityModule {
     @BonusActivityContext
     IBonusPresenter<IBonusView> provideBonusPresenter(
             BonusPresenter<IBonusView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    @BonusActivityContext
+    IBonusExchangePresenter<IBonusExchangeView> provideBonusExchangePresenter(
+            BonusExchangePresenter<IBonusExchangeView> presenter) {
         return presenter;
     }
 
