@@ -13,18 +13,23 @@
  * limitations under the License
  */
 
-package com.xiaolian.amigo.ui.order;
+package com.xiaolian.amigo.ui.repair;
 
 
 import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
+import com.xiaolian.amigo.data.manager.intf.IRepairDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.OrderReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.request.RepairReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.OrderRespDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.RepairRespDTO;
 import com.xiaolian.amigo.data.network.model.order.Order;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.order.adaptor.OrderAdaptor;
 import com.xiaolian.amigo.ui.order.intf.IOrderPresenter;
 import com.xiaolian.amigo.ui.order.intf.IOrderView;
+import com.xiaolian.amigo.ui.repair.intf.IRepairPresenter;
+import com.xiaolian.amigo.ui.repair.intf.IRepairView;
 import com.xiaolian.amigo.util.Constant;
 
 import java.util.ArrayList;
@@ -32,41 +37,28 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class OrderPresenter<V extends IOrderView> extends BasePresenter<V>
-        implements IOrderPresenter<V> {
+public class RepairPresenter<V extends IRepairView> extends BasePresenter<V>
+        implements IRepairPresenter<V> {
 
-    private static final String TAG = OrderPresenter.class.getSimpleName();
-    private IOrderDataManager manager;
+    private static final String TAG = RepairPresenter.class.getSimpleName();
+    private IRepairDataManager manager;
 
     @Inject
-    public OrderPresenter(IOrderDataManager manager) {
+    public RepairPresenter(IRepairDataManager manager) {
         super();
         this.manager = manager;
     }
 
 
     @Override
-    public void requestOrders(int page) {
-        OrderReqDTO reqDTO = new OrderReqDTO();
+    public void requestRepairs(int page) {
+        RepairReqDTO reqDTO = new RepairReqDTO();
         reqDTO.setPage(page);
         reqDTO.setSize(Constant.PAGE_SIZE);
-        // 查看已结束账单
-        reqDTO.setOrderStatus(2);
-        addObserver(manager.queryOrders(reqDTO), new NetworkObserver<ApiResult<OrderRespDTO>>() {
+        addObserver(manager.queryRepairs(reqDTO), new NetworkObserver<ApiResult<RepairRespDTO>>() {
             @Override
-            public void onReady(ApiResult<OrderRespDTO> result) {
+            public void onReady(ApiResult<RepairRespDTO> result) {
                 if (null == result.getError()) {
-//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-//                        getMvpView().addMore(result.getData().getOrders().stream().
-//                                map(OrderAdaptor.OrderWrapper::new).collect(Collectors.toList()));
-//                    }
-                    List<OrderAdaptor.OrderWrapper> wrappers = new ArrayList<OrderAdaptor.OrderWrapper>();
-                    if (null != result.getData().getOrders() && result.getData().getOrders().size() > 0) {
-                        for (Order order : result.getData().getOrders()) {
-                            wrappers.add(new OrderAdaptor.OrderWrapper(order));
-                        }
-                        getMvpView().addMore(wrappers);
-                    }
                 }
             }
         });

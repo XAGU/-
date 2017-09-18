@@ -58,7 +58,7 @@ public class OrderActivity extends OrderBaseActivity implements IOrderView {
         rv_orders.setLayoutManager(manager);
         rv_orders.setAdapter(adaptor);
 
-        presenter.requestNetWork(Constant.PAGE_START_NUM);
+        presenter.requestOrders(Constant.PAGE_START_NUM);
     }
 
     @Override

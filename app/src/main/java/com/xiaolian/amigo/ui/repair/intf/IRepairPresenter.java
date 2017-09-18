@@ -13,16 +13,18 @@
  * limitations under the License
  */
 
-package com.xiaolian.amigo.ui.order.intf;
+package com.xiaolian.amigo.ui.repair.intf;
 
 
 import com.xiaolian.amigo.di.LoginActivityContext;
+import com.xiaolian.amigo.di.RepairActivityContext;
 import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
+import com.xiaolian.amigo.ui.order.intf.IOrderView;
 
-@LoginActivityContext
-public interface IOrderPresenter<V extends IOrderView> extends IBasePresenter<V> {
+@RepairActivityContext
+public interface IRepairPresenter<V extends IRepairView> extends IBasePresenter<V> {
 
-    // 刷新个人消费账单
-    void requestOrders(int page);
+    // 刷新报修记录
+    void requestRepairs(int page);
 
 }

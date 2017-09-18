@@ -14,7 +14,7 @@ public class OrderReqDTO {
     private int orderStatus;
     // 页码
     private int page;
-    // 页数
+    // 页大小
     private int size;
 
 }

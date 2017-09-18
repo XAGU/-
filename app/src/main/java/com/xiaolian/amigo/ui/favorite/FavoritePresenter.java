@@ -47,7 +47,7 @@ public class FavoritePresenter<V extends IFavoriteView> extends BasePresenter<V>
 
 
     @Override
-    public void requestNetWork(int page) {
+    public void requestFavorites(int page) {
         FavoriteReqDTO reqDTO = new FavoriteReqDTO();
         reqDTO.setPage(page);
         reqDTO.setSize(Integer.MAX_VALUE);
@@ -69,7 +69,7 @@ public class FavoritePresenter<V extends IFavoriteView> extends BasePresenter<V>
     }
 
     @Override
-    public void onDelete(final Long deviceId, Integer index) {
+    public void onDelete(final Long deviceId, int index) {
         UnFavoriteReqDTO reqDTO = new UnFavoriteReqDTO();
         reqDTO.setId(deviceId);
         // 查看收藏设备列表

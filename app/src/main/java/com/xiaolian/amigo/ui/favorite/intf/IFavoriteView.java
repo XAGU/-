@@ -36,5 +36,5 @@ public interface IFavoriteView extends IBaseView {
      *
      * @param index 待删除的设备在设备列表中的编号
      */
-    void deleteOne(Integer index);
+    void deleteOne(int index);
 }

@@ -3,12 +3,12 @@ package com.xiaolian.amigo.data.network.model.dto.request;
 import lombok.Data;
 
 /**
- * 网络请求-收藏设备
+ * 网络请求-设备报修
  * <p>
- * Created by caidong on 2017/9/15.
+ * Created by caidong on 2017/9/18.
  */
 @Data
-public class FavoriteReqDTO {
+public class RepairReqDTO {
 
     // 页码
     private int page;

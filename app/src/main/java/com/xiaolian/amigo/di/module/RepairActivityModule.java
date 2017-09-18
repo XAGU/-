@@ -19,12 +19,17 @@ import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
 import com.xiaolian.amigo.data.manager.OrderDataManager;
+import com.xiaolian.amigo.data.manager.RepairDataManager;
 import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
+import com.xiaolian.amigo.data.manager.intf.IRepairDataManager;
 import com.xiaolian.amigo.di.OrderActivityContext;
 import com.xiaolian.amigo.di.RepairActivityContext;
 import com.xiaolian.amigo.ui.order.OrderPresenter;
 import com.xiaolian.amigo.ui.order.intf.IOrderPresenter;
 import com.xiaolian.amigo.ui.order.intf.IOrderView;
+import com.xiaolian.amigo.ui.repair.RepairPresenter;
+import com.xiaolian.amigo.ui.repair.intf.IRepairPresenter;
+import com.xiaolian.amigo.ui.repair.intf.IRepairView;
 
 import dagger.Module;
 import dagger.Provides;
@@ -48,4 +53,16 @@ public class RepairActivityModule {
         return mActivity;
     }
 
+    @Provides
+    @RepairActivityContext
+    IRepairDataManager provideRepairDataManager(RepairDataManager manager) {
+        return manager;
+    }
+
+    @Provides
+    @RepairActivityContext
+    IRepairPresenter<IRepairView> provideRepairPresenter(
+            RepairPresenter<IRepairView> presenter) {
+        return presenter;
+    }
 }

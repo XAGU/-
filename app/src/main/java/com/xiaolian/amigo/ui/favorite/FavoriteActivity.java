@@ -55,7 +55,7 @@ public class FavoriteActivity extends FavoriteBaseActivity implements IFavoriteV
         rv_favorites.setLayoutManager(manager);
         rv_favorites.setAdapter(adaptor);
 
-        presenter.requestNetWork(Constant.PAGE_START_NUM);
+        presenter.requestFavorites(Constant.PAGE_START_NUM);
     }
 
     @Override
@@ -65,9 +65,9 @@ public class FavoriteActivity extends FavoriteBaseActivity implements IFavoriteV
     }
 
     @Override
-    public void deleteOne(Integer index) {
+    public void deleteOne(int index) {
         Log.i(TAG, String.format("删除收藏设备前列表数量为：%d", this.favorites.size()));
-        FavoriteAdaptor.FavoriteWrapper result = this.favorites.remove(index.intValue());
+        FavoriteAdaptor.FavoriteWrapper result = this.favorites.remove(index);
         Log.i(TAG, String.format("删除收藏设备后列表数量为：%d", this.favorites.size()));
         if (null != result) {
             Log.i(TAG, "删除收藏设备成功！deviceId=" + result.getId());
