@@ -24,16 +24,48 @@
         android:text="@string/edit_mobile"
         />
 
-    <com.xiaolian.amigo.tmp.component.ClearableEditText
-        android:id="@+id/edit_mobile"
-        style="@style/EditText"
+    <!--<com.xiaolian.amigo.tmp.component.ClearableEditText-->
+        <!--android:id="@+id/edit_mobile"-->
+        <!--style="@style/EditText"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="48dp"-->
+        <!--android:drawableEnd="@drawable/clear"-->
+        <!--android:drawableRight="@drawable/clear"-->
+        <!--android:hint="@string/please_enter_new_mobile"-->
+        <!--android:imeOptions="actionDone"-->
+        <!--android:tag="mobile" />-->
+
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:drawableEnd="@drawable/clear"
-        android:drawableRight="@drawable/clear"
-        android:hint="@string/please_enter_new_mobile"
-        android:imeOptions="actionDone"
-        android:tag="mobile" />
+        android:background="@drawable/edittext_default"
+        android:layout_height="48dp">
+
+        <com.xiaolian.amigo.tmp.component.ClearableEditText
+            android:id="@+id/et_mobile"
+            style="@style/EditText"
+            android:background="@android:color/white"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="48dp"
+            android:drawableEnd="@drawable/clear"
+            android:drawableRight="@drawable/clear"
+            android:hint="@string/please_enter_new_mobile"
+            />
+
+        <Button
+            android:id="@+id/bt_verify_code"
+            android:background="@drawable/bg_rect_red_stroke"
+            android:layout_marginRight="14dp"
+            android:layout_marginEnd="14dp"
+            android:layout_marginLeft="14dp"
+            android:layout_marginStart="14dp"
+            android:text="获取验证码"
+            android:textColor="#ff5555"
+            android:layout_width="72dp"
+            android:layout_height="27dp" />
+
+    </LinearLayout>
 
     <com.xiaolian.amigo.tmp.component.ClearableEditText
         android:id="@+id/edit_verify_code"

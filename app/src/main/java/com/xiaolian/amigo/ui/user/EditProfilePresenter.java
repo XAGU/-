@@ -30,8 +30,17 @@ public class EditProfilePresenter<V extends IEditProfileView> extends BasePresen
         addObserver(manager.getUserInfo(), new NetworkObserver<ApiResult<EntireUserDTO>>() {
 
             @Override
-            public void onReady(ApiResult<EntireUserDTO> entireUserDTOApiResult) {
-
+            public void onReady(ApiResult<EntireUserDTO> result) {
+                if (null == result.getError()) {
+                    getMvpView().setAvatar(result.getData().getPictureUrl());
+                    getMvpView().setMobile(result.getData().getMobile());
+                    getMvpView().setNickName(result.getData().getNickName());
+                    getMvpView().setSchoolName(result.getData().getSchoolName());
+                    getMvpView().setResidenceName(result.getData().getResidenceName());
+                    getMvpView().setSex(result.getData().getSex());
+                } else {
+                    getMvpView().showMessage(result.getError().getDisplayMessage());
+                }
             }
         });
     }

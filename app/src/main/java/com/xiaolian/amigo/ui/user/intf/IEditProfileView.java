@@ -13,7 +13,7 @@ public interface IEditProfileView extends IBaseView {
 
     void setSex(int sex);
 
-    void setMobile(int mobile);
+    void setMobile(String mobile);
 
     void setSchoolName(String schoolName);
 
