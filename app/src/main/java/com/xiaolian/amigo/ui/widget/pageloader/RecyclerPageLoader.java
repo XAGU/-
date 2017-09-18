@@ -106,7 +106,7 @@ public final class RecyclerPageLoader extends PageLoader {
             throw new IllegalStateException("只支持LinearLayout");
         }
         if ((totalItemCount > visibleItemCount && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold))
-                || totalItemCount == 0) {
+                && visibleItemCount > 1) {
             if (!callbacks.isLoading() && !callbacks.hasLoadedAll()) {
                 callbacks.onLoadMore();
             }

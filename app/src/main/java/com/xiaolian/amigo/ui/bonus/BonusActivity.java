@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.ui.bonus.adaptor.BonusAdaptor;
 import com.xiaolian.amigo.ui.bonus.intf.IBonusPresenter;
 import com.xiaolian.amigo.ui.bonus.intf.IBonusView;
 import com.zhy.adapter.recyclerview.CommonAdapter;
@@ -16,6 +17,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 
 /**
@@ -25,83 +27,52 @@ import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 
 public class BonusActivity extends BonusBaseActivity implements IBonusView {
 
-    static List<Bonus> bonuses = new ArrayList<Bonus>() {
-        {
-            add(new Bonus(1, 1, "xxxx", "yyyy", 3));
-            add(new Bonus(1, 1, "xxxx", "yyyy", 3));
-            add(new Bonus(1, 1, "xxxx", "yyyy", 3));
-            add(new Bonus(1, 1, "xxxx", "yyyy", 3));
-            add(new Bonus(1, 1, "xxxx", "yyyy", 3));
-            add(new Bonus(1, 1, "xxxx", "yyyy", 3));
-            add(new Bonus(1, 1, "xxxx", "yyyy", 3));
-            add(new Bonus(1, 1, "xxxx", "yyyy", 3));
-//            add(new Bonus(1, 1, "xxxx", "yyyy", 3));
-//            add(new Bonus(1, 1, "xxxx", "yyyy", 3));
-        }
-    };
-
     @Inject
     IBonusPresenter<IBonusView> presenter;
 
-    CommonAdapter<Bonus> adaptor;
+//    // 兑换红包
+//    @OnClick(R.id.tv_exchage)
+//    void exchange() {
+//        startActivity(this, BonusExchangeActivity.class);
+//    }
+//
+//    // 查看过期红包
+//    @OnClick(R.id.tv_expired_entry)
+//    void queryExpiredBonus() {
+//        startActivity(new this, ExpiredBonusActivity.class);
+//    }
+
+    // 订单列表
+    List<BonusAdaptor.BonusWrapper> bonuses = new ArrayList<>();
+
+    BonusAdaptor adaptor;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
+    protected void initPresenter() {
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
-
         presenter.onAttach(BonusActivity.this);
     }
 
+    @Override
+    protected void initData() {
+        presenter.requestBonusList(page);
+    }
 
     @Override
     public void onLoadMore() {
         loadStart();
-        if (adaptor.getItemCount() > 10) {
+        if (hasLoadedAll()) {
             showNoMoreDataView();
         } else {
             showLoadMoreView();
+            presenter.requestBonusList(page);
         }
-        mRecyclerView.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-
-                //int position = mAdapter.getItemCount();
-//                            mHandler.sendEmptyMessageDelayed(0, 200);
-                bonuses.add(new Bonus(2, 2, "xxxx", "yyyy", 3));
-                adaptor.notifyDataSetChanged();
-                hideLoadMoreView();
-                //java.lang.IndexOutOfBoundsException: Inconsistency detected. Invalid view holder adapter positionViewHolder
-                //mAdapter.notifyItemRangeInserted(mAdapter.getItemCount() - 5, 5);
-                //mRecyclerView.scrollToPosition(position);
-                loadComplete();
-
-            }
-        }, 1500);
-
-    }
-
-
-    @Override
-    public boolean hasLoadedAll() {
-        return false;
     }
 
     @Override
     protected RecyclerView.Adapter getAdapter() {
-        adaptor = new CommonAdapter<Bonus>(this, R.layout.item_bonus, bonuses) {
-            @Override
-            protected void convert(ViewHolder holder, Bonus bonus, int position) {
-
-                holder.setText(R.id.tv_amount, bonus.amount.toString());
-                holder.setText(R.id.tv_type, bonus.type.toString());
-                holder.setText(R.id.tv_time_end, bonus.timeEnd);
-                holder.setText(R.id.tv_desc, bonus.desc);
-                holder.setText(R.id.tv_time_left, bonus.timeLeft.toString());
-            }
-        };
+        adaptor = new BonusAdaptor(this, R.layout.item_bonus, bonuses);
         return adaptor;
     }
 
@@ -112,88 +83,22 @@ public class BonusActivity extends BonusBaseActivity implements IBonusView {
 
     @Override
     public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
-        new AsyncTask<Void, Void, Void>() {
-
-            @Override
-            protected void onPreExecute() {
-//                showLoadingDialog();
-            }
-
-            @Override
-            protected Void doInBackground(Void... params) {
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-//                dismissLoadingDialog();
-                mRefreshLayout.endRefreshing();
-//                mClickableLabelTv.setText("加载最新数据完成");
-            }
-        }.execute();
-
+        page = 1;
+        setLoadAll(false);
+        setRefreshing(true);
+        presenter.requestBonusList(page);
+        bonuses.clear();
     }
 
     @Override
     public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
-        new AsyncTask<Void, Void, Void>() {
-
-            @Override
-            protected void onPreExecute() {
-//                showLoadingDialog();
-                if (mRecyclerView.getAdapter() != null && mRecyclerView.getAdapter().getItemCount() > 1) {
-                    mRecyclerView.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            mRecyclerView.smoothScrollToPosition(mRecyclerView.getAdapter().getItemCount() - 2);
-                        }
-                    });
-                }
-            }
-
-            @Override
-            protected Void doInBackground(Void... params) {
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-//                dismissLoadingDialog();
-                mRefreshLayout.endLoadingMore();
-//                Log.i(TAG, "上拉加载更多完成");
-            }
-        }.execute();
-        return true;
+        return false;
     }
 
-    public static class Bonus {
-        // 红包类型
-        Integer type;
-        // 红包金额
-        Integer amount;
-        // 到期时间
-        String timeEnd;
-        // 描述信息
-        String desc;
-        // 剩余时间
-        Integer timeLeft;
-
-        public Bonus(Integer type, Integer amount, String timeEnd, String desc, Integer timeLeft) {
-            this.type = type;
-            this.amount = amount;
-            this.timeEnd = timeEnd;
-            this.desc = desc;
-            this.timeLeft = timeLeft;
-        }
+    @Override
+    public void addMore(List<BonusAdaptor.BonusWrapper> bonuses) {
+        this.bonuses.addAll(bonuses);
+        adaptor.notifyDataSetChanged();
     }
+
 }

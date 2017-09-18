@@ -5,6 +5,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.ui.base.intf.IBaseListView;
 import com.xiaolian.amigo.ui.widget.pageloader.LoadMoreItemCreator;
 import com.xiaolian.amigo.ui.widget.pageloader.PageLoader;
 
@@ -17,7 +18,7 @@ import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
  */
 
 public abstract class BaseListActivity extends BaseActivity
-        implements PageLoader.Callbacks, BGARefreshLayout.BGARefreshLayoutDelegate{
+        implements PageLoader.Callbacks, BGARefreshLayout.BGARefreshLayoutDelegate, IBaseListView{
 
 
     protected RecyclerView mRecyclerView;
@@ -26,7 +27,9 @@ public abstract class BaseListActivity extends BaseActivity
 
     protected int threshold = 5;
     protected boolean loading = false;
-    protected int page = 0;
+    protected boolean refreshing = false;
+    protected int page = 1;
+    protected boolean hasLoadedAll = false;
 
     private PageLoader pageLoader;
 
@@ -36,12 +39,21 @@ public abstract class BaseListActivity extends BaseActivity
         setContentView(getLayout());
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         mRefreshLayout = (BGARefreshLayout) findViewById(R.id.refreshLayout);
+        initInject();
+        initPresenter();
         initRecyclerView();
         if (enableLoadMore()) {
             setupPageLoader();
         }
         initRefreshLayout();
+        initData();
     }
+
+    protected abstract void initData();
+
+    protected abstract void initInject();
+
+    protected abstract void initPresenter();
 
     private void initRefreshLayout() {
         BGAStickinessRefreshViewHolder stickinessRefreshViewHolder = new BGAStickinessRefreshViewHolder(this, false);
@@ -59,6 +71,29 @@ public abstract class BaseListActivity extends BaseActivity
         return loading;
     }
 
+    @Override
+    public boolean isRefreshing() {
+        return refreshing;
+    }
+
+    @Override
+    public void setRefreshing(boolean refreshing) {
+        this.refreshing = refreshing;
+        if (!refreshing) {
+            mRefreshLayout.endRefreshing();
+        }
+    }
+
+    @Override
+    public boolean hasLoadedAll() {
+        return hasLoadedAll;
+    }
+
+    @Override
+    public void setLoadAll(boolean hasLoadedAll) {
+        this.hasLoadedAll = hasLoadedAll;
+    }
+
     public void setLoading(boolean loading) {
         this.loading = loading;
     }
@@ -69,12 +104,12 @@ public abstract class BaseListActivity extends BaseActivity
         }
 
         loading = false;
-        page = 0;
         pageLoader = PageLoader.with(mRecyclerView, this)
                 .setLoadMoreItemCreator(getLoadMoreItemCreator())
                 .showLoadMoreItem(getShowLoadMoreItem())
                 .setVisibleThreshold(getVisibleThreshold())
                 .build();
+        hideLoadMoreView();
 
     }
 
@@ -88,24 +123,51 @@ public abstract class BaseListActivity extends BaseActivity
     protected void setUp() {
 
     }
-
-    protected void hideLoadMoreView() {
-        pageLoader.hideLoadMoreView();
+    @Override
+    public void showLoadMoreView() {
+        if (pageLoader != null) {
+            pageLoader.showLoadMoreView();
+        }
     }
 
-    protected void showLoadMoreView() {
-        pageLoader.showLoadMoreView();
+    @Override
+    public void hideLoadMoreView() {
+        if (pageLoader != null) {
+            pageLoader.hideLoadMoreView();
+        }
     }
 
-    protected void showNoMoreDataView() {
-        pageLoader.showNoMoreDataView();
+    @Override
+    public void showNoMoreDataView() {
+        if (pageLoader != null) {
+            pageLoader.showNoMoreDataView();
+        }
     }
 
-    protected void loadStart() {
+    @Override
+    public void showLoading() {
+        if (!isRefreshing()) {
+            super.showLoading();
+        }
+    }
+
+    @Override
+    public void hideLoading() {
+        super.hideLoading();
+    }
+
+    @Override
+    public void addPage() {
+        page ++;
+    }
+
+    @Override
+    public void loadStart() {
         loading = true;
     }
 
-    protected void loadComplete() {
+    @Override
+    public void loadComplete() {
         loading = false;
     }
 
