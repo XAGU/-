@@ -3,8 +3,8 @@ package com.xiaolian.amigo.tmp.activity.repair;
 import android.os.Bundle;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.tmp.activity.repair.adaptor.RepairAdaptor;
 import com.xiaolian.amigo.tmp.base.BaseActivity;
+import com.xiaolian.amigo.ui.repair.RepairActivity;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
