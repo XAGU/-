@@ -9,25 +9,30 @@ import com.xiaolian.amigo.R;
  */
 public enum RepairStatus {
 
-    TO_AUDIT(1, "待审核") {
+    AUDIT_PENDING(1, "等待审核") {
         @Override
         public int getCorlorRes() {
             return R.color.repair_todo;
         }
-    }, TO_ASSIGN(2, "待指派") {
+    }, REPAIR_PENDING(2, "等待维修") {
         @Override
         public int getCorlorRes() {
             return R.color.repair_todo;
         }
-    }, REPAIRING(1, "维修中") {
+    }, REPAIRING(3, "正在维修") {
         @Override
         public int getCorlorRes() {
             return R.color.repair_doing;
         }
-    }, REPAIR_DONE(1, "已结束") {
+    }, REPAIR_DONE(4, "维修完成") {
         @Override
         public int getCorlorRes() {
             return R.color.repair_done;
+        }
+    }, AUDIT_FAIL(5, "审核未通过") {
+        @Override
+        public int getCorlorRes() {
+            return R.color.repair_todo;
         }
     };
 

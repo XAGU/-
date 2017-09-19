@@ -44,7 +44,7 @@ public class RepairActivity extends RepairBaseActivity implements IRepairView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_order);
+        setContentView(R.layout.activity_repair);
 
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
