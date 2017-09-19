@@ -197,6 +197,14 @@ public class BezierWaveView extends View {
 //        mAnimator4.start();
     }
 
+    public boolean isRunning() {
+        if (mAnimator1 != null) {
+            return mAnimator1.isRunning();
+        } else {
+            return false;
+        }
+    }
+
     @Override
     public void onWindowFocusChanged(boolean hasWindowFocus) {
         super.onWindowFocusChanged(hasWindowFocus);

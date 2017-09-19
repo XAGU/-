@@ -118,7 +118,7 @@ public class ListChooseActivity extends UserBaseActivity implements IListChooseV
                         }
                     }
                     adapter.setOnItemClickListener((view, position) -> {
-                        presenter.bindDormitory(items.get(position).getId());
+//                        presenter.bindDormitory(items.get(position).getId());
                     });
                     break;
             }

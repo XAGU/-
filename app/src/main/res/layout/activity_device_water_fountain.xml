@@ -44,7 +44,7 @@
         android:id="@+id/ll_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
+        android:visibility="visible"
         android:orientation="vertical">
         <LinearLayout
             android:paddingTop="16dp"
@@ -194,7 +194,7 @@
         android:id="@+id/ll_content_unconnected"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="visible"
+        android:visibility="gone"
         android:orientation="vertical">
 
         <com.xiaolian.amigo.tmp.component.DotFlashView
