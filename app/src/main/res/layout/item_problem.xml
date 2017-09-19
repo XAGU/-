@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="27dp"
+    android:orientation="horizontal">
+
+    <Button
+        android:id="@+id/bt_first"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/device_problem_grey"
+        android:textSize="12sp"
+        android:textColor="@color/problem_grey"
+        android:visibility="invisible"/>
+
+    <View
+        android:layout_width="10dp"
+        android:layout_height="match_parent" />
+
+    <Button
+        android:id="@+id/bt_second"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/device_problem_grey"
+        android:textColor="@color/problem_grey"
+        android:textSize="12sp"
+        android:visibility="invisible"/>
+
+    <View
+        android:layout_width="10dp"
+        android:layout_height="match_parent" />
+
+    <Button
+        android:id="@+id/bt_third"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/device_problem_grey"
+        android:textSize="12sp"
+        android:textColor="@color/problem_grey"
+        android:visibility="invisible"/>
+
+</LinearLayout>

@@ -6,10 +6,9 @@ import android.support.v7.widget.RecyclerView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.tmp.activity.common.adaptor.LocationAdaptor;
-import com.xiaolian.amigo.tmp.activity.repair.RepairApplyActivity;
-import com.xiaolian.amigo.tmp.base.BaseActivity;
 import com.xiaolian.amigo.tmp.common.config.RecycleViewDivider;
-import com.xiaolian.amigo.tmp.common.config.SpaceItemDecoration;
+import com.xiaolian.amigo.ui.base.BaseActivity;
+import com.xiaolian.amigo.ui.repair.RepairApplyActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,5 +46,10 @@ public class LocActivity extends BaseActivity {
         rv_locs.addItemDecoration(new RecycleViewDivider(this, RecycleViewDivider.VERTICAL_LIST));
         rv_locs.setLayoutManager(manager);
         rv_locs.setAdapter(adapter);
+    }
+
+    @Override
+    protected void setUp() {
+
     }
 }
