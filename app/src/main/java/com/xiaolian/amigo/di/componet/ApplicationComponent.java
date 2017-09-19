@@ -20,6 +20,8 @@ import android.content.Context;
 
 
 import com.xiaolian.amigo.MvpApp;
+import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
+import com.xiaolian.amigo.data.prefs.SharedPreferencesHelp;
 import com.xiaolian.amigo.di.ApplicationContext;
 import com.xiaolian.amigo.di.module.ApplicationModule;
 
@@ -39,6 +41,8 @@ public interface ApplicationComponent {
     Application application();
 
     Retrofit retrofit();
+
+    ISharedPreferencesHelp sharedPreferencesHelp();
 
     void inject(MvpApp app);
 

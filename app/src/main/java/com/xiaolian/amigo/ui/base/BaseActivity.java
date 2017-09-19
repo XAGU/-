@@ -55,9 +55,9 @@ import butterknife.Unbinder;
 public abstract class BaseActivity extends AppCompatActivity
         implements IBaseView {
 
-    private static final int REQUEST_CODE_CAMERA = 0x0103;
-    private static final int REQUEST_CODE_PICK = 0x0104;
-    private static final int REQUEST_CODE_ICON = 0x0105;
+    private static final int REQUEST_CODE_CAMERA = 0x1103;
+    private static final int REQUEST_CODE_PICK = 0x1104;
+    private static final int REQUEST_CODE_ICON = 0x1105;
 
     private Uri mPhotoImageUri;
     private Uri mPickImageUri;
@@ -192,7 +192,9 @@ public abstract class BaseActivity extends AppCompatActivity
                 }
             }
         } else if (resultCode == UCrop.RESULT_ERROR) {
-            showMessage("剪裁失败");
+            if (requestCode == UCrop.REQUEST_CROP) {
+                showMessage("剪裁失败");
+            }
         }
     }
 

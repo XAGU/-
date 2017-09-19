@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.tmp.activity.wallet.RechargeActivty;
 import com.xiaolian.amigo.tmp.base.BaseActivity;
 import com.xiaolian.amigo.tmp.component.BezierWaveView;
 import com.xiaolian.amigo.tmp.component.DotFlashView;
@@ -192,6 +193,7 @@ public class GeyserActivity extends BaseActivity {
                 .setPositiveButton("前往充值", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        startActivity(new Intent(getApplicationContext(), RechargeActivty.class));
                     }
                 })
                 .setNegativeClickListener("取消", new IOSAlertDialog.OnDialogClickListener() {
@@ -210,6 +212,15 @@ public class GeyserActivity extends BaseActivity {
         dfv_dot.startAnimation();
     }
 
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus && bsv_wave != null && !bsv_wave.isRunning()) {
+            bsv_wave.startAnim();
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -220,7 +231,9 @@ public class GeyserActivity extends BaseActivity {
 
     private void initView() {
         tv_device_name.setText("3栋－5楼－510");
-        bsv_wave.startAnim();
+        if (bsv_wave != null && !bsv_wave.isRunning()) {
+            bsv_wave.startAnim();
+        }
     }
 
     @Override

@@ -1,32 +1,22 @@
 package com.xiaolian.amigo.ui.user;
 
-import android.Manifest;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.tmp.component.CircleImageView;
-import com.xiaolian.amigo.tmp.component.dialog.ActionSheetDialog;
+import com.xiaolian.amigo.ui.user.adaptor.ListChooseAdaptor;
 import com.xiaolian.amigo.ui.user.intf.IEditProfilePresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditProfileView;
-import com.yalantis.ucrop.UCrop;
+import com.xiaolian.amigo.util.Constant;
 
-import java.io.File;
-import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -42,6 +32,9 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
 
     private static final int REQUEST_CODE_EDIT_MOBILE = 0x0101;
     private static final int REQUEST_CODE_EDIT_NICKNAME = 0x0102;
+    private static final int REQUEST_CODE_EDIT_SCHOOL = 0x0103;
+    private static final int REQUEST_CODE_EDIT_DORMITORY = 0x0104;
+    private static final int REQUEST_CODE_EDIT_SEX = 0x0105;
     @Inject
     IEditProfilePresenter<IEditProfileView> presenter;
 
@@ -110,12 +103,12 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
             case R.id.rel_edit_avatar:
                 getImage(imageUri -> {
                     presenter.uploadImage(imageUri);
-                    Log.d("imageUri", imageUri.getPath());
-                    iv_avatar.setImageDrawable(null);
-                    Glide.with(EditProfileActivity.this)
-                        .load(imageUri)
-                        .asBitmap().skipMemoryCache(true)
-                            .diskCacheStrategy(DiskCacheStrategy.NONE).into(iv_avatar);
+//                    Log.d("imageUri", imageUri.getPath());
+//                    iv_avatar.setImageDrawable(null);
+//                    Glide.with(EditProfileActivity.this)
+//                        .load(imageUri)
+//                        .asBitmap().skipMemoryCache(true)
+//                            .diskCacheStrategy(DiskCacheStrategy.NONE).into(iv_avatar);
                 });
                 break;
             case R.id.rel_edit_nickname:
@@ -128,7 +121,10 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
                 }
                 break;
             case R.id.rel_edit_sex:
-                Toast.makeText(this.getApplicationContext(), "修改性别", Toast.LENGTH_SHORT).show();
+                intent = new Intent(getApplicationContext(), ListChooseActivity.class);
+                intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION,
+                        ListChooseActivity.ACTION_LIST_SEX);
+                startActivityForResult(intent, REQUEST_CODE_EDIT_SEX);
                 break;
             case R.id.rel_edit_mobile:
                 intent = new Intent(getApplicationContext(), EditMobileActivity.class);
@@ -149,16 +145,14 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
                 }
                 break;
             case R.id.rel_edit_school:
-                intent = new Intent(getApplicationContext(), ListChooseActivity.class);
-                intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE, "jfkdjf");
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    startActivityForResult(intent, 1, new Bundle());
-                } else {
-                    startActivityForResult(intent, 1);
-                }
+                intent = new Intent(this, ListChooseActivity.class);
+                intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION,
+                        ListChooseActivity.ACTION_LIST_SCHOOL);
+                startActivityForResult(intent, REQUEST_CODE_EDIT_SCHOOL);
                 break;
             case R.id.rel_edit_room:
-                Toast.makeText(this.getApplicationContext(), "修改宿舍", Toast.LENGTH_SHORT).show();
+                intent = new Intent(this, EditDormitoryActivity.class);
+                startActivityForResult(intent, REQUEST_CODE_EDIT_DORMITORY);
                 break;
         }
     }
@@ -202,4 +196,5 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
     public void setResidenceName(String residenceName) {
         tv_residence.setText(residenceName);
     }
+
 }

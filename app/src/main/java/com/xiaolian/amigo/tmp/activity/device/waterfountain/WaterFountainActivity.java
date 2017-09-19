@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.tmp.activity.device.geyser.ChooseBonusActivity;
+import com.xiaolian.amigo.tmp.activity.wallet.RechargeActivty;
 import com.xiaolian.amigo.tmp.base.BaseActivity;
 import com.xiaolian.amigo.tmp.component.BezierWaveView;
 import com.xiaolian.amigo.tmp.component.DotFlashView;
@@ -198,6 +199,7 @@ public class WaterFountainActivity extends BaseActivity {
                 .setPositiveButton("前往充值", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        startActivity(new Intent(getApplicationContext(), RechargeActivty.class));
                     }
                 })
                 .setNegativeClickListener("取消", new IOSAlertDialog.OnDialogClickListener() {
@@ -206,6 +208,14 @@ public class WaterFountainActivity extends BaseActivity {
                         iosAlertDialog.dismiss();
                     }
                 }).show();
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus && bsv_wave != null && !bsv_wave.isRunning()) {
+            bsv_wave.startAnim();
+        }
     }
 
     /**
@@ -233,7 +243,9 @@ public class WaterFountainActivity extends BaseActivity {
                 iv_collect.setImageResource(R.drawable.collected);
             }
         });
-        bsv_wave.startAnim();
+        if (bsv_wave != null && !bsv_wave.isRunning()) {
+            bsv_wave.startAnim();
+        }
     }
 
 }

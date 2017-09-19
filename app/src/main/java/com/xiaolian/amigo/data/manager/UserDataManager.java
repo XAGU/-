@@ -4,16 +4,23 @@ import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.data.network.IFileApi;
 import com.xiaolian.amigo.data.network.IUserApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.dto.request.BindResidenceReq;
 import com.xiaolian.amigo.data.network.model.dto.request.MobileUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.PasswordUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.PersonalUpdateReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.request.QueryResidenceListReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.SimpleQueryReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.request.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.VerificationCodeGetReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.EntireUserDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryBriefSchoolListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QuerySchoolBizListRespDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.QueryUserResidenceListRespDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.ResidenceListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.SimpleRespDTO;
+import com.xiaolian.amigo.data.network.model.user.User;
+import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 
 import javax.inject.Inject;
 
@@ -35,10 +42,13 @@ public class UserDataManager implements IUserDataManager {
 
     private IFileApi fileApi;
 
+    private ISharedPreferencesHelp sharedPreferencesHelp;
+
     @Inject
-    public UserDataManager(Retrofit retrofit) {
+    public UserDataManager(Retrofit retrofit, ISharedPreferencesHelp sharedPreferencesHelp) {
         userApi = retrofit.create(IUserApi.class);
         fileApi = retrofit.create(IFileApi.class);
+        this.sharedPreferencesHelp = sharedPreferencesHelp;
     }
 
     @Override
@@ -77,7 +87,37 @@ public class UserDataManager implements IUserDataManager {
     }
 
     @Override
+    public Observable<ApiResult<QueryUserResidenceListRespDTO>> queryUserResidenceList(@Body SimpleQueryReqDTO body) {
+        return userApi.queryUserResidenceList(body);
+    }
+
+    @Override
+    public Observable<ApiResult<BooleanRespDTO>> deleteResidence(@Body SimpleReqDTO body) {
+        return userApi.deleteResidence(body);
+    }
+
+    @Override
+    public Observable<ApiResult<ResidenceListRespDTO>> queryResidenceList(@Body QueryResidenceListReqDTO body) {
+        return userApi.queryResidenceList(body);
+    }
+
+    @Override
+    public Observable<ApiResult<BooleanRespDTO>> bindResidence(@Body BindResidenceReq body) {
+        return userApi.bindResidence(body);
+    }
+
+    @Override
     public Observable<ApiResult<String>> uploadFile(@Part("file") RequestBody images) {
         return fileApi.uploadFile(images);
+    }
+
+    @Override
+    public User getUser() {
+        return sharedPreferencesHelp.getUserInfo();
+    }
+
+    @Override
+    public void setUser(User user) {
+        sharedPreferencesHelp.setUserInfo(user);
     }
 }
