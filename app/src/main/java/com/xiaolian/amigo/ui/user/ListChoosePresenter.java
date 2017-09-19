@@ -2,9 +2,11 @@ package com.xiaolian.amigo.ui.user;
 
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.dto.request.BindResidenceReq;
 import com.xiaolian.amigo.data.network.model.dto.request.PersonalUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.QueryResidenceListReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.SimpleQueryReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.EntireUserDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryBriefSchoolListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.ResidenceListRespDTO;
@@ -159,6 +161,26 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
 
     @Override
     public void bindDormitory(Integer id, boolean isEdit) {
+        BindResidenceReq dto = new BindResidenceReq();
+        dto.setId(id);
+        if (isEdit) {
+            dto.setResidenceId(manager.getUser().getResidenceId());
+        }
+        addObserver(manager.bindResidence(dto), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
 
+            @Override
+            public void onReady(ApiResult<BooleanRespDTO> result) {
+                if (null == result.getError()) {
+                    if (result.getData().isResult()) {
+                        getMvpView().showMessage("绑定成功");
+                        getMvpView().backToDormitory();
+                    } else {
+                        getMvpView().showMessage("绑定失败");
+                    }
+                } else {
+                    getMvpView().showMessage(result.getError().getDisplayMessage());
+                }
+            }
+        });
     }
 }

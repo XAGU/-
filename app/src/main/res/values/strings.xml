@@ -51,5 +51,8 @@
     <string name="please_enter_old_password">请输入原密码</string>
     <string name="please_enter_new_password">请输入新密码</string>
     <string name="please_enter_new_password_again">请再次输入新密码</string>
+    <string name="choose_bonus">选择红包</string>
+    
+    <string name="shower_process">以预付%1$d元，请尽快放水洗澡(%2$ds)</string>
 
 </resources>

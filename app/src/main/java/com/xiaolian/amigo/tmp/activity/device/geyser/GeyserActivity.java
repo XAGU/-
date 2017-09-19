@@ -3,10 +3,13 @@ package com.xiaolian.amigo.tmp.activity.device.geyser;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -33,11 +36,41 @@ public class GeyserActivity extends BaseActivity {
      */
     private static final int CHOOSE_BONUS_CODE = 0x0010;
 
+
+    /**
+     * 使用倒计时
+     */
+    private CountDownTimer countDownTimer;
+
     /**
      * 确认支付
      */
     @BindView(R.id.bt_pay)
     Button bt_pay;
+
+    /**
+     * 放水进度
+     */
+    @BindView(R.id.tv_shower_process)
+    TextView tv_shower_process;
+
+    /**
+     * 正常页面
+     */
+    @BindView(R.id.ll_content_normal)
+    LinearLayout ll_content_normal;
+
+    /**
+     * 未连接页面
+     */
+    @BindView(R.id.ll_content_unconnected)
+    LinearLayout ll_content_unconnected;
+
+    /**
+     * 开始使用页面
+     */
+    @BindView(R.id.ll_content_shower)
+    LinearLayout ll_content_shower;
 
     /**
      * 结束洗澡
@@ -116,22 +149,32 @@ public class GeyserActivity extends BaseActivity {
     private boolean isMoneyPay = true;
 
     /**
+     * 结束洗澡
+     */
+    @OnClick(R.id.bt_stop_shower)
+    void stopShower() {
+        endShower();
+    }
+
+    /**
      * 点击选择用水量或选择红包
      */
     @OnClick(R.id.rl_pay_way)
     void onPayWayClick() {
         if (isMoneyPay) {
             new ActionSheetDialog(this).builder()
-                    .addSheetItem("预付5元／x吨水", ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {
+                    .addSheetItem("预付5元／1吨水", ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {
                         @Override
                         public void onClick(int which) {
                             mItemIndex = 0;
+                            tv_water_right.setText("预付5元／1吨水");
                         }
                     })
-                    .addSheetItem("预付5元／x吨水", ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {
+                    .addSheetItem("预付10元／2吨水", ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {
                         @Override
                         public void onClick(int which) {
                             mItemIndex = 1;
+                            tv_water_right.setText("预付10元／2吨水");
                         }
                     }).setTitle("选择水量上限")
                     .setItemGravity(Gravity.LEFT)
@@ -154,7 +197,7 @@ public class GeyserActivity extends BaseActivity {
         tv_money_pay.setTextColor(ContextCompat.getColor(this, R.color.black));
         tv_money_pay.setTypeface(tv_money_pay.getTypeface(), Typeface.BOLD);
         tv_water_left.setText(getString(R.string.excepted_water));
-        tv_water_right.setText("预付10元／1顿水");
+        tv_water_right.setText("预付5元／1顿水");
     }
 
     /**
@@ -167,7 +210,7 @@ public class GeyserActivity extends BaseActivity {
         tv_bonus_pay.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.line_red);
         tv_bonus_pay.setTextColor(ContextCompat.getColor(this, R.color.black));
         tv_bonus_pay.setTypeface(tv_bonus_pay.getTypeface(), Typeface.BOLD);
-        tv_water_left.setText(getString(R.string.excepted_water));
+        tv_water_left.setText(getString(R.string.choose_bonus));
         tv_water_right.setText("2个可用");
     }
 
@@ -184,24 +227,66 @@ public class GeyserActivity extends BaseActivity {
     }
 
     /**
+     * 隐藏底部布局
+     */
+    void hideBottomLayout() {
+        ll_content_normal.setVisibility(View.GONE);
+        ll_content_shower.setVisibility(View.GONE);
+        ll_content_unconnected.setVisibility(View.GONE);
+    }
+
+    /**
      * 确认支付点击事件
      */
     @OnClick(R.id.bt_pay)
     void onOkButtonClick() {
-        new IOSAlertDialog(this).builder()
-                .setMsg("sorry,您的账户余额不足xx元~")
-                .setPositiveButton("前往充值", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        startActivity(new Intent(getApplicationContext(), RechargeActivty.class));
-                    }
-                })
-                .setNegativeClickListener("取消", new IOSAlertDialog.OnDialogClickListener() {
-                    @Override
-                    public void onDialogClickListener(IOSAlertDialog iosAlertDialog) {
-                        iosAlertDialog.dismiss();
-                    }
-                }).show();
+        if (!isMoneyPay) {
+            startShower();
+        } else {
+            new IOSAlertDialog(this).builder()
+                    .setMsg("sorry,您的账户余额不足xx元~")
+                    .setPositiveButton("前往充值", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            startActivity(new Intent(getApplicationContext(), RechargeActivty.class));
+                        }
+                    })
+                    .setNegativeClickListener("取消", new IOSAlertDialog.OnDialogClickListener() {
+                        @Override
+                        public void onDialogClickListener(IOSAlertDialog iosAlertDialog) {
+                            iosAlertDialog.dismiss();
+                        }
+                    }).show();
+        }
+    }
+
+    private void startShower() {
+        hideBottomLayout();
+        ll_content_shower.setVisibility(View.VISIBLE);
+
+        if (countDownTimer != null) {
+            countDownTimer.start();
+        } else {
+            countDownTimer = new CountDownTimer(10 * 1000, 1 * 1000 - 10) {
+
+                @Override
+                public void onTick(long time) {
+                    tv_shower_process.setText(getString(R.string.shower_process, 10, (time / 1000)));
+                }
+
+                @Override
+                public void onFinish() {
+                    endShower();
+                }
+            };
+            countDownTimer.start();
+        }
+
+    }
+
+    private void endShower() {
+        hideBottomLayout();
+        ll_content_normal.setVisibility(View.VISIBLE);
     }
 
     /**

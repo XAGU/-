@@ -24,11 +24,11 @@ public class BonusAdaptor extends CommonAdapter<BonusAdaptor.BonusWrapper> {
 
     @Override
     protected void convert(ViewHolder holder, BonusWrapper bonusWrapper, int position) {
-        holder.setText(R.id.tv_amount, bonusWrapper.amount.toString());
+        holder.setText(R.id.tv_amount, "￥" + bonusWrapper.amount.toString());
         holder.setText(R.id.tv_type, bonusWrapper.type.toString());
         holder.setText(R.id.tv_time_end, bonusWrapper.timeEnd);
         holder.setText(R.id.tv_desc, bonusWrapper.desc);
-        holder.setText(R.id.tv_time_left, bonusWrapper.timeLeft.toString());
+        holder.setText(R.id.tv_time_left, "剩" + bonusWrapper.timeLeft.toString() + "日");
     }
 
     @Data

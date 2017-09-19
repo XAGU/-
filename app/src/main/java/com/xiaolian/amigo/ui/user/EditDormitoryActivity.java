@@ -1,8 +1,10 @@
 package com.xiaolian.amigo.ui.user;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.tmp.common.config.SpaceItemDecoration;
@@ -19,6 +21,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * 编辑宿舍
@@ -38,6 +41,19 @@ public class EditDormitoryActivity extends UserBaseActivity implements IEditDorm
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
 
+    @BindView(R.id.tv_add_dormitory)
+    TextView tv_add_dormitory;
+
+    @OnClick(R.id.tv_add_dormitory)
+    void onAddDormitoryClick() {
+        Intent intent = new Intent(this, ListChooseActivity.class);
+        intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
+        intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION,
+                ListChooseActivity.ACTION_LIST_BUILDING);
+        startActivity(intent);
+
+    }
+
     @Override
     protected void setUp() {
 
@@ -55,6 +71,9 @@ public class EditDormitoryActivity extends UserBaseActivity implements IEditDorm
         presenter.onAttach(EditDormitoryActivity.this);
 
         adaptor = new EditDormitoryAdaptor(this, R.layout.item_dormitory, items);
+        adaptor.setOnItemClickListener((userResidenceWrapper, position) -> {
+            presenter.updateResidenceId(userResidenceWrapper.getResidenceId());
+        });
         recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 14)));
         RecyclerView.LayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(manager);
@@ -66,6 +85,11 @@ public class EditDormitoryActivity extends UserBaseActivity implements IEditDorm
     @Override
     public void addMore(List<EditDormitoryAdaptor.UserResidenceWrapper> userResidenceWrappers) {
         items.addAll(userResidenceWrappers);
+        adaptor.notifyDataSetChanged();
+    }
+
+    @Override
+    public void notifyAdaptor() {
         adaptor.notifyDataSetChanged();
     }
 }

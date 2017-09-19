@@ -13,4 +13,6 @@ import java.util.List;
 
 public interface IEditDormitoryView extends IBaseView {
     void addMore(List<EditDormitoryAdaptor.UserResidenceWrapper> userResidenceWrappers);
+
+    void notifyAdaptor();
 }
