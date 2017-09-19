@@ -37,6 +37,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.aitangba.swipeback.SwipeBackActivity;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.tmp.component.dialog.ActionSheetDialog;
@@ -52,7 +53,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 
 
-public abstract class BaseActivity extends AppCompatActivity
+public abstract class BaseActivity extends SwipeBackActivity
         implements IBaseView {
 
     private static final int REQUEST_CODE_CAMERA = 0x1103;

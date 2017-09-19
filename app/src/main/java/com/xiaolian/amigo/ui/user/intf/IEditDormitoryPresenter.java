@@ -12,4 +12,6 @@ public interface IEditDormitoryPresenter<V extends IEditDormitoryView> extends I
     void queryDormitoryList(int page, int size);
 
     void deleteDormitory(int residenceId);
+
+    void updateResidenceId(int residenceId);
 }

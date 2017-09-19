@@ -2,10 +2,13 @@ package com.xiaolian.amigo.ui.user;
 
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.dto.request.PersonalUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.SimpleQueryReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.EntireUserDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryUserResidenceListRespDTO;
+import com.xiaolian.amigo.data.network.model.user.User;
 import com.xiaolian.amigo.data.network.model.user.UserResidence;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.user.adaptor.EditDormitoryAdaptor;
@@ -69,6 +72,24 @@ public class EditDormitoryPresenter<V extends IEditDormitoryView> extends BasePr
                 if (null == result.getError()) {
                     getMvpView().showMessage("删除成功");
                     queryDormitoryList(1, Constant.PAGE_SIZE);
+                } else {
+                    getMvpView().showMessage(result.getError().getDisplayMessage());
+                }
+            }
+        });
+    }
+
+    @Override
+    public void updateResidenceId(int residenceId) {
+        PersonalUpdateReqDTO dto = new PersonalUpdateReqDTO();
+        dto.setResidneceId(residenceId);
+        addObserver(manager.updateUserInfo(dto), new NetworkObserver<ApiResult<EntireUserDTO>>() {
+
+            @Override
+            public void onReady(ApiResult<EntireUserDTO> result) {
+                if (null == result.getError()) {
+                    manager.setUser(new User(result.getData()));
+                    getMvpView().notifyAdaptor();
                 } else {
                     getMvpView().showMessage(result.getError().getDisplayMessage());
                 }

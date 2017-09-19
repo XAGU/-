@@ -74,4 +74,7 @@ ext {
 
     // 图片剪裁
     ucropVersion = '2.2.1'
+
+    // 滑动返回
+    swipebackVersion = '1.0.1'
 }

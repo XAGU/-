@@ -47,13 +47,13 @@
                     android:text="宿舍列表" />
 
                 <TextView
-                    android:id="@+id/tv_exchage"
+                    android:id="@+id/tv_add_dormitory"
                     style="@style/ContentText_main"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:text="管理宿舍" />
+                    android:text="添加宿舍" />
 
             </RelativeLayout>
         </LinearLayout>

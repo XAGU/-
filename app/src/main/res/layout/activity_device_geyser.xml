@@ -41,7 +41,7 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/ll_content"
+        android:id="@+id/ll_content_normal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -119,7 +119,7 @@
                 android:textSize="12sp"
                 android:textColor="#ff5555"
                 android:layout_toLeftOf="@id/imageView2"
-                android:text="预付10元／1吨水" />
+                android:text="预付5元／1吨水" />
 
             <!--<View-->
                 <!--android:layout_width="match_parent"-->
@@ -210,6 +210,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"/>
         <TextView
+            android:id="@+id/tv_shower_process"
             android:textSize="14sp"
             android:text="以预付10元，请尽快放水洗澡(100s)"
             android:textColor="#ff5555"

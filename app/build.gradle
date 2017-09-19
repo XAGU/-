@@ -81,6 +81,9 @@ dependencies {
     // rx permission
     compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar'
 
+    // 滑动返回
+    compile "com.aitangba:swipeback:$rootProject.swipebackVersion"
+
     // parser
     compile "com.google.code.gson:gson:$rootProject.gsonVersion"
 

@@ -1,12 +1,14 @@
 package com.xiaolian.amigo.ui.user.adaptor;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.user.UserResidence;
+import com.xiaolian.amigo.ui.user.ListChooseActivity;
 import com.xiaolian.amigo.ui.user.intf.IEditDormitoryPresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditDormitoryView;
 import com.zhy.adapter.recyclerview.CommonAdapter;
@@ -26,6 +28,7 @@ public class EditDormitoryAdaptor extends CommonAdapter<EditDormitoryAdaptor.Use
 
     private Context context;
     private IEditDormitoryPresenter<IEditDormitoryView> presenter;
+    private OnItemClickListener listener;
 
     public EditDormitoryAdaptor(Context context, int layoutId, List<UserResidenceWrapper> datas) {
         super(context, layoutId, datas);
@@ -52,6 +55,22 @@ public class EditDormitoryAdaptor extends CommonAdapter<EditDormitoryAdaptor.Use
             ((TextView) holder.getView(R.id.tv_choose)).setTextColor(ContextCompat.getColor(context, R.color.colorDark9));
         }
         holder.getView(R.id.tv_delete).setOnClickListener(v -> presenter.deleteDormitory(userResidenceWrapper.getResidenceId()));
+        holder.getView(R.id.tv_edit).setOnClickListener(v -> {
+            Intent intent = new Intent(context, ListChooseActivity.class);
+            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_IS_EDIT, true);
+            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION,
+                    ListChooseActivity.ACTION_LIST_BUILDING);
+            context.startActivity(intent);
+        });
+        holder.itemView.setOnClickListener(v -> listener.onItemClick(userResidenceWrapper, position));
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(UserResidenceWrapper userResidenceWrapper, int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
     }
 
     @Data
