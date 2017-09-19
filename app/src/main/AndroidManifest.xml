@@ -125,11 +125,6 @@
         </activity>
 
         <activity
-            android:name=".tmp.activity.repair.RepairNavActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity
             android:name=".tmp.activity.repair.RepairApplyActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask"

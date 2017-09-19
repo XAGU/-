@@ -1,10 +1,10 @@
-package com.xiaolian.amigo.tmp.activity.repair;
+package com.xiaolian.amigo.ui.repair;
 
 import android.os.Bundle;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.tmp.activity.repair.RepairApplyActivity;
 import com.xiaolian.amigo.tmp.base.BaseActivity;
-import com.xiaolian.amigo.ui.repair.RepairActivity;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -14,13 +14,18 @@ import butterknife.OnClick;
  *
  * Created by caidong on 2017/9/12.
  */
-public class RepairNavActivity extends BaseActivity {
+public class RepairNavActivity extends RepairBaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_repair_nav);
         ButterKnife.bind(this);
+    }
+
+    @Override
+    protected void setUp() {
+
     }
 
     // 申请报修
