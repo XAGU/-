@@ -45,11 +45,7 @@ public class OrderAdaptor extends RecyclerView.Adapter<OrderAdaptor.ViewHolder> 
     public void onBindViewHolder(ViewHolder holder, int position) {
         OrderWrapper wrapper = orders.get(position);
         if (null != wrapper) {
-            if (Device.getDevice(wrapper.getType()) == Device.HEARTER) {
-                holder.v_type.setBackgroundColor(context.getResources().getColor(R.color.device_heator));
-            } else { // Device.getDevice(order.getType()) == Device.DISPENSER
-                holder.v_type.setBackgroundColor(context.getResources().getColor(R.color.device_dispenser));
-            }
+            holder.v_type.setBackgroundResource(Device.getDevice(wrapper.getType()).getColorRes());
             holder.tv_device.setText(wrapper.getDevice());
             holder.tv_time.setText(CommonUtil.stampToDate(wrapper.getTime()));
             holder.tv_amount.setText(wrapper.getAmount().toString());
