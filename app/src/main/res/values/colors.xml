@@ -66,4 +66,7 @@
     <color name="repair_todo">#ff5555</color>
     <color name="repair_doing">#45b0ff</color>
     <color name="repair_done">#bbb</color>
+
+    <color name="evaluate_todo">#45b0ff</color>
+    <color name="evaluate_done">#bbb</color>
 </resources>

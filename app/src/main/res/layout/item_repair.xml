@@ -25,13 +25,35 @@
         android:layout_marginTop="10dp"
         android:text="今天12:30"/>
 
-    <TextView
-        android:id="@+id/tv_status"
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:textSize="14sp"
-        android:textColor="#ff5555"
-        android:text="等待维修"/>
+        android:layout_alignParentRight="true">
+
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="#ff5555"
+            android:text="等待维修"
+            android:layout_centerHorizontal="true"/>
+
+        <Button
+            android:id="@+id/bt_evaluate"
+            android:layout_width="48dp"
+            android:layout_height="17dp"
+            android:layout_below="@id/tv_status"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="7dp"
+            android:background="@drawable/button_evaluate_todo"
+            android:text="前往评价"
+            android:textColor="#45b0ff"
+            android:textStyle="bold"
+            android:textSize="9sp"
+            android:visibility="gone"/>
+
+    </RelativeLayout>
+
 
 </RelativeLayout>

@@ -6,13 +6,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
+import com.xiaolian.amigo.data.enumeration.EvaluateStatus;
 import com.xiaolian.amigo.data.enumeration.RepairStatus;
 import com.xiaolian.amigo.data.network.model.repair.Repair;
 import com.xiaolian.amigo.tmp.activity.repair.RepairDetailActivity;
+import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 
 import java.util.List;
@@ -48,9 +51,17 @@ public class RepairAdaptor extends RecyclerView.Adapter<RepairAdaptor.ViewHolder
     public void onBindViewHolder(ViewHolder holder, int position) {
         RepairWrapper wrapper = repairs.get(position);
         holder.tv_device.setText(wrapper.device);
-        holder.tv_time.setText(wrapper.time);
+        holder.tv_time.setText(CommonUtil.stampToDate(wrapper.time));
         holder.tv_status.setText(RepairStatus.getStatus(wrapper.status).getDesc());
         holder.tv_status.setTextColor(context.getResources().getColor(RepairStatus.getStatus(wrapper.status).getCorlorRes()));
+
+        if (RepairStatus.getStatus(wrapper.status) == RepairStatus.REPAIR_DONE) {
+            // 状态为维修完成成需要呈现评价按钮
+            EvaluateStatus evaluate = EvaluateStatus.getStatus(wrapper.evaluateStatus);
+            holder.bt_evaluate.setText(evaluate.getDesc());
+            holder.bt_evaluate.setBackgroundResource(evaluate.getBackGroundRes());
+            holder.bt_evaluate.setTextColor(evaluate.getTextColor());
+        }
     }
 
     @Override
@@ -65,6 +76,8 @@ public class RepairAdaptor extends RecyclerView.Adapter<RepairAdaptor.ViewHolder
         TextView tv_time;
         @BindView(R.id.tv_status)
         TextView tv_status;
+        @BindView(R.id.bt_evaluate)
+        Button bt_evaluate;
 
         Context context;
 
@@ -89,11 +102,14 @@ public class RepairAdaptor extends RecyclerView.Adapter<RepairAdaptor.ViewHolder
         String time;
         // 维修状态
         Integer status;
+        // 评价状态
+        Integer evaluateStatus;
 
         public RepairWrapper(Repair repair) {
-            this.device = Device.getDevice(repair.getDeviceType()) + Constant.CHINEASE_COLON + repair.getLocation();
+            this.device = Device.getDevice(repair.getDeviceType()).getDesc() + Constant.CHINEASE_COLON + repair.getLocation();
             this.time = repair.getCreateTime();
             this.status = repair.getStatus();
+            this.evaluateStatus = repair.getEvaluateStatus();
         }
     }
 }

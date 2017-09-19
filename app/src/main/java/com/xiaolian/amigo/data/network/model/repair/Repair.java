@@ -22,5 +22,7 @@ public class Repair {
     private Integer status;
     // 设备编号
     private String hardwareNo;
+    // 评价状态，1 - 未评价， 2 - 已评价
+    private Integer evaluateStatus;
 
 }
