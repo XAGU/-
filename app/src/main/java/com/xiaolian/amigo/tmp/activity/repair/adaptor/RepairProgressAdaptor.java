@@ -46,8 +46,8 @@ public class RepairProgressAdaptor extends RecyclerView.Adapter<RepairProgressAd
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.rl_status)
-        RelativeLayout rl_status;
+        @BindView(R.id.tv_status)
+        TextView tv_status;
         @BindView(R.id.tv_time)
         TextView tv_time;
         @BindView(R.id.tv_desc)

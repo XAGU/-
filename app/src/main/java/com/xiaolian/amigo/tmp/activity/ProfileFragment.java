@@ -11,10 +11,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.tmp.activity.repair.RepairNavActivity;
-import com.xiaolian.amigo.tmp.activity.wallet.WalletActivty;
 import com.xiaolian.amigo.ui.favorite.FavoriteActivity;
 import com.xiaolian.amigo.ui.order.OrderActivity;
+import com.xiaolian.amigo.ui.repair.RepairNavActivity;
 
 import java.util.ArrayList;
 import java.util.List;

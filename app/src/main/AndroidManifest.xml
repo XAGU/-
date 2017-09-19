@@ -118,16 +118,7 @@
             android:name=".ui.repair.RepairActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
-
-        <activity
-            android:name=".tmp.activity.repair.RepairNavActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".tmp.activity.repair.RepairApplyActivity"
@@ -136,9 +127,14 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".tmp.activity.repair.RepairDetailActivity"
+            android:name=".ui.repair.RepairNavActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".ui.repair.RepairDetailActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".tmp.activity.common.DeviceTypeActivity"

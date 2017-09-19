@@ -1,34 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackgroundGray"
     android:orientation="vertical"
     android:paddingLeft="@dimen/mainMarginLeftRight"
-    android:paddingRight="@dimen/mainMarginLeftRight"
-    android:paddingTop="14dp">
+    android:paddingRight="@dimen/mainMarginLeftRight">
 
-    <ImageView
-        android:id="@+id/iv_back"
-        android:layout_width="wrap_content"
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/ll_header"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingRight="40dp"
-        android:src="@drawable/back" />
+        android:background="@color/colorBackgroundGray"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical"
+        app:elevation="0dp">
 
-    <TextView
-        style="@style/TitleText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="21dp"
-        android:layout_marginTop="24dp"
-        android:text="报修记录" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_scrollFlags="scroll|enterAlways">
+
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="24dp"
+                android:paddingRight="40dp"
+                android:paddingTop="14dp"
+                android:src="@drawable/back" />
+
+            <TextView
+                style="@style/TitleText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="21dp"
+                android:text="报修记录" />
+
+        </LinearLayout>
+
+    </android.support.design.widget.AppBarLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_repairs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbars="none"
-        />
+        android:overScrollMode="never"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
 
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

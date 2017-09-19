@@ -21,18 +21,23 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
     private int mOrientation;
     public static final int HORIZONTAL_LIST = LinearLayoutManager.HORIZONTAL;
     public static final int VERTICAL_LIST = LinearLayoutManager.VERTICAL;
+    public boolean deductLast = false;
 
     //我们通过获取系统属性中的listDivider来添加，在系统中的AppTheme中设置
     public static final int[] ATRRS = new int[]{
             android.R.attr.listDivider
     };
 
-    public RecycleViewDivider(Context context, int orientation) {
+    public RecycleViewDivider(Context context, int orientation, String... args) {
         this.mContext = context;
         final TypedArray ta = context.obtainStyledAttributes(ATRRS);
         this.mDivider = ta.getDrawable(0);
         ta.recycle();
         setOrientation(orientation);
+
+        if (args.length > 0) {
+            deductLast = true;
+        }
     }
 
     //设置屏幕的方向
@@ -56,7 +61,11 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
     public void drawHorizontalLine(Canvas c, RecyclerView parent, RecyclerView.State state) {
         int left = parent.getPaddingLeft();
         int right = parent.getWidth() - parent.getPaddingRight();
-        final int childCount = parent.getChildCount();
+        int childCount = parent.getChildCount();
+        if (deductLast) {
+            // 去除最后一条线
+            childCount--;
+        }
         for (int i = 0; i < childCount; i++) {
             final View child = parent.getChildAt(i);
 

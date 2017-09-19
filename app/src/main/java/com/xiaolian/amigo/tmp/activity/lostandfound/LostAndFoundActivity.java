@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.tmp.activity.lostandfound.adaptor.LostAndFoundAdaptor;
-import com.xiaolian.amigo.tmp.activity.repair.adaptor.RepairAdaptor;
 import com.xiaolian.amigo.tmp.base.BaseActivity;
 import com.xiaolian.amigo.tmp.common.config.SpaceItemDecoration;
 import com.xiaolian.amigo.tmp.common.util.ScreenUtils;

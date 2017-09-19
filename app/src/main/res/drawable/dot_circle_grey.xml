@@ -3,6 +3,6 @@
     android:shape="oval"
     android:useLevel="false">
 
-    <solid android:color="@color/repair_todo" />
+    <solid android:color="@color/repair_done" />
 
 </shape>

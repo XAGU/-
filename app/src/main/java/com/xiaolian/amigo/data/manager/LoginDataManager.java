@@ -4,7 +4,7 @@ import com.xiaolian.amigo.data.manager.intf.ILoginDataManager;
 import com.xiaolian.amigo.data.network.ILoginApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.response.LoginRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.RegisterReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.request.RegisterReqDTO;
 
 import javax.inject.Inject;
 

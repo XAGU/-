@@ -11,7 +11,7 @@ import lombok.Data;
 public class Repair {
 
     // 报修时间
-    private String createTime;
+    private Long createTime;
     // 报修设备类型
     private Integer deviceType;
     // 报修id
@@ -22,5 +22,7 @@ public class Repair {
     private Integer status;
     // 设备编号
     private String hardwareNo;
+    // 评价状态，1 - 未评价， 2 - 已评价
+    private Integer evaluateStatus;
 
 }
