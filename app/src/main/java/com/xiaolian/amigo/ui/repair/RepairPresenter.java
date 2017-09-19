@@ -53,7 +53,7 @@ public class RepairPresenter<V extends IRepairView> extends BasePresenter<V>
     public void requestRepairs(int page) {
         RepairReqDTO reqDTO = new RepairReqDTO();
         reqDTO.setPage(page);
-        reqDTO.setSize(Constant.PAGE_SIZE);
+        reqDTO.setSize(Integer.MAX_VALUE);
         addObserver(manager.queryRepairs(reqDTO), new NetworkObserver<ApiResult<RepairRespDTO>>() {
 
             @Override
