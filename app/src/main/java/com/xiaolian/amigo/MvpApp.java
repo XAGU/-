@@ -17,6 +17,7 @@ package com.xiaolian.amigo;
 
 import android.app.Application;
 
+import com.aitangba.swipeback.ActivityLifecycleHelper;
 import com.xiaolian.amigo.di.componet.ApplicationComponent;
 import com.xiaolian.amigo.di.componet.DaggerApplicationComponent;
 import com.xiaolian.amigo.di.module.ApplicationModule;
@@ -30,6 +31,7 @@ public class MvpApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        registerActivityLifecycleCallbacks(ActivityLifecycleHelper.build());
 
         mApplicationComponent = DaggerApplicationComponent.builder()
                 .applicationModule(new ApplicationModule(this)).build();
