@@ -4,13 +4,19 @@ import android.net.Uri;
 
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.dto.request.SimpleQueryReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.EntireUserDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.QueryBriefSchoolListRespDTO;
+import com.xiaolian.amigo.data.network.model.user.School;
+import com.xiaolian.amigo.data.network.model.user.User;
 import com.xiaolian.amigo.ui.base.BasePresenter;
+import com.xiaolian.amigo.ui.user.adaptor.ListChooseAdaptor;
 import com.xiaolian.amigo.ui.user.intf.IEditProfilePresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditProfileView;
 import com.xiaolian.amigo.util.Constant;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -46,6 +52,10 @@ public class EditProfilePresenter<V extends IEditProfileView> extends BasePresen
                     getMvpView().setSchoolName(result.getData().getSchoolName());
                     getMvpView().setResidenceName(result.getData().getResidenceName());
                     getMvpView().setSex(result.getData().getSex());
+                    User user = new User();
+                    user.setResidenceId(result.getData().getResidenceId());
+                    user.setSchoolId(result.getData().getSchoolId());
+                    manager.setUser(user);
                 } else {
                     getMvpView().showMessage(result.getError().getDisplayMessage());
                 }
@@ -70,4 +80,5 @@ public class EditProfilePresenter<V extends IEditProfileView> extends BasePresen
             }
         });
     }
+
 }

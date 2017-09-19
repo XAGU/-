@@ -1,5 +1,7 @@
-package com.xiaolian.amigo.ui.user;
+package com.xiaolian.amigo.ui.user.adaptor;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,11 +10,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.network.model.user.Residence;
+import com.xiaolian.amigo.data.network.model.user.School;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import lombok.Data;
 
 /**
  * ListChooseAdapter
@@ -23,6 +28,8 @@ public class ListChooseAdaptor extends RecyclerView.Adapter<ListChooseAdaptor.Vi
     private List<Item> datas;
 
     private OnItemClickListener mOnItemClickListener;
+
+    private int lastTickPostion = -1;
 
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
@@ -48,11 +55,18 @@ public class ListChooseAdaptor extends RecyclerView.Adapter<ListChooseAdaptor.Vi
             @Override
             public void onClick(View v) {
                 mOnItemClickListener.onItemClick(v, position);
+                if (lastTickPostion != -1) {
+                    datas.get(lastTickPostion).tick = false;
+                }
+                datas.get(position).tick = true;
+                lastTickPostion = position;
+                notifyDataSetChanged();
             }
         });
         holder.tv_content.setText(datas.get(position).content);
         if (datas.get(position).tick) {
             holder.iv_tick.setVisibility(View.VISIBLE);
+            lastTickPostion = position;
         } else {
             holder.iv_tick.setVisibility(View.GONE);
         }
@@ -75,13 +89,27 @@ public class ListChooseAdaptor extends RecyclerView.Adapter<ListChooseAdaptor.Vi
         }
     }
 
+    @Data
     public static class Item {
         String content;
         boolean tick;
+        Integer id;
 
         public Item(String content, boolean tick) {
             this.content = content;
             this.tick = tick;
+        }
+
+        public Item(School school, boolean tick) {
+            this.content = school.getSchoolName();
+            this.id = school.getId();
+            this.tick = tick;
+        }
+
+        public Item(Residence residence) {
+            this.content = residence.getName();
+            this.id = residence.getId();
+            this.tick = false;
         }
     }
 }

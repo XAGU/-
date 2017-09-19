@@ -6,10 +6,14 @@ import android.support.v7.app.AppCompatActivity;
 import com.xiaolian.amigo.data.manager.UserDataManager;
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.di.UserActivityContext;
+import com.xiaolian.amigo.ui.user.EditDormitoryPresenter;
 import com.xiaolian.amigo.ui.user.EditMobilePresenter;
 import com.xiaolian.amigo.ui.user.EditNickNamePresenter;
 import com.xiaolian.amigo.ui.user.EditPasswordPresenter;
 import com.xiaolian.amigo.ui.user.EditProfilePresenter;
+import com.xiaolian.amigo.ui.user.ListChoosePresenter;
+import com.xiaolian.amigo.ui.user.intf.IEditDormitoryPresenter;
+import com.xiaolian.amigo.ui.user.intf.IEditDormitoryView;
 import com.xiaolian.amigo.ui.user.intf.IEditMobilePresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditMobileView;
 import com.xiaolian.amigo.ui.user.intf.IEditNickNamePresenter;
@@ -18,6 +22,8 @@ import com.xiaolian.amigo.ui.user.intf.IEditPasswordPresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditPasswordView;
 import com.xiaolian.amigo.ui.user.intf.IEditProfilePresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditProfileView;
+import com.xiaolian.amigo.ui.user.intf.IListChoosePresenter;
+import com.xiaolian.amigo.ui.user.intf.IListChooseView;
 
 import dagger.Module;
 import dagger.Provides;
@@ -77,6 +83,20 @@ public class UserActivityModule {
     @UserActivityContext
     IEditPasswordPresenter<IEditPasswordView> provideEditPasswordPresenter(
             EditPasswordPresenter<IEditPasswordView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    @UserActivityContext
+    IListChoosePresenter<IListChooseView> provideListChoosePresenter(
+            ListChoosePresenter<IListChooseView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    @UserActivityContext
+    IEditDormitoryPresenter<IEditDormitoryView> provideEditDormitoryPresenter(
+            EditDormitoryPresenter<IEditDormitoryView> presenter) {
         return presenter;
     }
 }

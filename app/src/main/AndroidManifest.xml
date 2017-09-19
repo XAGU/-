@@ -250,6 +250,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
+        <!--宿舍列表-->
+        <activity android:name=".ui.user.EditDormitoryActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
 
         <activity
             android:name=".tmp.activity.MainActivity"
