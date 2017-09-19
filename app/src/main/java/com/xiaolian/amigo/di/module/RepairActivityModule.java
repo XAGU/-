@@ -27,7 +27,10 @@ import com.xiaolian.amigo.di.RepairActivityContext;
 import com.xiaolian.amigo.ui.order.OrderPresenter;
 import com.xiaolian.amigo.ui.order.intf.IOrderPresenter;
 import com.xiaolian.amigo.ui.order.intf.IOrderView;
+import com.xiaolian.amigo.ui.repair.RepairDetailPresenter;
 import com.xiaolian.amigo.ui.repair.RepairPresenter;
+import com.xiaolian.amigo.ui.repair.intf.IRepairDetailPresenter;
+import com.xiaolian.amigo.ui.repair.intf.IRepairDetailView;
 import com.xiaolian.amigo.ui.repair.intf.IRepairPresenter;
 import com.xiaolian.amigo.ui.repair.intf.IRepairView;
 
@@ -63,6 +66,13 @@ public class RepairActivityModule {
     @RepairActivityContext
     IRepairPresenter<IRepairView> provideRepairPresenter(
             RepairPresenter<IRepairView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    @RepairActivityContext
+    IRepairDetailPresenter<IRepairDetailView> provideRepairDetailPresenter(
+            RepairDetailPresenter<IRepairDetailView> presenter) {
         return presenter;
     }
 }

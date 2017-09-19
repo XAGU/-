@@ -3,7 +3,9 @@ package com.xiaolian.amigo.data.manager;
 import com.xiaolian.amigo.data.manager.intf.IRepairDataManager;
 import com.xiaolian.amigo.data.network.IRepairApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.dto.request.RepairDetailReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.RepairReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.RepairDetailRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.RepairRespDTO;
 
 import javax.inject.Inject;
@@ -31,5 +33,10 @@ public class RepairDataManager implements IRepairDataManager{
     @Override
     public Observable<ApiResult<RepairRespDTO>> queryRepairs(@Body RepairReqDTO reqDTO) {
         return repairApi.queryRepairs(reqDTO);
+    }
+
+    @Override
+    public Observable<ApiResult<RepairDetailRespDTO>> queryRepairDetail(@Body RepairDetailReqDTO reqDTO) {
+        return repairApi.queryRepairDetail(reqDTO);
     }
 }

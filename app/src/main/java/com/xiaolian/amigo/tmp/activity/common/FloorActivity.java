@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.tmp.activity.common.adaptor.LocationAdaptor;
-import com.xiaolian.amigo.tmp.activity.repair.adaptor.RepairAdaptor;
 import com.xiaolian.amigo.tmp.base.BaseActivity;
 import com.xiaolian.amigo.tmp.common.config.RecycleViewDivider;
 import com.xiaolian.amigo.tmp.common.config.SpaceItemDecoration;

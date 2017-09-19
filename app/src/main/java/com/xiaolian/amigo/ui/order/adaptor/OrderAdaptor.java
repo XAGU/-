@@ -47,7 +47,7 @@ public class OrderAdaptor extends RecyclerView.Adapter<OrderAdaptor.ViewHolder> 
         if (null != wrapper) {
             holder.v_type.setBackgroundResource(Device.getDevice(wrapper.getType()).getColorRes());
             holder.tv_device.setText(wrapper.getDevice());
-            holder.tv_time.setText(CommonUtil.stampToDate(wrapper.getTime()));
+            holder.tv_time.setText(wrapper.getTime());
             holder.tv_amount.setText(wrapper.getAmount().toString());
             holder.order = wrapper.getOrder();
         }
@@ -103,7 +103,7 @@ public class OrderAdaptor extends RecyclerView.Adapter<OrderAdaptor.ViewHolder> 
         public OrderWrapper(Order order) {
             this.type = order.getDeviceType();
             this.device = Device.getDevice(order.getDeviceType()).getDesc() + "：" + order.getDeviceNo();
-            this.time = order.getCreateTime();
+            this.time = CommonUtil.stampToDate(order.getCreateTime());
             this.amount = order.getConsume();
             this.order = order;
         }

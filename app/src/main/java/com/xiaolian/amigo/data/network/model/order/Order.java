@@ -15,7 +15,7 @@ public class Order implements Serializable {
     // 消费金额
     private int consume;
     // 创建时间
-    private String createTime;
+    private Long createTime;
     // 设备id
     private Long deviceId;
     // 设备编号

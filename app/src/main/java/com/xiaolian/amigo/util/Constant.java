@@ -24,4 +24,8 @@ public final class Constant {
 
     // 当前使用的服务器
     public static final String SERVER = SERVER_TEST;
+
+    // activity之间跳转携带的bundle id key
+    public static final String BUNDLE_ID = "id";
+
 }

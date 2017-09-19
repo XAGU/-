@@ -13,23 +13,16 @@
  * limitations under the License
  */
 
-package com.xiaolian.amigo.di.componet;
+package com.xiaolian.amigo.ui.repair.intf;
 
 
-import com.xiaolian.amigo.di.OrderActivityContext;
 import com.xiaolian.amigo.di.RepairActivityContext;
-import com.xiaolian.amigo.di.module.RepairActivityModule;
-import com.xiaolian.amigo.ui.repair.RepairActivity;
-import com.xiaolian.amigo.ui.repair.RepairDetailActivity;
-
-import dagger.Component;
-
+import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 
 @RepairActivityContext
-@Component(dependencies = ApplicationComponent.class, modules = RepairActivityModule.class)
-public interface RepairActivityComponent {
+public interface IRepairDetailPresenter<V extends IRepairDetailView> extends IBasePresenter<V> {
 
-    void inject(RepairActivity activity);
+    // 查询报修单详情
+    void requestRepailDetail(Long id);
 
-    void inject(RepairDetailActivity activity);
 }

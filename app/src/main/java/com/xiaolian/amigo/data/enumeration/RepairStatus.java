@@ -11,28 +11,53 @@ public enum RepairStatus {
 
     AUDIT_PENDING(1, "等待审核") {
         @Override
-        public int getCorlorRes() {
+        public int getTextCorlorRes() {
             return R.color.repair_todo;
+        }
+
+        @Override
+        public int getDotColorDrawableRes() {
+            return R.drawable.dot_circle_red;
         }
     }, REPAIR_PENDING(2, "等待维修") {
         @Override
-        public int getCorlorRes() {
+        public int getTextCorlorRes() {
             return R.color.repair_todo;
+        }
+
+        @Override
+        public int getDotColorDrawableRes() {
+            return R.drawable.dot_circle_red;
         }
     }, REPAIRING(3, "正在维修") {
         @Override
-        public int getCorlorRes() {
+        public int getTextCorlorRes() {
             return R.color.repair_doing;
+        }
+
+        @Override
+        public int getDotColorDrawableRes() {
+            return R.drawable.dot_circle_blue;
         }
     }, REPAIR_DONE(4, "维修完成") {
         @Override
-        public int getCorlorRes() {
+        public int getTextCorlorRes() {
             return R.color.repair_done;
+        }
+
+        @Override
+        public int getDotColorDrawableRes() {
+            return R.drawable.dot_circle_green;
         }
     }, AUDIT_FAIL(5, "审核未通过") {
         @Override
-        public int getCorlorRes() {
+        public int getTextCorlorRes() {
             return R.color.repair_todo;
+        }
+
+        @Override
+        public int getDotColorDrawableRes() {
+            return R.drawable.dot_circle_red;
         }
     };
 
@@ -44,7 +69,11 @@ public enum RepairStatus {
         this.desc = desc;
     }
 
-    public abstract int getCorlorRes();
+    // 获取文字颜色
+    public abstract int getTextCorlorRes();
+
+    // 获取提示圆点
+    public abstract int getDotColorDrawableRes();
 
     public int getType() {
         return type;
