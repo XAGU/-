@@ -19,12 +19,12 @@ public enum RepairStatus {
         public int getCorlorRes() {
             return R.color.repair_todo;
         }
-    }, REPAIRING(1, "维修中") {
+    }, REPAIRING(3, "维修中") {
         @Override
         public int getCorlorRes() {
             return R.color.repair_doing;
         }
-    }, REPAIR_DONE(1, "已结束") {
+    }, REPAIR_DONE(4, "已结束") {
         @Override
         public int getCorlorRes() {
             return R.color.repair_done;

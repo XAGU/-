@@ -19,18 +19,12 @@ package com.xiaolian.amigo.ui.repair;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
-import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
 import com.xiaolian.amigo.data.manager.intf.IRepairDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.dto.request.OrderReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.RepairReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.OrderRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.RepairRespDTO;
-import com.xiaolian.amigo.data.network.model.order.Order;
+import com.xiaolian.amigo.data.network.model.repair.Repair;
 import com.xiaolian.amigo.ui.base.BasePresenter;
-import com.xiaolian.amigo.ui.order.adaptor.OrderAdaptor;
-import com.xiaolian.amigo.ui.order.intf.IOrderPresenter;
-import com.xiaolian.amigo.ui.order.intf.IOrderView;
 import com.xiaolian.amigo.ui.repair.adaptor.RepairAdaptor;
 import com.xiaolian.amigo.ui.repair.intf.IRepairPresenter;
 import com.xiaolian.amigo.ui.repair.intf.IRepairView;
@@ -61,12 +55,15 @@ public class RepairPresenter<V extends IRepairView> extends BasePresenter<V>
         reqDTO.setPage(page);
         reqDTO.setSize(Constant.PAGE_SIZE);
         addObserver(manager.queryRepairs(reqDTO), new NetworkObserver<ApiResult<RepairRespDTO>>() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
+
             @Override
             public void onReady(ApiResult<RepairRespDTO> result) {
                 if (null == result.getError()) {
-                    getMvpView().addMore(result.getData().getRepairDevices().stream().
-                            map(RepairAdaptor.RepairWrapper::new).collect(Collectors.toList()));
+                    List<RepairAdaptor.RepairWrapper> wrappers = new ArrayList<>();
+                    for (Repair repair : result.getData().getRepairDevices()) {
+                        wrappers.add(new RepairAdaptor.RepairWrapper(repair));
+                    }
+                    getMvpView().addMore(wrappers);
                 }
             }
         });

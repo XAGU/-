@@ -41,8 +41,7 @@ public class RepairAdaptor extends RecyclerView.Adapter<RepairAdaptor.ViewHolder
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_repair, parent, false);
         context = view.getContext();
-        ViewHolder viewHolder = new ViewHolder(view);
-        return viewHolder;
+        return new ViewHolder(view);
     }
 
     @Override
@@ -50,7 +49,7 @@ public class RepairAdaptor extends RecyclerView.Adapter<RepairAdaptor.ViewHolder
         RepairWrapper wrapper = repairs.get(position);
         holder.tv_device.setText(wrapper.device);
         holder.tv_time.setText(wrapper.time);
-        holder.tv_status.setText(wrapper.status);
+        holder.tv_status.setText(RepairStatus.getStatus(wrapper.status).getDesc());
         holder.tv_status.setBackgroundResource(RepairStatus.getStatus(wrapper.status).getCorlorRes());
     }
 
