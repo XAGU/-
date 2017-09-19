@@ -15,27 +15,38 @@
 
 package com.xiaolian.amigo.ui.base;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.tmp.component.dialog.ActionSheetDialog;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.NetworkUtil;
+import com.yalantis.ucrop.UCrop;
+
+import java.io.File;
+import java.io.IOException;
 
 import butterknife.OnClick;
 import butterknife.Unbinder;
@@ -44,13 +55,156 @@ import butterknife.Unbinder;
 public abstract class BaseActivity extends AppCompatActivity
         implements IBaseView {
 
+    private static final int REQUEST_CODE_CAMERA = 0x0103;
+    private static final int REQUEST_CODE_PICK = 0x0104;
+    private static final int REQUEST_CODE_ICON = 0x0105;
+
+    private Uri mPhotoImageUri;
+    private Uri mPickImageUri;
+    private Uri mCropImageUri;
+
+    RxPermissions rxPermissions;
+
     private ProgressDialog mProgressDialog;
 
+
     private Unbinder mUnBinder;
+
+    ActionSheetDialog actionSheetDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        actionSheetDialog = new ActionSheetDialog(this)
+                .builder()
+                .setTitle("选择")
+                .addSheetItem("相机", ActionSheetDialog.SheetItemColor.Orange,
+                        i -> rxPermissions.request(Manifest.permission.CAMERA)
+                                .subscribe(granted -> {
+                                    if (granted) {
+                                        takePhoto();
+                                    } else {
+                                        showMessage("没有相机权限");
+                                    }
+                                }))
+                .addSheetItem("相册", ActionSheetDialog.SheetItemColor.Orange,
+                        i -> rxPermissions.request(Manifest.permission.READ_EXTERNAL_STORAGE)
+                                .subscribe(granted -> {
+                                    if (granted) {
+                                        selectPhoto();
+                                    } else {
+                                        showMessage("没有SD卡权限");
+                                    }
+                                }));
+        rxPermissions = new RxPermissions(this);
+    }
+
+
+    private void selectPhoto() {
+        mPickImageUri = getImageUri("pick");
+        Intent intent = new Intent(Intent.ACTION_PICK, null);
+        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+        startActivityForResult(intent, REQUEST_CODE_PICK);
+
+    }
+
+    private void takePhoto() {
+        mPhotoImageUri = getImageUri("photo");
+        //调用相机
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, mPhotoImageUri);
+        startActivityForResult(intent, REQUEST_CODE_CAMERA);
+    }
+
+
+    private Uri getImageUri(String fileName) {
+        Uri imageUri;
+        File outputImage = new File(getExternalCacheDir(), fileName + ".jpg");
+        try {
+            if (outputImage.exists()) {
+                outputImage.delete();
+            }
+            outputImage.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (Build.VERSION.SDK_INT >= 24) {
+            imageUri = FileProvider.getUriForFile(this, getPackageName() + ".fileprovider", outputImage);
+        } else {
+            imageUri = Uri.fromFile(outputImage);
+        }
+        return imageUri;
+    }
+
+    private Uri getCropUri(String fileName) {
+        File outputImage = new File(Environment.getExternalStorageDirectory(), fileName + ".jpg");
+        try {
+            if (outputImage.exists()) {
+                outputImage.delete();
+            }
+            outputImage.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return Uri.fromFile(outputImage);
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_CODE_CAMERA) {
+                mCropImageUri = getCropUri("crop");
+                UCrop.Options options = new UCrop.Options();
+                int colorPrimary = ContextCompat.getColor(this, R.color.colorPrimary);
+                options.setToolbarColor(colorPrimary);
+                options.setActiveWidgetColor(colorPrimary);
+                options.setStatusBarColor(colorPrimary);
+                UCrop.of(mPhotoImageUri, mCropImageUri)
+                        .withAspectRatio(25, 17)
+                        .withMaxResultSize(250 * 2, 170 * 2)
+                        .withOptions(options)
+                        .start(this);
+
+            } else if (requestCode == UCrop.REQUEST_CROP) {
+//                mImage.setImageDrawable(null);
+//                mImage.setImageURI(mCropImageUri);
+//                uploadImage(mCropImageUri);
+                if (imageCallback != null) {
+                    imageCallback.callback(mCropImageUri);
+                }
+            } else if (requestCode == REQUEST_CODE_PICK) {
+                if (data != null && data.getData() != null) {
+                    mPickImageUri = data.getData();
+                    mCropImageUri = getCropUri("crop");
+                    UCrop.Options options = new UCrop.Options();
+                    int colorPrimary = ContextCompat.getColor(this, R.color.colorPrimary);
+                    options.setToolbarColor(colorPrimary);
+                    options.setActiveWidgetColor(colorPrimary);
+                    options.setStatusBarColor(colorPrimary);
+                    UCrop.of(mPickImageUri, mCropImageUri)
+                            .withAspectRatio(25, 17)
+                            .withMaxResultSize(250 * 2, 170 * 2)
+                            .withOptions(options)
+                            .start(this);
+                }
+            }
+        } else if (resultCode == UCrop.RESULT_ERROR) {
+            showMessage("剪裁失败");
+        }
+    }
+
+    private ImageCallback imageCallback;
+
+    public void getImage(ImageCallback callback) {
+        imageCallback = callback;
+        actionSheetDialog.show();
+    }
+
+    public interface ImageCallback {
+        void callback(Uri imageUri);
     }
 
 

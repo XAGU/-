@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Rect;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
@@ -47,7 +48,7 @@ public class SearchDialog extends Dialog implements TextWatcher {
 
     Context context;
 
-    public SearchDialog(BaseActivity context) {
+    public SearchDialog(AppCompatActivity context) {
         super(context, R.style.Search_Dialog);
         this.context = context;
 //        setOwnerActivity((Activity)context);

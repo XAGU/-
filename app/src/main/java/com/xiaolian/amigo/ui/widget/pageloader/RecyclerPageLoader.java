@@ -13,6 +13,7 @@ public final class RecyclerPageLoader extends PageLoader {
     private final Callbacks callbacks;
     private final int visibleThreshold;
     private WrapperAdapter wrapperAdapter;
+    private int pageSize = 5;
 
     private final RecyclerView.OnScrollListener onScrollListener = new RecyclerView.OnScrollListener() {
         @Override

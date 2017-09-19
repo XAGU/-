@@ -55,7 +55,7 @@ public class HomeFragment extends Fragment {
 
     @OnClick(R.id.rl_lost_and_found)
     public void gotoLostAndFound() {
-        startActivity(new Intent(getActivity(), LostAndFoundActivity.class));
+        startActivity(new Intent(getActivity(), com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity.class));
     }
 
     @Nullable

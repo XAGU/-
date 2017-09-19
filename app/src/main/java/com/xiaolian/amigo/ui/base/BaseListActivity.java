@@ -116,7 +116,7 @@ public abstract class BaseListActivity extends BaseActivity
     private void initRecyclerView() {
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(linearLayoutManager);
-        mRecyclerView.setAdapter(getAdapter());
+        mRecyclerView.setAdapter(getAdaptor());
     }
 
     @Override
@@ -171,7 +171,7 @@ public abstract class BaseListActivity extends BaseActivity
         loading = false;
     }
 
-    protected abstract RecyclerView.Adapter getAdapter();
+    protected abstract RecyclerView.Adapter getAdaptor();
 
     protected abstract int getLayout();
 

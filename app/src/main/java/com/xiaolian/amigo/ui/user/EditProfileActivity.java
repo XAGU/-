@@ -1,18 +1,30 @@
 package com.xiaolian.amigo.ui.user;
 
+import android.Manifest;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.tmp.component.CircleImageView;
+import com.xiaolian.amigo.tmp.component.dialog.ActionSheetDialog;
 import com.xiaolian.amigo.ui.user.intf.IEditProfilePresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditProfileView;
+import com.yalantis.ucrop.UCrop;
+
+import java.io.File;
+import java.io.IOException;
 
 import javax.inject.Inject;
 
@@ -94,7 +106,9 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
         Intent intent;
         switch (v.getId()) {
             case R.id.rel_edit_avatar:
-                showMessage("修改头像");
+                getImage(imageUri -> Glide.with(EditProfileActivity.this)
+                        .load(imageUri)
+                        .asBitmap().into(iv_avatar));
                 break;
             case R.id.rel_edit_nickname:
                 intent = new Intent(getApplicationContext(), com.xiaolian.amigo.ui.user.EditNickNameActivity.class);

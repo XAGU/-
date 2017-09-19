@@ -5,6 +5,7 @@ buildscript {
         maven { url "http://maven.aliyun.com/nexus/content/groups/public/" }
         jcenter()
         mavenCentral()
+        maven { url 'https://jitpack.io' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.3.3'
@@ -19,6 +20,7 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        maven { url 'https://jitpack.io' }
     }
 }
 
@@ -69,4 +71,7 @@ ext {
 
     // lambda
     retrolambda = '3.7.0'
+
+    // 图片剪裁
+    ucropVersion = '2.2.1'
 }
