@@ -64,6 +64,7 @@ public class RepairDetailPresenter<V extends IRepairDetailView> extends BasePres
                         wrappers.add(new RepairProgressAdaptor.ProgressWrapper(step));
                     }
                     getMvpView().addMoreProgresses(wrappers);
+                    getMvpView().render(result.getData());
                 }
             }
         });

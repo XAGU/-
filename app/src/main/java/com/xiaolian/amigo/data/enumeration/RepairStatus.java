@@ -19,6 +19,11 @@ public enum RepairStatus {
         public int getDotColorDrawableRes() {
             return R.drawable.dot_circle_red;
         }
+
+        @Override
+        public String[] getNextOperations() {
+            return new String[]{"提醒客服尽快处理", "常见问题"};
+        }
     }, REPAIR_PENDING(2, "等待维修") {
         @Override
         public int getTextCorlorRes() {
@@ -28,6 +33,11 @@ public enum RepairStatus {
         @Override
         public int getDotColorDrawableRes() {
             return R.drawable.dot_circle_red;
+        }
+
+        @Override
+        public String[] getNextOperations() {
+            return new String[]{"提醒客服尽快处理", "常见问题"};
         }
     }, REPAIRING(3, "正在维修") {
         @Override
@@ -39,6 +49,11 @@ public enum RepairStatus {
         public int getDotColorDrawableRes() {
             return R.drawable.dot_circle_blue;
         }
+
+        @Override
+        public String[] getNextOperations() {
+            return new String[]{"提醒客服尽快处理", "常见问题"};
+        }
     }, REPAIR_DONE(4, "维修完成") {
         @Override
         public int getTextCorlorRes() {
@@ -49,6 +64,11 @@ public enum RepairStatus {
         public int getDotColorDrawableRes() {
             return R.drawable.dot_circle_green;
         }
+
+        @Override
+        public String[] getNextOperations() {
+            return new String[]{"前往评价", "我要投诉"};
+        }
     }, AUDIT_FAIL(5, "审核未通过") {
         @Override
         public int getTextCorlorRes() {
@@ -58,6 +78,11 @@ public enum RepairStatus {
         @Override
         public int getDotColorDrawableRes() {
             return R.drawable.dot_circle_red;
+        }
+
+        @Override
+        public String[] getNextOperations() {
+            return new String[]{"常见问题", "联系客服"};
         }
     };
 
@@ -74,6 +99,9 @@ public enum RepairStatus {
 
     // 获取提示圆点
     public abstract int getDotColorDrawableRes();
+
+    // 获取下一步操作
+    public abstract String[] getNextOperations();
 
     public int getType() {
         return type;
