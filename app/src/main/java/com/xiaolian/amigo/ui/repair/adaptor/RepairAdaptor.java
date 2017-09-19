@@ -50,7 +50,7 @@ public class RepairAdaptor extends RecyclerView.Adapter<RepairAdaptor.ViewHolder
         holder.tv_device.setText(wrapper.device);
         holder.tv_time.setText(wrapper.time);
         holder.tv_status.setText(RepairStatus.getStatus(wrapper.status).getDesc());
-        holder.tv_status.setBackgroundResource(RepairStatus.getStatus(wrapper.status).getCorlorRes());
+        holder.tv_status.setTextColor(context.getResources().getColor(RepairStatus.getStatus(wrapper.status).getCorlorRes()));
     }
 
     @Override
@@ -91,7 +91,7 @@ public class RepairAdaptor extends RecyclerView.Adapter<RepairAdaptor.ViewHolder
         Integer status;
 
         public RepairWrapper(Repair repair) {
-            this.device = Device.getDevice(repair.getDeviceType()) + Constant.CHINEASE_COLON + repair.getHardwareNo();
+            this.device = Device.getDevice(repair.getDeviceType()) + Constant.CHINEASE_COLON + repair.getLocation();
             this.time = repair.getCreateTime();
             this.status = repair.getStatus();
         }
