@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.data.manager;
 
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
+import com.xiaolian.amigo.data.network.IFileApi;
 import com.xiaolian.amigo.data.network.IUserApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.MobileUpdateReqDTO;
@@ -17,8 +18,10 @@ import com.xiaolian.amigo.data.network.model.dto.response.SimpleRespDTO;
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
+import okhttp3.RequestBody;
 import retrofit2.Retrofit;
 import retrofit2.http.Body;
+import retrofit2.http.Part;
 
 /**
  * User模块DataManager
@@ -30,9 +33,12 @@ public class UserDataManager implements IUserDataManager {
 
     private IUserApi userApi;
 
+    private IFileApi fileApi;
+
     @Inject
     public UserDataManager(Retrofit retrofit) {
         userApi = retrofit.create(IUserApi.class);
+        fileApi = retrofit.create(IFileApi.class);
     }
 
     @Override
@@ -68,5 +74,10 @@ public class UserDataManager implements IUserDataManager {
     @Override
     public Observable<ApiResult<BooleanRespDTO>> getVerifyCode(VerificationCodeGetReqDTO body) {
         return userApi.getVerifyCode(body);
+    }
+
+    @Override
+    public Observable<ApiResult<String>> uploadFile(@Part("file") RequestBody images) {
+        return fileApi.uploadFile(images);
     }
 }

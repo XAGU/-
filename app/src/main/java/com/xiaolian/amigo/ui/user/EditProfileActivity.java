@@ -10,11 +10,13 @@ import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.tmp.component.CircleImageView;
@@ -106,9 +108,15 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
         Intent intent;
         switch (v.getId()) {
             case R.id.rel_edit_avatar:
-                getImage(imageUri -> Glide.with(EditProfileActivity.this)
+                getImage(imageUri -> {
+                    presenter.uploadImage(imageUri);
+                    Log.d("imageUri", imageUri.getPath());
+                    iv_avatar.setImageDrawable(null);
+                    Glide.with(EditProfileActivity.this)
                         .load(imageUri)
-                        .asBitmap().into(iv_avatar));
+                        .asBitmap().skipMemoryCache(true)
+                            .diskCacheStrategy(DiskCacheStrategy.NONE).into(iv_avatar);
+                });
                 break;
             case R.id.rel_edit_nickname:
                 intent = new Intent(getApplicationContext(), com.xiaolian.amigo.ui.user.EditNickNameActivity.class);
