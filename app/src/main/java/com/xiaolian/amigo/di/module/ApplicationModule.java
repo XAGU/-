@@ -22,6 +22,7 @@ import com.xiaolian.amigo.data.base.LogInterceptor;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.data.prefs.SharedPreferencesHelp;
 import com.xiaolian.amigo.di.ApplicationContext;
+import com.xiaolian.amigo.util.Constant;
 
 import javax.inject.Singleton;
 
@@ -60,7 +61,7 @@ public class ApplicationModule {
                 .addInterceptor(new LogInterceptor())
                 .build();
         return new Retrofit.Builder()
-                .baseUrl("http://116.62.236.67:5081")
+                .baseUrl(Constant.SERVER)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(client)

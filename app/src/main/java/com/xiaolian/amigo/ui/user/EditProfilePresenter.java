@@ -1,13 +1,21 @@
 package com.xiaolian.amigo.ui.user;
 
+import android.net.Uri;
+
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.response.EntireUserDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditProfilePresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditProfileView;
+import com.xiaolian.amigo.util.Constant;
+
+import java.io.File;
 
 import javax.inject.Inject;
+
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 
 /**
  * EditProfilePresenter实现类
@@ -38,6 +46,24 @@ public class EditProfilePresenter<V extends IEditProfileView> extends BasePresen
                     getMvpView().setSchoolName(result.getData().getSchoolName());
                     getMvpView().setResidenceName(result.getData().getResidenceName());
                     getMvpView().setSex(result.getData().getSex());
+                } else {
+                    getMvpView().showMessage(result.getError().getDisplayMessage());
+                }
+            }
+        });
+    }
+
+    @Override
+    public void uploadImage(Uri imageUri) {
+        RequestBody image = RequestBody.create(MediaType.parse("multipart/form-data"),
+                new File(imageUri.getPath()));
+        addObserver(manager.uploadFile(image), new NetworkObserver<ApiResult<String>>() {
+
+            @Override
+            public void onReady(ApiResult<String> result) {
+                if (null == result.getError()) {
+                    getMvpView().showMessage("更换成功");
+                    getMvpView().setAvatar(Constant.SERVER + "/images/" + result.getData());
                 } else {
                     getMvpView().showMessage(result.getError().getDisplayMessage());
                 }
