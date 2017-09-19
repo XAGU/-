@@ -64,8 +64,6 @@ dependencies {
     compile "com.zhy:base-rvadapter:$rootProject.baseRvadapter"
     compile "com.huxq17.xrefreshview:xrefreshview:$rootProject.xrefreshview"
 
-    compile project(path: ':library')
-
     // android support libraries
     compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
     compile "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
