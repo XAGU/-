@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.network.model.repair.RepairProblem;
 import com.xiaolian.amigo.tmp.activity.common.DeviceTypeActivity;
 import com.xiaolian.amigo.tmp.base.BaseActivity;
@@ -19,8 +20,11 @@ import com.xiaolian.amigo.tmp.common.config.SpaceItemDecoration;
 import com.xiaolian.amigo.tmp.common.util.ScreenUtils;
 import com.xiaolian.amigo.ui.repair.adaptor.RepairAdaptor;
 import com.xiaolian.amigo.ui.repair.adaptor.RepairProblemAdaptor;
+import com.xiaolian.amigo.ui.repair.intf.IRepairApplyPresenter;
 import com.xiaolian.amigo.ui.repair.intf.IRepairApplyView;
 import com.xiaolian.amigo.ui.repair.intf.IRepairDetailView;
+import com.xiaolian.amigo.ui.repair.intf.IRepairPresenter;
+import com.xiaolian.amigo.ui.repair.intf.IRepairView;
 import com.xiaolian.amigo.ui.user.ListChooseActivity;
 import com.xiaolian.amigo.util.Constant;
 
@@ -28,6 +32,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,6 +54,8 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
         }
     };
 
+    @Inject
+    IRepairApplyPresenter<IRepairApplyView> presenter;
     @BindView(R.id.rv_problems)
     RecyclerView rv_problems;
     @BindView(R.id.tv_location)
@@ -67,6 +75,11 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
 
     RepairProblemAdaptor adapter;
     RecyclerView.LayoutManager manager;
+
+    List<String> images = new ArrayList<>();
+
+    int deviceType;
+    long residenceId;
     String location;
 
     @Override
@@ -96,7 +109,9 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
     protected void setUp() {
         Intent intent = getIntent();
         if (null != intent) {
-            location = getIntent().getStringExtra(Constant.LOCATION);
+            deviceType = intent.getIntExtra(Constant.DEVICE_TYPE, Device.HEARTER.getType());
+            residenceId = intent.getLongExtra(Constant.LOCATION_ID, 0L);
+            location = intent.getStringExtra(Constant.LOCATION);
         }
     }
 
@@ -156,10 +171,29 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
         int selectedProblem = 0;
         if (null != problems) {
             for (RepairProblemAdaptor.ProblemWrapper problem : problems) {
-                selectedProblem += problem.getSelectedNum();
+                selectedProblem += problem.getIds().size();
             }
         }
         bt_submit.setEnabled(!TextUtils.isEmpty(et_tel.getText())
                 && !TextUtils.isEmpty(et_content.getText()) && !TextUtils.isEmpty(tv_location.getText()) && selectedProblem != 0);
+    }
+
+    @Override
+    public void backToRepairNav() {
+        startActivity(this, RepairNavActivity.class);
+    }
+
+    @Override
+    public void addImage(String url) {
+        this.images.add(url);
+    }
+
+    @OnClick(R.id.bt_submit)
+    void submit() {
+        List<Long> problemIds = new ArrayList<>();
+        for (RepairProblemAdaptor.ProblemWrapper wrapper : problems) {
+            problemIds.addAll(wrapper.getIds());
+        }
+        presenter.onSubmit(problemIds, images, et_content.getText().toString(), et_tel.getText().toString(), deviceType, residenceId);
     }
 }

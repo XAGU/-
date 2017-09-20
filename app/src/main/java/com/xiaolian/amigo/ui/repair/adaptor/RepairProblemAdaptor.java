@@ -1,28 +1,17 @@
 package com.xiaolian.amigo.ui.repair.adaptor;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.drawable.LevelListDrawable;
-import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.data.enumeration.Device;
-import com.xiaolian.amigo.data.enumeration.EvaluateStatus;
-import com.xiaolian.amigo.data.enumeration.RepairStatus;
-import com.xiaolian.amigo.data.network.model.repair.Repair;
 import com.xiaolian.amigo.data.network.model.repair.RepairProblem;
-import com.xiaolian.amigo.ui.repair.RepairDetailActivity;
-import com.xiaolian.amigo.util.CommonUtil;
-import com.xiaolian.amigo.util.Constant;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -99,16 +88,39 @@ public class RepairProblemAdaptor extends RecyclerView.Adapter<RepairProblemAdap
         // 切换按钮状态
         @OnClick({R.id.bt_first, R.id.bt_second, R.id.bt_third})
         void toggleSelectStatus(Button btn) {
+            List<Long> ids = problem.ids;
             if (btn.getCurrentTextColor() == ContextCompat.getColor(context, R.color.problem_grey)) {
                 btn.setTextColor(ContextCompat.getColor(context, R.color.problem_blue));
                 btn.setBackgroundResource(R.drawable.device_problem_blue);
-                problem.selectedNum++;
+
+                switch (btn.getId()) {
+                    case R.id.bt_first:
+                        ids.add(problem.first.getId());
+                        break;
+                    case R.id.bt_second:
+                        ids.add(problem.second.getId());
+                        break;
+                    case R.id.bt_third:
+                        ids.add(problem.third.getId());
+                        break;
+                }
             } else { // btn.getCurrentTextColor() == ContextCompat.getColor(context, R.color.problem_blue
                 btn.setTextColor(ContextCompat.getColor(context, R.color.problem_grey));
                 btn.setBackgroundResource(R.drawable.device_problem_grey);
-                problem.selectedNum--;
+
+                switch (btn.getId()) {
+                    case R.id.bt_first:
+                        ids.remove(problem.first.getId());
+                        break;
+                    case R.id.bt_second:
+                        ids.remove(problem.second.getId());
+                        break;
+                    case R.id.bt_third:
+                        ids.remove(problem.third.getId());
+                        break;
+                }
+                this.listener.onClick(btn);
             }
-            this.listener.onClick(btn);
         }
     }
 
@@ -120,8 +132,8 @@ public class RepairProblemAdaptor extends RecyclerView.Adapter<RepairProblemAdap
         RepairProblem second;
         // 问题三
         RepairProblem third;
-        // 图片选中的数量
-        int selectedNum = 0;
+        // 存放选中的问题描述id列表
+        List<Long> ids = new ArrayList<>();
 
         public ProblemWrapper(RepairProblem first, RepairProblem second, RepairProblem third) {
             this.first = first;
@@ -131,3 +143,4 @@ public class RepairProblemAdaptor extends RecyclerView.Adapter<RepairProblemAdap
     }
 
 }
+

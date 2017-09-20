@@ -37,7 +37,13 @@ public final class Constant {
     // 位置
     public static final String LOCATION = "location";
 
+    // 位置id
+    public static final String LOCATION_ID = "location_id";
+
     // 设备类型
     public static final String DEVICE_TYPE = "device_type";
+
+    // 上传文件content type
+    public static final String UPLOAD_FILE_CONTENT_TYPE = "multipart/form-data";
 
 }

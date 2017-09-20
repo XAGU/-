@@ -20,15 +20,20 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.xiaolian.amigo.data.manager.OrderDataManager;
 import com.xiaolian.amigo.data.manager.RepairDataManager;
+import com.xiaolian.amigo.data.manager.UserDataManager;
 import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
 import com.xiaolian.amigo.data.manager.intf.IRepairDataManager;
+import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.di.OrderActivityContext;
 import com.xiaolian.amigo.di.RepairActivityContext;
 import com.xiaolian.amigo.ui.order.OrderPresenter;
 import com.xiaolian.amigo.ui.order.intf.IOrderPresenter;
 import com.xiaolian.amigo.ui.order.intf.IOrderView;
+import com.xiaolian.amigo.ui.repair.RepairApplyPresenter;
 import com.xiaolian.amigo.ui.repair.RepairDetailPresenter;
 import com.xiaolian.amigo.ui.repair.RepairPresenter;
+import com.xiaolian.amigo.ui.repair.intf.IRepairApplyPresenter;
+import com.xiaolian.amigo.ui.repair.intf.IRepairApplyView;
 import com.xiaolian.amigo.ui.repair.intf.IRepairDetailPresenter;
 import com.xiaolian.amigo.ui.repair.intf.IRepairDetailView;
 import com.xiaolian.amigo.ui.repair.intf.IRepairPresenter;
@@ -64,6 +69,14 @@ public class RepairActivityModule {
 
     @Provides
     @RepairActivityContext
+    IUserDataManager provideUserDataManager(UserDataManager manager) {
+        return manager;
+    }
+
+
+
+    @Provides
+    @RepairActivityContext
     IRepairPresenter<IRepairView> provideRepairPresenter(
             RepairPresenter<IRepairView> presenter) {
         return presenter;
@@ -73,6 +86,13 @@ public class RepairActivityModule {
     @RepairActivityContext
     IRepairDetailPresenter<IRepairDetailView> provideRepairDetailPresenter(
             RepairDetailPresenter<IRepairDetailView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    @RepairActivityContext
+    IRepairApplyPresenter<IRepairApplyView> provideRepairApplyPresenter(
+            RepairApplyPresenter<IRepairApplyView> presenter) {
         return presenter;
     }
 }

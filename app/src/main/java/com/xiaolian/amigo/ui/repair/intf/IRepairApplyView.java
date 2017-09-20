@@ -15,4 +15,10 @@ public interface IRepairApplyView extends IBaseView {
 
     // 变更提交按钮的状态
     void toggleBtnStatus();
+
+    // 返回报修申请入口页面
+    void backToRepairNav();
+
+    // 添加图片
+    void addImage(String url);
 }

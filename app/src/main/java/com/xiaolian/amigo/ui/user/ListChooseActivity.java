@@ -174,8 +174,10 @@ public class ListChooseActivity extends UserBaseActivity implements IListChooseV
                     adapter.setOnItemClickListener((view, position) -> {
                         if (Constant.REPAIR_APPLY_ACTIVITY_SRC.equals(activitySrc)) {
                             ListChooseAdaptor.Item item = items.get(position);
-                            startActivity(this, RepairApplyActivity.class, new HashMap<String, String>() {
+                            startActivity(this, RepairApplyActivity.class, new HashMap() {
                                 {
+                                    put(Constant.LOCATION_ID, item.getId());
+                                    put(Constant.DEVICE_TYPE, buildingType);
                                     put(Constant.LOCATION, Device.getDevice(buildingType).getDesc() + Constant.CHINEASE_COLON + item.getExtra());
                                 }
                             });
