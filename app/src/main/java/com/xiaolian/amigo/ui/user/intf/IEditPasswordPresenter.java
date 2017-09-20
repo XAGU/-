@@ -7,4 +7,6 @@ import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
  * @author zcd
  */
 public interface IEditPasswordPresenter<V extends IEditPasswordView> extends IBasePresenter<V> {
+
+    void updatePassword(String newPassword, String oldPassword);
 }

@@ -1,9 +1,12 @@
 package com.xiaolian.amigo.data.network;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.dto.request.SimpleQueryReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.PersonalWalletDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.QueryRechargeAmountsRespDTO;
 
 import io.reactivex.Observable;
+import retrofit2.http.Body;
 import retrofit2.http.POST;
 
 /**
@@ -17,4 +20,8 @@ public interface IWalletApi {
     // 获取余额
     @POST("/funds/wallet/personal/one")
     Observable<ApiResult<PersonalWalletDTO>> queryWallet();
+
+    // 获取金额列表
+    @POST("/funds/recharge/amount/list")
+    Observable<ApiResult<QueryRechargeAmountsRespDTO>> queryRechargeAmountList(@Body SimpleQueryReqDTO body);
 }

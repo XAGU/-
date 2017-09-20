@@ -13,12 +13,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.tmp.activity.wallet.RechargeActivty;
 import com.xiaolian.amigo.tmp.component.BezierWaveView;
 import com.xiaolian.amigo.tmp.component.DotFlashView;
 import com.xiaolian.amigo.tmp.component.dialog.ActionSheetDialog;
 import com.xiaolian.amigo.tmp.component.dialog.IOSAlertDialog;
 import com.xiaolian.amigo.ui.base.BaseActivity;
+import com.xiaolian.amigo.ui.wallet.RechargeActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -247,7 +247,7 @@ public class GeyserActivity extends BaseActivity {
                     .setPositiveButton("前往充值", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            startActivity(new Intent(getApplicationContext(), RechargeActivty.class));
+                            startActivity(new Intent(getApplicationContext(), RechargeActivity.class));
                         }
                     })
                     .setNegativeClickListener("取消", new IOSAlertDialog.OnDialogClickListener() {
