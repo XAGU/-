@@ -11,10 +11,13 @@ import com.xiaolian.amigo.tmp.common.config.SpaceItemDecoration;
 import com.xiaolian.amigo.tmp.common.util.ScreenUtils;
 import com.xiaolian.amigo.ui.repair.adaptor.RepairAdaptor;
 import com.xiaolian.amigo.ui.repair.adaptor.RepairProblemAdaptor;
+import com.xiaolian.amigo.ui.user.ListChooseActivity;
 import com.xiaolian.amigo.util.Constant;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -66,6 +69,6 @@ public class RepairApplyActivity extends RepairBaseActivity {
 
     @OnClick(R.id.rl_device)
     void selectDevice() {
-        startActivity(this, DeviceTypeActivity.class);
+        startActivity(this, RepairDeviceTypeActivity.class);
     }
 }

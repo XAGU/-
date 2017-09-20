@@ -34,6 +34,7 @@ public class ListChooseActivity extends UserBaseActivity implements IListChooseV
     public static final String INTENT_KEY_LIST_CHOOSE_ACTION = "intent_key_list_choose_action";
     public static final String INTENT_KEY_LIST_CHOOSE_PARENT_ID = "intent_key_list_choose_parent_id";
     public static final String INTENT_KEY_LIST_CHOOSE_IS_EDIT = "intent_key_list_choose_is_edit";
+    public static final String INTENT_KEY_LIST_BUILDING_TYPE = "intent_key_list_building_type";
     public static final int ACTION_LIST_SCHOOL = 1;
     public static final int ACTION_LIST_DORMITOR = 2;
     public static final int ACTION_LIST_FLOOR = 3;

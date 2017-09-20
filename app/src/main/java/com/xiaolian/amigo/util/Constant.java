@@ -28,4 +28,7 @@ public final class Constant {
     // activity之间跳转携带的bundle id key
     public static final String BUNDLE_ID = "id";
 
+    // 寝室楼
+    public static final int ROOM_BUILDING_TYPE = 1;
+
 }

@@ -48,6 +48,8 @@ import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
+import java.util.Map;
 
 import butterknife.OnClick;
 import butterknife.Unbinder;
@@ -308,10 +310,31 @@ public abstract class BaseActivity extends SwipeBackActivity
 
     protected abstract void setUp();
 
-    // 启动activity完成跳转
+    /**
+     * 启动activity完成跳转
+     *
+     * @param activity 当前activity
+     * @param clazz    目标activity class
+     */
     public void startActivity(AppCompatActivity activity, Class<?> clazz) {
+        startActivity(activity, clazz, null);
+    }
+
+    /**
+     * 启动activity完成跳转
+     *
+     * @param activity 当前activity
+     * @param clazz    目标activity class
+     * @param extraMap 捆绑参数
+     */
+    public void startActivity(AppCompatActivity activity, Class<?> clazz, Map<String, ? extends Serializable> extraMap) {
         Intent intent = new Intent();
         intent.setClass(activity, clazz);
+        if (null != extraMap) {
+            for (Map.Entry<String, ? extends Serializable> entry : extraMap.entrySet()) {
+                intent.putExtra(entry.getKey(), entry.getValue());
+            }
+        }
         startActivity(intent);
     }
 
