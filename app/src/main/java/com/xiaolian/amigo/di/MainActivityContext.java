@@ -13,17 +13,15 @@
  * limitations under the License
  */
 
-package com.xiaolian.amigo.ui.login.intf;
+package com.xiaolian.amigo.di;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
-import com.xiaolian.amigo.ui.base.intf.IBaseView;
+import javax.inject.Scope;
 
-public interface ILoginView extends IBaseView {
-
-    void gotoLoginView();
-
-    void gotoRegisterStep2View();
-
-    void startTimer();
-
+@Scope
+@Retention(RetentionPolicy.RUNTIME)
+public @interface MainActivityContext {
 }
+

@@ -11,11 +11,11 @@ import lombok.Data;
 public class RegisterReqDTO {
 
     private String code;
-    private int mobile;
+    private String mobile;
     private String password;
     private int schoolId;
 
-    public RegisterReqDTO(String code, int mobile, String password, int schoolId) {
+    public RegisterReqDTO(String code, String mobile, String password, int schoolId) {
         this.code = code;
         this.mobile = mobile;
         this.password = password;

@@ -1,18 +1,18 @@
-package com.xiaolian.amigo.tmp.activity;
+package com.xiaolian.amigo.ui.main;
 
 
-import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-
-import android.transition.Transition;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.tmp.activity.HomeFragment;
+import com.xiaolian.amigo.tmp.activity.ProfileFragment;
+import com.xiaolian.amigo.ui.base.BaseActivity;
+import com.xiaolian.amigo.ui.main.intf.IMainView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,7 +22,7 @@ import butterknife.OnClick;
  * Created by yik on 2017/9/5.
  */
 
-public class MainActivity extends Activity {
+public class MainActivity extends MainBaseActivity implements IMainView {
 
     @BindView(R.id.bt_switch)
     ImageView btSwitch;
@@ -45,6 +45,11 @@ public class MainActivity extends Activity {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(R.id.fm_container, homeFragment);
         transaction.commit();
+    }
+
+    @Override
+    protected void setUp() {
+
     }
 
     @OnClick(R.id.bt_switch)

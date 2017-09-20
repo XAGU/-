@@ -13,17 +13,22 @@
  * limitations under the License
  */
 
-package com.xiaolian.amigo.ui.login.intf;
+package com.xiaolian.amigo.di.componet;
 
 
-import com.xiaolian.amigo.ui.base.intf.IBaseView;
+import com.xiaolian.amigo.di.MainActivityContext;
+import com.xiaolian.amigo.di.OrderActivityContext;
+import com.xiaolian.amigo.di.module.MainActivityModule;
+import com.xiaolian.amigo.di.module.OrderActivityModule;
+import com.xiaolian.amigo.ui.main.MainActivity;
+import com.xiaolian.amigo.ui.order.OrderActivity;
 
-public interface ILoginView extends IBaseView {
+import dagger.Component;
 
-    void gotoLoginView();
 
-    void gotoRegisterStep2View();
+@MainActivityContext
+@Component(dependencies = ApplicationComponent.class, modules = MainActivityModule.class)
+public interface MainActivityComponent {
 
-    void startTimer();
-
+    void inject(MainActivity activity);
 }

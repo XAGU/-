@@ -26,7 +26,7 @@ public interface ILoginPresenter<V extends ILoginView> extends IBasePresenter<V>
     void onLoginClick(String mobile, String password);
 
     // 注册
-    void register(String code, int mobile, String password, int schoolId);
+    void register(String code, String mobile, String password, int schoolId);
 
     // 获取验证码
     void getVerification(String mobile);

@@ -43,13 +43,15 @@ public class ListChooseActivity extends UserBaseActivity implements IListChooseV
     public static final String INTENT_KEY_LIST_BUILDING_TYPE = "intent_key_list_building_type";
     public static final String INTENT_KEY_LIST_SRC_ACTIVITY = "intent_key_list_src_activity";
     public static final String INTENT_KEY_LIST_CHOOSE_RESIDENCE_BIND_ID = "intent_key_list_choose_residence_bind_id";
+    public static final String INTENT_KEY_LIST_CHOOSE_ITEM_RESULT = "intent_key_list_choose_item_result";
     public static final int ACTION_LIST_SCHOOL = 1;
     public static final int ACTION_LIST_DORMITOR = 2;
     public static final int ACTION_LIST_FLOOR = 3;
     public static final int ACTION_LIST_BUILDING = 4;
     public static final int ACTION_LIST_SEX = 5;
+    public static final int ACTION_LIST_SCHOOL_RESULT = 6;
     // 选择设备，热水器 or 饮水机
-    public static final int ACTION_LIST_DEVICE = 6;
+    public static final int ACTION_LIST_DEVICE = 7;
 
     private List<ListChooseAdaptor.Item> items = new ArrayList<>();
 
@@ -180,6 +182,16 @@ public class ListChooseActivity extends UserBaseActivity implements IListChooseV
                         } else {
                             presenter.bindDormitory(residenceBindId, items.get(position).getId(), isEditDormitory);
                         }
+                    });
+                    break;
+                case ACTION_LIST_SCHOOL_RESULT:
+                    tv_title.setText("选择学校");
+                    presenter.getSchoolList(1, Constant.PAGE_SIZE);
+                    adapter.setOnItemClickListener((view, position) -> {
+                        Intent intent = new Intent();
+                        intent.putExtra(INTENT_KEY_LIST_CHOOSE_ITEM_RESULT, items.get(position));
+                        setResult(RESULT_OK, intent);
+                        finish();
                     });
                     break;
                 case ACTION_LIST_DEVICE:

@@ -29,10 +29,11 @@
         android:imeOptions="actionNext"
         android:inputType="textPassword"
         android:maxLines="1"
+        android:gravity="center_vertical"
         android:textColor="#222"
         android:textColorHint="#bbb"
         android:textCursorDrawable="@drawable/cursor"
-        android:textSize="22sp" />
+        android:textSize="@dimen/login_edit_text_size" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -55,9 +56,10 @@
         android:drawableRight="@drawable/forward"
         android:hint="@string/school_hint"
         android:maxLines="1"
+        android:gravity="center_vertical"
         android:textColor="#222"
         android:textColorHint="#bbb"
-        android:textSize="22sp" />
+        android:textSize="@dimen/login_edit_text_size" />
 
     <TextView
         android:layout_width="wrap_content"
