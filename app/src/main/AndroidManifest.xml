@@ -268,6 +268,22 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
+        <!--热水器设备页-->
+        <activity android:name=".ui.device.geyser.GeyserActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <!--选择红包页-->
+        <activity android:name=".ui.device.geyser.ChooseBonusActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <!--选择饮水机页面-->
+        <activity android:name=".ui.device.waterfountain.ChooseWaterFountainActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <!--饮水机页面-->
+        <activity android:name=".ui.device.waterfountain.WaterFountainActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
 
         <activity
             android:name=".ui.main.MainActivity"

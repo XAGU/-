@@ -32,6 +32,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
@@ -40,6 +41,7 @@ import android.widget.Toast;
 import com.aitangba.swipeback.SwipeBackActivity;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.tmp.component.dialog.ActionSheetDialog;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 import com.xiaolian.amigo.util.CommonUtil;
@@ -50,6 +52,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Map;
+
+import javax.inject.Inject;
 
 import butterknife.OnClick;
 import butterknife.Unbinder;
@@ -74,6 +78,9 @@ public abstract class BaseActivity extends SwipeBackActivity
     private Unbinder mUnBinder;
 
     ActionSheetDialog actionSheetDialog;
+
+    @Inject
+    ISharedPreferencesHelp sharedPreferencesHelp;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -340,7 +347,6 @@ public abstract class BaseActivity extends SwipeBackActivity
         }
         startActivity(intent);
     }
-
 
     // 单击回退按钮返回
     @OnClick(R.id.iv_back)

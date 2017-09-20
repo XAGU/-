@@ -10,8 +10,9 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.tmp.activity.device.geyser.GeyserActivity;
-import com.xiaolian.amigo.tmp.activity.device.waterfountain.WaterFountainActivity;
+import com.xiaolian.amigo.ui.device.geyser.GeyserActivity;
+import com.xiaolian.amigo.ui.device.waterfountain.WaterFountainActivity;
+import com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,7 +55,7 @@ public class HomeFragment extends Fragment {
 
     @OnClick(R.id.rl_lost_and_found)
     public void gotoLostAndFound() {
-        startActivity(new Intent(getActivity(), com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity.class));
+        startActivity(new Intent(getActivity(), LostAndFoundActivity.class));
     }
 
     @Nullable
