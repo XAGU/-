@@ -10,6 +10,8 @@ import com.xiaolian.amigo.data.network.model.dto.request.VerificationCodeCheckRe
 import com.xiaolian.amigo.data.network.model.dto.request.VerificationCodeGetReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.LoginRespDTO;
+import com.xiaolian.amigo.data.network.model.user.User;
+import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 
 import javax.inject.Inject;
 
@@ -27,9 +29,13 @@ public class LoginDataManager implements ILoginDataManager {
 
     private ILoginApi loginApi;
 
+
+    private ISharedPreferencesHelp sharedPreferencesHelp;
+
     @Inject
-    public LoginDataManager(Retrofit retrofit) {
+    public LoginDataManager(Retrofit retrofit, ISharedPreferencesHelp sharedPreferencesHelp) {
         loginApi = retrofit.create(ILoginApi.class);
+        this.sharedPreferencesHelp = sharedPreferencesHelp;
     }
 
     @Override
@@ -55,5 +61,25 @@ public class LoginDataManager implements ILoginDataManager {
     @Override
     public Observable<ApiResult<BooleanRespDTO>> getVerification(@Body VerificationCodeGetReqDTO body) {
         return loginApi.getVerification(body);
+    }
+
+    @Override
+    public String getToken() {
+        return sharedPreferencesHelp.getToken();
+    }
+
+    @Override
+    public void setToken(String token) {
+        sharedPreferencesHelp.setToken(token);
+    }
+
+    @Override
+    public User getUserInfo() {
+        return sharedPreferencesHelp.getUserInfo();
+    }
+
+    @Override
+    public void setUserInfo(User user) {
+        sharedPreferencesHelp.setUserInfo(user);
     }
 }

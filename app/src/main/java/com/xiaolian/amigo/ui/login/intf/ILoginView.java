@@ -26,4 +26,6 @@ public interface ILoginView extends IBaseView {
 
     void startTimer();
 
+    void gotoMainView();
+
 }

@@ -19,6 +19,7 @@ package com.xiaolian.amigo.ui.login;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.manager.intf.ILoginDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.dto.request.LoginReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.PasswordResetReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.RegisterReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.VerificationCodeCheckReqDTO;
@@ -45,8 +46,23 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
 
     @Override
     public void onLoginClick(String mobile, String password) {
-        getMvpView().onError(R.string.password_invalid);
-        register("1", "", "1", 1);
+        LoginReqDTO dto = new LoginReqDTO();
+        dto.setMobile(mobile);
+        dto.setPassword(password);
+        addObserver(manager.login(dto), new NetworkObserver<ApiResult<LoginRespDTO>>() {
+
+            @Override
+            public void onReady(ApiResult<LoginRespDTO> result) {
+                if (null == result.getError()) {
+                    manager.setUserInfo(result.getData().getUser());
+                    manager.setToken(result.getData().getToken());
+                    getMvpView().showMessage("登录成功");
+                    getMvpView().gotoMainView();
+                } else {
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+        });
     }
 
     @Override

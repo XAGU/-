@@ -66,9 +66,17 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         transaction.add(R.id.fm_container, homeFragment);
         transaction.commit();
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         if (!presenter.isLogin()) {
             tv_nickName.setText("登录／注册");
             tv_schoolName.setText("登录以后才能使用哦");
+        } else {
+            tv_nickName.setText(presenter.getUserInfo().getNickName());
+            tv_schoolName.setText(presenter.getUserInfo().getSchoolName());
         }
     }
 
