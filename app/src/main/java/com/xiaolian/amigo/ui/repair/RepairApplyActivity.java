@@ -90,7 +90,7 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
 
-//        presenter.onAttach(this);
+        presenter.onAttach(this);
 
         adapter = new RepairProblemAdaptor(problems);
         rv_problems.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 10)));
@@ -101,8 +101,6 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
         adapter.setOnClickListener(v -> toggleBtnStatus());
 
         render();
-
-//        presenter.requestRepairs(Constant.PAGE_START_NUM);
     }
 
     @Override
@@ -195,5 +193,26 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
             problemIds.addAll(wrapper.getIds());
         }
         presenter.onSubmit(problemIds, images, et_content.getText().toString(), et_tel.getText().toString(), deviceType, residenceId);
+    }
+
+    @Override
+    public void refreshProblems(List<RepairProblem> repairProblems) {
+        if (null != repairProblems) {
+            int size = repairProblems.size();
+            int num = size % Constant.COLUMN_NUM == 0 ? size / Constant.COLUMN_NUM : size / Constant.COLUMN_NUM + 1;
+            for (int i = 0; i < num; i++) {
+                RepairProblem first = null, second = null, third = null;
+                if (i * Constant.COLUMN_NUM < size) {
+                    first = repairProblems.get(i * Constant.COLUMN_NUM);
+                }
+                if (i * Constant.COLUMN_NUM + 1 < size) {
+                    second = repairProblems.get(i * Constant.COLUMN_NUM);
+                }
+                if (i * Constant.COLUMN_NUM + 2 < size) {
+                    third = repairProblems.get(i * Constant.COLUMN_NUM);
+                }
+                problems.add(new RepairProblemAdaptor.ProblemWrapper(first, second, third));
+            }
+        }
     }
 }

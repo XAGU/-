@@ -44,4 +44,9 @@ public interface IRepairApplyPresenter<V extends IRepairApplyView> extends IBase
      * @param imageUri 报修图片uri
      */
     void onUpload(Uri imageUri);
+
+    /**
+     * 请求报修问题列表
+     */
+    void requestRepairProblems();
 }

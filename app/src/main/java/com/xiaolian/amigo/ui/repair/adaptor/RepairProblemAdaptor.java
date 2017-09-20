@@ -104,6 +104,7 @@ public class RepairProblemAdaptor extends RecyclerView.Adapter<RepairProblemAdap
                         ids.add(problem.third.getId());
                         break;
                 }
+                this.listener.onClick(btn);
             } else { // btn.getCurrentTextColor() == ContextCompat.getColor(context, R.color.problem_blue
                 btn.setTextColor(ContextCompat.getColor(context, R.color.problem_grey));
                 btn.setBackgroundResource(R.drawable.device_problem_grey);

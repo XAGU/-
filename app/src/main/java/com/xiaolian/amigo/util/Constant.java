@@ -46,4 +46,6 @@ public final class Constant {
     // 上传文件content type
     public static final String UPLOAD_FILE_CONTENT_TYPE = "multipart/form-data";
 
+    // 列数
+    public static final int COLUMN_NUM = 3;
 }

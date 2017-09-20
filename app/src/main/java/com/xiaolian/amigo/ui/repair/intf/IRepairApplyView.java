@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.repair.intf;
 
+import com.xiaolian.amigo.data.network.model.repair.RepairProblem;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 import com.xiaolian.amigo.ui.repair.adaptor.RepairAdaptor;
 
@@ -21,4 +22,7 @@ public interface IRepairApplyView extends IBaseView {
 
     // 添加图片
     void addImage(String url);
+
+    // 刷新报修问题
+    void refreshProblems(List<RepairProblem> problems);
 }

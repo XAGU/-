@@ -23,7 +23,9 @@ import com.xiaolian.amigo.data.manager.intf.IRepairDataManager;
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.RepairApplyReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.request.RepairProblemReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.RepairApplyRespDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.RepairProblemRespDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.repair.intf.IRepairApplyPresenter;
 import com.xiaolian.amigo.ui.repair.intf.IRepairApplyView;
@@ -84,6 +86,22 @@ public class RepairApplyPresenter<V extends IRepairApplyView> extends BasePresen
                 if (null == result.getError()) {
                     Log.i(TAG, "上传图片成功");
                     getMvpView().addImage(result.getData());
+                }
+            }
+        });
+    }
+
+    @Override
+    public void requestRepairProblems() {
+        RepairProblemReqDTO reqDTO = new RepairProblemReqDTO();
+        reqDTO.setPage(Constant.PAGE_START_NUM);
+        reqDTO.setSize(Constant.PAGE_SIZE);
+        addObserver(repairManager.queryRepairProblems(reqDTO), new NetworkObserver<ApiResult<RepairProblemRespDTO>>() {
+
+            @Override
+            public void onReady(ApiResult<RepairProblemRespDTO> result) {
+                if (null == result.getError()) {
+                    getMvpView().refreshProblems(result.getData().getCauses());
                 }
             }
         });
