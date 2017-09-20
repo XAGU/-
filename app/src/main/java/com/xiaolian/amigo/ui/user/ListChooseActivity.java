@@ -174,7 +174,7 @@ public class ListChooseActivity extends UserBaseActivity implements IListChooseV
                             ListChooseAdaptor.Item item = items.get(position);
                             startActivity(this, RepairApplyActivity.class, new HashMap<String, String>() {
                                 {
-                                    put(Constant.LOCATION, Device.getDevice(item.getId()) + Constant.CHINEASE_COLON + item.getExtra());
+                                    put(Constant.LOCATION, Device.getDevice(buildingType).getDesc() + Constant.CHINEASE_COLON + item.getExtra());
                                 }
                             });
                         } else {
