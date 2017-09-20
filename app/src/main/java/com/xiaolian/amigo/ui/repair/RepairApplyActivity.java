@@ -14,17 +14,11 @@ import com.bumptech.glide.Glide;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.network.model.repair.RepairProblem;
-import com.xiaolian.amigo.tmp.activity.common.DeviceTypeActivity;
-import com.xiaolian.amigo.tmp.base.BaseActivity;
 import com.xiaolian.amigo.tmp.common.config.SpaceItemDecoration;
 import com.xiaolian.amigo.tmp.common.util.ScreenUtils;
-import com.xiaolian.amigo.ui.repair.adaptor.RepairAdaptor;
 import com.xiaolian.amigo.ui.repair.adaptor.RepairProblemAdaptor;
 import com.xiaolian.amigo.ui.repair.intf.IRepairApplyPresenter;
 import com.xiaolian.amigo.ui.repair.intf.IRepairApplyView;
-import com.xiaolian.amigo.ui.repair.intf.IRepairDetailView;
-import com.xiaolian.amigo.ui.repair.intf.IRepairPresenter;
-import com.xiaolian.amigo.ui.repair.intf.IRepairView;
 import com.xiaolian.amigo.ui.user.ListChooseActivity;
 import com.xiaolian.amigo.util.Constant;
 
@@ -66,7 +60,12 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
     @BindView(R.id.bt_submit)
     Button bt_submit;
 
-    List<RepairProblemAdaptor.ProblemWrapper> problems = new ArrayList<RepairProblemAdaptor.ProblemWrapper>();
+    List<RepairProblemAdaptor.ProblemWrapper> problems = new ArrayList<RepairProblemAdaptor.ProblemWrapper>() {
+        {
+            add(new RepairProblemAdaptor.ProblemWrapper(new RepairProblem(1L, "问题一"), new RepairProblem(2L, "问题二"), new RepairProblem(3L, "问题三")));
+            add(new RepairProblemAdaptor.ProblemWrapper(new RepairProblem(4L, "问题无"), new RepairProblem(5L, "问题二"), null));
+        }
+    };
 
     RepairProblemAdaptor adapter;
     RecyclerView.LayoutManager manager;
@@ -96,6 +95,8 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
         adapter.setOnClickListener(v -> toggleBtnStatus());
 
         render();
+        // 获取报修问题列表
+        presenter.requestRepairProblems();
     }
 
     @Override
@@ -135,20 +136,26 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
                     Glide.with(this).load(imageUri).into(iv_first);
                     iv_first.setScaleType(ImageView.ScaleType.FIT_XY);
                     iv_second.setVisibility(View.VISIBLE);
+                    presenter.onUpload(imageUri);
                 });
+                break;
             }
             case R.id.iv_second: {
                 getImage(imageUri -> {
                     Glide.with(this).load(imageUri).into(iv_second);
                     iv_second.setScaleType(ImageView.ScaleType.FIT_XY);
                     iv_third.setVisibility(View.VISIBLE);
+                    presenter.onUpload(imageUri);
                 });
+                break;
             }
             case R.id.iv_third: {
                 getImage(imageUri -> {
                     Glide.with(this).load(imageUri).into(iv_third);
                     iv_third.setScaleType(ImageView.ScaleType.FIT_XY);
+                    presenter.onUpload(imageUri);
                 });
+                break;
             }
         }
     }

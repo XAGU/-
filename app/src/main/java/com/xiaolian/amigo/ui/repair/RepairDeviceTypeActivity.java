@@ -3,8 +3,6 @@ package com.xiaolian.amigo.ui.repair;
 import android.os.Bundle;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.tmp.activity.common.BuildingActivity;
-import com.xiaolian.amigo.tmp.base.BaseActivity;
 import com.xiaolian.amigo.ui.user.ListChooseActivity;
 import com.xiaolian.amigo.util.Constant;
 
