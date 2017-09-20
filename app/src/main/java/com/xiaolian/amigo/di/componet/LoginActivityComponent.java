@@ -19,6 +19,8 @@ package com.xiaolian.amigo.di.componet;
 import com.xiaolian.amigo.di.LoginActivityContext;
 import com.xiaolian.amigo.di.module.LoginActivityModule;
 import com.xiaolian.amigo.ui.login.LoginActivity;
+import com.xiaolian.amigo.ui.login.PasswordRetrievalStep1Activity;
+import com.xiaolian.amigo.ui.login.PasswordRetrievalStep2Activity;
 
 import dagger.Component;
 
@@ -27,7 +29,9 @@ import dagger.Component;
 @Component(dependencies = ApplicationComponent.class, modules = LoginActivityModule.class)
 public interface LoginActivityComponent {
 
-//    ILoginDataManager loginDataManager(LoginDataManager manage);
-
     void inject(LoginActivity activity);
+
+    void inject(PasswordRetrievalStep1Activity activity);
+
+    void inject(PasswordRetrievalStep2Activity activity);
 }
