@@ -5,7 +5,6 @@ import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.tmp.activity.wallet.PrepayActivity;
-import com.xiaolian.amigo.tmp.activity.wallet.RechargeActivty;
 import com.xiaolian.amigo.tmp.activity.wallet.WithdrawalActivty;
 import com.xiaolian.amigo.ui.wallet.intf.IWalletPresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IWalletView;
@@ -59,7 +58,7 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
     // 充值
     @OnClick(R.id.iv_recharge)
     void recharge() {
-        startActivity(this, RechargeActivty.class);
+        startActivity(this, RechargeActivity.class);
     }
 
     // 查看预付金额列表

@@ -33,7 +33,7 @@ public class LostAndFoundPresenter<V extends ILostAndFoundView> extends BasePres
 
 
     @Override
-    public void queryLostAndFoundList(int page, Integer schoolId, String selectKey, int size, int type) {
+    public void queryLostAndFoundList(int page, Long schoolId, String selectKey, int size, int type) {
         QueryLostAndFoundListReqDTO dto = new QueryLostAndFoundListReqDTO();
         dto.setPage(page);
         dto.setSchoolId(schoolId);

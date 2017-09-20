@@ -13,17 +13,17 @@ public class LostAndFound {
 
     private String createTime;
     private String description;
-    private Integer id;
+    private Long id;
     private String itemName;
     private String location;
     private String lostTime;
     private String mobile;
-    private Integer schoolId;
+    private Long schoolId;
     private String schoolName;
     private String title;
     private Integer type;
     private String user;
-    private Integer userId;
+    private Long userId;
     private List<String> images;
 
 }

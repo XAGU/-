@@ -8,15 +8,15 @@ import lombok.Data;
  */
 @Data
 public class Bonus {
-    private int amount;
+    private Long amount;
     private String createTime;
-    private int deviceType;
+    private Integer deviceType;
     private String endTime;
-    private int id;
+    private Long id;
     private String name;
     private String remarks;
-    private int timeLimit;
+    private Long timeLimit;
     private String updateTime;
-    private int useStatus;
-    private int validStatus;
+    private Integer useStatus;
+    private Integer validStatus;
 }

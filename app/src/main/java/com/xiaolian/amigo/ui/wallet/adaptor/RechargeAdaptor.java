@@ -19,7 +19,7 @@ public class RechargeAdaptor extends MultiItemTypeAdapter<RechargeAdaptor.Rechar
     }
 
     public static class RechargeWapper {
-        int id;
+        Long id;
         // 充值类型
         Integer type;
         // 主信息

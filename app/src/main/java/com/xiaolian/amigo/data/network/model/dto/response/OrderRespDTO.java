@@ -12,7 +12,7 @@ import java.util.List;
 public class OrderRespDTO {
 
     // 订单总数
-    private int total;
+    private Integer total;
     // 订单列表
     private List<Order> orders;
 

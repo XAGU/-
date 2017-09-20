@@ -19,14 +19,14 @@ public class QuerySchoolBizListRespDTO {
          * using : true
          */
 
-        private int businessId;
+        private Long businessId;
         private boolean using;
 
-        public int getBusinessId() {
+        public Long getBusinessId() {
             return businessId;
         }
 
-        public void setBusinessId(int businessId) {
+        public void setBusinessId(Long businessId) {
             this.businessId = businessId;
         }
 

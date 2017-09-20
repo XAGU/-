@@ -16,7 +16,7 @@ import lombok.Data;
 public class RepairRespDTO {
 
     // 报修总数
-    private int total;
+    private Integer total;
     // 报修列表
     private List<Repair> repairDevices;
 

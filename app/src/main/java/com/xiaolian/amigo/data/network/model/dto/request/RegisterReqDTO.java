@@ -13,9 +13,9 @@ public class RegisterReqDTO {
     private String code;
     private String mobile;
     private String password;
-    private int schoolId;
+    private Long schoolId;
 
-    public RegisterReqDTO(String code, String mobile, String password, int schoolId) {
+    public RegisterReqDTO(String code, String mobile, String password, Long schoolId) {
         this.code = code;
         this.mobile = mobile;
         this.password = password;

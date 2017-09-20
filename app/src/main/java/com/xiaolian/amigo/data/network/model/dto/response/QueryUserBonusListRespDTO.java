@@ -13,6 +13,6 @@ import lombok.Data;
 @Data
 public class QueryUserBonusListRespDTO {
 
-    private int total;
+    private Integer total;
     private List<Bonus> bonuses;
 }

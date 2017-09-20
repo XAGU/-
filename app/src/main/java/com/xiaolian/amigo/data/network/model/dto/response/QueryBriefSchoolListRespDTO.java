@@ -12,6 +12,6 @@ import lombok.Data;
  */
 @Data
 public class QueryBriefSchoolListRespDTO {
-    private int total;
+    private Integer total;
     private List<School> schools;
 }

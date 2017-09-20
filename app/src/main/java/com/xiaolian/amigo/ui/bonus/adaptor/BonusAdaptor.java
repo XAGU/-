@@ -36,15 +36,15 @@ public class BonusAdaptor extends CommonAdapter<BonusAdaptor.BonusWrapper> {
         // 红包类型
         Integer type;
         // 红包金额
-        Integer amount;
+        Long amount;
         // 到期时间
         String timeEnd;
         // 描述信息
         String desc;
         // 剩余时间
-        Integer timeLeft;
+        Long timeLeft;
 
-        public BonusWrapper(Integer type, Integer amount, String timeEnd, String desc, Integer timeLeft) {
+        public BonusWrapper(Integer type, Long amount, String timeEnd, String desc, Long timeLeft) {
             this.type = type;
             this.amount = amount;
             this.timeEnd = timeEnd;

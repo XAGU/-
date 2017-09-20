@@ -97,7 +97,7 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
     }
 
     @Override
-    public void updateSchool(Integer schoolId) {
+    public void updateSchool(Long schoolId) {
         PersonalUpdateReqDTO dto = new PersonalUpdateReqDTO();
         dto.setSchoolId(schoolId);
         addObserver(manager.updateUserInfo(dto), new NetworkObserver<ApiResult<EntireUserDTO>>() {
@@ -134,7 +134,7 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
     }
 
     @Override
-    public void getFloorList(int page, int size, int parentId, int buildingType) {
+    public void getFloorList(int page, int size, Long parentId, int buildingType) {
         QueryResidenceListReqDTO dto = new QueryResidenceListReqDTO();
         dto.setPage(page);
         dto.setSize(size);
@@ -166,7 +166,7 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
     }
 
     @Override
-    public void getDormitoryList(int page, int size, int parentId, int buildingType) {
+    public void getDormitoryList(int page, int size, Long parentId, int buildingType) {
         QueryResidenceListReqDTO dto = new QueryResidenceListReqDTO();
         dto.setPage(page);
         dto.setSize(size);
@@ -198,7 +198,7 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
     }
 
     @Override
-    public void bindDormitory(int id, int residenceId, boolean isEdit) {
+    public void bindDormitory(Long id, Long residenceId, boolean isEdit) {
         BindResidenceReq dto = new BindResidenceReq();
         dto.setResidenceId(residenceId);
         if (isEdit) {

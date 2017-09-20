@@ -13,6 +13,6 @@ import lombok.Data;
  */
 @Data
 public class QueryLostAndFoundListRespDTO {
-    private int total;
+    private Integer total;
     private List<LostAndFound> lostAndFounds;
 }

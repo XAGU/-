@@ -17,7 +17,7 @@ public class RepairDetailRespDTO {
     // 报修内容
     private String content;
     // 设备类型
-    private int deviceType;
+    private Integer deviceType;
     // 设备位置
     private String location;
     // 报修图片组url

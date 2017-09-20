@@ -94,12 +94,17 @@ public class ListChooseAdaptor extends RecyclerView.Adapter<ListChooseAdaptor.Vi
     public static class Item implements Parcelable {
         String content;
         boolean tick;
-        Integer id;
+        Long id;
         String extra;
 
-        public Item(String content, boolean tick, Integer id) {
+        public Item(String content, boolean tick, Long id) {
             this(content, tick);
             this.id = id;
+        }
+
+        public Item(String content, boolean tick, int id) {
+            this(content, tick);
+            this.id = (long) id;
         }
 
         public Item(String content, boolean tick) {
@@ -136,7 +141,7 @@ public class ListChooseAdaptor extends RecyclerView.Adapter<ListChooseAdaptor.Vi
         protected Item(Parcel in) {
             this.content = in.readString();
             this.tick = in.readByte() != 0;
-            this.id = (Integer) in.readValue(Integer.class.getClassLoader());
+            this.id = (Long) in.readValue(Long.class.getClassLoader());
         }
 
         public static final Creator<Item> CREATOR = new Creator<Item>() {

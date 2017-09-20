@@ -59,7 +59,7 @@ public class ListChooseActivity extends UserBaseActivity implements IListChooseV
     private boolean isEditDormitory;
 
     // 宿舍编辑时需要的ID
-    private int residenceBindId = -1;
+    private Long residenceBindId;
 
     // 建筑类型，1 - 宿舍楼栋 2 - 除宿舍楼栋之外的楼栋
     private int buildingType = 1;
@@ -115,7 +115,7 @@ public class ListChooseActivity extends UserBaseActivity implements IListChooseV
                     tv_title.setText("选择楼栋");
                     if (getIntent() != null) {
                         isEditDormitory = getIntent().getBooleanExtra(INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
-                        residenceBindId = getIntent().getIntExtra(INTENT_KEY_LIST_CHOOSE_RESIDENCE_BIND_ID, -1);
+                        residenceBindId = getIntent().getLongExtra(INTENT_KEY_LIST_CHOOSE_RESIDENCE_BIND_ID, -1);
                         buildingType = getIntent().getIntExtra(INTENT_KEY_LIST_BUILDING_TYPE, 1);
                         activitySrc = getIntent().getStringExtra(INTENT_KEY_LIST_SRC_ACTIVITY);
                     }
@@ -135,10 +135,10 @@ public class ListChooseActivity extends UserBaseActivity implements IListChooseV
                     tv_title.setText("选择楼层");
                     if (getIntent() != null) {
                         isEditDormitory = getIntent().getBooleanExtra(INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
-                        residenceBindId = getIntent().getIntExtra(INTENT_KEY_LIST_CHOOSE_RESIDENCE_BIND_ID, -1);
+                        residenceBindId = getIntent().getLongExtra(INTENT_KEY_LIST_CHOOSE_RESIDENCE_BIND_ID, -1);
                         buildingType = getIntent().getIntExtra(INTENT_KEY_LIST_BUILDING_TYPE, 1);
                         activitySrc = getIntent().getStringExtra(INTENT_KEY_LIST_SRC_ACTIVITY);
-                        int parentId = getIntent().getIntExtra(INTENT_KEY_LIST_CHOOSE_PARENT_ID, -1);
+                        Long parentId = getIntent().getLongExtra(INTENT_KEY_LIST_CHOOSE_PARENT_ID, -1);
                         if (parentId != -1) {
                             presenter.getFloorList(1, Constant.PAGE_SIZE, parentId, buildingType);
                         }
@@ -157,7 +157,7 @@ public class ListChooseActivity extends UserBaseActivity implements IListChooseV
                 case ACTION_LIST_DORMITOR:
                     if (getIntent() != null) {
                         isEditDormitory = getIntent().getBooleanExtra(INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
-                        residenceBindId = getIntent().getIntExtra(INTENT_KEY_LIST_CHOOSE_RESIDENCE_BIND_ID, -1);
+                        residenceBindId = getIntent().getLongExtra(INTENT_KEY_LIST_CHOOSE_RESIDENCE_BIND_ID, -1);
                         buildingType = getIntent().getIntExtra(INTENT_KEY_LIST_BUILDING_TYPE, 1);
                         activitySrc = getIntent().getStringExtra(INTENT_KEY_LIST_SRC_ACTIVITY);
                         if (buildingType == Device.HEARTER.getType()) {
@@ -165,7 +165,7 @@ public class ListChooseActivity extends UserBaseActivity implements IListChooseV
                         } else { // buildingType == Device.DISPENSER.getType()
                             tv_title.setText("选择位置");
                         }
-                        int parentId = getIntent().getIntExtra(INTENT_KEY_LIST_CHOOSE_PARENT_ID, -1);
+                        Long parentId = getIntent().getLongExtra(INTENT_KEY_LIST_CHOOSE_PARENT_ID, -1);
                         if (parentId != -1) {
                             presenter.getDormitoryList(1, Constant.PAGE_SIZE, parentId, buildingType);
                         }

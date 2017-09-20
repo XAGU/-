@@ -51,7 +51,7 @@ public class RegisterFragment extends Fragment {
         }
     }
 
-    private int schoolId = -1;
+    private Long schoolId;
 
     @OnClick(R.id.tv_school)
     void chooseSchool() {
