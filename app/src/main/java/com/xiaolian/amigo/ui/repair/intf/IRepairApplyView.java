@@ -10,5 +10,9 @@ import java.util.List;
  */
 public interface IRepairApplyView extends IBaseView {
 
+    // 渲染页面内容
     void render();
+
+    // 变更提交按钮的状态
+    void toggleBtnStatus();
 }

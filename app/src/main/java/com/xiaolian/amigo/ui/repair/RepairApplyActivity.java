@@ -4,9 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.network.model.repair.RepairProblem;
 import com.xiaolian.amigo.tmp.activity.common.DeviceTypeActivity;
 import com.xiaolian.amigo.tmp.base.BaseActivity;
 import com.xiaolian.amigo.tmp.common.config.SpaceItemDecoration;
@@ -26,6 +32,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnTextChanged;
 
 /**
  * 报修申请
@@ -36,8 +43,8 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
 
     List<RepairProblemAdaptor.ProblemWrapper> problems = new ArrayList<RepairProblemAdaptor.ProblemWrapper>() {
         {
-            add(new RepairProblemAdaptor.ProblemWrapper("问题一", "问题二", "问题三"));
-            add(new RepairProblemAdaptor.ProblemWrapper("问题一", "问题二", null));
+            add(new RepairProblemAdaptor.ProblemWrapper(new RepairProblem(1L, "问题一"), new RepairProblem(1L, "问题二"), new RepairProblem(1L, "问题三")));
+            add(new RepairProblemAdaptor.ProblemWrapper(new RepairProblem(1L, "问题一"), new RepairProblem(1L, "问题二"), null));
         }
     };
 
@@ -45,8 +52,20 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
     RecyclerView rv_problems;
     @BindView(R.id.tv_location)
     TextView tv_location;
+    @BindView(R.id.iv_first)
+    ImageView iv_first;
+    @BindView(R.id.iv_second)
+    ImageView iv_second;
+    @BindView(R.id.iv_third)
+    ImageView iv_third;
+    @BindView(R.id.et_tel)
+    TextView et_tel;
+    @BindView(R.id.et_content)
+    TextView et_content;
+    @BindView(R.id.bt_submit)
+    Button bt_submit;
 
-    RecyclerView.Adapter adapter;
+    RepairProblemAdaptor adapter;
     RecyclerView.LayoutManager manager;
     String location;
 
@@ -66,6 +85,8 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
         rv_problems.setLayoutManager(manager);
         rv_problems.setAdapter(adapter);
 
+        adapter.setOnClickListener(v -> toggleBtnStatus());
+
         render();
 
 //        presenter.requestRepairs(Constant.PAGE_START_NUM);
@@ -84,6 +105,7 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
         // 填充设备位置
         if (null != location) {
             tv_location.setText(location);
+            toggleBtnStatus();
         }
     }
 
@@ -95,5 +117,49 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
             }
         };
         startActivity(this, ListChooseActivity.class, extraMap);
+    }
+
+    @OnClick({R.id.iv_first, R.id.iv_second, R.id.iv_third})
+    void chooseImage(ImageView view) {
+        switch (view.getId()) {
+            case R.id.iv_first: {
+                getImage(imageUri -> {
+                    Glide.with(this).load(imageUri).into(iv_first);
+                    iv_first.setScaleType(ImageView.ScaleType.FIT_XY);
+                    iv_second.setVisibility(View.VISIBLE);
+                });
+            }
+            case R.id.iv_second: {
+                getImage(imageUri -> {
+                    Glide.with(this).load(imageUri).into(iv_second);
+                    iv_second.setScaleType(ImageView.ScaleType.FIT_XY);
+                    iv_third.setVisibility(View.VISIBLE);
+                });
+            }
+            case R.id.iv_third: {
+                getImage(imageUri -> {
+                    Glide.with(this).load(imageUri).into(iv_third);
+                    iv_third.setScaleType(ImageView.ScaleType.FIT_XY);
+                });
+            }
+        }
+    }
+
+    // 用户键入内容，如联系电话和报修内容
+    @OnTextChanged({R.id.et_tel, R.id.et_content})
+    void input() {
+        toggleBtnStatus();
+    }
+
+    @Override
+    public void toggleBtnStatus() {
+        int selectedProblem = 0;
+        if (null != problems) {
+            for (RepairProblemAdaptor.ProblemWrapper problem : problems) {
+                selectedProblem += problem.getSelectedNum();
+            }
+        }
+        bt_submit.setEnabled(!TextUtils.isEmpty(et_tel.getText())
+                && !TextUtils.isEmpty(et_content.getText()) && !TextUtils.isEmpty(tv_location.getText()) && selectedProblem != 0);
     }
 }
