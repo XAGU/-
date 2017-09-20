@@ -123,12 +123,6 @@
         </activity>
 
         <activity
-            android:name=".tmp.activity.repair.RepairApplyActivity"
-            android:label="@string/app_name"
-            android:launchMode="singleTask"
-            android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity
             android:name=".ui.repair.RepairNavActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -137,6 +131,13 @@
             android:name=".ui.repair.RepairDetailActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".ui.repair.RepairApplyActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"/>
+
 
         <activity
             android:name=".tmp.activity.common.DeviceTypeActivity"

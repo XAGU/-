@@ -10,8 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.tmp.activity.repair.RepairDetailActivity;
-import com.xiaolian.amigo.tmp.base.BaseActivity;
+import com.xiaolian.amigo.ui.base.BaseActivity;
 
 import java.util.List;
 

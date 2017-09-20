@@ -64,10 +64,13 @@
     <color name="device_heator">#fe557d</color>
     <color name="device_dispenser">#00d3c7</color>
 
-    <color name="repair_todo">#ff5555</color>
-    <color name="repair_doing">#45b0ff</color>
-    <color name="repair_done">#999</color>
+    <color name="repair_todo">@color/colorFullRed</color>
+    <color name="repair_doing">@color/colorBlue</color>
+    <color name="repair_done">@color/colorDark9</color>
     
-    <color name="evaluate_todo">#45b0ff</color>
-    <color name="evaluate_done">#bbb</color>
+    <color name="evaluate_todo">@color/colorBlue</color>
+    <color name="evaluate_done">@color/colorDarkB</color>
+
+    <color name="problem_blue">@color/colorBlue</color>
+    <color name="problem_grey">@color/colorDarkB</color>
 </resources>

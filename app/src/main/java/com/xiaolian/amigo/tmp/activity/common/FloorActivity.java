@@ -6,9 +6,8 @@ import android.support.v7.widget.RecyclerView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.tmp.activity.common.adaptor.LocationAdaptor;
-import com.xiaolian.amigo.tmp.base.BaseActivity;
 import com.xiaolian.amigo.tmp.common.config.RecycleViewDivider;
-import com.xiaolian.amigo.tmp.common.config.SpaceItemDecoration;
+import com.xiaolian.amigo.ui.base.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +20,7 @@ import butterknife.ButterKnife;
  *
  * Created by caidong on 2017/9/12.
  */
-public class FloorActivity extends BaseActivity{
+public class FloorActivity extends BaseActivity {
 
     static List<LocationAdaptor.Location> floors = new ArrayList<LocationAdaptor.Location>() {
         {
@@ -46,6 +45,11 @@ public class FloorActivity extends BaseActivity{
         rv_floors.addItemDecoration(new RecycleViewDivider(this, RecycleViewDivider.VERTICAL_LIST));
         rv_floors.setLayoutManager(manager);
         rv_floors.setAdapter(adapter);
+    }
+
+    @Override
+    protected void setUp() {
+
     }
 
 }
