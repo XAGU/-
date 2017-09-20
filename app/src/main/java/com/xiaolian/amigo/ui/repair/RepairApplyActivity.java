@@ -47,13 +47,6 @@ import butterknife.OnTextChanged;
  */
 public class RepairApplyActivity extends RepairBaseActivity implements IRepairApplyView {
 
-    List<RepairProblemAdaptor.ProblemWrapper> problems = new ArrayList<RepairProblemAdaptor.ProblemWrapper>() {
-        {
-            add(new RepairProblemAdaptor.ProblemWrapper(new RepairProblem(1L, "问题一"), new RepairProblem(1L, "问题二"), new RepairProblem(1L, "问题三")));
-            add(new RepairProblemAdaptor.ProblemWrapper(new RepairProblem(1L, "问题一"), new RepairProblem(1L, "问题二"), null));
-        }
-    };
-
     @Inject
     IRepairApplyPresenter<IRepairApplyView> presenter;
     @BindView(R.id.rv_problems)
@@ -72,6 +65,8 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
     TextView et_content;
     @BindView(R.id.bt_submit)
     Button bt_submit;
+
+    List<RepairProblemAdaptor.ProblemWrapper> problems = new ArrayList<RepairProblemAdaptor.ProblemWrapper>();
 
     RepairProblemAdaptor adapter;
     RecyclerView.LayoutManager manager;

@@ -66,7 +66,9 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     @Override
     public void setUserInfo(User user) {
         userHolder = user;
-        mSharedPreferences.edit().putLong(PREF_KEY_RESIDENCEID, user.getResidenceId()).apply();
+        if(null != user.getResidenceId()) {
+            mSharedPreferences.edit().putLong(PREF_KEY_RESIDENCEID, user.getResidenceId()).apply();
+        }
         mSharedPreferences.edit().putLong(PREF_KEY_SCHOOLID, user.getSchoolId()).apply();
         mSharedPreferences.edit().putString(PREF_KEY_SCHOOLNAME, user.getSchoolName()).apply();
         mSharedPreferences.edit().putString(PREF_KEY_NICKNAME, user.getNickName()).apply();
