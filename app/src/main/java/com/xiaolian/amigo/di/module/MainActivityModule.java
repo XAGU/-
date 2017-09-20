@@ -18,7 +18,9 @@ package com.xiaolian.amigo.di.module;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
+import com.xiaolian.amigo.data.manager.MainDataManager;
 import com.xiaolian.amigo.data.manager.OrderDataManager;
+import com.xiaolian.amigo.data.manager.intf.IMainDataManager;
 import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
 import com.xiaolian.amigo.di.MainActivityContext;
 import com.xiaolian.amigo.di.OrderActivityContext;
@@ -56,6 +58,11 @@ public class MainActivityModule {
     IMainPresenter<IMainView> provideMainPresenter(
             MainPresenter<IMainView> presenter) {
         return presenter;
+    }
+
+    @Provides
+    IMainDataManager provideMainDataManager(MainDataManager manager) {
+        return manager;
     }
 
 }

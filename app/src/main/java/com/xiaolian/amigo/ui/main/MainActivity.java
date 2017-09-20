@@ -3,16 +3,19 @@ package com.xiaolian.amigo.ui.main;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.tmp.activity.HomeFragment;
-import com.xiaolian.amigo.tmp.activity.ProfileFragment;
-import com.xiaolian.amigo.ui.base.BaseActivity;
+import com.xiaolian.amigo.ui.login.LoginActivity;
+import com.xiaolian.amigo.ui.main.intf.IMainPresenter;
 import com.xiaolian.amigo.ui.main.intf.IMainView;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,8 +27,22 @@ import butterknife.OnClick;
 
 public class MainActivity extends MainBaseActivity implements IMainView {
 
+    private static final String TAG = MainActivity.class.getSimpleName();
+
+    @Inject
+    IMainPresenter<IMainView> presenter;
+
     @BindView(R.id.bt_switch)
     ImageView btSwitch;
+
+    @BindView(R.id.iv_avatar)
+    ImageView iv_avatar;
+
+    @BindView(R.id.tv_nickName)
+    TextView tv_nickName;
+
+    @BindView(R.id.tv_schoolName)
+    TextView tv_schoolName;
 
     HomeFragment homeFragment;
     ProfileFragment profileFragment;
@@ -36,7 +53,10 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+        setUnBinder(ButterKnife.bind(this));
+        getActivityComponent().inject(this);
+
+        presenter.onAttach(this);
 
         btSwitch.setBackgroundResource(R.drawable.profile);
 
@@ -45,6 +65,11 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(R.id.fm_container, homeFragment);
         transaction.commit();
+
+        if (!presenter.isLogin()) {
+            tv_nickName.setText("登录／注册");
+            tv_schoolName.setText("登录以后才能使用哦");
+        }
     }
 
     @Override
@@ -76,5 +101,14 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         }
 
 
+    }
+
+
+    @OnClick({R.id.iv_avatar, R.id.ll_user_info})
+    void gotoLoginView() {
+        if (!presenter.isLogin()) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        }
     }
 }

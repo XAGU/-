@@ -79,27 +79,6 @@ public abstract class BaseActivity extends SwipeBackActivity
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        actionSheetDialog = new ActionSheetDialog(this)
-                .builder()
-                .setTitle("选择")
-                .addSheetItem("相机", ActionSheetDialog.SheetItemColor.Orange,
-                        i -> rxPermissions.request(Manifest.permission.CAMERA)
-                                .subscribe(granted -> {
-                                    if (granted) {
-                                        takePhoto();
-                                    } else {
-                                        showMessage("没有相机权限");
-                                    }
-                                }))
-                .addSheetItem("相册", ActionSheetDialog.SheetItemColor.Orange,
-                        i -> rxPermissions.request(Manifest.permission.READ_EXTERNAL_STORAGE)
-                                .subscribe(granted -> {
-                                    if (granted) {
-                                        selectPhoto();
-                                    } else {
-                                        showMessage("没有SD卡权限");
-                                    }
-                                }));
         rxPermissions = new RxPermissions(this);
     }
 
@@ -205,6 +184,30 @@ public abstract class BaseActivity extends SwipeBackActivity
 
     public void getImage(ImageCallback callback) {
         imageCallback = callback;
+
+        if (actionSheetDialog == null) {
+            actionSheetDialog = new ActionSheetDialog(this)
+                    .builder()
+                    .setTitle("选择")
+                    .addSheetItem("相机", ActionSheetDialog.SheetItemColor.Orange,
+                            i -> rxPermissions.request(Manifest.permission.CAMERA)
+                                    .subscribe(granted -> {
+                                        if (granted) {
+                                            takePhoto();
+                                        } else {
+                                            showMessage("没有相机权限");
+                                        }
+                                    }))
+                    .addSheetItem("相册", ActionSheetDialog.SheetItemColor.Orange,
+                            i -> rxPermissions.request(Manifest.permission.READ_EXTERNAL_STORAGE)
+                                    .subscribe(granted -> {
+                                        if (granted) {
+                                            selectPhoto();
+                                        } else {
+                                            showMessage("没有SD卡权限");
+                                        }
+                                    }));
+        }
         actionSheetDialog.show();
     }
 

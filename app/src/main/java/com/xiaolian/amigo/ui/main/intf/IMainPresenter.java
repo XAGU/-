@@ -9,4 +9,5 @@ import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
  */
 
 public interface IMainPresenter<V extends IMainView> extends IBasePresenter<V> {
+    boolean isLogin();
 }
