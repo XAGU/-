@@ -21,9 +21,15 @@ import android.support.v7.app.AppCompatActivity;
 import com.xiaolian.amigo.data.manager.intf.ILoginDataManager;
 import com.xiaolian.amigo.data.manager.LoginDataManager;
 import com.xiaolian.amigo.di.LoginActivityContext;
+import com.xiaolian.amigo.ui.login.PasswordRetrievalStep1Presenter;
+import com.xiaolian.amigo.ui.login.PasswordRetrievalStep2Presenter;
 import com.xiaolian.amigo.ui.login.intf.ILoginPresenter;
 import com.xiaolian.amigo.ui.login.intf.ILoginView;
 import com.xiaolian.amigo.ui.login.LoginPresenter;
+import com.xiaolian.amigo.ui.login.intf.IPasswordRetrievalStep1Presenter;
+import com.xiaolian.amigo.ui.login.intf.IPasswordRetrievalStep1View;
+import com.xiaolian.amigo.ui.login.intf.IPasswordRetrievalStep2Presenter;
+import com.xiaolian.amigo.ui.login.intf.IPasswordRetrievalStep2View;
 
 import dagger.Module;
 import dagger.Provides;
@@ -52,6 +58,20 @@ public class LoginActivityModule {
     @LoginActivityContext
     ILoginPresenter<ILoginView> provideLoginPresenter(
             LoginPresenter<ILoginView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    @LoginActivityContext
+    IPasswordRetrievalStep1Presenter<IPasswordRetrievalStep1View> providePasswordRetrievalStep1Presenter(
+            PasswordRetrievalStep1Presenter<IPasswordRetrievalStep1View> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    @LoginActivityContext
+    IPasswordRetrievalStep2Presenter<IPasswordRetrievalStep2View> providePasswordRetrievalStep2Presenter(
+            PasswordRetrievalStep2Presenter<IPasswordRetrievalStep2View> presenter) {
         return presenter;
     }
 

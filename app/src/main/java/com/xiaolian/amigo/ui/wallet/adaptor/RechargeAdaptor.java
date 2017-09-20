@@ -8,6 +8,7 @@ import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import java.util.List;
 
 /**
+ * 充值Adaptor
  * <p>
  * Created by zcd on 9/20/17.
  */
@@ -21,7 +22,7 @@ public class RechargeAdaptor extends MultiItemTypeAdapter<RechargeAdaptor.Rechar
     public static class RechargeWapper {
         Long id;
         // 充值类型
-        Integer type;
+        int type;
         // 主信息
         String main;
         // 附信息
@@ -34,8 +35,12 @@ public class RechargeAdaptor extends MultiItemTypeAdapter<RechargeAdaptor.Rechar
         }
 
         public RechargeWapper(RechargeDenominations rechargeDenominations) {
-            this.id = rechargeDenominations.getId();
-            this.type = rechargeDenominations.getActivityType();
+            if (rechargeDenominations.getId() != null) {
+                this.id = rechargeDenominations.getId();
+            }
+            if (rechargeDenominations.getActivityType() != null) {
+                this.type = rechargeDenominations.getActivityType();
+            }
             this.main = rechargeDenominations.getAmount() + "元";
             if (this.type == 1) {
                 this.sub = "售价" + rechargeDenominations.getValue() + "元";
