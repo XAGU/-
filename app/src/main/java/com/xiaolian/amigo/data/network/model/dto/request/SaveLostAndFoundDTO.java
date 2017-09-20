@@ -12,13 +12,13 @@ import lombok.Data;
 @Data
 public class SaveLostAndFoundDTO {
     private String description;
-    private int id;
+    private Long id;
     private String itemName;
     private String location;
     private String lostTime;
     private String mobile;
     private String title;
-    private int type;
+    private Integer type;
     private List<String> images;
 
 }

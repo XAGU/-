@@ -11,10 +11,10 @@ import lombok.Data;
 public class OrderReqDTO {
 
     // 订单状态 1 - 使用中， 2 - 已结束
-    private int orderStatus;
+    private Integer orderStatus;
     // 页码
-    private int page;
+    private Integer page;
     // 页大小
-    private int size;
+    private Integer size;
 
 }

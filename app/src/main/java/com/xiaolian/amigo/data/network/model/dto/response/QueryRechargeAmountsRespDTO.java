@@ -14,5 +14,5 @@ import lombok.Data;
 @Data
 public class QueryRechargeAmountsRespDTO {
     List<RechargeDenominations> rechargeDenominations;
-    int total;
+    Integer total;
 }

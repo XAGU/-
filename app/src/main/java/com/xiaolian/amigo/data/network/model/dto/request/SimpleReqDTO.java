@@ -8,5 +8,5 @@ import lombok.Data;
  */
 @Data
 public class SimpleReqDTO {
-    private Integer id;
+    private Long id;
 }

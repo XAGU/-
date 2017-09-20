@@ -13,6 +13,6 @@ import lombok.Data;
  */
 @Data
 public class ResidenceListRespDTO {
-    private int total;
+    private Integer total;
     private List<Residence> residences;
 }

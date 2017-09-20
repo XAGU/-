@@ -14,13 +14,13 @@ public interface IListChoosePresenter<V extends IListChooseView> extends IBasePr
 
     void getBuildList(Integer page, Integer size, Integer buildType);
 
-    void updateSchool(Integer schoolId);
+    void updateSchool(Long schoolId);
 
     void updateSex(int sex);
 
-    void getFloorList(int page, int size, int parentId, int buildingType);
+    void getFloorList(int page, int size, Long parentId, int buildingType);
 
-    void getDormitoryList(int page, int size, int parentId, int buildingType);
+    void getDormitoryList(int page, int size, Long parentId, int buildingType);
 
-    void bindDormitory(int id, int residenceId, boolean isEdit);
+    void bindDormitory(Long id, Long residenceId, boolean isEdit);
 }

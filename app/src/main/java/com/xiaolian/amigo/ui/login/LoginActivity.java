@@ -148,7 +148,7 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
         this.code = code;
     }
 
-    public void register(String password, int schoolId) {
+    public void register(String password, Long schoolId) {
         presenter.register(this.code, this.mobile, password, schoolId);
     }
 

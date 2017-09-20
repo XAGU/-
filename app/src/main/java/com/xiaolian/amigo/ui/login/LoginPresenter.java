@@ -66,7 +66,7 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
     }
 
     @Override
-    public void register(String code, String mobile, String password, int schoolId) {
+    public void register(String code, String mobile, String password, Long schoolId) {
         RegisterReqDTO dto = new RegisterReqDTO();
         dto.setCode(code);
         dto.setMobile(mobile);

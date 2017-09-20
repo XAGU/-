@@ -9,7 +9,7 @@ import lombok.Data;
  */
 @Data
 public class UserResidenceInListDTO {
-    private Integer id;
-    private Integer residenceId;
+    private Long id;
+    private Long residenceId;
     private String residenceName;
 }

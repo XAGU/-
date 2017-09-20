@@ -9,6 +9,6 @@ import lombok.Data;
  */
 @Data
 public class School {
-    private Integer id;
+    private Long id;
     private String schoolName;
 }

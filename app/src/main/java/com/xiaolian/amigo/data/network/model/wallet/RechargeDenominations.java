@@ -9,8 +9,8 @@ import lombok.Data;
  */
 @Data
 public class RechargeDenominations {
-    private int activityType;
-    private int amount;
-    private int id;
-    private int value;
+    private Integer activityType;
+    private Long amount;
+    private Long id;
+    private Long value;
 }

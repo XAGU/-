@@ -20,7 +20,7 @@ public class LoginDataManagerTest {
 
     @Before
     public void setUp() throws Exception {
-        this.mLoginDataManager = new LoginDataManager(mRetrofit);
+//        this.mLoginDataManager = new LoginDataManager(mRetrofit);
     }
 
     @Test

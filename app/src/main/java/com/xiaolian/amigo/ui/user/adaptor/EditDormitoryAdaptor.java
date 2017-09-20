@@ -76,8 +76,8 @@ public class EditDormitoryAdaptor extends CommonAdapter<EditDormitoryAdaptor.Use
 
     @Data
     public static class UserResidenceWrapper {
-        private int id;
-        private int residenceId;
+        private Long id;
+        private Long residenceId;
         private String residenceName;
         private boolean isDefault = false;
 

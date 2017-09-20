@@ -9,6 +9,6 @@ import lombok.Data;
  */
 @Data
 public class BindResidenceReq {
-    private Integer id;
-    private Integer residenceId;
+    private Long id;
+    private Long residenceId;
 }

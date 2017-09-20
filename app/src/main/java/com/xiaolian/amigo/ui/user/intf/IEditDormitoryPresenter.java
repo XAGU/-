@@ -11,7 +11,7 @@ import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 public interface IEditDormitoryPresenter<V extends IEditDormitoryView> extends IBasePresenter<V> {
     void queryDormitoryList(int page, int size);
 
-    void deleteDormitory(int residenceId);
+    void deleteDormitory(Long residenceId);
 
-    void updateResidenceId(int residenceId);
+    void updateResidenceId(Long residenceId);
 }

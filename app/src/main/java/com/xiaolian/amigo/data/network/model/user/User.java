@@ -11,19 +11,19 @@ import lombok.Data;
 @Data
 public class User {
     private String residenceName;
-    private int residenceId;
+    private Long residenceId;
     private String floor;
-    private int floorId;
-    private int id;
+    private Long floorId;
+    private Long id;
     private String mobile;
     private String nickName;
     private String pictureUrl;
     private String room;
-    private int roomId;
-    private int schoolId;
+    private Long roomId;
+    private Long schoolId;
     private String schoolName;
-    private int sex;
-    private int type;
+    private Integer sex;
+    private Integer type;
 
     public User() {
     }

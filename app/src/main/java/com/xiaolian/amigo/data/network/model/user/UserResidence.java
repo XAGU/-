@@ -9,8 +9,8 @@ import lombok.Data;
  */
 @Data
 public class UserResidence {
-    private Integer id;
-    private Integer residenceId;
+    private Long id;
+    private Long residenceId;
     // 宿舍名称
     private String residenceName;
 }

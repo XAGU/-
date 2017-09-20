@@ -16,7 +16,7 @@ import lombok.Data;
 public class FavoriteRespDTO {
 
     // 收藏设备总数
-    private int total;
+    private Integer total;
     // 收藏设备列表
     private List<Device> devices;
 

@@ -55,8 +55,8 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
         if (userHolder == null) {
             userHolder = new User();
         }
-        userHolder.setResidenceId(mSharedPreferences.getInt(PREF_KEY_RESIDENCEID, -1));
-        userHolder.setSchoolId(mSharedPreferences.getInt(PREF_KEY_SCHOOLID, -1));
+        userHolder.setResidenceId(mSharedPreferences.getLong(PREF_KEY_RESIDENCEID, -1));
+        userHolder.setSchoolId(mSharedPreferences.getLong(PREF_KEY_SCHOOLID, -1));
         userHolder.setSchoolName(mSharedPreferences.getString(PREF_KEY_SCHOOLNAME, null));
         userHolder.setNickName(mSharedPreferences.getString(PREF_KEY_NICKNAME, null));
         userHolder.setMobile(mSharedPreferences.getString(PREF_KEY_MOBILE, null));
@@ -66,8 +66,8 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     @Override
     public void setUserInfo(User user) {
         userHolder = user;
-        mSharedPreferences.edit().putInt(PREF_KEY_RESIDENCEID, user.getResidenceId()).apply();
-        mSharedPreferences.edit().putInt(PREF_KEY_SCHOOLID, user.getSchoolId()).apply();
+        mSharedPreferences.edit().putLong(PREF_KEY_RESIDENCEID, user.getResidenceId()).apply();
+        mSharedPreferences.edit().putLong(PREF_KEY_SCHOOLID, user.getSchoolId()).apply();
         mSharedPreferences.edit().putString(PREF_KEY_SCHOOLNAME, user.getSchoolName()).apply();
         mSharedPreferences.edit().putString(PREF_KEY_NICKNAME, user.getNickName()).apply();
         mSharedPreferences.edit().putString(PREF_KEY_MOBILE, user.getMobile()).apply();

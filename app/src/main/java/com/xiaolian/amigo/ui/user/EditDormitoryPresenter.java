@@ -62,7 +62,7 @@ public class EditDormitoryPresenter<V extends IEditDormitoryView> extends BasePr
     }
 
     @Override
-    public void deleteDormitory(int residenceId) {
+    public void deleteDormitory(Long residenceId) {
         SimpleReqDTO dto = new SimpleReqDTO();
         dto.setId(residenceId);
         addObserver(manager.deleteResidence(dto), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
@@ -80,7 +80,7 @@ public class EditDormitoryPresenter<V extends IEditDormitoryView> extends BasePr
     }
 
     @Override
-    public void updateResidenceId(int residenceId) {
+    public void updateResidenceId(Long residenceId) {
         PersonalUpdateReqDTO dto = new PersonalUpdateReqDTO();
         dto.setResidneceId(residenceId);
         addObserver(manager.updateUserInfo(dto), new NetworkObserver<ApiResult<EntireUserDTO>>() {

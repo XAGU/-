@@ -11,8 +11,8 @@ import lombok.Data;
 public class FavoriteReqDTO {
 
     // 页码
-    private int page;
+    private Integer page;
     // 页大小
-    private int size;
+    private Integer size;
 
 }
