@@ -44,13 +44,14 @@ public class LogInterceptor implements Interceptor {
         } else {
             content = "";
         }
+        int code = response.code();
         if (DEBUG) {
             if (!newRequest.method().equals("GET")) {
                 String requestContent = bodyToString(newRequest.body());
-                Log.d(TAG, "url: " + url + "\n" + "header: " + header + "\n" + "request body: " + requestContent
+                Log.d(TAG, "url: " + url + "\n" + "code: " + code + "\n" + "header: " + header + "\n" + "request body: " + requestContent
                         + "\n" + "response body: " + content);
             } else {
-                Log.d(TAG, "url: " + url + "\n" + "header: " + header + "\n" + "response body: " + content);
+                Log.d(TAG, "url: " + url + "\n" + "code: " + code + "\n" + "header: " + header + "\n" + "response body: " + content);
             }
         }
 

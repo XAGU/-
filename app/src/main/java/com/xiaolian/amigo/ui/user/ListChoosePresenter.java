@@ -1,5 +1,7 @@
 package com.xiaolian.amigo.ui.user;
 
+import android.util.Log;
+
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.BindResidenceReq;
@@ -10,6 +12,7 @@ import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.EntireUserDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryBriefSchoolListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.ResidenceListRespDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.UserResidenceInListDTO;
 import com.xiaolian.amigo.data.network.model.user.Residence;
 import com.xiaolian.amigo.data.network.model.user.School;
 import com.xiaolian.amigo.ui.base.BasePresenter;
@@ -160,23 +163,49 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
     }
 
     @Override
-    public void bindDormitory(Integer id, boolean isEdit) {
-        BindResidenceReq dto = new BindResidenceReq();
-        dto.setId(id);
-        if (isEdit) {
-            dto.setResidenceId(manager.getUser().getResidenceId());
-        }
-        addObserver(manager.bindResidence(dto), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
+    public void getDormitoryList(int page, int size, int parentId) {
+        QueryResidenceListReqDTO dto = new QueryResidenceListReqDTO();
+        dto.setPage(page);
+        dto.setSize(size);
+        // buildtype 1 表示宿舍
+        dto.setBuildingType(1);
+        dto.setParentId(parentId);
+        dto.setSchoolId(manager.getUser().getSchoolId());
+        // residencelevel 3 表示宿舍
+        dto.setResidenceLevel(3);
+        addObserver(manager.queryResidenceList(dto), new NetworkObserver<ApiResult<ResidenceListRespDTO>>() {
 
             @Override
-            public void onReady(ApiResult<BooleanRespDTO> result) {
+            public void onReady(ApiResult<ResidenceListRespDTO> result) {
                 if (null == result.getError()) {
-                    if (result.getData().isResult()) {
-                        getMvpView().showMessage("绑定成功");
-                        getMvpView().backToDormitory();
-                    } else {
-                        getMvpView().showMessage("绑定失败");
+                    if (result.getData().getResidences() != null && result.getData().getResidences().size() > 0) {
+                        ArrayList<ListChooseAdaptor.Item> wapper = new ArrayList<>();
+                        for (Residence residence : result.getData().getResidences()) {
+                            wapper.add(new ListChooseAdaptor.Item(residence));
+                        }
+                        getMvpView().addMore(wapper);
                     }
+                } else {
+                    getMvpView().showMessage(result.getError().getDisplayMessage());
+                }
+            }
+        });
+    }
+
+    @Override
+    public void bindDormitory(int id, int residenceId, boolean isEdit) {
+        BindResidenceReq dto = new BindResidenceReq();
+        dto.setResidenceId(residenceId);
+        if (isEdit) {
+            dto.setId(id);
+        }
+        addObserver(manager.bindResidence(dto), new NetworkObserver<ApiResult<UserResidenceInListDTO>>() {
+
+            @Override
+            public void onReady(ApiResult<UserResidenceInListDTO> result) {
+                if (null == result.getError()) {
+                    getMvpView().showMessage("绑定成功");
+                    getMvpView().backToDormitory();
                 } else {
                     getMvpView().showMessage(result.getError().getDisplayMessage());
                 }

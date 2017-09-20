@@ -19,6 +19,7 @@ import com.xiaolian.amigo.data.network.model.dto.response.QuerySchoolBizListResp
 import com.xiaolian.amigo.data.network.model.dto.response.QueryUserResidenceListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.ResidenceListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.SimpleRespDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.UserResidenceInListDTO;
 import com.xiaolian.amigo.data.network.model.user.User;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 
@@ -102,7 +103,7 @@ public class UserDataManager implements IUserDataManager {
     }
 
     @Override
-    public Observable<ApiResult<BooleanRespDTO>> bindResidence(@Body BindResidenceReq body) {
+    public Observable<ApiResult<UserResidenceInListDTO>> bindResidence(@Body BindResidenceReq body) {
         return userApi.bindResidence(body);
     }
 

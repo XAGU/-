@@ -1,7 +1,8 @@
 package com.xiaolian.amigo.data.network.model;
 
 /**
- * Created by adamzfc on 9/14/17.
+ * ApiResult
+ * Created by zcd on 9/14/17.
  */
 
 public class ApiResult<T> {

@@ -16,6 +16,7 @@ import com.xiaolian.amigo.data.network.model.dto.response.QuerySchoolBizListResp
 import com.xiaolian.amigo.data.network.model.dto.response.QueryUserResidenceListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.ResidenceListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.SimpleRespDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.UserResidenceInListDTO;
 
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
@@ -70,6 +71,6 @@ public interface IUserApi {
 
     // 用户绑定编辑寝室
     @POST("/user/residence/bind")
-    Observable<ApiResult<BooleanRespDTO>> bindResidence(@Body BindResidenceReq body);
+    Observable<ApiResult<UserResidenceInListDTO>> bindResidence(@Body BindResidenceReq body);
 
 }

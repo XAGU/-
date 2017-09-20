@@ -70,7 +70,7 @@ public class EditDormitoryActivity extends UserBaseActivity implements IEditDorm
 
         presenter.onAttach(EditDormitoryActivity.this);
 
-        adaptor = new EditDormitoryAdaptor(this, R.layout.item_dormitory, items);
+        adaptor = new EditDormitoryAdaptor(this, R.layout.item_dormitory, items, presenter);
         adaptor.setOnItemClickListener((userResidenceWrapper, position) -> {
             presenter.updateResidenceId(userResidenceWrapper.getResidenceId());
         });

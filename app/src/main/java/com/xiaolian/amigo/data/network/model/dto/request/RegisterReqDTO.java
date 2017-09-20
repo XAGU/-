@@ -21,4 +21,7 @@ public class RegisterReqDTO {
         this.password = password;
         this.schoolId = schoolId;
     }
+
+    public RegisterReqDTO() {
+    }
 }
