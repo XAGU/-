@@ -16,11 +16,9 @@
 package com.xiaolian.amigo.di.componet;
 
 
-import com.xiaolian.amigo.di.OrderActivityContext;
 import com.xiaolian.amigo.di.WalletActivityContext;
-import com.xiaolian.amigo.di.module.OrderActivityModule;
 import com.xiaolian.amigo.di.module.WalletActivityModule;
-import com.xiaolian.amigo.ui.order.OrderActivity;
+import com.xiaolian.amigo.ui.wallet.RechargeActivity;
 import com.xiaolian.amigo.ui.wallet.WalletActivity;
 
 import dagger.Component;
@@ -31,4 +29,6 @@ import dagger.Component;
 public interface WalletActivityComponent {
 
     void inject(WalletActivity activity);
+
+    void inject(RechargeActivity activity);
 }

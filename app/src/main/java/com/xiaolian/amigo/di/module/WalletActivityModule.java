@@ -27,7 +27,10 @@ import com.xiaolian.amigo.di.WalletActivityContext;
 import com.xiaolian.amigo.ui.order.OrderPresenter;
 import com.xiaolian.amigo.ui.order.intf.IOrderPresenter;
 import com.xiaolian.amigo.ui.order.intf.IOrderView;
+import com.xiaolian.amigo.ui.wallet.RechargePresenter;
 import com.xiaolian.amigo.ui.wallet.WalletPresenter;
+import com.xiaolian.amigo.ui.wallet.intf.IRechargePresenter;
+import com.xiaolian.amigo.ui.wallet.intf.IRechargeView;
 import com.xiaolian.amigo.ui.wallet.intf.IWalletPresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IWalletView;
 
@@ -61,8 +64,14 @@ public class WalletActivityModule {
     }
 
     @Provides
+    @WalletActivityContext
+    IRechargePresenter<IRechargeView> provideRechargePresenter(
+            RechargePresenter<IRechargeView> presenter) {
+        return presenter;
+    }
+
+    @Provides
     IWalletDataManager provideWalletDataManager(WalletDataManager manager) {
         return manager;
     }
-
 }
