@@ -34,6 +34,7 @@ public class ListChooseActivity extends UserBaseActivity implements IListChooseV
     public static final String INTENT_KEY_LIST_CHOOSE_ACTION = "intent_key_list_choose_action";
     public static final String INTENT_KEY_LIST_CHOOSE_PARENT_ID = "intent_key_list_choose_parent_id";
     public static final String INTENT_KEY_LIST_CHOOSE_IS_EDIT = "intent_key_list_choose_is_edit";
+    public static final String INTENT_KEY_LIST_CHOOSE_RESIDENCE_BIND_ID = "intent_key_list_choose_residence_bind_id";
     public static final int ACTION_LIST_SCHOOL = 1;
     public static final int ACTION_LIST_DORMITOR = 2;
     public static final int ACTION_LIST_FLOOR = 3;
@@ -44,6 +45,9 @@ public class ListChooseActivity extends UserBaseActivity implements IListChooseV
 
     // 宿舍是否编辑
     private boolean isEditDormitory;
+
+    // 宿舍编辑时需要的ID
+    private int residenceBindId = -1;
 
     @Inject
     IListChoosePresenter<IListChooseView> presenter;
@@ -94,6 +98,7 @@ public class ListChooseActivity extends UserBaseActivity implements IListChooseV
                     tv_title.setText("选择楼栋");
                     if (getIntent() != null) {
                         isEditDormitory = getIntent().getBooleanExtra(INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
+                        residenceBindId = getIntent().getIntExtra(INTENT_KEY_LIST_CHOOSE_RESIDENCE_BIND_ID, -1);
                     }
                     presenter.getBuildList(1, Constant.PAGE_SIZE);
                     adapter.setOnItemClickListener((view, position) -> {
@@ -101,6 +106,7 @@ public class ListChooseActivity extends UserBaseActivity implements IListChooseV
                         intent.putExtra(INTENT_KEY_LIST_CHOOSE_ACTION, ACTION_LIST_FLOOR);
                         intent.putExtra(INTENT_KEY_LIST_CHOOSE_PARENT_ID, items.get(position).getId());
                         intent.putExtra(INTENT_KEY_LIST_CHOOSE_IS_EDIT, isEditDormitory);
+                        intent.putExtra(INTENT_KEY_LIST_CHOOSE_RESIDENCE_BIND_ID, residenceBindId);
                         startActivity(intent);
                     });
                     break;
@@ -108,6 +114,7 @@ public class ListChooseActivity extends UserBaseActivity implements IListChooseV
                     tv_title.setText("选择楼层");
                     if (getIntent() != null) {
                         isEditDormitory = getIntent().getBooleanExtra(INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
+                        residenceBindId = getIntent().getIntExtra(INTENT_KEY_LIST_CHOOSE_RESIDENCE_BIND_ID, -1);
                         int parentId = getIntent().getIntExtra(INTENT_KEY_LIST_CHOOSE_PARENT_ID, -1);
                         if (parentId != -1) {
                             presenter.getFloorList(1, Constant.PAGE_SIZE, parentId);
@@ -118,6 +125,7 @@ public class ListChooseActivity extends UserBaseActivity implements IListChooseV
                         intent.putExtra(INTENT_KEY_LIST_CHOOSE_ACTION, ACTION_LIST_DORMITOR);
                         intent.putExtra(INTENT_KEY_LIST_CHOOSE_PARENT_ID, items.get(position).getId());
                         intent.putExtra(INTENT_KEY_LIST_CHOOSE_IS_EDIT, isEditDormitory);
+                        intent.putExtra(INTENT_KEY_LIST_CHOOSE_RESIDENCE_BIND_ID, residenceBindId);
                         startActivity(intent);
                     });
                     break;
@@ -125,13 +133,14 @@ public class ListChooseActivity extends UserBaseActivity implements IListChooseV
                     tv_title.setText("选择宿舍");
                     if (getIntent() != null) {
                         isEditDormitory = getIntent().getBooleanExtra(INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
+                        residenceBindId = getIntent().getIntExtra(INTENT_KEY_LIST_CHOOSE_RESIDENCE_BIND_ID, -1);
                         int parentId = getIntent().getIntExtra(INTENT_KEY_LIST_CHOOSE_PARENT_ID, -1);
                         if (parentId != -1) {
-                            presenter.getFloorList(1, Constant.PAGE_SIZE, parentId);
+                            presenter.getDormitoryList(1, Constant.PAGE_SIZE, parentId);
                         }
                     }
                     adapter.setOnItemClickListener((view, position) -> {
-                        presenter.bindDormitory(items.get(position).getId(), isEditDormitory);
+                        presenter.bindDormitory(residenceBindId, items.get(position).getId(), isEditDormitory);
                     });
                     break;
             }
@@ -151,7 +160,7 @@ public class ListChooseActivity extends UserBaseActivity implements IListChooseV
 
     @Override
     public void backToDormitory() {
-        Intent intent = new Intent(getApplicationContext(), EditDormitoryActivity.class);
+        Intent intent = new Intent(this, EditDormitoryActivity.class);
         startActivity(intent);
     }
 

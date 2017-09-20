@@ -67,8 +67,4 @@ public class LoginRegistryGroupActivity extends ActivityGroup {
         tv_registry.setTextColor(Color.parseColor("#bbbbbb"));
     }
 
-    @OnClick(R.id.iv_close)
-    void close() {
-        finish();
-    }
 }

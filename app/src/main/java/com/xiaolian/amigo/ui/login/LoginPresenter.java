@@ -18,6 +18,13 @@ package com.xiaolian.amigo.ui.login;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.manager.intf.ILoginDataManager;
+import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.dto.request.PasswordResetReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.request.RegisterReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.request.VerificationCodeCheckReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.request.VerificationCodeGetReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.LoginRespDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.login.intf.ILoginPresenter;
 import com.xiaolian.amigo.ui.login.intf.ILoginView;
@@ -27,12 +34,12 @@ import javax.inject.Inject;
 public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
         implements ILoginPresenter<V> {
 
-    private ILoginDataManager mLoginDataManager;
+    private ILoginDataManager manager;
 
     @Inject
     public LoginPresenter(ILoginDataManager manager) {
         super();
-        mLoginDataManager = manager;
+        this.manager = manager;
     }
 
 
@@ -43,38 +50,90 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
     }
 
     @Override
-    public void register(String code, int mobile, String password, int schoolld) {
-//        mLoginDataManager.register(new RegisterReqDTO(code, mobile, password, schoolld))
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Consumer<Response<ApiResult<LoginRespDTO>>>() {
-//                    @Override
-//                    public void accept(@NonNull Response<ApiResult<LoginRespDTO>> apiResultResponse) throws Exception {
-//                        getMvpView().showMessage(apiResultResponse.body().getError().getDebugMessage() + "");
-//                        Log.d("test", "onNext:" + apiResultResponse.code());
-//                    }
-//                });
-//                .subscribe(new DisposableSubscriber<ApiResult<LoginRespDTO>>() {
-//
-//                    @Override
-//                    public void onNext(ApiResult<LoginRespDTO> apiResultResponse) {
-////                        getMvpView().showMessage(apiResultResponse.body().getError().getDebugMessage() + "");
-//                        Log.d("test", "onNext:");
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable t) {
-//                        if (t instanceof HttpException) {
-//                            HttpException exception = (HttpException) t;
-//                            Response response = exception.response();
-//                            Log.d("test", response.code() + "");
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onComplete() {
-//
-//                    }
-//                });
+    public void register(String code, int mobile, String password, int schoolId) {
+        RegisterReqDTO dto = new RegisterReqDTO();
+        dto.setCode(code);
+        dto.setMobile(mobile);
+        dto.setPassword(password);
+        dto.setSchoolId(schoolId);
+        addObserver(manager.register(dto), new NetworkObserver<ApiResult<LoginRespDTO>>() {
+
+            @Override
+            public void onReady(ApiResult<LoginRespDTO> result) {
+                if (null == result.getError()) {
+                    getMvpView().showMessage("注册成功");
+                    getMvpView().gotoLoginView();
+                } else {
+                    getMvpView().showMessage(result.getError().getDisplayMessage());
+                }
+            }
+        });
+    }
+
+    @Override
+    public void getVerification(String mobile) {
+        VerificationCodeGetReqDTO dto = new VerificationCodeGetReqDTO();
+        dto.setMobile(mobile);
+        addObserver(manager.getVerification(dto), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
+
+            @Override
+            public void onReady(ApiResult<BooleanRespDTO> result) {
+                if (null == result.getError()) {
+                    if (result.getData().isResult()) {
+                        getMvpView().showMessage("验证码发送成功");
+                    } else {
+                        getMvpView().showMessage("验证码发送失败，请重试");
+                    }
+                } else {
+                    getMvpView().showMessage(result.getError().getDisplayMessage());
+                }
+            }
+        });
+    }
+
+    @Override
+    public void checkVerification(String mobile, String code) {
+        VerificationCodeCheckReqDTO dto = new VerificationCodeCheckReqDTO();
+        dto.setMobile(mobile);
+        dto.setCode(code);
+        addObserver(manager.verificationCheck(dto), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
+
+            @Override
+            public void onReady(ApiResult<BooleanRespDTO> result) {
+                if (null == result.getError()) {
+                    if (result.getData().isResult()) {
+                        getMvpView().gotoRegisterStep2View();
+                    } else {
+                        getMvpView().showMessage("验证码校验失败,请重试");
+                    }
+                } else {
+                    getMvpView().showMessage(result.getError().getDisplayMessage());
+                }
+            }
+        });
+    }
+
+    @Override
+    public void resetPassword(String mobile, String password, String code) {
+        PasswordResetReqDTO dto = new PasswordResetReqDTO();
+        dto.setCode(code);
+        dto.setMobile(mobile);
+        dto.setPassword(password);
+        addObserver(manager.passwordReset(dto), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
+
+            @Override
+            public void onReady(ApiResult<BooleanRespDTO> result) {
+                if (null == result.getError()) {
+                    if (result.getData().isResult()) {
+                        getMvpView().showMessage("密码重置成功");
+                        getMvpView().gotoLoginView();
+                    } else {
+                        getMvpView().showMessage("密码重置失败，请重试");
+                    }
+                } else {
+                    getMvpView().showMessage(result.getError().getDisplayMessage());
+                }
+            }
+        });
     }
 }

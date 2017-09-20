@@ -90,6 +90,7 @@ public class EditDormitoryPresenter<V extends IEditDormitoryView> extends BasePr
                 if (null == result.getError()) {
                     manager.setUser(new User(result.getData()));
                     getMvpView().notifyAdaptor();
+                    getMvpView().showMessage("设置成功");
                 } else {
                     getMvpView().showMessage(result.getError().getDisplayMessage());
                 }

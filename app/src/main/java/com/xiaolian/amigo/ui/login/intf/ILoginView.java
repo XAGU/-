@@ -20,4 +20,8 @@ import com.xiaolian.amigo.ui.base.intf.IBaseView;
 
 public interface ILoginView extends IBaseView {
 
+    void gotoLoginView();
+
+    void gotoRegisterStep2View();
+
 }

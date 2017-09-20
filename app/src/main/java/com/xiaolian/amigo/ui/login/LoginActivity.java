@@ -1,6 +1,8 @@
 package com.xiaolian.amigo.ui.login;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
@@ -12,7 +14,6 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import retrofit2.Retrofit;
 
 /**
  * Created by caidong on 2017/9/14.
@@ -22,10 +23,20 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
 
     @Inject
     ILoginPresenter<ILoginView> mPresenter;
-    @BindView(R.id.et_mobile)
-    TextView et_mobile;
-    @BindView(R.id.et_userpwd)
-    TextView et_userpwd;
+//    @BindView(R.id.et_mobile)
+//    TextView et_mobile;
+//    @BindView(R.id.et_userpwd)
+//    TextView et_userpwd;
+
+    @BindView(R.id.tv_login)
+    TextView tv_login;
+
+    @BindView(R.id.tv_registry)
+    TextView tv_registry;
+
+    LoginFragment loginFragment;
+    RegisterFragment registerFragment;
+    RegisterStep1Fragment registerStep1Fragment;
 
     @Override
     protected void setUp() {
@@ -35,13 +46,23 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_login_registry_group);
 
         setUnBinder(ButterKnife.bind(this));
 
         getActivityComponent().inject(this);
 
         mPresenter.onAttach(LoginActivity.this);
+
+        if (findViewById(R.id.sv_container) != null) {
+            if (savedInstanceState != null) {
+                return;
+            }
+            LoginFragment loginFragment = new LoginFragment();
+            loginFragment.setArguments(getIntent().getExtras());
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.sv_container, loginFragment).commit();
+        }
     }
 
     @Override
@@ -50,9 +71,49 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
         super.onDestroy();
     }
 
-    // 登录
-    @OnClick(R.id.bt_submit)
-    void login() {
-        mPresenter.onLoginClick(et_mobile.getText().toString(), et_userpwd.getText().toString());
+    @OnClick(R.id.tv_registry)
+    void gotoRegister() {
+        if (registerStep1Fragment == null) {
+            registerStep1Fragment = new RegisterStep1Fragment();
+        }
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.sv_container, registerStep1Fragment);
+        transaction.commit();
+
+        tv_login.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorTextGray));
+        tv_registry.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorDark2));
+
+    }
+
+    @OnClick(R.id.tv_login)
+    void gotoLogin() {
+        if (loginFragment == null) {
+            loginFragment = new LoginFragment();
+        }
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.sv_container, loginFragment);
+        transaction.commit();
+
+        tv_login.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorDark2));
+        tv_registry.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorTextGray));
+    }
+
+    public void registerSetp2() {
+        if (registerFragment == null) {
+            registerFragment = new RegisterFragment();
+        }
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.sv_container, registerFragment);
+        transaction.commit();
+    }
+
+    @Override
+    public void gotoLoginView() {
+        gotoLogin();
+    }
+
+    @Override
+    public void gotoRegisterStep2View() {
+        gotoRegisterStep2View();
     }
 }

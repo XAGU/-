@@ -54,15 +54,16 @@ public class EditDormitoryAdaptor extends CommonAdapter<EditDormitoryAdaptor.Use
             ((TextView)holder.getView(R.id.tv_choose)).setText("设为默认");
             ((TextView) holder.getView(R.id.tv_choose)).setTextColor(ContextCompat.getColor(context, R.color.colorDark9));
         }
-        holder.getView(R.id.tv_delete).setOnClickListener(v -> presenter.deleteDormitory(userResidenceWrapper.getResidenceId()));
+        holder.getView(R.id.tv_delete).setOnClickListener(v -> presenter.deleteDormitory(userResidenceWrapper.getId()));
         holder.getView(R.id.tv_edit).setOnClickListener(v -> {
             Intent intent = new Intent(context, ListChooseActivity.class);
             intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_IS_EDIT, true);
             intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION,
                     ListChooseActivity.ACTION_LIST_BUILDING);
+            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_RESIDENCE_BIND_ID, userResidenceWrapper.getId());
             context.startActivity(intent);
         });
-        holder.itemView.setOnClickListener(v -> listener.onItemClick(userResidenceWrapper, position));
+        holder.getView(R.id.ll_dormitory).setOnClickListener(v -> listener.onItemClick(userResidenceWrapper, position));
     }
 
     public interface OnItemClickListener {
