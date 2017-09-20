@@ -95,6 +95,11 @@ public class ListChooseAdaptor extends RecyclerView.Adapter<ListChooseAdaptor.Vi
         boolean tick;
         Integer id;
 
+        public Item(String content, boolean tick, Integer id) {
+            this(content, tick);
+            this.id = id;
+        }
+
         public Item(String content, boolean tick) {
             this.content = content;
             this.tick = tick;

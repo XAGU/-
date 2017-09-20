@@ -2,6 +2,7 @@ package com.xiaolian.amigo.ui.user;
 
 import android.util.Log;
 
+import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.BindResidenceReq;
@@ -46,7 +47,7 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
         SimpleQueryReqDTO dto = new SimpleQueryReqDTO();
         dto.setPage(page);
         dto.setSize(size);
-        addObserver(manager.getSchoolList(dto), new NetworkObserver<ApiResult<QueryBriefSchoolListRespDTO>>(){
+        addObserver(manager.getSchoolList(dto), new NetworkObserver<ApiResult<QueryBriefSchoolListRespDTO>>() {
 
             @Override
             public void onReady(ApiResult<QueryBriefSchoolListRespDTO> result) {
@@ -67,12 +68,14 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
     }
 
     @Override
-    public void getBuildList(Integer page, Integer size) {
+    public void getBuildList(Integer page, Integer size, Integer buildingType) {
         QueryResidenceListReqDTO dto = new QueryResidenceListReqDTO();
         dto.setPage(page);
         dto.setSize(size);
-        // buildtype 1 表示宿舍
-        dto.setBuildingType(1);
+        // buildingType 1 - 宿舍, 热水器时不要携带该参数表示选取所有楼栋
+        if (buildingType != Device.DISPENSER.getType()) {
+            dto.setBuildingType(buildingType);
+        }
         dto.setSchoolId(manager.getUser().getSchoolId());
         // residencelevel 1 表示楼栋
         dto.setResidenceLevel(1);
@@ -133,12 +136,14 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
     }
 
     @Override
-    public void getFloorList(int page, int size, int parentId) {
+    public void getFloorList(int page, int size, int parentId, int buildingType) {
         QueryResidenceListReqDTO dto = new QueryResidenceListReqDTO();
         dto.setPage(page);
         dto.setSize(size);
-        // buildtype 1 表示宿舍
-        dto.setBuildingType(1);
+        // buildingType 1 表示宿舍
+        if (buildingType != Device.DISPENSER.getType()) {
+            dto.setBuildingType(buildingType);
+        }
         dto.setParentId(parentId);
         dto.setSchoolId(manager.getUser().getSchoolId());
         // residencelevel 2 表示楼层
@@ -163,12 +168,14 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
     }
 
     @Override
-    public void getDormitoryList(int page, int size, int parentId) {
+    public void getDormitoryList(int page, int size, int parentId, int buildingType) {
         QueryResidenceListReqDTO dto = new QueryResidenceListReqDTO();
         dto.setPage(page);
         dto.setSize(size);
-        // buildtype 1 表示宿舍
-        dto.setBuildingType(1);
+        // buildingType 1 表示宿舍
+        if (buildingType != Device.DISPENSER.getType()) {
+            dto.setBuildingType(1);
+        }
         dto.setParentId(parentId);
         dto.setSchoolId(manager.getUser().getSchoolId());
         // residencelevel 3 表示宿舍

@@ -69,6 +69,11 @@ public class RepairApplyActivity extends RepairBaseActivity {
 
     @OnClick(R.id.rl_device)
     void selectDevice() {
-        startActivity(this, RepairDeviceTypeActivity.class);
+        Map<String, Integer> extraMap = new HashMap<String, Integer>() {
+            {
+                put(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION, ListChooseActivity.ACTION_LIST_DEVICE);
+            }
+        };
+        startActivity(this, ListChooseActivity.class, extraMap);
     }
 }

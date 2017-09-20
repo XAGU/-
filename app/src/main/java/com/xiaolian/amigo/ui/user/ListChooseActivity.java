@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.tmp.common.config.RecycleViewDivider;
 import com.xiaolian.amigo.ui.user.adaptor.ListChooseAdaptor;
 import com.xiaolian.amigo.ui.user.intf.IListChoosePresenter;
@@ -41,6 +42,8 @@ public class ListChooseActivity extends UserBaseActivity implements IListChooseV
     public static final int ACTION_LIST_FLOOR = 3;
     public static final int ACTION_LIST_BUILDING = 4;
     public static final int ACTION_LIST_SEX = 5;
+    // 选择设备，热水器 or 饮水机
+    public static final int ACTION_LIST_DEVICE = 6;
 
     private List<ListChooseAdaptor.Item> items = new ArrayList<>();
 
@@ -49,6 +52,9 @@ public class ListChooseActivity extends UserBaseActivity implements IListChooseV
 
     // 宿舍编辑时需要的ID
     private int residenceBindId = -1;
+
+    // 建筑类型，1 - 宿舍楼栋 2 - 除宿舍楼栋之外的楼栋
+    private int buildingType = 1;
 
     @Inject
     IListChoosePresenter<IListChooseView> presenter;
@@ -100,14 +106,16 @@ public class ListChooseActivity extends UserBaseActivity implements IListChooseV
                     if (getIntent() != null) {
                         isEditDormitory = getIntent().getBooleanExtra(INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
                         residenceBindId = getIntent().getIntExtra(INTENT_KEY_LIST_CHOOSE_RESIDENCE_BIND_ID, -1);
+                        buildingType = getIntent().getIntExtra(INTENT_KEY_LIST_BUILDING_TYPE, 1);
                     }
-                    presenter.getBuildList(1, Constant.PAGE_SIZE);
+                    presenter.getBuildList(1, Constant.PAGE_SIZE, buildingType);
                     adapter.setOnItemClickListener((view, position) -> {
                         Intent intent = new Intent(getApplicationContext(), ListChooseActivity.class);
                         intent.putExtra(INTENT_KEY_LIST_CHOOSE_ACTION, ACTION_LIST_FLOOR);
                         intent.putExtra(INTENT_KEY_LIST_CHOOSE_PARENT_ID, items.get(position).getId());
                         intent.putExtra(INTENT_KEY_LIST_CHOOSE_IS_EDIT, isEditDormitory);
                         intent.putExtra(INTENT_KEY_LIST_CHOOSE_RESIDENCE_BIND_ID, residenceBindId);
+                        intent.putExtra(INTENT_KEY_LIST_BUILDING_TYPE, buildingType);
                         startActivity(intent);
                     });
                     break;
@@ -116,9 +124,10 @@ public class ListChooseActivity extends UserBaseActivity implements IListChooseV
                     if (getIntent() != null) {
                         isEditDormitory = getIntent().getBooleanExtra(INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
                         residenceBindId = getIntent().getIntExtra(INTENT_KEY_LIST_CHOOSE_RESIDENCE_BIND_ID, -1);
+                        buildingType = getIntent().getIntExtra(INTENT_KEY_LIST_BUILDING_TYPE, 1);
                         int parentId = getIntent().getIntExtra(INTENT_KEY_LIST_CHOOSE_PARENT_ID, -1);
                         if (parentId != -1) {
-                            presenter.getFloorList(1, Constant.PAGE_SIZE, parentId);
+                            presenter.getFloorList(1, Constant.PAGE_SIZE, parentId, buildingType);
                         }
                     }
                     adapter.setOnItemClickListener((view, position) -> {
@@ -127,21 +136,40 @@ public class ListChooseActivity extends UserBaseActivity implements IListChooseV
                         intent.putExtra(INTENT_KEY_LIST_CHOOSE_PARENT_ID, items.get(position).getId());
                         intent.putExtra(INTENT_KEY_LIST_CHOOSE_IS_EDIT, isEditDormitory);
                         intent.putExtra(INTENT_KEY_LIST_CHOOSE_RESIDENCE_BIND_ID, residenceBindId);
+                        intent.putExtra(INTENT_KEY_LIST_BUILDING_TYPE, buildingType);
                         startActivity(intent);
                     });
                     break;
                 case ACTION_LIST_DORMITOR:
-                    tv_title.setText("选择宿舍");
                     if (getIntent() != null) {
                         isEditDormitory = getIntent().getBooleanExtra(INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
                         residenceBindId = getIntent().getIntExtra(INTENT_KEY_LIST_CHOOSE_RESIDENCE_BIND_ID, -1);
+                        buildingType = getIntent().getIntExtra(INTENT_KEY_LIST_BUILDING_TYPE, 1);
+                        if(buildingType == Device.HEARTER.getType()) {
+                            tv_title.setText("选择宿舍");
+                        } else { // buildingType == Device.DISPENSER.getType()
+                            tv_title.setText("选择位置");
+                        }
                         int parentId = getIntent().getIntExtra(INTENT_KEY_LIST_CHOOSE_PARENT_ID, -1);
                         if (parentId != -1) {
-                            presenter.getDormitoryList(1, Constant.PAGE_SIZE, parentId);
+                            presenter.getDormitoryList(1, Constant.PAGE_SIZE, parentId, buildingType);
                         }
                     }
                     adapter.setOnItemClickListener((view, position) -> {
                         presenter.bindDormitory(residenceBindId, items.get(position).getId(), isEditDormitory);
+                    });
+                    break;
+                case ACTION_LIST_DEVICE:
+                    tv_title.setText("设备类型");
+                    this.items.add(new ListChooseAdaptor.Item(Device.HEARTER.getDesc(), false, Device.HEARTER.getType()));
+                    this.items.add(new ListChooseAdaptor.Item(Device.DISPENSER.getDesc(), false, Device.DISPENSER.getType()));
+                    adapter.notifyDataSetChanged();
+                    adapter.setOnItemClickListener((view, position) -> {
+                        ListChooseAdaptor.Item item = items.get(position);
+                        Intent intent = new Intent(getApplicationContext(), ListChooseActivity.class);
+                        intent.putExtra(INTENT_KEY_LIST_BUILDING_TYPE, item.getId());
+                        intent.putExtra(INTENT_KEY_LIST_CHOOSE_ACTION, ACTION_LIST_BUILDING);
+                        startActivity(intent);
                     });
                     break;
             }
