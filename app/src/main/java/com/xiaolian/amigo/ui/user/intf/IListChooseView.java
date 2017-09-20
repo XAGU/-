@@ -16,5 +16,8 @@ public interface IListChooseView extends IBaseView {
 
     void backToDormitory();
 
+    void backToRepairApply(String location);
+
     void addMore(List<ListChooseAdaptor.Item> item);
+
 }

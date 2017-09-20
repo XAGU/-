@@ -21,6 +21,7 @@ import lombok.Data;
 
 /**
  * ListChooseAdapter
+ *
  * @author zcd
  */
 public class ListChooseAdaptor extends RecyclerView.Adapter<ListChooseAdaptor.ViewHolder> {
@@ -94,6 +95,7 @@ public class ListChooseAdaptor extends RecyclerView.Adapter<ListChooseAdaptor.Vi
         String content;
         boolean tick;
         Integer id;
+        String extra;
 
         public Item(String content, boolean tick, Integer id) {
             this(content, tick);
@@ -113,6 +115,7 @@ public class ListChooseAdaptor extends RecyclerView.Adapter<ListChooseAdaptor.Vi
 
         public Item(Residence residence) {
             this.content = residence.getName();
+            this.extra = residence.getFullName();
             this.id = residence.getId();
             this.tick = false;
         }

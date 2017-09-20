@@ -1,7 +1,5 @@
 package com.xiaolian.amigo.ui.user;
 
-import android.util.Log;
-
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
@@ -9,7 +7,6 @@ import com.xiaolian.amigo.data.network.model.dto.request.BindResidenceReq;
 import com.xiaolian.amigo.data.network.model.dto.request.PersonalUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.QueryResidenceListReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.SimpleQueryReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.EntireUserDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryBriefSchoolListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.ResidenceListRespDTO;
@@ -20,6 +17,7 @@ import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.user.adaptor.ListChooseAdaptor;
 import com.xiaolian.amigo.ui.user.intf.IListChoosePresenter;
 import com.xiaolian.amigo.ui.user.intf.IListChooseView;
+import com.xiaolian.amigo.util.Constant;
 
 import java.util.ArrayList;
 
@@ -211,8 +209,8 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
             @Override
             public void onReady(ApiResult<UserResidenceInListDTO> result) {
                 if (null == result.getError()) {
-                    getMvpView().showMessage("绑定成功");
-                    getMvpView().backToDormitory();
+                        getMvpView().showMessage("绑定成功");
+                        getMvpView().backToDormitory();
                 } else {
                     getMvpView().showMessage(result.getError().getDisplayMessage());
                 }
