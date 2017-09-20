@@ -31,4 +31,13 @@ public final class Constant {
     // 寝室楼
     public static final int ROOM_BUILDING_TYPE = 1;
 
+    // 跳转至ListChooseActivity的来源
+    public static final String REPAIR_APPLY_ACTIVITY_SRC = "repair_apply";
+
+    // 位置
+    public static final String LOCATION = "location";
+
+    // 设备类型
+    public static final String DEVICE_TYPE = "device_type";
+
 }

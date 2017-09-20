@@ -135,8 +135,7 @@
         <activity
             android:name=".ui.repair.RepairApplyActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:launchMode="singleTask"/>
+            android:theme="@style/AppTheme.NoActionBar"/>
 
 
         <activity

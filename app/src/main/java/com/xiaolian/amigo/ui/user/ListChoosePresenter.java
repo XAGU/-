@@ -1,14 +1,12 @@
 package com.xiaolian.amigo.ui.user;
 
-import android.util.Log;
-
+import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.BindResidenceReq;
 import com.xiaolian.amigo.data.network.model.dto.request.PersonalUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.QueryResidenceListReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.SimpleQueryReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.EntireUserDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryBriefSchoolListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.ResidenceListRespDTO;
@@ -19,6 +17,7 @@ import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.user.adaptor.ListChooseAdaptor;
 import com.xiaolian.amigo.ui.user.intf.IListChoosePresenter;
 import com.xiaolian.amigo.ui.user.intf.IListChooseView;
+import com.xiaolian.amigo.util.Constant;
 
 import java.util.ArrayList;
 
@@ -46,7 +45,7 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
         SimpleQueryReqDTO dto = new SimpleQueryReqDTO();
         dto.setPage(page);
         dto.setSize(size);
-        addObserver(manager.getSchoolList(dto), new NetworkObserver<ApiResult<QueryBriefSchoolListRespDTO>>(){
+        addObserver(manager.getSchoolList(dto), new NetworkObserver<ApiResult<QueryBriefSchoolListRespDTO>>() {
 
             @Override
             public void onReady(ApiResult<QueryBriefSchoolListRespDTO> result) {
@@ -67,12 +66,14 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
     }
 
     @Override
-    public void getBuildList(Integer page, Integer size) {
+    public void getBuildList(Integer page, Integer size, Integer buildingType) {
         QueryResidenceListReqDTO dto = new QueryResidenceListReqDTO();
         dto.setPage(page);
         dto.setSize(size);
-        // buildtype 1 表示宿舍
-        dto.setBuildingType(1);
+        // buildingType 1 - 宿舍, 热水器时不要携带该参数表示选取所有楼栋
+        if (buildingType != Device.DISPENSER.getType()) {
+            dto.setBuildingType(buildingType);
+        }
         dto.setSchoolId(manager.getUser().getSchoolId());
         // residencelevel 1 表示楼栋
         dto.setResidenceLevel(1);
@@ -133,12 +134,14 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
     }
 
     @Override
-    public void getFloorList(int page, int size, int parentId) {
+    public void getFloorList(int page, int size, int parentId, int buildingType) {
         QueryResidenceListReqDTO dto = new QueryResidenceListReqDTO();
         dto.setPage(page);
         dto.setSize(size);
-        // buildtype 1 表示宿舍
-        dto.setBuildingType(1);
+        // buildingType 1 表示宿舍
+        if (buildingType != Device.DISPENSER.getType()) {
+            dto.setBuildingType(buildingType);
+        }
         dto.setParentId(parentId);
         dto.setSchoolId(manager.getUser().getSchoolId());
         // residencelevel 2 表示楼层
@@ -163,12 +166,14 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
     }
 
     @Override
-    public void getDormitoryList(int page, int size, int parentId) {
+    public void getDormitoryList(int page, int size, int parentId, int buildingType) {
         QueryResidenceListReqDTO dto = new QueryResidenceListReqDTO();
         dto.setPage(page);
         dto.setSize(size);
-        // buildtype 1 表示宿舍
-        dto.setBuildingType(1);
+        // buildingType 1 表示宿舍
+        if (buildingType != Device.DISPENSER.getType()) {
+            dto.setBuildingType(1);
+        }
         dto.setParentId(parentId);
         dto.setSchoolId(manager.getUser().getSchoolId());
         // residencelevel 3 表示宿舍
@@ -204,8 +209,8 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
             @Override
             public void onReady(ApiResult<UserResidenceInListDTO> result) {
                 if (null == result.getError()) {
-                    getMvpView().showMessage("绑定成功");
-                    getMvpView().backToDormitory();
+                        getMvpView().showMessage("绑定成功");
+                        getMvpView().backToDormitory();
                 } else {
                     getMvpView().showMessage(result.getError().getDisplayMessage());
                 }
