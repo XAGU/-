@@ -46,11 +46,11 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
     @Override
     public void onLoginClick(String mobile, String password) {
         getMvpView().onError(R.string.password_invalid);
-        register("1", 1, "1", 1);
+        register("1", "", "1", 1);
     }
 
     @Override
-    public void register(String code, int mobile, String password, int schoolId) {
+    public void register(String code, String mobile, String password, int schoolId) {
         RegisterReqDTO dto = new RegisterReqDTO();
         dto.setCode(code);
         dto.setMobile(mobile);
@@ -81,6 +81,7 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
                 if (null == result.getError()) {
                     if (result.getData().isResult()) {
                         getMvpView().showMessage("验证码发送成功");
+                        getMvpView().startTimer();
                     } else {
                         getMvpView().showMessage("验证码发送失败，请重试");
                     }

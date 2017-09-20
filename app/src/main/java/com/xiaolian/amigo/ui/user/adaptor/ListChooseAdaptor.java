@@ -90,7 +90,7 @@ public class ListChooseAdaptor extends RecyclerView.Adapter<ListChooseAdaptor.Vi
     }
 
     @Data
-    public static class Item {
+    public static class Item implements Parcelable {
         String content;
         boolean tick;
         Integer id;
@@ -111,5 +111,36 @@ public class ListChooseAdaptor extends RecyclerView.Adapter<ListChooseAdaptor.Vi
             this.id = residence.getId();
             this.tick = false;
         }
+
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(this.content);
+            dest.writeByte(this.tick ? (byte) 1 : (byte) 0);
+            dest.writeValue(this.id);
+        }
+
+        protected Item(Parcel in) {
+            this.content = in.readString();
+            this.tick = in.readByte() != 0;
+            this.id = (Integer) in.readValue(Integer.class.getClassLoader());
+        }
+
+        public static final Creator<Item> CREATOR = new Creator<Item>() {
+            @Override
+            public Item createFromParcel(Parcel source) {
+                return new Item(source);
+            }
+
+            @Override
+            public Item[] newArray(int size) {
+                return new Item[size];
+            }
+        };
     }
 }

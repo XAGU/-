@@ -22,7 +22,7 @@ import butterknife.OnClick;
 public class LoginActivity extends LoginBaseActivity implements ILoginView {
 
     @Inject
-    ILoginPresenter<ILoginView> mPresenter;
+    ILoginPresenter<ILoginView> presenter;
 //    @BindView(R.id.et_mobile)
 //    TextView et_mobile;
 //    @BindView(R.id.et_userpwd)
@@ -38,6 +38,9 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
     RegisterFragment registerFragment;
     RegisterStep1Fragment registerStep1Fragment;
 
+    private String mobile;
+    private String code;
+
     @Override
     protected void setUp() {
 
@@ -52,7 +55,7 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
 
         getActivityComponent().inject(this);
 
-        mPresenter.onAttach(LoginActivity.this);
+        presenter.onAttach(LoginActivity.this);
 
         if (findViewById(R.id.sv_container) != null) {
             if (savedInstanceState != null) {
@@ -67,7 +70,7 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
 
     @Override
     protected void onDestroy() {
-        mPresenter.onDetach();
+        presenter.onDetach();
         super.onDestroy();
     }
 
@@ -114,6 +117,30 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
 
     @Override
     public void gotoRegisterStep2View() {
-        gotoRegisterStep2View();
+        registerSetp2();
+    }
+
+    @Override
+    public void startTimer() {
+        if (registerStep1Fragment != null) {
+            registerStep1Fragment.startTimer();
+        }
+    }
+
+    public void sendVerificationCode(String mobile) {
+        presenter.getVerification(mobile);
+    }
+
+    public void checkVerificationCode(String mobile, String code) {
+        presenter.checkVerification(mobile, code);
+    }
+
+    public void setMobileAndCode(String mobile, String code) {
+        this.mobile = mobile;
+        this.code = code;
+    }
+
+    public void register(String password, int schoolId) {
+        presenter.register(this.code, this.mobile, password, schoolId);
     }
 }

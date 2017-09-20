@@ -64,6 +64,7 @@
             android:textSize="@dimen/login_edit_text_size" />
 
         <Button
+            style="?android:attr/borderlessButtonStyle"
             android:id="@+id/bt_send_verification_code"
             android:layout_width="@dimen/verification_width"
             android:layout_height="@dimen/verification_height"
