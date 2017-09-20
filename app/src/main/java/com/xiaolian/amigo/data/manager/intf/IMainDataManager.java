@@ -1,13 +1,15 @@
 package com.xiaolian.amigo.data.manager.intf;
 
-import com.xiaolian.amigo.data.network.ILoginApi;
 import com.xiaolian.amigo.data.network.model.user.User;
 
 /**
- * LoginDataManager接口
- * @author zcd
+ * 主页
+ * <p>
+ * Created by zcd on 9/20/17.
  */
-public interface ILoginDataManager extends ILoginApi {
+
+public interface IMainDataManager {
+
     String getToken();
 
     void setToken(String token);

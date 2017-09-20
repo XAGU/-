@@ -52,9 +52,7 @@ public class EditProfilePresenter<V extends IEditProfileView> extends BasePresen
                     getMvpView().setSchoolName(result.getData().getSchoolName());
                     getMvpView().setResidenceName(result.getData().getResidenceName());
                     getMvpView().setSex(result.getData().getSex());
-                    User user = new User();
-                    user.setResidenceId(result.getData().getResidenceId());
-                    user.setSchoolId(result.getData().getSchoolId());
+                    User user = new User(result.getData());
                     manager.setUser(user);
                 } else {
                     getMvpView().showMessage(result.getError().getDisplayMessage());

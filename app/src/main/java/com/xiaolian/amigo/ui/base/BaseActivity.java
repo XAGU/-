@@ -32,6 +32,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
@@ -40,6 +41,7 @@ import android.widget.Toast;
 import com.aitangba.swipeback.SwipeBackActivity;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.tmp.component.dialog.ActionSheetDialog;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 import com.xiaolian.amigo.util.CommonUtil;
@@ -50,6 +52,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Map;
+
+import javax.inject.Inject;
 
 import butterknife.OnClick;
 import butterknife.Unbinder;
@@ -75,31 +79,13 @@ public abstract class BaseActivity extends SwipeBackActivity
 
     ActionSheetDialog actionSheetDialog;
 
+    @Inject
+    ISharedPreferencesHelp sharedPreferencesHelp;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        actionSheetDialog = new ActionSheetDialog(this)
-                .builder()
-                .setTitle("选择")
-                .addSheetItem("相机", ActionSheetDialog.SheetItemColor.Orange,
-                        i -> rxPermissions.request(Manifest.permission.CAMERA)
-                                .subscribe(granted -> {
-                                    if (granted) {
-                                        takePhoto();
-                                    } else {
-                                        showMessage("没有相机权限");
-                                    }
-                                }))
-                .addSheetItem("相册", ActionSheetDialog.SheetItemColor.Orange,
-                        i -> rxPermissions.request(Manifest.permission.READ_EXTERNAL_STORAGE)
-                                .subscribe(granted -> {
-                                    if (granted) {
-                                        selectPhoto();
-                                    } else {
-                                        showMessage("没有SD卡权限");
-                                    }
-                                }));
         rxPermissions = new RxPermissions(this);
     }
 
@@ -205,6 +191,30 @@ public abstract class BaseActivity extends SwipeBackActivity
 
     public void getImage(ImageCallback callback) {
         imageCallback = callback;
+
+        if (actionSheetDialog == null) {
+            actionSheetDialog = new ActionSheetDialog(this)
+                    .builder()
+                    .setTitle("选择")
+                    .addSheetItem("相机", ActionSheetDialog.SheetItemColor.Orange,
+                            i -> rxPermissions.request(Manifest.permission.CAMERA)
+                                    .subscribe(granted -> {
+                                        if (granted) {
+                                            takePhoto();
+                                        } else {
+                                            showMessage("没有相机权限");
+                                        }
+                                    }))
+                    .addSheetItem("相册", ActionSheetDialog.SheetItemColor.Orange,
+                            i -> rxPermissions.request(Manifest.permission.READ_EXTERNAL_STORAGE)
+                                    .subscribe(granted -> {
+                                        if (granted) {
+                                            selectPhoto();
+                                        } else {
+                                            showMessage("没有SD卡权限");
+                                        }
+                                    }));
+        }
         actionSheetDialog.show();
     }
 
@@ -337,7 +347,6 @@ public abstract class BaseActivity extends SwipeBackActivity
         }
         startActivity(intent);
     }
-
 
     // 单击回退按钮返回
     @OnClick(R.id.iv_back)

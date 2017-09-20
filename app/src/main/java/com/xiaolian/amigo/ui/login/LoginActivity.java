@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.login;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -8,6 +9,7 @@ import android.widget.TextView;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.login.intf.ILoginPresenter;
 import com.xiaolian.amigo.ui.login.intf.ILoginView;
+import com.xiaolian.amigo.ui.main.MainActivity;
 
 import javax.inject.Inject;
 
@@ -127,6 +129,12 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
         }
     }
 
+    @Override
+    public void gotoMainView() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
     public void sendVerificationCode(String mobile) {
         presenter.getVerification(mobile);
     }
@@ -143,4 +151,9 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
     public void register(String password, int schoolId) {
         presenter.register(this.code, this.mobile, password, schoolId);
     }
+
+    public void login(String mobile, String password) {
+        presenter.onLoginClick(mobile, password);
+    }
+
 }
