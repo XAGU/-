@@ -21,6 +21,7 @@ public class BonusExchangePresenter<V extends IBonusExchangeView> extends BasePr
 
     @Inject
     public BonusExchangePresenter(IBonusDataManager manager) {
+        super();
         this.manager = manager;
     }
 

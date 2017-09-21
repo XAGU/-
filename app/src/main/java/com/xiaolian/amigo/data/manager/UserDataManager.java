@@ -109,6 +109,7 @@ public class UserDataManager implements IUserDataManager {
 
     @Override
     public Observable<ApiResult<String>> uploadFile(@Part("file") RequestBody images) {
+
         return fileApi.uploadFile(images);
     }
 

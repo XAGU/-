@@ -22,6 +22,7 @@ public class LostAndFoundDetailPresenter<V extends ILostAndFoundDetailView> exte
 
     @Inject
     public LostAndFoundDetailPresenter(ILostAndFoundDataManager manager) {
+        super();
         this.manager = manager;
     }
 

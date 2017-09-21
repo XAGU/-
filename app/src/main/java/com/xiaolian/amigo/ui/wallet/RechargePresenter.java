@@ -28,6 +28,7 @@ public class RechargePresenter<V extends IRechargeView> extends BasePresenter<V>
 
     @Inject
     public RechargePresenter(IWalletDataManager manager) {
+        super();
         this.manager = manager;
     }
 

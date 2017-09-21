@@ -12,7 +12,6 @@ import android.widget.RelativeLayout;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.tmp.activity.device.geyser.GeyserActivity;
 import com.xiaolian.amigo.tmp.activity.device.waterfountain.WaterFountainActivity;
-import com.xiaolian.amigo.tmp.activity.lostandfound.LostAndFoundActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

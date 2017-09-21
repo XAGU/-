@@ -22,6 +22,9 @@ import com.xiaolian.amigo.di.module.LostAndFoundActivityModule;
 import com.xiaolian.amigo.di.module.OrderActivityModule;
 import com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity;
 import com.xiaolian.amigo.ui.lostandfound.LostAndFoundDetailActivity;
+import com.xiaolian.amigo.ui.lostandfound.MyPublishActivity;
+import com.xiaolian.amigo.ui.lostandfound.PublishFoundActivity;
+import com.xiaolian.amigo.ui.lostandfound.PublishLostActivity;
 import com.xiaolian.amigo.ui.order.OrderActivity;
 
 import dagger.Component;
@@ -34,4 +37,10 @@ public interface LostAndFoundActivityComponent {
     void inject(LostAndFoundActivity activity);
 
     void inject(LostAndFoundDetailActivity activity);
+
+    void inject(MyPublishActivity activity);
+
+    void inject(PublishLostActivity activity);
+
+    void inject(PublishFoundActivity activity);
 }

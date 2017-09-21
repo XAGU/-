@@ -27,6 +27,7 @@ public class BonusPresenter<V extends IBonusView> extends BasePresenter<V>
 
     @Inject
     public BonusPresenter(IBonusDataManager manager) {
+        super();
         this.manager = manager;
     }
 

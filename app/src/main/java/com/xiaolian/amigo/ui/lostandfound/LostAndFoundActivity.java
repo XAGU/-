@@ -7,9 +7,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.tmp.activity.lostandfound.MyPublishActivity;
-import com.xiaolian.amigo.tmp.activity.lostandfound.PublishFoundActivity;
-import com.xiaolian.amigo.tmp.activity.lostandfound.PublishLostActivity;
 import com.xiaolian.amigo.tmp.common.config.SpaceItemDecoration;
 import com.xiaolian.amigo.tmp.common.util.ScreenUtils;
 import com.xiaolian.amigo.tmp.component.dialog.SearchDialog;
@@ -191,6 +188,11 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
         this.lostAndFounds.addAll(found);
         adaptor.notifyDataSetChanged();
         foundPage ++;
+    }
+
+    @Override
+    public void addMore(List<LostAndFoundAdaptor.LostAndFoundWapper> lostAndFoundWappers) {
+        // this is for MyPublishActivity
     }
 
 

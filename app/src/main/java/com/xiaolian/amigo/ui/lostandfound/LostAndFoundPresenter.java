@@ -28,12 +28,13 @@ public class LostAndFoundPresenter<V extends ILostAndFoundView> extends BasePres
 
     @Inject
     public LostAndFoundPresenter(ILostAndFoundDataManager manager) {
+        super();
         this.manager = manager;
     }
 
 
     @Override
-    public void queryLostAndFoundList(int page, Long schoolId, String selectKey, int size, int type) {
+    public void queryLostAndFoundList(int page, Long schoolId, String selectKey, int size, Integer type) {
         QueryLostAndFoundListReqDTO dto = new QueryLostAndFoundListReqDTO();
         dto.setPage(page);
         dto.setSchoolId(schoolId);
@@ -51,10 +52,14 @@ public class LostAndFoundPresenter<V extends ILostAndFoundView> extends BasePres
                         for (LostAndFound lost : result.getData().getLostAndFounds()) {
                             wrappers.add(new LostAndFoundAdaptor.LostAndFoundWapper(lost));
                         }
-                        if (type == 1) {
-                            getMvpView().addMoreLost(wrappers);
+                        if (type == null) {
+                            getMvpView().addMore(wrappers);
                         } else {
-                            getMvpView().addMoreFound(wrappers);
+                            if (type == 1) {
+                                getMvpView().addMoreLost(wrappers);
+                            } else {
+                                getMvpView().addMoreFound(wrappers);
+                            }
                         }
                     }
                 } else {

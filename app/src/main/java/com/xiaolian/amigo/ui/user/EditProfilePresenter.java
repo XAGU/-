@@ -36,6 +36,7 @@ public class EditProfilePresenter<V extends IEditProfileView> extends BasePresen
 
     @Inject
     public EditProfilePresenter(IUserDataManager manager) {
+        super();
         this.manager = manager;
     }
 
@@ -51,7 +52,7 @@ public class EditProfilePresenter<V extends IEditProfileView> extends BasePresen
                     getMvpView().setNickName(result.getData().getNickName());
                     getMvpView().setSchoolName(result.getData().getSchoolName());
                     getMvpView().setResidenceName(result.getData().getResidenceName());
-                    getMvpView().setSex(result.getData().getSex());
+//                    getMvpView().setSex(result.getData().getSex());
                     User user = new User(result.getData());
                     manager.setUser(user);
                 } else {
@@ -63,7 +64,7 @@ public class EditProfilePresenter<V extends IEditProfileView> extends BasePresen
 
     @Override
     public void uploadImage(Uri imageUri) {
-        RequestBody image = RequestBody.create(MediaType.parse("multipart/form-data"),
+        RequestBody image = RequestBody.create(MediaType.parse(Constant.UPLOAD_IMAGE_CONTENT_TYPE),
                 new File(imageUri.getPath()));
         addObserver(manager.uploadFile(image), new NetworkObserver<ApiResult<String>>() {
 

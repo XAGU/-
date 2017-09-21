@@ -77,7 +77,7 @@ public class RepairApplyPresenter<V extends IRepairApplyView> extends BasePresen
 
     @Override
     public void onUpload(Uri imageUri) {
-        RequestBody image = RequestBody.create(MediaType.parse(Constant.UPLOAD_FILE_CONTENT_TYPE),
+        RequestBody image = RequestBody.create(MediaType.parse(Constant.UPLOAD_IMAGE_CONTENT_TYPE),
                 new File(imageUri.getPath()));
         addObserver(userManager.uploadFile(image), new NetworkObserver<ApiResult<String>>() {
 

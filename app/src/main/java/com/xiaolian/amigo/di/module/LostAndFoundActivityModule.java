@@ -20,16 +20,21 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.xiaolian.amigo.data.manager.LostAndFoundDataManager;
 import com.xiaolian.amigo.data.manager.OrderDataManager;
+import com.xiaolian.amigo.data.manager.UserDataManager;
 import com.xiaolian.amigo.data.manager.intf.ILostAndFoundDataManager;
 import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
+import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.di.LostAndFoundActivityContext;
 import com.xiaolian.amigo.di.OrderActivityContext;
 import com.xiaolian.amigo.ui.lostandfound.LostAndFoundDetailPresenter;
 import com.xiaolian.amigo.ui.lostandfound.LostAndFoundPresenter;
+import com.xiaolian.amigo.ui.lostandfound.PublishLostPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundDetailPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundDetailView;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundView;
+import com.xiaolian.amigo.ui.lostandfound.intf.IPublishLostPresenter;
+import com.xiaolian.amigo.ui.lostandfound.intf.IPublishLostView;
 import com.xiaolian.amigo.ui.order.OrderPresenter;
 import com.xiaolian.amigo.ui.order.intf.IOrderPresenter;
 import com.xiaolian.amigo.ui.order.intf.IOrderView;
@@ -71,7 +76,19 @@ public class LostAndFoundActivityModule {
     }
 
     @Provides
+    @LostAndFoundActivityContext
+    IPublishLostPresenter<IPublishLostView> providePublishLostPresenter(
+            PublishLostPresenter<IPublishLostView> presenter) {
+        return presenter;
+    }
+
+    @Provides
     ILostAndFoundDataManager provideLostAndFoundDataManager(LostAndFoundDataManager manager) {
+        return manager;
+    }
+
+    @Provides
+    IUserDataManager provideUserDataManager(UserDataManager manager) {
         return manager;
     }
 

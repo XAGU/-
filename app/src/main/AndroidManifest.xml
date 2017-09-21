@@ -160,11 +160,6 @@
             android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <activity
-            android:name=".tmp.activity.lostandfound.LostAndFoundActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-
-        <activity
             android:name=".tmp.activity.device.geyser.GeyserActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -187,9 +182,6 @@
 
         <activity
             android:name=".tmp.activity.lostandfound.PublishLostActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".tmp.activity.lostandfound.MyPublishActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
 
@@ -291,6 +283,18 @@
 
         <!--失物招领详情-->
         <activity android:name=".ui.lostandfound.LostAndFoundDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <!--我的发布-->
+        <activity android:name=".ui.lostandfound.MyPublishActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <!--失物发布-->
+        <activity android:name=".ui.lostandfound.PublishLostActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <!--招领发布-->
+        <activity android:name=".ui.lostandfound.PublishFoundActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
 
         <!--主页-->
