@@ -9,10 +9,10 @@ import android.widget.TextView;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.tmp.common.config.SpaceItemDecoration;
 import com.xiaolian.amigo.tmp.common.util.ScreenUtils;
-import com.xiaolian.amigo.tmp.component.dialog.SearchDialog;
 import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundAdaptor;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundView;
+import com.xiaolian.amigo.ui.widget.dialog.SearchDialog;
 import com.xiaolian.amigo.util.Constant;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 

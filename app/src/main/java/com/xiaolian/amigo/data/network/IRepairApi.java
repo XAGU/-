@@ -1,10 +1,12 @@
 package com.xiaolian.amigo.data.network;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.dto.request.RatingRepairReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.RepairApplyReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.RepairDetailReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.RepairProblemReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.RepairReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.RepairApplyRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.RepairDetailRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.RepairProblemRespDTO;
@@ -34,4 +36,8 @@ public interface IRepairApi {
     // 获取报修问题列表
     @POST("/repair/cause/list")
     Observable<ApiResult<RepairProblemRespDTO>> queryRepairProblems(@Body RepairProblemReqDTO reqDTO);
+
+    // 维修评价
+    @POST("/repair/rating")
+    Observable<ApiResult<BooleanRespDTO>> rateRapair(@Body RatingRepairReqDTO reqDTO);
 }

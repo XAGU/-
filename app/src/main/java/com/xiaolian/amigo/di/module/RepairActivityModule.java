@@ -31,11 +31,14 @@ import com.xiaolian.amigo.ui.order.intf.IOrderPresenter;
 import com.xiaolian.amigo.ui.order.intf.IOrderView;
 import com.xiaolian.amigo.ui.repair.RepairApplyPresenter;
 import com.xiaolian.amigo.ui.repair.RepairDetailPresenter;
+import com.xiaolian.amigo.ui.repair.RepairEvaluationPresenter;
 import com.xiaolian.amigo.ui.repair.RepairPresenter;
 import com.xiaolian.amigo.ui.repair.intf.IRepairApplyPresenter;
 import com.xiaolian.amigo.ui.repair.intf.IRepairApplyView;
 import com.xiaolian.amigo.ui.repair.intf.IRepairDetailPresenter;
 import com.xiaolian.amigo.ui.repair.intf.IRepairDetailView;
+import com.xiaolian.amigo.ui.repair.intf.IRepairEvaluationPresenter;
+import com.xiaolian.amigo.ui.repair.intf.IRepairEvaluationView;
 import com.xiaolian.amigo.ui.repair.intf.IRepairPresenter;
 import com.xiaolian.amigo.ui.repair.intf.IRepairView;
 
@@ -79,6 +82,13 @@ public class RepairActivityModule {
     @RepairActivityContext
     IRepairPresenter<IRepairView> provideRepairPresenter(
             RepairPresenter<IRepairView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    @RepairActivityContext
+    IRepairEvaluationPresenter<IRepairEvaluationView> provideRepairEvaluationPresenter(
+            RepairEvaluationPresenter<IRepairEvaluationView> presenter) {
         return presenter;
     }
 

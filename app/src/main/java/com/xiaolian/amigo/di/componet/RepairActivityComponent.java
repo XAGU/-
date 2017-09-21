@@ -16,12 +16,12 @@
 package com.xiaolian.amigo.di.componet;
 
 
-import com.xiaolian.amigo.di.OrderActivityContext;
 import com.xiaolian.amigo.di.RepairActivityContext;
 import com.xiaolian.amigo.di.module.RepairActivityModule;
 import com.xiaolian.amigo.ui.repair.RepairActivity;
 import com.xiaolian.amigo.ui.repair.RepairApplyActivity;
 import com.xiaolian.amigo.ui.repair.RepairDetailActivity;
+import com.xiaolian.amigo.ui.repair.RepairEvaluationActivity;
 
 import dagger.Component;
 
@@ -35,4 +35,6 @@ public interface RepairActivityComponent {
     void inject(RepairDetailActivity activity);
 
     void inject(RepairApplyActivity activity);
+
+    void inject(RepairEvaluationActivity activity);
 }

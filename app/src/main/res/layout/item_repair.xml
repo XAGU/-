@@ -51,7 +51,7 @@
             android:textColor="#45b0ff"
             android:textStyle="bold"
             android:textSize="9sp"
-            android:visibility="gone"/>
+            android:visibility="visible"/>
 
     </RelativeLayout>
 

@@ -209,6 +209,10 @@
         <activity android:name=".ui.lostandfound.PublishFoundActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
 
+        <!--报修评价-->
+        <activity android:name=".ui.repair.RepairEvaluationActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
         <!--主页-->
         <activity
             android:name=".ui.main.MainActivity"

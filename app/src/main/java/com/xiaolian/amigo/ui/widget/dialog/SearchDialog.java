@@ -1,30 +1,25 @@
-package com.xiaolian.amigo.tmp.component.dialog;
+package com.xiaolian.amigo.ui.widget.dialog;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Rect;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.tmp.base.BaseActivity;
+import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,6 +40,10 @@ public class SearchDialog extends Dialog implements TextWatcher {
     ImageView iv_clear;
     @BindView(R.id.rl_result)
     RelativeLayout rl_result;
+    @BindView(R.id.fl_result_contain)
+    FrameLayout fl_result_contain;
+
+    private OnSearchListener listener;
 
     Context context;
 
@@ -90,13 +89,17 @@ public class SearchDialog extends Dialog implements TextWatcher {
         // 判断如果用户输入的是搜索键
         if (actionId == EditorInfo.IME_ACTION_SEARCH) {
 //            this.dismiss();
-            rl_result.setVisibility(View.VISIBLE);
             InputMethodManager imm = (InputMethodManager) context.getSystemService(context.INPUT_METHOD_SERVICE);
             imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+            if (listener != null) {
+                listener.onSearch(et_search_content.getText().toString());
+            }
             return true;
         }
         return false;
     }
+
+
 
     // 点击清除图标
     @OnClick(R.id.iv_clear)
@@ -109,5 +112,24 @@ public class SearchDialog extends Dialog implements TextWatcher {
     @OnClick(R.id.tv_cancel)
     void cancelSearch() {
         this.dismiss();
+    }
+
+    public void showNoResult() {
+        rl_result.setVisibility(View.VISIBLE);
+    }
+
+    public void showResult(View view) {
+        if (fl_result_contain.getChildCount() > 0) {
+            fl_result_contain.removeAllViews();
+        }
+        fl_result_contain.addView(view);
+    }
+
+    public void setSearchListener(OnSearchListener listener) {
+        this.listener = listener;
+    }
+
+    public interface OnSearchListener {
+        void onSearch(String searchStr);
     }
 }

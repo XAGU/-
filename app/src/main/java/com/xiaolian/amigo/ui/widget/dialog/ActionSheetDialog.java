@@ -1,10 +1,9 @@
-package com.xiaolian.amigo.tmp.component.dialog;
+package com.xiaolian.amigo.ui.widget.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.LayoutRes;
-import android.text.TextUtils;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;

@@ -16,6 +16,7 @@ import com.xiaolian.amigo.data.enumeration.EvaluateStatus;
 import com.xiaolian.amigo.data.enumeration.RepairStatus;
 import com.xiaolian.amigo.data.network.model.repair.Repair;
 import com.xiaolian.amigo.ui.repair.RepairDetailActivity;
+import com.xiaolian.amigo.ui.repair.RepairEvaluationActivity;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 
@@ -58,11 +59,29 @@ public class RepairAdaptor extends RecyclerView.Adapter<RepairAdaptor.ViewHolder
 
         if (RepairStatus.getStatus(wrapper.status) == RepairStatus.REPAIR_DONE) {
             // 状态为维修完成成需要呈现评价按钮
-            EvaluateStatus evaluate = EvaluateStatus.getStatus(wrapper.evaluateStatus);
+            EvaluateStatus evaluate;
+            if (wrapper.rated != null) {
+                evaluate = EvaluateStatus.getStatus(wrapper.rated);
+            } else {
+                evaluate = EvaluateStatus.EVALUATE_PENDING;
+            }
             holder.bt_evaluate.setText(evaluate.getDesc());
             holder.bt_evaluate.setBackgroundResource(evaluate.getBackGroundRes());
             holder.bt_evaluate.setTextColor(evaluate.getTextColor());
+            holder.bt_evaluate.setVisibility(View.VISIBLE);
+            holder.bt_evaluate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, RepairEvaluationActivity.class);
+                    intent.putExtra(RepairEvaluationActivity.INTENT_KEY_REPAIR_EVALUATION_ID, wrapper.id);
+                    intent.putExtra(RepairEvaluationActivity.INTENT_KEY_REPAIR_EVALUATION_REPAIR_MAN_NAME, wrapper.repairmanName);
+                    context.startActivity(intent);
+                }
+            });
+        } else {
+            holder.bt_evaluate.setVisibility(View.GONE);
         }
+
 
         holder.detailId = wrapper.id;
     }
@@ -111,7 +130,12 @@ public class RepairAdaptor extends RecyclerView.Adapter<RepairAdaptor.ViewHolder
         // 维修状态
         Integer status;
         // 评价状态
-        Integer evaluateStatus;
+//        Integer evaluateStatus;
+        Integer rated;
+        // 维修人员名称
+        String repairmanName;
+        // 维修人员Id
+        Long repairmanId;
         // 保修单id
         Long id;
 
@@ -119,7 +143,9 @@ public class RepairAdaptor extends RecyclerView.Adapter<RepairAdaptor.ViewHolder
             this.device = Device.getDevice(repair.getDeviceType()).getDesc() + Constant.CHINEASE_COLON + repair.getLocation();
             this.time = CommonUtil.stampToDate(repair.getCreateTime());
             this.status = repair.getStatus();
-            this.evaluateStatus = repair.getEvaluateStatus();
+            this.rated = repair.getRated();
+            this.repairmanId = repair.getRepairmanId();
+            this.repairmanName = repair.getRepairmanName();
             this.id = repair.getId();
         }
     }
