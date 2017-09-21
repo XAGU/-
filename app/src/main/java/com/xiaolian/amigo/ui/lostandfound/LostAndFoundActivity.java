@@ -1,7 +1,9 @@
 package com.xiaolian.amigo.ui.lostandfound;
 
 import android.content.Intent;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
@@ -15,6 +17,7 @@ import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundAdaptor;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundView;
 import com.xiaolian.amigo.util.Constant;
+import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,11 +37,37 @@ import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 public class LostAndFoundActivity extends LostAndFoundBaseListActivity implements ILostAndFoundView {
     // 失物招领列表
     List<LostAndFoundAdaptor.LostAndFoundWapper> lostAndFounds = new ArrayList<>();
+    List<LostAndFoundAdaptor.LostAndFoundWapper> losts = new ArrayList<>();
+    List<LostAndFoundAdaptor.LostAndFoundWapper> founds = new ArrayList<>();
 
     LostAndFoundAdaptor adaptor;
 
     @Inject
     ILostAndFoundPresenter<ILostAndFoundView> presenter;
+
+    @BindView(R.id.tv_lost)
+    TextView tv_lost;
+
+    @BindView(R.id.tv_found)
+    TextView tv_found;
+
+    /**
+     * 列表显示的是失物列表还是招领列表
+     * false 表示失物列表
+     * true 表示招领列表
+     */
+    private boolean listStatus = false;
+
+    /**
+     * 失物列表page
+     */
+    private int lostPage = 1;
+
+    /**
+     * 招领列表page
+     */
+    private int foundPage = 1;
+
     /**
      * 发布招领
      */
@@ -81,7 +110,7 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
 
     @Override
     protected void initData() {
-        presenter.queryLostAndFoundList(page, null, null, Constant.PAGE_SIZE, 1);
+        presenter.queryLostList(page, Constant.PAGE_SIZE, null, null);
     }
 
     @Override
@@ -94,6 +123,28 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
     protected RecyclerView.Adapter getAdaptor() {
         adaptor = new LostAndFoundAdaptor(this, R.layout.item_lost_and_found, lostAndFounds);
         mRecyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 10)));
+        adaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                Intent intent = new Intent(LostAndFoundActivity.this, LostAndFoundDetailActivity.class);
+                intent.putExtra(LostAndFoundDetailActivity.INTENT_KEY_LOST_AND_FOUND_DETAIL_ID, lostAndFounds.get(position).getId());
+                // listStatus false表示失物 true表示招领
+                if (listStatus) {
+                    intent.putExtra(LostAndFoundDetailActivity.INTENT_KEY_LOST_AND_FOUND_DETAIL_TYPE,
+                            LostAndFoundDetailActivity.TYPE_FOUND);
+                } else {
+                    intent.putExtra(LostAndFoundDetailActivity.INTENT_KEY_LOST_AND_FOUND_DETAIL_TYPE,
+                            LostAndFoundDetailActivity.TYPE_LOST);
+                }
+                startActivity(intent);
+
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
         return adaptor;
     }
 
@@ -128,13 +179,58 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
 
     @Override
     public void addMoreLost(List<LostAndFoundAdaptor.LostAndFoundWapper> lost) {
+        this.losts.addAll(lost);
         this.lostAndFounds.addAll(lost);
         adaptor.notifyDataSetChanged();
+        lostPage ++;
     }
 
     @Override
     public void addMoreFound(List<LostAndFoundAdaptor.LostAndFoundWapper> found) {
+        this.founds.addAll(found);
         this.lostAndFounds.addAll(found);
         adaptor.notifyDataSetChanged();
+        foundPage ++;
     }
+
+
+    @OnClick(R.id.tv_lost)
+    void onLostClick() {
+        if (listStatus) {
+            switchListStatus();
+            if (lostPage == 1) {
+                page = lostPage;
+                presenter.queryLostList(page, Constant.PAGE_SIZE, null, null);
+            }
+            this.lostAndFounds.clear();
+            this.lostAndFounds.addAll(losts);
+            adaptor.notifyDataSetChanged();
+        }
+    }
+    @OnClick(R.id.tv_found)
+    void onFoundClick() {
+        if (!listStatus) {
+            switchListStatus();
+            if (foundPage == 1) {
+                page = foundPage;
+                presenter.queryFoundList(page, Constant.PAGE_SIZE, null, null);
+            }
+            this.lostAndFounds.clear();
+            this.lostAndFounds.addAll(founds);
+            adaptor.notifyDataSetChanged();
+        }
+    }
+    private void switchListStatus() {
+        if (listStatus) {
+            listStatus = false;
+            tv_lost.setTextColor(ContextCompat.getColor(this, R.color.colorDark2));
+            tv_found.setTextColor(ContextCompat.getColor(this, R.color.colorDarkB));
+        } else {
+            listStatus = true;
+            tv_lost.setTextColor(ContextCompat.getColor(this, R.color.colorDarkB));
+            tv_found.setTextColor(ContextCompat.getColor(this, R.color.colorDark2));
+        }
+    }
+
+
 }

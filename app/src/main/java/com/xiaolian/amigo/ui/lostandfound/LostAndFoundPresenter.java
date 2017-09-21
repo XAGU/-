@@ -51,13 +51,29 @@ public class LostAndFoundPresenter<V extends ILostAndFoundView> extends BasePres
                         for (LostAndFound lost : result.getData().getLostAndFounds()) {
                             wrappers.add(new LostAndFoundAdaptor.LostAndFoundWapper(lost));
                         }
-                        getMvpView().addMoreLost(wrappers);
+                        if (type == 1) {
+                            getMvpView().addMoreLost(wrappers);
+                        } else {
+                            getMvpView().addMoreFound(wrappers);
+                        }
                     }
                 } else {
                     getMvpView().showMessage(result.getError().getDisplayMessage());
                 }
             }
         });
+    }
+
+    @Override
+    public void queryLostList(int page, int size, Long schoolId, String selectKey) {
+        // type 1 表示失物
+        queryLostAndFoundList(page, schoolId, selectKey, size, 1);
+    }
+
+    @Override
+    public void queryFoundList(int page, int size, Long schoolId, String selectKey) {
+        // type 2 表示招领
+        queryLostAndFoundList(page, schoolId, selectKey, size, 2);
     }
 
 }

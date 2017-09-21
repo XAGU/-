@@ -24,7 +24,10 @@ import com.xiaolian.amigo.data.manager.intf.ILostAndFoundDataManager;
 import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
 import com.xiaolian.amigo.di.LostAndFoundActivityContext;
 import com.xiaolian.amigo.di.OrderActivityContext;
+import com.xiaolian.amigo.ui.lostandfound.LostAndFoundDetailPresenter;
 import com.xiaolian.amigo.ui.lostandfound.LostAndFoundPresenter;
+import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundDetailPresenter;
+import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundDetailView;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundView;
 import com.xiaolian.amigo.ui.order.OrderPresenter;
@@ -57,6 +60,13 @@ public class LostAndFoundActivityModule {
     @LostAndFoundActivityContext
     ILostAndFoundPresenter<ILostAndFoundView> provideLostAndFoundPresenter(
             LostAndFoundPresenter<ILostAndFoundView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    @LostAndFoundActivityContext
+    ILostAndFoundDetailPresenter<ILostAndFoundDetailView> provideLostAndFoundDetailPresenter(
+            LostAndFoundDetailPresenter<ILostAndFoundDetailView> presenter) {
         return presenter;
     }
 

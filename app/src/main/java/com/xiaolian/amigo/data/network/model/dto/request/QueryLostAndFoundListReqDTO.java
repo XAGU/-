@@ -13,5 +13,6 @@ public class QueryLostAndFoundListReqDTO {
     private Integer size;
     private Long schoolId;
     private String selectKey;
+    // 1 表示失物 2 表示招领
     private Integer type;
 }

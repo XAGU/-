@@ -289,6 +289,10 @@
         <activity android:name=".ui.wallet.RechargeActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
 
+        <!--失物招领详情-->
+        <activity android:name=".ui.lostandfound.LostAndFoundDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
         <!--主页-->
         <activity
             android:name=".ui.main.MainActivity"
