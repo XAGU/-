@@ -186,7 +186,7 @@
 
                     <EditText
                         android:id="@+id/et_tel"
-                        style="@style/EditText_No_Border"
+                        style="@style/EditText_No_Border_Lg"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -206,7 +206,7 @@
 
                 <EditText
                     android:id="@+id/et_content"
-                    style="@style/EditText_No_Border"
+                    style="@style/EditText_No_Border_Lg"
                     android:layout_width="match_parent"
                     android:layout_height="134dp"
                     android:layout_marginTop="21dp"

@@ -56,7 +56,7 @@
                     android:text="标题：" />
 
                 <EditText
-                    style="@style/EditText_No_Border"
+                    style="@style/EditText_No_Border_Lg"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -88,7 +88,7 @@
                     android:text="名称：" />
 
                 <EditText
-                    style="@style/EditText_No_Border"
+                    style="@style/EditText_No_Border_Lg"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -120,7 +120,7 @@
                     android:text="地址：" />
 
                 <EditText
-                    style="@style/EditText_No_Border"
+                    style="@style/EditText_No_Border_Lg"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -246,7 +246,7 @@
                     android:text="联系方式：" />
 
                 <EditText
-                    style="@style/EditText_No_Border"
+                    style="@style/EditText_No_Border_Lg"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -264,7 +264,7 @@
                 android:background="#eee" />
 
             <EditText
-                style="@style/EditText_No_Border"
+                style="@style/EditText_No_Border_Lg"
                 android:layout_width="match_parent"
                 android:layout_height="134dp"
                 android:background="#f5f5f5"
