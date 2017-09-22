@@ -15,11 +15,11 @@
 
 package com.xiaolian.amigo.ui.base.intf;
 
-import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.Error;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 
 import rx.Observable;
+import rx.Subscriber;
 
 /**
  * Created by caidong on 2017/9/15.
@@ -37,6 +37,9 @@ public interface IBasePresenter<V extends IBaseView> {
 
     // 处理业务层面异常
     void onBizCodeError(Error error);
+
+    // 添加观察者
+    <P> void addObserver(Observable<P> observable, BasePresenter.BLEObserver observer);
 
     // 添加观察者
     void addObserver(Observable observable, BasePresenter.NetworkObserver observer);

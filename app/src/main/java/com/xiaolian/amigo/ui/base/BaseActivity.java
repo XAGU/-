@@ -57,6 +57,7 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import butterknife.OnClick;
+import butterknife.Optional;
 import butterknife.Unbinder;
 
 
@@ -353,6 +354,7 @@ public abstract class BaseActivity extends SwipeBackActivity
 
     // 单击回退按钮返回
     @OnClick(R.id.iv_back)
+    @Optional
     void back() {
         finish();
     }
