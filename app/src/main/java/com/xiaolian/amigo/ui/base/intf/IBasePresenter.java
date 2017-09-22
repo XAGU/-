@@ -19,8 +19,7 @@ import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.Error;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 
-import io.reactivex.Observable;
-import io.reactivex.observers.DisposableObserver;
+import rx.Observable;
 
 /**
  * Created by caidong on 2017/9/15.

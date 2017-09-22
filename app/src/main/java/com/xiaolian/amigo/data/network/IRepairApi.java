@@ -12,7 +12,7 @@ import com.xiaolian.amigo.data.network.model.dto.response.RepairDetailRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.RepairProblemRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.RepairRespDTO;
 
-import io.reactivex.Observable;
+import rx.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
 

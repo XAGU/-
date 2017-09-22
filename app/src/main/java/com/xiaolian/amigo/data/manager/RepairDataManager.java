@@ -16,7 +16,7 @@ import com.xiaolian.amigo.data.network.model.dto.response.RepairRespDTO;
 
 import javax.inject.Inject;
 
-import io.reactivex.Observable;
+import rx.Observable;
 import retrofit2.Retrofit;
 import retrofit2.http.Body;
 

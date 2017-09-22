@@ -38,4 +38,7 @@ public interface IBaseView {
 
     void hideKeyboard();
 
+    // 设备蓝牙未打开
+    void onBLENotOpen();
+
 }

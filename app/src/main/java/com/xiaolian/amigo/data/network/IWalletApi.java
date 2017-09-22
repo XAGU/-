@@ -5,7 +5,7 @@ import com.xiaolian.amigo.data.network.model.dto.request.SimpleQueryReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.PersonalWalletDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryRechargeAmountsRespDTO;
 
-import io.reactivex.Observable;
+import rx.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
 

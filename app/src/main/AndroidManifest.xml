@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.xiaolian.amigo">
 
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
@@ -212,6 +214,7 @@
         <!--报修评价-->
         <activity android:name=".ui.repair.RepairEvaluationActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
+>>>>>>> temp
 
         <!--图片浏览-->
         <activity android:name=".ui.widget.photoview.AlbumItemActivity"
