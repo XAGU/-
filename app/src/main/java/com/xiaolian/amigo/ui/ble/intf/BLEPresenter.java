@@ -25,15 +25,14 @@ public class BLEPresenter<V extends IBLEView> extends BasePresenter<V>
 
     @Override
     public void scan() {
-        addObserver(manager.scan(), new BLEObserver() {
+        addObserver(manager.scan(), new BLEObserver<ScanResult>() {
             @Override
             public void onError(Throwable e) {
                 Log.wtf(TAG, "扫描设备失败", e);
             }
 
             @Override
-            public void onNext(Object obj) {
-                ScanResult result = (ScanResult)obj ;
+            public void onNext(ScanResult result) {
                 getMvpView().addDevice(result);
             }
         });

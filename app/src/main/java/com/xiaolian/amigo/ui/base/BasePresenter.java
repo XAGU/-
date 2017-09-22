@@ -62,7 +62,7 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
     }
 
     @Override
-    public void addObserver(Observable observable, NetworkObserver observer) {
+    public <P> void addObserver(Observable<P> observable, NetworkObserver observer) {
         if (null != subscriptions) {
             observable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())

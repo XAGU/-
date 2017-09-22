@@ -42,7 +42,7 @@ public interface IBasePresenter<V extends IBaseView> {
     <P> void addObserver(Observable<P> observable, BasePresenter.BLEObserver observer);
 
     // 添加观察者
-    void addObserver(Observable observable, BasePresenter.NetworkObserver observer);
+    <P> void addObserver(Observable<P> observable, BasePresenter.NetworkObserver observer);
 
     // 清空观察者列表
     void clearObservers();
