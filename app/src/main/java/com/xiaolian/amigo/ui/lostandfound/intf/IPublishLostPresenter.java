@@ -16,5 +16,5 @@ public interface IPublishLostPresenter<V extends IPublishLostView> extends IBase
     void publishLostAndFound(String desc, List<String> images, String itemName, String location,
                              String lostTime, String mobile, String title, Integer type);
 
-    void uploadImage(Uri imageUri);
+    void uploadImage(Uri imageUri, int position);
 }

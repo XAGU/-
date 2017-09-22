@@ -67,7 +67,7 @@ public class PublishLostPresenter<V extends IPublishLostView> extends BasePresen
     }
 
     @Override
-    public void uploadImage(Uri imageUri) {
+    public void uploadImage(Uri imageUri, int position) {
         RequestBody image = RequestBody.create(MediaType.parse(Constant.UPLOAD_IMAGE_CONTENT_TYPE),
                 new File(imageUri.getPath()));
         addObserver(userManager.uploadFile(image), new NetworkObserver<ApiResult<String>>() {
@@ -75,7 +75,7 @@ public class PublishLostPresenter<V extends IPublishLostView> extends BasePresen
             @Override
             public void onReady(ApiResult<String> result) {
                 if (null == result.getError()) {
-                    getMvpView().addImage(result.getData());
+                    getMvpView().addImage(result.getData(), position);
                 } else {
                     getMvpView().showMessage(result.getError().getDisplayMessage());
                 }

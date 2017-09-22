@@ -15,7 +15,7 @@ public interface IPublishLostView extends IBaseView {
     void toggleBtnStatus();
 
     // 添加图片
-    void addImage(String url);
+    void addImage(String url, int position);
 
 
 }

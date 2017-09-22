@@ -136,8 +136,13 @@ public class PublishFoundActivity extends LostAndFoundBaseActivity implements IP
     }
 
     @Override
-    public void addImage(String url) {
-        this.images.add(Constant.IMAGE_PREFIX + url);
+    public void addImage(String url, int position) {
+        if (this.images.size() > position) {
+            this.images.remove(position);
+            this.images.add(position, Constant.IMAGE_PREFIX + url);
+        } else {
+            this.images.add(Constant.IMAGE_PREFIX + url);
+        }
     }
 
     @OnClick(R.id.ll_time)
@@ -164,7 +169,7 @@ public class PublishFoundActivity extends LostAndFoundBaseActivity implements IP
                             .into(iv_first);
                     iv_first.setScaleType(ImageView.ScaleType.FIT_XY);
                     iv_second.setVisibility(View.VISIBLE);
-                    presenter.uploadImage(imageUri);
+                    presenter.uploadImage(imageUri, 0);
                 });
                 break;
             }
@@ -176,7 +181,7 @@ public class PublishFoundActivity extends LostAndFoundBaseActivity implements IP
                             .into(iv_second);
                     iv_second.setScaleType(ImageView.ScaleType.FIT_XY);
                     iv_third.setVisibility(View.VISIBLE);
-                    presenter.uploadImage(imageUri);
+                    presenter.uploadImage(imageUri, 1);
                 });
                 break;
             }
@@ -187,7 +192,7 @@ public class PublishFoundActivity extends LostAndFoundBaseActivity implements IP
                             .diskCacheStrategy(DiskCacheStrategy.NONE)
                             .into(iv_third);
                     iv_third.setScaleType(ImageView.ScaleType.FIT_XY);
-                    presenter.uploadImage(imageUri);
+                    presenter.uploadImage(imageUri, 2);
                 });
                 break;
             }
