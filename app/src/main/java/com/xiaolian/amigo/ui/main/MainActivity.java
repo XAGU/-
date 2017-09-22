@@ -8,12 +8,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.login.LoginActivity;
 import com.xiaolian.amigo.ui.main.intf.IMainPresenter;
 import com.xiaolian.amigo.ui.main.intf.IMainView;
+import com.xiaolian.amigo.ui.notice.NoticeActivity;
 
 import javax.inject.Inject;
 
@@ -44,6 +46,19 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @BindView(R.id.tv_schoolName)
     TextView tv_schoolName;
 
+    /**
+     * 通知数量上标
+     */
+    @BindView(R.id.tv_notice_count)
+    TextView tv_notice_count;
+
+    /**
+     * 通知
+     */
+    @BindView(R.id.rl_notice)
+    RelativeLayout rl_notice;
+
+
     HomeFragment homeFragment;
     ProfileFragment profileFragment;
 
@@ -65,7 +80,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(R.id.fm_container, homeFragment);
         transaction.commit();
-
+        presenter.getNoticeAmount();
     }
 
     @Override
@@ -100,12 +115,14 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
             imageView.setBackgroundResource(R.drawable.home);
             current = 1;
+            rl_notice.setVisibility(View.GONE);
         } else {
             transaction.remove(profileFragment);
             transaction.add(R.id.fm_container, homeFragment);
             transaction.commit();
             imageView.setBackgroundResource(R.drawable.profile);
             current = 0;
+            rl_notice.setVisibility(View.VISIBLE);
         }
 
 
@@ -117,6 +134,24 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         if (!presenter.isLogin()) {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
+        }
+    }
+
+    /**
+     * 通知
+     */
+    @OnClick(R.id.rl_notice)
+    void gotoNoticeList() {
+        startActivity(new Intent(this, NoticeActivity.class));
+    }
+
+    @Override
+    public void showNoticeAmount(Integer amount) {
+        if (amount != null && amount != 0) {
+            tv_notice_count.setVisibility(View.VISIBLE);
+            tv_notice_count.setText(amount);
+        } else {
+            tv_notice_count.setVisibility(View.GONE);
         }
     }
 }

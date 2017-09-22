@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.data.manager.intf;
 
+import com.xiaolian.amigo.data.network.IMainApi;
 import com.xiaolian.amigo.data.network.model.user.User;
 
 /**
@@ -8,7 +9,7 @@ import com.xiaolian.amigo.data.network.model.user.User;
  * Created by zcd on 9/20/17.
  */
 
-public interface IMainDataManager {
+public interface IMainDataManager extends IMainApi {
 
     String getToken();
 

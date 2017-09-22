@@ -9,4 +9,5 @@ import com.xiaolian.amigo.ui.base.intf.IBaseView;
  */
 
 public interface IMainView extends IBaseView {
+    void showNoticeAmount(Integer amount);
 }

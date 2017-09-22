@@ -13,4 +13,6 @@ public interface IMainPresenter<V extends IMainView> extends IBasePresenter<V> {
     boolean isLogin();
 
     User getUserInfo();
+
+    void getNoticeAmount();
 }

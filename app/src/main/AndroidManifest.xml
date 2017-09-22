@@ -230,6 +230,10 @@
             </intent-filter>
         </activity>
 
+        <!--通知中心-->
+        <activity android:name=".ui.notice.NoticeActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
         <!--主页-->
         <activity
             android:name=".ui.main.MainActivity"
