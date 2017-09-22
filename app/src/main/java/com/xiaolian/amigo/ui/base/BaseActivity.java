@@ -18,6 +18,7 @@ package com.xiaolian.amigo.ui.base;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -32,6 +33,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
@@ -60,6 +62,8 @@ import butterknife.Unbinder;
 
 public abstract class BaseActivity extends SwipeBackActivity
         implements IBaseView {
+
+    private final String TAG = this.getClass().getSimpleName();
 
     private static final int REQUEST_CODE_CAMERA = 0x1103;
     private static final int REQUEST_CODE_PICK = 0x1104;
@@ -354,7 +358,23 @@ public abstract class BaseActivity extends SwipeBackActivity
     }
 
     @Override
-    public void onBLENotOpen() {
+    public void getBLEPermission() {
+        // 1、用水流程时必须先打开蓝牙
+        Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+        int REQUEST_ENABLE_BT = 1;
+        this.startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
 
+        Log.i(TAG, "手机打开蓝牙成功！");
+
+        // 2、6.0版本以上的收必须动态申请权限，否则会提示没有操作权限
+        RxPermissions rxPermissions = RxPermissions.getInstance(this);
+        rxPermissions.request(Manifest.permission.ACCESS_COARSE_LOCATION)
+                .subscribe(granted -> {
+                    if (granted) {
+                        Log.i(TAG, "动态授权蓝牙操作成功！");
+                    } else {
+                        Log.e(TAG, "动态授权蓝牙操作失败！");
+                    }
+                });
     }
 }
