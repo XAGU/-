@@ -214,7 +214,6 @@
         <!--报修评价-->
         <activity android:name=".ui.repair.RepairEvaluationActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
->>>>>>> temp
 
         <!--图片浏览-->
         <activity android:name=".ui.widget.photoview.AlbumItemActivity"
