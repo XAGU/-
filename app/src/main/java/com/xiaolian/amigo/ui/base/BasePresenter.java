@@ -23,19 +23,17 @@ import com.xiaolian.amigo.data.network.model.Error;
 import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.observers.DisposableObserver;
-import io.reactivex.schedulers.Schedulers;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 
 public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
     private static final String TAG = BasePresenter.class.getSimpleName();
 
     // 统一管理observer，防止内存泄露
-    private CompositeDisposable disposable;
+    private CompositeSubscription subscriptions;
     private V view;
 
     @Override
@@ -49,7 +47,7 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
     }
 
     public BasePresenter() {
-        disposable = new CompositeDisposable();
+        subscriptions = new CompositeSubscription();
     }
 
     @Override
@@ -64,18 +62,18 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
 
     @Override
     public void addObserver(Observable observable, NetworkObserver observer) {
-        if (null != disposable) {
+        if (null != subscriptions) {
             observable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(observer);
 
-            this.disposable.add(observer);
+            this.subscriptions.add(observer);
         }
     }
 
     public void clearObservers() {
-        if (null != disposable && !disposable.isDisposed()) {
-            disposable.clear();
+        if (null != subscriptions && !subscriptions.isUnsubscribed()) {
+            subscriptions.clear();
         }
     }
 
@@ -83,7 +81,7 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
         return view;
     }
 
-    public abstract class NetworkObserver<T extends ApiResult> extends DisposableObserver<T> {
+    public abstract class NetworkObserver<T extends ApiResult> extends Subscriber<T> {
 
         @Override
         public void onStart() {
@@ -111,7 +109,7 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
         }
 
         @Override
-        public void onComplete() {
+        public void onCompleted() {
             view.hideLoading();
         }
     }

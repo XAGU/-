@@ -38,7 +38,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aitangba.swipeback.SwipeBackActivity;
-import com.tbruyelle.rxpermissions2.RxPermissions;
+import com.tbruyelle.rxpermissions.RxPermissions;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.ui.widget.dialog.ActionSheetDialog;
@@ -85,7 +85,7 @@ public abstract class BaseActivity extends SwipeBackActivity
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        rxPermissions = new RxPermissions(this);
+        rxPermissions = RxPermissions.getInstance(this);
     }
 
 
