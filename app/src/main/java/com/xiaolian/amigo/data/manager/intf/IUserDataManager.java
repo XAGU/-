@@ -4,7 +4,7 @@ import com.xiaolian.amigo.data.network.IUserApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.user.User;
 
-import io.reactivex.Observable;
+import rx.Observable;
 import okhttp3.RequestBody;
 import retrofit2.http.Part;
 

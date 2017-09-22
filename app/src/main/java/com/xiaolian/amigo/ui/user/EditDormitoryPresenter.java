@@ -33,6 +33,7 @@ public class EditDormitoryPresenter<V extends IEditDormitoryView> extends BasePr
 
     @Inject
     public EditDormitoryPresenter(IUserDataManager manager) {
+        super();
         this.manager = manager;
     }
 

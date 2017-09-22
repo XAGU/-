@@ -4,9 +4,9 @@ import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.QueryUserBonusReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryUserBonusListRespDTO;
 
-import io.reactivex.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
+import rx.Observable;
 
 /**
  * 红包相关接口

@@ -9,10 +9,12 @@ import com.xiaolian.amigo.data.network.model.dto.request.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryLostAndFoundListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.SimpleRespDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.LostAndFound;
+import com.xiaolian.amigo.data.network.model.user.User;
+import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 
 import javax.inject.Inject;
 
-import io.reactivex.Observable;
+import rx.Observable;
 import retrofit2.Retrofit;
 import retrofit2.http.Body;
 
@@ -26,9 +28,12 @@ public class LostAndFoundDataManager implements ILostAndFoundDataManager {
 
     ILostAndFoundApi lostAndFoundApi;
 
+    private ISharedPreferencesHelp sharedPreferencesHelp;
+
     @Inject
-    public LostAndFoundDataManager(Retrofit retrofit) {
+    public LostAndFoundDataManager(Retrofit retrofit, ISharedPreferencesHelp sharedPreferencesHelp) {
         lostAndFoundApi = retrofit.create(ILostAndFoundApi.class);
+        this.sharedPreferencesHelp = sharedPreferencesHelp;
     }
 
     @Override
@@ -54,5 +59,10 @@ public class LostAndFoundDataManager implements ILostAndFoundDataManager {
     @Override
     public Observable<ApiResult<SimpleRespDTO>> updateLostAndFounds(@Body SaveLostAndFoundDTO reqDTO) {
         return lostAndFoundApi.updateLostAndFounds(reqDTO);
+    }
+
+    @Override
+    public User getUserInfo() {
+        return sharedPreferencesHelp.getUserInfo();
     }
 }

@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.tmp.activity.bonus.viewmodel.Bonus;
 import com.xiaolian.amigo.tmp.component.recyclerview.BaseLoadMoreFooterView;
 import com.xiaolian.amigo.tmp.component.recyclerview.LinearLayoutWithRecyclerOnScrollListener;
 import com.xiaolian.amigo.ui.base.BaseActivity;
@@ -47,18 +46,12 @@ public class ChooseBonusActivity extends BaseActivity
     @BindView(R.id.refreshLayout)
     BGARefreshLayout mRefreshLayout;
 
-    static List<Bonus> bonuses = new ArrayList<Bonus>() {
+    static List<BonusAdaptor.BonusWrapper> bonuses = new ArrayList<BonusAdaptor.BonusWrapper>() {
         {
-            add(new Bonus(1, 1, "xxxx", "yyyy", 3));
-            add(new Bonus(1, 1, "xxxx", "yyyy", 3));
-            add(new Bonus(1, 1, "xxxx", "yyyy", 3));
-            add(new Bonus(1, 1, "xxxx", "yyyy", 3));
-            add(new Bonus(1, 1, "xxxx", "yyyy", 3));
-            add(new Bonus(1, 1, "xxxx", "yyyy", 3));
-            add(new Bonus(1, 1, "xxxx", "yyyy", 3));
-            add(new Bonus(1, 1, "xxxx", "yyyy", 3));
-//            add(new BonusWrap(1, 1, "xxxx", "yyyy", 3));
-//            add(new BonusWrap(1, 1, "xxxx", "yyyy", 3));
+            add(new BonusAdaptor.BonusWrapper(1, (long)1, "xxxx", "yyyy", (long)3));
+            add(new BonusAdaptor.BonusWrapper(1, (long)1, "xxxx", "yyyy", (long)3));
+            add(new BonusAdaptor.BonusWrapper(1, (long)1, "xxxx", "yyyy", (long)3));
+            add(new BonusAdaptor.BonusWrapper(1, (long)1, "xxxx", "yyyy", (long)3));
         }
     };
 
@@ -132,7 +125,7 @@ public class ChooseBonusActivity extends BaseActivity
                             adapter.showNoMoreDataView();
                         } else {
 //                            mHandler.sendEmptyMessageDelayed(0, 200);
-                            adapter.append(new Bonus(2, 2, "xxxx", "yyyy", 3));
+                            adapter.append(new BonusAdaptor.BonusWrapper(2, (long)2, "xxxx", "yyyy", (long)3));
                             adapter.hideFooterView();
                         }
                         //java.lang.IndexOutOfBoundsException: Inconsistency detected. Invalid view holder adapter positionViewHolder

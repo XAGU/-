@@ -23,6 +23,11 @@ public class Repair {
     // 设备编号
     private String hardwareNo;
     // 评价状态，1 - 未评价， 2 - 已评价
-    private Integer evaluateStatus;
+//    private Integer evaluateStatus;
+    private Integer rated;
+    // 维修人员名称
+    private String repairmanName;
+    // 维修人员Id
+    private Long repairmanId;
 
 }

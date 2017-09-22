@@ -24,6 +24,7 @@ import com.xiaolian.amigo.ui.repair.intf.IRepairDetailPresenter;
 import com.xiaolian.amigo.ui.repair.intf.IRepairDetailView;
 import com.xiaolian.amigo.ui.repair.intf.IRepairPresenter;
 import com.xiaolian.amigo.ui.repair.intf.IRepairView;
+import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 
 import java.util.ArrayList;
@@ -127,10 +128,27 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
         }
 
         // 设置操作按钮中的显示文案
-        RepairStatus status = RepairStatus.getStatus(detail.getSteps().get(0).getStatus());
+        RepairStatus status = RepairStatus.getStatus(detail.getSteps().get(detail.getSteps().size()-1).getStatus());
         String[] opers = status.getNextOperations();
         left_oper.setText(opers[0]);
         right_oper.setText(opers[1]);
+        left_oper.setOnClickListener(v -> {
+            switch (status) {
+                case REPAIR_DONE:
+                    Intent intent = new Intent(RepairDetailActivity.this, RepairEvaluationActivity.class);
+                    intent.putExtra(RepairEvaluationActivity.INTENT_KEY_REPAIR_EVALUATION_ID, detail.getId());
+                    intent.putExtra(RepairEvaluationActivity.INTENT_KEY_REPAIR_EVALUATION_REPAIR_MAN_NAME, detail.getRepairmanName());
+                    intent.putExtra(RepairEvaluationActivity.INTENT_KEY_REPAIR_EVALUATION_DEVICE_LOCATION, detail.getLocation());
+                    intent.putExtra(RepairEvaluationActivity.INTENT_KEY_REPAIR_EVALUATION_DEVICE_TYPE, detail.getDeviceType());
+                    intent.putExtra(RepairEvaluationActivity.INTENT_KEY_REPAIR_EVALUATION_TIME, CommonUtil.stampToDate(detail.getSteps().get(0).getTime()));
+                    startActivity(intent);
+                    break;
+                case AUDIT_FAIL:
+                    break;
+                default:
+                    break;
+            }
+        });
     }
 
     @Override

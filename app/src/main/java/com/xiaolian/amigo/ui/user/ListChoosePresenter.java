@@ -36,6 +36,7 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
 
     @Inject
     public ListChoosePresenter(IUserDataManager manager) {
+        super();
         this.manager = manager;
     }
 

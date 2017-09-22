@@ -8,20 +8,21 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.tmp.activity.bonus.adaptor.BonusAdaptor2;
-import com.xiaolian.amigo.tmp.activity.bonus.viewmodel.Bonus;
+import com.xiaolian.amigo.data.network.model.bonus.Bonus;
 import com.xiaolian.amigo.tmp.component.recyclerview.BaseWrapperRecyclerAdapter;
 
 import java.util.List;
+
+import lombok.Data;
 
 /**
  * BonusAdapter
  * @author zcd
  */
 
-public class BonusAdaptor extends BaseWrapperRecyclerAdapter<Bonus, BonusAdaptor.ItemViewHolder> {
+public class BonusAdaptor extends BaseWrapperRecyclerAdapter<BonusAdaptor.BonusWrapper, BonusAdaptor.ItemViewHolder> {
 
-    public BonusAdaptor(List<Bonus> items) {
+    public BonusAdaptor(List<BonusWrapper> items) {
         appendToList(items);
     }
 
@@ -36,7 +37,7 @@ public class BonusAdaptor extends BaseWrapperRecyclerAdapter<Bonus, BonusAdaptor
 
     @Override
     public void onBindItemViewHolder(BonusAdaptor.ItemViewHolder viewHolder, int position) {
-        Bonus bonus = getItem(position);
+        BonusWrapper bonus = getItem(position);
         viewHolder.tv_amount.setText(bonus.getAmount().toString());
         viewHolder.tv_type.setText(bonus.getType().toString());
         viewHolder.tv_time_end.setText(bonus.getTimeEnd());
@@ -53,15 +54,6 @@ public class BonusAdaptor extends BaseWrapperRecyclerAdapter<Bonus, BonusAdaptor
                 mItemClickListener.onItemClick(v, position);
             }
         });
-        if(payloads != null && payloads.size() > 0 && vh instanceof BonusAdaptor2.ItemViewHolder){
-            for(Object o : payloads){
-                if(o != null && o instanceof Integer) {
-//                    ((BonusAdaptor2.ItemViewHolder) vh).mTvContent.setTextColor((Integer) o);
-                }
-            }
-        } else {
-            super.onBindViewHolder(vh, position);
-        }
     }
 
     public class ItemViewHolder extends RecyclerView.ViewHolder{
@@ -94,6 +86,36 @@ public class BonusAdaptor extends BaseWrapperRecyclerAdapter<Bonus, BonusAdaptor
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.mItemClickListener = listener;
+    }
+
+    @Data
+    public static class BonusWrapper {
+        // 红包类型
+        Integer type;
+        // 红包金额
+        Long amount;
+        // 到期时间
+        String timeEnd;
+        // 描述信息
+        String desc;
+        // 剩余时间
+        Long timeLeft;
+
+        public BonusWrapper(Integer type, Long amount, String timeEnd, String desc, Long timeLeft) {
+            this.type = type;
+            this.amount = amount;
+            this.timeEnd = timeEnd;
+            this.desc = desc;
+            this.timeLeft = timeLeft;
+        }
+
+        public BonusWrapper(Bonus bonus) {
+            this.type = bonus.getDeviceType();
+            this.amount = bonus.getAmount();
+            this.timeEnd = bonus.getEndTime();
+            this.desc = bonus.getRemarks();
+            this.timeLeft = bonus.getTimeLimit();
+        }
     }
 
 }

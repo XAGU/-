@@ -8,8 +8,8 @@ import com.xiaolian.amigo.data.network.model.dto.response.OrderRespDTO;
 
 import javax.inject.Inject;
 
-import io.reactivex.Observable;
-import io.reactivex.observers.DisposableObserver;
+import rx.Observable;
+
 import retrofit2.Retrofit;
 
 /**

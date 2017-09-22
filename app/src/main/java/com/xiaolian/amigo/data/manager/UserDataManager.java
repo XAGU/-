@@ -25,7 +25,7 @@ import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 
 import javax.inject.Inject;
 
-import io.reactivex.Observable;
+import rx.Observable;
 import okhttp3.RequestBody;
 import retrofit2.Retrofit;
 import retrofit2.http.Body;
@@ -109,6 +109,7 @@ public class UserDataManager implements IUserDataManager {
 
     @Override
     public Observable<ApiResult<String>> uploadFile(@Part("file") RequestBody images) {
+
         return fileApi.uploadFile(images);
     }
 

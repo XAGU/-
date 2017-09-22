@@ -8,7 +8,7 @@ import com.xiaolian.amigo.data.network.model.dto.response.QueryLostAndFoundListR
 import com.xiaolian.amigo.data.network.model.dto.response.SimpleRespDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.LostAndFound;
 
-import io.reactivex.Observable;
+import rx.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
 

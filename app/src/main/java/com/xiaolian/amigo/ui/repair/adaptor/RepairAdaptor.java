@@ -3,6 +3,7 @@ package com.xiaolian.amigo.ui.repair.adaptor;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import com.xiaolian.amigo.data.enumeration.EvaluateStatus;
 import com.xiaolian.amigo.data.enumeration.RepairStatus;
 import com.xiaolian.amigo.data.network.model.repair.Repair;
 import com.xiaolian.amigo.ui.repair.RepairDetailActivity;
+import com.xiaolian.amigo.ui.repair.RepairEvaluationActivity;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 
@@ -58,11 +60,32 @@ public class RepairAdaptor extends RecyclerView.Adapter<RepairAdaptor.ViewHolder
 
         if (RepairStatus.getStatus(wrapper.status) == RepairStatus.REPAIR_DONE) {
             // 状态为维修完成成需要呈现评价按钮
-            EvaluateStatus evaluate = EvaluateStatus.getStatus(wrapper.evaluateStatus);
+            EvaluateStatus evaluate;
+            if (wrapper.rated != null) {
+                evaluate = EvaluateStatus.getStatus(wrapper.rated);
+            } else {
+                evaluate = EvaluateStatus.EVALUATE_PENDING;
+            }
             holder.bt_evaluate.setText(evaluate.getDesc());
             holder.bt_evaluate.setBackgroundResource(evaluate.getBackGroundRes());
-            holder.bt_evaluate.setTextColor(evaluate.getTextColor());
+            holder.bt_evaluate.setTextColor(ContextCompat.getColor(context, evaluate.getTextColor()));
+            holder.bt_evaluate.setVisibility(View.VISIBLE);
+            holder.bt_evaluate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, RepairEvaluationActivity.class);
+                    intent.putExtra(RepairEvaluationActivity.INTENT_KEY_REPAIR_EVALUATION_ID, wrapper.id);
+                    intent.putExtra(RepairEvaluationActivity.INTENT_KEY_REPAIR_EVALUATION_REPAIR_MAN_NAME, wrapper.repairmanName);
+                    intent.putExtra(RepairEvaluationActivity.INTENT_KEY_REPAIR_EVALUATION_DEVICE_LOCATION, wrapper.location);
+                    intent.putExtra(RepairEvaluationActivity.INTENT_KEY_REPAIR_EVALUATION_DEVICE_TYPE, wrapper.deviceType);
+                    intent.putExtra(RepairEvaluationActivity.INTENT_KEY_REPAIR_EVALUATION_TIME, wrapper.time);
+                    context.startActivity(intent);
+                }
+            });
+        } else {
+            holder.bt_evaluate.setVisibility(View.GONE);
         }
+
 
         holder.detailId = wrapper.id;
     }
@@ -111,16 +134,29 @@ public class RepairAdaptor extends RecyclerView.Adapter<RepairAdaptor.ViewHolder
         // 维修状态
         Integer status;
         // 评价状态
-        Integer evaluateStatus;
+//        Integer evaluateStatus;
+        Integer rated;
+        // 维修人员名称
+        String repairmanName;
+        // 维修人员Id
+        Long repairmanId;
         // 保修单id
         Long id;
+        // 设备类型
+        Integer deviceType;
+        // 设备位置
+        String location;
 
         public RepairWrapper(Repair repair) {
             this.device = Device.getDevice(repair.getDeviceType()).getDesc() + Constant.CHINEASE_COLON + repair.getLocation();
             this.time = CommonUtil.stampToDate(repair.getCreateTime());
             this.status = repair.getStatus();
-            this.evaluateStatus = repair.getEvaluateStatus();
+            this.rated = repair.getRated();
+            this.repairmanId = repair.getRepairmanId();
+            this.repairmanName = repair.getRepairmanName();
             this.id = repair.getId();
+            this.deviceType = repair.getDeviceType();
+            this.location = repair.getLocation();
         }
     }
 }

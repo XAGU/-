@@ -8,7 +8,7 @@ import com.xiaolian.amigo.data.network.model.dto.response.FavoriteRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.OrderRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.UnFavoriteRespDTO;
 
-import io.reactivex.Observable;
+import rx.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
 

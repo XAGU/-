@@ -9,7 +9,7 @@ import com.xiaolian.amigo.R;
  */
 public enum EvaluateStatus {
 
-    EVALUATE_PENDING(1, "未评价") {
+    EVALUATE_PENDING(1, "前往评价") {
         @Override
         public int getBackGroundRes() {
             return R.drawable.button_evaluate_todo;

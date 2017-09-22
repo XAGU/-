@@ -21,44 +21,7 @@
         tools:replace="android:icon, android:theme">
 
         <activity
-            android:name=".tmp.activity.LoginRegistryGroupActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateVisible|adjustResize" />
-
-        <activity
-            android:name=".tmp.activity.LoginActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:launchMode="singleTask"
-            android:windowSoftInputMode="stateVisible|adjustResize">
-        </activity>
-
-        <activity
             android:name=".tmp.activity.RegistryActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateVisible|adjustResize" />
-
-        <activity
-            android:name=".tmp.activity.PasswordRetrievalStep1Activity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateVisible|adjustResize" />
-
-        <activity
-            android:name=".tmp.activity.PasswordRetrievalStep2Activity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateVisible|adjustResize" />
-
-        <activity
-            android:name=".tmp.activity.EditProfileActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity
-            android:name=".tmp.activity.EditNicknameActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateVisible|adjustResize" />
@@ -85,21 +48,6 @@
 
         <activity
             android:name=".tmp.activity.wallet.WithdrawalActivty"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity
-            android:name=".tmp.activity.bonus.BonusActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity
-            android:name=".tmp.activity.bonus.ExpiredBonusActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity
-            android:name=".tmp.activity.bonus.BonusExchangeActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
 
@@ -146,54 +94,10 @@
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"/>
 
-        <activity
-            android:name=".tmp.activity.common.BuildingActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-
-        <activity
-            android:name=".tmp.activity.common.FloorActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-
-        <activity
-            android:name=".tmp.activity.common.LocActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-
-        <activity
-            android:name=".tmp.activity.lostandfound.LostAndFoundActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-
-        <activity
-            android:name=".tmp.activity.device.geyser.GeyserActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".tmp.activity.device.waterfountain.WaterFountainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".tmp.activity.device.geyser.ChooseBonusActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" />
-
+        <!--web页面-->
         <activity
             android:name=".tmp.activity.WebActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-
-        <activity
-            android:name=".tmp.activity.lostandfound.PublishFoundActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity
-            android:name=".tmp.activity.lostandfound.PublishLostActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".tmp.activity.lostandfound.MyPublishActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-
+            android:theme="@style/AppTheme.NoActionBar"/>
 
         <!--编辑个人信息页面-->
         <activity
@@ -291,16 +195,26 @@
         <activity android:name=".ui.wallet.RechargeActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
 
-        <activity
-            android:name=".ui.ble.BLEActivity"
-            android:label="@string/app_name"
-            android:launchMode="singleTask"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <!--失物招领详情-->
+        <activity android:name=".ui.lostandfound.LostAndFoundDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <!--我的发布-->
+        <activity android:name=".ui.lostandfound.MyPublishActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <!--失物发布-->
+        <activity android:name=".ui.lostandfound.PublishLostActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <!--招领发布-->
+        <activity android:name=".ui.lostandfound.PublishFoundActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <!--报修评价-->
+        <activity android:name=".ui.repair.RepairEvaluationActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+>>>>>>> temp
 
         <!--主页-->
         <activity

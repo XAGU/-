@@ -35,10 +35,16 @@ public class LostAndFoundAdaptor extends CommonAdapter<LostAndFoundAdaptor.LostA
         holder.setText(R.id.tv_time, lostAndFoundWapper.getTime());
     }
 
+    public void replaceData(List<LostAndFoundWapper> wapper) {
+        mDatas = wapper;
+        notifyDataSetChanged();
+    }
+
     @Data
     public static class LostAndFoundWapper {
 
         public LostAndFoundWapper(LostAndFound lostAndFound) {
+            this.id = lostAndFound.getId();
             this.title = lostAndFound.getTitle();
             this.content = lostAndFound.getDescription();
             this.good = lostAndFound.getItemName();
@@ -49,7 +55,7 @@ public class LostAndFoundAdaptor extends CommonAdapter<LostAndFoundAdaptor.LostA
             } else {
                 this.hasImage = false;
             }
-
+            this.type = lostAndFound.getType();
         }
 
         // 标题
@@ -64,5 +70,8 @@ public class LostAndFoundAdaptor extends CommonAdapter<LostAndFoundAdaptor.LostA
         String time;
         // 是否包含图片
         boolean hasImage;
+        Long id;
+        // 1失物或者2招领
+        Integer type;
     }
 }

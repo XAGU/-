@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="match_parent">
+
+    <com.aigestudio.wheelpicker.WheelPicker
+        android:id="@+id/wp_year"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="200dp" />
+    <com.aigestudio.wheelpicker.WheelPicker
+        android:id="@+id/wp_month"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="200dp" />
+    <com.aigestudio.wheelpicker.WheelPicker
+        android:id="@+id/wp_day"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="200dp" />
+    <com.aigestudio.wheelpicker.WheelPicker
+        android:id="@+id/wp_hour"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="200dp" />
+    <com.aigestudio.wheelpicker.WheelPicker
+        android:id="@+id/wp_minute"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="200dp" />
+
+</LinearLayout>

@@ -18,8 +18,8 @@ import com.xiaolian.amigo.data.network.model.dto.response.ResidenceListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.SimpleRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.UserResidenceInListDTO;
 
-import io.reactivex.Flowable;
-import io.reactivex.Observable;
+
+import rx.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
 
