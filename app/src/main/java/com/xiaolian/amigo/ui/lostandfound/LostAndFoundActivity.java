@@ -34,6 +34,7 @@ import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
  * Created by caidong on 2017/9/13.
  */
 public class LostAndFoundActivity extends LostAndFoundBaseListActivity implements ILostAndFoundView {
+    private static final int REQUEST_CODE_PUBLISH = 0x0101;
     // 失物招领列表
     List<LostAndFoundAdaptor.LostAndFoundWapper> lostAndFounds = new ArrayList<>();
     List<LostAndFoundAdaptor.LostAndFoundWapper> losts = new ArrayList<>();
@@ -82,7 +83,7 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
      */
     @OnClick(R.id.tv_publish_found)
     void gotoPublishFound() {
-        startActivity(new Intent(this, PublishFoundActivity.class));
+        startActivityForResult(new Intent(this, PublishFoundActivity.class), REQUEST_CODE_PUBLISH);
     }
 
     /**
@@ -96,7 +97,7 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
      */
     @OnClick(R.id.tv_publish_lost)
     void gotoPublishLost() {
-        startActivity(new Intent(this, PublishLostActivity.class));
+        startActivityForResult(new Intent(this, PublishLostActivity.class), REQUEST_CODE_PUBLISH);
     }
     /**
      * 我的发布
@@ -149,6 +150,33 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
             }
         });
         return adaptor;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_CODE_PUBLISH) {
+                refreshLostAndFound();
+                if (listStatus) {
+                    presenter.queryFoundList(page, Constant.PAGE_SIZE);
+                } else {
+                    presenter.queryLostList(page, Constant.PAGE_SIZE);
+                }
+            }
+        }
+    }
+
+    /**
+     * 刷新失物招领列表
+     */
+    private void refreshLostAndFound() {
+        lostAndFounds.clear();
+        losts.clear();
+        founds.clear();
+        page = 1;
+        lostPage = 1;
+        foundPage = 1;
     }
 
     @Override

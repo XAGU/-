@@ -47,8 +47,8 @@ public class LostAndFoundPresenter<V extends ILostAndFoundView> extends BasePres
             public void onReady(ApiResult<QueryLostAndFoundListRespDTO> result) {
                 if (null == result.getError()) {
 
-                    List<LostAndFoundAdaptor.LostAndFoundWapper> wrappers = new ArrayList<>();
                     if (null != result.getData().getLostAndFounds()) {
+                        List<LostAndFoundAdaptor.LostAndFoundWapper> wrappers = new ArrayList<>();
                         for (LostAndFound lost : result.getData().getLostAndFounds()) {
                             wrappers.add(new LostAndFoundAdaptor.LostAndFoundWapper(lost));
                         }
@@ -104,6 +104,27 @@ public class LostAndFoundPresenter<V extends ILostAndFoundView> extends BasePres
     public void searchFoundList(Integer page, Integer size, String selectKey) {
         // type 2 表示招领
         queryLostAndFoundList(page, size, 2, selectKey, true);
+    }
+
+    @Override
+    public void getMyLostAndFounds() {
+        addObserver(manager.getMyLostAndFounds(), new NetworkObserver<ApiResult<QueryLostAndFoundListRespDTO>>() {
+
+            @Override
+            public void onReady(ApiResult<QueryLostAndFoundListRespDTO> result) {
+                if (null == result.getError()) {
+                    if (result.getData().getLostAndFounds() != null && result.getData().getLostAndFounds().size() > 0) {
+                        List<LostAndFoundAdaptor.LostAndFoundWapper> wrappers = new ArrayList<>();
+                        for (LostAndFound lostAndFound : result.getData().getLostAndFounds()) {
+                            wrappers.add(new LostAndFoundAdaptor.LostAndFoundWapper(lostAndFound));
+                        }
+                        getMvpView().addMore(wrappers);
+                    }
+                } else {
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+        });
     }
 
 }

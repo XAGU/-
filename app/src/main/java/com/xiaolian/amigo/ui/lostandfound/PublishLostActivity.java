@@ -107,9 +107,9 @@ public class PublishLostActivity extends LostAndFoundBaseActivity implements IPu
 
     @Override
     public void finishView() {
+        setResult(RESULT_OK);
         finish();
     }
-
 
     @OnTextChanged({R.id.et_desc, R.id.et_itemName, R.id.et_mobile, R.id.et_location,
         R.id.et_title, R.id.tv_lostTime})

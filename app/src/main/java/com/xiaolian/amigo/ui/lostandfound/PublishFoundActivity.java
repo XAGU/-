@@ -106,6 +106,7 @@ public class PublishFoundActivity extends LostAndFoundBaseActivity implements IP
 
     @Override
     public void finishView() {
+        setResult(RESULT_OK);
         finish();
     }
 

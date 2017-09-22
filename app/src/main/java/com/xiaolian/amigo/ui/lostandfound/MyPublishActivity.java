@@ -37,7 +37,7 @@ public class MyPublishActivity extends LostAndFoundBaseListActivity implements I
 
     @Override
     protected void initData() {
-        presenter.queryLostList(page, Constant.PAGE_SIZE);
+        presenter.getMyLostAndFounds();
     }
 
     @Override
