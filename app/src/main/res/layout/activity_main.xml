@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
@@ -12,15 +12,51 @@
         android:layout_height="wrap_content" />
 
     <include
+        android:id="@+id/ll_header"
         layout="@layout/activity_main_top"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 
     <LinearLayout
+        android:layout_below="@id/ll_header"
         android:id="@+id/fm_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-
     </LinearLayout>
-</LinearLayout>
+    <RelativeLayout
+        android:id="@+id/rl_notice"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="14dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginBottom="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/iv_notice"
+            android:src="@drawable/ic_notice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tv_notice_count"
+            android:visibility="gone"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="3dp"
+            android:layout_marginRight="4dp"
+            android:textSize="10dp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"
+            android:paddingBottom="1dp"
+            android:gravity="center"
+            android:background="@drawable/bg_rect_red_corner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+</RelativeLayout>

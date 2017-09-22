@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tool="http://schemas.android.com/tools">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_marginTop="14dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/iv_image"
+            android:src="@drawable/ic_emergency_notice"
+            android:layout_width="20dp"
+            android:layout_height="20dp" />
+        <TextView
+            android:layout_gravity="center"
+            android:layout_toRightOf="@id/iv_image"
+            android:layout_toEndOf="@id/iv_image"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            tool:text="紧急通知"
+            android:textSize="14sp"
+            android:textColor="@color/colorDark2"
+            android:id="@+id/tv_type"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_gravity="center"
+            android:textSize="10sp"
+            tool:text="今天 12：30"
+            android:textColor="@color/colorDark9"
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <TextView
+        android:layout_marginBottom="14dp"
+        android:textSize="11sp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginStart="30dp"
+        tool:text="这里是描述性文字这里是描述性文字这里是描述性文字这里是描述性文字这里是描述性文字这里是描述性文字这里是描述性文字"
+        android:textColor="@color/colorDark9"
+        android:id="@+id/tv_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

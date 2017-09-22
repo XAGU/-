@@ -1,10 +1,16 @@
 package com.xiaolian.amigo.data.manager;
 
 import com.xiaolian.amigo.data.manager.intf.IMainDataManager;
+import com.xiaolian.amigo.data.network.IMainApi;
+import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.dto.response.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.data.network.model.user.User;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 
 import javax.inject.Inject;
+
+import retrofit2.Retrofit;
+import rx.Observable;
 
 /**
  * 主页
@@ -16,10 +22,12 @@ public class MainDataManager implements IMainDataManager {
     private static final String TAG = MainDataManager.class.getSimpleName();
 
     private ISharedPreferencesHelp sharedPreferencesHelp;
+    private IMainApi mainApi;
 
     @Inject
-    public MainDataManager(ISharedPreferencesHelp sharedPreferencesHelp) {
+    public MainDataManager(Retrofit retrofit, ISharedPreferencesHelp sharedPreferencesHelp) {
         this.sharedPreferencesHelp = sharedPreferencesHelp;
+        this.mainApi = retrofit.create(IMainApi.class);
     }
 
     @Override
@@ -40,5 +48,10 @@ public class MainDataManager implements IMainDataManager {
     @Override
     public void setUserInfo(User user) {
         sharedPreferencesHelp.setUserInfo(user);
+    }
+
+    @Override
+    public Observable<ApiResult<PersonalExtraInfoDTO>> getExtraInfo() {
+        return mainApi.getExtraInfo();
     }
 }
