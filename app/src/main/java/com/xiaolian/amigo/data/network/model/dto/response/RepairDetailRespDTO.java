@@ -24,5 +24,8 @@ public class RepairDetailRespDTO {
     private List<String> images;
     // 报修进度列表
     private List<RepairStep> steps;
-
+    // 报修id
+    private Long id;
+    // 维修人员名称
+    private String repairmanName;
 }

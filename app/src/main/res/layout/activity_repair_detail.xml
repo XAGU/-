@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackgroundGray"
-    android:paddingLeft="@dimen/mainMarginLeftRight"
     android:paddingRight="@dimen/mainMarginLeftRight">
 
     <ScrollView
@@ -28,17 +27,20 @@
                     android:layout_height="wrap_content"
                     android:paddingBottom="24dp"
                     android:paddingRight="40dp"
+                    android:paddingLeft="@dimen/mainMarginLeftRight"
                     android:paddingTop="14dp"
                     android:src="@drawable/back" />
 
                 <TextView
                     style="@style/TitleText"
+                    android:paddingLeft="@dimen/mainMarginLeftRight"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="21dp"
                     android:text="报修详情" />
 
                 <android.support.v7.widget.RecyclerView
+                    android:layout_marginLeft="@dimen/mainMarginLeftRight"
                     android:id="@+id/rv_repair_progresses"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -51,6 +53,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:layout_marginLeft="@dimen/mainMarginLeftRight"
                 android:id="@+id/ll_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -170,6 +173,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:layout_marginLeft="@dimen/mainMarginLeftRight"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@id/ll_content"
@@ -184,7 +188,7 @@
                     android:layout_height="48dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="提醒客服尽快处理"
+                    android:text="常见问题"
                     android:textColor="#45b0ff"
                     android:textSize="12sp"
                     android:textStyle="bold" />
