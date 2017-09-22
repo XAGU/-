@@ -2,6 +2,7 @@ package com.xiaolian.amigo.ui.widget.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -42,6 +43,8 @@ public class SearchDialog extends Dialog implements TextWatcher {
     RelativeLayout rl_result;
     @BindView(R.id.fl_result_contain)
     FrameLayout fl_result_contain;
+    @BindView(R.id.tv_no_result_tip)
+    TextView tv_no_result_tip;
 
     private OnSearchListener listener;
 
@@ -109,16 +112,23 @@ public class SearchDialog extends Dialog implements TextWatcher {
         this.dismiss();
     }
 
+    @OnClick(R.id.iv_back)
+    void back() {
+        this.dismiss();
+    }
+
     @OnClick(R.id.tv_cancel)
     void cancelSearch() {
         this.dismiss();
     }
 
-    public void showNoResult() {
+    public void showNoResult(String selectKey) {
+        tv_no_result_tip.setText(context.getResources().getString(R.string.no_search_result, selectKey));
         rl_result.setVisibility(View.VISIBLE);
     }
 
     public void showResult(View view) {
+        rl_result.setVisibility(View.GONE);
         if (fl_result_contain.getChildCount() > 0) {
             fl_result_contain.removeAllViews();
         }

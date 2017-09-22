@@ -37,7 +37,7 @@ public class MyPublishActivity extends LostAndFoundBaseListActivity implements I
 
     @Override
     protected void initData() {
-        presenter.queryLostAndFoundList(page, null, null, Constant.PAGE_SIZE, null);
+        presenter.queryLostList(page, Constant.PAGE_SIZE);
     }
 
     @Override
@@ -108,5 +108,15 @@ public class MyPublishActivity extends LostAndFoundBaseListActivity implements I
     public void addMore(List<LostAndFoundAdaptor.LostAndFoundWapper> lostAndFoundWappers) {
         this.lostAndFounds.addAll(lostAndFoundWappers);
         adaptor.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showNoSearchResult(String selectKey) {
+        // this is for LostAndFoundActivity
+    }
+
+    @Override
+    public void showSearchResult(List<LostAndFoundAdaptor.LostAndFoundWapper> wappers) {
+        // this is for LostAndFoundActivity
     }
 }

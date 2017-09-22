@@ -11,12 +11,14 @@
         android:background="@color/colorBackgroundWhite"
         android:paddingLeft="@dimen/mainMarginLeftRight"
         android:paddingRight="@dimen/mainMarginLeftRight"
-        android:paddingTop="14dp">
+        >
 
         <ImageView
+            android:paddingTop="14dp"
             android:id="@+id/iv_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingBottom="24dp"
             android:paddingRight="40dp"
             android:src="@drawable/back" />
 
@@ -24,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="21dp"
-            android:layout_marginTop="24dp">
+            >
 
             <EditText
                 android:id="@+id/et_search_content"
@@ -88,6 +90,7 @@
             android:layout_centerHorizontal="true"/>
 
         <TextView
+            android:id="@+id/tv_no_result_tip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="未找到任何与'雨伞'相关的内容"

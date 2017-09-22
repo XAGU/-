@@ -32,12 +32,12 @@ public class LostAndFoundPresenter<V extends ILostAndFoundView> extends BasePres
         this.manager = manager;
     }
 
-
-    @Override
-    public void queryLostAndFoundList(int page, Long schoolId, String selectKey, int size, Integer type) {
+    public void queryLostAndFoundList(Integer page, Integer size, Integer type, String selectKey, boolean isSearch) {
         QueryLostAndFoundListReqDTO dto = new QueryLostAndFoundListReqDTO();
         dto.setPage(page);
-        dto.setSchoolId(schoolId);
+        // TODO: 添加schoolId
+        dto.setSchoolId(null);
+//        dto.setSchoolId(manager.getUserInfo().getSchoolId());
         dto.setSelectKey(selectKey);
         dto.setSize(size);
         dto.setType(type);
@@ -48,17 +48,25 @@ public class LostAndFoundPresenter<V extends ILostAndFoundView> extends BasePres
                 if (null == result.getError()) {
 
                     List<LostAndFoundAdaptor.LostAndFoundWapper> wrappers = new ArrayList<>();
-                    if (null != result.getData().getLostAndFounds() && result.getData().getLostAndFounds().size() > 0) {
+                    if (null != result.getData().getLostAndFounds()) {
                         for (LostAndFound lost : result.getData().getLostAndFounds()) {
                             wrappers.add(new LostAndFoundAdaptor.LostAndFoundWapper(lost));
                         }
-                        if (type == null) {
-                            getMvpView().addMore(wrappers);
-                        } else {
-                            if (type == 1) {
-                                getMvpView().addMoreLost(wrappers);
+                        if (isSearch) {
+                            if (wrappers.isEmpty()) {
+                                getMvpView().showNoSearchResult(selectKey);
                             } else {
-                                getMvpView().addMoreFound(wrappers);
+                                getMvpView().showSearchResult(wrappers);
+                            }
+                        } else {
+                            if (type == null) {
+                                getMvpView().addMore(wrappers);
+                            } else {
+                                if (type == 1) {
+                                    getMvpView().addMoreLost(wrappers);
+                                } else {
+                                    getMvpView().addMoreFound(wrappers);
+                                }
                             }
                         }
                     }
@@ -70,15 +78,32 @@ public class LostAndFoundPresenter<V extends ILostAndFoundView> extends BasePres
     }
 
     @Override
-    public void queryLostList(int page, int size, Long schoolId, String selectKey) {
-        // type 1 表示失物
-        queryLostAndFoundList(page, schoolId, selectKey, size, 1);
+    public void queryLostAndFoundList(Integer page, Integer size, Integer type, String selectKey) {
+        queryLostAndFoundList(page, size, type, selectKey, false);
     }
 
     @Override
-    public void queryFoundList(int page, int size, Long schoolId, String selectKey) {
+    public void queryLostList(Integer page, Integer size) {
+        // type 1 表示失物
+        queryLostAndFoundList(page, size, 1, null);
+    }
+
+    @Override
+    public void queryFoundList(Integer page, Integer size) {
         // type 2 表示招领
-        queryLostAndFoundList(page, schoolId, selectKey, size, 2);
+        queryLostAndFoundList(page, size, 2, null);
+    }
+
+    @Override
+    public void searchLostList(Integer page, Integer size, String selectKey) {
+        // type 1 表示失物
+        queryLostAndFoundList(page, size, 1, selectKey, true);
+    }
+
+    @Override
+    public void searchFoundList(Integer page, Integer size, String selectKey) {
+        // type 2 表示招领
+        queryLostAndFoundList(page, size, 2, selectKey, true);
     }
 
 }

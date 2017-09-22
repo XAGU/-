@@ -28,4 +28,8 @@ public interface ILostAndFoundView extends IBaseListView {
 
     void addMore(List<LostAndFoundAdaptor.LostAndFoundWapper> lostAndFoundWappers);
 
+    void showNoSearchResult(String selectKey);
+
+    void showSearchResult(List<LostAndFoundAdaptor.LostAndFoundWapper> wappers);
+
 }

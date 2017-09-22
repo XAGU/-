@@ -54,5 +54,6 @@
     <string name="choose_bonus">选择红包</string>
     
     <string name="shower_process">以预付%1$d元，请尽快放水洗澡(%2$ds)</string>
+    <string name="no_search_result">未找到任何与\'%1$s\'相关的内容</string>
 
 </resources>

@@ -1,7 +1,9 @@
 package com.xiaolian.amigo.ui.lostandfound;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
@@ -36,8 +38,10 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
     List<LostAndFoundAdaptor.LostAndFoundWapper> lostAndFounds = new ArrayList<>();
     List<LostAndFoundAdaptor.LostAndFoundWapper> losts = new ArrayList<>();
     List<LostAndFoundAdaptor.LostAndFoundWapper> founds = new ArrayList<>();
+    List<LostAndFoundAdaptor.LostAndFoundWapper> searchResult = new ArrayList<>();
 
     LostAndFoundAdaptor adaptor;
+    LostAndFoundAdaptor searchAdaptor;
 
     @Inject
     ILostAndFoundPresenter<ILostAndFoundView> presenter;
@@ -70,6 +74,8 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
      */
     @BindView(R.id.tv_publish_found)
     TextView tv_publish_found;
+    private SearchDialog searchDialog;
+    private RecyclerView searchRecyclerView;
 
     /**
      * 打开发布招领页面
@@ -107,7 +113,7 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
 
     @Override
     protected void initData() {
-        presenter.queryLostList(page, Constant.PAGE_SIZE, null, null);
+        presenter.queryLostList(page, Constant.PAGE_SIZE);
     }
 
     @Override
@@ -153,10 +159,28 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
     // 点击搜索
     @OnClick(R.id.tv_search)
     void search() {
-        SearchDialog dialog = new SearchDialog(this);
-        dialog.show();
-        dialog.setCanceledOnTouchOutside(true);
-        dialog.setCancelable(true);
+        if (searchDialog == null) {
+            searchDialog = new SearchDialog(this);
+            searchDialog.setSearchListener(new SearchDialog.OnSearchListener() {
+                @Override
+                public void onSearch(String searchStr) {
+                    if (listStatus) {
+                        presenter.searchFoundList(null, null, searchStr);
+                    } else {
+                        presenter.searchLostList(null, null, searchStr);
+                    }
+                }
+            });
+            searchDialog.setCanceledOnTouchOutside(true);
+            searchDialog.setCancelable(true);
+            searchDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    searchResult.clear();
+                }
+            });
+        }
+        searchDialog.show();
     }
 
     @Override
@@ -195,6 +219,48 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
         // this is for MyPublishActivity
     }
 
+    @Override
+    public void showNoSearchResult(String selectKey) {
+        searchDialog.showNoResult(selectKey);
+    }
+
+    @Override
+    public void showSearchResult(List<LostAndFoundAdaptor.LostAndFoundWapper> wappers) {
+        if (searchRecyclerView == null) {
+            searchRecyclerView = new RecyclerView(this);
+            searchAdaptor = new LostAndFoundAdaptor(this, R.layout.item_lost_and_found, searchResult);
+            searchAdaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                    Intent intent = new Intent(LostAndFoundActivity.this, LostAndFoundDetailActivity.class);
+                    intent.putExtra(LostAndFoundDetailActivity.INTENT_KEY_LOST_AND_FOUND_DETAIL_ID, lostAndFounds.get(position).getId());
+                    // listStatus false表示失物 true表示招领
+                    if (listStatus) {
+                        intent.putExtra(LostAndFoundDetailActivity.INTENT_KEY_LOST_AND_FOUND_DETAIL_TYPE,
+                                LostAndFoundDetailActivity.TYPE_FOUND);
+                    } else {
+                        intent.putExtra(LostAndFoundDetailActivity.INTENT_KEY_LOST_AND_FOUND_DETAIL_TYPE,
+                                LostAndFoundDetailActivity.TYPE_LOST);
+                    }
+                    startActivity(intent);
+
+                }
+
+                @Override
+                public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                    return false;
+                }
+            });
+
+            searchRecyclerView.setAdapter(searchAdaptor);
+            searchRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        }
+        searchResult.clear();
+        searchResult.addAll(wappers);
+        searchAdaptor.notifyDataSetChanged();
+        searchDialog.showResult(searchRecyclerView);
+    }
+
 
     @OnClick(R.id.tv_lost)
     void onLostClick() {
@@ -202,7 +268,7 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
             switchListStatus();
             if (lostPage == 1) {
                 page = lostPage;
-                presenter.queryLostList(page, Constant.PAGE_SIZE, null, null);
+                presenter.queryLostList(page, Constant.PAGE_SIZE);
             }
             this.lostAndFounds.clear();
             this.lostAndFounds.addAll(losts);
@@ -215,7 +281,7 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
             switchListStatus();
             if (foundPage == 1) {
                 page = foundPage;
-                presenter.queryFoundList(page, Constant.PAGE_SIZE, null, null);
+                presenter.queryFoundList(page, Constant.PAGE_SIZE);
             }
             this.lostAndFounds.clear();
             this.lostAndFounds.addAll(founds);
