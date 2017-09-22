@@ -10,6 +10,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.aigestudio.wheelpicker.WheelPicker;
+import com.aigestudio.wheelpicker.widgets.WheelDatePicker;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.tmp.common.util.ScreenUtils;
 
@@ -27,12 +28,14 @@ import butterknife.ButterKnife;
 
 public class DatePickerDialog extends Dialog {
 
-    @BindView(R.id.wp_year)
-    WheelPicker wp_year;
-    @BindView(R.id.wp_month)
-    WheelPicker wp_month;
-    @BindView(R.id.wp_day)
-    WheelPicker wp_day;
+    @BindView(R.id.wp_date)
+    WheelDatePicker wp_date;
+//    @BindView(R.id.wp_year)
+//    WheelPicker wp_year;
+//    @BindView(R.id.wp_month)
+//    WheelPicker wp_month;
+//    @BindView(R.id.wp_day)
+//    WheelPicker wp_day;
     @BindView(R.id.wp_hour)
     WheelPicker wp_hour;
     @BindView(R.id.wp_minute)
@@ -54,15 +57,15 @@ public class DatePickerDialog extends Dialog {
         super(context, themeResId);
 
 
-        for (int i = 1990; i <= 2100; i ++) {
-            years.add(String.valueOf(i).concat("年"));
-        }
-        for (int i = 1; i <= 12; i ++) {
-            months.add(String.valueOf(i).concat("月"));
-        }
-        for (int i = 1; i <= 31; i ++) {
-            days.add(String.valueOf(i).concat("日"));
-        }
+//        for (int i = 1990; i <= 2100; i ++) {
+//            years.add(String.valueOf(i).concat("年"));
+//        }
+//        for (int i = 1; i <= 12; i ++) {
+//            months.add(String.valueOf(i).concat("月"));
+//        }
+//        for (int i = 1; i <= 31; i ++) {
+//            days.add(String.valueOf(i).concat("日"));
+//        }
         for (int i = 0; i <= 23; i ++) {
             hours.add(String.valueOf(i));
         }
@@ -85,48 +88,55 @@ public class DatePickerDialog extends Dialog {
 
         setContentView(R.layout.dialog_datepicker);
         ButterKnife.bind(this);
-        setWheelPicker(context, wp_year, years);
-        setWheelPicker(context, wp_month, months);
-        setWheelPicker(context, wp_day, days);
+
+        wp_date.setCyclic(true);
+        wp_date.setCurtainColor(Color.GRAY);
+        wp_date.setSelectedItemTextColor(Color.BLACK);
+        wp_date.setItemTextColor(Color.GRAY);
+        wp_date.setItemTextSize(ScreenUtils.dpToPxInt(context, 14));
+        wp_date.setVisibleItemCount(5);
+        wp_date.setCurtainColor(Color.BLACK);
+//        setWheelPicker(context, wp_year, years);
+//        setWheelPicker(context, wp_month, months);
+//        setWheelPicker(context, wp_day, days);
         setWheelPicker(context, wp_hour, hours);
         setWheelPicker(context, wp_minute, minutes);
-        wp_year.setOnItemSelectedListener(new WheelPicker.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(WheelPicker picker, Object data, int position) {
-                listener.onItemSelected(picker, (String) data, position, WheelType.YEAR);
-            }
-        });
-        wp_month.setOnItemSelectedListener(new WheelPicker.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(WheelPicker picker, Object data, int position) {
-                listener.onItemSelected(picker, (String) data, position, WheelType.MONTH);
-            }
-        });
-        wp_day.setOnItemSelectedListener(new WheelPicker.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(WheelPicker picker, Object data, int position) {
-                listener.onItemSelected(picker, (String) data, position, WheelType.DAY);
-            }
-        });
-        wp_hour.setOnItemSelectedListener(new WheelPicker.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(WheelPicker picker, Object data, int position) {
-                listener.onItemSelected(picker, (String) data, position, WheelType.HOUR);
-            }
-        });
-        wp_minute.setOnItemSelectedListener(new WheelPicker.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(WheelPicker picker, Object data, int position) {
-                listener.onItemSelected(picker, (String) data, position, WheelType.MINUTE);
-            }
-        });
+//        wp_year.setOnItemSelectedListener(new WheelPicker.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(WheelPicker picker, Object data, int position) {
+//                listener.onItemSelected(picker, (String) data, position, WheelType.YEAR);
+//            }
+//        });
+//        wp_month.setOnItemSelectedListener(new WheelPicker.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(WheelPicker picker, Object data, int position) {
+//                listener.onItemSelected(picker, (String) data, position, WheelType.MONTH);
+//            }
+//        });
+//        wp_day.setOnItemSelectedListener(new WheelPicker.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(WheelPicker picker, Object data, int position) {
+//                listener.onItemSelected(picker, (String) data, position, WheelType.DAY);
+//            }
+//        });
+//        wp_hour.setOnItemSelectedListener(new WheelPicker.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(WheelPicker picker, Object data, int position) {
+//                listener.onItemSelected(picker, (String) data, position, WheelType.HOUR);
+//            }
+//        });
+//        wp_minute.setOnItemSelectedListener(new WheelPicker.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(WheelPicker picker, Object data, int position) {
+//                listener.onItemSelected(picker, (String) data, position, WheelType.MINUTE);
+//            }
+//        });
 
     }
 
     private void setWheelPicker(Context context, WheelPicker picker, List<String> data) {
         picker.setData(data);
         picker.setCyclic(true);
-        picker.setSameWidth(true);
         picker.setSelectedItemTextColor(Color.BLACK);
         picker.setItemTextColor(Color.GRAY);
         picker.setItemTextSize(ScreenUtils.dpToPxInt(context, 14));

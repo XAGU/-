@@ -17,6 +17,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 /**
+ * 通知中心
  * <p>
  * Created by zcd on 9/22/17.
  */
