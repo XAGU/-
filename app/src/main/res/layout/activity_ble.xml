@@ -10,31 +10,16 @@
     android:paddingTop="16dp">
 
     <LinearLayout
-        android:id="@+id/ll_send"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-
-        <EditText
-            android:id="@+id/et_send"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="输入发动内容"
-            android:inputType="text" />
-
         <Button
-            android:id="@+id/btn_send"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="发送"
-            android:textSize="18sp" />
+            android:id="@+id/open"
+            android:layout_width="match_parent"
+            android:layout_height="15dp"
+            android:text="测试打开蓝牙"
+            style="@style/ContentText_main"/>
+
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_receive"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ll_send"
-        android:layout_marginTop="16dp" />
 </RelativeLayout>

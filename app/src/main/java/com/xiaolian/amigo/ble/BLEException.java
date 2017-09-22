@@ -5,7 +5,7 @@ package com.xiaolian.amigo.ble;
  * <p>
  * Created by caidong on 2017/9/22.
  */
-public class BLEException extends Exception {
+public class BLEException extends RuntimeException {
 
     public BLEException(String msg) {
         super(msg);
