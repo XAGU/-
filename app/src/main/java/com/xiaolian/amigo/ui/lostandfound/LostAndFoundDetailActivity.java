@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.lostandfound;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,13 +13,16 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.lostandfound.LostAndFound;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundDetailPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundDetailView;
+import com.xiaolian.amigo.ui.widget.photoview.AlbumItemActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * 失物招领详情
@@ -37,6 +41,8 @@ public class LostAndFoundDetailActivity extends LostAndFoundBaseActivity impleme
     ILostAndFoundDetailPresenter<ILostAndFoundDetailView> presenter;
 
     private Long id;
+
+    private ArrayList<String> images = new ArrayList<>();
 
     /**
      * 标题
@@ -139,6 +145,8 @@ public class LostAndFoundDetailActivity extends LostAndFoundBaseActivity impleme
         tv_createTime.setText(lostAndFound.getCreateTime());
         List<String> images = lostAndFound.getImages();
         if(null != images){
+            this.images.clear();
+            this.images.addAll(images);
             // 获取图片数量
             int num = images.size();
             RequestManager manager = Glide.with(this);
@@ -158,6 +166,36 @@ public class LostAndFoundDetailActivity extends LostAndFoundBaseActivity impleme
                 iv_third.setVisibility(View.VISIBLE);
                 manager.load(images.get(2)).into(iv_third);
             }
+        }
+    }
+
+    @OnClick(R.id.iv_first)
+    void onFirstImageClick() {
+        if (images != null) {
+            Intent intent = new Intent(this, AlbumItemActivity.class);
+            intent.putExtra(AlbumItemActivity.EXTRA_CURRENT, 0);
+            intent.putStringArrayListExtra(AlbumItemActivity.EXTRA_TYPE_LIST, images);
+            startActivity(intent);
+        }
+    }
+
+    @OnClick(R.id.iv_second)
+    void onSecondImageClick() {
+        if (images != null) {
+            Intent intent = new Intent(this, AlbumItemActivity.class);
+            intent.putExtra(AlbumItemActivity.EXTRA_CURRENT, 1);
+            intent.putStringArrayListExtra(AlbumItemActivity.EXTRA_TYPE_LIST, images);
+            startActivity(intent);
+        }
+    }
+
+    @OnClick(R.id.iv_third)
+    void onThirdImageClick() {
+        if (images != null) {
+            Intent intent = new Intent(this, AlbumItemActivity.class);
+            intent.putExtra(AlbumItemActivity.EXTRA_CURRENT, 2);
+            intent.putStringArrayListExtra(AlbumItemActivity.EXTRA_TYPE_LIST, images);
+            startActivity(intent);
         }
     }
 }

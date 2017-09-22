@@ -24,6 +24,7 @@ import com.xiaolian.amigo.ui.repair.intf.IRepairDetailPresenter;
 import com.xiaolian.amigo.ui.repair.intf.IRepairDetailView;
 import com.xiaolian.amigo.ui.repair.intf.IRepairPresenter;
 import com.xiaolian.amigo.ui.repair.intf.IRepairView;
+import com.xiaolian.amigo.ui.widget.photoview.AlbumItemActivity;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 
@@ -35,6 +36,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * 报修详情
@@ -72,6 +74,8 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
     RecyclerView.Adapter adapter;
     RecyclerView.LayoutManager manager;
 
+    private ArrayList<String> images = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,6 +110,7 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
 
         List<String> images = detail.getImages();
         if(null != images){
+            this.images.addAll(images);
             // 获取图片数量
             int num = images.size();
             RequestManager manager = Glide.with(this);
@@ -164,6 +169,36 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
         presenter.clearObservers();
         progresses.clear();
         super.onDestroy();
+    }
+
+    @OnClick(R.id.iv_first)
+    void onFirstImageClick() {
+        if (images != null) {
+            Intent intent = new Intent(this, AlbumItemActivity.class);
+            intent.putExtra(AlbumItemActivity.EXTRA_CURRENT, 0);
+            intent.putStringArrayListExtra(AlbumItemActivity.EXTRA_TYPE_LIST, images);
+            startActivity(intent);
+        }
+    }
+
+    @OnClick(R.id.iv_second)
+    void onSecondImageClick() {
+        if (images != null) {
+            Intent intent = new Intent(this, AlbumItemActivity.class);
+            intent.putExtra(AlbumItemActivity.EXTRA_CURRENT, 1);
+            intent.putStringArrayListExtra(AlbumItemActivity.EXTRA_TYPE_LIST, images);
+            startActivity(intent);
+        }
+    }
+
+    @OnClick(R.id.iv_third)
+    void onThirdImageClick() {
+        if (images != null) {
+            Intent intent = new Intent(this, AlbumItemActivity.class);
+            intent.putExtra(AlbumItemActivity.EXTRA_CURRENT, 2);
+            intent.putStringArrayListExtra(AlbumItemActivity.EXTRA_TYPE_LIST, images);
+            startActivity(intent);
+        }
     }
 
 }

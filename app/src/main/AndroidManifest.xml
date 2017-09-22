@@ -215,6 +215,10 @@
         <activity android:name=".ui.repair.RepairEvaluationActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
 
+        <!--图片浏览-->
+        <activity android:name=".ui.widget.photoview.AlbumItemActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
         <!--主页-->
         <activity
             android:name=".ui.main.MainActivity"

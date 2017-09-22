@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="88.0dip"
+    android:background="#aa111213"
+    android:gravity="center_vertical"
+    android:orientation="horizontal" >
+
+    <Button
+        android:id="@+id/delete"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:background="#aa111213"
+        android:gravity="center"
+        android:text=""
+        android:textColor="@color/white80"
+        android:textSize="20.0sp" />
+
+</LinearLayout>
