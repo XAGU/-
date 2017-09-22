@@ -353,4 +353,9 @@ public abstract class BaseActivity extends SwipeBackActivity
     void back() {
         finish();
     }
+
+    @Override
+    public void onBLENotOpen() {
+
+    }
 }
