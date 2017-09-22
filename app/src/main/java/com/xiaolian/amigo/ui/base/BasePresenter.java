@@ -64,27 +64,24 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
     @Override
     public <P> void addObserver(Observable<P> observable, NetworkObserver observer) {
         if (null != subscriptions) {
-            observable.subscribeOn(Schedulers.io())
+            this.subscriptions.add(observable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(observer);
-
-            this.subscriptions.add(observer);
+                    .subscribe(observer));
         }
     }
 
     @Override
     public <P> void addObserver(Observable<P> observable, BLEObserver observer) {
         if (null != subscriptions) {
-            observable.subscribeOn(Schedulers.io())
+            this.subscriptions.add(observable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(observer);
-
-            this.subscriptions.add(observer);
+                    .subscribe(observer));
         }
     }
 
     public void clearObservers() {
         if (null != subscriptions && !subscriptions.isUnsubscribed()) {
+            subscriptions.unsubscribe();
             subscriptions.clear();
         }
     }
