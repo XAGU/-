@@ -24,6 +24,7 @@ import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 
 import rx.Observable;
+import rx.Observer;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -33,7 +34,7 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
     private static final String TAG = BasePresenter.class.getSimpleName();
 
     // 统一管理observer，防止内存泄露
-    private CompositeSubscription subscriptions;
+    protected CompositeSubscription subscriptions;
     private V view;
 
     @Override
@@ -61,24 +62,45 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
     }
 
     @Override
-    public void addObserver(Observable observable, NetworkObserver observer) {
+    public <P> void addObserver(Observable<P> observable, NetworkObserver observer) {
         if (null != subscriptions) {
-            observable.subscribeOn(Schedulers.io())
+            this.subscriptions.add(observable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(observer);
+                    .subscribe(observer));
+        }
+    }
 
-            this.subscriptions.add(observer);
+    @Override
+    public <P> void addObserver(Observable<P> observable, BLEObserver observer) {
+        if (null != subscriptions) {
+            this.subscriptions.add(observable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(observer));
         }
     }
 
     public void clearObservers() {
         if (null != subscriptions && !subscriptions.isUnsubscribed()) {
+            subscriptions.unsubscribe();
             subscriptions.clear();
         }
     }
 
     public V getMvpView() {
         return view;
+    }
+
+    public abstract class BLEObserver<T> extends Subscriber<T> {
+
+        @Override
+        public void onStart() {
+            super.onStart();
+        }
+
+        @Override
+        public void onCompleted() {
+        }
+
     }
 
     public abstract class NetworkObserver<T extends ApiResult> extends Subscriber<T> {

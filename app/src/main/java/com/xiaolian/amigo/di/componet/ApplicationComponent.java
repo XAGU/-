@@ -19,6 +19,7 @@ import android.app.Application;
 import android.content.Context;
 
 
+import com.polidea.rxandroidble.RxBleClient;
 import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.data.prefs.SharedPreferencesHelp;
@@ -41,6 +42,8 @@ public interface ApplicationComponent {
     Application application();
 
     Retrofit retrofit();
+
+    RxBleClient rxBleClient();
 
     ISharedPreferencesHelp sharedPreferencesHelp();
 

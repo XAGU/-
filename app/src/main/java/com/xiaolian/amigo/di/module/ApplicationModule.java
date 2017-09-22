@@ -18,6 +18,8 @@ package com.xiaolian.amigo.di.module;
 import android.app.Application;
 import android.content.Context;
 
+import com.polidea.rxandroidble.RxBleClient;
+import com.polidea.rxandroidble.internal.RxBleLog;
 import com.xiaolian.amigo.data.base.LogInterceptor;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.data.prefs.SharedPreferencesHelp;
@@ -66,6 +68,14 @@ public class ApplicationModule {
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .client(client)
                 .build();
+    }
+
+    @Singleton
+    @Provides
+    RxBleClient provideRxBleClient() {
+        RxBleClient rxBleClient = RxBleClient.create(mApplication.getApplicationContext());
+        RxBleClient.setLogLevel(RxBleLog.DEBUG);
+        return rxBleClient;
     }
 
     @Singleton
