@@ -14,4 +14,13 @@ public interface IBLEView extends IBaseView {
 
     // 扫描设备失败
     void onScanError();
+
+    // 连接设备失败
+    void onConnectError();
+
+    // 向设备发送数据失败
+    void onWriteError();
+
+    // 接受设备数据失败
+    void onNotifyError();
 }

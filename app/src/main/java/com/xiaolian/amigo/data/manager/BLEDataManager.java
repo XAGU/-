@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.data.manager;
 
 import android.bluetooth.BluetoothGattCharacteristic;
+import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
 import android.os.ParcelUuid;
 
@@ -45,7 +46,8 @@ public class BLEDataManager implements IBLEDataManager {
     }
 
     @Override
-    public Observable<RxBleConnection> prepareConnectionObservable(RxBleDevice device, boolean autoConnect) {
+    public Observable<RxBleConnection> prepareConnectionObservable(String macAddress, boolean autoConnect) {
+        RxBleDevice device = client.getBleDevice(macAddress);
         return device
                 .establishConnection(autoConnect)
                 .takeUntil(PublishSubject.create())
@@ -60,8 +62,33 @@ public class BLEDataManager implements IBLEDataManager {
     }
 
     @Override
+    public Observable<byte[]> writeDescriptor(Observable<RxBleConnection> connectionObservable, BluetoothGattDescriptor bluetoothGattDescriptor) {
+        return connectionObservable.flatMap(rxBleConnection -> rxBleConnection.writeDescriptor(bluetoothGattDescriptor,
+                BluetoothGattDescriptor.ENABLE_INDICATION_VALUE));
+    }
+
+    @Override
     public Observable<byte[]> write(Observable<RxBleConnection> connectionObservable, byte[] inputBytes) {
         return connectionObservable
                 .flatMap(rxBleConnection -> rxBleConnection.writeCharacteristic(UUID.fromString(CHARACTERISTIC_UUID), inputBytes));
+    }
+
+    @Override
+    public Observable<byte[]> notify(Observable<RxBleConnection> connectionObservable) {
+        return connectionObservable
+                .flatMap(rxBleConnection -> rxBleConnection.setupNotification(UUID.fromString(CHARACTERISTIC_UUID)))
+                .flatMap(notificationObservable -> notificationObservable);
+    }
+
+    @Override
+    public Observable<RxBleConnection.RxBleConnectionState> monitorStatus(String macAddress) {
+        RxBleDevice device = client.getBleDevice(macAddress);
+        return device.observeConnectionStateChanges();
+    }
+
+    @Override
+    public RxBleConnection.RxBleConnectionState getStatus(String macAddress) {
+        RxBleDevice device = client.getBleDevice(macAddress);
+        return device.getConnectionState();
     }
 }

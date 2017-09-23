@@ -59,8 +59,23 @@ public class BLEActivity extends BLEBaseActivity implements IBLEView {
         Log.e(TAG, "扫描设备失败");
     }
 
+    @Override
+    public void onConnectError() {
+        Log.e(TAG, "连接设备失败");
+    }
+
+    @Override
+    public void onWriteError() {
+        Log.e(TAG, "写设备失败");
+    }
+
+    @Override
+    public void onNotifyError() {
+        Log.e(TAG, "读设备失败");
+    }
+
     @OnClick(R.id.scan)
     public void sendMessage(View view) {
-        presenter.scan();
+        presenter.onScan();
     }
 }
