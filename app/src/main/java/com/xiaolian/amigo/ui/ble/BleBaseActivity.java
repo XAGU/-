@@ -17,6 +17,7 @@ public abstract class BleBaseActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setUp();
         mActivityComponent = DaggerBleActivityComponent.builder()
                 .bleActivityModule(new BleActivityModule(this))
                 .applicationComponent(((MvpApp) getApplication()).getComponent())
