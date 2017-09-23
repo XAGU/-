@@ -53,7 +53,7 @@ public final class Constant {
     // 上传图片content type
     public static final String UPLOAD_IMAGE_CONTENT_TYPE = "image/jpeg";
 
-
     // 列数
     public static final int COLUMN_NUM = 3;
+
 }

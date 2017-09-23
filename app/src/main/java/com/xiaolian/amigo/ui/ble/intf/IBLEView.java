@@ -23,4 +23,7 @@ public interface IBLEView extends IBaseView {
 
     // 接受设备数据失败
     void onNotifyError();
+
+    // 设备状态错误（通常为不在线）
+    void onStatusError();
 }

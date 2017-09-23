@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
 import android.os.ParcelUuid;
+import android.support.annotation.NonNull;
 
 import com.polidea.rxandroidble.RxBleClient;
 import com.polidea.rxandroidble.RxBleConnection;
@@ -46,7 +47,7 @@ public class BLEDataManager implements IBLEDataManager {
     }
 
     @Override
-    public Observable<RxBleConnection> prepareConnectionObservable(String macAddress, boolean autoConnect) {
+    public Observable<RxBleConnection> prepareConnectionObservable(@NonNull String macAddress, boolean autoConnect) {
         RxBleDevice device = client.getBleDevice(macAddress);
         return device
                 .establishConnection(autoConnect)
@@ -62,32 +63,32 @@ public class BLEDataManager implements IBLEDataManager {
     }
 
     @Override
-    public Observable<byte[]> writeDescriptor(Observable<RxBleConnection> connectionObservable, BluetoothGattDescriptor bluetoothGattDescriptor) {
+    public Observable<byte[]> writeDescriptor(@NonNull Observable<RxBleConnection> connectionObservable, @NonNull BluetoothGattDescriptor bluetoothGattDescriptor) {
         return connectionObservable.flatMap(rxBleConnection -> rxBleConnection.writeDescriptor(bluetoothGattDescriptor,
                 BluetoothGattDescriptor.ENABLE_INDICATION_VALUE));
     }
 
     @Override
-    public Observable<byte[]> write(Observable<RxBleConnection> connectionObservable, byte[] inputBytes) {
+    public Observable<byte[]> write(@NonNull Observable<RxBleConnection> connectionObservable, @NonNull byte[] inputBytes) {
         return connectionObservable
                 .flatMap(rxBleConnection -> rxBleConnection.writeCharacteristic(UUID.fromString(CHARACTERISTIC_UUID), inputBytes));
     }
 
     @Override
-    public Observable<byte[]> notify(Observable<RxBleConnection> connectionObservable) {
+    public Observable<byte[]> notify(@NonNull Observable<RxBleConnection> connectionObservable) {
         return connectionObservable
                 .flatMap(rxBleConnection -> rxBleConnection.setupNotification(UUID.fromString(CHARACTERISTIC_UUID)))
                 .flatMap(notificationObservable -> notificationObservable);
     }
 
     @Override
-    public Observable<RxBleConnection.RxBleConnectionState> monitorStatus(String macAddress) {
+    public Observable<RxBleConnection.RxBleConnectionState> monitorStatus(@NonNull String macAddress) {
         RxBleDevice device = client.getBleDevice(macAddress);
         return device.observeConnectionStateChanges();
     }
 
     @Override
-    public RxBleConnection.RxBleConnectionState getStatus(String macAddress) {
+    public RxBleConnection.RxBleConnectionState getStatus(@NonNull String macAddress) {
         RxBleDevice device = client.getBleDevice(macAddress);
         return device.getConnectionState();
     }

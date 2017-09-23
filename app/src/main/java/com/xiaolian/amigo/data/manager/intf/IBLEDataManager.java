@@ -2,6 +2,7 @@ package com.xiaolian.amigo.data.manager.intf;
 
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
+import android.support.annotation.NonNull;
 
 import com.polidea.rxandroidble.RxBleConnection;
 import com.polidea.rxandroidble.RxBleDevice;
@@ -26,7 +27,7 @@ public interface IBLEDataManager {
      * @param macAddress  蓝牙设备mac地址
      * @param autoConnect 是否自动连接
      */
-    Observable<RxBleConnection> prepareConnectionObservable(String macAddress, boolean autoConnect);
+    Observable<RxBleConnection> prepareConnectionObservable(@NonNull String macAddress, boolean autoConnect);
 
     // 连接蓝牙
     Observable<BluetoothGattCharacteristic> connect(Observable<RxBleConnection> connectionObservable);
@@ -37,7 +38,7 @@ public interface IBLEDataManager {
      * @param connectionObservable    连接句柄
      * @param bluetoothGattDescriptor 特征值描述
      */
-    Observable<byte[]> writeDescriptor(Observable<RxBleConnection> connectionObservable, BluetoothGattDescriptor bluetoothGattDescriptor);
+    Observable<byte[]> writeDescriptor(@NonNull Observable<RxBleConnection> connectionObservable, @NonNull BluetoothGattDescriptor bluetoothGattDescriptor);
 
     /**
      * 向蓝牙设备发送数据
@@ -45,27 +46,26 @@ public interface IBLEDataManager {
      * @param connectionObservable 连接句柄
      * @param inputBytes           待发送的数据
      */
-    Observable<byte[]> write(Observable<RxBleConnection> connectionObservable, byte[] inputBytes);
+    Observable<byte[]> write(@NonNull Observable<RxBleConnection> connectionObservable, @NonNull byte[] inputBytes);
 
     /**
      * 接受蓝牙设备通知的数据
      *
-     * @param connectionObservable
-     * @return 返回的数据
+     * @param connectionObservable 连接句柄
      */
-    Observable<byte[]> notify(Observable<RxBleConnection> connectionObservable);
+    Observable<byte[]> notify(@NonNull Observable<RxBleConnection> connectionObservable);
 
     /**
      * 监控设备状态
      *
      * @param macAddress 蓝牙设备mac地址
      */
-    Observable<RxBleConnection.RxBleConnectionState> monitorStatus(String macAddress);
+    Observable<RxBleConnection.RxBleConnectionState> monitorStatus(@NonNull String macAddress);
 
     /**
      * 获取设备当前状态
      *
      * @param macAddress 蓝牙设备mac地址
      */
-    RxBleConnection.RxBleConnectionState getStatus(String macAddress);
+    RxBleConnection.RxBleConnectionState getStatus(@NonNull String macAddress);
 }
