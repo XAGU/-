@@ -2,32 +2,52 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:background="@color/white"
+    android:gravity="center"
     android:layout_height="match_parent">
 
-    <com.aigestudio.wheelpicker.WheelPicker
-        android:id="@+id/wp_year"
-        android:layout_weight="1"
+    <com.aigestudio.wheelpicker.widgets.WheelDatePicker
+        android:id="@+id/wp_date"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="3"
         android:layout_width="0dp"
-        android:layout_height="200dp" />
-    <com.aigestudio.wheelpicker.WheelPicker
-        android:id="@+id/wp_month"
-        android:layout_weight="1"
+        android:layout_height="200dp"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="0dp"
-        android:layout_height="200dp" />
-    <com.aigestudio.wheelpicker.WheelPicker
-        android:id="@+id/wp_day"
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="200dp" />
-    <com.aigestudio.wheelpicker.WheelPicker
-        android:id="@+id/wp_hour"
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="200dp" />
-    <com.aigestudio.wheelpicker.WheelPicker
-        android:id="@+id/wp_minute"
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="200dp" />
+        android:layout_weight="2"
+        android:layout_height="200dp">
+
+        <com.aigestudio.wheelpicker.WheelPicker
+            android:id="@+id/wp_hour"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="200dp" />
+
+        <TextView
+            android:text="时"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:gravity="center"
+            android:textColor="#536D8A"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+        <com.aigestudio.wheelpicker.WheelPicker
+            android:id="@+id/wp_minute"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="200dp" />
+
+        <TextView
+            android:text="分"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:textColor="#536D8A"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
 
 </LinearLayout>
