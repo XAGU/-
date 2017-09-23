@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackgroundWhite"
+    android:layout_marginLeft="14dp"
+    android:layout_marginRight="14dp"
+    android:paddingTop="21dp"
+    android:paddingBottom="21dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/ContentText_main"
+            android:layout_weight="1"
+            android:text="发送内容："
+            />
+
+        <EditText
+            android:id="@+id/send_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            style="@style/ContentText_main"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/ContentText_main"
+            android:layout_weight="1"
+            android:text="接收内容："
+            />
+
+        <EditText
+            android:id="@+id/receive_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            style="@style/ContentText_main"/>
+
+    </LinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="发送"/>
+
+
+</LinearLayout>

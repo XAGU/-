@@ -1,4 +1,4 @@
-package com.xiaolian.amigo.ui.ble.intf;
+package com.xiaolian.amigo.ui.ble;
 
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
@@ -7,12 +7,13 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.polidea.rxandroidble.RxBleConnection;
-import com.polidea.rxandroidble.scan.ScanResult;
 import com.trello.rxlifecycle.LifecycleTransformer;
 import com.trello.rxlifecycle.RxLifecycle;
 import com.trello.rxlifecycle.android.ActivityEvent;
 import com.xiaolian.amigo.data.manager.intf.IBLEDataManager;
 import com.xiaolian.amigo.ui.base.BasePresenter;
+import com.xiaolian.amigo.ui.ble.intf.IBleInteractivePresenter;
+import com.xiaolian.amigo.ui.ble.intf.IBleInteractiveView;
 
 import java.nio.charset.Charset;
 import java.util.UUID;
@@ -27,10 +28,10 @@ import static com.trello.rxlifecycle.android.ActivityEvent.PAUSE;
 /**
  * Created by caidong on 2017/9/22.
  */
-public class BLEPresenter<V extends IBLEView> extends BasePresenter<V>
-        implements IBLEPresenter<V> {
+public class BleInteractivePresenter<V extends IBleInteractiveView> extends BasePresenter<V>
+        implements IBleInteractivePresenter<V> {
 
-    private static final String TAG = BLEPresenter.class.getSimpleName();
+    private static final String TAG = BleInteractivePresenter.class.getSimpleName();
     private static final String DESCRIPTOR_UUID = "00002902-0000-1000-8000-00805f9b34fb";
     private IBLEDataManager manager;
     private Observable<RxBleConnection> connectionObservable;
@@ -41,25 +42,9 @@ public class BLEPresenter<V extends IBLEView> extends BasePresenter<V>
 
 
     @Inject
-    public BLEPresenter(IBLEDataManager manager) {
+    public BleInteractivePresenter(IBLEDataManager manager) {
         super();
         this.manager = manager;
-    }
-
-    @Override
-    public void onScan() {
-        addObserver(manager.scan(), new BLEObserver<ScanResult>() {
-            @Override
-            public void onError(Throwable e) {
-                Log.wtf(TAG, "扫描设备失败！", e);
-                getMvpView().onScanError();
-            }
-
-            @Override
-            public void onNext(ScanResult result) {
-                getMvpView().addDevice(result);
-            }
-        });
     }
 
     @Override

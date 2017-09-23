@@ -16,21 +16,20 @@
 package com.xiaolian.amigo.di.componet;
 
 
-import com.xiaolian.amigo.di.BLEActivityContext;
-import com.xiaolian.amigo.di.WalletActivityContext;
-import com.xiaolian.amigo.di.module.BLEActivityModule;
-import com.xiaolian.amigo.di.module.WalletActivityModule;
-import com.xiaolian.amigo.ui.ble.BLEActivity;
-import com.xiaolian.amigo.ui.wallet.RechargeActivity;
-import com.xiaolian.amigo.ui.wallet.WalletActivity;
+import com.xiaolian.amigo.di.BleActivityContext;
+import com.xiaolian.amigo.di.module.BleActivityModule;
+import com.xiaolian.amigo.ui.ble.BleActivity;
+import com.xiaolian.amigo.ui.ble.BleInteractiveActivity;
 
 import dagger.Component;
 
 
-@BLEActivityContext
-@Component(dependencies = ApplicationComponent.class, modules = BLEActivityModule.class)
-public interface BLEActivityComponent {
+@BleActivityContext
+@Component(dependencies = ApplicationComponent.class, modules = BleActivityModule.class)
+public interface BleActivityComponent {
 
-    void inject(BLEActivity activity);
+    void inject(BleActivity activity);
+
+    void inject(BleInteractiveActivity activity);
 
 }

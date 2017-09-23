@@ -56,4 +56,7 @@ public final class Constant {
     // 列数
     public static final int COLUMN_NUM = 3;
 
+    // 设备mac
+    public static final String MAC = "mac";
+
 }
