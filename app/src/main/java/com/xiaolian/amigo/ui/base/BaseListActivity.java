@@ -55,7 +55,7 @@ public abstract class BaseListActivity extends BaseActivity
 
     protected abstract void initPresenter();
 
-    private void initRefreshLayout() {
+    public void initRefreshLayout() {
         BGAStickinessRefreshViewHolder stickinessRefreshViewHolder = new BGAStickinessRefreshViewHolder(this, false);
         stickinessRefreshViewHolder.setStickinessColor(R.color.colorPrimary);
         stickinessRefreshViewHolder.setRotateImage(R.drawable.default_avatar);

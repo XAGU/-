@@ -11,16 +11,15 @@ import com.xiaolian.amigo.di.componet.OrderActivityComponent;
 import com.xiaolian.amigo.di.module.BLEActivityModule;
 import com.xiaolian.amigo.di.module.OrderActivityModule;
 import com.xiaolian.amigo.ui.base.BaseActivity;
+import com.xiaolian.amigo.ui.base.BaseListActivity;
 
 
-public abstract class BLEBaseActivity extends BaseActivity {
+public abstract class BLEBaseActivity extends BaseListActivity {
 
     private BLEActivityComponent mActivityComponent;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setUp();
+    protected void initInject() {
         mActivityComponent = DaggerBLEActivityComponent.builder()
                 .bLEActivityModule(new BLEActivityModule(this))
                 .applicationComponent(((MvpApp) getApplication()).getComponent())
