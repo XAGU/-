@@ -38,15 +38,23 @@ public class EditNickNameActivity extends UserBaseActivity implements IEditNickN
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_nickname);
-
+    protected void initView() {
         setUnBinder(ButterKnife.bind(this));
 
         getActivityComponent().inject(this);
 
         presenter.onAttach(EditNickNameActivity.this);
+
+    }
+
+    @Override
+    protected int setTitle() {
+        return R.string.edit_nickname;
+    }
+
+    @Override
+    protected int setLayout() {
+        return R.layout.activity_edit_nickname;
     }
 
     @Override

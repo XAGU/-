@@ -3,10 +3,10 @@
     android:shape="rectangle">
     <!--这里设置光标宽度（粗细）-->
     <size
-        android:width="2dp"
-        android:height="19dp" />
+        android:width="6px"
+        android:height="57px" />
     <!--这里设置光标颜色-->
     <solid android:color="#ff5555" />
-    <corners android:radius="1dp"></corners>
+    <corners android:radius="1dp"/>
 
 </shape>

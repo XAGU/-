@@ -63,5 +63,14 @@
     <string name="emergency_notice">紧/急/通/知</string>
     <string name="do_not_remind">不再提示</string>
     <string name="withdraw_tip">提现时间为：每周二12:00~每周四12:00</string>
+    <string name="repair_detail">报修详情</string>
+    <string name="edit_profile">编辑个人信息</string>
+    <string name="edit_nickname">编辑昵称</string>
+    <string name="recharge">充值</string>
+    <string name="my_wallet">我的钱包</string>
+    <string name="repair_apply">报修申请</string>
+    <string name="device_type">设备类型</string>
+    <string name="repair_evaluation">报修评价</string>
+    <string name="device_repair">设备保修</string>
 
 </resources>

@@ -284,4 +284,26 @@
         <item name="android:windowSoftInputMode">stateVisible</item><!--显示软件盘-->
     </style>
 
+    <!--个人信息页面EditText样式-->
+    <style name="Profile_EditText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/colorDark2</item>
+        <item name="android:textColorHint">@color/colorDarkB</item>
+        <item name="android:textCursorDrawable">@drawable/cursor_small</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:paddingLeft">14dp</item>
+        <item name="android:paddingRight">14dp</item>
+        <item name="android:maxLength">6</item>
+        <item name="android:background">@drawable/edittext_default</item>
+    </style>
+
+    <!--toolbar标题样式-->
+    <style name="ToolBarTextView">
+        <item name="android:textColor">@color/colorDark2</item>
+        <item name="android:textSize">@dimen/titleText</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 </resources>

@@ -12,6 +12,7 @@ import android.widget.ListView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.favorite.FavoriteActivity;
+import com.xiaolian.amigo.ui.login.LoginActivity;
 import com.xiaolian.amigo.ui.order.OrderActivity;
 import com.xiaolian.amigo.ui.repair.RepairNavActivity;
 
@@ -81,7 +82,12 @@ public class ProfileFragment extends Fragment {
 
     @OnItemClick(R.id.profileMenuListView)
     void forward(AdapterView<?> parent, View view, int position, long id) {
-        ((MainActivity)getActivity()).startActivity(listData.get(position).activityClazz);
+        if (position == 6) {
+            ((MainActivity)getActivity()).logout();
+            ((MainActivity)getActivity()).startActivity(LoginActivity.class);
+        } else {
+            ((MainActivity)getActivity()).startActivity(listData.get(position).activityClazz);
+        }
     }
 
 

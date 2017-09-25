@@ -1,6 +1,5 @@
 package com.xiaolian.amigo.ui.user;
 
-import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -61,14 +60,9 @@ public class EditMobileActivity extends UserBaseActivity implements IEditMobileV
     CountDownButtonHelper cdb;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_mobile);
-
+    protected void initView() {
         setUnBinder(ButterKnife.bind(this));
-
         getActivityComponent().inject(this);
-
         presenter.onAttach(EditMobileActivity.this);
 
         cdb = new CountDownButtonHelper(bt_verify_code, "获取验证码", 60, 1);
@@ -98,6 +92,16 @@ public class EditMobileActivity extends UserBaseActivity implements IEditMobileV
             public void afterTextChanged(Editable s) {
             }
         });
+    }
+
+    @Override
+    protected int setTitle() {
+        return R.string.edit_mobile;
+    }
+
+    @Override
+    protected int setLayout() {
+        return R.layout.activity_edit_mobile;
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.xiaolian.amigo.data.network;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.BindResidenceReq;
 import com.xiaolian.amigo.data.network.model.dto.request.MobileUpdateReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.request.PasswordCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.PasswordUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.PersonalUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.QueryResidenceListReqDTO;
@@ -72,5 +73,9 @@ public interface IUserApi {
     // 用户绑定编辑寝室
     @POST("/user/residence/bind")
     Observable<ApiResult<UserResidenceInListDTO>> bindResidence(@Body BindResidenceReq body);
+
+    // 用户密码校验
+    @POST("/user/password/check")
+    Observable<ApiResult<BooleanRespDTO>> checkPasswordValid(@Body PasswordCheckReqDTO reqDTO);
 
 }

@@ -8,6 +8,7 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.tmp.component.ClearableEditText;
 import com.xiaolian.amigo.ui.user.intf.IEditPasswordPresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditPasswordView;
+import com.xiaolian.amigo.util.ViewUtil;
 
 import javax.inject.Inject;
 
@@ -48,15 +49,30 @@ public class EditPasswordActivity extends UserBaseActivity implements IEditPassw
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_password);
-
+    protected void initView() {
         setUnBinder(ButterKnife.bind(this));
 
         getActivityComponent().inject(this);
 
         presenter.onAttach(EditPasswordActivity.this);
+
+        ViewUtil.setEditHintAndSize(getString(R.string.please_enter_old_password),
+                14, et_old_password);
+        ViewUtil.setEditHintAndSize(getString(R.string.please_enter_new_password),
+                14, et_new_password);
+        ViewUtil.setEditHintAndSize(getString(R.string.please_enter_new_password_again),
+                14, et_new_password_again);
+
+    }
+
+    @Override
+    protected int setTitle() {
+        return R.string.edit_password;
+    }
+
+    @Override
+    protected int setLayout() {
+        return R.layout.activity_edit_password;
     }
 
     @Override

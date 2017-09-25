@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorBackgroundGray"
     android:orientation="vertical"
-    android:paddingRight="@dimen/mainMarginLeftRight">
+    >
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -15,41 +15,12 @@
             >
 
             <LinearLayout
-                android:id="@+id/ll_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorBackgroundGray"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:paddingLeft="@dimen/mainMarginLeftRight"
-                    android:id="@+id/iv_back"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="24dp"
-                    android:paddingRight="40dp"
-                    android:paddingTop="14dp"
-                    android:src="@drawable/back" />
-
-                <TextView
-                    android:paddingLeft="@dimen/mainMarginLeftRight"
-                    style="@style/TitleText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="21dp"
-                    android:text="报修评价" />
-
-            </LinearLayout>
-
-
-            <LinearLayout
+                android:paddingLeft="14dp"
                 android:id="@+id/ll_desc"
-                android:layout_below="@id/ll_title"
-                android:layout_marginLeft="@dimen/mainMarginLeftRight"
                 android:layout_width="match_parent"
                 android:layout_height="76dp"
                 android:background="@color/colorBackgroundWhite"
-                android:paddingLeft="14dp">
+                >
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -111,7 +82,6 @@
             <LinearLayout
                 android:id="@+id/ll_evaluation"
                 android:layout_below="@id/ll_desc"
-                android:layout_marginLeft="@dimen/mainMarginLeftRight"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
@@ -174,7 +144,6 @@
             </LinearLayout>
             <Button
                 android:layout_below="@id/ll_evaluation"
-                android:layout_marginLeft="@dimen/mainMarginLeftRight"
                 android:id="@+id/bt_submit"
                 style="@style/Button"
                 android:layout_alignParentBottom="true"

@@ -4,36 +4,8 @@
     android:layout_height="fill_parent"
     android:background="@color/colorBackgroundGray"
     android:orientation="vertical"
-    android:paddingLeft="@dimen/mainMarginLeftRight"
-    android:paddingRight="@dimen/mainMarginLeftRight"
-    android:paddingTop="14dp">
+    >
 
-    <ImageView
-        android:id="@+id/iv_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingRight="40dp"
-        android:src="@drawable/back" />
-
-    <TextView
-        style="@style/TitleText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="21dp"
-        android:layout_marginTop="24dp"
-        android:text="@string/edit_mobile"
-        />
-
-    <!--<com.xiaolian.amigo.tmp.component.ClearableEditText-->
-        <!--android:id="@+id/edit_mobile"-->
-        <!--style="@style/EditText"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="48dp"-->
-        <!--android:drawableEnd="@drawable/clear"-->
-        <!--android:drawableRight="@drawable/clear"-->
-        <!--android:hint="@string/please_enter_new_mobile"-->
-        <!--android:imeOptions="actionDone"-->
-        <!--android:tag="mobile" />-->
 
     <LinearLayout
         android:orientation="horizontal"

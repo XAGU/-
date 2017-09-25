@@ -195,4 +195,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     public void checkTimeValid(Device device, Class clz) {
         presenter.queryTimeValid(device.getType(), clz);
     }
+
+    public void logout() {
+        presenter.logout();
+    }
 }

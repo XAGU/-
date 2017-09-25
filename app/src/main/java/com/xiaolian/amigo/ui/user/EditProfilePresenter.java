@@ -4,7 +4,9 @@ import android.net.Uri;
 
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.dto.request.PasswordCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.SimpleQueryReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.EntireUserDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryBriefSchoolListRespDTO;
 import com.xiaolian.amigo.data.network.model.user.School;
@@ -58,7 +60,7 @@ public class EditProfilePresenter<V extends IEditProfileView> extends BasePresen
                     User user = new User(result.getData());
                     manager.setUser(user);
                 } else {
-                    getMvpView().showMessage(result.getError().getDisplayMessage());
+                    getMvpView().onError(result.getError().getDisplayMessage());
                 }
             }
         });
@@ -76,10 +78,32 @@ public class EditProfilePresenter<V extends IEditProfileView> extends BasePresen
                     getMvpView().showMessage("更换成功");
                     getMvpView().setAvatar(Constant.SERVER + "/images/" + result.getData());
                 } else {
-                    getMvpView().showMessage(result.getError().getDisplayMessage());
+                    getMvpView().onError(result.getError().getDisplayMessage());
                 }
             }
         });
+    }
+
+    @Override
+    public void checkPassword(String password) {
+        getMvpView().onError("tttttttttttttttttttt");
+//        PasswordCheckReqDTO reqDTO = new PasswordCheckReqDTO();
+//        reqDTO.setPassword(password);
+//        addObserver(manager.checkPasswordValid(reqDTO), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
+//
+//            @Override
+//            public void onReady(ApiResult<BooleanRespDTO> result) {
+//                if (null == result.getError()) {
+//                    if (result.getData().isResult()) {
+//                        getMvpView().gotoChangeMobile();
+//                    } else {
+//                        getMvpView().onError("密码错误");
+//                    }
+//                } else {
+//                    getMvpView().onError(result.getError().getDisplayMessage());
+//                }
+//            }
+//        });
     }
 
 }

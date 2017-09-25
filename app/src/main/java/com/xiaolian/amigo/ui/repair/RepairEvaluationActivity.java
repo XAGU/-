@@ -110,10 +110,7 @@ public class RepairEvaluationActivity extends RepairBaseActivity implements IRep
     RepairEvaluationStarAdaptor starAdaptor;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_evaluation);
-
+    protected void initView() {
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
 
@@ -187,9 +184,19 @@ public class RepairEvaluationActivity extends RepairBaseActivity implements IRep
             }
         });
     }
+
+    @Override
+    protected int setTitle() {
+        return R.string.repair_evaluation;
+    }
+
+    @Override
+    protected int setLayout() {
+        return R.layout.activity_evaluation;
+    }
+
     @Override
     protected void setUp() {
-
     }
 
     @OnClick(R.id.bt_submit)

@@ -6,6 +6,7 @@ import com.xiaolian.amigo.data.network.IUserApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.BindResidenceReq;
 import com.xiaolian.amigo.data.network.model.dto.request.MobileUpdateReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.request.PasswordCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.PasswordUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.PersonalUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.QueryResidenceListReqDTO;
@@ -105,6 +106,11 @@ public class UserDataManager implements IUserDataManager {
     @Override
     public Observable<ApiResult<UserResidenceInListDTO>> bindResidence(@Body BindResidenceReq body) {
         return userApi.bindResidence(body);
+    }
+
+    @Override
+    public Observable<ApiResult<BooleanRespDTO>> checkPasswordValid(@Body PasswordCheckReqDTO reqDTO) {
+        return userApi.checkPasswordValid(reqDTO);
     }
 
     @Override

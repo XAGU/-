@@ -22,6 +22,7 @@ import butterknife.ButterKnife;
 
 /**
  * 编辑个人信息Activity
+ *
  * @author zcd
  */
 
@@ -74,17 +75,21 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_profile);
-
+    protected void initView() {
         setUnBinder(ButterKnife.bind(this));
-
         getActivityComponent().inject(this);
-
         presenter.onAttach(EditProfileActivity.this);
-
         presenter.getPersonProfile();
+    }
+
+    @Override
+    protected int setTitle() {
+        return R.string.edit_profile;
+    }
+
+    @Override
+    protected int setLayout() {
+        return R.layout.activity_edit_profile;
     }
 
     @Override
@@ -119,26 +124,19 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
                 break;
             case R.id.rel_edit_sex:
                 intent = new Intent(getApplicationContext(), ListChooseActivity.class);
+                if (!TextUtils.isEmpty(tv_sex.getText())) {
+                    intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_SEX_TYPE,
+                            TextUtils.equals(tv_sex.getText(), "男") ? 1 : 2);
+                }
                 intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION,
                         ListChooseActivity.ACTION_LIST_SEX);
+
                 startActivityForResult(intent, REQUEST_CODE_EDIT_SEX);
                 break;
             case R.id.rel_edit_mobile:
                 ChangeMobileDialog dialog = new ChangeMobileDialog(this);
-                dialog.setOnOkClickListener(new ChangeMobileDialog.OnOkClickListener() {
-                    @Override
-                    public void onOkClick(Dialog dialog, String password) {
-
-                    }
-                });
+                dialog.setOnOkClickListener((dialog1, password) -> presenter.checkPassword(password));
                 dialog.show();
-//                intent = new Intent(getApplicationContext(), EditMobileActivity.class);
-//                intent.putExtra("nickName", "");
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-//                    startActivityForResult(intent, REQUEST_CODE_EDIT_MOBILE, new Bundle());
-//                } else {
-//                    startActivityForResult(intent, REQUEST_CODE_EDIT_MOBILE);
-//                }
                 break;
             case R.id.rel_edit_password:
                 intent = new Intent(getApplicationContext(), EditPasswordActivity.class);
@@ -200,6 +198,18 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
     @Override
     public void setResidenceName(String residenceName) {
         tv_residence.setText(residenceName);
+    }
+
+    @Override
+    public void gotoChangeMobile() {
+        Intent intent;
+        intent = new Intent(getApplicationContext(), EditMobileActivity.class);
+        intent.putExtra("nickName", "");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            startActivityForResult(intent, REQUEST_CODE_EDIT_MOBILE, new Bundle());
+        } else {
+            startActivityForResult(intent, REQUEST_CODE_EDIT_MOBILE);
+        }
     }
 
 }

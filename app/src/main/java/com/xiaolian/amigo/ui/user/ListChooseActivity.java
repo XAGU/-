@@ -8,20 +8,22 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.widget.TextView;
 
+import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
+import com.xiaolian.amigo.di.componet.DaggerUserActivityComponent;
+import com.xiaolian.amigo.di.componet.UserActivityComponent;
+import com.xiaolian.amigo.di.module.UserActivityModule;
 import com.xiaolian.amigo.tmp.common.config.RecycleViewDivider;
+import com.xiaolian.amigo.ui.base.BaseActivity;
 import com.xiaolian.amigo.ui.repair.RepairApplyActivity;
 import com.xiaolian.amigo.ui.user.adaptor.ListChooseAdaptor;
 import com.xiaolian.amigo.ui.user.intf.IListChoosePresenter;
 import com.xiaolian.amigo.ui.user.intf.IListChooseView;
 import com.xiaolian.amigo.util.Constant;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -34,7 +36,7 @@ import butterknife.ButterKnife;
  * @author zcd
  */
 
-public class ListChooseActivity extends UserBaseActivity implements IListChooseView {
+public class ListChooseActivity extends BaseActivity implements IListChooseView {
     public static final String INTENT_KEY_LIST_CHOOSE_CONTENT = "intent_key_list_choose_content";
     public static final String INTENT_KEY_LIST_CHOOSE_ITEMS = "intent_key_list_choose_items";
     public static final String INTENT_KEY_LIST_CHOOSE_ACTION = "intent_key_list_choose_action";
@@ -44,6 +46,7 @@ public class ListChooseActivity extends UserBaseActivity implements IListChooseV
     public static final String INTENT_KEY_LIST_SRC_ACTIVITY = "intent_key_list_src_activity";
     public static final String INTENT_KEY_LIST_CHOOSE_RESIDENCE_BIND_ID = "intent_key_list_choose_residence_bind_id";
     public static final String INTENT_KEY_LIST_CHOOSE_ITEM_RESULT = "intent_key_list_choose_item_result";
+    public static final String INTENT_KEY_LIST_SEX_TYPE = "intent_key_list_sex_type";
     public static final int ACTION_LIST_SCHOOL = 1;
     public static final int ACTION_LIST_DORMITOR = 2;
     public static final int ACTION_LIST_FLOOR = 3;
@@ -52,6 +55,9 @@ public class ListChooseActivity extends UserBaseActivity implements IListChooseV
     public static final int ACTION_LIST_SCHOOL_RESULT = 6;
     // 选择设备，热水器 or 饮水机
     public static final int ACTION_LIST_DEVICE = 7;
+
+
+    private UserActivityComponent mActivityComponent;
 
     private List<ListChooseAdaptor.Item> items = new ArrayList<>();
 
@@ -80,6 +86,12 @@ public class ListChooseActivity extends UserBaseActivity implements IListChooseV
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mActivityComponent = DaggerUserActivityComponent.builder()
+                .userActivityModule(new UserActivityModule(this))
+                .applicationComponent(((MvpApp) getApplication()).getComponent())
+                .build();
+
         setContentView(R.layout.activity_list_choose);
 
         setUnBinder(ButterKnife.bind(this));
@@ -108,8 +120,19 @@ public class ListChooseActivity extends UserBaseActivity implements IListChooseV
                         presenter.updateSex(
                                 TextUtils.equals(items.get(position).getContent(), "男") ? 1 : 2);
                     });
-                    this.items.add(new ListChooseAdaptor.Item("男", false));
-                    this.items.add(new ListChooseAdaptor.Item("女", false));
+                    if (getIntent() != null) {
+                        int sexType = getIntent().getIntExtra(INTENT_KEY_LIST_SEX_TYPE, -1);
+                        if (sexType == 1) {
+                            this.items.add(new ListChooseAdaptor.Item("男", true));
+                            this.items.add(new ListChooseAdaptor.Item("女", false));
+                        } else if (sexType == 2) {
+                            this.items.add(new ListChooseAdaptor.Item("男", false));
+                            this.items.add(new ListChooseAdaptor.Item("女", true));
+                        } else {
+                            this.items.add(new ListChooseAdaptor.Item("男", false));
+                            this.items.add(new ListChooseAdaptor.Item("女", false));
+                        }
+                    }
                     adapter.notifyDataSetChanged();
                     break;
                 case ACTION_LIST_BUILDING:
@@ -215,6 +238,10 @@ public class ListChooseActivity extends UserBaseActivity implements IListChooseV
                     break;
             }
         }
+    }
+
+    public UserActivityComponent getActivityComponent() {
+        return mActivityComponent;
     }
 
     @Override

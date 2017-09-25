@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tool="http://schemas.android.com/tools">
+
+    <android.support.design.widget.AppBarLayout
+        android:fitsSystemWindows="true"
+        android:id="@+id/abl_actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <LinearLayout
+            android:background="@color/colorBackgroundGray"
+            app:layout_scrollFlags="scroll|enterAlways"
+            android:id="@+id/ll_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/toolBarMarginLeft"
+                android:paddingLeft="@dimen/toolBarMarginLeft"
+                android:paddingTop="@dimen/toolBarMarginTop"
+                android:paddingBottom="@dimen/toolBarMarginBottom"
+                android:src="@drawable/back" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/mainMarginLeftRight"
+                android:layout_marginRight="@dimen/mainMarginLeftRight"
+                android:layout_marginBottom="@dimen/toolBarMarginBottom"
+                >
+
+                <TextView
+                    android:id="@+id/tv_toolbar_title"
+                    style="@style/ToolBarTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    tool:text="宿舍列表" />
+
+                <TextView
+                    android:id="@+id/tv_toolbar_sub_title"
+                    style="@style/ContentText_main"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    tool:text="添加宿舍" />
+
+            </RelativeLayout>
+        </LinearLayout>
+    </android.support.design.widget.AppBarLayout>
+
+    <cn.bingoogolapple.refreshlayout.BGARefreshLayout
+        android:layout_marginRight="@dimen/mainMarginLeftRight"
+        android:layout_marginLeft="@dimen/mainMarginLeftRight"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:overScrollMode="never"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </cn.bingoogolapple.refreshlayout.BGARefreshLayout>
+
+</android.support.design.widget.CoordinatorLayout>

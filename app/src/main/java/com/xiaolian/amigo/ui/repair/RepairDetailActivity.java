@@ -77,10 +77,7 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
     private ArrayList<String> images = new ArrayList<>();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_repair_detail);
-
+    protected void initView() {
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
 
@@ -93,6 +90,16 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
         rv_repair_progresses.setAdapter(adapter);
 
         presenter.requestRepailDetail(detailId);
+    }
+
+    @Override
+    protected int setTitle() {
+        return R.string.repair_detail;
+    }
+
+    @Override
+    protected int setLayout() {
+        return R.layout.activity_repair_detail;
     }
 
     @Override

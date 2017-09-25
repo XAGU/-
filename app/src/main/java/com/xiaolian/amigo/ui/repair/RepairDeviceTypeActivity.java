@@ -20,10 +20,18 @@ import butterknife.OnClick;
 public class RepairDeviceTypeActivity extends RepairBaseActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_device_type);
+    protected void initView() {
         ButterKnife.bind(this);
+    }
+
+    @Override
+    protected int setTitle() {
+        return R.string.device_type;
+    }
+
+    @Override
+    protected int setLayout() {
+        return R.layout.activity_device_type;
     }
 
     @Override

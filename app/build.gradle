@@ -78,6 +78,7 @@ dependencies {
     // image
     compile "com.github.bumptech.glide:glide:$rootProject.glideVersion"
     compile "com.github.yalantis:ucrop:$rootProject.ucropVersion"
+    compile 'me.everything:overscroll-decor-android:1.0.4'
 
     // date picker
     compile "cn.aigestudio.wheelpicker:WheelPicker:$rootProject.wheelpickerVersion"

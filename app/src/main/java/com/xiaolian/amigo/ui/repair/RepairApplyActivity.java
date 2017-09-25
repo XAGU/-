@@ -77,10 +77,8 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
     String location;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_repair_apply);
-
+    protected void initView() {
+        setMainBackground(R.color.white);
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
 
@@ -97,6 +95,16 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
         render();
         // 获取报修问题列表
         presenter.requestRepairProblems();
+    }
+
+    @Override
+    protected int setTitle() {
+        return R.string.repair_apply;
+    }
+
+    @Override
+    protected int setLayout() {
+        return R.layout.activity_repair_apply;
     }
 
     @Override

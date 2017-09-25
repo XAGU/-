@@ -40,21 +40,25 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
     TextView tv_prepay;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_wallet);
-
+    protected void initView() {
+        setMainBackground(R.color.white);
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
 
         presenter.onAttach(WalletActivity.this);
 
         presenter.requestNetWork();
+
     }
 
     @Override
-    protected void setUp() {
+    protected int setTitle() {
+        return R.string.my_wallet;
+    }
 
+    @Override
+    protected int setLayout() {
+        return R.layout.activity_wallet;
     }
 
     // 充值

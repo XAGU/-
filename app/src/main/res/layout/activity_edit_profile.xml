@@ -2,50 +2,27 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:paddingRight="@dimen/mainMarginLeftRight"
-    android:background="@color/colorBackgroundWhite"
     android:orientation="vertical">
 
-    <ImageView
-        android:paddingTop="14dp"
-        android:paddingLeft="@dimen/mainMarginLeftRight"
-        android:id="@+id/iv_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingRight="40dp"
-        android:src="@drawable/back" />
-
-    <TextView
-        android:paddingLeft="@dimen/mainMarginLeftRight"
-        style="@style/TitleText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="21dp"
-        android:layout_marginTop="24dp"
-        android:text="编辑个人信息" />
+    <!--android:background="@color/colorBackgroundWhite"-->
 
     <View
-        android:paddingLeft="@dimen/mainMarginLeftRight"
         android:layout_width="match_parent"
         android:layout_height="1dip"
         android:layout_centerVertical="true"
         android:background="#eee" />
 
     <RelativeLayout
-        android:paddingLeft="@dimen/mainMarginLeftRight"
         android:id="@+id/rel_edit_avatar"
         android:onClick="onclick"
         style="@style/ListItemRel"
         android:clickable="true"
        >
-
-
         <TextView
             android:id="@+id/text_sys"
             style="@style/ListItemMainText"
             android:layout_marginLeft="10dp"
             android:text="更换头像" />
-
 
         <ImageView
             android:id="@+id/imageView1"
@@ -75,7 +52,6 @@
 
 
     <RelativeLayout
-        android:paddingLeft="@dimen/mainMarginLeftRight"
         android:id="@+id/rel_edit_nickname"
         android:onClick="onclick"
         style="@style/ListItemRel">
@@ -112,7 +88,6 @@
 
 
     <RelativeLayout
-        android:paddingLeft="@dimen/mainMarginLeftRight"
         android:id="@+id/rel_edit_sex"
         android:onClick="onclick"
         style="@style/ListItemRel">
@@ -148,7 +123,6 @@
 
 
     <RelativeLayout
-        android:paddingLeft="@dimen/mainMarginLeftRight"
         android:id="@+id/rel_edit_mobile"
         android:onClick="onclick"
         style="@style/ListItemRel">
@@ -183,7 +157,6 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:paddingLeft="@dimen/mainMarginLeftRight"
         android:id="@+id/rel_edit_password"
         android:onClick="onclick"
         style="@style/ListItemRel">
@@ -219,7 +192,6 @@
 
 
     <RelativeLayout
-        android:paddingLeft="@dimen/mainMarginLeftRight"
         android:id="@+id/rel_edit_school"
         android:onClick="onclick"
         style="@style/ListItemRel">
@@ -254,7 +226,6 @@
 
 
     <RelativeLayout
-        android:paddingLeft="@dimen/mainMarginLeftRight"
         android:id="@+id/rel_edit_room"
         android:onClick="onclick"
         style="@style/ListItemRel">
@@ -286,8 +257,6 @@
             android:layout_centerVertical="true"
             android:background="#eee" />
 
-
     </RelativeLayout>
-
 
 </LinearLayout>

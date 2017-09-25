@@ -1,6 +1,5 @@
 package com.xiaolian.amigo.ui.wallet;
 
-import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +12,6 @@ import com.xiaolian.amigo.ui.wallet.adaptor.NormalItemDelegate;
 import com.xiaolian.amigo.ui.wallet.adaptor.RechargeAdaptor;
 import com.xiaolian.amigo.ui.wallet.intf.IRechargePresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IRechargeView;
-import com.xiaolian.amigo.ui.widget.GridDividerItemDecoration;
 import com.xiaolian.amigo.ui.widget.GridSpacesItemDecoration;
 
 import java.util.ArrayList;
@@ -43,10 +41,7 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
     RechargeAdaptor adaptor;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_wallet_recharge2);
-
+    protected void initView() {
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
 
@@ -61,11 +56,17 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
 
         presenter.onAttach(RechargeActivity.this);
         presenter.getRechargeList();
+
     }
 
     @Override
-    protected void setUp() {
+    protected int setTitle() {
+        return R.string.recharge;
+    }
 
+    @Override
+    protected int setLayout() {
+        return R.layout.activity_wallet_recharge2;
     }
 
     @Override

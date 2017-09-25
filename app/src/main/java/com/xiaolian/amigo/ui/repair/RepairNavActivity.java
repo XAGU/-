@@ -1,13 +1,6 @@
 package com.xiaolian.amigo.ui.repair;
 
-import android.os.Bundle;
-
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.ui.user.ListChooseActivity;
-import com.xiaolian.amigo.util.Constant;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -20,10 +13,19 @@ import butterknife.OnClick;
 public class RepairNavActivity extends RepairBaseActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_repair_nav);
+    protected void initView() {
+        setMainBackground(R.color.white);
         ButterKnife.bind(this);
+    }
+
+    @Override
+    protected int setTitle() {
+        return R.string.device_repair;
+    }
+
+    @Override
+    protected int setLayout() {
+        return R.layout.activity_repair_nav;
     }
 
     @Override

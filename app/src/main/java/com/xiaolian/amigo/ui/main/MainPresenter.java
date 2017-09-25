@@ -35,6 +35,11 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V> impleme
     }
 
     @Override
+    public void logout() {
+        manager.setToken("");
+    }
+
+    @Override
     public User getUserInfo() {
         return manager.getUserInfo();
     }
