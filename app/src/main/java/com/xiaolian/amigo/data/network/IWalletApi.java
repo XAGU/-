@@ -1,9 +1,11 @@
 package com.xiaolian.amigo.data.network;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.dto.request.QueryTimeValidReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.SimpleQueryReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.PersonalWalletDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryRechargeAmountsRespDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.QueryTimeValidRespDTO;
 
 import rx.Observable;
 import retrofit2.http.Body;
@@ -24,4 +26,8 @@ public interface IWalletApi {
     // 获取金额列表
     @POST("/funds/recharge/amount/list")
     Observable<ApiResult<QueryRechargeAmountsRespDTO>> queryRechargeAmountList(@Body SimpleQueryReqDTO body);
+
+    // 查询提现时间段
+    @POST("/time/range/withdraw")
+    Observable<ApiResult<QueryTimeValidRespDTO>> queryWithDrawTimeValid();
 }

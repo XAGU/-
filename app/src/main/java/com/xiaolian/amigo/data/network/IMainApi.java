@@ -22,5 +22,5 @@ public interface IMainApi {
 
     // 查询热水器热水供应时间段
     @POST("/time/range/water")
-    Observable<ApiResult<QueryTimeValidRespDTO>> queryTimeValid(@Body QueryTimeValidReqDTO reqDTO);
+    Observable<ApiResult<QueryTimeValidRespDTO>> queryWaterTimeValid(@Body QueryTimeValidReqDTO reqDTO);
 }

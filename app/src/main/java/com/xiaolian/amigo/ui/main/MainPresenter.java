@@ -63,7 +63,7 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V> impleme
     public void queryTimeValid(Integer deviceType, Class clz) {
         QueryTimeValidReqDTO reqDTO = new QueryTimeValidReqDTO();
         reqDTO.setDeviceType(deviceType);
-        addObserver(manager.queryTimeValid(reqDTO), new NetworkObserver<ApiResult<QueryTimeValidRespDTO>>() {
+        addObserver(manager.queryWaterTimeValid(reqDTO), new NetworkObserver<ApiResult<QueryTimeValidRespDTO>>() {
 
             @Override
             public void onReady(ApiResult<QueryTimeValidRespDTO> result) {

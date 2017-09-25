@@ -12,4 +12,7 @@ public interface IWalletPresenter<V extends IWalletView> extends IBasePresenter<
 
     // 获取余额，预付金额
     void requestNetWork();
+
+    // 查询提现时间段
+    void queryWithdrawTimeValid();
 }

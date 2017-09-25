@@ -59,7 +59,7 @@ public class MainDataManager implements IMainDataManager {
     }
 
     @Override
-    public Observable<ApiResult<QueryTimeValidRespDTO>> queryTimeValid(@Body QueryTimeValidReqDTO reqDTO) {
-        return mainApi.queryTimeValid(reqDTO);
+    public Observable<ApiResult<QueryTimeValidRespDTO>> queryWaterTimeValid(@Body QueryTimeValidReqDTO reqDTO) {
+        return mainApi.queryWaterTimeValid(reqDTO);
     }
 }

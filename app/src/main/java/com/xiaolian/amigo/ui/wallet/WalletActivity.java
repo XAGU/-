@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.wallet;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
@@ -71,14 +72,7 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
     // 提现
     @OnClick(R.id.rl_withdrawal)
     void withdrawal() {
-        AvailabilityDialog dialog = new AvailabilityDialog(this);
-        dialog.setTip(getString(R.string.withdraw_tip));
-        dialog.setSubTipVisible(false);
-        dialog.setOkText(getString(R.string.ok));
-        dialog.setOnOkClickListener(dialog1 -> {
-            startActivity(this, WithdrawalActivty.class);
-        });
-        dialog.show();
+        presenter.queryWithdrawTimeValid();
     }
 
     @Override
@@ -89,5 +83,26 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
     @Override
     public void setPrepayText(String prepay) {
         tv_prepay.setText(prepay);
+    }
+
+    @Override
+    public void gotoWithDraw() {
+        startActivity(this, WithdrawalActivty.class);
+    }
+
+    @Override
+    public void showTimeValidDialog(String title, String remark) {
+        AvailabilityDialog dialog = new AvailabilityDialog(this);
+        if (TextUtils.isEmpty(title)) {
+            dialog.setTip(getString(R.string.withdraw_tip));
+        } else {
+            dialog.setTip(title);
+        }
+        dialog.setSubTipVisible(false);
+        dialog.setOkText(getString(R.string.ok));
+        dialog.setOnOkClickListener(dialog1 -> {
+            startActivity(this, WithdrawalActivty.class);
+        });
+        dialog.show();
     }
 }

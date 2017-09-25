@@ -3,9 +3,11 @@ package com.xiaolian.amigo.data.manager;
 import com.xiaolian.amigo.data.manager.intf.IWalletDataManager;
 import com.xiaolian.amigo.data.network.IWalletApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.dto.request.QueryTimeValidReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.SimpleQueryReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.PersonalWalletDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryRechargeAmountsRespDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.QueryTimeValidRespDTO;
 
 import javax.inject.Inject;
 
@@ -38,5 +40,10 @@ public class WalletDataManager implements IWalletDataManager {
     @Override
     public Observable<ApiResult<QueryRechargeAmountsRespDTO>> queryRechargeAmountList(@Body SimpleQueryReqDTO body) {
         return walletApi.queryRechargeAmountList(body);
+    }
+
+    @Override
+    public Observable<ApiResult<QueryTimeValidRespDTO>> queryWithDrawTimeValid() {
+        return walletApi.queryWithDrawTimeValid();
     }
 }

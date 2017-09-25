@@ -12,4 +12,8 @@ public interface IWalletView extends IBaseView {
     void setBalanceText(String balance);
 
     void setPrepayText(String prepay);
+
+    void gotoWithDraw();
+
+    void showTimeValidDialog(String title, String remark);
 }
