@@ -15,6 +15,7 @@ import android.widget.EditText;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.util.CountDownButtonHelper;
+import com.xiaolian.amigo.util.ViewUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -72,14 +73,8 @@ public class RegisterStep1Fragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        String mobileHint = getString(R.string.mobile_hint);
-        SpannableString mobileSpan = new SpannableString(mobileHint);
-        mobileSpan.setSpan(new AbsoluteSizeSpan(14, true), 0, mobileHint.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        et_mobile.setHint(mobileSpan);
-        String verificationCodeHint = getString(R.string.verification_code_hint);
-        SpannableString verificationSpan = new SpannableString(verificationCodeHint);
-        verificationSpan.setSpan(new AbsoluteSizeSpan(14, true), 0, verificationCodeHint.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        et_verification_code.setHint(verificationSpan);
+        ViewUtil.setEditHintAndSize(getString(R.string.mobile_hint), 14, et_mobile);
+        ViewUtil.setEditHintAndSize(getString(R.string.verification_code_hint), 14, et_verification_code);
 
         cdb = new CountDownButtonHelper(bt_send_verification_code, "获取验证码", 60, 1);
         cdb.setOnFinishListener(() -> {

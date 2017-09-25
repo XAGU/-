@@ -81,8 +81,7 @@ public class ProfileFragment extends Fragment {
 
     @OnItemClick(R.id.profileMenuListView)
     void forward(AdapterView<?> parent, View view, int position, long id) {
-        Intent intent = new Intent(getActivity().getApplicationContext(), listData.get(position).activityClazz);
-        startActivity(intent);
+        ((MainActivity)getActivity()).startActivity(listData.get(position).activityClazz);
     }
 
 

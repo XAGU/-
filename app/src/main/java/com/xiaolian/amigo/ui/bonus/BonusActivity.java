@@ -69,7 +69,7 @@ public class BonusActivity extends BonusBaseListActivity implements IBonusView {
     @Override
     public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
         page = 1;
-        presenter.requestBonusList(page);
+        setRefreshing(true);
         bonuses.clear();
     }
 

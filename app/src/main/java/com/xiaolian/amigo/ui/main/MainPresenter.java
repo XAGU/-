@@ -38,6 +38,11 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V> impleme
     }
 
     @Override
+    public String getToken() {
+        return manager.getToken();
+    }
+
+    @Override
     public void getNoticeAmount() {
         addObserver(manager.getExtraInfo(), new NetworkObserver<ApiResult<PersonalExtraInfoDTO>>() {
 

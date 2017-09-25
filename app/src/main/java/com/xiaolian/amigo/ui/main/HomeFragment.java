@@ -35,7 +35,7 @@ public class HomeFragment extends Fragment {
      */
     @OnClick(R.id.rl_geyser)
     public void gotoGeyser() {
-        startActivity(new Intent(getActivity(), GeyserActivity.class));
+        ((MainActivity)getActivity()).startActivity(GeyserActivity.class);
     }
 
 
@@ -50,12 +50,12 @@ public class HomeFragment extends Fragment {
      */
     @OnClick(R.id.rl_water_fountain)
     public void gotoWaterFountain() {
-        startActivity(new Intent(getActivity(), WaterFountainActivity.class));
+        ((MainActivity)getActivity()).startActivity(WaterFountainActivity.class);
     }
 
     @OnClick(R.id.rl_lost_and_found)
     public void gotoLostAndFound() {
-        startActivity(new Intent(getActivity(), LostAndFoundActivity.class));
+        ((MainActivity)getActivity()).startActivity(LostAndFoundActivity.class);
     }
 
     @Nullable

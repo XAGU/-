@@ -84,7 +84,8 @@ public class EditDormitoryActivity extends UserBaseListActivity implements IEdit
 
     @Override
     public void notifyAdaptor() {
-        adaptor.notifyDataSetChanged();
+//        adaptor.notifyDataSetChanged();
+        mRefreshLayout.beginRefreshing();
     }
 
     @Override
@@ -92,7 +93,6 @@ public class EditDormitoryActivity extends UserBaseListActivity implements IEdit
         page = Constant.PAGE_START_NUM;
         items.clear();
         setRefreshing(true);
-        presenter.queryDormitoryList(page, Constant.PAGE_SIZE);
     }
 
     @Override

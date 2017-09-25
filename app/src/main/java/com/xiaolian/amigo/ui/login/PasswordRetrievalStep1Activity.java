@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.login.intf.IPasswordRetrievalStep1Presenter;
 import com.xiaolian.amigo.ui.login.intf.IPasswordRetrievalStep1View;
+import com.xiaolian.amigo.util.ViewUtil;
 
 import javax.inject.Inject;
 
@@ -61,14 +62,8 @@ public class PasswordRetrievalStep1Activity extends LoginBaseActivity implements
         bt_submit.getBackground().setAlpha(100);
         bt_submit.setEnabled(false);
 
-        String mobileHint = getString(R.string.mobile_hint);
-        SpannableString mobileSpan = new SpannableString(mobileHint);
-        mobileSpan.setSpan(new AbsoluteSizeSpan(14, true), 0, mobileHint.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        et_mobile.setHint(mobileSpan);
-        String verificationHint = getString(R.string.verification_code_hint);
-        SpannableString verificationSpan = new SpannableString(verificationHint);
-        verificationSpan.setSpan(new AbsoluteSizeSpan(14, true), 0, verificationHint.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        et_verificationCode.setHint(verificationSpan);
+        ViewUtil.setEditHintAndSize(getString(R.string.mobile_hint), 14, et_mobile);
+        ViewUtil.setEditHintAndSize(getString(R.string.verification_code_hint), 14, et_verificationCode);
     }
 
     @Override

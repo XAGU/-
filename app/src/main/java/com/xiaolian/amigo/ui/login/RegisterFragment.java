@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.user.ListChooseActivity;
 import com.xiaolian.amigo.ui.user.adaptor.ListChooseAdaptor;
+import com.xiaolian.amigo.util.ViewUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -72,14 +73,8 @@ public class RegisterFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        String passwordHint = getString(R.string.password_hint);
-        SpannableString passwordSpan = new SpannableString(passwordHint);
-        passwordSpan.setSpan(new AbsoluteSizeSpan(14, true), 0, passwordHint.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        et_userpwd.setHint(passwordSpan);
-        String schoolHint = getString(R.string.school_hint);
-        SpannableString schoolSpan = new SpannableString(schoolHint);
-        schoolSpan.setSpan(new AbsoluteSizeSpan(14, true), 0, schoolHint.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        tv_school.setHint(schoolSpan);
+        ViewUtil.setEditHintAndSize(getString(R.string.password_hint), 14, et_userpwd);
+        ViewUtil.setEditHintAndSize(getString(R.string.school_hint), 14, tv_school);
     }
 
     @Override

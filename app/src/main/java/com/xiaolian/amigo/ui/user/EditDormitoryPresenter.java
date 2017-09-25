@@ -46,6 +46,8 @@ public class EditDormitoryPresenter<V extends IEditDormitoryView> extends BasePr
 
             @Override
             public void onReady(ApiResult<QueryUserResidenceListRespDTO> result) {
+                getMvpView().setRefreshing(false);
+                getMvpView().setLoadMoreComplete();
                 if (null == result.getError()) {
                     if (result.getData().getUserResidences() != null && result.getData().getUserResidences().size() > 0) {
                         List<EditDormitoryAdaptor.UserResidenceWrapper> wrappers = new ArrayList<>();
@@ -54,6 +56,7 @@ public class EditDormitoryPresenter<V extends IEditDormitoryView> extends BasePr
                                     userResidence.getResidenceId() == manager.getUser().getResidenceId()));
                         }
                         getMvpView().addMore(wrappers);
+                        getMvpView().addPage();
                     }
                 } else {
                     getMvpView().showMessage(result.getError().getDisplayMessage());
@@ -83,7 +86,7 @@ public class EditDormitoryPresenter<V extends IEditDormitoryView> extends BasePr
     @Override
     public void updateResidenceId(Long residenceId) {
         PersonalUpdateReqDTO dto = new PersonalUpdateReqDTO();
-        dto.setResidneceId(residenceId);
+        dto.setResidenceId(residenceId);
         addObserver(manager.updateUserInfo(dto), new NetworkObserver<ApiResult<EntireUserDTO>>() {
 
             @Override

@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.login.intf.IPasswordRetrievalStep2Presenter;
 import com.xiaolian.amigo.ui.login.intf.IPasswordRetrievalStep2View;
+import com.xiaolian.amigo.util.ViewUtil;
 
 import javax.inject.Inject;
 
@@ -61,11 +62,8 @@ public class PasswordRetrievalStep2Activity extends LoginBaseActivity implements
         bt_submit.getBackground().setAlpha(100);
         bt_submit.setEnabled(false);
 
-        String passwordHint = getString(R.string.password_hint);
-        SpannableString passwordSpan = new SpannableString(passwordHint);
-        passwordSpan.setSpan(new AbsoluteSizeSpan(14, true), 0, passwordHint.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        et_userpwd.setHint(passwordSpan);
-        et_confirm_userpwd.setHint(passwordSpan);
+        ViewUtil.setEditHintAndSize(getString(R.string.password_hint), 14, et_userpwd);
+        ViewUtil.setEditHintAndSize(getString(R.string.password_hint), 14, et_confirm_userpwd);
 
         if (getIntent() != null) {
             code = getIntent().getStringExtra(INTENT_KEY_PASSWORD_RETRIEVAL_CODE);

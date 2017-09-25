@@ -17,6 +17,7 @@ import android.widget.EditText;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.tmp.component.PasswordEditText;
+import com.xiaolian.amigo.util.ViewUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -64,18 +65,13 @@ public class LoginFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        String mobileHint = getString(R.string.mobile_hint);
-        SpannableString mobileSpan = new SpannableString(mobileHint);
-        mobileSpan.setSpan(new AbsoluteSizeSpan(14, true), 0, mobileHint.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        et_mobile.setHint(mobileSpan);
-        String passwordHint = getString(R.string.password_hint);
-        SpannableString passwordSpan = new SpannableString(passwordHint);
-        passwordSpan.setSpan(new AbsoluteSizeSpan(14, true), 0, passwordHint.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        et_userpwd.setHint(passwordSpan);
+        ViewUtil.setEditHintAndSize(getString(R.string.mobile_hint), 14, et_mobile);
+        ViewUtil.setEditHintAndSize(getString(R.string.password_hint), 14, et_userpwd);
         TextChange textChange = new TextChange();
         et_mobile.addTextChangedListener(textChange);
         et_userpwd.addTextChangedListener(textChange);
     }
+
 
     class TextChange implements TextWatcher {
 

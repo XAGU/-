@@ -6,6 +6,8 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -153,5 +155,18 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         } else {
             tv_notice_count.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void startActivity(AppCompatActivity activity, Class<?> clazz) {
+        if (TextUtils.isEmpty(presenter.getToken())) {
+            startActivity(new Intent(this, LoginActivity.class));
+        } else {
+            super.startActivity(activity, clazz);
+        }
+    }
+
+    public void startActivity(Class<?> clasz) {
+        startActivity(this, clasz);
     }
 }

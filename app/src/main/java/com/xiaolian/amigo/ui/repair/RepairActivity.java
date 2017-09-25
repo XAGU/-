@@ -76,7 +76,6 @@ public class RepairActivity extends RepairBaseListActivity implements IRepairVie
         page = Constant.PAGE_START_NUM;
         repairs.clear();
         setRefreshing(true);
-        presenter.requestRepairs(page);
     }
 
     @Override

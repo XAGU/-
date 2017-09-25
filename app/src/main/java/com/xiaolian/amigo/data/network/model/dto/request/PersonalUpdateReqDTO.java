@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class PersonalUpdateReqDTO {
 
-    private Long residneceId;
+    private Long residenceId;
     private String nickName;
     private String pictureUrl;
     private Long schoolId;
