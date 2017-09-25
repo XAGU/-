@@ -3,13 +3,16 @@ package com.xiaolian.amigo.data.manager;
 import com.xiaolian.amigo.data.manager.intf.IMainDataManager;
 import com.xiaolian.amigo.data.network.IMainApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.dto.request.QueryTimeValidReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.PersonalExtraInfoDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.QueryTimeValidRespDTO;
 import com.xiaolian.amigo.data.network.model.user.User;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 
 import javax.inject.Inject;
 
 import retrofit2.Retrofit;
+import retrofit2.http.Body;
 import rx.Observable;
 
 /**
@@ -53,5 +56,10 @@ public class MainDataManager implements IMainDataManager {
     @Override
     public Observable<ApiResult<PersonalExtraInfoDTO>> getExtraInfo() {
         return mainApi.getExtraInfo();
+    }
+
+    @Override
+    public Observable<ApiResult<QueryTimeValidRespDTO>> queryTimeValid(@Body QueryTimeValidReqDTO reqDTO) {
+        return mainApi.queryTimeValid(reqDTO);
     }
 }

@@ -1,6 +1,5 @@
 package com.xiaolian.amigo.ui.main;
 
-import android.app.Dialog;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,15 +12,13 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.device.geyser.GeyserActivity;
 import com.xiaolian.amigo.ui.device.waterfountain.WaterFountainActivity;
 import com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity;
-import com.xiaolian.amigo.ui.widget.dialog.AvailabilityAlertDialog;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.xiaolian.amigo.data.enumeration.Device.DISPENSER;
+import static com.xiaolian.amigo.data.enumeration.Device.HEARTER;
 
 /**
  * Created by yik on 2017/9/5.
@@ -40,13 +37,7 @@ public class HomeFragment extends Fragment {
      */
     @OnClick(R.id.rl_geyser)
     public void gotoGeyser() {
-        AvailabilityAlertDialog dialog = new AvailabilityAlertDialog(getActivity());
-        dialog.setOkText(getString(R.string.keep_use));
-        dialog.setTip(getString(R.string.water_supply_tip));
-        dialog.setOnOkClickListener(dialog1 -> {
-            ((MainActivity)getActivity()).startActivity(GeyserActivity.class);
-        });
-        dialog.show();
+        ((MainActivity)getActivity()).checkTimeValid(HEARTER, GeyserActivity.class);
     }
 
 
@@ -61,7 +52,7 @@ public class HomeFragment extends Fragment {
      */
     @OnClick(R.id.rl_water_fountain)
     public void gotoWaterFountain() {
-        ((MainActivity)getActivity()).startActivity(WaterFountainActivity.class);
+        ((MainActivity)getActivity()).checkTimeValid(DISPENSER, WaterFountainActivity.class);
     }
 
     @OnClick(R.id.rl_lost_and_found)

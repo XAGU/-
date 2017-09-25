@@ -4,7 +4,9 @@ import android.text.TextUtils;
 
 import com.xiaolian.amigo.data.manager.intf.IMainDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.dto.request.QueryTimeValidReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.PersonalExtraInfoDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.QueryTimeValidRespDTO;
 import com.xiaolian.amigo.data.network.model.user.User;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.main.intf.IMainPresenter;
@@ -50,6 +52,28 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V> impleme
             public void onReady(ApiResult<PersonalExtraInfoDTO> result) {
                 if (null == result.getError()) {
                     getMvpView().showNoticeAmount(result.getData().getNotifyAmount());
+                } else {
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+        });
+    }
+
+    @Override
+    public void queryTimeValid(Integer deviceType, Class clz) {
+        QueryTimeValidReqDTO reqDTO = new QueryTimeValidReqDTO();
+        reqDTO.setDeviceType(deviceType);
+        addObserver(manager.queryTimeValid(reqDTO), new NetworkObserver<ApiResult<QueryTimeValidRespDTO>>() {
+
+            @Override
+            public void onReady(ApiResult<QueryTimeValidRespDTO> result) {
+                if (null == result.getError()) {
+                    if (result.getData().isValid()) {
+                        getMvpView().gotoDevice(clz);
+                    } else {
+                        getMvpView().showTimeValidDialog(result.getData().getTitle(),
+                                result.getData().getRemark(), clz);
+                    }
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }

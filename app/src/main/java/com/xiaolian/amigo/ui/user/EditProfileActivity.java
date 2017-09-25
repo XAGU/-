@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.user;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.tmp.component.CircleImageView;
 import com.xiaolian.amigo.ui.user.intf.IEditProfilePresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditProfileView;
+import com.xiaolian.amigo.ui.widget.dialog.ChangeMobileDialog;
 
 import javax.inject.Inject;
 
@@ -122,13 +124,21 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
                 startActivityForResult(intent, REQUEST_CODE_EDIT_SEX);
                 break;
             case R.id.rel_edit_mobile:
-                intent = new Intent(getApplicationContext(), EditMobileActivity.class);
-                intent.putExtra("nickName", "");
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    startActivityForResult(intent, REQUEST_CODE_EDIT_MOBILE, new Bundle());
-                } else {
-                    startActivityForResult(intent, REQUEST_CODE_EDIT_MOBILE);
-                }
+                ChangeMobileDialog dialog = new ChangeMobileDialog(this);
+                dialog.setOnOkClickListener(new ChangeMobileDialog.OnOkClickListener() {
+                    @Override
+                    public void onOkClick(Dialog dialog, String password) {
+
+                    }
+                });
+                dialog.show();
+//                intent = new Intent(getApplicationContext(), EditMobileActivity.class);
+//                intent.putExtra("nickName", "");
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+//                    startActivityForResult(intent, REQUEST_CODE_EDIT_MOBILE, new Bundle());
+//                } else {
+//                    startActivityForResult(intent, REQUEST_CODE_EDIT_MOBILE);
+//                }
                 break;
             case R.id.rel_edit_password:
                 intent = new Intent(getApplicationContext(), EditPasswordActivity.class);

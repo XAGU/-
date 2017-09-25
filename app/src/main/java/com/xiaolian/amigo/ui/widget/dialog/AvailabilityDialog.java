@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
@@ -17,7 +18,7 @@ import com.xiaolian.amigo.R;
  * Created by zcd on 9/25/17.
  */
 
-public class AvailabilityAlertDialog extends Dialog {
+public class AvailabilityDialog extends Dialog {
 
     private TextView tv_tip;
     private TextView tv_sub_tip;
@@ -25,12 +26,16 @@ public class AvailabilityAlertDialog extends Dialog {
     private TextView tv_ok;
     private OnOkClickListener listener;
 
-    public AvailabilityAlertDialog(@NonNull Context context) {
+    public AvailabilityDialog(@NonNull Context context) {
         super(context, R.style.AlertDialogStyle);
         Window window = this.getWindow();
         window.requestFeature(Window.FEATURE_NO_TITLE);
         window.setGravity(Gravity.CENTER);  //此处可以设置dialog显示的位置
         window.getDecorView().setPadding(0, 0, 0, 0);
+        WindowManager.LayoutParams lp = window.getAttributes();
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        window.setAttributes(lp);
         initView();
     }
 
@@ -55,6 +60,10 @@ public class AvailabilityAlertDialog extends Dialog {
 
     public void setSubTipVisible(boolean visible) {
         tv_sub_tip.setVisibility(visible ? View.VISIBLE : View.GONE);
+    }
+
+    public void setSubTip(String subTip) {
+        tv_sub_tip.setText(subTip);
     }
 
     public void setOkText(String ok) {

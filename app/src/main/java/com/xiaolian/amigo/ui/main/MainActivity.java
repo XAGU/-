@@ -14,10 +14,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.ui.login.LoginActivity;
 import com.xiaolian.amigo.ui.main.intf.IMainPresenter;
 import com.xiaolian.amigo.ui.main.intf.IMainView;
 import com.xiaolian.amigo.ui.notice.NoticeActivity;
+import com.xiaolian.amigo.ui.widget.dialog.AvailabilityDialog;
 import com.xiaolian.amigo.ui.widget.dialog.NoticeAlertDialog;
 
 import javax.inject.Inject;
@@ -161,6 +163,23 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     }
 
     @Override
+    public void showTimeValidDialog(String title, String remark, Class clz) {
+        AvailabilityDialog dialog = new AvailabilityDialog(this);
+        dialog.setOkText(getString(R.string.keep_use));
+        dialog.setTip(title);
+        dialog.setSubTip(remark);
+        dialog.setOnOkClickListener(dialog1 -> {
+            startActivity(clz);
+        });
+        dialog.show();
+    }
+
+    @Override
+    public void gotoDevice(Class clz) {
+        startActivity(clz);
+    }
+
+    @Override
     public void startActivity(AppCompatActivity activity, Class<?> clazz) {
         if (TextUtils.isEmpty(presenter.getToken())) {
             startActivity(new Intent(this, LoginActivity.class));
@@ -171,5 +190,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     public void startActivity(Class<?> clasz) {
         startActivity(this, clasz);
+    }
+
+    public void checkTimeValid(Device device, Class clz) {
+        presenter.queryTimeValid(device.getType(), clz);
     }
 }

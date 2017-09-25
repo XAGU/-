@@ -17,4 +17,6 @@ public interface IMainPresenter<V extends IMainView> extends IBasePresenter<V> {
     String getToken();
 
     void getNoticeAmount();
+
+    void queryTimeValid(Integer deviceType, Class clz);
 }
