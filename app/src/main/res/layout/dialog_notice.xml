@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_marginLeft="42dp"
+    android:layout_marginRight="42dp"
+    android:background="@drawable/bg_rect_corner_dialog"
+    android:layout_height="match_parent">
+    <ImageView
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="29dp"
+        android:src="@drawable/ic_emergency_notice2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:layout_marginTop="14dp"
+        android:text="@string/emergency_notice"
+        android:gravity="center_horizontal"
+        android:textColor="@color/colorDark2"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    
+    <View
+        android:layout_marginTop="21dp"
+        android:background="#f3f3f3"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="32dp"
+        android:layout_height="4dp"/>
+
+    <TextView
+        android:layout_marginTop="21dp"
+        android:layout_marginLeft="36dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginRight="36dp"
+        android:layout_marginEnd="36dp"
+        android:text="这里是描述性文字哦这里是描述性文字哦这里是描述是描述性文字哦这里是描述性文字哦"
+        android:textSize="12sp"
+        android:textColor="@color/colorDark9"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:id="@+id/ll_not_remind"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/iv_not_remind"
+            android:src="@drawable/dot_gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_marginLeft="4dp"
+            android:layout_marginStart="4dp"
+            android:text="@string/do_not_remind"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/bt_ok"
+        android:text="朕知道了"
+        android:background="@drawable/button_oval_red"
+        android:layout_marginBottom="29dp"
+        android:textColor="#fff"
+        android:textSize="14sp"
+        android:elevation="2dp"
+        android:layout_marginTop="14dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="144dp"
+        android:layout_height="34dp" />
+
+</LinearLayout>

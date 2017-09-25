@@ -18,6 +18,7 @@ import com.xiaolian.amigo.ui.login.LoginActivity;
 import com.xiaolian.amigo.ui.main.intf.IMainPresenter;
 import com.xiaolian.amigo.ui.main.intf.IMainView;
 import com.xiaolian.amigo.ui.notice.NoticeActivity;
+import com.xiaolian.amigo.ui.widget.dialog.NoticeAlertDialog;
 
 import javax.inject.Inject;
 
@@ -144,7 +145,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
      */
     @OnClick(R.id.rl_notice)
     void gotoNoticeList() {
-        startActivity(new Intent(this, NoticeActivity.class));
+        NoticeAlertDialog dialog = new NoticeAlertDialog(this);
+        dialog.show();
+//        startActivity(new Intent(this, NoticeActivity.class));
     }
 
     @Override

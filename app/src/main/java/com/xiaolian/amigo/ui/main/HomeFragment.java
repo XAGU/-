@@ -1,7 +1,7 @@
 package com.xiaolian.amigo.ui.main;
 
+import android.app.Dialog;
 import android.app.Fragment;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -13,6 +13,11 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.device.geyser.GeyserActivity;
 import com.xiaolian.amigo.ui.device.waterfountain.WaterFountainActivity;
 import com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity;
+import com.xiaolian.amigo.ui.widget.dialog.AvailabilityAlertDialog;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,7 +40,14 @@ public class HomeFragment extends Fragment {
      */
     @OnClick(R.id.rl_geyser)
     public void gotoGeyser() {
-        ((MainActivity)getActivity()).startActivity(GeyserActivity.class);
+        AvailabilityAlertDialog dialog = new AvailabilityAlertDialog(getActivity());
+        dialog.setOkText(getString(R.string.keep_use));
+        dialog.setTip(getString(R.string.water_supply_tip));
+        dialog.setOnOkClickListener(dialog1 -> {
+            ((MainActivity)getActivity()).startActivity(GeyserActivity.class);
+            dialog1.dismiss();
+        });
+        dialog.show();
     }
 
 

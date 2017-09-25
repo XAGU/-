@@ -7,11 +7,11 @@
             <!-- solid指定形状的填充色，只有android:color一个属性 -->
             <solid android:color="#ff5559" />
             <!-- padding设置内容区域离边界的间距 -->
-            <padding
-                android:bottom="12dp"
-                android:left="12dp"
-                android:right="12dp"
-                android:top="12dp" />
+            <!--<padding-->
+                <!--android:bottom="12dp"-->
+                <!--android:left="12dp"-->
+                <!--android:right="12dp"-->
+                <!--android:top="12dp" />-->
             <!-- corners设置圆角，只适用于rectangle -->
             <corners android:radius="200dp" />
         </shape>
