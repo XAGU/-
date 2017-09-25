@@ -16,7 +16,7 @@ import rx.Observable;
  * <p>
  * Created by caidong on 2017/9/22.
  */
-public interface IBLEDataManager {
+public interface IBleDataManager {
 
     // 扫描设备
     Observable<ScanResult> scan();

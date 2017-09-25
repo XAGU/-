@@ -2,8 +2,6 @@ package com.xiaolian.amigo.data.manager;
 
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
-import android.bluetooth.BluetoothGattService;
-import android.os.ParcelUuid;
 import android.support.annotation.NonNull;
 
 import com.polidea.rxandroidble.RxBleClient;
@@ -13,9 +11,8 @@ import com.polidea.rxandroidble.scan.ScanFilter;
 import com.polidea.rxandroidble.scan.ScanResult;
 import com.polidea.rxandroidble.scan.ScanSettings;
 import com.polidea.rxandroidble.utils.ConnectionSharingAdapter;
-import com.xiaolian.amigo.data.manager.intf.IBLEDataManager;
+import com.xiaolian.amigo.data.manager.intf.IBleDataManager;
 
-import java.util.List;
 import java.util.UUID;
 
 import javax.inject.Inject;
@@ -26,14 +23,14 @@ import rx.subjects.PublishSubject;
 /**
  * Created by caidong on 2017/9/22.
  */
-public class BLEDataManager implements IBLEDataManager {
+public class BleDataManager implements IBleDataManager {
 
     private static final String SERVICE_UUID = "0000fee9-0000-1000-8000-00805f9b34fb";
     private static final String CHARACTERISTIC_UUID = "d44bc439-abfd-45a2-b575-925416129600";
     private RxBleClient client;
 
     @Inject
-    public BLEDataManager(RxBleClient client) {
+    public BleDataManager(RxBleClient client) {
         this.client = client;
     }
 

@@ -18,8 +18,8 @@ package com.xiaolian.amigo.di.module;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
-import com.xiaolian.amigo.data.manager.BLEDataManager;
-import com.xiaolian.amigo.data.manager.intf.IBLEDataManager;
+import com.xiaolian.amigo.data.manager.BleDataManager;
+import com.xiaolian.amigo.data.manager.intf.IBleDataManager;
 import com.xiaolian.amigo.di.BleActivityContext;
 import com.xiaolian.amigo.ui.ble.BleInteractivePresenter;
 import com.xiaolian.amigo.ui.ble.BlePresenter;
@@ -52,7 +52,7 @@ public class BleActivityModule {
 
     @Provides
     @BleActivityContext
-    IBLEDataManager provideBleDataManager(BLEDataManager manager) {
+    IBleDataManager provideBleDataManager(BleDataManager manager) {
         return manager;
     }
 
