@@ -37,6 +37,9 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
         sourceCompatibility JavaVersion.VERSION_1_8
     }
+    configurations.all {
+        resolutionStrategy.force 'com.google.code.findbugs:jsr305:3.0.1'
+    }
 }
 
 //greendao {
@@ -142,6 +145,8 @@ dependencies {
 
     // RxBLE
     compile "com.polidea.rxandroidble:rxandroidble:$rootProject.polidea"
+    compile 'com.trello:rxlifecycle:1.0'
+    compile 'com.trello:rxlifecycle-components:1.0'
 }
 
 configurations.all {

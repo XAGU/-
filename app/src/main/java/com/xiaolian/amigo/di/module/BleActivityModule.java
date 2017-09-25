@@ -18,26 +18,25 @@ package com.xiaolian.amigo.di.module;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
-import com.xiaolian.amigo.data.manager.BLEDataManager;
-import com.xiaolian.amigo.data.manager.intf.IBLEDataManager;
-import com.xiaolian.amigo.di.BLEActivityContext;
-import com.xiaolian.amigo.di.BonusActivityContext;
-import com.xiaolian.amigo.ui.ble.intf.BLEPresenter;
-import com.xiaolian.amigo.ui.ble.intf.IBLEPresenter;
-import com.xiaolian.amigo.ui.ble.intf.IBLEView;
-import com.xiaolian.amigo.ui.bonus.BonusExchangePresenter;
-import com.xiaolian.amigo.ui.bonus.intf.IBonusExchangePresenter;
-import com.xiaolian.amigo.ui.bonus.intf.IBonusExchangeView;
+import com.xiaolian.amigo.data.manager.BleDataManager;
+import com.xiaolian.amigo.data.manager.intf.IBleDataManager;
+import com.xiaolian.amigo.di.BleActivityContext;
+import com.xiaolian.amigo.ui.ble.BleInteractivePresenter;
+import com.xiaolian.amigo.ui.ble.BlePresenter;
+import com.xiaolian.amigo.ui.ble.intf.IBleInteractivePresenter;
+import com.xiaolian.amigo.ui.ble.intf.IBleInteractiveView;
+import com.xiaolian.amigo.ui.ble.intf.IBlePresenter;
+import com.xiaolian.amigo.ui.ble.intf.IBleView;
 
 import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class BLEActivityModule {
+public class BleActivityModule {
 
     private AppCompatActivity mActivity;
 
-    public BLEActivityModule(AppCompatActivity activity) {
+    public BleActivityModule(AppCompatActivity activity) {
         this.mActivity = activity;
     }
 
@@ -52,14 +51,20 @@ public class BLEActivityModule {
     }
 
     @Provides
-    @BLEActivityContext
-    IBLEDataManager provideBLEDataManager(BLEDataManager manager) {
+    @BleActivityContext
+    IBleDataManager provideBleDataManager(BleDataManager manager) {
         return manager;
     }
 
     @Provides
-    @BLEActivityContext
-    IBLEPresenter<IBLEView> provideBLEPresenter(BLEPresenter<IBLEView> presenter) {
+    @BleActivityContext
+    IBlePresenter<IBleView> provideBlePresenter(BlePresenter<IBleView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    @BleActivityContext
+    IBleInteractivePresenter<IBleInteractiveView> provideBleInterractivePresenter(BleInteractivePresenter<IBleInteractiveView> presenter) {
         return presenter;
     }
 }
