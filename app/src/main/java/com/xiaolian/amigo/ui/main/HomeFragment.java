@@ -45,7 +45,6 @@ public class HomeFragment extends Fragment {
         dialog.setTip(getString(R.string.water_supply_tip));
         dialog.setOnOkClickListener(dialog1 -> {
             ((MainActivity)getActivity()).startActivity(GeyserActivity.class);
-            dialog1.dismiss();
         });
         dialog.show();
     }

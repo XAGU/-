@@ -77,8 +77,11 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
             @Override
             public void onReady(ApiResult<LoginRespDTO> result) {
                 if (null == result.getError()) {
+                    manager.setUserInfo(result.getData().getUser());
+                    manager.setToken(result.getData().getToken());
                     getMvpView().showMessage("注册成功");
-                    getMvpView().gotoLoginView();
+                    getMvpView().gotoMainView();
+//                    getMvpView().gotoLoginView();
                 } else {
                     getMvpView().showMessage(result.getError().getDisplayMessage());
                 }

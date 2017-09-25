@@ -41,7 +41,12 @@ public class AvailabilityAlertDialog extends Dialog {
         tv_cancel = (TextView) findViewById(R.id.tv_cancel);
         tv_cancel.setOnClickListener(v -> dismiss());
         tv_ok = (TextView) findViewById(R.id.tv_ok);
-        tv_ok.setOnClickListener(v -> listener.onOkClick(this));
+        tv_ok.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onOkClick(this);
+            }
+            dismiss();
+        });
     }
 
     public void setTip(String tip) {
