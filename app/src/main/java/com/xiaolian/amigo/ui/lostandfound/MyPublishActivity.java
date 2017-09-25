@@ -36,11 +36,6 @@ public class MyPublishActivity extends LostAndFoundBaseListActivity implements I
     ILostAndFoundPresenter<ILostAndFoundView> presenter;
 
     @Override
-    protected void initData() {
-        presenter.getMyLostAndFounds();
-    }
-
-    @Override
     protected void initPresenter() {
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
@@ -81,7 +76,10 @@ public class MyPublishActivity extends LostAndFoundBaseListActivity implements I
 
     @Override
     public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
-
+        page = 1;
+        setRefreshing(true);
+        lostAndFounds.clear();
+        presenter.getMyLostAndFounds();
     }
 
     @Override
@@ -91,7 +89,7 @@ public class MyPublishActivity extends LostAndFoundBaseListActivity implements I
 
     @Override
     public void onLoadMore() {
-
+        presenter.getMyLostAndFounds();
     }
 
     @Override

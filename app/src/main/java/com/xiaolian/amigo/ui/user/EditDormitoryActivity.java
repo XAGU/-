@@ -22,6 +22,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 
 /**
  * 编辑宿舍
@@ -29,7 +30,7 @@ import butterknife.OnClick;
  * Created by zcd on 9/19/17.
  */
 
-public class EditDormitoryActivity extends UserBaseActivity implements IEditDormitoryView{
+public class EditDormitoryActivity extends UserBaseListActivity implements IEditDormitoryView{
 
     @Inject
     IEditDormitoryPresenter<IEditDormitoryView> presenter;
@@ -37,9 +38,6 @@ public class EditDormitoryActivity extends UserBaseActivity implements IEditDorm
     List<EditDormitoryAdaptor.UserResidenceWrapper> items = new ArrayList<>();
 
     EditDormitoryAdaptor adaptor;
-
-    @BindView(R.id.recyclerView)
-    RecyclerView recyclerView;
 
     @BindView(R.id.tv_add_dormitory)
     TextView tv_add_dormitory;
@@ -55,31 +53,27 @@ public class EditDormitoryActivity extends UserBaseActivity implements IEditDorm
     }
 
     @Override
-    protected void setUp() {
-
+    protected RecyclerView.Adapter getAdaptor() {
+        adaptor = new EditDormitoryAdaptor(this, R.layout.item_dormitory, items, presenter);
+        adaptor.setOnItemClickListener((userResidenceWrapper, position) -> {
+            presenter.updateResidenceId(userResidenceWrapper.getResidenceId());
+        });
+        mRecyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 14)));
+        return adaptor;
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_dormitory);
+    protected int getLayout() {
+        return R.layout.activity_edit_dormitory;
+    }
 
+    @Override
+    protected void initPresenter() {
         setUnBinder(ButterKnife.bind(this));
 
         getActivityComponent().inject(this);
 
         presenter.onAttach(EditDormitoryActivity.this);
-
-        adaptor = new EditDormitoryAdaptor(this, R.layout.item_dormitory, items, presenter);
-        adaptor.setOnItemClickListener((userResidenceWrapper, position) -> {
-            presenter.updateResidenceId(userResidenceWrapper.getResidenceId());
-        });
-        recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 14)));
-        RecyclerView.LayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(manager);
-        recyclerView.setAdapter(adaptor);
-
-        presenter.queryDormitoryList(1, Constant.PAGE_SIZE);
     }
 
     @Override
@@ -91,5 +85,23 @@ public class EditDormitoryActivity extends UserBaseActivity implements IEditDorm
     @Override
     public void notifyAdaptor() {
         adaptor.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
+        page = Constant.PAGE_START_NUM;
+        items.clear();
+        setRefreshing(true);
+        presenter.queryDormitoryList(page, Constant.PAGE_SIZE);
+    }
+
+    @Override
+    public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
+        return false;
+    }
+
+    @Override
+    public void onLoadMore() {
+        presenter.queryDormitoryList(page, Constant.PAGE_SIZE);
     }
 }

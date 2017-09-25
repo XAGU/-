@@ -113,11 +113,6 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
     }
 
     @Override
-    protected void initData() {
-        presenter.queryLostList(page, Constant.PAGE_SIZE);
-    }
-
-    @Override
     protected void initPresenter() {
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
@@ -213,7 +208,17 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
 
     @Override
     public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
-
+        page = 1;
+        lostAndFounds.clear();
+        if (listStatus) {
+            foundPage = 1;
+            presenter.queryFoundList(foundPage, Constant.PAGE_SIZE);
+            founds.clear();
+        } else {
+            lostPage = 1;
+            presenter.queryLostList(lostPage, Constant.PAGE_SIZE);
+            losts.clear();
+        }
     }
 
     @Override
@@ -223,7 +228,11 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
 
     @Override
     public void onLoadMore() {
-
+        if (listStatus) {
+            presenter.queryFoundList(foundPage, Constant.PAGE_SIZE);
+        } else {
+            presenter.queryLostList(lostPage, Constant.PAGE_SIZE);
+        }
     }
 
     @Override
@@ -294,26 +303,28 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
     void onLostClick() {
         if (listStatus) {
             switchListStatus();
+            this.lostAndFounds.clear();
             if (lostPage == 1) {
                 page = lostPage;
                 presenter.queryLostList(page, Constant.PAGE_SIZE);
+            } else {
+                this.lostAndFounds.addAll(losts);
+                adaptor.notifyDataSetChanged();
             }
-            this.lostAndFounds.clear();
-            this.lostAndFounds.addAll(losts);
-            adaptor.notifyDataSetChanged();
         }
     }
     @OnClick(R.id.tv_found)
     void onFoundClick() {
         if (!listStatus) {
             switchListStatus();
+            this.lostAndFounds.clear();
             if (foundPage == 1) {
                 page = foundPage;
                 presenter.queryFoundList(page, Constant.PAGE_SIZE);
+            } else {
+                this.lostAndFounds.addAll(founds);
+                adaptor.notifyDataSetChanged();
             }
-            this.lostAndFounds.clear();
-            this.lostAndFounds.addAll(founds);
-            adaptor.notifyDataSetChanged();
         }
     }
     private void switchListStatus() {

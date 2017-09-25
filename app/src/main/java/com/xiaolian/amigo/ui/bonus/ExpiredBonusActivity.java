@@ -33,11 +33,6 @@ public class ExpiredBonusActivity extends BonusBaseListActivity implements IBonu
     ExpiredBonusAdaptor adaptor;
 
     @Override
-    protected void initData() {
-        presenter.requestExpiredBonusList(page);
-    }
-
-    @Override
     protected void initPresenter() {
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
@@ -57,9 +52,8 @@ public class ExpiredBonusActivity extends BonusBaseListActivity implements IBonu
     @Override
     public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
         page = 1;
-        setLoadAll(false);
         setRefreshing(true);
-        presenter.requestBonusList(page);
+        presenter.requestExpiredBonusList(page);
         bonuses.clear();
     }
 
@@ -70,13 +64,7 @@ public class ExpiredBonusActivity extends BonusBaseListActivity implements IBonu
 
     @Override
     public void onLoadMore() {
-        loadStart();
-        if (hasLoadedAll()) {
-            showNoMoreDataView();
-        } else {
-            showLoadMoreView();
-            presenter.requestExpiredBonusList(page);
-        }
+        presenter.requestExpiredBonusList(page);
     }
 
     @Override

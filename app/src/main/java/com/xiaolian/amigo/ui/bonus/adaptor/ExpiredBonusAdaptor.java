@@ -21,10 +21,16 @@ public class ExpiredBonusAdaptor extends CommonAdapter<BonusAdaptor.BonusWrapper
 
     @Override
     protected void convert(ViewHolder holder, BonusAdaptor.BonusWrapper bonusWrapper, int position) {
-        holder.setText(R.id.tv_amount, bonusWrapper.amount.toString());
-        holder.setText(R.id.tv_type, bonusWrapper.type.toString());
+        if (bonusWrapper.amount != null) {
+            holder.setText(R.id.tv_amount, bonusWrapper.amount.toString());
+        }
+        if (bonusWrapper.type != null) {
+            holder.setText(R.id.tv_type, bonusWrapper.type.toString());
+        }
         holder.setText(R.id.tv_time_end, bonusWrapper.timeEnd);
         holder.setText(R.id.tv_desc, bonusWrapper.desc);
-        holder.setText(R.id.tv_time_left, bonusWrapper.timeLeft.toString());
+        if (bonusWrapper.timeLeft != null) {
+            holder.setText(R.id.tv_time_left, bonusWrapper.timeLeft.toString());
+        }
     }
 }

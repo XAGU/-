@@ -174,7 +174,7 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
 
     @Override
     public void setSex(int sex) {
-        tv_sex.setText(sex == 0 ? "男" : "女");
+        tv_sex.setText(sex == 1 ? "男" : "女");
     }
 
     @Override

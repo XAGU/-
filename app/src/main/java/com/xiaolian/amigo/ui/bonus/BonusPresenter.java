@@ -41,6 +41,8 @@ public class BonusPresenter<V extends IBonusView> extends BasePresenter<V>
         addObserver(manager.queryOrders(dto), new NetworkObserver<ApiResult<QueryUserBonusListRespDTO>>() {
             @Override
             public void onReady(ApiResult<QueryUserBonusListRespDTO> result) {
+                getMvpView().setRefreshing(false);
+                getMvpView().setLoadMoreComplete();
                 if (null == result.getError()) {
                     List<BonusAdaptor.BonusWrapper> wrappers = new ArrayList<>();
                     if (null != result.getData().getBonuses() && result.getData().getBonuses().size() > 0) {
@@ -48,23 +50,8 @@ public class BonusPresenter<V extends IBonusView> extends BasePresenter<V>
                             wrappers.add(new BonusAdaptor.BonusWrapper(bonus));
                         }
                         getMvpView().addMore(wrappers);
-                        getMvpView().loadComplete();
-                        if (result.getData().getBonuses().size() < Constant.PAGE_SIZE) {
-                            getMvpView().showNoMoreDataView();
-                            getMvpView().setLoadAll(true);
-                        } else {
-                            getMvpView().hideLoadMoreView();
-                            getMvpView().addPage();
-                        }
-                        if (getMvpView().isRefreshing()) {
-                            getMvpView().setRefreshing(false);
-                        }
+                        getMvpView().addPage();
                     }
-                } else {
-                    getMvpView().setLoadAll(true);
-                    getMvpView().hideLoadMoreView();
-                    getMvpView().loadComplete();
-                    getMvpView().showMessage(result.getError().getDisplayMessage());
                 }
             }
         });
@@ -80,6 +67,8 @@ public class BonusPresenter<V extends IBonusView> extends BasePresenter<V>
         addObserver(manager.queryOrders(dto), new NetworkObserver<ApiResult<QueryUserBonusListRespDTO>>() {
             @Override
             public void onReady(ApiResult<QueryUserBonusListRespDTO> result) {
+                getMvpView().setRefreshing(false);
+                getMvpView().setLoadMoreComplete();
                 if (null == result.getError()) {
                     List<BonusAdaptor.BonusWrapper> wrappers = new ArrayList<>();
                     if (null != result.getData().getBonuses() && result.getData().getBonuses().size() > 0) {
@@ -87,22 +76,8 @@ public class BonusPresenter<V extends IBonusView> extends BasePresenter<V>
                             wrappers.add(new BonusAdaptor.BonusWrapper(bonus));
                         }
                         getMvpView().addMore(wrappers);
-                        getMvpView().loadComplete();
-                        if (result.getData().getBonuses().size() < Constant.PAGE_SIZE) {
-                            getMvpView().showNoMoreDataView();
-                            getMvpView().setLoadAll(true);
-                        } else {
-                            getMvpView().hideLoadMoreView();
-                            getMvpView().addPage();
-                        }
-                        if (getMvpView().isRefreshing()) {
-                            getMvpView().setRefreshing(false);
-                        }
                     }
                 } else {
-                    getMvpView().setLoadAll(true);
-                    getMvpView().hideLoadMoreView();
-                    getMvpView().loadComplete();
                     getMvpView().showMessage(result.getError().getDisplayMessage());
                 }
             }

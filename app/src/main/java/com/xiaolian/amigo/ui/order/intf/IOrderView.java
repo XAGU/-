@@ -16,12 +16,13 @@
 package com.xiaolian.amigo.ui.order.intf;
 
 
+import com.xiaolian.amigo.ui.base.intf.IBaseListView;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 import com.xiaolian.amigo.ui.order.adaptor.OrderAdaptor;
 
 import java.util.List;
 
-public interface IOrderView extends IBaseView {
+public interface IOrderView extends IBaseListView {
 
     /**
      * 刷新消费记录列表

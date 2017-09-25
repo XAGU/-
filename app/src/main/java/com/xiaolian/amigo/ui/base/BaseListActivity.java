@@ -25,8 +25,6 @@ public abstract class BaseListActivity extends BaseActivity
 
     protected BGARefreshLayout mRefreshLayout;
 
-    protected int threshold = 5;
-    protected boolean loading = false;
     protected boolean refreshing = false;
     protected int page = 1;
     protected boolean hasLoadedAll = false;
@@ -49,7 +47,9 @@ public abstract class BaseListActivity extends BaseActivity
         initData();
     }
 
-    protected abstract void initData();
+    protected void initData() {
+
+    }
 
     protected abstract void initInject();
 
@@ -67,11 +67,6 @@ public abstract class BaseListActivity extends BaseActivity
     }
 
     @Override
-    public boolean isLoading() {
-        return loading;
-    }
-
-    @Override
     public boolean isRefreshing() {
         return refreshing;
     }
@@ -85,17 +80,8 @@ public abstract class BaseListActivity extends BaseActivity
     }
 
     @Override
-    public boolean hasLoadedAll() {
-        return hasLoadedAll;
-    }
-
-    @Override
     public void setLoadAll(boolean hasLoadedAll) {
         this.hasLoadedAll = hasLoadedAll;
-    }
-
-    public void setLoading(boolean loading) {
-        this.loading = loading;
     }
 
     protected void setupPageLoader() {
@@ -103,14 +89,11 @@ public abstract class BaseListActivity extends BaseActivity
             pageLoader.unbind();
         }
 
-        loading = false;
         pageLoader = PageLoader.with(mRecyclerView, this)
                 .setLoadMoreItemCreator(getLoadMoreItemCreator())
                 .showLoadMoreItem(getShowLoadMoreItem())
                 .setVisibleThreshold(getVisibleThreshold())
                 .build();
-        hideLoadMoreView();
-
     }
 
     private void initRecyclerView() {
@@ -161,14 +144,10 @@ public abstract class BaseListActivity extends BaseActivity
         page ++;
     }
 
-    @Override
-    public void loadStart() {
-        loading = true;
-    }
 
     @Override
-    public void loadComplete() {
-        loading = false;
+    public void setLoadMoreComplete() {
+        pageLoader.setLoadMore(false);
     }
 
     protected abstract RecyclerView.Adapter getAdaptor();
@@ -200,6 +179,6 @@ public abstract class BaseListActivity extends BaseActivity
      * @return visibleThreshold
      */
     protected int getVisibleThreshold() {
-        return 5;
+        return 2;
     }
 }

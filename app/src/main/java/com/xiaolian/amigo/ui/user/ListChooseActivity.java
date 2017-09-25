@@ -96,7 +96,8 @@ public class ListChooseActivity extends UserBaseActivity implements IListChooseV
             switch (getIntent().getExtras().getInt(INTENT_KEY_LIST_CHOOSE_ACTION)) {
                 case ACTION_LIST_SCHOOL:
                     tv_title.setText("选择学校");
-                    presenter.getSchoolList(1, Constant.PAGE_SIZE);
+                    // page size 为null 加载全部
+                    presenter.getSchoolList(null, null);
                     adapter.setOnItemClickListener((view, position) -> {
                         presenter.updateSchool(items.get(position).getId());
                     });
@@ -119,7 +120,8 @@ public class ListChooseActivity extends UserBaseActivity implements IListChooseV
                         buildingType = getIntent().getIntExtra(INTENT_KEY_LIST_BUILDING_TYPE, 1);
                         activitySrc = getIntent().getStringExtra(INTENT_KEY_LIST_SRC_ACTIVITY);
                     }
-                    presenter.getBuildList(1, Constant.PAGE_SIZE, buildingType);
+                    // page size 为null 加载全部
+                    presenter.getBuildList(null, null, buildingType);
                     adapter.setOnItemClickListener((view, position) -> {
                         Intent intent = new Intent(getApplicationContext(), ListChooseActivity.class);
                         intent.putExtra(INTENT_KEY_LIST_CHOOSE_ACTION, ACTION_LIST_FLOOR);
@@ -140,7 +142,8 @@ public class ListChooseActivity extends UserBaseActivity implements IListChooseV
                         activitySrc = getIntent().getStringExtra(INTENT_KEY_LIST_SRC_ACTIVITY);
                         Long parentId = getIntent().getLongExtra(INTENT_KEY_LIST_CHOOSE_PARENT_ID, -1);
                         if (parentId != -1) {
-                            presenter.getFloorList(1, Constant.PAGE_SIZE, parentId, buildingType);
+                            // page size 为null 加载全部
+                            presenter.getFloorList(null, null, parentId, buildingType);
                         }
                     }
                     adapter.setOnItemClickListener((view, position) -> {
@@ -167,7 +170,8 @@ public class ListChooseActivity extends UserBaseActivity implements IListChooseV
                         }
                         Long parentId = getIntent().getLongExtra(INTENT_KEY_LIST_CHOOSE_PARENT_ID, -1);
                         if (parentId != -1) {
-                            presenter.getDormitoryList(1, Constant.PAGE_SIZE, parentId, buildingType);
+                            // page size 为null 加载全部
+                            presenter.getDormitoryList(null, null, parentId, buildingType);
                         }
                     }
 

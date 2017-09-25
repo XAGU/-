@@ -10,21 +10,13 @@ import android.support.v7.widget.RecyclerView;
  * @author zcd
  */
 public abstract class PageLoader {
+    private boolean isLoadMore = false;
+    private boolean hasMore = true;
+
     public interface Callbacks {
 
         void onLoadMore();
 
-        /**
-         * 是否正在加载
-         * @return true表示正在加载
-         */
-        boolean isLoading();
-
-        /**
-         * 是否已经加载所有数据
-         * @return true表示已经加载完所有数据
-         */
-        boolean hasLoadedAll();
     }
 
     public abstract void setHasDataToLoad(boolean hasDataToLoad);
@@ -37,6 +29,21 @@ public abstract class PageLoader {
 
     public abstract void hideLoadMoreView();
 
+    public boolean isLoadMore() {
+        return isLoadMore;
+    }
+
+    public void setLoadMore(boolean loadMore) {
+        isLoadMore = loadMore;
+    }
+
+    public boolean isHasMore() {
+        return hasMore;
+    }
+
+    public void setHasMore(boolean hasMore) {
+        this.hasMore = hasMore;
+    }
 
     public static RecyclerPageLoader.Builder with(RecyclerView recyclerView, Callbacks callbacks) {
         return new RecyclerPageLoader.Builder(recyclerView, callbacks);

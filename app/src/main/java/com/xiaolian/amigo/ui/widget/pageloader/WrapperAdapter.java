@@ -122,6 +122,10 @@ public class WrapperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
+    void notifyDataChange() {
+        wrappedAdapter.notifyDataSetChanged();
+    }
+
     boolean isLoadMoreItem(int position) {
         return showLoadMore && position == getLoadMoreItemPosition();
     }

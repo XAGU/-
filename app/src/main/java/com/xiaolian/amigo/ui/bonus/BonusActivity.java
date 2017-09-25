@@ -52,19 +52,8 @@ public class BonusActivity extends BonusBaseListActivity implements IBonusView {
     }
 
     @Override
-    protected void initData() {
-        presenter.requestBonusList(page);
-    }
-
-    @Override
     public void onLoadMore() {
-        loadStart();
-        if (hasLoadedAll()) {
-            showNoMoreDataView();
-        } else {
-            showLoadMoreView();
-            presenter.requestBonusList(page);
-        }
+        presenter.requestBonusList(page);
     }
 
     protected RecyclerView.Adapter getAdaptor() {
@@ -80,8 +69,6 @@ public class BonusActivity extends BonusBaseListActivity implements IBonusView {
     @Override
     public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
         page = 1;
-        setLoadAll(false);
-        setRefreshing(true);
         presenter.requestBonusList(page);
         bonuses.clear();
     }

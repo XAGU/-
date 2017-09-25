@@ -55,6 +55,8 @@ public class OrderPresenter<V extends IOrderView> extends BasePresenter<V>
         addObserver(manager.queryOrders(reqDTO), new NetworkObserver<ApiResult<OrderRespDTO>>() {
             @Override
             public void onReady(ApiResult<OrderRespDTO> result) {
+                getMvpView().setRefreshing(false);
+                getMvpView().setLoadMoreComplete();
                 if (null == result.getError()) {
 //                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
 //                        getMvpView().addMore(result.getData().getOrders().stream().
@@ -66,6 +68,7 @@ public class OrderPresenter<V extends IOrderView> extends BasePresenter<V>
                             wrappers.add(new OrderAdaptor.OrderWrapper(order));
                         }
                         getMvpView().addMore(wrappers);
+                        getMvpView().addPage();
                     }
                 }
             }

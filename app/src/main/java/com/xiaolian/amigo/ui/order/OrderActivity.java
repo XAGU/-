@@ -19,19 +19,17 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 
 /**
  * 订单列表
  * <p>
  * Created by caidong on 2017/9/14.
  */
-public class OrderActivity extends OrderBaseActivity implements IOrderView {
+public class OrderActivity extends OrderBaseListActivity implements IOrderView {
 
     @Inject
     IOrderPresenter<IOrderView> presenter;
-    @BindView(R.id.rv_orders)
-    RecyclerView rv_orders;
-
     // 订单列表
     List<OrderAdaptor.OrderWrapper> orders = new ArrayList<OrderAdaptor.OrderWrapper>();
     // 订单列表recycleView适配器
@@ -43,22 +41,24 @@ public class OrderActivity extends OrderBaseActivity implements IOrderView {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_order);
+    protected RecyclerView.Adapter getAdaptor() {
+        adaptor = new OrderAdaptor(orders);
+        mRecyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 14)));
+        return adaptor;
+    }
 
+    @Override
+    protected int getLayout() {
+        return R.layout.activity_order;
+    }
+
+    @Override
+    protected void initPresenter() {
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
 
         presenter.onAttach(OrderActivity.this);
 
-        adaptor = new OrderAdaptor(orders);
-        rv_orders.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 14)));
-        RecyclerView.LayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        rv_orders.setLayoutManager(manager);
-        rv_orders.setAdapter(adaptor);
-
-        presenter.requestOrders(Constant.PAGE_START_NUM);
     }
 
     @Override
@@ -73,5 +73,22 @@ public class OrderActivity extends OrderBaseActivity implements IOrderView {
         presenter.clearObservers();
         orders.clear();
         super.onDestroy();
+    }
+
+    @Override
+    public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
+        page = 1;
+        presenter.requestOrders(Constant.PAGE_START_NUM);
+        orders.clear();
+    }
+
+    @Override
+    public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
+        return false;
+    }
+
+    @Override
+    public void onLoadMore() {
+        presenter.requestOrders(page);
     }
 }

@@ -13,12 +13,12 @@ public final class RecyclerPageLoader extends PageLoader {
     private final Callbacks callbacks;
     private final int visibleThreshold;
     private WrapperAdapter wrapperAdapter;
-    private int pageSize = 5;
+
 
     private final RecyclerView.OnScrollListener onScrollListener = new RecyclerView.OnScrollListener() {
         @Override
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-            checkLoadMore();
+            checkLoadMore(dx, dy);
         }
     };
 
@@ -97,7 +97,7 @@ public final class RecyclerPageLoader extends PageLoader {
         }
     }
 
-    void checkLoadMore() {
+    void checkLoadMore(int dx, int dy) {
         int visibleItemCount = recyclerView.getChildCount();
         int totalItemCount = recyclerView.getLayoutManager().getItemCount();
         int firstVisibleItem;
@@ -107,16 +107,36 @@ public final class RecyclerPageLoader extends PageLoader {
             throw new IllegalStateException("只支持LinearLayout");
         }
         if ((totalItemCount > visibleItemCount && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold))
-                && visibleItemCount > 1) {
-            if (!callbacks.isLoading() && !callbacks.hasLoadedAll()) {
+                && (dx > 0 || dy > 0)
+                || visibleItemCount == 0
+                ) {
+            if (!isLoadMore() && isHasMore()) {
+                setLoadMore(true);
                 callbacks.onLoadMore();
+                showLoadMoreView();
             }
         }
     }
 
+    void checkLoadMore() {
+        checkLoadMore(0, 0);
+    }
+
+    public void setLoadMore(boolean loadMore) {
+        super.setLoadMore(loadMore);
+        if (!loadMore) {
+            hideLoadMoreView();
+        } else {
+            showLoadMoreView();
+        }
+    }
+
+
     private void onAdapterDataChanged() {
-        wrapperAdapter.showLoadMore(!callbacks.hasLoadedAll());
-        checkLoadMore();
+        wrapperAdapter.showLoadMore(isHasMore());
+        wrapperAdapter.hideLoadMoreView();
+//        wrapperAdapter.notifyDataChange();
+//        checkLoadMore();
     }
 
 
@@ -137,7 +157,7 @@ public final class RecyclerPageLoader extends PageLoader {
         private final RecyclerView recyclerView;
         private final Callbacks callbacks;
         private boolean showLoadMoreItem = true;
-        private int visibleThreshold = 5;
+        private int visibleThreshold = 2;
         private LoadMoreItemCreator loadMoreItemCreator;
 
         public Builder(RecyclerView recyclerView, Callbacks callbacks) {

@@ -13,9 +13,7 @@ public interface IBaseListView extends IBaseView {
 
     void showNoMoreDataView();
 
-    void loadStart();
-
-    void loadComplete();
+    void setLoadMoreComplete();
 
     void setLoadAll(boolean hasLoadAll);
 

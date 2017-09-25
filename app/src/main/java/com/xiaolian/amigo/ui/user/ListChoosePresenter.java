@@ -135,7 +135,7 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
     }
 
     @Override
-    public void getFloorList(int page, int size, Long parentId, int buildingType) {
+    public void getFloorList(Integer page, Integer size, Long parentId, int buildingType) {
         QueryResidenceListReqDTO dto = new QueryResidenceListReqDTO();
         dto.setPage(page);
         dto.setSize(size);
@@ -167,7 +167,7 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
     }
 
     @Override
-    public void getDormitoryList(int page, int size, Long parentId, int buildingType) {
+    public void getDormitoryList(Integer page, Integer size, Long parentId, int buildingType) {
         QueryResidenceListReqDTO dto = new QueryResidenceListReqDTO();
         dto.setPage(page);
         dto.setSize(size);
