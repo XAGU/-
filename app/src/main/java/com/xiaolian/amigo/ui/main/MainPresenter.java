@@ -56,6 +56,10 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V> impleme
             @Override
             public void onReady(ApiResult<PersonalExtraInfoDTO> result) {
                 if (null == result.getError()) {
+                    if (result.getData().getUrgentNotify() != null) {
+                        getMvpView().showUrgentNotify(result.getData().getUrgentNotify().getContent(),
+                                result.getData().getUrgentNotify().getId());
+                    }
                     getMvpView().showNoticeAmount(result.getData().getNotifyAmount());
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());

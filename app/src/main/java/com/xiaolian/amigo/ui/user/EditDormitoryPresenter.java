@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.user;
 
+import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.PersonalUpdateReqDTO;
@@ -46,7 +47,7 @@ public class EditDormitoryPresenter<V extends IEditDormitoryView> extends BasePr
 
             @Override
             public void onReady(ApiResult<QueryUserResidenceListRespDTO> result) {
-                getMvpView().setRefreshing(false);
+                getMvpView().setRefreshComplete();
                 getMvpView().setLoadMoreComplete();
                 if (null == result.getError()) {
                     if (result.getData().getUserResidences() != null && result.getData().getUserResidences().size() > 0) {
@@ -59,7 +60,7 @@ public class EditDormitoryPresenter<V extends IEditDormitoryView> extends BasePr
                         getMvpView().addPage();
                     }
                 } else {
-                    getMvpView().showMessage(result.getError().getDisplayMessage());
+                    getMvpView().onError(result.getError().getDisplayMessage());
                 }
             }
         });
@@ -74,10 +75,10 @@ public class EditDormitoryPresenter<V extends IEditDormitoryView> extends BasePr
             @Override
             public void onReady(ApiResult<BooleanRespDTO> result) {
                 if (null == result.getError()) {
-                    getMvpView().showMessage("删除成功");
-                    queryDormitoryList(1, Constant.PAGE_SIZE);
+                    getMvpView().onSuccess(R.string.delete_success);
+                    queryDormitoryList(Constant.PAGE_START_NUM, Constant.PAGE_SIZE);
                 } else {
-                    getMvpView().showMessage(result.getError().getDisplayMessage());
+                    getMvpView().onError(result.getError().getDisplayMessage());
                 }
             }
         });
@@ -94,9 +95,9 @@ public class EditDormitoryPresenter<V extends IEditDormitoryView> extends BasePr
                 if (null == result.getError()) {
                     manager.setUser(new User(result.getData()));
                     getMvpView().notifyAdaptor();
-                    getMvpView().showMessage("设置成功");
+                    getMvpView().onSuccess(R.string.setting_success);
                 } else {
-                    getMvpView().showMessage(result.getError().getDisplayMessage());
+                    getMvpView().onError(result.getError().getDisplayMessage());
                 }
             }
         });

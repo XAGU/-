@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.user;
 
+import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.MobileUpdateReqDTO;
@@ -37,13 +38,13 @@ public class EditMobilePresenter<V extends IEditMobileView> extends BasePresente
             public void onReady(ApiResult<BooleanRespDTO> result) {
                 if (null == result.getError()) {
                     if (result.getData().isResult()) {
-                        getMvpView().showMessage("获取成功");
+                        getMvpView().onSuccess(R.string.get_success);
                         getMvpView().startTimer();
                     } else {
-                        getMvpView().showMessage("获取失败");
+                        getMvpView().onError(R.string.get_fail);
                     }
                 } else {
-                    getMvpView().showMessage(result.getError().getDisplayMessage());
+                    getMvpView().onError(result.getError().getDisplayMessage());
                 }
             }
         });
@@ -59,10 +60,10 @@ public class EditMobilePresenter<V extends IEditMobileView> extends BasePresente
             @Override
             public void onReady(ApiResult<EntireUserDTO> result) {
                 if (null == result.getError()) {
-                    getMvpView().showMessage("修改成功");
+                    getMvpView().onSuccess(R.string.change_success);
                     getMvpView().finishView();
                 } else {
-                    getMvpView().showMessage(result.getError().getDisplayMessage());
+                    getMvpView().onError(result.getError().getDisplayMessage());
                 }
             }
         });

@@ -45,7 +45,7 @@ public class LostAndFoundPresenter<V extends ILostAndFoundView> extends BasePres
 
             @Override
             public void onReady(ApiResult<QueryLostAndFoundListRespDTO> result) {
-                getMvpView().setRefreshing(false);
+                getMvpView().setRefreshComplete();
                 getMvpView().setLoadMoreComplete();
                 if (null == result.getError()) {
 
@@ -76,7 +76,7 @@ public class LostAndFoundPresenter<V extends ILostAndFoundView> extends BasePres
                         }
                     }
                 } else {
-                    getMvpView().showMessage(result.getError().getDisplayMessage());
+                    getMvpView().onError(result.getError().getDisplayMessage());
                 }
             }
         });
@@ -117,7 +117,7 @@ public class LostAndFoundPresenter<V extends ILostAndFoundView> extends BasePres
 
             @Override
             public void onReady(ApiResult<QueryLostAndFoundListRespDTO> result) {
-                getMvpView().setRefreshing(false);
+                getMvpView().setRefreshComplete();
                 getMvpView().setLoadMoreComplete();
                 if (null == result.getError()) {
                     if (result.getData().getLostAndFounds() != null && result.getData().getLostAndFounds().size() > 0) {

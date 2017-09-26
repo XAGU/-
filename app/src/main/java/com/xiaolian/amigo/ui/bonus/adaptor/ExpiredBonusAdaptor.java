@@ -29,8 +29,8 @@ public class ExpiredBonusAdaptor extends CommonAdapter<BonusAdaptor.BonusWrapper
         }
         holder.setText(R.id.tv_time_end, bonusWrapper.timeEnd);
         holder.setText(R.id.tv_desc, bonusWrapper.desc);
-        if (bonusWrapper.timeLeft != null) {
-            holder.setText(R.id.tv_time_left, bonusWrapper.timeLeft.toString());
-        }
+//        if (bonusWrapper.timeLeft != null) {
+//            holder.setText(R.id.tv_time_left, String.valueOf(bonusWrapper.timeLeft));
+//        }
     }
 }

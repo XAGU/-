@@ -3,18 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBackgroundGray"
+    android:id="@+id/cl_main"
     xmlns:tool="http://schemas.android.com/tools">
 
     <android.support.design.widget.AppBarLayout
         android:fitsSystemWindows="true"
         android:id="@+id/abl_actionbar"
+        app:elevation="0dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <LinearLayout
-            android:background="@color/colorBackgroundGray"
             app:layout_scrollFlags="scroll|enterAlways"
+            android:background="@color/colorBackgroundGray"
             android:id="@+id/ll_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -46,7 +49,28 @@
                     android:layout_alignParentLeft="true"
                     tool:text="宿舍列表" />
 
+                <View
+                    android:visibility="gone"
+                    android:id="@+id/v_divide"
+                    android:layout_width="1dp"
+                    android:layout_height="14dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="14dp"
+                    android:layout_toRightOf="@id/tv_toolbar_title"
+                    android:background="#eee" />
+
                 <TextView
+                    android:id="@+id/tv_toolbar_title2"
+                    style="@style/ToolBarTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="14dp"
+                    android:layout_toRightOf="@id/v_divide"
+                    tool:text="招领"
+                    android:textColor="#bbb" />
+
+                <TextView
+                    android:visibility="gone"
                     android:id="@+id/tv_toolbar_sub_title"
                     style="@style/ContentText_main"
                     android:layout_width="wrap_content"
@@ -59,19 +83,47 @@
         </LinearLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <cn.bingoogolapple.refreshlayout.BGARefreshLayout
-        android:layout_marginRight="@dimen/mainMarginLeftRight"
+    <com.xiaolian.amigo.ui.widget.recyclerview.IRecyclerView
         android:layout_marginLeft="@dimen/mainMarginLeftRight"
+        android:layout_marginRight="@dimen/mainMarginLeftRight"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:id="@+id/refreshLayout"
+        android:id="@+id/recyclerView"
+        android:overScrollMode="never"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:overScrollMode="never"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </cn.bingoogolapple.refreshlayout.BGARefreshLayout>
+        android:layout_height="match_parent"/>
 
+    <RelativeLayout
+        android:id="@+id/rl_empty"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:background="@color/colorBackgroundGray"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/tv_empty_tip"
+            android:textSize="14sp"
+            android:text="@string/empty_tip"
+            android:textColor="@color/colorDark2"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="14dp"
+            android:layout_above="@id/tv_empty_tip"
+            android:src="@drawable/ic_empty_box"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/ll_footer"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_gravity="bottom|center_horizontal"
+        app:layout_behavior="com.xiaolian.amigo.ui.lostandfound.behavior.FooterBehavior"
+        />
 </android.support.design.widget.CoordinatorLayout>

@@ -30,6 +30,10 @@ public interface IBaseView {
 
     void onError(String message);
 
+    void onSuccess(@StringRes int resId);
+
+    void onSuccess(String message);
+
     void showMessage(String message);
 
     void showMessage(@StringRes int resId);

@@ -58,19 +58,19 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1px"
+            android:layout_height="1dip"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/mainMarginLeftRight"
             android:layout_marginRight="@dimen/mainMarginLeftRight"
             android:background="#eee" />
 
         <com.xiaolian.amigo.ui.widget.recyclerview.IRecyclerView
-            android:overScrollMode="never"
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/mainMarginLeftRight"
             android:layout_marginRight="@dimen/mainMarginLeftRight" />
+
 
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

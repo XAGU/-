@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.user;
 
+import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.PasswordUpdateReqDTO;
@@ -35,7 +36,7 @@ public class EditPasswordPresenter<V extends IEditPasswordView> extends BasePres
             @Override
             public void onReady(ApiResult<SimpleRespDTO> result) {
                 if (null == result.getError()) {
-                    getMvpView().showMessage("修改成功");
+                    getMvpView().onSuccess(R.string.change_success);
                     getMvpView().finishView();
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());

@@ -1,5 +1,7 @@
 package com.xiaolian.amigo.data.network.model.dto.response;
 
+import com.xiaolian.amigo.data.network.model.notify.Notify;
+
 import lombok.Data;
 
 /**
@@ -14,4 +16,5 @@ public class PersonalExtraInfoDTO {
     private Integer notifyAmount;
     private Integer prepay;
     private Boolean repair;
+    private Notify urgentNotify;
 }

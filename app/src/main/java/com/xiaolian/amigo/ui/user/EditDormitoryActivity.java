@@ -52,29 +52,10 @@ public class EditDormitoryActivity extends UserBaseListActivity implements IEdit
 
     }
 
-    @Override
-    protected RecyclerView.Adapter getAdaptor() {
-        adaptor = new EditDormitoryAdaptor(this, R.layout.item_dormitory, items, presenter);
-        adaptor.setOnItemClickListener((userResidenceWrapper, position) -> {
-            presenter.updateResidenceId(userResidenceWrapper.getResidenceId());
-        });
-        mRecyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 14)));
-        return adaptor;
-    }
-
-    @Override
-    protected int getLayout() {
-        return R.layout.activity_edit_dormitory;
-    }
-
-    @Override
-    protected void initPresenter() {
-        setUnBinder(ButterKnife.bind(this));
-
-        getActivityComponent().inject(this);
-
-        presenter.onAttach(EditDormitoryActivity.this);
-    }
+//    @Override
+//    protected int getLayout() {
+//        return R.layout.activity_edit_dormitory;
+//    }
 
     @Override
     public void addMore(List<EditDormitoryAdaptor.UserResidenceWrapper> userResidenceWrappers) {
@@ -84,24 +65,39 @@ public class EditDormitoryActivity extends UserBaseListActivity implements IEdit
 
     @Override
     public void notifyAdaptor() {
-//        adaptor.notifyDataSetChanged();
-        mRefreshLayout.beginRefreshing();
+        onRefresh();
     }
 
     @Override
-    public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
+    protected void onRefresh() {
         page = Constant.PAGE_START_NUM;
         items.clear();
-        setRefreshing(true);
-    }
-
-    @Override
-    public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
-        return false;
+        presenter.queryDormitoryList(page, Constant.PAGE_SIZE);
     }
 
     @Override
     public void onLoadMore() {
         presenter.queryDormitoryList(page, Constant.PAGE_SIZE);
+    }
+
+    @Override
+    protected void setRecyclerView(RecyclerView recyclerView) {
+        adaptor = new EditDormitoryAdaptor(this, R.layout.item_dormitory, items, presenter);
+        adaptor.setOnItemClickListener((userResidenceWrapper, position) -> {
+            presenter.updateResidenceId(userResidenceWrapper.getResidenceId());
+        });
+        recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 14)));
+    }
+
+    @Override
+    protected int setTitle() {
+        return R.string.edit_dormitory;
+    }
+
+    @Override
+    protected void initView() {
+        setUnBinder(ButterKnife.bind(this));
+        getActivityComponent().inject(this);
+        presenter.onAttach(EditDormitoryActivity.this);
     }
 }

@@ -14,4 +14,6 @@ public interface IMainView extends IBaseView {
     void showTimeValidDialog(String title, String remark, Class clz);
 
     void gotoDevice(Class clz);
+
+    void showUrgentNotify(String content, Long id);
 }

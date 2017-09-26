@@ -5,6 +5,7 @@ import com.xiaolian.amigo.di.componet.DaggerRepairActivityComponent;
 import com.xiaolian.amigo.di.componet.RepairActivityComponent;
 import com.xiaolian.amigo.di.module.RepairActivityModule;
 import com.xiaolian.amigo.ui.base.BaseListActivity;
+import com.xiaolian.amigo.ui.base.BaseToolBarListActivity;
 
 /**
  * 报修模块BaseListActivity
@@ -12,7 +13,7 @@ import com.xiaolian.amigo.ui.base.BaseListActivity;
  * Created by zcd on 9/25/17.
  */
 
-public abstract class RepairBaseListActivity extends BaseListActivity {
+public abstract class RepairBaseListActivity extends BaseToolBarListActivity {
     private RepairActivityComponent mActivityComponent;
 
 

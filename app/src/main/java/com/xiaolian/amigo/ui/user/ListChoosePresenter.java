@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.user;
 
+import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
@@ -60,7 +61,7 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
                         getMvpView().addMore(schoolWapper);
                     }
                 } else {
-                    getMvpView().showMessage(result.getError().getDisplayMessage());
+                    getMvpView().onError(result.getError().getDisplayMessage());
                 }
             }
         });
@@ -91,7 +92,7 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
                         getMvpView().addMore(wapper);
                     }
                 } else {
-                    getMvpView().showMessage(result.getError().getDisplayMessage());
+                    getMvpView().onError(result.getError().getDisplayMessage());
                 }
             }
         });
@@ -106,10 +107,10 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
             @Override
             public void onReady(ApiResult<EntireUserDTO> result) {
                 if (null == result.getError()) {
-                    getMvpView().showMessage("修改成功");
+                    getMvpView().onSuccess(R.string.change_success);
                     getMvpView().finishView();
                 } else {
-                    getMvpView().showMessage(result.getError().getDisplayMessage());
+                    getMvpView().onError(result.getError().getDisplayMessage());
                 }
             }
         });
@@ -124,10 +125,10 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
             @Override
             public void onReady(ApiResult<EntireUserDTO> result) {
                 if (null == result.getError()) {
-                    getMvpView().showMessage("修改成功");
+                    getMvpView().onSuccess(R.string.change_success);
                     getMvpView().finishView();
                 } else {
-                    getMvpView().showMessage(result.getError().getDisplayMessage());
+                    getMvpView().onError(result.getError().getDisplayMessage());
                 }
             }
         });
@@ -160,7 +161,7 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
                         getMvpView().addMore(wapper);
                     }
                 } else {
-                    getMvpView().showMessage(result.getError().getDisplayMessage());
+                    getMvpView().onError(result.getError().getDisplayMessage());
                 }
             }
         });
@@ -192,7 +193,7 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
                         getMvpView().addMore(wapper);
                     }
                 } else {
-                    getMvpView().showMessage(result.getError().getDisplayMessage());
+                    getMvpView().onError(result.getError().getDisplayMessage());
                 }
             }
         });
@@ -210,10 +211,10 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
             @Override
             public void onReady(ApiResult<UserResidenceInListDTO> result) {
                 if (null == result.getError()) {
-                        getMvpView().showMessage("绑定成功");
-                        getMvpView().backToDormitory();
+                    getMvpView().onSuccess(R.string.bind_success);
+                    getMvpView().backToDormitory();
                 } else {
-                    getMvpView().showMessage(result.getError().getDisplayMessage());
+                    getMvpView().onError(result.getError().getDisplayMessage());
                 }
             }
         });

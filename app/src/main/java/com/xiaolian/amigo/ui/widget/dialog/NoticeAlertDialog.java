@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 
@@ -24,6 +25,7 @@ public class NoticeAlertDialog extends Dialog {
     private LinearLayout ll_not_reminder;
     private ImageView iv_not_reminder;
     private Button bt_ok;
+    private TextView tv_content;
     private OnOkClickListener listener;
     private boolean isNotReminder;
     public NoticeAlertDialog(@NonNull Context context) {
@@ -49,6 +51,7 @@ public class NoticeAlertDialog extends Dialog {
             }
             dismiss();
         });
+        tv_content = (TextView) findViewById(R.id.tv_content);
         iv_not_reminder = (ImageView) findViewById(R.id.iv_not_remind);
         ll_not_reminder = (LinearLayout) findViewById(R.id.ll_not_remind);
         ll_not_reminder.setOnClickListener(v -> {
@@ -60,6 +63,10 @@ public class NoticeAlertDialog extends Dialog {
                 iv_not_reminder.setImageResource(R.drawable.dot_red);
             }
         });
+    }
+
+    public void setContent(String content) {
+        tv_content.setText(content);
     }
 
     public void setOnOkClickListener(OnOkClickListener listener) {

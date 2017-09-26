@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.bonus;
 
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.xiaolian.amigo.R;
@@ -7,6 +8,7 @@ import com.xiaolian.amigo.ui.bonus.adaptor.BonusAdaptor;
 import com.xiaolian.amigo.ui.bonus.adaptor.ExpiredBonusAdaptor;
 import com.xiaolian.amigo.ui.bonus.intf.IBonusPresenter;
 import com.xiaolian.amigo.ui.bonus.intf.IBonusView;
+import com.xiaolian.amigo.util.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +16,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
-import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 
 /**
  * 过期红包
@@ -32,38 +33,41 @@ public class ExpiredBonusActivity extends BonusBaseListActivity implements IBonu
 
     ExpiredBonusAdaptor adaptor;
 
-    @Override
-    protected void initPresenter() {
-        setUnBinder(ButterKnife.bind(this));
-        getActivityComponent().inject(this);
-        presenter.onAttach(ExpiredBonusActivity.this);
-    }
-
-    protected RecyclerView.Adapter getAdaptor() {
-        adaptor = new ExpiredBonusAdaptor(this, R.layout.item_bonus_expired, bonuses);
-        return adaptor;
-    }
+//    @Override
+//    protected int getLayout() {
+//        return R.layout.activity_bonus_expired;
+//    }
 
     @Override
-    protected int getLayout() {
-        return R.layout.activity_bonus_expired;
-    }
-
-    @Override
-    public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
-        page = 1;
-        setRefreshing(true);
+    protected void onRefresh() {
+        page = Constant.PAGE_START_NUM;
         presenter.requestExpiredBonusList(page);
         bonuses.clear();
-    }
 
-    @Override
-    public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
-        return false;
     }
 
     @Override
     public void onLoadMore() {
+        presenter.requestExpiredBonusList(page);
+    }
+
+    @Override
+    protected void setRecyclerView(RecyclerView recyclerView) {
+        adaptor = new ExpiredBonusAdaptor(this, R.layout.item_bonus_expired, bonuses);
+        recyclerView.setAdapter(adaptor);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    @Override
+    protected int setTitle() {
+        return R.string.expried_bonus;
+ }
+
+    @Override
+    protected void initView() {
+        setUnBinder(ButterKnife.bind(this));
+        getActivityComponent().inject(this);
+        presenter.onAttach(ExpiredBonusActivity.this);
         presenter.requestExpiredBonusList(page);
     }
 

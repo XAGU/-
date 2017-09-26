@@ -7,20 +7,10 @@ package com.xiaolian.amigo.ui.base.intf;
 
 public interface IBaseListView extends IBaseView {
 
-    void showLoadMoreView();
-
-    void hideLoadMoreView();
-
-    void showNoMoreDataView();
-
     void setLoadMoreComplete();
 
-    void setLoadAll(boolean hasLoadAll);
+    void setRefreshComplete();
 
     void addPage();
-
-    boolean isRefreshing();
-
-    void setRefreshing(boolean refreshing);
 
 }

@@ -56,7 +56,7 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
                 if (null == result.getError()) {
                     manager.setUserInfo(result.getData().getUser());
                     manager.setToken(result.getData().getToken());
-                    getMvpView().showMessage("登录成功");
+                    getMvpView().onSuccess(R.string.login_success);
                     getMvpView().gotoMainView();
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
@@ -79,11 +79,11 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
                 if (null == result.getError()) {
                     manager.setUserInfo(result.getData().getUser());
                     manager.setToken(result.getData().getToken());
-                    getMvpView().showMessage("注册成功");
+                    getMvpView().onSuccess(R.string.register_success);
                     getMvpView().gotoMainView();
 //                    getMvpView().gotoLoginView();
                 } else {
-                    getMvpView().showMessage(result.getError().getDisplayMessage());
+                    getMvpView().onError(result.getError().getDisplayMessage());
                 }
             }
         });
@@ -99,13 +99,13 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
             public void onReady(ApiResult<BooleanRespDTO> result) {
                 if (null == result.getError()) {
                     if (result.getData().isResult()) {
-                        getMvpView().showMessage("验证码发送成功");
+                        getMvpView().onSuccess("验证码发送成功");
                         getMvpView().startTimer();
                     } else {
-                        getMvpView().showMessage("验证码发送失败，请重试");
+                        getMvpView().onError("验证码发送失败，请重试");
                     }
                 } else {
-                    getMvpView().showMessage(result.getError().getDisplayMessage());
+                    getMvpView().onError(result.getError().getDisplayMessage());
                 }
             }
         });
@@ -124,10 +124,10 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
                     if (result.getData().isResult()) {
                         getMvpView().gotoRegisterStep2View();
                     } else {
-                        getMvpView().showMessage("验证码校验失败,请重试");
+                        getMvpView().onError("验证码校验失败,请重试");
                     }
                 } else {
-                    getMvpView().showMessage(result.getError().getDisplayMessage());
+                    getMvpView().onError(result.getError().getDisplayMessage());
                 }
             }
         });
@@ -145,13 +145,13 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
             public void onReady(ApiResult<BooleanRespDTO> result) {
                 if (null == result.getError()) {
                     if (result.getData().isResult()) {
-                        getMvpView().showMessage("密码重置成功");
+                        getMvpView().onSuccess("密码重置成功");
                         getMvpView().gotoLoginView();
                     } else {
-                        getMvpView().showMessage("密码重置失败，请重试");
+                        getMvpView().onError("密码重置失败，请重试");
                     }
                 } else {
-                    getMvpView().showMessage(result.getError().getDisplayMessage());
+                    getMvpView().onError(result.getError().getDisplayMessage());
                 }
             }
         });

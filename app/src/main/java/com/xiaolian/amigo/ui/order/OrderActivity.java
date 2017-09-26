@@ -1,6 +1,5 @@
 package com.xiaolian.amigo.ui.order;
 
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -17,9 +16,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
-import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 
 /**
  * 订单列表
@@ -40,31 +37,41 @@ public class OrderActivity extends OrderBaseListActivity implements IOrderView {
 
     }
 
-    @Override
-    protected RecyclerView.Adapter getAdaptor() {
-        adaptor = new OrderAdaptor(orders);
-        mRecyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 14)));
-        return adaptor;
-    }
-
-    @Override
-    protected int getLayout() {
-        return R.layout.activity_order;
-    }
-
-    @Override
-    protected void initPresenter() {
-        setUnBinder(ButterKnife.bind(this));
-        getActivityComponent().inject(this);
-
-        presenter.onAttach(OrderActivity.this);
-
-    }
+//    @Override
+//    protected RecyclerView.Adapter getAdaptor() {
+//        adaptor = new OrderAdaptor(orders);
+//        return adaptor;
+//    }
+//
+//    @Override
+//    protected int getLayout() {
+//        return R.layout.activity_order;
+//    }
+//
+//    @Override
+//    protected void initPresenter() {
+//
+//    }
 
     @Override
     public void addMore(List<OrderAdaptor.OrderWrapper> orders) {
         this.orders.addAll(orders);
         adaptor.notifyDataSetChanged();
+    }
+
+    @Override
+    public void setLoadMoreComplete() {
+        getRecyclerView().loadMoreComplete();
+    }
+
+    @Override
+    public void setRefreshComplete() {
+        getRecyclerView().refreshComplete();
+    }
+
+    @Override
+    public void addPage() {
+        page ++;
     }
 
     @Override
@@ -75,20 +82,47 @@ public class OrderActivity extends OrderBaseListActivity implements IOrderView {
         super.onDestroy();
     }
 
+//    @Override
+//    public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
+//    }
+//
+//    @Override
+//    public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
+//        return false;
+//    }
+
     @Override
-    public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
+    protected void onRefresh() {
         page = 1;
         presenter.requestOrders(Constant.PAGE_START_NUM);
         orders.clear();
     }
 
     @Override
-    public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
-        return false;
+    public void onLoadMore() {
+        presenter.requestOrders(page);
     }
 
     @Override
-    public void onLoadMore() {
+    protected void setRecyclerView(RecyclerView recyclerView) {
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adaptor = new OrderAdaptor(orders);
+        recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 14)));
+        recyclerView.setAdapter(adaptor);
+    }
+
+    @Override
+    protected int setTitle() {
+        return R.string.order_record;
+    }
+
+    @Override
+    protected void initView() {
+
+        setUnBinder(ButterKnife.bind(this));
+        getActivityComponent().inject(this);
+
+        presenter.onAttach(OrderActivity.this);
         presenter.requestOrders(page);
     }
 }

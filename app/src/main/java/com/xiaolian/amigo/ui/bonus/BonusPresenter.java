@@ -41,7 +41,7 @@ public class BonusPresenter<V extends IBonusView> extends BasePresenter<V>
         addObserver(manager.queryOrders(dto), new NetworkObserver<ApiResult<QueryUserBonusListRespDTO>>() {
             @Override
             public void onReady(ApiResult<QueryUserBonusListRespDTO> result) {
-                getMvpView().setRefreshing(false);
+                getMvpView().setRefreshComplete();
                 getMvpView().setLoadMoreComplete();
                 if (null == result.getError()) {
                     List<BonusAdaptor.BonusWrapper> wrappers = new ArrayList<>();
@@ -52,6 +52,8 @@ public class BonusPresenter<V extends IBonusView> extends BasePresenter<V>
                         getMvpView().addMore(wrappers);
                         getMvpView().addPage();
                     }
+                } else {
+                    getMvpView().onError(result.getError().getDisplayMessage());
                 }
             }
         });
@@ -67,7 +69,7 @@ public class BonusPresenter<V extends IBonusView> extends BasePresenter<V>
         addObserver(manager.queryOrders(dto), new NetworkObserver<ApiResult<QueryUserBonusListRespDTO>>() {
             @Override
             public void onReady(ApiResult<QueryUserBonusListRespDTO> result) {
-                getMvpView().setRefreshing(false);
+                getMvpView().setRefreshComplete();
                 getMvpView().setLoadMoreComplete();
                 if (null == result.getError()) {
                     List<BonusAdaptor.BonusWrapper> wrappers = new ArrayList<>();
@@ -76,9 +78,10 @@ public class BonusPresenter<V extends IBonusView> extends BasePresenter<V>
                             wrappers.add(new BonusAdaptor.BonusWrapper(bonus));
                         }
                         getMvpView().addMore(wrappers);
+                        getMvpView().addPage();
                     }
                 } else {
-                    getMvpView().showMessage(result.getError().getDisplayMessage());
+                    getMvpView().onError(result.getError().getDisplayMessage());
                 }
             }
         });

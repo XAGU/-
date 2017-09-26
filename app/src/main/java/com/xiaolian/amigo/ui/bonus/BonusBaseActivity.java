@@ -8,20 +8,20 @@ import com.xiaolian.amigo.di.componet.BonusActivityComponent;
 import com.xiaolian.amigo.di.componet.DaggerBonusActivityComponent;
 import com.xiaolian.amigo.di.module.BonusActivityModule;
 import com.xiaolian.amigo.ui.base.BaseActivity;
+import com.xiaolian.amigo.ui.base.BaseToolBarActivity;
 
 /**
  * BonusBaseActivity
  * Created by zcd on 9/18/17.
  */
 
-public abstract class BonusBaseActivity extends BaseActivity {
+public abstract class BonusBaseActivity extends BaseToolBarActivity {
 
 
     private BonusActivityComponent mActivityComponent;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initInject() {
         setUp();
         mActivityComponent = DaggerBonusActivityComponent.builder()
                 .bonusActivityModule(new BonusActivityModule(this))

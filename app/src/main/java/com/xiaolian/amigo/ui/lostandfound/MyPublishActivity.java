@@ -35,17 +35,28 @@ public class MyPublishActivity extends LostAndFoundBaseListActivity implements I
     @Inject
     ILostAndFoundPresenter<ILostAndFoundView> presenter;
 
+//    @Override
+//    protected int getLayout() {
+//        return R.layout.activity_my_publish;
+//    }
+
     @Override
-    protected void initPresenter() {
-        setUnBinder(ButterKnife.bind(this));
-        getActivityComponent().inject(this);
-        presenter.onAttach(MyPublishActivity.this);
+    protected void onRefresh() {
+        page = Constant.PAGE_START_NUM;
+        lostAndFounds.clear();
+        presenter.getMyLostAndFounds();
     }
 
     @Override
-    protected RecyclerView.Adapter getAdaptor() {
+    public void onLoadMore() {
+        presenter.getMyLostAndFounds();
+    }
+
+    @Override
+    protected void setRecyclerView(RecyclerView recyclerView) {
+
         adaptor = new LostAndFoundAdaptor(this, R.layout.item_lost_and_found, lostAndFounds);
-        mRecyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 10)));
+        recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 10)));
         adaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
@@ -66,30 +77,19 @@ public class MyPublishActivity extends LostAndFoundBaseListActivity implements I
                 return false;
             }
         });
-        return adaptor;
     }
 
     @Override
-    protected int getLayout() {
-        return R.layout.activity_my_publish;
+    protected int setTitle() {
+        return R.string.my_publish;
     }
 
     @Override
-    public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
-        page = 1;
-        setRefreshing(true);
-        lostAndFounds.clear();
-        presenter.getMyLostAndFounds();
-    }
+    protected void initView() {
+        setUnBinder(ButterKnife.bind(this));
+        getActivityComponent().inject(this);
+        presenter.onAttach(MyPublishActivity.this);
 
-    @Override
-    public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
-        return false;
-    }
-
-    @Override
-    public void onLoadMore() {
-        presenter.getMyLostAndFounds();
     }
 
     @Override

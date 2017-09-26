@@ -147,10 +147,10 @@ public class MainActivity extends MainBaseActivity implements IMainView {
      */
     @OnClick(R.id.rl_notice)
     void gotoNoticeList() {
-        NoticeAlertDialog dialog = new NoticeAlertDialog(this);
-        dialog.show();
-//        startActivity(new Intent(this, NoticeActivity.class));
+        startActivity(new Intent(this, NoticeActivity.class));
     }
+
+
 
     @Override
     public void showNoticeAmount(Integer amount) {
@@ -177,6 +177,13 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @Override
     public void gotoDevice(Class clz) {
         startActivity(clz);
+    }
+
+    @Override
+    public void showUrgentNotify(String content, Long id) {
+        NoticeAlertDialog dialog = new NoticeAlertDialog(this);
+        dialog.setContent(content);
+        dialog.show();
     }
 
     @Override

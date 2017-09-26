@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.repair;
 
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.xiaolian.amigo.R;
@@ -16,7 +17,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
-import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 
 /**
  * 报修记录
@@ -34,28 +34,14 @@ public class RepairActivity extends RepairBaseListActivity implements IRepairVie
     RecyclerView.LayoutManager manager;
 
     @Override
-    protected void initPresenter() {
-        setUnBinder(ButterKnife.bind(this));
-        getActivityComponent().inject(this);
-        presenter.onAttach(this);
-    }
-
-    @Override
     protected void setUp() {
 
     }
 
-    @Override
-    protected RecyclerView.Adapter getAdaptor() {
-        adapter = new RepairAdaptor(repairs);
-        mRecyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 14)));
-        return adapter;
-    }
-
-    @Override
-    protected int getLayout() {
-        return R.layout.activity_repair;
-    }
+//    @Override
+//    protected int getLayout() {
+//        return R.layout.activity_repair;
+//    }
 
     @Override
     protected void onDestroy() {
@@ -71,20 +57,37 @@ public class RepairActivity extends RepairBaseListActivity implements IRepairVie
         adapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
-        page = Constant.PAGE_START_NUM;
-        repairs.clear();
-        setRefreshing(true);
-    }
 
     @Override
-    public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
-        return false;
+    protected void onRefresh() {
+        page = Constant.PAGE_START_NUM;
+        repairs.clear();
+        presenter.requestRepairs(page);
     }
 
     @Override
     public void onLoadMore() {
+        presenter.requestRepairs(page);
+    }
+
+    @Override
+    protected void setRecyclerView(RecyclerView recyclerView) {
+        adapter = new RepairAdaptor(repairs);
+        recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 14)));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    protected int setTitle() {
+        return R.string.repair_record;
+    }
+
+    @Override
+    protected void initView() {
+        setUnBinder(ButterKnife.bind(this));
+        getActivityComponent().inject(this);
+        presenter.onAttach(this);
         presenter.requestRepairs(page);
     }
 }

@@ -110,7 +110,8 @@
         android:layout_gravity="bottom|center_horizontal"
         android:layout_marginBottom="21dp"
         android:background="#40b5ff"
-        app:layout_behavior="com.xiaolian.amigo.ui.lostandfound.behavior.FooterBehavior">
+        app:layout_behavior="com.xiaolian.amigo.ui.lostandfound.behavior.FooterBehavior"
+        >
 
         <TextView
             android:id="@+id/tv_publish_lost"

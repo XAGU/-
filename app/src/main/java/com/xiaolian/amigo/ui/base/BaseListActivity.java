@@ -66,23 +66,23 @@ public abstract class BaseListActivity extends BaseActivity
         mRefreshLayout.setDelegate(this);
     }
 
-    @Override
-    public boolean isRefreshing() {
-        return refreshing;
-    }
-
-    @Override
-    public void setRefreshing(boolean refreshing) {
-        this.refreshing = refreshing;
-        if (!refreshing) {
-            mRefreshLayout.endRefreshing();
-        }
-    }
-
-    @Override
-    public void setLoadAll(boolean hasLoadedAll) {
-        this.hasLoadedAll = hasLoadedAll;
-    }
+//    @Override
+//    public boolean isRefreshing() {
+//        return refreshing;
+//    }
+//
+//    @Override
+//    public void setRefreshing(boolean refreshing) {
+//        this.refreshing = refreshing;
+//        if (!refreshing) {
+//            mRefreshLayout.endRefreshing();
+//        }
+//    }
+//
+//    @Override
+//    public void setLoadAll(boolean hasLoadedAll) {
+//        this.hasLoadedAll = hasLoadedAll;
+//    }
 
     protected void setupPageLoader() {
         if (pageLoader != null) {
@@ -106,33 +106,33 @@ public abstract class BaseListActivity extends BaseActivity
     protected void setUp() {
 
     }
-    @Override
-    public void showLoadMoreView() {
-        if (pageLoader != null) {
-            pageLoader.showLoadMoreView();
-        }
-    }
-
-    @Override
-    public void hideLoadMoreView() {
-        if (pageLoader != null) {
-            pageLoader.hideLoadMoreView();
-        }
-    }
-
-    @Override
-    public void showNoMoreDataView() {
-        if (pageLoader != null) {
-            pageLoader.showNoMoreDataView();
-        }
-    }
-
-    @Override
-    public void showLoading() {
-        if (!isRefreshing()) {
-            super.showLoading();
-        }
-    }
+//    @Override
+//    public void showLoadMoreView() {
+//        if (pageLoader != null) {
+//            pageLoader.showLoadMoreView();
+//        }
+//    }
+//
+//    @Override
+//    public void hideLoadMoreView() {
+//        if (pageLoader != null) {
+//            pageLoader.hideLoadMoreView();
+//        }
+//    }
+//
+//    @Override
+//    public void showNoMoreDataView() {
+//        if (pageLoader != null) {
+//            pageLoader.showNoMoreDataView();
+//        }
+//    }
+//
+//    @Override
+//    public void showLoading() {
+//        if (!isRefreshing()) {
+//            super.showLoading();
+//        }
+//    }
 
     @Override
     public void hideLoading() {

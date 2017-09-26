@@ -263,18 +263,56 @@ public abstract class BaseActivity extends SwipeBackActivity
         snackbar.show();
     }
 
+    private void showErrorSnackBar(String message) {
+        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),
+                message, Snackbar.LENGTH_SHORT);
+        View sbView = snackbar.getView();
+        sbView.setBackgroundResource(R.color.colorFullRed);
+        TextView textView = (TextView) sbView
+                .findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(ContextCompat.getColor(this, R.color.white));
+        snackbar.show();
+    }
+
+    private void showSuccessSnackBar(String message) {
+        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),
+                message, Snackbar.LENGTH_SHORT);
+        View sbView = snackbar.getView();
+        sbView.setBackgroundResource(R.color.device_dispenser);
+        TextView textView = (TextView) sbView
+                .findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(ContextCompat.getColor(this, R.color.white));
+        snackbar.show();
+    }
+
     @Override
     public void onError(String message) {
         if (message != null) {
-            showSnackBar(message);
+//            showSnackBar(message);
+            showErrorSnackBar(message);
         } else {
-            showSnackBar(getString(R.string.some_error));
+//            showSnackBar(getString(R.string.some_error));
+            showErrorSnackBar(getString(R.string.some_error));
         }
     }
 
     @Override
     public void onError(@StringRes int resId) {
         onError(getString(resId));
+    }
+
+    @Override
+    public void onSuccess(@StringRes int resId) {
+        onSuccess(getString(resId));
+    }
+
+    @Override
+    public void onSuccess(String message) {
+        if (message != null) {
+            showSuccessSnackBar(message);
+        } else {
+            showSuccessSnackBar(getString(R.string.some_error));
+        }
     }
 
     @Override

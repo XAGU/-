@@ -25,6 +25,7 @@ import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.repair.adaptor.RepairAdaptor;
 import com.xiaolian.amigo.ui.repair.intf.IRepairPresenter;
 import com.xiaolian.amigo.ui.repair.intf.IRepairView;
+import com.xiaolian.amigo.util.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,17 +49,20 @@ public class RepairPresenter<V extends IRepairView> extends BasePresenter<V>
     public void requestRepairs(int page) {
         RepairReqDTO reqDTO = new RepairReqDTO();
         reqDTO.setPage(page);
-        reqDTO.setSize(Integer.MAX_VALUE);
+        reqDTO.setSize(Constant.PAGE_SIZE);
         addObserver(manager.queryRepairs(reqDTO), new NetworkObserver<ApiResult<RepairRespDTO>>() {
 
             @Override
             public void onReady(ApiResult<RepairRespDTO> result) {
+                getMvpView().setLoadMoreComplete();
+                getMvpView().setRefreshComplete();
                 if (null == result.getError()) {
                     List<RepairAdaptor.RepairWrapper> wrappers = new ArrayList<>();
                     for (Repair repair : result.getData().getRepairDevices()) {
                         wrappers.add(new RepairAdaptor.RepairWrapper(repair));
                     }
                     getMvpView().addMore(wrappers);
+                    getMvpView().addPage();
                 }
             }
         });

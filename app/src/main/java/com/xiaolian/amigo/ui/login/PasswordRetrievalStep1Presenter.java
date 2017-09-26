@@ -35,7 +35,7 @@ public class PasswordRetrievalStep1Presenter<V extends IPasswordRetrievalStep1Vi
             @Override
             public void onReady(ApiResult<BooleanRespDTO> result) {
                 if (null == result.getError()) {
-                    getMvpView().showMessage("验证码发送成功");
+                    getMvpView().onSuccess("验证码发送成功");
                     getMvpView().startTimer();
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());

@@ -32,13 +32,21 @@ public class BonusExchangeActivity extends BonusBaseActivity implements IBonusEx
     IBonusExchangePresenter<IBonusExchangeView> presenter;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bonus_exchange);
+    protected void initView() {
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
 
         presenter.onAttach(BonusExchangeActivity.this);
+    }
+
+    @Override
+    protected int setTitle() {
+        return R.string.exchange_bonus;
+    }
+
+    @Override
+    protected int setLayout() {
+        return R.layout.activity_bonus_exchange;
     }
 
     @Override

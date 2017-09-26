@@ -57,7 +57,7 @@ public class PublishLostPresenter<V extends IPublishLostView> extends BasePresen
             @Override
             public void onReady(ApiResult<SimpleRespDTO> result) {
                 if (null == result.getError()) {
-                    getMvpView().showMessage("发布成功");
+                    getMvpView().onSuccess("发布成功");
                     getMvpView().finishView();
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
@@ -77,7 +77,7 @@ public class PublishLostPresenter<V extends IPublishLostView> extends BasePresen
                 if (null == result.getError()) {
                     getMvpView().addImage(result.getData(), position);
                 } else {
-                    getMvpView().showMessage(result.getError().getDisplayMessage());
+                    getMvpView().onError(result.getError().getDisplayMessage());
                 }
             }
         });

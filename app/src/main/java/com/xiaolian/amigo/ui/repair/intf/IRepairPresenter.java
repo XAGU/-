@@ -16,10 +16,8 @@
 package com.xiaolian.amigo.ui.repair.intf;
 
 
-import com.xiaolian.amigo.di.LoginActivityContext;
 import com.xiaolian.amigo.di.RepairActivityContext;
 import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
-import com.xiaolian.amigo.ui.order.intf.IOrderView;
 
 @RepairActivityContext
 public interface IRepairPresenter<V extends IRepairView> extends IBasePresenter<V> {

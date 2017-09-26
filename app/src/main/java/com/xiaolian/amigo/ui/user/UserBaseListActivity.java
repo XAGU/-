@@ -5,13 +5,14 @@ import com.xiaolian.amigo.di.componet.DaggerUserActivityComponent;
 import com.xiaolian.amigo.di.componet.UserActivityComponent;
 import com.xiaolian.amigo.di.module.UserActivityModule;
 import com.xiaolian.amigo.ui.base.BaseListActivity;
+import com.xiaolian.amigo.ui.base.BaseToolBarListActivity;
 
 /**
  * <p>
  * Created by zcd on 9/25/17.
  */
 
-public abstract class UserBaseListActivity extends BaseListActivity {
+public abstract class UserBaseListActivity extends BaseToolBarListActivity {
 
     private UserActivityComponent mActivityComponent;
 

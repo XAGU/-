@@ -38,7 +38,7 @@ public class PasswordRetrievalStep2Presenter<V extends IPasswordRetrievalStep2Vi
             public void onReady(ApiResult<BooleanRespDTO> result) {
                 if (null == result.getError()) {
                     if (result.getData().isResult()) {
-                        getMvpView().showMessage("密码重置成功，请登录");
+                        getMvpView().onSuccess("密码重置成功，请登录");
                         getMvpView().gotoLoginView();
                     } else {
                         getMvpView().onError("密码重置失败，请重试");
