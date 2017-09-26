@@ -35,7 +35,7 @@ public class BleInteractivePresenter<V extends IBleInteractiveView> extends Base
     private static final String DESCRIPTOR_UUID = "00002902-0000-1000-8000-00805f9b34fb";
     private IBleDataManager manager;
     private Observable<RxBleConnection> connectionObservable;
-    private BluetoothGattCharacteristic writeCharacteristic;
+    private BluetoothGattCharacteristic notifyCharacteristic;
     private BehaviorSubject<ActivityEvent> lifecycleSubject = BehaviorSubject.create();
     // 当前连接的设备
     private String currentMacAddress;
@@ -67,12 +67,12 @@ public class BleInteractivePresenter<V extends IBleInteractiveView> extends Base
                         currentMacAddress = macAddress;
 
                         // 取第一个匹配到的特征值
-                        if (null == writeCharacteristic && characteristic.getProperties() == 16) {
-                            writeCharacteristic = characteristic;
+                        if (null == notifyCharacteristic) {
+                            notifyCharacteristic = characteristic;
 
                             // 3、向蓝牙设备写特征值描述，为后续接受蓝牙设备notify通知做铺垫
                             if (manager.getStatus(macAddress) == RxBleConnection.RxBleConnectionState.CONNECTED) {
-                                writeCharacteristicDesc(writeCharacteristic);
+                                enableNotify(characteristic);
                             } else {
                                 getMvpView().onStatusError();
                             }
@@ -81,9 +81,28 @@ public class BleInteractivePresenter<V extends IBleInteractiveView> extends Base
                 });
     }
 
+    // 开启notify通道
+    private void enableNotify(BluetoothGattCharacteristic characteristic) {
+        addObserver(manager.setupNotification(connectionObservable, characteristic),
+                new BLEObserver<Observable<byte[]>>() {
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.wtf(TAG, "开启notify通道失败！", e);
+                        getMvpView().onConnectError();
+                    }
+
+                    @Override
+                    public void onNext(Observable<byte[]> observable) {
+                        writeCharacteristicDesc(notifyCharacteristic);
+                    }
+                });
+    }
+
     // 写特征值描述
     private void writeCharacteristicDesc(BluetoothGattCharacteristic characteristic) {
+
         BluetoothGattDescriptor descriptor = characteristic.getDescriptor(UUID.fromString(DESCRIPTOR_UUID));
+        descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
 
         addObserver(manager.writeDescriptor(connectionObservable, descriptor),
                 new BLEObserver<byte[]>() {

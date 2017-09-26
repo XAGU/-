@@ -2,29 +2,36 @@ package com.xiaolian.amigo.data.manager;
 
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
+import android.bluetooth.BluetoothGattService;
+import android.os.ParcelUuid;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.polidea.rxandroidble.RxBleClient;
 import com.polidea.rxandroidble.RxBleConnection;
 import com.polidea.rxandroidble.RxBleDevice;
+import com.polidea.rxandroidble.RxBleDeviceServices;
 import com.polidea.rxandroidble.scan.ScanFilter;
 import com.polidea.rxandroidble.scan.ScanResult;
 import com.polidea.rxandroidble.scan.ScanSettings;
 import com.polidea.rxandroidble.utils.ConnectionSharingAdapter;
 import com.xiaolian.amigo.data.manager.intf.IBleDataManager;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import javax.inject.Inject;
 
 import rx.Observable;
+import rx.functions.Func1;
 import rx.subjects.PublishSubject;
 
 /**
  * Created by caidong on 2017/9/22.
  */
 public class BleDataManager implements IBleDataManager {
-
+    private static final String TAG = BleDataManager.class.getSimpleName();
     private static final String SERVICE_UUID = "0000fee9-0000-1000-8000-00805f9b34fb";
     private static final String CHARACTERISTIC_UUID = "d44bc439-abfd-45a2-b575-925416129600";
     private RxBleClient client;
@@ -39,7 +46,7 @@ public class BleDataManager implements IBleDataManager {
         return client.scanBleDevices(new ScanSettings.Builder().build(),
                 new ScanFilter.Builder()
                         // 按照SERVICE_UUID筛选
-//                        .setServiceUuid(ParcelUuid.fromString(SERVICE_UUID))
+                        .setServiceUuid(ParcelUuid.fromString(SERVICE_UUID))
                         .build());
     }
 
@@ -56,13 +63,27 @@ public class BleDataManager implements IBleDataManager {
     public Observable<BluetoothGattCharacteristic> connect(Observable<RxBleConnection> connectionObservable) {
         return connectionObservable
                 .flatMap(RxBleConnection::discoverServices)
-                .flatMap(rxBleDeviceServices -> rxBleDeviceServices.getCharacteristic(UUID.fromString(CHARACTERISTIC_UUID)));
+                .flatMap(rxBleDeviceServices -> Observable.from(rxBleDeviceServices.getBluetoothGattServices()))
+                .flatMap(bluetoothGattService -> Observable.from(bluetoothGattService.getCharacteristics()))
+                .filter(characteristic -> {
+                    if (null != characteristic) {
+                        Log.i(TAG, "property=" + characteristic.getProperties());
+                    }
+                    return null != characteristic && characteristic.getProperties() == 16;
+                });
     }
 
     @Override
-    public Observable<byte[]> writeDescriptor(@NonNull Observable<RxBleConnection> connectionObservable, @NonNull BluetoothGattDescriptor bluetoothGattDescriptor) {
-        return connectionObservable.flatMap(rxBleConnection -> rxBleConnection.writeDescriptor(bluetoothGattDescriptor,
-                BluetoothGattDescriptor.ENABLE_INDICATION_VALUE));
+    public Observable<Observable<byte[]>> setupNotification(Observable<RxBleConnection> connectionObservable, BluetoothGattCharacteristic characteristic) {
+        return connectionObservable.flatMap(rxBleConnection -> rxBleConnection.setupNotification(characteristic));
+    }
+
+    @Override
+    public Observable<byte[]> writeDescriptor(@NonNull Observable<RxBleConnection> connectionObservable, @NonNull BluetoothGattDescriptor descriptor) {
+        BluetoothGattCharacteristic characteristic = descriptor.getCharacteristic();
+        BluetoothGattService service = characteristic.getService();
+        return connectionObservable
+                .flatMap(rxBleConnection -> rxBleConnection.writeDescriptor(descriptor, BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE));
     }
 
     @Override

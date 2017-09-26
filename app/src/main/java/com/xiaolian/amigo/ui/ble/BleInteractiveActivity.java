@@ -34,6 +34,7 @@ public class BleInteractiveActivity extends BleBaseActivity implements IBleInter
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
 
+        presenter.onAttach(this);
         presenter.onConnect(mac);
     }
 

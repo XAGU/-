@@ -32,6 +32,9 @@ public interface IBleDataManager {
     // 连接蓝牙
     Observable<BluetoothGattCharacteristic> connect(Observable<RxBleConnection> connectionObservable);
 
+    // 设置notify通道模式为enable
+    Observable<Observable<byte[]>> setupNotification(Observable<RxBleConnection> connectionObservable, BluetoothGattCharacteristic characteristic);
+
     /**
      * 向设备写特征值描述
      *
