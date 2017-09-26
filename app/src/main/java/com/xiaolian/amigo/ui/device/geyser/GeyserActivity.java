@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.tmp.component.BezierWaveView;
-import com.xiaolian.amigo.tmp.component.DotFlashView;
+import com.xiaolian.amigo.ui.widget.DotFlashView;
 import com.xiaolian.amigo.ui.widget.dialog.ActionSheetDialog;
 import com.xiaolian.amigo.ui.widget.dialog.IOSAlertDialog;
 import com.xiaolian.amigo.ui.base.BaseActivity;

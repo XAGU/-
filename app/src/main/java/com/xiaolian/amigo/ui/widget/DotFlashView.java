@@ -1,4 +1,4 @@
-package com.xiaolian.amigo.tmp.component;
+package com.xiaolian.amigo.ui.widget;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
@@ -106,7 +106,7 @@ public class DotFlashView extends View {
         }
     }
 
-    public void startAnimation() {
+    public void startAnimation(){
 
 
         valueAnimator = ValueAnimator.ofInt(mHeight / 2, mHeight / 8, mHeight / 2);

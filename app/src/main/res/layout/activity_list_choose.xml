@@ -1,45 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/colorBackgroundWhite"
-              android:paddingBottom="14dp"
-              android:paddingLeft="@dimen/mainMarginLeftRight"
-              android:paddingRight="@dimen/mainMarginLeftRight"
-              android:paddingTop="14dp">
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackgroundWhite"
+    android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/iv_back"
-        android:layout_width="wrap_content"
+    <!--<ScrollView-->
+    <!--android:id="@+id/sv_refresh"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:scrollbars="none">-->
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingRight="40dp"
-        android:src="@drawable/back" />
+        android:background="@color/colorBackgroundWhite"
+        android:fitsSystemWindows="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical"
+        app:elevation="0dp">
 
-    <TextView
-        style="@style/TitleText"
-        android:id="@+id/tv_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="21dp"
-        android:layout_marginTop="24dp"
-        />
 
-    <View
+        <LinearLayout
+            android:id="@+id/ll_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_scrollFlags="scroll|enterAlways">
+
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/toolBarInnerMargin"
+                android:paddingLeft="@dimen/toolBarMarginLeft"
+                android:paddingRight="@dimen/toolBarMarginLeft"
+                android:paddingTop="@dimen/toolBarMarginTop"
+                android:src="@drawable/back" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                style="@style/TitleText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/toolBarMarginBottom"
+                android:layout_marginLeft="@dimen/toolBarMarginLeft"
+                android:layout_marginRight="@dimen/toolBarMarginLeft" />
+        </LinearLayout>
+    </android.support.design.widget.AppBarLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="1dip"
-        android:layout_centerVertical="true"
-        android:background="#eee" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/mainMarginLeftRight"
+            android:layout_marginRight="@dimen/mainMarginLeftRight"
+            android:background="#eee" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dip"
-        android:layout_centerVertical="true"
-        android:background="#eee" />
+        <com.xiaolian.amigo.ui.widget.recyclerview.IRecyclerView
+            android:overScrollMode="never"
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/mainMarginLeftRight"
+            android:layout_marginRight="@dimen/mainMarginLeftRight" />
 
-</LinearLayout>
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

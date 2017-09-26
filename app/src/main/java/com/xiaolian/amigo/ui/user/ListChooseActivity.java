@@ -2,6 +2,7 @@ package com.xiaolian.amigo.ui.user;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,6 +21,7 @@ import com.xiaolian.amigo.ui.repair.RepairApplyActivity;
 import com.xiaolian.amigo.ui.user.adaptor.ListChooseAdaptor;
 import com.xiaolian.amigo.ui.user.intf.IListChoosePresenter;
 import com.xiaolian.amigo.ui.user.intf.IListChooseView;
+import com.xiaolian.amigo.ui.widget.recyclerview.IRecyclerView;
 import com.xiaolian.amigo.util.Constant;
 
 import java.util.ArrayList;
@@ -78,7 +80,7 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
     ListChooseAdaptor adapter;
 
     @BindView(R.id.recyclerView)
-    RecyclerView recyclerView;
+    IRecyclerView recyclerView;
 
     @BindView(R.id.tv_title)
     TextView tv_title;
@@ -101,6 +103,21 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
         presenter.onAttach(ListChooseActivity.this);
 
         adapter = new ListChooseAdaptor(items);
+        recyclerView.setLoadingListener(new IRecyclerView.LoadingListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        recyclerView.refreshComplete();
+                    }
+                }, 3000);
+            }
+
+            @Override
+            public void onLoadMore() {
+
+            }
+        });
         recyclerView.addItemDecoration(new RecycleViewDivider(this, RecycleViewDivider.VERTICAL_LIST));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
@@ -203,7 +220,7 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                             ListChooseAdaptor.Item item = items.get(position);
 
                             Intent intent = new Intent(getApplicationContext(), RepairApplyActivity.class);
-                            intent.putExtra(Constant.LOCATION_ID, (long)item.getId());
+                            intent.putExtra(Constant.LOCATION_ID, (long) item.getId());
                             intent.putExtra(Constant.DEVICE_TYPE, buildingType);
                             intent.putExtra(Constant.LOCATION, Device.getDevice(buildingType).getDesc() + Constant.CHINEASE_COLON + item.getExtra());
                             startActivity(intent);
