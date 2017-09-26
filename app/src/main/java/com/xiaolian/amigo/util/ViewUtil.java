@@ -17,7 +17,7 @@ public final class ViewUtil {
 
     public static void setEditHintAndSize(String hint, int dp, TextView textView) {
         SpannableString span = new SpannableString(hint);
-        span.setSpan(new AbsoluteSizeSpan(dp, true), 0, hint.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        span.setSpan(new AbsoluteSizeSpan(dp, true), 0, hint.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
         textView.setHint(span);
     }
 }

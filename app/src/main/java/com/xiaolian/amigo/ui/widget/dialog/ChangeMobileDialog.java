@@ -5,6 +5,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.Gravity;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -23,6 +24,7 @@ import com.xiaolian.amigo.util.ViewUtil;
 public class ChangeMobileDialog extends Dialog {
 
     private TextView tv_ok;
+    private TextView tv_cancel;
     private EditText et_password;
     private OnOkClickListener listener;
 
@@ -52,6 +54,8 @@ public class ChangeMobileDialog extends Dialog {
             }
             dismiss();
         });
+        tv_cancel = (TextView) findViewById(R.id.tv_cancel);
+        tv_cancel.setOnClickListener(v -> dismiss());
         et_password = (EditText) findViewById(R.id.et_password);
         ViewUtil.setEditHintAndSize(context.getString(R.string.password_hint), 14, et_password);
 

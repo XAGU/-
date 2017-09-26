@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.login;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
 import android.util.Log;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -153,4 +155,15 @@ public class PasswordRetrievalStep1Activity extends LoginBaseActivity implements
             timer.cancel();
         }
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (et_mobile != null) {
+            et_mobile.requestFocus();
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(et_mobile, InputMethodManager.SHOW_IMPLICIT);
+        }
+    }
+
 }

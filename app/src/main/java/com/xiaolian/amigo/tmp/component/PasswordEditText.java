@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.tmp.component;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.v7.widget.AppCompatEditText;
@@ -41,6 +42,8 @@ public class PasswordEditText extends AppCompatEditText {
 
     // 初始化方法
     private void init() {
+        // 设置Typeface，防止inputtype为password时，光标远离hint的问题
+        setTypeface(Typeface.SANS_SERIF, -1);
         // Drawable顺序左上右下，0123
         // 获取DrawRight内容
         mDrawableRight = getCompoundDrawables()[2];
@@ -91,9 +94,12 @@ public class PasswordEditText extends AppCompatEditText {
                     setmDrawableRight(isOpen);
                     // 执行点击事件-隐藏或显示
                     if (isOpen)
-                        setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                        setInputType(InputType.TYPE_CLASS_TEXT |
+                                InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                     else
-                        setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                        setInputType(
+                                InputType.TYPE_CLASS_TEXT |
+                                        InputType.TYPE_TEXT_VARIATION_PASSWORD);
                     // 设置光标位置
                     setSelection(getText().length());
                 }
