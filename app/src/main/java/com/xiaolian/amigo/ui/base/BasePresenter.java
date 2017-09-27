@@ -18,6 +18,7 @@ package com.xiaolian.amigo.ui.base;
 
 import android.util.Log;
 
+import com.polidea.rxandroidble.exceptions.BleDisconnectedException;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.Error;
 import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
@@ -106,6 +107,21 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
     }
 
     public abstract class BLEObserver<T> extends Subscriber<T> {
+
+        @Override
+        public void onError(Throwable e) {
+            if (e instanceof BleDisconnectedException) {
+                onConnectError();
+            } else {
+                onExecuteError(e);
+            }
+        }
+
+        // 蓝牙设备连接异常
+        public abstract void onConnectError();
+
+        // 执行操作出错
+        public abstract void onExecuteError(Throwable e);
 
         @Override
         public void onStart() {

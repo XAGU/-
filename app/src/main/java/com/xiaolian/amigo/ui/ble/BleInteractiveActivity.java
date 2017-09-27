@@ -3,6 +3,7 @@ package com.xiaolian.amigo.ui.ble;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.ble.intf.IBleInteractivePresenter;
@@ -13,7 +14,9 @@ import com.xiaolian.amigo.util.Constant;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by caidong on 2017/9/23.
@@ -25,6 +28,8 @@ public class BleInteractiveActivity extends BleBaseActivity implements IBleInter
 
     @Inject
     IBleInteractivePresenter<IBleInteractiveView> presenter;
+    @BindView(R.id.receive_content)
+    TextView receiveContent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +39,7 @@ public class BleInteractiveActivity extends BleBaseActivity implements IBleInter
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
 
+        presenter.onAttach(this);
         presenter.onConnect(mac);
     }
 
@@ -41,6 +47,22 @@ public class BleInteractiveActivity extends BleBaseActivity implements IBleInter
     protected void setUp() {
         Intent intent  = getIntent();
         mac = intent.getStringExtra(Constant.MAC);
+    }
+
+    @Override
+    protected void onDestroy() {
+        presenter.onDisConnect();
+        super.onDestroy();
+    }
+
+    @OnClick(R.id.connect)
+    void connect() {
+        presenter.onWrite("A70108f778a9a00000000068");
+    }
+
+    @Override
+    public void onShow(String content) {
+        receiveContent.setText(content);
     }
 
     @Override

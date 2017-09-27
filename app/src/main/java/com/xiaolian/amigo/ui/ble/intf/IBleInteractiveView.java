@@ -20,4 +20,7 @@ public interface IBleInteractiveView extends IBaseView {
 
     // 设备状态错误（通常为不在线）
     void onStatusError();
+
+    // 显示结果
+    void onShow(String content);
 }

@@ -17,4 +17,7 @@ public interface IBleInteractivePresenter<V extends IBleInteractiveView> extends
 
     // 接收设备通知（读数据）
     void registerNotify();
+
+    // 断开连接
+    void onDisConnect();
 }
