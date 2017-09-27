@@ -15,4 +15,6 @@ public interface ISharedPreferencesHelp {
     User getUserInfo();
 
     void setUserInfo(User user);
+
+    void logout();
 }

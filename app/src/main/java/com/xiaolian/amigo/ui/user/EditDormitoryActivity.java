@@ -50,10 +50,15 @@ public class EditDormitoryActivity extends UserBaseListActivity implements IEdit
         intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION,
                 ListChooseActivity.ACTION_LIST_BUILDING);
         startActivity(intent);
-
     }
 
-//    @Override
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        onRefresh();
+    }
+
+    //    @Override
 //    protected int getLayout() {
 //        return R.layout.activity_edit_dormitory;
 //    }
@@ -83,7 +88,7 @@ public class EditDormitoryActivity extends UserBaseListActivity implements IEdit
 
     @Override
     protected void setRecyclerView(RecyclerView recyclerView) {
-        adaptor = new EditDormitoryAdaptor(this, R.layout.item_dormitory, items, presenter);
+        adaptor = new EditDormitoryAdaptor(this, R.layout.item_dormitory, items);
         adaptor.setOnItemClickListener((userResidenceWrapper, position) -> {
             presenter.updateResidenceId(userResidenceWrapper.getResidenceId());
         });
@@ -114,6 +119,13 @@ public class EditDormitoryActivity extends UserBaseListActivity implements IEdit
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
         presenter.onAttach(EditDormitoryActivity.this);
+        adaptor.setPresenter(presenter);
         presenter.queryDormitoryList(Constant.PAGE_START_NUM, Constant.PAGE_SIZE);
+    }
+
+    @Override
+    public void onBackPressed() {
+        setResult(RESULT_OK);
+        super.onBackPressed();
     }
 }

@@ -42,6 +42,10 @@ public class EditDormitoryAdaptor extends CommonAdapter<EditDormitoryAdaptor.Use
         this.presenter = presenter;
     }
 
+    public void setPresenter(IEditDormitoryPresenter<IEditDormitoryView> presenter) {
+        this.presenter = presenter;
+    }
+
     @Override
     protected void convert(ViewHolder holder, UserResidenceWrapper userResidenceWrapper, int position) {
         holder.setText(R.id.tv_edit_dormitory_name, userResidenceWrapper.getResidenceName());

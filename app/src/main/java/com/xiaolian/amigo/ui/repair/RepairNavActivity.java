@@ -1,7 +1,10 @@
 package com.xiaolian.amigo.ui.repair;
 
+import android.view.View;
+
 import com.xiaolian.amigo.R;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -11,6 +14,9 @@ import butterknife.OnClick;
  * Created by caidong on 2017/9/12.
  */
 public class RepairNavActivity extends RepairBaseActivity {
+
+    @BindView(R.id.v_dot)
+    View v_dot;
 
     @Override
     protected void initView() {

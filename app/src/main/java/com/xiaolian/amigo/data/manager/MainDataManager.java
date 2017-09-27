@@ -56,6 +56,11 @@ public class MainDataManager implements IMainDataManager {
     }
 
     @Override
+    public void logout() {
+        sharedPreferencesHelp.logout();
+    }
+
+    @Override
     public Observable<ApiResult<PersonalExtraInfoDTO>> getExtraInfo() {
         return mainApi.getExtraInfo();
     }

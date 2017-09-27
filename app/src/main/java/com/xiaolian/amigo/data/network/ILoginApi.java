@@ -33,8 +33,8 @@ public interface ILoginApi {
     @POST("/login/password/reset")
     Observable<ApiResult<BooleanRespDTO>> passwordReset(@Body PasswordResetReqDTO body);
 
-    // 校验验证码
-    @POST("/login/verification/check")
+    // 校验注册验证码
+    @POST("/login/register/check")
     Observable<ApiResult<BooleanRespDTO>> verificationCheck(@Body VerificationCodeCheckReqDTO body);
 
     // 获取验证码

@@ -103,21 +103,21 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
         presenter.onAttach(ListChooseActivity.this);
 
         adapter = new ListChooseAdaptor(items);
-        recyclerView.setLoadingListener(new IRecyclerView.LoadingListener() {
-            @Override
-            public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    public void run() {
-                        recyclerView.refreshComplete();
-                    }
-                }, 3000);
-            }
-
-            @Override
-            public void onLoadMore() {
-
-            }
-        });
+//        recyclerView.setLoadingListener(new IRecyclerView.LoadingListener() {
+//            @Override
+//            public void onRefresh() {
+//                new Handler().postDelayed(new Runnable() {
+//                    public void run() {
+//                        recyclerView.refreshComplete();
+//                    }
+//                }, 3000);
+//            }
+//
+//            @Override
+//            public void onLoadMore() {
+//
+//            }
+//        });
         recyclerView.addItemDecoration(new RecycleViewDivider(this, RecycleViewDivider.VERTICAL_LIST));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);

@@ -75,6 +75,12 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
         mSharedPreferences.edit().putString(PREF_KEY_MOBILE, user.getMobile()).apply();
     }
 
+    @Override
+    public void logout() {
+        mSharedPreferences.edit().clear().apply();
+    }
+
+
     boolean isUserHolderEmpty() {
         if (userHolder != null) {
             if (userHolder.getNickName() != null

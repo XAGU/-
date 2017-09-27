@@ -18,4 +18,6 @@ public interface IMainDataManager extends IMainApi {
     User getUserInfo();
 
     void setUserInfo(User user);
+
+    void logout();
 }

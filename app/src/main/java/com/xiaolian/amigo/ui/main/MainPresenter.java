@@ -38,7 +38,7 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V> impleme
 
     @Override
     public void logout() {
-        manager.setToken("");
+        manager.logout();
     }
 
     @Override
