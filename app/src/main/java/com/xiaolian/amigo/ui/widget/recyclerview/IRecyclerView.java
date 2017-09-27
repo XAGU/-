@@ -45,6 +45,8 @@ public class IRecyclerView extends RecyclerView {
     private AppBarStateChangeListener.State appbarState = AppBarStateChangeListener.State.EXPANDED;
     private MRecyclerAdapter mAdapter;
     private View mEmptyView; // TODO 空界面
+    // 解决第一次加载页面不显示问题
+    private boolean isFirstAttachAdapter = true;
 
 
     public IRecyclerView(Context context) {
@@ -115,7 +117,7 @@ public class IRecyclerView extends RecyclerView {
      */
     public void setEmptyView(View emptyView) {
         this.mEmptyView = emptyView;
-        mDataObserver.onChanged();
+//        mDataObserver.onChanged();
     }
 
     public View getEmptyView() {
@@ -311,10 +313,13 @@ public class IRecyclerView extends RecyclerView {
 
         public MRecyclerAdapter(RecyclerView.Adapter adapter){
             this.mAdapter = adapter;
+            isFirstAttachAdapter = true;
+
         }
         public RecyclerView.Adapter getOriginalAdapter(){
             return this.mAdapter;
         }
+
 
         /**
          * 判断当前item是否是header
@@ -520,6 +525,10 @@ public class IRecyclerView extends RecyclerView {
         @Override
         public void onChanged() {
             if (mAdapter != null && mEmptyView != null) {
+                if (isFirstAttachAdapter) {
+                    isFirstAttachAdapter = false;
+                    return;
+                }
                 int emptyCount = 1 + mAdapter.getHeadersCount();
                 if (LoadMoreEnabled) {
                     emptyCount++;
@@ -530,9 +539,14 @@ public class IRecyclerView extends RecyclerView {
                 } else {
                     IRecyclerView.this.setVisibility(View.VISIBLE);
                     mEmptyView.setVisibility(View.GONE);
+                    IRecyclerView.this.getRecycledViewPool().clear();
                 }
             }
             if (mAdapter != null) {
+                if (isFirstAttachAdapter) {
+                    isFirstAttachAdapter = false;
+                    return;
+                }
                 mAdapter.notifyDataSetChanged();
             }
         }

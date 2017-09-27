@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 public class Notify {
     private String content;
-    private String createTime;
+    private Long createTime;
     private Long id;
     private Integer type;
 }

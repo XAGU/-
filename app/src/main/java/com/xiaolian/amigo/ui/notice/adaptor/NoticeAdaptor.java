@@ -5,6 +5,7 @@ import android.content.Context;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Notice;
 import com.xiaolian.amigo.data.network.model.notify.Notify;
+import com.xiaolian.amigo.util.TimeUtils;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -34,7 +35,8 @@ public class NoticeAdaptor extends CommonAdapter<NoticeAdaptor.NoticeWapper> {
             }
         }
         holder.setText(R.id.tv_content, noticeWapper.getContent());
-        holder.setText(R.id.tv_time, noticeWapper.getCreateTime());
+        holder.setText(R.id.tv_time, TimeUtils.convertTimestampToFormat(noticeWapper.getCreateTime())
+                + "/" + TimeUtils.millis2String(noticeWapper.getCreateTime(), TimeUtils.MY_TIME_FORMAT));
     }
 
     @Data
@@ -42,7 +44,7 @@ public class NoticeAdaptor extends CommonAdapter<NoticeAdaptor.NoticeWapper> {
         private String content;
         private Long id;
         private Integer type;
-        private String createTime;
+        private Long createTime;
 
         public NoticeWapper(Notify notify) {
             this.content = notify.getContent();

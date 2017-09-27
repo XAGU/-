@@ -86,7 +86,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(R.id.fm_container, homeFragment);
         transaction.commit();
-        presenter.getNoticeAmount();
     }
 
     @Override
