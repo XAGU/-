@@ -231,7 +231,7 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                     break;
                 case ACTION_LIST_SCHOOL_RESULT:
                     tv_title.setText("选择学校");
-                    presenter.getSchoolList(1, Constant.PAGE_SIZE);
+                    presenter.getSchoolList(null, null);
                     adapter.setOnItemClickListener((view, position) -> {
                         Intent intent = new Intent();
                         intent.putExtra(INTENT_KEY_LIST_CHOOSE_ITEM_RESULT, items.get(position));

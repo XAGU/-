@@ -56,6 +56,8 @@ public class FavoritePresenter<V extends IFavoriteView> extends BasePresenter<V>
         addObserver(manager.queryFavorites(reqDTO), new NetworkObserver<ApiResult<FavoriteRespDTO>>() {
             @Override
             public void onReady(ApiResult<FavoriteRespDTO> result) {
+                getMvpView().setRefreshComplete();
+                getMvpView().setLoadMoreComplete();
                 if (null == result.getError()) {
                     List<FavoriteAdaptor.FavoriteWrapper> wrappers = new ArrayList<>();
                     if (null != result.getData().getDevices()) {
@@ -63,6 +65,7 @@ public class FavoritePresenter<V extends IFavoriteView> extends BasePresenter<V>
                             wrappers.add(new FavoriteAdaptor.FavoriteWrapper(device));
                         }
                         getMvpView().addMore(wrappers);
+                        getMvpView().addPage();
                     }
                 }
             }

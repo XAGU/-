@@ -15,6 +15,6 @@ public class PersonalExtraInfoDTO {
     private Integer bonusAmount;
     private Integer notifyAmount;
     private Integer prepay;
-    private Boolean repair;
+    private Long repair;
     private Notify urgentNotify;
 }
