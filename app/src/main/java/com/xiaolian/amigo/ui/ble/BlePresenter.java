@@ -35,6 +35,16 @@ public class BlePresenter<V extends IBleView> extends BasePresenter<V>
             }
 
             @Override
+            public void onConnectError() {
+                // ignore 不会执行到此
+            }
+
+            @Override
+            public void onExecuteError(Throwable e) {
+                // ignore 不会执行到此
+            }
+
+            @Override
             public void onNext(ScanResult result) {
                 getMvpView().addDevice(result);
             }

@@ -10,6 +10,7 @@ import com.polidea.rxandroidble.RxBleDeviceServices;
 import com.polidea.rxandroidble.scan.ScanResult;
 
 import rx.Observable;
+import rx.subjects.PublishSubject;
 
 /**
  * 蓝牙相关操作
@@ -23,11 +24,11 @@ public interface IBleDataManager {
 
     /**
      * 提供连接蓝牙设备的Observable，附带连接共享适配器供后续蓝牙操作使用
-     *
-     * @param macAddress  蓝牙设备mac地址
+     *  @param macAddress  蓝牙设备mac地址
      * @param autoConnect 是否自动连接
+     * @param disconnectTriggerSubject 断连触发器
      */
-    Observable<RxBleConnection> prepareConnectionObservable(@NonNull String macAddress, boolean autoConnect);
+    Observable<RxBleConnection> prepareConnectionObservable(@NonNull String macAddress, boolean autoConnect, @NonNull PublishSubject<Void> disconnectTriggerSubject);
 
     // 连接蓝牙
     Observable<BluetoothGattCharacteristic> connect(Observable<RxBleConnection> connectionObservable);
@@ -56,7 +57,7 @@ public interface IBleDataManager {
      *
      * @param connectionObservable 连接句柄
      */
-    Observable<byte[]> notify(@NonNull Observable<RxBleConnection> connectionObservable);
+    Observable<byte[]> notify(@NonNull Observable<RxBleConnection> connectionObservable, BluetoothGattCharacteristic characteristic);
 
     /**
      * 监控设备状态
