@@ -24,7 +24,13 @@ import okio.Buffer;
 public class LogInterceptor implements Interceptor {
     private final static String TAG = LogInterceptor.class.getSimpleName();
     private final static boolean DEBUG = true;
-    private final static String TOKEN = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaXNzIjoiaHR0cHM6Ly94aWFvbGlhbi5pbyIsImlhdCI6MTUwNTczOTM1NCwiZXhwIjoxNTA2NDk1MzU0fQ.0MWlDmGbf_GRb8g6zAsyN3nVSseF9Hb_mlO7vM3HN60kgkqnzOoqh2hfRc4i2CXaxMH82CX0liSneL3OTVY3wA";
+//    private final static String TOKEN = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaXNzIjoiaHR0cHM6Ly94aWFvbGlhbi5pbyIsImlhdCI6MTUwNTczOTM1NCwiZXhwIjoxNTA2NDk1MzU0fQ.0MWlDmGbf_GRb8g6zAsyN3nVSseF9Hb_mlO7vM3HN60kgkqnzOoqh2hfRc4i2CXaxMH82CX0liSneL3OTVY3wA";
+
+    ISharedPreferencesHelp sharedPreferencesHelp;
+
+    public LogInterceptor(ISharedPreferencesHelp sharedPreferencesHelp) {
+        this.sharedPreferencesHelp = sharedPreferencesHelp;
+    }
 
     @Override
     public Response intercept(Chain chain) throws IOException {
@@ -32,7 +38,7 @@ public class LogInterceptor implements Interceptor {
         Request newRequest;
         newRequest = request.newBuilder()
                  // 添加token
-                .addHeader("token", TOKEN)
+                .addHeader("token", sharedPreferencesHelp.getToken())
                 .build();
         String url = newRequest.url().toString();
         String header = newRequest.headers().toString();

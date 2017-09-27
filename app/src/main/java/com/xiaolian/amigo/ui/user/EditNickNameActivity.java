@@ -1,6 +1,5 @@
 package com.xiaolian.amigo.ui.user;
 
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -40,11 +39,8 @@ public class EditNickNameActivity extends UserBaseActivity implements IEditNickN
     @Override
     protected void initView() {
         setUnBinder(ButterKnife.bind(this));
-
         getActivityComponent().inject(this);
-
         presenter.onAttach(EditNickNameActivity.this);
-
     }
 
     @Override

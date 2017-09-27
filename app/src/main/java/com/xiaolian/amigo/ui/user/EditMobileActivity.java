@@ -134,4 +134,10 @@ public class EditMobileActivity extends UserBaseActivity implements IEditMobileV
         setResult(RESULT_OK);
         finish();
     }
+
+    @Override
+    public void onBackPressed() {
+        setResult(RESULT_OK);
+        super.onBackPressed();
+    }
 }

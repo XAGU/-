@@ -93,5 +93,8 @@
     <string name="register_success">注册成功</string>
     <string name="add_dormitory">添加宿舍</string>
     <string name="change_avatar">更换头像</string>
+    <string name="please_login">请重新登录</string>
+    <string name="please_enter_password">请输入密码</string>
+    <string name="check_password">校验密码</string>
 
 </resources>

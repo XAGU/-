@@ -43,6 +43,7 @@ import com.aitangba.swipeback.SwipeBackActivity;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
+import com.xiaolian.amigo.ui.login.LoginActivity;
 import com.xiaolian.amigo.ui.widget.dialog.ActionSheetDialog;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 import com.xiaolian.amigo.util.CommonUtil;
@@ -417,5 +418,10 @@ public abstract class BaseActivity extends SwipeBackActivity
                         Log.e(TAG, "动态授权蓝牙操作失败！");
                     }
                 });
+    }
+
+    @Override
+    public void redirectToLogin() {
+        startActivity(this, LoginActivity.class);
     }
 }

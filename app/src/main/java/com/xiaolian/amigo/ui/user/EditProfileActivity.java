@@ -1,6 +1,5 @@
 package com.xiaolian.amigo.ui.user;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,7 +12,6 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.tmp.component.CircleImageView;
 import com.xiaolian.amigo.ui.user.intf.IEditProfilePresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditProfileView;
-import com.xiaolian.amigo.ui.widget.dialog.ChangeMobileDialog;
 
 import javax.inject.Inject;
 
@@ -28,7 +26,7 @@ import butterknife.ButterKnife;
 
 public class EditProfileActivity extends UserBaseActivity implements IEditProfileView {
 
-    private static final int REQUEST_CODE_EDIT_MOBILE = 0x0101;
+    private static final int REQUEST_CODE_CHECK_PASSWORD = 0x0101;
     private static final int REQUEST_CODE_EDIT_NICKNAME = 0x0102;
     private static final int REQUEST_CODE_EDIT_SCHOOL = 0x0103;
     private static final int REQUEST_CODE_EDIT_DORMITORY = 0x0104;
@@ -140,9 +138,11 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
                 startActivityForResult(intent, REQUEST_CODE_EDIT_SEX);
                 break;
             case R.id.rel_edit_mobile:
-                ChangeMobileDialog dialog = new ChangeMobileDialog(this);
-                dialog.setOnOkClickListener((dialog1, password) -> presenter.checkPassword(password));
-                dialog.show();
+                intent = new Intent(getApplicationContext(), CheckPasswordActivity.class);
+                startActivityForResult(intent, REQUEST_CODE_CHECK_PASSWORD);
+//                ChangeMobileDialog dialog = new ChangeMobileDialog(this);
+//                dialog.setOnOkClickListener((dialog1, password) -> presenter.checkPassword(password));
+//                dialog.show();
                 break;
             case R.id.rel_edit_password:
                 intent = new Intent(getApplicationContext(), EditPasswordActivity.class);
@@ -215,9 +215,9 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
         intent = new Intent(getApplicationContext(), EditMobileActivity.class);
         intent.putExtra("nickName", "");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            startActivityForResult(intent, REQUEST_CODE_EDIT_MOBILE, new Bundle());
+            startActivityForResult(intent, REQUEST_CODE_CHECK_PASSWORD, new Bundle());
         } else {
-            startActivityForResult(intent, REQUEST_CODE_EDIT_MOBILE);
+            startActivityForResult(intent, REQUEST_CODE_CHECK_PASSWORD);
         }
     }
 

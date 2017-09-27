@@ -19,11 +19,13 @@ package com.xiaolian.amigo.ui.base;
 import android.util.Log;
 
 import com.polidea.rxandroidble.exceptions.BleDisconnectedException;
+import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.Error;
 import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 
+import retrofit2.HttpException;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
@@ -55,11 +57,77 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
     @Override
     public void onRemoteInvocationError(Throwable e) {
         // TODO 和mMvpView关联
+        if (e instanceof HttpException) {
+            switch (((HttpException) e).code()) {
+                case 401:
+                    getMvpView().onError(R.string.please_login);
+                    getMvpView().redirectToLogin();
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     @Override
     public void onBizCodeError(Error error) {
         // TODO 和mMvpView关联
+        switch (error.getCode()) {
+            // PERMISSION_DENIED(10001, "请重新登录"),
+            case 10001:
+                getMvpView().onError(R.string.please_login);
+                getMvpView().redirectToLogin();
+                break;
+            // ACCOUNT_EXIST(10002, "该手机号已注册，请直接登录"),
+            case 10002:
+                getMvpView().onError("该手机号已注册，请直接登录");
+                break;
+            // SERVER_SYSTEM_ERROR(10003, "服务器错误"),
+            case 10003:
+                getMvpView().onError("服务器错误");
+                break;
+            // INVALID_SMS_CODE(10004, "短信验证码输入错误"),
+            case 10004:
+                getMvpView().onError("短信验证码输入错误");
+                break;
+            // ACCOUNT_NOT_EXIST(10005,"账号不存在"),
+            case 10005:
+                getMvpView().onError("账号不存在");
+                break;
+            // UNMATCHED_PASSWORD(10006,"密码错误" ),
+            case 10006:
+                getMvpView().onError("密码错误");
+                break;
+            // ACCOUNT_LOCKED(10007,"账号不可用" ),
+            case 10007:
+                getMvpView().onError("账号不可用");
+                break;
+            // BIZ_ERROR(10008, "业务错误"),
+            case 10008:
+                getMvpView().onError("业务错误");
+                break;
+            // CLIENT_PARAM_ERROR(10009, "缺少参数"),
+            case 10009:
+                getMvpView().onError("缺少参数");
+                break;
+            // INVALID_MOBILE(10010, "手机号不合法:"),
+            case 10010:
+                getMvpView().onError("手机号不合法");
+                break;
+            // DATA_NOT_FOUND(10011, "数据不存在:"),
+            case 10011:
+                getMvpView().onError("数据不存在");
+                break;
+            // SQL_ERROR(10012, "数据库操作错误"),
+            case 10012:
+                getMvpView().onError("数据库操作错误");
+                break;
+            // DUPLICATE_KEY_ERROR(10013, "主键冲突");
+            case 10013:
+                break;
+            default:
+                break;
+        }
     }
 
     @Override

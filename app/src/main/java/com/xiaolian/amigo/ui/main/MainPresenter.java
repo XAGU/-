@@ -53,6 +53,9 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V> impleme
 
     @Override
     public void getNoticeAmount() {
+        if (TextUtils.isEmpty(manager.getToken())) {
+            return;
+        }
         addObserver(manager.getExtraInfo(), new NetworkObserver<ApiResult<PersonalExtraInfoDTO>>() {
 
             @Override
@@ -94,6 +97,9 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V> impleme
 
     @Override
     public void readUrgentNotify(Long id) {
+        if (TextUtils.isEmpty(manager.getToken())) {
+            return;
+        }
         ReadNotifyReqDTO reqDTO = new ReadNotifyReqDTO();
         reqDTO.setId(id);
         addObserver(manager.readUrgentNotify(reqDTO), new NetworkObserver<ApiResult<BooleanRespDTO>>() {

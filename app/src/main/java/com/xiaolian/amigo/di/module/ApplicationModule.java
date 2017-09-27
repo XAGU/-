@@ -58,9 +58,9 @@ public class ApplicationModule {
 
     @Singleton
     @Provides
-    Retrofit provideRetrofit() {
+    Retrofit provideRetrofit(LogInterceptor logInterceptor) {
         OkHttpClient client = new OkHttpClient().newBuilder()
-                .addInterceptor(new LogInterceptor())
+                .addInterceptor(logInterceptor)
                 .build();
         return new Retrofit.Builder()
                 .baseUrl(Constant.SERVER)
@@ -68,6 +68,12 @@ public class ApplicationModule {
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .client(client)
                 .build();
+    }
+
+    @Singleton
+    @Provides
+    LogInterceptor provideLogInterceptor(ISharedPreferencesHelp sharedPreferencesHelp) {
+        return new LogInterceptor(sharedPreferencesHelp);
     }
 
     @Singleton

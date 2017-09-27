@@ -45,4 +45,5 @@ public interface IBaseView {
     // 打开蓝牙，获取蓝牙设备权限
     void getBLEPermission();
 
+    void redirectToLogin();
 }

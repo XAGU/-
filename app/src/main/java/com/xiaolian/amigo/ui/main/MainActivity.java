@@ -180,7 +180,11 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public void gotoDevice(Class clz) {
-        startActivity(clz);
+        if (TextUtils.isEmpty(presenter.getToken())) {
+            startActivity(new Intent(this, LoginActivity.class));
+        } else {
+            startActivity(clz);
+        }
     }
 
     @Override
@@ -212,8 +216,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         }
     }
 
-    public void startActivity(Class<?> clasz) {
-        startActivity(this, clasz);
+    public void startActivity(Class<?> clz) {
+        startActivity(this, clz);
     }
 
     public void checkTimeValid(Device device, Class clz) {
