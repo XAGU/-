@@ -13,4 +13,6 @@ import java.util.List;
 
 public interface INoticeView extends IBaseView {
     void addMore(List<NoticeAdaptor.NoticeWapper> wapper);
+
+    void readNotify(Long id);
 }

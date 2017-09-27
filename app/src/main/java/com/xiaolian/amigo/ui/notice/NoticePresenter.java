@@ -3,6 +3,8 @@ package com.xiaolian.amigo.ui.notice;
 import com.xiaolian.amigo.data.manager.intf.INoticeDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.QueryNotifyListReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.request.ReadNotifyReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryNotifyListRespDTO;
 import com.xiaolian.amigo.data.network.model.notify.Notify;
 import com.xiaolian.amigo.ui.base.BasePresenter;
@@ -49,6 +51,25 @@ public class NoticePresenter<V extends INoticeView> extends BasePresenter<V>
                             wappers.add(new NoticeAdaptor.NoticeWapper(notify));
                         }
                         getMvpView().addMore(wappers);
+                    }
+                } else {
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+        });
+    }
+
+    @Override
+    public void readUrgentNotify(Long id) {
+        ReadNotifyReqDTO reqDTO = new ReadNotifyReqDTO();
+        reqDTO.setId(id);
+        addObserver(manager.readUrgentNotify(reqDTO), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
+
+            @Override
+            public void onReady(ApiResult<BooleanRespDTO> result) {
+                if (null == result.getError()) {
+                    if (result.getData().isResult()) {
+                        getMvpView().readNotify(id);
                     }
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());

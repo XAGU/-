@@ -1,17 +1,24 @@
 package com.xiaolian.amigo.ui.notice;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.enumeration.Notice;
 import com.xiaolian.amigo.ui.notice.adaptor.NoticeAdaptor;
 import com.xiaolian.amigo.ui.notice.intf.INoticePresenter;
 import com.xiaolian.amigo.ui.notice.intf.INoticeView;
+import com.xiaolian.amigo.ui.widget.dialog.NoticeAlertDialog;
+import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
+import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -47,6 +54,21 @@ public class NoticeActivity extends NoticeBaseActivity implements INoticeView {
         presenter.onAttach(NoticeActivity.this);
 
         adaptor = new NoticeAdaptor(this, R.layout.item_notice, notices);
+        adaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                // 1 表示紧急通知
+                if (notices.get(position).getType() == 1 && notices.get(position).getReadStatus() == 1) {
+                    showUrgentNotify(notices.get(position).getContent(),
+                            notices.get(position).getId());
+                }
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adaptor);
 
@@ -58,9 +80,33 @@ public class NoticeActivity extends NoticeBaseActivity implements INoticeView {
 
     }
 
+    public void showUrgentNotify(String content, Long id) {
+        NoticeAlertDialog dialog = new NoticeAlertDialog(this);
+        dialog.setContent(content);
+        dialog.setOnOkClickListener(new NoticeAlertDialog.OnOkClickListener() {
+            @Override
+            public void onOkClick(Dialog dialog, boolean isNotReminder) {
+                if (isNotReminder) {
+                    presenter.readUrgentNotify(id);
+                }
+            }
+        });
+        dialog.show();
+    }
+
     @Override
     public void addMore(List<NoticeAdaptor.NoticeWapper> wapper) {
         notices.addAll(wapper);
         adaptor.notifyDataSetChanged();
+    }
+
+    @Override
+    public void readNotify(Long id) {
+        for (NoticeAdaptor.NoticeWapper notice : notices) {
+            if (CommonUtil.equals(notice.getId(), id)) {
+                // 2 表示已读
+                notice.setReadStatus(2);
+            }
+        }
     }
 }

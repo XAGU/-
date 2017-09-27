@@ -36,9 +36,13 @@ public class LogInterceptor implements Interceptor {
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
         Request newRequest;
+        String token = sharedPreferencesHelp.getToken();
+        if (token == null) {
+            token = "";
+        }
         newRequest = request.newBuilder()
                  // 添加token
-                .addHeader("token", sharedPreferencesHelp.getToken())
+                .addHeader("token", token)
                 .build();
         String url = newRequest.url().toString();
         String header = newRequest.headers().toString();

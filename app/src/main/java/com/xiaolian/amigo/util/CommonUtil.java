@@ -97,4 +97,9 @@ public final class CommonUtil {
         res = simpleDateFormat.format(date);
         return res;
     }
+
+    public static boolean equals(Object a, Object b) {
+        return (a == b) || (a != null && a.equals(b));
+    }
+
 }

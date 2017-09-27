@@ -10,4 +10,6 @@ import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 
 public interface INoticePresenter<V extends INoticeView> extends IBasePresenter<V> {
     void requestNotices(Integer page);
+
+    void readUrgentNotify(Long id);
 }

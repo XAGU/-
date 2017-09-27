@@ -45,12 +45,14 @@ public class NoticeAdaptor extends CommonAdapter<NoticeAdaptor.NoticeWapper> {
         private Long id;
         private Integer type;
         private Long createTime;
+        private Integer readStatus;
 
         public NoticeWapper(Notify notify) {
             this.content = notify.getContent();
             this.id = notify.getId();
             this.type = notify.getType();
             this.createTime = notify.getCreateTime();
+            this.readStatus = notify.getReadStatus();
         }
     }
 }

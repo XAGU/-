@@ -4,6 +4,8 @@ import com.xiaolian.amigo.data.manager.intf.INoticeDataManager;
 import com.xiaolian.amigo.data.network.INoticeApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.QueryNotifyListReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.request.ReadNotifyReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryNotifyListRespDTO;
 
 import javax.inject.Inject;
@@ -31,5 +33,10 @@ public class NoticeDataManager implements INoticeDataManager {
     @Override
     public Observable<ApiResult<QueryNotifyListRespDTO>> queryNotifyList(@Body QueryNotifyListReqDTO dto) {
         return noticeApi.queryNotifyList(dto);
+    }
+
+    @Override
+    public Observable<ApiResult<BooleanRespDTO>> readUrgentNotify(@Body ReadNotifyReqDTO reqDTO) {
+        return noticeApi.readUrgentNotify(reqDTO);
     }
 }
