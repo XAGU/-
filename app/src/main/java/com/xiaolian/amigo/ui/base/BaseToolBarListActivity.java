@@ -86,6 +86,11 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
             ll_footer.addView(layout);
             ll_footer.setVisibility(View.VISIBLE);
         }
+        setFooter();
+    }
+
+    protected void setFooter() {
+        // do nth
     }
 
     protected LinearLayout getFooter() {

@@ -14,6 +14,7 @@ import com.xiaolian.amigo.data.network.model.lostandfound.LostAndFound;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundDetailPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundDetailView;
 import com.xiaolian.amigo.ui.widget.photoview.AlbumItemActivity;
+import com.xiaolian.amigo.util.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -141,8 +142,10 @@ public class LostAndFoundDetailActivity extends LostAndFoundBaseActivity impleme
         tv_itemName.setText(lostAndFound.getItemName());
         tv_location.setText(lostAndFound.getLocation());
         tv_mobile.setText(lostAndFound.getMobile());
-        tv_lostTime.setText(lostAndFound.getLostTime());
-        tv_createTime.setText(lostAndFound.getCreateTime());
+        tv_lostTime.setText(TimeUtils.convertTimestampToFormat(lostAndFound.getLostTime()) +
+                "/" + TimeUtils.millis2String(lostAndFound.getLostTime(), TimeUtils.MY_TIME_FORMAT));
+        tv_createTime.setText(TimeUtils.convertTimestampToFormat(lostAndFound.getCreateTime()) +
+                "/" + TimeUtils.millis2String(lostAndFound.getCreateTime(), TimeUtils.MY_TIME_FORMAT));
         List<String> images = lostAndFound.getImages();
         if(null != images){
             this.images.clear();

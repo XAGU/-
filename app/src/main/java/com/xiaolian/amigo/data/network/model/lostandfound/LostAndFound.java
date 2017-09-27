@@ -11,12 +11,12 @@ import lombok.Data;
 @Data
 public class LostAndFound {
 
-    private String createTime;
+    private Long createTime;
     private String description;
     private Long id;
     private String itemName;
     private String location;
-    private String lostTime;
+    private Long lostTime;
     private String mobile;
     private Long schoolId;
     private String schoolName;

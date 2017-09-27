@@ -6,12 +6,15 @@ import android.support.v7.app.AppCompatActivity;
 import com.xiaolian.amigo.data.manager.UserDataManager;
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.di.UserActivityContext;
+import com.xiaolian.amigo.ui.user.EditAvatarPresenter;
 import com.xiaolian.amigo.ui.user.EditDormitoryPresenter;
 import com.xiaolian.amigo.ui.user.EditMobilePresenter;
 import com.xiaolian.amigo.ui.user.EditNickNamePresenter;
 import com.xiaolian.amigo.ui.user.EditPasswordPresenter;
 import com.xiaolian.amigo.ui.user.EditProfilePresenter;
 import com.xiaolian.amigo.ui.user.ListChoosePresenter;
+import com.xiaolian.amigo.ui.user.intf.IEditAvatarPresenter;
+import com.xiaolian.amigo.ui.user.intf.IEditAvatarVIew;
 import com.xiaolian.amigo.ui.user.intf.IEditDormitoryPresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditDormitoryView;
 import com.xiaolian.amigo.ui.user.intf.IEditMobilePresenter;
@@ -69,6 +72,13 @@ public class UserActivityModule {
     @UserActivityContext
     IEditNickNamePresenter<IEditNickNameView> provideEditNicknamePresenter(
             EditNickNamePresenter<IEditNickNameView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    @UserActivityContext
+    IEditAvatarPresenter<IEditAvatarVIew> provideEditAvatarPresenter(
+            EditAvatarPresenter<IEditAvatarVIew> presenter) {
         return presenter;
     }
 

@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.lostandfound;
 
 import android.content.Intent;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -77,6 +78,8 @@ public class MyPublishActivity extends LostAndFoundBaseListActivity implements I
                 return false;
             }
         });
+        recyclerView.setAdapter(adaptor);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     @Override
@@ -86,10 +89,11 @@ public class MyPublishActivity extends LostAndFoundBaseListActivity implements I
 
     @Override
     protected void initView() {
+        setMainBackground(R.color.white);
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
         presenter.onAttach(MyPublishActivity.this);
-
+        onRefresh();
     }
 
     @Override

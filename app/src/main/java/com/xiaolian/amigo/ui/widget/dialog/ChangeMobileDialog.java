@@ -2,6 +2,7 @@ package com.xiaolian.amigo.ui.widget.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -57,8 +58,8 @@ public class ChangeMobileDialog extends Dialog {
         tv_cancel = (TextView) findViewById(R.id.tv_cancel);
         tv_cancel.setOnClickListener(v -> dismiss());
         et_password = (EditText) findViewById(R.id.et_password);
+        et_password.setTypeface(null, Typeface.NORMAL);
         ViewUtil.setEditHintAndSize(context.getString(R.string.password_hint), 14, et_password);
-
     }
 
     public void setOnOkClickListener(OnOkClickListener listener) {

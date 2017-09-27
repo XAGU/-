@@ -519,9 +519,6 @@ public class IRecyclerView extends RecyclerView {
     private class DataObserver extends RecyclerView.AdapterDataObserver {
         @Override
         public void onChanged() {
-            if (mAdapter != null) {
-                mAdapter.notifyDataSetChanged();
-            }
             if (mAdapter != null && mEmptyView != null) {
                 int emptyCount = 1 + mAdapter.getHeadersCount();
                 if (LoadMoreEnabled) {
@@ -531,10 +528,12 @@ public class IRecyclerView extends RecyclerView {
                     mEmptyView.setVisibility(View.VISIBLE);
                     IRecyclerView.this.setVisibility(View.GONE);
                 } else {
-
-                    mEmptyView.setVisibility(View.GONE);
                     IRecyclerView.this.setVisibility(View.VISIBLE);
+                    mEmptyView.setVisibility(View.GONE);
                 }
+            }
+            if (mAdapter != null) {
+                mAdapter.notifyDataSetChanged();
             }
         }
 

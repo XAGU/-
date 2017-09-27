@@ -51,6 +51,11 @@ public class RepairAdaptor extends RecyclerView.Adapter<RepairAdaptor.ViewHolder
     }
 
     @Override
+    public void onBindViewHolder(ViewHolder holder, int position, List<Object> payloads) {
+        super.onBindViewHolder(holder, position, payloads);
+    }
+
+    @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         RepairWrapper wrapper = repairs.get(position);
         holder.tv_device.setText(wrapper.device);

@@ -12,6 +12,7 @@ import com.xiaolian.amigo.data.network.model.dto.request.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.VerificationCodeGetReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.EntireUserDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.QueryAvatarDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryBriefSchoolListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QuerySchoolBizListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryUserResidenceListRespDTO;
@@ -19,6 +20,8 @@ import com.xiaolian.amigo.data.network.model.dto.response.ResidenceListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.SimpleRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.UserResidenceInListDTO;
 
+
+import java.util.List;
 
 import rx.Observable;
 import retrofit2.http.Body;
@@ -29,6 +32,9 @@ import retrofit2.http.POST;
  * @author zcd
  */
 public interface IUserApi {
+    // 用户默认头像列表
+    @POST("/user/avatar/list")
+    Observable<ApiResult<QueryAvatarDTO>> getAvatarList();
     // 获取用户个人信息
     @POST("/user/one")
     Observable<ApiResult<EntireUserDTO>> getUserInfo();

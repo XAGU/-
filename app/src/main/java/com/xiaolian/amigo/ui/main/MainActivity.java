@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.main;
 
 
+import android.app.Dialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -91,6 +92,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @Override
     protected void onResume() {
         super.onResume();
+        presenter.getNoticeAmount();
         if (!presenter.isLogin()) {
             tv_nickName.setText("登录／注册");
             tv_schoolName.setText("登录以后才能使用哦");
@@ -156,7 +158,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     public void showNoticeAmount(Integer amount) {
         if (amount != null && amount != 0) {
             tv_notice_count.setVisibility(View.VISIBLE);
-            tv_notice_count.setText(amount);
+            tv_notice_count.setText(String.valueOf(amount));
         } else {
             tv_notice_count.setVisibility(View.GONE);
         }
@@ -183,6 +185,14 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     public void showUrgentNotify(String content, Long id) {
         NoticeAlertDialog dialog = new NoticeAlertDialog(this);
         dialog.setContent(content);
+        dialog.setOnOkClickListener(new NoticeAlertDialog.OnOkClickListener() {
+            @Override
+            public void onOkClick(Dialog dialog, boolean isNotReminder) {
+                if (isNotReminder) {
+                    presenter.readUrgentNotify(id);
+                }
+            }
+        });
         dialog.show();
     }
 

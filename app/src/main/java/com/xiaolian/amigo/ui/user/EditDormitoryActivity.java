@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
@@ -39,10 +40,10 @@ public class EditDormitoryActivity extends UserBaseListActivity implements IEdit
 
     EditDormitoryAdaptor adaptor;
 
-    @BindView(R.id.tv_add_dormitory)
+//    @BindView(R.id.tv_add_dormitory)
     TextView tv_add_dormitory;
 
-    @OnClick(R.id.tv_add_dormitory)
+//    @OnClick(R.id.tv_add_dormitory)
     void onAddDormitoryClick() {
         Intent intent = new Intent(this, ListChooseActivity.class);
         intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
@@ -87,6 +88,8 @@ public class EditDormitoryActivity extends UserBaseListActivity implements IEdit
             presenter.updateResidenceId(userResidenceWrapper.getResidenceId());
         });
         recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 14)));
+        recyclerView.setAdapter(adaptor);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     @Override
@@ -95,9 +98,22 @@ public class EditDormitoryActivity extends UserBaseListActivity implements IEdit
     }
 
     @Override
+    protected int setSubTitle() {
+        tv_add_dormitory = getSubTitle();
+        tv_add_dormitory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onAddDormitoryClick();
+            }
+        });
+        return R.string.add_dormitory;
+    }
+
+    @Override
     protected void initView() {
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
         presenter.onAttach(EditDormitoryActivity.this);
+        presenter.queryDormitoryList(Constant.PAGE_START_NUM, Constant.PAGE_SIZE);
     }
 }

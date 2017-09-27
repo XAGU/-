@@ -71,7 +71,7 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
 //     * 发布招领
 //     */
 //    @BindView(R.id.tv_publish_found)
-//    TextView tv_publish_found;
+    TextView tv_publish_found;
     private SearchDialog searchDialog;
     private RecyclerView searchRecyclerView;
 
@@ -79,35 +79,35 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
 //     * 打开发布招领页面
 //     */
 //    @OnClick(R.id.tv_publish_found)
-//    void gotoPublishFound() {
-//        startActivityForResult(new Intent(this, PublishFoundActivity.class), REQUEST_CODE_PUBLISH);
-//    }
+    void gotoPublishFound() {
+        startActivityForResult(new Intent(this, PublishFoundActivity.class), REQUEST_CODE_PUBLISH);
+    }
 
 //    /**
 //     * 发布失物
 //     */
 //    @BindView(R.id.tv_publish_lost)
-//    TextView tv_publish_lost;
+    TextView tv_publish_lost;
 //
 //    /**
 //     * 打开发布招领页面
 //     */
 //    @OnClick(R.id.tv_publish_lost)
-//    void gotoPublishLost() {
-//        startActivityForResult(new Intent(this, PublishLostActivity.class), REQUEST_CODE_PUBLISH);
-//    }
+    void gotoPublishLost() {
+        startActivityForResult(new Intent(this, PublishLostActivity.class), REQUEST_CODE_PUBLISH);
+    }
 //    /**
 //     * 我的发布
 //     */
 //    @BindView(R.id.tv_my_publish)
-//    TextView tv_my_publish;
+    TextView tv_my_publish;
 //    /**
 //     * 打开发布招领页面
 //     */
 //    @OnClick(R.id.tv_my_publish)
-//    void gotoMyPublish() {
-//        startActivity(new Intent(this, MyPublishActivity.class));
-//    }
+    void gotoMyPublish() {
+        startActivity(new Intent(this, MyPublishActivity.class));
+    }
 
 
     @Override
@@ -202,7 +202,7 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 Intent intent = new Intent(LostAndFoundActivity.this, LostAndFoundDetailActivity.class);
-                intent.putExtra(LostAndFoundDetailActivity.INTENT_KEY_LOST_AND_FOUND_DETAIL_ID, lostAndFounds.get(position).getId());
+                intent.putExtra(LostAndFoundDetailActivity.INTENT_KEY_LOST_AND_FOUND_DETAIL_ID, lostAndFounds.get(position-1).getId());
                 // listStatus false表示失物 true表示招领
                 if (listStatus) {
                     intent.putExtra(LostAndFoundDetailActivity.INTENT_KEY_LOST_AND_FOUND_DETAIL_TYPE,
@@ -222,6 +222,36 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
         });
         recyclerView.setAdapter(adaptor);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    @Override
+    protected int setFooterLayout() {
+        return R.layout.footer_lost_and_found;
+    }
+
+    @Override
+    protected void setFooter() {
+        tv_my_publish = (TextView) getFooter().findViewById(R.id.tv_my_publish);
+        tv_my_publish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gotoMyPublish();
+            }
+        });
+        tv_publish_found = (TextView) getFooter().findViewById(R.id.tv_publish_found);
+        tv_publish_found.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gotoPublishFound();
+            }
+        });
+        tv_publish_lost = (TextView) getFooter().findViewById(R.id.tv_publish_lost);
+        tv_publish_lost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gotoPublishLost();
+            }
+        });
     }
 
     @Override

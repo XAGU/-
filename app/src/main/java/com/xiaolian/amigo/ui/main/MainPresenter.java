@@ -5,6 +5,8 @@ import android.text.TextUtils;
 import com.xiaolian.amigo.data.manager.intf.IMainDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.QueryTimeValidReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.request.ReadNotifyReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryTimeValidRespDTO;
 import com.xiaolian.amigo.data.network.model.user.User;
@@ -83,6 +85,23 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V> impleme
                         getMvpView().showTimeValidDialog(result.getData().getTitle(),
                                 result.getData().getRemark(), clz);
                     }
+                } else {
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+        });
+    }
+
+    @Override
+    public void readUrgentNotify(Long id) {
+        ReadNotifyReqDTO reqDTO = new ReadNotifyReqDTO();
+        reqDTO.setId(id);
+        addObserver(manager.readUrgentNotify(reqDTO), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
+
+            @Override
+            public void onReady(ApiResult<BooleanRespDTO> result) {
+                if (null == result.getError()) {
+                    // do nth
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }

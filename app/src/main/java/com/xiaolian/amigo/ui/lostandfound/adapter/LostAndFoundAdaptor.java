@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.lostandfound.LostAndFound;
+import com.xiaolian.amigo.util.TimeUtils;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -32,7 +33,8 @@ public class LostAndFoundAdaptor extends CommonAdapter<LostAndFoundAdaptor.LostA
         holder.setText(R.id.tv_content, lostAndFoundWapper.getContent());
         holder.setText(R.id.tv_good, lostAndFoundWapper.getGood());
         holder.setText(R.id.tv_location, lostAndFoundWapper.getLocation());
-        holder.setText(R.id.tv_time, lostAndFoundWapper.getTime());
+        holder.setText(R.id.tv_time, TimeUtils.convertTimestampToFormat(lostAndFoundWapper.getTime())
+                + "/" + TimeUtils.millis2String(lostAndFoundWapper.getTime(), TimeUtils.MY_TIME_FORMAT));
     }
 
     public void replaceData(List<LostAndFoundWapper> wapper) {
@@ -67,7 +69,7 @@ public class LostAndFoundAdaptor extends CommonAdapter<LostAndFoundAdaptor.LostA
         // 地点
         String location;
         // 时间
-        String time;
+        Long time;
         // 是否包含图片
         boolean hasImage;
         Long id;

@@ -69,6 +69,8 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
     @BindView(R.id.iv_avatar)
     CircleImageView iv_avatar;
 
+    private String avatarUrl;
+
     @Override
     protected void setUp() {
 
@@ -103,15 +105,18 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
         Intent intent;
         switch (v.getId()) {
             case R.id.rel_edit_avatar:
-                getImage(imageUri -> {
-                    presenter.uploadImage(imageUri);
-//                    Log.d("imageUri", imageUri.getPath());
-//                    iv_avatar.setImageDrawable(null);
-//                    Glide.with(EditProfileActivity.this)
-//                        .load(imageUri)
-//                        .asBitmap().skipMemoryCache(true)
-//                            .diskCacheStrategy(DiskCacheStrategy.NONE).into(iv_avatar);
-                });
+//                getImage(imageUri -> {
+//                    presenter.uploadImage(imageUri);
+////                    Log.d("imageUri", imageUri.getPath());
+////                    iv_avatar.setImageDrawable(null);
+////                    Glide.with(EditProfileActivity.this)
+////                        .load(imageUri)
+////                        .asBitmap().skipMemoryCache(true)
+////                            .diskCacheStrategy(DiskCacheStrategy.NONE).into(iv_avatar);
+//                });
+                intent = new Intent(this, EditAvatarActivity.class);
+                intent.putExtra(EditAvatarActivity.INTENT_KEY_CURRENT_AVATAR, avatarUrl);
+                startActivity(intent);
                 break;
             case R.id.rel_edit_nickname:
                 intent = new Intent(getApplicationContext(), com.xiaolian.amigo.ui.user.EditNickNameActivity.class);
@@ -171,7 +176,10 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
     @Override
     public void setAvatar(String pictureUrl) {
         if (!TextUtils.isEmpty(pictureUrl)) {
+            avatarUrl = pictureUrl;
             Glide.with(this).load(pictureUrl).into(iv_avatar);
+        } else {
+            iv_avatar.setImageResource(R.drawable.ic_picture_error);
         }
     }
 

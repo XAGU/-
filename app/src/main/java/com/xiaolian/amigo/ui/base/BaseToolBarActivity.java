@@ -41,6 +41,10 @@ public abstract class BaseToolBarActivity extends BaseActivity {
         initView();
     }
 
+    protected View getMainLayout() {
+        return ll_main_content;
+    }
+
     protected abstract void initInject();
 
     protected abstract void initView();

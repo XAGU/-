@@ -242,6 +242,10 @@
         <activity android:name=".ui.notice.NoticeActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
 
+        <!--更换头像-->
+        <activity android:name=".ui.user.EditAvatarActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
         <!--主页-->
         <activity
             android:name=".ui.main.MainActivity"

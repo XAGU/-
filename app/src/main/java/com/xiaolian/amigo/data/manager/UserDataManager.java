@@ -15,6 +15,7 @@ import com.xiaolian.amigo.data.network.model.dto.request.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.VerificationCodeGetReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.EntireUserDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.QueryAvatarDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryBriefSchoolListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QuerySchoolBizListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryUserResidenceListRespDTO;
@@ -23,6 +24,8 @@ import com.xiaolian.amigo.data.network.model.dto.response.SimpleRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.UserResidenceInListDTO;
 import com.xiaolian.amigo.data.network.model.user.User;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -51,6 +54,11 @@ public class UserDataManager implements IUserDataManager {
         userApi = retrofit.create(IUserApi.class);
         fileApi = retrofit.create(IFileApi.class);
         this.sharedPreferencesHelp = sharedPreferencesHelp;
+    }
+
+    @Override
+    public Observable<ApiResult<QueryAvatarDTO>> getAvatarList() {
+        return userApi.getAvatarList();
     }
 
     @Override

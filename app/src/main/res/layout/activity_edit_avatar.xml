@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/ll_header"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.xiaolian.amigo.tmp.component.CircleImageView
+            android:layout_marginTop="21dp"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/iv_current_avatar"
+            android:scaleType="centerInside"
+            android:layout_width="67dp"
+            android:layout_height="67dp" />
+        <TextView
+            android:layout_marginTop="9dp"
+            android:layout_marginBottom="24dp"
+            android:textSize="11sp"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/colorDarkB"
+            android:text="点击头像可更换相册照片"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="14dp"
+        android:id="@+id/ll_avatar_list"
+        android:layout_below="@id/ll_header"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:paddingBottom="48dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp"
+            android:layout_marginTop="21dp"
+            android:layout_marginBottom="21dp"
+            android:textSize="14sp"
+            android:text="默认头像"
+            android:textColor="@color/colorDark2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+
+    <!--android:layout_alignParentBottom="true"-->
+    <Button
+        android:layout_below="@id/ll_avatar_list"
+        android:layout_marginBottom="21dp"
+        android:id="@+id/bt_submit"
+        style="@style/Button"
+        android:onClick="onclick"
+        android:layout_marginTop="34dp"
+        android:enabled="false"
+        android:text="确认更换" />
+
+</RelativeLayout>

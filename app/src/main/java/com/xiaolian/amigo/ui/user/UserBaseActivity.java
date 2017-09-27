@@ -27,6 +27,11 @@ public abstract class UserBaseActivity extends BaseToolBarActivity {
                 .build();
     }
 
+    @Override
+    protected void setUp() {
+
+    }
+
     public UserActivityComponent getActivityComponent() {
         return mActivityComponent;
     }

@@ -2,6 +2,7 @@ package com.xiaolian.amigo.di.componet;
 
 import com.xiaolian.amigo.di.UserActivityContext;
 import com.xiaolian.amigo.di.module.UserActivityModule;
+import com.xiaolian.amigo.ui.user.EditAvatarActivity;
 import com.xiaolian.amigo.ui.user.EditDormitoryActivity;
 import com.xiaolian.amigo.ui.user.EditMobileActivity;
 import com.xiaolian.amigo.ui.user.EditNickNameActivity;
@@ -30,4 +31,6 @@ public interface UserActivityComponent {
     void inject(ListChooseActivity activity);
 
     void inject(EditDormitoryActivity activity);
+
+    void inject(EditAvatarActivity activity);
 }

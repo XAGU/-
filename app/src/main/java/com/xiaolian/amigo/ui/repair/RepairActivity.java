@@ -30,8 +30,7 @@ public class RepairActivity extends RepairBaseListActivity implements IRepairVie
 
     List<RepairAdaptor.RepairWrapper> repairs = new ArrayList<>();
 
-    RecyclerView.Adapter adapter;
-    RecyclerView.LayoutManager manager;
+    RepairAdaptor adapter;
 
     @Override
     protected void setUp() {
@@ -88,6 +87,6 @@ public class RepairActivity extends RepairBaseListActivity implements IRepairVie
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
         presenter.onAttach(this);
-        presenter.requestRepairs(page);
+        onRefresh();
     }
 }
