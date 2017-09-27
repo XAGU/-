@@ -31,30 +31,48 @@ public class FavoriteActivity extends FavoriteBaseActivity implements IFavoriteV
 
     @Inject
     IFavoritePresenter<IFavoriteView> presenter;
-    @BindView(R.id.rv_favorites)
-    RecyclerView rv_favorites;
 
     List<FavoriteAdaptor.FavoriteWrapper> favorites = new ArrayList<>();
 
     // 收藏设备recycleView适配器
     FavoriteAdaptor adaptor;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_favorite);
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_favorite);
+//    }
 
+    @Override
+    protected void onRefresh() {
+        page = Constant.PAGE_START_NUM;
+        favorites.clear();
+        presenter.requestFavorites(Constant.PAGE_START_NUM);
+    }
+
+    @Override
+    protected void onLoadMore() {
+        presenter.requestFavorites(page);
+    }
+
+    @Override
+    protected void setRecyclerView(RecyclerView recyclerView) {
+        adaptor = new FavoriteAdaptor(favorites, presenter);
+        recyclerView.addItemDecoration(new RecycleViewDivider(this, RecycleViewDivider.VERTICAL_LIST));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adaptor);
+    }
+
+    @Override
+    protected int setTitle() {
+        return R.string.my_favorite;
+    }
+
+    @Override
+    protected void initView() {
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
-
         presenter.onAttach(this);
-
-        adaptor = new FavoriteAdaptor(favorites, presenter);
-        RecyclerView.LayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        rv_favorites.addItemDecoration(new RecycleViewDivider(this, RecycleViewDivider.VERTICAL_LIST));
-        rv_favorites.setLayoutManager(manager);
-        rv_favorites.setAdapter(adaptor);
-
         presenter.requestFavorites(Constant.PAGE_START_NUM);
     }
 

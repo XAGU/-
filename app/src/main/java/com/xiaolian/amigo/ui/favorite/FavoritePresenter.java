@@ -27,6 +27,7 @@ import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.favorite.adaptor.FavoriteAdaptor;
 import com.xiaolian.amigo.ui.favorite.intf.IFavoritePresenter;
 import com.xiaolian.amigo.ui.favorite.intf.IFavoriteView;
+import com.xiaolian.amigo.util.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,14 +51,14 @@ public class FavoritePresenter<V extends IFavoriteView> extends BasePresenter<V>
     public void requestFavorites(int page) {
         FavoriteReqDTO reqDTO = new FavoriteReqDTO();
         reqDTO.setPage(page);
-        reqDTO.setSize(Integer.MAX_VALUE);
+        reqDTO.setSize(Constant.PAGE_SIZE);
         // 查看收藏设备列表
         addObserver(manager.queryFavorites(reqDTO), new NetworkObserver<ApiResult<FavoriteRespDTO>>() {
             @Override
             public void onReady(ApiResult<FavoriteRespDTO> result) {
                 if (null == result.getError()) {
                     List<FavoriteAdaptor.FavoriteWrapper> wrappers = new ArrayList<>();
-                    if (null != result.getData().getDevices() && result.getData().getDevices().size() > 0) {
+                    if (null != result.getData().getDevices()) {
                         for (Device device : result.getData().getDevices()) {
                             wrappers.add(new FavoriteAdaptor.FavoriteWrapper(device));
                         }

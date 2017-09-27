@@ -50,7 +50,7 @@ public class EditDormitoryPresenter<V extends IEditDormitoryView> extends BasePr
                 getMvpView().setRefreshComplete();
                 getMvpView().setLoadMoreComplete();
                 if (null == result.getError()) {
-                    if (result.getData().getUserResidences() != null && result.getData().getUserResidences().size() > 0) {
+                    if (result.getData().getUserResidences() != null) {
                         List<EditDormitoryAdaptor.UserResidenceWrapper> wrappers = new ArrayList<>();
                         for (UserResidence userResidence : result.getData().getUserResidences()) {
                             wrappers.add(new EditDormitoryAdaptor.UserResidenceWrapper(userResidence,

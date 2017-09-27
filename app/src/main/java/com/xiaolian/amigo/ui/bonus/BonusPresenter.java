@@ -45,7 +45,7 @@ public class BonusPresenter<V extends IBonusView> extends BasePresenter<V>
                 getMvpView().setLoadMoreComplete();
                 if (null == result.getError()) {
                     List<BonusAdaptor.BonusWrapper> wrappers = new ArrayList<>();
-                    if (null != result.getData().getBonuses() && result.getData().getBonuses().size() > 0) {
+                    if (null != result.getData().getBonuses()) {
                         for (Bonus bonus : result.getData().getBonuses()) {
                             wrappers.add(new BonusAdaptor.BonusWrapper(bonus));
                         }
@@ -73,7 +73,7 @@ public class BonusPresenter<V extends IBonusView> extends BasePresenter<V>
                 getMvpView().setLoadMoreComplete();
                 if (null == result.getError()) {
                     List<BonusAdaptor.BonusWrapper> wrappers = new ArrayList<>();
-                    if (null != result.getData().getBonuses() && result.getData().getBonuses().size() > 0) {
+                    if (null != result.getData().getBonuses()) {
                         for (Bonus bonus : result.getData().getBonuses()) {
                             wrappers.add(new BonusAdaptor.BonusWrapper(bonus));
                         }

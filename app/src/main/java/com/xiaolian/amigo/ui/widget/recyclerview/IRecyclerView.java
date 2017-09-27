@@ -524,11 +524,11 @@ public class IRecyclerView extends RecyclerView {
     private class DataObserver extends RecyclerView.AdapterDataObserver {
         @Override
         public void onChanged() {
+            if (isFirstAttachAdapter) {
+                isFirstAttachAdapter = false;
+                return;
+            }
             if (mAdapter != null && mEmptyView != null) {
-                if (isFirstAttachAdapter) {
-                    isFirstAttachAdapter = false;
-                    return;
-                }
                 int emptyCount = 1 + mAdapter.getHeadersCount();
                 if (LoadMoreEnabled) {
                     emptyCount++;
@@ -543,10 +543,6 @@ public class IRecyclerView extends RecyclerView {
                 }
             }
             if (mAdapter != null) {
-                if (isFirstAttachAdapter) {
-                    isFirstAttachAdapter = false;
-                    return;
-                }
                 mAdapter.notifyDataSetChanged();
             }
         }

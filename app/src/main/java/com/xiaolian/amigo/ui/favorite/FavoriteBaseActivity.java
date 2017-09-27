@@ -11,15 +11,15 @@ import com.xiaolian.amigo.di.componet.OrderActivityComponent;
 import com.xiaolian.amigo.di.module.FavoriteActivityModule;
 import com.xiaolian.amigo.di.module.OrderActivityModule;
 import com.xiaolian.amigo.ui.base.BaseActivity;
+import com.xiaolian.amigo.ui.base.BaseToolBarListActivity;
 
 
-public abstract class FavoriteBaseActivity extends BaseActivity {
+public abstract class FavoriteBaseActivity extends BaseToolBarListActivity {
 
     private FavoriteActivityComponent mActivityComponent;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initInject() {
         setUp();
         mActivityComponent = DaggerFavoriteActivityComponent.builder()
                 .favoriteActivityModule(new FavoriteActivityModule(this))

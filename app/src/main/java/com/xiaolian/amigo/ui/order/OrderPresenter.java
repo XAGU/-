@@ -59,7 +59,7 @@ public class OrderPresenter<V extends IOrderView> extends BasePresenter<V>
                 getMvpView().setLoadMoreComplete();
                 if (null == result.getError()) {
                     List<OrderAdaptor.OrderWrapper> wrappers = new ArrayList<OrderAdaptor.OrderWrapper>();
-                    if (null != result.getData().getOrders() && result.getData().getOrders().size() > 0) {
+                    if (null != result.getData().getOrders()) {
                         for (Order order : result.getData().getOrders()) {
                             wrappers.add(new OrderAdaptor.OrderWrapper(order));
                         }
