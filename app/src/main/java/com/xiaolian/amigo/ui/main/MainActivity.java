@@ -152,7 +152,10 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     }
 
 
-
+    /**
+     * 显示通知个数
+     * @param amount 通知个数
+     */
     @Override
     public void showNoticeAmount(Integer amount) {
         if (amount != null && amount != 0) {
@@ -193,6 +196,11 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             }
         });
         dialog.show();
+    }
+
+    @Override
+    public void refreshNoticeAmount() {
+        presenter.getNoticeAmount();
     }
 
     @Override

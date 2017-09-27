@@ -16,4 +16,6 @@ public interface IMainView extends IBaseView {
     void gotoDevice(Class clz);
 
     void showUrgentNotify(String content, Long id);
+
+    void refreshNoticeAmount();
 }

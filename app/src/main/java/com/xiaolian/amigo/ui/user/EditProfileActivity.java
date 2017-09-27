@@ -33,6 +33,7 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
     private static final int REQUEST_CODE_EDIT_SCHOOL = 0x0103;
     private static final int REQUEST_CODE_EDIT_DORMITORY = 0x0104;
     private static final int REQUEST_CODE_EDIT_SEX = 0x0105;
+    private static final int REQUEST_CODE_EDIT_AVATAR = 0x0106;
     @Inject
     IEditProfilePresenter<IEditProfileView> presenter;
 
@@ -116,7 +117,7 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
 //                });
                 intent = new Intent(this, EditAvatarActivity.class);
                 intent.putExtra(EditAvatarActivity.INTENT_KEY_CURRENT_AVATAR, avatarUrl);
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_CODE_EDIT_AVATAR);
                 break;
             case R.id.rel_edit_nickname:
                 intent = new Intent(getApplicationContext(), com.xiaolian.amigo.ui.user.EditNickNameActivity.class);
@@ -177,7 +178,7 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
     public void setAvatar(String pictureUrl) {
         if (!TextUtils.isEmpty(pictureUrl)) {
             avatarUrl = pictureUrl;
-            Glide.with(this).load(pictureUrl).into(iv_avatar);
+            Glide.with(this).load(pictureUrl).asBitmap().into(iv_avatar);
         } else {
             iv_avatar.setImageResource(R.drawable.ic_picture_error);
         }

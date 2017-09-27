@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.user.adaptor;
 
 import android.content.Context;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -30,14 +31,18 @@ public class EditAvatarAdaptor extends CommonAdapter<EditAvatarAdaptor.AvatarWra
     protected void convert(ViewHolder holder, AvatarWrapper avatarWrapper, int position) {
         Glide.with(context).load(avatarWrapper.getAvatarUrl()).asBitmap()
                 .into((ImageView) holder.getView(R.id.iv_avatar));
+        holder.getView(R.id.iv_selected).setVisibility(avatarWrapper.isSelected() ? View.VISIBLE : View.GONE);
     }
 
     @Data
     public static class AvatarWrapper {
         String avatarUrl;
+        boolean isSelected;
 
         public AvatarWrapper(String avatarUrl) {
             this.avatarUrl = avatarUrl;
+            this.isSelected = false;
         }
     }
+
 }

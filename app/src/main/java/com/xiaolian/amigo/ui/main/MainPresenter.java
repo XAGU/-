@@ -101,7 +101,9 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V> impleme
             @Override
             public void onReady(ApiResult<BooleanRespDTO> result) {
                 if (null == result.getError()) {
-                    // do nth
+                    if (result.getData().isResult()) {
+                        getMvpView().refreshNoticeAmount();
+                    }
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }

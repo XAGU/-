@@ -13,4 +13,8 @@ import java.util.List;
 
 public interface IEditAvatarVIew extends IBaseView {
     void addAvatar(List<EditAvatarAdaptor.AvatarWrapper> avatar);
+
+    void setAvatar(String pictureUrl);
+
+    void finishView();
 }
