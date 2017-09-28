@@ -2,6 +2,7 @@ package com.xiaolian.amigo.ui.repair;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -20,7 +21,9 @@ import com.xiaolian.amigo.ui.repair.adaptor.RepairProblemAdaptor;
 import com.xiaolian.amigo.ui.repair.intf.IRepairApplyPresenter;
 import com.xiaolian.amigo.ui.repair.intf.IRepairApplyView;
 import com.xiaolian.amigo.ui.user.ListChooseActivity;
+import com.xiaolian.amigo.ui.widget.GridSpacesItemDecoration;
 import com.xiaolian.amigo.util.Constant;
+import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,15 +63,9 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
     @BindView(R.id.bt_submit)
     Button bt_submit;
 
-    List<RepairProblemAdaptor.ProblemWrapper> problems = new ArrayList<RepairProblemAdaptor.ProblemWrapper>() {
-        {
-            add(new RepairProblemAdaptor.ProblemWrapper(new RepairProblem(1L, "问题一"), new RepairProblem(2L, "问题二"), new RepairProblem(3L, "问题三")));
-            add(new RepairProblemAdaptor.ProblemWrapper(new RepairProblem(4L, "问题无"), new RepairProblem(5L, "问题二"), null));
-        }
-    };
+    List<RepairProblemAdaptor.ProblemWrapper> problems = new ArrayList<>();
 
     RepairProblemAdaptor adapter;
-    RecyclerView.LayoutManager manager;
 
     List<String> images = new ArrayList<>();
 
@@ -84,14 +81,21 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
 
         presenter.onAttach(this);
 
-        adapter = new RepairProblemAdaptor(problems);
-        rv_problems.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 10)));
-        manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        rv_problems.setLayoutManager(manager);
+        adapter = new RepairProblemAdaptor(this, R.layout.item_problem, problems);
+        adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                toggleBtnStatus();
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
+        rv_problems.addItemDecoration(new GridSpacesItemDecoration(3, ScreenUtils.dpToPxInt(this, 10), false));
+        rv_problems.setLayoutManager(new GridLayoutManager(this, 3));
         rv_problems.setAdapter(adapter);
-
-        adapter.setOnClickListener(v -> toggleBtnStatus());
-
         render();
         // 获取报修问题列表
         presenter.requestRepairProblems();
@@ -179,11 +183,13 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
         int selectedProblem = 0;
         if (null != problems) {
             for (RepairProblemAdaptor.ProblemWrapper problem : problems) {
-                selectedProblem += problem.getIds().size();
+                selectedProblem += (problem.isChoose() ? 1 : 0);
             }
         }
         bt_submit.setEnabled(!TextUtils.isEmpty(et_tel.getText())
-                && !TextUtils.isEmpty(et_content.getText()) && !TextUtils.isEmpty(tv_location.getText()) && selectedProblem != 0);
+                && !TextUtils.isEmpty(et_content.getText())
+                && !TextUtils.isEmpty(tv_location.getText())
+                && selectedProblem != 0);
     }
 
     @Override
@@ -200,7 +206,7 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
     void submit() {
         List<Long> problemIds = new ArrayList<>();
         for (RepairProblemAdaptor.ProblemWrapper wrapper : problems) {
-            problemIds.addAll(wrapper.getIds());
+            problemIds.add(wrapper.getId());
         }
         presenter.onSubmit(problemIds, images, et_content.getText().toString(), et_tel.getText().toString(), deviceType, residenceId);
     }
@@ -208,21 +214,12 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
     @Override
     public void refreshProblems(List<RepairProblem> repairProblems) {
         if (null != repairProblems) {
-            int size = repairProblems.size();
-            int num = size % Constant.COLUMN_NUM == 0 ? size / Constant.COLUMN_NUM : size / Constant.COLUMN_NUM + 1;
-            for (int i = 0; i < num; i++) {
-                RepairProblem first = null, second = null, third = null;
-                if (i * Constant.COLUMN_NUM < size) {
-                    first = repairProblems.get(i * Constant.COLUMN_NUM);
-                }
-                if (i * Constant.COLUMN_NUM + 1 < size) {
-                    second = repairProblems.get(i * Constant.COLUMN_NUM);
-                }
-                if (i * Constant.COLUMN_NUM + 2 < size) {
-                    third = repairProblems.get(i * Constant.COLUMN_NUM);
-                }
-                problems.add(new RepairProblemAdaptor.ProblemWrapper(first, second, third));
+            List<RepairProblemAdaptor.ProblemWrapper> problemWrappers = new ArrayList<>();
+            for (RepairProblem problem : repairProblems) {
+                problemWrappers.add(new RepairProblemAdaptor.ProblemWrapper(problem));
             }
+            problems.addAll(problemWrappers);
+            adapter.notifyDataSetChanged();
         }
     }
 }
