@@ -97,5 +97,7 @@
     <string name="please_enter_password">请输入密码</string>
     <string name="check_password">校验密码</string>
     <string name="my_favorite">我收藏的设备</string>
+    <string name="please_choose_lost_time">请选择丢失的时间</string>
+    <string name="please_choose_found_time">请选择捡到物品的时间</string>
 
 </resources>

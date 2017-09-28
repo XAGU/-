@@ -15,7 +15,7 @@ public class SaveLostAndFoundDTO {
     private Long id;
     private String itemName;
     private String location;
-    private String lostTime;
+    private Long lostTime;
     private String mobile;
     private String title;
     private Integer type;

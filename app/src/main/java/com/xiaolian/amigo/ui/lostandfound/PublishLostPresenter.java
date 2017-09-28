@@ -41,7 +41,7 @@ public class PublishLostPresenter<V extends IPublishLostView> extends BasePresen
 
     @Override
     public void publishLostAndFound(String desc, List<String> images, String itemName,
-                                    String location, String lostTime, String mobile, String title,
+                                    String location, Long lostTime, String mobile, String title,
                                     Integer type) {
         SaveLostAndFoundDTO dto = new SaveLostAndFoundDTO();
         dto.setDescription(desc);

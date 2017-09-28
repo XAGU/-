@@ -16,9 +16,12 @@ import com.xiaolian.amigo.tmp.base.BaseActivity;
 import com.xiaolian.amigo.ui.lostandfound.intf.IPublishLostPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.IPublishLostView;
 import com.xiaolian.amigo.ui.widget.dialog.DatePickerDialog;
+import com.xiaolian.amigo.ui.widget.wheelpicker.WheelDateTimePicker;
 import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.util.TimeUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -88,6 +91,8 @@ public class PublishLostActivity extends LostAndFoundBaseActivity implements IPu
     ImageView iv_third;
 
     List<String> images = new ArrayList<>();
+    private boolean allValidated = false;
+    private List<TextView> viewList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +103,17 @@ public class PublishLostActivity extends LostAndFoundBaseActivity implements IPu
         getActivityComponent().inject(this);
 
         presenter.onAttach(PublishLostActivity.this);
+
+        viewList = new ArrayList<TextView>(){
+            {
+                add(et_title);
+                add(et_itemName);
+                add(et_location);
+                add(tv_lostTime);
+                add(et_mobile);
+                add(et_desc);
+            }
+        };
     }
 
     @Override
@@ -119,19 +135,29 @@ public class PublishLostActivity extends LostAndFoundBaseActivity implements IPu
 
     @Override
     public void toggleBtnStatus() {
-        bt_submit.setEnabled(!TextUtils.isEmpty(et_title.getText())
+        allValidated = !TextUtils.isEmpty(et_title.getText())
                 && !TextUtils.isEmpty(et_itemName.getText())
                 && !TextUtils.isEmpty(et_location.getText())
                 && !TextUtils.isEmpty(tv_lostTime.getText())
                 && !TextUtils.isEmpty(et_mobile.getText())
-                && !TextUtils.isEmpty(et_desc.getText()));
+                && !TextUtils.isEmpty(et_desc.getText());
+        bt_submit.setBackgroundResource(allValidated ?
+                R.drawable.button_enable : R.drawable.button_disable);
     }
 
     @OnClick(R.id.bt_submit)
     void publishLost() {
+        if (!allValidated) {
+            for (TextView view : viewList) {
+                if (TextUtils.isEmpty(view.getText())) {
+                    onError(view.getHint().toString());
+                    return;
+                }
+            }
+        }
         presenter.publishLostAndFound(et_desc.getText().toString(),
                 images, et_itemName.getText().toString(),et_location.getText().toString(),
-                tv_lostTime.getText().toString(), et_mobile.getText().toString(),
+                (Long) tv_lostTime.getTag(R.id.timestamp), et_mobile.getText().toString(),
                 et_title.getText().toString(), 1);
     }
 
@@ -149,8 +175,9 @@ public class PublishLostActivity extends LostAndFoundBaseActivity implements IPu
         DatePickerDialog datePickerDialog = new DatePickerDialog(this);
         datePickerDialog.setOnItemSelectedListener(new DatePickerDialog.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(WheelPicker picker, String data, int position, DatePickerDialog.WheelType type) {
-                tv_lostTime.setText(System.currentTimeMillis() + "");
+            public void onItemSelected(WheelDateTimePicker picker, Date date) {
+                tv_lostTime.setTag(R.id.timestamp, TimeUtils.date2Millis(date));
+                tv_lostTime.setText(TimeUtils.date2String(date, TimeUtils.MY_DATE_TIME_FORMAT));
             }
         });
         datePickerDialog.show();

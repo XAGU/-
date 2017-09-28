@@ -165,7 +165,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
                     android:paddingLeft="10dp"
-                    android:text="请选择捡到物品的时间" />
+                    android:textColorHint="@color/colorDark9"
+                    android:hint="@string/please_choose_found_time"
+                    />
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -297,8 +299,8 @@
         <!--android:enabled="false"-->
         <Button
             android:id="@+id/bt_submit"
-            android:enabled="false"
             style="@style/Button"
+            android:background="@drawable/button_disable"
             android:text="确认发布" />
     </LinearLayout>
 </ScrollView>

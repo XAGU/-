@@ -14,6 +14,7 @@ public class TimeUtils {
 
     private static final DateFormat DEFAULT_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
     public static final DateFormat MY_DATE_FORMAT = new SimpleDateFormat("MM-dd", Locale.getDefault());
+    public static final DateFormat MY_DATE_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
     public static final DateFormat MY_TIME_FORMAT = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
 
@@ -94,5 +95,37 @@ public class TimeUtils {
             return "昨天";
         }
         return millis2String(timeStamp, MY_DATE_FORMAT);
+    }
+
+    /**
+     * 将Date类型转为时间戳
+     *
+     * @param date Date类型时间
+     * @return 毫秒时间戳
+     */
+    public static long date2Millis(final Date date) {
+        return date.getTime();
+    }
+    /**
+     * 将Date类型转为时间字符串
+     * <p>格式为yyyy-MM-dd HH:mm:ss</p>
+     *
+     * @param date Date类型时间
+     * @return 时间字符串
+     */
+    public static String date2String(final Date date) {
+        return date2String(date, DEFAULT_FORMAT);
+    }
+
+    /**
+     * 将Date类型转为时间字符串
+     * <p>格式为format</p>
+     *
+     * @param date   Date类型时间
+     * @param format 时间格式
+     * @return 时间字符串
+     */
+    public static String date2String(final Date date, final DateFormat format) {
+        return format.format(date);
     }
 }

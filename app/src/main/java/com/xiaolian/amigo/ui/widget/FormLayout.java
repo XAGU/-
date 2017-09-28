@@ -1,6 +1,8 @@
 package com.xiaolian.amigo.ui.widget;
 
 import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.InputType;
@@ -15,7 +17,6 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.tmp.component.ClearableEditText;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -84,7 +85,7 @@ public class FormLayout extends LinearLayout {
             View view = vg.getChildAt(i);
             if (view instanceof EditText) {
                 EditText editText = (EditText) view;
-                editText.addTextChangedListener(new EditTextWatcher(editText));
+                editText.addTextChangedListener(new EnableButtonEditTextWatcher(editText));
                 editTexts.add(editText);
             } else if (view instanceof ViewGroup) {
                 getEditTexts((ViewGroup) view);
@@ -105,10 +106,10 @@ public class FormLayout extends LinearLayout {
         initEditText();
     }
 
-    final class EditTextWatcher implements TextWatcher {
+    final class EnableButtonEditTextWatcher implements TextWatcher {
         private EditText editText;
 
-        EditTextWatcher(EditText editText) {
+        EnableButtonEditTextWatcher(EditText editText) {
             this.editText = editText;
         }
 

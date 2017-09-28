@@ -13,8 +13,10 @@ import com.aigestudio.wheelpicker.WheelPicker;
 import com.aigestudio.wheelpicker.widgets.WheelDatePicker;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.tmp.common.util.ScreenUtils;
+import com.xiaolian.amigo.ui.widget.wheelpicker.WheelDateTimePicker;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -29,24 +31,7 @@ import butterknife.ButterKnife;
 public class DatePickerDialog extends Dialog {
 
     @BindView(R.id.wp_date)
-    WheelDatePicker wp_date;
-//    @BindView(R.id.wp_year)
-//    WheelPicker wp_year;
-//    @BindView(R.id.wp_month)
-//    WheelPicker wp_month;
-//    @BindView(R.id.wp_day)
-//    WheelPicker wp_day;
-    @BindView(R.id.wp_hour)
-    WheelPicker wp_hour;
-    @BindView(R.id.wp_minute)
-    WheelPicker wp_minute;
-
-    private List<String> years = new ArrayList<String>();
-    private List<String> months = new ArrayList<String>();
-    private List<String> days = new ArrayList<String>();
-    private List<String> hours = new ArrayList<String>();
-    private List<String> minutes = new ArrayList<String>();
-
+    WheelDateTimePicker wp_date;
 
     public DatePickerDialog(@NonNull Context context) {
 //        super(context);
@@ -55,23 +40,6 @@ public class DatePickerDialog extends Dialog {
 
     public DatePickerDialog(@NonNull Context context, @StyleRes int themeResId) {
         super(context, themeResId);
-
-
-//        for (int i = 1990; i <= 2100; i ++) {
-//            years.add(String.valueOf(i).concat("年"));
-//        }
-//        for (int i = 1; i <= 12; i ++) {
-//            months.add(String.valueOf(i).concat("月"));
-//        }
-//        for (int i = 1; i <= 31; i ++) {
-//            days.add(String.valueOf(i).concat("日"));
-//        }
-        for (int i = 0; i <= 23; i ++) {
-            hours.add(String.valueOf(i));
-        }
-        for (int i = 0; i <= 60; i ++) {
-            minutes.add(String.valueOf(i));
-        }
 
 
         Window window = this.getWindow();
@@ -93,45 +61,17 @@ public class DatePickerDialog extends Dialog {
         wp_date.setCurtainColor(Color.GRAY);
         wp_date.setSelectedItemTextColor(Color.BLACK);
         wp_date.setItemTextColor(Color.GRAY);
-        wp_date.setItemTextSize(ScreenUtils.dpToPxInt(context, 14));
+        wp_date.setItemTextSize(ScreenUtils.dpToPxInt(context, 16));
         wp_date.setVisibleItemCount(5);
         wp_date.setCurtainColor(Color.BLACK);
-//        setWheelPicker(context, wp_year, years);
-//        setWheelPicker(context, wp_month, months);
-//        setWheelPicker(context, wp_day, days);
-        setWheelPicker(context, wp_hour, hours);
-        setWheelPicker(context, wp_minute, minutes);
-//        wp_year.setOnItemSelectedListener(new WheelPicker.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(WheelPicker picker, Object data, int position) {
-//                listener.onItemSelected(picker, (String) data, position, WheelType.YEAR);
-//            }
-//        });
-//        wp_month.setOnItemSelectedListener(new WheelPicker.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(WheelPicker picker, Object data, int position) {
-//                listener.onItemSelected(picker, (String) data, position, WheelType.MONTH);
-//            }
-//        });
-//        wp_day.setOnItemSelectedListener(new WheelPicker.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(WheelPicker picker, Object data, int position) {
-//                listener.onItemSelected(picker, (String) data, position, WheelType.DAY);
-//            }
-//        });
-//        wp_hour.setOnItemSelectedListener(new WheelPicker.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(WheelPicker picker, Object data, int position) {
-//                listener.onItemSelected(picker, (String) data, position, WheelType.HOUR);
-//            }
-//        });
-//        wp_minute.setOnItemSelectedListener(new WheelPicker.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(WheelPicker picker, Object data, int position) {
-//                listener.onItemSelected(picker, (String) data, position, WheelType.MINUTE);
-//            }
-//        });
-
+        wp_date.setOnDateTimeSelectedListener(new WheelDateTimePicker.OnDateTimeSelectedListener() {
+            @Override
+            public void onDateTimeSelected(WheelDateTimePicker picker, Date date) {
+                if (listener != null) {
+                    listener.onItemSelected(picker, date);
+                }
+            }
+        });
     }
 
     private void setWheelPicker(Context context, WheelPicker picker, List<String> data) {
@@ -152,7 +92,7 @@ public class DatePickerDialog extends Dialog {
     }
 
     public interface OnItemSelectedListener {
-        void onItemSelected(WheelPicker picker, String data, int position, WheelType type);
+        void onItemSelected(WheelDateTimePicker picker, Date date);
     }
 
     public enum WheelType {

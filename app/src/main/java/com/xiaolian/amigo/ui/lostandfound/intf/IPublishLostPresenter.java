@@ -14,7 +14,7 @@ import java.util.List;
 
 public interface IPublishLostPresenter<V extends IPublishLostView> extends IBasePresenter<V> {
     void publishLostAndFound(String desc, List<String> images, String itemName, String location,
-                             String lostTime, String mobile, String title, Integer type);
+                             Long lostTime, String mobile, String title, Integer type);
 
     void uploadImage(Uri imageUri, int position);
 }

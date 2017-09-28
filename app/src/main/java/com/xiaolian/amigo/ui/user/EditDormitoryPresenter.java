@@ -76,7 +76,7 @@ public class EditDormitoryPresenter<V extends IEditDormitoryView> extends BasePr
             public void onReady(ApiResult<BooleanRespDTO> result) {
                 if (null == result.getError()) {
                     getMvpView().onSuccess(R.string.delete_success);
-                    queryDormitoryList(Constant.PAGE_START_NUM, Constant.PAGE_SIZE);
+                    getMvpView().refreshList();
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }

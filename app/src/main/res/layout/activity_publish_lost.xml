@@ -165,7 +165,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
                     android:paddingLeft="10dp"
-                    android:text="请选择丢失的时间" />
+                    android:textColorHint="@color/colorDark9"
+                    android:hint="@string/please_choose_lost_time"
+                    />
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -264,6 +266,7 @@
                     android:paddingLeft="10dp"
                     android:imeOptions="actionNext"
                     android:inputType="phone"
+                    android:maxLength="11"
                     android:hint="请留下任意联系方式即可" />
             </LinearLayout>
 
@@ -298,7 +301,7 @@
         <Button
             android:id="@+id/bt_submit"
             style="@style/Button"
-            android:enabled="false"
+            android:background="@drawable/button_disable"
             android:text="确认发布" />
     </LinearLayout>
 </ScrollView>

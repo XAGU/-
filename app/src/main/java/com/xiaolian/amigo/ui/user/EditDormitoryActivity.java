@@ -75,6 +75,11 @@ public class EditDormitoryActivity extends UserBaseListActivity implements IEdit
     }
 
     @Override
+    public void refreshList() {
+        onRefresh();
+    }
+
+    @Override
     protected void onRefresh() {
         page = Constant.PAGE_START_NUM;
         items.clear();

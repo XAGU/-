@@ -1,3 +1,4 @@
 <resources>
     <item name="form_validate" type="id"/>
+    <item name="timestamp" type="id"/>
 </resources>

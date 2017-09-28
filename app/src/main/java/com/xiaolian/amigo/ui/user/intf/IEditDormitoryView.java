@@ -16,4 +16,6 @@ public interface IEditDormitoryView extends IBaseListView {
     void addMore(List<EditDormitoryAdaptor.UserResidenceWrapper> userResidenceWrappers);
 
     void notifyAdaptor();
+
+    void refreshList();
 }
