@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.tmp.component.BezierWaveView;
+import com.xiaolian.amigo.ui.device.DeviceBaseActivity;
 import com.xiaolian.amigo.ui.widget.DotFlashView;
 import com.xiaolian.amigo.ui.widget.dialog.ActionSheetDialog;
 import com.xiaolian.amigo.ui.widget.dialog.IOSAlertDialog;
@@ -28,7 +29,7 @@ import butterknife.OnClick;
  * 热水器设备页
  * @author zcd
  */
-public class HeaterActivity extends BaseActivity {
+public class HeaterActivity extends DeviceBaseActivity {
 
     /**
      * 跳转到选择红包页面的request code
@@ -309,7 +310,10 @@ public class HeaterActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_geyser);
-        ButterKnife.bind(this);
+
+        setUnBinder(ButterKnife.bind(this));
+        getActivityComponent().inject(this);
+
         initView();
     }
 
