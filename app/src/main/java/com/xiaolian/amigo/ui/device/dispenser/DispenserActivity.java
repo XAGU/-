@@ -1,4 +1,4 @@
-package com.xiaolian.amigo.ui.device.waterfountain;
+package com.xiaolian.amigo.ui.device.dispenser;
 
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -17,7 +17,7 @@ import com.xiaolian.amigo.ui.widget.DotFlashView;
 import com.xiaolian.amigo.ui.widget.dialog.ActionSheetDialog;
 import com.xiaolian.amigo.ui.widget.dialog.IOSAlertDialog;
 import com.xiaolian.amigo.ui.base.BaseActivity;
-import com.xiaolian.amigo.ui.device.geyser.ChooseBonusActivity;
+import com.xiaolian.amigo.ui.device.heater.ChooseBonusActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,7 +27,7 @@ import butterknife.OnClick;
  * 饮水机页面
  * @author zcd
  */
-public class WaterFountainActivity extends BaseActivity {
+public class DispenserActivity extends BaseActivity {
 
     /**
      * 跳转到选择红包的request code
