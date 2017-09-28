@@ -10,12 +10,10 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.aigestudio.wheelpicker.WheelPicker;
-import com.aigestudio.wheelpicker.widgets.WheelDatePicker;
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.tmp.common.util.ScreenUtils;
+import com.xiaolian.amigo.util.ScreenUtils;
 import com.xiaolian.amigo.ui.widget.wheelpicker.WheelDateTimePicker;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 

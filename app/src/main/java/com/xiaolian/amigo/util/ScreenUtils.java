@@ -1,4 +1,4 @@
-package com.xiaolian.amigo.tmp.common.util;
+package com.xiaolian.amigo.util;
 
 import android.content.Context;
 import android.util.DisplayMetrics;
