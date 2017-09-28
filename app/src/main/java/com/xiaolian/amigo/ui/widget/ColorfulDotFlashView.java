@@ -3,9 +3,7 @@ package com.xiaolian.amigo.ui.widget;
 import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -13,7 +11,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.tmp.common.util.ScreenUtils;
+import com.xiaolian.amigo.util.ScreenUtils;
 
 /**
  * 下拉刷新动画

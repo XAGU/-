@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.tmp.common.config.SpaceItemDecoration;
-import com.xiaolian.amigo.tmp.common.util.ScreenUtils;
+import com.xiaolian.amigo.util.ScreenUtils;
 import com.xiaolian.amigo.ui.repair.adaptor.RepairAdaptor;
 import com.xiaolian.amigo.ui.repair.intf.IRepairPresenter;
 import com.xiaolian.amigo.ui.repair.intf.IRepairView;

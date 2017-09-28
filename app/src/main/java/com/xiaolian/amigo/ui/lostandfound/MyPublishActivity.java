@@ -7,7 +7,7 @@ import android.view.View;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.tmp.common.config.SpaceItemDecoration;
-import com.xiaolian.amigo.tmp.common.util.ScreenUtils;
+import com.xiaolian.amigo.util.ScreenUtils;
 import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundAdaptor;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundView;
@@ -20,7 +20,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
-import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 
 /**
  * 我的发布页面

@@ -18,16 +18,12 @@ import android.view.View;
 import com.polidea.rxandroidble.scan.ScanResult;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.tmp.common.config.SpaceItemDecoration;
-import com.xiaolian.amigo.tmp.common.util.ScreenUtils;
+import com.xiaolian.amigo.util.ScreenUtils;
 import com.xiaolian.amigo.ui.ble.adaptor.BleAdaptor;
 import com.xiaolian.amigo.ui.ble.intf.IBlePresenter;
 import com.xiaolian.amigo.ui.ble.intf.IBleView;
-import com.xiaolian.amigo.ui.order.OrderActivity;
-import com.xiaolian.amigo.ui.order.adaptor.OrderAdaptor;
-import com.xiaolian.amigo.util.Constant;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -35,8 +31,6 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.OnItemClick;
-import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 
 @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
 public class BleActivity extends BleBaseActivity implements IBleView {
