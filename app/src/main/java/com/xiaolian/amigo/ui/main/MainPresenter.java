@@ -22,7 +22,8 @@ import javax.inject.Inject;
  * Created by zcd on 9/20/17.
  */
 
-public class MainPresenter<V extends IMainView> extends BasePresenter<V> implements IMainPresenter<V> {
+public class MainPresenter<V extends IMainView> extends BasePresenter<V>
+        implements IMainPresenter<V> {
     private static final String TAG = MainPresenter.class.getSimpleName();
     private IMainDataManager manager;
 
@@ -62,8 +63,11 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V> impleme
             public void onReady(ApiResult<PersonalExtraInfoDTO> result) {
                 if (null == result.getError()) {
                     if (result.getData().getUrgentNotify() != null) {
-                        getMvpView().showUrgentNotify(result.getData().getUrgentNotify().getContent(),
-                                result.getData().getUrgentNotify().getId());
+                        if (isShowUrgencyNotify()) {
+                            getMvpView().showUrgentNotify(result.getData().getUrgentNotify().getContent(),
+                                    result.getData().getUrgentNotify().getId());
+                            setShowUrgencyNotify(false);
+                        }
                     }
                     getMvpView().showNoticeAmount(result.getData().getNotifyAmount());
                 } else {
@@ -115,6 +119,16 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V> impleme
                 }
             }
         });
+    }
+
+    @Override
+    public boolean isShowUrgencyNotify() {
+        return manager.isShowUrgencyNotify();
+    }
+
+    @Override
+    public void setShowUrgencyNotify(boolean isShow) {
+        manager.setShowUrgencyNotify(isShow);
     }
 
 

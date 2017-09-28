@@ -23,4 +23,8 @@ public interface IMainPresenter<V extends IMainView> extends IBasePresenter<V> {
     void queryTimeValid(Integer deviceType, Class clz);
 
     void readUrgentNotify(Long id);
+
+    boolean isShowUrgencyNotify();
+
+    void setShowUrgencyNotify(boolean isShow);
 }

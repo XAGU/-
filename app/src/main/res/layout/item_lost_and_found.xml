@@ -35,6 +35,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         style="@style/ContentText_sub"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:text="我在食堂2楼丢了女朋友，有遇见的请与我联系"/>
 
     <LinearLayout

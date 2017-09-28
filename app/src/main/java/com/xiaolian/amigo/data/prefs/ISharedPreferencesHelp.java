@@ -16,5 +16,9 @@ public interface ISharedPreferencesHelp {
 
     void setUserInfo(User user);
 
+    boolean isShowUrgencyNotify();
+
+    void setShowUrgencyNotify(boolean isShow);
+
     void logout();
 }
