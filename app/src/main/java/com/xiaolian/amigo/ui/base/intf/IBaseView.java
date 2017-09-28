@@ -18,6 +18,8 @@ package com.xiaolian.amigo.ui.base.intf;
 
 import android.support.annotation.StringRes;
 
+import com.xiaolian.amigo.ui.base.BaseActivity;
+
 public interface IBaseView {
 
     void showLoading();

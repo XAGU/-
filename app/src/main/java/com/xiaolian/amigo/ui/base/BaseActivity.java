@@ -70,6 +70,7 @@ public abstract class BaseActivity extends SwipeBackActivity
     private static final int REQUEST_CODE_CAMERA = 0x1103;
     private static final int REQUEST_CODE_PICK = 0x1104;
     private static final int REQUEST_CODE_ICON = 0x1105;
+    private static final int REQUEST_BLE = 0x1106;
 
     private Uri mPhotoImageUri;
     private Uri mPickImageUri;
@@ -83,6 +84,8 @@ public abstract class BaseActivity extends SwipeBackActivity
     private Unbinder mUnBinder;
 
     ActionSheetDialog actionSheetDialog;
+    // 申请蓝牙访问权限后的回调
+    private Callback blePermissonCallback;
 
     @Inject
     ISharedPreferencesHelp sharedPreferencesHelp;
@@ -183,6 +186,10 @@ public abstract class BaseActivity extends SwipeBackActivity
                             .withMaxResultSize(250 * 2, 170 * 2)
                             .withOptions(options)
                             .start(this);
+                }
+            } else if (requestCode == REQUEST_BLE) {
+                if (null != blePermissonCallback) {
+                    blePermissonCallback.execute();
                 }
             }
         } else if (resultCode == UCrop.RESULT_ERROR) {
@@ -402,17 +409,19 @@ public abstract class BaseActivity extends SwipeBackActivity
     @Override
     public void getBLEPermission() {
         // 1、用水流程时必须先打开蓝牙
-        Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-        int REQUEST_ENABLE_BT = 1;
-        this.startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+//        Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+//        int REQUEST_ENABLE_BT = 1;
+//        this.startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
 
         Log.i(TAG, "手机打开蓝牙成功！");
 
         // 2、6.0版本以上的收必须动态申请权限，否则会提示没有操作权限
         RxPermissions rxPermissions = RxPermissions.getInstance(this);
-        rxPermissions.request(Manifest.permission.ACCESS_COARSE_LOCATION)
+        rxPermissions.request(Manifest.permission.BLUETOOTH, Manifest.permission.ACCESS_COARSE_LOCATION)
                 .subscribe(granted -> {
                     if (granted) {
+                        Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                        startActivityForResult(enableBtIntent, REQUEST_BLE);
                         Log.i(TAG, "动态授权蓝牙操作成功！");
                     } else {
                         Log.e(TAG, "动态授权蓝牙操作失败！");
@@ -420,8 +429,17 @@ public abstract class BaseActivity extends SwipeBackActivity
                 });
     }
 
+    public void setBleCallback(Callback callback) {
+        this.blePermissonCallback = callback;
+    }
+
+
     @Override
     public void redirectToLogin() {
         startActivity(this, LoginActivity.class);
+    }
+
+    public interface Callback {
+        void execute();
     }
 }

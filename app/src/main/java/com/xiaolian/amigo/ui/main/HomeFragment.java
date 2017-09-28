@@ -1,14 +1,20 @@
 package com.xiaolian.amigo.ui.main;
 
+import android.Manifest;
 import android.app.Fragment;
+import android.bluetooth.BluetoothAdapter;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.tbruyelle.rxpermissions.RxPermissions;
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.ui.base.BaseActivity;
 import com.xiaolian.amigo.ui.device.heater.HeaterActivity;
 import com.xiaolian.amigo.ui.device.dispenser.DispenserActivity;
 import com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity;
@@ -26,6 +32,8 @@ import static com.xiaolian.amigo.data.enumeration.Device.HEARTER;
 
 public class HomeFragment extends Fragment {
 
+    private static final String TAG = HomeFragment.class.getSimpleName();
+
     /**
      * 热水器
      */
@@ -37,7 +45,9 @@ public class HomeFragment extends Fragment {
      */
     @OnClick(R.id.rl_geyser)
     public void gotoGeyser() {
-        ((MainActivity)getActivity()).checkTimeValid(HEARTER, HeaterActivity.class);
+        MainActivity parent  = (MainActivity)this.getActivity();
+        parent.setBleCallback(() -> parent.checkTimeValid(HEARTER, HeaterActivity.class));
+        parent.getBLEPermission();
     }
 
 
@@ -52,12 +62,14 @@ public class HomeFragment extends Fragment {
      */
     @OnClick(R.id.rl_water_fountain)
     public void gotoWaterFountain() {
-        ((MainActivity)getActivity()).checkTimeValid(DISPENSER, DispenserActivity.class);
+        MainActivity parent  = (MainActivity)this.getActivity();
+        parent.setBleCallback(() -> parent.checkTimeValid(DISPENSER, DispenserActivity.class));
+        parent.getBLEPermission();
     }
 
     @OnClick(R.id.rl_lost_and_found)
     public void gotoLostAndFound() {
-        ((MainActivity)getActivity()).startActivity(LostAndFoundActivity.class);
+        ((MainActivity) getActivity()).startActivity(LostAndFoundActivity.class);
     }
 
     @Nullable
@@ -73,4 +85,5 @@ public class HomeFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
     }
+
 }
