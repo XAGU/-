@@ -14,11 +14,15 @@ import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.tmp.component.BezierWaveView;
+import com.xiaolian.amigo.ui.device.DeviceBaseActivity;
+import com.xiaolian.amigo.ui.device.intf.heator.IHeaterPresenter;
+import com.xiaolian.amigo.ui.device.intf.heator.IHeaterView;
 import com.xiaolian.amigo.ui.widget.DotFlashView;
 import com.xiaolian.amigo.ui.widget.dialog.ActionSheetDialog;
 import com.xiaolian.amigo.ui.widget.dialog.IOSAlertDialog;
-import com.xiaolian.amigo.ui.base.BaseActivity;
 import com.xiaolian.amigo.ui.wallet.RechargeActivity;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,7 +32,7 @@ import butterknife.OnClick;
  * 热水器设备页
  * @author zcd
  */
-public class HeaterActivity extends BaseActivity {
+public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
 
     /**
      * 跳转到选择红包页面的request code
@@ -154,6 +158,9 @@ public class HeaterActivity extends BaseActivity {
     void stopShower() {
         endShower();
     }
+
+    @Inject
+    IHeaterPresenter<IHeaterView> presenter;
 
     /**
      * 点击选择用水量或选择红包
@@ -309,8 +316,16 @@ public class HeaterActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_geyser);
-        ButterKnife.bind(this);
+
+        setUnBinder(ButterKnife.bind(this));
+        getActivityComponent().inject(this);
+
         initView();
+
+        presenter.onAttach(this);
+        macAddress = "08:7C:BE:E1:FD:3B";
+        // 连接蓝牙设备
+        presenter.onConnect(macAddress);
     }
 
     private void initView() {
@@ -332,6 +347,12 @@ public class HeaterActivity extends BaseActivity {
 
     @Override
     protected void setUp() {
+        super.setUp();
+    }
 
+    @Override
+    protected void onDestroy() {
+        presenter.onDisConnect();
+        super.onDestroy();
     }
 }
