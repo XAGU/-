@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.ui.device.geyser.GeyserActivity;
-import com.xiaolian.amigo.ui.device.waterfountain.WaterFountainActivity;
+import com.xiaolian.amigo.ui.device.heater.HeaterActivity;
+import com.xiaolian.amigo.ui.device.dispenser.DispenserActivity;
 import com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity;
 
 import butterknife.BindView;
@@ -37,7 +37,7 @@ public class HomeFragment extends Fragment {
      */
     @OnClick(R.id.rl_geyser)
     public void gotoGeyser() {
-        ((MainActivity)getActivity()).checkTimeValid(HEARTER, GeyserActivity.class);
+        ((MainActivity)getActivity()).checkTimeValid(HEARTER, HeaterActivity.class);
     }
 
 
@@ -52,7 +52,7 @@ public class HomeFragment extends Fragment {
      */
     @OnClick(R.id.rl_water_fountain)
     public void gotoWaterFountain() {
-        ((MainActivity)getActivity()).checkTimeValid(DISPENSER, WaterFountainActivity.class);
+        ((MainActivity)getActivity()).checkTimeValid(DISPENSER, DispenserActivity.class);
     }
 
     @OnClick(R.id.rl_lost_and_found)

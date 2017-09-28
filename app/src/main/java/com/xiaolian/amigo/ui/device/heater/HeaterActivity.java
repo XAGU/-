@@ -1,4 +1,4 @@
-package com.xiaolian.amigo.ui.device.geyser;
+package com.xiaolian.amigo.ui.device.heater;
 
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -28,7 +28,7 @@ import butterknife.OnClick;
  * 热水器设备页
  * @author zcd
  */
-public class GeyserActivity extends BaseActivity {
+public class HeaterActivity extends BaseActivity {
 
     /**
      * 跳转到选择红包页面的request code

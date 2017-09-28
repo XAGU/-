@@ -1,4 +1,4 @@
-package com.xiaolian.amigo.ui.device.geyser;
+package com.xiaolian.amigo.ui.device.heater;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;

@@ -1,4 +1,4 @@
-package com.xiaolian.amigo.ui.device.waterfountain;
+package com.xiaolian.amigo.ui.device.dispenser;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -15,9 +15,9 @@ import java.util.List;
  * @author zcd
  */
 
-public class WaterFountainAdaptor extends BaseWrapperRecyclerAdapter<WaterFountainAdaptor.WaterFountain, WaterFountainAdaptor.ItemViewHolder> {
+public class DispenserAdaptor extends BaseWrapperRecyclerAdapter<DispenserAdaptor.WaterFountain, DispenserAdaptor.ItemViewHolder> {
 
-    public WaterFountainAdaptor(List<WaterFountain> items) {
+    public DispenserAdaptor(List<WaterFountain> items) {
         appendToList(items);
     }
 
