@@ -10,6 +10,8 @@ import android.widget.Button;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.repair.RepairProblem;
+import com.zhy.adapter.recyclerview.CommonAdapter;
+import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,124 +24,58 @@ import lombok.Data;
 /**
  * Created by caidong on 2017/9/12.
  */
-public class RepairProblemAdaptor extends RecyclerView.Adapter<RepairProblemAdaptor.ViewHolder> {
+public class RepairProblemAdaptor extends CommonAdapter<RepairProblemAdaptor.ProblemWrapper> {
 
-    private List<ProblemWrapper> problems;
+    private int lastChoosePosition = -1;
     private Context context;
-    private View.OnClickListener listener;
 
-    public RepairProblemAdaptor(List<ProblemWrapper> problems) {
-        this.problems = problems;
-    }
-
-    public void setOnClickListener(View.OnClickListener listener) {
-        this.listener = listener;
+    public RepairProblemAdaptor(Context context, int layoutId, List<ProblemWrapper> datas) {
+        super(context, layoutId, datas);
+        this.context = context;
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_problem, parent, false);
-        context = view.getContext();
-        return new ViewHolder(view, context, listener);
-    }
-
-    @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        ProblemWrapper problem = problems.get(position);
-        holder.problem = problem;
-        if (null != problem.first) {
-            holder.bt_first.setVisibility(View.VISIBLE);
-            holder.bt_first.setText(problem.first.getDescription());
-        }
-        if (null != problem.second) {
-            holder.bt_second.setVisibility(View.VISIBLE);
-            holder.bt_second.setText(problem.second.getDescription());
-        }
-        if (null != problem.third) {
-            holder.bt_third.setVisibility(View.VISIBLE);
-            holder.bt_third.setText(problem.third.getDescription());
-        }
-    }
-
-    @Override
-    public int getItemCount() {
-        return null == problems ? 0 : problems.size();
-    }
-
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.bt_first)
-        Button bt_first;
-        @BindView(R.id.bt_second)
-        Button bt_second;
-        @BindView(R.id.bt_third)
-        Button bt_third;
-
-        Context context;
-        View.OnClickListener listener;
-        ProblemWrapper problem;
-
-        public ViewHolder(View itemView, Context context, View.OnClickListener listener) {
-            super(itemView);
-            this.context = context;
-            this.listener = listener;
-            ButterKnife.bind(this, itemView);
-        }
-
-        // 切换按钮状态
-        @OnClick({R.id.bt_first, R.id.bt_second, R.id.bt_third})
-        void toggleSelectStatus(Button btn) {
-            List<Long> ids = problem.ids;
-            if (btn.getCurrentTextColor() == ContextCompat.getColor(context, R.color.problem_grey)) {
-                btn.setTextColor(ContextCompat.getColor(context, R.color.problem_blue));
-                btn.setBackgroundResource(R.drawable.device_problem_blue);
-
-                switch (btn.getId()) {
-                    case R.id.bt_first:
-                        ids.add(problem.first.getId());
-                        break;
-                    case R.id.bt_second:
-                        ids.add(problem.second.getId());
-                        break;
-                    case R.id.bt_third:
-                        ids.add(problem.third.getId());
-                        break;
+    protected void convert(ViewHolder holder, ProblemWrapper problemWrapper, int position) {
+        holder.setText(R.id.bt_problem, problemWrapper.getDesc());
+        holder.getView(R.id.bt_problem).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (lastChoosePosition != -1) {
+                    getDatas().get(lastChoosePosition).setChoose(false);
                 }
-                this.listener.onClick(btn);
-            } else { // btn.getCurrentTextColor() == ContextCompat.getColor(context, R.color.problem_blue
-                btn.setTextColor(ContextCompat.getColor(context, R.color.problem_grey));
-                btn.setBackgroundResource(R.drawable.device_problem_grey);
-
-                switch (btn.getId()) {
-                    case R.id.bt_first:
-                        ids.remove(problem.first.getId());
-                        break;
-                    case R.id.bt_second:
-                        ids.remove(problem.second.getId());
-                        break;
-                    case R.id.bt_third:
-                        ids.remove(problem.third.getId());
-                        break;
-                }
-                this.listener.onClick(btn);
+                getDatas().get(position).setChoose(true);
+                lastChoosePosition = position;
+                notifyDataSetChanged();
             }
+        });
+        toggleButton(holder.getView(R.id.bt_problem), problemWrapper.isChoose());
+    }
+
+
+
+    private void toggleButton(Button button, boolean isChoose) {
+        if (isChoose) {
+            button.setTextColor(ContextCompat.getColor(context, R.color.problem_blue));
+            button.setBackgroundResource(R.drawable.device_problem_blue);
+        } else {
+            button.setTextColor(ContextCompat.getColor(context, R.color.problem_grey));
+            button.setBackgroundResource(R.drawable.device_problem_grey);
         }
     }
 
     @Data
     public static class ProblemWrapper {
-        // 问题一
-        RepairProblem first;
-        // 问题二
-        RepairProblem second;
-        // 问题三
-        RepairProblem third;
-        // 存放选中的问题描述id列表
-        List<Long> ids = new ArrayList<>();
+        // 问题描述
+        String desc;
+        // 问题id
+        Long id;
+        // 是否被选择
+        boolean isChoose = false;
 
-        public ProblemWrapper(RepairProblem first, RepairProblem second, RepairProblem third) {
-            this.first = first;
-            this.second = second;
-            this.third = third;
+        public ProblemWrapper(RepairProblem problem) {
+            this.desc = problem.getDescription();
+            this.id = problem.getId();
+            this.isChoose = false;
         }
     }
 

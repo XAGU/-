@@ -5,41 +5,14 @@
     android:orientation="horizontal">
 
     <Button
-        android:id="@+id/bt_first"
+        android:id="@+id/bt_problem"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
+        android:clickable="true"
         android:background="@drawable/device_problem_grey"
         android:textSize="12sp"
         android:textColor="@color/problem_grey"
-        android:visibility="invisible"/>
-
-    <View
-        android:layout_width="10dp"
-        android:layout_height="match_parent" />
-
-    <Button
-        android:id="@+id/bt_second"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="@drawable/device_problem_grey"
-        android:textColor="@color/problem_grey"
-        android:textSize="12sp"
-        android:visibility="invisible"/>
-
-    <View
-        android:layout_width="10dp"
-        android:layout_height="match_parent" />
-
-    <Button
-        android:id="@+id/bt_third"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="@drawable/device_problem_grey"
-        android:textSize="12sp"
-        android:textColor="@color/problem_grey"
-        android:visibility="invisible"/>
+        />
 
 </LinearLayout>
