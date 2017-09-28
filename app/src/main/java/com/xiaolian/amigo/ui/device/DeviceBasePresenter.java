@@ -1,4 +1,4 @@
-package com.xiaolian.amigo.ui.ble;
+package com.xiaolian.amigo.ui.device;
 
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
@@ -15,6 +15,9 @@ import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.ble.intf.IBleInteractivePresenter;
 import com.xiaolian.amigo.ui.ble.intf.IBleInteractiveView;
 import com.xiaolian.amigo.ui.ble.util.HexBytesUtils;
+import com.xiaolian.amigo.ui.device.intf.IDevicePresenter;
+import com.xiaolian.amigo.ui.device.intf.IDeviceView;
+import com.xiaolian.amigo.util.ble.Agreement;
 
 import java.util.UUID;
 
@@ -29,10 +32,10 @@ import static com.trello.rxlifecycle.android.ActivityEvent.PAUSE;
 /**
  * Created by caidong on 2017/9/22.
  */
-public class BleInteractivePresenter<V extends IBleInteractiveView> extends BasePresenter<V>
-        implements IBleInteractivePresenter<V> {
+public class DeviceBasePresenter<V extends IDeviceView> extends BasePresenter<V>
+        implements IDevicePresenter<V> {
 
-    private static final String TAG = BleInteractivePresenter.class.getSimpleName();
+    private static final String TAG = DeviceBasePresenter.class.getSimpleName();
     private static final String NOTIFY_DESCRIPTOR_UUID = "00002902-0000-1000-8000-00805f9b34fb";
     private IBleDataManager manager;
     // 共享连接
@@ -46,10 +49,10 @@ public class BleInteractivePresenter<V extends IBleInteractiveView> extends Base
     private String currentMacAddress;
     // 设备连接状态, 只会在UI线程中更新该变量，不需要volatile
     private boolean connected = false;
+    // 蓝牙数据通讯协议（测试用）
+    private Agreement agreement = new Agreement();
 
-
-    @Inject
-    BleInteractivePresenter(IBleDataManager manager) {
+    public DeviceBasePresenter(IBleDataManager manager) {
         super();
         this.manager = manager;
     }
@@ -201,10 +204,28 @@ public class BleInteractivePresenter<V extends IBleInteractiveView> extends Base
                         if (null != data) {
                             String result = HexBytesUtils.bytesToHexString(data);
                             Log.i(TAG, "接收数据成功！data:" + result);
-                            getMvpView().onShow(result);
+                            handleResult(result);
                         }
                     }
                 });
+
+        // 开始握手连接
+        onWrite(agreement.createConnection());
+    }
+
+    @Override
+    public void handleResult(String data) {
+        String prefix = data.substring(0, 4);
+        switch (prefix) {
+            case "a801": {
+                if (data.length() != 28) {
+                    Log.e(TAG, "握手失败！data:" + data);
+                } else {
+                    agreement.InitKey(data, "AAABCDDEEFADABBB");
+                }
+                break;
+            }
+        }
     }
 
     // 统一处理设备连接异常

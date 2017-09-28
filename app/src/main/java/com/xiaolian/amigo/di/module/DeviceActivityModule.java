@@ -20,14 +20,12 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.xiaolian.amigo.data.manager.BleDataManager;
 import com.xiaolian.amigo.data.manager.intf.IBleDataManager;
-import com.xiaolian.amigo.di.BleActivityContext;
 import com.xiaolian.amigo.di.DeviceActivityContext;
-import com.xiaolian.amigo.ui.ble.BleInteractivePresenter;
 import com.xiaolian.amigo.ui.ble.BlePresenter;
-import com.xiaolian.amigo.ui.ble.intf.IBleInteractivePresenter;
-import com.xiaolian.amigo.ui.ble.intf.IBleInteractiveView;
-import com.xiaolian.amigo.ui.ble.intf.IBlePresenter;
 import com.xiaolian.amigo.ui.ble.intf.IBleView;
+import com.xiaolian.amigo.ui.device.intf.heator.HeaterPresenter;
+import com.xiaolian.amigo.ui.device.intf.heator.IHeaterPresenter;
+import com.xiaolian.amigo.ui.device.intf.heator.IHeaterView;
 
 import dagger.Module;
 import dagger.Provides;
@@ -55,6 +53,12 @@ public class DeviceActivityModule {
     @DeviceActivityContext
     IBleDataManager provideBleDataManager(BleDataManager manager) {
         return manager;
+    }
+
+    @Provides
+    @DeviceActivityContext
+    IHeaterPresenter<IHeaterView> provideHeaterPresenter(HeaterPresenter<IHeaterView> presenter) {
+        return presenter;
     }
 
 }
