@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.device;
 
+import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.support.annotation.CheckResult;
@@ -11,17 +12,15 @@ import com.trello.rxlifecycle.LifecycleTransformer;
 import com.trello.rxlifecycle.RxLifecycle;
 import com.trello.rxlifecycle.android.ActivityEvent;
 import com.xiaolian.amigo.data.manager.intf.IBleDataManager;
+import com.xiaolian.amigo.ui.base.BaseActivity;
 import com.xiaolian.amigo.ui.base.BasePresenter;
-import com.xiaolian.amigo.ui.ble.intf.IBleInteractivePresenter;
-import com.xiaolian.amigo.ui.ble.intf.IBleInteractiveView;
 import com.xiaolian.amigo.ui.ble.util.HexBytesUtils;
 import com.xiaolian.amigo.ui.device.intf.IDevicePresenter;
 import com.xiaolian.amigo.ui.device.intf.IDeviceView;
 import com.xiaolian.amigo.util.ble.Agreement;
 
+import java.math.BigDecimal;
 import java.util.UUID;
-
-import javax.inject.Inject;
 
 import rx.Observable;
 import rx.subjects.BehaviorSubject;
@@ -49,8 +48,10 @@ public class DeviceBasePresenter<V extends IDeviceView> extends BasePresenter<V>
     private String currentMacAddress;
     // 设备连接状态, 只会在UI线程中更新该变量，不需要volatile
     private boolean connected = false;
-    // 蓝牙数据通讯协议（测试用）
-    private Agreement agreement = new Agreement();
+    // 蓝牙已关闭
+    private boolean bluetoothDisabled = false;
+    // 回调任务（存放结束用水的回调）
+    private Callback callback;
 
     public DeviceBasePresenter(IBleDataManager manager) {
         super();
@@ -82,6 +83,8 @@ public class DeviceBasePresenter<V extends IDeviceView> extends BasePresenter<V>
                     public void onNext(BluetoothGattCharacteristic characteristic) {
                         // 设备连接上存储mac地址供后续读写数据使用
                         currentMacAddress = macAddress;
+                        // 蓝牙已启用
+                        bluetoothDisabled = false;
 
                         // 取第一个匹配到的特征值
                         if (null == notifyCharacteristic) {
@@ -153,10 +156,22 @@ public class DeviceBasePresenter<V extends IDeviceView> extends BasePresenter<V>
 
     @Override
     public void onWrite(@NonNull String command) {
-        if (!connected || manager.getStatus(currentMacAddress) != RxBleConnection.RxBleConnectionState.CONNECTED) {
+        if (manager.getStatus(currentMacAddress) != RxBleConnection.RxBleConnectionState.CONNECTED) {
             getMvpView().onStatusError();
+
+            // reconnect
+            this.setCallback(new Callback() {
+                @Override
+                public void execute() {
+                    onWrite(command);
+                }
+            });
+            onConnect(currentMacAddress);
             return;
         }
+
+        // 测试
+//        writeNotifyCharacteristicDesc();
 
         byte[] commandBytes = HexBytesUtils.hexStr2Bytes(command);
         addObserver(manager.write(connectionObservable, commandBytes),
@@ -181,7 +196,7 @@ public class DeviceBasePresenter<V extends IDeviceView> extends BasePresenter<V>
 
     @Override
     public void registerNotify() {
-        if (!connected || manager.getStatus(currentMacAddress) != RxBleConnection.RxBleConnectionState.CONNECTED) {
+        if (manager.getStatus(currentMacAddress) != RxBleConnection.RxBleConnectionState.CONNECTED) {
             getMvpView().onStatusError();
             return;
         }
@@ -210,22 +225,7 @@ public class DeviceBasePresenter<V extends IDeviceView> extends BasePresenter<V>
                 });
 
         // 开始握手连接
-        onWrite(agreement.createConnection());
-    }
-
-    @Override
-    public void handleResult(String data) {
-        String prefix = data.substring(0, 4);
-        switch (prefix) {
-            case "a801": {
-                if (data.length() != 28) {
-                    Log.e(TAG, "握手失败！data:" + data);
-                } else {
-                    agreement.InitKey(data, "AAABCDDEEFADABBB");
-                }
-                break;
-            }
-        }
+        onWrite(Agreement.getInstance().createConnection());
     }
 
     // 统一处理设备连接异常
@@ -234,6 +234,23 @@ public class DeviceBasePresenter<V extends IDeviceView> extends BasePresenter<V>
         connected = false;
         this.onDisConnect();
         getMvpView().onConnectError();
+
+        // 判断蓝牙模块是否打开,如果没有提示打开
+        BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
+        if (null == adapter || !adapter.isEnabled()) {
+            // 避免重复提示
+            if (!bluetoothDisabled) {
+                BaseActivity view = (BaseActivity) getMvpView();
+                view.setBleCallback(new BaseActivity.Callback() {
+                    @Override
+                    public void execute() {
+                        registerNotify();
+                    }
+                });
+                view.getBLEPermission();
+                bluetoothDisabled = true;
+            }
+        }
     }
 
     @Override
@@ -246,4 +263,78 @@ public class DeviceBasePresenter<V extends IDeviceView> extends BasePresenter<V>
     private <T> LifecycleTransformer<T> bindUntilEvent(@NonNull ActivityEvent event) {
         return RxLifecycle.bindUntilEvent(lifeCycleSubject, event);
     }
+
+    public static interface Callback {
+        void execute();
+    }
+
+    @Override
+    public void setCallback(Callback callback) {
+        this.callback = callback;
+    }
+
+    /*************************** 以下为测试用 *****************************/
+    @Override
+    public void handleResult(String data) {
+        String prefix = data.substring(0, 4);
+        switch (prefix) {
+            case "a801":
+                if (data.length() != 28) {
+                    Log.e(TAG, "握手失败！data:" + data);
+                } else {
+                    Log.e(TAG, "握手成功！data:" + data);
+                    Agreement.getInstance().InitKey(data, "AAABCDDEEFADABBB");
+
+                    // 回调下发预结账指令
+                    if (null != callback) {
+                        callback.execute();
+                    }
+                }
+                break;
+            case "a802":
+                if (!"a80200aa".equals(data)) {
+                    Log.e(TAG, "开阀失败！data:" + data);
+                } else {
+                    Log.e(TAG, "开阀成功！data:" + data);
+                    // 关闭连接
+                    // clearObservers(true);
+                }
+                break;
+            case "a804":
+                if (data.length() == 40) {
+                    Log.e(TAG, "关阀成功：" + data);
+                    BigDecimal bal = Agreement.getInstance().getYE(data);
+                    Log.e(TAG, "结账金额：" + bal);
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    onWrite(Agreement.getInstance().Checkout("12345678"));
+//                    waitCheckout = true;
+                } else {
+                    Log.e(TAG, "关阀失败：" + data);
+                }
+                break;
+            case "a807":
+                if (data.length() == 24) {
+                    Log.e(TAG, "结账成功：" + data);
+                    getMvpView().onFinish();
+                } else {
+                    Log.e(TAG, "结账失败：" + data);
+                }
+                break;
+            case "a808":
+                if (data.length() == 24) {
+                    Log.e(TAG, "预结账成功收到的数据：" + data);
+                    BigDecimal bal = Agreement.getInstance().getYE(data);
+                    Log.e(TAG, "预结账金额：" + bal);
+                    onWrite(Agreement.getInstance().Checkout("12345678"));
+                } else {
+                    Log.e(TAG, "预结账失败收到的数据：" + data);
+                }
+                break;
+        }
+    }
+
 }
