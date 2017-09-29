@@ -20,5 +20,9 @@ public interface ISharedPreferencesHelp {
 
     void setShowUrgencyNotify(boolean isShow);
 
+    void setBonusAmount(int amount);
+
+    int getBonusAmount();
+
     void logout();
 }

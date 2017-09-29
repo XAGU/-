@@ -71,6 +71,16 @@ public class MainDataManager implements IMainDataManager {
     }
 
     @Override
+    public void setBonusAmount(int amount) {
+        sharedPreferencesHelp.setBonusAmount(amount);
+    }
+
+    @Override
+    public int getBonusAmount() {
+        return sharedPreferencesHelp.getBonusAmount();
+    }
+
+    @Override
     public Observable<ApiResult<PersonalExtraInfoDTO>> getExtraInfo() {
         return mainApi.getExtraInfo();
     }

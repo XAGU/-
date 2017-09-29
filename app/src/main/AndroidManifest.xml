@@ -181,8 +181,6 @@
             android:theme="@style/AppTheme.NoActionBar"/>
 
         <!--选择红包页-->
-        <activity android:name=".ui.device.heater.ChooseBonusActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
 
         <!--选择饮水机页面-->
         <activity android:name=".ui.device.dispenser.ChooseDispenserActivity"

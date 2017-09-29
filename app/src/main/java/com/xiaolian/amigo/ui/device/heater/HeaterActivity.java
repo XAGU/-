@@ -14,13 +14,15 @@ import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.tmp.component.BezierWaveView;
+import com.xiaolian.amigo.ui.bonus.BonusActivity;
+import com.xiaolian.amigo.ui.bonus.adaptor.BonusAdaptor;
 import com.xiaolian.amigo.ui.device.DeviceBaseActivity;
 import com.xiaolian.amigo.ui.device.intf.heator.IHeaterPresenter;
 import com.xiaolian.amigo.ui.device.intf.heator.IHeaterView;
+import com.xiaolian.amigo.ui.wallet.RechargeActivity;
 import com.xiaolian.amigo.ui.widget.DotFlashView;
 import com.xiaolian.amigo.ui.widget.dialog.ActionSheetDialog;
 import com.xiaolian.amigo.ui.widget.dialog.IOSAlertDialog;
-import com.xiaolian.amigo.ui.wallet.RechargeActivity;
 
 import javax.inject.Inject;
 
@@ -52,12 +54,6 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
     Button bt_pay;
 
     /**
-     * 放水进度
-     */
-    @BindView(R.id.tv_shower_process)
-    TextView tv_shower_process;
-
-    /**
      * 正常页面
      */
     @BindView(R.id.ll_content_normal)
@@ -74,6 +70,18 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
      */
     @BindView(R.id.ll_content_shower)
     LinearLayout ll_content_shower;
+
+    /**
+     * et.已使用10元红包
+     */
+    @BindView(R.id.tv_shower_payed)
+    TextView tv_shower_payed;
+
+    /**
+     * 设备连接状态
+     */
+    @BindView(R.id.tv_connect_status)
+    TextView tv_connect_status;
 
     /**
      * 结束洗澡
@@ -174,6 +182,7 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
                         public void onClick(int which) {
                             mItemIndex = 0;
                             tv_water_right.setText("预付5元／1吨水");
+                            tv_water_right.setTag(R.id.money_pay_amount, 5);
                         }
                     })
                     .addSheetItem("预付10元／2吨水", ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {
@@ -181,6 +190,7 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
                         public void onClick(int which) {
                             mItemIndex = 1;
                             tv_water_right.setText("预付10元／2吨水");
+                            tv_water_right.setTag(R.id.money_pay_amount, 10);
                         }
                     }).setTitle("选择水量上限")
                     .setItemGravity(Gravity.LEFT)
@@ -188,9 +198,13 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
                     .addFooter(R.layout.view_actionsheet_foot)
                     .setSelectItem(mItemIndex).show();
         } else {
-            startActivityForResult(new Intent(this, ChooseBonusActivity.class), CHOOSE_BONUS_CODE);
+            Intent intent = new Intent(this, BonusActivity.class);
+            intent.putExtra(BonusActivity.INTENT_KEY_BONUS_ACTION, BonusActivity.ACTION_CHOOSE);
+            startActivityForResult(intent, CHOOSE_BONUS_CODE);
         }
     }
+
+
 
     /**
      * 选择余额支付
@@ -217,7 +231,7 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
         tv_bonus_pay.setTextColor(ContextCompat.getColor(this, R.color.black));
         tv_bonus_pay.setTypeface(tv_bonus_pay.getTypeface(), Typeface.BOLD);
         tv_water_left.setText(getString(R.string.choose_bonus));
-        tv_water_right.setText("2个可用");
+        tv_water_right.setText(presenter.getBonusAmount() + "个可用");
     }
 
     /**
@@ -230,6 +244,30 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
         tv_bonus_pay.setTextColor(ContextCompat.getColor(this, R.color.colorTextGray));
         tv_money_pay.setTypeface(null, Typeface.NORMAL);
         tv_bonus_pay.setTypeface(null, Typeface.NORMAL);
+        bt_pay.setEnabled(true);
+    }
+
+    /**
+     * 显示设备连接中
+     */
+    void showConnecting() {
+        hideBottomLayout();
+        ll_content_unconnected.setVisibility(View.VISIBLE);
+        tv_connect_status.setText("正在连接设备，请稍后");
+        if (dfv_dot != null && !dfv_dot.isRunning()) {
+            dfv_dot.startAnimation();
+        }
+    }
+
+    /**
+     * 显示连接完成页面
+     */
+    void showConnected() {
+        hideBottomLayout();
+        ll_content_normal.setVisibility(View.VISIBLE);
+        if (dfv_dot != null && dfv_dot.isRunning()) {
+            dfv_dot.endAnimation();
+        }
     }
 
     /**
@@ -241,6 +279,7 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
         ll_content_unconnected.setVisibility(View.GONE);
     }
 
+
     /**
      * 确认支付点击事件
      */
@@ -249,26 +288,25 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
         if (!isMoneyPay) {
             startShower();
         } else {
-            new IOSAlertDialog(this).builder()
-                    .setMsg("sorry,您的账户余额不足xx元~")
-                    .setPositiveButton("前往充值", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            startActivity(new Intent(getApplicationContext(), RechargeActivity.class));
-                        }
-                    })
-                    .setNegativeClickListener("取消", new IOSAlertDialog.OnDialogClickListener() {
-                        @Override
-                        public void onDialogClickListener(IOSAlertDialog iosAlertDialog) {
-                            iosAlertDialog.dismiss();
-                        }
-                    }).show();
+            if (tv_water_right.getTag(R.id.money_pay_amount) == null) {
+                showMessage("请选择预计用水量");
+                return;
+            }
+            presenter.queryWallet((Integer) tv_water_right.getTag(R.id.money_pay_amount));
         }
     }
+
 
     private void startShower() {
         hideBottomLayout();
         ll_content_shower.setVisibility(View.VISIBLE);
+
+
+        if (isMoneyPay) {
+            tv_shower_payed.setText("已预付" + (Integer) tv_water_right.getTag(R.id.money_pay_amount) + "元");
+        } else {
+            tv_shower_payed.setText("已使用" + tv_water_right.getText().toString());
+        }
 
         if (countDownTimer != null) {
             countDownTimer.start();
@@ -277,7 +315,8 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
 
                 @Override
                 public void onTick(long time) {
-                    tv_shower_process.setText(getString(R.string.shower_process, 10, (time / 1000)));
+                    // 不显示
+//                    tv_shower_process.setText(getString(R.string.shower_process, 10, (time / 1000)));
                 }
 
                 @Override
@@ -329,18 +368,37 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
     }
 
     private void initView() {
+        // 默认选择预付5元
+        tv_water_right.setTag(R.id.money_pay_amount, 5);
         tv_device_name.setText("3栋－5楼－510");
         if (bsv_wave != null && !bsv_wave.isRunning()) {
             bsv_wave.startAnim();
         }
+
+        // 默认显示连接中状态
+        showConnecting();
+        tv_water_right.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+               showConnected();
+            }
+        }, 3000);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            if (requestCode == CHOOSE_BONUS_CODE) {
-
+        if (requestCode == CHOOSE_BONUS_CODE) {
+            if (resultCode == RESULT_CANCELED) {
+                tv_water_right.setText(R.string.not_use_bonus);
+                bt_pay.setEnabled(false);
+            } else if (resultCode == RESULT_OK) {
+                BonusAdaptor.BonusWrapper wrapper = (BonusAdaptor.BonusWrapper) data.getExtras().getSerializable(BonusActivity.INTENT_KEY_BONUS_RESULT);
+//                BonusAdaptor.BonusWrapper wrapper = (BonusAdaptor.BonusWrapper) data.getSerializableExtra(BonusActivity.INTENT_KEY_BONUS_RESULT);
+                if (wrapper != null) {
+                    tv_water_right.setText(wrapper.getDesc());
+                    bt_pay.setEnabled(true);
+                }
             }
         }
     }
@@ -353,6 +411,32 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
     @Override
     protected void onDestroy() {
         presenter.onDisConnect();
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
         super.onDestroy();
+    }
+
+    @Override
+    public void showRechargeDialog(int amount) {
+        new IOSAlertDialog(this).builder()
+                .setMsg("sorry,您的账户余额不足" + amount + "元~")
+                .setPositiveButton("前往充值", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(new Intent(getApplicationContext(), RechargeActivity.class));
+                    }
+                })
+                .setNegativeClickListener("取消", new IOSAlertDialog.OnDialogClickListener() {
+                    @Override
+                    public void onDialogClickListener(IOSAlertDialog iosAlertDialog) {
+                        iosAlertDialog.dismiss();
+                    }
+                }).show();
+    }
+
+    @Override
+    public void startUse() {
+        startShower();
     }
 }

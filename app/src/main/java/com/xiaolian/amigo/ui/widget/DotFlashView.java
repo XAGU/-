@@ -154,6 +154,13 @@ public class DotFlashView extends View {
 
     }
 
+    public boolean isRunning() {
+        if (valueAnimator != null) {
+            return valueAnimator.isRunning();
+        }
+        return false;
+    }
+
     @Override
     public void onWindowFocusChanged(boolean hasWindowFocus) {
         super.onWindowFocusChanged(hasWindowFocus);
