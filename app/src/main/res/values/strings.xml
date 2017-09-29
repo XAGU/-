@@ -44,6 +44,7 @@
     <string name="please_enter_nickname">请输入昵称</string>
     <string name="nickname">昵称</string>
     <string name="edit_mobile">修改手机号</string>
+    <string name="please_enter_least_six_password">请输入至少6位数的密码</string>
     <string name="please_enter_new_mobile">请输入新的手机号</string>
     <string name="please_enter_verify_code">请输入收到的验证码</string>
     <string name="password_invalid">密码不对，登录失败，请重试！</string>
