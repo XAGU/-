@@ -161,6 +161,7 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
 
     /******************   Begin for test *******************/
     String orderId = "12345678";
+    private BonusAdaptor.BonusWrapper choosedBonus;
     /******************    End for test  *******************/
 
     /**
@@ -276,6 +277,10 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
     @OnClick(R.id.bt_pay)
     void onOkButtonClick() {
         if (!isMoneyPay) {
+            if (choosedBonus == null) {
+                showMessage("请选择红包");
+                return;
+            }
             startShower();
         } else {
             if (tv_water_right.getTag(R.id.money_pay_amount) == null) {
@@ -400,10 +405,10 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
                 tv_water_right.setText(R.string.not_use_bonus);
                 bt_pay.setEnabled(false);
             } else if (resultCode == RESULT_OK) {
-                BonusAdaptor.BonusWrapper wrapper = (BonusAdaptor.BonusWrapper) data.getExtras().getSerializable(BonusActivity.INTENT_KEY_BONUS_RESULT);
+                choosedBonus = (BonusAdaptor.BonusWrapper) data.getExtras().getSerializable(BonusActivity.INTENT_KEY_BONUS_RESULT);
 //                BonusAdaptor.BonusWrapper wrapper = (BonusAdaptor.BonusWrapper) data.getSerializableExtra(BonusActivity.INTENT_KEY_BONUS_RESULT);
-                if (wrapper != null) {
-                    tv_water_right.setText(wrapper.getDesc());
+                if (choosedBonus != null) {
+                    tv_water_right.setText(choosedBonus.getDesc());
                     bt_pay.setEnabled(true);
                 }
             }
