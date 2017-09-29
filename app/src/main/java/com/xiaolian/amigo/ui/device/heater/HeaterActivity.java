@@ -3,7 +3,6 @@ package com.xiaolian.amigo.ui.device.heater;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.View;
@@ -18,16 +17,13 @@ import com.xiaolian.amigo.tmp.component.BezierWaveView;
 import com.xiaolian.amigo.ui.bonus.BonusActivity;
 import com.xiaolian.amigo.ui.bonus.adaptor.BonusAdaptor;
 import com.xiaolian.amigo.ui.device.DeviceBaseActivity;
-import com.xiaolian.amigo.ui.device.DeviceBasePresenter;
 import com.xiaolian.amigo.ui.device.intf.heator.IHeaterPresenter;
 import com.xiaolian.amigo.ui.device.intf.heator.IHeaterView;
-import com.xiaolian.amigo.ui.wallet.RechargeActivity;
-import com.xiaolian.amigo.ui.order.OrderActivity;
 import com.xiaolian.amigo.ui.order.OrderDetailActivity;
+import com.xiaolian.amigo.ui.wallet.RechargeActivity;
 import com.xiaolian.amigo.ui.widget.DotFlashView;
 import com.xiaolian.amigo.ui.widget.dialog.ActionSheetDialog;
 import com.xiaolian.amigo.ui.widget.dialog.IOSAlertDialog;
-import com.xiaolian.amigo.ui.wallet.RechargeActivity;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.ble.Agreement;
 
@@ -42,17 +38,10 @@ import butterknife.OnClick;
  * @author zcd
  */
 public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
-
     /**
      * 跳转到选择红包页面的request code
      */
     private static final int CHOOSE_BONUS_CODE = 0x0010;
-
-
-    /**
-     * 使用倒计时
-     */
-    private CountDownTimer countDownTimer;
 
     /**
      * 确认支付
@@ -166,13 +155,6 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
      */
     private boolean isMoneyPay = true;
 
-    /**
-     * 结束洗澡
-     */
-    @OnClick(R.id.bt_stop_shower)
-    void stopShower() {
-        endShower();
-    }
 
     @Inject
     IHeaterPresenter<IHeaterView> presenter;
@@ -305,24 +287,6 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
         // 用户点击支付操作时当前的蓝牙连接还在，直接向蓝牙设备写指令即可
         presenter.onWrite(Agreement.getInstance().setBalance(orderId, 50));
         startShower();
-//        if (!isMoneyPay) {
-//            startShower();
-//        } else {
-//            new IOSAlertDialog(this).builder()
-//                    .setMsg("sorry,您的账户余额不足xx元~")
-//                    .setPositiveButton("前往充值", new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            startActivity(new Intent(getApplicationContext(), RechargeActivity.class));
-//                        }
-//                    })
-//                    .setNegativeClickListener("取消", new IOSAlertDialog.OnDialogClickListener() {
-//                        @Override
-//                        public void onDialogClickListener(IOSAlertDialog iosAlertDialog) {
-//                            iosAlertDialog.dismiss();
-//                        }
-//                    }).show();
-//        }
     }
 
     /**
@@ -369,42 +333,6 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
         } else {
             tv_shower_payed.setText("已使用" + tv_water_right.getText().toString());
         }
-
-        if (countDownTimer != null) {
-            countDownTimer.start();
-        } else {
-            countDownTimer = new CountDownTimer(10 * 1000, 1 * 1000 - 10) {
-
-                @Override
-                public void onTick(long time) {
-                    // 不显示
-//                    tv_shower_process.setText(getString(R.string.shower_process, 10, (time / 1000)));
-                }
-
-                @Override
-                public void onFinish() {
-                    endShower();
-                }
-            };
-            countDownTimer.start();
-        }
-//        if (countDownTimer != null) {
-//            countDownTimer.start();
-//        } else   {
-//            countDownTimer = new CountDownTimer(10 * 1000, 1 * 1000 - 10) {
-//
-//                @Override
-//                public void onTick(long time) {
-//                    tv_shower_process.setText(getString(R.string.shower_process, 10, (time / 1000)));
-//                }
-//
-//                @Override
-//                public void onFinish() {
-//                    endShower();
-//                }
-//            };
-//            countDownTimer.start();
-//        }
 
     }
 
@@ -490,9 +418,6 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
     @Override
     protected void onDestroy() {
         presenter.onDisConnect();
-        if (countDownTimer != null) {
-            countDownTimer.cancel();
-        }
         super.onDestroy();
     }
 
