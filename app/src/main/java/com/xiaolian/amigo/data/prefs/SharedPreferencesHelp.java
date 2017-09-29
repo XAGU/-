@@ -26,6 +26,7 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     private User userHolder;
 
     private boolean isShowUrgencyNotify = true;
+    private int bonusAmount = 0;
 
     private final SharedPreferences mSharedPreferences;
 
@@ -85,6 +86,16 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     @Override
     public void setShowUrgencyNotify(boolean isShow) {
         this.isShowUrgencyNotify = isShow;
+    }
+
+    @Override
+    public void setBonusAmount(int amount) {
+        this.bonusAmount = amount;
+    }
+
+    @Override
+    public int getBonusAmount() {
+        return this.bonusAmount;
     }
 
     @Override

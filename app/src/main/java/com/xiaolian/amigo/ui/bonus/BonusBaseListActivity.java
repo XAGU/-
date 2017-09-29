@@ -14,10 +14,6 @@ import com.xiaolian.amigo.ui.base.BaseToolBarListActivity;
  */
 
 public abstract class BonusBaseListActivity extends BaseToolBarListActivity {
-    @Override
-    protected void setUp() {
-
-    }
 
     private BonusActivityComponent mActivityComponent;
 

@@ -69,6 +69,9 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
                             setShowUrgencyNotify(false);
                         }
                     }
+                    if (result.getData().getBonusAmount() != null) {
+                        manager.setBonusAmount(result.getData().getBonusAmount());
+                    }
                     getMvpView().showNoticeAmount(result.getData().getNotifyAmount());
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());

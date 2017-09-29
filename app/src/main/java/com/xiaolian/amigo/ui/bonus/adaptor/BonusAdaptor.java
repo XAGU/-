@@ -7,6 +7,7 @@ import com.xiaolian.amigo.data.network.model.bonus.Bonus;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
+import java.io.Serializable;
 import java.util.List;
 
 import lombok.Data;
@@ -32,7 +33,7 @@ public class BonusAdaptor extends CommonAdapter<BonusAdaptor.BonusWrapper> {
     }
 
     @Data
-    public static class BonusWrapper {
+    public static class BonusWrapper implements Serializable {
         // 红包类型
         Integer type;
         // 红包金额

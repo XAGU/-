@@ -49,6 +49,7 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
         recyclerView = (IRecyclerView) findViewById(R.id.recyclerView);
         cl_main = (CoordinatorLayout) findViewById(R.id.cl_main);
         rl_empty = (RelativeLayout) findViewById(R.id.rl_empty);
+        setUp();
         initToolBar();
         initFooter();
         initRecyclerView();
@@ -191,5 +192,10 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
     @Override
     public void setRefreshComplete() {
         getRecyclerView().refreshComplete();
+    }
+
+    @Override
+    protected void setUp() {
+
     }
 }

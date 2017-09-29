@@ -19,7 +19,9 @@ import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
 import com.xiaolian.amigo.data.manager.BleDataManager;
+import com.xiaolian.amigo.data.manager.DeviceDataManager;
 import com.xiaolian.amigo.data.manager.intf.IBleDataManager;
+import com.xiaolian.amigo.data.manager.intf.IDeviceDataManager;
 import com.xiaolian.amigo.di.DeviceActivityContext;
 import com.xiaolian.amigo.ui.ble.BlePresenter;
 import com.xiaolian.amigo.ui.ble.intf.IBleView;
@@ -59,6 +61,11 @@ public class DeviceActivityModule {
     @DeviceActivityContext
     IHeaterPresenter<IHeaterView> provideHeaterPresenter(HeaterPresenter<IHeaterView> presenter) {
         return presenter;
+    }
+
+    @Provides
+    IDeviceDataManager provideDeviceDataManager(DeviceDataManager manager) {
+        return manager;
     }
 
 }

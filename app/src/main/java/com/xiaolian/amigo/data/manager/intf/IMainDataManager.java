@@ -24,4 +24,8 @@ public interface IMainDataManager extends IMainApi {
     boolean isShowUrgencyNotify();
 
     void setShowUrgencyNotify(boolean isShow);
+
+    void setBonusAmount(int amount);
+
+    int getBonusAmount();
 }

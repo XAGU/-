@@ -1,4 +1,5 @@
 <resources>
     <item name="form_validate" type="id"/>
     <item name="timestamp" type="id"/>
+    <item name="money_pay_amount" type="id"/>
 </resources>

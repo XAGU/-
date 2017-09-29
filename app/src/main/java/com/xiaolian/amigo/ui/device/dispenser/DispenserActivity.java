@@ -13,11 +13,11 @@ import android.widget.TextView;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.tmp.activity.wallet.RechargeActivty;
 import com.xiaolian.amigo.tmp.component.BezierWaveView;
+import com.xiaolian.amigo.ui.bonus.BonusActivity;
 import com.xiaolian.amigo.ui.widget.DotFlashView;
 import com.xiaolian.amigo.ui.widget.dialog.ActionSheetDialog;
 import com.xiaolian.amigo.ui.widget.dialog.IOSAlertDialog;
 import com.xiaolian.amigo.ui.base.BaseActivity;
-import com.xiaolian.amigo.ui.device.heater.ChooseBonusActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -184,7 +184,7 @@ public class DispenserActivity extends BaseActivity {
                     .addFooter(R.layout.view_actionsheet_foot)
                     .setSelectItem(mItemIndex).show();
         } else {
-            startActivityForResult(new Intent(this, ChooseBonusActivity.class), CHOOSE_BONUS_CODE);
+            startActivityForResult(new Intent(this, BonusActivity.class), CHOOSE_BONUS_CODE);
         }
     }
 

@@ -51,7 +51,7 @@
     <string name="please_enter_old_password">请输入原密码</string>
     <string name="please_enter_new_password">请输入新密码</string>
     <string name="please_enter_new_password_again">请再次输入新密码</string>
-    <string name="choose_bonus">选择红包</string>
+    <string name="choose_bonus">挑选红包</string>
     
     <string name="shower_process">以预付%1$d元，请尽快放水洗澡(%2$ds)</string>
     <string name="no_search_result">未找到任何与\'%1$s\'相关的内容</string>
@@ -99,5 +99,6 @@
     <string name="my_favorite">我收藏的设备</string>
     <string name="please_choose_lost_time">请选择丢失的时间</string>
     <string name="please_choose_found_time">请选择捡到物品的时间</string>
+    <string name="not_use_bonus">不使用红包</string>
 
 </resources>
