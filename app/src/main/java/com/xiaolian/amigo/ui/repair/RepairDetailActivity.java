@@ -120,17 +120,29 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
             if (num > 0) {
                 ll_images.setVisibility(View.VISIBLE);
                 iv_first.setVisibility(View.VISIBLE);
-                manager.load(images.get(0)).into(iv_first);
+                manager.load(images.get(0))
+                        .asBitmap()
+                        .placeholder(R.drawable.ic_picture_error)
+                        .error(R.drawable.ic_picture_error)
+                        .into(iv_first);
             }
             // 渲染第二张图
             if (num > 1) {
                 iv_second.setVisibility(View.VISIBLE);
-                manager.load(images.get(1)).into(iv_second);
+                manager.load(images.get(1))
+                        .asBitmap()
+                        .placeholder(R.drawable.ic_picture_error)
+                        .error(R.drawable.ic_picture_error)
+                        .into(iv_second);
             }
             // 渲染第三张图
             if (num > 2) {
                 iv_third.setVisibility(View.VISIBLE);
-                manager.load(images.get(2)).into(iv_third);
+                manager.load(images.get(2))
+                        .asBitmap()
+                        .placeholder(R.drawable.ic_picture_error)
+                        .error(R.drawable.ic_picture_error)
+                        .into(iv_third);
             }
         }
 

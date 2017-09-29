@@ -32,6 +32,7 @@ public class EditDormitoryAdaptor extends CommonAdapter<EditDormitoryAdaptor.Use
 
     public EditDormitoryAdaptor(Context context, int layoutId, List<UserResidenceWrapper> datas) {
         super(context, layoutId, datas);
+        setHasStableIds(true);
         this.context = context;
     }
 

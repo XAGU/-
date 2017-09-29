@@ -142,7 +142,11 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
         switch (view.getId()) {
             case R.id.iv_first: {
                 getImage(imageUri -> {
-                    Glide.with(this).load(imageUri).into(iv_first);
+                    Glide.with(this).load(imageUri)
+                            .asBitmap()
+                            .placeholder(R.drawable.ic_picture_error)
+                            .error(R.drawable.ic_picture_error)
+                            .into(iv_first);
                     iv_first.setScaleType(ImageView.ScaleType.FIT_XY);
                     iv_second.setVisibility(View.VISIBLE);
                     presenter.onUpload(imageUri);
@@ -151,7 +155,11 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
             }
             case R.id.iv_second: {
                 getImage(imageUri -> {
-                    Glide.with(this).load(imageUri).into(iv_second);
+                    Glide.with(this).load(imageUri)
+                            .asBitmap()
+                            .placeholder(R.drawable.ic_picture_error)
+                            .error(R.drawable.ic_picture_error)
+                            .into(iv_second);
                     iv_second.setScaleType(ImageView.ScaleType.FIT_XY);
                     iv_third.setVisibility(View.VISIBLE);
                     presenter.onUpload(imageUri);
@@ -160,7 +168,11 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
             }
             case R.id.iv_third: {
                 getImage(imageUri -> {
-                    Glide.with(this).load(imageUri).into(iv_third);
+                    Glide.with(this).load(imageUri)
+                            .asBitmap()
+                            .placeholder(R.drawable.ic_picture_error)
+                            .error(R.drawable.ic_picture_error)
+                            .into(iv_third);
                     iv_third.setScaleType(ImageView.ScaleType.FIT_XY);
                     presenter.onUpload(imageUri);
                 });

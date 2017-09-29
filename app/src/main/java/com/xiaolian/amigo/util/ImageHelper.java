@@ -4,6 +4,7 @@ import android.content.Context;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.xiaolian.amigo.R;
 
 /**
  * ImageHelper
@@ -28,7 +29,11 @@ public class ImageHelper {
         if (context == null) {
             return;
         }
-        Glide.with(context).load(path).into(imageView);
+        Glide.with(context).load(path)
+                .asBitmap()
+                .placeholder(R.drawable.ic_picture_error)
+                .error(R.drawable.ic_picture_error)
+                .into(imageView);
     }
 
 }

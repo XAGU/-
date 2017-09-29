@@ -121,14 +121,16 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
             imageView.setBackgroundResource(R.drawable.home);
             current = 1;
-            rl_notice.setVisibility(View.GONE);
+            // 改为切换不隐藏
+//            rl_notice.setVisibility(View.GONE);
         } else {
             transaction.remove(profileFragment);
             transaction.add(R.id.fm_container, homeFragment);
             transaction.commit();
             imageView.setBackgroundResource(R.drawable.profile);
             current = 0;
-            rl_notice.setVisibility(View.VISIBLE);
+            // 改为切换不隐藏
+//            rl_notice.setVisibility(View.VISIBLE);
         }
 
 

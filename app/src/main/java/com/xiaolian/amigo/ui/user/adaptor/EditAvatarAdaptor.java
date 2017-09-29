@@ -29,7 +29,10 @@ public class EditAvatarAdaptor extends CommonAdapter<EditAvatarAdaptor.AvatarWra
 
     @Override
     protected void convert(ViewHolder holder, AvatarWrapper avatarWrapper, int position) {
-        Glide.with(context).load(avatarWrapper.getAvatarUrl()).asBitmap()
+        Glide.with(context).load(avatarWrapper.getAvatarUrl())
+                .asBitmap()
+                .placeholder(R.drawable.ic_picture_error)
+                .error(R.drawable.ic_picture_error)
                 .into((ImageView) holder.getView(R.id.iv_avatar));
         holder.getView(R.id.iv_selected).setVisibility(avatarWrapper.isSelected() ? View.VISIBLE : View.GONE);
     }

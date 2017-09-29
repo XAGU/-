@@ -8,11 +8,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.aigestudio.wheelpicker.WheelPicker;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.tmp.base.BaseActivity;
 import com.xiaolian.amigo.ui.lostandfound.intf.IPublishLostPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.IPublishLostView;
 import com.xiaolian.amigo.ui.widget.dialog.DatePickerDialog;
@@ -192,6 +190,9 @@ public class PublishFoundActivity extends LostAndFoundBaseActivity implements IP
                 getImage(imageUri -> {
 
                     Glide.with(this).load(imageUri)
+                            .asBitmap()
+                            .placeholder(R.drawable.ic_picture_error)
+                            .error(R.drawable.ic_picture_error)
                             .skipMemoryCache(true)
                             .diskCacheStrategy(DiskCacheStrategy.NONE)
                             .into(iv_first);
@@ -204,6 +205,9 @@ public class PublishFoundActivity extends LostAndFoundBaseActivity implements IP
             case R.id.iv_second: {
                 getImage(imageUri -> {
                     Glide.with(this).load(imageUri)
+                            .asBitmap()
+                            .placeholder(R.drawable.ic_picture_error)
+                            .error(R.drawable.ic_picture_error)
                             .skipMemoryCache(true)
                             .diskCacheStrategy(DiskCacheStrategy.NONE)
                             .into(iv_second);
@@ -216,6 +220,9 @@ public class PublishFoundActivity extends LostAndFoundBaseActivity implements IP
             case R.id.iv_third: {
                 getImage(imageUri -> {
                     Glide.with(this).load(imageUri)
+                            .asBitmap()
+                            .placeholder(R.drawable.ic_picture_error)
+                            .error(R.drawable.ic_picture_error)
                             .skipMemoryCache(true)
                             .diskCacheStrategy(DiskCacheStrategy.NONE)
                             .into(iv_third);

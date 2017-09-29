@@ -190,6 +190,9 @@ public class PublishLostActivity extends LostAndFoundBaseActivity implements IPu
                 getImage(imageUri -> {
 
                     Glide.with(this).load(imageUri)
+                            .asBitmap()
+                            .placeholder(R.drawable.ic_picture_error)
+                            .error(R.drawable.ic_picture_error)
                             .skipMemoryCache(true)
                             .diskCacheStrategy(DiskCacheStrategy.NONE)
                             .into(iv_first);
@@ -202,6 +205,9 @@ public class PublishLostActivity extends LostAndFoundBaseActivity implements IPu
             case R.id.iv_second: {
                 getImage(imageUri -> {
                     Glide.with(this).load(imageUri)
+                            .asBitmap()
+                            .placeholder(R.drawable.ic_picture_error)
+                            .error(R.drawable.ic_picture_error)
                             .skipMemoryCache(true)
                             .diskCacheStrategy(DiskCacheStrategy.NONE)
                             .into(iv_second);
@@ -214,6 +220,9 @@ public class PublishLostActivity extends LostAndFoundBaseActivity implements IPu
             case R.id.iv_third: {
                 getImage(imageUri -> {
                     Glide.with(this).load(imageUri)
+                            .asBitmap()
+                            .placeholder(R.drawable.ic_picture_error)
+                            .error(R.drawable.ic_picture_error)
                             .skipMemoryCache(true)
                             .diskCacheStrategy(DiskCacheStrategy.NONE)
                             .into(iv_third);

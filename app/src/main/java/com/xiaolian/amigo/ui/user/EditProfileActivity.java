@@ -178,7 +178,11 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
     public void setAvatar(String pictureUrl) {
         if (!TextUtils.isEmpty(pictureUrl)) {
             avatarUrl = pictureUrl;
-            Glide.with(this).load(pictureUrl).asBitmap().into(iv_avatar);
+            Glide.with(this).load(pictureUrl)
+                    .asBitmap()
+                    .placeholder(R.drawable.ic_picture_error)
+                    .error(R.drawable.ic_picture_error)
+                    .into(iv_avatar);
         } else {
             iv_avatar.setImageResource(R.drawable.ic_picture_error);
         }

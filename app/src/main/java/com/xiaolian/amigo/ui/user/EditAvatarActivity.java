@@ -60,7 +60,11 @@ public class EditAvatarActivity extends UserBaseActivity implements IEditAvatarV
         if (getIntent() != null) {
             avatarUrl = getIntent().getStringExtra(INTENT_KEY_CURRENT_AVATAR);
             if (!TextUtils.isEmpty(avatarUrl)) {
-                Glide.with(this).load(avatarUrl).asBitmap().into(iv_current_avatar);
+                Glide.with(this).load(avatarUrl)
+                        .asBitmap()
+                        .placeholder(R.drawable.ic_picture_error)
+                        .error(R.drawable.ic_picture_error)
+                        .into(iv_current_avatar);
             } else {
                 iv_current_avatar.setImageResource(R.drawable.ic_picture_error);
             }
@@ -81,7 +85,10 @@ public class EditAvatarActivity extends UserBaseActivity implements IEditAvatarV
                 avatarUrl = avatars.get(position).getAvatarUrl();
                 if (!TextUtils.isEmpty(avatarUrl)) {
                     Glide.with(EditAvatarActivity.this).load(avatarUrl)
-                            .asBitmap().into(iv_current_avatar);
+                            .asBitmap()
+                            .placeholder(R.drawable.ic_picture_error)
+                            .error(R.drawable.ic_picture_error)
+                            .into(iv_current_avatar);
                 }
                 toggleSumbitBtnStatus();
                 adaptor.notifyDataSetChanged();
