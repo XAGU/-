@@ -15,7 +15,6 @@ import com.trello.rxlifecycle.LifecycleTransformer;
 import com.trello.rxlifecycle.RxLifecycle;
 import com.trello.rxlifecycle.android.ActivityEvent;
 import com.xiaolian.amigo.data.manager.intf.IBleDataManager;
-import com.xiaolian.amigo.ui.base.BaseActivity;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.ble.util.HexBytesUtils;
 import com.xiaolian.amigo.ui.device.intf.IDevicePresenter;
@@ -334,13 +333,7 @@ public class DeviceBasePresenter<V extends IDeviceView> extends BasePresenter<V>
                     Log.e(TAG, "关阀成功：" + data);
                     BigDecimal bal = Agreement.getInstance().getYE(data);
                     Log.e(TAG, "结账金额：" + bal);
-                    try {
-                        Thread.sleep(5000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
                     onWrite(Agreement.getInstance().Checkout("12345678"));
-//                    waitCheckout = true;
                 } else {
                     Log.e(TAG, "关阀失败：" + data);
                 }
