@@ -16,6 +16,8 @@
 package com.xiaolian.amigo.ui.base;
 
 
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.util.Log;
 
 import com.polidea.rxandroidble.exceptions.BleDisconnectedException;
@@ -39,6 +41,7 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
     // 统一管理observer，防止内存泄露
     protected CompositeSubscription subscriptions;
     private V view;
+    private Handler handler;
 
     @Override
     public void onAttach(V view) {
@@ -52,6 +55,9 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
 
     public BasePresenter() {
         subscriptions = new CompositeSubscription();
+        HandlerThread thread = new HandlerThread("BasePresenter");
+        thread.start();
+        handler = new Handler(thread.getLooper());
     }
 
     @Override
@@ -133,22 +139,22 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
     @Override
     public <P> void addObserver(Observable<P> observable, NetworkObserver observer) {
         if (null != subscriptions) {
-            this.subscriptions.add(
+            handler.post(() -> this.subscriptions.add(
                     observable
                             .compose(this.applySchedulers())
                             .subscribe(observer)
-            );
+            ));
         }
     }
 
     @Override
     public <P> void addObserver(Observable<P> observable, BLEObserver observer) {
         if (null != subscriptions) {
-            this.subscriptions.add(
+            handler.post(() -> this.subscriptions.add(
                     observable
                             .compose(this.applySchedulers())
                             .subscribe(observer)
-            );
+            ));
         }
     }
 
