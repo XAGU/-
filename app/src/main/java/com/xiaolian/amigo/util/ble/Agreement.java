@@ -9,7 +9,16 @@ import java.util.Random;
 public class Agreement {
 
     private DES des = new DES();
-    private static String TAG="HnhAgreementImpl";
+    private static String TAG = "HnhAgreementImpl";
+
+    private static Agreement agreement;
+
+    public static Agreement getInstance() {
+        if (null == agreement) {
+            agreement = new Agreement();
+        }
+        return agreement;
+    }
 
     public String createConnection() {
         String factor = "";
@@ -21,11 +30,12 @@ public class Agreement {
                 factor += "0";
             }
         }
-        FACTOR=factor;
+        FACTOR = factor;
         HEX = "A70108" + FACTOR;
         HEX = HEX + HexUtils.HexstrSum(HEX);
         return HEX;
     }
+
     private String SYCS = null;
     private String FACTOR = "0000000000000000"; //"AAABCDDEEFADABBB" ;
     public String KEY = null;
@@ -36,6 +46,7 @@ public class Agreement {
         String temp = des.des_code(0, FACTOR, Hex.substring(6, 22));
         KEY = des.des_code(0, temp, key);
     }
+
     private String TEMPKEY = null;
     private String HEX = null;
 
@@ -47,7 +58,7 @@ public class Agreement {
         return HEX;
     }
 
-    public String preCheckout(String orderId){
+    public String preCheckout(String orderId) {
         String temp = des.des_code(0, orderId + "0000" + SYCS, KEY);
         HEX = "A70808" + temp;
         HEX = HEX + HexUtils.HexstrSum(HEX);
@@ -79,8 +90,8 @@ public class Agreement {
         String result = new DES().des_code(1, ye_hex, KEY);
         String res = Integer.valueOf(result.substring(8, 12), 16).toString();
         BigDecimal ye = new BigDecimal(res);
-        BigDecimal a=new BigDecimal(100);
-        ye = ye.divide(a,2, BigDecimal.ROUND_HALF_UP);
+        BigDecimal a = new BigDecimal(100);
+        ye = ye.divide(a, 2, BigDecimal.ROUND_HALF_UP);
         return ye;
     }
 

@@ -13,16 +13,23 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.network.model.order.Order;
 import com.xiaolian.amigo.tmp.component.BezierWaveView;
 import com.xiaolian.amigo.ui.bonus.BonusActivity;
 import com.xiaolian.amigo.ui.bonus.adaptor.BonusAdaptor;
 import com.xiaolian.amigo.ui.device.DeviceBaseActivity;
+import com.xiaolian.amigo.ui.device.DeviceBasePresenter;
 import com.xiaolian.amigo.ui.device.intf.heator.IHeaterPresenter;
 import com.xiaolian.amigo.ui.device.intf.heator.IHeaterView;
 import com.xiaolian.amigo.ui.wallet.RechargeActivity;
+import com.xiaolian.amigo.ui.order.OrderActivity;
+import com.xiaolian.amigo.ui.order.OrderDetailActivity;
 import com.xiaolian.amigo.ui.widget.DotFlashView;
 import com.xiaolian.amigo.ui.widget.dialog.ActionSheetDialog;
 import com.xiaolian.amigo.ui.widget.dialog.IOSAlertDialog;
+import com.xiaolian.amigo.ui.wallet.RechargeActivity;
+import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.util.ble.Agreement;
 
 import javax.inject.Inject;
 
@@ -170,6 +177,10 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
     @Inject
     IHeaterPresenter<IHeaterView> presenter;
 
+    /******************   Begin for test *******************/
+    String orderId = "12345678";
+    /******************    End for test  *******************/
+
     /**
      * 点击选择用水量或选择红包
      */
@@ -203,8 +214,6 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
             startActivityForResult(intent, CHOOSE_BONUS_CODE);
         }
     }
-
-
 
     /**
      * 选择余额支付
@@ -279,7 +288,6 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
         ll_content_unconnected.setVisibility(View.GONE);
     }
 
-
     /**
      * 确认支付点击事件
      */
@@ -294,8 +302,62 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
             }
             presenter.queryWallet((Integer) tv_water_right.getTag(R.id.money_pay_amount));
         }
+        // 用户点击支付操作时当前的蓝牙连接还在，直接向蓝牙设备写指令即可
+        presenter.onWrite(Agreement.getInstance().setBalance(orderId, 50));
+        startShower();
+//        if (!isMoneyPay) {
+//            startShower();
+//        } else {
+//            new IOSAlertDialog(this).builder()
+//                    .setMsg("sorry,您的账户余额不足xx元~")
+//                    .setPositiveButton("前往充值", new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            startActivity(new Intent(getApplicationContext(), RechargeActivity.class));
+//                        }
+//                    })
+//                    .setNegativeClickListener("取消", new IOSAlertDialog.OnDialogClickListener() {
+//                        @Override
+//                        public void onDialogClickListener(IOSAlertDialog iosAlertDialog) {
+//                            iosAlertDialog.dismiss();
+//                        }
+//                    }).show();
+//        }
     }
 
+    /**
+     * 结束洗澡
+     */
+    @OnClick(R.id.bt_stop_shower)
+    void stopShower() {
+        // 付款之后会断开蓝牙连接，因而在点击结束用水操作时需要重连蓝牙设备
+//        presenter.setCallback(new DeviceBasePresenter.Callback() {
+//            @Override
+//            public void execute() {
+//                presenter.onWrite(Agreement.getInstance().preCheckout(orderId));
+//            }
+//        });
+//        presenter.onConnect(macAddress);
+        presenter.onWrite(Agreement.getInstance().CloseValve());
+//        endShower();
+    }
+
+    @Override
+    public void onFinish() {
+        // mock数据
+        Order order = new Order();
+        order.setDeviceNo("asdas2412as");
+        order.setLocation("一号楼102室内");
+        order.setDeviceNo("asdas2412as");
+        order.setOrderNo("77f88c5ea7886c34");
+        order.setPaymentType(1);
+        order.setWaterUsage(50);
+        order.setConsume(2);
+        order.setCreateTime(System.currentTimeMillis());
+        Intent intent = new Intent(this, OrderDetailActivity.class);
+        intent.putExtra(Constant.EXTRA_KEY, order);
+        startActivity(intent);
+    }
 
     private void startShower() {
         hideBottomLayout();
@@ -326,6 +388,23 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
             };
             countDownTimer.start();
         }
+//        if (countDownTimer != null) {
+//            countDownTimer.start();
+//        } else   {
+//            countDownTimer = new CountDownTimer(10 * 1000, 1 * 1000 - 10) {
+//
+//                @Override
+//                public void onTick(long time) {
+//                    tv_shower_process.setText(getString(R.string.shower_process, 10, (time / 1000)));
+//                }
+//
+//                @Override
+//                public void onFinish() {
+//                    endShower();
+//                }
+//            };
+//            countDownTimer.start();
+//        }
 
     }
 

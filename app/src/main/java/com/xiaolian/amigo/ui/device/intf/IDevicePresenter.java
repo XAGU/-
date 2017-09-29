@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 import com.xiaolian.amigo.ui.ble.intf.IBleInteractiveView;
+import com.xiaolian.amigo.ui.device.DeviceBasePresenter;
 
 /**
  * Created by caidong on 2017/9/22.
@@ -25,4 +26,7 @@ public interface IDevicePresenter<V extends IBaseView> extends IBasePresenter<V>
 
     // 处理蓝牙响应结果
     void handleResult(String data);
+
+    // 设置回调操作
+    void setCallback(DeviceBasePresenter.Callback callback);
 }

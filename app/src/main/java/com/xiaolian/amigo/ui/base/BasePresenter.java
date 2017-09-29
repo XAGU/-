@@ -163,6 +163,13 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
         };
     }
 
+    public void clearObservers(boolean rebuild) {
+        this.clearObservers();
+        if (rebuild) {
+            subscriptions = new CompositeSubscription();
+        }
+    }
+
     public void clearObservers() {
         if (null != subscriptions && !subscriptions.isUnsubscribed()) {
             subscriptions.unsubscribe();
