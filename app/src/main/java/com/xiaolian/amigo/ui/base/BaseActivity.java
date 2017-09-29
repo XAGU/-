@@ -34,8 +34,12 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -89,6 +93,7 @@ public abstract class BaseActivity extends SwipeBackActivity
 
     @Inject
     ISharedPreferencesHelp sharedPreferencesHelp;
+    private Toast toast;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -293,14 +298,53 @@ public abstract class BaseActivity extends SwipeBackActivity
         snackbar.show();
     }
 
+    private void showSuccessToast(String message) {
+        if (toast == null) {
+            toast = new Toast(getApplicationContext());
+            toast.setGravity(Gravity.FILL_HORIZONTAL | Gravity.TOP, 0, 0);
+            toast.setDuration(Toast.LENGTH_SHORT);
+        }
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.view_toast, null, false);
+        TextView tv_content = (TextView) layout.findViewById(R.id.tv_content);
+        tv_content.setText(message);
+        toast.setView(layout);
+        toast.show();
+    }
+
+    private void showSuccessToast(int message) {
+        showSuccessToast(getString(message));
+    }
+
+    private void showErrorToast(String message) {
+        if (toast == null) {
+            toast = new Toast(getApplicationContext());
+            toast.setGravity(Gravity.FILL_HORIZONTAL | Gravity.TOP, 0, 0);
+            toast.setDuration(Toast.LENGTH_SHORT);
+        }
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.view_toast, null, false);
+        TextView tv_content = (TextView) layout.findViewById(R.id.tv_content);
+        tv_content.setBackgroundColor(ContextCompat.getColor(this, R.color.colorFullRed));
+        tv_content.setText(message);
+        toast.setView(layout);
+        toast.show();
+    }
+
+    private void showErrorToast(int message) {
+        showErrorToast(getString(message));
+    }
+
     @Override
     public void onError(String message) {
         if (message != null) {
 //            showSnackBar(message);
-            showErrorSnackBar(message);
+//            showErrorSnackBar(message);
+            showErrorToast(message);
         } else {
 //            showSnackBar(getString(R.string.some_error));
-            showErrorSnackBar(getString(R.string.some_error));
+//            showErrorSnackBar(getString(R.string.some_error));
+            showErrorToast(getString(R.string.some_error));
         }
     }
 
@@ -317,9 +361,11 @@ public abstract class BaseActivity extends SwipeBackActivity
     @Override
     public void onSuccess(String message) {
         if (message != null) {
-            showSuccessSnackBar(message);
+//            showSuccessSnackBar(message);
+            showSuccessToast(message);
         } else {
-            showSuccessSnackBar(getString(R.string.some_error));
+//            showSuccessSnackBar(getString(R.string.some_error));
+            showSuccessToast(getString(R.string.some_error));
         }
     }
 

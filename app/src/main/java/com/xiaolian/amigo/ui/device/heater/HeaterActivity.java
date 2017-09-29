@@ -332,13 +332,11 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
         hideBottomLayout();
         ll_content_shower.setVisibility(View.VISIBLE);
 
-
         if (isMoneyPay) {
             tv_shower_payed.setText("已预付" + (Integer) tv_water_right.getTag(R.id.money_pay_amount) + "元");
         } else {
             tv_shower_payed.setText("已使用" + tv_water_right.getText().toString());
         }
-
     }
 
     private void endShower() {
@@ -406,7 +404,6 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
                 bt_pay.setEnabled(false);
             } else if (resultCode == RESULT_OK) {
                 choosedBonus = (BonusAdaptor.BonusWrapper) data.getExtras().getSerializable(BonusActivity.INTENT_KEY_BONUS_RESULT);
-//                BonusAdaptor.BonusWrapper wrapper = (BonusAdaptor.BonusWrapper) data.getSerializableExtra(BonusActivity.INTENT_KEY_BONUS_RESULT);
                 if (choosedBonus != null) {
                     tv_water_right.setText(choosedBonus.getDesc());
                     bt_pay.setEnabled(true);
