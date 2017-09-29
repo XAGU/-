@@ -279,7 +279,8 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
     @Override
     protected void initView() {
         setHeaderBackground(R.color.white);
-        setMainBackground(R.color.white);
+        setMainBackground(R.color.colorBackgroundGray);
+        setRecyclerViewMargin(0, 0, 0, 0);
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
         presenter.onAttach(LostAndFoundActivity.this);

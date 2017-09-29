@@ -20,4 +20,8 @@ public interface IMainDataManager extends IMainApi {
     void setUserInfo(User user);
 
     void logout();
+
+    boolean isShowUrgencyNotify();
+
+    void setShowUrgencyNotify(boolean isShow);
 }

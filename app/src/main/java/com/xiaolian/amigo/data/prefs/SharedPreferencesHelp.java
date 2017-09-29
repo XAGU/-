@@ -25,6 +25,8 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     private String tokenHolder;
     private User userHolder;
 
+    private boolean isShowUrgencyNotify = true;
+
     private final SharedPreferences mSharedPreferences;
 
     @Inject
@@ -73,6 +75,16 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
         mSharedPreferences.edit().putString(PREF_KEY_SCHOOLNAME, user.getSchoolName()).apply();
         mSharedPreferences.edit().putString(PREF_KEY_NICKNAME, user.getNickName()).apply();
         mSharedPreferences.edit().putString(PREF_KEY_MOBILE, user.getMobile()).apply();
+    }
+
+    @Override
+    public boolean isShowUrgencyNotify() {
+        return this.isShowUrgencyNotify;
+    }
+
+    @Override
+    public void setShowUrgencyNotify(boolean isShow) {
+        this.isShowUrgencyNotify = isShow;
     }
 
     @Override

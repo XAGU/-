@@ -8,6 +8,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -152,6 +153,13 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
 
     protected void setHeaderBackground(@ColorRes int color) {
         ll_header.setBackgroundResource(color);
+    }
+
+    protected void setRecyclerViewMargin(int left, int top, int right, int bottom) {
+        ViewGroup.MarginLayoutParams marginLayoutParams =
+                (ViewGroup.MarginLayoutParams) recyclerView.getLayoutParams();
+        marginLayoutParams.setMargins(left, top, right, bottom);
+        recyclerView.setLayoutParams(marginLayoutParams);
     }
 
     protected void setMainBackground(@ColorRes int color) {

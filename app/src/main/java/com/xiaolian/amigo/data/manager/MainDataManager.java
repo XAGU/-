@@ -61,6 +61,16 @@ public class MainDataManager implements IMainDataManager {
     }
 
     @Override
+    public boolean isShowUrgencyNotify() {
+        return sharedPreferencesHelp.isShowUrgencyNotify();
+    }
+
+    @Override
+    public void setShowUrgencyNotify(boolean isShow) {
+        sharedPreferencesHelp.setShowUrgencyNotify(isShow);
+    }
+
+    @Override
     public Observable<ApiResult<PersonalExtraInfoDTO>> getExtraInfo() {
         return mainApi.getExtraInfo();
     }

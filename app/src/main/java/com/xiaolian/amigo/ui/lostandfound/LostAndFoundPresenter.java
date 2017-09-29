@@ -120,7 +120,7 @@ public class LostAndFoundPresenter<V extends ILostAndFoundView> extends BasePres
                 getMvpView().setRefreshComplete();
                 getMvpView().setLoadMoreComplete();
                 if (null == result.getError()) {
-                    if (result.getData().getLostAndFounds() != null && result.getData().getLostAndFounds().size() > 0) {
+                    if (result.getData().getLostAndFounds() != null) {
                         List<LostAndFoundAdaptor.LostAndFoundWapper> wrappers = new ArrayList<>();
                         for (LostAndFound lostAndFound : result.getData().getLostAndFounds()) {
                             wrappers.add(new LostAndFoundAdaptor.LostAndFoundWapper(lostAndFound));
