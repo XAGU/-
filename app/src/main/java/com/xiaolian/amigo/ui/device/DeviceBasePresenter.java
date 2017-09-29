@@ -162,7 +162,13 @@ public class DeviceBasePresenter<V extends IDeviceView> extends BasePresenter<V>
         if (manager.getStatus(currentMacAddress) != RxBleConnection.RxBleConnectionState.CONNECTED) {
             getMvpView().onStatusError();
 
+            disconnectTriggerSubject.onNext(null);
             clearObservers();
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                Log.wtf(TAG, e);
+            }
 
             // reconnect
             this.setCallback(new Callback() {
@@ -237,39 +243,6 @@ public class DeviceBasePresenter<V extends IDeviceView> extends BasePresenter<V>
         this.onDisConnect();
         getMvpView().onConnectError();
 
-        addObserver(connectionObservable, new BLEObserver<RxBleConnection>() {
-
-            @Override
-            public void onNext(RxBleConnection connection) {
-                connection.queue(new RxBleCustomOperation() {
-                    @NonNull
-                    @Override
-                    public Observable asObservable(BluetoothGatt bluetoothGatt, RxBleGattCallback rxBleGattCallback, Scheduler scheduler) throws Throwable {
-                        return Observable.fromCallable(() -> {
-                            try {
-                                bluetoothGatt.disconnect();
-                                bluetoothGatt.close();
-                            } catch (Exception e) {
-                                // ignore
-                                Log.wtf(TAG, "关闭连接失败", e);
-                            }
-                            return null;
-                        });
-                    }
-                });
-            }
-
-            @Override
-            public void onConnectError() {
-
-            }
-
-            @Override
-            public void onExecuteError(Throwable e) {
-
-            }
-        });
-
         // 判断蓝牙模块是否打开,如果没有提示打开
         BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
         if (null == adapter || !adapter.isEnabled()) {
@@ -292,7 +265,7 @@ public class DeviceBasePresenter<V extends IDeviceView> extends BasePresenter<V>
         return RxLifecycle.bindUntilEvent(lifeCycleSubject, event);
     }
 
-    public static interface Callback {
+    public interface Callback {
         void execute();
     }
 
