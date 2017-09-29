@@ -72,4 +72,6 @@ public interface IBleDataManager {
      * @param macAddress 蓝牙设备mac地址
      */
     RxBleConnection.RxBleConnectionState getStatus(@NonNull String macAddress);
+
+
 }

@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.device;
 
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.support.annotation.CheckResult;
@@ -8,6 +9,8 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.polidea.rxandroidble.RxBleConnection;
+import com.polidea.rxandroidble.RxBleCustomOperation;
+import com.polidea.rxandroidble.internal.connection.RxBleGattCallback;
 import com.trello.rxlifecycle.LifecycleTransformer;
 import com.trello.rxlifecycle.RxLifecycle;
 import com.trello.rxlifecycle.android.ActivityEvent;
@@ -23,6 +26,7 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 import rx.Observable;
+import rx.Scheduler;
 import rx.subjects.BehaviorSubject;
 import rx.subjects.PublishSubject;
 
@@ -159,6 +163,8 @@ public class DeviceBasePresenter<V extends IDeviceView> extends BasePresenter<V>
         if (manager.getStatus(currentMacAddress) != RxBleConnection.RxBleConnectionState.CONNECTED) {
             getMvpView().onStatusError();
 
+            clearObservers();
+
             // reconnect
             this.setCallback(new Callback() {
                 @Override
@@ -169,9 +175,6 @@ public class DeviceBasePresenter<V extends IDeviceView> extends BasePresenter<V>
             onConnect(currentMacAddress);
             return;
         }
-
-        // 测试
-//        writeNotifyCharacteristicDesc();
 
         byte[] commandBytes = HexBytesUtils.hexStr2Bytes(command);
         addObserver(manager.write(connectionObservable, commandBytes),
@@ -235,19 +238,45 @@ public class DeviceBasePresenter<V extends IDeviceView> extends BasePresenter<V>
         this.onDisConnect();
         getMvpView().onConnectError();
 
+        addObserver(connectionObservable, new BLEObserver<RxBleConnection>() {
+
+            @Override
+            public void onNext(RxBleConnection connection) {
+                connection.queue(new RxBleCustomOperation() {
+                    @NonNull
+                    @Override
+                    public Observable asObservable(BluetoothGatt bluetoothGatt, RxBleGattCallback rxBleGattCallback, Scheduler scheduler) throws Throwable {
+                        return Observable.fromCallable(() -> {
+                            try {
+                                bluetoothGatt.disconnect();
+                                bluetoothGatt.close();
+                            } catch (Exception e) {
+                                // ignore
+                                Log.wtf(TAG, "关闭连接失败", e);
+                            }
+                            return null;
+                        });
+                    }
+                });
+            }
+
+            @Override
+            public void onConnectError() {
+
+            }
+
+            @Override
+            public void onExecuteError(Throwable e) {
+
+            }
+        });
+
         // 判断蓝牙模块是否打开,如果没有提示打开
         BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
         if (null == adapter || !adapter.isEnabled()) {
             // 避免重复提示
             if (!bluetoothDisabled) {
-                BaseActivity view = (BaseActivity) getMvpView();
-                view.setBleCallback(new BaseActivity.Callback() {
-                    @Override
-                    public void execute() {
-                        registerNotify();
-                    }
-                });
-                view.getBLEPermission();
+                getMvpView().getBLEPermission();
                 bluetoothDisabled = true;
             }
         }
