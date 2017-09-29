@@ -87,7 +87,7 @@ public class LoginFragment extends Fragment {
 
         @Override
         public void afterTextChanged(Editable s) {
-            if (et_mobile.length() == 11 && et_userpwd.length() > 0) {
+            if (et_mobile.length() == 11 && et_userpwd.length() >= 6) {
                 bt_submit.setEnabled(true);
             } else {
                 bt_submit.setEnabled(false);

@@ -5,8 +5,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.text.Editable;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextWatcher;
 import android.text.style.AbsoluteSizeSpan;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -86,6 +88,39 @@ public class RegisterStep1Fragment extends Fragment {
                 int color = ContextCompat.getColor(getContext(), R.color.colorFullRed);
                 bt_send_verification_code.setTextColor(color);
                 bt_send_verification_code.setBackgroundResource(R.drawable.bg_rect_red_stroke);
+            }
+        });
+
+        int color = ContextCompat.getColor(getContext(), R.color.colorDarkB);
+        bt_send_verification_code.setTextColor(color);
+        bt_send_verification_code.setBackgroundResource(R.drawable.bg_rect_gray_stroke);
+        bt_send_verification_code.setEnabled(false);
+        et_mobile.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (et_mobile.length() == 11) {
+                    bt_send_verification_code.setEnabled(true);
+                    bt_send_verification_code.setText("获取验证码");
+                    int color = ContextCompat.getColor(getContext(), R.color.colorFullRed);
+                    bt_send_verification_code.setTextColor(color);
+                    bt_send_verification_code.setBackgroundResource(R.drawable.bg_rect_red_stroke);
+                } else {
+                    bt_send_verification_code.setText("获取验证码");
+                    int color = ContextCompat.getColor(getContext(), R.color.colorDarkB);
+                    bt_send_verification_code.setTextColor(color);
+                    bt_send_verification_code.setBackgroundResource(R.drawable.bg_rect_gray_stroke);
+                    bt_send_verification_code.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
     }

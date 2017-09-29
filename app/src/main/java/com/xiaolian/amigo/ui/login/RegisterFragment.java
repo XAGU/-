@@ -75,7 +75,7 @@ public class RegisterFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ViewUtil.setEditHintAndSize(getString(R.string.password_hint), 14, et_userpwd);
+        ViewUtil.setEditHintAndSize(getString(R.string.please_enter_least_six_password), 14, et_userpwd);
         ViewUtil.setEditHintAndSize(getString(R.string.school_hint), 14, tv_school);
     }
 
