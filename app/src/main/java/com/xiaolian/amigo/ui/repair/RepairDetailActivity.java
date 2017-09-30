@@ -38,6 +38,7 @@ import butterknife.OnClick;
  * <p>
  * Created by caidong on 2017/9/18.
  */
+// TODO: 提醒客服 ／repair/remind
 public class RepairDetailActivity extends RepairBaseActivity implements IRepairDetailView {
 
     @Inject

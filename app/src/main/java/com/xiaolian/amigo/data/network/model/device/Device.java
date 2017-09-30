@@ -33,4 +33,6 @@ public class Device {
     private Integer type;
     // 设备用途
     private Integer usefor;
+
+    private String macAddress;
 }

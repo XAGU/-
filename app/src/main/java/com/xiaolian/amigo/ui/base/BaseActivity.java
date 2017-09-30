@@ -62,7 +62,7 @@ import javax.inject.Inject;
 import butterknife.OnClick;
 import butterknife.Optional;
 import butterknife.Unbinder;
-
+// TODO: 加载去掉浮层 添加菊花
 
 public abstract class BaseActivity extends SwipeBackActivity
         implements IBaseView {

@@ -1,10 +1,12 @@
 package com.xiaolian.amigo.data.network;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.dto.request.QueryDeviceListReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.QueryTimeValidReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.ReadNotifyReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.PersonalExtraInfoDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.QueryDeviceListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryTimeValidRespDTO;
 
 import retrofit2.http.Body;
@@ -29,4 +31,8 @@ public interface IMainApi {
     // 告诉服务端通知已读（紧急公告）
     @POST("/notify/read")
     Observable<ApiResult<BooleanRespDTO>> readUrgentNotify(@Body ReadNotifyReqDTO reqDTO);
+
+    // 设备列表
+    @POST("/device/list")
+    Observable<ApiResult<QueryDeviceListRespDTO>> queryDeviceList(@Body QueryDeviceListReqDTO reqDTO);
 }

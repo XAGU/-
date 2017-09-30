@@ -4,13 +4,17 @@ import android.text.TextUtils;
 
 import com.xiaolian.amigo.data.manager.intf.IMainDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.dto.request.QueryDeviceListReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.request.QueryNotifyListReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.QueryTimeValidReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.ReadNotifyReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.PersonalExtraInfoDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.QueryDeviceListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryTimeValidRespDTO;
 import com.xiaolian.amigo.data.network.model.user.User;
 import com.xiaolian.amigo.ui.base.BasePresenter;
+import com.xiaolian.amigo.ui.device.heater.HeaterActivity;
 import com.xiaolian.amigo.ui.main.intf.IMainPresenter;
 import com.xiaolian.amigo.ui.main.intf.IMainView;
 
@@ -90,7 +94,12 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
             public void onReady(ApiResult<QueryTimeValidRespDTO> result) {
                 if (null == result.getError()) {
                     if (result.getData().isValid()) {
-                        getMvpView().gotoDevice(clz);
+//                        getMvpView().gotoDevice(clz);
+                        if (deviceType == 1) {
+                            getHeaterDeviceMacAddress();
+                        } else if (deviceType == 2) {
+                            getMvpView().gotoDevice(clz);
+                        }
                     } else {
                         getMvpView().showTimeValidDialog(result.getData().getTitle(),
                                 result.getData().getRemark(), clz);
@@ -132,6 +141,36 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
     @Override
     public void setShowUrgencyNotify(boolean isShow) {
         manager.setShowUrgencyNotify(isShow);
+    }
+
+    @Override
+    public void getHeaterDeviceMacAddress() {
+        QueryDeviceListReqDTO reqDTO = new QueryDeviceListReqDTO();
+        reqDTO.setSchoolId(manager.getUserInfo().getSchoolId());
+        reqDTO.setType(1);
+        if (manager.getUserInfo().getResidenceId() == null) {
+            getMvpView().onError("请绑定默认宿舍");
+            return;
+        } else {
+            reqDTO.setResidenceId(manager.getUserInfo().getResidenceId());
+        }
+        addObserver(manager.queryDeviceList(reqDTO), new NetworkObserver<ApiResult<QueryDeviceListRespDTO>>() {
+
+            @Override
+            public void onReady(ApiResult<QueryDeviceListRespDTO> result) {
+                if (null == result.getError()) {
+                    if (result.getData().getDevices() != null
+                            && !result.getData().getDevices().isEmpty()
+                            && result.getData().getDevices().get(0).getMacAddress() != null) {
+                        getMvpView().gotoDevice(HeaterActivity.class, result.getData().getDevices().get(0).getMacAddress());
+                    } else {
+                        getMvpView().onError("设备不存在");
+                    }
+                } else {
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+        });
     }
 
 

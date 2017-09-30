@@ -1,5 +1,7 @@
 package com.xiaolian.amigo.ui.main.intf;
 
+import android.content.Intent;
+
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 
 /**
@@ -14,6 +16,8 @@ public interface IMainView extends IBaseView {
     void showTimeValidDialog(String title, String remark, Class clz);
 
     void gotoDevice(Class clz);
+
+    void gotoDevice(Class clz, String macAddress);
 
     void showUrgentNotify(String content, Long id);
 

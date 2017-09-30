@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
+import com.xiaolian.amigo.ui.device.heater.HeaterActivity;
 import com.xiaolian.amigo.ui.login.LoginActivity;
 import com.xiaolian.amigo.ui.main.intf.IMainPresenter;
 import com.xiaolian.amigo.ui.main.intf.IMainView;
@@ -36,6 +37,7 @@ import butterknife.OnClick;
 public class MainActivity extends MainBaseActivity implements IMainView {
 
     private static final String TAG = MainActivity.class.getSimpleName();
+    public static final String INTENT_KEY_MAC_ADDRESS = "intent_key_mac_address";
 
     @Inject
     IMainPresenter<IMainView> presenter;
@@ -190,6 +192,13 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     }
 
     @Override
+    public void gotoDevice(Class clz, String macAddress) {
+        Intent intent = new Intent(this, clz);
+        intent.putExtra(INTENT_KEY_MAC_ADDRESS, macAddress);
+        startActivity(intent);
+    }
+
+    @Override
     public void showUrgentNotify(String content, Long id) {
         NoticeAlertDialog dialog = new NoticeAlertDialog(this);
         dialog.setContent(content);
@@ -223,7 +232,11 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     }
 
     public void checkTimeValid(Device device, Class clz) {
-        presenter.queryTimeValid(device.getType(), clz);
+        if (TextUtils.isEmpty(presenter.getToken())) {
+            startActivity(new Intent(this, LoginActivity.class));
+        } else {
+            presenter.queryTimeValid(device.getType(), clz);
+        }
     }
 
     public void logout() {

@@ -19,6 +19,7 @@ import com.xiaolian.amigo.ui.bonus.adaptor.BonusAdaptor;
 import com.xiaolian.amigo.ui.device.DeviceBaseActivity;
 import com.xiaolian.amigo.ui.device.intf.heator.IHeaterPresenter;
 import com.xiaolian.amigo.ui.device.intf.heator.IHeaterView;
+import com.xiaolian.amigo.ui.main.MainActivity;
 import com.xiaolian.amigo.ui.order.OrderDetailActivity;
 import com.xiaolian.amigo.ui.wallet.RechargeActivity;
 import com.xiaolian.amigo.ui.widget.DotFlashView;
@@ -372,7 +373,11 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
         initView();
 
         presenter.onAttach(this);
-        macAddress = "08:7C:BE:E1:FD:3B";
+        if (getIntent() != null) {
+            macAddress = getIntent().getStringExtra(MainActivity.INTENT_KEY_MAC_ADDRESS);
+        } else {
+            macAddress = "08:7C:BE:E1:FD:3B";
+        }
         // 连接蓝牙设备
         presenter.onConnect(macAddress);
     }
