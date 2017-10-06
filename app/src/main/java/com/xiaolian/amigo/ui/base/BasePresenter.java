@@ -23,13 +23,13 @@ import android.util.Log;
 import com.polidea.rxandroidble.exceptions.BleDisconnectedException;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.Error;
 import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
+import com.xiaolian.amigo.data.network.model.Error;
 
 import retrofit2.HttpException;
 import rx.Observable;
-import rx.Observer;
+import rx.Scheduler;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -55,6 +55,7 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
 
     public BasePresenter() {
         subscriptions = new CompositeSubscription();
+
         HandlerThread thread = new HandlerThread("BasePresenter");
         thread.start();
         handler = new Handler(thread.getLooper());
@@ -139,22 +140,37 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
     @Override
     public <P> void addObserver(Observable<P> observable, NetworkObserver observer) {
         if (null != subscriptions) {
-            handler.post(() -> this.subscriptions.add(
+            // handler.post(() ->
+            this.subscriptions.add(
                     observable
                             .compose(this.applySchedulers())
-                            .subscribe(observer)
-            ));
+                            .subscribe(observer));
+            // ));
         }
     }
 
     @Override
     public <P> void addObserver(Observable<P> observable, BLEObserver observer) {
         if (null != subscriptions) {
-            handler.post(() -> this.subscriptions.add(
+            // handler.post(() ->
+            this.subscriptions.add(
                     observable
                             .compose(this.applySchedulers())
-                            .subscribe(observer)
-            ));
+                            .subscribe(observer));
+            // ));
+        }
+    }
+
+    @Override
+    public <P> void addObserver(Observable<P> observable, BLEObserver observer, Scheduler scheduler) {
+        if (null != subscriptions) {
+            //handler.post(() ->
+            this.subscriptions.add(
+                    observable
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(scheduler)
+                            .subscribe(observer));
+            // ));
         }
     }
 
@@ -169,18 +185,18 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
         };
     }
 
-    public void clearObservers(boolean rebuild) {
-        this.clearObservers();
-        if (rebuild) {
-            subscriptions = new CompositeSubscription();
+    public void clearObservers() {
+        if (null != subscriptions && !subscriptions.isUnsubscribed()) {
+            // handler.post(() -> {
+            subscriptions.unsubscribe();
+            subscriptions.clear();
+            // });
         }
     }
 
-    public void clearObservers() {
-        if (null != subscriptions && !subscriptions.isUnsubscribed()) {
-            subscriptions.unsubscribe();
-            subscriptions.clear();
-        }
+    // 重置订阅列表集合
+    public void resetSubscriptions() {
+        subscriptions = new CompositeSubscription();
     }
 
     public V getMvpView() {
