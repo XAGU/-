@@ -362,8 +362,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     getMvpView().onConnectError();
                 } else {
                     Log.e(TAG, "握手成功！data:" + data);
-                    Agreement.getInstance().InitKey(data, "AAABCDDEEFADABBB");
+                     Agreement.getInstance().InitKey(data, "AAABCDDEEFADABBB");
                     // getMvpView().onConnected();
+                    getMvpView().onConnectSuccess();
                 }
                 break;
             case "a802":

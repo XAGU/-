@@ -263,6 +263,16 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
         }
     }
 
+    @Override
+    public void onConnectSuccess() {
+        showConnected();
+    }
+
+    @Override
+    public void onReconnectSuccess() {
+
+    }
+
     /**
      * 隐藏底部布局
      */
@@ -299,7 +309,7 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
      * 结束洗澡
      */
     @OnClick(R.id.bt_stop_shower)
-    void stopShower() {
+    void stopShower(Button button) {
         // 付款之后会断开蓝牙连接，因而在点击结束用水操作时需要重连蓝牙设备
 //        presenter.setCallback(new DeviceBasePresenter.Callback() {
 //            @Override
@@ -308,6 +318,7 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
 //            }
 //        });
 //        presenter.onConnect(macAddress);
+        button.setEnabled(false);
         presenter.onWrite(Agreement.getInstance().CloseValve());
 //        endShower();
     }
@@ -392,12 +403,12 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
 
         // 默认显示连接中状态
         showConnecting();
-        tv_water_right.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-               showConnected();
-            }
-        }, 3000);
+//        tv_water_right.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//               showConnected();
+//            }
+//        }, 3000);
     }
 
     @Override
