@@ -53,6 +53,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     private String currentMacAddress;
     // 表示是否正在处理蓝牙被主动关闭
     private AtomicBoolean handleBleAdaptorClose = new AtomicBoolean(false);
+    // 处理蓝牙关闭时的时间戳(取当前时间往前推20秒)
+    private Long handleTime = System.currentTimeMillis() - 20000;
     // 回调任务（存放结束用水的回调）
     private Callback callback;
     // 订阅设备返回的消息
@@ -327,7 +329,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         try {
             Thread.sleep(mills);
         } catch (InterruptedException e) {
-            // ignore
+            Log.wtf(TAG, e);
         }
     }
 
@@ -335,10 +337,15 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     private void handleBluetoothAccidentClose() {
         // 判断蓝牙模块是否打开,如果没有提示打开
         BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
+        Log.i(TAG, Thread.currentThread().getName() + " 状态改变前，handleBleAdaptorClose:" + handleBleAdaptorClose.get());
         while ((null == adapter || !adapter.isEnabled()) && !handleBleAdaptorClose.getAndSet(true)) {
-            getMvpView().getBLEPermission();
-            // 10s内不需要给用户重复提示
-            safeWait(10000);
+            // 20s内不需要给用户重复提示
+            long now = System.currentTimeMillis();
+            if (now - handleTime > 20000) {
+                Log.i(TAG, Thread.currentThread().getName() + " 状态改变后，handleBleAdaptorClose:" + handleBleAdaptorClose.get());
+                getMvpView().getBLEPermission();
+                handleTime = now;
+            }
             handleBleAdaptorClose.set(false);
         }
     }

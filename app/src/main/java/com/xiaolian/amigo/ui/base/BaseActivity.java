@@ -457,8 +457,6 @@ public abstract class BaseActivity extends SwipeBackActivity
 //        int REQUEST_ENABLE_BT = 1;
 //        this.startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
 
-        Log.i(TAG, "手机打开蓝牙成功！");
-
         // 2、6.0版本以上的收必须动态申请权限，否则会提示没有操作权限
         RxPermissions rxPermissions = RxPermissions.getInstance(this);
         rxPermissions.request(Manifest.permission.BLUETOOTH, Manifest.permission.ACCESS_COARSE_LOCATION)
