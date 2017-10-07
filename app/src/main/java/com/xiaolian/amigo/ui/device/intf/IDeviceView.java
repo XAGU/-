@@ -22,4 +22,10 @@ public interface IDeviceView extends IBaseView {
 
     // 设备用水结束
     void onFinish();
+
+    // 设备连接成功
+    void onConnectSuccess();
+
+    // 设备重连成功
+    void onReconnectSuccess();
 }
