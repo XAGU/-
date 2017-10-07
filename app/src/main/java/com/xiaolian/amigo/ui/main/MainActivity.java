@@ -150,7 +150,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     /**
      * 通知
      */
-    @OnClick(R.id.rl_notice)
+    @OnClick(R.id.iv_notice)
     void gotoNoticeList() {
         startActivity(new Intent(this, NoticeActivity.class));
     }
@@ -193,9 +193,13 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public void gotoDevice(Class clz, String macAddress) {
-        Intent intent = new Intent(this, clz);
-        intent.putExtra(INTENT_KEY_MAC_ADDRESS, macAddress);
-        startActivity(intent);
+        if (TextUtils.isEmpty(macAddress)) {
+            onError("设备macAddress不合法");
+        } else {
+            Intent intent = new Intent(this, clz);
+            intent.putExtra(INTENT_KEY_MAC_ADDRESS, macAddress);
+            startActivity(intent);
+        }
     }
 
     @Override

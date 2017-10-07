@@ -397,7 +397,7 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
             public void run() {
                showConnected();
             }
-        }, 3000);
+        }, 2000);
     }
 
     @Override
