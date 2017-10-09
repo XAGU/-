@@ -13,7 +13,7 @@ import com.xiaolian.amigo.ui.base.intf.IBaseView;
 public interface IMainView extends IBaseView {
     void showNoticeAmount(Integer amount);
 
-    void showTimeValidDialog(String title, String remark, Class clz);
+    void showTimeValidDialog(String title, String remark, Class clz, int deviceType);
 
     void gotoDevice(Class clz);
 

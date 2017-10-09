@@ -26,6 +26,9 @@ import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 import com.xiaolian.amigo.data.network.model.Error;
+import com.xiaolian.amigo.util.NetworkUtil;
+
+import java.net.ConnectException;
 
 import retrofit2.HttpException;
 import rx.Observable;
@@ -63,8 +66,10 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
 
     @Override
     public void onRemoteInvocationError(Throwable e) {
-        // TODO 和mMvpView关联
-        if (e instanceof HttpException) {
+        if (e instanceof ConnectException) {
+            getMvpView().onError("服务器飞走啦，努力修复中");
+        }
+        else if (e instanceof HttpException) {
             switch (((HttpException) e).code()) {
                 case 401:
                     getMvpView().onError(R.string.please_login);
@@ -139,6 +144,10 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
 
     @Override
     public <P> void addObserver(Observable<P> observable, NetworkObserver observer) {
+        if (!getMvpView().isNetworkAvailable()) {
+            getMvpView().onError("你的网络不太好哦");
+            return;
+        }
         if (null != subscriptions) {
             // handler.post(() ->
             this.subscriptions.add(

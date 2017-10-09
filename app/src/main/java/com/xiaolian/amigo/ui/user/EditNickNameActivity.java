@@ -74,7 +74,7 @@ public class EditNickNameActivity extends UserBaseActivity implements IEditNickN
         switch (v.getId()) {
             case R.id.bt_submit:
                 Log.d(TAG, edit_nickname.getText().toString());
-                presenter.updateNickName(edit_nickname.getText().toString());
+                presenter.updateNickName(edit_nickname.getText().toString().trim());
                 break;
         }
     }

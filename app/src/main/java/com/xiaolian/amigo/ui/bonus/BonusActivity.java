@@ -25,8 +25,6 @@ import butterknife.ButterKnife;
  * 红包Activity
  * @author zcd
  */
-// TODO: 显示红包 未使用1 未过期1 过期红包 未使用1 已过期2
-
 public class BonusActivity extends BonusBaseListActivity implements IBonusView {
     public static final String INTENT_KEY_BONUS_ACTION = "intent_key_bonus_action";
     public static final String INTENT_KEY_BONUS_RESULT = "intent_key_bonus_result";

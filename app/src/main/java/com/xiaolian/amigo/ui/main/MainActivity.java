@@ -14,13 +14,14 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
-import com.xiaolian.amigo.ui.device.heater.HeaterActivity;
 import com.xiaolian.amigo.ui.login.LoginActivity;
 import com.xiaolian.amigo.ui.main.intf.IMainPresenter;
 import com.xiaolian.amigo.ui.main.intf.IMainView;
 import com.xiaolian.amigo.ui.notice.NoticeActivity;
+import com.xiaolian.amigo.ui.user.EditProfileActivity;
 import com.xiaolian.amigo.ui.widget.dialog.AvailabilityDialog;
 import com.xiaolian.amigo.ui.widget.dialog.NoticeAlertDialog;
 
@@ -45,14 +46,17 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @BindView(R.id.bt_switch)
     ImageView btSwitch;
 
-    @BindView(R.id.iv_avatar)
-    ImageView iv_avatar;
-
     @BindView(R.id.tv_nickName)
     TextView tv_nickName;
 
     @BindView(R.id.tv_schoolName)
     TextView tv_schoolName;
+
+    /**
+     * 头像
+     */
+    @BindView(R.id.iv_avatar)
+    ImageView iv_avatar;
 
     /**
      * 通知数量上标
@@ -97,9 +101,19 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         if (!presenter.isLogin()) {
             tv_nickName.setText("登录／注册");
             tv_schoolName.setText("登录以后才能使用哦");
+            iv_avatar.setImageResource(R.drawable.ic_picture_error);
         } else {
             tv_nickName.setText(presenter.getUserInfo().getNickName());
             tv_schoolName.setText(presenter.getUserInfo().getSchoolName());
+            if (presenter.getUserInfo().getPictureUrl() != null) {
+                Glide.with(this).load(presenter.getUserInfo().getPictureUrl())
+                        .asBitmap()
+                        .placeholder(R.drawable.ic_picture_error)
+                        .error(R.drawable.ic_picture_error)
+                        .into(iv_avatar);
+            } else {
+                iv_avatar.setImageResource(R.drawable.ic_picture_error);
+            }
         }
     }
 
@@ -150,9 +164,25 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     /**
      * 通知
      */
-    @OnClick(R.id.rl_notice)
+    @OnClick(R.id.iv_notice)
     void gotoNoticeList() {
         startActivity(new Intent(this, NoticeActivity.class));
+    }
+
+    /**
+     * 点击头像 跳转到编辑个人信息页面
+     */
+    @OnClick(R.id.iv_avatar)
+    void onAvatarClick() {
+        startActivity(this, EditProfileActivity.class);
+    }
+
+    /**
+     * 点击昵称 跳转到编辑个人信息页面
+     */
+    @OnClick(R.id.ll_user_info)
+    void onUserInfoClick() {
+        startActivity(this, EditProfileActivity.class);
     }
 
 
@@ -171,13 +201,17 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     }
 
     @Override
-    public void showTimeValidDialog(String title, String remark, Class clz) {
+    public void showTimeValidDialog(String title, String remark, Class clz, int deviceType) {
         AvailabilityDialog dialog = new AvailabilityDialog(this);
         dialog.setOkText(getString(R.string.keep_use));
         dialog.setTip(title);
         dialog.setSubTip(remark);
         dialog.setOnOkClickListener(dialog1 -> {
-            startActivity(clz);
+            if (deviceType == 1) {
+                presenter.getHeaterDeviceMacAddress();
+            } else {
+                startActivity(clz);
+            }
         });
         dialog.show();
     }
@@ -193,9 +227,13 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public void gotoDevice(Class clz, String macAddress) {
-        Intent intent = new Intent(this, clz);
-        intent.putExtra(INTENT_KEY_MAC_ADDRESS, macAddress);
-        startActivity(intent);
+        if (TextUtils.isEmpty(macAddress)) {
+            onError("设备macAddress不合法");
+        } else {
+            Intent intent = new Intent(this, clz);
+            intent.putExtra(INTENT_KEY_MAC_ADDRESS, macAddress);
+            startActivity(intent);
+        }
     }
 
     @Override

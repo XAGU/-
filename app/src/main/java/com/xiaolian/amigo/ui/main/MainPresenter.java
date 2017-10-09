@@ -102,7 +102,7 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
                         }
                     } else {
                         getMvpView().showTimeValidDialog(result.getData().getTitle(),
-                                result.getData().getRemark(), clz);
+                                result.getData().getRemark(), clz, deviceType);
                     }
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());

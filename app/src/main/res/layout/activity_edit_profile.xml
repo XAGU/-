@@ -30,15 +30,15 @@
             android:layout_alignParentRight="true"
             android:src="@drawable/arrow_right" />
 
-        <com.xiaolian.amigo.tmp.component.CircleImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_avatar"
             android:layout_width="37dp"
             android:layout_height="37dp"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
             android:layout_toLeftOf="@id/imageView1"
-
-            android:src="@drawable/default_avatar" />
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_picture_error" />
 
         <View
             android:layout_width="match_parent"
