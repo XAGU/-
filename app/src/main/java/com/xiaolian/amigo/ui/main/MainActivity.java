@@ -101,6 +101,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         if (!presenter.isLogin()) {
             tv_nickName.setText("登录／注册");
             tv_schoolName.setText("登录以后才能使用哦");
+            iv_avatar.setImageResource(R.drawable.ic_picture_error);
         } else {
             tv_nickName.setText(presenter.getUserInfo().getNickName());
             tv_schoolName.setText(presenter.getUserInfo().getSchoolName());
