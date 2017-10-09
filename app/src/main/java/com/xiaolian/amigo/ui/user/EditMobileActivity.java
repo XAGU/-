@@ -49,7 +49,7 @@ public class EditMobileActivity extends UserBaseActivity implements IEditMobileV
 
     @OnClick(R.id.bt_submit)
     void onSubmitButtonClick() {
-        presenter.updateMobile(et_mobile.getText().toString(), et_verify_code.getText().toString());
+        presenter.updateMobile(et_mobile.getText().toString().trim(), et_verify_code.getText().toString());
     }
 
     private boolean verify(String s) {
