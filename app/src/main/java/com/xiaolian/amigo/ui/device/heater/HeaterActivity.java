@@ -289,10 +289,12 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
     @Override
     public void onConnectError() {
         // 连接失败时显示重连页面
-        ll_content_normal.setVisibility(View.GONE);
-        ll_content_shower.setVisibility(View.GONE);
-        ll_content_unconnected.setVisibility(View.GONE);
-        ll_content_connect_failed.setVisibility(View.VISIBLE);
+        if (null != ll_content_normal && null != ll_content_shower && null != ll_content_unconnected && null != ll_content_connect_failed) {
+            ll_content_normal.setVisibility(View.GONE);
+            ll_content_shower.setVisibility(View.GONE);
+            ll_content_unconnected.setVisibility(View.GONE);
+            ll_content_connect_failed.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -321,7 +323,7 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
      * 确认支付点击事件
      */
     @OnClick(R.id.bt_pay)
-    void onOkButtonClick() {
+    void onOkButtonClick(Button button) {
         if (!isMoneyPay) {
             if (choosedBonus == null) {
                 showMessage("请选择红包");
@@ -336,15 +338,14 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
             presenter.queryWallet((Integer) tv_water_right.getTag(R.id.money_pay_amount));
         }
 
-        // 点击支付操作时蓝牙必须为开启状态
-        if (!isBleOpen()) {
-            setBleCallback(null);
-            getBlePermission();
-            return;
-        }
 
-        // 用户点击支付操作时当前的蓝牙连接还在，直接向蓝牙设备写指令即可
-        presenter.onWrite(Agreement.getInstance().setBalance(orderId, 50));
+        // 点击支付操作时蓝牙必须为开启状态
+        setBleCallback(() -> {
+            button.setEnabled(false);
+            presenter.onWrite(Agreement.getInstance().setBalance(orderId, 50));
+        });
+        getBlePermission();
+
     }
 
     /**
@@ -353,14 +354,11 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
     @OnClick(R.id.bt_stop_shower)
     void stopShower(Button button) {
         // 点击结束用水操作时蓝牙必须为开启状态
-        if (!isBleOpen()) {
-            setBleCallback(null);
-            getBlePermission();
-            return;
-        }
-
-        button.setEnabled(false);
-        presenter.onWrite(Agreement.getInstance().CloseValve());
+        setBleCallback(() -> {
+            button.setEnabled(false);
+            presenter.onWrite(Agreement.getInstance().CloseValve());
+        });
+        getBlePermission();
     }
 
     /**
@@ -369,17 +367,14 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
     @OnClick(R.id.bt_reconnect)
     void reconnect(Button button) {
         // 点击重连按钮时蓝牙必须为开启状态
-        if (!isBleOpen()) {
-            setBleCallback(null);
-            getBlePermission();
-            return;
-        }
+        setBleCallback(() -> {
+            // 显示正在连接画面
+            hideBottomLayout();
+            ll_content_unconnected.setVisibility(View.VISIBLE);
 
-        // 显示正在连接画面
-        hideBottomLayout();
-        ll_content_unconnected.setVisibility(View.VISIBLE);
-
-        presenter.onReconnect(macAddress);
+            presenter.onReconnect(macAddress);
+        });
+        getBlePermission();
     }
 
     @Override
