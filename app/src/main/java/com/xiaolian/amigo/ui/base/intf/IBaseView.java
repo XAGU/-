@@ -45,7 +45,13 @@ public interface IBaseView {
     void hideKeyboard();
 
     // 打开蓝牙，获取蓝牙设备权限
-    void getBLEPermission();
+    void getBlePermission();
+
+    // 判断蓝牙是否打开
+    boolean isBleOpen();
 
     void redirectToLogin();
+
+    // 子线程提交UI更新task
+    void post(Runnable task);
 }

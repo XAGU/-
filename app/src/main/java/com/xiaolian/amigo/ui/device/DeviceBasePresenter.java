@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.polidea.rxandroidble.RxBleConnection;
-import com.polidea.rxandroidble.scan.ScanResult;
 import com.trello.rxlifecycle.LifecycleTransformer;
 import com.trello.rxlifecycle.RxLifecycle;
 import com.trello.rxlifecycle.android.ActivityEvent;
@@ -59,8 +58,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     private Callback callback;
     // 订阅设备返回的消息
     private Subscription busSubscriber;
-    // 清除subscriptions标志
-    private AtomicBoolean clear = new AtomicBoolean(false);
+    // 处理蓝牙连接错误标识
+    private AtomicBoolean handleConnectError = new AtomicBoolean(false);
     // 信号量
     private byte[] lock = new byte[0];
     // 标志是否重连
@@ -198,25 +197,26 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     }
 
     @Override
+    public void onReconnect(@NonNull String macAddress) {
+        // 清空旧连接
+        clearObservers();
+
+        // 此步骤非常重要，不加会造成重连请求掉进黑洞的现象
+        resetSubscriptions();
+
+        // 设置重连标识
+        reconnect = true;
+
+        safeWait(1000);
+
+        // 触发重连机制
+        onConnect(currentMacAddress);
+    }
+
+    @Override
     public void onWrite(@NonNull String command) {
         if (manager.getStatus(currentMacAddress) != RxBleConnection.RxBleConnectionState.CONNECTED) {
-            getMvpView().onStatusError();
-
-            // 清空旧连接
-            clearObservers();
-            // 此步骤非常重要，不加会造成重连请求掉进黑洞的现象
-            resetSubscriptions();
-
-            handleBluetoothAccidentClose();
-
-            // 设置重连成功后的回调
-            reconnect = true;
-            this.setCallback(() -> onWrite(command));
-
-            safeWait(1000);
-
-            // 触发重连机制
-            onConnect(currentMacAddress);
+            getMvpView().onConnectError();
             return;
         }
 
@@ -244,7 +244,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     @Override
     public void registerNotify() {
         if (manager.getStatus(currentMacAddress) != RxBleConnection.RxBleConnectionState.CONNECTED) {
-            getMvpView().onStatusError();
+            getMvpView().onConnectError();
             return;
         }
 
@@ -267,38 +267,40 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                             String result = HexBytesUtils.bytesToHexString(data);
                             Log.i(TAG, "接收数据成功！data:" + result);
                             RxBus.getDefault().post(result);
-//                            handleResult(result);
                         }
                     }
                 }, Schedulers.io());
 
         safeWait(500);
-        if (!reconnect) {
-            // 重连时不需要再次握手连接
-            onWrite(Agreement.getInstance().createConnection());
+
+        handleConnectError.set(false);
+
+        if (reconnect) {
+            // 重新连接成功时不需要再次握手
+            getMvpView().post(() -> getMvpView().onReconnectSuccess());
         } else {
-            // 回调下发断连前的指令
-            if (null != callback) {
-                callback.execute();
-            }
+            // 握手连接
+            onWrite(Agreement.getInstance().createConnection());
         }
     }
 
     // 统一处理设备连接异常
     private void handleDisConnectError() {
         Log.wtf(TAG, "蓝牙连接已断开！");
-        getMvpView().onConnectError();
 
-        if (!clear.getAndSet(true)) {
+        if (!handleConnectError.getAndSet(true)) {
+            // 断开链接
             disconnectTriggerSubject.onNext(null);
+
+            // 清空所有连接事件监听着
             clearObservers();
 
-            safeWait(5000);
-            clear.set(false);
+            // 跳转至连接失败页面
+            getMvpView().post(() -> getMvpView().onConnectError());
         }
 
         // 处理蓝牙在用水过程中被用户恶意关闭
-        handleBluetoothAccidentClose();
+        // handleBluetoothAccidentClose();
     }
 
     @Override
@@ -343,7 +345,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             long now = System.currentTimeMillis();
             if (now - handleTime > 20000) {
                 Log.i(TAG, Thread.currentThread().getName() + " 状态改变后，handleBleAdaptorClose:" + handleBleAdaptorClose.get());
-                getMvpView().getBLEPermission();
+                getMvpView().getBlePermission();
                 handleTime = now;
             }
             handleBleAdaptorClose.set(false);
@@ -362,7 +364,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     getMvpView().onConnectError();
                 } else {
                     Log.e(TAG, "握手成功！data:" + data);
-                     Agreement.getInstance().InitKey(data, "AAABCDDEEFADABBB");
+                    Agreement.getInstance().InitKey(data, "AAABCDDEEFADABBB");
                     // getMvpView().onConnected();
                     getMvpView().onConnectSuccess();
                 }
@@ -372,7 +374,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     Log.e(TAG, "开阀失败！data:" + data);
                 } else {
                     Log.e(TAG, "开阀成功！data:" + data);
-                    // getMvpView().onOpen();
+                    getMvpView().onOpen();
                     // 关闭连接
                     // clearObservers(true);
                 }

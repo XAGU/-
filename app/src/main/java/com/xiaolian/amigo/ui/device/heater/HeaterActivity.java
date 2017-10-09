@@ -36,6 +36,7 @@ import butterknife.OnClick;
 
 /**
  * 热水器设备页
+ *
  * @author zcd
  */
 public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
@@ -61,6 +62,12 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
      */
     @BindView(R.id.ll_content_unconnected)
     LinearLayout ll_content_unconnected;
+
+    /**
+     * 连接失败页面
+     */
+    @BindView(R.id.ll_content_connect_failed)
+    LinearLayout ll_content_connect_failed;
 
     /**
      * 开始使用页面
@@ -156,6 +163,8 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
      */
     private boolean isMoneyPay = true;
 
+    // 当前步骤，默认为第一步，1 - 确认支付页面， 2 - 结束用水页面
+    private int step = 1;
 
     @Inject
     IHeaterPresenter<IHeaterView> presenter;
@@ -266,11 +275,36 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
     @Override
     public void onConnectSuccess() {
         showConnected();
+        // 标记步骤为确认支付页面
+        step = 1;
+    }
+
+    @Override
+    public void onOpen() {
+        startShower();
+        // 标记步骤为结束用水页面
+        step = 2;
+    }
+
+    @Override
+    public void onConnectError() {
+        // 连接失败时显示重连页面
+        ll_content_normal.setVisibility(View.GONE);
+        ll_content_shower.setVisibility(View.GONE);
+        ll_content_unconnected.setVisibility(View.GONE);
+        ll_content_connect_failed.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onReconnectSuccess() {
-
+        hideBottomLayout();
+        if (step == 1) {
+            // 显示确认支付页面
+            ll_content_normal.setVisibility(View.VISIBLE);
+        } else {
+            // 显示结束用水页面
+            ll_content_shower.setVisibility(View.VISIBLE);
+        }
     }
 
     /**
@@ -280,6 +314,7 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
         ll_content_normal.setVisibility(View.GONE);
         ll_content_shower.setVisibility(View.GONE);
         ll_content_unconnected.setVisibility(View.GONE);
+        ll_content_connect_failed.setVisibility(View.GONE);
     }
 
     /**
@@ -300,9 +335,16 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
             }
             presenter.queryWallet((Integer) tv_water_right.getTag(R.id.money_pay_amount));
         }
+
+        // 点击支付操作时蓝牙必须为开启状态
+        if (!isBleOpen()) {
+            setBleCallback(null);
+            getBlePermission();
+            return;
+        }
+
         // 用户点击支付操作时当前的蓝牙连接还在，直接向蓝牙设备写指令即可
         presenter.onWrite(Agreement.getInstance().setBalance(orderId, 50));
-        startShower();
     }
 
     /**
@@ -310,17 +352,34 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
      */
     @OnClick(R.id.bt_stop_shower)
     void stopShower(Button button) {
-        // 付款之后会断开蓝牙连接，因而在点击结束用水操作时需要重连蓝牙设备
-//        presenter.setCallback(new DeviceBasePresenter.Callback() {
-//            @Override
-//            public void execute() {
-//                presenter.onWrite(Agreement.getInstance().preCheckout(orderId));
-//            }
-//        });
-//        presenter.onConnect(macAddress);
+        // 点击结束用水操作时蓝牙必须为开启状态
+        if (!isBleOpen()) {
+            setBleCallback(null);
+            getBlePermission();
+            return;
+        }
+
         button.setEnabled(false);
         presenter.onWrite(Agreement.getInstance().CloseValve());
-//        endShower();
+    }
+
+    /**
+     * 重新连接
+     */
+    @OnClick(R.id.bt_reconnect)
+    void reconnect(Button button) {
+        // 点击重连按钮时蓝牙必须为开启状态
+        if (!isBleOpen()) {
+            setBleCallback(null);
+            getBlePermission();
+            return;
+        }
+
+        // 显示正在连接画面
+        hideBottomLayout();
+        ll_content_unconnected.setVisibility(View.VISIBLE);
+
+        presenter.onReconnect(macAddress);
     }
 
     @Override
