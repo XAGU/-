@@ -333,7 +333,7 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
         order.setOrderNo("77f88c5ea7886c34");
         order.setPaymentType(1);
         order.setWaterUsage(50);
-        order.setConsume(2);
+        order.setConsume(2.1);
         order.setCreateTime(System.currentTimeMillis());
         Intent intent = new Intent(this, OrderDetailActivity.class);
         intent.putExtra(Constant.EXTRA_KEY, order);

@@ -17,6 +17,7 @@ package com.xiaolian.amigo.ui.base;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
@@ -80,7 +81,7 @@ public abstract class BaseActivity extends SwipeBackActivity
 
     RxPermissions rxPermissions;
 
-    private ProgressDialog mProgressDialog;
+    private Dialog mProgressDialog;
 
 
     private Unbinder mUnBinder;

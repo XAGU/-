@@ -11,7 +11,7 @@ public class Bonus {
     private Long amount;
     private String createTime;
     private Integer deviceType;
-    private String endTime;
+    private Long endTime;
     private Long id;
     private String name;
     private String remarks;
