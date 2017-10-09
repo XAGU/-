@@ -11,9 +11,12 @@ import com.polidea.rxandroidble.RxBleConnection;
 import com.trello.rxlifecycle.LifecycleTransformer;
 import com.trello.rxlifecycle.RxLifecycle;
 import com.trello.rxlifecycle.android.ActivityEvent;
+import com.xiaolian.amigo.data.enumeration.Command;
 import com.xiaolian.amigo.data.manager.intf.IBleDataManager;
 import com.xiaolian.amigo.data.manager.intf.ITradeDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.dto.request.CmdResultReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.CmdResultRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.ConnectCommandRespDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.base.RxBus;
@@ -68,6 +71,12 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     private boolean reconnect = false;
     // 握手连接指令
     private volatile String connectCmd;
+    // 开阀指令
+    private String openCmd;
+    // 关阀指令
+    private String closeCmd;
+    // 结账指令
+    private String checkoutCmd;
     // 握手连接指令信号量
     private byte[] connectCmdLock = new byte[0];
 
@@ -88,7 +97,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         // 2、初始化设备消息接收者
         if (null == busSubscriber) {
             busSubscriber = RxBus.getDefault()
-                    .toObservable(String.class)
+                    .toObservable(ApiResult.class)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(this::handleResult, throwable -> Log.wtf(TAG, "接收设备返回的数据失败", throwable));
         }
@@ -391,6 +400,41 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         }, Schedulers.io());
     }
 
+    // 网络请求处理设备响应结果
+    private void processCommandResult(String result) {
+        CmdResultReqDTO reqDTO = new CmdResultReqDTO();
+        reqDTO.setData(result);
+        reqDTO.setMacAddress(currentMacAddress);
+        addObserver(tradeDataManager.processCmdResult(reqDTO), new NetworkObserver<ApiResult<CmdResultRespDTO>>() {
+            @Override
+            public void onReady(ApiResult<CmdResultRespDTO> result) {
+                RxBus.getDefault().post(result);
+            }
+        }, Schedulers.io());
+    }
+
+    @Override
+    public void handleResult(ApiResult<CmdResultRespDTO> result) {
+        if (null == result.getError()) {
+            // 下一步执行指令
+            String nextCommand = result.getData().getNextCommand();
+            switch (Command.getCommand(result.getData().getSrcCommandType())) {
+                case CONNECT:
+                    break;
+                case OPEN_VALVE:
+                    closeCmd = nextCommand;
+                    break;
+                case CLOSE_VALVE:
+                    checkoutCmd = nextCommand;
+                    break;
+                case CHECK_OUT:
+                    break;
+            }
+        } else {
+            // TODO 处理非正常指令响应结果
+            Log.e(TAG, result.getError().getCode() + ":" + result.getError().getDisplayMessage());
+        }
+    }
 
     /*************************** 以下为测试用 *****************************/
     @Override
