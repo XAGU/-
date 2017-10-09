@@ -16,8 +16,10 @@ import com.xiaolian.amigo.data.manager.intf.IBleDataManager;
 import com.xiaolian.amigo.data.manager.intf.ITradeDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.CmdResultReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.request.PayReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.CmdResultRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.ConnectCommandRespDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.PayRespDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.base.RxBus;
 import com.xiaolian.amigo.ui.device.intf.IDevicePresenter;
@@ -288,7 +290,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         if (null != data) {
                             String result = HexBytesUtils.bytesToHexString(data);
                             Log.i(TAG, "接收数据成功！data:" + result);
-                            RxBus.getDefault().post(result);
+                            processCommandResult(result);
                         }
                     }
                 }, Schedulers.io());
@@ -395,6 +397,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         connectCmd = result.getData().getConnectCmd();
                         connectCmdLock.notifyAll();
                     }
+                } else {
+                    // TODO 请求握手指令失败
                 }
             }
         }, Schedulers.io());
@@ -405,7 +409,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         CmdResultReqDTO reqDTO = new CmdResultReqDTO();
         reqDTO.setData(result);
         reqDTO.setMacAddress(currentMacAddress);
-        addObserver(tradeDataManager.processCmdResult(reqDTO), new NetworkObserver<ApiResult<CmdResultRespDTO>>() {
+        addObserver(tradeDataManager.processCmdResult(reqDTO), new NetworkObserver<ApiResult<CmdResultRespDTO>>(false) {
             @Override
             public void onReady(ApiResult<CmdResultRespDTO> result) {
                 RxBus.getDefault().post(result);
@@ -420,6 +424,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             String nextCommand = result.getData().getNextCommand();
             switch (Command.getCommand(result.getData().getSrcCommandType())) {
                 case CONNECT:
+                    getMvpView().onConnectSuccess();
                     break;
                 case OPEN_VALVE:
                     closeCmd = nextCommand;
@@ -434,6 +439,28 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             // TODO 处理非正常指令响应结果
             Log.e(TAG, result.getError().getCode() + ":" + result.getError().getDisplayMessage());
         }
+    }
+
+    @Override
+    public void onPay(int method, Integer prepay, Long bonusId) {
+        PayReqDTO reqDTO = new PayReqDTO();
+        reqDTO.setMacAddress(currentMacAddress);
+        reqDTO.setBonusId(bonusId);
+        reqDTO.setPrepay(prepay);
+        reqDTO.setMethod(method);
+
+        addObserver(tradeDataManager.pay(reqDTO), new NetworkObserver<ApiResult<PayRespDTO>>() {
+            @Override
+            public void onReady(ApiResult<PayRespDTO> result) {
+                if (null == result.getError()) {
+                    // 向设备下发开阀指令
+                    openCmd = result.getData().getOpenValveCommand();
+                    onWrite(openCmd);
+                } else {
+                    // TODO 请求开发指令指令失败
+                }
+            }
+        }, Schedulers.io());
     }
 
     /*************************** 以下为测试用 *****************************/

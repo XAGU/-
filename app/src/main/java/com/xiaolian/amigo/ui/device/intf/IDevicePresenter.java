@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.device.intf;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.response.CmdResultRespDTO;
@@ -22,6 +23,9 @@ public interface IDevicePresenter<V extends IBaseView> extends IBasePresenter<V>
 
     // 向设备下发指令
     void onWrite(@NonNull String command);
+
+    // 点击支付
+    void onPay(int method, @Nullable Integer prepay, @Nullable Long bonusId);
 
     // 接收设备通知（读数据）
     void registerNotify();

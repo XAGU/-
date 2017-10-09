@@ -245,10 +245,22 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
 
     public abstract class NetworkObserver<T extends ApiResult> extends Subscriber<T> {
 
+        private boolean renderView = true;
+
+        public NetworkObserver(boolean renderView) {
+            this.renderView = renderView;
+        }
+
+        public NetworkObserver() {
+
+        }
+
         @Override
         public void onStart() {
             super.onStart();
-            view.showLoading();
+            if(renderView) {
+                view.showLoading();
+            }
         }
 
         @Override
@@ -258,7 +270,9 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
                 onBizCodeError(error);
             }
             onReady(t);
-            view.hideLoading();
+            if(renderView) {
+                view.hideLoading();
+            }
         }
 
         public abstract void onReady(T t);
@@ -266,13 +280,17 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
         @Override
         public void onError(Throwable e) {
             Log.d(TAG, e.getMessage());
-            onRemoteInvocationError(e);
-            view.hideLoading();
+            if(renderView) {
+                onRemoteInvocationError(e);
+                view.hideLoading();
+            }
         }
 
         @Override
         public void onCompleted() {
-            view.hideLoading();
+            if(renderView) {
+                view.hideLoading();
+            }
         }
     }
 
