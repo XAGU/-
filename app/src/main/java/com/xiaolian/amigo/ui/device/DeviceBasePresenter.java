@@ -12,6 +12,9 @@ import com.trello.rxlifecycle.LifecycleTransformer;
 import com.trello.rxlifecycle.RxLifecycle;
 import com.trello.rxlifecycle.android.ActivityEvent;
 import com.xiaolian.amigo.data.manager.intf.IBleDataManager;
+import com.xiaolian.amigo.data.manager.intf.ITradeDataManager;
+import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.dto.response.ConnectCommandRespDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.base.RxBus;
 import com.xiaolian.amigo.ui.device.intf.IDevicePresenter;
@@ -40,7 +43,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
     private static final String TAG = DeviceBasePresenter.class.getSimpleName();
     private static final String NOTIFY_DESCRIPTOR_UUID = "00002902-0000-1000-8000-00805f9b34fb";
-    private IBleDataManager manager;
+    private IBleDataManager bleDataManager;
+    private ITradeDataManager tradeDataManager;
     // 共享连接
     private Observable<RxBleConnection> connectionObservable;
     // notify特征值
@@ -60,19 +64,28 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     private Subscription busSubscriber;
     // 处理蓝牙连接错误标识
     private AtomicBoolean handleConnectError = new AtomicBoolean(false);
-    // 信号量
-    private byte[] lock = new byte[0];
     // 标志是否重连
     private boolean reconnect = false;
+    // 握手连接指令
+    private volatile String connectCmd;
+    // 握手连接指令信号量
+    private byte[] connectCmdLock = new byte[0];
 
-    public DeviceBasePresenter(IBleDataManager manager) {
+    public DeviceBasePresenter(IBleDataManager bleDataManager, ITradeDataManager tradeDataManager) {
         super();
-        this.manager = manager;
+        this.bleDataManager = bleDataManager;
+        this.tradeDataManager = tradeDataManager;
     }
 
     @Override
     public void onConnect(@NonNull String macAddress) {
-        // 1、初始化设备消息接收者
+
+        // 1、网络请求获取握手指令
+        if (null == connectCmd) {
+            getConnectCommand();
+        }
+
+        // 2、初始化设备消息接收者
         if (null == busSubscriber) {
             busSubscriber = RxBus.getDefault()
                     .toObservable(String.class)
@@ -80,8 +93,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     .subscribe(this::handleResult, throwable -> Log.wtf(TAG, "接收设备返回的数据失败", throwable));
         }
 
-        // 2、开启设备状态监控
-        addObserver(manager.monitorStatus(macAddress), new BLEObserver<RxBleConnection.RxBleConnectionState>() {
+        // 3、开启设备状态监控
+        addObserver(bleDataManager.monitorStatus(macAddress), new BleObserver<RxBleConnection.RxBleConnectionState>() {
 
             @Override
             public void onNext(RxBleConnection.RxBleConnectionState state) {
@@ -101,14 +114,14 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             }
         }, Schedulers.io());
 
-        // 3、创建共享连接
-        connectionObservable = manager
+        // 4、创建共享连接
+        connectionObservable = bleDataManager
                 .prepareConnectionObservable(macAddress, false, disconnectTriggerSubject)
                 .compose(bindUntilEvent(PAUSE));
 
-        // 4、连接设备
-        addObserver(manager.connect(connectionObservable),
-                new BLEObserver<BluetoothGattCharacteristic>() {
+        // 5、连接设备
+        addObserver(bleDataManager.connect(connectionObservable),
+                new BleObserver<BluetoothGattCharacteristic>() {
                     @Override
                     public void onConnectError() {
                         handleDisConnectError();
@@ -132,8 +145,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         // 取notify特征值
                         notifyCharacteristic = characteristic;
 
-                        // 3、开启notify，向蓝牙设备写notify特征值描述，为后续接受蓝牙设备notify通知做铺垫
-                        if (manager.getStatus(macAddress) == RxBleConnection.RxBleConnectionState.CONNECTED) {
+                        // 6、开启notify，向蓝牙设备写notify特征值描述，为后续接受蓝牙设备notify通知做铺垫
+                        if (bleDataManager.getStatus(macAddress) == RxBleConnection.RxBleConnectionState.CONNECTED) {
                             Log.i(TAG, "准备开启notify通道");
                             enableNotify();
                         } else {
@@ -146,8 +159,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
     // 开启notify通道
     private void enableNotify() {
-        addObserver(manager.setupNotification(connectionObservable, notifyCharacteristic),
-                new BLEObserver<Observable<byte[]>>() {
+        addObserver(bleDataManager.setupNotification(connectionObservable, notifyCharacteristic),
+                new BleObserver<Observable<byte[]>>() {
                     @Override
                     public void onConnectError() {
                         handleDisConnectError();
@@ -173,8 +186,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         BluetoothGattDescriptor descriptor = notifyCharacteristic.getDescriptor(UUID.fromString(NOTIFY_DESCRIPTOR_UUID));
         descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
 
-        addObserver(manager.writeDescriptor(connectionObservable, descriptor),
-                new BLEObserver<byte[]>() {
+        addObserver(bleDataManager.writeDescriptor(connectionObservable, descriptor),
+                new BleObserver<byte[]>() {
                     @Override
                     public void onConnectError() {
                         handleDisConnectError();
@@ -215,14 +228,14 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
     @Override
     public void onWrite(@NonNull String command) {
-        if (manager.getStatus(currentMacAddress) != RxBleConnection.RxBleConnectionState.CONNECTED) {
+        if (bleDataManager.getStatus(currentMacAddress) != RxBleConnection.RxBleConnectionState.CONNECTED) {
             getMvpView().onConnectError();
             return;
         }
 
         byte[] commandBytes = HexBytesUtils.hexStr2Bytes(command);
-        addObserver(manager.write(connectionObservable, commandBytes),
-                new BLEObserver<byte[]>() {
+        addObserver(bleDataManager.write(connectionObservable, commandBytes),
+                new BleObserver<byte[]>() {
                     @Override
                     public void onConnectError() {
                         handleDisConnectError();
@@ -243,13 +256,13 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
     @Override
     public void registerNotify() {
-        if (manager.getStatus(currentMacAddress) != RxBleConnection.RxBleConnectionState.CONNECTED) {
+        if (bleDataManager.getStatus(currentMacAddress) != RxBleConnection.RxBleConnectionState.CONNECTED) {
             getMvpView().onConnectError();
             return;
         }
 
-        addObserver(manager.notify(connectionObservable, notifyCharacteristic),
-                new BLEObserver<byte[]>() {
+        addObserver(bleDataManager.notify(connectionObservable, notifyCharacteristic),
+                new BleObserver<byte[]>() {
                     @Override
                     public void onConnectError() {
                         handleDisConnectError();
@@ -280,7 +293,18 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             getMvpView().post(() -> getMvpView().onReconnectSuccess());
         } else {
             // 握手连接
-            onWrite(Agreement.getInstance().createConnection());
+            if (null == connectCmd) {
+                synchronized (connectCmdLock) {
+                    if (null == connectCmd) {
+                        try {
+                            connectCmdLock.wait();
+                        } catch (InterruptedException e) {
+                            Log.wtf(TAG, e);
+                        }
+                    }
+                }
+            }
+            onWrite(connectCmd);
         }
     }
 
@@ -350,6 +374,21 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             }
             handleBleAdaptorClose.set(false);
         }
+    }
+
+    // 网络请求获取握手连接指令
+    private void getConnectCommand() {
+        addObserver(tradeDataManager.getConnectCommand(), new NetworkObserver<ApiResult<ConnectCommandRespDTO>>() {
+            @Override
+            public void onReady(ApiResult<ConnectCommandRespDTO> result) {
+                if (null == result.getError()) {
+                    synchronized (connectCmdLock) {
+                        connectCmd = result.getData().getConnectCmd();
+                        connectCmdLock.notifyAll();
+                    }
+                }
+            }
+        }, Schedulers.io());
     }
 
 
