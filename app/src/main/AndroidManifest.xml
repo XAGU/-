@@ -291,6 +291,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
 
+        <!--设备账单-->
+        <activity android:name=".ui.device.DeviceOrderActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
 
         <!--主页-->
         <activity
