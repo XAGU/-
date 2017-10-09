@@ -21,6 +21,7 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     private static final String PREF_KEY_SCHOOLNAME = "PREF_KEY_SCHOOLNAME";
     private static final String PREF_KEY_NICKNAME = "PREF_KEY_NICKNAME";
     private static final String PREF_KEY_MOBILE = "PREF_KEY_MOBILE";
+    private static final String PREF_KEY_PICTURE_URL = "PREF_KEY_PICTURE_URL";
 
     private String tokenHolder;
     private User userHolder;
@@ -63,6 +64,7 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
         userHolder.setSchoolName(mSharedPreferences.getString(PREF_KEY_SCHOOLNAME, null));
         userHolder.setNickName(mSharedPreferences.getString(PREF_KEY_NICKNAME, null));
         userHolder.setMobile(mSharedPreferences.getString(PREF_KEY_MOBILE, null));
+        userHolder.setPictureUrl(mSharedPreferences.getString(PREF_KEY_PICTURE_URL, null));
         return userHolder;
     }
 
@@ -76,6 +78,9 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
         mSharedPreferences.edit().putString(PREF_KEY_SCHOOLNAME, user.getSchoolName()).apply();
         mSharedPreferences.edit().putString(PREF_KEY_NICKNAME, user.getNickName()).apply();
         mSharedPreferences.edit().putString(PREF_KEY_MOBILE, user.getMobile()).apply();
+        if (null != user.getPictureUrl()) {
+            mSharedPreferences.edit().putString(PREF_KEY_PICTURE_URL, user.getPictureUrl()).apply();
+        }
     }
 
     @Override

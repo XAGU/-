@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.tmp.component.CircleImageView;
 import com.xiaolian.amigo.ui.user.intf.IEditProfilePresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditProfileView;
 
@@ -17,6 +16,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * 编辑个人信息Activity

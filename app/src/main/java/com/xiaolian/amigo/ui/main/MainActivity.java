@@ -14,9 +14,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
-import com.xiaolian.amigo.ui.device.heater.HeaterActivity;
 import com.xiaolian.amigo.ui.login.LoginActivity;
 import com.xiaolian.amigo.ui.main.intf.IMainPresenter;
 import com.xiaolian.amigo.ui.main.intf.IMainView;
@@ -46,14 +46,17 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @BindView(R.id.bt_switch)
     ImageView btSwitch;
 
-    @BindView(R.id.iv_avatar)
-    ImageView iv_avatar;
-
     @BindView(R.id.tv_nickName)
     TextView tv_nickName;
 
     @BindView(R.id.tv_schoolName)
     TextView tv_schoolName;
+
+    /**
+     * 头像
+     */
+    @BindView(R.id.iv_avatar)
+    ImageView iv_avatar;
 
     /**
      * 通知数量上标
@@ -101,6 +104,15 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         } else {
             tv_nickName.setText(presenter.getUserInfo().getNickName());
             tv_schoolName.setText(presenter.getUserInfo().getSchoolName());
+            if (presenter.getUserInfo().getPictureUrl() != null) {
+                Glide.with(this).load(presenter.getUserInfo().getPictureUrl())
+                        .asBitmap()
+                        .placeholder(R.drawable.ic_picture_error)
+                        .error(R.drawable.ic_picture_error)
+                        .into(iv_avatar);
+            } else {
+                iv_avatar.setImageResource(R.drawable.ic_picture_error);
+            }
         }
     }
 

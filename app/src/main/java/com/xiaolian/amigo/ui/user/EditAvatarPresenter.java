@@ -8,6 +8,7 @@ import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.PersonalUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.EntireUserDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryAvatarDTO;
+import com.xiaolian.amigo.data.network.model.user.User;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.user.adaptor.EditAvatarAdaptor;
 import com.xiaolian.amigo.ui.user.intf.IEditAvatarPresenter;
@@ -88,6 +89,7 @@ public class EditAvatarPresenter<V extends IEditAvatarVIew> extends BasePresente
             public void onReady(ApiResult<EntireUserDTO> result) {
                 if (null == result.getError()) {
                     getMvpView().onSuccess(R.string.change_success);
+                    manager.setUser(new User(result.getData()));
                     getMvpView().finishView();
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());

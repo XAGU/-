@@ -14,12 +14,13 @@
         android:rowCount="1"
         android:useDefaultMargins="false">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_avatar"
             android:layout_width="@dimen/avatarWidth"
             android:layout_height="@dimen/avatarHeight"
             android:layout_marginLeft="@dimen/mainMarginLeftRight"
-            android:src="@drawable/default_avatar" />
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_picture_error" />
 
 
         <LinearLayout
