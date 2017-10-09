@@ -369,8 +369,7 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
         // 点击重连按钮时蓝牙必须为开启状态
         setBleCallback(() -> {
             // 显示正在连接画面
-            hideBottomLayout();
-            ll_content_unconnected.setVisibility(View.VISIBLE);
+            showConnecting();
 
             presenter.onReconnect(macAddress);
         });
