@@ -37,11 +37,6 @@ public abstract class DeviceBaseActivity extends BaseActivity implements IDevice
     }
 
     @Override
-    public void onConnectError() {
-        Log.e(TAG, "onConnectError");
-    }
-
-    @Override
     public void onWriteError() {
         Log.e(TAG, "onWriteError");
     }

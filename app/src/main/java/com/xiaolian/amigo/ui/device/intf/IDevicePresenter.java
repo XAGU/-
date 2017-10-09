@@ -15,6 +15,9 @@ public interface IDevicePresenter<V extends IBaseView> extends IBasePresenter<V>
     // 连接设备
     void onConnect(@NonNull String macAddress);
 
+    // 重新连接设备
+    void onReconnect(@NonNull String macAddress);
+
     // 向设备下发指令
     void onWrite(@NonNull String command);
 

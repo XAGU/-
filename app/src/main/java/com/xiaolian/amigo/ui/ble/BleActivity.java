@@ -62,7 +62,7 @@ public class BleActivity extends BleBaseActivity implements IBleView {
         rv_devices.setAdapter(adaptor);
 
         // 开启蓝牙
-        getBLEPermission();
+        getBlePermission();
     }
 
 

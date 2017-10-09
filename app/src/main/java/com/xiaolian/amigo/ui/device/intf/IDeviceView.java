@@ -20,6 +20,9 @@ public interface IDeviceView extends IBaseView {
     // 设备状态错误（通常为不在线）
     void onStatusError();
 
+    // 设备开阀成功
+    void onOpen();
+
     // 设备用水结束
     void onFinish();
 

@@ -457,13 +457,7 @@ public abstract class BaseActivity extends SwipeBackActivity
     }
 
     @Override
-    public void getBLEPermission() {
-        // 1、用水流程时必须先打开蓝牙
-//        Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-//        int REQUEST_ENABLE_BT = 1;
-//        this.startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-
-        // 2、6.0版本以上的收必须动态申请权限，否则会提示没有操作权限
+    public void getBlePermission() {
         RxPermissions rxPermissions = RxPermissions.getInstance(this);
         rxPermissions.request(Manifest.permission.BLUETOOTH, Manifest.permission.ACCESS_COARSE_LOCATION)
                 .subscribe(granted -> {
@@ -477,6 +471,13 @@ public abstract class BaseActivity extends SwipeBackActivity
                 });
     }
 
+    @Override
+    public boolean isBleOpen() {
+        // 确保蓝牙适配器处于打开状态
+        BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
+        return null != adapter && adapter.isEnabled();
+    }
+
     public void setBleCallback(Callback callback) {
         this.blePermissonCallback = callback;
     }
@@ -485,6 +486,11 @@ public abstract class BaseActivity extends SwipeBackActivity
     @Override
     public void redirectToLogin() {
         startActivity(this, LoginActivity.class);
+    }
+
+    @Override
+    public void post(Runnable task) {
+        this.runOnUiThread(task);
     }
 
     public interface Callback {
