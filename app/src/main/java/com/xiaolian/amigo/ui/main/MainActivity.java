@@ -201,13 +201,17 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     }
 
     @Override
-    public void showTimeValidDialog(String title, String remark, Class clz) {
+    public void showTimeValidDialog(String title, String remark, Class clz, int deviceType) {
         AvailabilityDialog dialog = new AvailabilityDialog(this);
         dialog.setOkText(getString(R.string.keep_use));
         dialog.setTip(title);
         dialog.setSubTip(remark);
         dialog.setOnOkClickListener(dialog1 -> {
-            startActivity(clz);
+            if (deviceType == 1) {
+                presenter.getHeaterDeviceMacAddress();
+            } else {
+                startActivity(clz);
+            }
         });
         dialog.show();
     }

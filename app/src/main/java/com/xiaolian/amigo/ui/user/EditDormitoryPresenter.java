@@ -15,6 +15,7 @@ import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.user.adaptor.EditDormitoryAdaptor;
 import com.xiaolian.amigo.ui.user.intf.IEditDormitoryPresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditDormitoryView;
+import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 
 import java.util.ArrayList;
@@ -54,7 +55,8 @@ public class EditDormitoryPresenter<V extends IEditDormitoryView> extends BasePr
                         List<EditDormitoryAdaptor.UserResidenceWrapper> wrappers = new ArrayList<>();
                         for (UserResidence userResidence : result.getData().getUserResidences()) {
                             wrappers.add(new EditDormitoryAdaptor.UserResidenceWrapper(userResidence,
-                                    userResidence.getResidenceId() == manager.getUser().getResidenceId()));
+                                    CommonUtil.equals(userResidence.getResidenceId(),
+                                            manager.getUser().getResidenceId())));
                         }
                         getMvpView().addMore(wrappers);
                         getMvpView().addPage();
