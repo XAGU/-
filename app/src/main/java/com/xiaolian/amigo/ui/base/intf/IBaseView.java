@@ -42,6 +42,8 @@ public interface IBaseView {
 
     boolean isWifiConnected();
 
+    boolean isNetworkAvailable();
+
     void hideKeyboard();
 
     // 打开蓝牙，获取蓝牙设备权限

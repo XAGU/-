@@ -101,6 +101,10 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     @Override
     public void logout() {
         mSharedPreferences.edit().clear().apply();
+        tokenHolder = null;
+        userHolder = null;
+        bonusAmount = 0;
+        isShowUrgencyNotify = true;
     }
 
 

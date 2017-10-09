@@ -386,6 +386,11 @@ public abstract class BaseActivity extends SwipeBackActivity
         return NetworkUtil.isWifiConnected(getApplicationContext());
     }
 
+    @Override
+    public boolean isNetworkAvailable() {
+        return NetworkUtil.isAvailable(getApplicationContext());
+    }
+
     public void hideKeyboard() {
         View view = this.getCurrentFocus();
         if (view != null) {

@@ -21,6 +21,7 @@ import com.xiaolian.amigo.ui.login.LoginActivity;
 import com.xiaolian.amigo.ui.main.intf.IMainPresenter;
 import com.xiaolian.amigo.ui.main.intf.IMainView;
 import com.xiaolian.amigo.ui.notice.NoticeActivity;
+import com.xiaolian.amigo.ui.user.EditProfileActivity;
 import com.xiaolian.amigo.ui.widget.dialog.AvailabilityDialog;
 import com.xiaolian.amigo.ui.widget.dialog.NoticeAlertDialog;
 
@@ -153,6 +154,22 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @OnClick(R.id.iv_notice)
     void gotoNoticeList() {
         startActivity(new Intent(this, NoticeActivity.class));
+    }
+
+    /**
+     * 点击头像 跳转到编辑个人信息页面
+     */
+    @OnClick(R.id.iv_avatar)
+    void onAvatarClick() {
+        startActivity(this, EditProfileActivity.class);
+    }
+
+    /**
+     * 点击昵称 跳转到编辑个人信息页面
+     */
+    @OnClick(R.id.ll_user_info)
+    void onUserInfoClick() {
+        startActivity(this, EditProfileActivity.class);
     }
 
 
