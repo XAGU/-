@@ -27,6 +27,9 @@ public interface IDevicePresenter<V extends IBaseView> extends IBasePresenter<V>
     // 点击支付
     void onPay(int method, @Nullable Integer prepay, @Nullable Long bonusId);
 
+    // 点击结束用水
+    void onClose();
+
     // 接收设备通知（读数据）
     void registerNotify();
 

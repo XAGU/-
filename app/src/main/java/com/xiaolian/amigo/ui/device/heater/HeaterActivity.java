@@ -357,7 +357,7 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
         // 点击结束用水操作时蓝牙必须为开启状态
         setBleCallback(() -> {
             button.setEnabled(false);
-            presenter.onWrite(Agreement.getInstance().CloseValve());
+            presenter.onClose();
         });
         getBlePermission();
     }

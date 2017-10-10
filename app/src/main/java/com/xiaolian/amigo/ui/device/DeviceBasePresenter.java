@@ -432,8 +432,11 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     break;
                 case CLOSE_VALVE:
                     checkoutCmd = nextCommand;
+                    // 下发结账指令
+                    onWrite(checkoutCmd);
                     break;
                 case CHECK_OUT:
+                    getMvpView().onFinish();
                     break;
             }
         } else {
@@ -462,6 +465,12 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 }
             }
         }, Schedulers.io());
+    }
+
+    @Override
+    public void onClose() {
+        // 向设备下发关阀指令
+        onWrite(closeCmd);
     }
 
     /*************************** 以下为测试用 *****************************/
