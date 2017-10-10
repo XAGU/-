@@ -44,10 +44,8 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
     @Inject
     ILostAndFoundPresenter<ILostAndFoundView> presenter;
 
-//    @BindView(R.id.tv_lost)
     TextView tv_lost;
 
-//    @BindView(R.id.tv_found)
     TextView tv_found;
 
     /**
@@ -332,7 +330,7 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
                 @Override
                 public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                     Intent intent = new Intent(LostAndFoundActivity.this, LostAndFoundDetailActivity.class);
-                    intent.putExtra(LostAndFoundDetailActivity.INTENT_KEY_LOST_AND_FOUND_DETAIL_ID, lostAndFounds.get(position).getId());
+                    intent.putExtra(LostAndFoundDetailActivity.INTENT_KEY_LOST_AND_FOUND_DETAIL_ID, searchResult.get(position).getId());
                     // listStatus false表示失物 true表示招领
                     if (listStatus) {
                         intent.putExtra(LostAndFoundDetailActivity.INTENT_KEY_LOST_AND_FOUND_DETAIL_TYPE,
@@ -375,7 +373,6 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
             }
         }
     }
-//    @OnClick(R.id.tv_found)
     void onFoundClick() {
         if (!listStatus) {
             switchListStatus();

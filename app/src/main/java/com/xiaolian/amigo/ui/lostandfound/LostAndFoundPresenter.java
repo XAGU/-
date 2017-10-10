@@ -35,9 +35,7 @@ public class LostAndFoundPresenter<V extends ILostAndFoundView> extends BasePres
     public void queryLostAndFoundList(Integer page, Integer size, Integer type, String selectKey, boolean isSearch) {
         QueryLostAndFoundListReqDTO dto = new QueryLostAndFoundListReqDTO();
         dto.setPage(page);
-        // TODO: 添加schoolId
-        dto.setSchoolId(null);
-//        dto.setSchoolId(manager.getUserInfo().getSchoolId());
+        dto.setSchoolId(manager.getUserInfo().getSchoolId());
         dto.setSelectKey(selectKey);
         dto.setSize(size);
         dto.setType(type);
