@@ -78,9 +78,13 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     // 关阀指令
     private String closeCmd;
     // 结账指令
+    private String precheckCmd;
+    // 结账指令
     private String checkoutCmd;
     // 握手连接指令信号量
     private byte[] connectCmdLock = new byte[0];
+    // 预结账标识(预结账状态时，结账后继续正常用水，非预结账状态时，结账后跳转账单详情页)
+    private volatile boolean precheckFlag = false;
 
     public DeviceBasePresenter(IBleDataManager bleDataManager, ITradeDataManager tradeDataManager) {
         super();
@@ -424,7 +428,15 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             String nextCommand = result.getData().getNextCommand();
             switch (Command.getCommand(result.getData().getSrcCommandType())) {
                 case CONNECT:
-                    getMvpView().onConnectSuccess();
+                    // 如果存在未结账订单，需要先结算旧账单
+                    if (null != result.getData().getNextCommand()) {
+                        // 下发预结账指令
+                        precheckCmd = nextCommand;
+                        onWrite(precheckCmd);
+                    } else {
+                        // 握手连接成功，进入正常用水流程
+                        getMvpView().onConnectSuccess();
+                    }
                     break;
                 case OPEN_VALVE:
                     closeCmd = nextCommand;
@@ -436,7 +448,22 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     onWrite(checkoutCmd);
                     break;
                 case CHECK_OUT:
-                    getMvpView().onFinish();
+                    if (!precheckFlag) {
+                        // 当前为非预结账状态，结账完毕后跳转账单详情页
+                        getMvpView().onFinish();
+                    } else {
+                        // 当前为预结账状态，结账完毕后关闭更改标识
+                        precheckFlag = false;
+                        // 需要再次握手，否则会报设备使用次数不对
+                        onWrite(connectCmd);
+                    }
+                    break;
+                case PRE_CHECK:
+                    checkoutCmd = nextCommand;
+                    // 标识当前状态为预结账状态
+                    precheckFlag = true;
+                    // 下发结账指令
+                    onWrite(checkoutCmd);
                     break;
             }
         } else {
