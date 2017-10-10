@@ -188,8 +188,10 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
     @Override
     public void onLoadMore() {
         if (listStatus) {
+            page = foundPage;
             presenter.queryFoundList(foundPage, Constant.PAGE_SIZE);
         } else {
+            page = lostPage;
             presenter.queryLostList(lostPage, Constant.PAGE_SIZE);
         }
     }
@@ -308,6 +310,7 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
         this.lostAndFounds.addAll(lost);
         adaptor.notifyDataSetChanged();
         lostPage ++;
+        page = lostPage;
     }
 
     @Override
@@ -316,6 +319,7 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
         this.lostAndFounds.addAll(found);
         adaptor.notifyDataSetChanged();
         foundPage ++;
+        page = foundPage;
     }
 
     @Override

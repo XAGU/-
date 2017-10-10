@@ -208,7 +208,9 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
 
     @Override
     public void showEmptyView() {
-        rl_empty.setVisibility(View.VISIBLE);
+        if (page == Constant.PAGE_START_NUM) {
+            rl_empty.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
