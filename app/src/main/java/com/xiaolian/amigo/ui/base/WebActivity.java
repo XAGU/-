@@ -1,4 +1,4 @@
-package com.xiaolian.amigo.tmp.activity;
+package com.xiaolian.amigo.ui.base;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

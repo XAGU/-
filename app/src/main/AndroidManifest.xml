@@ -113,7 +113,7 @@
         <!--web页面-->
         <activity
             android:screenOrientation="portrait"
-            android:name=".tmp.activity.WebActivity"
+            android:name=".ui.base.WebActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
 
         <!--编辑个人信息页面-->

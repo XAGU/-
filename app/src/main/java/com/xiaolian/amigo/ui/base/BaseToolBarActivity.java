@@ -36,6 +36,7 @@ public abstract class BaseToolBarActivity extends BaseActivity {
         ll_main_content.addView(layout);
         sv_main_container = (ScrollView) findViewById(R.id.sv_main_container);
         OverScrollDecoratorHelper.setUpOverScroll(sv_main_container);
+        setUp();
         initToolBar();
         initInject();
         initView();
@@ -69,4 +70,9 @@ public abstract class BaseToolBarActivity extends BaseActivity {
     }
 
     protected abstract @LayoutRes int setLayout();
+
+    @Override
+    protected void setUp() {
+
+    }
 }
