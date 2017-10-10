@@ -60,16 +60,6 @@ public class OrderActivity extends OrderBaseListActivity implements IOrderView {
     }
 
     @Override
-    public void setLoadMoreComplete() {
-        getRecyclerView().loadMoreComplete();
-    }
-
-    @Override
-    public void setRefreshComplete() {
-        getRecyclerView().refreshComplete();
-    }
-
-    @Override
     public void addPage() {
         page ++;
     }
@@ -81,15 +71,6 @@ public class OrderActivity extends OrderBaseListActivity implements IOrderView {
         orders.clear();
         super.onDestroy();
     }
-
-//    @Override
-//    public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
-//    }
-//
-//    @Override
-//    public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
-//        return false;
-//    }
 
     @Override
     protected void onRefresh() {
@@ -123,6 +104,6 @@ public class OrderActivity extends OrderBaseListActivity implements IOrderView {
         getActivityComponent().inject(this);
 
         presenter.onAttach(OrderActivity.this);
-        presenter.requestOrders(page);
+//        presenter.requestOrders(page);
     }
 }

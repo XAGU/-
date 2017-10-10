@@ -87,6 +87,6 @@ public class RepairActivity extends RepairBaseListActivity implements IRepairVie
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
         presenter.onAttach(this);
-        onRefresh();
+//        onRefresh();
     }
 }

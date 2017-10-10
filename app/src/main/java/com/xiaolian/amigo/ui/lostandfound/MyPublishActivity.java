@@ -89,12 +89,12 @@ public class MyPublishActivity extends LostAndFoundBaseListActivity implements I
     @Override
     protected void initView() {
         setHeaderBackground(R.color.white);
-        setRecyclerViewMargin(0, 0, 0, 0);
-        setMainBackground(R.color.white);
+        setMainBackground(R.color.colorBackgroundGray);
+        setRefreshLayoutMargin(0, ScreenUtils.dpToPxInt(this, 10), 0, 0);
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
         presenter.onAttach(MyPublishActivity.this);
-        onRefresh();
+//        onRefresh();
     }
 
     @Override

@@ -216,4 +216,9 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
         }
     }
 
+    @Override
+    protected boolean isShowLoading() {
+        return true;
+    }
+
 }

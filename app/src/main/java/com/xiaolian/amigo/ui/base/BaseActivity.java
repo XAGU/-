@@ -49,6 +49,7 @@ import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 import com.xiaolian.amigo.ui.login.LoginActivity;
 import com.xiaolian.amigo.ui.widget.dialog.ActionSheetDialog;
+import com.xiaolian.amigo.ui.widget.dialog.LodingDialog;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.NetworkUtil;
 import com.yalantis.ucrop.UCrop;
@@ -81,7 +82,7 @@ public abstract class BaseActivity extends SwipeBackActivity
 
     RxPermissions rxPermissions;
 
-    private Dialog mProgressDialog;
+    private LodingDialog mProgressDialog;
 
 
     private Unbinder mUnBinder;
@@ -254,8 +255,14 @@ public abstract class BaseActivity extends SwipeBackActivity
 
     @Override
     public void showLoading() {
+        if (!isShowLoading()) {
+            return;
+        }
+        if (mProgressDialog == null) {
+            mProgressDialog = new LodingDialog(this);
+        }
         hideLoading();
-        mProgressDialog = CommonUtil.showLoadingDialog(this);
+        mProgressDialog.show();
     }
 
     @Override
@@ -263,6 +270,14 @@ public abstract class BaseActivity extends SwipeBackActivity
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.cancel();
         }
+    }
+
+    /**
+     * 子类重新来显示loading
+     * @return 是否显示loading
+     */
+    protected boolean isShowLoading() {
+        return false;
     }
 
     private void showSnackBar(String message) {

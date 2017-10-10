@@ -39,6 +39,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     public static final String INTENT_KEY_MAC_ADDRESS = "intent_key_mac_address";
+    public static final String INTENT_KEY_LOCAION = "intent_key_location";
 
     @Inject
     IMainPresenter<IMainView> presenter;

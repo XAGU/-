@@ -43,7 +43,6 @@ public class DotFlashView extends View {
         for (int i = 0; i < n; i++) {
             int attr = array.getIndex(i);
             switch (attr) {
-
                 case R.styleable.DotFlashView_firstColor:
                     // 默认颜色设置为黑色
                     firstColor = array.getColor(attr, Color.BLACK);

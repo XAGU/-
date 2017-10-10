@@ -83,14 +83,24 @@
         </LinearLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <com.xiaolian.amigo.ui.widget.recyclerview.IRecyclerView
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:srlHeaderHeight="40dp"
+        app:srlFooterHeight="60dp"
         android:layout_marginLeft="@dimen/mainMarginLeftRight"
         android:layout_marginRight="@dimen/mainMarginLeftRight"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:id="@+id/recyclerView"
-        android:overScrollMode="never"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        >
+        <android.support.v7.widget.RecyclerView
+            android:overScrollMode="never"
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
     <RelativeLayout
         android:id="@+id/rl_empty"

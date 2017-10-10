@@ -201,4 +201,9 @@ public class LostAndFoundDetailActivity extends LostAndFoundBaseActivity impleme
             startActivity(intent);
         }
     }
+
+    @Override
+    protected boolean isShowLoading() {
+        return true;
+    }
 }
