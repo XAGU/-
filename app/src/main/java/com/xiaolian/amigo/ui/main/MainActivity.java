@@ -128,16 +128,16 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                     //显示下一页
                     if (current == 1) {
                         onSwitch();
-                        return true;
                     }
+                    return true;
                 }
 
                 if ((e2.getRawX() - e1.getRawX()) > 200) {  //向左滑动 表示 上一页
                     //显示上一页
                     if (current == 0) {
                         onSwitch();
-                        return true;//消费掉当前事件  不让当前事件继续向下传递
                     }
+                    return true;//消费掉当前事件  不让当前事件继续向下传递
                 }
                 return super.onFling(e1, e2, velocityX, velocityY);
             }
