@@ -4,7 +4,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.tmp.common.config.SpaceItemDecoration;
+import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.util.ScreenUtils;
 import com.xiaolian.amigo.ui.repair.adaptor.RepairAdaptor;
 import com.xiaolian.amigo.ui.repair.intf.IRepairPresenter;
@@ -87,6 +87,6 @@ public class RepairActivity extends RepairBaseListActivity implements IRepairVie
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
         presenter.onAttach(this);
-        onRefresh();
+//        onRefresh();
     }
 }

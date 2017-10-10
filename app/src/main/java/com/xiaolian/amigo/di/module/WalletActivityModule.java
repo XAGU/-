@@ -27,8 +27,11 @@ import com.xiaolian.amigo.di.WalletActivityContext;
 import com.xiaolian.amigo.ui.order.OrderPresenter;
 import com.xiaolian.amigo.ui.order.intf.IOrderPresenter;
 import com.xiaolian.amigo.ui.order.intf.IOrderView;
+import com.xiaolian.amigo.ui.wallet.PrepayPresenter;
 import com.xiaolian.amigo.ui.wallet.RechargePresenter;
 import com.xiaolian.amigo.ui.wallet.WalletPresenter;
+import com.xiaolian.amigo.ui.wallet.intf.IPrepayPresenter;
+import com.xiaolian.amigo.ui.wallet.intf.IPrepayView;
 import com.xiaolian.amigo.ui.wallet.intf.IRechargePresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IRechargeView;
 import com.xiaolian.amigo.ui.wallet.intf.IWalletPresenter;
@@ -68,6 +71,18 @@ public class WalletActivityModule {
     IRechargePresenter<IRechargeView> provideRechargePresenter(
             RechargePresenter<IRechargeView> presenter) {
         return presenter;
+    }
+
+    @Provides
+    @WalletActivityContext
+    IPrepayPresenter<IPrepayView> providePrepayPresenter(
+            PrepayPresenter<IPrepayView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    IOrderDataManager provideOrderDataManager(OrderDataManager manager) {
+        return manager;
     }
 
     @Provides

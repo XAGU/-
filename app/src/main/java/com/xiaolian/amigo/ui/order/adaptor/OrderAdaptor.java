@@ -48,7 +48,7 @@ public class OrderAdaptor extends RecyclerView.Adapter<OrderAdaptor.ViewHolder> 
             holder.v_type.setBackgroundResource(Device.getDevice(wrapper.getType()).getColorRes());
             holder.tv_device.setText(wrapper.getDevice());
             holder.tv_time.setText(wrapper.getTime());
-            holder.tv_amount.setText(wrapper.getAmount().toString());
+            holder.tv_amount.setText(String.valueOf(wrapper.getAmount()));
             holder.order = wrapper.getOrder();
         }
     }
@@ -96,7 +96,7 @@ public class OrderAdaptor extends RecyclerView.Adapter<OrderAdaptor.ViewHolder> 
         // 时间
         String time;
         // 金额
-        Integer amount;
+        Double amount;
         // 原始订单内容，供查询订单详情时使用
         Order order;
 

@@ -63,4 +63,9 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
         tv_water_usage.setText(String.valueOf(order.getWaterUsage()));
         tv_amount.setText(String.valueOf(order.getConsume()));
     }
+
+    @Override
+    protected boolean isShowLoading() {
+        return true;
+    }
 }

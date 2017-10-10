@@ -4,7 +4,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.tmp.common.config.SpaceItemDecoration;
+import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.util.ScreenUtils;
 import com.xiaolian.amigo.ui.order.adaptor.OrderAdaptor;
 import com.xiaolian.amigo.ui.order.intf.IOrderPresenter;
@@ -32,46 +32,11 @@ public class OrderActivity extends OrderBaseListActivity implements IOrderView {
     // 订单列表recycleView适配器
     OrderAdaptor adaptor;
 
-    @Override
-    protected void setUp() {
-
-    }
-
-//    @Override
-//    protected RecyclerView.Adapter getAdaptor() {
-//        adaptor = new OrderAdaptor(orders);
-//        return adaptor;
-//    }
-//
-//    @Override
-//    protected int getLayout() {
-//        return R.layout.activity_order;
-//    }
-//
-//    @Override
-//    protected void initPresenter() {
-//
-//    }
 
     @Override
     public void addMore(List<OrderAdaptor.OrderWrapper> orders) {
         this.orders.addAll(orders);
         adaptor.notifyDataSetChanged();
-    }
-
-    @Override
-    public void setLoadMoreComplete() {
-        getRecyclerView().loadMoreComplete();
-    }
-
-    @Override
-    public void setRefreshComplete() {
-        getRecyclerView().refreshComplete();
-    }
-
-    @Override
-    public void addPage() {
-        page ++;
     }
 
     @Override
@@ -81,15 +46,6 @@ public class OrderActivity extends OrderBaseListActivity implements IOrderView {
         orders.clear();
         super.onDestroy();
     }
-
-//    @Override
-//    public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
-//    }
-//
-//    @Override
-//    public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
-//        return false;
-//    }
 
     @Override
     protected void onRefresh() {
@@ -118,11 +74,8 @@ public class OrderActivity extends OrderBaseListActivity implements IOrderView {
 
     @Override
     protected void initView() {
-
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
-
         presenter.onAttach(OrderActivity.this);
-        presenter.requestOrders(page);
     }
 }

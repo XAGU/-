@@ -11,8 +11,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.tmp.activity.wallet.RechargeActivty;
-import com.xiaolian.amigo.tmp.component.BezierWaveView;
+import com.xiaolian.amigo.ui.wallet.RechargeActivity;
+import com.xiaolian.amigo.ui.widget.BezierWaveView;
 import com.xiaolian.amigo.ui.bonus.BonusActivity;
 import com.xiaolian.amigo.ui.widget.DotFlashView;
 import com.xiaolian.amigo.ui.widget.dialog.ActionSheetDialog;
@@ -199,7 +199,7 @@ public class DispenserActivity extends BaseActivity {
                 .setPositiveButton("前往充值", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        startActivity(new Intent(getApplicationContext(), RechargeActivty.class));
+                        startActivity(new Intent(getApplicationContext(), RechargeActivity.class));
                     }
                 })
                 .setNegativeClickListener("取消", new IOSAlertDialog.OnDialogClickListener() {

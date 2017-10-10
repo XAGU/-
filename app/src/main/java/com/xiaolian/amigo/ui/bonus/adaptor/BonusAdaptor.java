@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.bonus.Bonus;
+import com.xiaolian.amigo.util.TimeUtils;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -14,6 +15,7 @@ import lombok.Data;
 
 /**
  * BonusAdaptor
+ *
  * @author zcd
  */
 public class BonusAdaptor extends CommonAdapter<BonusAdaptor.BonusWrapper> {
@@ -26,8 +28,9 @@ public class BonusAdaptor extends CommonAdapter<BonusAdaptor.BonusWrapper> {
     @Override
     protected void convert(ViewHolder holder, BonusWrapper bonusWrapper, int position) {
         holder.setText(R.id.tv_amount, "￥" + bonusWrapper.amount.toString());
-        holder.setText(R.id.tv_type, bonusWrapper.type.toString());
-        holder.setText(R.id.tv_time_end, bonusWrapper.timeEnd);
+        holder.setText(R.id.tv_type, bonusWrapper.getName());
+        holder.setText(R.id.tv_time_end, TimeUtils.millis2String(bonusWrapper.getTimeEnd(),
+                TimeUtils.MY_DATE_FORMAT2) + "到期");
         holder.setText(R.id.tv_desc, bonusWrapper.desc);
         holder.setText(R.id.tv_time_left, "剩" + bonusWrapper.timeLeft.toString() + "日");
     }
@@ -39,13 +42,15 @@ public class BonusAdaptor extends CommonAdapter<BonusAdaptor.BonusWrapper> {
         // 红包金额
         Long amount;
         // 到期时间
-        String timeEnd;
+        Long timeEnd;
         // 描述信息
         String desc;
         // 剩余时间
         Long timeLeft;
+        // 红包名称
+        String name;
 
-        public BonusWrapper(Integer type, Long amount, String timeEnd, String desc, Long timeLeft) {
+        public BonusWrapper(Integer type, Long amount, Long timeEnd, String desc, Long timeLeft) {
             this.type = type;
             this.amount = amount;
             this.timeEnd = timeEnd;
@@ -59,9 +64,9 @@ public class BonusAdaptor extends CommonAdapter<BonusAdaptor.BonusWrapper> {
             this.timeEnd = bonus.getEndTime();
             this.desc = bonus.getRemarks();
             this.timeLeft = bonus.getTimeLimit();
+            this.name = bonus.getName();
         }
     }
-
 
 
 }

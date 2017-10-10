@@ -16,7 +16,7 @@
         android:textStyle="bold" />
 
 
-    <com.xiaolian.amigo.tmp.component.PasswordEditText
+    <com.xiaolian.amigo.ui.widget.PasswordEditText
         android:id="@+id/et_userpwd"
         android:layout_width="match_parent"
         android:layout_height="48dp"

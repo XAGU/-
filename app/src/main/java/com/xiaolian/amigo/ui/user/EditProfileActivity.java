@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.user.intf.IEditProfilePresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditProfileView;
+import com.xiaolian.amigo.util.Constant;
 
 import javax.inject.Inject;
 
@@ -118,8 +119,8 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
                 startActivityForResult(intent, REQUEST_CODE_EDIT_AVATAR);
                 break;
             case R.id.rel_edit_nickname:
-                intent = new Intent(getApplicationContext(), com.xiaolian.amigo.ui.user.EditNickNameActivity.class);
-                intent.putExtra("nickName", "");
+                intent = new Intent(getApplicationContext(), EditNickNameActivity.class);
+                intent.putExtra(Constant.EXTRA_KEY, new EditNickNameActivity.Model(tv_nickname.getText().toString().trim()));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     startActivityForResult(intent, REQUEST_CODE_EDIT_NICKNAME, new Bundle());
                 } else {

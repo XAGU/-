@@ -6,7 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.tmp.common.config.SpaceItemDecoration;
+import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.util.ScreenUtils;
 import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundAdaptor;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundPresenter;
@@ -89,12 +89,12 @@ public class MyPublishActivity extends LostAndFoundBaseListActivity implements I
     @Override
     protected void initView() {
         setHeaderBackground(R.color.white);
-        setRecyclerViewMargin(0, 0, 0, 0);
-        setMainBackground(R.color.white);
+        setMainBackground(R.color.colorBackgroundGray);
+        setRefreshLayoutMargin(0, ScreenUtils.dpToPxInt(this, 10), 0, 0);
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
         presenter.onAttach(MyPublishActivity.this);
-        onRefresh();
+//        onRefresh();
     }
 
     @Override

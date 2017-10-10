@@ -13,12 +13,14 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.base.intf.IBaseListView;
-import com.xiaolian.amigo.ui.widget.recyclerview.IRecyclerView;
+import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutFooter;
+import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutHeader;
 import com.xiaolian.amigo.util.Constant;
-
-import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 
 /**
  * 统一添加toolbar的ListActivity
@@ -29,8 +31,7 @@ import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 
 public abstract class BaseToolBarListActivity extends BaseActivity implements IBaseListView {
 
-    private IRecyclerView recyclerView;
-    private BGARefreshLayout mRefreshLayout;
+    private RecyclerView recyclerView;
     private LinearLayout ll_footer;
     private LinearLayout ll_header;
     private RelativeLayout rl_empty;
@@ -40,13 +41,15 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
     private View v_divide;
     private TextView tv_toolbar_sub_title;
     protected int page = Constant.PAGE_START_NUM;
+    private SmartRefreshLayout refreshLayout;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base_toolbar_list);
-        recyclerView = (IRecyclerView) findViewById(R.id.recyclerView);
+        refreshLayout = (SmartRefreshLayout) findViewById(R.id.refreshLayout);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         cl_main = (CoordinatorLayout) findViewById(R.id.cl_main);
         rl_empty = (RelativeLayout) findViewById(R.id.rl_empty);
         setUp();
@@ -59,21 +62,23 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
 
     private void initRecyclerView() {
         setRecyclerView(recyclerView);
-        recyclerView.setEmptyView(rl_empty);
-        recyclerView.setLoadingListener(new IRecyclerView.LoadingListener() {
+        refreshLayout.setOnRefreshLoadmoreListener(new OnRefreshLoadmoreListener() {
             @Override
-            public void onRefresh() {
-                BaseToolBarListActivity.this.onRefresh();
-            }
-
-            @Override
-            public void onLoadMore() {
+            public void onLoadmore(RefreshLayout refreshlayout) {
                 BaseToolBarListActivity.this.onLoadMore();
             }
+
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                BaseToolBarListActivity.this.onRefresh();
+            }
         });
+        refreshLayout.setRefreshHeader(new RefreshLayoutHeader(this));
+        refreshLayout.setRefreshFooter(new RefreshLayoutFooter(this));
+        refreshLayout.autoRefresh();
     }
 
-    protected IRecyclerView getRecyclerView() {
+    protected RecyclerView getRecyclerView() {
         return recyclerView;
     }
 
@@ -156,11 +161,11 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
         ll_header.setBackgroundResource(color);
     }
 
-    protected void setRecyclerViewMargin(int left, int top, int right, int bottom) {
+    protected void setRefreshLayoutMargin(int left, int top, int right, int bottom) {
         ViewGroup.MarginLayoutParams marginLayoutParams =
-                (ViewGroup.MarginLayoutParams) recyclerView.getLayoutParams();
+                (ViewGroup.MarginLayoutParams) refreshLayout.getLayoutParams();
         marginLayoutParams.setMargins(left, top, right, bottom);
-        recyclerView.setLayoutParams(marginLayoutParams);
+        refreshLayout.setLayoutParams(marginLayoutParams);
     }
 
     protected void setMainBackground(@ColorRes int color) {
@@ -186,16 +191,26 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
 
     @Override
     public void setLoadMoreComplete() {
-        getRecyclerView().loadMoreComplete();
+        refreshLayout.finishLoadmore();
     }
 
     @Override
     public void setRefreshComplete() {
-        getRecyclerView().refreshComplete();
+        refreshLayout.finishRefresh();
     }
 
     @Override
     protected void setUp() {
 
+    }
+
+    @Override
+    public void showEmptyView() {
+        rl_empty.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideEmptyView() {
+        rl_empty.setVisibility(View.GONE);
     }
 }

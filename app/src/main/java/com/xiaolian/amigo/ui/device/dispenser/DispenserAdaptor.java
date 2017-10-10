@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.tmp.component.recyclerview.BaseWrapperRecyclerAdapter;
+import com.xiaolian.amigo.ui.widget.recyclerview.BaseWrapperRecyclerAdapter;
 
 import java.util.List;
 

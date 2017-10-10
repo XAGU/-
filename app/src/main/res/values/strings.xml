@@ -101,5 +101,7 @@
     <string name="please_choose_lost_time">请选择丢失的时间</string>
     <string name="please_choose_found_time">请选择捡到物品的时间</string>
     <string name="not_use_bonus">不使用红包</string>
+    <string name="prepay_money">预付金额</string>
+    <string name="withdrawal">提现</string>
 
 </resources>

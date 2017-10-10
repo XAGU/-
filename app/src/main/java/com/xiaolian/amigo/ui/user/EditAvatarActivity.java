@@ -158,4 +158,9 @@ public class EditAvatarActivity extends UserBaseActivity implements IEditAvatarV
         bt_submit.setEnabled(condition);
         bt_submit.getBackground().setAlpha(condition ? 255 : 100);
     }
+
+    @Override
+    protected boolean isShowLoading() {
+        return true;
+    }
 }

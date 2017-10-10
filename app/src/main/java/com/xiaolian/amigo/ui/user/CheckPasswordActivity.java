@@ -39,7 +39,7 @@ public class CheckPasswordActivity extends UserBaseActivity implements ICheckPas
 
     @Override
     protected int setTitle() {
-        return R.string.check_password;
+        return R.string.edit_mobile;
     }
 
     @Override
@@ -51,7 +51,7 @@ public class CheckPasswordActivity extends UserBaseActivity implements ICheckPas
     @OnClick(R.id.bt_submit)
     void checkPassword() {
         if (TextUtils.isEmpty(et_password.getText())) {
-            onError(R.string.please_enter_password);
+            onError("请输入");
         } else {
             presenter.checkPassword(et_password.getText().toString());
         }

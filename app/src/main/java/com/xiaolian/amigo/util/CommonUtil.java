@@ -16,12 +16,11 @@
 package com.xiaolian.amigo.util;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.res.AssetManager;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.provider.Settings;
+import android.view.Window;
 
 import com.xiaolian.amigo.R;
 
@@ -40,17 +39,27 @@ public final class CommonUtil {
     private CommonUtil() {
     }
 
-    public static ProgressDialog showLoadingDialog(Context context) {
-        ProgressDialog progressDialog = new ProgressDialog(context);
-        progressDialog.show();
-        if (progressDialog.getWindow() != null) {
-            progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        }
-        progressDialog.setContentView(R.layout.progress_dialog);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setCancelable(false);
-        progressDialog.setCanceledOnTouchOutside(false);
-        return progressDialog;
+    public static Dialog showLoadingDialog(Context context) {
+//        Dialog progressDialog = new Dialog(context);
+//        progressDialog.show();
+////        if (progressDialog.getWindow() != null) {
+////            progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+////        }
+//        progressDialog.setContentView(R.layout.progress_dialog);
+//        PullToRefreshIndicator loading = (PullToRefreshIndicator) progressDialog.findViewById(R.id.loading);
+//        loading.setIndicatorColor(0xffB5B5B5);
+////        progressDialog.setIndeterminate(true);
+//        progressDialog.setCancelable(false);
+//        progressDialog.setCanceledOnTouchOutside(false);
+
+        final Dialog dialog = new Dialog(context, android.R.style.Theme_Translucent);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.progress_dialog);
+        dialog.setCancelable(false);
+//        PullToRefreshIndicator loading = (PullToRefreshIndicator) dialog.findViewById(R.id.loading);
+//        loading.setIndicatorColor(0xffB5B5B5);
+        dialog.show();
+        return dialog;
     }
 
     @SuppressLint("all")

@@ -5,14 +5,18 @@ import android.view.View;
 import android.widget.Button;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.tmp.component.ClearableEditText;
+import com.xiaolian.amigo.ui.widget.ClearableEditText;
 import com.xiaolian.amigo.ui.user.intf.IEditNickNamePresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditNickNameView;
+import com.xiaolian.amigo.util.Constant;
+
+import java.io.Serializable;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import lombok.Data;
 
 /**
  * 编辑昵称页面
@@ -30,10 +34,11 @@ public class EditNickNameActivity extends UserBaseActivity implements IEditNickN
 
     @BindView(R.id.bt_submit)
     Button bt_submit;
+    private Model model;
 
     @Override
     protected void setUp() {
-
+        model = (Model) getIntent().getSerializableExtra(Constant.EXTRA_KEY);
     }
 
     @Override
@@ -41,6 +46,10 @@ public class EditNickNameActivity extends UserBaseActivity implements IEditNickN
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
         presenter.onAttach(EditNickNameActivity.this);
+        if (model != null) {
+            edit_nickname.setText(model.getNickname());
+            edit_nickname.setSelection(edit_nickname.getText().length());
+        }
     }
 
     @Override
@@ -77,5 +86,14 @@ public class EditNickNameActivity extends UserBaseActivity implements IEditNickN
                 presenter.updateNickName(edit_nickname.getText().toString().trim());
                 break;
         }
+    }
+
+    @Data
+    public static class Model implements Serializable {
+        public Model(String nickname) {
+            this.nickname = nickname;
+        }
+
+        String nickname;
     }
 }

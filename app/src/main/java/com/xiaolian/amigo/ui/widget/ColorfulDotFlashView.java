@@ -154,12 +154,4 @@ public class ColorfulDotFlashView extends View{
         }
 
     }
-
-    @Override
-    public void onWindowFocusChanged(boolean hasWindowFocus) {
-        super.onWindowFocusChanged(hasWindowFocus);
-        if (!hasWindowFocus) {
-            endAnimation();
-        }
-    }
 }

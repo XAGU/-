@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 public class Order implements Serializable {
     private int id;
     // 消费金额
-    private int consume;
+    private Double consume;
     // 创建时间
     private Long createTime;
     // 设备id
@@ -33,7 +33,7 @@ public class Order implements Serializable {
     // 支付类型，1 - 余额支付， 2 - 红包支付
     private Integer paymentType;
     // 预付金额
-    private Integer prepay;
+    private Double prepay;
     // 学校id
     private Integer schoolId;
     // 学校名称

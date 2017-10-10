@@ -83,38 +83,51 @@
         </LinearLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <com.xiaolian.amigo.ui.widget.recyclerview.IRecyclerView
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:srlHeaderHeight="40dp"
+        app:srlFooterHeight="60dp"
         android:layout_marginLeft="@dimen/mainMarginLeftRight"
         android:layout_marginRight="@dimen/mainMarginLeftRight"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:id="@+id/recyclerView"
-        android:overScrollMode="never"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        >
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <RelativeLayout
+                android:id="@+id/rl_empty"
+                android:layout_width="match_parent"
+                android:visibility="gone"
+                android:background="@color/colorBackgroundGray"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/tv_empty_tip"
+                    android:textSize="14sp"
+                    android:text="@string/empty_tip"
+                    android:textColor="@color/colorDark2"
+                    android:layout_centerInParent="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <ImageView
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="14dp"
+                    android:layout_above="@id/tv_empty_tip"
+                    android:src="@drawable/ic_empty_box"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+            <android.support.v7.widget.RecyclerView
+                android:overScrollMode="never"
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+        </FrameLayout>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
-    <RelativeLayout
-        android:id="@+id/rl_empty"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:layout_width="match_parent"
-        android:visibility="gone"
-        android:background="@color/colorBackgroundGray"
-        android:layout_height="match_parent">
-        <TextView
-            android:id="@+id/tv_empty_tip"
-            android:textSize="14sp"
-            android:text="@string/empty_tip"
-            android:textColor="@color/colorDark2"
-            android:layout_centerInParent="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <ImageView
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="14dp"
-            android:layout_above="@id/tv_empty_tip"
-            android:src="@drawable/ic_empty_box"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </RelativeLayout>
 
     <LinearLayout
         android:orientation="vertical"

@@ -66,6 +66,7 @@ dependencies {
     // recyclerview adapter
     compile "com.zhy:base-rvadapter:$rootProject.baseRvadapter"
     compile "com.huxq17.xrefreshview:xrefreshview:$rootProject.xrefreshview"
+    compile "com.scwang.smartrefresh:SmartRefreshLayout:1.0.3"
 
     // android support libraries
     compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"

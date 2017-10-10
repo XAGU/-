@@ -7,8 +7,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.tmp.component.recyclerview.BaseLoadMoreFooterView;
-import com.xiaolian.amigo.tmp.component.recyclerview.LinearLayoutWithRecyclerOnScrollListener;
+import com.xiaolian.amigo.ui.widget.recyclerview.BaseLoadMoreFooterView;
+import com.xiaolian.amigo.ui.widget.recyclerview.LinearLayoutWithRecyclerOnScrollListener;
 import com.xiaolian.amigo.ui.base.BaseActivity;
 
 import java.util.ArrayList;

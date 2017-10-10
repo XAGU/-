@@ -1,13 +1,12 @@
 package com.xiaolian.amigo.ui.favorite;
 
 
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.tmp.common.config.RecycleViewDivider;
+import com.xiaolian.amigo.ui.widget.RecycleViewDivider;
 import com.xiaolian.amigo.ui.favorite.adaptor.FavoriteAdaptor;
 import com.xiaolian.amigo.ui.favorite.intf.IFavoritePresenter;
 import com.xiaolian.amigo.ui.favorite.intf.IFavoriteView;
@@ -18,7 +17,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**

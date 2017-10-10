@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.tmp.common.config.SpaceItemDecoration;
+import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.util.ScreenUtils;
 import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundAdaptor;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundPresenter;
@@ -202,7 +202,8 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 Intent intent = new Intent(LostAndFoundActivity.this, LostAndFoundDetailActivity.class);
-                intent.putExtra(LostAndFoundDetailActivity.INTENT_KEY_LOST_AND_FOUND_DETAIL_ID, lostAndFounds.get(position-1).getId());
+                intent.putExtra(LostAndFoundDetailActivity.INTENT_KEY_LOST_AND_FOUND_DETAIL_ID,
+                        lostAndFounds.get(position).getId());
                 // listStatus false表示失物 true表示招领
                 if (listStatus) {
                     intent.putExtra(LostAndFoundDetailActivity.INTENT_KEY_LOST_AND_FOUND_DETAIL_TYPE,
@@ -280,7 +281,7 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
     protected void initView() {
         setHeaderBackground(R.color.white);
         setMainBackground(R.color.colorBackgroundGray);
-        setRecyclerViewMargin(0, 0, 0, 0);
+        setRefreshLayoutMargin(0, ScreenUtils.dpToPxInt(this, 10), 0, 0);
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
         presenter.onAttach(LostAndFoundActivity.this);
@@ -298,7 +299,7 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
                 onFoundClick();
             }
         });
-        presenter.queryLostList(page, Constant.PAGE_SIZE);
+//        presenter.queryLostList(page, Constant.PAGE_SIZE);
     }
 
     @Override

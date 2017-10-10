@@ -13,14 +13,14 @@ import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.order.Order;
-import com.xiaolian.amigo.tmp.component.BezierWaveView;
+import com.xiaolian.amigo.ui.widget.BezierWaveView;
 import com.xiaolian.amigo.ui.bonus.BonusActivity;
 import com.xiaolian.amigo.ui.bonus.adaptor.BonusAdaptor;
 import com.xiaolian.amigo.ui.device.DeviceBaseActivity;
+import com.xiaolian.amigo.ui.device.DeviceOrderActivity;
 import com.xiaolian.amigo.ui.device.intf.heator.IHeaterPresenter;
 import com.xiaolian.amigo.ui.device.intf.heator.IHeaterView;
 import com.xiaolian.amigo.ui.main.MainActivity;
-import com.xiaolian.amigo.ui.order.OrderDetailActivity;
 import com.xiaolian.amigo.ui.wallet.RechargeActivity;
 import com.xiaolian.amigo.ui.widget.DotFlashView;
 import com.xiaolian.amigo.ui.widget.dialog.ActionSheetDialog;
@@ -384,12 +384,14 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
         order.setDeviceNo("asdas2412as");
         order.setLocation("一号楼102室内");
         order.setDeviceNo("asdas2412as");
+        order.setConsume(1.2);
+        order.setPrepay(10.0);
         order.setOrderNo("77f88c5ea7886c34");
-        order.setPaymentType(1);
+        order.setPaymentType(isMoneyPay ? 1 : 2);
         order.setWaterUsage(50);
-        order.setConsume(2);
+        order.setConsume(2.1);
         order.setCreateTime(System.currentTimeMillis());
-        Intent intent = new Intent(this, OrderDetailActivity.class);
+        Intent intent = new Intent(this, DeviceOrderActivity.class);
         intent.putExtra(Constant.EXTRA_KEY, order);
         startActivity(intent);
     }

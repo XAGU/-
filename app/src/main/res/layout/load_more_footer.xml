@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:fitsSystemWindows="true"
     android:gravity="bottom|center">
-    <com.xiaolian.amigo.ui.widget.recyclerview.view.SimpleView
+    <com.xiaolian.amigo.ui.widget.recyclerview2.view.SimpleView
         android:id="@+id/loadmore_progressbar"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"

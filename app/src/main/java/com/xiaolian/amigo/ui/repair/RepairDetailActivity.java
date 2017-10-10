@@ -15,7 +15,7 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.enumeration.RepairStatus;
 import com.xiaolian.amigo.data.network.model.dto.response.RepairDetailRespDTO;
-import com.xiaolian.amigo.tmp.common.config.RecycleViewDivider;
+import com.xiaolian.amigo.ui.widget.RecycleViewDivider;
 import com.xiaolian.amigo.ui.repair.adaptor.RepairProgressAdaptor;
 import com.xiaolian.amigo.ui.repair.intf.IRepairDetailPresenter;
 import com.xiaolian.amigo.ui.repair.intf.IRepairDetailView;
@@ -214,6 +214,11 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
             intent.putStringArrayListExtra(AlbumItemActivity.EXTRA_TYPE_LIST, images);
             startActivity(intent);
         }
+    }
+
+    @Override
+    protected boolean isShowLoading() {
+        return true;
     }
 
 }

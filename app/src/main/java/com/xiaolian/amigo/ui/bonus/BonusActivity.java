@@ -85,7 +85,7 @@ public class BonusActivity extends BonusBaseListActivity implements IBonusView {
                     @Override
                     public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                         Intent intent = new Intent(BonusActivity.this, HeaterActivity.class);
-                        intent.putExtra(INTENT_KEY_BONUS_RESULT, bonuses.get(position - 1));
+                        intent.putExtra(INTENT_KEY_BONUS_RESULT, bonuses.get(position));
                         setResult(RESULT_OK, intent);
                         finish();
                     }
@@ -107,7 +107,7 @@ public class BonusActivity extends BonusBaseListActivity implements IBonusView {
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
         presenter.onAttach(BonusActivity.this);
-        presenter.requestBonusList(page);
+//        presenter.requestBonusList(page);
     }
 
     protected RecyclerView.Adapter getAdaptor() {
@@ -143,16 +143,6 @@ public class BonusActivity extends BonusBaseListActivity implements IBonusView {
     public void addMore(List<BonusAdaptor.BonusWrapper> bonuses) {
         this.bonuses.addAll(bonuses);
         adaptor.notifyDataSetChanged();
-    }
-
-    @Override
-    public void setLoadMoreComplete() {
-        getRecyclerView().loadMoreComplete();
-    }
-
-    @Override
-    public void setRefreshComplete() {
-        getRecyclerView().refreshComplete();
     }
 
     @Override

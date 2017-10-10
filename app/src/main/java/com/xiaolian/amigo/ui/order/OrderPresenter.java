@@ -70,4 +70,5 @@ public class OrderPresenter<V extends IOrderView> extends BasePresenter<V>
             }
         });
     }
+
 }
