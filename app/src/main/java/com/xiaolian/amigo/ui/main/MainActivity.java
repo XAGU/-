@@ -2,11 +2,10 @@ package com.xiaolian.amigo.ui.main;
 
 
 import android.app.Dialog;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -89,10 +88,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         btSwitch.setBackgroundResource(R.drawable.profile);
 
         homeFragment = new HomeFragment();
-        FragmentManager fragmentManager = this.getFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.add(R.id.fm_container, homeFragment);
-        transaction.commit();
+
+        getSupportFragmentManager().beginTransaction().add(R.id.fm_container, homeFragment).commit();
     }
 
     @Override
@@ -126,24 +123,22 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @OnClick(R.id.bt_switch)
     void onSwitch(View v) {
         ImageView imageView = (ImageView) v;
-        FragmentManager fragmentManager = this.getFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if (current == 0) {
-            transaction.remove(homeFragment);
             if (profileFragment == null) {
                 profileFragment = new ProfileFragment();
             }
-            transaction.add(R.id.fm_container, profileFragment);
-            transaction.commit();
-
+            if (!profileFragment.isAdded()) {
+                transaction.hide(homeFragment).add(R.id.fm_container, profileFragment).commit();
+            } else {
+                transaction.hide(homeFragment).show(profileFragment).commit();
+            }
             imageView.setBackgroundResource(R.drawable.home);
             current = 1;
             // 改为切换不隐藏
 //            rl_notice.setVisibility(View.GONE);
         } else {
-            transaction.remove(profileFragment);
-            transaction.add(R.id.fm_container, homeFragment);
-            transaction.commit();
+            transaction.hide(profileFragment).show(homeFragment).commit();
             imageView.setBackgroundResource(R.drawable.profile);
             current = 0;
             // 改为切换不隐藏
