@@ -428,6 +428,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     break;
                 case OPEN_VALVE:
                     closeCmd = nextCommand;
+                    getMvpView().onOpen();
                     break;
                 case CLOSE_VALVE:
                     checkoutCmd = nextCommand;
