@@ -5,12 +5,16 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -29,6 +33,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
 /**
  * Created by yik on 2017/9/5.
@@ -70,9 +75,13 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @BindView(R.id.rl_notice)
     RelativeLayout rl_notice;
 
+    @BindView(R.id.sv_main)
+    ScrollView sv_main;
+
+    private GestureDetector mGestureDetector;
 
     HomeFragment homeFragment;
-    ProfileFragment profileFragment;
+    ProfileFragment2 profileFragment;
 
     int current = 0;
 
@@ -85,11 +94,63 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
         presenter.onAttach(this);
 
+        OverScrollDecoratorHelper.setUpOverScroll(sv_main);
+
         btSwitch.setBackgroundResource(R.drawable.profile);
 
-        homeFragment = new HomeFragment();
+        if (savedInstanceState == null) {
+            homeFragment = new HomeFragment();
+            getSupportFragmentManager().beginTransaction().add(R.id.fm_container, homeFragment).commit();
+        } else {
+            HomeFragment home = (HomeFragment) getSupportFragmentManager().findFragmentByTag("home");
+            ProfileFragment2 profile = (ProfileFragment2) getSupportFragmentManager().findFragmentByTag("profile");
+            if (home != null && profile != null) {
+                getSupportFragmentManager().beginTransaction()
+                        .show(home)
+                        .hide(profile)
+                        .commit();
+            }
+        }
 
-        getSupportFragmentManager().beginTransaction().add(R.id.fm_container, homeFragment).commit();
+        mGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
+            @Override
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+
+                if(Math.abs(e1.getRawY() - e2.getRawY())>100){
+                    //Toast.makeText(getApplicationContext(), "动作不合法", 0).show();
+                    return true;
+                }
+                if(Math.abs(velocityX)<150){
+                    //Toast.makeText(getApplicationContext(), "移动的太慢", 0).show();
+                    return true;
+                }
+                if ((e1.getRawX() - e2.getRawX()) > 200) {// 表示 向右滑动表示下一页
+                    //显示下一页
+                    if (current == 1) {
+                        onSwitch();
+                        return true;
+                    }
+                }
+
+                if ((e2.getRawX() - e1.getRawX()) > 200) {  //向左滑动 表示 上一页
+                    //显示上一页
+                    if (current == 0) {
+                        onSwitch();
+                        return true;//消费掉当前事件  不让当前事件继续向下传递
+                    }
+                }
+                return super.onFling(e1, e2, velocityX, velocityY);
+            }
+        });
+
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (mGestureDetector.onTouchEvent(ev)) {
+            return true;
+        }
+        return super.dispatchTouchEvent(ev);
     }
 
     @Override
@@ -121,15 +182,15 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     }
 
     @OnClick(R.id.bt_switch)
-    void onSwitch(View v) {
-        ImageView imageView = (ImageView) v;
+    void onSwitch() {
+        ImageView imageView = btSwitch;
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if (current == 0) {
             if (profileFragment == null) {
-                profileFragment = new ProfileFragment();
+                profileFragment = new ProfileFragment2();
             }
             if (!profileFragment.isAdded()) {
-                transaction.hide(homeFragment).add(R.id.fm_container, profileFragment).commit();
+                transaction.hide(homeFragment).add(R.id.fm_container, profileFragment, "profile").commit();
             } else {
                 transaction.hide(homeFragment).show(profileFragment).commit();
             }
@@ -138,7 +199,14 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             // 改为切换不隐藏
 //            rl_notice.setVisibility(View.GONE);
         } else {
-            transaction.hide(profileFragment).show(homeFragment).commit();
+            if (homeFragment == null) {
+                homeFragment = new HomeFragment();
+            }
+            if (!homeFragment.isAdded()) {
+                transaction.hide(profileFragment).add(R.id.fm_container, homeFragment, "home").commit();
+            } else {
+                transaction.hide(profileFragment).show(homeFragment).commit();
+            }
             imageView.setBackgroundResource(R.drawable.profile);
             current = 0;
             // 改为切换不隐藏
@@ -184,6 +252,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     /**
      * 显示通知个数
+     *
      * @param amount 通知个数
      */
     @Override
