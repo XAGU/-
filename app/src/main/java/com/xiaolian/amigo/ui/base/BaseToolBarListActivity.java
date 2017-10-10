@@ -170,6 +170,13 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
         refreshLayout.setLayoutParams(marginLayoutParams);
     }
 
+    protected void setRecyclerViewMargin(int left, int top, int right, int bottom) {
+        ViewGroup.MarginLayoutParams marginLayoutParams =
+                (ViewGroup.MarginLayoutParams) recyclerView.getLayoutParams();
+        marginLayoutParams.setMargins(left, top, right, bottom);
+        recyclerView.setLayoutParams(marginLayoutParams);
+    }
+
     protected void setMainBackground(@ColorRes int color) {
         cl_main.setBackgroundResource(color);
     }

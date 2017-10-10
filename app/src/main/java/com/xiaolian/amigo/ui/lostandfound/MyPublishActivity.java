@@ -35,11 +35,6 @@ public class MyPublishActivity extends LostAndFoundBaseListActivity implements I
     @Inject
     ILostAndFoundPresenter<ILostAndFoundView> presenter;
 
-//    @Override
-//    protected int getLayout() {
-//        return R.layout.activity_my_publish;
-//    }
-
     @Override
     protected void onRefresh() {
         page = Constant.PAGE_START_NUM;
@@ -55,7 +50,7 @@ public class MyPublishActivity extends LostAndFoundBaseListActivity implements I
     @Override
     protected void setRecyclerView(RecyclerView recyclerView) {
 
-        adaptor = new LostAndFoundAdaptor(this, R.layout.item_lost_and_found, lostAndFounds);
+        adaptor = new LostAndFoundAdaptor(this, R.layout.item_lost_and_found, lostAndFounds, true);
         recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 10)));
         adaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
@@ -90,11 +85,10 @@ public class MyPublishActivity extends LostAndFoundBaseListActivity implements I
     protected void initView() {
         setHeaderBackground(R.color.white);
         setMainBackground(R.color.colorBackgroundGray);
-        setRefreshLayoutMargin(0, ScreenUtils.dpToPxInt(this, 10), 0, 0);
+        setRefreshLayoutMargin(0, 0, 0, 0);
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
         presenter.onAttach(MyPublishActivity.this);
-//        onRefresh();
     }
 
     @Override

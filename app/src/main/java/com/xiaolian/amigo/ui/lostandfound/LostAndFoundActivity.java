@@ -67,44 +67,40 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
      */
     private int foundPage = Constant.PAGE_START_NUM;
 
-//    /**
-//     * 发布招领
-//     */
-//    @BindView(R.id.tv_publish_found)
+    /**
+     * 发布招领
+     */
     TextView tv_publish_found;
     private SearchDialog searchDialog;
     private RecyclerView searchRecyclerView;
 
-//    /**
-//     * 打开发布招领页面
-//     */
-//    @OnClick(R.id.tv_publish_found)
+    /**
+     * 打开发布招领页面
+     */
     void gotoPublishFound() {
         startActivityForResult(new Intent(this, PublishFoundActivity.class), REQUEST_CODE_PUBLISH);
     }
 
-//    /**
-//     * 发布失物
-//     */
-//    @BindView(R.id.tv_publish_lost)
+    /**
+     * 发布失物
+     */
     TextView tv_publish_lost;
-//
-//    /**
-//     * 打开发布招领页面
-//     */
-//    @OnClick(R.id.tv_publish_lost)
+
+    /**
+     * 打开发布招领页面
+     */
     void gotoPublishLost() {
         startActivityForResult(new Intent(this, PublishLostActivity.class), REQUEST_CODE_PUBLISH);
     }
-//    /**
-//     * 我的发布
-//     */
-//    @BindView(R.id.tv_my_publish)
+
+    /**
+     * 我的发布
+     */
     TextView tv_my_publish;
-//    /**
-//     * 打开发布招领页面
-//     */
-//    @OnClick(R.id.tv_my_publish)
+
+    /**
+     * 打开发布招领页面
+     */
     void gotoMyPublish() {
         startActivity(new Intent(this, MyPublishActivity.class));
     }
@@ -136,14 +132,8 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
         lostPage = Constant.PAGE_START_NUM;
         foundPage = Constant.PAGE_START_NUM;
     }
-//
-//    @Override
-//    protected int getLayout() {
-//        return R.layout.activity_lost_and_found;
-//    }
 
-    // 点击搜索
-//    @OnClick(R.id.tv_search)
+   //  点击搜索
     void search() {
         if (searchDialog == null) {
             searchDialog = new SearchDialog(this);
@@ -283,7 +273,7 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
     protected void initView() {
         setHeaderBackground(R.color.white);
         setMainBackground(R.color.colorBackgroundGray);
-        setRefreshLayoutMargin(0, ScreenUtils.dpToPxInt(this, 10), 0, 0);
+        setRefreshLayoutMargin(0, 0, 0, 0);
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
         presenter.onAttach(LostAndFoundActivity.this);
@@ -336,7 +326,8 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
     public void showSearchResult(List<LostAndFoundAdaptor.LostAndFoundWapper> wappers) {
         if (searchRecyclerView == null) {
             searchRecyclerView = new RecyclerView(this);
-            searchAdaptor = new LostAndFoundAdaptor(this, R.layout.item_lost_and_found, searchResult);
+            searchAdaptor = new LostAndFoundAdaptor(this, R.layout.item_lost_and_found, searchResult, true);
+            searchRecyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 10)));
             searchAdaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {

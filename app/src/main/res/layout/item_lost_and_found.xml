@@ -27,6 +27,15 @@
             android:src="@drawable/picture_light"
             android:layout_marginLeft="7dp"
             android:layout_gravity="center_vertical"/>
+
+        <ImageView
+            android:visibility="gone"
+            android:layout_marginLeft="5dp"
+            android:id="@+id/iv_icon"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_lost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <TextView
