@@ -1,12 +1,9 @@
 package com.xiaolian.amigo.ui.wallet;
 
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.tmp.activity.wallet.PrepayActivity;
-import com.xiaolian.amigo.tmp.activity.wallet.WithdrawalActivty;
 import com.xiaolian.amigo.ui.wallet.intf.IWalletPresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IWalletView;
 import com.xiaolian.amigo.ui.widget.dialog.AvailabilityDialog;
@@ -91,7 +88,7 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
 
     @Override
     public void gotoWithDraw() {
-        startActivity(this, WithdrawalActivty.class);
+        startActivity(this, WithdrawalActivity.class);
     }
 
     @Override
@@ -105,7 +102,7 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
         dialog.setSubTipVisible(false);
         dialog.setOkText(getString(R.string.ok));
         dialog.setOnOkClickListener(dialog1 -> {
-            startActivity(this, WithdrawalActivty.class);
+            startActivity(this, WithdrawalActivity.class);
         });
         dialog.show();
     }

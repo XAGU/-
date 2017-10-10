@@ -3,7 +3,7 @@ package com.xiaolian.amigo.ui.widget.pageloader;
 import android.content.Context;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.tmp.component.recyclerview.BaseLoadMoreFooterView;
+import com.xiaolian.amigo.ui.widget.recyclerview.BaseLoadMoreFooterView;
 
 /**
  * DefaultLoadMoreFooterView LoadMoreView默认实现

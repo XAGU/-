@@ -6,10 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
-import android.text.SpannableString;
-import android.text.Spanned;
 import android.text.TextWatcher;
-import android.text.style.AbsoluteSizeSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.tmp.component.PasswordEditText;
+import com.xiaolian.amigo.ui.widget.PasswordEditText;
 import com.xiaolian.amigo.util.ViewUtil;
 
 import butterknife.BindView;

@@ -1,11 +1,10 @@
 package com.xiaolian.amigo.ui.user;
 
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.tmp.component.ClearableEditText;
+import com.xiaolian.amigo.ui.widget.ClearableEditText;
 import com.xiaolian.amigo.ui.user.intf.IEditPasswordPresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditPasswordView;
 import com.xiaolian.amigo.util.ViewUtil;

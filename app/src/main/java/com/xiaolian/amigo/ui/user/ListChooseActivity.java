@@ -2,10 +2,8 @@ package com.xiaolian.amigo.ui.user;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.widget.TextView;
 
@@ -15,13 +13,13 @@ import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.di.componet.DaggerUserActivityComponent;
 import com.xiaolian.amigo.di.componet.UserActivityComponent;
 import com.xiaolian.amigo.di.module.UserActivityModule;
-import com.xiaolian.amigo.tmp.common.config.RecycleViewDivider;
+import com.xiaolian.amigo.ui.widget.RecycleViewDivider;
 import com.xiaolian.amigo.ui.base.BaseActivity;
 import com.xiaolian.amigo.ui.repair.RepairApplyActivity;
 import com.xiaolian.amigo.ui.user.adaptor.ListChooseAdaptor;
 import com.xiaolian.amigo.ui.user.intf.IListChoosePresenter;
 import com.xiaolian.amigo.ui.user.intf.IListChooseView;
-import com.xiaolian.amigo.ui.widget.recyclerview.IRecyclerView;
+import com.xiaolian.amigo.ui.widget.recyclerview2.IRecyclerView;
 import com.xiaolian.amigo.util.Constant;
 
 import java.util.ArrayList;

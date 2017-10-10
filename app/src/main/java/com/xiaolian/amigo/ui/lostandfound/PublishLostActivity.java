@@ -8,11 +8,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.aigestudio.wheelpicker.WheelPicker;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.tmp.base.BaseActivity;
 import com.xiaolian.amigo.ui.lostandfound.intf.IPublishLostPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.IPublishLostView;
 import com.xiaolian.amigo.ui.widget.dialog.DatePickerDialog;

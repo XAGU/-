@@ -13,4 +13,8 @@ public interface IBaseListView extends IBaseView {
 
     void addPage();
 
+    void showEmptyView();
+
+    void hideEmptyView();
+
 }

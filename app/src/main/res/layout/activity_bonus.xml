@@ -95,7 +95,7 @@
 
     </RelativeLayout>
 
-            <!--<com.xiaolian.amigo.tmp.component.UnScrollListView-->
+            <!--<com.xiaolian.amigo.ui.widget.UnScrollListView-->
                 <!--android:id="@+id/lv_bonuses"-->
                 <!--android:layout_width="match_parent"-->
                 <!--android:layout_height="wrap_content" />-->

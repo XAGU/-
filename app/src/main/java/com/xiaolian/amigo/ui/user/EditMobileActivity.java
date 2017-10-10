@@ -7,7 +7,7 @@ import android.text.TextWatcher;
 import android.widget.Button;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.tmp.component.ClearableEditText;
+import com.xiaolian.amigo.ui.widget.ClearableEditText;
 import com.xiaolian.amigo.ui.user.intf.IEditMobilePresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditMobileView;
 import com.xiaolian.amigo.util.CountDownButtonHelper;

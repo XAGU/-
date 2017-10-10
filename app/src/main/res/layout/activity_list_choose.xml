@@ -65,7 +65,7 @@
             android:layout_marginRight="@dimen/mainMarginLeftRight"
             android:background="#eee" />
 
-        <com.xiaolian.amigo.ui.widget.recyclerview.IRecyclerView
+        <com.xiaolian.amigo.ui.widget.recyclerview2.IRecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

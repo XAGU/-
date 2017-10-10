@@ -30,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-        <com.xiaolian.amigo.tmp.component.BezierWaveView
+        <com.xiaolian.amigo.ui.widget.BezierWaveView
             android:layout_alignParentBottom="true"
             android:id="@+id/bsv_wave"
             android:layout_width="match_parent"

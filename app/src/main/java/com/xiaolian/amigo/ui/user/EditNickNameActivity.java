@@ -5,7 +5,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.tmp.component.ClearableEditText;
+import com.xiaolian.amigo.ui.widget.ClearableEditText;
 import com.xiaolian.amigo.ui.user.intf.IEditNickNamePresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditNickNameView;
 import com.xiaolian.amigo.util.Constant;
