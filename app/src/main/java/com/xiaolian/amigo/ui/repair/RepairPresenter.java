@@ -56,14 +56,31 @@ public class RepairPresenter<V extends IRepairView> extends BasePresenter<V>
             public void onReady(ApiResult<RepairRespDTO> result) {
                 getMvpView().setLoadMoreComplete();
                 getMvpView().setRefreshComplete();
+                getMvpView().hideEmptyView();
+                getMvpView().hideErrorView();
                 if (null == result.getError()) {
-                    List<RepairAdaptor.RepairWrapper> wrappers = new ArrayList<>();
-                    for (Repair repair : result.getData().getRepairDevices()) {
-                        wrappers.add(new RepairAdaptor.RepairWrapper(repair));
+                    if (null != result.getData() && result.getData().getRepairDevices().size() > 0) {
+                        List<RepairAdaptor.RepairWrapper> wrappers = new ArrayList<>();
+                        for (Repair repair : result.getData().getRepairDevices()) {
+                            wrappers.add(new RepairAdaptor.RepairWrapper(repair));
+                        }
+                        getMvpView().addMore(wrappers);
+                        getMvpView().addPage();
+                    } else {
+                        getMvpView().showEmptyView();
                     }
-                    getMvpView().addMore(wrappers);
-                    getMvpView().addPage();
+                } else {
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                    getMvpView().showErrorView();
                 }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                getMvpView().setLoadMoreComplete();
+                getMvpView().setRefreshComplete();
+                getMvpView().showErrorView();
             }
         });
     }

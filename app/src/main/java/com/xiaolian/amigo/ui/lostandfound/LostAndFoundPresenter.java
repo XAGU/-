@@ -62,8 +62,10 @@ public class LostAndFoundPresenter<V extends ILostAndFoundView> extends BasePres
                             }
                         } else {
                             if (wrappers.isEmpty()) {
+                                getMvpView().showEmptyView();
                                 return;
                             }
+                            getMvpView().hideEmptyView();
                             if (type == null) {
                                 getMvpView().addMore(wrappers);
                             } else {
@@ -76,8 +78,17 @@ public class LostAndFoundPresenter<V extends ILostAndFoundView> extends BasePres
                         }
                     }
                 } else {
+                    getMvpView().hideErrorView();
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                getMvpView().setRefreshComplete();
+                getMvpView().setLoadMoreComplete();
+                getMvpView().showErrorView();
             }
         });
     }
@@ -119,17 +130,30 @@ public class LostAndFoundPresenter<V extends ILostAndFoundView> extends BasePres
             public void onReady(ApiResult<QueryLostAndFoundListRespDTO> result) {
                 getMvpView().setRefreshComplete();
                 getMvpView().setLoadMoreComplete();
+                getMvpView().hideEmptyView();
+                getMvpView().hideErrorView();
                 if (null == result.getError()) {
-                    if (result.getData().getLostAndFounds() != null) {
+                    if (result.getData().getLostAndFounds() != null && result.getData().getLostAndFounds().size() > 0) {
                         List<LostAndFoundAdaptor.LostAndFoundWapper> wrappers = new ArrayList<>();
                         for (LostAndFound lostAndFound : result.getData().getLostAndFounds()) {
                             wrappers.add(new LostAndFoundAdaptor.LostAndFoundWapper(lostAndFound));
                         }
                         getMvpView().addMore(wrappers);
+                    } else {
+                        getMvpView().showEmptyView();
                     }
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
+                    getMvpView().showErrorView();
                 }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                getMvpView().setRefreshComplete();
+                getMvpView().setLoadMoreComplete();
+                getMvpView().showErrorView();
             }
         });
     }

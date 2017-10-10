@@ -17,4 +17,8 @@ public interface IBaseListView extends IBaseView {
 
     void hideEmptyView();
 
+    void showErrorView();
+
+    void hideErrorView();
+
 }

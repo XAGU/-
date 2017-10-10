@@ -35,6 +35,7 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
     private LinearLayout ll_footer;
     private LinearLayout ll_header;
     private RelativeLayout rl_empty;
+    private RelativeLayout rl_error;
     private CoordinatorLayout cl_main;
     private TextView tv_toolbar_title;
     private TextView tv_toolbar_title2;
@@ -52,6 +53,7 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         cl_main = (CoordinatorLayout) findViewById(R.id.cl_main);
         rl_empty = (RelativeLayout) findViewById(R.id.rl_empty);
+        rl_error = (RelativeLayout) findViewById(R.id.rl_error);
         setUp();
         initToolBar();
         initFooter();
@@ -212,5 +214,15 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
     @Override
     public void hideEmptyView() {
         rl_empty.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showErrorView() {
+        rl_error.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideErrorView() {
+        rl_error.setVisibility(View.GONE);
     }
 }

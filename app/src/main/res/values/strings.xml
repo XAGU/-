@@ -103,5 +103,6 @@
     <string name="not_use_bonus">不使用红包</string>
     <string name="prepay_money">预付金额</string>
     <string name="withdrawal">提现</string>
+    <string name="error_tip">网络异常</string>
 
 </resources>

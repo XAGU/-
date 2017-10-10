@@ -57,16 +57,31 @@ public class OrderPresenter<V extends IOrderView> extends BasePresenter<V>
             public void onReady(ApiResult<OrderRespDTO> result) {
                 getMvpView().setRefreshComplete();
                 getMvpView().setLoadMoreComplete();
+                getMvpView().hideEmptyView();
+                getMvpView().hideErrorView();
                 if (null == result.getError()) {
-                    List<OrderAdaptor.OrderWrapper> wrappers = new ArrayList<OrderAdaptor.OrderWrapper>();
-                    if (null != result.getData().getOrders()) {
+                    if (null != result.getData().getOrders() && result.getData().getOrders().size() > 0) {
+                        List<OrderAdaptor.OrderWrapper> wrappers = new ArrayList<OrderAdaptor.OrderWrapper>();
                         for (Order order : result.getData().getOrders()) {
                             wrappers.add(new OrderAdaptor.OrderWrapper(order));
                         }
                         getMvpView().addMore(wrappers);
                         getMvpView().addPage();
+                    } else {
+                        getMvpView().showEmptyView();
                     }
+                } else {
+                    getMvpView().showErrorView();
+                    getMvpView().onError(result.getError().getDisplayMessage());
                 }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                getMvpView().setRefreshComplete();
+                getMvpView().setLoadMoreComplete();
+                getMvpView().showErrorView();
             }
         });
     }

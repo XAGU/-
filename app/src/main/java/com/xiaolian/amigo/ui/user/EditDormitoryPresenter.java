@@ -50,8 +50,10 @@ public class EditDormitoryPresenter<V extends IEditDormitoryView> extends BasePr
             public void onReady(ApiResult<QueryUserResidenceListRespDTO> result) {
                 getMvpView().setRefreshComplete();
                 getMvpView().setLoadMoreComplete();
+                getMvpView().hideEmptyView();
+                getMvpView().hideErrorView();
                 if (null == result.getError()) {
-                    if (result.getData().getUserResidences() != null) {
+                    if (result.getData().getUserResidences() != null && result.getData().getUserResidences().size() > 0) {
                         List<EditDormitoryAdaptor.UserResidenceWrapper> wrappers = new ArrayList<>();
                         for (UserResidence userResidence : result.getData().getUserResidences()) {
                             wrappers.add(new EditDormitoryAdaptor.UserResidenceWrapper(userResidence,
@@ -60,10 +62,21 @@ public class EditDormitoryPresenter<V extends IEditDormitoryView> extends BasePr
                         }
                         getMvpView().addMore(wrappers);
                         getMvpView().addPage();
+                    } else {
+                        getMvpView().showEmptyView();
                     }
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
+                    getMvpView().showErrorView();
                 }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                getMvpView().setRefreshComplete();
+                getMvpView().setLoadMoreComplete();
+                getMvpView().showErrorView();
             }
         });
     }

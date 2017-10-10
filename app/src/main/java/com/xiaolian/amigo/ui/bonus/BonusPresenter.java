@@ -44,18 +44,31 @@ public class BonusPresenter<V extends IBonusView> extends BasePresenter<V>
             public void onReady(ApiResult<QueryUserBonusListRespDTO> result) {
                 getMvpView().setRefreshComplete();
                 getMvpView().setLoadMoreComplete();
+                getMvpView().hideEmptyView();
+                getMvpView().hideErrorView();
                 if (null == result.getError()) {
-                    List<BonusAdaptor.BonusWrapper> wrappers = new ArrayList<>();
-                    if (null != result.getData().getBonuses()) {
+                    if (null != result.getData().getBonuses() && result.getData().getBonuses().size() > 0) {
+                        List<BonusAdaptor.BonusWrapper> wrappers = new ArrayList<>();
                         for (Bonus bonus : result.getData().getBonuses()) {
                             wrappers.add(new BonusAdaptor.BonusWrapper(bonus));
                         }
                         getMvpView().addMore(wrappers);
                         getMvpView().addPage();
+                    } else {
+                        getMvpView().showEmptyView();
                     }
                 } else {
+                    getMvpView().showErrorView();
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                getMvpView().setRefreshComplete();
+                getMvpView().setLoadMoreComplete();
+                getMvpView().showErrorView();
             }
         });
     }
@@ -73,18 +86,31 @@ public class BonusPresenter<V extends IBonusView> extends BasePresenter<V>
             public void onReady(ApiResult<QueryUserBonusListRespDTO> result) {
                 getMvpView().setRefreshComplete();
                 getMvpView().setLoadMoreComplete();
+                getMvpView().hideEmptyView();
+                getMvpView().hideErrorView();
                 if (null == result.getError()) {
-                    List<BonusAdaptor.BonusWrapper> wrappers = new ArrayList<>();
-                    if (null != result.getData().getBonuses()) {
+                    if (null != result.getData().getBonuses() && result.getData().getBonuses().size() > 0) {
+                        List<BonusAdaptor.BonusWrapper> wrappers = new ArrayList<>();
                         for (Bonus bonus : result.getData().getBonuses()) {
                             wrappers.add(new BonusAdaptor.BonusWrapper(bonus));
                         }
                         getMvpView().addMore(wrappers);
                         getMvpView().addPage();
+                    } else {
+                        getMvpView().showEmptyView();
                     }
                 } else {
+                    getMvpView().showErrorView();
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                getMvpView().setRefreshComplete();
+                getMvpView().setLoadMoreComplete();
+                getMvpView().showErrorView();
             }
         });
 
