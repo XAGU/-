@@ -80,7 +80,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     private GestureDetector mGestureDetector;
 
-    HomeFragment homeFragment;
+    HomeFragment2 homeFragment;
     ProfileFragment2 profileFragment;
 
     int current = 0;
@@ -99,10 +99,10 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         btSwitch.setBackgroundResource(R.drawable.profile);
 
         if (savedInstanceState == null) {
-            homeFragment = new HomeFragment();
+            homeFragment = new HomeFragment2();
             getSupportFragmentManager().beginTransaction().add(R.id.fm_container, homeFragment).commit();
         } else {
-            HomeFragment home = (HomeFragment) getSupportFragmentManager().findFragmentByTag("home");
+            HomeFragment2 home = (HomeFragment2) getSupportFragmentManager().findFragmentByTag("home");
             ProfileFragment2 profile = (ProfileFragment2) getSupportFragmentManager().findFragmentByTag("profile");
             if (home != null && profile != null) {
                 getSupportFragmentManager().beginTransaction()
@@ -200,7 +200,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 //            rl_notice.setVisibility(View.GONE);
         } else {
             if (homeFragment == null) {
-                homeFragment = new HomeFragment();
+                homeFragment = new HomeFragment2();
             }
             if (!homeFragment.isAdded()) {
                 transaction.hide(profileFragment).add(R.id.fm_container, homeFragment, "home").commit();

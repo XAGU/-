@@ -4,4 +4,9 @@
         <attr name="firstColor" format="color">#fff</attr>
         <attr name="secondColor" format="color">#000</attr>
     </declare-styleable>
+
+    <declare-styleable name="ShadowImageView">
+        <attr name="shadowRound" format="dimension" />
+        <attr name="shadowSrc" format="reference" />
+    </declare-styleable>
 </resources>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/subMarginTop"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:background="@drawable/lost"
+        android:id="@+id/rl_geyser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_centerInParent="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="22dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_gravity="right"
+                android:id="@+id/showerTextView"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/itemMainText"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="热水器" />
+
+            <TextView
+                android:id="@+id/tv_shower"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TAKE A SHOWER"
+                android:textColor="#ffb6c5" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:background="@drawable/bg_tag_onclick"
+        android:id="@+id/rl_water_fountain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/waterImageView"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/water" />
+
+        <TextView
+            android:id="@+id/waterTextView"
+            style="@style/HomeButtonMainText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/waterImageView"
+            android:layout_alignLeft="@+id/waterImageView"
+            android:layout_alignRight="@+id/waterImageView"
+
+            android:layout_alignTop="@+id/waterImageView"
+            android:text="饮水机" />
+
+        <TextView
+            style="@style/HomeButtonSubText"
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/waterImageView"
+            android:layout_alignLeft="@+id/waterImageView"
+            android:layout_alignRight="@+id/waterImageView"
+
+            android:layout_alignTop="@+id/waterImageView"
+            android:text="DRINK A WATER"
+
+            android:textColor="#aaebe4" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/rl_lost_and_found"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/lostImageView"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/lost" />
+
+        <TextView
+            android:id="@+id/lostTextView"
+            style="@style/HomeButtonMainText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/lostImageView"
+            android:layout_alignLeft="@+id/lostImageView"
+            android:layout_alignRight="@+id/lostImageView"
+
+            android:layout_alignTop="@+id/lostImageView"
+            android:text="失物招领" />
+
+        <TextView
+            style="@style/HomeButtonSubText"
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/lostImageView"
+            android:layout_alignLeft="@+id/lostImageView"
+            android:layout_alignRight="@+id/lostImageView"
+
+            android:layout_alignTop="@+id/lostImageView"
+            android:text="DRINK A WATER"
+            android:textColor="#b3d4ff" />
+    </RelativeLayout>
+
+</LinearLayout>
