@@ -8,9 +8,7 @@ import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -50,7 +48,6 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
 import static com.xiaolian.amigo.data.enumeration.Device.DISPENSER;
 import static com.xiaolian.amigo.data.enumeration.Device.HEARTER;
@@ -143,7 +140,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 //                    //Toast.makeText(getApplicationContext(), "移动的太慢", 0).show();
 //                    return true;
 //                }
-                if (hasBanners) {
+                if (hasBanners && current == 0) {
                     Banner banner = (Banner) sl_main.getRootView().findViewById(R.id.banner);
                     RectF rectF = CommonUtil.calcViewScreenLocation(banner);
                     if (rectF.contains(e1.getRawX(), e1.getRawY())) {
@@ -342,11 +339,12 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     }
 
     @Override
-    public void gotoDevice(Class clz, String macAddress) {
+    public void gotoDevice(Class clz, String macAddress, String location) {
         if (TextUtils.isEmpty(macAddress)) {
             onError("设备macAddress不合法");
         } else {
             Intent intent = new Intent(this, clz);
+            intent.putExtra(INTENT_KEY_LOCAION, location);
             intent.putExtra(INTENT_KEY_MAC_ADDRESS, macAddress);
             startActivity(intent);
         }

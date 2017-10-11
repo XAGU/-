@@ -9,6 +9,7 @@ import com.xiaolian.amigo.data.network.model.dto.request.MobileUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.PasswordCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.PasswordUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.PersonalUpdateReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.request.QueryDeviceListReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.QueryResidenceListReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.SimpleQueryReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.SimpleReqDTO;
@@ -17,6 +18,7 @@ import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.EntireUserDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryAvatarDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryBriefSchoolListRespDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.QueryDeviceListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QuerySchoolBizListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryUserResidenceListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.ResidenceListRespDTO;
@@ -119,6 +121,11 @@ public class UserDataManager implements IUserDataManager {
     @Override
     public Observable<ApiResult<BooleanRespDTO>> checkPasswordValid(@Body PasswordCheckReqDTO reqDTO) {
         return userApi.checkPasswordValid(reqDTO);
+    }
+
+    @Override
+    public Observable<ApiResult<QueryDeviceListRespDTO>> queryDeviceList(@Body QueryDeviceListReqDTO reqDTO) {
+        return userApi.queryDeviceList(reqDTO);
     }
 
     @Override

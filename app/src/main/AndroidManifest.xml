@@ -269,6 +269,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
 
+        <!--宿舍列表-->
+        <activity android:name=".ui.user.ChooseDormitoryActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
 
         <!--主页-->
         <activity

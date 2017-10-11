@@ -44,11 +44,13 @@ public class HomeBannerDelegate implements ItemViewDelegate<HomeAdaptor.ItemWrap
     public class GlideImageLoader extends ImageLoader {
         @Override
         public void displayImage(Context context, Object path, ImageView imageView) {
-            Glide.with(context).load((String)path)
-                    .asBitmap()
-                    .placeholder(R.drawable.ic_picture_error)
-                    .error(R.drawable.ic_picture_error)
-                    .into(imageView);
+            if (path != null && path instanceof String) {
+                Glide.with(context).load((String)path)
+                        .asBitmap()
+                        .placeholder(R.drawable.ic_picture_error)
+                        .error(R.drawable.ic_picture_error)
+                        .into(imageView);
+            }
         }
 
     }

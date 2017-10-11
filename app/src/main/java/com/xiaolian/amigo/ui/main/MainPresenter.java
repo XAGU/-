@@ -167,7 +167,9 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
                     if (result.getData().getDevices() != null
                             && !result.getData().getDevices().isEmpty()
                             && result.getData().getDevices().get(0).getMacAddress() != null) {
-                        getMvpView().gotoDevice(HeaterActivity.class, result.getData().getDevices().get(0).getMacAddress());
+                        getMvpView().gotoDevice(HeaterActivity.class,
+                                result.getData().getDevices().get(0).getMacAddress(),
+                                result.getData().getDevices().get(0).getLocation());
                     } else {
                         getMvpView().onError("设备不存在");
                     }
