@@ -90,6 +90,8 @@ public class RepairApplyPresenter<V extends IRepairApplyView> extends BasePresen
                 if (null == result.getError()) {
                     Log.i(TAG, "上传图片成功");
                     getMvpView().addImage(result.getData());
+                } else {
+                    getMvpView().onError(result.getError().getDisplayMessage());
                 }
             }
         });

@@ -17,8 +17,6 @@ package com.xiaolian.amigo.ui.base;
 
 import android.Manifest;
 import android.annotation.TargetApi;
-import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
@@ -50,7 +48,6 @@ import com.xiaolian.amigo.ui.base.intf.IBaseView;
 import com.xiaolian.amigo.ui.login.LoginActivity;
 import com.xiaolian.amigo.ui.widget.dialog.ActionSheetDialog;
 import com.xiaolian.amigo.ui.widget.dialog.LodingDialog;
-import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.NetworkUtil;
 import com.yalantis.ucrop.UCrop;
 
@@ -64,7 +61,6 @@ import javax.inject.Inject;
 import butterknife.OnClick;
 import butterknife.Optional;
 import butterknife.Unbinder;
-// TODO: 加载去掉浮层 添加菊花
 
 public abstract class BaseActivity extends SwipeBackActivity
         implements IBaseView {
@@ -165,8 +161,8 @@ public abstract class BaseActivity extends SwipeBackActivity
                 options.setActiveWidgetColor(colorPrimary);
                 options.setStatusBarColor(colorPrimary);
                 UCrop.of(mPhotoImageUri, mCropImageUri)
-                        .withAspectRatio(25, 17)
-                        .withMaxResultSize(250 * 2, 170 * 2)
+                        .withAspectRatio(1, 1)
+//                        .withMaxResultSize(250 * 2, 170 * 2)
                         .withOptions(options)
                         .start(this);
 
@@ -187,8 +183,8 @@ public abstract class BaseActivity extends SwipeBackActivity
                     options.setActiveWidgetColor(colorPrimary);
                     options.setStatusBarColor(colorPrimary);
                     UCrop.of(mPickImageUri, mCropImageUri)
-                            .withAspectRatio(25, 17)
-                            .withMaxResultSize(250 * 2, 170 * 2)
+                            .withAspectRatio(1, 1)
+//                            .withMaxResultSize(250 * 2, 170 * 2)
                             .withOptions(options)
                             .start(this);
                 }
