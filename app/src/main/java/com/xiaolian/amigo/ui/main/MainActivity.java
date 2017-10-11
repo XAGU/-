@@ -2,16 +2,21 @@ package com.xiaolian.amigo.ui.main;
 
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -31,6 +36,8 @@ import com.xiaolian.amigo.ui.notice.NoticeActivity;
 import com.xiaolian.amigo.ui.user.EditProfileActivity;
 import com.xiaolian.amigo.ui.widget.dialog.AvailabilityDialog;
 import com.xiaolian.amigo.ui.widget.dialog.NoticeAlertDialog;
+import com.xiaolian.amigo.util.CommonUtil;
+import com.youth.banner.Banner;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -97,6 +104,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     ProfileFragment2 profileFragment;
 
     int current = 0;
+    private boolean hasBanners;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -135,6 +143,13 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 //                    //Toast.makeText(getApplicationContext(), "移动的太慢", 0).show();
 //                    return true;
 //                }
+                if (hasBanners) {
+                    Banner banner = (Banner) sl_main.getRootView().findViewById(R.id.banner);
+                    RectF rectF = CommonUtil.calcViewScreenLocation(banner);
+                    if (rectF.contains(e1.getRawX(), e1.getRawY())) {
+                        return false;
+                    }
+                }
                 if ((e1.getRawX() - e2.getRawX()) > 200) {// 表示 向右滑动表示下一页
                     //显示下一页
                     if (current == 1) {
@@ -207,7 +222,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             } else {
                 transaction.hide(homeFragment).show(profileFragment).commit();
             }
-            imageView.setBackgroundResource(R.drawable.home);
+//            imageView.setBackgroundResource(R.drawable.home);
+            imageViewAnimatedChange(this, imageView, R.drawable.home);
             current = 1;
             // 改为切换不隐藏
 //            rl_notice.setVisibility(View.GONE);
@@ -220,13 +236,35 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             } else {
                 transaction.hide(profileFragment).show(homeFragment).commit();
             }
-            imageView.setBackgroundResource(R.drawable.profile);
+//            imageView.setBackgroundResource(R.drawable.profile);
+            imageViewAnimatedChange(this, imageView, R.drawable.profile);
             current = 0;
             // 改为切换不隐藏
 //            rl_notice.setVisibility(View.VISIBLE);
         }
 
 
+    }
+
+    public void imageViewAnimatedChange(Context context, ImageView imageView, int res) {
+        final Animation anim_out = AnimationUtils.loadAnimation(context, R.anim.item_slide_out_right);
+        final Animation anim_in  = AnimationUtils.loadAnimation(context, R.anim.item_slide_in_left);
+        anim_out.setAnimationListener(new Animation.AnimationListener()
+        {
+            @Override public void onAnimationStart(Animation animation) {}
+            @Override public void onAnimationRepeat(Animation animation) {}
+            @Override public void onAnimationEnd(Animation animation)
+            {
+                imageView.setBackgroundResource(res);
+                anim_in.setAnimationListener(new Animation.AnimationListener() {
+                    @Override public void onAnimationStart(Animation animation) {}
+                    @Override public void onAnimationRepeat(Animation animation) {}
+                    @Override public void onAnimationEnd(Animation animation) {}
+                });
+                imageView.startAnimation(anim_in);
+            }
+        });
+        imageView.startAnimation(anim_out);
     }
 
 
@@ -336,6 +374,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public void showBanners(List<String> banners) {
+        hasBanners = true;
         EventBus.getDefault().post(banners);
     }
 

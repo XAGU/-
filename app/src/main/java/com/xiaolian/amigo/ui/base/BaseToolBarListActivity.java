@@ -77,7 +77,8 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
         });
         refreshLayout.setRefreshHeader(new RefreshLayoutHeader(this));
         refreshLayout.setRefreshFooter(new RefreshLayoutFooter(this));
-        refreshLayout.autoRefresh();
+        refreshLayout.setReboundDuration(200);
+        refreshLayout.autoRefresh(0);
     }
 
     protected RecyclerView getRecyclerView() {
@@ -205,7 +206,7 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
 
     @Override
     public void setRefreshComplete() {
-        refreshLayout.finishRefresh();
+        refreshLayout.finishRefresh(300);
     }
 
     @Override

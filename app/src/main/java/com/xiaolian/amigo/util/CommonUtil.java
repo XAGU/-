@@ -19,7 +19,9 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.graphics.RectF;
 import android.provider.Settings;
+import android.view.View;
 import android.view.Window;
 
 import com.xiaolian.amigo.R;
@@ -109,6 +111,17 @@ public final class CommonUtil {
 
     public static boolean equals(Object a, Object b) {
         return (a == b) || (a != null && a.equals(b));
+    }
+
+    /**
+     * 计算指定的 View 在屏幕中的坐标。
+     */
+    public static RectF calcViewScreenLocation(View view) {
+        int[] location = new int[2];
+        // 获取控件在屏幕中的位置，返回的数组分别为控件左顶点的 x、y 的值
+        view.getLocationOnScreen(location);
+        return new RectF(location[0], location[1], location[0] + view.getWidth(),
+                location[1] + view.getHeight());
     }
 
 }
