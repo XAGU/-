@@ -56,7 +56,7 @@ public interface IUserApi {
     Observable<ApiResult<QueryBriefSchoolListRespDTO>> getSchoolList(@Body SimpleQueryReqDTO body);
 
     // 获取学校业务列表
-    @POST("/school/bussiness/list")
+    @POST("/school/business/list")
     Observable<ApiResult<QuerySchoolBizListRespDTO>> getSchoolBizList();
 
     // 获取验证码

@@ -14,6 +14,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
 import com.xiaolian.amigo.ui.device.dispenser.DispenserActivity;
 import com.xiaolian.amigo.ui.device.heater.HeaterActivity;
 import com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity;
@@ -45,8 +46,6 @@ public class HomeFragment2 extends Fragment {
 
     List<HomeAdaptor.ItemWrapper> items = new ArrayList<HomeAdaptor.ItemWrapper>() {
         {
-            add(new HomeAdaptor.ItemWrapper(1, null, "热水器", "TAKE A SHOWER", "#ffb6c5", R.drawable.shower));
-            add(new HomeAdaptor.ItemWrapper(1, null, "饮水机", "DRINK A WATER", "#aaebe4", R.drawable.water));
             add(new HomeAdaptor.ItemWrapper(1, null, "失物招领", "LOST AND FOUND", "#b3d4ff", R.drawable.lost));
         }
     };
@@ -122,6 +121,21 @@ public class HomeFragment2 extends Fragment {
                 adaptor.notifyDataSetChanged();
             }
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onSchoolBizEvent(List<BriefSchoolBusiness> businesses) {
+        if (businesses.isEmpty()) {
+            return;
+        }
+        for (BriefSchoolBusiness business : businesses) {
+            if (business.getBusinessId() == 2) {
+                items.add(0, new HomeAdaptor.ItemWrapper(1, null, "热水器", "TAKE A SHOWER", "#ffb6c5", R.drawable.shower));
+            } else if (business.getBusinessId() == 1) {
+                items.add(0, new HomeAdaptor.ItemWrapper(1, null, "饮水机", "DRINK A WATER", "#aaebe4", R.drawable.water));
+            }
+        }
+        adaptor.notifyDataSetChanged();
     }
 
     private boolean isBannersEqual(List<String> banners1, List<String> banners2) {

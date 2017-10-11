@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
+import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
 import com.xiaolian.amigo.ui.device.dispenser.DispenserActivity;
 import com.xiaolian.amigo.ui.device.heater.HeaterActivity;
 import com.xiaolian.amigo.ui.login.LoginActivity;
@@ -153,12 +154,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             }
         });
 
-//        sl_main.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                return isBlockedScrollView;
-//            }
-//        });
+        presenter.getSchoolBusiness();
 
     }
 
@@ -341,6 +337,11 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @Override
     public void showBanners(List<String> banners) {
         EventBus.getDefault().post(banners);
+    }
+
+    @Override
+    public void showSchoolBiz(List<BriefSchoolBusiness> businesses) {
+        EventBus.getDefault().post(businesses);
     }
 
     @Override

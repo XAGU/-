@@ -11,7 +11,9 @@ import com.xiaolian.amigo.data.network.model.dto.request.ReadNotifyReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryDeviceListRespDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.QuerySchoolBizListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryTimeValidRespDTO;
+import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
 import com.xiaolian.amigo.data.network.model.user.User;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.device.heater.HeaterActivity;
@@ -176,5 +178,19 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
         });
     }
 
+    @Override
+    public void getSchoolBusiness() {
+        addObserver(manager.getSchoolBizList(), new NetworkObserver<ApiResult<QuerySchoolBizListRespDTO>>() {
+
+            @Override
+            public void onReady(ApiResult<QuerySchoolBizListRespDTO> result) {
+                if (null == result.getError()) {
+                    getMvpView().showSchoolBiz(result.getData().getBusinesses());
+                } else {
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+        });
+    }
 
 }

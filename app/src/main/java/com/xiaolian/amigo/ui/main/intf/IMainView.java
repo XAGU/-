@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.main.intf;
 
+import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 
 import java.util.List;
@@ -24,4 +25,6 @@ public interface IMainView extends IBaseView {
     void refreshNoticeAmount();
 
     void showBanners(List<String> banners);
+
+    void showSchoolBiz(List<BriefSchoolBusiness> businesses);
 }
