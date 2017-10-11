@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.network.model.repair.RepairProblem;
@@ -69,6 +70,20 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
     int deviceType;
     long residenceId;
     String location;
+    private boolean allValidated = false;
+    private List<TextView> viewList;
+    private int selectedProblem;
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (null != intent) {
+            deviceType = intent.getIntExtra(Constant.DEVICE_TYPE, Device.HEARTER.getType());
+            residenceId = intent.getLongExtra(Constant.LOCATION_ID, 0L);
+            location = intent.getStringExtra(Constant.LOCATION);
+            tv_location.setText(location);
+        }
+    }
 
     @Override
     protected void initView() {
@@ -78,16 +93,18 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
 
         presenter.onAttach(this);
 
-        adapter = new RepairProblemAdaptor(this, R.layout.item_problem, problems);
-        adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                toggleBtnStatus();
+        viewList = new ArrayList<TextView>(){
+            {
+                add(et_tel);
+                add(et_content);
             }
+        };
 
+        adapter = new RepairProblemAdaptor(this, R.layout.item_problem, problems);
+        adapter.setOnItemClickListener(new RepairProblemAdaptor.OnItemClickListener() {
             @Override
-            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
-                return false;
+            public void onItemClick() {
+                toggleBtnStatus();
             }
         });
         rv_problems.addItemDecoration(new GridSpacesItemDecoration(3, ScreenUtils.dpToPxInt(this, 10), false));
@@ -146,6 +163,8 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
                             .asBitmap()
                             .placeholder(R.drawable.ic_picture_error)
                             .error(R.drawable.ic_picture_error)
+                            .skipMemoryCache(true)
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
                             .into(iv_first);
                     iv_first.setScaleType(ImageView.ScaleType.FIT_XY);
                     iv_second.setVisibility(View.VISIBLE);
@@ -159,6 +178,8 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
                             .asBitmap()
                             .placeholder(R.drawable.ic_picture_error)
                             .error(R.drawable.ic_picture_error)
+                            .skipMemoryCache(true)
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
                             .into(iv_second);
                     iv_second.setScaleType(ImageView.ScaleType.FIT_XY);
                     iv_third.setVisibility(View.VISIBLE);
@@ -172,6 +193,8 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
                             .asBitmap()
                             .placeholder(R.drawable.ic_picture_error)
                             .error(R.drawable.ic_picture_error)
+                            .skipMemoryCache(true)
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
                             .into(iv_third);
                     iv_third.setScaleType(ImageView.ScaleType.FIT_XY);
                     presenter.onUpload(imageUri);
@@ -189,16 +212,23 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
 
     @Override
     public void toggleBtnStatus() {
-        int selectedProblem = 0;
+        selectedProblem = 0;
         if (null != problems) {
             for (RepairProblemAdaptor.ProblemWrapper problem : problems) {
                 selectedProblem += (problem.isChoose() ? 1 : 0);
             }
         }
-        bt_submit.setEnabled(!TextUtils.isEmpty(et_tel.getText())
-                && !TextUtils.isEmpty(et_content.getText())
-                && !TextUtils.isEmpty(tv_location.getText())
-                && selectedProblem != 0);
+//        bt_submit.setEnabled(!TextUtils.isEmpty(et_tel.getText())
+//                && !TextUtils.isEmpty(et_content.getText())
+//                && !TextUtils.isEmpty(tv_location.getText())
+//                && selectedProblem != 0);
+
+        allValidated = !TextUtils.isEmpty(location)
+                && selectedProblem > 0
+                && !TextUtils.isEmpty(et_tel.getText())
+                && !TextUtils.isEmpty(et_content.getText());
+        bt_submit.setBackgroundResource(allValidated ?
+                R.drawable.button_enable : R.drawable.button_disable);
     }
 
     @Override
@@ -208,14 +238,32 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
 
     @Override
     public void addImage(String url) {
-        this.images.add(url);
+        this.images.add(Constant.IMAGE_PREFIX + url);
     }
 
     @OnClick(R.id.bt_submit)
     void submit() {
+        if (!allValidated) {
+            if (TextUtils.isEmpty(location)) {
+                onError("请选择设备信息");
+                return;
+            }
+            if (selectedProblem == 0) {
+                onError("请选择设备问题");
+                return;
+            }
+            for (TextView view : viewList) {
+                if (TextUtils.isEmpty(view.getText())) {
+                    onError(view.getHint().toString());
+                    return;
+                }
+            }
+        }
         List<Long> problemIds = new ArrayList<>();
         for (RepairProblemAdaptor.ProblemWrapper wrapper : problems) {
-            problemIds.add(wrapper.getId());
+            if (wrapper.isChoose()) {
+                problemIds.add(wrapper.getId());
+            }
         }
         presenter.onSubmit(problemIds, images, et_content.getText().toString(), et_tel.getText().toString(), deviceType, residenceId);
     }
