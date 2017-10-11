@@ -342,7 +342,7 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
         // 点击支付操作时蓝牙必须为开启状态
         setBleCallback(() -> {
             button.setEnabled(false);
-            presenter.onPay(1, null, null);
+            presenter.onPay(1, 50, null);
             // presenter.onWrite(Agreement.getInstance().setBalance(orderId, 50));
         });
         getBlePermission();
