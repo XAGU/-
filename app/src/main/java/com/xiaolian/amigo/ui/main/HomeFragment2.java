@@ -15,6 +15,7 @@ import android.view.animation.LayoutAnimationController;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
+import com.xiaolian.amigo.ui.base.aspect.SingleClick;
 import com.xiaolian.amigo.ui.device.dispenser.DispenserActivity;
 import com.xiaolian.amigo.ui.device.heater.HeaterActivity;
 import com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity;
@@ -72,6 +73,7 @@ public class HomeFragment2 extends Fragment {
         adaptor.addItemViewDelegate(new HomeNormalDelegate());
         adaptor.addItemViewDelegate(new HomeBannerDelegate(getActivity()));
         adaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @SingleClick
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 if (items.get(position).getType() == 1) {
