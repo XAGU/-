@@ -1,8 +1,9 @@
 package com.xiaolian.amigo.ui.main.intf;
 
-import android.content.Intent;
-
+import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
+
+import java.util.List;
 
 /**
  * 主页
@@ -17,9 +18,13 @@ public interface IMainView extends IBaseView {
 
     void gotoDevice(Class clz);
 
-    void gotoDevice(Class clz, String macAddress);
+    void gotoDevice(Class clz, String macAddress, String location);
 
     void showUrgentNotify(String content, Long id);
 
     void refreshNoticeAmount();
+
+    void showBanners(List<String> banners);
+
+    void showSchoolBiz(List<BriefSchoolBusiness> businesses);
 }

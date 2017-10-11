@@ -97,7 +97,7 @@ public class RefreshLayoutHeader extends LinearLayout implements RefreshHeader {
 
     @Override
     public int onFinish(RefreshLayout layout, boolean success) {
-        return 0;//延迟500毫秒之后再弹回
+        return 0;
     }
 
     @Override

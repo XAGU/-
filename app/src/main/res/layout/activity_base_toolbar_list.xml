@@ -119,6 +119,28 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_error"
+                android:layout_width="match_parent"
+                android:visibility="gone"
+                android:background="@color/colorBackgroundGray"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/tv_error_tip"
+                    android:textSize="14sp"
+                    android:text="@string/error_tip"
+                    android:textColor="@color/colorDark2"
+                    android:layout_centerInParent="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <ImageView
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="14dp"
+                    android:layout_above="@id/tv_error_tip"
+                    android:src="@drawable/ic_error_ballon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
             <android.support.v7.widget.RecyclerView
                 android:overScrollMode="never"
                 android:id="@+id/recyclerView"

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.order.Order;
+import com.xiaolian.amigo.ui.user.ChooseDormitoryActivity;
 import com.xiaolian.amigo.ui.widget.BezierWaveView;
 import com.xiaolian.amigo.ui.bonus.BonusActivity;
 import com.xiaolian.amigo.ui.bonus.adaptor.BonusAdaptor;
@@ -44,6 +46,7 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
      * 跳转到选择红包页面的request code
      */
     private static final int CHOOSE_BONUS_CODE = 0x0010;
+    private static final int CHOOSE_DORMITORY_CODE = 0x0011;
 
     /**
      * 确认支付
@@ -441,6 +444,7 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
         presenter.onAttach(this);
         if (getIntent() != null) {
             macAddress = getIntent().getStringExtra(MainActivity.INTENT_KEY_MAC_ADDRESS);
+            tv_device_name.setText(getIntent().getStringExtra(MainActivity.INTENT_KEY_LOCAION));
         } else {
             macAddress = "08:7C:BE:E1:FD:3B";
         }
@@ -451,7 +455,6 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
     private void initView() {
         // 默认选择预付5元
         tv_water_right.setTag(R.id.money_pay_amount, 5);
-        tv_device_name.setText("3栋－5楼－510");
         if (bsv_wave != null && !bsv_wave.isRunning()) {
             bsv_wave.startAnim();
         }
@@ -479,6 +482,25 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
                     tv_water_right.setText(choosedBonus.getDesc());
                     bt_pay.setEnabled(true);
                 }
+            }
+        } else if (requestCode == CHOOSE_DORMITORY_CODE) {
+            if (resultCode == RESULT_CANCELED) {
+                // 没有选择宿舍, 不做处理
+            } else if (resultCode == RESULT_OK) {
+                if (data == null) {
+                    return;
+                }
+                String chosenLocation = data.getStringExtra(MainActivity.INTENT_KEY_LOCAION);
+                String chosenMacAddress = data.getStringExtra(MainActivity.INTENT_KEY_MAC_ADDRESS);
+                if (TextUtils.equals(chosenMacAddress, this.macAddress)
+                        || TextUtils.isEmpty(chosenLocation)
+                        || TextUtils.isEmpty(chosenMacAddress)) {
+                    // 如果选择的设备的mac地址和当前设备的mac地址相同或者mac地址为空，则不做处理
+                    return;
+                }
+                // 设置设备位置
+                tv_device_name.setText(chosenLocation);
+                // TODO: 重新连接设备
             }
         }
     }
@@ -510,6 +532,14 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
                         iosAlertDialog.dismiss();
                     }
                 }).show();
+    }
+
+    /**
+     * 更换宿舍
+     */
+    @OnClick(R.id.tv_device_name)
+    public void changeDormitory() {
+        startActivityForResult(new Intent(this, ChooseDormitoryActivity.class), CHOOSE_DORMITORY_CODE);
     }
 
     @Override

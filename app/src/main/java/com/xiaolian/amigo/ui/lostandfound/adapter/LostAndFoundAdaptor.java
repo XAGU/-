@@ -1,9 +1,14 @@
 package com.xiaolian.amigo.ui.lostandfound.adapter;
 
 import android.content.Context;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.lostandfound.LostAndFound;
+import com.xiaolian.amigo.util.CommonUtil;
+import com.xiaolian.amigo.util.ScreenUtils;
 import com.xiaolian.amigo.util.TimeUtils;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -18,8 +23,18 @@ import lombok.Data;
  */
 
 public class LostAndFoundAdaptor extends CommonAdapter<LostAndFoundAdaptor.LostAndFoundWapper>{
+    private Context context;
+    private boolean isShowIcon;
     public LostAndFoundAdaptor(Context context, int layoutId, List<LostAndFoundWapper> datas) {
         super(context, layoutId, datas);
+        this.context = context;
+    }
+
+    public LostAndFoundAdaptor(Context context, int layoutId, List<LostAndFoundWapper> datas,
+                               boolean isShowIcon) {
+        super(context, layoutId, datas);
+        this.context = context;
+        this.isShowIcon = isShowIcon;
     }
 
     @Override
@@ -35,6 +50,27 @@ public class LostAndFoundAdaptor extends CommonAdapter<LostAndFoundAdaptor.LostA
         holder.setText(R.id.tv_location, lostAndFoundWapper.getLocation());
         holder.setText(R.id.tv_time, TimeUtils.convertTimestampToFormat(lostAndFoundWapper.getTime())
                 + "/" + TimeUtils.millis2String(lostAndFoundWapper.getTime(), TimeUtils.MY_TIME_FORMAT));
+        if (position == 0) {
+            ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams) holder.itemView.getLayoutParams();
+            marginLayoutParams.setMargins(0, ScreenUtils.dpToPxInt(this.context, 10), 0, 0);
+            holder.itemView.setLayoutParams(marginLayoutParams);
+        } else {
+            ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams) holder.itemView.getLayoutParams();
+            marginLayoutParams.setMargins(0, 0, 0, 0);
+            holder.itemView.setLayoutParams(marginLayoutParams);
+        }
+
+        if (isShowIcon) {
+            ((ImageView)holder.getView(R.id.iv_icon)).setVisibility(View.VISIBLE);
+            if (CommonUtil.equals(lostAndFoundWapper.getType(), 1)) {
+                // 失物
+                ((ImageView)holder.getView(R.id.iv_icon)).setImageResource(R.drawable.ic_lost);
+            } else {
+                ((ImageView)holder.getView(R.id.iv_icon)).setImageResource(R.drawable.ic_found);
+            }
+        } else {
+            ((ImageView)holder.getView(R.id.iv_icon)).setVisibility(View.GONE);
+        }
     }
 
     public void replaceData(List<LostAndFoundWapper> wapper) {

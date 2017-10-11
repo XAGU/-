@@ -7,6 +7,7 @@ import com.xiaolian.amigo.data.network.model.dto.request.ReadNotifyReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryDeviceListRespDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.QuerySchoolBizListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryTimeValidRespDTO;
 
 import retrofit2.http.Body;
@@ -35,4 +36,8 @@ public interface IMainApi {
     // 设备列表
     @POST("/device/list")
     Observable<ApiResult<QueryDeviceListRespDTO>> queryDeviceList(@Body QueryDeviceListReqDTO reqDTO);
+
+    // 获取学校业务列表
+    @POST("/school/business/list")
+    Observable<ApiResult<QuerySchoolBizListRespDTO>> getSchoolBizList();
 }

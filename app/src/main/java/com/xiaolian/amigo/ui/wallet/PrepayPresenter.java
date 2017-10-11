@@ -45,6 +45,8 @@ public class PrepayPresenter<V extends IPrepayView> extends BasePresenter<V>
             public void onReady(ApiResult<OrderRespDTO> result) {
                 getMvpView().setRefreshComplete();
                 getMvpView().setLoadMoreComplete();
+                getMvpView().hideEmptyView();
+                getMvpView().hideErrorView();
                 if (null == result.getError()) {
                     if (null != result.getData().getOrders() && result.getData().getOrders().size() > 0) {
                         List<PrepayAdaptor.OrderWrapper> wrappers = new ArrayList<PrepayAdaptor.OrderWrapper>();
@@ -53,11 +55,21 @@ public class PrepayPresenter<V extends IPrepayView> extends BasePresenter<V>
                         }
                         getMvpView().addMore(wrappers);
                         getMvpView().addPage();
-                        getMvpView().hideEmptyView();
                     } else {
                         getMvpView().showEmptyView();
                     }
+                } else {
+                    getMvpView().showErrorView();
+                    getMvpView().onError(result.getError().getDisplayMessage());
                 }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                getMvpView().setRefreshComplete();
+                getMvpView().setLoadMoreComplete();
+                getMvpView().showErrorView();
             }
         });
     }

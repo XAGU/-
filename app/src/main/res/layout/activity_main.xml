@@ -5,25 +5,34 @@
     android:background="#ffffff"
     android:orientation="vertical"
     >
-    <ImageView
-        android:visibility="gone"
-        android:id="@+id/iv_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <include
-        android:id="@+id/ll_header"
-        layout="@layout/activity_main_top"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
-
-    <LinearLayout
-        android:layout_below="@id/ll_header"
-        android:id="@+id/fm_container"
+    <ScrollView
+        android:scrollbars="none"
+        android:overScrollMode="never"
+        android:id="@+id/sv_main"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-    </LinearLayout>
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:descendantFocusability="blocksDescendants"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <include
+                android:id="@+id/ll_header"
+                layout="@layout/activity_main_top"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_below="@id/ll_header"
+                android:id="@+id/fm_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+            </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
     <RelativeLayout
         android:id="@+id/rl_notice"
         android:layout_alignParentBottom="true"

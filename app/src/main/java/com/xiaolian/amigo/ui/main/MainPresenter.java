@@ -11,7 +11,9 @@ import com.xiaolian.amigo.data.network.model.dto.request.ReadNotifyReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryDeviceListRespDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.QuerySchoolBizListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryTimeValidRespDTO;
+import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
 import com.xiaolian.amigo.data.network.model.user.User;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.device.heater.HeaterActivity;
@@ -66,6 +68,9 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
             @Override
             public void onReady(ApiResult<PersonalExtraInfoDTO> result) {
                 if (null == result.getError()) {
+                    if (result.getData().getBanners() != null && result.getData().getBanners().size() > 0) {
+                        getMvpView().showBanners(result.getData().getBanners());
+                    }
                     if (result.getData().getUrgentNotify() != null) {
                         if (isShowUrgencyNotify()) {
                             getMvpView().showUrgentNotify(result.getData().getUrgentNotify().getContent(),
@@ -162,7 +167,9 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
                     if (result.getData().getDevices() != null
                             && !result.getData().getDevices().isEmpty()
                             && result.getData().getDevices().get(0).getMacAddress() != null) {
-                        getMvpView().gotoDevice(HeaterActivity.class, result.getData().getDevices().get(0).getMacAddress());
+                        getMvpView().gotoDevice(HeaterActivity.class,
+                                result.getData().getDevices().get(0).getMacAddress(),
+                                result.getData().getDevices().get(0).getLocation());
                     } else {
                         getMvpView().onError("设备不存在");
                     }
@@ -173,5 +180,19 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
         });
     }
 
+    @Override
+    public void getSchoolBusiness() {
+        addObserver(manager.getSchoolBizList(), new NetworkObserver<ApiResult<QuerySchoolBizListRespDTO>>() {
+
+            @Override
+            public void onReady(ApiResult<QuerySchoolBizListRespDTO> result) {
+                if (null == result.getError()) {
+                    getMvpView().showSchoolBiz(result.getData().getBusinesses());
+                } else {
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+        });
+    }
 
 }

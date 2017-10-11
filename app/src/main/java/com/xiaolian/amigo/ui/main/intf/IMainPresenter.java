@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.main.intf;
 
+import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
 import com.xiaolian.amigo.data.network.model.user.User;
 import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 
@@ -29,5 +30,7 @@ public interface IMainPresenter<V extends IMainView> extends IBasePresenter<V> {
     void setShowUrgencyNotify(boolean isShow);
 
     void getHeaterDeviceMacAddress();
+
+    void getSchoolBusiness();
 
 }

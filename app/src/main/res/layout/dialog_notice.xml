@@ -42,6 +42,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <LinearLayout
+        android:layout_marginTop="47dp"
         android:id="@+id/ll_not_remind"
         android:gravity="center"
         android:orientation="horizontal"
@@ -68,7 +69,7 @@
         android:textColor="#fff"
         android:textSize="14sp"
         android:elevation="2dp"
-        android:layout_marginTop="47dp"
+        android:layout_marginTop="21dp"
         android:layout_gravity="center_horizontal"
         android:layout_width="144dp"
         android:layout_height="34dp" />

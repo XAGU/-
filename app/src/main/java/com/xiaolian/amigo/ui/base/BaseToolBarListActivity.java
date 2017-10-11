@@ -35,6 +35,7 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
     private LinearLayout ll_footer;
     private LinearLayout ll_header;
     private RelativeLayout rl_empty;
+    private RelativeLayout rl_error;
     private CoordinatorLayout cl_main;
     private TextView tv_toolbar_title;
     private TextView tv_toolbar_title2;
@@ -52,6 +53,7 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         cl_main = (CoordinatorLayout) findViewById(R.id.cl_main);
         rl_empty = (RelativeLayout) findViewById(R.id.rl_empty);
+        rl_error = (RelativeLayout) findViewById(R.id.rl_error);
         setUp();
         initToolBar();
         initFooter();
@@ -75,7 +77,8 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
         });
         refreshLayout.setRefreshHeader(new RefreshLayoutHeader(this));
         refreshLayout.setRefreshFooter(new RefreshLayoutFooter(this));
-        refreshLayout.autoRefresh();
+        refreshLayout.setReboundDuration(200);
+        refreshLayout.autoRefresh(0);
     }
 
     protected RecyclerView getRecyclerView() {
@@ -168,6 +171,13 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
         refreshLayout.setLayoutParams(marginLayoutParams);
     }
 
+    protected void setRecyclerViewMargin(int left, int top, int right, int bottom) {
+        ViewGroup.MarginLayoutParams marginLayoutParams =
+                (ViewGroup.MarginLayoutParams) recyclerView.getLayoutParams();
+        marginLayoutParams.setMargins(left, top, right, bottom);
+        recyclerView.setLayoutParams(marginLayoutParams);
+    }
+
     protected void setMainBackground(@ColorRes int color) {
         cl_main.setBackgroundResource(color);
     }
@@ -196,7 +206,7 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
 
     @Override
     public void setRefreshComplete() {
-        refreshLayout.finishRefresh();
+        refreshLayout.finishRefresh(300);
     }
 
     @Override
@@ -206,11 +216,23 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
 
     @Override
     public void showEmptyView() {
-        rl_empty.setVisibility(View.VISIBLE);
+        if (page == Constant.PAGE_START_NUM) {
+            rl_empty.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
     public void hideEmptyView() {
         rl_empty.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showErrorView() {
+        rl_error.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideErrorView() {
+        rl_error.setVisibility(View.GONE);
     }
 }

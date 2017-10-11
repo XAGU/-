@@ -6,6 +6,7 @@ import com.xiaolian.amigo.data.network.model.dto.request.MobileUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.PasswordCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.PasswordUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.PersonalUpdateReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.request.QueryDeviceListReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.QueryResidenceListReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.SimpleQueryReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.SimpleReqDTO;
@@ -14,6 +15,7 @@ import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.EntireUserDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryAvatarDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryBriefSchoolListRespDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.QueryDeviceListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QuerySchoolBizListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryUserResidenceListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.ResidenceListRespDTO;
@@ -56,7 +58,7 @@ public interface IUserApi {
     Observable<ApiResult<QueryBriefSchoolListRespDTO>> getSchoolList(@Body SimpleQueryReqDTO body);
 
     // 获取学校业务列表
-    @POST("/school/bussiness/list")
+    @POST("/school/business/list")
     Observable<ApiResult<QuerySchoolBizListRespDTO>> getSchoolBizList();
 
     // 获取验证码
@@ -83,5 +85,9 @@ public interface IUserApi {
     // 用户密码校验
     @POST("/user/password/check")
     Observable<ApiResult<BooleanRespDTO>> checkPasswordValid(@Body PasswordCheckReqDTO reqDTO);
+
+    // 设备列表
+    @POST("/device/list")
+    Observable<ApiResult<QueryDeviceListRespDTO>> queryDeviceList(@Body QueryDeviceListReqDTO reqDTO);
 
 }

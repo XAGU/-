@@ -44,6 +44,8 @@ public class NoticePresenter<V extends INoticeView> extends BasePresenter<V>
 
             @Override
             public void onReady(ApiResult<QueryNotifyListRespDTO> result) {
+                getMvpView().setLoadMoreComplete();
+                getMvpView().setRefreshComplete();
                 if (null == result.getError()) {
                     if (result.getData().getNotices() != null && result.getData().getNotices().size() > 0) {
                         List<NoticeAdaptor.NoticeWapper> wappers = new ArrayList<>();
@@ -51,10 +53,21 @@ public class NoticePresenter<V extends INoticeView> extends BasePresenter<V>
                             wappers.add(new NoticeAdaptor.NoticeWapper(notify));
                         }
                         getMvpView().addMore(wappers);
+                    } else {
+                        getMvpView().showEmptyView();
                     }
                 } else {
+                    getMvpView().showErrorView();
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                getMvpView().setLoadMoreComplete();
+                getMvpView().setRefreshComplete();
+                getMvpView().showErrorView();
             }
         });
     }

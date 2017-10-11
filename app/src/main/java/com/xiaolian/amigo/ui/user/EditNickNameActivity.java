@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.user;
 
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -46,9 +47,10 @@ public class EditNickNameActivity extends UserBaseActivity implements IEditNickN
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
         presenter.onAttach(EditNickNameActivity.this);
-        if (model != null) {
+        if (model != null && !TextUtils.isEmpty(model.getNickname())) {
             edit_nickname.setText(model.getNickname());
             edit_nickname.setSelection(edit_nickname.getText().length());
+            bt_submit.setEnabled(true);
         }
     }
 

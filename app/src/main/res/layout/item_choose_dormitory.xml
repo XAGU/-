@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:id="@+id/ll_dormitory"
+    android:orientation="horizontal"
+    android:background="@drawable/bg_rect_gray_stroke"
+    android:gravity="center_vertical"
+    android:layout_width="match_parent"
+    android:paddingLeft="14dp"
+    android:paddingRight="14dp"
+    android:layout_height="72dp">
+    <TextView
+        android:id="@+id/tv_default_dormitory"
+        android:text="[默认宿舍]"
+        android:textColor="@color/colorFullRed"
+        android:textSize="14sp"
+        android:layout_gravity="center_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tv_dormitory_name"
+        tool:text="XX楼XX层"
+        android:layout_gravity="center_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#222"
+        android:textSize="14sp" />
+</LinearLayout>

@@ -7,6 +7,7 @@ import com.xiaolian.amigo.data.manager.UserDataManager;
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.di.UserActivityContext;
 import com.xiaolian.amigo.ui.user.CheckPasswordPresenter;
+import com.xiaolian.amigo.ui.user.ChooseDormitoryPresenter;
 import com.xiaolian.amigo.ui.user.EditAvatarPresenter;
 import com.xiaolian.amigo.ui.user.EditDormitoryPresenter;
 import com.xiaolian.amigo.ui.user.EditMobilePresenter;
@@ -16,6 +17,8 @@ import com.xiaolian.amigo.ui.user.EditProfilePresenter;
 import com.xiaolian.amigo.ui.user.ListChoosePresenter;
 import com.xiaolian.amigo.ui.user.intf.ICheckPasswordPresenter;
 import com.xiaolian.amigo.ui.user.intf.ICheckPasswordView;
+import com.xiaolian.amigo.ui.user.intf.IChooseDormitoryPresenter;
+import com.xiaolian.amigo.ui.user.intf.IChooseDormitoryView;
 import com.xiaolian.amigo.ui.user.intf.IEditAvatarPresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditAvatarVIew;
 import com.xiaolian.amigo.ui.user.intf.IEditDormitoryPresenter;
@@ -117,6 +120,13 @@ public class UserActivityModule {
     @UserActivityContext
     ICheckPasswordPresenter<ICheckPasswordView> provideCheckPasswordPresenter(
             CheckPasswordPresenter<ICheckPasswordView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    @UserActivityContext
+    IChooseDormitoryPresenter<IChooseDormitoryView> provideChooseDormitoryPresenter(
+            ChooseDormitoryPresenter<IChooseDormitoryView> presenter) {
         return presenter;
     }
 }

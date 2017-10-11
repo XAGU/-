@@ -240,7 +240,7 @@
         </activity>
 
         <!--通知中心-->
-        <activity android:name=".ui.notice.NoticeActivity"
+        <activity android:name=".ui.notice.NoticeListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
 
@@ -266,6 +266,11 @@
 
         <!--预付金额-->
         <activity android:name=".ui.wallet.PrepayActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <!--宿舍列表-->
+        <activity android:name=".ui.user.ChooseDormitoryActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
 

@@ -58,16 +58,31 @@ public class FavoritePresenter<V extends IFavoriteView> extends BasePresenter<V>
             public void onReady(ApiResult<FavoriteRespDTO> result) {
                 getMvpView().setRefreshComplete();
                 getMvpView().setLoadMoreComplete();
+                getMvpView().hideEmptyView();
+                getMvpView().hideErrorView();
                 if (null == result.getError()) {
-                    List<FavoriteAdaptor.FavoriteWrapper> wrappers = new ArrayList<>();
-                    if (null != result.getData().getDevices()) {
+                    if (null != result.getData().getDevices() && result.getData().getDevices().size() > 0) {
+                        List<FavoriteAdaptor.FavoriteWrapper> wrappers = new ArrayList<>();
                         for (Device device : result.getData().getDevices()) {
                             wrappers.add(new FavoriteAdaptor.FavoriteWrapper(device));
                         }
                         getMvpView().addMore(wrappers);
                         getMvpView().addPage();
+                    } else {
+                        getMvpView().showEmptyView();
                     }
+                } else {
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                    getMvpView().showErrorView();
                 }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                getMvpView().setRefreshComplete();
+                getMvpView().setLoadMoreComplete();
+                getMvpView().showErrorView();
             }
         });
     }

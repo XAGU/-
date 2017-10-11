@@ -102,6 +102,7 @@
     </RelativeLayout>
 
     <FrameLayout
+        android:background="@color/colorBackgroundGray"
         android:id="@+id/fl_result_contain"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

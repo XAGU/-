@@ -2,6 +2,8 @@ package com.xiaolian.amigo.data.network.model.dto.response;
 
 import com.xiaolian.amigo.data.network.model.notify.Notify;
 
+import java.util.List;
+
 import lombok.Data;
 
 /**
@@ -12,6 +14,7 @@ import lombok.Data;
 @Data
 public class PersonalExtraInfoDTO {
     private Integer balance;
+    private List<String> banners;
     private Integer bonusAmount;
     private Integer notifyAmount;
     private Integer prepay;
