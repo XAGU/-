@@ -13,6 +13,10 @@ import lombok.NonNull;
 @AllArgsConstructor
 public class PayRespDTO {
 
+    // 订单编号
+    @NonNull
+    private Long orderId;
+
     // 开阀指令
     @NonNull
     private String openValveCommand;

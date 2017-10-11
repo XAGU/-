@@ -85,6 +85,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     private byte[] connectCmdLock = new byte[0];
     // 预结账标识(预结账状态时，结账后继续正常用水，非预结账状态时，结账后跳转账单详情页)
     private volatile boolean precheckFlag = false;
+    // 订单id
+    private long orderId;
 
     public DeviceBasePresenter(IBleDataManager bleDataManager, ITradeDataManager tradeDataManager) {
         super();
@@ -450,7 +452,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 case CHECK_OUT:
                     if (!precheckFlag) {
                         // 当前为非预结账状态，结账完毕后跳转账单详情页
-                        getMvpView().onFinish();
+                        getMvpView().onFinish(orderId);
                     } else {
                         // 当前为预结账状态，结账完毕后关闭更改标识
                         precheckFlag = false;
@@ -484,11 +486,14 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             @Override
             public void onReady(ApiResult<PayRespDTO> result) {
                 if (null == result.getError()) {
+                    // 初始化订单id
+                    orderId = result.getData().getOrderId();
+
                     // 向设备下发开阀指令
                     openCmd = result.getData().getOpenValveCommand();
                     onWrite(openCmd);
                 } else {
-                    // TODO 请求开发指令指令失败
+                    // TODO 请求开阀指令指令失败
                 }
             }
         }, Schedulers.io());
@@ -539,7 +544,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             case "a807":
                 if (data.length() == 24) {
                     Log.e(TAG, "结账成功：" + data);
-                    getMvpView().onFinish();
+                    getMvpView().onFinish(orderId);
                 } else {
                     Log.e(TAG, "结账失败：" + data);
                 }

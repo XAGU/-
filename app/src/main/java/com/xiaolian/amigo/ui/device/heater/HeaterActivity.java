@@ -26,7 +26,6 @@ import com.xiaolian.amigo.ui.widget.DotFlashView;
 import com.xiaolian.amigo.ui.widget.dialog.ActionSheetDialog;
 import com.xiaolian.amigo.ui.widget.dialog.IOSAlertDialog;
 import com.xiaolian.amigo.util.Constant;
-import com.xiaolian.amigo.util.ble.Agreement;
 
 import javax.inject.Inject;
 
@@ -378,21 +377,9 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
     }
 
     @Override
-    public void onFinish() {
-        // mock数据
-        Order order = new Order();
-        order.setDeviceNo("asdas2412as");
-        order.setLocation("一号楼102室内");
-        order.setDeviceNo("asdas2412as");
-        order.setConsume(1.2);
-        order.setPrepay(10.0);
-        order.setOrderNo("77f88c5ea7886c34");
-        order.setPaymentType(isMoneyPay ? 1 : 2);
-        order.setWaterUsage(50);
-        order.setConsume(2.1);
-        order.setCreateTime(System.currentTimeMillis());
+    public void onFinish(long orderId) {
         Intent intent = new Intent(this, DeviceOrderActivity.class);
-        intent.putExtra(Constant.EXTRA_KEY, order);
+        intent.putExtra(Constant.BUNDLE_ID, orderId);
         startActivity(intent);
     }
 

@@ -20,13 +20,18 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.xiaolian.amigo.data.manager.BleDataManager;
 import com.xiaolian.amigo.data.manager.DeviceDataManager;
+import com.xiaolian.amigo.data.manager.OrderDataManager;
 import com.xiaolian.amigo.data.manager.TradeDataManager;
 import com.xiaolian.amigo.data.manager.intf.IBleDataManager;
 import com.xiaolian.amigo.data.manager.intf.IDeviceDataManager;
+import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
 import com.xiaolian.amigo.data.manager.intf.ITradeDataManager;
 import com.xiaolian.amigo.di.DeviceActivityContext;
 import com.xiaolian.amigo.ui.ble.BlePresenter;
 import com.xiaolian.amigo.ui.ble.intf.IBleView;
+import com.xiaolian.amigo.ui.device.DeviceOrderPresenter;
+import com.xiaolian.amigo.ui.device.intf.IDeviceOrderPresenter;
+import com.xiaolian.amigo.ui.device.intf.IDeviceOrderView;
 import com.xiaolian.amigo.ui.device.intf.heator.HeaterPresenter;
 import com.xiaolian.amigo.ui.device.intf.heator.IHeaterPresenter;
 import com.xiaolian.amigo.ui.device.intf.heator.IHeaterView;
@@ -72,8 +77,20 @@ public class DeviceActivityModule {
 
     @Provides
     @DeviceActivityContext
+    IOrderDataManager provideOrderDataManager(OrderDataManager manager) {
+        return manager;
+    }
+
+    @Provides
+    @DeviceActivityContext
     ITradeDataManager provideTradeDataManager(TradeDataManager manager) {
         return manager;
+    }
+
+    @Provides
+    @DeviceActivityContext
+    IDeviceOrderPresenter<IDeviceOrderView> provideDeviceOrderPresenter(DeviceOrderPresenter<IDeviceOrderView> presenter) {
+        return presenter;
     }
 
 }
