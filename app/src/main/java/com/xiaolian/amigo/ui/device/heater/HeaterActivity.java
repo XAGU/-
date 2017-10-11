@@ -485,21 +485,22 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
             }
         } else if (requestCode == CHOOSE_DORMITORY_CODE) {
             if (resultCode == RESULT_CANCELED) {
-                // 没有选择宿舍
-                onError("没有选择宿舍");
+                // 没有选择宿舍, 不做处理
             } else if (resultCode == RESULT_OK) {
                 if (data == null) {
                     return;
                 }
-                String location = data.getStringExtra(MainActivity.INTENT_KEY_LOCAION);
-                String macAddress = data.getStringExtra(MainActivity.INTENT_KEY_MAC_ADDRESS);
-                if (TextUtils.isEmpty(location) || TextUtils.isEmpty(macAddress)) {
+                String chosenLocation = data.getStringExtra(MainActivity.INTENT_KEY_LOCAION);
+                String chosenMacAddress = data.getStringExtra(MainActivity.INTENT_KEY_MAC_ADDRESS);
+                if (TextUtils.equals(chosenMacAddress, this.macAddress)
+                        || TextUtils.isEmpty(chosenLocation)
+                        || TextUtils.isEmpty(chosenMacAddress)) {
+                    // 如果选择的设备的mac地址和当前设备的mac地址相同或者mac地址为空，则不做处理
                     return;
                 }
                 // 设置设备位置
-                tv_device_name.setText(location);
+                tv_device_name.setText(chosenLocation);
                 // TODO: 重新连接设备
-                onSuccess("选择了" + location + macAddress);
             }
         }
     }
