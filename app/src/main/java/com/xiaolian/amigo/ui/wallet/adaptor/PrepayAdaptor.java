@@ -2,12 +2,16 @@ package com.xiaolian.amigo.ui.wallet.adaptor;
 
 import android.content.Context;
 
+import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.network.model.order.Order;
+import com.xiaolian.amigo.util.CommonUtil;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.List;
+
+import lombok.Data;
 
 /**
  * <p>
@@ -22,9 +26,17 @@ public class PrepayAdaptor extends CommonAdapter<PrepayAdaptor.OrderWrapper> {
 
     @Override
     protected void convert(ViewHolder holder, OrderWrapper orderWrapper, int position) {
-
+        holder.setText(R.id.tv_prepay_device, orderWrapper.getDevice());
+        holder.setText(R.id.tv_prepay_time, CommonUtil.stampToDate(orderWrapper.getTime()));
+        holder.setText(R.id.tv_prepay_amount, "预付￥" + String.valueOf(orderWrapper.getAmount()));
+        if (orderWrapper.getStatus() == 1) {
+            holder.setText(R.id.tv_prepay_title, "待找零");
+        } else {
+            holder.setText(R.id.tv_prepay_title, "已结束");
+        }
     }
 
+    @Data
     public static class OrderWrapper {
         // 设备类型
         Integer type;
@@ -34,15 +46,22 @@ public class PrepayAdaptor extends CommonAdapter<PrepayAdaptor.OrderWrapper> {
         Long time;
         // 预付金额
         Double amount;
+        // 状态
+        Integer status;
         // 原始订单内容，供查询订单详情时使用
         Order order;
 
         public OrderWrapper(Order order) {
             this.order = order;
             this.type = order.getDeviceType();
-            this.device = Device.getDevice(order.getDeviceType()).getDesc() + "：" + order.getDeviceNo();
+            if (Device.getDevice(order.getDeviceType()) != null) {
+                this.device = Device.getDevice(order.getDeviceType()).getDesc() + "：" + order.getDeviceNo();
+            } else {
+                this.device = "未知设备";
+            }
             this.time = order.getCreateTime();
             this.amount = order.getPrepay();
+            this.status = order.getStatus();
         }
     }
 }

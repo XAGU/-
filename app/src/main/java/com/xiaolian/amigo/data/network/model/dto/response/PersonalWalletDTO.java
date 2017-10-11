@@ -9,6 +9,6 @@ import lombok.Data;
  */
 @Data
 public class PersonalWalletDTO {
-    private Long balance;
-    private Long prepay;
+    private Double balance;
+    private Double prepay;
 }
