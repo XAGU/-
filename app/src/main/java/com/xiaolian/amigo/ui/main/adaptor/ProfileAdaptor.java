@@ -1,4 +1,4 @@
-package com.xiaolian.amigo.ui.main;
+package com.xiaolian.amigo.ui.main.adaptor;
 
 import android.app.Activity;
 import android.content.Context;

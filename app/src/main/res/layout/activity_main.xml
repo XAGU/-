@@ -6,10 +6,13 @@
     android:orientation="vertical"
     >
     <ScrollView
+        android:scrollbars="none"
+        android:overScrollMode="never"
         android:id="@+id/sv_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
+            android:descendantFocusability="blocksDescendants"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">

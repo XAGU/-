@@ -5,8 +5,8 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.GestureDetector;
@@ -20,7 +20,10 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
+import com.xiaolian.amigo.ui.device.dispenser.DispenserActivity;
+import com.xiaolian.amigo.ui.device.heater.HeaterActivity;
 import com.xiaolian.amigo.ui.login.LoginActivity;
+import com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity;
 import com.xiaolian.amigo.ui.main.intf.IMainPresenter;
 import com.xiaolian.amigo.ui.main.intf.IMainView;
 import com.xiaolian.amigo.ui.notice.NoticeActivity;
@@ -28,12 +31,21 @@ import com.xiaolian.amigo.ui.user.EditProfileActivity;
 import com.xiaolian.amigo.ui.widget.dialog.AvailabilityDialog;
 import com.xiaolian.amigo.ui.widget.dialog.NoticeAlertDialog;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.List;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
+
+import static com.xiaolian.amigo.data.enumeration.Device.DISPENSER;
+import static com.xiaolian.amigo.data.enumeration.Device.HEARTER;
 
 /**
  * Created by yik on 2017/9/5.
@@ -76,7 +88,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     RelativeLayout rl_notice;
 
     @BindView(R.id.sv_main)
-    ScrollView sv_main;
+    ScrollView sl_main;
 
     private GestureDetector mGestureDetector;
 
@@ -93,8 +105,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         getActivityComponent().inject(this);
 
         presenter.onAttach(this);
-
-        OverScrollDecoratorHelper.setUpOverScroll(sv_main);
 
         btSwitch.setBackgroundResource(R.drawable.profile);
 
@@ -116,14 +126,14 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             @Override
             public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
 
-                if(Math.abs(e1.getRawY() - e2.getRawY())>100){
-                    //Toast.makeText(getApplicationContext(), "动作不合法", 0).show();
-                    return true;
-                }
-                if(Math.abs(velocityX)<150){
-                    //Toast.makeText(getApplicationContext(), "移动的太慢", 0).show();
-                    return true;
-                }
+//                if(Math.abs(e1.getRawY() - e2.getRawY())>100){
+//                    //Toast.makeText(getApplicationContext(), "动作不合法", 0).show();
+//                    return true;
+//                }
+//                if(Math.abs(velocityX)<150){
+//                    //Toast.makeText(getApplicationContext(), "移动的太慢", 0).show();
+//                    return true;
+//                }
                 if ((e1.getRawX() - e2.getRawX()) > 200) {// 表示 向右滑动表示下一页
                     //显示下一页
                     if (current == 1) {
@@ -142,6 +152,13 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 return super.onFling(e1, e2, velocityX, velocityY);
             }
         });
+
+//        sl_main.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                return isBlockedScrollView;
+//            }
+//        });
 
     }
 
@@ -322,6 +339,11 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     }
 
     @Override
+    public void showBanners(List<String> banners) {
+        EventBus.getDefault().post(banners);
+    }
+
+    @Override
     public void startActivity(AppCompatActivity activity, Class<?> clazz) {
         if (TextUtils.isEmpty(presenter.getToken())) {
             startActivity(new Intent(this, LoginActivity.class));
@@ -342,7 +364,71 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         }
     }
 
+    /**
+     * 点击进入热水器界面
+     */
+    public void gotoHeater() {
+        setBleCallback(() -> checkTimeValid(HEARTER, HeaterActivity.class));
+        getBlePermission();
+    }
+
+    /**
+     * 点击进入饮水机页面
+     */
+    public void gotoDispenser() {
+        setBleCallback(() -> checkTimeValid(DISPENSER, DispenserActivity.class));
+        getBlePermission();
+    }
+
+    /**
+     * 点击进入失物招领
+     */
+    public void gotoLostAndFound() {
+        startActivity(LostAndFoundActivity.class);
+    }
+
     public void logout() {
         presenter.logout();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(Event event) {
+        switch (event) {
+            case GOTO_HEATER:
+                gotoHeater();
+                break;
+            case GOTO_DISPENSER:
+                gotoDispenser();
+                break;
+            case GOTO_LOST_AND_FOUND:
+                gotoLostAndFound();
+                break;
+        }
+    }
+
+    public enum Event {
+        GOTO_HEATER(1, null),
+        GOTO_DISPENSER(2, null),
+        GOTO_LOST_AND_FOUND(3, null);
+
+        private int type;
+        private Object object;
+
+        Event(int type, Object object) {
+            this.type = type;
+            this.object = object;
+        }
     }
 }

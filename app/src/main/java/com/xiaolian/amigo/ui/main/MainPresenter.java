@@ -66,6 +66,9 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
             @Override
             public void onReady(ApiResult<PersonalExtraInfoDTO> result) {
                 if (null == result.getError()) {
+                    if (result.getData().getBanners() != null && result.getData().getBanners().size() > 0) {
+                        getMvpView().showBanners(result.getData().getBanners());
+                    }
                     if (result.getData().getUrgentNotify() != null) {
                         if (isShowUrgencyNotify()) {
                             getMvpView().showUrgentNotify(result.getData().getUrgentNotify().getContent(),
