@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.enumeration.Payment;
 import com.xiaolian.amigo.data.network.model.order.Order;
 import com.xiaolian.amigo.ui.widget.BezierWaveView;
 import com.xiaolian.amigo.ui.bonus.BonusActivity;
@@ -168,10 +169,8 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
     @Inject
     IHeaterPresenter<IHeaterView> presenter;
 
-    /******************   Begin for test *******************/
-    String orderId = "12345678";
     private BonusAdaptor.BonusWrapper choosedBonus;
-    /******************    End for test  *******************/
+
 
     /**
      * 点击选择用水量或选择红包
@@ -328,7 +327,13 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
                 showMessage("请选择红包");
                 return;
             }
-            startShower();
+
+            // 点击支付操作时蓝牙必须为开启状态
+            setBleCallback(() -> {
+                button.setEnabled(false);
+                presenter.onPay(Payment.BONUS.getType(), null, choosedBonus.getId());
+            });
+            getBlePermission();
         } else {
             if (tv_water_right.getTag(R.id.money_pay_amount) == null) {
                 showMessage("请选择预计用水量");
@@ -336,16 +341,6 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
             }
             presenter.queryWallet((Integer) tv_water_right.getTag(R.id.money_pay_amount));
         }
-
-
-        // 点击支付操作时蓝牙必须为开启状态
-        setBleCallback(() -> {
-            button.setEnabled(false);
-            presenter.onPay(1, 50, null);
-            // presenter.onWrite(Agreement.getInstance().setBalance(orderId, 50));
-        });
-        getBlePermission();
-
     }
 
     /**
@@ -502,6 +497,12 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
 
     @Override
     public void startUse() {
-        startShower();
+        // 点击支付操作时蓝牙必须为开启状态
+        setBleCallback(() -> {
+            bt_pay.setEnabled(false);
+            presenter.onPay(Payment.BALANCE.getType(), (Integer) tv_water_right.getTag(R.id.money_pay_amount), null);
+
+        });
+        getBlePermission();
     }
 }

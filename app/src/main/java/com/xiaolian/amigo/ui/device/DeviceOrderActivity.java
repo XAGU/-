@@ -71,8 +71,8 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
             tv_change_amount.setText(String.valueOf(respDTO.getOdd()));
         } else { // 红包支付
             iv_order_free.setVisibility(View.VISIBLE);
-            tv_amount.setText(String.valueOf(respDTO.getConsume()));
-            tv_change_amount.setText(String.valueOf(respDTO.getOdd()));
+            tv_amount.setText("0");
+            tv_change_amount.setText("0");
         }
         tv_time.setText(CommonUtil.stampToDate(respDTO.getCreateTime()));
         tv_device_info.setText(respDTO.getLocation());
