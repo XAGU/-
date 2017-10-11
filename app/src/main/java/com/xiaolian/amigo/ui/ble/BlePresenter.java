@@ -27,7 +27,7 @@ public class BlePresenter<V extends IBleView> extends BasePresenter<V>
 
     @Override
     public void onScan() {
-        addObserver(manager.scan(), new BLEObserver<ScanResult>() {
+        addObserver(manager.scan(), new BleObserver<ScanResult>() {
             @Override
             public void onError(Throwable e) {
                 Log.wtf(TAG, "扫描设备失败！", e);

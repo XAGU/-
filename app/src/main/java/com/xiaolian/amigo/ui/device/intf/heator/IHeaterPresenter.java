@@ -12,4 +12,5 @@ public interface IHeaterPresenter<V extends IDeviceView> extends IDevicePresente
     int getBonusAmount();
 
     void queryWallet(int amount);
+
 }

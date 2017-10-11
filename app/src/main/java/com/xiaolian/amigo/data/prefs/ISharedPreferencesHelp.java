@@ -25,4 +25,8 @@ public interface ISharedPreferencesHelp {
     int getBonusAmount();
 
     void logout();
+
+    void setDeviceToken(String deviceToken);
+
+    String getDeviceToken();
 }

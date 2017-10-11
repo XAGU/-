@@ -22,6 +22,7 @@ import com.xiaolian.amigo.di.module.BleActivityModule;
 import com.xiaolian.amigo.di.module.DeviceActivityModule;
 import com.xiaolian.amigo.ui.ble.BleActivity;
 import com.xiaolian.amigo.ui.ble.BleInteractiveActivity;
+import com.xiaolian.amigo.ui.device.DeviceOrderActivity;
 import com.xiaolian.amigo.ui.device.dispenser.DispenserActivity;
 import com.xiaolian.amigo.ui.device.heater.HeaterActivity;
 
@@ -35,5 +36,7 @@ public interface DeviceActivityComponent {
     void inject(HeaterActivity activity);
 
     void inject(DispenserActivity activity);
+
+    void inject(DeviceOrderActivity activity);
 
 }

@@ -24,7 +24,7 @@ public interface IDeviceView extends IBaseView {
     void onOpen();
 
     // 设备用水结束
-    void onFinish();
+    void onFinish(long orderId);
 
     // 设备连接成功
     void onConnectSuccess();

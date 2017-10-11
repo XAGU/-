@@ -63,7 +63,7 @@ public class BleInteractivePresenter<V extends IBleInteractiveView> extends Base
 
         // 2、连接设备
         addObserver(manager.connect(connectionObservable),
-                new BLEObserver<BluetoothGattCharacteristic>() {
+                new BleObserver<BluetoothGattCharacteristic>() {
                     @Override
                     public void onConnectError() {
                         handleDisConnectError();
@@ -98,7 +98,7 @@ public class BleInteractivePresenter<V extends IBleInteractiveView> extends Base
     // 开启notify通道
     private void enableNotify() {
         addObserver(manager.setupNotification(connectionObservable, notifyCharacteristic),
-                new BLEObserver<Observable<byte[]>>() {
+                new BleObserver<Observable<byte[]>>() {
                     @Override
                     public void onConnectError() {
                         handleDisConnectError();
@@ -124,7 +124,7 @@ public class BleInteractivePresenter<V extends IBleInteractiveView> extends Base
         descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
 
         addObserver(manager.writeDescriptor(connectionObservable, descriptor),
-                new BLEObserver<byte[]>() {
+                new BleObserver<byte[]>() {
                     @Override
                     public void onConnectError() {
                         handleDisConnectError();
@@ -157,7 +157,7 @@ public class BleInteractivePresenter<V extends IBleInteractiveView> extends Base
 
         byte[] commandBytes = HexBytesUtils.hexStr2Bytes(command);
         addObserver(manager.write(connectionObservable, commandBytes),
-                new BLEObserver<byte[]>() {
+                new BleObserver<byte[]>() {
                     @Override
                     public void onConnectError() {
                         handleDisConnectError();
@@ -184,7 +184,7 @@ public class BleInteractivePresenter<V extends IBleInteractiveView> extends Base
         }
 
         addObserver(manager.notify(connectionObservable, notifyCharacteristic),
-                new BLEObserver<byte[]>() {
+                new BleObserver<byte[]>() {
                     @Override
                     public void onConnectError() {
                         handleDisConnectError();
