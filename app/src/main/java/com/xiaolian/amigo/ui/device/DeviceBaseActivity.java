@@ -56,4 +56,29 @@ public abstract class DeviceBaseActivity extends BaseActivity implements IDevice
         Intent intent  = getIntent();
         macAddress = intent.getStringExtra(Constant.MAC);
     }
+
+    @Override
+    public void onConnectError() {
+
+    }
+
+    @Override
+    public void onOpen() {
+
+    }
+
+    @Override
+    public void onFinish(long orderId) {
+
+    }
+
+    @Override
+    public void onConnectSuccess() {
+
+    }
+
+    @Override
+    public void onReconnectSuccess() {
+
+    }
 }

@@ -11,11 +11,13 @@ import javax.inject.Singleton;
 
 /**
  * SharedPreferencesHelp实现类
+ *
  * @author zcd
  */
 public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     private static final String PREF_FILE_NAME = "amigo";
     private static final String PREF_KEY_TOKEN = "PREF_KEY_TOKEN";
+    private static final String PREF_DEVICE_TOKEN = "PREF_DEVICE_TOKEN";
     private static final String PREF_KEY_RESIDENCEID = "PREF_KEY_RESIDENCEID";
     private static final String PREF_KEY_SCHOOLID = "PREF_KEY_SCHOOLID";
     private static final String PREF_KEY_SCHOOLNAME = "PREF_KEY_SCHOOLNAME";
@@ -24,6 +26,7 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     private static final String PREF_KEY_PICTURE_URL = "PREF_KEY_PICTURE_URL";
 
     private String tokenHolder;
+    private String deviceTokenHolder;
     private User userHolder;
 
     private boolean isShowUrgencyNotify = true;
@@ -52,6 +55,21 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     }
 
     @Override
+    public void setDeviceToken(String deviceToken) {
+        mSharedPreferences.edit().putString(PREF_DEVICE_TOKEN, deviceToken).apply();
+        deviceTokenHolder = null;
+    }
+
+    @Override
+    public String getDeviceToken() {
+        if (deviceTokenHolder != null) {
+            return deviceTokenHolder;
+        }
+        deviceTokenHolder = mSharedPreferences.getString(PREF_DEVICE_TOKEN, null);
+        return deviceTokenHolder;
+    }
+
+    @Override
     public User getUserInfo() {
         if (!isUserHolderEmpty()) {
             return userHolder;
@@ -71,7 +89,7 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     @Override
     public void setUserInfo(User user) {
         userHolder = user;
-        if(null != user.getResidenceId()) {
+        if (null != user.getResidenceId()) {
             mSharedPreferences.edit().putLong(PREF_KEY_RESIDENCEID, user.getResidenceId()).apply();
         }
         mSharedPreferences.edit().putLong(PREF_KEY_SCHOOLID, user.getSchoolId()).apply();

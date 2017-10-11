@@ -37,18 +37,26 @@ public class LogInterceptor implements Interceptor {
         Request request = chain.request();
         Request newRequest;
         String token = sharedPreferencesHelp.getToken();
+        String deviceToken = sharedPreferencesHelp.getDeviceToken();
         if (token == null) {
             token = "";
         }
+        if (deviceToken == null) {
+            deviceToken = "";
+        }
         newRequest = request.newBuilder()
-                 // 添加token
+                // 添加token
                 .addHeader("token", token)
+                .addHeader("device_token", deviceToken)
                 .build();
         String url = newRequest.url().toString();
         String header = newRequest.headers().toString();
         okhttp3.Response response = chain.proceed(newRequest);
         okhttp3.MediaType mediaType = response.body().contentType();
         String content;
+        if (null != response.header("device_token")) {
+            sharedPreferencesHelp.setDeviceToken(response.header("device_token"));
+        }
         if (response.body() != null) {
             content = response.body().string();
         } else {
@@ -58,10 +66,10 @@ public class LogInterceptor implements Interceptor {
         if (DEBUG) {
             if (!newRequest.method().equals("GET")) {
                 String requestContent = bodyToString(newRequest.body());
-                Log.d(TAG, "url: " + url + "\n" + "code: " + code + "\n" + "header: " + header + "\n" + "request body: " + requestContent
-                        + "\n" + "response body: " + content);
+                Log.d(TAG, "url: " + url + "\n" + "code: " + code + "\n" + "request header: " + header + "\n" + "request body: " + requestContent + "\n" + "response header: "
+                        + response.headers().toString() + "\n" + "response body: " + content);
             } else {
-                Log.d(TAG, "url: " + url + "\n" + "code: " + code + "\n" + "header: " + header + "\n" + "response body: " + content);
+                Log.d(TAG, "url: " + url + "\n" + "code: " + code + "\n" + "request header: " + header + "\n" + "response body: " + content );
             }
         }
 

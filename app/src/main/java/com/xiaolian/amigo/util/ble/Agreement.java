@@ -1,5 +1,7 @@
 package com.xiaolian.amigo.util.ble;
 
+import android.util.Log;
+
 import java.math.BigDecimal;
 import java.util.Random;
 
@@ -55,6 +57,7 @@ public class Agreement {
                 + SYCS, KEY);
         HEX = "A70208" + TEMPKEY;
         HEX = HEX + HexUtils.HexstrSum(HEX);
+        Log.i(TAG, "设备使用次数：" + SYCS);
         return HEX;
     }
 

@@ -11,7 +11,15 @@ import com.polidea.rxandroidble.RxBleConnection;
 import com.trello.rxlifecycle.LifecycleTransformer;
 import com.trello.rxlifecycle.RxLifecycle;
 import com.trello.rxlifecycle.android.ActivityEvent;
+import com.xiaolian.amigo.data.enumeration.Command;
 import com.xiaolian.amigo.data.manager.intf.IBleDataManager;
+import com.xiaolian.amigo.data.manager.intf.ITradeDataManager;
+import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.dto.request.CmdResultReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.request.PayReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.CmdResultRespDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.ConnectCommandRespDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.PayRespDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.base.RxBus;
 import com.xiaolian.amigo.ui.device.intf.IDevicePresenter;
@@ -40,7 +48,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
     private static final String TAG = DeviceBasePresenter.class.getSimpleName();
     private static final String NOTIFY_DESCRIPTOR_UUID = "00002902-0000-1000-8000-00805f9b34fb";
-    private IBleDataManager manager;
+    private IBleDataManager bleDataManager;
+    private ITradeDataManager tradeDataManager;
     // 共享连接
     private Observable<RxBleConnection> connectionObservable;
     // notify特征值
@@ -60,28 +69,49 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     private Subscription busSubscriber;
     // 处理蓝牙连接错误标识
     private AtomicBoolean handleConnectError = new AtomicBoolean(false);
-    // 信号量
-    private byte[] lock = new byte[0];
     // 标志是否重连
     private boolean reconnect = false;
+    // 握手连接指令
+    private volatile String connectCmd;
+    // 开阀指令
+    private String openCmd;
+    // 关阀指令
+    private String closeCmd;
+    // 结账指令
+    private String precheckCmd;
+    // 结账指令
+    private String checkoutCmd;
+    // 握手连接指令信号量
+    private byte[] connectCmdLock = new byte[0];
+    // 预结账标识(预结账状态时，结账后继续正常用水，非预结账状态时，结账后跳转账单详情页)
+    private volatile boolean precheckFlag = false;
+    // 订单id
+    private long orderId;
 
-    public DeviceBasePresenter(IBleDataManager manager) {
+    public DeviceBasePresenter(IBleDataManager bleDataManager, ITradeDataManager tradeDataManager) {
         super();
-        this.manager = manager;
+        this.bleDataManager = bleDataManager;
+        this.tradeDataManager = tradeDataManager;
     }
 
     @Override
     public void onConnect(@NonNull String macAddress) {
-        // 1、初始化设备消息接收者
+
+        // 1、网络请求获取握手指令
+        if (null == connectCmd) {
+            getConnectCommand();
+        }
+
+        // 2、初始化设备消息接收者
         if (null == busSubscriber) {
             busSubscriber = RxBus.getDefault()
-                    .toObservable(String.class)
+                    .toObservable(ApiResult.class)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(this::handleResult, throwable -> Log.wtf(TAG, "接收设备返回的数据失败", throwable));
         }
 
-        // 2、开启设备状态监控
-        addObserver(manager.monitorStatus(macAddress), new BLEObserver<RxBleConnection.RxBleConnectionState>() {
+        // 3、开启设备状态监控
+        addObserver(bleDataManager.monitorStatus(macAddress), new BleObserver<RxBleConnection.RxBleConnectionState>() {
 
             @Override
             public void onNext(RxBleConnection.RxBleConnectionState state) {
@@ -101,14 +131,14 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             }
         }, Schedulers.io());
 
-        // 3、创建共享连接
-        connectionObservable = manager
+        // 4、创建共享连接
+        connectionObservable = bleDataManager
                 .prepareConnectionObservable(macAddress, false, disconnectTriggerSubject)
                 .compose(bindUntilEvent(PAUSE));
 
-        // 4、连接设备
-        addObserver(manager.connect(connectionObservable),
-                new BLEObserver<BluetoothGattCharacteristic>() {
+        // 5、连接设备
+        addObserver(bleDataManager.connect(connectionObservable),
+                new BleObserver<BluetoothGattCharacteristic>() {
                     @Override
                     public void onConnectError() {
                         handleDisConnectError();
@@ -132,8 +162,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         // 取notify特征值
                         notifyCharacteristic = characteristic;
 
-                        // 3、开启notify，向蓝牙设备写notify特征值描述，为后续接受蓝牙设备notify通知做铺垫
-                        if (manager.getStatus(macAddress) == RxBleConnection.RxBleConnectionState.CONNECTED) {
+                        // 6、开启notify，向蓝牙设备写notify特征值描述，为后续接受蓝牙设备notify通知做铺垫
+                        if (bleDataManager.getStatus(macAddress) == RxBleConnection.RxBleConnectionState.CONNECTED) {
                             Log.i(TAG, "准备开启notify通道");
                             enableNotify();
                         } else {
@@ -146,8 +176,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
     // 开启notify通道
     private void enableNotify() {
-        addObserver(manager.setupNotification(connectionObservable, notifyCharacteristic),
-                new BLEObserver<Observable<byte[]>>() {
+        addObserver(bleDataManager.setupNotification(connectionObservable, notifyCharacteristic),
+                new BleObserver<Observable<byte[]>>() {
                     @Override
                     public void onConnectError() {
                         handleDisConnectError();
@@ -173,8 +203,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         BluetoothGattDescriptor descriptor = notifyCharacteristic.getDescriptor(UUID.fromString(NOTIFY_DESCRIPTOR_UUID));
         descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
 
-        addObserver(manager.writeDescriptor(connectionObservable, descriptor),
-                new BLEObserver<byte[]>() {
+        addObserver(bleDataManager.writeDescriptor(connectionObservable, descriptor),
+                new BleObserver<byte[]>() {
                     @Override
                     public void onConnectError() {
                         handleDisConnectError();
@@ -215,14 +245,14 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
     @Override
     public void onWrite(@NonNull String command) {
-        if (manager.getStatus(currentMacAddress) != RxBleConnection.RxBleConnectionState.CONNECTED) {
+        if (bleDataManager.getStatus(currentMacAddress) != RxBleConnection.RxBleConnectionState.CONNECTED) {
             getMvpView().onConnectError();
             return;
         }
 
         byte[] commandBytes = HexBytesUtils.hexStr2Bytes(command);
-        addObserver(manager.write(connectionObservable, commandBytes),
-                new BLEObserver<byte[]>() {
+        addObserver(bleDataManager.write(connectionObservable, commandBytes),
+                new BleObserver<byte[]>() {
                     @Override
                     public void onConnectError() {
                         handleDisConnectError();
@@ -243,13 +273,13 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
     @Override
     public void registerNotify() {
-        if (manager.getStatus(currentMacAddress) != RxBleConnection.RxBleConnectionState.CONNECTED) {
+        if (bleDataManager.getStatus(currentMacAddress) != RxBleConnection.RxBleConnectionState.CONNECTED) {
             getMvpView().onConnectError();
             return;
         }
 
-        addObserver(manager.notify(connectionObservable, notifyCharacteristic),
-                new BLEObserver<byte[]>() {
+        addObserver(bleDataManager.notify(connectionObservable, notifyCharacteristic),
+                new BleObserver<byte[]>() {
                     @Override
                     public void onConnectError() {
                         handleDisConnectError();
@@ -266,7 +296,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         if (null != data) {
                             String result = HexBytesUtils.bytesToHexString(data);
                             Log.i(TAG, "接收数据成功！data:" + result);
-                            RxBus.getDefault().post(result);
+                            processCommandResult(result);
                         }
                     }
                 }, Schedulers.io());
@@ -280,7 +310,18 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             getMvpView().post(() -> getMvpView().onReconnectSuccess());
         } else {
             // 握手连接
-            onWrite(Agreement.getInstance().createConnection());
+            if (null == connectCmd) {
+                synchronized (connectCmdLock) {
+                    if (null == connectCmd) {
+                        try {
+                            connectCmdLock.wait();
+                        } catch (InterruptedException e) {
+                            Log.wtf(TAG, e);
+                        }
+                    }
+                }
+            }
+            onWrite(connectCmd);
         }
     }
 
@@ -352,6 +393,117 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         }
     }
 
+    // 网络请求获取握手连接指令
+    private void getConnectCommand() {
+        addObserver(tradeDataManager.getConnectCommand(), new NetworkObserver<ApiResult<ConnectCommandRespDTO>>() {
+            @Override
+            public void onReady(ApiResult<ConnectCommandRespDTO> result) {
+                if (null == result.getError()) {
+                    synchronized (connectCmdLock) {
+                        connectCmd = result.getData().getConnectCmd();
+                        connectCmdLock.notifyAll();
+                    }
+                } else {
+                    // TODO 请求握手指令失败
+                }
+            }
+        }, Schedulers.io());
+    }
+
+    // 网络请求处理设备响应结果
+    private void processCommandResult(String result) {
+        CmdResultReqDTO reqDTO = new CmdResultReqDTO();
+        reqDTO.setData(result);
+        reqDTO.setMacAddress(currentMacAddress);
+        addObserver(tradeDataManager.processCmdResult(reqDTO), new NetworkObserver<ApiResult<CmdResultRespDTO>>(false) {
+            @Override
+            public void onReady(ApiResult<CmdResultRespDTO> result) {
+                RxBus.getDefault().post(result);
+            }
+        }, Schedulers.io());
+    }
+
+    @Override
+    public void handleResult(ApiResult<CmdResultRespDTO> result) {
+        if (null == result.getError()) {
+            // 下一步执行指令
+            String nextCommand = result.getData().getNextCommand();
+            switch (Command.getCommand(result.getData().getSrcCommandType())) {
+                case CONNECT:
+                    // 如果存在未结账订单，需要先结算旧账单
+                    if (null != result.getData().getNextCommand()) {
+                        // 下发预结账指令
+                        precheckCmd = nextCommand;
+                        onWrite(precheckCmd);
+                    } else {
+                        // 握手连接成功，进入正常用水流程
+                        getMvpView().onConnectSuccess();
+                    }
+                    break;
+                case OPEN_VALVE:
+                    closeCmd = nextCommand;
+                    getMvpView().onOpen();
+                    break;
+                case CLOSE_VALVE:
+                    checkoutCmd = nextCommand;
+                    // 下发结账指令
+                    onWrite(checkoutCmd);
+                    break;
+                case CHECK_OUT:
+                    if (!precheckFlag) {
+                        // 当前为非预结账状态，结账完毕后跳转账单详情页
+                        getMvpView().onFinish(orderId);
+                    } else {
+                        // 当前为预结账状态，结账完毕后关闭更改标识
+                        precheckFlag = false;
+                        // 需要再次握手，否则会报设备使用次数不对
+                        onWrite(connectCmd);
+                    }
+                    break;
+                case PRE_CHECK:
+                    checkoutCmd = nextCommand;
+                    // 标识当前状态为预结账状态
+                    precheckFlag = true;
+                    // 下发结账指令
+                    onWrite(checkoutCmd);
+                    break;
+            }
+        } else {
+            // TODO 处理非正常指令响应结果
+            Log.e(TAG, result.getError().getCode() + ":" + result.getError().getDisplayMessage());
+        }
+    }
+
+    @Override
+    public void onPay(int method, Integer prepay, Long bonusId) {
+        PayReqDTO reqDTO = new PayReqDTO();
+        reqDTO.setMacAddress(currentMacAddress);
+        reqDTO.setBonusId(bonusId);
+        reqDTO.setPrepay(prepay);
+        reqDTO.setMethod(method);
+
+        addObserver(tradeDataManager.pay(reqDTO), new NetworkObserver<ApiResult<PayRespDTO>>() {
+            @Override
+            public void onReady(ApiResult<PayRespDTO> result) {
+                if (null == result.getError()) {
+                    // 初始化订单id
+                    orderId = result.getData().getOrderId();
+
+                    // 向设备下发开阀指令
+                    openCmd = result.getData().getOpenValveCommand();
+                    onWrite(openCmd);
+                } else {
+                    // TODO 请求开阀指令指令失败
+                }
+            }
+        }, Schedulers.io());
+    }
+
+    @Override
+    public void onClose() {
+        // 向设备下发关阀指令
+        onWrite(closeCmd);
+    }
 
     /*************************** 以下为测试用 *****************************/
     @Override
@@ -392,7 +544,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             case "a807":
                 if (data.length() == 24) {
                     Log.e(TAG, "结账成功：" + data);
-                    getMvpView().onFinish();
+                    getMvpView().onFinish(orderId);
                 } else {
                     Log.e(TAG, "结账失败：" + data);
                 }

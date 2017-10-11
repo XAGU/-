@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.enumeration.Payment;
 import com.xiaolian.amigo.data.network.model.order.Order;
 import com.xiaolian.amigo.ui.user.ChooseDormitoryActivity;
 import com.xiaolian.amigo.ui.widget.BezierWaveView;
@@ -28,7 +29,6 @@ import com.xiaolian.amigo.ui.widget.DotFlashView;
 import com.xiaolian.amigo.ui.widget.dialog.ActionSheetDialog;
 import com.xiaolian.amigo.ui.widget.dialog.IOSAlertDialog;
 import com.xiaolian.amigo.util.Constant;
-import com.xiaolian.amigo.util.ble.Agreement;
 
 import javax.inject.Inject;
 
@@ -172,10 +172,8 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
     @Inject
     IHeaterPresenter<IHeaterView> presenter;
 
-    /******************   Begin for test *******************/
-    String orderId = "12345678";
     private BonusAdaptor.BonusWrapper choosedBonus;
-    /******************    End for test  *******************/
+
 
     /**
      * 点击选择用水量或选择红包
@@ -332,7 +330,13 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
                 showMessage("请选择红包");
                 return;
             }
-            startShower();
+
+            // 点击支付操作时蓝牙必须为开启状态
+            setBleCallback(() -> {
+                button.setEnabled(false);
+                presenter.onPay(Payment.BONUS.getType(), null, choosedBonus.getId());
+            });
+            getBlePermission();
         } else {
             if (tv_water_right.getTag(R.id.money_pay_amount) == null) {
                 showMessage("请选择预计用水量");
@@ -340,15 +344,6 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
             }
             presenter.queryWallet((Integer) tv_water_right.getTag(R.id.money_pay_amount));
         }
-
-
-        // 点击支付操作时蓝牙必须为开启状态
-        setBleCallback(() -> {
-            button.setEnabled(false);
-            presenter.onWrite(Agreement.getInstance().setBalance(orderId, 50));
-        });
-        getBlePermission();
-
     }
 
     /**
@@ -359,7 +354,7 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
         // 点击结束用水操作时蓝牙必须为开启状态
         setBleCallback(() -> {
             button.setEnabled(false);
-            presenter.onWrite(Agreement.getInstance().CloseValve());
+            presenter.onClose();
         });
         getBlePermission();
     }
@@ -380,21 +375,9 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
     }
 
     @Override
-    public void onFinish() {
-        // mock数据
-        Order order = new Order();
-        order.setDeviceNo("asdas2412as");
-        order.setLocation("一号楼102室内");
-        order.setDeviceNo("asdas2412as");
-        order.setConsume(1.2);
-        order.setPrepay(10.0);
-        order.setOrderNo("77f88c5ea7886c34");
-        order.setPaymentType(isMoneyPay ? 1 : 2);
-        order.setWaterUsage(50);
-        order.setConsume(2.1);
-        order.setCreateTime(System.currentTimeMillis());
+    public void onFinish(long orderId) {
         Intent intent = new Intent(this, DeviceOrderActivity.class);
-        intent.putExtra(Constant.EXTRA_KEY, order);
+        intent.putExtra(Constant.BUNDLE_ID, orderId);
         startActivity(intent);
     }
 
@@ -544,6 +527,12 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
 
     @Override
     public void startUse() {
-        startShower();
+        // 点击支付操作时蓝牙必须为开启状态
+        setBleCallback(() -> {
+            bt_pay.setEnabled(false);
+            presenter.onPay(Payment.BALANCE.getType(), (Integer) tv_water_right.getTag(R.id.money_pay_amount), null);
+
+        });
+        getBlePermission();
     }
 }

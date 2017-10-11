@@ -49,16 +49,11 @@ public class BonusAdaptor extends CommonAdapter<BonusAdaptor.BonusWrapper> {
         Long timeLeft;
         // 红包名称
         String name;
-
-        public BonusWrapper(Integer type, Long amount, Long timeEnd, String desc, Long timeLeft) {
-            this.type = type;
-            this.amount = amount;
-            this.timeEnd = timeEnd;
-            this.desc = desc;
-            this.timeLeft = timeLeft;
-        }
+        // 红包id
+        Long id;
 
         public BonusWrapper(Bonus bonus) {
+            this.id = bonus.getId();
             this.type = bonus.getDeviceType();
             this.amount = bonus.getAmount();
             this.timeEnd = bonus.getEndTime();

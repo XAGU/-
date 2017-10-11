@@ -1,7 +1,9 @@
 package com.xiaolian.amigo.data.network;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.dto.request.OrderDetailReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.OrderReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.OrderDetailRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.OrderRespDTO;
 
 import rx.Observable;
@@ -18,4 +20,8 @@ public interface IOrderApi {
     // 查询个人订单列表
     @POST("/order/personal/list")
     Observable<ApiResult<OrderRespDTO>> queryOrders(@Body OrderReqDTO reqDTO);
+
+    // 查询订单详情
+    @POST("/order/one")
+    Observable<ApiResult<OrderDetailRespDTO>> queryOrderDetail(@Body OrderDetailReqDTO reqDTO);
 }

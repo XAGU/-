@@ -26,7 +26,6 @@ import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 import com.xiaolian.amigo.data.network.model.Error;
-import com.xiaolian.amigo.util.NetworkUtil;
 
 import java.net.ConnectException;
 
@@ -71,8 +70,7 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
         }
         else if (e instanceof ConnectException) {
             getMvpView().onError("服务器飞走啦，努力修复中");
-        }
-        else if (e instanceof HttpException) {
+        } else if (e instanceof HttpException) {
             switch (((HttpException) e).code()) {
                 case 401:
                     getMvpView().onError(R.string.please_login);
@@ -148,37 +146,42 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
     @Override
     public <P> void addObserver(Observable<P> observable, NetworkObserver observer) {
         if (null != subscriptions) {
-            // handler.post(() ->
             this.subscriptions.add(
                     observable
                             .compose(this.applySchedulers())
                             .subscribe(observer));
-            // ));
         }
     }
 
     @Override
-    public <P> void addObserver(Observable<P> observable, BLEObserver observer) {
+    public <P> void addObserver(Observable<P> observable, NetworkObserver observer, Scheduler scheduler) {
         if (null != subscriptions) {
-            // handler.post(() ->
-            this.subscriptions.add(
-                    observable
-                            .compose(this.applySchedulers())
-                            .subscribe(observer));
-            // ));
-        }
-    }
-
-    @Override
-    public <P> void addObserver(Observable<P> observable, BLEObserver observer, Scheduler scheduler) {
-        if (null != subscriptions) {
-            //handler.post(() ->
             this.subscriptions.add(
                     observable
                             .subscribeOn(Schedulers.io())
                             .observeOn(scheduler)
                             .subscribe(observer));
-            // ));
+        }
+    }
+
+    @Override
+    public <P> void addObserver(Observable<P> observable, BleObserver observer) {
+        if (null != subscriptions) {
+            this.subscriptions.add(
+                    observable
+                            .compose(this.applySchedulers())
+                            .subscribe(observer));
+        }
+    }
+
+    @Override
+    public <P> void addObserver(Observable<P> observable, BleObserver observer, Scheduler scheduler) {
+        if (null != subscriptions) {
+            this.subscriptions.add(
+                    observable
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(scheduler)
+                            .subscribe(observer));
         }
     }
 
@@ -211,7 +214,7 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
         return view;
     }
 
-    public abstract class BLEObserver<T> extends Subscriber<T> {
+    public abstract class BleObserver<T> extends Subscriber<T> {
 
         @Override
         public void onError(Throwable e) {
@@ -241,10 +244,22 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
 
     public abstract class NetworkObserver<T extends ApiResult> extends Subscriber<T> {
 
+        private boolean renderView = true;
+
+        public NetworkObserver(boolean renderView) {
+            this.renderView = renderView;
+        }
+
+        public NetworkObserver() {
+
+        }
+
         @Override
         public void onStart() {
             super.onStart();
-            view.showLoading();
+            if(renderView) {
+                view.showLoading();
+            }
         }
 
         @Override
@@ -254,7 +269,9 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
                 onBizCodeError(error);
             }
             onReady(t);
-            view.hideLoading();
+            if(renderView) {
+                view.hideLoading();
+            }
         }
 
         public abstract void onReady(T t);
@@ -262,13 +279,17 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
         @Override
         public void onError(Throwable e) {
             Log.d(TAG, e.getMessage());
-            onRemoteInvocationError(e);
-            view.hideLoading();
+            if(renderView) {
+                onRemoteInvocationError(e);
+                view.hideLoading();
+            }
         }
 
         @Override
         public void onCompleted() {
-            view.hideLoading();
+            if(renderView) {
+                view.hideLoading();
+            }
         }
     }
 
