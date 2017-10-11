@@ -244,24 +244,46 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     }
 
     public void imageViewAnimatedChange(Context context, ImageView imageView, int res) {
-        final Animation anim_out = AnimationUtils.loadAnimation(context, R.anim.item_slide_out_right);
-        final Animation anim_in  = AnimationUtils.loadAnimation(context, R.anim.item_slide_in_left);
-        anim_out.setAnimationListener(new Animation.AnimationListener()
-        {
-            @Override public void onAnimationStart(Animation animation) {}
-            @Override public void onAnimationRepeat(Animation animation) {}
-            @Override public void onAnimationEnd(Animation animation)
+        final Animation anim_out_right = AnimationUtils.loadAnimation(context, R.anim.item_slide_out_right);
+        final Animation anim_out_left = AnimationUtils.loadAnimation(context, R.anim.item_slide_out_left);
+        final Animation anim_in_left  = AnimationUtils.loadAnimation(context, R.anim.item_slide_in_left);
+        final Animation anim_in_right  = AnimationUtils.loadAnimation(context, R.anim.item_slide_in_right);
+        if (current == 0) {
+            anim_out_right.setAnimationListener(new Animation.AnimationListener()
             {
-                imageView.setBackgroundResource(res);
-                anim_in.setAnimationListener(new Animation.AnimationListener() {
-                    @Override public void onAnimationStart(Animation animation) {}
-                    @Override public void onAnimationRepeat(Animation animation) {}
-                    @Override public void onAnimationEnd(Animation animation) {}
-                });
-                imageView.startAnimation(anim_in);
-            }
-        });
-        imageView.startAnimation(anim_out);
+                @Override public void onAnimationStart(Animation animation) {}
+                @Override public void onAnimationRepeat(Animation animation) {}
+                @Override public void onAnimationEnd(Animation animation)
+                {
+                    imageView.setBackgroundResource(res);
+                    anim_in_right.setAnimationListener(new Animation.AnimationListener() {
+                        @Override public void onAnimationStart(Animation animation) {}
+                        @Override public void onAnimationRepeat(Animation animation) {}
+                        @Override public void onAnimationEnd(Animation animation) {}
+                    });
+                    imageView.startAnimation(anim_in_right);
+                }
+            });
+            imageView.startAnimation(anim_out_right);
+        } else {
+            anim_out_left.setAnimationListener(new Animation.AnimationListener()
+            {
+                @Override public void onAnimationStart(Animation animation) {}
+                @Override public void onAnimationRepeat(Animation animation) {}
+                @Override public void onAnimationEnd(Animation animation)
+                {
+                    imageView.setBackgroundResource(res);
+                    anim_in_right.setAnimationListener(new Animation.AnimationListener() {
+                        @Override public void onAnimationStart(Animation animation) {}
+                        @Override public void onAnimationRepeat(Animation animation) {}
+                        @Override public void onAnimationEnd(Animation animation) {}
+                    });
+                    imageView.startAnimation(anim_in_left);
+                }
+            });
+            imageView.startAnimation(anim_out_left);
+
+        }
     }
 
 
