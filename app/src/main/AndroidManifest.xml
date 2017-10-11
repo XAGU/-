@@ -240,7 +240,7 @@
         </activity>
 
         <!--通知中心-->
-        <activity android:name=".ui.notice.NoticeActivity"
+        <activity android:name=".ui.notice.NoticeListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
 

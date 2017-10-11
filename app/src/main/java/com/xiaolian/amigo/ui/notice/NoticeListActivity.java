@@ -7,10 +7,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.data.enumeration.Notice;
 import com.xiaolian.amigo.ui.notice.adaptor.NoticeAdaptor;
 import com.xiaolian.amigo.ui.notice.intf.INoticePresenter;
 import com.xiaolian.amigo.ui.notice.intf.INoticeView;
+import com.xiaolian.amigo.ui.widget.RecycleViewDivider;
 import com.xiaolian.amigo.ui.widget.dialog.NoticeAlertDialog;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
@@ -18,7 +18,6 @@ import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -31,7 +30,7 @@ import butterknife.ButterKnife;
  * Created by zcd on 9/22/17.
  */
 
-public class NoticeActivity extends NoticeBaseActivity implements INoticeView {
+public class NoticeListActivity extends NoticeBaseListActivity implements INoticeView {
 
     @Inject
     INoticePresenter<INoticeView> presenter;
@@ -44,15 +43,21 @@ public class NoticeActivity extends NoticeBaseActivity implements INoticeView {
     private List<NoticeAdaptor.NoticeWapper> notices = new ArrayList<>();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_notice);
+    protected void onRefresh() {
+        page = Constant.PAGE_START_NUM;
+        notices.clear();
+        presenter.requestNotices(page);
+    }
 
-        setUnBinder(ButterKnife.bind(this));
-        getActivityComponent().inject(this);
+    @Override
+    protected void onLoadMore() {
+        presenter.requestNotices(page);
+    }
 
-        presenter.onAttach(NoticeActivity.this);
-
+    @Override
+    protected void setRecyclerView(RecyclerView recyclerView) {
+        setMainBackground(R.color.white);
+        setHeaderBackground(R.color.white);
         adaptor = new NoticeAdaptor(this, R.layout.item_notice, notices);
         adaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
@@ -69,15 +74,22 @@ public class NoticeActivity extends NoticeBaseActivity implements INoticeView {
                 return false;
             }
         });
+        recyclerView.addItemDecoration(new RecycleViewDivider(this, RecycleViewDivider.VERTICAL_LIST));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adaptor);
 
-        presenter.requestNotices(Constant.PAGE_START_NUM);
     }
 
     @Override
-    protected void setUp() {
+    protected int setTitle() {
+        return R.string.notice_center;
+    }
 
+    @Override
+    protected void initView() {
+        setUnBinder(ButterKnife.bind(this));
+        getActivityComponent().inject(this);
+        presenter.onAttach(NoticeListActivity.this);
     }
 
     public void showUrgentNotify(String content, Long id) {

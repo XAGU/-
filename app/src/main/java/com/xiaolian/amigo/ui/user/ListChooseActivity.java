@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.widget.TextView;
 
@@ -78,7 +79,7 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
     ListChooseAdaptor adapter;
 
     @BindView(R.id.recyclerView)
-    IRecyclerView recyclerView;
+    RecyclerView recyclerView;
 
     @BindView(R.id.tv_title)
     TextView tv_title;
@@ -101,21 +102,6 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
         presenter.onAttach(ListChooseActivity.this);
 
         adapter = new ListChooseAdaptor(items);
-//        recyclerView.setLoadingListener(new IRecyclerView.LoadingListener() {
-//            @Override
-//            public void onRefresh() {
-//                new Handler().postDelayed(new Runnable() {
-//                    public void run() {
-//                        recyclerView.refreshComplete();
-//                    }
-//                }, 3000);
-//            }
-//
-//            @Override
-//            public void onLoadMore() {
-//
-//            }
-//        });
         recyclerView.addItemDecoration(new RecycleViewDivider(this, RecycleViewDivider.VERTICAL_LIST));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);

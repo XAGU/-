@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.notice.intf;
 
+import com.xiaolian.amigo.ui.base.intf.IBaseListView;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 import com.xiaolian.amigo.ui.notice.adaptor.NoticeAdaptor;
 
@@ -11,7 +12,7 @@ import java.util.List;
  * Created by zcd on 9/22/17.
  */
 
-public interface INoticeView extends IBaseView {
+public interface INoticeView extends IBaseListView {
     void addMore(List<NoticeAdaptor.NoticeWapper> wapper);
 
     void readNotify(Long id);
