@@ -9,6 +9,7 @@ import com.xiaolian.amigo.util.CommonUtil;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
+import java.io.Serializable;
 import java.util.List;
 
 import lombok.Data;
@@ -37,7 +38,7 @@ public class PrepayAdaptor extends CommonAdapter<PrepayAdaptor.OrderWrapper> {
     }
 
     @Data
-    public static class OrderWrapper {
+    public static class OrderWrapper implements Serializable {
         // 设备类型
         Integer type;
         // 设备

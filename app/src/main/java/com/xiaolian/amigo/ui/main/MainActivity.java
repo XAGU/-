@@ -348,18 +348,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 startActivity(clz);
             }
         });
-        availabilityDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                HomeFragment2.Event timeValidEvent = HomeFragment2.Event.TIME_VALID_DIALOG;
-                timeValidEvent.setObject(false);
-                EventBus.getDefault().post(timeValidEvent);
-            }
-        });
         availabilityDialog.show();
-        HomeFragment2.Event timeValidEvent = HomeFragment2.Event.TIME_VALID_DIALOG;
-        timeValidEvent.setObject(true);
-        EventBus.getDefault().post(timeValidEvent);
     }
 
     @Override
@@ -406,16 +395,14 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @Override
     public void showBanners(List<String> banners) {
         hasBanners = true;
-        HomeFragment2.Event bannersEvent = HomeFragment2.Event.BANNER;
-        bannersEvent.setObject(banners);
-        EventBus.getDefault().post(bannersEvent);
+        EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.BANNER,
+                banners));
     }
 
     @Override
     public void showSchoolBiz(List<BriefSchoolBusiness> businesses) {
-        HomeFragment2.Event schoolBizEvent = HomeFragment2.Event.SCHOOL_BIZ;
-        schoolBizEvent.setObject(businesses);
-        EventBus.getDefault().post(schoolBizEvent);
+        EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.SCHOOL_BIZ,
+                businesses));
     }
 
     @Override

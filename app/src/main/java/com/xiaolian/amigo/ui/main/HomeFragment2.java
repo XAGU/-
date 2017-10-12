@@ -33,6 +33,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import lombok.Data;
 
 import static com.xiaolian.amigo.data.enumeration.Device.DISPENSER;
 import static com.xiaolian.amigo.data.enumeration.Device.HEARTER;
@@ -55,8 +56,6 @@ public class HomeFragment2 extends Fragment {
     RecyclerView recyclerView;
 
     HomeAdaptor adaptor;
-    private boolean isShowTimeValidDialog;
-
 
     @Nullable
     @Override
@@ -78,8 +77,7 @@ public class HomeFragment2 extends Fragment {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 if (items.get(position).getType() == 1) {
-                    if (items.get(position).getRes() == R.drawable.shower
-                            && !isShowTimeValidDialog) {
+                    if (items.get(position).getRes() == R.drawable.shower) {
                         EventBus.getDefault().post(MainActivity.Event.GOTO_HEATER);
                     } else if (items.get(position).getRes() == R.drawable.water) {
                         EventBus.getDefault().post(MainActivity.Event.GOTO_DISPENSER);
@@ -140,25 +138,18 @@ public class HomeFragment2 extends Fragment {
         adaptor.notifyDataSetChanged();
     }
 
-    public void onTimeValidDialogEvent(boolean isShowTimeValidDialog) {
-        this.isShowTimeValidDialog = isShowTimeValidDialog;
-    }
-
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(Event event) {
-        switch (event) {
+        switch (event.getType()) {
             case BANNER:
                 onBannerEvent((List<String>) event.getObject());
                 break;
             case SCHOOL_BIZ:
                 onSchoolBizEvent((List<BriefSchoolBusiness>) event.getObject());
                 break;
-            case TIME_VALID_DIALOG:
-                onTimeValidDialogEvent((Boolean) event.getObject());
-                break;
         }
     }
+
 
     private boolean isBannersEqual(List<String> banners1, List<String> banners2) {
         if (banners1.size() != banners2.size()) {
@@ -172,40 +163,28 @@ public class HomeFragment2 extends Fragment {
         return true;
     }
 
-    public enum Event {
-        BANNER(1),
-        SCHOOL_BIZ(2),
-        TIME_VALID_DIALOG(3);
-
-        private int type;
+    @Data
+    public static class Event {
+        private EventType type;
         private Object object;
 
-        Event(int type, Object object) {
+        public Event(EventType type, Object object) {
             this.type = type;
             this.object = object;
         }
 
-        Event(int type) {
-            this.type = type;
-        }
+        public enum EventType {
+            BANNER(1),
+            SCHOOL_BIZ(2)
+            ;
 
-        public int getType() {
-            return type;
-        }
+            EventType(int type) {
+                this.type = type;
+            }
 
-        public void setType(int type) {
-            this.type = type;
-        }
-
-        public Object getObject() {
-            return object;
-        }
-
-        public void setObject(Object object) {
-            this.object = object;
+            private int type;
         }
     }
-
 
     @Override
     public void onStart() {

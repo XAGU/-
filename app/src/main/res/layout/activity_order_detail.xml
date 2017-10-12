@@ -259,15 +259,6 @@
                     android:layout_centerVertical="true" />
             </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="21dp"
-                android:layout_marginBottom="21dp"
-                android:text="@string/prepay_order_tip"
-                android:textColor="#999"
-                android:textSize="12sp" />
 
         </LinearLayout>
     </ScrollView>

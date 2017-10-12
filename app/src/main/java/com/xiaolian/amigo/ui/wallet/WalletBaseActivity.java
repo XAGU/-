@@ -28,11 +28,6 @@ public abstract class WalletBaseActivity extends BaseToolBarActivity {
 
     }
 
-    @Override
-    protected void setUp() {
-
-    }
-
     public WalletActivityComponent getActivityComponent() {
         return mActivityComponent;
     }

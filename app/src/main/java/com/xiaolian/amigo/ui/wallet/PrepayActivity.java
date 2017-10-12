@@ -1,7 +1,9 @@
 package com.xiaolian.amigo.ui.wallet;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.order.OrderBaseListActivity;
@@ -13,6 +15,7 @@ import com.xiaolian.amigo.ui.wallet.intf.IPrepayView;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.ScreenUtils;
+import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +25,7 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 
 /**
+ * 预付金额
  * <p>
  * Created by zcd on 10/10/17.
  */
@@ -49,6 +53,18 @@ public class PrepayActivity extends WalletBaseListActivity implements IPrepayVie
     @Override
     protected void setRecyclerView(RecyclerView recyclerView) {
         adaptor = new PrepayAdaptor(this, R.layout.item_wallet_prepay, orders);
+        adaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                startActivity(new Intent(getApplicationContext(), PrepayOrderActivity.class)
+                                .putExtra(Constant.EXTRA_KEY, orders.get(position)));
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adaptor);
         recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 14)));

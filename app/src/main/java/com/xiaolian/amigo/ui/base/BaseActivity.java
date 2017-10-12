@@ -276,38 +276,6 @@ public abstract class BaseActivity extends SwipeBackActivity
         return false;
     }
 
-    private void showSnackBar(String message) {
-        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),
-                message, Snackbar.LENGTH_SHORT);
-        View sbView = snackbar.getView();
-        TextView textView = (TextView) sbView
-                .findViewById(android.support.design.R.id.snackbar_text);
-        textView.setTextColor(ContextCompat.getColor(this, R.color.white));
-        snackbar.show();
-    }
-
-    private void showErrorSnackBar(String message) {
-        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),
-                message, Snackbar.LENGTH_SHORT);
-        View sbView = snackbar.getView();
-        sbView.setBackgroundResource(R.color.colorFullRed);
-        TextView textView = (TextView) sbView
-                .findViewById(android.support.design.R.id.snackbar_text);
-        textView.setTextColor(ContextCompat.getColor(this, R.color.white));
-        snackbar.show();
-    }
-
-    private void showSuccessSnackBar(String message) {
-        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),
-                message, Snackbar.LENGTH_SHORT);
-        View sbView = snackbar.getView();
-        sbView.setBackgroundResource(R.color.device_dispenser);
-        TextView textView = (TextView) sbView
-                .findViewById(android.support.design.R.id.snackbar_text);
-        textView.setTextColor(ContextCompat.getColor(this, R.color.white));
-        snackbar.show();
-    }
-
     private void showSuccessToast(String message) {
         if (toast == null) {
             toast = new Toast(getApplicationContext());
@@ -348,12 +316,8 @@ public abstract class BaseActivity extends SwipeBackActivity
     @Override
     public void onError(String message) {
         if (message != null) {
-//            showSnackBar(message);
-//            showErrorSnackBar(message);
             showErrorToast(message);
         } else {
-//            showSnackBar(getString(R.string.some_error));
-//            showErrorSnackBar(getString(R.string.some_error));
             showErrorToast(getString(R.string.some_error));
         }
     }
@@ -371,10 +335,8 @@ public abstract class BaseActivity extends SwipeBackActivity
     @Override
     public void onSuccess(String message) {
         if (message != null) {
-//            showSuccessSnackBar(message);
             showSuccessToast(message);
         } else {
-//            showSuccessSnackBar(getString(R.string.some_error));
             showSuccessToast(getString(R.string.some_error));
         }
     }
