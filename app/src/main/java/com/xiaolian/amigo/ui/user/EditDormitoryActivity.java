@@ -14,6 +14,8 @@ import com.xiaolian.amigo.ui.user.intf.IEditDormitoryPresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditDormitoryView;
 import com.xiaolian.amigo.util.Constant;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -116,7 +118,6 @@ public class EditDormitoryActivity extends UserBaseListActivity implements IEdit
         getActivityComponent().inject(this);
         presenter.onAttach(EditDormitoryActivity.this);
         adaptor.setPresenter(presenter);
-//        presenter.queryDormitoryList(Constant.PAGE_START_NUM, Constant.PAGE_SIZE);
     }
 
     @Override

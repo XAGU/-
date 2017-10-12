@@ -44,7 +44,6 @@ public class MvpApp extends Application {
         return mApplicationComponent;
     }
 
-
     public void setComponent(ApplicationComponent applicationComponent) {
         mApplicationComponent = applicationComponent;
     }

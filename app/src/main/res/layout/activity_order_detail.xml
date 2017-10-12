@@ -57,6 +57,7 @@
                     <TextView
                         android:id="@+id/tv_time"
                         style="@style/ContentText_main"
+                        android:textColor="#666"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -84,6 +85,7 @@
                     <TextView
                         android:id="@+id/tv_device_location"
                         style="@style/ContentText_main"
+                        android:textColor="#666"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -111,6 +113,7 @@
                     <TextView
                         android:id="@+id/tv_order_no"
                         style="@style/ContentText_main"
+                        android:textColor="#666"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -138,6 +141,7 @@
                     <TextView
                         android:id="@+id/tv_pay_method"
                         style="@style/ContentText_main"
+                        android:textColor="#666"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -168,6 +172,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:text="￥"
+                        android:visibility="gone"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:layout_toLeftOf="@id/tv_change_amount"/>
@@ -177,6 +182,7 @@
                         style="@style/ContentText_main"
                         android:textSize="16sp"
                         android:textStyle="bold"
+                        android:textColor="#666"
                         android:layout_width="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_height="wrap_content"
@@ -191,23 +197,23 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="58dp">
+                    android:layout_height="117dp">
 
                     <TextView
                         style="@style/ContentText_main"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="58dp"
+                        android:gravity="center"
                         android:layout_alignParentLeft="true"
-                        android:layout_centerVertical="true"
                         android:text="实际消费" />
 
                     <TextView
                         android:id="@+id/tv_amount"
                         style="@style/ContentText_main"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="58dp"
                         android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
+                        android:gravity="center"
                         android:textColor="@color/colorFullRed"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -218,25 +224,29 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:text="￥"
+                        android:visibility="gone"
                         android:textColor="@color/colorFullRed"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:layout_toLeftOf="@id/tv_amount"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dip"
+                        android:layout_centerVertical="true"
+                        android:background="#eee" />
+
+                    <ImageView
+                        android:id="@+id/iv_order_free"
+                        android:layout_toLeftOf="@id/tv_amount"
+                        android:src="@drawable/ic_order_free"
+                        android:layout_marginRight="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
                 </RelativeLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dip"
-                    android:layout_centerVertical="true"
-                    android:background="#eee" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="58dp"
-                    android:layout_centerVertical="true" />
             </LinearLayout>
-
-
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

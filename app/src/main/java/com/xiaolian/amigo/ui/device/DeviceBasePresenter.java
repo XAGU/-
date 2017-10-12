@@ -337,9 +337,11 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             if (null == getStep()) {
                 waitConnectCmdResult();
                 onWrite(connectCmd);
+                reconnect = false; // 重置重连标志
             } else if (TradeStep.PAY == getStep()) { // 支付页面重连
                 // 重新连接成功时不需要再次握手
                 getMvpView().post(() -> getMvpView().onReconnectSuccess());
+                reconnect = false; // 重置重连标志
             } else { // 结算页面重连
                 waitOrderCheckResult();
                 if (null == orderStatus) {

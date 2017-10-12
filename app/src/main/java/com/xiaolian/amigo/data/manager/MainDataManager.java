@@ -2,11 +2,14 @@ package com.xiaolian.amigo.data.manager;
 
 import com.xiaolian.amigo.data.manager.intf.IMainDataManager;
 import com.xiaolian.amigo.data.network.IMainApi;
+import com.xiaolian.amigo.data.network.IOrderApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.dto.request.OrderReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.QueryDeviceListReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.QueryTimeValidReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.ReadNotifyReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.OrderRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryDeviceListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QuerySchoolBizListRespDTO;
@@ -31,11 +34,13 @@ public class MainDataManager implements IMainDataManager {
 
     private ISharedPreferencesHelp sharedPreferencesHelp;
     private IMainApi mainApi;
+    private IOrderApi orderApi;
 
     @Inject
     public MainDataManager(Retrofit retrofit, ISharedPreferencesHelp sharedPreferencesHelp) {
         this.sharedPreferencesHelp = sharedPreferencesHelp;
         this.mainApi = retrofit.create(IMainApi.class);
+        this.orderApi = retrofit.create(IOrderApi.class);
     }
 
     @Override
@@ -81,6 +86,11 @@ public class MainDataManager implements IMainDataManager {
     @Override
     public int getBonusAmount() {
         return sharedPreferencesHelp.getBonusAmount();
+    }
+
+    @Override
+    public Observable<ApiResult<OrderRespDTO>> queryOrders(@Body OrderReqDTO reqDTO) {
+        return orderApi.queryOrders(reqDTO);
     }
 
     @Override

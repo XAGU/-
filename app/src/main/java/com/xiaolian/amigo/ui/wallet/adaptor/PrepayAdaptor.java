@@ -29,7 +29,7 @@ public class PrepayAdaptor extends CommonAdapter<PrepayAdaptor.OrderWrapper> {
     protected void convert(ViewHolder holder, OrderWrapper orderWrapper, int position) {
         holder.setText(R.id.tv_prepay_device, orderWrapper.getDevice());
         holder.setText(R.id.tv_prepay_time, CommonUtil.stampToDate(orderWrapper.getTime()));
-        holder.setText(R.id.tv_prepay_amount, "预付￥" + String.valueOf(orderWrapper.getAmount()));
+        holder.setText(R.id.tv_prepay_amount, orderWrapper.getPrepay());
         if (orderWrapper.getStatus() == 1) {
             holder.setText(R.id.tv_prepay_title, "待找零");
         } else {
@@ -46,7 +46,7 @@ public class PrepayAdaptor extends CommonAdapter<PrepayAdaptor.OrderWrapper> {
         // 时间
         Long time;
         // 预付金额
-        Double amount;
+        String prepay;
         // 状态
         Integer status;
         // 原始订单内容，供查询订单详情时使用
@@ -61,7 +61,7 @@ public class PrepayAdaptor extends CommonAdapter<PrepayAdaptor.OrderWrapper> {
                 this.device = "未知设备";
             }
             this.time = order.getCreateTime();
-            this.amount = order.getPrepay();
+            this.prepay = order.getPrepay();
             this.status = order.getStatus();
         }
     }

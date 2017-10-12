@@ -2,6 +2,8 @@ package com.xiaolian.amigo.data.network;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.QueryUserBonusReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.request.RedeemBonusReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryUserBonusListRespDTO;
 
 import retrofit2.http.Body;
@@ -17,4 +19,8 @@ public interface IBonusApi {
     // 获取红包列表
     @POST("/bonus/personal/list")
     Observable<ApiResult<QueryUserBonusListRespDTO>> queryOrders(@Body QueryUserBonusReqDTO reqDTO);
+
+    // 兑换红包
+    @POST("/bonus/redeem")
+    Observable<ApiResult<BooleanRespDTO>> redeem(@Body RedeemBonusReqDTO reqDTO);
 }

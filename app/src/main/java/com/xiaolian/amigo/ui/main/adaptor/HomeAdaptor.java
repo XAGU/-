@@ -22,6 +22,7 @@ public class HomeAdaptor extends MultiItemTypeAdapter<HomeAdaptor.ItemWrapper> {
     @Data
     public static class ItemWrapper {
         public ItemWrapper(int type, List<String> banners, String deviceName, String desc, String descColor, int res) {
+
             this.type = type;
             this.banners = banners;
             this.deviceName = deviceName;
@@ -36,5 +37,6 @@ public class HomeAdaptor extends MultiItemTypeAdapter<HomeAdaptor.ItemWrapper> {
         String desc;
         String descColor;
         int res;
+        int prepaySize = 0;
     }
 }

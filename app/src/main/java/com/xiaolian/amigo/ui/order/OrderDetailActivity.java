@@ -2,6 +2,8 @@ package com.xiaolian.amigo.ui.order;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
@@ -34,6 +36,8 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
     TextView tv_change_amount;
     @BindView(R.id.tv_amount)
     TextView tv_amount;
+    @BindView(R.id.iv_order_free)
+    ImageView iv_order_free;
 
     Order order;
 
@@ -56,8 +60,11 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
         tv_time.setText(CommonUtil.stampToDate(order.getCreateTime()));
         tv_device_location.setText(order.getLocation());
         tv_order_no.setText(order.getOrderNo());
-        tv_pay_method.setText(Payment.getPayment(order.getPaymentType()).getDesc());
-        tv_change_amount.setText(String.valueOf(order.getPrepay() - order.getConsume()));
+        tv_pay_method.setText(order.getPaymentType() == 1 ?
+                order.getPrepay() : "红包支付");
+        iv_order_free.setVisibility(order.getPaymentType() == 1 ?
+                View.GONE : View.VISIBLE);
+        tv_change_amount.setText(String.valueOf(order.getOdd()));
         tv_amount.setText(String.valueOf(order.getConsume()));
     }
 

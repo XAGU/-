@@ -28,7 +28,6 @@ import java.util.List;
 /**
  * 单选列表Dialog
  */
-
 public class ActionSheetDialog {
     private Context context;
     private Dialog dialog;
@@ -363,19 +362,16 @@ public class ActionSheetDialog {
 
         @Override
         public int getCount() {
-            // TODO Auto-generated method stub
             return mListModels.size();
         }
 
         @Override
         public Object getItem(int position) {
-            // TODO Auto-generated method stub
             return mListModels.get(position);
         }
 
         @Override
         public long getItemId(int position) {
-            // TODO Auto-generated method stub
             return 0;
         }
 

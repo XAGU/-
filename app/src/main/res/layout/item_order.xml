@@ -46,6 +46,6 @@
             android:layout_height="wrap_content"
             style="@style/ContentText_title"
             android:layout_toLeftOf="@id/tv_amount"
-            android:text="-￥"/>
+            android:text="-"/>
     </RelativeLayout>
 </LinearLayout>
