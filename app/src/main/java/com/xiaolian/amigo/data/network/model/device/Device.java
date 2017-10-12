@@ -29,7 +29,7 @@ public class Device {
     private Long schoolId;
     // 设备所在学校名称
     private String schoolName;
-    // 设备类型，1 - 热水器， 2 - 饮水机
+    // 设备类型，1 - 热水澡， 2 - 饮水机
     private Integer type;
     // 设备用途
     private Integer usefor;

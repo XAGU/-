@@ -130,7 +130,7 @@ public class HomeFragment2 extends Fragment {
         }
         for (BriefSchoolBusiness business : businesses) {
             if (business.getBusinessId() == 2) {
-                items.add(0, new HomeAdaptor.ItemWrapper(1, null, "热水器", "TAKE A SHOWER", "#ffb6c5", R.drawable.shower));
+                items.add(0, new HomeAdaptor.ItemWrapper(1, null, "热水澡", "TAKE A SHOWER", "#ffb6c5", R.drawable.shower));
             } else if (business.getBusinessId() == 1) {
                 items.add(0, new HomeAdaptor.ItemWrapper(1, null, "饮水机", "DRINK A WATER", "#aaebe4", R.drawable.water));
             }

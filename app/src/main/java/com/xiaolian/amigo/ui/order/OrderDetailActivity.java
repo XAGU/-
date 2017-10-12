@@ -24,16 +24,14 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
 
     @BindView(R.id.tv_time)
     TextView tv_time;
-    @BindView(R.id.tv_device_no)
-    TextView tv_device_no;
     @BindView(R.id.tv_device_location)
     TextView tv_device_location;
     @BindView(R.id.tv_order_no)
     TextView tv_order_no;
     @BindView(R.id.tv_pay_method)
     TextView tv_pay_method;
-    @BindView(R.id.tv_water_usage)
-    TextView tv_water_usage;
+    @BindView(R.id.tv_change_amount)
+    TextView tv_change_amount;
     @BindView(R.id.tv_amount)
     TextView tv_amount;
 
@@ -56,11 +54,10 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
     @Override
     public void render() {
         tv_time.setText(CommonUtil.stampToDate(order.getCreateTime()));
-        tv_device_no.setText(order.getDeviceNo());
         tv_device_location.setText(order.getLocation());
         tv_order_no.setText(order.getOrderNo());
         tv_pay_method.setText(Payment.getPayment(order.getPaymentType()).getDesc());
-        tv_water_usage.setText(String.valueOf(order.getWaterUsage()));
+        tv_change_amount.setText(String.valueOf(order.getPrepay() - order.getConsume()));
         tv_amount.setText(String.valueOf(order.getConsume()));
     }
 

@@ -25,7 +25,7 @@ public interface IMainApi {
     @POST("/user/extraInfo/one")
     Observable<ApiResult<PersonalExtraInfoDTO>> getExtraInfo();
 
-    // 查询热水器热水供应时间段
+    // 查询热水澡热水供应时间段
     @POST("/time/range/water")
     Observable<ApiResult<QueryTimeValidRespDTO>> queryWaterTimeValid(@Body QueryTimeValidReqDTO reqDTO);
 

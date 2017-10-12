@@ -37,7 +37,7 @@ public class RepairDeviceTypeActivity extends RepairBaseActivity {
 
     }
 
-    // 选择热水器
+    // 选择热水澡
     @OnClick(R.id.rl_heator)
     void selectHeatorLocation() {
         Map<String, Integer> extraMap = new HashMap<String, Integer>() {

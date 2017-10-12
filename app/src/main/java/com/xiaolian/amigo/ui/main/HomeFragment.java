@@ -29,13 +29,13 @@ public class HomeFragment extends Fragment {
     private static final String TAG = HomeFragment.class.getSimpleName();
 
     /**
-     * 热水器
+     * 热水澡
      */
     @BindView(R.id.rl_geyser)
     RelativeLayout rl_geyser;
 
     /**
-     * 点击进入热水器界面
+     * 点击进入热水澡界面
      */
     @OnClick(R.id.rl_geyser)
     public void gotoGeyser() {

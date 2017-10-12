@@ -24,7 +24,7 @@ public class Order implements Serializable {
     private Long deviceId;
     // 设备编号
     private String deviceNo;
-    // 设备类型，1 - 热水器， 2 - 饮水机，3 - 洗衣机，4 - 吹风机，
+    // 设备类型，1 - 热水澡， 2 - 饮水机，3 - 洗衣机，4 - 吹风机，
     private Integer deviceType;
     // 设备位置
     private String location;

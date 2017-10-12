@@ -72,7 +72,7 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
         QueryResidenceListReqDTO dto = new QueryResidenceListReqDTO();
         dto.setPage(page);
         dto.setSize(size);
-        // buildingType 1 - 宿舍, 热水器时不要携带该参数表示选取所有楼栋
+        // buildingType 1 - 宿舍, 热水澡时不要携带该参数表示选取所有楼栋
         if (buildingType != Device.DISPENSER.getType()) {
             dto.setBuildingType(buildingType);
         }

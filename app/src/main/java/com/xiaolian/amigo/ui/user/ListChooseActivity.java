@@ -54,7 +54,7 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
     public static final int ACTION_LIST_BUILDING = 4;
     public static final int ACTION_LIST_SEX = 5;
     public static final int ACTION_LIST_SCHOOL_RESULT = 6;
-    // 选择设备，热水器 or 饮水机
+    // 选择设备，热水澡 or 饮水机
     public static final int ACTION_LIST_DEVICE = 7;
 
 

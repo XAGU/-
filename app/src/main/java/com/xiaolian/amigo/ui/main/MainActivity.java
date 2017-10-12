@@ -427,7 +427,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     }
 
     /**
-     * 点击进入热水器界面
+     * 点击进入热水澡界面
      */
     public void gotoHeater() {
         setBleCallback(() -> checkTimeValid(HEARTER, HeaterActivity.class));

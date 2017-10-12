@@ -10,6 +10,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:overScrollMode="never"
         android:scrollbars="none">
 
         <LinearLayout
@@ -31,7 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="21dp"
-                android:text="消费记录" />
+                android:text="消费账单" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -55,33 +56,6 @@
 
                     <TextView
                         android:id="@+id/tv_time"
-                        style="@style/ContentText_main"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"/>
-                </RelativeLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dip"
-                    android:layout_centerVertical="true"
-                    android:background="#eee" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="58dp">
-
-                    <TextView
-                        style="@style/ContentText_main"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_centerVertical="true"
-                        android:text="设备编号" />
-
-                    <TextView
-                        android:id="@+id/tv_device_no"
                         style="@style/ContentText_main"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -186,23 +160,26 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
-                        android:text="实际用水量" />
+                        android:text="找零金额" />
 
                     <TextView
-                        android:id="@+id/tv_water_usage_unit"
                         style="@style/ContentText_main"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:text="吨"/>
+                        android:text="￥"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:layout_toLeftOf="@id/tv_change_amount"/>
 
                     <TextView
-                        android:id="@+id/tv_water_usage"
+                        android:id="@+id/tv_change_amount"
                         style="@style/ContentText_main"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
                         android:layout_width="wrap_content"
+                        android:layout_alignParentRight="true"
                         android:layout_height="wrap_content"
-                        android:layout_toLeftOf="@id/tv_water_usage_unit"
                         android:layout_centerVertical="true"/>
                 </RelativeLayout>
 
