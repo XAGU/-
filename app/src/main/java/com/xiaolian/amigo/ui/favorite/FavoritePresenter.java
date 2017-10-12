@@ -53,7 +53,7 @@ public class FavoritePresenter<V extends IFavoriteView> extends BasePresenter<V>
         reqDTO.setPage(page);
         reqDTO.setSize(Constant.PAGE_SIZE);
         // 查看收藏设备列表
-        addObserver(manager.queryFavorites(reqDTO), new NetworkObserver<ApiResult<FavoriteRespDTO>>() {
+        addObserver(manager.queryFavorites(reqDTO), new NetworkObserver<ApiResult<FavoriteRespDTO>>(false) {
             @Override
             public void onReady(ApiResult<FavoriteRespDTO> result) {
                 getMvpView().setRefreshComplete();

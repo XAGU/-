@@ -40,7 +40,7 @@ public class NoticePresenter<V extends INoticeView> extends BasePresenter<V>
         QueryNotifyListReqDTO reqDTO = new QueryNotifyListReqDTO();
         reqDTO.setPage(page);
         reqDTO.setSize(Constant.PAGE_SIZE);
-        addObserver(manager.queryNotifyList(reqDTO), new NetworkObserver<ApiResult<QueryNotifyListRespDTO>>() {
+        addObserver(manager.queryNotifyList(reqDTO), new NetworkObserver<ApiResult<QueryNotifyListRespDTO>>(false) {
 
             @Override
             public void onReady(ApiResult<QueryNotifyListRespDTO> result) {
@@ -76,7 +76,7 @@ public class NoticePresenter<V extends INoticeView> extends BasePresenter<V>
     public void readUrgentNotify(Long id) {
         ReadNotifyReqDTO reqDTO = new ReadNotifyReqDTO();
         reqDTO.setId(id);
-        addObserver(manager.readUrgentNotify(reqDTO), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
+        addObserver(manager.readUrgentNotify(reqDTO), new NetworkObserver<ApiResult<BooleanRespDTO>>(false) {
 
             @Override
             public void onReady(ApiResult<BooleanRespDTO> result) {

@@ -53,6 +53,7 @@
             android:layout_height="wrap_content">
             <TextView
                 android:paddingTop="16dp"
+                android:paddingBottom="18dp"
                 android:id="@+id/tv_money_pay"
                 android:drawableBottom="@drawable/line_red"
                 android:drawablePadding="5dp"
@@ -66,6 +67,7 @@
                 android:layout_height="wrap_content"/>
             <TextView
                 android:paddingTop="16dp"
+                android:paddingBottom="18dp"
                 android:id="@+id/tv_bonus_pay"
                 android:drawablePadding="5dp"
                 android:text="红包支付"
@@ -80,7 +82,6 @@
         </LinearLayout>
 
         <View
-            android:layout_marginTop="18dp"
             android:layout_marginLeft="@dimen/mainMarginLeftRight"
             android:layout_marginRight="@dimen/mainMarginLeftRight"
             android:background="#eee"
@@ -256,7 +257,7 @@
         <TextView
             android:id="@+id/tv_shower_payed"
             android:layout_gravity="center_horizontal"
-            tool:text="⃣已预付10元"
+            tool:text="已预付10元"
             android:textColor="#ff5555"
             android:textSize="17sp"
             android:textStyle="bold"

@@ -50,7 +50,7 @@ public class RepairPresenter<V extends IRepairView> extends BasePresenter<V>
         RepairReqDTO reqDTO = new RepairReqDTO();
         reqDTO.setPage(page);
         reqDTO.setSize(Constant.PAGE_SIZE);
-        addObserver(manager.queryRepairs(reqDTO), new NetworkObserver<ApiResult<RepairRespDTO>>() {
+        addObserver(manager.queryRepairs(reqDTO), new NetworkObserver<ApiResult<RepairRespDTO>>(false) {
 
             @Override
             public void onReady(ApiResult<RepairRespDTO> result) {

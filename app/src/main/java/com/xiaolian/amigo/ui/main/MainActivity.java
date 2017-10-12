@@ -3,7 +3,6 @@ package com.xiaolian.amigo.ui.main;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.RectF;
 import android.os.Bundle;
