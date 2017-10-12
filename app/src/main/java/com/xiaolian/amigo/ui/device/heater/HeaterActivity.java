@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Payment;
+import com.xiaolian.amigo.data.enumeration.TradeStep;
 import com.xiaolian.amigo.data.network.model.order.Order;
 import com.xiaolian.amigo.ui.user.ChooseDormitoryActivity;
 import com.xiaolian.amigo.ui.widget.BezierWaveView;
@@ -166,9 +167,6 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
      */
     private boolean isMoneyPay = true;
 
-    // 当前步骤，默认为第一步，1 - 确认支付页面， 2 - 结束用水页面
-    private int step = 1;
-
     @Inject
     IHeaterPresenter<IHeaterView> presenter;
 
@@ -277,14 +275,14 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
     public void onConnectSuccess() {
         showConnected();
         // 标记步骤为确认支付页面
-        step = 1;
+        presenter.setStep(TradeStep.PAY);
     }
 
     @Override
     public void onOpen() {
         startShower();
         // 标记步骤为结束用水页面
-        step = 2;
+        presenter.setStep(TradeStep.SETTLE);
     }
 
     @Override
@@ -301,7 +299,7 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
     @Override
     public void onReconnectSuccess() {
         hideBottomLayout();
-        if (step == 1) {
+        if (presenter.getStep() == TradeStep.PAY) {
             // 显示确认支付页面
             ll_content_normal.setVisibility(View.VISIBLE);
         } else {
