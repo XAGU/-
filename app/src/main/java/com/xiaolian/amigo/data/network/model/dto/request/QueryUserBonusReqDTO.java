@@ -12,4 +12,5 @@ public class QueryUserBonusReqDTO {
     private Integer size;
     private Integer useStatus;
     private Integer validStatus;
+    private Integer deviceType;
 }

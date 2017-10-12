@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.ui.bonus.adaptor.BonusAdaptor;
 import com.xiaolian.amigo.ui.bonus.intf.IBonusPresenter;
 import com.xiaolian.amigo.ui.bonus.intf.IBonusView;
@@ -28,6 +29,7 @@ import butterknife.ButterKnife;
 public class BonusActivity extends BonusBaseListActivity implements IBonusView {
     public static final String INTENT_KEY_BONUS_ACTION = "intent_key_bonus_action";
     public static final String INTENT_KEY_BONUS_RESULT = "intent_key_bonus_result";
+    public static final String INTENT_KEY_BONUS_DEVICE_TYPE = "intent_key_bonus_device_type";
     public static final int ACTION_NORMAL = -1;
     public static final int ACTION_CHOOSE = 1;
     @Inject
@@ -42,17 +44,18 @@ public class BonusActivity extends BonusBaseListActivity implements IBonusView {
     private int subTitleRes = R.string.exchange_bonus;
     // 从我的红包进入为普通模式 从热水澡页面的选择红包进入为选择模式
     private int action = ACTION_NORMAL;
+    private Integer deviceType = null;
 
     @Override
     protected void onRefresh() {
         page = Constant.PAGE_START_NUM;
         bonuses.clear();
-        presenter.requestBonusList(page);
+        presenter.requestBonusList(page, deviceType ==  -1 ? null : deviceType);
     }
 
     @Override
     public void onLoadMore() {
-        presenter.requestBonusList(page);
+        presenter.requestBonusList(page, deviceType ==  -1 ? null : deviceType);
     }
 
     @Override
@@ -123,22 +126,6 @@ public class BonusActivity extends BonusBaseListActivity implements IBonusView {
         return R.layout.footer_bonus;
     }
 
-    //    @Override
-//    protected int getLayout() {
-//        return R.layout.activity_bonus;
-//    }
-
-//    @Override
-//    public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
-//        page = 1;
-//        setRefreshing(true);
-//    }
-
-//    @Override
-//    public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
-//        return false;
-//    }
-
     @Override
     public void addMore(List<BonusAdaptor.BonusWrapper> bonuses) {
         this.bonuses.addAll(bonuses);
@@ -150,6 +137,7 @@ public class BonusActivity extends BonusBaseListActivity implements IBonusView {
         super.setUp();
         if (getIntent() != null) {
             action = getIntent().getIntExtra(INTENT_KEY_BONUS_ACTION, ACTION_NORMAL);
+            deviceType = getIntent().getIntExtra(INTENT_KEY_BONUS_DEVICE_TYPE, -1);
             switch (action) {
                 case ACTION_CHOOSE:
                     titleRes = R.string.choose_bonus;
