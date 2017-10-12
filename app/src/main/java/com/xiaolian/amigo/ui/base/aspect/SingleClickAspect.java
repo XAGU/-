@@ -14,8 +14,9 @@ import java.util.Calendar;
 
 /**
  * 防止View被连续点击,间隔时间600ms
+ * <p>
+ * Created by zcd on 10/11/17.
  */
-
 @Aspect
 public class SingleClickAspect {
     static int TIME_TAG = R.id.click_time;

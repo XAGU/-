@@ -55,6 +55,7 @@ public class HomeFragment2 extends Fragment {
     RecyclerView recyclerView;
 
     HomeAdaptor adaptor;
+    private boolean isShowTimeValidDialog;
 
 
     @Nullable
@@ -77,7 +78,8 @@ public class HomeFragment2 extends Fragment {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 if (items.get(position).getType() == 1) {
-                    if (items.get(position).getRes() == R.drawable.shower) {
+                    if (items.get(position).getRes() == R.drawable.shower
+                            && !isShowTimeValidDialog) {
                         EventBus.getDefault().post(MainActivity.Event.GOTO_HEATER);
                     } else if (items.get(position).getRes() == R.drawable.water) {
                         EventBus.getDefault().post(MainActivity.Event.GOTO_DISPENSER);
@@ -112,7 +114,6 @@ public class HomeFragment2 extends Fragment {
         super.onActivityCreated(savedInstanceState);
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onBannerEvent(List<String> banners) {
         if (items.get(items.size() - 1).getType() == 1) {
             items.add(new HomeAdaptor.ItemWrapper(2, banners, null, null, null, 0));
@@ -125,7 +126,6 @@ public class HomeFragment2 extends Fragment {
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onSchoolBizEvent(List<BriefSchoolBusiness> businesses) {
         if (businesses.isEmpty()) {
             return;
@@ -140,6 +140,26 @@ public class HomeFragment2 extends Fragment {
         adaptor.notifyDataSetChanged();
     }
 
+    public void onTimeValidDialogEvent(boolean isShowTimeValidDialog) {
+        this.isShowTimeValidDialog = isShowTimeValidDialog;
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(Event event) {
+        switch (event) {
+            case BANNER:
+                onBannerEvent((List<String>) event.getObject());
+                break;
+            case SCHOOL_BIZ:
+                onSchoolBizEvent((List<BriefSchoolBusiness>) event.getObject());
+                break;
+            case TIME_VALID_DIALOG:
+                onTimeValidDialogEvent((Boolean) event.getObject());
+                break;
+        }
+    }
+
     private boolean isBannersEqual(List<String> banners1, List<String> banners2) {
         if (banners1.size() != banners2.size()) {
             return false;
@@ -151,6 +171,41 @@ public class HomeFragment2 extends Fragment {
         }
         return true;
     }
+
+    public enum Event {
+        BANNER(1),
+        SCHOOL_BIZ(2),
+        TIME_VALID_DIALOG(3);
+
+        private int type;
+        private Object object;
+
+        Event(int type, Object object) {
+            this.type = type;
+            this.object = object;
+        }
+
+        Event(int type) {
+            this.type = type;
+        }
+
+        public int getType() {
+            return type;
+        }
+
+        public void setType(int type) {
+            this.type = type;
+        }
+
+        public Object getObject() {
+            return object;
+        }
+
+        public void setObject(Object object) {
+            this.object = object;
+        }
+    }
+
 
     @Override
     public void onStart() {
