@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Payment;
 import com.xiaolian.amigo.data.network.model.dto.response.OrderDetailRespDTO;
@@ -50,7 +51,6 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_order);
-
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
 

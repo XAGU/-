@@ -13,11 +13,16 @@ import com.xiaolian.amigo.ui.user.intf.IEditProfilePresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditProfileView;
 import com.xiaolian.amigo.util.Constant;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
+import lombok.Data;
 
 /**
  * 编辑个人信息Activity
@@ -70,6 +75,8 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
     CircleImageView iv_avatar;
 
     private String avatarUrl;
+
+    private boolean isNeedRefresh;
 
     @Override
     protected void setUp() {
@@ -171,7 +178,16 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
+            isNeedRefresh = true;
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (isNeedRefresh) {
             presenter.getPersonProfile();
+            isNeedRefresh = false;
         }
     }
 
@@ -223,6 +239,44 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
             startActivityForResult(intent, REQUEST_CODE_CHECK_PASSWORD, new Bundle());
         } else {
             startActivityForResult(intent, REQUEST_CODE_CHECK_PASSWORD);
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(Event event) {
+        switch (event.getType()) {
+            case REFRESH:
+                isNeedRefresh = true;
+                break;
+        }
+    }
+
+    @Data
+    public static class Event {
+        EventType type;
+        Event(EventType type) {
+            this.type = type;
+        }
+
+        public enum EventType {
+            REFRESH(1);
+            int type;
+
+            EventType(int type) {
+                this.type = type;
+            }
         }
     }
 

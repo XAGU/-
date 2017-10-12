@@ -23,11 +23,13 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
+import com.xiaolian.amigo.data.network.model.order.Order;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
 import com.xiaolian.amigo.ui.device.dispenser.DispenserActivity;
 import com.xiaolian.amigo.ui.device.heater.HeaterActivity;
 import com.xiaolian.amigo.ui.login.LoginActivity;
 import com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity;
+import com.xiaolian.amigo.ui.main.adaptor.HomeAdaptor;
 import com.xiaolian.amigo.ui.main.intf.IMainPresenter;
 import com.xiaolian.amigo.ui.main.intf.IMainView;
 import com.xiaolian.amigo.ui.notice.NoticeListActivity;
@@ -102,6 +104,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     int current = 0;
     private boolean hasBanners;
+    List<BriefSchoolBusiness> businesses;
     private AvailabilityDialog availabilityDialog;
 
     @Override
@@ -180,14 +183,16 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @Override
     protected void onResume() {
         super.onResume();
-        presenter.getNoticeAmount();
         if (!presenter.isLogin()) {
             tv_nickName.setText("登录／注册");
             tv_schoolName.setText("登录以后才能使用哦");
             iv_avatar.setImageResource(R.drawable.ic_picture_error);
         } else {
+            // 设置昵称
             tv_nickName.setText(presenter.getUserInfo().getNickName());
+            // 设置学校
             tv_schoolName.setText(presenter.getUserInfo().getSchoolName());
+            // 设置头像
             if (presenter.getUserInfo().getPictureUrl() != null) {
                 Glide.with(this).load(presenter.getUserInfo().getPictureUrl())
                         .asBitmap()
@@ -197,6 +202,10 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             } else {
                 iv_avatar.setImageResource(R.drawable.ic_picture_error);
             }
+            // 请求通知
+            presenter.getNoticeAmount();
+            // 请求待找零订单
+            presenter.getPrepayOrder();
         }
     }
 
@@ -400,8 +409,36 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public void showSchoolBiz(List<BriefSchoolBusiness> businesses) {
+        this.businesses = businesses;
         EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.SCHOOL_BIZ,
                 businesses));
+    }
+
+
+    @Override
+    public void showPrepayOrder(List<Order> orders) {
+        int heaterOrderSize = 0;
+        for (Order order : orders) {
+            heaterOrderSize += CommonUtil.equals(order.getDeviceType(), 1) ? 1 : 0;
+        }
+        if (heaterOrderSize != 0) {
+            HomeAdaptor.ItemWrapper itemWrapper = new HomeAdaptor.ItemWrapper(1, null, null, null, null,
+                            Device.HEARTER.getDrawableRes());
+            itemWrapper.setPrepaySize(heaterOrderSize);
+            EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.PREPAY_ORDER,
+                    itemWrapper));
+        }
+        int dispenserOrderSize = 0;
+        for (Order order : orders) {
+            dispenserOrderSize += CommonUtil.equals(order.getDeviceType(), 2) ? 1 : 0;
+        }
+        if (dispenserOrderSize != 0) {
+            HomeAdaptor.ItemWrapper itemWrapper = new HomeAdaptor.ItemWrapper(1, null, null, null, null,
+                    Device.DISPENSER.getDrawableRes());
+            itemWrapper.setPrepaySize(dispenserOrderSize);
+            EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.PREPAY_ORDER,
+                    itemWrapper));
+        }
     }
 
     @Override

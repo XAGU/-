@@ -1,7 +1,13 @@
 package com.xiaolian.amigo.data.manager.intf;
 
 import com.xiaolian.amigo.data.network.IMainApi;
+import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.dto.request.OrderReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.OrderRespDTO;
 import com.xiaolian.amigo.data.network.model.user.User;
+
+import retrofit2.http.Body;
+import rx.Observable;
 
 /**
  * 主页
@@ -28,4 +34,7 @@ public interface IMainDataManager extends IMainApi {
     void setBonusAmount(int amount);
 
     int getBonusAmount();
+
+    // 获取个人订单
+    Observable<ApiResult<OrderRespDTO>> queryOrders(@Body OrderReqDTO reqDTO);
 }

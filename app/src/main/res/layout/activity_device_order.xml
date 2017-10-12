@@ -197,23 +197,23 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="58dp">
+                    android:layout_height="117dp">
 
                     <TextView
                         style="@style/ContentText_main"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_height="58dp"
                         android:layout_alignParentLeft="true"
-                        android:layout_centerVertical="true"
                         android:text="实际消费" />
 
                     <TextView
                         android:id="@+id/tv_amount"
                         style="@style/ContentText_main"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="58dp"
+                        android:gravity="center"
                         android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
                         android:textColor="@color/colorFullRed"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -222,8 +222,8 @@
                         android:id="@+id/tv_unit"
                         style="@style/ContentText_main"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
+                        android:layout_height="58dp"
+                        android:gravity="center"
                         android:text="￥"
                         android:textColor="@color/colorFullRed"
                         android:textSize="16sp"
@@ -231,7 +231,6 @@
                         android:layout_toLeftOf="@id/tv_amount"/>
 
                     <ImageView
-                        android:layout_centerVertical="true"
                         android:id="@+id/iv_order_free"
                         android:layout_toLeftOf="@id/tv_unit"
                         android:src="@drawable/ic_order_free"
@@ -239,18 +238,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dip"
+                        android:layout_centerVertical="true"
+                        android:background="#eee" />
+
                 </RelativeLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dip"
-                    android:layout_centerVertical="true"
-                    android:background="#eee" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="58dp"
-                    android:layout_centerVertical="true" />
             </LinearLayout>
 
             <!--<TextView-->

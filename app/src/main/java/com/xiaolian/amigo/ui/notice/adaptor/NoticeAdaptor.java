@@ -1,6 +1,9 @@
 package com.xiaolian.amigo.ui.notice.adaptor;
 
 import android.content.Context;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Notice;
@@ -27,6 +30,15 @@ public class NoticeAdaptor extends CommonAdapter<NoticeAdaptor.NoticeWapper> {
 
     @Override
     protected void convert(ViewHolder holder, NoticeWapper noticeWapper, int position) {
+        if (position == 0) {
+            LinearLayout ll_item = holder.getView(R.id.ll_item_notice);
+            if (!TextUtils.equals((CharSequence) ll_item.getChildAt(0).getTag(), "divider")) {
+                View view = new View(ll_item.getContext());
+                view.setTag("divider");
+                view.setBackgroundResource(R.drawable.divider);
+                ll_item.addView(view, 0);
+            }
+        }
         if (noticeWapper.getType() != null) {
             Notice notice = Notice.getNotice(noticeWapper.getType());
             if (notice != null) {

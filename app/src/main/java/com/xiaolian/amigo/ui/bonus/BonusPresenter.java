@@ -32,9 +32,10 @@ public class BonusPresenter<V extends IBonusView> extends BasePresenter<V>
     }
 
     @Override
-    public void requestBonusList(int page) {
+    public void requestBonusList(int page, Integer deviceType) {
         QueryUserBonusReqDTO dto = new QueryUserBonusReqDTO();
         dto.setPage(page);
+        dto.setDeviceType(deviceType);
         dto.setSize(Constant.PAGE_SIZE);
         // 显示红包 未使用1 未过期1 过期红包 未使用1 已过期2
         dto.setUseStatus(1);

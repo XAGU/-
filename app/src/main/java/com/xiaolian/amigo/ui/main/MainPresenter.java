@@ -4,16 +4,16 @@ import android.text.TextUtils;
 
 import com.xiaolian.amigo.data.manager.intf.IMainDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.dto.request.OrderReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.QueryDeviceListReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.QueryNotifyListReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.QueryTimeValidReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.ReadNotifyReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.OrderRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryDeviceListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QuerySchoolBizListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryTimeValidRespDTO;
-import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
 import com.xiaolian.amigo.data.network.model.user.User;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.device.heater.HeaterActivity;
@@ -194,5 +194,21 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
             }
         });
     }
+
+    @Override
+    public void getPrepayOrder() {
+        OrderReqDTO reqDTO = new OrderReqDTO();
+        // 查看未结束账单
+        reqDTO.setOrderStatus(1);
+        addObserver(manager.queryOrders(reqDTO), new NetworkObserver<ApiResult<OrderRespDTO>>(false) {
+            @Override
+            public void onReady(ApiResult<OrderRespDTO> result) {
+                if (null == result.getError()) {
+                    getMvpView().showPrepayOrder(result.getData().getOrders());
+                }
+            }
+        });
+    }
+
 
 }

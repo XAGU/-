@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.enumeration.Payment;
 import com.xiaolian.amigo.data.enumeration.TradeStep;
 import com.xiaolian.amigo.data.network.model.order.Order;
@@ -215,6 +216,7 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
         } else {
             Intent intent = new Intent(this, BonusActivity.class);
             intent.putExtra(BonusActivity.INTENT_KEY_BONUS_ACTION, BonusActivity.ACTION_CHOOSE);
+            intent.putExtra(BonusActivity.INTENT_KEY_BONUS_DEVICE_TYPE, Device.HEARTER.getType());
             startActivityForResult(intent, CHOOSE_BONUS_CODE);
         }
     }
