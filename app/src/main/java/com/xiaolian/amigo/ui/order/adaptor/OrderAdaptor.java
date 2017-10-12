@@ -96,7 +96,7 @@ public class OrderAdaptor extends RecyclerView.Adapter<OrderAdaptor.ViewHolder> 
         // 时间
         String time;
         // 金额
-        Double amount;
+        String amount;
         // 原始订单内容，供查询订单详情时使用
         Order order;
 

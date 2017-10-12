@@ -20,8 +20,8 @@ public final class Constant {
     public static final String CHINEASE_COLON = "：";
 
     // 测试服务器
-    public static final String SERVER_TEST = "http://116.62.236.67:5081";
-//    public static final String SERVER_TEST = "http://10.0.0.4:8081";
+//    public static final String SERVER_TEST = "http://116.62.236.67:5081";
+    public static final String SERVER_TEST = "http://10.0.0.4:8081";
 //    public static final String SERVER_TEST = "http://10.0.0.2:5081";
 
     // 当前使用的服务器
