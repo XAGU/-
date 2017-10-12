@@ -12,6 +12,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UnsettledOrderStatusCheckRespDTO {
 
+    // 订单id
+    private Long orderId;
+
     // 支付方式
     private Integer paymentType;
 

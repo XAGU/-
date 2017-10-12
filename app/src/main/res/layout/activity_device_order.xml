@@ -176,17 +176,6 @@
                         android:layout_centerVertical="true"
                         />
 
-                    <TextView
-                        style="@style/ContentText_main"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:text="￥"
-                        android:textColor="@color/colorDark2"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:layout_toLeftOf="@id/tv_change_amount"/>
-
                 </RelativeLayout>
 
                 <View
@@ -218,22 +207,11 @@
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
-                    <TextView
-                        android:id="@+id/tv_unit"
-                        style="@style/ContentText_main"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:text="￥"
-                        android:textColor="@color/colorFullRed"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:layout_toLeftOf="@id/tv_amount"/>
 
                     <ImageView
                         android:layout_centerVertical="true"
                         android:id="@+id/iv_order_free"
-                        android:layout_toLeftOf="@id/tv_unit"
+                        android:layout_toLeftOf="@id/tv_amount"
                         android:src="@drawable/ic_order_free"
                         android:layout_marginRight="10dp"
                         android:layout_width="wrap_content"

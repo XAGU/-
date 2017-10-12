@@ -67,8 +67,8 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
     public void setRefreshComplete(OrderDetailRespDTO respDTO) {
         if (respDTO.getPaymentType() == Payment.BALANCE.getType()) { // 余额支付
             iv_order_free.setVisibility(View.GONE);
-            tv_amount.setText(String.valueOf(respDTO.getConsume()));
-            tv_change_amount.setText(String.valueOf(respDTO.getOdd()));
+            tv_amount.setText(respDTO.getConsume());
+            tv_change_amount.setText(respDTO.getOdd());
         } else { // 红包支付
             iv_order_free.setVisibility(View.VISIBLE);
             tv_amount.setText("0");

@@ -6,6 +6,7 @@ import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
 import com.xiaolian.amigo.data.manager.intf.ITradeDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.response.PersonalWalletDTO;
+import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.ui.device.DeviceBasePresenter;
 
 import javax.inject.Inject;
@@ -18,8 +19,8 @@ public class HeaterPresenter<V extends IHeaterView> extends DeviceBasePresenter<
     private IDeviceDataManager deviceDataManager;
 
     @Inject
-    HeaterPresenter(IBleDataManager bleDataManager, ITradeDataManager tradeDataManager, IDeviceDataManager deviceDataManager, IOrderDataManager orderDataManager) {
-        super(bleDataManager, tradeDataManager, orderDataManager);
+    HeaterPresenter(IBleDataManager bleDataManager, ITradeDataManager tradeDataManager, IDeviceDataManager deviceDataManager, IOrderDataManager orderDataManager, ISharedPreferencesHelp sharedPreferencesHelp) {
+        super(bleDataManager, tradeDataManager, orderDataManager, sharedPreferencesHelp);
         this.deviceDataManager = deviceDataManager;
     }
 

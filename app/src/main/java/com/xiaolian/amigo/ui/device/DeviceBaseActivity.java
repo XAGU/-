@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.xiaolian.amigo.MvpApp;
+import com.xiaolian.amigo.data.enumeration.TradeStep;
 import com.xiaolian.amigo.di.componet.DaggerDeviceActivityComponent;
 import com.xiaolian.amigo.di.componet.DeviceActivityComponent;
 import com.xiaolian.amigo.di.module.DeviceActivityModule;
@@ -73,7 +74,7 @@ public abstract class DeviceBaseActivity extends BaseActivity implements IDevice
     }
 
     @Override
-    public void onConnectSuccess() {
+    public void onConnectSuccess(TradeStep step, Object... extra) {
 
     }
 

@@ -13,9 +13,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.enumeration.OrderStatus;
 import com.xiaolian.amigo.data.enumeration.Payment;
 import com.xiaolian.amigo.data.enumeration.TradeStep;
-import com.xiaolian.amigo.data.network.model.order.Order;
+import com.xiaolian.amigo.data.network.model.dto.response.UnsettledOrderStatusCheckRespDTO;
 import com.xiaolian.amigo.ui.user.ChooseDormitoryActivity;
 import com.xiaolian.amigo.ui.widget.BezierWaveView;
 import com.xiaolian.amigo.ui.bonus.BonusActivity;
@@ -273,9 +274,9 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
     }
 
     /**
-     * 显示连接完成页面
+     * 显示支付页面
      */
-    void showConnected() {
+    void showStep1() {
         hideBottomLayout();
         ll_content_normal.setVisibility(View.VISIBLE);
         if (dfv_dot != null && dfv_dot.isRunning()) {
@@ -283,16 +284,29 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
         }
     }
 
+    /**
+     * 直接跳转至结算页面
+     */
+    void showStep2(UnsettledOrderStatusCheckRespDTO orderStatus) {
+        startShower(orderStatus);
+    }
+
     @Override
-    public void onConnectSuccess() {
-        showConnected();
-        // 标记步骤为确认支付页面
-        presenter.setStep(TradeStep.PAY);
+    public void onConnectSuccess(TradeStep step, Object... extra) {
+        if (TradeStep.PAY == step) {
+            showStep1();
+            // 标记步骤为确认支付页面
+            presenter.setStep(TradeStep.PAY);
+        } else { // TradeStep.SETTLE
+            showStep2((UnsettledOrderStatusCheckRespDTO) extra[0]);
+            // 标记步骤为结算找零页面
+            presenter.setStep(TradeStep.SETTLE);
+        }
     }
 
     @Override
     public void onOpen() {
-        startShower();
+        startShower(null);
         // 标记步骤为结束用水页面
         presenter.setStep(TradeStep.SETTLE);
     }
@@ -391,21 +405,36 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
         startActivity(intent);
     }
 
-    private void startShower() {
+    private void startShower(UnsettledOrderStatusCheckRespDTO orderStatus) {
         hideBottomLayout();
         ll_content_shower.setVisibility(View.VISIBLE);
 
-        if (isMoneyPay) {
-            tv_shower_payed.setText("已预付" + (Integer) tv_water_right.getTag(R.id.money_pay_amount) + "元");
-            trade_above_tip.setText(getString(R.string.balance_pay_tip_above));
-            trade_below_tip.setText(getString(R.string.balance_pay_tip_below));
-            bt_stop_shower.setText("结算找零");
+        if (null != orderStatus) {
+            if (Payment.getPayment(orderStatus.getPaymentType()) == Payment.BALANCE) {
+                tv_shower_payed.setText("已预付" + orderStatus.getExtra());
+                trade_above_tip.setText(getString(R.string.balance_pay_tip_above));
+                trade_below_tip.setText(getString(R.string.balance_pay_tip_below));
+                bt_stop_shower.setText("结算找零");
+            } else {
+                tv_shower_payed.setText("已使用" + orderStatus.getExtra());
+                trade_above_tip.setText(getString(R.string.bonus_pay_tip_above));
+                trade_below_tip.setText(getString(R.string.bonus_pay_tip_below));
+                bt_stop_shower.setText("结束用水");
+            }
         } else {
-            tv_shower_payed.setText("已使用" + tv_water_right.getText().toString());
-            trade_above_tip.setText(getString(R.string.bonus_pay_tip_above));
-            trade_below_tip.setText(getString(R.string.bonus_pay_tip_below));
-            bt_stop_shower.setText("结束用水");
+            if (isMoneyPay) {
+                tv_shower_payed.setText("已预付" + (Integer) tv_water_right.getTag(R.id.money_pay_amount) + "元");
+                trade_above_tip.setText(getString(R.string.balance_pay_tip_above));
+                trade_below_tip.setText(getString(R.string.balance_pay_tip_below));
+                bt_stop_shower.setText("结算找零");
+            } else {
+                tv_shower_payed.setText("已使用" + tv_water_right.getText().toString());
+                trade_above_tip.setText(getString(R.string.bonus_pay_tip_above));
+                trade_below_tip.setText(getString(R.string.bonus_pay_tip_below));
+                bt_stop_shower.setText("结束用水");
+            }
         }
+
     }
 
     private void endShower() {
@@ -463,7 +492,7 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
 //        tv_water_right.postDelayed(new Runnable() {
 //            @Override
 //            public void run() {
-//               showConnected();
+//               showStep1();
 //            }
 //        }, 3000);
     }
