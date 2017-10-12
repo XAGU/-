@@ -401,7 +401,7 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
             trade_below_tip.setText(getString(R.string.balance_pay_tip_below));
             bt_stop_shower.setText("结算找零");
         } else {
-            tv_shower_payed.setText("已使用" + tv_water_right.getText().toString() + "元红包");
+            tv_shower_payed.setText("已使用" + tv_water_right.getText().toString());
             trade_above_tip.setText(getString(R.string.bonus_pay_tip_above));
             trade_below_tip.setText(getString(R.string.bonus_pay_tip_below));
             bt_stop_shower.setText("结束用水");
@@ -478,7 +478,7 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
             } else if (resultCode == RESULT_OK) {
                 choosedBonus = (BonusAdaptor.BonusWrapper) data.getExtras().getSerializable(BonusActivity.INTENT_KEY_BONUS_RESULT);
                 if (choosedBonus != null) {
-                    tv_water_right.setText(String.valueOf(choosedBonus.getAmount()));
+                    tv_water_right.setText(choosedBonus.getAmount() + "元" + choosedBonus.getName());
                     bt_pay.setEnabled(true);
                 }
             }
