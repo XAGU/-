@@ -18,6 +18,8 @@ import com.xiaolian.amigo.ui.user.intf.IEditDormitoryView;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,6 +65,7 @@ public class EditDormitoryPresenter<V extends IEditDormitoryView> extends BasePr
                         getMvpView().addMore(wrappers);
                         getMvpView().addPage();
                     } else {
+                        getMvpView().addMore(new ArrayList<>());
                         getMvpView().showEmptyView();
                     }
                 } else {
@@ -77,6 +80,7 @@ public class EditDormitoryPresenter<V extends IEditDormitoryView> extends BasePr
                 getMvpView().setRefreshComplete();
                 getMvpView().setLoadMoreComplete();
                 getMvpView().showErrorView();
+                getMvpView().addMore(new ArrayList<>());
             }
         });
     }

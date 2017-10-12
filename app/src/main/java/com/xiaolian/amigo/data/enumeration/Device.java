@@ -14,16 +14,27 @@ public enum Device {
         public int getColorRes() {
             return R.color.device_heator;
         }
+
+        @Override
+        public int getDrawableRes() {
+            return R.drawable.shower;
+        }
     }, DISPENSER(2, "饮水机") {
         @Override
         public int getColorRes() {
             return R.color.device_dispenser;
+        }
+
+        @Override
+        public int getDrawableRes() {
+            return R.drawable.water;
         }
     };
 
     private int type;
 
     private String desc;
+
 
     Device(int type, String desc) {
         this.type = type;
@@ -47,6 +58,8 @@ public enum Device {
     }
 
     public abstract int getColorRes();
+
+    public abstract int getDrawableRes();
 
     public static Device getDevice(int type) {
         for (Device device : Device.values()) {

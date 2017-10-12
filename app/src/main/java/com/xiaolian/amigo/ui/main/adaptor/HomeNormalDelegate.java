@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.main.adaptor;
 
 import android.graphics.Color;
+import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.xiaolian.amigo.R;
@@ -29,5 +30,11 @@ public class HomeNormalDelegate implements ItemViewDelegate<HomeAdaptor.ItemWrap
         holder.setText(R.id.tv_device_name, itemWrapper.getDeviceName());
         holder.setText(R.id.tv_desc, itemWrapper.getDesc());
         holder.setTextColor(R.id.tv_desc, Color.parseColor(itemWrapper.getDescColor()));
+        if (itemWrapper.getPrepaySize() != 0) {
+            holder.getView(R.id.tv_prepay).setVisibility(View.VISIBLE);
+            holder.setText(R.id.tv_prepay, "(有" + itemWrapper.getPrepaySize() + "笔未找零金额)");
+        } else {
+            holder.getView(R.id.tv_prepay).setVisibility(View.GONE);
+        }
     }
 }

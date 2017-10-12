@@ -22,6 +22,7 @@ import com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity;
 import com.xiaolian.amigo.ui.main.adaptor.HomeAdaptor;
 import com.xiaolian.amigo.ui.main.adaptor.HomeBannerDelegate;
 import com.xiaolian.amigo.ui.main.adaptor.HomeNormalDelegate;
+import com.xiaolian.amigo.util.CommonUtil;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import org.greenrobot.eventbus.EventBus;
@@ -48,7 +49,8 @@ public class HomeFragment2 extends Fragment {
 
     List<HomeAdaptor.ItemWrapper> items = new ArrayList<HomeAdaptor.ItemWrapper>() {
         {
-            add(new HomeAdaptor.ItemWrapper(1, null, "失物招领", "LOST AND FOUND", "#b3d4ff", R.drawable.lost));
+            add(new HomeAdaptor.ItemWrapper(1, null, "失物招领", "LOST AND FOUND", "#b3d4ff",
+                    R.drawable.lost));
         }
     };
 
@@ -86,7 +88,6 @@ public class HomeFragment2 extends Fragment {
                     }
                 }
             }
-
             @Override
             public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
                 return false;
@@ -138,6 +139,15 @@ public class HomeFragment2 extends Fragment {
         adaptor.notifyDataSetChanged();
     }
 
+    private void onPrepayOrderEvent(HomeAdaptor.ItemWrapper itemWrapper) {
+        for (HomeAdaptor.ItemWrapper item : items) {
+            if (CommonUtil.equals(itemWrapper.getRes(), item.getRes())) {
+                item.setPrepaySize(itemWrapper.getPrepaySize());
+                adaptor.notifyDataSetChanged();
+            }
+        }
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(Event event) {
         switch (event.getType()) {
@@ -147,8 +157,12 @@ public class HomeFragment2 extends Fragment {
             case SCHOOL_BIZ:
                 onSchoolBizEvent((List<BriefSchoolBusiness>) event.getObject());
                 break;
+            case PREPAY_ORDER:
+                onPrepayOrderEvent((HomeAdaptor.ItemWrapper) event.getObject());
+                break;
         }
     }
+
 
 
     private boolean isBannersEqual(List<String> banners1, List<String> banners2) {
@@ -175,7 +189,8 @@ public class HomeFragment2 extends Fragment {
 
         public enum EventType {
             BANNER(1),
-            SCHOOL_BIZ(2)
+            SCHOOL_BIZ(2),
+            PREPAY_ORDER(3)
             ;
 
             EventType(int type) {
