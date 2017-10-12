@@ -9,7 +9,7 @@ import com.xiaolian.amigo.R;
  */
 
 public enum Device {
-    HEARTER(1, "热水器") {
+    HEARTER(1, "热水") {
         @Override
         public int getColorRes() {
             return R.color.device_heator;

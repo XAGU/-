@@ -17,8 +17,6 @@ package com.xiaolian.amigo.ui.base;
 
 import android.Manifest;
 import android.annotation.TargetApi;
-import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
@@ -50,7 +48,6 @@ import com.xiaolian.amigo.ui.base.intf.IBaseView;
 import com.xiaolian.amigo.ui.login.LoginActivity;
 import com.xiaolian.amigo.ui.widget.dialog.ActionSheetDialog;
 import com.xiaolian.amigo.ui.widget.dialog.LodingDialog;
-import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.NetworkUtil;
 import com.yalantis.ucrop.UCrop;
 
@@ -64,7 +61,6 @@ import javax.inject.Inject;
 import butterknife.OnClick;
 import butterknife.Optional;
 import butterknife.Unbinder;
-// TODO: 加载去掉浮层 添加菊花
 
 public abstract class BaseActivity extends SwipeBackActivity
         implements IBaseView {
@@ -165,8 +161,8 @@ public abstract class BaseActivity extends SwipeBackActivity
                 options.setActiveWidgetColor(colorPrimary);
                 options.setStatusBarColor(colorPrimary);
                 UCrop.of(mPhotoImageUri, mCropImageUri)
-                        .withAspectRatio(25, 17)
-                        .withMaxResultSize(250 * 2, 170 * 2)
+                        .withAspectRatio(1, 1)
+//                        .withMaxResultSize(250 * 2, 170 * 2)
                         .withOptions(options)
                         .start(this);
 
@@ -187,8 +183,8 @@ public abstract class BaseActivity extends SwipeBackActivity
                     options.setActiveWidgetColor(colorPrimary);
                     options.setStatusBarColor(colorPrimary);
                     UCrop.of(mPickImageUri, mCropImageUri)
-                            .withAspectRatio(25, 17)
-                            .withMaxResultSize(250 * 2, 170 * 2)
+                            .withAspectRatio(1, 1)
+//                            .withMaxResultSize(250 * 2, 170 * 2)
                             .withOptions(options)
                             .start(this);
                 }
@@ -280,38 +276,6 @@ public abstract class BaseActivity extends SwipeBackActivity
         return false;
     }
 
-    private void showSnackBar(String message) {
-        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),
-                message, Snackbar.LENGTH_SHORT);
-        View sbView = snackbar.getView();
-        TextView textView = (TextView) sbView
-                .findViewById(android.support.design.R.id.snackbar_text);
-        textView.setTextColor(ContextCompat.getColor(this, R.color.white));
-        snackbar.show();
-    }
-
-    private void showErrorSnackBar(String message) {
-        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),
-                message, Snackbar.LENGTH_SHORT);
-        View sbView = snackbar.getView();
-        sbView.setBackgroundResource(R.color.colorFullRed);
-        TextView textView = (TextView) sbView
-                .findViewById(android.support.design.R.id.snackbar_text);
-        textView.setTextColor(ContextCompat.getColor(this, R.color.white));
-        snackbar.show();
-    }
-
-    private void showSuccessSnackBar(String message) {
-        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),
-                message, Snackbar.LENGTH_SHORT);
-        View sbView = snackbar.getView();
-        sbView.setBackgroundResource(R.color.device_dispenser);
-        TextView textView = (TextView) sbView
-                .findViewById(android.support.design.R.id.snackbar_text);
-        textView.setTextColor(ContextCompat.getColor(this, R.color.white));
-        snackbar.show();
-    }
-
     private void showSuccessToast(String message) {
         if (toast == null) {
             toast = new Toast(getApplicationContext());
@@ -352,12 +316,8 @@ public abstract class BaseActivity extends SwipeBackActivity
     @Override
     public void onError(String message) {
         if (message != null) {
-//            showSnackBar(message);
-//            showErrorSnackBar(message);
             showErrorToast(message);
         } else {
-//            showSnackBar(getString(R.string.some_error));
-//            showErrorSnackBar(getString(R.string.some_error));
             showErrorToast(getString(R.string.some_error));
         }
     }
@@ -375,10 +335,8 @@ public abstract class BaseActivity extends SwipeBackActivity
     @Override
     public void onSuccess(String message) {
         if (message != null) {
-//            showSuccessSnackBar(message);
             showSuccessToast(message);
         } else {
-//            showSuccessSnackBar(getString(R.string.some_error));
             showSuccessToast(getString(R.string.some_error));
         }
     }

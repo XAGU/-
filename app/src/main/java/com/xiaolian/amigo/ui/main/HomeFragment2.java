@@ -15,6 +15,7 @@ import android.view.animation.LayoutAnimationController;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
+import com.xiaolian.amigo.ui.base.aspect.SingleClick;
 import com.xiaolian.amigo.ui.device.dispenser.DispenserActivity;
 import com.xiaolian.amigo.ui.device.heater.HeaterActivity;
 import com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity;
@@ -32,6 +33,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import lombok.Data;
 
 import static com.xiaolian.amigo.data.enumeration.Device.DISPENSER;
 import static com.xiaolian.amigo.data.enumeration.Device.HEARTER;
@@ -55,7 +57,6 @@ public class HomeFragment2 extends Fragment {
 
     HomeAdaptor adaptor;
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -72,6 +73,7 @@ public class HomeFragment2 extends Fragment {
         adaptor.addItemViewDelegate(new HomeNormalDelegate());
         adaptor.addItemViewDelegate(new HomeBannerDelegate(getActivity()));
         adaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @SingleClick
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 if (items.get(position).getType() == 1) {
@@ -110,7 +112,6 @@ public class HomeFragment2 extends Fragment {
         super.onActivityCreated(savedInstanceState);
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onBannerEvent(List<String> banners) {
         if (items.get(items.size() - 1).getType() == 1) {
             items.add(new HomeAdaptor.ItemWrapper(2, banners, null, null, null, 0));
@@ -123,20 +124,32 @@ public class HomeFragment2 extends Fragment {
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onSchoolBizEvent(List<BriefSchoolBusiness> businesses) {
         if (businesses.isEmpty()) {
             return;
         }
         for (BriefSchoolBusiness business : businesses) {
             if (business.getBusinessId() == 2) {
-                items.add(0, new HomeAdaptor.ItemWrapper(1, null, "热水器", "TAKE A SHOWER", "#ffb6c5", R.drawable.shower));
+                items.add(0, new HomeAdaptor.ItemWrapper(1, null, "热水澡", "TAKE A SHOWER", "#ffb6c5", R.drawable.shower));
             } else if (business.getBusinessId() == 1) {
                 items.add(0, new HomeAdaptor.ItemWrapper(1, null, "饮水机", "DRINK A WATER", "#aaebe4", R.drawable.water));
             }
         }
         adaptor.notifyDataSetChanged();
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(Event event) {
+        switch (event.getType()) {
+            case BANNER:
+                onBannerEvent((List<String>) event.getObject());
+                break;
+            case SCHOOL_BIZ:
+                onSchoolBizEvent((List<BriefSchoolBusiness>) event.getObject());
+                break;
+        }
+    }
+
 
     private boolean isBannersEqual(List<String> banners1, List<String> banners2) {
         if (banners1.size() != banners2.size()) {
@@ -148,6 +161,29 @@ public class HomeFragment2 extends Fragment {
             }
         }
         return true;
+    }
+
+    @Data
+    public static class Event {
+        private EventType type;
+        private Object object;
+
+        public Event(EventType type, Object object) {
+            this.type = type;
+            this.object = object;
+        }
+
+        public enum EventType {
+            BANNER(1),
+            SCHOOL_BIZ(2)
+            ;
+
+            EventType(int type) {
+                this.type = type;
+            }
+
+            private int type;
+        }
     }
 
     @Override

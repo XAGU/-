@@ -40,7 +40,7 @@ public class BonusActivity extends BonusBaseListActivity implements IBonusView {
 
     private int titleRes = R.string.my_bonus;
     private int subTitleRes = R.string.exchange_bonus;
-    // 从我的红包进入为普通模式 从热水器页面的选择红包进入为选择模式
+    // 从我的红包进入为普通模式 从热水澡页面的选择红包进入为选择模式
     private int action = ACTION_NORMAL;
 
     @Override

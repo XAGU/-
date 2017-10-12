@@ -70,6 +70,10 @@ public class RepairApplyPresenter<V extends IRepairApplyView> extends BasePresen
             public void onReady(ApiResult<RepairApplyRespDTO> result) {
                 if (null == result.getError()) {
                     Log.i(TAG, "报修成功");
+                    getMvpView().onSuccess("报修成功");
+                    getMvpView().backToRepairNav();
+                } else {
+                    getMvpView().onError(result.getError().getDisplayMessage());
                 }
             }
         });
@@ -86,6 +90,8 @@ public class RepairApplyPresenter<V extends IRepairApplyView> extends BasePresen
                 if (null == result.getError()) {
                     Log.i(TAG, "上传图片成功");
                     getMvpView().addImage(result.getData());
+                } else {
+                    getMvpView().onError(result.getError().getDisplayMessage());
                 }
             }
         });

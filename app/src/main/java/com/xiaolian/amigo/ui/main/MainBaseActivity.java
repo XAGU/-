@@ -30,6 +30,11 @@ public abstract class MainBaseActivity extends BaseActivity {
 
     }
 
+    @Override
+    protected void setUp() {
+
+    }
+
     public MainActivityComponent getActivityComponent() {
         return mActivityComponent;
     }

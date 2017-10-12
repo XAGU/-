@@ -10,6 +10,7 @@ import android.widget.Button;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.repair.RepairProblem;
+import com.xiaolian.amigo.ui.user.adaptor.EditDormitoryAdaptor;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -46,6 +47,7 @@ public class RepairProblemAdaptor extends CommonAdapter<RepairProblemAdaptor.Pro
                 getDatas().get(position).setChoose(true);
                 lastChoosePosition = position;
                 notifyDataSetChanged();
+                listener.onItemClick();
             }
         });
         toggleButton(holder.getView(R.id.bt_problem), problemWrapper.isChoose());
@@ -77,6 +79,16 @@ public class RepairProblemAdaptor extends CommonAdapter<RepairProblemAdaptor.Pro
             this.id = problem.getId();
             this.isChoose = false;
         }
+    }
+
+    private OnItemClickListener listener;
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick();
     }
 
 }

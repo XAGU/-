@@ -64,6 +64,7 @@
         <activity
             android:screenOrientation="portrait"
             android:name=".ui.repair.RepairApplyActivity"
+            android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar"/>
 
 
@@ -165,15 +166,12 @@
             android:screenOrientation="portrait"
             android:launchMode="singleTask"
             android:windowSoftInputMode="stateVisible|adjustResize"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
 
         <!--热水器设备页-->
         <activity android:name=".ui.device.heater.HeaterActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
-
-        <!--选择红包页-->
 
         <!--选择饮水机页面-->
         <activity android:name=".ui.device.dispenser.ChooseDispenserActivity"
@@ -266,6 +264,11 @@
 
         <!--预付金额-->
         <activity android:name=".ui.wallet.PrepayActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <!--待找零账单-->
+        <activity android:name=".ui.wallet.PrepayOrderActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
 

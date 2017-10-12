@@ -107,5 +107,6 @@
     <string name="please_enter_password_to_verify">请输入登录密码进行验证</string>
     <string name="manage_dormitory">管理宿舍</string>
     <string name="notice_center">通知中心</string>
+    <string name="prepay_order">待找零订单</string>
 
 </resources>

@@ -3,6 +3,7 @@ package com.xiaolian.amigo.ui.main;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.RectF;
 import android.os.Bundle;
@@ -102,6 +103,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     int current = 0;
     private boolean hasBanners;
+    private AvailabilityDialog availabilityDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -147,16 +149,14 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                         return false;
                     }
                 }
-                if ((e1.getRawX() - e2.getRawX()) > 200) {// 表示 向右滑动表示下一页
-                    //显示下一页
+                if ((e1.getRawX() - e2.getRawX()) > 200) {
                     if (current == 1) {
                         onSwitch();
                     }
                     return true;
                 }
 
-                if ((e2.getRawX() - e1.getRawX()) > 200) {  //向左滑动 表示 上一页
-                    //显示上一页
+                if ((e2.getRawX() - e1.getRawX()) > 200) {
                     if (current == 0) {
                         onSwitch();
                     }
@@ -199,11 +199,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 iv_avatar.setImageResource(R.drawable.ic_picture_error);
             }
         }
-    }
-
-    @Override
-    protected void setUp() {
-
     }
 
     @OnClick(R.id.bt_switch)
@@ -337,18 +332,23 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public void showTimeValidDialog(String title, String remark, Class clz, int deviceType) {
-        AvailabilityDialog dialog = new AvailabilityDialog(this);
-        dialog.setOkText(getString(R.string.keep_use));
-        dialog.setTip(title);
-        dialog.setSubTip(remark);
-        dialog.setOnOkClickListener(dialog1 -> {
+        if (null == availabilityDialog) {
+            availabilityDialog = new AvailabilityDialog(this);
+        }
+        if (availabilityDialog.isShowing()) {
+            return;
+        }
+        availabilityDialog.setOkText(getString(R.string.keep_use));
+        availabilityDialog.setTip(title);
+        availabilityDialog.setSubTip(remark);
+        availabilityDialog.setOnOkClickListener(dialog1 -> {
             if (deviceType == 1) {
                 presenter.getHeaterDeviceMacAddress();
             } else {
                 startActivity(clz);
             }
         });
-        dialog.show();
+        availabilityDialog.show();
     }
 
     @Override
@@ -395,12 +395,14 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @Override
     public void showBanners(List<String> banners) {
         hasBanners = true;
-        EventBus.getDefault().post(banners);
+        EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.BANNER,
+                banners));
     }
 
     @Override
     public void showSchoolBiz(List<BriefSchoolBusiness> businesses) {
-        EventBus.getDefault().post(businesses);
+        EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.SCHOOL_BIZ,
+                businesses));
     }
 
     @Override
@@ -425,7 +427,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     }
 
     /**
-     * 点击进入热水器界面
+     * 点击进入热水澡界面
      */
     public void gotoHeater() {
         setBleCallback(() -> checkTimeValid(HEARTER, HeaterActivity.class));

@@ -38,7 +38,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * 热水器设备页
+ * 热水澡设备页
  *
  * @author zcd
  */
