@@ -40,7 +40,7 @@ public class PrepayPresenter<V extends IPrepayView> extends BasePresenter<V>
         reqDTO.setSize(Constant.PAGE_SIZE);
         // 查看未结束账单
         reqDTO.setOrderStatus(1);
-        addObserver(manager.queryOrders(reqDTO), new NetworkObserver<ApiResult<OrderRespDTO>>() {
+        addObserver(manager.queryOrders(reqDTO), new NetworkObserver<ApiResult<OrderRespDTO>>(false) {
             @Override
             public void onReady(ApiResult<OrderRespDTO> result) {
                 getMvpView().setRefreshComplete();

@@ -202,8 +202,4 @@ public class LostAndFoundDetailActivity extends LostAndFoundBaseActivity impleme
         }
     }
 
-    @Override
-    protected boolean isShowLoading() {
-        return true;
-    }
 }

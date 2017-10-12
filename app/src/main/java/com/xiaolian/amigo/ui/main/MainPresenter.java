@@ -63,7 +63,7 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
         if (TextUtils.isEmpty(manager.getToken())) {
             return;
         }
-        addObserver(manager.getExtraInfo(), new NetworkObserver<ApiResult<PersonalExtraInfoDTO>>() {
+        addObserver(manager.getExtraInfo(), new NetworkObserver<ApiResult<PersonalExtraInfoDTO>>(false) {
 
             @Override
             public void onReady(ApiResult<PersonalExtraInfoDTO> result) {
@@ -123,7 +123,7 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
         }
         ReadNotifyReqDTO reqDTO = new ReadNotifyReqDTO();
         reqDTO.setId(id);
-        addObserver(manager.readUrgentNotify(reqDTO), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
+        addObserver(manager.readUrgentNotify(reqDTO), new NetworkObserver<ApiResult<BooleanRespDTO>>(false) {
 
             @Override
             public void onReady(ApiResult<BooleanRespDTO> result) {
@@ -182,7 +182,7 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
 
     @Override
     public void getSchoolBusiness() {
-        addObserver(manager.getSchoolBizList(), new NetworkObserver<ApiResult<QuerySchoolBizListRespDTO>>() {
+        addObserver(manager.getSchoolBizList(), new NetworkObserver<ApiResult<QuerySchoolBizListRespDTO>>(false) {
 
             @Override
             public void onReady(ApiResult<QuerySchoolBizListRespDTO> result) {

@@ -251,9 +251,6 @@ public abstract class BaseActivity extends SwipeBackActivity
 
     @Override
     public void showLoading() {
-        if (!isShowLoading()) {
-            return;
-        }
         if (mProgressDialog == null) {
             mProgressDialog = new LodingDialog(this);
         }
@@ -266,14 +263,6 @@ public abstract class BaseActivity extends SwipeBackActivity
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.cancel();
         }
-    }
-
-    /**
-     * 子类重新来显示loading
-     * @return 是否显示loading
-     */
-    protected boolean isShowLoading() {
-        return false;
     }
 
     private void showSuccessToast(String message) {

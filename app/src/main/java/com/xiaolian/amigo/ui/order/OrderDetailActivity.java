@@ -61,8 +61,4 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
         tv_amount.setText(String.valueOf(order.getConsume()));
     }
 
-    @Override
-    protected boolean isShowLoading() {
-        return true;
-    }
 }

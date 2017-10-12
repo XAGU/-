@@ -39,7 +39,7 @@ public class BonusPresenter<V extends IBonusView> extends BasePresenter<V>
         // 显示红包 未使用1 未过期1 过期红包 未使用1 已过期2
         dto.setUseStatus(1);
         dto.setValidStatus(1);
-        addObserver(manager.queryOrders(dto), new NetworkObserver<ApiResult<QueryUserBonusListRespDTO>>() {
+        addObserver(manager.queryOrders(dto), new NetworkObserver<ApiResult<QueryUserBonusListRespDTO>>(false) {
             @Override
             public void onReady(ApiResult<QueryUserBonusListRespDTO> result) {
                 getMvpView().setRefreshComplete();
@@ -81,7 +81,7 @@ public class BonusPresenter<V extends IBonusView> extends BasePresenter<V>
         // 显示红包 未使用1 未过期1 过期红包 未使用1 已过期2
         dto.setUseStatus(1);
         dto.setValidStatus(2);
-        addObserver(manager.queryOrders(dto), new NetworkObserver<ApiResult<QueryUserBonusListRespDTO>>() {
+        addObserver(manager.queryOrders(dto), new NetworkObserver<ApiResult<QueryUserBonusListRespDTO>>(false) {
             @Override
             public void onReady(ApiResult<QueryUserBonusListRespDTO> result) {
                 getMvpView().setRefreshComplete();
