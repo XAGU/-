@@ -424,22 +424,24 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public void showPrepayOrder(List<Order> orders) {
-        heaterOrderSize = 0;
+        int currentHeaterOrderSize = 0;
         for (Order order : orders) {
-            heaterOrderSize += CommonUtil.equals(order.getDeviceType(), 1) ? 1 : 0;
+            currentHeaterOrderSize += CommonUtil.equals(order.getDeviceType(), 1) ? 1 : 0;
         }
-        if (heaterOrderSize != 0) {
+        if (currentHeaterOrderSize != heaterOrderSize) {
+            heaterOrderSize = currentHeaterOrderSize;
             HomeAdaptor.ItemWrapper itemWrapper = new HomeAdaptor.ItemWrapper(1, null, null, null, null,
                             Device.HEARTER.getDrawableRes());
             itemWrapper.setPrepaySize(heaterOrderSize);
             EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.PREPAY_ORDER,
                     itemWrapper));
         }
-        dispenserOrderSize = 0;
+        int currentDispenserOrderSize = 0;
         for (Order order : orders) {
             dispenserOrderSize += CommonUtil.equals(order.getDeviceType(), 2) ? 1 : 0;
         }
-        if (dispenserOrderSize != 0) {
+        if (dispenserOrderSize != currentDispenserOrderSize) {
+            dispenserOrderSize = currentDispenserOrderSize;
             HomeAdaptor.ItemWrapper itemWrapper = new HomeAdaptor.ItemWrapper(1, null, null, null, null,
                     Device.DISPENSER.getDrawableRes());
             itemWrapper.setPrepaySize(dispenserOrderSize);

@@ -3,8 +3,10 @@ package com.xiaolian.amigo.data.network;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.OrderDetailReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.OrderReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.request.QueryPrepayOptionReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.UnsettledOrderStatusCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.OrderDetailRespDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.OrderPreInfoDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.OrderRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.UnsettledOrderStatusCheckRespDTO;
 
@@ -30,4 +32,8 @@ public interface IOrderApi {
     // 校验订单状态
     @POST("/order/status/check")
     Observable<ApiResult<UnsettledOrderStatusCheckRespDTO>> checkOrderStatus(@Body UnsettledOrderStatusCheckReqDTO reqDTO);
+
+    // 订单预备信息：options是预付金额选项，bonus是可用红包数量
+    @POST("/order/pre")
+    Observable<ApiResult<OrderPreInfoDTO>> queryPrepayOption(@Body QueryPrepayOptionReqDTO reqDTO);
 }

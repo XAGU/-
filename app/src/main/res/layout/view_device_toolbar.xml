@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"/>
 
     <TextView
-        android:id="@+id/tv_device_name"
+        android:id="@+id/tv_device_title"
         android:layout_centerHorizontal="true"
         android:text="3栋－5楼－510"
         android:layout_centerVertical="true"
@@ -20,7 +20,7 @@
         />
 
     <View
-        android:layout_below="@id/tv_device_name"
+        android:layout_below="@id/tv_device_title"
         android:layout_marginTop="5dp"
         android:background="@color/white"
         android:layout_centerHorizontal="true"
@@ -28,7 +28,7 @@
         android:layout_height="1px"/>
     
     <ImageView
-        android:id="@+id/iv_collect"
+        android:id="@+id/iv_top_right_icon"
         android:visibility="visible"
         android:paddingRight="@dimen/mainMarginLeftRight"
         android:layout_alignParentRight="true"

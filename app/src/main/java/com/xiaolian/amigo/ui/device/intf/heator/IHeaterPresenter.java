@@ -1,16 +1,10 @@
 package com.xiaolian.amigo.ui.device.intf.heator;
 
-import com.xiaolian.amigo.ui.device.intf.IDevicePresenter;
-import com.xiaolian.amigo.ui.device.intf.IDeviceView;
+import com.xiaolian.amigo.ui.device.intf.IWaterDeviceBasePresenter;
+import com.xiaolian.amigo.ui.device.intf.IWaterDeviceBaseView;
 
 /**
  * Created by caidong on 2017/9/22.
  */
-public interface IHeaterPresenter<V extends IDeviceView> extends IDevicePresenter<V> {
-    void setBonusAmount(int amount);
-
-    int getBonusAmount();
-
-    void queryWallet(int amount);
-
+public interface IHeaterPresenter<V extends IWaterDeviceBaseView> extends IWaterDeviceBasePresenter<V> {
 }

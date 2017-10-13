@@ -22,16 +22,21 @@ import com.xiaolian.amigo.data.manager.BleDataManager;
 import com.xiaolian.amigo.data.manager.DeviceDataManager;
 import com.xiaolian.amigo.data.manager.OrderDataManager;
 import com.xiaolian.amigo.data.manager.TradeDataManager;
+import com.xiaolian.amigo.data.manager.WalletDataManager;
 import com.xiaolian.amigo.data.manager.intf.IBleDataManager;
 import com.xiaolian.amigo.data.manager.intf.IDeviceDataManager;
 import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
 import com.xiaolian.amigo.data.manager.intf.ITradeDataManager;
+import com.xiaolian.amigo.data.manager.intf.IWalletDataManager;
 import com.xiaolian.amigo.di.DeviceActivityContext;
 import com.xiaolian.amigo.ui.ble.BlePresenter;
 import com.xiaolian.amigo.ui.ble.intf.IBleView;
 import com.xiaolian.amigo.ui.device.DeviceOrderPresenter;
+import com.xiaolian.amigo.ui.device.dispenser.DispenserPresenter;
 import com.xiaolian.amigo.ui.device.intf.IDeviceOrderPresenter;
 import com.xiaolian.amigo.ui.device.intf.IDeviceOrderView;
+import com.xiaolian.amigo.ui.device.intf.dispenser.IDispenserPresenter;
+import com.xiaolian.amigo.ui.device.intf.dispenser.IDispenserView;
 import com.xiaolian.amigo.ui.device.intf.heator.HeaterPresenter;
 import com.xiaolian.amigo.ui.device.intf.heator.IHeaterPresenter;
 import com.xiaolian.amigo.ui.device.intf.heator.IHeaterView;
@@ -71,6 +76,12 @@ public class DeviceActivityModule {
     }
 
     @Provides
+    @DeviceActivityContext
+    IDispenserPresenter<IDispenserView> provideDispenserPresenter(DispenserPresenter<IDispenserView> presenter) {
+        return presenter;
+    }
+
+    @Provides
     IDeviceDataManager provideDeviceDataManager(DeviceDataManager manager) {
         return manager;
     }
@@ -86,6 +97,13 @@ public class DeviceActivityModule {
     ITradeDataManager provideTradeDataManager(TradeDataManager manager) {
         return manager;
     }
+
+    @Provides
+    @DeviceActivityContext
+    IWalletDataManager provideWalletDataManager(WalletDataManager manager) {
+        return manager;
+    }
+
 
     @Provides
     @DeviceActivityContext

@@ -16,12 +16,8 @@
 package com.xiaolian.amigo.di.componet;
 
 
-import com.xiaolian.amigo.di.BleActivityContext;
 import com.xiaolian.amigo.di.DeviceActivityContext;
-import com.xiaolian.amigo.di.module.BleActivityModule;
 import com.xiaolian.amigo.di.module.DeviceActivityModule;
-import com.xiaolian.amigo.ui.ble.BleActivity;
-import com.xiaolian.amigo.ui.ble.BleInteractiveActivity;
 import com.xiaolian.amigo.ui.device.DeviceOrderActivity;
 import com.xiaolian.amigo.ui.device.dispenser.DispenserActivity;
 import com.xiaolian.amigo.ui.device.heater.HeaterActivity;
