@@ -9,6 +9,7 @@ public class Error {
     private int code;
     private String debugMessage;
     private String displayMessage;
+    private Integer bleCmdType;
 
     public int getCode() {
         return code;
@@ -32,5 +33,13 @@ public class Error {
 
     public void setDisplayMessage(String displayMessage) {
         this.displayMessage = displayMessage;
+    }
+
+    public Integer getBleCmdType() {
+        return bleCmdType;
+    }
+
+    public void setBleCmdType(Integer bleCmdType) {
+        this.bleCmdType = bleCmdType;
     }
 }

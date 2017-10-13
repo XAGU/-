@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
+import com.xiaolian.amigo.data.enumeration.ErrorTag;
 import com.xiaolian.amigo.data.enumeration.Payment;
 import com.xiaolian.amigo.data.enumeration.TradeError;
 import com.xiaolian.amigo.data.enumeration.TradeStep;
@@ -490,14 +491,25 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
      */
     @OnClick(R.id.bt_error_handler)
     void reconnect(Button button) {
-        // 点击重连按钮时蓝牙必须为开启状态
-        setBleCallback(() -> {
-            // 显示正在连接画面
-            showConnecting();
+        switch (ErrorTag.getErrorTag((int)(button.getTag()))) {
+            case CONNECT_ERROR:
+                // 点击重连按钮时蓝牙必须为开启状态
+                setBleCallback(() -> {
+                    // 显示正在连接画面
+                    showConnecting();
 
-            presenter.onReconnect(macAddress);
-        });
-        getBlePermission();
+                    presenter.onReconnect(macAddress);
+                });
+                getBlePermission();
+                break;
+            case DEVICE_BUSY:
+                startActivityForResult(new Intent(this, ChooseDormitoryActivity.class), CHOOSE_DORMITORY_CODE);
+                break;
+            case PAY_ERROR:
+                break;
+            case SETTLE_ERROR:
+                break;
+        }
     }
 
     @Override

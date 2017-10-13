@@ -161,7 +161,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             public void onFinish() {
                 clearObservers();
                 resetSubscriptions();
-                getMvpView().onError(TradeError.CONNECT_ERROR_1);
+                getMvpView().onError(TradeError.CONNECT_ERROR_5);
             }
         };
         timer.start();
@@ -407,7 +407,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
             // String savedConnectCmd = sharedPreferencesHelp.getConnectCmd(currentMacAddress);
             // Log.i(TAG, "获取已保存的握手指令：" + savedConnectCmd);
-            if (null != orderStatus && orderStatus.isLessThanThreeHours()) {  // 三小时之内拿上次连接的握手指令（这里待验证是否有影响）
+            if (null != orderStatus && null != orderStatus.getStatus() && OrderStatus.getOrderStatus(orderStatus.getStatus()) == OrderStatus.USING) {  // 有订单未计算拿上次连接的握手指令（这里待验证是否有影响）
                 orderId = orderStatus.getOrderId();
                 onWrite(connectCmd);
                 purelyCheckoutFlag = true;
@@ -577,7 +577,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             switch (Command.getCommand(result.getData().getSrcCommandType())) {
                 case CONNECT:
                     // 如果用户本人在三小时之内再次连接该设备，需要进入第二步账单结算页面
-                    if (null != orderStatus && orderStatus.isLessThanThreeHours()) {
+                    if (null != orderStatus && null != orderStatus.getStatus() && OrderStatus.getOrderStatus(orderStatus.getStatus()) == OrderStatus.USING) {
                         // 记录预结账指令，此时阀门已经被长按关闭，但是订单没有被其它用户带回
                         reopenNextCmd = nextCommand;
                         getMvpView().onConnectSuccess(TradeStep.SETTLE, orderStatus);
@@ -647,13 +647,26 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     getMvpView().onReconnectSuccess();
                     reconnectNextCmd = closeCmd;
                 } else { // 首次连接
-                    if (null != orderStatus && OrderStatus.getOrderStatus(orderStatus.getStatus()) == OrderStatus.USING) { // 用户主动上来结账
+                    if (null != orderStatus && null != orderStatus.getStatus() && OrderStatus.getOrderStatus(orderStatus.getStatus()) == OrderStatus.USING) { // 用户主动上来结账
                         getMvpView().onConnectSuccess(TradeStep.SETTLE, orderStatus);
                         reopenNextCmd = sharedPreferencesHelp.getCloseCmd(currentMacAddress);
 
                         connectCmd = sharedPreferencesHelp.getConnectCmd(currentMacAddress);
                         closeCmd = reopenNextCmd;
+                    } else {
+                        // 提示用户设备已被其它用户使用
+                        getMvpView().onError(TradeError.DEVICE_BUSY);
                     }
+                }
+            }
+            Integer cmdType = result.getError().getBleCmdType();
+            if (null != cmdType) {
+                // 确认支付时异常
+                if (Command.OPEN_VALVE == Command.getCommand(cmdType)) {
+                    getMvpView().onError(TradeError.DEVICE_BROKEN_2);
+                } else if (Command.CLOSE_VALVE == Command.getCommand(cmdType) || Command.PRE_CHECK == Command.getCommand(cmdType) || Command.CHECK_OUT == Command.getCommand(cmdType)) {
+                    // 结算时异常
+                    getMvpView().onError(TradeError.DEVICE_BROKEN_1);
                 }
             }
             Log.e(TAG, result.getError().getCode() + ":" + result.getError().getDisplayMessage());
