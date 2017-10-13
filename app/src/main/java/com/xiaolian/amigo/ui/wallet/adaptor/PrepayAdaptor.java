@@ -51,12 +51,18 @@ public class PrepayAdaptor extends CommonAdapter<PrepayAdaptor.OrderWrapper> {
         Integer status;
         // 原始订单内容，供查询订单详情时使用
         Order order;
+        // 设备mac地址
+        String macAddress;
+        // 设备地址
+        String location;
 
         public OrderWrapper(Order order) {
             this.order = order;
             this.type = order.getDeviceType();
             if (Device.getDevice(order.getDeviceType()) != null) {
                 this.device = Device.getDevice(order.getDeviceType()).getDesc() + "：" + order.getDeviceNo();
+                this.macAddress = order.getMacAddress();
+                this.location = order.getLocation();
             } else {
                 this.device = "未知设备";
             }

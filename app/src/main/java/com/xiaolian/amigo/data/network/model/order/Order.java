@@ -48,4 +48,6 @@ public class Order implements Serializable {
     private Integer waterUsage;
     // 找零
     private String odd;
+    // 设备mac地址
+    private String macAddress;
 }

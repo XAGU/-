@@ -1,8 +1,13 @@
 package com.xiaolian.amigo.ui.wallet;
 
+import android.content.Intent;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.enumeration.Device;
+import com.xiaolian.amigo.ui.device.dispenser.DispenserActivity;
+import com.xiaolian.amigo.ui.device.heater.HeaterActivity;
+import com.xiaolian.amigo.ui.main.MainActivity;
 import com.xiaolian.amigo.ui.wallet.adaptor.PrepayAdaptor;
 import com.xiaolian.amigo.ui.wallet.intf.IPrepayOrderPresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IPrepayOrderView;
@@ -13,6 +18,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * 待找零账单
@@ -79,5 +85,21 @@ public class PrepayOrderActivity extends WalletBaseActivity implements IPrepayOr
     @Override
     protected int setLayout() {
         return R.layout.activity_prepay_order;
+    }
+
+    // 前往结算订单
+    @OnClick(R.id.bt_ok)
+    public void settleOrder() {
+        String macAddress = orderWrapper.getMacAddress();
+        String location = orderWrapper.getLocation();
+        Intent intent = null;
+        if(Device.getDevice(orderWrapper.getType()) == Device.HEARTER) {
+            intent = new Intent(this, HeaterActivity.class);
+        }else {
+            intent = new Intent(this, DispenserActivity.class);
+        }
+        intent.putExtra(MainActivity.INTENT_KEY_LOCAION, location);
+        intent.putExtra(MainActivity.INTENT_KEY_MAC_ADDRESS, macAddress);
+        startActivity(intent);
     }
 }
