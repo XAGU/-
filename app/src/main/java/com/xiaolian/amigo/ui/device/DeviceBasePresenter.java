@@ -102,7 +102,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     // 预结账标识(预结账状态时，结账后继续正常用水，非预结账状态时，结账后跳转账单详情页)
     private volatile boolean precheckFlag = false;
     // 订单id
-    private long orderId;
+    private Long orderId;
     // 订单状态
     private UnsettledOrderStatusCheckRespDTO orderStatus;
     // 订单状态信号量
@@ -110,7 +110,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     // 页面当前跳转跳转步骤 1-支付页， 2-结账页
     private TradeStep step;
     // 纯结账标识，直接连接跳转至第二页结账
-    boolean purelyCheckoutFlag = false;
+    private boolean purelyCheckoutFlag = false;
 
     public DeviceBasePresenter(IBleDataManager bleDataManager, ITradeDataManager tradeDataManager, IOrderDataManager orderDataManager, ISharedPreferencesHelp sharedPreferencesHelp) {
         super();
@@ -118,6 +118,25 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         this.tradeDataManager = tradeDataManager;
         this.orderDataManager = orderDataManager;
         this.sharedPreferencesHelp = sharedPreferencesHelp;
+    }
+
+    @Override
+    public void resetContext() {
+        currentMacAddress = null;
+        reconnect = false;
+        connectCmd = null;
+        openCmd = null;
+        closeCmd = null;
+        precheckCmd = null;
+        checkoutCmd = null;
+        reconnectNextCmd = null;
+        reopenNextCmd = null;
+        precheckFlag = false;
+        orderId = null;
+        orderStatus = null;
+        purelyCheckoutFlag = false;
+        step = null;
+        purelyCheckoutFlag = false;
     }
 
     @Override

@@ -523,7 +523,13 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
                 }
                 // 设置设备位置
                 tv_device_name.setText(chosenLocation);
-                // TODO: 重新连接设备
+
+                // 重新连接设备
+                showConnecting();
+                presenter.clearObservers(); // 清空旧连接
+                presenter.resetSubscriptions(); // 此步骤非常重要，不加会造成重连请求掉进黑洞的现象
+                presenter.resetContext();
+                presenter.onConnect(chosenMacAddress);
             }
         }
     }

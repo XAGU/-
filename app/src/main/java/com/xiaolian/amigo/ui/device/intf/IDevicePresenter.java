@@ -51,4 +51,10 @@ public interface IDevicePresenter<V extends IBaseView> extends IBasePresenter<V>
 
     // 获取当前页面操作步骤
     TradeStep getStep();
+
+    // 重置请求
+    void resetSubscriptions();
+
+    // 重置上下文内容
+    void resetContext();
 }
