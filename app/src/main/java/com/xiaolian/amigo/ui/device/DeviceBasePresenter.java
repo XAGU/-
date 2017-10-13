@@ -21,6 +21,7 @@ import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
 import com.xiaolian.amigo.data.manager.intf.ITradeDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.CmdResultReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.request.ConnectCommandReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.PayReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.UnsettledOrderStatusCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.CmdResultRespDTO;
@@ -101,7 +102,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     // 预结账标识(预结账状态时，结账后继续正常用水，非预结账状态时，结账后跳转账单详情页)
     private volatile boolean precheckFlag = false;
     // 订单id
-    private long orderId;
+    private Long orderId;
     // 订单状态
     private UnsettledOrderStatusCheckRespDTO orderStatus;
     // 订单状态信号量
@@ -109,7 +110,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     // 页面当前跳转跳转步骤 1-支付页， 2-结账页
     private TradeStep step;
     // 纯结账标识，直接连接跳转至第二页结账
-    boolean purelyCheckoutFlag = false;
+    private boolean purelyCheckoutFlag = false;
 
     public DeviceBasePresenter(IBleDataManager bleDataManager, ITradeDataManager tradeDataManager, IOrderDataManager orderDataManager, ISharedPreferencesHelp sharedPreferencesHelp) {
         super();
@@ -120,11 +121,33 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     }
 
     @Override
+    public void resetContext() {
+        currentMacAddress = null;
+        reconnect = false;
+        connectCmd = null;
+        openCmd = null;
+        closeCmd = null;
+        precheckCmd = null;
+        checkoutCmd = null;
+        reconnectNextCmd = null;
+        reopenNextCmd = null;
+        precheckFlag = false;
+        orderId = null;
+        orderStatus = null;
+        purelyCheckoutFlag = false;
+        step = null;
+        purelyCheckoutFlag = false;
+    }
+
+    @Override
     public void onConnect(@NonNull String macAddress) {
+
+        // 设备连接上存储mac地址供后续读写数据使用
+        currentMacAddress = macAddress;
 
         // 1、网络请求获取握手指令
         if (null == connectCmd) {
-            getConnectCommand();
+            getConnectCommand(macAddress);
         }
         // 检测当前用户对该设备订单使用状态
         checkOrderStatus(macAddress);
@@ -180,8 +203,6 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     @Override
                     public void onNext(BluetoothGattCharacteristic characteristic) {
                         Log.i(TAG, "设备连接成功！");
-                        // 设备连接上存储mac地址供后续读写数据使用
-                        currentMacAddress = macAddress;
 
                         // 蓝牙已启用
                         handleBleAdaptorClose.set(false);
@@ -361,7 +382,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             // 查询订单状态
             waitOrderCheckResult();
 
-            String savedConnectCmd = sharedPreferencesHelp.getConnectCmd();
+            String savedConnectCmd = sharedPreferencesHelp.getConnectCmd(currentMacAddress);
             if (null != savedConnectCmd && null != orderStatus && orderStatus.isLessThanThreeHours()) {  // 三小时之内拿上次连接的握手指令（这里待验证是否有影响）
                 orderId = orderStatus.getOrderId();
                 onWrite(savedConnectCmd);
@@ -472,14 +493,16 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     }
 
     // 网络请求获取握手连接指令
-    private void getConnectCommand() {
-        addObserver(tradeDataManager.getConnectCommand(), new NetworkObserver<ApiResult<ConnectCommandRespDTO>>() {
+    private void getConnectCommand(String macAddress) {
+        ConnectCommandReqDTO reqDTO = new ConnectCommandReqDTO();
+        reqDTO.setMacAddress(macAddress);
+        addObserver(tradeDataManager.getConnectCommand(reqDTO), new NetworkObserver<ApiResult<ConnectCommandRespDTO>>() {
             @Override
             public void onReady(ApiResult<ConnectCommandRespDTO> result) {
                 if (null == result.getError()) {
                     synchronized (connectCmdLock) {
                         connectCmd = result.getData().getConnectCmd();
-                        sharedPreferencesHelp.setConnectCmd(connectCmd);
+                        sharedPreferencesHelp.setConnectCmd(macAddress, connectCmd);
                         connectCmdLock.notifyAll();
                     }
                 } else {
@@ -534,8 +557,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         reopenNextCmd = nextCommand;
                         getMvpView().onConnectSuccess(TradeStep.SETTLE, orderStatus);
 
-                        connectCmd = sharedPreferencesHelp.getConnectCmd();
-                        closeCmd = sharedPreferencesHelp.getCloseCmd();
+                        connectCmd = sharedPreferencesHelp.getConnectCmd(currentMacAddress);
+                        closeCmd = sharedPreferencesHelp.getCloseCmd(currentMacAddress);
 
                         return;
                     }
@@ -556,7 +579,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     break;
                 case OPEN_VALVE:
                     closeCmd = nextCommand;
-                    sharedPreferencesHelp.setCloseCmd(closeCmd);
+                    sharedPreferencesHelp.setCloseCmd(currentMacAddress, closeCmd);
                     getMvpView().onOpen();
                     break;
                 case CLOSE_VALVE:
@@ -601,10 +624,10 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 } else { // 首次连接
                     if (null != orderStatus && OrderStatus.getOrderStatus(orderStatus.getStatus()) == OrderStatus.USING) { // 用户主动上来结账
                         getMvpView().onConnectSuccess(TradeStep.SETTLE, orderStatus);
-                        reopenNextCmd = sharedPreferencesHelp.getCloseCmd();
+                        reopenNextCmd = sharedPreferencesHelp.getCloseCmd(currentMacAddress);
 
-                        connectCmd = sharedPreferencesHelp.getConnectCmd();
-                        closeCmd = sharedPreferencesHelp.getCloseCmd();
+                        connectCmd = sharedPreferencesHelp.getConnectCmd(currentMacAddress);
+                        closeCmd = reopenNextCmd;
                     }
                 }
             }
