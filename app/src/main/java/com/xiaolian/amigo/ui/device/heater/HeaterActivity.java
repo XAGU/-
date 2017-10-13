@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.enumeration.Payment;
+import com.xiaolian.amigo.data.enumeration.TradeError;
 import com.xiaolian.amigo.data.enumeration.TradeStep;
 import com.xiaolian.amigo.data.network.model.dto.response.UnsettledOrderStatusCheckRespDTO;
 import com.xiaolian.amigo.ui.bonus.BonusActivity;
@@ -423,6 +424,11 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
             presenter.onReconnect(macAddress);
         });
         getBlePermission();
+    }
+
+    @Override
+    public void onError(TradeError tradeError) {
+        
     }
 
     @Override

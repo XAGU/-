@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.device.intf;
 
 
+import com.xiaolian.amigo.data.enumeration.TradeError;
 import com.xiaolian.amigo.data.enumeration.TradeStep;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 
@@ -8,6 +9,9 @@ import com.xiaolian.amigo.ui.base.intf.IBaseView;
  * Created by caidong on 2017/9/22.
  */
 public interface IDeviceView extends IBaseView {
+
+    // 设备操作失败
+    void onError(TradeError tradeError);
 
     // 连接设备失败
     void onConnectError();
