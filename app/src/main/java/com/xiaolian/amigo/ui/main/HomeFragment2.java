@@ -65,27 +65,40 @@ public class HomeFragment2 extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         adaptor = new HomeAdaptor(getActivity(),items);
-        adaptor.addItemViewDelegate(new HomeNormalDelegate());
-        adaptor.addItemViewDelegate(new HomeBannerDelegate(getActivity()));
-        adaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
-            @SingleClick
+        HomeNormalDelegate homeDelegate = new HomeNormalDelegate();
+        homeDelegate.setOnItemClickListener(new HomeNormalDelegate.OnItemClickListener() {
             @Override
-            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                if (items.get(position).getType() == 1) {
-                    if (items.get(position).getRes() == R.drawable.shower) {
-                        EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_HEATER));
-                    } else if (items.get(position).getRes() == R.drawable.water) {
-                        EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_DISPENSER));
-                    } else if (items.get(position).getRes() == R.drawable.lost) {
-                        EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_LOST_AND_FOUND));
-                    }
+            public void onItemClickListener(View v, int position) {
+                if (items.get(position).getRes() == R.drawable.shower) {
+                    EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_HEATER));
+                } else if (items.get(position).getRes() == R.drawable.water) {
+                    EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_DISPENSER));
+                } else if (items.get(position).getRes() == R.drawable.lost) {
+                    EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_LOST_AND_FOUND));
                 }
             }
-            @Override
-            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
-                return false;
-            }
         });
+        adaptor.addItemViewDelegate(homeDelegate);
+        adaptor.addItemViewDelegate(new HomeBannerDelegate(getActivity()));
+//        adaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+////            @SingleClick
+//            @Override
+//            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+//                if (items.get(position).getType() == 1) {
+//                    if (items.get(position).getRes() == R.drawable.shower) {
+//                        EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_HEATER));
+//                    } else if (items.get(position).getRes() == R.drawable.water) {
+//                        EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_DISPENSER));
+//                    } else if (items.get(position).getRes() == R.drawable.lost) {
+//                        EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_LOST_AND_FOUND));
+//                    }
+//                }
+//            }
+//            @Override
+//            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+//                return false;
+//            }
+//        });
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adaptor);
         LayoutAnimationController animation = AnimationUtils

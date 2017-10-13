@@ -43,6 +43,7 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
     private TextView tv_toolbar_sub_title;
     protected int page = Constant.PAGE_START_NUM;
     private SmartRefreshLayout refreshLayout;
+    private boolean autoRefresh = true;
 
 
     @Override
@@ -78,7 +79,17 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
         refreshLayout.setRefreshHeader(new RefreshLayoutHeader(this));
         refreshLayout.setRefreshFooter(new RefreshLayoutFooter(this));
         refreshLayout.setReboundDuration(200);
-        refreshLayout.autoRefresh(0);
+        if (autoRefresh) {
+            refreshLayout.autoRefresh(0);
+        }
+    }
+
+    protected void setAutoRefresh(boolean autoRefresh) {
+        this.autoRefresh = autoRefresh;
+    }
+
+    protected SmartRefreshLayout getRefreshLayout() {
+        return refreshLayout;
     }
 
     protected RecyclerView getRecyclerView() {

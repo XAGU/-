@@ -130,4 +130,5 @@
     <string name="device_busy_btn">切换宿舍</string>
     <string name="device_broken_btn_1">联系客服</string>
     <string name="device_broken_btn_2">前往报修</string>
+    <string name="nearby_dispenser">附近的饮水机</string>
 </resources>
