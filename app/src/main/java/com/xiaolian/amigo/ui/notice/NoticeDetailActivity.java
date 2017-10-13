@@ -1,11 +1,16 @@
 package com.xiaolian.amigo.ui.notice;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.ui.base.BaseActivity;
+import com.xiaolian.amigo.data.enumeration.Notice;
 import com.xiaolian.amigo.ui.base.BaseToolBarActivity;
+import com.xiaolian.amigo.ui.notice.adaptor.NoticeAdaptor;
+import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.util.TimeUtils;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * <p>
@@ -13,15 +18,28 @@ import com.xiaolian.amigo.ui.base.BaseToolBarActivity;
  */
 
 public class NoticeDetailActivity extends BaseToolBarActivity {
+    NoticeAdaptor.NoticeWapper noticeWapper;
+    @BindView(R.id.tv_content)
+    TextView tv_content;
+
+    @BindView(R.id.tv_time)
+    TextView tv_time;
 
     @Override
     protected void initInject() {
-
     }
 
     @Override
     protected void initView() {
-
+        ButterKnife.bind(this);
+        if (noticeWapper != null) {
+            Notice notice = Notice.getNotice(noticeWapper.getType());
+            setToolBarTitle(notice.getDesc());
+            tv_content.setText(noticeWapper.getContent());
+            tv_time.setText(
+                    TimeUtils.convertTimestampToFormat(noticeWapper.getCreateTime())
+                + "/" + TimeUtils.millis2String(noticeWapper.getCreateTime(), TimeUtils.MY_TIME_FORMAT));
+        }
     }
 
     @Override
@@ -36,6 +54,8 @@ public class NoticeDetailActivity extends BaseToolBarActivity {
 
     @Override
     protected void setUp() {
-
+        noticeWapper = (NoticeAdaptor.NoticeWapper) getIntent().getSerializableExtra(Constant.EXTRA_KEY);
     }
+
+
 }

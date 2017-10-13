@@ -490,12 +490,6 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
 
         // 默认显示连接中状态
         showConnecting();
-//        tv_water_right.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//               showStep1();
-//            }
-//        }, 3000);
     }
 
     @Override

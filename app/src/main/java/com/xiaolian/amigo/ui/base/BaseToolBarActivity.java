@@ -52,7 +52,9 @@ public abstract class BaseToolBarActivity extends BaseActivity {
 
     protected void initToolBar() {
         tv_toolbar_title = (TextView) findViewById(R.id.tv_toolbar_title);
-        setToolBarTitle(setTitle());
+        if (setTitle() != 0) {
+            setToolBarTitle(setTitle());
+        }
     }
 
     protected abstract @StringRes int setTitle();
