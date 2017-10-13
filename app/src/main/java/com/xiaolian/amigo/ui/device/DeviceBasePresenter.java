@@ -3,6 +3,7 @@ package com.xiaolian.amigo.ui.device;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
+import android.os.CountDownTimer;
 import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -15,6 +16,7 @@ import com.xiaolian.amigo.data.enumeration.BleErrorType;
 import com.xiaolian.amigo.data.enumeration.Command;
 import com.xiaolian.amigo.data.enumeration.OrderStatus;
 import com.xiaolian.amigo.data.enumeration.Payment;
+import com.xiaolian.amigo.data.enumeration.TradeError;
 import com.xiaolian.amigo.data.enumeration.TradeStep;
 import com.xiaolian.amigo.data.manager.intf.IBleDataManager;
 import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
@@ -111,6 +113,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     private TradeStep step;
     // 纯结账标识，直接连接跳转至第二页结账
     private boolean purelyCheckoutFlag = false;
+    // 正在连接标识
+    private boolean connecting = true;
 
     public DeviceBasePresenter(IBleDataManager bleDataManager, ITradeDataManager tradeDataManager, IOrderDataManager orderDataManager, ISharedPreferencesHelp sharedPreferencesHelp) {
         super();
@@ -141,6 +145,26 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
     @Override
     public void onConnect(@NonNull String macAddress) {
+
+        // 重置正在连接标识
+        connecting = true;
+        // 启动30s倒计时
+        final CountDownTimer timer = new CountDownTimer(30 * 1000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                if (!connecting) {
+                    this.cancel();
+                }
+            }
+
+            @Override
+            public void onFinish() {
+                clearObservers();
+                resetSubscriptions();
+                getMvpView().onError(TradeError.CONNECT_ERROR_1);
+            }
+        };
+        timer.start();
 
         // 设备连接上存储mac地址供后续读写数据使用
         currentMacAddress = macAddress;
@@ -349,8 +373,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     }
                 }, Schedulers.io());
 
-        safeWait(500);
-
+        connecting = false;
         handleConnectError.set(false);
 
         if (reconnect) {
@@ -437,7 +460,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             clearObservers();
 
             // 跳转至连接失败页面
-            getMvpView().post(() -> getMvpView().onConnectError());
+            getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
         }
 
         // 处理蓝牙在用水过程中被用户恶意关闭
@@ -639,6 +662,11 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
     @Override
     public void onPay(int method, Integer prepay, Long bonusId) {
+        // 校验网络
+        if (!getMvpView().isNetworkAvailable()) {
+            getMvpView().onError(TradeError.CONNECT_ERROR_3);
+        }
+
         PayReqDTO reqDTO = new PayReqDTO();
         reqDTO.setMacAddress(currentMacAddress);
         reqDTO.setBonusId(bonusId);
@@ -664,12 +692,21 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
     @Override
     public void onClose() {
+        // 校验网络
+        if (!getMvpView().isNetworkAvailable()) {
+            getMvpView().onError(TradeError.CONNECT_ERROR_3);
+        }
+
         if (reconnect) {
             // 重连状态下指令有两种 1 - 关阀 2 - 预结账
             onWrite(reconnectNextCmd);
         } else {
             if (purelyCheckoutFlag) { // 直接跳转至第二步结算
-                onWrite(reopenNextCmd);
+                if (null == reopenNextCmd) { // 用户卸载掉app时取回的关阀指令为空
+                    getMvpView().onError(TradeError.CONNECT_ERROR_2);
+                } else {
+                    onWrite(reopenNextCmd); // 正常下发
+                }
             } else {
                 // 向设备下发关阀指令
                 onWrite(closeCmd);

@@ -75,8 +75,8 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     /**
      * 连接失败页面
      */
-    @BindView(R.id.ll_content_connect_failed)
-    LinearLayout ll_content_connect_failed;
+    @BindView(R.id.ll_error)
+    LinearLayout ll_error;
 
     /**
      * 开始使用页面
@@ -117,8 +117,8 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     /**
      * 重新连接
      */
-    @BindView(R.id.bt_reconnect)
-    Button bt_reconnect;
+//    @BindView(R.id.bt_reconnect)
+//    Button bt_reconnect;
 
     /**
      * 布局头部
@@ -416,11 +416,11 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     @Override
     public void onConnectError() {
         // 连接失败时显示重连页面
-        if (null != ll_content_normal && null != ll_content_shower && null != ll_content_unconnected && null != ll_content_connect_failed) {
+        if (null != ll_content_normal && null != ll_content_shower && null != ll_content_unconnected && null != ll_error) {
             ll_content_normal.setVisibility(View.GONE);
             ll_content_shower.setVisibility(View.GONE);
             ll_content_unconnected.setVisibility(View.GONE);
-            ll_content_connect_failed.setVisibility(View.VISIBLE);
+            ll_error.setVisibility(View.VISIBLE);
         }
     }
 
@@ -443,7 +443,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         ll_content_normal.setVisibility(View.GONE);
         ll_content_shower.setVisibility(View.GONE);
         ll_content_unconnected.setVisibility(View.GONE);
-        ll_content_connect_failed.setVisibility(View.GONE);
+        ll_error.setVisibility(View.GONE);
     }
 
     /**
@@ -488,7 +488,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     /**
      * 重新连接
      */
-    @OnClick(R.id.bt_reconnect)
+    @OnClick(R.id.bt_error_handler)
     void reconnect(Button button) {
         // 点击重连按钮时蓝牙必须为开启状态
         setBleCallback(() -> {
@@ -547,10 +547,10 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     /**
      * 重新连接
      */
-    @OnClick(R.id.bt_reconnect)
-    void onReconnectClick() {
-        dfv_dot.startAnimation();
-    }
+//    @OnClick(R.id.bt_reconnect)
+//    void onReconnectClick() {
+//        dfv_dot.startAnimation();
+//    }
 
     /**
      * 帮助
@@ -665,10 +665,20 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
     @Override
     public void onError(TradeError tradeError) {
-        v_loading.setVisibility(tradeError.isShowLoading() ? View.VISIBLE : View.GONE);
-        tv_error_title.setText(getString(tradeError.getErrorTitle()));
-        tv_error_tip.setText(getString(tradeError.getErrorTip()));
-        bt_error_handler.setText(getString(tradeError.getBtnText()));
-        bt_error_handler.setTag(tradeError.getBtnTag());
+
+        // 显示错误页面，必须加这行判断，否则在activity销毁时会报空指针错误
+        if (null != ll_content_normal && null != ll_content_shower && null != ll_content_unconnected && null != ll_error) {
+            ll_content_normal.setVisibility(View.GONE);
+            ll_content_shower.setVisibility(View.GONE);
+            ll_content_unconnected.setVisibility(View.GONE);
+            ll_error.setVisibility(View.VISIBLE);
+
+            v_loading.setVisibility(tradeError.isShowLoading() ? View.VISIBLE : View.GONE);
+            tv_error_title.setText(getString(tradeError.getErrorTitle()));
+            tv_error_tip.setText(getString(tradeError.getErrorTip()));
+            bt_error_handler.setText(getString(tradeError.getBtnText()));
+            bt_error_handler.setTag(tradeError.getBtnTag());
+        }
+
     }
 }
