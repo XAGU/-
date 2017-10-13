@@ -24,14 +24,12 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     private static final String PREF_KEY_NICKNAME = "PREF_KEY_NICKNAME";
     private static final String PREF_KEY_MOBILE = "PREF_KEY_MOBILE";
     private static final String PREF_KEY_PICTURE_URL = "PREF_KEY_PICTURE_URL";
-    private static final String PREF_CMD_CONNECT = "PREF_CMD_CONNECT";
-    private static final String PREF_CMD_CLOSE = "PREF_CMD_CLOSE";
+    private static final String PREF_CMD_CONNECT_PREFIX = "PREF_CMD_CONNECT_";
+    private static final String PREF_CMD_CLOSE_PREFIX = "PREF_CMD_CLOSE_";
 
     private String tokenHolder;
     private String deviceTokenHolder;
     private User userHolder;
-    private String connectCmdHolder;
-    private String closeCmdHolder;
 
     private boolean isShowUrgencyNotify = true;
     private int bonusAmount = 0;
@@ -147,32 +145,22 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     }
 
     @Override
-    public void setConnectCmd(String connectCmd) {
-        mSharedPreferences.edit().putString(PREF_CMD_CONNECT, connectCmd).apply();
-        connectCmdHolder = null;
+    public void setConnectCmd(String macAddress, String connectCmd) {
+        mSharedPreferences.edit().putString(PREF_CMD_CONNECT_PREFIX + macAddress, connectCmd).apply();
     }
 
     @Override
-    public String getConnectCmd() {
-        if (connectCmdHolder != null) {
-            return connectCmdHolder;
-        }
-        connectCmdHolder = mSharedPreferences.getString(PREF_CMD_CONNECT, null);
-        return connectCmdHolder;
+    public String getConnectCmd(String macAddress) {
+        return mSharedPreferences.getString(PREF_CMD_CONNECT_PREFIX + macAddress, null);
     }
 
     @Override
-    public void setCloseCmd(String closeCmd) {
-        mSharedPreferences.edit().putString(PREF_CMD_CLOSE, closeCmd).apply();
-        closeCmdHolder = null;
+    public void setCloseCmd(String macAddress, String closeCmd) {
+        mSharedPreferences.edit().putString(PREF_CMD_CLOSE_PREFIX + macAddress, closeCmd).apply();
     }
 
     @Override
-    public String getCloseCmd() {
-        if (closeCmdHolder != null) {
-            return closeCmdHolder;
-        }
-        closeCmdHolder = mSharedPreferences.getString(PREF_CMD_CLOSE, null);
-        return closeCmdHolder;
+    public String getCloseCmd(String macAddress) {
+        return mSharedPreferences.getString(PREF_CMD_CLOSE_PREFIX + macAddress, null);
     }
 }

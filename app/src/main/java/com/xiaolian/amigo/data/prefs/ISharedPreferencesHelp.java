@@ -31,12 +31,12 @@ public interface ISharedPreferencesHelp {
     String getDeviceToken();
 
     // 握手指令
-    void setConnectCmd(String connectCmd);
+    void setConnectCmd(String macAddress, String connectCmd);
 
-    String getConnectCmd();
+    String getConnectCmd(String macAddress);
 
     // 关阀指令
-    void setCloseCmd(String closeCmd);
+    void setCloseCmd(String macAddress, String closeCmd);
 
-    String getCloseCmd();
+    String getCloseCmd(String macAddress);
 }
