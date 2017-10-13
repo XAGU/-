@@ -15,9 +15,8 @@ import android.widget.TextView;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.enumeration.Payment;
-import com.xiaolian.amigo.data.network.model.order.Order;
-import com.xiaolian.amigo.ui.user.ChooseDormitoryActivity;
-import com.xiaolian.amigo.ui.widget.BezierWaveView;
+import com.xiaolian.amigo.data.enumeration.TradeStep;
+import com.xiaolian.amigo.data.network.model.dto.response.UnsettledOrderStatusCheckRespDTO;
 import com.xiaolian.amigo.ui.bonus.BonusActivity;
 import com.xiaolian.amigo.ui.bonus.adaptor.BonusAdaptor;
 import com.xiaolian.amigo.ui.device.DeviceBaseActivity;
@@ -25,7 +24,9 @@ import com.xiaolian.amigo.ui.device.DeviceOrderActivity;
 import com.xiaolian.amigo.ui.device.intf.heator.IHeaterPresenter;
 import com.xiaolian.amigo.ui.device.intf.heator.IHeaterView;
 import com.xiaolian.amigo.ui.main.MainActivity;
+import com.xiaolian.amigo.ui.user.ChooseDormitoryActivity;
 import com.xiaolian.amigo.ui.wallet.RechargeActivity;
+import com.xiaolian.amigo.ui.widget.BezierWaveView;
 import com.xiaolian.amigo.ui.widget.DotFlashView;
 import com.xiaolian.amigo.ui.widget.dialog.ActionSheetDialog;
 import com.xiaolian.amigo.ui.widget.dialog.IOSAlertDialog;
@@ -84,6 +85,18 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
      */
     @BindView(R.id.tv_shower_payed)
     TextView tv_shower_payed;
+
+    /**
+     * 小提示（上）
+     */
+    @BindView(R.id.trade_above_tip)
+    TextView trade_above_tip;
+
+    /**
+     * 小提示（下）
+     */
+    @BindView(R.id.trade_below_tip)
+    TextView trade_below_tip;
 
     /**
      * 设备连接状态
@@ -166,9 +179,6 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
      * 支付方式状态
      */
     private boolean isMoneyPay = true;
-
-    // 当前步骤，默认为第一步，1 - 确认支付页面， 2 - 结束用水页面
-    private int step = 1;
 
     @Inject
     IHeaterPresenter<IHeaterView> presenter;
@@ -265,9 +275,9 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
     }
 
     /**
-     * 显示连接完成页面
+     * 显示支付页面
      */
-    void showConnected() {
+    void showStep1() {
         hideBottomLayout();
         ll_content_normal.setVisibility(View.VISIBLE);
         if (dfv_dot != null && dfv_dot.isRunning()) {
@@ -275,18 +285,31 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
         }
     }
 
+    /**
+     * 直接跳转至结算页面
+     */
+    void showStep2(UnsettledOrderStatusCheckRespDTO orderStatus) {
+        startShower(orderStatus);
+    }
+
     @Override
-    public void onConnectSuccess() {
-        showConnected();
-        // 标记步骤为确认支付页面
-        step = 1;
+    public void onConnectSuccess(TradeStep step, Object... extra) {
+        if (TradeStep.PAY == step) {
+            showStep1();
+            // 标记步骤为确认支付页面
+            presenter.setStep(TradeStep.PAY);
+        } else { // TradeStep.SETTLE
+            showStep2((UnsettledOrderStatusCheckRespDTO) extra[0]);
+            // 标记步骤为结算找零页面
+            presenter.setStep(TradeStep.SETTLE);
+        }
     }
 
     @Override
     public void onOpen() {
-        startShower();
+        startShower(null);
         // 标记步骤为结束用水页面
-        step = 2;
+        presenter.setStep(TradeStep.SETTLE);
     }
 
     @Override
@@ -303,7 +326,7 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
     @Override
     public void onReconnectSuccess() {
         hideBottomLayout();
-        if (step == 1) {
+        if (presenter.getStep() == TradeStep.PAY) {
             // 显示确认支付页面
             ll_content_normal.setVisibility(View.VISIBLE);
         } else {
@@ -383,15 +406,36 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
         startActivity(intent);
     }
 
-    private void startShower() {
+    private void startShower(UnsettledOrderStatusCheckRespDTO orderStatus) {
         hideBottomLayout();
         ll_content_shower.setVisibility(View.VISIBLE);
 
-        if (isMoneyPay) {
-            tv_shower_payed.setText("已预付" + (Integer) tv_water_right.getTag(R.id.money_pay_amount) + "元");
+        if (null != orderStatus) {
+            if (Payment.getPayment(orderStatus.getPaymentType()) == Payment.BALANCE) {
+                tv_shower_payed.setText("已预付" + orderStatus.getExtra());
+                trade_above_tip.setText(getString(R.string.balance_pay_tip_above));
+                trade_below_tip.setText(getString(R.string.balance_pay_tip_below));
+                bt_stop_shower.setText("结算找零");
+            } else {
+                tv_shower_payed.setText("已使用" + orderStatus.getExtra());
+                trade_above_tip.setText(getString(R.string.bonus_pay_tip_above));
+                trade_below_tip.setText(getString(R.string.bonus_pay_tip_below));
+                bt_stop_shower.setText("结束用水");
+            }
         } else {
-            tv_shower_payed.setText("已使用" + tv_water_right.getText().toString());
+            if (isMoneyPay) {
+                tv_shower_payed.setText("已预付" + (Integer) tv_water_right.getTag(R.id.money_pay_amount) + "元");
+                trade_above_tip.setText(getString(R.string.balance_pay_tip_above));
+                trade_below_tip.setText(getString(R.string.balance_pay_tip_below));
+                bt_stop_shower.setText("结算找零");
+            } else {
+                tv_shower_payed.setText("已使用" + tv_water_right.getText().toString());
+                trade_above_tip.setText(getString(R.string.bonus_pay_tip_above));
+                trade_below_tip.setText(getString(R.string.bonus_pay_tip_below));
+                bt_stop_shower.setText("结束用水");
+            }
         }
+
     }
 
     private void endShower() {
@@ -449,7 +493,7 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
 //        tv_water_right.postDelayed(new Runnable() {
 //            @Override
 //            public void run() {
-//               showConnected();
+//               showStep1();
 //            }
 //        }, 3000);
     }
@@ -464,7 +508,7 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
             } else if (resultCode == RESULT_OK) {
                 choosedBonus = (BonusAdaptor.BonusWrapper) data.getExtras().getSerializable(BonusActivity.INTENT_KEY_BONUS_RESULT);
                 if (choosedBonus != null) {
-                    tv_water_right.setText(choosedBonus.getDesc());
+                    tv_water_right.setText(choosedBonus.getAmount() + "元" + choosedBonus.getName());
                     bt_pay.setEnabled(true);
                 }
             }

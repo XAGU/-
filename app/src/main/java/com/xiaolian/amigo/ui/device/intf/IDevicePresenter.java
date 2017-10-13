@@ -3,6 +3,7 @@ package com.xiaolian.amigo.ui.device.intf;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.xiaolian.amigo.data.enumeration.TradeStep;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.response.CmdResultRespDTO;
 import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
@@ -44,4 +45,10 @@ public interface IDevicePresenter<V extends IBaseView> extends IBasePresenter<V>
 
     // 设置回调操作
     void setCallback(DeviceBasePresenter.Callback callback);
+
+    // 设置当前页面操作步骤
+    void setStep(TradeStep step);
+
+    // 获取当前页面操作步骤
+    TradeStep getStep();
 }

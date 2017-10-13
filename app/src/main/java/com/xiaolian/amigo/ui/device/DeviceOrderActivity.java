@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.MvpApp;
@@ -44,6 +45,8 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
     TextView tv_amount;
     @BindView(R.id.iv_order_free)
     ImageView iv_order_free;
+    @BindView(R.id.rl_odd)
+    RelativeLayout rl_odd;
     @Inject
     IDeviceOrderPresenter<IDeviceOrderView> presenter;
 
@@ -67,9 +70,10 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
     public void setRefreshComplete(OrderDetailRespDTO respDTO) {
         if (respDTO.getPaymentType() == Payment.BALANCE.getType()) { // 余额支付
             iv_order_free.setVisibility(View.GONE);
-            tv_amount.setText(String.valueOf(respDTO.getConsume()));
-            tv_change_amount.setText(String.valueOf(respDTO.getOdd()));
+            tv_amount.setText(respDTO.getConsume());
+            tv_change_amount.setText(respDTO.getOdd());
         } else { // 红包支付
+            rl_odd.setVisibility(View.GONE);
             iv_order_free.setVisibility(View.VISIBLE);
             tv_amount.setText("0");
             tv_change_amount.setText("0");

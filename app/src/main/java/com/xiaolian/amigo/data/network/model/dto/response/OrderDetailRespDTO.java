@@ -21,10 +21,10 @@ public class OrderDetailRespDTO {
     private String location;
 
     // 找零
-    private Double odd;
+    private String odd;
 
     // 实际消费
-    private Double consume;
+    private String consume;
 
     // 支付方式
     private Integer paymentType;

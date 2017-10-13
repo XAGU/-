@@ -58,7 +58,7 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
     public BasePresenter() {
         subscriptions = new CompositeSubscription();
 
-        HandlerThread thread = new HandlerThread("BasePresenter");
+        HandlerThread thread = new HandlerThread("basepresenter");
         thread.start();
         handler = new Handler(thread.getLooper());
     }

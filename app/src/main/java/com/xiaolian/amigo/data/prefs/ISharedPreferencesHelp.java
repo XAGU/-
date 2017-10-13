@@ -29,4 +29,14 @@ public interface ISharedPreferencesHelp {
     void setDeviceToken(String deviceToken);
 
     String getDeviceToken();
+
+    // 握手指令
+    void setConnectCmd(String connectCmd);
+
+    String getConnectCmd();
+
+    // 关阀指令
+    void setCloseCmd(String closeCmd);
+
+    String getCloseCmd();
 }
