@@ -226,7 +226,7 @@
             android:layout_height="1dp"/>
 
         <Button
-            android:id="@+id/bt_reconnect"
+            android:id="@+id/bt_error_handler"
             style="@style/Rect_button"
             android:text="重新连接"
             />

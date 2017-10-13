@@ -221,7 +221,7 @@ public class DispenserActivity extends BaseActivity {
     /**
      * 重新连接
      */
-    @OnClick(R.id.bt_reconnect)
+    @OnClick(R.id.bt_error_handler)
     void onReconnectClick() {
         dfv_dot.startAnimation();
     }

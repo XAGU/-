@@ -70,9 +70,9 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
     LinearLayout ll_content_unconnected;
 
     /**
-     * 连接失败页面
+     * 失败页面
      */
-    @BindView(R.id.ll_content_connect_failed)
+    @BindView(R.id.ll_error)
     LinearLayout ll_content_connect_failed;
 
     /**
@@ -114,7 +114,7 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
     /**
      * 重新连接
      */
-    @BindView(R.id.bt_reconnect)
+    @BindView(R.id.bt_error_handler)
     Button bt_reconnect;
 
     /**
@@ -411,9 +411,9 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
     }
 
     /**
-     * 重新连接
+     * 统一异常处理
      */
-    @OnClick(R.id.bt_reconnect)
+    @OnClick(R.id.bt_error_handler)
     void reconnect(Button button) {
         // 点击重连按钮时蓝牙必须为开启状态
         setBleCallback(() -> {
@@ -472,7 +472,7 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
     /**
      * 重新连接
      */
-    @OnClick(R.id.bt_reconnect)
+    @OnClick(R.id.bt_error_handler)
     void onReconnectClick() {
         dfv_dot.startAnimation();
     }
