@@ -4,11 +4,13 @@ import android.text.TextUtils;
 
 import com.xiaolian.amigo.data.manager.intf.IMainDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.dto.request.DeviceCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.OrderReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.QueryDeviceListReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.QueryTimeValidReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.ReadNotifyReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.DeviceCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.OrderRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryDeviceListRespDTO;
@@ -16,6 +18,7 @@ import com.xiaolian.amigo.data.network.model.dto.response.QuerySchoolBizListResp
 import com.xiaolian.amigo.data.network.model.dto.response.QueryTimeValidRespDTO;
 import com.xiaolian.amigo.data.network.model.user.User;
 import com.xiaolian.amigo.ui.base.BasePresenter;
+import com.xiaolian.amigo.ui.device.dispenser.DispenserActivity;
 import com.xiaolian.amigo.ui.device.heater.HeaterActivity;
 import com.xiaolian.amigo.ui.main.intf.IMainPresenter;
 import com.xiaolian.amigo.ui.main.intf.IMainView;
@@ -103,11 +106,11 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
                         if (deviceType == 1) {
                             getHeaterDeviceMacAddress();
                         } else if (deviceType == 2) {
-                            getMvpView().gotoDevice(clz);
+                            getMvpView().gotoDevice(DispenserActivity.class);
                         }
                     } else {
                         getMvpView().showTimeValidDialog(result.getData().getTitle(),
-                                result.getData().getRemark(), clz, deviceType);
+                                result.getData().getRemark(), deviceType);
                     }
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
@@ -205,6 +208,23 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
             public void onReady(ApiResult<OrderRespDTO> result) {
                 if (null == result.getError()) {
                     getMvpView().showPrepayOrder(result.getData().getOrders());
+                }
+            }
+        });
+    }
+
+    @Override
+    public void checkDeviceUsage(int type) {
+        DeviceCheckReqDTO reqDTO = new DeviceCheckReqDTO();
+        reqDTO.setDeviceType(type);
+        addObserver(manager.checkDeviceUseage(reqDTO), new NetworkObserver<ApiResult<DeviceCheckRespDTO>>() {
+
+            @Override
+            public void onReady(ApiResult<DeviceCheckRespDTO> result) {
+                if (null == result.getError()) {
+                    getMvpView().showDeviceUsageDialog(type, result.getData());
+                } else {
+                    getMvpView().onError(result.getError().getDisplayMessage());
                 }
             }
         });

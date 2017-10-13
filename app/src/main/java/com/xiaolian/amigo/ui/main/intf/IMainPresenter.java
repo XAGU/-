@@ -36,4 +36,5 @@ public interface IMainPresenter<V extends IMainView> extends IBasePresenter<V> {
     // 请求待找零订单
     void getPrepayOrder();
 
+    void checkDeviceUsage(int type);
 }

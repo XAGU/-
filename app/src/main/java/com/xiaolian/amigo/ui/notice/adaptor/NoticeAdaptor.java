@@ -12,6 +12,7 @@ import com.xiaolian.amigo.util.TimeUtils;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
+import java.io.Serializable;
 import java.util.List;
 
 import lombok.Data;
@@ -52,7 +53,7 @@ public class NoticeAdaptor extends CommonAdapter<NoticeAdaptor.NoticeWapper> {
     }
 
     @Data
-    public static class NoticeWapper {
+    public static class NoticeWapper implements Serializable {
         private String content;
         private Long id;
         private Integer type;

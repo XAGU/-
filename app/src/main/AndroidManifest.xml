@@ -242,6 +242,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
 
+        <!--通知详情-->
+        <activity android:name=".ui.notice.NoticeDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
         <!--更换头像-->
         <activity android:name=".ui.user.EditAvatarActivity"
             android:screenOrientation="portrait"
