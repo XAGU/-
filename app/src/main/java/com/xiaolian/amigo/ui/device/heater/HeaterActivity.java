@@ -74,7 +74,7 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
      * 失败页面
      */
     @BindView(R.id.ll_error)
-    LinearLayout ll_content_connect_failed;
+    LinearLayout ll_error;
 
     /**
      * 开始使用页面
@@ -336,11 +336,11 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
     @Override
     public void onConnectError() {
         // 连接失败时显示重连页面
-        if (null != ll_content_normal && null != ll_content_shower && null != ll_content_unconnected && null != ll_content_connect_failed) {
+        if (null != ll_content_normal && null != ll_content_shower && null != ll_content_unconnected && null != ll_error) {
             ll_content_normal.setVisibility(View.GONE);
             ll_content_shower.setVisibility(View.GONE);
             ll_content_unconnected.setVisibility(View.GONE);
-            ll_content_connect_failed.setVisibility(View.VISIBLE);
+            ll_error.setVisibility(View.VISIBLE);
         }
 
         // 显示或隐藏 "切换宿舍"
@@ -369,7 +369,7 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
         ll_content_normal.setVisibility(View.GONE);
         ll_content_shower.setVisibility(View.GONE);
         ll_content_unconnected.setVisibility(View.GONE);
-        ll_content_connect_failed.setVisibility(View.GONE);
+        ll_error.setVisibility(View.GONE);
     }
 
     /**
