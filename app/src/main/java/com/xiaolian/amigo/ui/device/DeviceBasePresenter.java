@@ -369,7 +369,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     // TODO 查询不到订单状态，此种状态不应发生
                 } else {
                     if (OrderStatus.getOrderStatus(orderStatus.getStatus()) == OrderStatus.FINISHED) { // 订单已结单
-                        // TODO 跳转订单完成页面
+                        getMvpView().onFinish(orderStatus.getOrderId()); // 跳转订单详情页
                     } else { // 未结单
                         // 重连状态下继续下发握手指令
                         // 1、如果设备没有长按结束用水按钮，握手会失败，但连接不会被设备中断，继续下发关阀指令走结账流程即可
@@ -382,10 +382,11 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             // 查询订单状态
             waitOrderCheckResult();
 
-            String savedConnectCmd = sharedPreferencesHelp.getConnectCmd(currentMacAddress);
-            if (null != savedConnectCmd && null != orderStatus && orderStatus.isLessThanThreeHours()) {  // 三小时之内拿上次连接的握手指令（这里待验证是否有影响）
+            // String savedConnectCmd = sharedPreferencesHelp.getConnectCmd(currentMacAddress);
+            // Log.i(TAG, "获取已保存的握手指令：" + savedConnectCmd);
+            if (null != orderStatus && orderStatus.isLessThanThreeHours()) {  // 三小时之内拿上次连接的握手指令（这里待验证是否有影响）
                 orderId = orderStatus.getOrderId();
-                onWrite(savedConnectCmd);
+                onWrite(connectCmd);
                 purelyCheckoutFlag = true;
             } else {
                 // 握手连接
@@ -415,7 +416,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             synchronized (orderStatusLock) {
                 if (null == orderStatus) {
                     try {
-                        orderStatusLock.wait(5000);
+                        orderStatusLock.wait();
                     } catch (InterruptedException e) {
                         Log.wtf(TAG, e);
                     }
@@ -502,7 +503,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 if (null == result.getError()) {
                     synchronized (connectCmdLock) {
                         connectCmd = result.getData().getConnectCmd();
-                        sharedPreferencesHelp.setConnectCmd(macAddress, connectCmd);
+                        Log.i(TAG, "获取握手指令：" + connectCmd);
+                        // sharedPreferencesHelp.setConnectCmd(macAddress, connectCmd);
                         connectCmdLock.notifyAll();
                     }
                 } else {
@@ -588,13 +590,10 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     onWrite(checkoutCmd);
                     break;
                 case CHECK_OUT:
-                    if (!precheckFlag) {
-                        // 当前为非预结账状态，结账完毕后跳转账单详情页
-                        getMvpView().onFinish(orderId);
-                    } else if (purelyCheckoutFlag) {
+                    if (purelyCheckoutFlag) {
                         // 纯结账操作，直接跳转至第二步结账，结账完毕跳转账单详情页面
                         getMvpView().onFinish(orderId);
-                    } else {
+                    } else if (precheckFlag) {
                         // 当前为预结账状态，结账完毕后关闭更改标识
                         precheckFlag = false;
                         if (reconnect) {
@@ -604,6 +603,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                             // 非重连状态下，是主动帮别人结账，此时用户还未进入用水流程，需要再次握手，否则会报设备使用次数不对
                             onWrite(connectCmd);
                         }
+                    } else {
+                        // 当前为非预结账状态，结账完毕后跳转账单详情页
+                        getMvpView().onFinish(orderId);
                     }
                     break;
                 case PRE_CHECK:
