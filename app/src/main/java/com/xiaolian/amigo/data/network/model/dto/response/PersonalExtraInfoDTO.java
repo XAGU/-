@@ -13,11 +13,12 @@ import lombok.Data;
  */
 @Data
 public class PersonalExtraInfoDTO {
-    private Integer balance;
+    private String balance;
     private List<String> banners;
     private Integer bonusAmount;
     private Integer notifyAmount;
     private Integer prepay;
     private Long repair;
+    private Long lastRepairTime;
     private Notify urgentNotify;
 }

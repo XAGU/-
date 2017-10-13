@@ -50,7 +50,7 @@ public class ChooseDispenserActivity extends DeviceBaseListActivity implements I
             public void onItemClick(View view, int position) {
                 startActivity(new Intent(getApplicationContext(), DispenserActivity.class)
                         .putExtra(MainActivity.INTENT_KEY_MAC_ADDRESS, items.get(position).getDevice().getMacAddress())
-                        .putExtra(MainActivity.INTENT_KEY_LOCAION, items.get(position).getDevice().getLocation()));
+                        .putExtra(MainActivity.INTENT_KEY_LOCATION, items.get(position).getDevice().getLocation()));
             }
         });
         recyclerView.setAdapter(adaptor);

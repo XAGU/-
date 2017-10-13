@@ -1,6 +1,8 @@
 package com.xiaolian.amigo.data.enumeration;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.ui.device.dispenser.DispenserActivity;
+import com.xiaolian.amigo.ui.device.heater.HeaterActivity;
 
 /**
  * 设备类型
@@ -19,6 +21,11 @@ public enum Device {
         public int getDrawableRes() {
             return R.drawable.shower;
         }
+
+        @Override
+        public Class getClz() {
+            return HeaterActivity.class;
+        }
     }, DISPENSER(2, "饮水机") {
         @Override
         public int getColorRes() {
@@ -28,6 +35,11 @@ public enum Device {
         @Override
         public int getDrawableRes() {
             return R.drawable.water;
+        }
+
+        @Override
+        public Class getClz() {
+            return DispenserActivity.class;
         }
     };
 
@@ -60,6 +72,8 @@ public enum Device {
     public abstract int getColorRes();
 
     public abstract int getDrawableRes();
+
+    public abstract Class getClz();
 
     public static Device getDevice(int type) {
         for (Device device : Device.values()) {
