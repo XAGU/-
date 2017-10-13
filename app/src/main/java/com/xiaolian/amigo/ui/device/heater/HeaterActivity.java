@@ -428,7 +428,7 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
 
     @Override
     public void onError(TradeError tradeError) {
-        
+
     }
 
     @Override
