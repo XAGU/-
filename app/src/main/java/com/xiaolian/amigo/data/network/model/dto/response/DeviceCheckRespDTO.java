@@ -12,6 +12,7 @@ public class DeviceCheckRespDTO {
     // 是否存在2小时内未找零的账单
     private Boolean existsUnsettledOrder;
     private String macAddress;
+    private String location;
     private String remark;
     private Boolean timeValid;
     private String title;

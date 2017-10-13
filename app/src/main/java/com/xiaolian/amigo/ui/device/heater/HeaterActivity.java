@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -121,6 +122,15 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
      */
     @BindView(R.id.rl_header)
     RelativeLayout rl_header;
+
+    /**
+     * 帮助按钮
+     */
+    @BindView(R.id.iv_collect)
+    ImageView iv_help;
+
+    @BindView(R.id.tv_sub_title)
+    TextView tv_sub_title;
 
     /**
      * 余额支付
@@ -292,6 +302,11 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
         startShower(orderStatus);
     }
 
+    private void toggleSubTitle(boolean visible) {
+        tv_sub_title.setVisibility(visible ?
+                View.VISIBLE : View.GONE);
+    }
+
     @Override
     public void onConnectSuccess(TradeStep step, Object... extra) {
         if (TradeStep.PAY == step) {
@@ -303,6 +318,9 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
             // 标记步骤为结算找零页面
             presenter.setStep(TradeStep.SETTLE);
         }
+
+        // 显示或隐藏 "切换宿舍"
+        toggleSubTitle(presenter.getStep() == TradeStep.PAY);
     }
 
     @Override
@@ -321,6 +339,9 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
             ll_content_unconnected.setVisibility(View.GONE);
             ll_content_connect_failed.setVisibility(View.VISIBLE);
         }
+
+        // 显示或隐藏 "切换宿舍"
+        toggleSubTitle(presenter.getStep() == TradeStep.PAY);
     }
 
     @Override
@@ -333,6 +354,9 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
             // 显示结束用水页面
             ll_content_shower.setVisibility(View.VISIBLE);
         }
+
+        // 显示或隐藏 "切换宿舍"
+        toggleSubTitle(presenter.getStep() == TradeStep.PAY);
     }
 
     /**
@@ -451,6 +475,13 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
         dfv_dot.startAnimation();
     }
 
+    /**
+     * 帮助
+     */
+    @OnClick(R.id.iv_collect)
+    void onHelpClick() {
+        // TODO: H5 帮助
+    }
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
@@ -477,6 +508,8 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
         } else {
             macAddress = "08:7C:BE:E1:FD:3B";
         }
+        // 设置右上角图标为帮助icon
+        iv_help.setImageResource(R.drawable.ic_question);
         // 连接蓝牙设备
         presenter.onConnect(macAddress);
     }

@@ -22,10 +22,10 @@
             layout="@layout/view_device_toolbar"
             />
         <TextView
+            android:id="@+id/tv_sub_title"
             android:layout_below="@id/toolbar"
             android:textSize="12sp"
-            android:visibility="gone"
-            android:text="已连接热水器：ZLG9021P"
+            android:text="切换宿舍"
             android:textColor="#8fff"
             android:gravity="center"
             android:layout_width="match_parent"
