@@ -27,7 +27,6 @@ import com.xiaolian.amigo.data.network.model.dto.response.DeviceCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.order.Order;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
 import com.xiaolian.amigo.ui.device.dispenser.DispenserActivity;
-import com.xiaolian.amigo.ui.device.heater.HeaterActivity;
 import com.xiaolian.amigo.ui.login.LoginActivity;
 import com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity;
 import com.xiaolian.amigo.ui.main.adaptor.HomeAdaptor;
@@ -36,7 +35,6 @@ import com.xiaolian.amigo.ui.main.intf.IMainView;
 import com.xiaolian.amigo.ui.notice.NoticeListActivity;
 import com.xiaolian.amigo.ui.user.EditProfileActivity;
 import com.xiaolian.amigo.ui.wallet.PrepayActivity;
-import com.xiaolian.amigo.ui.wallet.adaptor.PrepayAdaptor;
 import com.xiaolian.amigo.ui.widget.dialog.AvailabilityDialog;
 import com.xiaolian.amigo.ui.widget.dialog.NoticeAlertDialog;
 import com.xiaolian.amigo.ui.widget.dialog.PrepayDialog;
@@ -54,6 +52,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import lombok.Data;
 
 import static com.xiaolian.amigo.data.enumeration.Device.DISPENSER;
 import static com.xiaolian.amigo.data.enumeration.Device.HEARTER;
@@ -581,7 +580,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(Event event) {
-        switch (event) {
+        switch (event.getType()) {
             case GOTO_HEATER:
                 gotoHeater();
                 break;
@@ -591,20 +590,37 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             case GOTO_LOST_AND_FOUND:
                 gotoLostAndFound();
                 break;
+            case START_ACTIVITY:
+                startActivity((Class) event.getObject());
+                break;
         }
     }
 
-    public enum Event {
-        GOTO_HEATER(1, null),
-        GOTO_DISPENSER(2, null),
-        GOTO_LOST_AND_FOUND(3, null);
+    @Data
+    public static class Event {
+        EventType type;
+        Object object;
 
-        private int type;
-        private Object object;
-
-        Event(int type, Object object) {
+        public Event(EventType type, Object object) {
             this.type = type;
             this.object = object;
         }
+
+        public Event(EventType type) {
+            this.type = type;
+        }
+
+        public enum EventType {
+            GOTO_HEATER(1),
+            GOTO_DISPENSER(2),
+            GOTO_LOST_AND_FOUND(3),
+            START_ACTIVITY(4)
+            ;
+            private int type;
+            EventType(int type) {
+                this.type = type;
+            }
+        }
     }
+
 }

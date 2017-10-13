@@ -216,8 +216,14 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
 
     @Override
     public void showEmptyView() {
+        showEmptyView(R.color.colorBackgroundGray);
+    }
+
+    @Override
+    public void showEmptyView(int colorRes) {
         if (page == Constant.PAGE_START_NUM) {
             rl_empty.setVisibility(View.VISIBLE);
+            rl_empty.setBackgroundResource(colorRes);
         }
     }
 
@@ -228,7 +234,13 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
 
     @Override
     public void showErrorView() {
+        showErrorView(R.color.colorBackgroundGray);
+    }
+
+    @Override
+    public void showErrorView(int colorRes) {
         rl_error.setVisibility(View.VISIBLE);
+        rl_error.setBackgroundResource(colorRes);
     }
 
     @Override
