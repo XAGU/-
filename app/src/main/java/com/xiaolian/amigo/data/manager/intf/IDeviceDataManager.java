@@ -1,10 +1,5 @@
 package com.xiaolian.amigo.data.manager.intf;
 
-import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.dto.response.PersonalWalletDTO;
-
-import rx.Observable;
-
 /**
  * 设备数据管理
  * <p>
@@ -16,6 +11,4 @@ public interface IDeviceDataManager {
 
     int getBonusAmount();
 
-    // 获取余额
-    Observable<ApiResult<PersonalWalletDTO>> queryWallet();
 }
