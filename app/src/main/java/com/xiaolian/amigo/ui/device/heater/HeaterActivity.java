@@ -524,7 +524,10 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
      */
     @OnClick(R.id.tv_device_name)
     public void changeDormitory() {
-        startActivityForResult(new Intent(this, ChooseDormitoryActivity.class), CHOOSE_DORMITORY_CODE);
+        // 只有在step为1时才能更换宿舍
+        if (step == 1) {
+            startActivityForResult(new Intent(this, ChooseDormitoryActivity.class), CHOOSE_DORMITORY_CODE);
+        }
     }
 
     @Override

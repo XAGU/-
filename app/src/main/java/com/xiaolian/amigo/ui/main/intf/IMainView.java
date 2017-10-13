@@ -1,5 +1,7 @@
 package com.xiaolian.amigo.ui.main.intf;
 
+import com.xiaolian.amigo.data.enumeration.Device;
+import com.xiaolian.amigo.data.network.model.dto.response.DeviceCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.order.Order;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
@@ -15,7 +17,7 @@ import java.util.List;
 public interface IMainView extends IBaseView {
     void showNoticeAmount(Integer amount);
 
-    void showTimeValidDialog(String title, String remark, Class clz, int deviceType);
+    void showTimeValidDialog(String title, String remark, int deviceType);
 
     void gotoDevice(Class clz);
 
@@ -30,4 +32,6 @@ public interface IMainView extends IBaseView {
     void showSchoolBiz(List<BriefSchoolBusiness> businesses);
 
     void showPrepayOrder(List<Order> orders);
+
+    void showDeviceUsageDialog(int type, DeviceCheckRespDTO data);
 }

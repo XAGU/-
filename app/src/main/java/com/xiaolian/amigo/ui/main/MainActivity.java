@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
+import com.xiaolian.amigo.data.network.model.dto.response.DeviceCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.order.Order;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
 import com.xiaolian.amigo.ui.device.dispenser.DispenserActivity;
@@ -34,8 +35,11 @@ import com.xiaolian.amigo.ui.main.intf.IMainPresenter;
 import com.xiaolian.amigo.ui.main.intf.IMainView;
 import com.xiaolian.amigo.ui.notice.NoticeListActivity;
 import com.xiaolian.amigo.ui.user.EditProfileActivity;
+import com.xiaolian.amigo.ui.wallet.PrepayActivity;
+import com.xiaolian.amigo.ui.wallet.adaptor.PrepayAdaptor;
 import com.xiaolian.amigo.ui.widget.dialog.AvailabilityDialog;
 import com.xiaolian.amigo.ui.widget.dialog.NoticeAlertDialog;
+import com.xiaolian.amigo.ui.widget.dialog.PrepayDialog;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.youth.banner.Banner;
 
@@ -106,6 +110,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     private boolean hasBanners;
     List<BriefSchoolBusiness> businesses;
     private AvailabilityDialog availabilityDialog;
+    private int heaterOrderSize;
+    private int dispenserOrderSize;
+    private PrepayDialog prepayDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -339,7 +346,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     }
 
     @Override
-    public void showTimeValidDialog(String title, String remark, Class clz, int deviceType) {
+    public void showTimeValidDialog(String title, String remark, int deviceType) {
         if (null == availabilityDialog) {
             availabilityDialog = new AvailabilityDialog(this);
         }
@@ -353,7 +360,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             if (deviceType == 1) {
                 presenter.getHeaterDeviceMacAddress();
             } else {
-                startActivity(clz);
+                startActivity(DispenserActivity.class);
             }
         });
         availabilityDialog.show();
@@ -417,7 +424,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public void showPrepayOrder(List<Order> orders) {
-        int heaterOrderSize = 0;
+        heaterOrderSize = 0;
         for (Order order : orders) {
             heaterOrderSize += CommonUtil.equals(order.getDeviceType(), 1) ? 1 : 0;
         }
@@ -428,7 +435,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.PREPAY_ORDER,
                     itemWrapper));
         }
-        int dispenserOrderSize = 0;
+        dispenserOrderSize = 0;
         for (Order order : orders) {
             dispenserOrderSize += CommonUtil.equals(order.getDeviceType(), 2) ? 1 : 0;
         }
@@ -439,6 +446,66 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.PREPAY_ORDER,
                     itemWrapper));
         }
+    }
+
+    @Override
+    public void showDeviceUsageDialog(int type, DeviceCheckRespDTO data) {
+        if (data.getExistsUnsettledOrder() != null && data.getExistsUnsettledOrder()) {
+            // 1 表示热水澡 2 表示饮水机
+            if (type == 1) {
+                presenter.getHeaterDeviceMacAddress();
+            } else {
+                gotoDevice(DispenserActivity.class);
+            }
+        } else {
+            if (type == 1 && heaterOrderSize > 0) {
+                showPrepayDialog(type, heaterOrderSize, data);
+            } else if (type == 2 && dispenserOrderSize > 0) {
+                showPrepayDialog(type, dispenserOrderSize, data);
+            } else {
+                if (!data.getTimeValid()) {
+                    showTimeValidDialog(data.getTitle(), data.getRemark(), type);
+                } else {
+                    if (type == 1) {
+                        presenter.getHeaterDeviceMacAddress();
+                    } else {
+                        gotoDevice(DispenserActivity.class);
+                    }
+                }
+            }
+        }
+    }
+
+    public void showPrepayDialog(int type, int prepaySize, DeviceCheckRespDTO data) {
+        if (prepayDialog == null) {
+            prepayDialog = new PrepayDialog(this);
+        }
+        if (prepayDialog.isShowing()) {
+            return;
+        }
+        prepayDialog.setDeviceTypeAndPrepaySize(type, prepaySize);
+        prepayDialog.setOnOkClickListener(new PrepayDialog.OnOkClickListener() {
+            @Override
+            public void onOkClick(Dialog dialog) {
+                startActivity(new Intent(getApplicationContext(), PrepayActivity.class));
+            }
+        });
+        prepayDialog.setOnCancelClickListener(new PrepayDialog.OnCancelClickListener() {
+            @Override
+            public void onCancelClick(Dialog dialog) {
+                if (data.getTimeValid()) {
+                    // 1 表示热水澡 2 表示饮水机
+                    if (type == 1) {
+                        presenter.getHeaterDeviceMacAddress();
+                    } else {
+                        gotoDevice(DispenserActivity.class);
+                    }
+                } else {
+                    showTimeValidDialog(data.getTitle(), data.getRemark(), type);
+                }
+            }
+        });
+        prepayDialog.show();
     }
 
     @Override
@@ -462,11 +529,21 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         }
     }
 
+    // 设备用水检查
+    public void checkDeviceUsage(Device device) {
+        if (TextUtils.isEmpty(presenter.getToken())) {
+            startActivity(new Intent(this, LoginActivity.class));
+        } else {
+            presenter.checkDeviceUsage(device.getType());
+        }
+    }
+
     /**
      * 点击进入热水澡界面
      */
     public void gotoHeater() {
-        setBleCallback(() -> checkTimeValid(HEARTER, HeaterActivity.class));
+//        setBleCallback(() -> checkTimeValid(HEARTER, HeaterActivity.class));
+        setBleCallback(() -> checkDeviceUsage(HEARTER));
         getBlePermission();
     }
 
@@ -474,7 +551,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
      * 点击进入饮水机页面
      */
     public void gotoDispenser() {
-        setBleCallback(() -> checkTimeValid(DISPENSER, DispenserActivity.class));
+//        setBleCallback(() -> checkTimeValid(DISPENSER, DispenserActivity.class));
+        setBleCallback(() -> checkDeviceUsage(DISPENSER));
         getBlePermission();
     }
 

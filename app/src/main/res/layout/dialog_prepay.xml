@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@drawable/bg_rect_corner_dialog"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_marginTop="29dp"
+            android:id="@+id/iv_icon"
+            android:gravity="center"
+            android:src="@drawable/ic_prepay_dialog_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_marginTop="10dp"
+            android:id="@+id/tv_tip"
+            android:text="你在'热水澡'中有2笔未找零的金额"
+            android:textColor="@color/colorDark2"
+            android:layout_marginBottom="28dp"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <View
+        android:background="@color/colorDarke"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="48dp">
+        <TextView
+            android:id="@+id/tv_cancel"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:gravity="center"
+            android:textSize="12sp"
+            android:textColor="@color/colorDark9"
+            android:text="暂不处理"
+            android:layout_height="match_parent" />
+        <View
+            android:background="@color/colorDarke"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"/>
+        <TextView
+            android:id="@+id/tv_ok"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:textColor="@color/colorBlue"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:text="前往处理"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+</LinearLayout>
