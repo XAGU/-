@@ -187,6 +187,12 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     TextView tv_device_title;
 
     /**
+     * 头部icon
+     */
+    @BindView(R.id.iv_header_icon)
+    ImageView iv_header_icon;
+
+    /**
      * 预计用水量 选中项
      */
     private int mItemIndex;
@@ -232,6 +238,8 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
     private void initView() {
         setHeaderBackground(setHeaderBackgroundDrawable());
+        setHeaderIcon(setHeaderIconDrawable());
+        setTopRightIcon(setTopRightIconDrawable());
         // 默认选择预付5元
         tv_water_right.setTag(R.id.money_pay_amount, 5);
         if (bsv_wave != null && !bsv_wave.isRunning()) {
@@ -240,6 +248,19 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         // 默认显示连接中状态
         showConnecting();
     }
+
+    // 子类可重写
+    protected void setTopRightIcon(int drawableRes) {
+        iv_top_right_icon.setImageResource(drawableRes);
+    }
+
+    protected abstract int setTopRightIconDrawable();
+
+    private void setHeaderIcon(int drawableRes) {
+        iv_header_icon.setImageResource(drawableRes);
+    }
+
+    protected abstract @DrawableRes int setHeaderIconDrawable();
 
 
     // 设置头部背景
@@ -527,11 +548,11 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     }
 
     /**
-     * 帮助
+     * 右上角图标点击时间
      */
     @OnClick(R.id.iv_top_right_icon)
-    void onHelpClick() {
-        // TODO: H5 帮助
+    void onTopRightIconClick() {
+        // 子类重写实现功能
     }
 
     @Override

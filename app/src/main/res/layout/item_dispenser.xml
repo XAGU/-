@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:background="@drawable/bg_rect_gray_stroke"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:id="@+id/rl_top"
+        android:layout_width="match_parent"
+        android:layout_height="65dp">
+        <LinearLayout
+            android:layout_marginLeft="14dp"
+            android:layout_centerVertical="true"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/device_dispenser"
+                android:text="饮水机"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/tv_location"
+                android:layout_marginTop="8dp"
+                tool:text="男寝A二楼北走廊"
+                android:textSize="16sp"
+                android:textColor="@color/colorDark2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <ImageView
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="14dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/arrow_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <View
+        android:id="@+id/v_divide"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/divider"/>
+    <RelativeLayout
+        android:id="@+id/rl_bottom"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:layout_width="match_parent"
+        android:layout_height="54dp">
+        <TextView
+            android:id="@+id/tv_cold_water"
+            android:background="@drawable/bg_rect_corner_solid_blue"
+            android:textColor="#fff"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_centerVertical="true"
+            android:text="冷水"
+            android:layout_width="62dp"
+            android:layout_height="26dp" />
+
+        <TextView
+            android:id="@+id/tv_ice_water"
+            android:background="@drawable/bg_rect_corner_solid_green"
+            android:textColor="#fff"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="冰水"
+            android:layout_width="62dp"
+            android:layout_height="26dp" />
+
+        <TextView
+            android:id="@+id/tv_hot_water"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/bg_rect_corner_solid_red"
+            android:textColor="#fff"
+            android:textSize="12sp"
+            android:layout_centerVertical="true"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:text="热水"
+            android:layout_width="62dp"
+            android:layout_height="26dp" />
+    </RelativeLayout>
+
+
+
+</LinearLayout>

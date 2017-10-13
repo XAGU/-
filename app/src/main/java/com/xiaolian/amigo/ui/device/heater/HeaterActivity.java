@@ -36,6 +36,16 @@ public class HeaterActivity extends WaterDeviceBaseActivity<IHeaterPresenter> im
     }
 
     @Override
+    protected int setTopRightIconDrawable() {
+        return R.drawable.ic_question;
+    }
+
+    @Override
+    protected int setHeaderIconDrawable() {
+        return R.drawable.ic_shower;
+    }
+
+    @Override
     public IHeaterPresenter setPresenter() {
         return presenter;
     }

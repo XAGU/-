@@ -20,11 +20,13 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.xiaolian.amigo.data.manager.BleDataManager;
 import com.xiaolian.amigo.data.manager.DeviceDataManager;
+import com.xiaolian.amigo.data.manager.FavoriteManager;
 import com.xiaolian.amigo.data.manager.OrderDataManager;
 import com.xiaolian.amigo.data.manager.TradeDataManager;
 import com.xiaolian.amigo.data.manager.WalletDataManager;
 import com.xiaolian.amigo.data.manager.intf.IBleDataManager;
 import com.xiaolian.amigo.data.manager.intf.IDeviceDataManager;
+import com.xiaolian.amigo.data.manager.intf.IFavoriteManager;
 import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
 import com.xiaolian.amigo.data.manager.intf.ITradeDataManager;
 import com.xiaolian.amigo.data.manager.intf.IWalletDataManager;
@@ -32,9 +34,12 @@ import com.xiaolian.amigo.di.DeviceActivityContext;
 import com.xiaolian.amigo.ui.ble.BlePresenter;
 import com.xiaolian.amigo.ui.ble.intf.IBleView;
 import com.xiaolian.amigo.ui.device.DeviceOrderPresenter;
+import com.xiaolian.amigo.ui.device.dispenser.ChooseDispenserPresenter;
 import com.xiaolian.amigo.ui.device.dispenser.DispenserPresenter;
 import com.xiaolian.amigo.ui.device.intf.IDeviceOrderPresenter;
 import com.xiaolian.amigo.ui.device.intf.IDeviceOrderView;
+import com.xiaolian.amigo.ui.device.intf.dispenser.IChooseDispenerView;
+import com.xiaolian.amigo.ui.device.intf.dispenser.IChooseDispenserPresenter;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IDispenserPresenter;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IDispenserView;
 import com.xiaolian.amigo.ui.device.intf.heator.HeaterPresenter;
@@ -82,6 +87,12 @@ public class DeviceActivityModule {
     }
 
     @Provides
+    @DeviceActivityContext
+    IChooseDispenserPresenter<IChooseDispenerView> provideChooseDispenserPresenter(ChooseDispenserPresenter<IChooseDispenerView> presenter) {
+        return presenter;
+    }
+
+    @Provides
     IDeviceDataManager provideDeviceDataManager(DeviceDataManager manager) {
         return manager;
     }
@@ -104,6 +115,11 @@ public class DeviceActivityModule {
         return manager;
     }
 
+    @Provides
+    @DeviceActivityContext
+    IFavoriteManager provideFavoriteDataManager(FavoriteManager manager) {
+        return manager;
+    }
 
     @Provides
     @DeviceActivityContext

@@ -35,6 +35,16 @@ public class DispenserActivity extends WaterDeviceBaseActivity<IDispenserPresent
     }
 
     @Override
+    protected int setTopRightIconDrawable() {
+        return R.drawable.uncollected;
+    }
+
+    @Override
+    protected int setHeaderIconDrawable() {
+        return R.drawable.ic_dispenser;
+    }
+
+    @Override
     public IDispenserPresenter setPresenter() {
         return presenter;
     }

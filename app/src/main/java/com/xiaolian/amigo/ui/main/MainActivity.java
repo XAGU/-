@@ -26,6 +26,7 @@ import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.network.model.dto.response.DeviceCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.order.Order;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
+import com.xiaolian.amigo.ui.device.dispenser.ChooseDispenserActivity;
 import com.xiaolian.amigo.ui.device.dispenser.DispenserActivity;
 import com.xiaolian.amigo.ui.device.heater.HeaterActivity;
 import com.xiaolian.amigo.ui.login.LoginActivity;
@@ -458,7 +459,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 // 直接前往热水澡处理找零
                 gotoDevice(HeaterActivity.class, data.getMacAddress(), data.getLocation());
             } else {
-                gotoDevice(DispenserActivity.class);
+                gotoDevice(DispenserActivity.class, data.getMacAddress(), data.getLocation());
             }
         } else {
             if (type == 1 && heaterOrderSize > 0) {
@@ -472,7 +473,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                     if (type == 1) {
                         presenter.getHeaterDeviceMacAddress();
                     } else {
-                        gotoDevice(DispenserActivity.class);
+                        startActivity(new Intent(getApplicationContext(), ChooseDispenserActivity.class));
                     }
                 }
             }

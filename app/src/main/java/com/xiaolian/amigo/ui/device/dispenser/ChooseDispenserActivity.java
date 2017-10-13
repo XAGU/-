@@ -1,144 +1,83 @@
 package com.xiaolian.amigo.ui.device.dispenser;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.ui.widget.recyclerview.BaseLoadMoreFooterView;
-import com.xiaolian.amigo.ui.widget.recyclerview.LinearLayoutWithRecyclerOnScrollListener;
-import com.xiaolian.amigo.ui.base.BaseActivity;
+import com.xiaolian.amigo.ui.device.DeviceBaseListActivity;
+import com.xiaolian.amigo.ui.device.intf.dispenser.IChooseDispenerView;
+import com.xiaolian.amigo.ui.device.intf.dispenser.IChooseDispenserPresenter;
+import com.xiaolian.amigo.ui.main.MainActivity;
+import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
+import com.xiaolian.amigo.util.ScreenUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
+import javax.inject.Inject;
+
 import butterknife.ButterKnife;
-import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
-import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
 
 /**
  * 附近饮水机页面
  * @author zcd
  */
-public class ChooseDispenserActivity extends BaseActivity
-        implements BGARefreshLayout.BGARefreshLayoutDelegate {
+public class ChooseDispenserActivity extends DeviceBaseListActivity implements IChooseDispenerView {
 
-    @BindView(R.id.recyclerView)
-    RecyclerView mRecyclerView;
-
-    @BindView(R.id.refreshLayout)
-    BGARefreshLayout mRefreshLayout;
-
-    private final int MAX_ITEM_COUNT = 20;
-
-    static List<DispenserAdaptor.WaterFountain> funtationList = new ArrayList<DispenserAdaptor.WaterFountain>() {
-        {
-            add(new DispenserAdaptor.WaterFountain(1,  "xxxx"));
-            add(new DispenserAdaptor.WaterFountain(1,  "xxxx"));
-            add(new DispenserAdaptor.WaterFountain(1,  "xxxx"));
-            add(new DispenserAdaptor.WaterFountain(1,  "xxxx"));
-            add(new DispenserAdaptor.WaterFountain(1,  "xxxx"));
-            add(new DispenserAdaptor.WaterFountain(1,  "xxxx"));
-            add(new DispenserAdaptor.WaterFountain(1,  "xxxx"));
-//            add(new BonusWrap(1, 1, "xxxx", "yyyy", 3));
-//            add(new BonusWrap(1, 1, "xxxx", "yyyy", 3));
-        }
-    };
-
-    DispenserAdaptor adapter;
-    private LinearLayoutWithRecyclerOnScrollListener mLoadMoreListener;
+    @Inject
+    IChooseDispenserPresenter<IChooseDispenerView> presenter;
+    ChooseDispenserAdaptor adaptor;
+    List<ChooseDispenserAdaptor.DispenserWapper> items = new ArrayList<>();
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_device_choose_water_fountain);
-        ButterKnife.bind(this);
-        initRecyclerView();
+    protected void onRefresh() {
+        // ignore
     }
 
     @Override
-    protected void setUp() {
-
+    protected void onLoadMore() {
+        // ignore
     }
 
-    private void initRecyclerView() {
-        BGAStickinessRefreshViewHolder stickinessRefreshViewHolder = new BGAStickinessRefreshViewHolder(this, false);
-        stickinessRefreshViewHolder.setStickinessColor(R.color.colorPrimary);
-        stickinessRefreshViewHolder.setRotateImage(R.drawable.default_avatar);
-        mRefreshLayout.setRefreshViewHolder(stickinessRefreshViewHolder);
-
-//        mRefreshLayout.setPullDownRefreshEnable(false);
-
-        mRefreshLayout.setDelegate(this);
-
-        adapter = new DispenserAdaptor(funtationList);
-
-        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(linearLayoutManager);
-//        LoadMoreWrapper<BonusWrap> loadMoreWrapper = new LoadMoreWrapper<>(adapter);
-//        loadMoreWrapper.setLoadMoreView(R.layout.item_loadmore);
-
-        adapter.setLoadMoreFooterView(new BaseLoadMoreFooterView(this) {
-            @Override
-            public int getLoadMoreLayoutResource() {
-                return R.layout.view_default_load_more;
-            }
-        });
-        mRecyclerView.setAdapter(adapter);
-        mLoadMoreListener = new LinearLayoutWithRecyclerOnScrollListener(linearLayoutManager) {
-            @Override
-            public void onLoadMore(int pagination, int pageSize) {
-                mRecyclerView.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (adapter.getItemCount() < MAX_ITEM_COUNT) {
-                            adapter.showLoadMoreView();
-                        } else {
-                            adapter.showNoMoreDataView();
-                        }
-                    }
-                });
-                mRecyclerView.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        //int position = mAdapter.getItemCount();
-                        if (adapter.getItemCount() >= MAX_ITEM_COUNT) {
-                            adapter.showNoMoreDataView();
-                        } else {
-//                            mHandler.sendEmptyMessageDelayed(0, 200);
-                            adapter.append(new DispenserAdaptor.WaterFountain(2, "xxxx"));
-                            adapter.hideFooterView();
-                        }
-                        //java.lang.IndexOutOfBoundsException: Inconsistency detected. Invalid view holder adapter positionViewHolder
-                        //mAdapter.notifyItemRangeInserted(mAdapter.getItemCount() - 5, 5);
-                        //mRecyclerView.scrollToPosition(position);
-                        loadComplete();
-
-                    }
-                }, 1500);
-
-            }
-        };
-        mRecyclerView.addOnScrollListener(mLoadMoreListener);
-        adapter.setOnItemClickListener(new DispenserAdaptor.OnItemClickListener() {
+    @Override
+    protected void setRecyclerView(RecyclerView recyclerView) {
+        setAutoRefresh(false);
+        adaptor = new ChooseDispenserAdaptor(this, R.layout.item_dispenser, items);
+        adaptor.setOnItemClickListener(new ChooseDispenserAdaptor.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
+                startActivity(new Intent(getApplicationContext(), DispenserActivity.class)
+                        .putExtra(MainActivity.INTENT_KEY_MAC_ADDRESS, items.get(position).getDevice().getMacAddress())
+                        .putExtra(MainActivity.INTENT_KEY_LOCAION, items.get(position).getDevice().getLocation()));
             }
         });
-
+        recyclerView.setAdapter(adaptor);
+        recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 14)));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     @Override
-    public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
-
+    protected int setTitle() {
+        return R.string.nearby_dispenser;
     }
 
     @Override
-    public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
-        return false;
+    protected void initView() {
+        getRefreshLayout().setEnableRefresh(false);
+        getRefreshLayout().setEnableLoadmore(false);
+
+        setUnBinder(ButterKnife.bind(this));
+        getActivityComponent().inject(this);
+        presenter.onAttach(ChooseDispenserActivity.this);
+
+        presenter.requestFavorites();
+    }
+
+    @Override
+    public void addMore(List<ChooseDispenserAdaptor.DispenserWapper> wrappers) {
+        items.addAll(wrappers);
+        adaptor.notifyDataSetChanged();
     }
 }

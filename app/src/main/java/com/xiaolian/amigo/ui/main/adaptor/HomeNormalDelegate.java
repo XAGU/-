@@ -27,6 +27,16 @@ public class HomeNormalDelegate implements ItemViewDelegate<HomeAdaptor.ItemWrap
     @Override
     public void convert(ViewHolder holder, HomeAdaptor.ItemWrapper itemWrapper, int position) {
         ((RelativeLayout)holder.getView(R.id.rl_item)).setBackgroundResource(itemWrapper.getRes());
+        holder.getView(R.id.rl_item).setClickable(true);
+        holder.getView(R.id.rl_item).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onItemClickListener(v, position);
+                }
+
+            }
+        });
         holder.setText(R.id.tv_device_title, itemWrapper.getDeviceName());
         holder.setText(R.id.tv_desc, itemWrapper.getDesc());
         holder.setTextColor(R.id.tv_desc, Color.parseColor(itemWrapper.getDescColor()));
@@ -36,5 +46,15 @@ public class HomeNormalDelegate implements ItemViewDelegate<HomeAdaptor.ItemWrap
         } else {
             holder.getView(R.id.tv_prepay).setVisibility(View.GONE);
         }
+    }
+
+    private OnItemClickListener listener;
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClickListener(View v, int position);
     }
 }
