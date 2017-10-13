@@ -53,7 +53,7 @@
     <string name="please_enter_new_password">请输入新密码</string>
     <string name="please_enter_new_password_again">请再次输入新密码</string>
     <string name="choose_bonus">挑选红包</string>
-    
+
     <string name="shower_process">以预付%1$d元，请尽快放水洗澡(%2$ds)</string>
     <string name="no_search_result">未找到任何与\'%1$s\'相关的内容</string>
     <string name="water_supply_sub_tip">(继续使用，则只有冷水)</string>
@@ -114,4 +114,20 @@
     <string name="bonus_pay_tip_below">点击下方按钮即结束用水</string>
     <string name="more">更多</string>
     <string name="about_us">关于我们</string>
+    <string name="connect_error_tip_1">请靠近设备</string>
+    <string name="connect_error_tip_2">请长按设备上的物理按钮以结束用水，然后重新连接\n给您带来的不便敬请谅解！</string>
+    <string name="connect_error_tip_3">网络连接超时，请检查您的网络</string>
+    <string name="connect_error_tip_4">您的手机蓝牙无法与设备进行连接，请重试</string>
+    <string name="connect_error_tip_5">请靠近设备，并确保设备未被他人使用</string>
+    <string name="device_busy_tip">当前设备正在被他人使用，请稍后再试或切换宿舍\n给您带来的不便敬请谅解！</string>
+    <string name="device_broken_tip_1">当前设备在结算找零时出现了故障，请联系客服处理\n给您带来的不便敬请谅解！</string>
+    <string name="device_broken_tip_2">当前设备出现了故障，请稍后再试或前往报修\n给您带来的不便敬请谅解！</string>
+    <string name="connect_error_title_1">与设备连接失败</string>
+    <string name="connect_error_title_2">操作失败</string>
+    <string name="device_busy__title">设备繁忙</string>
+    <string name="device_broken_title">故障设备</string>
+    <string name="connect_error_btn">重新连接</string>
+    <string name="device_busy_btn">切换宿舍</string>
+    <string name="device_broken_btn_1">联系客服</string>
+    <string name="device_broken_btn_2">前往报修</string>
 </resources>
