@@ -187,6 +187,30 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     TextView tv_device_title;
 
     /**
+     * 显示加载动画
+     */
+    @BindView(R.id.v_loading)
+    DotFlashView v_loading;
+
+    /**
+     * 错误标题
+     */
+    @BindView(R.id.tv_error_title)
+    TextView tv_error_title;
+
+    /**
+     * 错误提示
+     */
+    @BindView(R.id.tv_error_tip)
+    TextView tv_error_tip;
+
+    /**
+     * 错误处理器
+     */
+    @BindView(R.id.bt_error_handler)
+    Button bt_error_handler;
+
+    /**
      * 预计用水量 选中项
      */
     private int mItemIndex;
@@ -224,7 +248,9 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
     protected abstract void initInject();
 
-    protected abstract @DrawableRes int setHeaderBackgroundDrawable();
+    protected abstract
+    @DrawableRes
+    int setHeaderBackgroundDrawable();
 
     private void initPresenter() {
         presenter = setPresenter();
@@ -639,5 +665,10 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
     @Override
     public void onError(TradeError tradeError) {
+        v_loading.setVisibility(tradeError.isShowLoading() ? View.VISIBLE : View.GONE);
+        tv_error_title.setText(getString(tradeError.getErrorTitle()));
+        tv_error_tip.setText(getString(tradeError.getErrorTip()));
+        bt_error_handler.setText(getString(tradeError.getBtnText()));
+        bt_error_handler.setTag(tradeError.getBtnTag());
     }
 }

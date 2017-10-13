@@ -11,9 +11,9 @@ public enum TradeError {
     CONNECT_ERROR_3(true, R.string.connect_error_title_1, R.string.connect_error_tip_3, R.string.connect_error_btn, 1),
     CONNECT_ERROR_4(true, R.string.connect_error_title_1, R.string.connect_error_tip_4, R.string.connect_error_btn, 1),
     CONNECT_ERROR_5(true, R.string.connect_error_title_1, R.string.connect_error_tip_5, R.string.connect_error_btn, 1),
-    DEVICE_BUSY(true, R.string.device_busy__title, R.string.device_busy_tip, R.string.device_busy_btn, 1),
-    DEVICE_BROKEN_1(true, R.string.device_broken_title, R.string.device_broken_tip_1, R.string.device_broken_btn_1, 1),
-    DEVICE_BROKEN_2(true, R.string.device_broken_title, R.string.device_broken_tip_2, R.string.device_broken_btn_2, 1);
+    DEVICE_BUSY(false, R.string.device_busy__title, R.string.device_busy_tip, R.string.device_busy_btn, 2),
+    DEVICE_BROKEN_1(false, R.string.device_broken_title, R.string.device_broken_tip_1, R.string.device_broken_btn_1, 3),
+    DEVICE_BROKEN_2(false, R.string.device_broken_title, R.string.device_broken_tip_2, R.string.device_broken_btn_2, 4);
 
     // 是否现在加载小圆点
     private boolean showLoading;
