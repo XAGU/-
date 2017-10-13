@@ -21,6 +21,7 @@ import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
 import com.xiaolian.amigo.data.manager.intf.ITradeDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.CmdResultReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.request.ConnectCommandReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.PayReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.UnsettledOrderStatusCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.CmdResultRespDTO;
@@ -474,7 +475,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
     // 网络请求获取握手连接指令
     private void getConnectCommand(String macAddress) {
-        addObserver(tradeDataManager.getConnectCommand(), new NetworkObserver<ApiResult<ConnectCommandRespDTO>>() {
+        ConnectCommandReqDTO reqDTO = new ConnectCommandReqDTO();
+        reqDTO.setMacAddress(macAddress);
+        addObserver(tradeDataManager.getConnectCommand(reqDTO), new NetworkObserver<ApiResult<ConnectCommandRespDTO>>() {
             @Override
             public void onReady(ApiResult<ConnectCommandRespDTO> result) {
                 if (null == result.getError()) {

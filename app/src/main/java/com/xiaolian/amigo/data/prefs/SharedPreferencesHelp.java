@@ -17,7 +17,8 @@ import javax.inject.Singleton;
 public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     private static final String PREF_FILE_NAME = "amigo";
     private static final String PREF_KEY_TOKEN = "PREF_KEY_TOKEN";
-    private static final String PREF_DEVICE_TOKEN = "PREF_DEVICE_TOKEN";
+    private static final String PREF_DEVICE_TOKEN_PREFIX = "PREF_DEVICE_TOKEN_";
+    private static final String PREF_CURRENT_DEVICE_TOKEN = "PREF_CURRENT_DEVICE_TOKEN";
     private static final String PREF_KEY_RESIDENCEID = "PREF_KEY_RESIDENCEID";
     private static final String PREF_KEY_SCHOOLID = "PREF_KEY_SCHOOLID";
     private static final String PREF_KEY_SCHOOLNAME = "PREF_KEY_SCHOOLNAME";
@@ -57,18 +58,23 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     }
 
     @Override
-    public void setDeviceToken(String deviceToken) {
-        mSharedPreferences.edit().putString(PREF_DEVICE_TOKEN, deviceToken).apply();
-        deviceTokenHolder = null;
+    public void setCurrentDeviceToken(String deviceToken) {
+        mSharedPreferences.edit().putString(PREF_CURRENT_DEVICE_TOKEN, deviceToken).apply();
     }
 
     @Override
-    public String getDeviceToken() {
-        if (deviceTokenHolder != null) {
-            return deviceTokenHolder;
-        }
-        deviceTokenHolder = mSharedPreferences.getString(PREF_DEVICE_TOKEN, null);
-        return deviceTokenHolder;
+    public String getCurrentDeviceToken() {
+        return mSharedPreferences.getString(PREF_CURRENT_DEVICE_TOKEN, null);
+    }
+
+    @Override
+    public void setDeviceToken(String macAddress, String deviceToken) {
+        mSharedPreferences.edit().putString(PREF_DEVICE_TOKEN_PREFIX + macAddress, deviceToken).apply();
+    }
+
+    @Override
+    public String getDeviceToken(String macAddress) {
+        return mSharedPreferences.getString(PREF_DEVICE_TOKEN_PREFIX + macAddress, null);
     }
 
     @Override

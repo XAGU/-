@@ -40,18 +40,29 @@ public class LogInterceptor implements Interceptor {
         Request request = chain.request();
         Request newRequest;
         String token = sharedPreferencesHelp.getToken();
-        String deviceToken = sharedPreferencesHelp.getDeviceToken();
         if (token == null) {
             token = "";
         }
-        if (deviceToken == null) {
-            deviceToken = "";
+
+        if (request.url().url().getPath().startsWith("/trade")) {
+            String deviceToken = sharedPreferencesHelp.getCurrentDeviceToken();
+            if (deviceToken == null) {
+                deviceToken = "";
+            }
+
+            newRequest = request.newBuilder()
+                    // 添加token
+                    .addHeader("token", token)
+                    .addHeader("device_token", deviceToken)
+                    .build();
+
+        } else {
+            newRequest = request.newBuilder()
+                    // 添加token
+                    .addHeader("token", token)
+                    .build();
+
         }
-        newRequest = request.newBuilder()
-                // 添加token
-                .addHeader("token", token)
-                .addHeader("device_token", deviceToken)
-                .build();
 
         if (lastTime == 0 || lastRequest == null) {
             lastTime = Calendar.getInstance().getTimeInMillis();
@@ -75,7 +86,9 @@ public class LogInterceptor implements Interceptor {
         okhttp3.MediaType mediaType = response.body().contentType();
         String content;
         if (null != response.header("device_token")) {
-            sharedPreferencesHelp.setDeviceToken(response.header("device_token"));
+            // 有device_token,一定配对一个macAddress
+            String macAddress = response.header("macAddress");
+            sharedPreferencesHelp.setDeviceToken(macAddress, response.header("device_token"));
         }
         if (response.body() != null) {
             content = response.body().string();
@@ -89,7 +102,7 @@ public class LogInterceptor implements Interceptor {
                 Log.d(TAG, "url: " + url + "\n" + "code: " + code + "\n" + "request header: " + header + "\n" + "request body: " + requestContent + "\n" + "response header: "
                         + response.headers().toString() + "\n" + "response body: " + content);
             } else {
-                Log.d(TAG, "url: " + url + "\n" + "code: " + code + "\n" + "request header: " + header + "\n" + "response body: " + content );
+                Log.d(TAG, "url: " + url + "\n" + "code: " + code + "\n" + "request header: " + header + "\n" + "response body: " + content);
             }
         }
 

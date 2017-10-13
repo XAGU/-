@@ -26,9 +26,15 @@ public interface ISharedPreferencesHelp {
 
     void logout();
 
-    void setDeviceToken(String deviceToken);
+    // current http device token
+    void setCurrentDeviceToken(String deviceToken);
 
-    String getDeviceToken();
+    String getCurrentDeviceToken();
+
+    // http device token
+    void setDeviceToken(String macAddress, String deviceToken);
+
+    String getDeviceToken(String macAddress);
 
     // 握手指令
     void setConnectCmd(String macAddress, String connectCmd);
