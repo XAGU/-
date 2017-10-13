@@ -52,7 +52,7 @@ public class EditDormitoryAdaptor extends CommonAdapter<EditDormitoryAdaptor.Use
         holder.setText(R.id.tv_edit_dormitory_name, userResidenceWrapper.getResidenceName());
         // 只有一个宿舍时，显示为默认宿舍
         if (userResidenceWrapper.isDefault() || getDatas().size() == 1) {
-            presenter.updateResidenceId(userResidenceWrapper.getResidenceId());
+            presenter.saveDefaultResidenceId(userResidenceWrapper.getResidenceId());
             ((ImageView)holder.getView(R.id.iv_choose)).setImageResource(R.drawable.dot_red);
             ((TextView)holder.getView(R.id.tv_choose)).setText("默认宿舍");
             ((TextView) holder.getView(R.id.tv_choose)).setTextColor(ContextCompat.getColor(context, R.color.colorFullRed));
