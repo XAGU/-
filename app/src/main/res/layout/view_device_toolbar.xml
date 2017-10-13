@@ -29,7 +29,7 @@
     
     <ImageView
         android:id="@+id/iv_collect"
-        android:visibility="invisible"
+        android:visibility="visible"
         android:paddingRight="@dimen/mainMarginLeftRight"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"

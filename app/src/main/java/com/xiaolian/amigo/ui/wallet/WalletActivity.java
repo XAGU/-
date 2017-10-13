@@ -41,7 +41,6 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
         setMainBackground(R.color.white);
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
-
         presenter.onAttach(WalletActivity.this);
 
         presenter.requestNetWork();

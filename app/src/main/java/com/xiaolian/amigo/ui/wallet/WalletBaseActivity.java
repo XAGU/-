@@ -1,13 +1,9 @@
 package com.xiaolian.amigo.ui.wallet;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-
 import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.di.componet.DaggerWalletActivityComponent;
 import com.xiaolian.amigo.di.componet.WalletActivityComponent;
 import com.xiaolian.amigo.di.module.WalletActivityModule;
-import com.xiaolian.amigo.ui.base.BaseActivity;
 import com.xiaolian.amigo.ui.base.BaseToolBarActivity;
 
 /**

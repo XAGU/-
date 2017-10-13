@@ -9,16 +9,12 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
 import com.xiaolian.amigo.ui.base.aspect.SingleClick;
-import com.xiaolian.amigo.ui.device.dispenser.DispenserActivity;
-import com.xiaolian.amigo.ui.device.heater.HeaterActivity;
-import com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity;
 import com.xiaolian.amigo.ui.main.adaptor.HomeAdaptor;
 import com.xiaolian.amigo.ui.main.adaptor.HomeBannerDelegate;
 import com.xiaolian.amigo.ui.main.adaptor.HomeNormalDelegate;
@@ -35,9 +31,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import lombok.Data;
-
-import static com.xiaolian.amigo.data.enumeration.Device.DISPENSER;
-import static com.xiaolian.amigo.data.enumeration.Device.HEARTER;
 
 /**
  * Created by yik on 2017/9/5.
@@ -80,11 +73,11 @@ public class HomeFragment2 extends Fragment {
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 if (items.get(position).getType() == 1) {
                     if (items.get(position).getRes() == R.drawable.shower) {
-                        EventBus.getDefault().post(MainActivity.Event.GOTO_HEATER);
+                        EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_HEATER));
                     } else if (items.get(position).getRes() == R.drawable.water) {
-                        EventBus.getDefault().post(MainActivity.Event.GOTO_DISPENSER);
+                        EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_DISPENSER));
                     } else if (items.get(position).getRes() == R.drawable.lost) {
-                        EventBus.getDefault().post(MainActivity.Event.GOTO_LOST_AND_FOUND);
+                        EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_LOST_AND_FOUND));
                     }
                 }
             }

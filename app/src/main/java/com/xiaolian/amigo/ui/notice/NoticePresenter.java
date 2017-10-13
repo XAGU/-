@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.notice;
 
+import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.manager.intf.INoticeDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.QueryNotifyListReqDTO;
@@ -54,10 +55,10 @@ public class NoticePresenter<V extends INoticeView> extends BasePresenter<V>
                         }
                         getMvpView().addMore(wappers);
                     } else {
-                        getMvpView().showEmptyView();
+                        getMvpView().showEmptyView(R.color.colorBackgroundWhite);
                     }
                 } else {
-                    getMvpView().showErrorView();
+                    getMvpView().showErrorView(R.color.colorBackgroundWhite);
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }
             }
@@ -67,7 +68,7 @@ public class NoticePresenter<V extends INoticeView> extends BasePresenter<V>
                 super.onError(e);
                 getMvpView().setLoadMoreComplete();
                 getMvpView().setRefreshComplete();
-                getMvpView().showErrorView();
+                getMvpView().showErrorView(R.color.colorBackgroundWhite);
             }
         });
     }

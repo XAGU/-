@@ -17,11 +17,14 @@ import com.xiaolian.amigo.ui.bonus.BonusActivity;
 import com.xiaolian.amigo.ui.favorite.FavoriteActivity;
 import com.xiaolian.amigo.ui.login.LoginActivity;
 import com.xiaolian.amigo.ui.main.adaptor.ProfileAdaptor;
+import com.xiaolian.amigo.ui.more.MoreActivity;
 import com.xiaolian.amigo.ui.order.OrderActivity;
 import com.xiaolian.amigo.ui.repair.RepairNavActivity;
 import com.xiaolian.amigo.ui.user.EditProfileActivity;
 import com.xiaolian.amigo.ui.wallet.WalletActivity;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +47,7 @@ public class ProfileFragment2 extends Fragment {
             add(new ProfileAdaptor.Item(R.drawable.profile_order, "消费记录", OrderActivity.class));
             add(new ProfileAdaptor.Item(R.drawable.profile_favorite, "我收藏的设备", FavoriteActivity.class));
             add(new ProfileAdaptor.Item(R.drawable.profile_repair, "设备报修", RepairNavActivity.class));
-            add(new ProfileAdaptor.Item(R.drawable.profile_more, "更多", null));
+            add(new ProfileAdaptor.Item(R.drawable.profile_more, "更多", MoreActivity.class));
         }
     };
 
@@ -68,12 +71,8 @@ public class ProfileFragment2 extends Fragment {
         adaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                if (position == 6) {
-                    ((MainActivity)getActivity()).logout();
-                    ((MainActivity)getActivity()).startActivity(LoginActivity.class);
-                } else {
-                    startActivity(new Intent(getActivity(), items.get(position).getActivityClazz()));
-                }
+                EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.START_ACTIVITY,
+                        items.get(position).getActivityClazz()));
             }
 
             @Override

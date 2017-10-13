@@ -112,4 +112,6 @@
     <string name="balance_pay_tip_below">消费金额以实际用水量为准</string>
     <string name="bonus_pay_tip_above">红包金额对应水量上线，一旦使用则立即消耗</string>
     <string name="bonus_pay_tip_below">点击下方按钮即结束用水</string>
+    <string name="more">更多</string>
+    <string name="about_us">关于我们</string>
 </resources>
