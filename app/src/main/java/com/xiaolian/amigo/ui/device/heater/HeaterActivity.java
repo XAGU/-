@@ -15,6 +15,7 @@ import javax.inject.Inject;
  *
  * @author zcd
  */
+
 public class HeaterActivity extends WaterDeviceBaseActivity<IHeaterPresenter> implements IHeaterView {
     @Inject
     IHeaterPresenter<IHeaterView> presenter;

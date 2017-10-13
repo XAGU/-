@@ -15,6 +15,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.enumeration.Device;
+import com.xiaolian.amigo.data.enumeration.ErrorTag;
 import com.xiaolian.amigo.data.enumeration.Payment;
 import com.xiaolian.amigo.data.enumeration.TradeError;
 import com.xiaolian.amigo.data.enumeration.TradeStep;
@@ -74,8 +76,8 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     /**
      * 连接失败页面
      */
-    @BindView(R.id.ll_content_connect_failed)
-    LinearLayout ll_content_connect_failed;
+    @BindView(R.id.ll_error)
+    LinearLayout ll_error;
 
     /**
      * 开始使用页面
@@ -116,8 +118,8 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     /**
      * 重新连接
      */
-    @BindView(R.id.bt_reconnect)
-    Button bt_reconnect;
+//    @BindView(R.id.bt_reconnect)
+//    Button bt_reconnect;
 
     /**
      * 布局头部
@@ -186,6 +188,31 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     TextView tv_device_title;
 
     /**
+     * <<<<<<< HEAD
+     * 显示加载动画
+     */
+    @BindView(R.id.v_loading)
+    DotFlashView v_loading;
+
+    /**
+     * 错误标题
+     */
+    @BindView(R.id.tv_error_title)
+    TextView tv_error_title;
+
+    /**
+     * 错误提示
+     */
+    @BindView(R.id.tv_error_tip)
+    TextView tv_error_tip;
+
+    /**
+     * 错误处理器
+     */
+    @BindView(R.id.bt_error_handler)
+    Button bt_error_handler;
+
+    /**
      * 头部icon
      */
     @BindView(R.id.iv_header_icon)
@@ -232,7 +259,9 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
     protected abstract void initInject();
 
-    protected abstract @DrawableRes int setHeaderBackgroundDrawable();
+    protected abstract
+    @DrawableRes
+    int setHeaderBackgroundDrawable();
 
     private void initPresenter() {
         presenter = setPresenter();
@@ -262,7 +291,9 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         iv_header_icon.setImageResource(drawableRes);
     }
 
-    protected abstract @DrawableRes int setHeaderIconDrawable();
+    protected abstract
+    @DrawableRes
+    int setHeaderIconDrawable();
 
 
     // 设置头部背景
@@ -336,7 +367,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         tv_bonus_pay.setTextColor(ContextCompat.getColor(this, R.color.black));
         tv_bonus_pay.setTypeface(tv_bonus_pay.getTypeface(), Typeface.BOLD);
         tv_water_left.setText(getString(R.string.choose_bonus));
-        tv_water_right.setText(orderPreInfo == null ? "0" : orderPreInfo.getBonus() + "个可用");
+        tv_water_right.setText(presenter.getBonusAmount() == 0 ? "没有可用" : presenter.getBonusAmount() + "个可用");
     }
 
     /**
@@ -416,11 +447,11 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     @Override
     public void onConnectError() {
         // 连接失败时显示重连页面
-        if (null != ll_content_normal && null != ll_content_shower && null != ll_content_unconnected && null != ll_content_connect_failed) {
+        if (null != ll_content_normal && null != ll_content_shower && null != ll_content_unconnected && null != ll_error) {
             ll_content_normal.setVisibility(View.GONE);
             ll_content_shower.setVisibility(View.GONE);
             ll_content_unconnected.setVisibility(View.GONE);
-            ll_content_connect_failed.setVisibility(View.VISIBLE);
+            ll_error.setVisibility(View.VISIBLE);
         }
     }
 
@@ -443,7 +474,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         ll_content_normal.setVisibility(View.GONE);
         ll_content_shower.setVisibility(View.GONE);
         ll_content_unconnected.setVisibility(View.GONE);
-        ll_content_connect_failed.setVisibility(View.GONE);
+        ll_error.setVisibility(View.GONE);
     }
 
     /**
@@ -488,16 +519,27 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     /**
      * 重新连接
      */
-    @OnClick(R.id.bt_reconnect)
+    @OnClick(R.id.bt_error_handler)
     void reconnect(Button button) {
-        // 点击重连按钮时蓝牙必须为开启状态
-        setBleCallback(() -> {
-            // 显示正在连接画面
-            showConnecting();
+        switch (ErrorTag.getErrorTag((int) (button.getTag()))) {
+            case CONNECT_ERROR:
+                // 点击重连按钮时蓝牙必须为开启状态
+                setBleCallback(() -> {
+                    // 显示正在连接画面
+                    showConnecting();
 
-            presenter.onReconnect(macAddress);
-        });
-        getBlePermission();
+                    presenter.onReconnect(macAddress);
+                });
+                getBlePermission();
+                break;
+            case DEVICE_BUSY:
+                startActivityForResult(new Intent(this, ChooseDormitoryActivity.class), CHOOSE_DORMITORY_CODE);
+                break;
+            case PAY_ERROR:
+                break;
+            case SETTLE_ERROR:
+                break;
+        }
     }
 
     @Override
@@ -547,10 +589,10 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     /**
      * 重新连接
      */
-    @OnClick(R.id.bt_reconnect)
-    void onReconnectClick() {
-        dfv_dot.startAnimation();
-    }
+//    @OnClick(R.id.bt_reconnect)
+//    void onReconnectClick() {
+//        dfv_dot.startAnimation();
+//    }
 
     /**
      * 右上角图标点击时间
@@ -665,5 +707,20 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
     @Override
     public void onError(TradeError tradeError) {
+
+        // 显示错误页面，必须加这行判断，否则在activity销毁时会报空指针错误
+        if (null != ll_content_normal && null != ll_content_shower && null != ll_content_unconnected && null != ll_error) {
+            ll_content_normal.setVisibility(View.GONE);
+            ll_content_shower.setVisibility(View.GONE);
+            ll_content_unconnected.setVisibility(View.GONE);
+            ll_error.setVisibility(View.VISIBLE);
+
+            v_loading.setVisibility(tradeError.isShowLoading() ? View.VISIBLE : View.GONE);
+            tv_error_title.setText(getString(tradeError.getErrorTitle()));
+            tv_error_tip.setText(getString(tradeError.getErrorTip()));
+            bt_error_handler.setText(getString(tradeError.getBtnText()));
+            bt_error_handler.setTag(tradeError.getBtnTag());
+        }
+
     }
 }

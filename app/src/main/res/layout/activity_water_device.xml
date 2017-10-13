@@ -207,13 +207,14 @@
 
     <LinearLayout
         android:layout_marginTop="16dp"
-        android:id="@+id/ll_content_connect_failed"
+        android:id="@+id/ll_error"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
         android:orientation="vertical">
 
         <com.xiaolian.amigo.ui.widget.DotFlashView
+            android:id="@+id/v_loading"
             app:firstColor="#4cff5555"
             app:secondColor="#ff5555"
             android:layout_width="match_parent"
@@ -221,6 +222,7 @@
 
 
         <TextView
+            android:id="@+id/tv_error_title"
             android:layout_marginTop="20dp"
             android:text="与设备连接失败"
             android:textSize="17sp"
@@ -231,11 +233,14 @@
             android:layout_height="wrap_content"/>
 
         <TextView
-            android:layout_marginTop="8dp"
+            android:id="@+id/tv_error_tip"
+            android:layout_marginTop="13dp"
             android:textColor="#999"
             android:textSize="10sp"
             android:text="请靠近设备"
+            android:lineSpacingExtra="8dp"
             android:layout_gravity="center_horizontal"
+            android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -247,7 +252,7 @@
             android:layout_height="2dp"/>
 
         <Button
-            android:id="@+id/bt_reconnect"
+            android:id="@+id/bt_error_handler"
             style="@style/Rect_button"
             android:text="重新连接"
             />
