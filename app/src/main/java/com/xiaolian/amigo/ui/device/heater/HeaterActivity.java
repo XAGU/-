@@ -303,8 +303,10 @@ public class HeaterActivity extends DeviceBaseActivity implements IHeaterView {
     }
 
     private void toggleSubTitle(boolean visible) {
-        tv_sub_title.setVisibility(visible ?
-                View.VISIBLE : View.GONE);
+        if(null != tv_sub_title) {
+            tv_sub_title.setVisibility(visible ?
+                    View.VISIBLE : View.GONE);
+        }
     }
 
     @Override
