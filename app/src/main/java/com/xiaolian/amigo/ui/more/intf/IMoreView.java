@@ -9,4 +9,5 @@ import com.xiaolian.amigo.ui.base.intf.IBaseView;
  */
 
 public interface IMoreView extends IBaseView {
+    void backToMain();
 }

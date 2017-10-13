@@ -25,4 +25,10 @@ public class MorePresenter<V extends IMoreView> extends BasePresenter<V>
         this.manager = manager;
     }
 
+    @Override
+    public void logout() {
+        manager.logout();
+        getMvpView().onSuccess("退出登录成功");
+        getMvpView().backToMain();
+    }
 }

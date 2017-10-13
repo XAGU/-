@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.ui.main.MainActivity;
 import com.xiaolian.amigo.ui.main.MainBaseActivity;
 import com.xiaolian.amigo.ui.more.adapter.MoreAdapter;
 import com.xiaolian.amigo.ui.more.intf.IMorePresenter;
@@ -22,6 +23,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * 更多页面
@@ -75,6 +77,11 @@ public class MoreActivity extends MoreBaseActivity implements IMoreView {
 
     }
 
+    @OnClick(R.id.bt_logout)
+    public void logout() {
+        presenter.logout();
+    }
+
     @Override
     protected int setTitle() {
         return R.string.more;
@@ -83,5 +90,10 @@ public class MoreActivity extends MoreBaseActivity implements IMoreView {
     @Override
     protected int setLayout() {
         return R.layout.activity_more;
+    }
+
+    @Override
+    public void backToMain() {
+        startActivity(new Intent(this, MainActivity.class));
     }
 }
