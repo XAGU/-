@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Payment;
+import com.xiaolian.amigo.data.enumeration.TradeError;
 import com.xiaolian.amigo.data.network.model.dto.response.OrderDetailRespDTO;
 import com.xiaolian.amigo.ui.device.intf.IDeviceOrderPresenter;
 import com.xiaolian.amigo.ui.device.intf.IDeviceOrderView;
@@ -102,4 +103,8 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
         backToMain();
     }
 
+    @Override
+    public void onError(TradeError tradeError) {
+
+    }
 }
