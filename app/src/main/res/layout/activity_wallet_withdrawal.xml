@@ -102,6 +102,7 @@
                 android:textStyle="bold" />
 
             <EditText
+                android:id="@+id/et_amount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
@@ -149,7 +150,9 @@
 
     <Button
         android:id="@+id/bt_submit"
-        style="@style/Button"
+        style="@style/Rect_button"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"

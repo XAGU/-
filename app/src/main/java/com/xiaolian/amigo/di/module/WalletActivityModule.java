@@ -27,6 +27,7 @@ import com.xiaolian.amigo.ui.wallet.PrepayOrderPresenter;
 import com.xiaolian.amigo.ui.wallet.PrepayPresenter;
 import com.xiaolian.amigo.ui.wallet.RechargePresenter;
 import com.xiaolian.amigo.ui.wallet.WalletPresenter;
+import com.xiaolian.amigo.ui.wallet.WithdrawalPresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IPrepayOrderPresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IPrepayOrderView;
 import com.xiaolian.amigo.ui.wallet.intf.IPrepayPresenter;
@@ -35,6 +36,8 @@ import com.xiaolian.amigo.ui.wallet.intf.IRechargePresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IRechargeView;
 import com.xiaolian.amigo.ui.wallet.intf.IWalletPresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IWalletView;
+import com.xiaolian.amigo.ui.wallet.intf.IWithdrawalPresenter;
+import com.xiaolian.amigo.ui.wallet.intf.IWithdrawalView;
 
 import dagger.Module;
 import dagger.Provides;
@@ -83,6 +86,13 @@ public class WalletActivityModule {
     @WalletActivityContext
     IPrepayOrderPresenter<IPrepayOrderView> providePrepayOrderPresenter(
             PrepayOrderPresenter<IPrepayOrderView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    @WalletActivityContext
+    IWithdrawalPresenter<IWithdrawalView> provideWithdrawPresenter(
+            WithdrawalPresenter<IWithdrawalView> presenter) {
         return presenter;
     }
 
