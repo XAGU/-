@@ -486,10 +486,10 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     }
 
     /**
-     * 确认支付点击事件
+     * 确认支付
      */
     @OnClick(R.id.bt_pay)
-    void onOkButtonClick(Button button) {
+    void pay(Button button) {
         if (!isMoneyPay) {
             if (choosedBonus == null) {
                 showMessage("请选择红包");
@@ -512,10 +512,10 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     }
 
     /**
-     * 结束洗澡
+     * 准备结算
      */
     @OnClick(R.id.bt_stop_shower)
-    void stopShower(Button button) {
+    void settle(Button button) {
         // 点击结束用水操作时蓝牙必须为开启状态
         setBleCallback(() -> {
             button.setEnabled(false);
