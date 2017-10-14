@@ -33,6 +33,7 @@ public interface IMainPresenter<V extends IMainView> extends IBasePresenter<V> {
 
     void getSchoolBusiness();
 
+    @Deprecated
     // 请求待找零订单
     void getPrepayOrder();
 

@@ -7,6 +7,8 @@ import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import java.util.List;
 
+import lombok.Data;
+
 /**
  * 充值Adaptor
  * <p>
@@ -19,6 +21,7 @@ public class RechargeAdaptor extends MultiItemTypeAdapter<RechargeAdaptor.Rechar
         super(context, datas);
     }
 
+    @Data
     public static class RechargeWapper {
         Long id;
         // 充值类型

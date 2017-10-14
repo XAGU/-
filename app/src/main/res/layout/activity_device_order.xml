@@ -145,16 +145,16 @@
                         android:layout_centerVertical="true"/>
                 </RelativeLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dip"
-                    android:layout_centerVertical="true"
-                    android:background="#eee" />
 
                 <RelativeLayout
                     android:id="@+id/rl_odd"
                     android:layout_width="match_parent"
-                    android:layout_height="58dp">
+                    android:layout_height="59dp">
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dip"
+                        android:layout_centerHorizontal="true"
+                        android:background="#eee" />
 
                     <TextView
                         style="@style/ContentText_main"
@@ -208,6 +208,11 @@
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dip"
+                        android:layout_centerVertical="true"
+                        android:background="#eee" />
 
                     <ImageView
                         android:id="@+id/iv_order_free"
@@ -216,12 +221,6 @@
                         android:layout_marginRight="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dip"
-                        android:layout_centerVertical="true"
-                        android:background="#eee" />
 
                 </RelativeLayout>
 

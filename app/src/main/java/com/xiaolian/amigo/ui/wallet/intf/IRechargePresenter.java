@@ -10,4 +10,6 @@ import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 
 public interface IRechargePresenter<V extends IRechargeView> extends IBasePresenter<V> {
     void getRechargeList();
+
+    void recharge(Long id);
 }

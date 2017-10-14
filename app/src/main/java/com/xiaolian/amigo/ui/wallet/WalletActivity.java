@@ -42,9 +42,12 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
         presenter.onAttach(WalletActivity.this);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
         presenter.requestNetWork();
-
     }
 
     @Override
