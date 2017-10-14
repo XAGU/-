@@ -35,13 +35,11 @@ public class HomeNormalDelegate implements ItemViewDelegate<HomeAdaptor.ItemWrap
         ((RelativeLayout)holder.getView(R.id.rl_item)).setBackgroundResource(itemWrapper.getRes());
         holder.getView(R.id.rl_item).setClickable(true);
         holder.getView(R.id.rl_item).setOnClickListener(new View.OnClickListener() {
-            @SingleClick
             @Override
             public void onClick(View v) {
                 if (listener != null) {
                     listener.onItemClickListener(v, position);
                 }
-
             }
         });
         holder.setText(R.id.tv_device_title, itemWrapper.getDeviceName());

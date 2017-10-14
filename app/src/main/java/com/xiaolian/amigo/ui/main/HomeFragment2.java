@@ -58,6 +58,8 @@ public class HomeFragment2 extends Fragment {
     RecyclerView recyclerView;
 
     HomeAdaptor adaptor;
+    private int prepayOrderSize = 0;
+    private int businessSize = 0;
 
     @Nullable
     @Override
@@ -139,28 +141,30 @@ public class HomeFragment2 extends Fragment {
     }
 
     public void onSchoolBizEvent(List<BriefSchoolBusiness> businesses) {
-        int businessSize = 0;
+        int currentPrepayOrderSize = 0;
+        int currentBusinessSize = 0;
         boolean needNotify = false;
         shower.setActive(false);
         water.setActive(false);
         for (BriefSchoolBusiness business : businesses) {
             if (business.getBusinessId() == 2) {
                 water.setActive(true);
-                if (business.getPrepayOrder() > 0) {
-                    water.setPrepaySize(business.getPrepayOrder());
-                    needNotify = true;
-                }
-                businessSize += 1;
+                water.setPrepaySize(business.getPrepayOrder());
+                currentPrepayOrderSize += business.getPrepayOrder();
+                currentBusinessSize += 1;
             } else if (business.getBusinessId() == 1) {
                 shower.setActive(true);
-                if (business.getPrepayOrder() > 0) {
-                    shower.setPrepaySize(business.getPrepayOrder());
-                    needNotify = true;
-                }
-                businessSize += 1;
+                shower.setPrepaySize(business.getPrepayOrder());
+                currentPrepayOrderSize += business.getPrepayOrder();
+                currentBusinessSize += 1;
             }
         }
-        if (businessSize != 2) {
+        if (currentBusinessSize != businessSize) {
+            businessSize = currentBusinessSize;
+            needNotify = true;
+        }
+        if (currentPrepayOrderSize != prepayOrderSize) {
+            prepayOrderSize = currentPrepayOrderSize;
             needNotify = true;
         }
         if (needNotify) {

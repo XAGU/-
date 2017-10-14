@@ -177,9 +177,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 return super.onFling(e1, e2, velocityX, velocityY);
             }
         });
-
-        presenter.getSchoolBusiness();
-
     }
 
     @Override
@@ -195,6 +192,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         super.onResume();
         // 请求通知
         presenter.getNoticeAmount();
+        presenter.getSchoolBusiness();
         if (!presenter.isLogin()) {
             tv_nickName.setText("登录／注册");
             tv_schoolName.setText("登录以后才能使用哦");
