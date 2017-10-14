@@ -21,7 +21,7 @@ public interface IMainView extends IBaseView {
 
     void gotoDevice(Class clz);
 
-    void gotoDevice(Device device, String macAddress, String location);
+    void gotoDevice(Device device, String macAddress, String location, Long residenceId);
 
     void showUrgentNotify(String content, Long id);
 

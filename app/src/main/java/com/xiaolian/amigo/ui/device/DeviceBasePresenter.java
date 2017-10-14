@@ -150,22 +150,26 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
         // 重置正在连接标识
         connecting = true;
+
         // 启动30s倒计时
         timer = new CountDownTimer(15 * 1000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 if (!connecting) {
                     this.cancel();
+                    Log.i(TAG, "设备已连接上，取消定时器。");
                 }
             }
 
             @Override
             public void onFinish() {
+                Log.i(TAG, "设备连接超时。");
                 clearObservers();
                 resetSubscriptions();
                 getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_5));
             }
         };
+        Log.i(TAG, "启动30s定时器......");
         timer.start();
 
         // 设备连接上存储mac地址供后续读写数据使用
@@ -379,42 +383,51 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         handleConnectError.set(false);
 
         if (reconnect) {
-            // 首次连接就连接不上，需要重新下发握手指令
+            Log.i(TAG, "当前为重连状态");
             if (null == getStep()) {
+                Log.i(TAG, "首次连接就连接不上，需要重新下发握手指令:" + connectCmd);
                 waitConnectCmdResult();
                 onWrite(connectCmd);
                 reconnect = false; // 重置重连标志
             } else if (TradeStep.PAY == getStep()) { // 支付页面重连
                 // 重新连接成功时不需要再次握手
+                Log.i(TAG, "当前为支付页面重连，不需要重新下发握手指令，只需要页面显示重连成功。");
                 getMvpView().post(() -> getMvpView().onReconnectSuccess());
                 reconnect = false; // 重置重连标志
             } else { // 结算页面重连
+                Log.i(TAG, "当前为结算页面重连");
                 waitOrderCheckResult();
                 if (null == orderStatus) {
-                    // TODO 查询不到订单状态，此种状态不应发生
+                    Log.wtf(TAG, "查不到对应的未结账订单，不应该发生此种状况！！！");
                 } else {
                     if (OrderStatus.getOrderStatus(orderStatus.getStatus()) == OrderStatus.FINISHED) { // 订单已结单
+                        Log.i(TAG, "重连后发现订单已被结算，跳转至订单详情页。orderId:" + orderStatus.getOrderId());
                         getMvpView().onFinish(orderStatus.getOrderId()); // 跳转订单详情页
                     } else { // 未结单
                         // 重连状态下继续下发握手指令
                         // 1、如果设备没有长按结束用水按钮，握手会失败，但连接不会被设备中断，继续下发关阀指令走结账流程即可
                         // 2、如果设备已被长按结束用水按钮，握手会成功，此时需要走预结账->结账流程
+                        Log.i(TAG, String.format("重连后发现订单仍未被结算，继续下发握手指令。command:%s, orderId: %s", connectCmd, orderStatus.getOrderId()));
                         onWrite(connectCmd);
                     }
                 }
             }
         } else {
+            Log.i(TAG, "当前为正常连接状态");
+
             // 查询订单状态
             waitOrderCheckResult();
 
             // String savedConnectCmd = sharedPreferencesHelp.getConnectCmd(currentMacAddress);
             // Log.i(TAG, "获取已保存的握手指令：" + savedConnectCmd);
             if (null != orderStatus && null != orderStatus.getStatus() && OrderStatus.getOrderStatus(orderStatus.getStatus()) == OrderStatus.USING) {  // 有订单未计算拿上次连接的握手指令（这里待验证是否有影响）
+                Log.i(TAG, String.format("正常连接发现有订单未被结算，继续下发握手指令。command: %s, orderId:%s", connectCmd, orderStatus.getOrderId()));
                 orderId = orderStatus.getOrderId();
                 onWrite(connectCmd);
                 purelyCheckoutFlag = true;
             } else {
                 // 握手连接
+                Log.i(TAG, "正常连接成功，下发握手指令。command:" + connectCmd);
                 waitConnectCmdResult();
                 onWrite(connectCmd);
             }
@@ -427,7 +440,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             synchronized (connectCmdLock) {
                 if (null == connectCmd) {
                     try {
+                        Log.i(TAG, "物理连接成功，等待握手指令到达");
                         connectCmdLock.wait();
+                        Log.i(TAG, "物理连接成功，握手指令成功到达");
                     } catch (InterruptedException e) {
                         Log.wtf(TAG, e);
                     }
@@ -441,7 +456,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             synchronized (orderStatusLock) {
                 if (null == orderStatus) {
                     try {
+                        Log.i(TAG, "物理连接成功，等待订单状态到达");
                         orderStatusLock.wait();
+                        Log.i(TAG, "物理连接成功，订单状态成功到达");
                     } catch (InterruptedException e) {
                         Log.wtf(TAG, e);
                     }
@@ -531,12 +548,12 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 if (null == result.getError()) {
                     synchronized (connectCmdLock) {
                         connectCmd = result.getData().getConnectCmd();
-                        Log.i(TAG, "获取握手指令：" + connectCmd);
-                        // sharedPreferencesHelp.setConnectCmd(macAddress, connectCmd);
+                        Log.i(TAG, "获取握手指令成功。command:" + connectCmd);
                         connectCmdLock.notifyAll();
                     }
                 } else {
-                    // TODO 请求握手指令失败
+                    Log.wtf(TAG, "获取握手失败");
+                    getMvpView().post(() -> getMvpView().onError(TradeError.SYSTEM_ERROR));
                 }
             }
         }, Schedulers.io());
@@ -552,10 +569,12 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 if (null == result.getError()) {
                     synchronized (orderStatusLock) {
                         orderStatus = result.getData();
+                        Log.i(TAG, "获取订单状态成功。orderStatus:" + orderStatus);
                         orderStatusLock.notifyAll();
                     }
                 } else {
-                    // TODO 校验设备状态失败
+                    Log.wtf(TAG, "获取握手失败");
+                    getMvpView().post(() -> getMvpView().onError(TradeError.SYSTEM_ERROR));
                 }
             }
         }, Schedulers.io());
@@ -569,6 +588,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         addObserver(tradeDataManager.processCmdResult(reqDTO), new NetworkObserver<ApiResult<CmdResultRespDTO>>(false) {
             @Override
             public void onReady(ApiResult<CmdResultRespDTO> result) {
+                Log.i(TAG, "通知主线程更新数据。" + result.getData());
                 RxBus.getDefault().post(result);
             }
         }, Schedulers.io());
@@ -576,6 +596,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
     @Override
     public void handleResult(ApiResult<CmdResultRespDTO> result) {
+        Log.i(TAG, "主线程开始处理指令响应结果");
         if (null == result.getError()) {
             // 下一步执行指令
             String nextCommand = result.getData().getNextCommand();
@@ -584,6 +605,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     // 如果用户本人在三小时之内再次连接该设备，需要进入第二步账单结算页面
                     if (null != orderStatus && null != orderStatus.getStatus() && OrderStatus.getOrderStatus(orderStatus.getStatus()) == OrderStatus.USING) {
                         // 记录预结账指令，此时阀门已经被长按关闭，但是订单没有被其它用户带回
+                        Log.i(TAG, "用户在该设备上存在未结账订单，直接跳转至结算页面，获取到预结账指令。command:" + nextCommand);
                         reopenNextCmd = nextCommand;
                         getMvpView().onConnectSuccess(TradeStep.SETTLE, orderStatus);
 
@@ -597,22 +619,27 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         precheckCmd = nextCommand;
                         if (!reconnect) { // 正常流程
                             // 下发预结账指令
+                            Log.i(TAG, "正常流程，设备上存在未结账订单，获取到预结账指令。command:" + nextCommand);
                             onWrite(precheckCmd);
                         } else {
+                            Log.i(TAG, "用户在结算页面重新连接成功，设备上存在未结账订单，获取到预结账指令。command:" + nextCommand);
                             getMvpView().onReconnectSuccess();
                             reconnectNextCmd = precheckCmd;
                         }
                     } else {
                         // 握手连接成功，进入正常用水流程
+                        Log.i(TAG, "正常流程，设备上不存在未结账订单。");
                         getMvpView().onConnectSuccess(TradeStep.PAY);
                     }
                     break;
                 case OPEN_VALVE:
+                    Log.i(TAG, "正常流程，获取到关阀指令。command:" + nextCommand);
                     closeCmd = nextCommand;
                     sharedPreferencesHelp.setCloseCmd(currentMacAddress, closeCmd);
                     getMvpView().onOpen();
                     break;
                 case CLOSE_VALVE:
+                    Log.i(TAG, "正常流程，获取到结账指令。command:" + nextCommand);
                     checkoutCmd = nextCommand;
                     // 下发结账指令
                     onWrite(checkoutCmd);
@@ -620,23 +647,28 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 case CHECK_OUT:
                     if (purelyCheckoutFlag) {
                         // 纯结账操作，直接跳转至第二步结账，结账完毕跳转账单详情页面
+                        Log.i(TAG, "结账完成");
                         getMvpView().onFinish(orderId);
                     } else if (precheckFlag) {
                         // 当前为预结账状态，结账完毕后关闭更改标识
                         precheckFlag = false;
                         if (reconnect) {
                             // 重连状态下，走预结账->结账流程时，是本人主动结账，跳转账单详情页
+                            Log.i(TAG, "结账完成");
                             getMvpView().onFinish(orderId);
                         } else {
                             // 非重连状态下，是主动帮别人结账，此时用户还未进入用水流程，需要再次握手，否则会报设备使用次数不对
+                            Log.i(TAG, "结账完成,当前为主动帮别人结账，正常流程，继续下发握手指令");
                             onWrite(connectCmd);
                         }
                     } else {
                         // 当前为非预结账状态，结账完毕后跳转账单详情页
+                        Log.i(TAG, "结账完成");
                         getMvpView().onFinish(orderId);
                     }
                     break;
                 case PRE_CHECK:
+                    Log.i(TAG, "正常流程，获取到结账指令。command:" + nextCommand);
                     checkoutCmd = nextCommand;
                     // 标识当前状态为预结账状态
                     precheckFlag = true;
@@ -645,6 +677,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     break;
             }
         } else {
+            Log.e(TAG, result.getError().getCode() + ":" + result.getError().getDisplayMessage());
             if (result.getError().getCode() == BleErrorType.BLE_DEVICE_BUSY.getCode()) {
                 // 如果是重连状态下，此时可以直接下发关阀指令
                 if (reconnect) {
@@ -673,8 +706,11 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     // 结算时异常
                     getMvpView().onError(TradeError.DEVICE_BROKEN_1);
                 }
+            } else {
+                // 系统异常
+                Log.wtf(TAG, String.format("服务器后台出错, errorCode:%s, errorMsg:%s", result.getError().getCode(), result.getError().getDisplayMessage()));
+                getMvpView().onError(TradeError.SYSTEM_ERROR);
             }
-            Log.e(TAG, result.getError().getCode() + ":" + result.getError().getDisplayMessage());
         }
     }
 

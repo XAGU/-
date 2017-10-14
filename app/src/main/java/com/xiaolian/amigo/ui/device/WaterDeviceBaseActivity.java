@@ -15,7 +15,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.enumeration.ErrorTag;
 import com.xiaolian.amigo.data.enumeration.Payment;
 import com.xiaolian.amigo.data.enumeration.TradeError;
@@ -27,6 +26,7 @@ import com.xiaolian.amigo.ui.bonus.adaptor.BonusAdaptor;
 import com.xiaolian.amigo.ui.device.intf.IWaterDeviceBasePresenter;
 import com.xiaolian.amigo.ui.device.intf.IWaterDeviceBaseView;
 import com.xiaolian.amigo.ui.main.MainActivity;
+import com.xiaolian.amigo.ui.repair.RepairApplyActivity;
 import com.xiaolian.amigo.ui.user.ChooseDormitoryActivity;
 import com.xiaolian.amigo.ui.wallet.RechargeActivity;
 import com.xiaolian.amigo.ui.widget.BezierWaveView;
@@ -232,7 +232,13 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
     private BonusAdaptor.BonusWrapper choosedBonus;
     private OrderPreInfoDTO orderPreInfo;
+
+    // 设备类型
     private int deviceType;
+    // 设备位置
+    private String deviceLocation;
+    // 设备位置id
+    private Long residenceId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -247,6 +253,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             macAddress = getIntent().getStringExtra(MainActivity.INTENT_KEY_MAC_ADDRESS);
             tv_device_title.setText(getIntent().getStringExtra(MainActivity.INTENT_KEY_LOCATION));
             deviceType = getIntent().getIntExtra(MainActivity.INTENT_KEY_DEVICE_TYPE, 1);
+            residenceId = getIntent().getLongExtra(MainActivity.INTENT_KEY_RESIDENCE_ID, 0L);
         }
         if (TextUtils.isEmpty(macAddress)) {
             macAddress = "08:7C:BE:E1:FD:3B";
@@ -520,7 +527,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
      * 重新连接
      */
     @OnClick(R.id.bt_error_handler)
-    void reconnect(Button button) {
+    void handleError(Button button) {
         switch (ErrorTag.getErrorTag((int) (button.getTag()))) {
             case CONNECT_ERROR:
                 // 点击重连按钮时蓝牙必须为开启状态
@@ -535,9 +542,16 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             case DEVICE_BUSY:
                 startActivityForResult(new Intent(this, ChooseDormitoryActivity.class), CHOOSE_DORMITORY_CODE);
                 break;
-            case PAY_ERROR:
+            case REPAIR:
+                Intent intent = new Intent(this, RepairApplyActivity.class);
+                intent.putExtra(Constant.DEVICE_TYPE, deviceType);
+                intent.putExtra(Constant.LOCATION_ID, residenceId);
+                intent.putExtra(Constant.LOCATION, deviceLocation);
+                startActivity(intent);
+                finish();
                 break;
-            case SETTLE_ERROR:
+            case CALL:
+                // TODO 联系客服
                 break;
         }
     }
@@ -647,6 +661,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                 presenter.clearObservers(); // 清空旧连接
                 presenter.resetSubscriptions(); // 此步骤非常重要，不加会造成重连请求掉进黑洞的现象
                 presenter.resetContext();
+                this.macAddress = chosenMacAddress;
                 presenter.onConnect(chosenMacAddress);
             }
         }

@@ -16,4 +16,5 @@ public class DeviceCheckRespDTO {
     private String remark;
     private Boolean timeValid;
     private String title;
+    private Long residenceId;
 }

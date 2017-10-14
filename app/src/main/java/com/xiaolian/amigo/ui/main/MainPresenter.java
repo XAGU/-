@@ -170,7 +170,7 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
                             && result.getData().getDevices().get(0).getMacAddress() != null) {
                         getMvpView().gotoDevice(Device.HEARTER,
                                 result.getData().getDevices().get(0).getMacAddress(),
-                                result.getData().getDevices().get(0).getLocation());
+                                result.getData().getDevices().get(0).getLocation(), reqDTO.getResidenceId());
                     } else {
                         getMvpView().onError("设备不存在");
                     }
