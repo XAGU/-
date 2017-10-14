@@ -452,7 +452,8 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     }
 
     @Override
-    public void onConnectError() {
+    public void
+    onConnectError() {
         // 连接失败时显示重连页面
         if (null != ll_content_normal && null != ll_content_shower && null != ll_content_unconnected && null != ll_error) {
             ll_content_normal.setVisibility(View.GONE);

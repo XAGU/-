@@ -207,7 +207,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             @Override
             public void onExecuteError(Throwable e) {
                 Log.wtf(TAG, "监控设备状态失败！", e);
-                getMvpView().onConnectError();
+                getMvpView().onError(TradeError.CONNECT_ERROR_1);
             }
         }, Schedulers.io());
 
@@ -227,7 +227,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     @Override
                     public void onExecuteError(Throwable e) {
                         Log.wtf(TAG, "获取特征值失败！", e);
-                        getMvpView().onConnectError();
+                        getMvpView().onError(TradeError.CONNECT_ERROR_1);
                     }
 
                     @Override
@@ -264,7 +264,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     @Override
                     public void onExecuteError(Throwable e) {
                         Log.wtf(TAG, "开启notify通道失败！", e);
-                        getMvpView().onConnectError();
+                        getMvpView().onError(TradeError.CONNECT_ERROR_1);
                     }
 
                     @Override
@@ -291,7 +291,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     @Override
                     public void onExecuteError(Throwable e) {
                         Log.wtf(TAG, "写notify特征值描述失败！", e);
-                        getMvpView().onConnectError();
+                        getMvpView().onError(TradeError.CONNECT_ERROR_1);
                     }
 
                     @Override
@@ -321,7 +321,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     @Override
     public void onWrite(@NonNull String command) {
         if (bleDataManager.getStatus(currentMacAddress) != RxBleConnection.RxBleConnectionState.CONNECTED) {
-            getMvpView().onConnectError();
+            getMvpView().onError(TradeError.CONNECT_ERROR_1);
             return;
         }
 
@@ -349,7 +349,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     @Override
     public void registerNotify() {
         if (bleDataManager.getStatus(currentMacAddress) != RxBleConnection.RxBleConnectionState.CONNECTED) {
-            getMvpView().onConnectError();
+            getMvpView().onError(TradeError.CONNECT_ERROR_1);
             return;
         }
 
@@ -812,7 +812,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             case "a801":
                 if (data.length() != 28) {
                     Log.e(TAG, "握手失败！data:" + data);
-                    getMvpView().onConnectError();
+                    getMvpView().onError(TradeError.CONNECT_ERROR_1);
                 } else {
                     Log.e(TAG, "握手成功！data:" + data);
                     Agreement.getInstance().InitKey(data, "AAABCDDEEFADABBB");
