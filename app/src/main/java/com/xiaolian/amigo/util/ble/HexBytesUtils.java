@@ -4,10 +4,10 @@ import android.util.Log;
 
 public class HexBytesUtils {
 
-	private static final String qppHexStr = "0123456789ABCDEF";
+	private static final String HEX_SELECTOR = "0123456789ABCDEF";
 
 	private static byte charToByte(char paramChar) {
-		return (byte) "0123456789ABCDEF".indexOf(paramChar);
+		return (byte) HEX_SELECTOR.indexOf(paramChar);
 	}
 
 	public static byte[] hexStr2Bytes(String paramString) {
@@ -23,9 +23,9 @@ public class HexBytesUtils {
 			int i = str.length() >> 1;
 			char[] arrayOfChar = str.toCharArray();
 			int j = 0;
-			Log.i("QnDbg", "hexString.length() : " + str.length());
+			Log.i("HexBytesUtils", "hexString.length() : " + str.length());
 			do {
-				int k = "0123456789ABCDEF".indexOf(arrayOfChar[j]);
+				int k = HEX_SELECTOR.indexOf(arrayOfChar[j]);
 				arrayOfByte = null;
 				if (k == -1)
 					break;
