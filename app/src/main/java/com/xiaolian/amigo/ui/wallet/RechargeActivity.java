@@ -3,6 +3,7 @@ package com.xiaolian.amigo.ui.wallet;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.util.ScreenUtils;
@@ -13,6 +14,7 @@ import com.xiaolian.amigo.ui.wallet.adaptor.RechargeAdaptor;
 import com.xiaolian.amigo.ui.wallet.intf.IRechargePresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IRechargeView;
 import com.xiaolian.amigo.ui.widget.GridSpacesItemDecoration;
+import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +51,17 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
         adaptor.addItemViewDelegate(new NormalItemDelegate());
         adaptor.addItemViewDelegate(new BonusItemDelegate());
         adaptor.addItemViewDelegate(new DiscountItemDelegate());
+        adaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                presenter.recharge(recharges.get(position).getId());
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
 
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3, LinearLayoutManager.VERTICAL, false));
         recyclerView.addItemDecoration(new GridSpacesItemDecoration(3, ScreenUtils.dpToPxInt(this, 10), false));
@@ -73,5 +86,10 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
     public void addMore(List<RechargeAdaptor.RechargeWapper> rechargeWappers) {
         recharges.addAll(rechargeWappers);
         adaptor.notifyDataSetChanged();
+    }
+
+    @Override
+    public void back() {
+        onBackPressed();
     }
 }

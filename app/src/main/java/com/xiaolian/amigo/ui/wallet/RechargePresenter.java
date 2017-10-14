@@ -2,7 +2,9 @@ package com.xiaolian.amigo.ui.wallet;
 
 import com.xiaolian.amigo.data.manager.intf.IWalletDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.dto.request.RechargeReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.SimpleQueryReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryRechargeAmountsRespDTO;
 import com.xiaolian.amigo.data.network.model.wallet.RechargeDenominations;
 import com.xiaolian.amigo.ui.base.BasePresenter;
@@ -47,6 +49,24 @@ public class RechargePresenter<V extends IRechargeView> extends BasePresenter<V>
                         }
                         getMvpView().addMore(rechargeWapper);
                     }
+                } else {
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+        });
+    }
+
+    @Override
+    public void recharge(Long id) {
+        RechargeReqDTO reqDTO = new RechargeReqDTO();
+        reqDTO.setDenominationId(id);
+        addObserver(manager.recharge(reqDTO), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
+
+            @Override
+            public void onReady(ApiResult<BooleanRespDTO> result) {
+                if (null == result.getError()) {
+                    getMvpView().onSuccess("充值成功");
+                    getMvpView().back();
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }
