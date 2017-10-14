@@ -71,18 +71,16 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
     public void setRefreshComplete(OrderDetailRespDTO respDTO) {
         if (respDTO.getPaymentType() == Payment.BALANCE.getType()) { // 余额支付
             iv_order_free.setVisibility(View.GONE);
-            tv_amount.setText(respDTO.getConsume());
-            tv_change_amount.setText(respDTO.getOdd());
         } else { // 红包支付
             rl_odd.setVisibility(View.GONE);
             iv_order_free.setVisibility(View.VISIBLE);
-            tv_amount.setText("0");
-            tv_change_amount.setText("0");
         }
+        tv_amount.setText(respDTO.getConsume());
+        tv_change_amount.setText(respDTO.getOdd());
+        tv_pay_method.setText(respDTO.getPrepay());
         tv_time.setText(CommonUtil.stampToDate(respDTO.getCreateTime()));
         tv_device_info.setText(respDTO.getLocation());
         tv_order_no.setText(respDTO.getOrderNo());
-        tv_pay_method.setText(Payment.getPayment(respDTO.getPaymentType()).getDesc());
     }
 
     @OnClick(R.id.bt_ok)

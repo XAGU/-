@@ -58,6 +58,7 @@
                     <TextView
                         android:id="@+id/tv_time"
                         style="@style/ContentText_main"
+                        android:textColor="#666"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -85,6 +86,7 @@
                     <TextView
                         android:id="@+id/tv_device_info"
                         style="@style/ContentText_main"
+                        android:textColor="#666"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -112,6 +114,7 @@
                     <TextView
                         android:id="@+id/tv_order_no"
                         style="@style/ContentText_main"
+                        android:textColor="#666"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -139,6 +142,7 @@
                     <TextView
                         android:id="@+id/tv_pay_method"
                         style="@style/ContentText_main"
+                        android:textColor="#666"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -237,9 +241,9 @@
                 <!--android:textSize="12sp" />-->
             <Button
                 android:id="@+id/bt_ok"
-                style="@style/Button"
-                android:layout_marginTop="21dp"
-                android:layout_marginBottom="14dp"
+                style="@style/Rect_button"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="0dp"
                 android:text="朕知道了"
                 android:enabled="true"
                 android:layout_width="match_parent"

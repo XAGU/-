@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.DrawableRes;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -20,6 +21,7 @@ import com.xiaolian.amigo.data.enumeration.Payment;
 import com.xiaolian.amigo.data.enumeration.TradeError;
 import com.xiaolian.amigo.data.enumeration.TradeStep;
 import com.xiaolian.amigo.data.network.model.dto.response.OrderPreInfoDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.PrepayOptionDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.UnsettledOrderStatusCheckRespDTO;
 import com.xiaolian.amigo.ui.bonus.BonusActivity;
 import com.xiaolian.amigo.ui.bonus.adaptor.BonusAdaptor;
@@ -38,6 +40,7 @@ import com.xiaolian.amigo.util.Constant;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Optional;
 
 /**
  * <p>
@@ -45,6 +48,7 @@ import butterknife.OnClick;
  */
 
 public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresenter> extends DeviceBaseActivity implements IWaterDeviceBaseView {
+    private static String TAG = WaterDeviceBaseActivity.class.getSimpleName();
 
 //    // 显示或隐藏 "切换宿舍"
 //    toggleSubTitle(presenter.getStep() == TradeStep.PAY);
@@ -188,7 +192,6 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     TextView tv_device_title;
 
     /**
-     * <<<<<<< HEAD
      * 显示加载动画
      */
     @BindView(R.id.v_loading)
@@ -239,6 +242,8 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     private String deviceLocation;
     // 设备位置id
     private Long residenceId;
+    private String prepayDefaultDesc = "预付5元";
+    private Double prepayDefaultAmount = 5.00;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -279,7 +284,8 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         setHeaderIcon(setHeaderIconDrawable());
         setTopRightIcon(setTopRightIconDrawable());
         // 默认选择预付5元
-        tv_water_right.setTag(R.id.money_pay_amount, 5);
+        tv_water_right.setTag(R.id.money_pay_amount, prepayDefaultAmount);
+        tv_water_right.setText(prepayDefaultDesc);
         if (bsv_wave != null && !bsv_wave.isRunning()) {
             bsv_wave.startAnim();
         }
@@ -311,6 +317,14 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     @Override
     public void setPrepayOption(OrderPreInfoDTO data) {
         orderPreInfo = data;
+        try {
+            prepayDefaultDesc = data.getOptions().get(0).getItems().get(0).getDescription();
+            prepayDefaultAmount = data.getOptions().get(0).getItems().get(0).getPrepay();
+            tv_water_right.setTag(R.id.money_pay_amount, prepayDefaultAmount);
+            tv_water_right.setText(prepayDefaultDesc);
+        } catch (Exception e) {
+            Log.w(TAG, "服务器返回的prepayOption为空");
+        }
         // TODO 子类重写
     }
 
@@ -320,23 +334,25 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     @OnClick(R.id.rl_pay_way)
     void onPayWayClick() {
         if (isMoneyPay) {
-            new ActionSheetDialog(this).builder()
-                    .addSheetItem("预付5元／1吨水", ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {
-                        @Override
-                        public void onClick(int which) {
-                            mItemIndex = 0;
-                            tv_water_right.setText("预付5元／1吨水");
-                            tv_water_right.setTag(R.id.money_pay_amount, 5);
-                        }
-                    })
-                    .addSheetItem("预付10元／2吨水", ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {
-                        @Override
-                        public void onClick(int which) {
-                            mItemIndex = 1;
-                            tv_water_right.setText("预付10元／2吨水");
-                            tv_water_right.setTag(R.id.money_pay_amount, 10);
-                        }
-                    }).setTitle("选择水量上限")
+            ActionSheetDialog actionSheetDialog = new ActionSheetDialog(this).builder();
+            if (orderPreInfo.getOptions() != null && !orderPreInfo.getOptions().isEmpty()) {
+                PrepayOptionDTO option = orderPreInfo.getOptions().get(0);
+                for (int i = 0; i < option.getItems().size(); i ++) {
+                    String desc = option.getItems().get(i).getDescription();
+                    Double prepay = option.getItems().get(i).getPrepay();
+                    int position = i;
+                    actionSheetDialog.addSheetItem(desc, ActionSheetDialog.SheetItemColor.Blue,
+                            new ActionSheetDialog.OnSheetItemClickListener() {
+                                @Override
+                                public void onClick(int which) {
+                                    mItemIndex = position;
+                                    tv_water_right.setText(desc);
+                                    tv_water_right.setTag(R.id.money_pay_amount, prepay);
+                                }
+                            });
+                }
+            }
+        actionSheetDialog.setTitle("选择水量上限")
                     .setItemGravity(Gravity.LEFT)
                     .setShowCanceleButton(false)
                     .addFooter(R.layout.view_actionsheet_foot)
@@ -360,7 +376,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         tv_money_pay.setTextColor(ContextCompat.getColor(this, R.color.black));
         tv_money_pay.setTypeface(tv_money_pay.getTypeface(), Typeface.BOLD);
         tv_water_left.setText(getString(R.string.excepted_water));
-        tv_water_right.setText("预付5元／1顿水");
+        tv_water_right.setText(prepayDefaultDesc);
     }
 
     /**
@@ -374,7 +390,11 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         tv_bonus_pay.setTextColor(ContextCompat.getColor(this, R.color.black));
         tv_bonus_pay.setTypeface(tv_bonus_pay.getTypeface(), Typeface.BOLD);
         tv_water_left.setText(getString(R.string.choose_bonus));
-        tv_water_right.setText(presenter.getBonusAmount() == 0 ? "没有可用" : presenter.getBonusAmount() + "个可用");
+        int bonusAmount = orderPreInfo.getBonus();
+        tv_water_right.setText(bonusAmount == 0 ? "没有可用红包" : bonusAmount + "个可用");
+        if (bonusAmount == 0) {
+            bt_pay.setEnabled(false);
+        }
     }
 
     /**
@@ -495,7 +515,6 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                 showMessage("请选择红包");
                 return;
             }
-
             // 点击支付操作时蓝牙必须为开启状态
             setBleCallback(() -> {
                 button.setEnabled(false);
@@ -507,7 +526,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                 showMessage("请选择预计用水量");
                 return;
             }
-            presenter.queryWallet((Integer) tv_water_right.getTag(R.id.money_pay_amount));
+            presenter.queryWallet((Double) tv_water_right.getTag(R.id.money_pay_amount));
         }
     }
 
@@ -582,7 +601,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             }
         } else {
             if (isMoneyPay) {
-                tv_shower_payed.setText("已预付" + (Integer) tv_water_right.getTag(R.id.money_pay_amount) + "元");
+                tv_shower_payed.setText("已预付" + (Double) tv_water_right.getTag(R.id.money_pay_amount) + "元");
                 trade_above_tip.setText(getString(R.string.balance_pay_tip_above));
                 trade_below_tip.setText(getString(R.string.balance_pay_tip_below));
                 bt_stop_shower.setText("结算找零");
@@ -610,7 +629,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 //    }
 
     /**
-     * 右上角图标点击时间
+     * 右上角图标点击事件
      */
     @OnClick(R.id.iv_top_right_icon)
     void onTopRightIconClick() {
@@ -679,8 +698,16 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         super.onDestroy();
     }
 
+    // 单击回退按钮返回 解决返回区域过小问题
+    @OnClick({R.id.iv_back, R.id.v_back_placeholder})
+    @Optional
+    void back() {
+        super.onBackPressed();
+//        finish();
+    }
+
     @Override
-    public void showRechargeDialog(int amount) {
+    public void showRechargeDialog(double amount) {
         new IOSAlertDialog(this).builder()
                 .setMsg("sorry,您的账户余额不足" + amount + "元~")
                 .setPositiveButton("前往充值", new View.OnClickListener() {
@@ -700,9 +727,9 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     /**
      * 更换宿舍
      */
-    @OnClick({R.id.tv_sub_title, R.id.v_placeholder})
+    @OnClick({R.id.tv_sub_title, R.id.v_title_placeholder})
     public void changeDormitory() {
-        // 只有在step为1时才能更换宿舍
+        // 只有在step为SETILE时才不能更换宿舍
         if (presenter.getStep() != TradeStep.SETTLE) {
             startActivityForResult(new Intent(this, ChooseDormitoryActivity.class), CHOOSE_DORMITORY_CODE);
         }
@@ -713,7 +740,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         // 点击支付操作时蓝牙必须为开启状态
         setBleCallback(() -> {
             bt_pay.setEnabled(false);
-            presenter.onPay(Payment.BALANCE.getType(), (Integer) tv_water_right.getTag(R.id.money_pay_amount), null);
+            presenter.onPay(Payment.BALANCE.getType(), (Double) tv_water_right.getTag(R.id.money_pay_amount), null);
 
         });
         getBlePermission();

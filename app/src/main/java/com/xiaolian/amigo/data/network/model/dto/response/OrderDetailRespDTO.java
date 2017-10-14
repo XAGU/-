@@ -32,4 +32,7 @@ public class OrderDetailRespDTO {
     // 创建时间
     private Long createTime;
 
+    // 预付金额
+    private String prepay;
+
 }
