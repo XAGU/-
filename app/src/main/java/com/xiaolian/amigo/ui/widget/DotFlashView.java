@@ -106,47 +106,47 @@ public class DotFlashView extends View {
     }
 
     public void startAnimation(){
+        if (valueAnimator == null) {
+            valueAnimator = ValueAnimator.ofInt(mHeight / 2, mHeight / 8, mHeight / 2);
+            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    invalidate();
+                }
 
+            });
+            //动画循环执行
+            valueAnimator.setRepeatCount(ValueAnimator.INFINITE);
+            valueAnimator.setDuration(500);
+            valueAnimator.start();
+            valueAnimator.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+                }
 
-        valueAnimator = ValueAnimator.ofInt(mHeight / 2, mHeight / 8, mHeight / 2);
-        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                invalidate();
-            }
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                }
 
-        });
-        //动画循环执行
-        valueAnimator.setRepeatCount(ValueAnimator.INFINITE);
-        valueAnimator.setDuration(500);
-        valueAnimator.start();
+                @Override
+                public void onAnimationCancel(Animator animation) {
+                }
 
-        valueAnimator.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+                    number++;
+                }
+            });
 
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-                number++;
-            }
-        });
+        } else {
+            valueAnimator.start();
+        }
 
     }
 
     public void endAnimation() {
         if (valueAnimator != null) {
+            number = 0;
             valueAnimator.cancel();
             valueAnimator.end();
         }
@@ -160,11 +160,11 @@ public class DotFlashView extends View {
         return false;
     }
 
-    @Override
-    public void onWindowFocusChanged(boolean hasWindowFocus) {
-        super.onWindowFocusChanged(hasWindowFocus);
-        if (!hasWindowFocus) {
-            endAnimation();
-        }
-    }
+//    @Override
+//    public void onWindowFocusChanged(boolean hasWindowFocus) {
+//        super.onWindowFocusChanged(hasWindowFocus);
+//        if (!hasWindowFocus) {
+//            endAnimation();
+//        }
+//    }
 }
