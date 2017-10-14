@@ -69,6 +69,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     public static final String INTENT_KEY_MAC_ADDRESS = "intent_key_mac_address";
     public static final String INTENT_KEY_LOCATION = "intent_key_location";
     public static final String INTENT_KEY_DEVICE_TYPE = "intent_key_device_type";
+    public static final String INTENT_KEY_RESIDENCE_ID = "intent_key_residence_id";
 
     @Inject
     IMainPresenter<IMainView> presenter;
@@ -378,7 +379,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     }
 
     @Override
-    public void gotoDevice(Device device, String macAddress, String location) {
+    public void gotoDevice(Device device, String macAddress, String location, Long residenceId) {
         if (TextUtils.isEmpty(macAddress)) {
             onError("设备macAddress不合法");
         } else {
@@ -386,6 +387,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             intent.putExtra(INTENT_KEY_LOCATION, location);
             intent.putExtra(INTENT_KEY_MAC_ADDRESS, macAddress);
             intent.putExtra(INTENT_KEY_DEVICE_TYPE, device.getType());
+            intent.putExtra(INTENT_KEY_RESIDENCE_ID, residenceId);
             startActivity(intent);
         }
     }
@@ -459,9 +461,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             // 1 表示热水澡 2 表示饮水机
             if (type == 1) {
                 // 直接前往热水澡处理找零
-                gotoDevice(HEARTER, data.getMacAddress(), data.getLocation());
+                gotoDevice(HEARTER, data.getMacAddress(), data.getLocation(), data.getResidenceId());
             } else {
-                gotoDevice(DISPENSER, data.getMacAddress(), data.getLocation());
+                gotoDevice(DISPENSER, data.getMacAddress(), data.getLocation(), data.getResidenceId());
             }
         } else {
             if (type == 1 && heaterOrderSize > 0) {
