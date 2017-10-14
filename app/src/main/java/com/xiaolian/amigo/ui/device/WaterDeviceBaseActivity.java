@@ -441,7 +441,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         startShower(null);
         // 标记步骤为结束用水页面
         presenter.setStep(TradeStep.SETTLE);
-        toggleSubTitle(false);
+        toggleSubTitle(true);
     }
 
     @Override
@@ -684,10 +684,10 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     /**
      * 更换宿舍
      */
-    @OnClick(R.id.tv_device_title)
+    @OnClick({R.id.tv_sub_title, R.id.v_placeholder})
     public void changeDormitory() {
         // 只有在step为1时才能更换宿舍
-        if (presenter.getStep() == TradeStep.PAY) {
+        if (presenter.getStep() != TradeStep.SETTLE) {
             startActivityForResult(new Intent(this, ChooseDormitoryActivity.class), CHOOSE_DORMITORY_CODE);
         }
     }
