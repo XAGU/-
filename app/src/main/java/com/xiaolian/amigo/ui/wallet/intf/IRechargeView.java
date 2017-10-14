@@ -12,7 +12,7 @@ import java.util.List;
  */
 
 public interface IRechargeView extends IBaseView {
-    void addMore(List<RechargeAdaptor.RechargeWapper> rechargeWappers);
+    void addMore(List<RechargeAdaptor.RechargeWrapper> rechargeWrappers);
 
     void back();
 }

@@ -15,14 +15,14 @@ import lombok.Data;
  * Created by zcd on 9/20/17.
  */
 
-public class RechargeAdaptor extends MultiItemTypeAdapter<RechargeAdaptor.RechargeWapper> {
+public class RechargeAdaptor extends MultiItemTypeAdapter<RechargeAdaptor.RechargeWrapper> {
 
-    public RechargeAdaptor(Context context, List<RechargeWapper> datas) {
+    public RechargeAdaptor(Context context, List<RechargeWrapper> datas) {
         super(context, datas);
     }
 
     @Data
-    public static class RechargeWapper {
+    public static class RechargeWrapper {
         Long id;
         // 充值类型
         int type;
@@ -31,13 +31,13 @@ public class RechargeAdaptor extends MultiItemTypeAdapter<RechargeAdaptor.Rechar
         // 附信息
         String sub;
 
-        public RechargeWapper(Integer type, String main, String sub) {
+        public RechargeWrapper(Integer type, String main, String sub) {
             this.type = type;
             this.main = main;
             this.sub = sub;
         }
 
-        public RechargeWapper(RechargeDenominations rechargeDenominations) {
+        public RechargeWrapper(RechargeDenominations rechargeDenominations) {
             if (rechargeDenominations.getId() != null) {
                 this.id = rechargeDenominations.getId();
             }
@@ -48,7 +48,7 @@ public class RechargeAdaptor extends MultiItemTypeAdapter<RechargeAdaptor.Rechar
             if (this.type == 1) {
                 this.sub = "售价" + rechargeDenominations.getValue() + "元";
             } else if (this.type == 2) {
-                this.sub = "送" + rechargeDenominations.getValue() + "红包";
+                this.sub = "送" + rechargeDenominations.getValue() + "元红包";
             }
         }
     }
