@@ -677,8 +677,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     break;
             }
         } else {
-            Log.e(TAG, result.getError().getCode() + ":" + result.getError().getDisplayMessage());
+            Log.e(TAG, String.format("处理异常返回结果。code:{}, msg:{}", result.getError().getCode(), result.getError().getDisplayMessage()));
             if (result.getError().getCode() == BleErrorType.BLE_DEVICE_BUSY.getCode()) {
+                Log.e(TAG, "设备正在被使用");
                 // 如果是重连状态下，此时可以直接下发关阀指令
                 if (reconnect) {
                     // 显示重连成功
@@ -701,8 +702,10 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             if (null != cmdType) {
                 // 确认支付时异常
                 if (Command.OPEN_VALVE == Command.getCommand(cmdType)) {
+                    Log.wtf(TAG, "设备开阀异常");
                     getMvpView().onError(TradeError.DEVICE_BROKEN_2);
                 } else if (Command.CLOSE_VALVE == Command.getCommand(cmdType) || Command.PRE_CHECK == Command.getCommand(cmdType) || Command.CHECK_OUT == Command.getCommand(cmdType)) {
+                    Log.wtf(TAG, "订单结算异常");
                     // 结算时异常
                     getMvpView().onError(TradeError.DEVICE_BROKEN_1);
                 }
@@ -734,11 +737,15 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     // 初始化订单id
                     orderId = result.getData().getOrderId();
 
+                    Log.i(TAG, "支付创建订单成功。orderId：" + orderId);
+
                     // 向设备下发开阀指令
                     openCmd = result.getData().getOpenValveCommand();
+                    Log.i(TAG, "开始下发开阀指令。command：" + openCmd);
                     onWrite(openCmd);
                 } else {
-                    // TODO 请求开阀指令指令失败
+                    Log.wtf(TAG, "支付创建订单失败。");
+                    getMvpView().post(() -> getMvpView().onError(TradeError.SYSTEM_ERROR));
                 }
             }
         }, Schedulers.io());
