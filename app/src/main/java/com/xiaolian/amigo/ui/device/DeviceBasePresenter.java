@@ -15,7 +15,6 @@ import com.trello.rxlifecycle.android.ActivityEvent;
 import com.xiaolian.amigo.data.enumeration.BleErrorType;
 import com.xiaolian.amigo.data.enumeration.Command;
 import com.xiaolian.amigo.data.enumeration.OrderStatus;
-import com.xiaolian.amigo.data.enumeration.Payment;
 import com.xiaolian.amigo.data.enumeration.TradeError;
 import com.xiaolian.amigo.data.enumeration.TradeStep;
 import com.xiaolian.amigo.data.manager.intf.IBleDataManager;
@@ -30,7 +29,6 @@ import com.xiaolian.amigo.data.network.model.dto.response.CmdResultRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.ConnectCommandRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.PayRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.UnsettledOrderStatusCheckRespDTO;
-import com.xiaolian.amigo.data.network.model.order.Order;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.base.RxBus;
@@ -164,8 +162,10 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             @Override
             public void onFinish() {
                 Log.i(TAG, "设备连接超时。");
-                clearObservers();
-                resetSubscriptions();
+
+                // 关闭蓝牙连接
+                closeBleConnecttion();
+
                 getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_5));
             }
         };
@@ -306,11 +306,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
     @Override
     public void onReconnect(@NonNull String macAddress) {
-        // 清空旧连接
-        clearObservers();
-
-        // 此步骤非常重要，不加会造成重连请求掉进黑洞的现象
-        resetSubscriptions();
+        // 重置蓝牙连接
+        resetBleConnection();
 
         // 设置重连标识
         reconnect = true;
@@ -472,11 +469,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         Log.wtf(TAG, "蓝牙连接已断开！");
 
         if (!handleConnectError.getAndSet(true)) {
-            // 断开链接
-            disconnectTriggerSubject.onNext(null);
-
-            // 清空所有连接事件监听着
-            clearObservers();
+            // 关闭蓝牙连接
+            closeBleConnecttion();
 
             // 跳转至连接失败页面
             getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
@@ -694,6 +688,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         closeCmd = reopenNextCmd;
                     } else {
                         // 提示用户设备已被其它用户使用
+                        closeBleConnecttion();
                         getMvpView().onError(TradeError.DEVICE_BUSY);
                     }
                 }
@@ -703,15 +698,18 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 // 确认支付时异常
                 if (Command.OPEN_VALVE == Command.getCommand(cmdType)) {
                     Log.wtf(TAG, "设备开阀异常");
+                    closeBleConnecttion();
                     getMvpView().onError(TradeError.DEVICE_BROKEN_2);
                 } else if (Command.CLOSE_VALVE == Command.getCommand(cmdType) || Command.PRE_CHECK == Command.getCommand(cmdType) || Command.CHECK_OUT == Command.getCommand(cmdType)) {
                     Log.wtf(TAG, "订单结算异常");
+                    closeBleConnecttion();
                     // 结算时异常
                     getMvpView().onError(TradeError.DEVICE_BROKEN_1);
                 }
             } else {
                 // 系统异常
                 Log.wtf(TAG, String.format("服务器后台出错, errorCode:%s, errorMsg:%s", result.getError().getCode(), result.getError().getDisplayMessage()));
+                closeBleConnecttion();
                 getMvpView().onError(TradeError.SYSTEM_ERROR);
             }
         }
@@ -753,8 +751,10 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
     @Override
     public void onClose() {
+        Log.i(TAG, "开始关阀");
         // 校验网络
         if (!getMvpView().isNetworkAvailable()) {
+            Log.wtf(TAG, "网络不可用");
             getMvpView().onError(TradeError.CONNECT_ERROR_3);
         }
 
@@ -764,6 +764,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         } else {
             if (purelyCheckoutFlag) { // 直接跳转至第二步结算
                 if (null == reopenNextCmd) { // 用户卸载掉app时取回的关阀指令为空
+                    closeBleConnecttion();
                     getMvpView().onError(TradeError.CONNECT_ERROR_2);
                 } else {
                     onWrite(reopenNextCmd); // 正常下发
@@ -773,6 +774,24 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 onWrite(closeCmd);
             }
         }
+    }
+
+    @Override
+    public void closeBleConnecttion() {
+        // 不再接收数据
+        disconnectTriggerSubject.onNext(null);
+
+        // 清空连接观察者
+        clearObservers();
+    }
+
+    @Override
+    public void resetBleConnection() {
+        // 清空旧连接
+        clearObservers();
+
+        // 此步骤非常重要，不加会造成重连请求掉进黑洞的现象
+        resetSubscriptions();
     }
 
     @Override

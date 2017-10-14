@@ -52,7 +52,13 @@ public interface IDevicePresenter<V extends IBaseView> extends IBasePresenter<V>
     // 获取当前页面操作步骤
     TradeStep getStep();
 
-    // 重置请求
+    // 重置蓝牙连接
+    void resetBleConnection();
+
+    // 关闭蓝牙连接
+    void closeBleConnecttion();
+
+    // 重置连接观察者管理器
     void resetSubscriptions();
 
     // 重置上下文内容
