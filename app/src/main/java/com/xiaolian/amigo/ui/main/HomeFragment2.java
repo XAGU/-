@@ -140,18 +140,30 @@ public class HomeFragment2 extends Fragment {
 
     public void onSchoolBizEvent(List<BriefSchoolBusiness> businesses) {
         int businessSize = 0;
+        boolean needNotify = false;
         shower.setActive(false);
         water.setActive(false);
         for (BriefSchoolBusiness business : businesses) {
             if (business.getBusinessId() == 2) {
                 water.setActive(true);
+                if (business.getPrepayOrder() > 0) {
+                    water.setPrepaySize(business.getPrepayOrder());
+                    needNotify = true;
+                }
                 businessSize += 1;
             } else if (business.getBusinessId() == 1) {
                 shower.setActive(true);
+                if (business.getPrepayOrder() > 0) {
+                    shower.setPrepaySize(business.getPrepayOrder());
+                    needNotify = true;
+                }
                 businessSize += 1;
             }
         }
         if (businessSize != 2) {
+            needNotify = true;
+        }
+        if (needNotify) {
             adaptor.notifyDataSetChanged();
         }
     }
@@ -174,9 +186,9 @@ public class HomeFragment2 extends Fragment {
             case SCHOOL_BIZ:
                 onSchoolBizEvent((List<BriefSchoolBusiness>) event.getObject());
                 break;
-            case PREPAY_ORDER:
-                onPrepayOrderEvent((HomeAdaptor.ItemWrapper) event.getObject());
-                break;
+//            case PREPAY_ORDER:
+//                onPrepayOrderEvent((HomeAdaptor.ItemWrapper) event.getObject());
+//                break;
         }
     }
 
@@ -207,7 +219,6 @@ public class HomeFragment2 extends Fragment {
         public enum EventType {
             BANNER(1),
             SCHOOL_BIZ(2),
-            PREPAY_ORDER(3)
             ;
 
             EventType(int type) {

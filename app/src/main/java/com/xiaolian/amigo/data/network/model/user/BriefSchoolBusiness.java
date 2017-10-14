@@ -11,4 +11,5 @@ import lombok.Data;
 public class BriefSchoolBusiness {
     private Long businessId;
     private Boolean using;
+    private Integer prepayOrder;
 }

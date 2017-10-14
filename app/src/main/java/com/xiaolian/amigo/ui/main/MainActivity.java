@@ -215,7 +215,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 iv_avatar.setImageResource(R.drawable.ic_picture_error);
             }
             // 请求待找零订单
-            presenter.getPrepayOrder();
+//            presenter.getPrepayOrder();
         }
     }
 
@@ -438,8 +438,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             HomeAdaptor.ItemWrapper itemWrapper = new HomeAdaptor.ItemWrapper(1, null, null, null, null,
                             Device.HEARTER.getDrawableRes());
             itemWrapper.setPrepaySize(heaterOrderSize);
-            EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.PREPAY_ORDER,
-                    itemWrapper));
+//            EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.PREPAY_ORDER,
+//                    itemWrapper));
         }
         int currentDispenserOrderSize = 0;
         for (Order order : orders) {
@@ -450,8 +450,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             HomeAdaptor.ItemWrapper itemWrapper = new HomeAdaptor.ItemWrapper(1, null, null, null, null,
                     Device.DISPENSER.getDrawableRes());
             itemWrapper.setPrepaySize(dispenserOrderSize);
-            EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.PREPAY_ORDER,
-                    itemWrapper));
+//            EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.PREPAY_ORDER,
+//                    itemWrapper));
         }
     }
 
