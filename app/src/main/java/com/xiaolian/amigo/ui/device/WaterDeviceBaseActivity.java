@@ -661,6 +661,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                 presenter.clearObservers(); // 清空旧连接
                 presenter.resetSubscriptions(); // 此步骤非常重要，不加会造成重连请求掉进黑洞的现象
                 presenter.resetContext();
+                this.macAddress = chosenMacAddress;
                 presenter.onConnect(chosenMacAddress);
             }
         }

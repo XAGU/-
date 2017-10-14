@@ -647,19 +647,23 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 case CHECK_OUT:
                     if (purelyCheckoutFlag) {
                         // 纯结账操作，直接跳转至第二步结账，结账完毕跳转账单详情页面
+                        Log.i(TAG, "结账完成");
                         getMvpView().onFinish(orderId);
                     } else if (precheckFlag) {
                         // 当前为预结账状态，结账完毕后关闭更改标识
                         precheckFlag = false;
                         if (reconnect) {
                             // 重连状态下，走预结账->结账流程时，是本人主动结账，跳转账单详情页
+                            Log.i(TAG, "结账完成");
                             getMvpView().onFinish(orderId);
                         } else {
                             // 非重连状态下，是主动帮别人结账，此时用户还未进入用水流程，需要再次握手，否则会报设备使用次数不对
+                            Log.i(TAG, "结账完成,当前为主动帮别人结账，正常流程，继续下发握手指令");
                             onWrite(connectCmd);
                         }
                     } else {
                         // 当前为非预结账状态，结账完毕后跳转账单详情页
+                        Log.i(TAG, "结账完成");
                         getMvpView().onFinish(orderId);
                     }
                     break;
