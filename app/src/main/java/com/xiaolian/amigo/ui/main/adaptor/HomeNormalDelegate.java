@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.ui.base.aspect.SingleClick;
 import com.zhy.adapter.recyclerview.base.ItemViewDelegate;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -26,9 +27,15 @@ public class HomeNormalDelegate implements ItemViewDelegate<HomeAdaptor.ItemWrap
 
     @Override
     public void convert(ViewHolder holder, HomeAdaptor.ItemWrapper itemWrapper, int position) {
+        if (itemWrapper.isActive()) {
+            holder.itemView.setVisibility(View.VISIBLE);
+        } else {
+            holder.itemView.setVisibility(View.GONE);
+        }
         ((RelativeLayout)holder.getView(R.id.rl_item)).setBackgroundResource(itemWrapper.getRes());
         holder.getView(R.id.rl_item).setClickable(true);
         holder.getView(R.id.rl_item).setOnClickListener(new View.OnClickListener() {
+            @SingleClick
             @Override
             public void onClick(View v) {
                 if (listener != null) {

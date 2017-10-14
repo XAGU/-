@@ -95,10 +95,12 @@ public class PrepayOrderActivity extends WalletBaseActivity implements IPrepayOr
         Intent intent = null;
         if(Device.getDevice(orderWrapper.getType()) == Device.HEARTER) {
             intent = new Intent(this, HeaterActivity.class);
+            intent.putExtra(MainActivity.INTENT_KEY_DEVICE_TYPE, Device.HEARTER.getType());
         }else {
             intent = new Intent(this, DispenserActivity.class);
+            intent.putExtra(MainActivity.INTENT_KEY_DEVICE_TYPE, Device.DISPENSER.getType());
         }
-        intent.putExtra(MainActivity.INTENT_KEY_LOCAION, location);
+        intent.putExtra(MainActivity.INTENT_KEY_LOCATION, location);
         intent.putExtra(MainActivity.INTENT_KEY_MAC_ADDRESS, macAddress);
         startActivity(intent);
     }

@@ -2,6 +2,7 @@ package com.xiaolian.amigo.ui.main;
 
 import android.text.TextUtils;
 
+import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.manager.intf.IMainDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.DeviceCheckReqDTO;
@@ -63,9 +64,6 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
 
     @Override
     public void getNoticeAmount() {
-        if (TextUtils.isEmpty(manager.getToken())) {
-            return;
-        }
         addObserver(manager.getExtraInfo(), new NetworkObserver<ApiResult<PersonalExtraInfoDTO>>(false) {
 
             @Override
@@ -170,7 +168,7 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
                     if (result.getData().getDevices() != null
                             && !result.getData().getDevices().isEmpty()
                             && result.getData().getDevices().get(0).getMacAddress() != null) {
-                        getMvpView().gotoDevice(HeaterActivity.class,
+                        getMvpView().gotoDevice(Device.HEARTER,
                                 result.getData().getDevices().get(0).getMacAddress(),
                                 result.getData().getDevices().get(0).getLocation());
                     } else {

@@ -38,5 +38,6 @@ public class HomeAdaptor extends MultiItemTypeAdapter<HomeAdaptor.ItemWrapper> {
         String descColor;
         int res;
         int prepaySize = 0;
+        boolean active = true;
     }
 }

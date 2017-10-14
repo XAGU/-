@@ -36,6 +36,7 @@ public class PrepayDialog extends Dialog {
         this.context = context;
         Window window = this.getWindow();
         window.requestFeature(Window.FEATURE_NO_TITLE);
+        window.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         window.setGravity(Gravity.CENTER);  //此处可以设置dialog显示的位置
         window.getDecorView().setPadding(0, 0, 0, 0);
         WindowManager.LayoutParams lp = window.getAttributes();

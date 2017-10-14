@@ -115,6 +115,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     private boolean purelyCheckoutFlag = false;
     // 正在连接标识
     private boolean connecting = true;
+    // 连接计时器
+    private CountDownTimer timer;
 
     public DeviceBasePresenter(IBleDataManager bleDataManager, ITradeDataManager tradeDataManager, IOrderDataManager orderDataManager, ISharedPreferencesHelp sharedPreferencesHelp) {
         super();
@@ -149,7 +151,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         // 重置正在连接标识
         connecting = true;
         // 启动30s倒计时
-        final CountDownTimer timer = new CountDownTimer(30 * 1000, 1000) {
+        timer = new CountDownTimer(15 * 1000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 if (!connecting) {
@@ -161,7 +163,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             public void onFinish() {
                 clearObservers();
                 resetSubscriptions();
-                getMvpView().onError(TradeError.CONNECT_ERROR_5);
+                getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_5));
             }
         };
         timer.start();
@@ -472,6 +474,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         disconnectTriggerSubject.onNext(null);
         if (null != busSubscriber) {
             busSubscriber.unsubscribe();
+        }
+        if (null != timer) {
+            timer.cancel();
         }
     }
 

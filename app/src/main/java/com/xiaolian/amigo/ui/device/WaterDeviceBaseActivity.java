@@ -232,6 +232,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
     private BonusAdaptor.BonusWrapper choosedBonus;
     private OrderPreInfoDTO orderPreInfo;
+    private int deviceType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -244,7 +245,8 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
         if (getIntent() != null) {
             macAddress = getIntent().getStringExtra(MainActivity.INTENT_KEY_MAC_ADDRESS);
-            tv_device_title.setText(getIntent().getStringExtra(MainActivity.INTENT_KEY_LOCAION));
+            tv_device_title.setText(getIntent().getStringExtra(MainActivity.INTENT_KEY_LOCATION));
+            deviceType = getIntent().getIntExtra(MainActivity.INTENT_KEY_DEVICE_TYPE, 1);
         }
         if (TextUtils.isEmpty(macAddress)) {
             macAddress = "08:7C:BE:E1:FD:3B";
@@ -252,6 +254,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
         // 连接蓝牙设备
         presenter.onConnect(macAddress);
+        presenter.queryPrepayOption(deviceType);
     }
 
     protected abstract void initInject();
@@ -334,7 +337,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         } else {
             Intent intent = new Intent(this, BonusActivity.class);
             intent.putExtra(BonusActivity.INTENT_KEY_BONUS_ACTION, BonusActivity.ACTION_CHOOSE);
-            intent.putExtra(BonusActivity.INTENT_KEY_BONUS_DEVICE_TYPE, Device.HEARTER.getType());
+            intent.putExtra(BonusActivity.INTENT_KEY_BONUS_DEVICE_TYPE, deviceType);
             startActivityForResult(intent, CHOOSE_BONUS_CODE);
         }
     }
@@ -364,7 +367,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         tv_bonus_pay.setTextColor(ContextCompat.getColor(this, R.color.black));
         tv_bonus_pay.setTypeface(tv_bonus_pay.getTypeface(), Typeface.BOLD);
         tv_water_left.setText(getString(R.string.choose_bonus));
-        tv_water_right.setText(presenter.getBonusAmount() + "个可用");
+        tv_water_right.setText(presenter.getBonusAmount() == 0 ? "没有可用" : presenter.getBonusAmount() + "个可用");
     }
 
     /**
@@ -423,10 +426,12 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             showStep1();
             // 标记步骤为确认支付页面
             presenter.setStep(TradeStep.PAY);
+            toggleSubTitle(true);
         } else { // TradeStep.SETTLE
             showStep2((UnsettledOrderStatusCheckRespDTO) extra[0]);
             // 标记步骤为结算找零页面
             presenter.setStep(TradeStep.SETTLE);
+            toggleSubTitle(false);
         }
 
     }
@@ -436,6 +441,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         startShower(null);
         // 标记步骤为结束用水页面
         presenter.setStep(TradeStep.SETTLE);
+        toggleSubTitle(false);
     }
 
     @Override
@@ -625,7 +631,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                 if (data == null) {
                     return;
                 }
-                String chosenLocation = data.getStringExtra(MainActivity.INTENT_KEY_LOCAION);
+                String chosenLocation = data.getStringExtra(MainActivity.INTENT_KEY_LOCATION);
                 String chosenMacAddress = data.getStringExtra(MainActivity.INTENT_KEY_MAC_ADDRESS);
                 if (TextUtils.equals(chosenMacAddress, this.macAddress)
                         || TextUtils.isEmpty(chosenLocation)

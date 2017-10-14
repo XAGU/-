@@ -104,7 +104,7 @@ public class ChooseDormitoryActivity extends UserBaseListActivity implements ICh
     public void backToDevice(String macAddress, String location) {
         Intent intent = new Intent();
         intent.putExtra(MainActivity.INTENT_KEY_MAC_ADDRESS, macAddress);
-        intent.putExtra(MainActivity.INTENT_KEY_LOCAION, location);
+        intent.putExtra(MainActivity.INTENT_KEY_LOCATION, location);
         setResult(RESULT_OK, intent);
         finish();
     }

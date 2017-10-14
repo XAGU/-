@@ -39,11 +39,18 @@ import lombok.Data;
 public class HomeFragment2 extends Fragment {
 
     private static final String TAG = HomeFragment2.class.getSimpleName();
+    HomeAdaptor.ItemWrapper shower = new HomeAdaptor.ItemWrapper(1, null, "热水澡", "TAKE A SHOWER", "#ffb6c5",
+                    R.drawable.shower);
+    HomeAdaptor.ItemWrapper water = new HomeAdaptor.ItemWrapper(1, null, "饮水机", "DRINK A WATER", "#aaebe4",
+                    R.drawable.water);
+    HomeAdaptor.ItemWrapper lost = new HomeAdaptor.ItemWrapper(1, null, "失物招领", "LOST AND FOUND", "#b3d4ff",
+            R.drawable.lost);
 
     List<HomeAdaptor.ItemWrapper> items = new ArrayList<HomeAdaptor.ItemWrapper>() {
         {
-            add(new HomeAdaptor.ItemWrapper(1, null, "失物招领", "LOST AND FOUND", "#b3d4ff",
-                    R.drawable.lost));
+            add(shower);
+            add(water);
+            add(lost);
         }
     };
 
@@ -132,17 +139,21 @@ public class HomeFragment2 extends Fragment {
     }
 
     public void onSchoolBizEvent(List<BriefSchoolBusiness> businesses) {
-        if (businesses.isEmpty()) {
-            return;
-        }
+        int businessSize = 0;
+        shower.setActive(false);
+        water.setActive(false);
         for (BriefSchoolBusiness business : businesses) {
             if (business.getBusinessId() == 2) {
-                items.add(0, new HomeAdaptor.ItemWrapper(1, null, "热水澡", "TAKE A SHOWER", "#ffb6c5", R.drawable.shower));
+                water.setActive(true);
+                businessSize += 1;
             } else if (business.getBusinessId() == 1) {
-                items.add(0, new HomeAdaptor.ItemWrapper(1, null, "饮水机", "DRINK A WATER", "#aaebe4", R.drawable.water));
+                shower.setActive(true);
+                businessSize += 1;
             }
         }
-        adaptor.notifyDataSetChanged();
+        if (businessSize != 2) {
+            adaptor.notifyDataSetChanged();
+        }
     }
 
     private void onPrepayOrderEvent(HomeAdaptor.ItemWrapper itemWrapper) {

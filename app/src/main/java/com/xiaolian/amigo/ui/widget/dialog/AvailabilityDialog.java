@@ -32,6 +32,7 @@ public class AvailabilityDialog extends Dialog {
         window.requestFeature(Window.FEATURE_NO_TITLE);
         window.setGravity(Gravity.CENTER);  //此处可以设置dialog显示的位置
         window.getDecorView().setPadding(0, 0, 0, 0);
+        window.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         WindowManager.LayoutParams lp = window.getAttributes();
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;

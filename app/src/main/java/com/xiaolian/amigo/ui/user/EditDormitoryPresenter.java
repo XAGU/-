@@ -121,4 +121,9 @@ public class EditDormitoryPresenter<V extends IEditDormitoryView> extends BasePr
             }
         });
     }
+
+    @Override
+    public void saveDefaultResidenceId(Long residenceId) {
+        manager.getUser().setResidenceId(residenceId);
+    }
 }

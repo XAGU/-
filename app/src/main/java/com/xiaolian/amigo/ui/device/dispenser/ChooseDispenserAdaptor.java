@@ -1,10 +1,12 @@
 package com.xiaolian.amigo.ui.device.dispenser;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.device.Device;
+import com.xiaolian.amigo.ui.main.MainActivity;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -20,8 +22,10 @@ import lombok.Data;
 public class ChooseDispenserAdaptor extends CommonAdapter<ChooseDispenserAdaptor.DispenserWapper> {
     private OnItemClickListener mOnItemClickListener;
     private int lastExpandPosition = -1;
+    private Context context;
     public ChooseDispenserAdaptor(Context context, int layoutId, List<DispenserWapper> datas) {
         super(context, layoutId, datas);
+        this.context = context;
     }
 
     @Override
@@ -55,6 +59,34 @@ public class ChooseDispenserAdaptor extends CommonAdapter<ChooseDispenserAdaptor
             holder.getView(R.id.v_divide).setVisibility(View.GONE);
             holder.getView(R.id.rl_bottom).setVisibility(View.GONE);
         }
+        // 添加饮水机点击事件
+        // 冷水
+        holder.getView(R.id.tv_cold_water).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                context.startActivity(new Intent(context.getApplicationContext(), DispenserActivity.class)
+                        .putExtra(MainActivity.INTENT_KEY_MAC_ADDRESS, dispenserWapper.getDevice().getMacAddress())
+                        .putExtra(MainActivity.INTENT_KEY_LOCATION, dispenserWapper.getDevice().getLocation()));
+            }
+        });
+        // 冰水
+        holder.getView(R.id.tv_ice_water).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                context.startActivity(new Intent(context.getApplicationContext(), DispenserActivity.class)
+                        .putExtra(MainActivity.INTENT_KEY_MAC_ADDRESS, dispenserWapper.getDevice().getMacAddress())
+                        .putExtra(MainActivity.INTENT_KEY_LOCATION, dispenserWapper.getDevice().getLocation()));
+            }
+        });
+        // 热水
+        holder.getView(R.id.tv_hot_water).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                context.startActivity(new Intent(context.getApplicationContext(), DispenserActivity.class)
+                        .putExtra(MainActivity.INTENT_KEY_MAC_ADDRESS, dispenserWapper.getDevice().getMacAddress())
+                        .putExtra(MainActivity.INTENT_KEY_LOCATION, dispenserWapper.getDevice().getLocation()));
+            }
+        });
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
