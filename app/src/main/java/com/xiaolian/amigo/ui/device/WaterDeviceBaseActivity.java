@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.base.TimeHolder;
 import com.xiaolian.amigo.data.enumeration.ErrorTag;
 import com.xiaolian.amigo.data.enumeration.Payment;
 import com.xiaolian.amigo.data.enumeration.TradeError;
@@ -269,7 +270,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
         // 连接蓝牙设备
         presenter.setHomePageJump(homePageJump);
-        presenter.onConnect(macAddress);
+        presenter.onPreConnect(macAddress);
         presenter.queryPrepayOption(deviceType);
     }
 
@@ -604,7 +605,9 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                 tv_shower_payed.setText(orderStatus.getExtra());
                 // 从未结算订单列表跳转过来，tip展示需要标注订单时间等信息
                 if (!homePageJump) {
-                    trade_tip.setText(String.format("您%s在%s预付了%s的用水已结束\\n点击下方按钮进行找零", TimeUtils.convertTimestampToAccurateFormat(orderStatus.getStartTime()), orderStatus.getLocation(), String.valueOf(orderStatus.getPrepay().intValue())));
+                    String time = TimeUtils.convertTimestampToAccurateFormat(orderStatus.getCreateTime());
+                    String tip = String.format("您%s在%s预付了%s元的用水已结束\n点击下方按钮进行找零", time, orderStatus.getLocation(), String.valueOf(orderStatus.getPrepay().intValue()));
+                    trade_tip.setText(tip);
                 } else {
                     trade_tip.setText(getString(R.string.balance_trade_tip));
                 }
@@ -695,7 +698,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                 presenter.resetSubscriptions(); // 此步骤非常重要，不加会造成重连请求掉进黑洞的现象
                 presenter.resetContext();
                 this.macAddress = chosenMacAddress;
-                presenter.onConnect(chosenMacAddress);
+                presenter.onPreConnect(chosenMacAddress);
             }
         }
     }
@@ -709,6 +712,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     protected void onDestroy() {
         presenter.onDisConnect();
         super.onDestroy();
+        TimeHolder.get().setLastConnectTime(System.currentTimeMillis());
     }
 
     // 单击回退按钮返回 解决返回区域过小问题
@@ -716,7 +720,6 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     @Optional
     void back() {
         super.onBackPressed();
-//        finish();
     }
 
     @Override
@@ -766,6 +769,9 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
         presenter.cancelTimer();
 
+        // 异常发生时关闭蓝牙连接
+        presenter.closeBleConnecttion();
+
         // 显示错误页面，必须加这行判断，否则在activity销毁时会报空指针错误
         if (null != ll_content_normal && null != ll_content_shower && null != ll_content_unconnected && null != ll_error) {
             ll_content_normal.setVisibility(View.GONE);
@@ -781,4 +787,5 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         }
 
     }
+
 }

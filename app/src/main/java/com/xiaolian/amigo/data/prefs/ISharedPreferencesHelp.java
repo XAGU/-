@@ -45,4 +45,9 @@ public interface ISharedPreferencesHelp {
     void setCloseCmd(String macAddress, String closeCmd);
 
     String getCloseCmd(String macAddress);
+
+    // 上次连接时间
+    void setLastConnectTime(Long lastConnectTime);
+
+    Long getLastConnectTime();
 }

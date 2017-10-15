@@ -3,10 +3,12 @@ package com.xiaolian.amigo.data.manager;
 import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
 import com.xiaolian.amigo.data.network.IOrderApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.dto.request.LatestOrderReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.OrderDetailReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.OrderReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.QueryPrepayOptionReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.UnsettledOrderStatusCheckReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.LatestOrderRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.OrderDetailRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.OrderPreInfoDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.OrderRespDTO;
@@ -54,5 +56,10 @@ public class OrderDataManager implements IOrderDataManager {
     @Override
     public Observable<ApiResult<OrderPreInfoDTO>> queryPrepayOption(@Body QueryPrepayOptionReqDTO reqDTO) {
         return orderApi.queryPrepayOption(reqDTO);
+    }
+
+    @Override
+    public Observable<ApiResult<LatestOrderRespDTO>> queryLatestOrder(@Body LatestOrderReqDTO reqDTO) {
+        return orderApi.queryLatestOrder(reqDTO);
     }
 }
