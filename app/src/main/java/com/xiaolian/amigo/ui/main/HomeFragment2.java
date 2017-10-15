@@ -62,6 +62,7 @@ public class HomeFragment2 extends Fragment {
     private int prepayOrderSize = 0;
     private int businessSize = 0;
     private View disabledView;
+    private HomeNormalDelegate homeDelegate;
 
     @Nullable
     @Override
@@ -96,7 +97,7 @@ public class HomeFragment2 extends Fragment {
 //                return false;
 //            }
 //        });
-        HomeNormalDelegate homeDelegate = new HomeNormalDelegate();
+        homeDelegate = new HomeNormalDelegate();
         homeDelegate.setOnItemClickListener(new HomeNormalDelegate.OnItemClickListener() {
             @Override
             public void onItemClickListener(View v, int position) {
@@ -112,6 +113,7 @@ public class HomeFragment2 extends Fragment {
                 }
             }
         });
+        recyclerView.scheduleLayoutAnimation();
         adaptor.addItemViewDelegate(homeDelegate);
         adaptor.addItemViewDelegate(new HomeBannerDelegate(getActivity()));
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -126,6 +128,21 @@ public class HomeFragment2 extends Fragment {
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (!hidden) {
+            homeDelegate.setOnItemClickListener(new HomeNormalDelegate.OnItemClickListener() {
+                @Override
+                public void onItemClickListener(View v, int position) {
+                    Log.d(TAG, "onItemClick");
+                    disabledView = v;
+                    v.setEnabled(false);
+                    if (items.get(position).getRes() == R.drawable.shower) {
+                        EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_HEATER));
+                    } else if (items.get(position).getRes() == R.drawable.water) {
+                        EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_DISPENSER));
+                    } else if (items.get(position).getRes() == R.drawable.lost) {
+                        EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_LOST_AND_FOUND));
+                    }
+                }
+            });
             recyclerView.scheduleLayoutAnimation();
         }
     }

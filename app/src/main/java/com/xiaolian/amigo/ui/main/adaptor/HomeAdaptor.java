@@ -39,5 +39,6 @@ public class HomeAdaptor extends MultiItemTypeAdapter<HomeAdaptor.ItemWrapper> {
         int res;
         int prepaySize = 0;
         boolean active = true;
+        boolean using = false;
     }
 }

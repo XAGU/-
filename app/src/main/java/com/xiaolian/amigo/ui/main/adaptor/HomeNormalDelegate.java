@@ -7,6 +7,7 @@ import android.widget.RelativeLayout;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.base.aspect.SingleClick;
+import com.xiaolian.amigo.ui.widget.DotFlashView;
 import com.zhy.adapter.recyclerview.base.ItemViewDelegate;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -53,6 +54,13 @@ public class HomeNormalDelegate implements ItemViewDelegate<HomeAdaptor.ItemWrap
             holder.setText(R.id.tv_prepay, "(有" + itemWrapper.getPrepaySize() + "笔未找零金额)");
         } else {
             holder.getView(R.id.tv_prepay).setVisibility(View.GONE);
+        }
+        if (itemWrapper.isUsing()) {
+            ((DotFlashView)holder.getView(R.id.dfv_dot)).setVisibility(View.VISIBLE);
+            ((DotFlashView)holder.getView(R.id.dfv_dot)).startAnimation();
+        } else {
+            ((DotFlashView)holder.getView(R.id.dfv_dot)).setVisibility(View.GONE);
+            ((DotFlashView)holder.getView(R.id.dfv_dot)).endAnimation();
         }
     }
 
