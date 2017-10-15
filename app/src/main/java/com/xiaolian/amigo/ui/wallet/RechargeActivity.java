@@ -38,7 +38,7 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
     RecyclerView recyclerView;
 
     // 充值金额列表
-    List<RechargeAdaptor.RechargeWapper> recharges = new ArrayList<>();
+    List<RechargeAdaptor.RechargeWrapper> recharges = new ArrayList<>();
 
     RechargeAdaptor adaptor;
 
@@ -83,8 +83,8 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
     }
 
     @Override
-    public void addMore(List<RechargeAdaptor.RechargeWapper> rechargeWappers) {
-        recharges.addAll(rechargeWappers);
+    public void addMore(List<RechargeAdaptor.RechargeWrapper> rechargeWrappers) {
+        recharges.addAll(rechargeWrappers);
         adaptor.notifyDataSetChanged();
     }
 

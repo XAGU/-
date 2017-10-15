@@ -148,16 +148,15 @@
                         android:layout_centerVertical="true"/>
                 </RelativeLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dip"
-                    android:layout_centerVertical="true"
-                    android:background="#eee" />
 
                 <RelativeLayout
+                    android:id="@+id/rl_odd"
                     android:layout_width="match_parent"
-                    android:layout_height="58dp">
-
+                    android:layout_height="59dp">
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dip"
+                        android:background="#eee" />
                     <TextView
                         style="@style/ContentText_main"
                         android:layout_width="wrap_content"

@@ -29,6 +29,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+                android:textColor="#666"
                 android:text="2017-08-30 12:30" />
         </RelativeLayout>
 
@@ -53,6 +54,7 @@
             <TextView
                 android:id="@+id/tv_location"
                 style="@style/ContentText_main"
+                android:textColor="#666"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -81,6 +83,7 @@
             <TextView
                 android:id="@+id/tv_order_no"
                 style="@style/ContentText_main"
+                android:textColor="#666"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -109,6 +112,7 @@
             <TextView
                 android:id="@+id/tv_pay_method"
                 style="@style/ContentText_main"
+                android:textColor="#666"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -116,15 +120,15 @@
                 android:text="预付10元/1吨水" />
         </RelativeLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dip"
-            android:layout_centerVertical="true"
-            android:background="#eee" />
-
         <RelativeLayout
+            android:id="@+id/rl_odd"
             android:layout_width="match_parent"
-            android:layout_height="58dp">
+            android:layout_height="59dp">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dip"
+                android:background="#eee" />
 
             <TextView
                 style="@style/ContentText_main"
@@ -198,8 +202,9 @@
 
     <Button
         android:id="@+id/bt_ok"
-        style="@style/Button"
-        android:layout_marginBottom="14dp"
+        style="@style/Rect_button"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
         android:text="前往找零"
         android:enabled="true"
         android:layout_width="match_parent"

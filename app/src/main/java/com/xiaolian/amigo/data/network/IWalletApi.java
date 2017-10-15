@@ -4,6 +4,7 @@ import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.QueryTimeValidReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.RechargeReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.SimpleQueryReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.request.WithdrawReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.PersonalWalletDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryRechargeAmountsRespDTO;
@@ -36,4 +37,8 @@ public interface IWalletApi {
     // 充值
     @POST("/funds/recharge")
     Observable<ApiResult<BooleanRespDTO>> recharge(@Body RechargeReqDTO reqDTO);
+
+    // 提现
+    @POST("/funds/withdraw")
+    Observable<ApiResult<BooleanRespDTO>> withdraw(@Body WithdrawReqDTO reqDTO);
 }

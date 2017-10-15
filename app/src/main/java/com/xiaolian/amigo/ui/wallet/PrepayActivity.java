@@ -6,10 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.ui.order.OrderBaseListActivity;
 import com.xiaolian.amigo.ui.wallet.adaptor.PrepayAdaptor;
-import com.xiaolian.amigo.ui.order.intf.IOrderPresenter;
-import com.xiaolian.amigo.ui.order.intf.IOrderView;
 import com.xiaolian.amigo.ui.wallet.intf.IPrepayPresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IPrepayView;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
@@ -29,8 +26,6 @@ import butterknife.ButterKnife;
  * <p>
  * Created by zcd on 10/10/17.
  */
-
-
 public class PrepayActivity extends WalletBaseListActivity implements IPrepayView {
 
     private List<PrepayAdaptor.OrderWrapper> orders = new ArrayList<>();

@@ -23,7 +23,7 @@ public class PayReqDTO {
     private Integer method;
 
     // 预付金额
-    private Integer prepay;
+    private Double prepay;
 
     // 红包id
     private Long bonusId;

@@ -43,11 +43,11 @@ public class RechargePresenter<V extends IRechargeView> extends BasePresenter<V>
                 if (null == result.getError()) {
                     if (result.getData().getRechargeDenominations() != null
                             && result.getData().getRechargeDenominations().size() > 0) {
-                        List<RechargeAdaptor.RechargeWapper> rechargeWapper = new ArrayList<>();
+                        List<RechargeAdaptor.RechargeWrapper> rechargeWrapper = new ArrayList<>();
                         for (RechargeDenominations rechargeDenominations : result.getData().getRechargeDenominations()) {
-                            rechargeWapper.add(new RechargeAdaptor.RechargeWapper(rechargeDenominations));
+                            rechargeWrapper.add(new RechargeAdaptor.RechargeWrapper(rechargeDenominations));
                         }
-                        getMvpView().addMore(rechargeWapper);
+                        getMvpView().addMore(rechargeWrapper);
                     }
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());

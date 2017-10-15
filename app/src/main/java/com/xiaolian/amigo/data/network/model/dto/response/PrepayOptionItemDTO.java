@@ -10,5 +10,5 @@ import lombok.Data;
 @Data
 public class PrepayOptionItemDTO {
     private String description;
-    private String prepay;
+    private Double prepay;
 }

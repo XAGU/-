@@ -66,7 +66,8 @@ public class ChooseDispenserAdaptor extends CommonAdapter<ChooseDispenserAdaptor
             public void onClick(View v) {
                 context.startActivity(new Intent(context.getApplicationContext(), DispenserActivity.class)
                         .putExtra(MainActivity.INTENT_KEY_MAC_ADDRESS, dispenserWapper.getDevice().getMacAddress())
-                        .putExtra(MainActivity.INTENT_KEY_LOCATION, dispenserWapper.getDevice().getLocation()));
+                        .putExtra(MainActivity.INTENT_KEY_LOCATION, dispenserWapper.getDevice().getLocation())
+                        .putExtra(MainActivity.INTENT_KEY_DEVICE_TYPE, 2));
             }
         });
         // 冰水
@@ -75,7 +76,8 @@ public class ChooseDispenserAdaptor extends CommonAdapter<ChooseDispenserAdaptor
             public void onClick(View v) {
                 context.startActivity(new Intent(context.getApplicationContext(), DispenserActivity.class)
                         .putExtra(MainActivity.INTENT_KEY_MAC_ADDRESS, dispenserWapper.getDevice().getMacAddress())
-                        .putExtra(MainActivity.INTENT_KEY_LOCATION, dispenserWapper.getDevice().getLocation()));
+                        .putExtra(MainActivity.INTENT_KEY_LOCATION, dispenserWapper.getDevice().getLocation())
+                        .putExtra(MainActivity.INTENT_KEY_DEVICE_TYPE, 2));
             }
         });
         // 热水
@@ -84,7 +86,8 @@ public class ChooseDispenserAdaptor extends CommonAdapter<ChooseDispenserAdaptor
             public void onClick(View v) {
                 context.startActivity(new Intent(context.getApplicationContext(), DispenserActivity.class)
                         .putExtra(MainActivity.INTENT_KEY_MAC_ADDRESS, dispenserWapper.getDevice().getMacAddress())
-                        .putExtra(MainActivity.INTENT_KEY_LOCATION, dispenserWapper.getDevice().getLocation()));
+                        .putExtra(MainActivity.INTENT_KEY_LOCATION, dispenserWapper.getDevice().getLocation())
+                        .putExtra(MainActivity.INTENT_KEY_DEVICE_TYPE, 2));
             }
         });
     }

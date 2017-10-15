@@ -6,6 +6,7 @@ import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.QueryTimeValidReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.RechargeReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.SimpleQueryReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.request.WithdrawReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.PersonalWalletDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryRechargeAmountsRespDTO;
@@ -52,5 +53,10 @@ public class WalletDataManager implements IWalletDataManager {
     @Override
     public Observable<ApiResult<BooleanRespDTO>> recharge(@Body RechargeReqDTO reqDTO) {
         return walletApi.recharge(reqDTO);
+    }
+
+    @Override
+    public Observable<ApiResult<BooleanRespDTO>> withdraw(@Body WithdrawReqDTO reqDTO) {
+        return walletApi.withdraw(reqDTO);
     }
 }

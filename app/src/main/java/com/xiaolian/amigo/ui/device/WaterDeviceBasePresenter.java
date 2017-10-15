@@ -43,7 +43,7 @@ public abstract class WaterDeviceBasePresenter<V extends IWaterDeviceBaseView> e
     }
 
     @Override
-    public void queryWallet(int amount) {
+    public void queryWallet(double amount) {
         addObserver(walletDataManager.queryWallet(), new NetworkObserver<ApiResult<PersonalWalletDTO>>() {
 
             @Override

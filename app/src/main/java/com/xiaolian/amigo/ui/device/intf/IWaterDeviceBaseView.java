@@ -10,7 +10,7 @@ import com.xiaolian.amigo.data.network.model.dto.response.OrderPreInfoDTO;
 
 public interface IWaterDeviceBaseView extends IDeviceView {
     // 显示提示充值dialog
-    void showRechargeDialog(int amount);
+    void showRechargeDialog(double amount);
 
     // 开始使用
     void startUse();

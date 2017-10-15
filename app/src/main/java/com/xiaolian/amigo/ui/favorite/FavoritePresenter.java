@@ -80,9 +80,6 @@ public class FavoritePresenter<V extends IFavoriteView> extends BasePresenter<V>
             @Override
             public void onError(Throwable e) {
                 super.onError(e);
-                if (e instanceof IllegalStateException) {
-                    return;
-                }
                 getMvpView().setRefreshComplete();
                 getMvpView().setLoadMoreComplete();
                 getMvpView().showErrorView();

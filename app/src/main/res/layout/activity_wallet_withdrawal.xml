@@ -4,24 +4,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorBackgroundGray"
     android:orientation="vertical"
-    android:paddingLeft="@dimen/mainMarginLeftRight"
-    android:paddingRight="@dimen/mainMarginLeftRight"
-    android:paddingTop="14dp">
-
-    <ImageView
-        android:id="@+id/iv_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingRight="40dp"
-        android:src="@drawable/back" />
-
-    <TextView
-        style="@style/TitleText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="21dp"
-        android:layout_marginTop="24dp"
-        android:text="提现" />
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -119,6 +102,7 @@
                 android:textStyle="bold" />
 
             <EditText
+                android:id="@+id/et_amount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
@@ -166,7 +150,9 @@
 
     <Button
         android:id="@+id/bt_submit"
-        style="@style/Button"
+        style="@style/Rect_button"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"

@@ -1,6 +1,8 @@
 package com.xiaolian.amigo.ui.wallet;
 
 import android.content.Intent;
+import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
@@ -25,7 +27,6 @@ import butterknife.OnClick;
  * <p>
  * Created by zcd on 10/12/17.
  */
-
 public class PrepayOrderActivity extends WalletBaseActivity implements IPrepayOrderView {
     @Inject
     IPrepayOrderPresenter<IPrepayOrderView> presenter;
@@ -54,6 +55,12 @@ public class PrepayOrderActivity extends WalletBaseActivity implements IPrepayOr
     @BindView(R.id.tv_pay_method)
     TextView tv_pay_method;
 
+    /**
+     * 找零金额
+     */
+    @BindView(R.id.rl_odd)
+    RelativeLayout rl_odd;
+
     private PrepayAdaptor.OrderWrapper orderWrapper;
 
     @Override
@@ -66,8 +73,9 @@ public class PrepayOrderActivity extends WalletBaseActivity implements IPrepayOr
             tv_time.setText(CommonUtil.stampToDate(orderWrapper.getTime()));
             tv_location.setText(orderWrapper.getOrder().getLocation());
             tv_order_no.setText(orderWrapper.getOrder().getOrderNo());
-            tv_pay_method.setText(orderWrapper.getOrder().getPaymentType() == 1 ?
-                    "余额支付" : "红包支付");
+            tv_pay_method.setText(orderWrapper.getOrder().getPrepay());
+            rl_odd.setVisibility(orderWrapper.getOrder().getPaymentType() == 1 ?
+                    View.VISIBLE : View.GONE);
         }
     }
 

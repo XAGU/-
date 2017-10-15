@@ -723,7 +723,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     }
 
     @Override
-    public void onPay(int method, Integer prepay, Long bonusId) {
+    public void onPay(int method, Double prepay, Long bonusId) {
         // 校验网络
         if (!getMvpView().isNetworkAvailable()) {
             getMvpView().onError(TradeError.CONNECT_ERROR_3);
