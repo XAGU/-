@@ -110,7 +110,6 @@
     <string name="prepay_order">待找零订单</string>
     <string name="balance_trade_tip">(100s)内未打开放水阀门，系统将自动停止本次服务\n消费金额以实际用水量为准</string>
     <string name="bonus_trade_tip">红包金额对应水量上线，一旦使用则立即消耗\n点击下方按钮即结束用水</string>
-    <string name="balance_settle_tip">您%s在%s预付了%s的用水已结束\n点击下方按钮进行找零</string>
     <string name="more">更多</string>
     <string name="about_us">关于我们</string>
     <string name="connect_error_tip_1">请靠近设备</string>

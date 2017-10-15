@@ -100,16 +100,11 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     TextView tv_shower_payed;
 
     /**
-     * 小提示（上）
+     * 提示
      */
     @BindView(R.id.trade_tip)
     TextView trade_tip;
 
-    /**
-     * 小提示（下）
-     */
-    @BindView(R.id.trade_below_tip)
-    TextView trade_below_tip;
 
     /**
      * 设备连接状态
@@ -262,7 +257,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             deviceType = getIntent().getIntExtra(MainActivity.INTENT_KEY_DEVICE_TYPE, 1);
             residenceId = getIntent().getLongExtra(MainActivity.INTENT_KEY_RESIDENCE_ID, 0L);
             homePageJump = getIntent().getBooleanExtra(INTENT_HOME_PAGE_JUMP, true);
-            recorvery = getIntent().getBooleanExtra(MainActivity.INTENT_KEY_RECOVERY, true);
+            recorvery = getIntent().getBooleanExtra(MainActivity.INTENT_KEY_RECOVERY, false);
         }
 
         tv_connect_status.setText(recorvery ? "正在恢复上一次用水" : "正在连接设备, 请稍后");
@@ -609,7 +604,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                 tv_shower_payed.setText(orderStatus.getExtra());
                 // 从未结算订单列表跳转过来，tip展示需要标注订单时间等信息
                 if (!homePageJump) {
-                    trade_tip.setText(String.format(getString(R.string.balance_settle_tip), TimeUtils.convertTimestampToAccurateFormat(orderStatus.getStartTime()), orderStatus.getLocation(), String.valueOf(orderStatus.getPrepay().intValue())));
+                    trade_tip.setText(String.format("您%s在%s预付了%s的用水已结束\\n点击下方按钮进行找零", TimeUtils.convertTimestampToAccurateFormat(orderStatus.getStartTime()), orderStatus.getLocation(), String.valueOf(orderStatus.getPrepay().intValue())));
                 } else {
                     trade_tip.setText(getString(R.string.balance_trade_tip));
                 }
