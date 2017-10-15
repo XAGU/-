@@ -63,4 +63,7 @@ public interface IDevicePresenter<V extends IBaseView> extends IBasePresenter<V>
 
     // 重置上下文内容
     void resetContext();
+
+    // 取消连监控接定时器
+    void cancelTimer();
 }

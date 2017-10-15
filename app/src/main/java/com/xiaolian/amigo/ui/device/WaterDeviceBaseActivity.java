@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.DrawableRes;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -48,7 +49,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
 //    // 显示或隐藏 "切换宿舍"
 //    toggleSubTitle(presenter.getStep() == TradeStep.PAY);
-
+    private static final String TAG = WaterDeviceBaseActivity.class.getSimpleName();
     /**
      * 跳转到选择红包页面的request code
      */
@@ -434,6 +435,11 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             // 标记步骤为确认支付页面
             presenter.setStep(TradeStep.PAY);
             toggleSubTitle(true);
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+                Log.wtf(TAG, e);
+            }
         } else { // TradeStep.SETTLE
             showStep2((UnsettledOrderStatusCheckRespDTO) extra[0]);
             // 标记步骤为结算找零页面
@@ -559,9 +565,11 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
     @Override
     public void onFinish(long orderId) {
+        presenter.onDisConnect();
         Intent intent = new Intent(this, DeviceOrderActivity.class);
         intent.putExtra(Constant.BUNDLE_ID, orderId);
         startActivity(intent);
+        finish();
     }
 
     private void startShower(UnsettledOrderStatusCheckRespDTO orderStatus) {
@@ -723,6 +731,8 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
     @Override
     public void onError(TradeError tradeError) {
+
+        presenter.cancelTimer();
 
         // 显示错误页面，必须加这行判断，否则在activity销毁时会报空指针错误
         if (null != ll_content_normal && null != ll_content_shower && null != ll_content_unconnected && null != ll_error) {

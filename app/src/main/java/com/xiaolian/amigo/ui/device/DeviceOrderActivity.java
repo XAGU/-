@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -86,7 +87,8 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
     }
 
     @OnClick(R.id.bt_ok)
-    void onOkClick() {
+    void onOkClick(Button button) {
+        button.setEnabled(false);
         backToMain();
     }
 
@@ -94,6 +96,11 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
      * 返回首页
      */
     private void backToMain() {
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         startActivity(new Intent(this, MainActivity.class));
     }
 

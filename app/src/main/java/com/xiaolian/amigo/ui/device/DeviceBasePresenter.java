@@ -144,6 +144,13 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     }
 
     @Override
+    public void cancelTimer() {
+        if (null != timer) {
+            timer.cancel();
+        }
+    }
+
+    @Override
     public void onConnect(@NonNull String macAddress) {
 
         // 重置正在连接标识
@@ -201,13 +208,13 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
             @Override
             public void onConnectError() {
-                handleDisConnectError();
+                // handleDisConnectError();
             }
 
             @Override
             public void onExecuteError(Throwable e) {
                 Log.wtf(TAG, "监控设备状态失败！", e);
-                getMvpView().onError(TradeError.CONNECT_ERROR_1);
+                getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
             }
         }, Schedulers.io());
 
@@ -221,13 +228,13 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 new BleObserver<BluetoothGattCharacteristic>() {
                     @Override
                     public void onConnectError() {
-                        handleDisConnectError();
+                         handleDisConnectError();
                     }
 
                     @Override
                     public void onExecuteError(Throwable e) {
                         Log.wtf(TAG, "获取特征值失败！", e);
-                        getMvpView().onError(TradeError.CONNECT_ERROR_1);
+                        getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
                     }
 
                     @Override
@@ -258,13 +265,13 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 new BleObserver<Observable<byte[]>>() {
                     @Override
                     public void onConnectError() {
-                        handleDisConnectError();
+                        // handleDisConnectError();
                     }
 
                     @Override
                     public void onExecuteError(Throwable e) {
                         Log.wtf(TAG, "开启notify通道失败！", e);
-                        getMvpView().onError(TradeError.CONNECT_ERROR_1);
+                        getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
                     }
 
                     @Override
@@ -285,13 +292,13 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 new BleObserver<byte[]>() {
                     @Override
                     public void onConnectError() {
-                        handleDisConnectError();
+                        // handleDisConnectError();
                     }
 
                     @Override
                     public void onExecuteError(Throwable e) {
                         Log.wtf(TAG, "写notify特征值描述失败！", e);
-                        getMvpView().onError(TradeError.CONNECT_ERROR_1);
+                        getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
                     }
 
                     @Override
@@ -330,13 +337,13 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 new BleObserver<byte[]>() {
                     @Override
                     public void onConnectError() {
-                        handleDisConnectError();
+                        // handleDisConnectError();
                     }
 
                     @Override
                     public void onExecuteError(Throwable e) {
                         Log.wtf(TAG, "发送指令失败！command:" + command, e);
-                        getMvpView().onWriteError();
+                        getMvpView().post(() -> getMvpView().onError(TradeError.DEVICE_BROKEN_1));
                     }
 
                     @Override
@@ -357,13 +364,13 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 new BleObserver<byte[]>() {
                     @Override
                     public void onConnectError() {
-                        handleDisConnectError();
+                        // handleDisConnectError();
                     }
 
                     @Override
                     public void onExecuteError(Throwable e) {
                         Log.wtf(TAG, "接收数据失败！", e);
-                        getMvpView().onNotifyError();
+                        getMvpView().post(() -> getMvpView().onError(TradeError.DEVICE_BROKEN_1));
                     }
 
                     @Override
@@ -482,13 +489,13 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
     @Override
     public void onDisConnect() {
-        disconnectTriggerSubject.onNext(null);
         if (null != busSubscriber) {
             busSubscriber.unsubscribe();
         }
         if (null != timer) {
             timer.cancel();
         }
+        closeBleConnecttion();
     }
 
     @NonNull
@@ -671,7 +678,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     break;
             }
         } else {
-            Log.e(TAG, String.format("处理异常返回结果。code:{}, msg:{}", result.getError().getCode(), result.getError().getDisplayMessage()));
+            Log.e(TAG, String.format("处理异常返回结果。code:%s, msg:%s", result.getError().getCode(), result.getError().getDisplayMessage()));
             if (result.getError().getCode() == BleErrorType.BLE_DEVICE_BUSY.getCode()) {
                 Log.e(TAG, "设备正在被使用");
                 // 如果是重连状态下，此时可以直接下发关阀指令
