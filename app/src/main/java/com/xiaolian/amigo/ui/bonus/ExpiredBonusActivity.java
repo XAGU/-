@@ -33,11 +33,6 @@ public class ExpiredBonusActivity extends BonusBaseListActivity implements IBonu
 
     ExpiredBonusAdaptor adaptor;
 
-//    @Override
-//    protected int getLayout() {
-//        return R.layout.activity_bonus_expired;
-//    }
-
     @Override
     protected void onRefresh() {
         page = Constant.PAGE_START_NUM;
@@ -68,7 +63,6 @@ public class ExpiredBonusActivity extends BonusBaseListActivity implements IBonu
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
         presenter.onAttach(ExpiredBonusActivity.this);
-        presenter.requestExpiredBonusList(page);
     }
 
     @Override

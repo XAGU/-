@@ -60,6 +60,7 @@ public class HomeFragment2 extends Fragment {
     HomeAdaptor adaptor;
     private int prepayOrderSize = 0;
     private int businessSize = 0;
+    private View disabledView;
 
     @Nullable
     @Override
@@ -78,6 +79,8 @@ public class HomeFragment2 extends Fragment {
         homeDelegate.setOnItemClickListener(new HomeNormalDelegate.OnItemClickListener() {
             @Override
             public void onItemClickListener(View v, int position) {
+                disabledView = v;
+                v.setEnabled(false);
                 if (items.get(position).getRes() == R.drawable.shower) {
                     EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_HEATER));
                 } else if (items.get(position).getRes() == R.drawable.water) {
@@ -193,6 +196,11 @@ public class HomeFragment2 extends Fragment {
 //            case PREPAY_ORDER:
 //                onPrepayOrderEvent((HomeAdaptor.ItemWrapper) event.getObject());
 //                break;
+            case ENABLE_VIEW:
+                if (!disabledView.isEnabled()) {
+                    disabledView.setEnabled(true);
+                }
+                break;
         }
     }
 
@@ -223,6 +231,7 @@ public class HomeFragment2 extends Fragment {
         public enum EventType {
             BANNER(1),
             SCHOOL_BIZ(2),
+            ENABLE_VIEW(3)
             ;
 
             EventType(int type) {

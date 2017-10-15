@@ -35,12 +35,6 @@ public class FavoriteActivity extends FavoriteBaseActivity implements IFavoriteV
     // 收藏设备recycleView适配器
     FavoriteAdaptor adaptor;
 
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_favorite);
-//    }
-
     @Override
     protected void onRefresh() {
         page = Constant.PAGE_START_NUM;
@@ -71,7 +65,6 @@ public class FavoriteActivity extends FavoriteBaseActivity implements IFavoriteV
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
         presenter.onAttach(this);
-        presenter.requestFavorites(Constant.PAGE_START_NUM);
     }
 
     @Override
