@@ -8,6 +8,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.enumeration.Payment;
 import com.xiaolian.amigo.data.network.model.order.Order;
 import com.xiaolian.amigo.ui.order.intf.IOrderDetailView;
@@ -61,7 +62,12 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
     @Override
     public void render() {
         tv_time.setText(CommonUtil.stampToDate(order.getCreateTime()));
-        tv_device_location.setText(order.getLocation());
+        Device device = Device.getDevice(order.getDeviceType());
+        if (device != null) {
+            tv_device_location.setText(device.getDesc() + " " + order.getLocation());
+        } else {
+            tv_device_location.setText("未知设备 " + order.getLocation());
+        }
         tv_order_no.setText(order.getOrderNo());
         tv_pay_method.setText(order.getPrepay());
         rl_odd.setVisibility(order.getPaymentType() == 1 ?
