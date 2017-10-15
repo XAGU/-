@@ -24,6 +24,8 @@ import com.xiaolian.amigo.ui.device.heater.HeaterActivity;
 import com.xiaolian.amigo.ui.main.intf.IMainPresenter;
 import com.xiaolian.amigo.ui.main.intf.IMainView;
 
+import org.greenrobot.eventbus.EventBus;
+
 import javax.inject.Inject;
 
 /**
@@ -219,11 +221,18 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
 
             @Override
             public void onReady(ApiResult<DeviceCheckRespDTO> result) {
+                EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.ENABLE_VIEW));
                 if (null == result.getError()) {
                     getMvpView().showDeviceUsageDialog(type, result.getData());
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.ENABLE_VIEW));
             }
         });
     }

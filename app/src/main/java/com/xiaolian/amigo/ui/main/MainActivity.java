@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -181,7 +182,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
+        Log.d(TAG, "dispatchTouchEvent");
         if (mGestureDetector.onTouchEvent(ev)) {
+            Log.d(TAG, "mGestureDetector onTouchEvent");
             return true;
         }
         return super.dispatchTouchEvent(ev);
@@ -190,14 +193,17 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @Override
     protected void onResume() {
         super.onResume();
+        Log.d(TAG, "onResume");
         // 请求通知
         presenter.getNoticeAmount();
         presenter.getSchoolBusiness();
         if (!presenter.isLogin()) {
+            Log.d(TAG, "onResume: not login");
             tv_nickName.setText("登录／注册");
             tv_schoolName.setText("登录以后才能使用哦");
             iv_avatar.setImageResource(R.drawable.ic_picture_error);
         } else {
+            Log.d(TAG, "onResume: login");
             // 设置昵称
             tv_nickName.setText(presenter.getUserInfo().getNickName());
             // 设置学校
@@ -338,6 +344,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
      */
     @Override
     public void showNoticeAmount(Integer amount) {
+        Log.d(TAG, "showNoticeAmount: " + amount);
         if (amount != null && amount != 0) {
             tv_notice_count.setVisibility(View.VISIBLE);
             tv_notice_count.setText(String.valueOf(amount));
@@ -348,6 +355,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public void showTimeValidDialog(String title, String remark, int deviceType) {
+        Log.d(TAG, "showTimeValidDialog: " + title + "->" + remark + "->" + deviceType);
         if (null == availabilityDialog) {
             availabilityDialog = new AvailabilityDialog(this);
         }
@@ -369,6 +377,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public void gotoDevice(Class clz) {
+        Log.d(TAG, "gotoDevice: " + clz.getSimpleName());
         if (TextUtils.isEmpty(presenter.getToken())) {
             startActivity(new Intent(this, LoginActivity.class));
         } else {
@@ -378,6 +387,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public void gotoDevice(Device device, String macAddress, String location, Long residenceId) {
+        Log.d(TAG, "gotoDevice: " + device.getDesc() + "->" + macAddress + "->" + location + "->" + residenceId);
         if (TextUtils.isEmpty(macAddress)) {
             onError("设备macAddress不合法");
         } else {
@@ -392,6 +402,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public void showUrgentNotify(String content, Long id) {
+        Log.d(TAG, "showUrgentNotify: " + content + "->" + id);
         NoticeAlertDialog dialog = new NoticeAlertDialog(this);
         dialog.setContent(content);
         dialog.setOnOkClickListener(new NoticeAlertDialog.OnOkClickListener() {
@@ -407,11 +418,13 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public void refreshNoticeAmount() {
+        Log.d(TAG, "refreshNoticeAmount");
         presenter.getNoticeAmount();
     }
 
     @Override
     public void showBanners(List<String> banners) {
+        Log.d(TAG, "showBanners");
         hasBanners = true;
         EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.BANNER,
                 banners));
@@ -419,6 +432,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public void showSchoolBiz(List<BriefSchoolBusiness> businesses) {
+        Log.d(TAG, "showSchoolBiz");
         this.businesses = businesses;
         EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.SCHOOL_BIZ,
                 businesses));
@@ -455,6 +469,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public void showDeviceUsageDialog(int type, DeviceCheckRespDTO data) {
+        Log.d(TAG, "showDeviceUsageDialog: " + type);
         if (data.getExistsUnsettledOrder() != null && data.getExistsUnsettledOrder()) {
             // 1 表示热水澡 2 表示饮水机
             if (type == 1) {
@@ -483,6 +498,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     }
 
     public void showPrepayDialog(int type, int prepaySize, DeviceCheckRespDTO data) {
+        Log.d(TAG, "showPrepayDialog: " + type + "->" + prepaySize);
         if (prepayDialog == null) {
             prepayDialog = new PrepayDialog(this);
         }
@@ -528,6 +544,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     }
 
     public void checkTimeValid(Device device, Class clz) {
+        Log.d(TAG, "checkTimeValid");
         if (TextUtils.isEmpty(presenter.getToken())) {
             startActivity(new Intent(this, LoginActivity.class));
         } else {
@@ -537,8 +554,10 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     // 设备用水检查
     public void checkDeviceUsage(Device device) {
+        Log.d(TAG, "checkDeviceUsage");
         if (TextUtils.isEmpty(presenter.getToken())) {
             startActivity(new Intent(this, LoginActivity.class));
+            EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.ENABLE_VIEW));
         } else {
             presenter.checkDeviceUsage(device.getType());
         }
@@ -548,6 +567,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
      * 点击进入热水澡界面
      */
     public void gotoHeater() {
+        Log.d(TAG, "gotoHeater");
 //        setBleCallback(() -> checkTimeValid(HEARTER, HeaterActivity.class));
         setBleCallback(() -> checkDeviceUsage(HEARTER));
         getBlePermission();
@@ -557,6 +577,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
      * 点击进入饮水机页面
      */
     public void gotoDispenser() {
+        Log.d(TAG, "gotoDispenser");
 //        setBleCallback(() -> checkTimeValid(DISPENSER, DispenserActivity.class));
         setBleCallback(() -> checkDeviceUsage(DISPENSER));
         getBlePermission();
@@ -566,27 +587,32 @@ public class MainActivity extends MainBaseActivity implements IMainView {
      * 点击进入失物招领
      */
     public void gotoLostAndFound() {
+        Log.d(TAG, "gotoLostAndFound");
         startActivity(LostAndFoundActivity.class);
     }
 
     public void logout() {
+        Log.d(TAG, "logout");
         presenter.logout();
     }
 
     @Override
     public void onStart() {
+        Log.d(TAG, "onStart");
         super.onStart();
         EventBus.getDefault().register(this);
     }
 
     @Override
     public void onStop() {
+        Log.d(TAG, "onStop");
         super.onStop();
         EventBus.getDefault().unregister(this);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(Event event) {
+        Log.d(TAG, "onEvent: " + event.getType().type);
         switch (event.getType()) {
             case GOTO_HEATER:
                 gotoHeater();
@@ -596,6 +622,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 break;
             case GOTO_LOST_AND_FOUND:
                 gotoLostAndFound();
+                EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.ENABLE_VIEW));
                 break;
             case START_ACTIVITY:
                 startActivity((Class) event.getObject());
