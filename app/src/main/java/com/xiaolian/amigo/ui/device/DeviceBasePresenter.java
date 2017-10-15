@@ -140,7 +140,6 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         orderStatus = null;
         purelyCheckoutFlag = false;
         step = null;
-        purelyCheckoutFlag = false;
     }
 
     @Override
