@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.base.TimeHolder;
 import com.xiaolian.amigo.data.enumeration.ErrorTag;
 import com.xiaolian.amigo.data.enumeration.Payment;
 import com.xiaolian.amigo.data.enumeration.TradeError;
@@ -269,7 +270,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
         // 连接蓝牙设备
         presenter.setHomePageJump(homePageJump);
-        presenter.onConnect(macAddress);
+        presenter.onPreConnect(macAddress);
         presenter.queryPrepayOption(deviceType);
     }
 
@@ -697,7 +698,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                 presenter.resetSubscriptions(); // 此步骤非常重要，不加会造成重连请求掉进黑洞的现象
                 presenter.resetContext();
                 this.macAddress = chosenMacAddress;
-                presenter.onConnect(chosenMacAddress);
+                presenter.onPreConnect(chosenMacAddress);
             }
         }
     }
@@ -711,6 +712,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     protected void onDestroy() {
         presenter.onDisConnect();
         super.onDestroy();
+        TimeHolder.get().setLastConnectTime(System.currentTimeMillis());
     }
 
     // 单击回退按钮返回 解决返回区域过小问题
@@ -718,7 +720,6 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     @Optional
     void back() {
         super.onBackPressed();
-//        finish();
     }
 
     @Override
@@ -786,4 +787,5 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         }
 
     }
+
 }

@@ -4,6 +4,8 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -12,6 +14,7 @@ import com.polidea.rxandroidble.RxBleConnection;
 import com.trello.rxlifecycle.LifecycleTransformer;
 import com.trello.rxlifecycle.RxLifecycle;
 import com.trello.rxlifecycle.android.ActivityEvent;
+import com.xiaolian.amigo.data.base.TimeHolder;
 import com.xiaolian.amigo.data.enumeration.BleErrorType;
 import com.xiaolian.amigo.data.enumeration.Command;
 import com.xiaolian.amigo.data.enumeration.OrderStatus;
@@ -157,7 +160,24 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     }
 
     @Override
+    public void onPreConnect(@NonNull String macAddress) {
+
+        Long lastConnectTime = TimeHolder.get().getLastConnectTime();
+        if (null != lastConnectTime) {
+            if (lastConnectTime - System.currentTimeMillis() < 5000) {
+                new Handler().postDelayed(() -> onConnect(macAddress), 5000);
+            } else {
+                onConnect(macAddress);
+            }
+        } else {
+            onConnect(macAddress);
+        }
+
+    }
+
+    @Override
     public void onConnect(@NonNull String macAddress) {
+
 
         // 重置正在连接标识
         connecting = true;
@@ -885,5 +905,4 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 break;
         }
     }
-
 }
