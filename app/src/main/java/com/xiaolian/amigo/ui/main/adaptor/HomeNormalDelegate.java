@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.main.adaptor;
 
 import android.graphics.Color;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -15,6 +16,7 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
  */
 
 public class HomeNormalDelegate implements ItemViewDelegate<HomeAdaptor.ItemWrapper> {
+    private static final String TAG = HomeNormalDelegate.class.getSimpleName();
     @Override
     public int getItemViewLayoutId() {
         return R.layout.item_home;
@@ -37,6 +39,7 @@ public class HomeNormalDelegate implements ItemViewDelegate<HomeAdaptor.ItemWrap
         holder.getView(R.id.rl_item).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG, "onClick");
                 if (listener != null) {
                     listener.onItemClickListener(v, position);
                 }

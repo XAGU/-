@@ -46,10 +46,13 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 import com.xiaolian.amigo.ui.login.LoginActivity;
+import com.xiaolian.amigo.ui.main.HomeFragment2;
 import com.xiaolian.amigo.ui.widget.dialog.ActionSheetDialog;
 import com.xiaolian.amigo.ui.widget.dialog.LodingDialog;
 import com.xiaolian.amigo.util.NetworkUtil;
 import com.yalantis.ucrop.UCrop;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.io.IOException;
@@ -429,6 +432,8 @@ public abstract class BaseActivity extends SwipeBackActivity
                         Log.i(TAG, "动态授权蓝牙操作成功！");
                     } else {
                         Log.e(TAG, "动态授权蓝牙操作失败！");
+                        // enable首页按钮
+                        EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.ENABLE_VIEW));
                     }
                 });
     }

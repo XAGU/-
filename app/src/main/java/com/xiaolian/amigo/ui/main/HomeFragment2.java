@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,27 +76,11 @@ public class HomeFragment2 extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         adaptor = new HomeAdaptor(getActivity(),items);
-        HomeNormalDelegate homeDelegate = new HomeNormalDelegate();
-        homeDelegate.setOnItemClickListener(new HomeNormalDelegate.OnItemClickListener() {
-            @Override
-            public void onItemClickListener(View v, int position) {
-                disabledView = v;
-                v.setEnabled(false);
-                if (items.get(position).getRes() == R.drawable.shower) {
-                    EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_HEATER));
-                } else if (items.get(position).getRes() == R.drawable.water) {
-                    EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_DISPENSER));
-                } else if (items.get(position).getRes() == R.drawable.lost) {
-                    EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_LOST_AND_FOUND));
-                }
-            }
-        });
-        adaptor.addItemViewDelegate(homeDelegate);
-        adaptor.addItemViewDelegate(new HomeBannerDelegate(getActivity()));
 //        adaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
-////            @SingleClick
+//            //            @SingleClick
 //            @Override
 //            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+//                Log.d(TAG, "onItemClick: " + position);
 //                if (items.get(position).getType() == 1) {
 //                    if (items.get(position).getRes() == R.drawable.shower) {
 //                        EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_HEATER));
@@ -111,12 +96,31 @@ public class HomeFragment2 extends Fragment {
 //                return false;
 //            }
 //        });
+        HomeNormalDelegate homeDelegate = new HomeNormalDelegate();
+        homeDelegate.setOnItemClickListener(new HomeNormalDelegate.OnItemClickListener() {
+            @Override
+            public void onItemClickListener(View v, int position) {
+                Log.d(TAG, "onItemClick");
+                disabledView = v;
+                v.setEnabled(false);
+                if (items.get(position).getRes() == R.drawable.shower) {
+                    EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_HEATER));
+                } else if (items.get(position).getRes() == R.drawable.water) {
+                    EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_DISPENSER));
+                } else if (items.get(position).getRes() == R.drawable.lost) {
+                    EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_LOST_AND_FOUND));
+                }
+            }
+        });
+        adaptor.addItemViewDelegate(homeDelegate);
+        adaptor.addItemViewDelegate(new HomeBannerDelegate(getActivity()));
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adaptor);
         LayoutAnimationController animation = AnimationUtils
                 .loadLayoutAnimation(getContext(), R.anim.layout_animation_slide_right);
         recyclerView.setLayoutAnimation(animation);
     }
+
 
     @Override
     public void onHiddenChanged(boolean hidden) {
@@ -197,6 +201,7 @@ public class HomeFragment2 extends Fragment {
 //                onPrepayOrderEvent((HomeAdaptor.ItemWrapper) event.getObject());
 //                break;
             case ENABLE_VIEW:
+                Log.d(TAG, "enable View");
                 if (!disabledView.isEnabled()) {
                     disabledView.setEnabled(true);
                 }
@@ -228,6 +233,10 @@ public class HomeFragment2 extends Fragment {
             this.object = object;
         }
 
+        public Event(EventType type) {
+            this.type = type;
+        }
+
         public enum EventType {
             BANNER(1),
             SCHOOL_BIZ(2),
@@ -241,6 +250,8 @@ public class HomeFragment2 extends Fragment {
             private int type;
         }
     }
+
+
 
     @Override
     public void onStart() {
