@@ -768,6 +768,9 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
         presenter.cancelTimer();
 
+        // 异常发生时关闭蓝牙连接
+        presenter.closeBleConnecttion();
+
         // 显示错误页面，必须加这行判断，否则在activity销毁时会报空指针错误
         if (null != ll_content_normal && null != ll_content_shower && null != ll_content_unconnected && null != ll_error) {
             ll_content_normal.setVisibility(View.GONE);
