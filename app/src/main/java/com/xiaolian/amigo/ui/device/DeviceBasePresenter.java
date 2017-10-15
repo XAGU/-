@@ -75,8 +75,6 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     private AtomicBoolean handleBleAdaptorClose = new AtomicBoolean(false);
     // 处理蓝牙关闭时的时间戳(取当前时间往前推20秒)
     private Long handleTime = System.currentTimeMillis() - 20000;
-    // 回调任务（存放结束用水的回调）
-    private Callback callback;
     // 订阅设备返回的消息
     private Subscription busSubscriber;
     // 处理蓝牙连接错误标识
@@ -115,6 +113,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     private boolean connecting = true;
     // 连接计时器
     private CountDownTimer timer;
+    // 从首页点击设备用水跳转标识
+    private boolean homePageJump = true;
 
     public DeviceBasePresenter(IBleDataManager bleDataManager, ITradeDataManager tradeDataManager, IOrderDataManager orderDataManager, ISharedPreferencesHelp sharedPreferencesHelp) {
         super();
@@ -140,6 +140,11 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         orderStatus = null;
         purelyCheckoutFlag = false;
         step = null;
+    }
+
+    @Override
+    public void setHomePageJump(boolean homePageJump) {
+        this.homePageJump = homePageJump;
     }
 
     @Override
@@ -227,7 +232,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 new BleObserver<BluetoothGattCharacteristic>() {
                     @Override
                     public void onConnectError() {
-                         handleDisConnectError();
+                        handleDisConnectError();
                     }
 
                     @Override
@@ -503,15 +508,6 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         return RxLifecycle.bindUntilEvent(lifeCycleSubject, event);
     }
 
-    public interface Callback {
-        void execute();
-    }
-
-    @Override
-    public void setCallback(Callback callback) {
-        this.callback = callback;
-    }
-
     // 安全等待时长间隔
     private void safeWait(long mills) {
         try {
@@ -606,11 +602,18 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     if (null != orderStatus && null != orderStatus.getStatus() && OrderStatus.getOrderStatus(orderStatus.getStatus()) == OrderStatus.USING) {
                         // 记录预结账指令，此时阀门已经被长按关闭，但是订单没有被其它用户带回
                         Log.i(TAG, "用户在该设备上存在未结账订单，直接跳转至结算页面，获取到预结账指令。command:" + nextCommand);
-                        reopenNextCmd = nextCommand;
-                        getMvpView().onConnectSuccess(TradeStep.SETTLE, orderStatus);
+                        if (orderStatus.isExistsUnsettledOrder()) { // 未结算订单在指定时间范围内
+                            Log.i(TAG, "未结算订单在指定时间范围内，显示结算页面");
+                            reopenNextCmd = nextCommand;
+                            getMvpView().onConnectSuccess(TradeStep.SETTLE, orderStatus);
 
-                        connectCmd = sharedPreferencesHelp.getConnectCmd(currentMacAddress);
-                        closeCmd = sharedPreferencesHelp.getCloseCmd(currentMacAddress);
+                            connectCmd = sharedPreferencesHelp.getConnectCmd(currentMacAddress);
+                            closeCmd = sharedPreferencesHelp.getCloseCmd(currentMacAddress);
+                        } else {
+                            Log.i(TAG, "未结算订单已经超出指定时间范围，继续下发预结账指令，走正常流程");
+                            precheckCmd = nextCommand;
+                            onWrite(precheckCmd);
+                        }
 
                         return;
                     }
@@ -687,11 +690,17 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     reconnectNextCmd = closeCmd;
                 } else { // 首次连接
                     if (null != orderStatus && null != orderStatus.getStatus() && OrderStatus.getOrderStatus(orderStatus.getStatus()) == OrderStatus.USING) { // 用户主动上来结账
-                        getMvpView().onConnectSuccess(TradeStep.SETTLE, orderStatus);
-                        reopenNextCmd = sharedPreferencesHelp.getCloseCmd(currentMacAddress);
+                        if (orderStatus.isExistsUnsettledOrder()) { // 未结账订单在指定时间范围内
+                            Log.i(TAG, "未结账订单在两个小时时间范围内，阀门处于打开状态，下发关阀指令即可。");
+                            getMvpView().onConnectSuccess(TradeStep.SETTLE, orderStatus);
+                            reopenNextCmd = sharedPreferencesHelp.getCloseCmd(currentMacAddress);
 
-                        connectCmd = sharedPreferencesHelp.getConnectCmd(currentMacAddress);
-                        closeCmd = reopenNextCmd;
+                            connectCmd = sharedPreferencesHelp.getConnectCmd(currentMacAddress);
+                            closeCmd = reopenNextCmd;
+                        } else {
+                            Log.wtf(TAG, "未结账订单超出两个小时时间范围，阀门仍处于打开状态，不应该出现这种状况");
+                            getMvpView().onError(TradeError.DEVICE_BROKEN_2);
+                        }
                     } else {
                         // 提示用户设备已被其它用户使用
                         closeBleConnecttion();

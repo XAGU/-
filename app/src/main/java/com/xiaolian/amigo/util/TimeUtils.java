@@ -51,6 +51,7 @@ public class TimeUtils {
     public static Date millis2Date(final long millis) {
         return new Date(millis);
     }
+
     /**
      * 获取当前Date
      *
@@ -67,7 +68,7 @@ public class TimeUtils {
      * @return
      */
     public static String convertTimeToFormat(long timeStamp) {
-        long curTime =System.currentTimeMillis() / (long) 1000 ;
+        long curTime = System.currentTimeMillis() / (long) 1000;
         long time = curTime - timeStamp;
 
         if (time < 60 && time >= 0) {
@@ -88,7 +89,7 @@ public class TimeUtils {
     }
 
     public static String convertTimestampToFormat(long timeStamp) {
-        long curTime =System.currentTimeMillis() / (long) 1000 ;
+        long curTime = System.currentTimeMillis() / (long) 1000;
         long time = curTime - timeStamp;
         if (time >= 0 && time < 3600 * 24) {
             return "今天";
@@ -96,6 +97,20 @@ public class TimeUtils {
             return "昨天";
         }
         return millis2String(timeStamp, MY_DATE_FORMAT);
+    }
+
+    public static String convertTimestampToAccurateFormat(long timeStamp) {
+        String result = null;
+        long curTime = System.currentTimeMillis() / (long) 1000;
+        long time = curTime - timeStamp;
+        if (time >= 0 && time < 3600 * 24) {
+            result += "今天 ";
+        } else if (time >= 3600 * 24 && time < 3600 * 24 * 2) {
+            result += "昨天 ";
+        } else {
+            result += millis2String(timeStamp, MY_DATE_FORMAT) + " ";
+        }
+        return result + millis2String(timeStamp, MY_TIME_FORMAT);
     }
 
     /**
@@ -107,6 +122,7 @@ public class TimeUtils {
     public static long date2Millis(final Date date) {
         return date.getTime();
     }
+
     /**
      * 将Date类型转为时间字符串
      * <p>格式为yyyy-MM-dd HH:mm:ss</p>

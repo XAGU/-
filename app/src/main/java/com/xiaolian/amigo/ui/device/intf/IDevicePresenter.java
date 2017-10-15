@@ -43,9 +43,6 @@ public interface IDevicePresenter<V extends IBaseView> extends IBasePresenter<V>
     // 处理网络请求响应结果
     void handleResult(ApiResult<CmdResultRespDTO> result);
 
-    // 设置回调操作
-    void setCallback(DeviceBasePresenter.Callback callback);
-
     // 设置当前页面操作步骤
     void setStep(TradeStep step);
 
@@ -66,4 +63,7 @@ public interface IDevicePresenter<V extends IBaseView> extends IBasePresenter<V>
 
     // 取消连监控接定时器
     void cancelTimer();
+
+    // 标识是否从首页跳转
+    void setHomePageJump(boolean homePageJump);
 }

@@ -21,10 +21,19 @@ public class UnsettledOrderStatusCheckRespDTO {
     // 描述信息
     private String extra;
 
-    // 未结账单是否在三小时之内
-    private boolean lessThanThreeHours;
+    // 未结账单是否在指定时间范围之内
+    private boolean existsUnsettledOrder;
 
     // 订单状态
     private Integer status;
+
+    // 订单产生时间
+    private Long startTime;
+
+    // 设备位置
+    private String location;
+
+    // 预付金额
+    private Double prepay;
 
 }

@@ -36,6 +36,7 @@ import com.xiaolian.amigo.ui.widget.DotFlashView;
 import com.xiaolian.amigo.ui.widget.dialog.ActionSheetDialog;
 import com.xiaolian.amigo.ui.widget.dialog.IOSAlertDialog;
 import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.util.TimeUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,7 +50,10 @@ import butterknife.Optional;
 
 public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresenter> extends DeviceBaseActivity implements IWaterDeviceBaseView {
 
-//    // 显示或隐藏 "切换宿舍"
+    public static final String INTENT_HOME_PAGE_JUMP = "intent_home_page_jump";
+    public static final String INTENT_RECOVER = "intent_recover";
+
+    //    // 显示或隐藏 "切换宿舍"
 //    toggleSubTitle(presenter.getStep() == TradeStep.PAY);
     private static final String TAG = WaterDeviceBaseActivity.class.getSimpleName();
     /**
@@ -97,8 +101,8 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     /**
      * 小提示（上）
      */
-    @BindView(R.id.trade_above_tip)
-    TextView trade_above_tip;
+    @BindView(R.id.trade_tip)
+    TextView trade_tip;
 
     /**
      * 小提示（下）
@@ -118,11 +122,6 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     @BindView(R.id.bt_stop_shower)
     Button bt_stop_shower;
 
-    /**
-     * 重新连接
-     */
-//    @BindView(R.id.bt_reconnect)
-//    Button bt_reconnect;
 
     /**
      * 布局头部
@@ -243,6 +242,9 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     private Long residenceId;
     private String prepayDefaultDesc = "预付5元";
     private Double prepayDefaultAmount = 5.00;
+    private boolean homePageJump;
+    // 标记是否为恢复用水
+    private boolean recorvery;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -251,19 +253,25 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         setUnBinder(ButterKnife.bind(this));
         initInject();
         initPresenter();
-        initView();
+
 
         if (getIntent() != null) {
             macAddress = getIntent().getStringExtra(MainActivity.INTENT_KEY_MAC_ADDRESS);
             tv_device_title.setText(getIntent().getStringExtra(MainActivity.INTENT_KEY_LOCATION));
             deviceType = getIntent().getIntExtra(MainActivity.INTENT_KEY_DEVICE_TYPE, 1);
             residenceId = getIntent().getLongExtra(MainActivity.INTENT_KEY_RESIDENCE_ID, 0L);
+            homePageJump = getIntent().getBooleanExtra(INTENT_HOME_PAGE_JUMP, true);
         }
+
+        tv_connect_status.setText(recorvery ? "正在恢复上一次用水" : "正在连接设备, 请稍后");
+        initView();
+
         if (TextUtils.isEmpty(macAddress)) {
             macAddress = "08:7C:BE:E1:FD:3B";
         }
 
         // 连接蓝牙设备
+        presenter.setHomePageJump(homePageJump);
         presenter.onConnect(macAddress);
         presenter.queryPrepayOption(deviceType);
     }
@@ -336,7 +344,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             ActionSheetDialog actionSheetDialog = new ActionSheetDialog(this).builder();
             if (orderPreInfo.getOptions() != null && !orderPreInfo.getOptions().isEmpty()) {
                 PrepayOptionDTO option = orderPreInfo.getOptions().get(0);
-                for (int i = 0; i < option.getItems().size(); i ++) {
+                for (int i = 0; i < option.getItems().size(); i++) {
                     String desc = option.getItems().get(i).getDescription();
                     Double prepay = option.getItems().get(i).getPrepay();
                     int position = i;
@@ -351,7 +359,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                             });
                 }
             }
-        actionSheetDialog.setTitle("选择水量上限")
+            actionSheetDialog.setTitle("选择水量上限")
                     .setItemGravity(Gravity.LEFT)
                     .setShowCanceleButton(false)
                     .addFooter(R.layout.view_actionsheet_foot)
@@ -415,7 +423,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     void showConnecting() {
         hideBottomLayout();
         ll_content_unconnected.setVisibility(View.VISIBLE);
-        tv_connect_status.setText("正在连接设备，请稍后");
+        // tv_connect_status.setText("正在连接设备，请稍后");
         if (dfv_dot != null && !dfv_dot.isRunning()) {
             dfv_dot.startAnimation();
         }
@@ -460,6 +468,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             }
         } else { // TradeStep.SETTLE
             showStep2((UnsettledOrderStatusCheckRespDTO) extra[0]);
+
             // 标记步骤为结算找零页面
             presenter.setStep(TradeStep.SETTLE);
             toggleSubTitle(false);
@@ -596,25 +605,26 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         if (null != orderStatus) {
             if (Payment.getPayment(orderStatus.getPaymentType()) == Payment.BALANCE) {
                 tv_shower_payed.setText(orderStatus.getExtra());
-                trade_above_tip.setText(getString(R.string.balance_pay_tip_above));
-                trade_below_tip.setText(getString(R.string.balance_pay_tip_below));
+                // 从未结算订单列表跳转过来，tip展示需要标注订单时间等信息
+                if (!homePageJump) {
+                    trade_tip.setText(String.format(getString(R.string.balance_settle_tip), TimeUtils.convertTimestampToAccurateFormat(orderStatus.getStartTime()), orderStatus.getLocation(), String.valueOf(orderStatus.getPrepay().intValue())));
+                } else {
+                    trade_tip.setText(getString(R.string.balance_trade_tip));
+                }
                 bt_stop_shower.setText("结算找零");
             } else {
                 tv_shower_payed.setText(orderStatus.getExtra());
-                trade_above_tip.setText(getString(R.string.bonus_pay_tip_above));
-                trade_below_tip.setText(getString(R.string.bonus_pay_tip_below));
+                trade_tip.setText(getString(R.string.bonus_trade_tip));
                 bt_stop_shower.setText("结束用水");
             }
         } else {
             if (isMoneyPay) {
                 tv_shower_payed.setText("已预付" + (Double) tv_water_right.getTag(R.id.money_pay_amount) + "元");
-                trade_above_tip.setText(getString(R.string.balance_pay_tip_above));
-                trade_below_tip.setText(getString(R.string.balance_pay_tip_below));
+                trade_tip.setText(getString(R.string.balance_trade_tip));
                 bt_stop_shower.setText("结算找零");
             } else {
                 tv_shower_payed.setText("已使用" + tv_water_right.getText().toString());
-                trade_above_tip.setText(getString(R.string.bonus_pay_tip_above));
-                trade_below_tip.setText(getString(R.string.bonus_pay_tip_below));
+                trade_tip.setText(getString(R.string.bonus_trade_tip));
                 bt_stop_shower.setText("结束用水");
             }
         }

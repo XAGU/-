@@ -276,22 +276,13 @@
             android:layout_height="wrap_content" />
 
         <TextView
-            android:id="@+id/trade_above_tip"
+            android:id="@+id/trade_tip"
             android:textColor="#999"
             android:textSize="10sp"
             android:layout_marginTop="13dp"
-            android:text="(100s)内未打开放水阀门，系统将自动停止本次服务"
+            android:text="(100s)内未打开放水阀门，系统将自动停止本次服务\n消费金额以实际用水量为准"
             android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <TextView
-            android:id="@+id/trade_below_tip"
-            android:textColor="#999"
-            android:textSize="10sp"
-            android:layout_marginTop="8dp"
-            android:text="消费金额以实际用水量为准"
-            android:gravity="center"
+            android:layout_gravity="center_horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
