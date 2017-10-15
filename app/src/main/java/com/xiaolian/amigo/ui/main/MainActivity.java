@@ -70,6 +70,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     public static final String INTENT_KEY_LOCATION = "intent_key_location";
     public static final String INTENT_KEY_DEVICE_TYPE = "intent_key_device_type";
     public static final String INTENT_KEY_RESIDENCE_ID = "intent_key_residence_id";
+    public static final String INTENT_KEY_RECOVERY = "intent_key_recovery";
 
     @Inject
     IMainPresenter<IMainView> presenter;
@@ -385,7 +386,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     }
 
     @Override
-    public void gotoDevice(Device device, String macAddress, String location, Long residenceId) {
+    public void gotoDevice(Device device, String macAddress, String location, Long residenceId, boolean recovery) {
         Log.d(TAG, "gotoDevice: " + device.getDesc() + "->" + macAddress + "->" + location + "->" + residenceId);
         if (TextUtils.isEmpty(macAddress)) {
             onError("设备macAddress不合法");
@@ -395,6 +396,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             intent.putExtra(INTENT_KEY_MAC_ADDRESS, macAddress);
             intent.putExtra(INTENT_KEY_DEVICE_TYPE, device.getType());
             intent.putExtra(INTENT_KEY_RESIDENCE_ID, residenceId);
+            intent.putExtra(INTENT_KEY_RESIDENCE_ID, recovery);
             startActivity(intent);
         }
     }
@@ -473,9 +475,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             // 1 表示热水澡 2 表示饮水机
             if (type == 1) {
                 // 直接前往热水澡处理找零
-                gotoDevice(HEARTER, data.getUnsettledMacAddress(), data.getLocation(), data.getResidenceId());
+                gotoDevice(HEARTER, data.getUnsettledMacAddress(), data.getLocation(), data.getResidenceId(), true);
             } else {
-                gotoDevice(DISPENSER, data.getUnsettledMacAddress(), data.getLocation(), data.getResidenceId());
+                gotoDevice(DISPENSER, data.getUnsettledMacAddress(), data.getLocation(), data.getResidenceId(), true);
             }
         } else {
             if (type == 1 && heaterOrderSize > 0) {

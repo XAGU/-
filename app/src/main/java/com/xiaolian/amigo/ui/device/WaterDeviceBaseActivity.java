@@ -28,6 +28,7 @@ import com.xiaolian.amigo.ui.bonus.adaptor.BonusAdaptor;
 import com.xiaolian.amigo.ui.device.intf.IWaterDeviceBasePresenter;
 import com.xiaolian.amigo.ui.device.intf.IWaterDeviceBaseView;
 import com.xiaolian.amigo.ui.main.MainActivity;
+import com.xiaolian.amigo.ui.more.MoreActivity;
 import com.xiaolian.amigo.ui.repair.RepairApplyActivity;
 import com.xiaolian.amigo.ui.user.ChooseDormitoryActivity;
 import com.xiaolian.amigo.ui.wallet.RechargeActivity;
@@ -261,6 +262,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             deviceType = getIntent().getIntExtra(MainActivity.INTENT_KEY_DEVICE_TYPE, 1);
             residenceId = getIntent().getLongExtra(MainActivity.INTENT_KEY_RESIDENCE_ID, 0L);
             homePageJump = getIntent().getBooleanExtra(INTENT_HOME_PAGE_JUMP, true);
+            recorvery = getIntent().getBooleanExtra(MainActivity.INTENT_KEY_RECOVERY, true);
         }
 
         tv_connect_status.setText(recorvery ? "正在恢复上一次用水" : "正在连接设备, 请稍后");

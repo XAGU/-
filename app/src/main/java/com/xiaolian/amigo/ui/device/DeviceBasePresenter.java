@@ -114,7 +114,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     // 连接计时器
     private CountDownTimer timer;
     // 从首页点击设备用水跳转标识
-    private boolean homePageJump = true;
+    private boolean homePageJump;
 
     public DeviceBasePresenter(IBleDataManager bleDataManager, ITradeDataManager tradeDataManager, IOrderDataManager orderDataManager, ISharedPreferencesHelp sharedPreferencesHelp) {
         super();
