@@ -160,11 +160,12 @@ public class DotFlashView extends View {
         return false;
     }
 
-//    @Override
-//    public void onWindowFocusChanged(boolean hasWindowFocus) {
-//        super.onWindowFocusChanged(hasWindowFocus);
+    @Override
+    public void onWindowFocusChanged(boolean hasWindowFocus) {
+        super.onWindowFocusChanged(hasWindowFocus);
+        number = 0;
 //        if (!hasWindowFocus) {
 //            endAnimation();
 //        }
-//    }
+    }
 }

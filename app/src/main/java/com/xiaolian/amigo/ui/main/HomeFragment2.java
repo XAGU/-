@@ -61,8 +61,12 @@ public class HomeFragment2 extends Fragment {
     RecyclerView recyclerView;
 
     HomeAdaptor adaptor;
+    // 未找零账单个数
     private int prepayOrderSize = 0;
+    // 学校业务个数
     private int businessSize = 0;
+    // 正在使用的设备个数
+    private int usingAmount = 0;
     private View disabledView;
 
     @Nullable
@@ -140,18 +144,24 @@ public class HomeFragment2 extends Fragment {
     public void onSchoolBizEvent(List<BriefSchoolBusiness> businesses) {
         int currentPrepayOrderSize = 0;
         int currentBusinessSize = 0;
+        int currentUsingAmount = 0;
         boolean needNotify = false;
         shower.setActive(false);
         water.setActive(false);
         for (BriefSchoolBusiness business : businesses) {
+            if (business.getUsing()) {
+                currentUsingAmount += 1;
+            }
             if (business.getBusinessId() == 2) {
                 water.setActive(true);
                 water.setPrepaySize(business.getPrepayOrder());
+                water.setUsing(business.getUsing());
                 currentPrepayOrderSize += business.getPrepayOrder();
                 currentBusinessSize += 1;
             } else if (business.getBusinessId() == 1) {
                 shower.setActive(true);
                 shower.setPrepaySize(business.getPrepayOrder());
+                shower.setUsing(business.getUsing());
                 currentPrepayOrderSize += business.getPrepayOrder();
                 currentBusinessSize += 1;
             }
@@ -162,6 +172,10 @@ public class HomeFragment2 extends Fragment {
         }
         if (currentPrepayOrderSize != prepayOrderSize) {
             prepayOrderSize = currentPrepayOrderSize;
+            needNotify = true;
+        }
+        if (currentUsingAmount != usingAmount) {
+            usingAmount = currentUsingAmount;
             needNotify = true;
         }
         if (needNotify) {
