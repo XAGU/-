@@ -120,6 +120,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     private CountDownTimer timer;
     // 从首页点击设备用水跳转标识
     private boolean homePageJump;
+    // 结束标识
+    private boolean closeFlag = false;
 
     public DeviceBasePresenter(IBleDataManager bleDataManager, ITradeDataManager tradeDataManager, IOrderDataManager orderDataManager, ISharedPreferencesHelp sharedPreferencesHelp) {
         super();
@@ -502,12 +504,14 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     private void handleDisConnectError() {
         Log.wtf(TAG, "蓝牙连接已断开！");
 
-        if (!handleConnectError.getAndSet(true)) {
-            // 关闭蓝牙连接
-            closeBleConnecttion();
+        if(!closeFlag) { // 退出时由onDisconnect方法完成关闭操作
+            if (!handleConnectError.getAndSet(true)) {
+                // 关闭蓝牙连接
+                closeBleConnecttion();
 
-            // 跳转至连接失败页面
-            getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
+                // 跳转至连接失败页面
+                getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
+            }
         }
 
         // 处理蓝牙在用水过程中被用户恶意关闭
@@ -516,6 +520,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
     @Override
     public void onDisConnect() {
+        closeFlag = true;
         if (null != busSubscriber) {
             busSubscriber.unsubscribe();
         }
