@@ -164,8 +164,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
         Long lastConnectTime = TimeHolder.get().getLastConnectTime();
         if (null != lastConnectTime) {
+            Long diff = lastConnectTime - System.currentTimeMillis();
             if (lastConnectTime - System.currentTimeMillis() < 5000) {
-                new Handler().postDelayed(() -> onConnect(macAddress), 5000);
+                new Handler().postDelayed(() -> onConnect(macAddress), 5000 - diff);
             } else {
                 onConnect(macAddress);
             }
