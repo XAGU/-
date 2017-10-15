@@ -604,7 +604,9 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                 tv_shower_payed.setText(orderStatus.getExtra());
                 // 从未结算订单列表跳转过来，tip展示需要标注订单时间等信息
                 if (!homePageJump) {
-                    trade_tip.setText(String.format("您%s在%s预付了%s的用水已结束\\n点击下方按钮进行找零", TimeUtils.convertTimestampToAccurateFormat(orderStatus.getStartTime()), orderStatus.getLocation(), String.valueOf(orderStatus.getPrepay().intValue())));
+                    String time = TimeUtils.convertTimestampToAccurateFormat(orderStatus.getCreateTime());
+                    String tip = String.format("您%s在%s预付了%s元的用水已结束\n点击下方按钮进行找零", time, orderStatus.getLocation(), String.valueOf(orderStatus.getPrepay().intValue()));
+                    trade_tip.setText(tip);
                 } else {
                     trade_tip.setText(getString(R.string.balance_trade_tip));
                 }
