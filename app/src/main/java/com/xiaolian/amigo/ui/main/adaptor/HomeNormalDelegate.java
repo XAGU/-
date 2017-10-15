@@ -36,16 +36,6 @@ public class HomeNormalDelegate implements ItemViewDelegate<HomeAdaptor.ItemWrap
             holder.itemView.setVisibility(View.GONE);
         }
         ((RelativeLayout)holder.getView(R.id.rl_item)).setBackgroundResource(itemWrapper.getRes());
-        holder.getView(R.id.rl_item).setClickable(true);
-        holder.getView(R.id.rl_item).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick");
-                if (listener != null) {
-                    listener.onItemClickListener(v, position);
-                }
-            }
-        });
         holder.setText(R.id.tv_device_title, itemWrapper.getDeviceName());
         holder.setText(R.id.tv_desc, itemWrapper.getDesc());
         holder.setTextColor(R.id.tv_desc, Color.parseColor(itemWrapper.getDescColor()));
@@ -62,15 +52,5 @@ public class HomeNormalDelegate implements ItemViewDelegate<HomeAdaptor.ItemWrap
             ((DotFlashView)holder.getView(R.id.dfv_dot)).setVisibility(View.GONE);
             ((DotFlashView)holder.getView(R.id.dfv_dot)).endAnimation();
         }
-    }
-
-    private OnItemClickListener listener;
-
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        this.listener = listener;
-    }
-
-    public interface OnItemClickListener {
-        void onItemClickListener(View v, int position);
     }
 }

@@ -17,7 +17,7 @@ import java.util.List;
 public interface IMainView extends IBaseView {
     void showNoticeAmount(Integer amount);
 
-    void showTimeValidDialog(String title, String remark, int deviceType);
+    void showTimeValidDialog(int deviceType, DeviceCheckRespDTO data);
 
     void gotoDevice(Class clz);
 
