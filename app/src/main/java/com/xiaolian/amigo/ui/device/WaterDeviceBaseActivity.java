@@ -578,12 +578,12 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
         if (null != orderStatus) {
             if (Payment.getPayment(orderStatus.getPaymentType()) == Payment.BALANCE) {
-                tv_shower_payed.setText("已预付" + orderStatus.getExtra());
+                tv_shower_payed.setText(orderStatus.getExtra());
                 trade_above_tip.setText(getString(R.string.balance_pay_tip_above));
                 trade_below_tip.setText(getString(R.string.balance_pay_tip_below));
                 bt_stop_shower.setText("结算找零");
             } else {
-                tv_shower_payed.setText("已使用" + orderStatus.getExtra());
+                tv_shower_payed.setText(orderStatus.getExtra());
                 trade_above_tip.setText(getString(R.string.bonus_pay_tip_above));
                 trade_below_tip.setText(getString(R.string.bonus_pay_tip_below));
                 bt_stop_shower.setText("结束用水");

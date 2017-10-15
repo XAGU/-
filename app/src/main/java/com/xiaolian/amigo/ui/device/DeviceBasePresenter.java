@@ -750,7 +750,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     onWrite(openCmd);
                 } else {
                     Log.wtf(TAG, "支付创建订单失败。");
-                    getMvpView().post(() -> getMvpView().onError(TradeError.SYSTEM_ERROR));
+                    getMvpView().post(() -> getMvpView().onError(TradeError.DEVICE_BROKEN_2));
                 }
             }
         }, Schedulers.io());
