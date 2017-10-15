@@ -48,6 +48,9 @@ import butterknife.Optional;
  */
 
 public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresenter> extends DeviceBaseActivity implements IWaterDeviceBaseView {
+
+//    // 显示或隐藏 "切换宿舍"
+//    toggleSubTitle(presenter.getStep() == TradeStep.PAY);
     private static final String TAG = WaterDeviceBaseActivity.class.getSimpleName();
     /**
      * 跳转到选择红包页面的request code

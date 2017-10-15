@@ -29,7 +29,6 @@ import com.xiaolian.amigo.data.network.model.order.Order;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
 import com.xiaolian.amigo.ui.device.dispenser.ChooseDispenserActivity;
 import com.xiaolian.amigo.ui.device.dispenser.DispenserActivity;
-import com.xiaolian.amigo.ui.device.heater.HeaterActivity;
 import com.xiaolian.amigo.ui.login.LoginActivity;
 import com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity;
 import com.xiaolian.amigo.ui.main.adaptor.HomeAdaptor;
@@ -474,9 +473,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             // 1 表示热水澡 2 表示饮水机
             if (type == 1) {
                 // 直接前往热水澡处理找零
-                gotoDevice(HEARTER, data.getMacAddress(), data.getLocation(), data.getResidenceId());
+                gotoDevice(HEARTER, data.getUnsettledMacAddress(), data.getLocation(), data.getResidenceId());
             } else {
-                gotoDevice(DISPENSER, data.getMacAddress(), data.getLocation(), data.getResidenceId());
+                gotoDevice(DISPENSER, data.getUnsettledMacAddress(), data.getLocation(), data.getResidenceId());
             }
         } else {
             if (type == 1 && heaterOrderSize > 0) {
