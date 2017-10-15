@@ -472,7 +472,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         startShower(null);
         // 标记步骤为结束用水页面
         presenter.setStep(TradeStep.SETTLE);
-        toggleSubTitle(true);
+        toggleSubTitle(false);
     }
 
     @Override

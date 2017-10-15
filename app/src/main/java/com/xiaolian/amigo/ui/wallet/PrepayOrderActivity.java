@@ -71,7 +71,12 @@ public class PrepayOrderActivity extends WalletBaseActivity implements IPrepayOr
 
         if (orderWrapper != null) {
             tv_time.setText(CommonUtil.stampToDate(orderWrapper.getTime()));
-            tv_location.setText(orderWrapper.getOrder().getLocation());
+            Device device = Device.getDevice(orderWrapper.getType());
+            if (device != null) {
+                tv_location.setText(device.getDesc() + " " + orderWrapper.getOrder().getLocation());
+            } else {
+                tv_location.setText("未知设备 " + orderWrapper.getOrder().getLocation());
+            }
             tv_order_no.setText(orderWrapper.getOrder().getOrderNo());
             tv_pay_method.setText(orderWrapper.getOrder().getPrepay());
             rl_odd.setVisibility(orderWrapper.getOrder().getPaymentType() == 1 ?

@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.enumeration.Payment;
 import com.xiaolian.amigo.data.enumeration.TradeError;
 import com.xiaolian.amigo.data.network.model.dto.response.OrderDetailRespDTO;
@@ -80,7 +81,12 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
         tv_change_amount.setText(respDTO.getOdd());
         tv_pay_method.setText(respDTO.getPrepay());
         tv_time.setText(CommonUtil.stampToDate(respDTO.getCreateTime()));
-        tv_device_info.setText(respDTO.getLocation());
+        Device device = Device.getDevice(respDTO.getDeviceType());
+        if (device != null) {
+            tv_device_info.setText(device.getDesc() + " " + respDTO.getLocation());
+        } else {
+            tv_device_info.setText("未知设备 " + respDTO.getLocation());
+        }
         tv_order_no.setText(respDTO.getOrderNo());
     }
 

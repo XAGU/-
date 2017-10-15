@@ -35,4 +35,7 @@ public class OrderDetailRespDTO {
     // 预付金额
     private String prepay;
 
+    // 设备类型
+    private Integer deviceType;
+
 }
