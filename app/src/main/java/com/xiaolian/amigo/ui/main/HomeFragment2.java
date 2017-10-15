@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
+import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
@@ -19,6 +20,7 @@ import com.xiaolian.amigo.ui.base.aspect.SingleClick;
 import com.xiaolian.amigo.ui.main.adaptor.HomeAdaptor;
 import com.xiaolian.amigo.ui.main.adaptor.HomeBannerDelegate;
 import com.xiaolian.amigo.ui.main.adaptor.HomeNormalDelegate;
+import com.xiaolian.amigo.ui.widget.RecyclerItemClickListener;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
@@ -59,10 +61,13 @@ public class HomeFragment2 extends Fragment {
     RecyclerView recyclerView;
 
     HomeAdaptor adaptor;
+    // 未找零账单个数
     private int prepayOrderSize = 0;
+    // 学校业务个数
     private int businessSize = 0;
+    // 正在使用的设备个数
+    private int usingAmount = 0;
     private View disabledView;
-    private HomeNormalDelegate homeDelegate;
 
     @Nullable
     @Override
@@ -77,50 +82,37 @@ public class HomeFragment2 extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         adaptor = new HomeAdaptor(getActivity(),items);
-//        adaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
-//            //            @SingleClick
-//            @Override
-//            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-//                Log.d(TAG, "onItemClick: " + position);
-//                if (items.get(position).getType() == 1) {
-//                    if (items.get(position).getRes() == R.drawable.shower) {
-//                        EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_HEATER));
-//                    } else if (items.get(position).getRes() == R.drawable.water) {
-//                        EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_DISPENSER));
-//                    } else if (items.get(position).getRes() == R.drawable.lost) {
-//                        EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_LOST_AND_FOUND));
-//                    }
-//                }
-//            }
-//            @Override
-//            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
-//                return false;
-//            }
-//        });
-        homeDelegate = new HomeNormalDelegate();
-        homeDelegate.setOnItemClickListener(new HomeNormalDelegate.OnItemClickListener() {
-            @Override
-            public void onItemClickListener(View v, int position) {
-                Log.d(TAG, "onItemClick");
-                disabledView = v;
-                v.setEnabled(false);
-                if (items.get(position).getRes() == R.drawable.shower) {
-                    EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_HEATER));
-                } else if (items.get(position).getRes() == R.drawable.water) {
-                    EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_DISPENSER));
-                } else if (items.get(position).getRes() == R.drawable.lost) {
-                    EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_LOST_AND_FOUND));
-                }
-            }
-        });
         recyclerView.scheduleLayoutAnimation();
-        adaptor.addItemViewDelegate(homeDelegate);
+        adaptor.addItemViewDelegate(new HomeNormalDelegate());
         adaptor.addItemViewDelegate(new HomeBannerDelegate(getActivity()));
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adaptor);
         LayoutAnimationController animation = AnimationUtils
                 .loadLayoutAnimation(getContext(), R.anim.layout_animation_slide_right);
         recyclerView.setLayoutAnimation(animation);
+        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), recyclerView,
+                new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Log.d(TAG, "recycler view onItemClick " + position);
+                        if (items.get(position).getType() == 1) {
+                            disabledView = view;
+                            view.setEnabled(false);
+                            if (items.get(position).getRes() == R.drawable.shower) {
+                                EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_HEATER));
+                            } else if (items.get(position).getRes() == R.drawable.water) {
+                                EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_DISPENSER));
+                            } else if (items.get(position).getRes() == R.drawable.lost) {
+                                EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_LOST_AND_FOUND));
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onLongItemClick(View view, int position) {
+                        Log.d(TAG, "recycler view onLongItemClick");
+                    }
+                }));
     }
 
 
@@ -128,21 +120,6 @@ public class HomeFragment2 extends Fragment {
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (!hidden) {
-            homeDelegate.setOnItemClickListener(new HomeNormalDelegate.OnItemClickListener() {
-                @Override
-                public void onItemClickListener(View v, int position) {
-                    Log.d(TAG, "onItemClick");
-                    disabledView = v;
-                    v.setEnabled(false);
-                    if (items.get(position).getRes() == R.drawable.shower) {
-                        EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_HEATER));
-                    } else if (items.get(position).getRes() == R.drawable.water) {
-                        EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_DISPENSER));
-                    } else if (items.get(position).getRes() == R.drawable.lost) {
-                        EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_LOST_AND_FOUND));
-                    }
-                }
-            });
             recyclerView.scheduleLayoutAnimation();
         }
     }
@@ -167,18 +144,24 @@ public class HomeFragment2 extends Fragment {
     public void onSchoolBizEvent(List<BriefSchoolBusiness> businesses) {
         int currentPrepayOrderSize = 0;
         int currentBusinessSize = 0;
+        int currentUsingAmount = 0;
         boolean needNotify = false;
         shower.setActive(false);
         water.setActive(false);
         for (BriefSchoolBusiness business : businesses) {
+            if (business.getUsing()) {
+                currentUsingAmount += 1;
+            }
             if (business.getBusinessId() == 2) {
                 water.setActive(true);
                 water.setPrepaySize(business.getPrepayOrder());
+                water.setUsing(business.getUsing());
                 currentPrepayOrderSize += business.getPrepayOrder();
                 currentBusinessSize += 1;
             } else if (business.getBusinessId() == 1) {
                 shower.setActive(true);
                 shower.setPrepaySize(business.getPrepayOrder());
+                shower.setUsing(business.getUsing());
                 currentPrepayOrderSize += business.getPrepayOrder();
                 currentBusinessSize += 1;
             }
@@ -189,6 +172,10 @@ public class HomeFragment2 extends Fragment {
         }
         if (currentPrepayOrderSize != prepayOrderSize) {
             prepayOrderSize = currentPrepayOrderSize;
+            needNotify = true;
+        }
+        if (currentUsingAmount != usingAmount) {
+            usingAmount = currentUsingAmount;
             needNotify = true;
         }
         if (needNotify) {
@@ -205,6 +192,7 @@ public class HomeFragment2 extends Fragment {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(Event event) {
         switch (event.getType()) {

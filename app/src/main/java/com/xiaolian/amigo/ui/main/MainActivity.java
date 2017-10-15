@@ -354,8 +354,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     }
 
     @Override
-    public void showTimeValidDialog(String title, String remark, int deviceType) {
-        Log.d(TAG, "showTimeValidDialog: " + title + "->" + remark + "->" + deviceType);
+    public void showTimeValidDialog(int deviceType, DeviceCheckRespDTO data) {
+        Log.d(TAG, "showTimeValidDialog: " + data.getTitle() + "->" + data.getRemark() + "->" + deviceType);
         if (null == availabilityDialog) {
             availabilityDialog = new AvailabilityDialog(this);
         }
@@ -363,11 +363,12 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             return;
         }
         availabilityDialog.setOkText(getString(R.string.keep_use));
-        availabilityDialog.setTip(title);
-        availabilityDialog.setSubTip(remark);
+        availabilityDialog.setTip(data.getTitle());
+        availabilityDialog.setSubTip(data.getRemark());
         availabilityDialog.setOnOkClickListener(dialog1 -> {
             if (deviceType == 1) {
-                presenter.getHeaterDeviceMacAddress();
+                presenter.gotoHeaterDevice(data.getDefaultMacAddress(), data.getLocation(),
+                        data.getResidenceId());
             } else {
                 startActivity(DispenserActivity.class);
             }
@@ -486,11 +487,14 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 showPrepayDialog(type, dispenserOrderSize, data);
             } else {
                 if (!data.getTimeValid()) {
-                    showTimeValidDialog(data.getTitle(), data.getRemark(), type);
+                    showTimeValidDialog(type, data);
                 } else {
                     if (type == 1) {
-                        presenter.getHeaterDeviceMacAddress();
+                        // 前往默认宿舍的热水澡
+                        presenter.gotoHeaterDevice(data.getDefaultMacAddress(), data.getLocation(),
+                                data.getResidenceId());
                     } else {
+                        // 进入饮水机选择页面
                         startActivity(new Intent(getApplicationContext(), ChooseDispenserActivity.class));
                     }
                 }
@@ -519,12 +523,13 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 if (data.getTimeValid()) {
                     // 1 表示热水澡 2 表示饮水机
                     if (type == 1) {
-                        presenter.getHeaterDeviceMacAddress();
+                        presenter.gotoHeaterDevice(data.getDefaultMacAddress(), data.getLocation(),
+                                data.getResidenceId());
                     } else {
                         gotoDevice(DispenserActivity.class);
                     }
                 } else {
-                    showTimeValidDialog(data.getTitle(), data.getRemark(), type);
+                    showTimeValidDialog(type, data);
                 }
             }
         });
@@ -542,15 +547,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     public void startActivity(Class<?> clz) {
         startActivity(this, clz);
-    }
-
-    public void checkTimeValid(Device device, Class clz) {
-        Log.d(TAG, "checkTimeValid");
-        if (TextUtils.isEmpty(presenter.getToken())) {
-            startActivity(new Intent(this, LoginActivity.class));
-        } else {
-            presenter.queryTimeValid(device.getType(), clz);
-        }
     }
 
     // 设备用水检查

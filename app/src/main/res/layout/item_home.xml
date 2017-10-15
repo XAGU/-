@@ -6,7 +6,6 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/shower">
-
     <!--android:clipToPadding="true"-->
     <!-- TODO: 居中显示 -->
     <RelativeLayout
@@ -37,8 +36,8 @@
                 android:id="@+id/dfv_dot"
                 app:firstColor="#44ffffff"
                 app:secondColor="#ffffffff"
-                android:layout_width="35dp"
-                android:layout_height="7dp" />
+                android:layout_width="40dp"
+                android:layout_height="6dp" />
         </LinearLayout>
 
 
