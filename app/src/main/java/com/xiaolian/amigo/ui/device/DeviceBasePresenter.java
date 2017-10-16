@@ -29,11 +29,13 @@ import com.xiaolian.amigo.data.network.model.dto.request.CmdResultReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.ConnectCommandReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.LatestOrderReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.PayReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.request.ScanDeviceReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.UnsettledOrderStatusCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.CmdResultRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.ConnectCommandRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.LatestOrderRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.PayRespDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.ScanDeviceRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.UnsettledOrderStatusCheckRespDTO;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.ui.base.BasePresenter;
@@ -151,52 +153,6 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         orderStatus = null;
         purelyCheckoutFlag = false;
         step = null;
-    }
-
-    @Override
-    public void onScan() {
-        addObserver(bleDataManager.scan(), new BleObserver<ScanResult>() {
-            // 已经上报的mac地址的集合
-            List<String> existDevices = new ArrayList<String>();
-            // 新扫描到的mac地址的集合
-            List<String> scanDevices = new ArrayList<String>();
-
-            Long begin = null;
-
-            @Override
-            public void onNext(ScanResult result) {
-                if (null == begin) {
-                    // 起始时间设置为当前时间
-                    begin = System.currentTimeMillis();
-                }
-
-                String macAddress = result.getBleDevice().getMacAddress();
-
-                if (!existDevices.contains(macAddress)) { // 如果已经在上报的集合中，忽略
-                    scanDevices.add(macAddress);
-                }
-
-                long now = System.currentTimeMillis();
-                if (scanDevices.size() >= 10 || now - begin > 2000) { // 列表数目到达10条或者时间超过2s都去服务端请求一次接口
-                    if (scanDevices.size() > 0) {
-                        existDevices.addAll(scanDevices);
-                        // TODO 请求服务器获取具体位置
-                        scanDevices.clear(); // 重置扫描到的设备集合
-                        begin = now; // 重置计时器
-                    }
-                }
-            }
-
-            @Override
-            public void onConnectError() {
-                // handleDisConnectError();
-            }
-
-            @Override
-            public void onExecuteError(Throwable e) {
-                Log.wtf(TAG, "扫描设备失败", e);
-            }
-        }, Schedulers.io());
     }
 
     @Override

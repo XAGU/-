@@ -3,9 +3,12 @@ package com.xiaolian.amigo.ui.device.dispenser;
 import android.os.Bundle;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.network.model.device.ScanDeviceGroup;
 import com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IDispenserPresenter;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IDispenserView;
+
+import java.util.List;
 
 import javax.inject.Inject;
 

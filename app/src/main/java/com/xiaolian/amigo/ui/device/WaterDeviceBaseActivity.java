@@ -21,6 +21,7 @@ import com.xiaolian.amigo.data.enumeration.ErrorTag;
 import com.xiaolian.amigo.data.enumeration.Payment;
 import com.xiaolian.amigo.data.enumeration.TradeError;
 import com.xiaolian.amigo.data.enumeration.TradeStep;
+import com.xiaolian.amigo.data.network.model.device.ScanDeviceGroup;
 import com.xiaolian.amigo.data.network.model.dto.response.OrderPreInfoDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.PrepayOptionDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.UnsettledOrderStatusCheckRespDTO;
@@ -39,6 +40,8 @@ import com.xiaolian.amigo.ui.widget.dialog.ActionSheetDialog;
 import com.xiaolian.amigo.ui.widget.dialog.IOSAlertDialog;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.TimeUtils;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -792,7 +795,6 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             bt_error_handler.setText(getString(tradeError.getBtnText()));
             bt_error_handler.setTag(tradeError.getBtnTag());
         }
-
     }
 
 }

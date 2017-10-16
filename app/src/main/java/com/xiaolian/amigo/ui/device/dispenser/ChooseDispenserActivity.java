@@ -3,9 +3,11 @@ package com.xiaolian.amigo.ui.device.dispenser;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.network.model.device.ScanDeviceGroup;
 import com.xiaolian.amigo.ui.device.DeviceBaseListActivity;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IChooseDispenerView;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IChooseDispenserPresenter;
@@ -22,9 +24,12 @@ import butterknife.ButterKnife;
 
 /**
  * 附近饮水机页面
+ *
  * @author zcd
  */
 public class ChooseDispenserActivity extends DeviceBaseListActivity implements IChooseDispenerView {
+
+    private static final String TAG = ChooseDispenserActivity.class.getSimpleName();
 
     @Inject
     IChooseDispenserPresenter<IChooseDispenerView> presenter;
@@ -73,12 +78,18 @@ public class ChooseDispenserActivity extends DeviceBaseListActivity implements I
         getActivityComponent().inject(this);
         presenter.onAttach(ChooseDispenserActivity.this);
 
-        presenter.requestFavorites();
+        // presenter.requestFavorites();
+        presenter.onLoad();
     }
 
     @Override
     public void addMore(List<ChooseDispenserAdaptor.DispenserWapper> wrappers) {
         items.addAll(wrappers);
         adaptor.notifyDataSetChanged();
+    }
+
+    @Override
+    public void addScanDevices(List<ScanDeviceGroup> devices) {
+        Log.i(TAG, "扫描到的设备列表：" + devices);
     }
 }

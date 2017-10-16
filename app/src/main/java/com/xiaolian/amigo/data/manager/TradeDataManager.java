@@ -6,9 +6,11 @@ import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.CmdResultReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.ConnectCommandReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.PayReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.request.ScanDeviceReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.CmdResultRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.ConnectCommandRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.PayRespDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.ScanDeviceRespDTO;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 
 import javax.inject.Inject;
@@ -49,5 +51,10 @@ public class TradeDataManager implements ITradeDataManager {
     public Observable<ApiResult<PayRespDTO>> pay(@Body PayReqDTO reqDTO) {
         sharedPreferencesHelp.setCurrentDeviceToken(sharedPreferencesHelp.getDeviceToken(reqDTO.getMacAddress()));
         return tradeApi.pay(reqDTO);
+    }
+
+    @Override
+    public Observable<ApiResult<ScanDeviceRespDTO>> handleScanDevices(@Body ScanDeviceReqDTO reqDTO) {
+        return tradeApi.handleScanDevices(reqDTO);
     }
 }
