@@ -10,6 +10,4 @@ import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 
 public interface IChooseDormitoryPresenter<V extends IChooseDormitoryView> extends IBasePresenter<V> {
     void queryDormitoryList(int page, int size);
-
-    void getHeaterDeviceMacAddress(Long residenceId);
 }

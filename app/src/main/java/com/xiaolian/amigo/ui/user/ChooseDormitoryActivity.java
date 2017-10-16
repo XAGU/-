@@ -55,7 +55,8 @@ public class ChooseDormitoryActivity extends UserBaseListActivity implements ICh
         adaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                presenter.getHeaterDeviceMacAddress(items.get(position).getResidenceId());
+//                presenter.getHeaterDeviceMacAddress(items.get(position).getResidenceId());
+                backToDevice(items.get(position).getMacAddress(), items.get(position).getResidenceName());
             }
 
             @Override

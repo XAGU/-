@@ -39,10 +39,6 @@ public interface IMainApi {
     @POST("/notify/read")
     Observable<ApiResult<BooleanRespDTO>> readUrgentNotify(@Body ReadNotifyReqDTO reqDTO);
 
-    // 设备列表
-    @POST("/device/list")
-    Observable<ApiResult<QueryDeviceListRespDTO>> queryDeviceList(@Body QueryDeviceListReqDTO reqDTO);
-
     // 获取学校业务列表
     @POST("/school/business/list")
     Observable<ApiResult<QuerySchoolBizListRespDTO>> getSchoolBizList();

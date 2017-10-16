@@ -124,11 +124,6 @@ public class UserDataManager implements IUserDataManager {
     }
 
     @Override
-    public Observable<ApiResult<QueryDeviceListRespDTO>> queryDeviceList(@Body QueryDeviceListReqDTO reqDTO) {
-        return userApi.queryDeviceList(reqDTO);
-    }
-
-    @Override
     public Observable<ApiResult<String>> uploadFile(@Part("file") RequestBody images) {
 
         return fileApi.uploadFile(images);

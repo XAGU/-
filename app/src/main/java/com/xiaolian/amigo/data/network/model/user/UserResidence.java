@@ -13,4 +13,6 @@ public class UserResidence {
     private Long residenceId;
     // 宿舍名称
     private String residenceName;
+    // macAddress
+    private String macAddress;
 }

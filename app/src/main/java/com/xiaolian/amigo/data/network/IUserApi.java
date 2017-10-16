@@ -85,9 +85,4 @@ public interface IUserApi {
     // 用户密码校验
     @POST("/user/password/check")
     Observable<ApiResult<BooleanRespDTO>> checkPasswordValid(@Body PasswordCheckReqDTO reqDTO);
-
-    // 设备列表
-    @POST("/device/list")
-    Observable<ApiResult<QueryDeviceListRespDTO>> queryDeviceList(@Body QueryDeviceListReqDTO reqDTO);
-
 }
