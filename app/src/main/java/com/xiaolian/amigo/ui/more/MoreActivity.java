@@ -1,19 +1,18 @@
 package com.xiaolian.amigo.ui.more;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.ui.main.MainActivity;
-import com.xiaolian.amigo.ui.main.MainBaseActivity;
 import com.xiaolian.amigo.ui.more.adapter.MoreAdapter;
 import com.xiaolian.amigo.ui.more.intf.IMorePresenter;
 import com.xiaolian.amigo.ui.more.intf.IMoreView;
 import com.xiaolian.amigo.ui.widget.RecycleViewDivider;
+import com.xiaolian.amigo.util.Constant;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import java.util.ArrayList;
@@ -35,7 +34,7 @@ public class MoreActivity extends MoreBaseActivity implements IMoreView {
 
     List<MoreAdapter.MoreModel> items = new ArrayList<MoreAdapter.MoreModel>() {
         {
-            add(new MoreAdapter.MoreModel("帮助中心", null));
+            add(new MoreAdapter.MoreModel("帮助中心", WebActivity.class));
             add(new MoreAdapter.MoreModel("用户协议", null));
             add(new MoreAdapter.MoreModel("关于我们", AboutUsActivity.class));
         }
@@ -62,7 +61,7 @@ public class MoreActivity extends MoreBaseActivity implements IMoreView {
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 Class clz = items.get(position).getClz();
                 if (clz != null) {
-                    startActivity(new Intent(getApplicationContext(), clz));
+                    startActivity(new Intent(getApplicationContext(), clz).putExtra(WebActivity.INTENT_KEY_URL, Constant.HELP_URL));
                 }
             }
 

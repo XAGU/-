@@ -26,6 +26,8 @@ import com.xiaolian.amigo.data.prefs.SharedPreferencesHelp;
 import com.xiaolian.amigo.di.ApplicationContext;
 import com.xiaolian.amigo.util.Constant;
 
+import java.util.concurrent.TimeUnit;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -61,6 +63,9 @@ public class ApplicationModule {
     Retrofit provideRetrofit(LogInterceptor logInterceptor) {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .addInterceptor(logInterceptor)
+                .connectTimeout(Constant.DEFAULT_TIMEOUT, TimeUnit.SECONDS)
+                .writeTimeout(Constant.DEFAULT_TIMEOUT, TimeUnit.SECONDS)
+                .readTimeout(Constant.DEFAULT_TIMEOUT, TimeUnit.SECONDS)
                 .build();
         return new Retrofit.Builder()
                 .baseUrl(Constant.SERVER)

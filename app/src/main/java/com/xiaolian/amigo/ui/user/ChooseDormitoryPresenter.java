@@ -77,30 +77,4 @@ public class ChooseDormitoryPresenter<V extends IChooseDormitoryView> extends Ba
             }
         });
     }
-
-    @Override
-    public void getHeaterDeviceMacAddress(Long residenceId) {
-        QueryDeviceListReqDTO reqDTO = new QueryDeviceListReqDTO();
-        reqDTO.setSchoolId(manager.getUser().getSchoolId());
-        reqDTO.setType(1);
-        reqDTO.setResidenceId(residenceId);
-        addObserver(manager.queryDeviceList(reqDTO), new NetworkObserver<ApiResult<QueryDeviceListRespDTO>>() {
-
-            @Override
-            public void onReady(ApiResult<QueryDeviceListRespDTO> result) {
-                if (null == result.getError()) {
-                    if (result.getData().getDevices() != null
-                            && !result.getData().getDevices().isEmpty()
-                            && result.getData().getDevices().get(0).getMacAddress() != null) {
-                        getMvpView().backToDevice(result.getData().getDevices().get(0).getMacAddress(),
-                                result.getData().getDevices().get(0).getLocation());
-                    } else {
-                        getMvpView().onError("该宿舍不存在设备");
-                    }
-                } else {
-                    getMvpView().onError(result.getError().getDisplayMessage());
-                }
-            }
-        });
-    }
 }

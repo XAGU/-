@@ -86,6 +86,7 @@ public class EditDormitoryAdaptor extends CommonAdapter<EditDormitoryAdaptor.Use
         private Long id;
         private Long residenceId;
         private String residenceName;
+        private String macAddress;
         private boolean isDefault = false;
 
         public UserResidenceWrapper(UserResidence residence, boolean isDefault) {
@@ -93,6 +94,7 @@ public class EditDormitoryAdaptor extends CommonAdapter<EditDormitoryAdaptor.Use
             this.id = residence.getId();
             this.residenceId = residence.getResidenceId();
             this.residenceName = residence.getResidenceName();
+            this.macAddress = residence.getMacAddress();
         }
     }
 

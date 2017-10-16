@@ -3,6 +3,8 @@ package com.xiaolian.amigo.util;
 public final class Constant {
 
     private static final String TAG = "Constant";
+    public static final String HELP_URL = "http://116.62.236.67:5097/help/list";
+    public static final int DEFAULT_TIMEOUT = 10;
 
     private Constant() {
     }

@@ -116,11 +116,6 @@ public class MainDataManager implements IMainDataManager {
     }
 
     @Override
-    public Observable<ApiResult<QueryDeviceListRespDTO>> queryDeviceList(@Body QueryDeviceListReqDTO reqDTO) {
-        return mainApi.queryDeviceList(reqDTO);
-    }
-
-    @Override
     public Observable<ApiResult<QuerySchoolBizListRespDTO>> getSchoolBizList() {
         return mainApi.getSchoolBizList();
     }
