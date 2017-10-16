@@ -119,7 +119,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     // 连接计时器
     private CountDownTimer timer;
     // 从首页点击设备用水跳转标识
-    private boolean homePageJump;
+    private volatile boolean homePageJump = true;
     // 结束标识
     private volatile boolean closeFlag = false;
 
@@ -454,10 +454,16 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             // String savedConnectCmd = sharedPreferencesHelp.getConnectCmd(currentMacAddress);
             // Log.i(TAG, "获取已保存的握手指令：" + savedConnectCmd);
             if (null != orderStatus && null != orderStatus.getStatus() && OrderStatus.getOrderStatus(orderStatus.getStatus()) == OrderStatus.USING) {  // 有订单未计算拿上次连接的握手指令（这里待验证是否有影响）
-                Log.i(TAG, String.format("正常连接发现有订单未被结算，继续下发握手指令。command: %s, orderId:%s", connectCmd, orderStatus.getOrderId()));
-                orderId = orderStatus.getOrderId();
-                onWrite(connectCmd);
-                purelyCheckoutFlag = true;
+                if (homePageJump && !orderStatus.isExistsUnsettledOrder()) {
+                    Log.i(TAG, "首页点击继续用水，且未结账订单已超出指定时间范围，走正常流程，继续下发握手指令。command:" + connectCmd);
+                    waitConnectCmdResult();
+                    onWrite(connectCmd);
+                } else {
+                    Log.i(TAG, String.format("正常连接发现有订单未被结算，继续下发握手指令。command: %s, orderId:%s", connectCmd, orderStatus.getOrderId()));
+                    // orderId = orderStatus.getOrderId();
+                    onWrite(connectCmd);
+                    purelyCheckoutFlag = true;
+                }
             } else {
                 // 握手连接
                 Log.i(TAG, "正常连接成功，下发握手指令。command:" + connectCmd);
@@ -504,7 +510,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     private void handleDisConnectError() {
         Log.wtf(TAG, "蓝牙连接已断开！");
 
-        if(!closeFlag) { // 退出时由onDisconnect方法完成关闭操作
+        if (!closeFlag) { // 退出时由onDisconnect方法完成关闭操作
             if (!handleConnectError.getAndSet(true)) {
                 // 关闭蓝牙连接
                 closeBleConnecttion();
@@ -593,6 +599,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 if (null == result.getError()) {
                     synchronized (orderStatusLock) {
                         orderStatus = result.getData();
+                        orderId = orderStatus.getOrderId();
                         Log.i(TAG, "获取订单状态成功。orderStatus:" + orderStatus);
                         orderStatusLock.notifyAll();
                     }
@@ -630,8 +637,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     if (null != orderStatus && null != orderStatus.getStatus() && OrderStatus.getOrderStatus(orderStatus.getStatus()) == OrderStatus.USING) {
                         // 记录预结账指令，此时阀门已经被长按关闭，但是订单没有被其它用户带回
                         Log.i(TAG, "用户在该设备上存在未结账订单，直接跳转至结算页面，获取到预结账指令。command:" + nextCommand);
-                        if (orderStatus.isExistsUnsettledOrder()) { // 未结算订单在指定时间范围内
-                            Log.i(TAG, "未结算订单在指定时间范围内，显示结算页面");
+                        if (orderStatus.isExistsUnsettledOrder() || !homePageJump) { // 未结算订单在指定时间范围内
+                            Log.i(TAG, "未结算订单在指定时间范围内或者由未结账单页面跳转过来，显示结算页面");
                             reopenNextCmd = nextCommand;
                             getMvpView().onConnectSuccess(TradeStep.SETTLE, orderStatus);
 
@@ -689,7 +696,11 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                             getMvpView().onFinish(orderId);
                         } else {
                             // 非重连状态下，是主动帮别人结账，此时用户还未进入用水流程，需要再次握手，否则会报设备使用次数不对
-                            Log.i(TAG, "结账完成,当前为主动帮别人结账，正常流程，继续下发握手指令");
+                            Log.i(TAG, "结账完成,当前为主动帮别人结账，正常流程，继续下发握手指令。");
+                            if (null != orderStatus) {
+                                Log.i(TAG, "orderStatus不为空，说明是给自己超过2小时的订单结账，需要重置orderStatus的状态。");
+                                orderStatus = null;
+                            }
                             onWrite(connectCmd);
                         }
                     } else {
