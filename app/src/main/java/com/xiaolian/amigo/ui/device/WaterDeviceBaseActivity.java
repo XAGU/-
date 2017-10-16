@@ -264,8 +264,11 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         tv_connect_status.setText(recorvery ? "正在恢复上一次用水" : "正在连接设备, 请稍后");
         initView();
 
+        // 正常情况不能出现macAddress为空的情况
+        // 如果出现则设置为默认的"08:7C:BE:E1:FD:3B"
         if (TextUtils.isEmpty(macAddress)) {
             macAddress = "08:7C:BE:E1:FD:3B";
+            Log.wtf(TAG, "macAddress为空!");
         }
 
         // 连接蓝牙设备

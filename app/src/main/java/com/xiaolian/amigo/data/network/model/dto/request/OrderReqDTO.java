@@ -16,5 +16,7 @@ public class OrderReqDTO {
     private Integer page;
     // 页大小
     private Integer size;
+    // 订单类型 1 余额支付 2 红包支付
+    private Integer paymentType;
 
 }
