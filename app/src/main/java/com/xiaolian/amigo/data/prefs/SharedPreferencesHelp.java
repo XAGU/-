@@ -2,6 +2,7 @@ package com.xiaolian.amigo.data.prefs;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.provider.Settings;
 
 import com.xiaolian.amigo.data.network.model.user.User;
 import com.xiaolian.amigo.di.ApplicationContext;
@@ -27,6 +28,7 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     private static final String PREF_KEY_PICTURE_URL = "PREF_KEY_PICTURE_URL";
     private static final String PREF_CMD_CONNECT_PREFIX = "PREF_CMD_CONNECT_";
     private static final String PREF_CMD_CLOSE_PREFIX = "PREF_CMD_CLOSE_";
+    private static final String PREF_LAST_CONNECT_TIME = "PREF_LAST_CONNECT_TIME";
 
     private String tokenHolder;
     private String deviceTokenHolder;
@@ -127,6 +129,16 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     @Override
     public int getBonusAmount() {
         return this.bonusAmount;
+    }
+
+    @Override
+    public void setLastConnectTime(Long lastConnectTime) {
+        mSharedPreferences.edit().putLong(PREF_LAST_CONNECT_TIME, System.currentTimeMillis()).apply();
+    }
+
+    @Override
+    public Long getLastConnectTime() {
+        return mSharedPreferences.getLong(PREF_LAST_CONNECT_TIME, 0L);
     }
 
     @Override

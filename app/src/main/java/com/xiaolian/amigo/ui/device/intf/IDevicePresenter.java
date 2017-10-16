@@ -16,6 +16,8 @@ import com.xiaolian.amigo.ui.device.DeviceBasePresenter;
  */
 public interface IDevicePresenter<V extends IBaseView> extends IBasePresenter<V> {
 
+    void onPreConnect(@NonNull String macAddress);
+
     // 连接设备
     void onConnect(@NonNull String macAddress);
 

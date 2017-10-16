@@ -100,12 +100,12 @@ public class TimeUtils {
     }
 
     public static String convertTimestampToAccurateFormat(long timeStamp) {
-        String result = null;
-        long curTime = System.currentTimeMillis() / (long) 1000;
+        String result = "";
+        long curTime = System.currentTimeMillis();
         long time = curTime - timeStamp;
-        if (time >= 0 && time < 3600 * 24) {
+        if (time >= 0 && time < 3600 * 24 * 1000) {
             result += "今天 ";
-        } else if (time >= 3600 * 24 && time < 3600 * 24 * 2) {
+        } else if (time >= 3600 * 24 * 1000 && time < 3600 * 24 * 2 * 1000) {
             result += "昨天 ";
         } else {
             result += millis2String(timeStamp, MY_DATE_FORMAT) + " ";

@@ -416,7 +416,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             intent.putExtra(INTENT_KEY_MAC_ADDRESS, macAddress);
             intent.putExtra(INTENT_KEY_DEVICE_TYPE, device.getType());
             intent.putExtra(INTENT_KEY_RESIDENCE_ID, residenceId);
-            intent.putExtra(INTENT_KEY_RESIDENCE_ID, recovery);
+            intent.putExtra(MainActivity.INTENT_KEY_RECOVERY, recovery);
             startActivity(intent);
         }
     }

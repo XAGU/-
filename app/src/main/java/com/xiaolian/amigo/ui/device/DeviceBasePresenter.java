@@ -4,6 +4,8 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -12,6 +14,7 @@ import com.polidea.rxandroidble.RxBleConnection;
 import com.trello.rxlifecycle.LifecycleTransformer;
 import com.trello.rxlifecycle.RxLifecycle;
 import com.trello.rxlifecycle.android.ActivityEvent;
+import com.xiaolian.amigo.data.base.TimeHolder;
 import com.xiaolian.amigo.data.enumeration.BleErrorType;
 import com.xiaolian.amigo.data.enumeration.Command;
 import com.xiaolian.amigo.data.enumeration.OrderStatus;
@@ -23,10 +26,12 @@ import com.xiaolian.amigo.data.manager.intf.ITradeDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.CmdResultReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.ConnectCommandReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.request.LatestOrderReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.PayReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.UnsettledOrderStatusCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.CmdResultRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.ConnectCommandRespDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.LatestOrderRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.PayRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.UnsettledOrderStatusCheckRespDTO;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
@@ -115,6 +120,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     private CountDownTimer timer;
     // 从首页点击设备用水跳转标识
     private boolean homePageJump;
+    // 结束标识
+    private boolean closeFlag = false;
 
     public DeviceBasePresenter(IBleDataManager bleDataManager, ITradeDataManager tradeDataManager, IOrderDataManager orderDataManager, ISharedPreferencesHelp sharedPreferencesHelp) {
         super();
@@ -155,7 +162,25 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     }
 
     @Override
+    public void onPreConnect(@NonNull String macAddress) {
+
+        Long lastConnectTime = TimeHolder.get().getLastConnectTime();
+        if (null != lastConnectTime) {
+            Long diff = System.currentTimeMillis() - lastConnectTime;
+            if (diff < 5000) {
+                new Handler().postDelayed(() -> onConnect(macAddress), 5000 - diff);
+            } else {
+                onConnect(macAddress);
+            }
+        } else {
+            onConnect(macAddress);
+        }
+
+    }
+
+    @Override
     public void onConnect(@NonNull String macAddress) {
+
 
         // 重置正在连接标识
         connecting = true;
@@ -479,12 +504,14 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     private void handleDisConnectError() {
         Log.wtf(TAG, "蓝牙连接已断开！");
 
-        if (!handleConnectError.getAndSet(true)) {
-            // 关闭蓝牙连接
-            closeBleConnecttion();
+        if(!closeFlag) { // 退出时由onDisconnect方法完成关闭操作
+            if (!handleConnectError.getAndSet(true)) {
+                // 关闭蓝牙连接
+                closeBleConnecttion();
 
-            // 跳转至连接失败页面
-            getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
+                // 跳转至连接失败页面
+                getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
+            }
         }
 
         // 处理蓝牙在用水过程中被用户恶意关闭
@@ -493,6 +520,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
     @Override
     public void onDisConnect() {
+        closeFlag = true;
         if (null != busSubscriber) {
             busSubscriber.unsubscribe();
         }
@@ -883,5 +911,4 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 break;
         }
     }
-
 }

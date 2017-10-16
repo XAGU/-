@@ -6,6 +6,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.base.TimeHolder;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity;
 import com.xiaolian.amigo.ui.device.dispenser.DispenserActivity;
@@ -118,6 +119,7 @@ public class PrepayOrderActivity extends WalletBaseActivity implements IPrepayOr
         intent.putExtra(MainActivity.INTENT_KEY_MAC_ADDRESS, macAddress);
         intent.putExtra(MainActivity.INTENT_KEY_MAC_ADDRESS, macAddress);
         intent.putExtra(WaterDeviceBaseActivity.INTENT_HOME_PAGE_JUMP, false);
+        TimeHolder.get().setLastConnectTime(System.currentTimeMillis());
         startActivity(intent);
     }
 }
