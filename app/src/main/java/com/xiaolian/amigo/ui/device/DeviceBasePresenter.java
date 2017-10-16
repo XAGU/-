@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.polidea.rxandroidble.RxBleConnection;
+import com.polidea.rxandroidble.scan.ScanResult;
 import com.trello.rxlifecycle.LifecycleTransformer;
 import com.trello.rxlifecycle.RxLifecycle;
 import com.trello.rxlifecycle.android.ActivityEvent;
@@ -43,6 +44,9 @@ import com.xiaolian.amigo.util.ble.Agreement;
 import com.xiaolian.amigo.util.ble.HexBytesUtils;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -147,6 +151,52 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         orderStatus = null;
         purelyCheckoutFlag = false;
         step = null;
+    }
+
+    @Override
+    public void onScan() {
+        addObserver(bleDataManager.scan(), new BleObserver<ScanResult>() {
+            // 已经上报的mac地址的集合
+            List<String> existDevices = new ArrayList<String>();
+            // 新扫描到的mac地址的集合
+            List<String> scanDevices = new ArrayList<String>();
+
+            Long begin = null;
+
+            @Override
+            public void onNext(ScanResult result) {
+                if (null == begin) {
+                    // 起始时间设置为当前时间
+                    begin = System.currentTimeMillis();
+                }
+
+                String macAddress = result.getBleDevice().getMacAddress();
+
+                if (!existDevices.contains(macAddress)) { // 如果已经在上报的集合中，忽略
+                    scanDevices.add(macAddress);
+                }
+
+                long now = System.currentTimeMillis();
+                if (scanDevices.size() >= 10 || now - begin > 2000) { // 列表数目到达10条或者时间超过2s都去服务端请求一次接口
+                    if (scanDevices.size() > 0) {
+                        existDevices.addAll(scanDevices);
+                        // TODO 请求服务器获取具体位置
+                        scanDevices.clear(); // 重置扫描到的设备集合
+                        begin = now; // 重置计时器
+                    }
+                }
+            }
+
+            @Override
+            public void onConnectError() {
+                // handleDisConnectError();
+            }
+
+            @Override
+            public void onExecuteError(Throwable e) {
+                Log.wtf(TAG, "扫描设备失败", e);
+            }
+        }, Schedulers.io());
     }
 
     @Override
@@ -733,11 +783,11 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         Log.i(TAG, "处理未结账订单，此时阀门处于打开状态，下发关阀指令即可。");
                         getMvpView().onConnectSuccess(TradeStep.SETTLE, orderStatus);
                         String savedCloseCmd = sharedPreferencesHelp.getCloseCmd(currentMacAddress);
-                        if(null != savedCloseCmd) {
+                        if (null != savedCloseCmd) {
                             Log.wtf(TAG, "从缓存中成功获取关阀指令。command:" + savedCloseCmd);
                             reopenNextCmd = savedCloseCmd;
                             closeCmd = reopenNextCmd;
-                        }else {
+                        } else {
                             Log.wtf(TAG, "从缓存中获取关阀指令为空，APP有可能被用户卸载过");
                             getMvpView().onError(TradeError.CONNECT_ERROR_2);
                         }
