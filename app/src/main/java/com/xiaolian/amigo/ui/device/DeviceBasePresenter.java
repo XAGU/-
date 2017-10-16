@@ -460,7 +460,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     onWrite(connectCmd);
                 } else {
                     Log.i(TAG, String.format("正常连接发现有订单未被结算，继续下发握手指令。command: %s, orderId:%s", connectCmd, orderStatus.getOrderId()));
-                    orderId = orderStatus.getOrderId();
+                    // orderId = orderStatus.getOrderId();
                     onWrite(connectCmd);
                     purelyCheckoutFlag = true;
                 }
@@ -599,6 +599,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 if (null == result.getError()) {
                     synchronized (orderStatusLock) {
                         orderStatus = result.getData();
+                        orderId = orderStatus.getOrderId();
                         Log.i(TAG, "获取订单状态成功。orderStatus:" + orderStatus);
                         orderStatusLock.notifyAll();
                     }
