@@ -734,6 +734,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         getMvpView().onConnectSuccess(TradeStep.SETTLE, orderStatus);
                         String savedCloseCmd = sharedPreferencesHelp.getCloseCmd(currentMacAddress);
                         if(null != savedCloseCmd) {
+                            Log.wtf(TAG, "从缓存中成功获取关阀指令。command:" + savedCloseCmd);
                             reopenNextCmd = savedCloseCmd;
                             closeCmd = reopenNextCmd;
                         }else {
