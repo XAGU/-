@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -105,6 +106,7 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
     protected void onDestroy() {
         presenter.onDetach();
         super.onDestroy();
+        Log.d("test", "onDestroy");
     }
 
 
@@ -278,6 +280,12 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
                 this.type = type;
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Log.d("test", "onBackPressed");
     }
 
 }

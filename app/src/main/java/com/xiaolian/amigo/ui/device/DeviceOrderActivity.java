@@ -105,7 +105,8 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        startActivity(new Intent(this, MainActivity.class));
+        startActivity(new Intent(this, MainActivity.class)
+                .putExtra(MainActivity.INTENT_KEY_SWITCH_TO_HOME, true));
     }
 
     @Override
