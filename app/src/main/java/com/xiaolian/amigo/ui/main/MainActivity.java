@@ -55,6 +55,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import lombok.Data;
+import rx.Observable;
 
 import static com.xiaolian.amigo.data.enumeration.Device.DISPENSER;
 import static com.xiaolian.amigo.data.enumeration.Device.HEARTER;
@@ -71,6 +72,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     public static final String INTENT_KEY_DEVICE_TYPE = "intent_key_device_type";
     public static final String INTENT_KEY_RESIDENCE_ID = "intent_key_residence_id";
     public static final String INTENT_KEY_RECOVERY = "intent_key_recovery";
+    public static final String INTENT_KEY_SWITCH_TO_HOME = "intent_key_switch_to_home";
 
     @Inject
     IMainPresenter<IMainView> presenter;
@@ -181,6 +183,17 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (intent != null) {
+            boolean isSwitchToHome = intent.getBooleanExtra(INTENT_KEY_SWITCH_TO_HOME, false);
+            if (isSwitchToHome) {
+                onSwitch(0);
+            }
+        }
+    }
+
+    @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         Log.d(TAG, "dispatchTouchEvent");
         if (mGestureDetector.onTouchEvent(ev)) {
@@ -256,8 +269,14 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             // 改为切换不隐藏
 //            rl_notice.setVisibility(View.VISIBLE);
         }
+    }
 
-
+    void onSwitch(int current) {
+        if (this.current == current) {
+            return;
+        } else {
+            onSwitch();
+        }
     }
 
     public void imageViewAnimatedChange(Context context, ImageView imageView, int res) {

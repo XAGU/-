@@ -15,6 +15,7 @@ import com.xiaolian.amigo.ui.user.intf.IEditProfileView;
 import com.xiaolian.amigo.util.Constant;
 
 import java.io.File;
+import java.util.logging.Handler;
 
 import javax.inject.Inject;
 
