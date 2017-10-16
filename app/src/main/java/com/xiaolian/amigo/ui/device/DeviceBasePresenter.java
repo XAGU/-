@@ -737,7 +737,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                             reopenNextCmd = savedCloseCmd;
                             closeCmd = reopenNextCmd;
                         }else {
-                            Log.wtf(TAG, "从缓存中获取关阀指令为空，APP有可能被用户卸载过"):
+                            Log.wtf(TAG, "从缓存中获取关阀指令为空，APP有可能被用户卸载过");
                             getMvpView().onError(TradeError.CONNECT_ERROR_2);
                         }
 
