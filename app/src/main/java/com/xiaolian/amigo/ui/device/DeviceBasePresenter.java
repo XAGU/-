@@ -85,7 +85,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     // 处理蓝牙连接错误标识
     private AtomicBoolean handleConnectError = new AtomicBoolean(false);
     // 标志是否重连
-    private boolean reconnect = false;
+    private volatile boolean reconnect = false;
     // 握手连接指令
     private volatile String connectCmd;
     // 开阀指令
@@ -105,7 +105,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     // 预结账标识(预结账状态时，结账后继续正常用水，非预结账状态时，结账后跳转账单详情页)
     private volatile boolean precheckFlag = false;
     // 订单id
-    private Long orderId;
+    private volatile long orderId;
     // 订单状态
     private UnsettledOrderStatusCheckRespDTO orderStatus;
     // 订单状态信号量
@@ -113,15 +113,15 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     // 页面当前跳转跳转步骤 1-支付页， 2-结账页
     private TradeStep step;
     // 纯结账标识，直接连接跳转至第二页结账
-    private boolean purelyCheckoutFlag = false;
+    private volatile boolean purelyCheckoutFlag = false;
     // 正在连接标识
-    private boolean connecting = true;
+    private volatile boolean connecting = true;
     // 连接计时器
     private CountDownTimer timer;
     // 从首页点击设备用水跳转标识
     private boolean homePageJump;
     // 结束标识
-    private boolean closeFlag = false;
+    private volatile boolean closeFlag = false;
 
     public DeviceBasePresenter(IBleDataManager bleDataManager, ITradeDataManager tradeDataManager, IOrderDataManager orderDataManager, ISharedPreferencesHelp sharedPreferencesHelp) {
         super();
@@ -143,7 +143,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         reconnectNextCmd = null;
         reopenNextCmd = null;
         precheckFlag = false;
-        orderId = null;
+        orderId = 0L;
         orderStatus = null;
         purelyCheckoutFlag = false;
         step = null;
