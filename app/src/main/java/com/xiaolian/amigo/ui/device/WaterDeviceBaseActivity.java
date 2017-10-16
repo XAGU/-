@@ -133,6 +133,12 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     ImageView iv_top_right_icon;
 
     /**
+     * 右上角按钮placeholder
+     */
+    @BindView(R.id.v_icon_placeholder)
+    View v_icon_placeholder;
+
+    /**
      * 子标题
      */
     @BindView(R.id.tv_sub_title)
@@ -291,6 +297,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         setHeaderBackground(setHeaderBackgroundDrawable());
         setHeaderIcon(setHeaderIconDrawable());
         setTopRightIcon(setTopRightIconDrawable());
+        setTopRightIconClickEvent(setTopRightIconClickListener());
         // 默认选择预付5元
         tv_water_right.setTag(R.id.money_pay_amount, prepayDefaultAmount);
         tv_water_right.setText(prepayDefaultDesc);
@@ -300,6 +307,12 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         // 默认显示连接中状态
         showConnecting();
     }
+
+    private void setTopRightIconClickEvent(View.OnClickListener onClickListener) {
+        v_icon_placeholder.setOnClickListener(onClickListener);
+    }
+
+    protected abstract View.OnClickListener setTopRightIconClickListener();
 
     // 子类可重写
     protected void setTopRightIcon(int drawableRes) {

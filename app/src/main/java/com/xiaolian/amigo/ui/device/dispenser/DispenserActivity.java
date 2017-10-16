@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.device.dispenser;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity;
@@ -32,6 +33,16 @@ public class DispenserActivity extends WaterDeviceBaseActivity<IDispenserPresent
     @Override
     protected int setHeaderBackgroundDrawable() {
         return R.drawable.bg_rect_green;
+    }
+
+    @Override
+    protected View.OnClickListener setTopRightIconClickListener() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO 设置饮水机事件
+            }
+        };
     }
 
     @Override
