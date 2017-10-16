@@ -589,6 +589,10 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
     @Override
     public void onFinish(long orderId) {
+        if (orderId == 0L) {
+            Log.wtf(TAG, "订单id不能为0");
+            return;
+        }
         presenter.onDisConnect();
         Intent intent = new Intent(this, DeviceOrderActivity.class);
         intent.putExtra(Constant.BUNDLE_ID, orderId);
