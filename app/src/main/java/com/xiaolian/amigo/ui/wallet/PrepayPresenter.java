@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.wallet;
 
+import com.xiaolian.amigo.data.enumeration.Payment;
 import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.OrderReqDTO;
@@ -40,6 +41,8 @@ public class PrepayPresenter<V extends IPrepayView> extends BasePresenter<V>
         reqDTO.setSize(Constant.PAGE_SIZE);
         // 查看未结束账单
         reqDTO.setOrderStatus(1);
+        // 默认只获取余额支付的未找零账单
+        reqDTO.setPaymentType(Payment.BALANCE.getType());
         addObserver(manager.queryOrders(reqDTO), new NetworkObserver<ApiResult<OrderRespDTO>>(false) {
             @Override
             public void onReady(ApiResult<OrderRespDTO> result) {
