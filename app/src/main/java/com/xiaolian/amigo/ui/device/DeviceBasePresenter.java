@@ -781,6 +781,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         // 校验网络
         if (!getMvpView().isNetworkAvailable()) {
             getMvpView().onError(TradeError.CONNECT_ERROR_3);
+            return;
         }
 
         PayReqDTO reqDTO = new PayReqDTO();
@@ -817,6 +818,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         if (!getMvpView().isNetworkAvailable()) {
             Log.wtf(TAG, "网络不可用");
             getMvpView().onError(TradeError.CONNECT_ERROR_3);
+            return;
         }
 
         if (reconnect) {
