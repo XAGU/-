@@ -455,6 +455,13 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     public void showSchoolBiz(List<BriefSchoolBusiness> businesses) {
         Log.d(TAG, "showSchoolBiz");
         this.businesses = businesses;
+        for (BriefSchoolBusiness business : businesses) {
+            if (business.getBusinessId() == 1) {
+                heaterOrderSize = business.getPrepayOrder();
+            } else if (business.getBusinessId() == 2) {
+                dispenserOrderSize = business.getPrepayOrder();
+            }
+        }
         EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.SCHOOL_BIZ,
                 businesses));
     }
