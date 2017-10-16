@@ -16,6 +16,10 @@ import com.xiaolian.amigo.ui.device.DeviceBasePresenter;
  */
 public interface IDevicePresenter<V extends IBaseView> extends IBasePresenter<V> {
 
+    // 扫描设备
+    void onScan();
+
+    // 连接前准备
     void onPreConnect(@NonNull String macAddress);
 
     // 连接设备
