@@ -729,17 +729,23 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     reconnectNextCmd = closeCmd;
                 } else { // 首次连接
                     if (null != orderStatus && null != orderStatus.getStatus() && OrderStatus.getOrderStatus(orderStatus.getStatus()) == OrderStatus.USING) { // 用户主动上来结账
-                        if (orderStatus.isExistsUnsettledOrder()) { // 未结账订单在指定时间范围内
-                            Log.i(TAG, "未结账订单在两个小时时间范围内，阀门处于打开状态，下发关阀指令即可。");
-                            getMvpView().onConnectSuccess(TradeStep.SETTLE, orderStatus);
-                            reopenNextCmd = sharedPreferencesHelp.getCloseCmd(currentMacAddress);
-
-                            connectCmd = sharedPreferencesHelp.getConnectCmd(currentMacAddress);
+                        //if (orderStatus.isExistsUnsettledOrder() || !homePageJump) { // 未结账订单在指定时间范围内
+                        Log.i(TAG, "处理未结账订单，此时阀门处于打开状态，下发关阀指令即可。");
+                        getMvpView().onConnectSuccess(TradeStep.SETTLE, orderStatus);
+                        String savedCloseCmd = sharedPreferencesHelp.getCloseCmd(currentMacAddress);
+                        if(null != savedCloseCmd) {
+                            reopenNextCmd = savedCloseCmd;
                             closeCmd = reopenNextCmd;
-                        } else {
-                            Log.wtf(TAG, "未结账订单超出两个小时时间范围，阀门仍处于打开状态，不应该出现这种状况");
-                            getMvpView().onError(TradeError.DEVICE_BROKEN_2);
+                        }else {
+                            Log.wtf(TAG, "从缓存中获取关阀指令为空，APP有可能被用户卸载过"):
+                            getMvpView().onError(TradeError.CONNECT_ERROR_2);
                         }
+
+                        //} else {
+                        //    Log.i(TAG, "处理未结账订单，订单时间超出指定时间范围内并且从首页跳转过来，此时阀门处于打开状态，");
+                        //    Log.wtf(TAG, "未结账订单超出两个小时时间范围，阀门仍处于打开状态，不应该出现这种状况");
+                        //    getMvpView().onError(TradeError.DEVICE_BROKEN_2);
+                        // }
                     } else {
                         // 提示用户设备已被其它用户使用
                         closeBleConnecttion();
