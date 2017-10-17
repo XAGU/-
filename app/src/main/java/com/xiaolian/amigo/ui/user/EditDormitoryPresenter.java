@@ -70,6 +70,7 @@ public class EditDormitoryPresenter<V extends IEditDormitoryView> extends BasePr
                     }
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
+                    getMvpView().addMore(new ArrayList<>());
                     getMvpView().showErrorView();
                 }
             }

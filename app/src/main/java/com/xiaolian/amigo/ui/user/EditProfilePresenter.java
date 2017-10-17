@@ -8,6 +8,7 @@ import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.PasswordCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.EntireUserDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.data.network.model.user.User;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditProfilePresenter;
@@ -94,6 +95,26 @@ public class EditProfilePresenter<V extends IEditProfileView> extends BasePresen
                         getMvpView().gotoChangeMobile();
                     } else {
                         getMvpView().onError(R.string.password_invalid);
+                    }
+                } else {
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+        });
+    }
+
+    @Override
+    public void checkChangeSchool() {
+        addObserver(manager.getUserExtraInfo(), new NetworkObserver<ApiResult<PersonalExtraInfoDTO>>() {
+
+            @Override
+            public void onReady(ApiResult<PersonalExtraInfoDTO> result) {
+                if (null == result.getError()) {
+                    if (result.getData().getPrepay() > 0
+                            || Double.valueOf(result.getData().getBalance()) > 0) {
+                        getMvpView().onError("需要把余额都提现才能更换学校哦");
+                    } else {
+                        getMvpView().showChangeSchoolDialog();
                     }
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());

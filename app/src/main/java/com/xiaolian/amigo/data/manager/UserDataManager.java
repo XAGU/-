@@ -16,6 +16,7 @@ import com.xiaolian.amigo.data.network.model.dto.request.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.VerificationCodeGetReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.EntireUserDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryAvatarDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryBriefSchoolListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryDeviceListRespDTO;
@@ -66,6 +67,11 @@ public class UserDataManager implements IUserDataManager {
     @Override
     public Observable<ApiResult<EntireUserDTO>> getUserInfo() {
         return userApi.getUserInfo();
+    }
+
+    @Override
+    public Observable<ApiResult<PersonalExtraInfoDTO>> getUserExtraInfo() {
+        return userApi.getUserExtraInfo();
     }
 
     @Override

@@ -32,4 +32,6 @@ public interface IMainView extends IBaseView {
     void showSchoolBiz(List<BriefSchoolBusiness> businesses);
 
     void showDeviceUsageDialog(int type, DeviceCheckRespDTO data);
+
+    void showBindDormitoryDialog();
 }

@@ -15,4 +15,6 @@ public interface IEditProfilePresenter <V extends IEditProfileView> extends IBas
     void uploadImage(Uri imageUri);
 
     void checkPassword(String password);
+
+    void checkChangeSchool();
 }

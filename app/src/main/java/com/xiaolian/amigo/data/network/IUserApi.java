@@ -13,6 +13,7 @@ import com.xiaolian.amigo.data.network.model.dto.request.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.VerificationCodeGetReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.EntireUserDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryAvatarDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryBriefSchoolListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryDeviceListRespDTO;
@@ -40,6 +41,10 @@ public interface IUserApi {
     // 获取用户个人信息
     @POST("/user/one")
     Observable<ApiResult<EntireUserDTO>> getUserInfo();
+
+    // 用户个人中心额外信息
+    @POST("/user/extraInfo/one")
+    Observable<ApiResult<PersonalExtraInfoDTO>> getUserExtraInfo();
 
     // 更新用户个人信息
     @POST("/user/update")

@@ -35,6 +35,7 @@ import com.xiaolian.amigo.ui.main.adaptor.HomeAdaptor;
 import com.xiaolian.amigo.ui.main.intf.IMainPresenter;
 import com.xiaolian.amigo.ui.main.intf.IMainView;
 import com.xiaolian.amigo.ui.notice.NoticeListActivity;
+import com.xiaolian.amigo.ui.user.EditDormitoryActivity;
 import com.xiaolian.amigo.ui.user.EditProfileActivity;
 import com.xiaolian.amigo.ui.wallet.PrepayActivity;
 import com.xiaolian.amigo.ui.widget.dialog.AvailabilityDialog;
@@ -389,7 +390,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 presenter.gotoHeaterDevice(data.getDefaultMacAddress(), data.getLocation(),
                         data.getResidenceId());
             } else {
-                startActivity(DispenserActivity.class);
+                startActivity(ChooseDispenserActivity.class);
             }
         });
         availabilityDialog.show();
@@ -497,6 +498,24 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 }
             }
         }
+    }
+
+    @Override
+    public void showBindDormitoryDialog() {
+        Log.d(TAG, "showBindDormitoryDialog");
+        if (null == availabilityDialog) {
+            availabilityDialog = new AvailabilityDialog(this);
+        }
+        if (availabilityDialog.isShowing()) {
+            return;
+        }
+        availabilityDialog.setOkText("前往绑定");
+        availabilityDialog.setTip("需要先绑定宿舍信息");
+        availabilityDialog.setSubTipVisible(false);
+        availabilityDialog.setOnOkClickListener(dialog1 -> {
+            startActivity(new Intent(getApplicationContext(), EditDormitoryActivity.class));
+        });
+        availabilityDialog.show();
     }
 
     public void showPrepayDialog(int type, int prepaySize, DeviceCheckRespDTO data) {

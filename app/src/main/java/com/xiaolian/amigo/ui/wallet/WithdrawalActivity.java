@@ -1,6 +1,8 @@
 package com.xiaolian.amigo.ui.wallet;
 
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -35,6 +37,7 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
     protected void initView() {
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
+        setUpEditText();
         presenter.onAttach(WithdrawalActivity.this);
     }
 
@@ -46,6 +49,32 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
     @Override
     protected int setLayout() {
         return R.layout.activity_wallet_withdrawal;
+    }
+
+    // 设置输入框只能输入2位小数
+    private void setUpEditText() {
+        et_amount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String temp = s.toString();
+                int posDot = temp.indexOf(".");
+                if (posDot <= 0) return;
+                if (temp.length() - posDot - 1 > 2)
+                {
+                    s.delete(posDot + 3, posDot + 4);
+                }
+            }
+        });
     }
 
     private void toggleButton() {

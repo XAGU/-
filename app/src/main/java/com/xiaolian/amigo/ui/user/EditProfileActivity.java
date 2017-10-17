@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.user.intf.IEditProfilePresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditProfileView;
+import com.xiaolian.amigo.ui.widget.dialog.AvailabilityDialog;
 import com.xiaolian.amigo.util.Constant;
 
 import org.greenrobot.eventbus.EventBus;
@@ -78,6 +79,7 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
     private String avatarUrl;
 
     private boolean isNeedRefresh;
+    private AvailabilityDialog availabilityDialog;
 
     @Override
     protected void setUp() {
@@ -164,16 +166,33 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
                 }
                 break;
             case R.id.rel_edit_school:
-                intent = new Intent(this, ListChooseActivity.class);
-                intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION,
-                        ListChooseActivity.ACTION_LIST_SCHOOL);
-                startActivityForResult(intent, REQUEST_CODE_EDIT_SCHOOL);
+                presenter.checkChangeSchool();
                 break;
             case R.id.rel_edit_room:
                 intent = new Intent(this, EditDormitoryActivity.class);
                 startActivityForResult(intent, REQUEST_CODE_EDIT_DORMITORY);
                 break;
         }
+    }
+
+    @Override
+    public void showChangeSchoolDialog() {
+        if (null == availabilityDialog) {
+            availabilityDialog = new AvailabilityDialog(this);
+        }
+        if (availabilityDialog.isShowing()) {
+            return;
+        }
+        availabilityDialog.setOkText("确定");
+        availabilityDialog.setTip("更换学校后所有信息将清空，且需要重新登录");
+        availabilityDialog.setSubTipVisible(false);
+        availabilityDialog.setOnOkClickListener(dialog1 -> {
+            Intent intent = new Intent(this, ListChooseActivity.class);
+            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION,
+                    ListChooseActivity.ACTION_LIST_SCHOOL);
+            startActivityForResult(intent, REQUEST_CODE_EDIT_SCHOOL);
+        });
+        availabilityDialog.show();
     }
 
     @Override

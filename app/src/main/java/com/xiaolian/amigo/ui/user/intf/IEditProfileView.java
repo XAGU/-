@@ -20,4 +20,6 @@ public interface IEditProfileView extends IBaseView {
     void setResidenceName(String residenceName);
 
     void gotoChangeMobile();
+
+    void showChangeSchoolDialog();
 }
