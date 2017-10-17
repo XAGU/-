@@ -88,6 +88,9 @@ dependencies {
     // event bus
     compile 'org.greenrobot:eventbus:3.0.0'
 
+    // gif
+    compile "pl.droidsonroids.gif:android-gif-drawable:1.2.3"
+
     // date picker
     compile "cn.aigestudio.wheelpicker:WheelPicker:$rootProject.wheelpickerVersion"
 

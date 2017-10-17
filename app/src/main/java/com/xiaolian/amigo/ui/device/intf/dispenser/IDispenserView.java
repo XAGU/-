@@ -9,4 +9,7 @@ import com.xiaolian.amigo.ui.device.intf.IWaterDeviceBaseView;
  */
 
 public interface IDispenserView extends IWaterDeviceBaseView {
+    void setFavoriteIcon();
+
+    void setUnFavoriteIcon();
 }

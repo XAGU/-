@@ -8,12 +8,12 @@ import com.xiaolian.amigo.data.manager.intf.IFavoriteManager;
 import com.xiaolian.amigo.data.manager.intf.ITradeDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.device.Device;
+import com.xiaolian.amigo.data.network.model.device.ScanDeviceGroup;
 import com.xiaolian.amigo.data.network.model.dto.request.FavoriteReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.ScanDeviceReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.FavoriteRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.ScanDeviceRespDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
-import com.xiaolian.amigo.ui.base.RxBus;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IChooseDispenerView;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IChooseDispenserPresenter;
 
@@ -50,16 +50,16 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
     public void requestFavorites() {
         FavoriteReqDTO reqDTO = new FavoriteReqDTO();
         // 查看收藏设备列表
-        addObserver(favoriteManager.queryFavorites(reqDTO), new NetworkObserver<ApiResult<FavoriteRespDTO>>(false) {
+        addObserver(favoriteManager.queryFavorites(reqDTO), new NetworkObserver<ApiResult<ScanDeviceRespDTO>>(false) {
             @Override
-            public void onReady(ApiResult<FavoriteRespDTO> result) {
+            public void onReady(ApiResult<ScanDeviceRespDTO> result) {
                 getMvpView().hideEmptyView();
                 getMvpView().hideErrorView();
                 if (null == result.getError()) {
                     if (null != result.getData().getDevices() && result.getData().getDevices().size() > 0) {
-                        List<ChooseDispenserAdaptor.DispenserWapper> wrappers = new ArrayList<>();
-                        for (Device device : result.getData().getDevices()) {
-                            wrappers.add(new ChooseDispenserAdaptor.DispenserWapper(device));
+                        List<ChooseDispenserAdaptor.DispenserWrapper> wrappers = new ArrayList<>();
+                        for (ScanDeviceGroup device : result.getData().getDevices()) {
+                            wrappers.add(new ChooseDispenserAdaptor.DispenserWrapper(device));
                         }
                         getMvpView().addMore(wrappers);
                     } else {
@@ -133,7 +133,9 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
             @Override
             public void onReady(ApiResult<ScanDeviceRespDTO> result) {
                 if (null == result.getError()) {
-                    getMvpView().addScanDevices(result.getData().getDevices());
+                    getMvpView().post(() -> {
+                        getMvpView().addScanDevices(result.getData().getDevices());
+                    });
                 }
             }
         }, Schedulers.io());

@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.bonus.adaptor;
 
 import android.content.Context;
+import android.view.View;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.bonus.Bonus;
@@ -20,6 +21,7 @@ import lombok.Data;
  */
 public class BonusAdaptor extends CommonAdapter<BonusAdaptor.BonusWrapper> {
 
+    private boolean isShowButton = true;
 
     public BonusAdaptor(Context context, int layout, List<BonusWrapper> bonuses) {
         super(context, layout, bonuses);
@@ -33,6 +35,15 @@ public class BonusAdaptor extends CommonAdapter<BonusAdaptor.BonusWrapper> {
                 TimeUtils.MY_DATE_FORMAT2) + "到期");
         holder.setText(R.id.tv_desc, bonusWrapper.desc);
         holder.setText(R.id.tv_time_left, "剩" + String.valueOf(bonusWrapper.timeLeft) + "日");
+        if (isShowButton) {
+            holder.getView(R.id.bt_bonus_use).setVisibility(View.VISIBLE);
+        } else {
+            holder.getView(R.id.bt_bonus_use).setVisibility(View.GONE);
+        }
+    }
+
+    public void setShowButton(boolean showButton) {
+        isShowButton = showButton;
     }
 
     @Data
@@ -62,6 +73,4 @@ public class BonusAdaptor extends CommonAdapter<BonusAdaptor.BonusWrapper> {
             this.name = bonus.getName();
         }
     }
-
-
 }

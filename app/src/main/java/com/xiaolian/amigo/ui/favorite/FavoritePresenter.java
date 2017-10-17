@@ -19,9 +19,11 @@ package com.xiaolian.amigo.ui.favorite;
 import com.xiaolian.amigo.data.manager.intf.IFavoriteManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.device.Device;
+import com.xiaolian.amigo.data.network.model.device.ScanDeviceGroup;
 import com.xiaolian.amigo.data.network.model.dto.request.FavoriteReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.UnFavoriteReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.FavoriteRespDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.ScanDeviceRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.UnFavoriteRespDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.favorite.adaptor.FavoriteAdaptor;
@@ -53,9 +55,9 @@ public class FavoritePresenter<V extends IFavoriteView> extends BasePresenter<V>
         reqDTO.setPage(page);
         reqDTO.setSize(Constant.PAGE_SIZE);
         // 查看收藏设备列表
-        addObserver(manager.queryFavorites(reqDTO), new NetworkObserver<ApiResult<FavoriteRespDTO>>(false) {
+        addObserver(manager.queryFavorites(reqDTO), new NetworkObserver<ApiResult<ScanDeviceRespDTO>>(false) {
             @Override
-            public void onReady(ApiResult<FavoriteRespDTO> result) {
+            public void onReady(ApiResult<ScanDeviceRespDTO> result) {
                 getMvpView().setRefreshComplete();
                 getMvpView().setLoadMoreComplete();
                 getMvpView().hideEmptyView();
@@ -63,7 +65,7 @@ public class FavoritePresenter<V extends IFavoriteView> extends BasePresenter<V>
                 if (null == result.getError()) {
                     if (null != result.getData().getDevices() && result.getData().getDevices().size() > 0) {
                         List<FavoriteAdaptor.FavoriteWrapper> wrappers = new ArrayList<>();
-                        for (Device device : result.getData().getDevices()) {
+                        for (ScanDeviceGroup device : result.getData().getDevices()) {
                             wrappers.add(new FavoriteAdaptor.FavoriteWrapper(device));
                         }
                         getMvpView().addMore(wrappers);

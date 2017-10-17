@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.polidea.rxandroidble.RxBleConnection;
@@ -170,6 +171,23 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     @Override
     public void onPreConnect(@NonNull String macAddress) {
 
+        // 校验macAddress
+        if (TextUtils.isEmpty(macAddress)) {
+            getMvpView().post(() -> getMvpView().onError(TradeError.DEVICE_BROKEN_2));
+            getMvpView().post(() -> getMvpView().hideLoading());
+            Log.wtf(TAG, "macAddress为空!");
+            return;
+        }
+        // 校验macAddress是否合法
+        try {
+            bleDataManager.getStatus(macAddress);
+        } catch (Exception e) {
+            Log.wtf(TAG, "macAddress不合法", e);
+            getMvpView().post(() -> getMvpView().onError(TradeError.DEVICE_BROKEN_2));
+            getMvpView().post(() -> getMvpView().hideLoading());
+            return;
+        }
+
         Long lastConnectTime = TimeHolder.get().getLastConnectTime();
         if (null != lastConnectTime) {
             Long diff = System.currentTimeMillis() - lastConnectTime;
@@ -244,6 +262,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             @Override
             public void onConnectError() {
                 // handleDisConnectError();
+                Log.wtf(TAG, "onConnectError");
             }
 
             @Override

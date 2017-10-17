@@ -1,13 +1,18 @@
 package com.xiaolian.amigo.ui.notice.adaptor;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Notice;
 import com.xiaolian.amigo.data.network.model.notify.Notify;
+import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.TimeUtils;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -25,8 +30,12 @@ import lombok.Data;
 
 public class NoticeAdaptor extends CommonAdapter<NoticeAdaptor.NoticeWapper> {
 
+    Drawable dot;
+
     public NoticeAdaptor(Context context, int layoutId, List<NoticeWapper> datas) {
         super(context, layoutId, datas);
+        dot = ContextCompat.getDrawable(context, R.drawable.dot_notice_red);
+        dot.setBounds(0, 0, dot.getIntrinsicWidth(), dot.getIntrinsicHeight());
     }
 
     @Override
@@ -39,6 +48,16 @@ public class NoticeAdaptor extends CommonAdapter<NoticeAdaptor.NoticeWapper> {
                 view.setBackgroundResource(R.drawable.divider);
                 ll_item.addView(view, 0);
             }
+        }
+
+        TextView tv_type = (TextView) holder.getView(R.id.tv_type);
+        if (CommonUtil.equals(noticeWapper.getReadStatus(), 1)) {
+            // 未读
+            tv_type.setCompoundDrawables(tv_type.getCompoundDrawables()[0],
+                    tv_type.getCompoundDrawables()[1], dot, tv_type.getCompoundDrawables()[3]);
+        } else if (CommonUtil.equals(noticeWapper.getReadStatus(), 2)) {
+            tv_type.setCompoundDrawables(tv_type.getCompoundDrawables()[0],
+                    tv_type.getCompoundDrawables()[1], null, tv_type.getCompoundDrawables()[3]);
         }
         if (noticeWapper.getType() != null) {
             Notice notice = Notice.getNotice(noticeWapper.getType());

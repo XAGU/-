@@ -68,6 +68,7 @@ public class NoticeListActivity extends NoticeBaseListActivity implements INotic
 //                    showUrgentNotify(notices.get(position).getContent(),
 //                            notices.get(position).getId());
 //                }
+                presenter.readUrgentNotify(notices.get(position).getId());
                 startActivity(new Intent(getApplicationContext(), NoticeDetailActivity.class)
                                 .putExtra(Constant.EXTRA_KEY, notices.get(position)));
             }
