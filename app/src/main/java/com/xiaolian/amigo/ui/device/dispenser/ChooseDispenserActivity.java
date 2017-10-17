@@ -1,12 +1,15 @@
 package com.xiaolian.amigo.ui.device.dispenser;
 
 import android.content.Intent;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.network.model.device.ScanDeviceGroup;
 import com.xiaolian.amigo.ui.device.DeviceBaseListActivity;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IChooseDispenerView;
@@ -34,7 +37,18 @@ public class ChooseDispenserActivity extends DeviceBaseListActivity implements I
     @Inject
     IChooseDispenserPresenter<IChooseDispenerView> presenter;
     ChooseDispenserAdaptor adaptor;
-    List<ChooseDispenserAdaptor.DispenserWapper> items = new ArrayList<>();
+    /**
+     * 列表显示的是附近列表还是收藏列表
+     * false 表示附近列表
+     * true 表示收藏列表
+     */
+    boolean listStatus = false;
+    List<ChooseDispenserAdaptor.DispenserWrapper> items = new ArrayList<>();
+    List<ChooseDispenserAdaptor.DispenserWrapper> nearbyItems = new ArrayList<>();
+    List<ChooseDispenserAdaptor.DispenserWrapper> favoriteItems = new ArrayList<>();
+
+    TextView tv_nearby;
+    TextView tv_favorite;
 
     @Override
     protected void onRefresh() {
@@ -50,15 +64,6 @@ public class ChooseDispenserActivity extends DeviceBaseListActivity implements I
     protected void setRecyclerView(RecyclerView recyclerView) {
         setAutoRefresh(false);
         adaptor = new ChooseDispenserAdaptor(this, R.layout.item_dispenser, items);
-        adaptor.setOnItemClickListener(new ChooseDispenserAdaptor.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                startActivity(new Intent(getApplicationContext(), DispenserActivity.class)
-                        .putExtra(MainActivity.INTENT_KEY_MAC_ADDRESS, items.get(position).getDevice().getMacAddress())
-                        .putExtra(MainActivity.INTENT_KEY_LOCATION, items.get(position).getDevice().getLocation())
-                        .putExtra(MainActivity.INTENT_KEY_DEVICE_TYPE, 2));
-            }
-        });
         recyclerView.setAdapter(adaptor);
         recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 14)));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -70,6 +75,11 @@ public class ChooseDispenserActivity extends DeviceBaseListActivity implements I
     }
 
     @Override
+    protected int setTitle2() {
+        return R.string.favorite_dispenser;
+    }
+
+    @Override
     protected void initView() {
         getRefreshLayout().setEnableRefresh(false);
         getRefreshLayout().setEnableLoadmore(false);
@@ -78,13 +88,69 @@ public class ChooseDispenserActivity extends DeviceBaseListActivity implements I
         getActivityComponent().inject(this);
         presenter.onAttach(ChooseDispenserActivity.this);
 
+        tv_nearby = getToolBarTitle();
+        tv_nearby.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onNearbyClick();
+            }
+        });
+        tv_favorite = getToolBarTitle2();
+        tv_favorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onFavoriteClick();
+            }
+        });
+
         // presenter.requestFavorites();
         presenter.onLoad();
     }
 
+    private void onNearbyClick() {
+        if (listStatus) {
+            switchListStatus();
+            this.items.clear();
+            if (nearbyItems.isEmpty()) {
+                presenter.onLoad();
+            } else {
+                this.items.addAll(nearbyItems);
+                adaptor.notifyDataSetChanged();
+            }
+        }
+    }
+
+    private void onFavoriteClick() {
+        if (!listStatus) {
+            switchListStatus();
+            this.items.clear();
+            if (favoriteItems.isEmpty()) {
+                presenter.requestFavorites();
+            }
+            else {
+                this.items.addAll(favoriteItems);
+                adaptor.notifyDataSetChanged();
+            }
+        }
+    }
+
+
+    private void switchListStatus() {
+        if (listStatus) {
+            listStatus = false;
+            tv_nearby.setTextColor(ContextCompat.getColor(this, R.color.colorDark2));
+            tv_favorite.setTextColor(ContextCompat.getColor(this, R.color.colorDarkB));
+        } else {
+            listStatus = true;
+            tv_nearby.setTextColor(ContextCompat.getColor(this, R.color.colorDarkB));
+            tv_favorite.setTextColor(ContextCompat.getColor(this, R.color.colorDark2));
+        }
+    }
+
     @Override
-    public void addMore(List<ChooseDispenserAdaptor.DispenserWapper> wrappers) {
+    public void addMore(List<ChooseDispenserAdaptor.DispenserWrapper> wrappers) {
         items.addAll(wrappers);
+        favoriteItems.addAll(wrappers);
         adaptor.notifyDataSetChanged();
     }
 

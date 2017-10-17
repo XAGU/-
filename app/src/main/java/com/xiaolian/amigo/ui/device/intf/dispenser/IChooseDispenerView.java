@@ -13,7 +13,7 @@ import java.util.List;
  */
 
 public interface IChooseDispenerView extends IBaseListView {
-    void addMore(List<ChooseDispenserAdaptor.DispenserWapper> wrappers);
+    void addMore(List<ChooseDispenserAdaptor.DispenserWrapper> wrappers);
 
     // 添加扫描到的设备
     void addScanDevices(List<ScanDeviceGroup> devices);

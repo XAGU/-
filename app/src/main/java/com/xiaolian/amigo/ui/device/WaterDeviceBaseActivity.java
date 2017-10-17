@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
@@ -65,7 +66,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
      * 跳转到选择红包页面的request code
      */
     private static final int CHOOSE_BONUS_CODE = 0x0010;
-    private static final int CHOOSE_DORMITORY_CODE = 0x0011;
+    protected static final int CHOOSE_DORMITORY_CODE = 0x0011;
 
     /**
      * 确认支付
@@ -140,6 +141,12 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
      */
     @BindView(R.id.v_icon_placeholder)
     View v_icon_placeholder;
+
+    /**
+     * 标题placeholder
+     */
+    @BindView(R.id.v_title_placeholder)
+    View v_title_placeholder;
 
     /**
      * 子标题
@@ -251,6 +258,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     private boolean homePageJump;
     // 标记是否为恢复用水
     private boolean recorvery;
+    private String location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -259,31 +267,26 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         setUnBinder(ButterKnife.bind(this));
         initInject();
         initPresenter();
-
-
-        if (getIntent() != null) {
-            macAddress = getIntent().getStringExtra(MainActivity.INTENT_KEY_MAC_ADDRESS);
-            tv_device_title.setText(getIntent().getStringExtra(MainActivity.INTENT_KEY_LOCATION));
-            deviceType = getIntent().getIntExtra(MainActivity.INTENT_KEY_DEVICE_TYPE, 1);
-            residenceId = getIntent().getLongExtra(MainActivity.INTENT_KEY_RESIDENCE_ID, 0L);
-            homePageJump = getIntent().getBooleanExtra(INTENT_HOME_PAGE_JUMP, true);
-            recorvery = getIntent().getBooleanExtra(MainActivity.INTENT_KEY_RECOVERY, false);
-        }
-
-        tv_connect_status.setText(recorvery ? "正在恢复上一次用水" : "正在连接设备, 请稍后");
         initView();
 
-        // 正常情况不能出现macAddress为空的情况
-        // 如果出现则设置为默认的"08:7C:BE:E1:FD:3B"
-        if (TextUtils.isEmpty(macAddress)) {
-            macAddress = "08:7C:BE:E1:FD:3B";
-            Log.wtf(TAG, "macAddress为空!");
-        }
 
         // 连接蓝牙设备
         presenter.setHomePageJump(homePageJump);
         presenter.onPreConnect(macAddress);
         presenter.queryPrepayOption(deviceType);
+    }
+
+    @Override
+    protected void setUp() {
+        super.setUp();
+        if (getIntent() != null) {
+            macAddress = getIntent().getStringExtra(MainActivity.INTENT_KEY_MAC_ADDRESS);
+            deviceType = getIntent().getIntExtra(MainActivity.INTENT_KEY_DEVICE_TYPE, 1);
+            location = getIntent().getStringExtra(MainActivity.INTENT_KEY_LOCATION);
+            residenceId = getIntent().getLongExtra(MainActivity.INTENT_KEY_RESIDENCE_ID, 0L);
+            homePageJump = getIntent().getBooleanExtra(INTENT_HOME_PAGE_JUMP, true);
+            recorvery = getIntent().getBooleanExtra(MainActivity.INTENT_KEY_RECOVERY, false);
+        }
     }
 
     protected abstract void initInject();
@@ -297,10 +300,15 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     }
 
     private void initView() {
+        tv_connect_status.setText(recorvery ? "正在恢复上一次用水" : "正在连接设备, 请稍后");
+        tv_device_title.setText(location);
         setHeaderBackground(setHeaderBackgroundDrawable());
         setHeaderIcon(setHeaderIconDrawable());
         setTopRightIcon(setTopRightIconDrawable());
         setTopRightIconClickEvent(setTopRightIconClickListener());
+        setTitleClickEvent(setTitleClickListener());
+        setSubtitle(setSubtitleString());
+        // TODO title click
         // 默认选择预付5元
         tv_water_right.setTag(R.id.money_pay_amount, prepayDefaultAmount);
         tv_water_right.setText(prepayDefaultDesc);
@@ -310,6 +318,19 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         // 默认显示连接中状态
         showConnecting();
     }
+
+    protected abstract String setSubtitleString();
+
+    protected void setSubtitle(@NonNull String titile) {
+        tv_sub_title.setText(titile);
+    }
+
+    private void setTitleClickEvent(View.OnClickListener onClickListener) {
+        tv_sub_title.setOnClickListener(onClickListener);
+        v_title_placeholder.setOnClickListener(onClickListener);
+    }
+
+    protected abstract View.OnClickListener setTitleClickListener();
 
     private void setTopRightIconClickEvent(View.OnClickListener onClickListener) {
         v_icon_placeholder.setOnClickListener(onClickListener);
@@ -659,22 +680,6 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         ll_content_normal.setVisibility(View.VISIBLE);
     }
 
-    /**
-     * 重新连接
-     */
-//    @OnClick(R.id.bt_reconnect)
-//    void onReconnectClick() {
-//        dfv_dot.startAnimation();
-//    }
-
-    /**
-     * 右上角图标点击事件
-     */
-    @OnClick(R.id.iv_top_right_icon)
-    void onTopRightIconClick() {
-        // 子类重写实现功能
-    }
-
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
@@ -726,10 +731,6 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         }
     }
 
-    @Override
-    protected void setUp() {
-        super.setUp();
-    }
 
     @Override
     protected void onDestroy() {
@@ -763,16 +764,6 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                 }).show();
     }
 
-    /**
-     * 更换宿舍
-     */
-    @OnClick({R.id.tv_sub_title, R.id.v_title_placeholder})
-    public void changeDormitory() {
-        // 只有在step为SETILE时才不能更换宿舍
-        if (presenter.getStep() != TradeStep.SETTLE) {
-            startActivityForResult(new Intent(this, ChooseDormitoryActivity.class), CHOOSE_DORMITORY_CODE);
-        }
-    }
 
     @Override
     public void startUse() {

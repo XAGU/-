@@ -7,7 +7,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.data.network.model.device.Device;
+import com.xiaolian.amigo.data.enumeration.Device;
+import com.xiaolian.amigo.data.network.model.device.ScanDeviceGroup;
 import com.xiaolian.amigo.ui.favorite.intf.IFavoritePresenter;
 import com.xiaolian.amigo.ui.favorite.intf.IFavoriteView;
 
@@ -45,7 +46,7 @@ public class FavoriteAdaptor extends RecyclerView.Adapter<FavoriteAdaptor.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
         FavoriteWrapper wrapper = favorites.get(position);
         if (null != wrapper) {
-            holder.tv_device.setText(com.xiaolian.amigo.data.enumeration.Device.getDevice(wrapper.getType()).getDesc());
+            holder.tv_device.setText(Device.DISPENSER.getDesc());
             holder.tv_location.setText(wrapper.getLocation());
             holder.deviceId = wrapper.getId();
             holder.index = position;
@@ -91,9 +92,11 @@ public class FavoriteAdaptor extends RecyclerView.Adapter<FavoriteAdaptor.ViewHo
         // 设备
         String location;
 
-        public FavoriteWrapper(Device device) {
-            this.id = device.getId();
-            this.type = device.getType();
+        public FavoriteWrapper(ScanDeviceGroup device) {
+            for (String key : device.getWater().keySet()) {
+                this.id = device.getWater().get(key).getId();
+                break;
+            }
             this.location = device.getLocation();
         }
 

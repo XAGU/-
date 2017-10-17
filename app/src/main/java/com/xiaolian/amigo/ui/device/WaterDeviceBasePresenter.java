@@ -65,7 +65,7 @@ public abstract class WaterDeviceBasePresenter<V extends IWaterDeviceBaseView> e
     public void queryPrepayOption(int deviceType) {
         QueryPrepayOptionReqDTO reqDTO = new QueryPrepayOptionReqDTO();
         reqDTO.setDeviceType(deviceType);
-        addObserver(orderDataManager.queryPrepayOption(reqDTO), new NetworkObserver<ApiResult<OrderPreInfoDTO>>() {
+        addObserver(orderDataManager.queryPrepayOption(reqDTO), new NetworkObserver<ApiResult<OrderPreInfoDTO>>(false) {
 
             @Override
             public void onReady(ApiResult<OrderPreInfoDTO> result) {

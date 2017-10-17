@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.enumeration.TradeStep;
 import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity;
 import com.xiaolian.amigo.ui.device.intf.IWaterDeviceBasePresenter;
 import com.xiaolian.amigo.ui.device.intf.heator.IHeaterPresenter;
 import com.xiaolian.amigo.ui.device.intf.heator.IHeaterView;
+import com.xiaolian.amigo.ui.user.ChooseDormitoryActivity;
 import com.xiaolian.amigo.util.Constant;
 
 import javax.inject.Inject;
@@ -38,6 +40,28 @@ public class HeaterActivity extends WaterDeviceBaseActivity<IHeaterPresenter> im
     @Override
     protected int setHeaderBackgroundDrawable() {
         return R.drawable.bg_rect_red;
+    }
+
+    @Override
+    protected String setSubtitleString() {
+        return getString(R.string.change_dormitory);
+    }
+
+    @Override
+    protected View.OnClickListener setTitleClickListener() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeDormitory();
+            }
+        };
+    }
+
+    public void changeDormitory() {
+        // 只有在step为SETILE时才不能更换宿舍
+        if (presenter.getStep() != TradeStep.SETTLE) {
+            startActivityForResult(new Intent(this, ChooseDormitoryActivity.class), CHOOSE_DORMITORY_CODE);
+        }
     }
 
     @Override

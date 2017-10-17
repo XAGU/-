@@ -13,6 +13,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ScanDeviceGroup {
+    /**
+     * 是否已收藏
+     */
+    private Boolean favor;
 
     private String location;
 

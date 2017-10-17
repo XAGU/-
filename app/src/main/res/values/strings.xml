@@ -131,4 +131,6 @@
     <string name="device_broken_btn_1">联系客服</string>
     <string name="device_broken_btn_2">前往报修</string>
     <string name="nearby_dispenser">附近的饮水机</string>
+    <string name="favorite_dispenser">收藏的饮水机</string>
+    <string name="change_dormitory">更换宿舍</string>
 </resources>
