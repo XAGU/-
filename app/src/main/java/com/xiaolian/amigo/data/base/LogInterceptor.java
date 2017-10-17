@@ -53,7 +53,7 @@ public class LogInterceptor implements Interceptor {
             newRequest = request.newBuilder()
                     // 添加token
                     .addHeader("token", token)
-                    .addHeader("device_token", deviceToken)
+                    .addHeader("deviceToken", deviceToken)
                     .build();
 
         } else {
@@ -85,10 +85,10 @@ public class LogInterceptor implements Interceptor {
         okhttp3.Response response = chain.proceed(newRequest);
         okhttp3.MediaType mediaType = response.body().contentType();
         String content;
-        if (null != response.header("device_token")) {
+        if (null != response.header("deviceToken")) {
             // 有device_token,一定配对一个macAddress
             String macAddress = response.header("macAddress");
-            sharedPreferencesHelp.setDeviceToken(macAddress, response.header("device_token"));
+            sharedPreferencesHelp.setDeviceToken(macAddress, response.header("deviceToken"));
         }
         if (response.body() != null) {
             content = response.body().string();
@@ -121,7 +121,7 @@ public class LogInterceptor implements Interceptor {
         if (!TextUtils.equals(request.headers().get("token"), lastRequest.headers().get("token"))) {
             return false;
         }
-        if (!TextUtils.equals(request.headers().get("device_token"), lastRequest.headers().get("device_token"))) {
+        if (!TextUtils.equals(request.headers().get("deviceToken"), lastRequest.headers().get("deviceToken"))) {
             return false;
         }
         if (!TextUtils.equals(request.method(), lastRequest.method())) {
