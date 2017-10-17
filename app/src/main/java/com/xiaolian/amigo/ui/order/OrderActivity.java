@@ -78,4 +78,11 @@ public class OrderActivity extends OrderBaseListActivity implements IOrderView {
         getActivityComponent().inject(this);
         presenter.onAttach(OrderActivity.this);
     }
+
+    @Override
+    public void showErrorView() {
+        super.showErrorView();
+        orders.clear();
+        adaptor.notifyDataSetChanged();
+    }
 }

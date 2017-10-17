@@ -52,7 +52,6 @@ public class ChooseDispenserAdaptor extends CommonAdapter<ChooseDispenserAdaptor
                     lastExpandPosition = position;
                 }
                 notifyDataSetChanged();
-
             }
         });
         if (dispenserWrapper.isExpanded()) {
@@ -126,11 +125,13 @@ public class ChooseDispenserAdaptor extends CommonAdapter<ChooseDispenserAdaptor
         ScanDevice cold;
         ScanDevice ice;
         ScanDevice hot;
+        Long residenceId;
 
         public DispenserWrapper(ScanDeviceGroup device) {
             this.favor = device.getFavor();
             this.location = device.getLocation();
             this.deviceGroup = device;
+            this.residenceId = device.getResidenceId();
             for (String key : device.getWater().keySet()) {
                 if (TextUtils.equals(key, DispenserWater.HOT.getType())) {
                     this.hot = device.getWater().get(key);
