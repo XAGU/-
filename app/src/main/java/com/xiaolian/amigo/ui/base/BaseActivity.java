@@ -417,6 +417,7 @@ public abstract class BaseActivity extends SwipeBackActivity
     @OnClick(R.id.iv_back)
     @Optional
     void back() {
+        hideLoading();
         super.onBackPressed();
 //        finish();
     }

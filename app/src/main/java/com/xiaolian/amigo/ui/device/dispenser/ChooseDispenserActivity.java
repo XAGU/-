@@ -73,7 +73,6 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
         presenter.onAttach(ChooseDispenserActivity.this);
         adaptor = new ChooseDispenserAdaptor(this, R.layout.item_dispenser, items);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        recyclerView.setAdapter(adaptor);
         recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 14)));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -145,8 +144,14 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
 
     @Override
     public void addMore(List<ChooseDispenserAdaptor.DispenserWrapper> wrappers) {
+        if (wrappers.isEmpty()) {
+            return;
+        }
         items.addAll(wrappers);
         favoriteItems.addAll(wrappers);
+        if (recyclerView.getAdapter() == null) {
+            recyclerView.setAdapter(adaptor);
+        }
         adaptor.notifyDataSetChanged();
     }
 
@@ -181,12 +186,18 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
     }
 
     private void updateDevice(List<ScanDeviceGroup> devices) {
+        if (devices.isEmpty()) {
+            return;
+        }
         if (nearbyItems.isEmpty()) {
             for (ScanDeviceGroup scanDeviceGroup : devices) {
                 nearbyItems.add(new ChooseDispenserAdaptor.DispenserWrapper(scanDeviceGroup));
             }
             if (!listStatus) {
                 items.addAll(nearbyItems);
+                if (recyclerView.getAdapter() == null) {
+                    recyclerView.setAdapter(adaptor);
+                }
                 adaptor.notifyDataSetChanged();
             }
         } else {

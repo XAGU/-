@@ -133,7 +133,9 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
             @Override
             public void onReady(ApiResult<ScanDeviceRespDTO> result) {
                 if (null == result.getError()) {
-                    getMvpView().addScanDevices(result.getData().getDevices());
+                    getMvpView().post(() -> {
+                        getMvpView().addScanDevices(result.getData().getDevices());
+                    });
                 }
             }
         }, Schedulers.io());
