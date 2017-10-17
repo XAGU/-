@@ -37,11 +37,6 @@ public class RepairActivity extends RepairBaseListActivity implements IRepairVie
 
     }
 
-//    @Override
-//    protected int getLayout() {
-//        return R.layout.activity_repair;
-//    }
-
     @Override
     protected void onDestroy() {
         presenter.onDetach();
@@ -87,6 +82,5 @@ public class RepairActivity extends RepairBaseListActivity implements IRepairVie
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
         presenter.onAttach(this);
-//        onRefresh();
     }
 }

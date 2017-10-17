@@ -60,7 +60,7 @@ public class EditMobilePresenter<V extends IEditMobileView> extends BasePresente
             @Override
             public void onReady(ApiResult<EntireUserDTO> result) {
                 if (null == result.getError()) {
-                    getMvpView().onSuccess(R.string.change_success);
+                    getMvpView().onSuccess(R.string.change_mobile_success);
                     getMvpView().finishView();
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());

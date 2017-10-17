@@ -152,21 +152,6 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
     }
 
     @Override
-    public void getPrepayOrder() {
-        OrderReqDTO reqDTO = new OrderReqDTO();
-        // 查看未结束账单
-        reqDTO.setOrderStatus(1);
-        addObserver(manager.queryOrders(reqDTO), new NetworkObserver<ApiResult<OrderRespDTO>>(false) {
-            @Override
-            public void onReady(ApiResult<OrderRespDTO> result) {
-                if (null == result.getError()) {
-                    getMvpView().showPrepayOrder(result.getData().getOrders());
-                }
-            }
-        });
-    }
-
-    @Override
     public void checkDeviceUsage(int type) {
         DeviceCheckReqDTO reqDTO = new DeviceCheckReqDTO();
         reqDTO.setDeviceType(type);

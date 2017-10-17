@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.lostandfound;
 
+import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.manager.intf.ILostAndFoundDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.QueryLostAndFoundListReqDTO;
@@ -60,7 +61,7 @@ public class LostAndFoundPresenter<V extends ILostAndFoundView> extends BasePres
                             }
                         } else {
                             if (wrappers.isEmpty()) {
-                                getMvpView().showEmptyView();
+                                getMvpView().showEmptyView(R.string.empty_tip_1);
                                 return;
                             }
                             getMvpView().hideEmptyView();
@@ -138,7 +139,7 @@ public class LostAndFoundPresenter<V extends ILostAndFoundView> extends BasePres
                         }
                         getMvpView().addMore(wrappers);
                     } else {
-                        getMvpView().showEmptyView();
+                        getMvpView().showEmptyView(R.string.empty_tip_1);
                     }
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());

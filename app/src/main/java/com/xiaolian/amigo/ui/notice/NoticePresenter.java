@@ -55,7 +55,7 @@ public class NoticePresenter<V extends INoticeView> extends BasePresenter<V>
                         }
                         getMvpView().addMore(wappers);
                     } else {
-                        getMvpView().showEmptyView(R.color.colorBackgroundWhite);
+                        getMvpView().showEmptyView(R.string.empty_tip, R.color.colorBackgroundWhite);
                     }
                 } else {
                     getMvpView().showErrorView(R.color.colorBackgroundWhite);

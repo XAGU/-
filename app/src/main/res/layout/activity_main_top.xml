@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:paddingTop="@dimen/mainPaddingTop">
 
-    <GridLayout
+    <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorBackgroundWhite"
@@ -15,26 +15,41 @@
         android:useDefaultMargins="false">
 
         <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_centerVertical="true"
             android:id="@+id/iv_avatar"
             android:layout_width="@dimen/avatarWidth"
             android:layout_height="@dimen/avatarHeight"
             android:layout_marginLeft="@dimen/mainMarginLeftRight"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_picture_error" />
+        <ImageView
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:id="@+id/bt_switch"
+            android:layout_width="81dp"
+            android:layout_height="44dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="@dimen/mainMarginLeftRight" />
 
 
         <LinearLayout
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/bt_switch"
+            android:layout_toRightOf="@id/iv_avatar"
             android:id="@+id/ll_user_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="fill_horizontal|center_vertical"
             android:background="@color/colorBackgroundWhite"
             android:orientation="vertical"
+            android:paddingRight="31dp"
             android:paddingLeft="13dp">
 
             <TextView
                 android:id="@+id/tv_nickName"
                 style="@style/TitleText"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="某昵称" />
@@ -48,14 +63,8 @@
                 android:text="杭州中国美术学院" />
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/bt_switch"
-            android:layout_width="81dp"
-            android:layout_height="44dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="@dimen/mainMarginLeftRight" />
 
-    </GridLayout>
+    </RelativeLayout>
 
     <View
         android:layout_width="match_parent"

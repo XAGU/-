@@ -2,6 +2,7 @@ package com.xiaolian.amigo.ui.lostandfound;
 
 import android.net.Uri;
 
+import com.xiaolian.amigo.data.enumeration.LostAndFound;
 import com.xiaolian.amigo.data.manager.intf.ILostAndFoundDataManager;
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
@@ -57,7 +58,7 @@ public class PublishLostPresenter<V extends IPublishLostView> extends BasePresen
             @Override
             public void onReady(ApiResult<SimpleRespDTO> result) {
                 if (null == result.getError()) {
-                    getMvpView().onSuccess("发布成功");
+                    getMvpView().onSuccess(LostAndFound.getLostAndFound(type).getDesc() + "发布成功");
                     getMvpView().finishView();
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());

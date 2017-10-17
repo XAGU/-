@@ -88,7 +88,7 @@ public class EditAvatarPresenter<V extends IEditAvatarVIew> extends BasePresente
             @Override
             public void onReady(ApiResult<EntireUserDTO> result) {
                 if (null == result.getError()) {
-                    getMvpView().onSuccess(R.string.change_success);
+                    getMvpView().onSuccess(R.string.change_avatar_success);
                     manager.setUser(new User(result.getData()));
                     getMvpView().finishView();
                 } else {

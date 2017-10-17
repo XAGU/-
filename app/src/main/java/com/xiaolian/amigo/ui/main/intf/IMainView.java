@@ -31,7 +31,5 @@ public interface IMainView extends IBaseView {
 
     void showSchoolBiz(List<BriefSchoolBusiness> businesses);
 
-    void showPrepayOrder(List<Order> orders);
-
     void showDeviceUsageDialog(int type, DeviceCheckRespDTO data);
 }

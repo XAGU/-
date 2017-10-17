@@ -8,7 +8,6 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.TradeStep;
 import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity;
-import com.xiaolian.amigo.ui.device.intf.IWaterDeviceBasePresenter;
 import com.xiaolian.amigo.ui.device.intf.heator.IHeaterPresenter;
 import com.xiaolian.amigo.ui.device.intf.heator.IHeaterView;
 import com.xiaolian.amigo.ui.user.ChooseDormitoryActivity;
@@ -70,7 +69,7 @@ public class HeaterActivity extends WaterDeviceBaseActivity<IHeaterPresenter> im
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), WebActivity.class)
-                        .putExtra(WebActivity.INTENT_KEY_URL, Constant.HELP_URL));
+                        .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_HELP));
             }
         };
     }

@@ -107,8 +107,10 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
             @Override
             public void onReady(ApiResult<EntireUserDTO> result) {
                 if (null == result.getError()) {
-                    getMvpView().onSuccess(R.string.change_success);
-                    getMvpView().finishView();
+                    getMvpView().onSuccess(R.string.change_school_success);
+                    getMvpView().backToMain();
+                    manager.logout();
+                    getMvpView().redirectToLogin();
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }
@@ -125,7 +127,7 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
             @Override
             public void onReady(ApiResult<EntireUserDTO> result) {
                 if (null == result.getError()) {
-                    getMvpView().onSuccess(R.string.change_success);
+                    getMvpView().onSuccess(R.string.change_sex_success);
                     getMvpView().finishView();
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
@@ -211,7 +213,7 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
             @Override
             public void onReady(ApiResult<UserResidenceInListDTO> result) {
                 if (null == result.getError()) {
-                    getMvpView().onSuccess(R.string.bind_success);
+                    getMvpView().onSuccess(R.string.add_dormitory_success);
                     getMvpView().backToDormitory();
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());

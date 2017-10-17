@@ -3,7 +3,6 @@ package com.xiaolian.amigo.util;
 public final class Constant {
 
     private static final String TAG = "Constant";
-    public static final String HELP_URL = "http://116.62.236.67:5097/help/list";
     public static final int DEFAULT_TIMEOUT = 10;
 
     private Constant() {
@@ -22,8 +21,8 @@ public final class Constant {
     public static final String CHINEASE_COLON = "：";
 
     // 测试服务器
-    public static final String SERVER_TEST = "http://116.62.236.67:5081";
-//    public static final String SERVER_TEST = "http://10.0.0.2:5081";
+//    public static final String SERVER_TEST = "http://116.62.236.67:5081";
+    public static final String SERVER_TEST = "https://c.api.xiaolian365.com";
 //    public static final String SERVER_TEST = "http://10.0.0.4:8081";
 //    public static final String SERVER_TEST = "http://10.0.0.2:5081";
 
@@ -32,6 +31,11 @@ public final class Constant {
 
     // 图片地址前缀
     public static final String IMAGE_PREFIX = SERVER + "/images/";
+
+    // H5地址
+    public static final String H5_SERVER = "https://c.h5.xiaolian365.com";
+    // H5帮助中心
+    public static final String H5_HELP = H5_SERVER + "/help/list";
 
     // activity之间跳转携带的bundle id key
     public static final String BUNDLE_ID = "id";

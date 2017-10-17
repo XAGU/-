@@ -16,6 +16,7 @@
 package com.xiaolian.amigo.ui.repair;
 
 
+import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.manager.intf.IRepairDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.RepairReqDTO;
@@ -67,7 +68,7 @@ public class RepairPresenter<V extends IRepairView> extends BasePresenter<V>
                         getMvpView().addMore(wrappers);
                         getMvpView().addPage();
                     } else {
-                        getMvpView().showEmptyView();
+                        getMvpView().showEmptyView(R.string.empty_tip_1);
                     }
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());

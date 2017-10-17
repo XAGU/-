@@ -11,5 +11,5 @@ import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 public interface IBonusExchangePresenter<V extends IBonusExchangeView> extends IBasePresenter<V> {
 
     // 兑换红包
-    void exchangeBonus();
+    void exchangeBonus(String code);
 }

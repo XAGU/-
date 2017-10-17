@@ -14,6 +14,7 @@ import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.di.componet.DaggerUserActivityComponent;
 import com.xiaolian.amigo.di.componet.UserActivityComponent;
 import com.xiaolian.amigo.di.module.UserActivityModule;
+import com.xiaolian.amigo.ui.main.MainActivity;
 import com.xiaolian.amigo.ui.widget.RecycleViewDivider;
 import com.xiaolian.amigo.ui.base.BaseActivity;
 import com.xiaolian.amigo.ui.repair.RepairApplyActivity;
@@ -273,5 +274,10 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
     public void addMore(List<ListChooseAdaptor.Item> item) {
         this.items.addAll(item);
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void backToMain() {
+        startActivity(new Intent(getApplicationContext(), MainActivity.class));
     }
 }

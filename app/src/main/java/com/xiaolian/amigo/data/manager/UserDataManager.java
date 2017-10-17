@@ -138,4 +138,9 @@ public class UserDataManager implements IUserDataManager {
     public void setUser(User user) {
         sharedPreferencesHelp.setUserInfo(user);
     }
+
+    @Override
+    public void logout() {
+        sharedPreferencesHelp.logout();
+    }
 }

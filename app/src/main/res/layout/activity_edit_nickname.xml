@@ -15,6 +15,7 @@
         android:drawableEnd="@drawable/clear"
         android:drawableRight="@drawable/clear"
         android:hint="@string/please_enter_nickname"
+        android:maxLength="@integer/nickname_max_length"
         android:imeOptions="actionDone"
         android:tag="nickname" />
 

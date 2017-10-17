@@ -77,6 +77,7 @@
     <string name="exchange_bonus">兑换红包</string>
     <string name="order_record">消费记录</string>
     <string name="empty_tip">空空如也</string>
+    <string name="empty_tip_1">暂无记录</string>
     <string name="lost">失物</string>
     <string name="my_publish">我的发布</string>
     <string name="repair_record">报修记录</string>
@@ -133,4 +134,12 @@
     <string name="nearby_dispenser">附近的饮水机</string>
     <string name="favorite_dispenser">收藏的饮水机</string>
     <string name="change_dormitory">更换宿舍</string>
+    <string name="change_avatar_success">头像更换成功</string>
+    <string name="change_nickname_success">昵称修改成功</string>
+    <string name="change_sex_success">性别修改成功</string>
+    <string name="change_mobile_success">手机号修改成功</string>
+    <string name="change_password_success">密码修改成功</string>
+    <string name="add_dormitory_success">宿舍添加成功</string>
+    <string name="bonus_exchange_success">红包兑换成功</string>
+    <string name="change_school_success">学校更换成功，请重新登录</string>
 </resources>

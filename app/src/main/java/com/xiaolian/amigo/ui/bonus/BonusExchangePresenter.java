@@ -1,6 +1,10 @@
 package com.xiaolian.amigo.ui.bonus;
 
+import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.manager.intf.IBonusDataManager;
+import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.dto.request.RedeemBonusReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.bonus.intf.IBonusExchangePresenter;
 import com.xiaolian.amigo.ui.bonus.intf.IBonusExchangeView;
@@ -26,7 +30,22 @@ public class BonusExchangePresenter<V extends IBonusExchangeView> extends BasePr
     }
 
     @Override
-    public void exchangeBonus() {
+    public void exchangeBonus(String code) {
+        RedeemBonusReqDTO reqDTO = new RedeemBonusReqDTO();
+        reqDTO.setCode(code);
+        addObserver(manager.redeem(reqDTO), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
+
+            @Override
+            public void onReady(ApiResult<BooleanRespDTO> result) {
+                if (null == result.getError()) {
+                    if (result.getData().isResult()) {
+                        getMvpView().onSuccess(R.string.bonus_exchange_success);
+                    }
+                } else {
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+        });
 
     }
 }

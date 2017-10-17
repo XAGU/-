@@ -35,6 +35,7 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
     private LinearLayout ll_footer;
     private LinearLayout ll_header;
     private RelativeLayout rl_empty;
+    private TextView tv_empty_tip;
     private RelativeLayout rl_error;
     private CoordinatorLayout cl_main;
     private TextView tv_toolbar_title;
@@ -54,6 +55,7 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         cl_main = (CoordinatorLayout) findViewById(R.id.cl_main);
         rl_empty = (RelativeLayout) findViewById(R.id.rl_empty);
+        tv_empty_tip = (TextView) findViewById(R.id.tv_empty_tip);
         rl_error = (RelativeLayout) findViewById(R.id.rl_error);
         setUp();
         initToolBar();
@@ -227,14 +229,25 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
 
     @Override
     public void showEmptyView() {
-        showEmptyView(R.color.colorBackgroundGray);
+        showEmptyView(getString(R.string.empty_tip), R.color.colorBackgroundGray);
     }
 
     @Override
-    public void showEmptyView(int colorRes) {
+    public void showEmptyView(int tipRes, int colorRes) {
+        showEmptyView(getString(tipRes), colorRes);
+    }
+
+    @Override
+    public void showEmptyView(int tipRes) {
+        showEmptyView(tipRes, R.color.colorBackgroundGray);
+    }
+
+    @Override
+    public void showEmptyView(String tip, int colorRes) {
         if (page == Constant.PAGE_START_NUM) {
             rl_empty.setVisibility(View.VISIBLE);
             rl_empty.setBackgroundResource(colorRes);
+            tv_empty_tip.setText(tip);
         }
     }
 

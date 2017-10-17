@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="password_max_length">20</integer>
+    <integer name="password_min_length">6</integer>
+    <integer name="nickname_max_length">15</integer>
+    <integer name="phone_max_length">11</integer>
+    <integer name="publish_title_max_length">15</integer>
+    <integer name="publish_name_max_length">15</integer>
+    <integer name="publish_address_max_length">15</integer>
+    <integer name="publish_contact_max_length">15</integer>
+    <integer name="publish_content_max_length">100</integer>
+</resources>

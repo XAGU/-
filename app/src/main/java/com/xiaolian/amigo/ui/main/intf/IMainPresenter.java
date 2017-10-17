@@ -1,6 +1,5 @@
 package com.xiaolian.amigo.ui.main.intf;
 
-import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
 import com.xiaolian.amigo.data.network.model.user.User;
 import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 
@@ -30,10 +29,6 @@ public interface IMainPresenter<V extends IMainView> extends IBasePresenter<V> {
     void gotoHeaterDevice(String defaultMacAddress, String location, Long residenceId);
 
     void getSchoolBusiness();
-
-    @Deprecated
-    // 请求待找零订单
-    void getPrepayOrder();
 
     void checkDeviceUsage(int type);
 }

@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.wallet;
 
+import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Payment;
 import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
@@ -59,7 +60,7 @@ public class PrepayPresenter<V extends IPrepayView> extends BasePresenter<V>
                         getMvpView().addMore(wrappers);
                         getMvpView().addPage();
                     } else {
-                        getMvpView().showEmptyView();
+                        getMvpView().showEmptyView(R.string.empty_tip_1);
                     }
                 } else {
                     getMvpView().showErrorView();

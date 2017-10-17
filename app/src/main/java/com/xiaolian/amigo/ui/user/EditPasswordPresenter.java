@@ -36,7 +36,7 @@ public class EditPasswordPresenter<V extends IEditPasswordView> extends BasePres
             @Override
             public void onReady(ApiResult<SimpleRespDTO> result) {
                 if (null == result.getError()) {
-                    getMvpView().onSuccess(R.string.change_success);
+                    getMvpView().onSuccess(R.string.change_password_success);
                     getMvpView().finishView();
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());

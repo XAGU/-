@@ -466,35 +466,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 businesses));
     }
 
-
-    @Override
-    public void showPrepayOrder(List<Order> orders) {
-        int currentHeaterOrderSize = 0;
-        for (Order order : orders) {
-            currentHeaterOrderSize += CommonUtil.equals(order.getDeviceType(), 1) ? 1 : 0;
-        }
-        if (currentHeaterOrderSize != heaterOrderSize) {
-            heaterOrderSize = currentHeaterOrderSize;
-            HomeAdaptor.ItemWrapper itemWrapper = new HomeAdaptor.ItemWrapper(1, null, null, null, null,
-                            Device.HEARTER.getDrawableRes());
-            itemWrapper.setPrepaySize(heaterOrderSize);
-//            EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.PREPAY_ORDER,
-//                    itemWrapper));
-        }
-        int currentDispenserOrderSize = 0;
-        for (Order order : orders) {
-            dispenserOrderSize += CommonUtil.equals(order.getDeviceType(), 2) ? 1 : 0;
-        }
-        if (dispenserOrderSize != currentDispenserOrderSize) {
-            dispenserOrderSize = currentDispenserOrderSize;
-            HomeAdaptor.ItemWrapper itemWrapper = new HomeAdaptor.ItemWrapper(1, null, null, null, null,
-                    Device.DISPENSER.getDrawableRes());
-            itemWrapper.setPrepaySize(dispenserOrderSize);
-//            EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.PREPAY_ORDER,
-//                    itemWrapper));
-        }
-    }
-
     @Override
     public void showDeviceUsageDialog(int type, DeviceCheckRespDTO data) {
         Log.d(TAG, "showDeviceUsageDialog: " + type);

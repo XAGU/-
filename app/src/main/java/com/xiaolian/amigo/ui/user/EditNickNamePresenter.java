@@ -36,7 +36,7 @@ public class EditNickNamePresenter<V extends IEditNickNameView> extends BasePres
             @Override
             public void onReady(ApiResult<EntireUserDTO> result) {
                 if (null == result.getError()) {
-                    getMvpView().onSuccess(R.string.change_success);
+                    getMvpView().onSuccess(R.string.change_nickname_success);
                     getMvpView().finishView();
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());

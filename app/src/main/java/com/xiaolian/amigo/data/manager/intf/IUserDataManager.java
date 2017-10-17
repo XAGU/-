@@ -21,4 +21,5 @@ public interface IUserDataManager extends IUserApi {
 
     void setUser(User user);
 
+    void logout();
 }

@@ -15,7 +15,11 @@ public interface IBaseListView extends IBaseView {
 
     void showEmptyView();
 
-    void showEmptyView(int colorRes);
+    void showEmptyView(String tip, int colorRes);
+
+    void showEmptyView(int tipRes, int colorRes);
+
+    void showEmptyView(int tipRes);
 
     void hideEmptyView();
 
