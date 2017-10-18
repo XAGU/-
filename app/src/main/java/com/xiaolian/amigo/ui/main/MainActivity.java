@@ -419,6 +419,23 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         }
     }
 
+    public void gotoDispenser(String macAddress, String location, Long residenceId, boolean favor, int usefor, int type,
+                              boolean recovery) {
+        if (TextUtils.isEmpty(macAddress)) {
+            onError("设备macAddress不合法");
+        } else {
+            Intent intent = new Intent(this, DispenserActivity.class);
+            intent.putExtra(INTENT_KEY_LOCATION, location);
+            intent.putExtra(INTENT_KEY_MAC_ADDRESS, macAddress);
+            intent.putExtra(INTENT_KEY_DEVICE_TYPE, type);
+            intent.putExtra(DispenserActivity.INTENT_KEY_ID, residenceId);
+            intent.putExtra(MainActivity.INTENT_KEY_RECOVERY, recovery);
+            intent.putExtra(DispenserActivity.INTENT_KEY_FAVOR, favor);
+            intent.putExtra(DispenserActivity.INTENT_KEY_TEMPERATURE, usefor);
+            startActivity(intent);
+        }
+    }
+
     @Override
     public void showUrgentNotify(String content, Long id) {
         Log.d(TAG, "showUrgentNotify: " + content + "->" + id);
@@ -471,9 +488,13 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             // 1 表示热水澡 2 表示饮水机
             if (type == 1) {
                 // 直接前往热水澡处理找零
-                gotoDevice(HEATER, data.getUnsettledMacAddress(), data.getLocation(), data.getResidenceId(), true);
+                gotoDevice(HEATER, data.getUnsettledMacAddress(), data.getLocation(),
+                        data.getResidenceId(), true);
             } else {
-                gotoDevice(DISPENSER, data.getUnsettledMacAddress(), data.getLocation(), data.getResidenceId(), true);
+                gotoDispenser(data.getUnsettledMacAddress(), data.getLocation(), data.getResidenceId(),
+                        data.getFavor(), data.getUsefor(), Device.DISPENSER.getType(), true);
+//                gotoDevice(DISPENSER, data.getUnsettledMacAddress(), data.getLocation(), data.getResidenceId(), true);
+
             }
         } else {
             if (type == 1 && heaterOrderSize > 0) {

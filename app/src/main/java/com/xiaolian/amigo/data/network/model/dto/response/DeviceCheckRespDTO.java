@@ -22,4 +22,7 @@ public class DeviceCheckRespDTO {
     private String startTime;
     private String title;
     private Long residenceId;
+    private Boolean favor;
+    private Integer usefor;
+
 }

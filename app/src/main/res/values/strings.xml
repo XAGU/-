@@ -118,7 +118,8 @@
     <string name="connect_error_tip_3">网络连接超时，请检查您的网络</string>
     <string name="connect_error_tip_4">您的手机蓝牙无法与设备进行连接，请重试</string>
     <string name="connect_error_tip_5">请靠近设备，并确保设备未被他人使用</string>
-    <string name="device_busy_tip">当前设备正在被他人使用，请稍后再试或切换宿舍\n给您带来的不便敬请谅解！</string>
+    <string name="device_busy_tip">当前设备正在被他人使用，请稍后再试或宿舍\n给您带来的不便敬请谅解！</string>
+    <string name="device_busy_tip2">当前设备正在被他人使用，请稍后再试或切换饮水机\n给您带来的不便敬请谅解！</string>
     <string name="device_broken_tip_1">当前设备在结算找零时出现了故障，请联系客服处理\n给您带来的不便敬请谅解！</string>
     <string name="device_broken_tip_2">当前设备出现了故障，请稍后再试或前往报修\n给您带来的不便敬请谅解！</string>
     <string name="system_error_tip">当前设备出现了故障，请稍后再试或前往报修\n给您带来的不便敬请谅解！</string>

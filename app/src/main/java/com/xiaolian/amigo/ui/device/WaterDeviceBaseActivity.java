@@ -59,8 +59,6 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     public static final String INTENT_HOME_PAGE_JUMP = "intent_home_page_jump";
     public static final String INTENT_RECOVER = "intent_recover";
 
-    //    // 显示或隐藏 "切换宿舍"
-//    toggleSubTitle(presenter.getStep() == TradeStep.PAY);
     private static final String TAG = WaterDeviceBaseActivity.class.getSimpleName();
     /**
      * 跳转到选择红包页面的request code
@@ -486,7 +484,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     }
 
     private void toggleSubTitle(boolean visible) {
-        if (tv_sub_title != null) {
+        if (tv_sub_title != null && deviceType == 1) {
             tv_sub_title.setVisibility(visible ?
                     View.VISIBLE : View.GONE);
         }
