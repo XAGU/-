@@ -8,7 +8,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/btn_corners_white_color"
+        android:background="@drawable/btn_white_color"
         android:orientation="vertical" >
 
         <TextView
@@ -57,7 +57,7 @@
         android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:background="@drawable/btn_corners_white_color"
+        android:background="@drawable/btn_white_color"
         android:gravity="center"
         android:text="取消"
         android:textColor="@color/black80"

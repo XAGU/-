@@ -125,7 +125,7 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
     @Override
     public void gotoHeaterDevice(String defaultAddress, String location, Long residenceId) {
         if (TextUtils.isEmpty(defaultAddress)) {
-            if (TextUtils.isEmpty(defaultAddress)) {
+            if (manager.getUserInfo().getResidenceId() == null) {
                 getMvpView().showBindDormitoryDialog();
             } else {
                 getMvpView().onError("设备不存在");

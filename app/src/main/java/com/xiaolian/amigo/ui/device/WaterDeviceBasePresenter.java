@@ -75,6 +75,11 @@ public abstract class WaterDeviceBasePresenter<V extends IWaterDeviceBaseView> e
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }
             }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+            }
         });
     }
 }

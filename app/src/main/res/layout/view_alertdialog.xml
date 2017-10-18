@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:id="@+id/lLayout_bg"
+    android:background="@drawable/bg_rect_corner_dialog"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:background="@drawable/btn_corners_white_color"
               android:orientation="vertical" >
 
     <LinearLayout
@@ -83,7 +83,7 @@
             android:layout_width="wrap_content"
             android:layout_height="43dp"
             android:layout_weight="1"
-            android:background="@drawable/btn_corners_white_color"
+            android:background="@drawable/btn_corner_white_color"
             android:gravity="center"
             android:textColor="#bbb"
             android:textSize="16sp" />
@@ -99,7 +99,7 @@
             android:layout_width="wrap_content"
             android:layout_height="43dp"
             android:layout_weight="1"
-            android:background="@drawable/btn_corners_white_color"
+            android:background="@drawable/btn_corner_white_color"
             android:gravity="center"
             android:textColor="@color/colorBlue"
             android:textSize="16sp" />

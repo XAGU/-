@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.wallet;
 
+import android.content.Intent;
 import android.text.TextUtils;
 import android.widget.TextView;
 
@@ -78,6 +79,11 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
         presenter.queryWithdrawTimeValid();
     }
 
+    // 充值提现记录
+    @OnClick(R.id.rl_withdrawal_record)
+    void withdrawalRecord() {
+        startActivity(new Intent(getApplicationContext(), WithdrawalRecordActivity.class));
+    }
     @Override
     public void setBalanceText(String balance) {
         tv_balance.setText(balance);

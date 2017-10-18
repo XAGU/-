@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_marginLeft="19dp"
     android:layout_marginRight="19dp"
-    android:background="@drawable/bg_rect_corner_dialog"
+    android:background="@drawable/bg_rect_corner_dialog_inset"
     android:layout_height="match_parent">
     <ImageView
         android:layout_gravity="center_horizontal"

@@ -107,4 +107,31 @@
         android:layout_centerVertical="true"
         android:background="#eee" />
 
+    <RelativeLayout
+        android:id="@+id/rl_withdrawal_record"
+        android:layout_width="wrap_content"
+        android:layout_height="58dp">
+
+        <ImageView
+            android:id="@+id/iv_withdrawal_record_forward"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/forward" />
+
+        <TextView
+            style="@style/ContentText_main"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="充值提现记录" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:layout_centerVertical="true"
+        android:background="#eee" />
+
 </LinearLayout>

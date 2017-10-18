@@ -624,7 +624,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 if (null == result.getError()) {
                     synchronized (orderStatusLock) {
                         orderStatus = result.getData();
-                        orderId = orderStatus.getOrderId();
+                        if (orderStatus.getOrderId() != null) {
+                            orderId = orderStatus.getOrderId();
+                        }
                         Log.i(TAG, "获取订单状态成功。orderStatus:" + orderStatus);
                         orderStatusLock.notifyAll();
                     }

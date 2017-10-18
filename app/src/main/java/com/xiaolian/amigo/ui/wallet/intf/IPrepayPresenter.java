@@ -12,5 +12,4 @@ public interface IPrepayPresenter<V extends IPrepayView> extends IBasePresenter<
 
     // 查看预付金额
     void requestPrepay(int page);
-
 }
