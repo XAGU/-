@@ -25,13 +25,11 @@ import com.bumptech.glide.Glide;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.network.model.dto.response.DeviceCheckRespDTO;
-import com.xiaolian.amigo.data.network.model.order.Order;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
 import com.xiaolian.amigo.ui.device.dispenser.ChooseDispenserActivity;
 import com.xiaolian.amigo.ui.device.dispenser.DispenserActivity;
 import com.xiaolian.amigo.ui.login.LoginActivity;
 import com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity;
-import com.xiaolian.amigo.ui.main.adaptor.HomeAdaptor;
 import com.xiaolian.amigo.ui.main.intf.IMainPresenter;
 import com.xiaolian.amigo.ui.main.intf.IMainView;
 import com.xiaolian.amigo.ui.notice.NoticeListActivity;
@@ -56,10 +54,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import lombok.Data;
-import rx.Observable;
 
 import static com.xiaolian.amigo.data.enumeration.Device.DISPENSER;
-import static com.xiaolian.amigo.data.enumeration.Device.HEARTER;
+import static com.xiaolian.amigo.data.enumeration.Device.HEATER;
 
 /**
  * Created by yik on 2017/9/5.
@@ -474,7 +471,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             // 1 表示热水澡 2 表示饮水机
             if (type == 1) {
                 // 直接前往热水澡处理找零
-                gotoDevice(HEARTER, data.getUnsettledMacAddress(), data.getLocation(), data.getResidenceId(), true);
+                gotoDevice(HEATER, data.getUnsettledMacAddress(), data.getLocation(), data.getResidenceId(), true);
             } else {
                 gotoDevice(DISPENSER, data.getUnsettledMacAddress(), data.getLocation(), data.getResidenceId(), true);
             }
@@ -581,8 +578,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
      */
     public void gotoHeater() {
         Log.d(TAG, "gotoHeater");
-//        setBleCallback(() -> checkTimeValid(HEARTER, HeaterActivity.class));
-        setBleCallback(() -> checkDeviceUsage(HEARTER));
+//        setBleCallback(() -> checkTimeValid(HEATER, HeaterActivity.class));
+        setBleCallback(() -> checkDeviceUsage(HEATER));
         getBlePermission();
     }
 

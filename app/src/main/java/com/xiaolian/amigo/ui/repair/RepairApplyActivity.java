@@ -21,7 +21,6 @@ import com.xiaolian.amigo.ui.repair.intf.IRepairApplyView;
 import com.xiaolian.amigo.ui.user.ListChooseActivity;
 import com.xiaolian.amigo.ui.widget.GridSpacesItemDecoration;
 import com.xiaolian.amigo.util.Constant;
-import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -78,7 +77,7 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         if (null != intent) {
-            deviceType = intent.getIntExtra(Constant.DEVICE_TYPE, Device.HEARTER.getType());
+            deviceType = intent.getIntExtra(Constant.DEVICE_TYPE, Device.HEATER.getType());
             residenceId = intent.getLongExtra(Constant.LOCATION_ID, 0L);
             location = intent.getStringExtra(Constant.LOCATION);
             tv_location.setText(location);
@@ -129,7 +128,7 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
     protected void setUp() {
         Intent intent = getIntent();
         if (null != intent) {
-            deviceType = intent.getIntExtra(Constant.DEVICE_TYPE, Device.HEARTER.getType());
+            deviceType = intent.getIntExtra(Constant.DEVICE_TYPE, Device.HEATER.getType());
             residenceId = intent.getLongExtra(Constant.LOCATION_ID, 0L);
             location = intent.getStringExtra(Constant.LOCATION);
         }

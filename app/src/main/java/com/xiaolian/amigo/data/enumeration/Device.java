@@ -11,7 +11,23 @@ import com.xiaolian.amigo.ui.device.heater.HeaterActivity;
  */
 
 public enum Device {
-    HEARTER(1, "热水澡") {
+    UNKNOWN(-1, "未知设备") {
+        @Override
+        public int getColorRes() {
+            return 0;
+        }
+
+        @Override
+        public int getDrawableRes() {
+            return 0;
+        }
+
+        @Override
+        public Class getClz() {
+            return null;
+        }
+    },
+    HEATER(1, "热水澡") {
         @Override
         public int getColorRes() {
             return R.color.device_heator;
@@ -81,6 +97,6 @@ public enum Device {
                 return device;
             }
         }
-        return null;
+        return UNKNOWN;
     }
 }

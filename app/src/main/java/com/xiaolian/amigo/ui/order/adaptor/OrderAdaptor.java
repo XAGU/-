@@ -102,7 +102,7 @@ public class OrderAdaptor extends RecyclerView.Adapter<OrderAdaptor.ViewHolder> 
 
         public OrderWrapper(Order order) {
             this.type = order.getDeviceType();
-            this.device = Device.getDevice(order.getDeviceType()).getDesc() + "：" + order.getDeviceNo();
+            this.device = Device.getDevice(order.getDeviceType()).getDesc() + "：" + order.getLocation();
             this.time = CommonUtil.stampToDate(order.getCreateTime());
             this.amount = order.getConsume();
             this.order = order;

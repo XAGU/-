@@ -21,7 +21,6 @@ import com.xiaolian.amigo.ui.repair.RepairApplyActivity;
 import com.xiaolian.amigo.ui.user.adaptor.ListChooseAdaptor;
 import com.xiaolian.amigo.ui.user.intf.IListChoosePresenter;
 import com.xiaolian.amigo.ui.user.intf.IListChooseView;
-import com.xiaolian.amigo.ui.widget.recyclerview2.IRecyclerView;
 import com.xiaolian.amigo.util.Constant;
 
 import java.util.ArrayList;
@@ -188,7 +187,7 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                         residenceBindId = getIntent().getLongExtra(INTENT_KEY_LIST_CHOOSE_RESIDENCE_BIND_ID, -1);
                         buildingType = getIntent().getIntExtra(INTENT_KEY_LIST_BUILDING_TYPE, 1);
                         activitySrc = getIntent().getStringExtra(INTENT_KEY_LIST_SRC_ACTIVITY);
-                        if (buildingType == Device.HEARTER.getType()) {
+                        if (buildingType == Device.HEATER.getType()) {
                             tv_title.setText("选择宿舍");
                         } else { // buildingType == Device.DISPENSER.getType()
                             tv_title.setText("选择位置");
@@ -226,7 +225,7 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                     break;
                 case ACTION_LIST_DEVICE:
                     tv_title.setText("设备类型");
-                    this.items.add(new ListChooseAdaptor.Item(Device.HEARTER.getDesc(), false, Device.HEARTER.getType()));
+                    this.items.add(new ListChooseAdaptor.Item(Device.HEATER.getDesc(), false, Device.HEATER.getType()));
                     this.items.add(new ListChooseAdaptor.Item(Device.DISPENSER.getDesc(), false, Device.DISPENSER.getType()));
                     adapter.notifyDataSetChanged();
                     adapter.setOnItemClickListener((view, position) -> {
