@@ -282,6 +282,7 @@
             android:layout_marginTop="13dp"
             android:text="(100s)内未打开放水阀门，系统将自动停止本次服务\n消费金额以实际用水量为准"
             android:gravity="center"
+            android:lineSpacingExtra="8dp"
             android:layout_gravity="center_horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>

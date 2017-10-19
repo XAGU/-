@@ -36,9 +36,9 @@ public class WebActivity extends BaseActivity {
         webSettings.setUseWideViewPort(true);
         webSettings.setLoadWithOverviewMode(true);
         webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        webSettings.setTextZoom(100);
         webView.addJavascriptInterface(new WebAppInterface(), "WebViewInterface");
         webView.setWebChromeClient(new MyWebChromeClient());
-//        webView.loadUrl("http://116.62.236.67:5098");
         webView.loadUrl(url);
     }
 

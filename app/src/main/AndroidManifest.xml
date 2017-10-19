@@ -279,6 +279,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
 
+        <!--充值提现记录-->
+        <activity android:name=".ui.wallet.WithdrawalRecordActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
         <!--预付金额-->
         <activity android:name=".ui.wallet.PrepayActivity"
             android:screenOrientation="portrait"
