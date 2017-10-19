@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.base.TimeHolder;
+import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.enumeration.ErrorTag;
 import com.xiaolian.amigo.data.enumeration.Payment;
 import com.xiaolian.amigo.data.enumeration.TradeError;
@@ -648,7 +649,8 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                 // 从未结算订单列表跳转过来，tip展示需要标注订单时间等信息
                 if (!homePageJump) {
                     String time = TimeUtils.convertTimestampToAccurateFormat(orderStatus.getCreateTime());
-                    String tip = String.format("您%s在%s预付了%s元的用水已结束\n点击下方按钮进行找零", time, orderStatus.getLocation(), String.valueOf(orderStatus.getPrepay().intValue()));
+                    String tip = String.format("你%s在%s使用了%s\n点击下方按钮进行找零", time, orderStatus.getLocation(), Device.getDevice(deviceType).getDesc());
+//                    String tip = String.format("您%s在%s使用预付了%s元的用水已结束\n点击下方按钮进行找零", time, orderStatus.getLocation(), String.valueOf(orderStatus.getPrepay().intValue()));
                     trade_tip.setText(tip);
                 } else {
                     trade_tip.setText(getString(R.string.balance_trade_tip));
@@ -747,7 +749,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     @Override
     public void showRechargeDialog(double amount) {
         new IOSAlertDialog(this).builder()
-                .setMsg("sorry,您的账户余额不足" + amount + "元~")
+                .setMsg("sorry,你的账户余额不足" + amount + "元~")
                 .setPositiveButton("前往充值", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

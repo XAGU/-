@@ -203,7 +203,7 @@ public class RepairEvaluationActivity extends RepairBaseActivity implements IRep
         ratingOptions.clear();
         for (int i = 0; i < labels.size(); i ++) {
             if (labels.get(i).isChecked()) {
-                ratingOptions.add(i);
+                ratingOptions.add(i + 1);
             }
         }
         presenter.rateRepair(et_content.getText().toString(), rating, ratingOptions, repairId);

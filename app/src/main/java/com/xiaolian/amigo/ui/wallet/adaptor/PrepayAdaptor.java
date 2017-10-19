@@ -60,7 +60,7 @@ public class PrepayAdaptor extends CommonAdapter<PrepayAdaptor.OrderWrapper> {
             this.order = order;
             this.type = order.getDeviceType();
             if (Device.getDevice(order.getDeviceType()) != null) {
-                this.device = Device.getDevice(order.getDeviceType()).getDesc() + "：" + order.getDeviceNo();
+                this.device = Device.getDevice(order.getDeviceType()).getDesc() + "：" + order.getLocation();
                 this.macAddress = order.getMacAddress();
                 this.location = order.getLocation();
             } else {

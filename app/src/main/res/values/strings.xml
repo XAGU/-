@@ -3,19 +3,19 @@
     <string name="action_settings">Settings</string>
 
     <string name="mobile_hint">
-        <font size="20">请输入您的手机号</font>
+        <font size="20">请输入你的手机号</font>
     </string>
     <string name="password_hint">
-        <font size="20">请输入您的密码</font>
+        <font size="20">请输入你的密码</font>
     </string>
     <string name="confirm_password_hint">
-        <font size="20">再次输入您的密码</font>
+        <font size="20">再次输入你的密码</font>
     </string>
     <string name="verification_code_hint">
         <font size="20">请输入验证码</font>
     </string>
     <string name="school_hint">
-        <font size="20">点击选择您的学校</font>
+        <font size="20">点击选择你的学校</font>
     </string>
 
     <string name="forget_password_tip">
@@ -109,20 +109,20 @@
     <string name="manage_dormitory">管理宿舍</string>
     <string name="notice_center">通知中心</string>
     <string name="prepay_order">待找零订单</string>
-    <string name="balance_trade_tip">(100s)内未打开放水阀门，系统将自动停止本次服务\n消费金额以实际用水量为准</string>
-    <string name="bonus_trade_tip">红包金额对应水量上线，一旦使用则立即消耗\n点击下方按钮即结束用水</string>
+    <string name="balance_trade_tip">100s内未打开放水阀门，系统将自动停止本次服务\n消费金额以实际用水量为准\n用水结束后请务必点击下方"结束找零"按钮</string>
+    <string name="bonus_trade_tip">红\n用水结束后请务必点击下方"结束找零"按钮包金额对应水量上线，一旦使用则立即消耗\n点击下方按钮即结束用水</string>
     <string name="more">更多</string>
     <string name="about_us">关于我们</string>
     <string name="connect_error_tip_1">请靠近设备</string>
-    <string name="connect_error_tip_2">请长按设备上的物理按钮以结束用水，然后重新连接\n给您带来的不便敬请谅解！</string>
-    <string name="connect_error_tip_3">网络连接超时，请检查您的网络</string>
-    <string name="connect_error_tip_4">您的手机蓝牙无法与设备进行连接，请重试</string>
+    <string name="connect_error_tip_2">请长按设备上的物理按钮以结束用水，然后重新连接\n给你带来的不便敬请谅解！</string>
+    <string name="connect_error_tip_3">网络连接超时，请检查你的网络</string>
+    <string name="connect_error_tip_4">你的手机蓝牙无法与设备进行连接，请重试</string>
     <string name="connect_error_tip_5">请靠近设备，并确保设备未被他人使用</string>
-    <string name="device_busy_tip">当前设备正在被他人使用，请稍后再试或宿舍\n给您带来的不便敬请谅解！</string>
-    <string name="device_busy_tip2">当前设备正在被他人使用，请稍后再试或切换饮水机\n给您带来的不便敬请谅解！</string>
-    <string name="device_broken_tip_1">当前设备在结算找零时出现了故障，请联系客服处理\n给您带来的不便敬请谅解！</string>
-    <string name="device_broken_tip_2">当前设备出现了故障，请稍后再试或前往报修\n给您带来的不便敬请谅解！</string>
-    <string name="system_error_tip">当前设备出现了故障，请稍后再试或前往报修\n给您带来的不便敬请谅解！</string>
+    <string name="device_busy_tip">当前设备正在被他人使用，请稍后再试或宿舍\n给你带来的不便敬请谅解！</string>
+    <string name="device_busy_tip2">当前设备正在被他人使用，请稍后再试或切换饮水机\n给你带来的不便敬请谅解！</string>
+    <string name="device_broken_tip_1">当前设备在结算找零时出现了故障，请联系客服处理\n给你带来的不便敬请谅解！</string>
+    <string name="device_broken_tip_2">当前设备出现了故障，请稍后再试或前往报修\n给你带来的不便敬请谅解！</string>
+    <string name="system_error_tip">当前设备出现了故障，请稍后再试或前往报修\n给你带来的不便敬请谅解！</string>
     <string name="connect_error_title_1">与设备连接失败</string>
     <string name="connect_error_title_2">操作失败</string>
     <string name="device_busy__title">设备繁忙</string>

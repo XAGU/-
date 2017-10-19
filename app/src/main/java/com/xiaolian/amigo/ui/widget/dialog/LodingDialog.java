@@ -28,7 +28,8 @@ public class LodingDialog extends Dialog {
     private void initView(Context context) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_loding);
-        setCancelable(false);
+//        setCancelable(false);
+        setCanceledOnTouchOutside(false);
         mProgressDrawable = new ProgressDrawable();
         iv_loding = (ImageView) findViewById(R.id.iv_loding);
         iv_loding.setImageDrawable(mProgressDrawable);
