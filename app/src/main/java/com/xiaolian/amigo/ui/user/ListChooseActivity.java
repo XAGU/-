@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.enumeration.BuildingType;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.di.componet.DaggerUserActivityComponent;
 import com.xiaolian.amigo.di.componet.UserActivityComponent;
@@ -43,8 +44,8 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
     public static final String INTENT_KEY_LIST_CHOOSE_ACTION = "intent_key_list_choose_action";
     public static final String INTENT_KEY_LIST_CHOOSE_PARENT_ID = "intent_key_list_choose_parent_id";
     public static final String INTENT_KEY_LIST_CHOOSE_IS_EDIT = "intent_key_list_choose_is_edit";
-    public static final String INTENT_KEY_LIST_BUILDING_TYPE = "intent_key_list_building_type";
     public static final String INTENT_KEY_LIST_SRC_ACTIVITY = "intent_key_list_src_activity";
+    public static final String INTENT_KEY_LIST_DEVICE_TYPE = "intent_key_list_device_type";
     public static final String INTENT_KEY_LIST_CHOOSE_RESIDENCE_BIND_ID = "intent_key_list_choose_residence_bind_id";
     public static final String INTENT_KEY_LIST_CHOOSE_ITEM_RESULT = "intent_key_list_choose_item_result";
     public static final String INTENT_KEY_LIST_SEX_TYPE = "intent_key_list_sex_type";
@@ -68,8 +69,7 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
     // 宿舍编辑时需要的ID
     private Long residenceBindId;
 
-    // 建筑类型，1 - 宿舍楼栋 2 - 除宿舍楼栋之外的楼栋
-    private int buildingType = 1;
+    private int deviceType;
 
     private String activitySrc = null;
 
@@ -141,18 +141,18 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                     if (getIntent() != null) {
                         isEditDormitory = getIntent().getBooleanExtra(INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
                         residenceBindId = getIntent().getLongExtra(INTENT_KEY_LIST_CHOOSE_RESIDENCE_BIND_ID, -1);
-                        buildingType = getIntent().getIntExtra(INTENT_KEY_LIST_BUILDING_TYPE, 1);
+                        deviceType = getIntent().getIntExtra(INTENT_KEY_LIST_DEVICE_TYPE, Device.UNKNOWN.getType());
                         activitySrc = getIntent().getStringExtra(INTENT_KEY_LIST_SRC_ACTIVITY);
                     }
                     // page size 为null 加载全部
-                    presenter.getBuildList(null, null, buildingType);
+                    presenter.getBuildList(null, null, deviceType);
                     adapter.setOnItemClickListener((view, position) -> {
                         Intent intent = new Intent(getApplicationContext(), ListChooseActivity.class);
                         intent.putExtra(INTENT_KEY_LIST_CHOOSE_ACTION, ACTION_LIST_FLOOR);
                         intent.putExtra(INTENT_KEY_LIST_CHOOSE_PARENT_ID, items.get(position).getId());
                         intent.putExtra(INTENT_KEY_LIST_CHOOSE_IS_EDIT, isEditDormitory);
                         intent.putExtra(INTENT_KEY_LIST_CHOOSE_RESIDENCE_BIND_ID, residenceBindId);
-                        intent.putExtra(INTENT_KEY_LIST_BUILDING_TYPE, buildingType);
+                        intent.putExtra(INTENT_KEY_LIST_DEVICE_TYPE, deviceType);
                         intent.putExtra(INTENT_KEY_LIST_SRC_ACTIVITY, activitySrc);
                         startActivity(intent);
                     });
@@ -162,12 +162,12 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                     if (getIntent() != null) {
                         isEditDormitory = getIntent().getBooleanExtra(INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
                         residenceBindId = getIntent().getLongExtra(INTENT_KEY_LIST_CHOOSE_RESIDENCE_BIND_ID, -1);
-                        buildingType = getIntent().getIntExtra(INTENT_KEY_LIST_BUILDING_TYPE, 1);
+                        deviceType = getIntent().getIntExtra(INTENT_KEY_LIST_DEVICE_TYPE, Device.UNKNOWN.getType());
                         activitySrc = getIntent().getStringExtra(INTENT_KEY_LIST_SRC_ACTIVITY);
                         Long parentId = getIntent().getLongExtra(INTENT_KEY_LIST_CHOOSE_PARENT_ID, -1);
                         if (parentId != -1) {
                             // page size 为null 加载全部
-                            presenter.getFloorList(null, null, parentId, buildingType);
+                            presenter.getFloorList(null, null, parentId);
                         }
                     }
                     adapter.setOnItemClickListener((view, position) -> {
@@ -176,7 +176,7 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                         intent.putExtra(INTENT_KEY_LIST_CHOOSE_PARENT_ID, items.get(position).getId());
                         intent.putExtra(INTENT_KEY_LIST_CHOOSE_IS_EDIT, isEditDormitory);
                         intent.putExtra(INTENT_KEY_LIST_CHOOSE_RESIDENCE_BIND_ID, residenceBindId);
-                        intent.putExtra(INTENT_KEY_LIST_BUILDING_TYPE, buildingType);
+                        intent.putExtra(INTENT_KEY_LIST_DEVICE_TYPE, deviceType);
                         intent.putExtra(INTENT_KEY_LIST_SRC_ACTIVITY, activitySrc);
                         startActivity(intent);
                     });
@@ -185,11 +185,11 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                     if (getIntent() != null) {
                         isEditDormitory = getIntent().getBooleanExtra(INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
                         residenceBindId = getIntent().getLongExtra(INTENT_KEY_LIST_CHOOSE_RESIDENCE_BIND_ID, -1);
-                        buildingType = getIntent().getIntExtra(INTENT_KEY_LIST_BUILDING_TYPE, 1);
+                        deviceType = getIntent().getIntExtra(INTENT_KEY_LIST_DEVICE_TYPE, Device.UNKNOWN.getType());
                         activitySrc = getIntent().getStringExtra(INTENT_KEY_LIST_SRC_ACTIVITY);
-                        if (buildingType == Device.HEATER.getType()) {
+                        if (deviceType == Device.HEATER.getType()) {
                             tv_title.setText("选择宿舍");
-                        } else { // buildingType == Device.DISPENSER.getType()
+                        } else {
                             tv_title.setText("选择位置");
                         }
                         adapter = new ListChooseAdaptor(items, true);
@@ -197,7 +197,7 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                         Long parentId = getIntent().getLongExtra(INTENT_KEY_LIST_CHOOSE_PARENT_ID, -1);
                         if (parentId != -1) {
                             // page size 为null 加载全部
-                            presenter.getDormitoryList(null, null, parentId, buildingType);
+                            presenter.getDormitoryList(null, null, parentId);
                         }
                     }
 
@@ -207,8 +207,8 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
 
                             Intent intent = new Intent(getApplicationContext(), RepairApplyActivity.class);
                             intent.putExtra(Constant.LOCATION_ID, (long) item.getId());
-                            intent.putExtra(Constant.DEVICE_TYPE, buildingType);
-                            intent.putExtra(Constant.LOCATION, Device.getDevice(buildingType).getDesc() + Constant.CHINEASE_COLON + item.getExtra());
+                            intent.putExtra(Constant.DEVICE_TYPE, deviceType);
+                            intent.putExtra(Constant.LOCATION, Device.getDevice(deviceType).getDesc() + Constant.CHINEASE_COLON + item.getExtra());
                             startActivity(intent);
                         } else {
                             presenter.bindDormitory(residenceBindId, items.get(position).getId(), isEditDormitory);
@@ -227,14 +227,14 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                     break;
                 case ACTION_LIST_DEVICE:
                     tv_title.setText("设备类型");
-                    this.items.add(new ListChooseAdaptor.Item(Device.HEATER.getDesc(), false, Device.HEATER.getType()));
-                    this.items.add(new ListChooseAdaptor.Item(Device.DISPENSER.getDesc(), false, Device.DISPENSER.getType()));
+                    this.items.add(new ListChooseAdaptor.Item(Device.HEATER.getDesc(), Device.HEATER.getType()));
+                    this.items.add(new ListChooseAdaptor.Item(Device.DISPENSER.getDesc(), Device.DISPENSER.getType()));
                     adapter.notifyDataSetChanged();
                     adapter.setOnItemClickListener((view, position) -> {
                         ListChooseAdaptor.Item item = items.get(position);
                         Intent intent = new Intent(getApplicationContext(), ListChooseActivity.class);
-                        intent.putExtra(INTENT_KEY_LIST_BUILDING_TYPE, item.getId());
                         intent.putExtra(INTENT_KEY_LIST_CHOOSE_ACTION, ACTION_LIST_BUILDING);
+                        intent.putExtra(INTENT_KEY_LIST_DEVICE_TYPE, item.getDeviceType());
                         intent.putExtra(INTENT_KEY_LIST_SRC_ACTIVITY, Constant.REPAIR_APPLY_ACTIVITY_SRC);
                         startActivity(intent);
                     });

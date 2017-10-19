@@ -1,7 +1,9 @@
 package com.xiaolian.amigo.ui.user;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.enumeration.BuildingType;
 import com.xiaolian.amigo.data.enumeration.Device;
+import com.xiaolian.amigo.data.enumeration.ResidenceLevel;
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.BindResidenceReq;
@@ -68,17 +70,16 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
     }
 
     @Override
-    public void getBuildList(Integer page, Integer size, Integer buildingType) {
+    public void getBuildList(Integer page, Integer size, Integer deviceType) {
         QueryResidenceListReqDTO dto = new QueryResidenceListReqDTO();
         dto.setPage(page);
         dto.setSize(size);
-        // buildingType 1 - 宿舍, 热水澡时不要携带该参数表示选取所有楼栋
-        if (buildingType != Device.DISPENSER.getType()) {
-            dto.setBuildingType(buildingType);
+        if (deviceType == Device.HEATER.getType()) {
+            dto.setBuildingType(BuildingType.DORMITORY.getType());
         }
         dto.setSchoolId(manager.getUser().getSchoolId());
         // residencelevel 1 表示楼栋
-        dto.setResidenceLevel(1);
+        dto.setResidenceLevel(ResidenceLevel.BUILDING.getType());
         addObserver(manager.queryResidenceList(dto), new NetworkObserver<ApiResult<ResidenceListRespDTO>>() {
 
             @Override
@@ -138,18 +139,14 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
     }
 
     @Override
-    public void getFloorList(Integer page, Integer size, Long parentId, int buildingType) {
+    public void getFloorList(Integer page, Integer size, Long parentId) {
         QueryResidenceListReqDTO dto = new QueryResidenceListReqDTO();
         dto.setPage(page);
         dto.setSize(size);
-        // buildingType 1 表示宿舍
-        if (buildingType != Device.DISPENSER.getType()) {
-            dto.setBuildingType(buildingType);
-        }
         dto.setParentId(parentId);
         dto.setSchoolId(manager.getUser().getSchoolId());
         // residencelevel 2 表示楼层
-        dto.setResidenceLevel(2);
+        dto.setResidenceLevel(ResidenceLevel.FLOOR.getType());
         addObserver(manager.queryResidenceList(dto), new NetworkObserver<ApiResult<ResidenceListRespDTO>>() {
 
             @Override
@@ -170,18 +167,14 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
     }
 
     @Override
-    public void getDormitoryList(Integer page, Integer size, Long parentId, int buildingType) {
+    public void getDormitoryList(Integer page, Integer size, Long parentId) {
         QueryResidenceListReqDTO dto = new QueryResidenceListReqDTO();
         dto.setPage(page);
         dto.setSize(size);
-        // buildingType 1 表示宿舍
-        if (buildingType != Device.DISPENSER.getType()) {
-            dto.setBuildingType(1);
-        }
         dto.setParentId(parentId);
         dto.setSchoolId(manager.getUser().getSchoolId());
         // residencelevel 3 表示宿舍
-        dto.setResidenceLevel(3);
+        dto.setResidenceLevel(ResidenceLevel.ROOM.getType());
         addObserver(manager.queryResidenceList(dto), new NetworkObserver<ApiResult<ResidenceListRespDTO>>() {
 
             @Override

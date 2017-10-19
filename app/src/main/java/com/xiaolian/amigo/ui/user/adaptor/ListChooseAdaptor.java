@@ -110,9 +110,10 @@ public class ListChooseAdaptor extends RecyclerView.Adapter<ListChooseAdaptor.Vi
     @Data
     public static class Item implements Parcelable {
         String content;
-        boolean tick;
+        boolean tick = false;
         Long id;
         String extra;
+        int deviceType;
         boolean deviceExist = true;
 
         public Item(String content, boolean tick, Long id) {
@@ -120,9 +121,9 @@ public class ListChooseAdaptor extends RecyclerView.Adapter<ListChooseAdaptor.Vi
             this.id = id;
         }
 
-        public Item(String content, boolean tick, int id) {
-            this(content, tick);
-            this.id = (long) id;
+        public Item(String content, int deviceType) {
+            this(content, false);
+            this.deviceType = deviceType;
         }
 
         public Item(String content, boolean tick) {

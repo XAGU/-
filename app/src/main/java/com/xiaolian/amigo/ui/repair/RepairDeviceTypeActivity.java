@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.repair;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.ui.user.ListChooseActivity;
 import com.xiaolian.amigo.util.Constant;
 
@@ -43,7 +44,7 @@ public class RepairDeviceTypeActivity extends RepairBaseActivity {
         Map<String, Integer> extraMap = new HashMap<String, Integer>() {
             {
                 put(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION, ListChooseActivity.ACTION_LIST_BUILDING);
-                put(ListChooseActivity.INTENT_KEY_LIST_BUILDING_TYPE, Constant.ROOM_BUILDING_TYPE);
+                put(ListChooseActivity.INTENT_KEY_LIST_DEVICE_TYPE, Device.HEATER.getType());
             }
         };
         startActivity(this, ListChooseActivity.class, extraMap);
@@ -55,6 +56,7 @@ public class RepairDeviceTypeActivity extends RepairBaseActivity {
         Map<String, Integer> extraMap = new HashMap<String, Integer>() {
             {
                 put(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION, ListChooseActivity.ACTION_LIST_BUILDING);
+                put(ListChooseActivity.INTENT_KEY_LIST_DEVICE_TYPE, Device.DISPENSER.getType());
             }
         };
         startActivity(this, ListChooseActivity.class, extraMap);
