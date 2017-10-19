@@ -14,4 +14,5 @@ public class RepairProblemReqDTO {
     Integer page;
     // 页大小
     Integer size;
+    Integer deviceType;
 }

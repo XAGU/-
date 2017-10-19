@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -60,6 +61,11 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
     @BindView(R.id.bt_submit)
     Button bt_submit;
 
+    @BindView(R.id.ll_problems)
+    LinearLayout ll_problems;
+    @BindView(R.id.v_divide)
+    View v_divide;
+
     List<RepairProblemAdaptor.ProblemWrapper> problems = new ArrayList<>();
 
     RepairProblemAdaptor adapter;
@@ -77,10 +83,14 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         if (null != intent) {
-            deviceType = intent.getIntExtra(Constant.DEVICE_TYPE, Device.HEATER.getType());
+            deviceType = intent.getIntExtra(Constant.DEVICE_TYPE, Device.UNKNOWN.getType());
             residenceId = intent.getLongExtra(Constant.LOCATION_ID, 0L);
             location = intent.getStringExtra(Constant.LOCATION);
             tv_location.setText(location);
+            if (Device.UNKNOWN.getType() != deviceType) {
+                // 获取报修问题列表
+                presenter.requestRepairProblems(deviceType);
+            }
         }
     }
 
@@ -110,8 +120,6 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
         rv_problems.setLayoutManager(new GridLayoutManager(this, 3));
         rv_problems.setAdapter(adapter);
         render();
-        // 获取报修问题列表
-        presenter.requestRepairProblems();
     }
 
     @Override
@@ -269,13 +277,20 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
 
     @Override
     public void refreshProblems(List<RepairProblem> repairProblems) {
+        renderProblems();
+        problems.clear();
         if (null != repairProblems) {
             List<RepairProblemAdaptor.ProblemWrapper> problemWrappers = new ArrayList<>();
             for (RepairProblem problem : repairProblems) {
                 problemWrappers.add(new RepairProblemAdaptor.ProblemWrapper(problem));
             }
             problems.addAll(problemWrappers);
-            adapter.notifyDataSetChanged();
         }
+        adapter.notifyDataSetChanged();
+    }
+
+    private void renderProblems() {
+        v_divide.setVisibility(View.VISIBLE);
+        ll_problems.setVisibility(View.VISIBLE);
     }
 }

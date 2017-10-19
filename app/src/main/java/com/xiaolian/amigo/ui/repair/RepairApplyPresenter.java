@@ -98,16 +98,19 @@ public class RepairApplyPresenter<V extends IRepairApplyView> extends BasePresen
     }
 
     @Override
-    public void requestRepairProblems() {
+    public void requestRepairProblems(int deviceType) {
         RepairProblemReqDTO reqDTO = new RepairProblemReqDTO();
         reqDTO.setPage(Constant.PAGE_START_NUM);
         reqDTO.setSize(Constant.PAGE_SIZE);
-        addObserver(repairManager.queryRepairProblems(reqDTO), new NetworkObserver<ApiResult<RepairProblemRespDTO>>(false) {
+        reqDTO.setDeviceType(deviceType);
+        addObserver(repairManager.queryRepairProblems(reqDTO), new NetworkObserver<ApiResult<RepairProblemRespDTO>>() {
 
             @Override
             public void onReady(ApiResult<RepairProblemRespDTO> result) {
                 if (null == result.getError()) {
                     getMvpView().refreshProblems(result.getData().getCauses());
+                } else {
+                    getMvpView().onError(result.getError().getDisplayMessage());
                 }
             }
         });
