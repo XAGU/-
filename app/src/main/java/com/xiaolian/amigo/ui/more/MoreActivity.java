@@ -35,8 +35,10 @@ public class MoreActivity extends MoreBaseActivity implements IMoreView {
     List<MoreAdapter.MoreModel> items = new ArrayList<MoreAdapter.MoreModel>() {
         {
             add(new MoreAdapter.MoreModel("帮助中心", WebActivity.class));
+            add(new MoreAdapter.MoreModel("意见反馈", null));
             add(new MoreAdapter.MoreModel("用户协议", null));
             add(new MoreAdapter.MoreModel("关于我们", AboutUsActivity.class));
+            add(new MoreAdapter.MoreModel("\"校OK\"账户迁移", null));
         }
     };
 

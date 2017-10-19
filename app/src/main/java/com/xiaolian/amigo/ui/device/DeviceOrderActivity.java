@@ -109,6 +109,23 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
                 .putExtra(MainActivity.INTENT_KEY_SWITCH_TO_HOME, true));
     }
 
+    /**
+     * 投诉
+     */
+    @OnClick(R.id.tv_complaint)
+    public void complaint() {
+        // TODO 投诉
+    }
+
+    /**
+     * 复制
+     */
+    @OnClick(R.id.tv_copy)
+    public void copy() {
+        CommonUtil.copy(tv_order_no.getText().toString(), getApplicationContext());
+        onSuccess("复制成功");
+    }
+
     @Override
     public void onBackPressed() {
 //        super.onBackPressed();

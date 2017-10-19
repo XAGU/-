@@ -59,6 +59,8 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
 
         presenter.onAttach(LoginActivity.this);
 
+        presenter.logout();
+
         if (findViewById(R.id.sv_container) != null) {
             if (savedInstanceState != null) {
                 return;

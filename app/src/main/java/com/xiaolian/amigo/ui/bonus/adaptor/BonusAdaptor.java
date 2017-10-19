@@ -29,12 +29,16 @@ public class BonusAdaptor extends CommonAdapter<BonusAdaptor.BonusWrapper> {
 
     @Override
     protected void convert(ViewHolder holder, BonusWrapper bonusWrapper, int position) {
-        holder.setText(R.id.tv_amount, "￥" + bonusWrapper.amount.toString());
+        holder.setText(R.id.tv_amount, "¥" + String.valueOf(bonusWrapper.amount));
         holder.setText(R.id.tv_type, bonusWrapper.getName());
         holder.setText(R.id.tv_time_end, TimeUtils.millis2String(bonusWrapper.getTimeEnd(),
                 TimeUtils.MY_DATE_FORMAT2) + "到期");
         holder.setText(R.id.tv_desc, bonusWrapper.desc);
-        holder.setText(R.id.tv_time_left, "剩" + String.valueOf(bonusWrapper.timeLeft) + "日");
+        if (bonusWrapper.timeLeft <= 3) {
+            holder.setText(R.id.tv_time_left, "剩" + String.valueOf(bonusWrapper.timeLeft) + "日");
+        } else {
+            holder.setText(R.id.tv_time_left, "");
+        }
         if (isShowButton) {
             holder.getView(R.id.bt_bonus_use).setVisibility(View.VISIBLE);
         } else {
@@ -51,7 +55,7 @@ public class BonusAdaptor extends CommonAdapter<BonusAdaptor.BonusWrapper> {
         // 红包类型
         Integer type;
         // 红包金额
-        Long amount;
+        Integer amount;
         // 到期时间
         Long timeEnd;
         // 描述信息
@@ -66,7 +70,7 @@ public class BonusAdaptor extends CommonAdapter<BonusAdaptor.BonusWrapper> {
         public BonusWrapper(Bonus bonus) {
             this.id = bonus.getId();
             this.type = bonus.getDeviceType();
-            this.amount = bonus.getAmount();
+            this.amount = bonus.getAmount().intValue();
             this.timeEnd = bonus.getEndTime();
             this.desc = bonus.getRemarks();
             this.timeLeft = bonus.getTimeLimit();

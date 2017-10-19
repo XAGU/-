@@ -18,6 +18,7 @@ import com.xiaolian.amigo.util.Constant;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * 消费账单详情
@@ -57,6 +58,23 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
     protected void setUp() {
         Intent intent = getIntent();
         this.order = (Order) intent.getSerializableExtra(Constant.EXTRA_KEY);
+    }
+
+    /**
+     * 投诉
+     */
+    @OnClick(R.id.tv_complaint)
+    public void complaint() {
+        // TODO 投诉
+    }
+
+    /**
+     * 复制
+     */
+    @OnClick(R.id.tv_copy)
+    public void copy() {
+        CommonUtil.copy(tv_order_no.getText().toString(), getApplicationContext());
+        onSuccess("复制成功");
     }
 
     @Override

@@ -23,10 +23,10 @@ public class ExpiredBonusAdaptor extends CommonAdapter<BonusAdaptor.BonusWrapper
     @Override
     protected void convert(ViewHolder holder, BonusAdaptor.BonusWrapper bonusWrapper, int position) {
         if (bonusWrapper.amount != null) {
-            holder.setText(R.id.tv_amount, bonusWrapper.amount.toString());
+            holder.setText(R.id.tv_amount, "¥" + String.valueOf(bonusWrapper.amount));
         }
-        if (bonusWrapper.type != null) {
-            holder.setText(R.id.tv_type, bonusWrapper.type.toString());
+        if (bonusWrapper.name != null) {
+            holder.setText(R.id.tv_type, bonusWrapper.getName());
         }
         holder.setText(R.id.tv_time_end, TimeUtils.millis2String(bonusWrapper.getTimeEnd(),
                 TimeUtils.MY_DATE_FORMAT2) + "到期");

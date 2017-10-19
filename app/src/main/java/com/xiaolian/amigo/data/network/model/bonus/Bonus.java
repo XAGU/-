@@ -8,7 +8,7 @@ import lombok.Data;
  */
 @Data
 public class Bonus {
-    private Long amount;
+    private Double amount;
     private String createTime;
     private Integer deviceType;
     private Long endTime;

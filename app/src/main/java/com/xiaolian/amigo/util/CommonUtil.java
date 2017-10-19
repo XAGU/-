@@ -17,10 +17,13 @@ package com.xiaolian.amigo.util;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.RectF;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.Window;
 
@@ -101,7 +104,7 @@ public final class CommonUtil {
     /*
      * 将时间戳转换为时间
      */
-    public static String stampToDate(Long s){
+    public static String stampToDate(Long s) {
         String res;
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date(s);
@@ -124,4 +127,15 @@ public final class CommonUtil {
                 location[1] + view.getHeight());
     }
 
+    /**
+     * 文本复制
+     * @param content 内容
+     * @param context 上下文
+     */
+    public static void copy(@NonNull String content, Context context) {
+        ClipboardManager cmb = (ClipboardManager) context
+                .getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("simple label", content.trim());
+        cmb.setPrimaryClip(clip);
+    }
 }

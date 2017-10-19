@@ -15,4 +15,6 @@ public interface ILoginDataManager extends ILoginApi {
     User getUserInfo();
 
     void setUserInfo(User user);
+
+    void logout();
 }

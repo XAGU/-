@@ -82,4 +82,9 @@ public class LoginDataManager implements ILoginDataManager {
     public void setUserInfo(User user) {
         sharedPreferencesHelp.setUserInfo(user);
     }
+
+    @Override
+    public void logout() {
+        sharedPreferencesHelp.logout();
+    }
 }

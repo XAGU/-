@@ -37,4 +37,5 @@ public interface ILoginPresenter<V extends ILoginView> extends IBasePresenter<V>
     // 密码重置
     void resetPassword(String mobile, String password, String code);
 
+    void logout();
 }

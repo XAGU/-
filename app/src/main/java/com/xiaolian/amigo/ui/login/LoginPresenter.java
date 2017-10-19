@@ -156,4 +156,9 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
             }
         });
     }
+
+    @Override
+    public void logout() {
+        manager.logout();
+    }
 }

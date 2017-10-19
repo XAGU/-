@@ -30,5 +30,6 @@ public class MorePresenter<V extends IMoreView> extends BasePresenter<V>
         manager.logout();
         getMvpView().onSuccess("退出登录成功");
         getMvpView().backToMain();
+        getMvpView().redirectToLogin();
     }
 }
