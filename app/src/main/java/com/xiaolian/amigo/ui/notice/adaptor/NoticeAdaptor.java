@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Notice;
+import com.xiaolian.amigo.data.enumeration.NoticeReadStatus;
 import com.xiaolian.amigo.data.network.model.notify.Notify;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.TimeUtils;
@@ -51,11 +52,11 @@ public class NoticeAdaptor extends CommonAdapter<NoticeAdaptor.NoticeWapper> {
         }
 
         TextView tv_type = (TextView) holder.getView(R.id.tv_type);
-        if (CommonUtil.equals(noticeWapper.getReadStatus(), 1)) {
+        if (CommonUtil.equals(noticeWapper.getReadStatus(), NoticeReadStatus.UNREAD.getType())) {
             // 未读
             tv_type.setCompoundDrawables(tv_type.getCompoundDrawables()[0],
                     tv_type.getCompoundDrawables()[1], dot, tv_type.getCompoundDrawables()[3]);
-        } else if (CommonUtil.equals(noticeWapper.getReadStatus(), 2)) {
+        } else if (CommonUtil.equals(noticeWapper.getReadStatus(), NoticeReadStatus.READ.getType())) {
             tv_type.setCompoundDrawables(tv_type.getCompoundDrawables()[0],
                     tv_type.getCompoundDrawables()[1], null, tv_type.getCompoundDrawables()[3]);
         }

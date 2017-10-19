@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.enumeration.NoticeReadStatus;
 import com.xiaolian.amigo.ui.notice.adaptor.NoticeAdaptor;
 import com.xiaolian.amigo.ui.notice.intf.INoticePresenter;
 import com.xiaolian.amigo.ui.notice.intf.INoticeView;
@@ -68,6 +69,7 @@ public class NoticeListActivity extends NoticeBaseListActivity implements INotic
 //                    showUrgentNotify(notices.get(position).getContent(),
 //                            notices.get(position).getId());
 //                }
+                notices.get(position).setReadStatus(NoticeReadStatus.READ.getType());
                 presenter.readUrgentNotify(notices.get(position).getId());
                 startActivity(new Intent(getApplicationContext(), NoticeDetailActivity.class)
                                 .putExtra(Constant.EXTRA_KEY, notices.get(position)));
@@ -121,7 +123,7 @@ public class NoticeListActivity extends NoticeBaseListActivity implements INotic
         for (NoticeAdaptor.NoticeWapper notice : notices) {
             if (CommonUtil.equals(notice.getId(), id)) {
                 // 2 表示已读
-                notice.setReadStatus(2);
+                notice.setReadStatus(NoticeReadStatus.READ.getType());
             }
         }
     }
