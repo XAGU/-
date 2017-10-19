@@ -67,6 +67,16 @@
                 android:textSize="14sp"
                 />
 
+            <TextView
+                android:layout_toRightOf="@id/tv_edit_dormitory_name"
+                android:id="@+id/tv_device_exist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(无设备)"
+                android:textColor="@color/colorDarkB"
+                android:textSize="14sp"
+                />
+
             <ImageView
                 android:id="@+id/iv_choose"
                 android:src="@drawable/dot_red"

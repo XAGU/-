@@ -192,6 +192,8 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                         } else { // buildingType == Device.DISPENSER.getType()
                             tv_title.setText("选择位置");
                         }
+                        adapter = new ListChooseAdaptor(items, true);
+                        recyclerView.setAdapter(adapter);
                         Long parentId = getIntent().getLongExtra(INTENT_KEY_LIST_CHOOSE_PARENT_ID, -1);
                         if (parentId != -1) {
                             // page size 为null 加载全部

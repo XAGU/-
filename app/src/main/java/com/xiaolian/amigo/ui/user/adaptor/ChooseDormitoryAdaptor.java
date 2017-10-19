@@ -32,5 +32,11 @@ public class ChooseDormitoryAdaptor extends CommonAdapter<EditDormitoryAdaptor.U
         } else {
             holder.getView(R.id.tv_default_dormitory).setVisibility(View.GONE);
         }
+        // 是否存在设备
+        if (userResidenceWrapper.isExist()) {
+            holder.getView(R.id.tv_device_exist).setVisibility(View.GONE);
+        } else {
+            holder.getView(R.id.tv_device_exist).setVisibility(View.VISIBLE);
+        }
     }
 }

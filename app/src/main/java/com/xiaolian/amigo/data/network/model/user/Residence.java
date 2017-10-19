@@ -12,4 +12,5 @@ public class Residence {
     private Long id;
     private String name;
     private String fullName;
+    private String macAddress;
 }

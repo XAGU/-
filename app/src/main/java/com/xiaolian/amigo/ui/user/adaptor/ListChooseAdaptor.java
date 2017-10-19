@@ -3,6 +3,7 @@ package com.xiaolian.amigo.ui.user.adaptor;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,8 @@ public class ListChooseAdaptor extends RecyclerView.Adapter<ListChooseAdaptor.Vi
 
     private int lastTickPostion = -1;
 
+    private boolean checkDeviceExist = false;
+
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
     }
@@ -42,6 +45,11 @@ public class ListChooseAdaptor extends RecyclerView.Adapter<ListChooseAdaptor.Vi
 
     public ListChooseAdaptor(List<Item> datas) {
         this.datas = datas;
+    }
+
+    public ListChooseAdaptor(List<Item> datas, boolean checkDeviceExist) {
+        this.datas = datas;
+        this.checkDeviceExist = checkDeviceExist;
     }
 
     @Override
@@ -71,6 +79,13 @@ public class ListChooseAdaptor extends RecyclerView.Adapter<ListChooseAdaptor.Vi
         } else {
             holder.iv_tick.setVisibility(View.GONE);
         }
+        if (checkDeviceExist) {
+            if (datas.get(position).isDeviceExist()) {
+                holder.tv_device_exist.setVisibility(View.GONE);
+            } else {
+                holder.tv_device_exist.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     @Override
@@ -83,6 +98,8 @@ public class ListChooseAdaptor extends RecyclerView.Adapter<ListChooseAdaptor.Vi
         TextView tv_content;
         @BindView(R.id.iv_tick)
         ImageView iv_tick;
+        @BindView(R.id.tv_device_exist)
+        TextView tv_device_exist;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -96,6 +113,7 @@ public class ListChooseAdaptor extends RecyclerView.Adapter<ListChooseAdaptor.Vi
         boolean tick;
         Long id;
         String extra;
+        boolean deviceExist = true;
 
         public Item(String content, boolean tick, Long id) {
             this(content, tick);
@@ -123,6 +141,7 @@ public class ListChooseAdaptor extends RecyclerView.Adapter<ListChooseAdaptor.Vi
             this.extra = residence.getFullName();
             this.id = residence.getId();
             this.tick = false;
+            this.deviceExist = !TextUtils.isEmpty(residence.getMacAddress());
         }
 
 
@@ -136,15 +155,19 @@ public class ListChooseAdaptor extends RecyclerView.Adapter<ListChooseAdaptor.Vi
             dest.writeString(this.content);
             dest.writeByte(this.tick ? (byte) 1 : (byte) 0);
             dest.writeValue(this.id);
+            dest.writeString(this.extra);
+            dest.writeByte(this.deviceExist ? (byte) 1 : (byte) 0);
         }
 
         protected Item(Parcel in) {
             this.content = in.readString();
             this.tick = in.readByte() != 0;
             this.id = (Long) in.readValue(Long.class.getClassLoader());
+            this.extra = in.readString();
+            this.deviceExist = in.readByte() != 0;
         }
 
-        public static final Creator<Item> CREATOR = new Creator<Item>() {
+        public static final Parcelable.Creator<Item> CREATOR = new Parcelable.Creator<Item>() {
             @Override
             public Item createFromParcel(Parcel source) {
                 return new Item(source);

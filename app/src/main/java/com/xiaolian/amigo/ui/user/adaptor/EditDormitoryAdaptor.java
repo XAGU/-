@@ -3,6 +3,8 @@ package com.xiaolian.amigo.ui.user.adaptor;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -71,6 +73,12 @@ public class EditDormitoryAdaptor extends CommonAdapter<EditDormitoryAdaptor.Use
             context.startActivity(intent);
         });
         holder.getView(R.id.ll_dormitory).setOnClickListener(v -> listener.onItemClick(userResidenceWrapper, position));
+        // 是否存在设备
+        if (userResidenceWrapper.isExist()) {
+            holder.getView(R.id.tv_device_exist).setVisibility(View.GONE);
+        } else {
+            holder.getView(R.id.tv_device_exist).setVisibility(View.VISIBLE);
+        }
     }
 
     public interface OnItemClickListener {
@@ -88,8 +96,12 @@ public class EditDormitoryAdaptor extends CommonAdapter<EditDormitoryAdaptor.Use
         private String residenceName;
         private String macAddress;
         private boolean isDefault = false;
+        private boolean exist = true;
 
         public UserResidenceWrapper(UserResidence residence, boolean isDefault) {
+            if (TextUtils.isEmpty(residence.getMacAddress())) {
+                exist = false;
+            }
             this.isDefault = isDefault;
             this.id = residence.getId();
             this.residenceId = residence.getResidenceId();
