@@ -34,4 +34,6 @@ public interface IMainView extends IBaseView {
     void showDeviceUsageDialog(int type, DeviceCheckRespDTO data);
 
     void showBindDormitoryDialog();
+
+    void showNoDeviceDialog();
 }

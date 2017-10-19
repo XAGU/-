@@ -536,6 +536,24 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         availabilityDialog.show();
     }
 
+    @Override
+    public void showNoDeviceDialog() {
+        Log.d(TAG, "showNoDeviceDialog");
+        if (null == availabilityDialog) {
+            availabilityDialog = new AvailabilityDialog(this);
+        }
+        if (availabilityDialog.isShowing()) {
+            return;
+        }
+        availabilityDialog.setOkText("前往设置");
+        availabilityDialog.setTip("你的默认宿舍无设备");
+        availabilityDialog.setSubTipVisible(false);
+        availabilityDialog.setOnOkClickListener(dialog1 -> {
+            startActivity(new Intent(getApplicationContext(), EditDormitoryActivity.class));
+        });
+        availabilityDialog.show();
+    }
+
     public void showPrepayDialog(int type, int prepaySize, DeviceCheckRespDTO data) {
         Log.d(TAG, "showPrepayDialog: " + type + "->" + prepaySize);
         if (prepayDialog == null) {

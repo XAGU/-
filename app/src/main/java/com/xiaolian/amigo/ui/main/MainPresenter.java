@@ -122,7 +122,7 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
             if (manager.getUserInfo().getResidenceId() == null) {
                 getMvpView().showBindDormitoryDialog();
             } else {
-                getMvpView().onError("设备不存在");
+                getMvpView().showNoDeviceDialog();
             }
         } else {
             getMvpView().gotoDevice(Device.HEATER, defaultAddress,
