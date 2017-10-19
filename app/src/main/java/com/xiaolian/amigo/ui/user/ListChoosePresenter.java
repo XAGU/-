@@ -167,10 +167,11 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
     }
 
     @Override
-    public void getDormitoryList(Integer page, Integer size, Long parentId) {
+    public void getDormitoryList(Integer page, Integer size, Long parentId, boolean existDevice) {
         QueryResidenceListReqDTO dto = new QueryResidenceListReqDTO();
         dto.setPage(page);
         dto.setSize(size);
+        dto.setExistDevice(existDevice);
         dto.setParentId(parentId);
         dto.setSchoolId(manager.getUser().getSchoolId());
         // residencelevel 3 表示宿舍

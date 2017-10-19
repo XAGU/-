@@ -16,4 +16,5 @@ public class QueryResidenceListReqDTO {
     Long parentId;
     Integer residenceLevel;
     Long schoolId;
+    Boolean existDevice;
 }

@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.util.ScreenUtils;
 import com.xiaolian.amigo.ui.user.adaptor.EditDormitoryAdaptor;
@@ -45,6 +46,7 @@ public class EditDormitoryActivity extends UserBaseListActivity implements IEdit
         intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
         intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION,
                 ListChooseActivity.ACTION_LIST_BUILDING);
+        intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_DEVICE_TYPE, Device.HEATER.getType());
         startActivity(intent);
     }
 

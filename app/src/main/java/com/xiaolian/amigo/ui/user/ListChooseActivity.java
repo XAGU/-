@@ -197,7 +197,11 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                         Long parentId = getIntent().getLongExtra(INTENT_KEY_LIST_CHOOSE_PARENT_ID, -1);
                         if (parentId != -1) {
                             // page size 为null 加载全部
-                            presenter.getDormitoryList(null, null, parentId);
+                            if (TextUtils.isEmpty(activitySrc)) {
+                                presenter.getDormitoryList(null, null, parentId, false);
+                            } else {
+                                presenter.getDormitoryList(null, null, parentId, true);
+                            }
                         }
                     }
 
