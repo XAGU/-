@@ -1,14 +1,17 @@
 package com.xiaolian.amigo.ui.base;
 
+import android.graphics.Bitmap;
+import android.net.http.SslError;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.webkit.JavascriptInterface;
-import android.webkit.WebChromeClient;
+import android.webkit.SslErrorHandler;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.util.CommonUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,24 +33,51 @@ public class WebActivity extends BaseActivity {
         ButterKnife.bind(this);
         String url = getIntent().getStringExtra(INTENT_KEY_URL);
         WebSettings webSettings = webView.getSettings();
-        webSettings.setJavaScriptEnabled(true);
         webSettings.setAllowFileAccess(true);
         webSettings.setDefaultTextEncodingName("UTF-8");
         webSettings.setUseWideViewPort(true);
         webSettings.setLoadWithOverviewMode(true);
         webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         webSettings.setTextZoom(100);
+//        webView.setWebChromeClient(new WebChromeClient());
+        webView.setWebViewClient(new WebViewClient(){
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                hideLoading();
+            }
+
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+                showLoading();
+            }
+
+            @Override
+            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+//                super.onReceivedSslError(view, handler, error);
+            }
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                String tag = "tel:";
+                if (url.contains(tag)) {
+                    String mobile = url.substring(url.lastIndexOf(":") + 1);
+                    CommonUtil.call(WebActivity.this, mobile);
+                    return true;
+                }
+                return super.shouldOverrideUrlLoading(view, url);
+            }
+
+        });
         webView.addJavascriptInterface(new WebAppInterface(), "WebViewInterface");
-        webView.setWebChromeClient(new MyWebChromeClient());
+        webSettings.setJavaScriptEnabled(true);
         webView.loadUrl(url);
     }
 
     @Override
     protected void setUp() {
 
-    }
-
-    class MyWebChromeClient extends WebChromeClient {
     }
 
     public class WebAppInterface {

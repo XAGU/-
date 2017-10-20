@@ -20,8 +20,10 @@ import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.RectF;
+import android.net.Uri;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.view.View;
@@ -137,5 +139,15 @@ public final class CommonUtil {
                 .getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("simple label", content.trim());
         cmb.setPrimaryClip(clip);
+    }
+
+    /**
+     * 调用拨号界面
+     * @param phone 电话号码
+     */
+    public static void call(Context context, String phone) {
+        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+phone));
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
     }
 }
