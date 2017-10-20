@@ -2,6 +2,7 @@ package com.xiaolian.amigo.ui.device.dispenser;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.DispenserWater;
@@ -58,7 +59,13 @@ public class DispenserActivity extends WaterDeviceBaseActivity<IDispenserPresent
 
     @Override
     protected String setSubtitleString() {
-        return "当前水温：" + temperature.getDesc();
+        return "切换饮水机";
+    }
+
+    @Override
+    protected void setTempText(TextView tempText) {
+        tempText.setVisibility(View.VISIBLE);
+        tempText.setText("当前水温：" + temperature.getDesc());
     }
 
     @Override

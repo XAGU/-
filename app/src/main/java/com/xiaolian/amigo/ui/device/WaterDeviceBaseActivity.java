@@ -92,6 +92,12 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     LinearLayout ll_error;
 
     /**
+     * 当前水温
+     */
+    @BindView(R.id.tv_temp)
+    TextView tv_temp;
+
+    /**
      * 开始使用页面
      */
     @BindView(R.id.ll_content_shower)
@@ -314,8 +320,12 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         if (bsv_wave != null && !bsv_wave.isRunning()) {
             bsv_wave.startAnim();
         }
+        setTempText(tv_temp);
         // 默认显示连接中状态
         showConnecting();
+    }
+
+    protected void setTempText(TextView tempText) {
     }
 
     protected abstract String setSubtitleString();
