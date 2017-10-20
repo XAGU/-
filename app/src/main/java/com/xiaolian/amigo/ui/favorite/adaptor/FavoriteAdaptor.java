@@ -11,6 +11,7 @@ import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.network.model.device.ScanDeviceGroup;
 import com.xiaolian.amigo.ui.favorite.intf.IFavoritePresenter;
 import com.xiaolian.amigo.ui.favorite.intf.IFavoriteView;
+import com.xiaolian.amigo.ui.user.adaptor.EditDormitoryAdaptor;
 
 import java.util.List;
 
@@ -26,6 +27,7 @@ public class FavoriteAdaptor extends RecyclerView.Adapter<FavoriteAdaptor.ViewHo
 
     private List<FavoriteWrapper> favorites;
     private IFavoritePresenter<IFavoriteView> presenter;
+    private OnItemLongClickListener listener;
 
     private FavoriteAdaptor(List<FavoriteWrapper> favorites) {
         this.favorites = favorites;
@@ -51,6 +53,13 @@ public class FavoriteAdaptor extends RecyclerView.Adapter<FavoriteAdaptor.ViewHo
             holder.deviceId = wrapper.getId();
             holder.index = position;
         }
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                listener.onItemLongClick();
+                return true;
+            }
+        });
     }
 
     @Override
@@ -81,6 +90,14 @@ public class FavoriteAdaptor extends RecyclerView.Adapter<FavoriteAdaptor.ViewHo
         void delete() {
             presenter.onDelete(deviceId, index);
         }
+    }
+
+    public void setOnItemLongClickListener(OnItemLongClickListener listener) {
+        this.listener = listener;
+    }
+
+    public interface OnItemLongClickListener {
+        void onItemLongClick();
     }
 
     @Data

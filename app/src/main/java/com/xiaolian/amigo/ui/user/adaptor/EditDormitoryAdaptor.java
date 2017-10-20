@@ -31,6 +31,7 @@ public class EditDormitoryAdaptor extends CommonAdapter<EditDormitoryAdaptor.Use
     private Context context;
     private IEditDormitoryPresenter<IEditDormitoryView> presenter;
     private OnItemClickListener listener;
+    private OnItemLongClickListener longClickListener;
 
     public EditDormitoryAdaptor(Context context, int layoutId, List<UserResidenceWrapper> datas) {
         super(context, layoutId, datas);
@@ -73,6 +74,13 @@ public class EditDormitoryAdaptor extends CommonAdapter<EditDormitoryAdaptor.Use
             context.startActivity(intent);
         });
         holder.getView(R.id.ll_dormitory).setOnClickListener(v -> listener.onItemClick(userResidenceWrapper, position));
+        holder.getView(R.id.ll_dormitory).setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                longClickListener.onItemLongClick();
+                return true;
+            }
+        });
         // 是否存在设备
         if (userResidenceWrapper.isExist()) {
             holder.getView(R.id.tv_device_exist).setVisibility(View.GONE);
@@ -85,9 +93,18 @@ public class EditDormitoryAdaptor extends CommonAdapter<EditDormitoryAdaptor.Use
         void onItemClick(UserResidenceWrapper userResidenceWrapper, int position);
     }
 
+    public interface OnItemLongClickListener {
+        void onItemLongClick();
+    }
+
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
     }
+
+    public void setOnItemLongClickListener(OnItemLongClickListener listener) {
+        this.longClickListener = listener;
+    }
+
 
     @Data
     public static class UserResidenceWrapper {

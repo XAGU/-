@@ -50,6 +50,12 @@ public class FavoriteActivity extends FavoriteBaseActivity implements IFavoriteV
     @Override
     protected void setRecyclerView(RecyclerView recyclerView) {
         adaptor = new FavoriteAdaptor(favorites, presenter);
+        adaptor.setOnItemLongClickListener(new FavoriteAdaptor.OnItemLongClickListener() {
+            @Override
+            public void onItemLongClick() {
+                onSuccess("请左滑操作");
+            }
+        });
         recyclerView.addItemDecoration(new RecycleViewDivider(this, RecycleViewDivider.VERTICAL_LIST));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adaptor);

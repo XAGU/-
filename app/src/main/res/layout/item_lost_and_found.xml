@@ -1,132 +1,159 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:swipe="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/sl_collection"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/toolBarMarginLeft"
-    android:background="@color/colorBackgroundWhite">
-
+    swipe:leftEdgeSwipeOffset="0dp"
+    swipe:rightEdgeSwipeOffset="0dp">
     <LinearLayout
-        android:id="@+id/ll_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:id="@+id/ll_operator"
+        android:layout_width="78dp"
+        android:layout_height="78dp"
+        android:background="@color/colorFullRed"
+        android:gravity="center">
+
         <TextView
-            android:id="@+id/tv_title"
+            android:id="@+id/tv_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/ContentText_main"
-            android:text="我丢失了一把雨伞"
-            android:textStyle="bold"
-            android:layout_gravity="center_vertical"/>
+            android:layout_gravity="center"
+            android:text="删除"
+            android:textColor="#fff"
+            android:textSize="14sp" />
 
-        <ImageView
-            android:id="@+id/iv_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/picture_light"
-            android:layout_marginLeft="7dp"
-            android:layout_gravity="center_vertical"/>
-
-        <ImageView
-            android:visibility="gone"
-            android:layout_marginLeft="5dp"
-            android:id="@+id/iv_icon"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/ic_lost"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        style="@style/ContentText_sub"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:text="我在食堂2楼丢了女朋友，有遇见的请与我联系"/>
-
-    <LinearLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp">
+        android:background="@color/colorBackgroundWhite"
+        android:orientation="vertical"
+        android:padding="@dimen/toolBarMarginLeft">
 
         <LinearLayout
-            android:id="@+id/ll_good"
-            android:layout_width="wrap_content"
+            android:id="@+id/ll_title"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/good_icon"
-                android:layout_gravity="center_vertical"/>
-
             <TextView
-                android:id="@+id/tv_good"
+                android:id="@+id/tv_title"
+                style="@style/ContentText_main"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:textColor="#222"
-                android:text="雨伞"
-                android:layout_marginLeft="5dp"
-                android:layout_gravity="center_vertical"/>
+                android:layout_gravity="center_vertical"
+                android:text="我丢失了一把雨伞"
+                android:textStyle="bold" />
 
+            <ImageView
+                android:id="@+id/iv_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="7dp"
+                android:src="@drawable/picture_light" />
+
+            <ImageView
+                android:id="@+id/iv_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="5dp"
+                android:src="@drawable/ic_lost"
+                android:visibility="gone" />
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/ll_location"
+        <TextView
+            android:id="@+id/tv_content"
+            style="@style/ContentText_sub"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginLeft="14dp">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/location_icon"
-                android:layout_gravity="center_vertical"/>
-
-            <TextView
-                android:id="@+id/tv_location"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:textColor="#222"
-                android:text="4号教学楼"
-                android:layout_marginLeft="5dp"
-                android:layout_gravity="center_vertical"/>
-
-        </LinearLayout>
+            android:layout_marginTop="10dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="我在食堂2楼丢了女朋友，有遇见的请与我联系" />
 
         <LinearLayout
-            android:id="@+id/ll_time"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginLeft="14dp">
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
 
-            <ImageView
+            <LinearLayout
+                android:id="@+id/ll_good"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/time_icon"
-                android:layout_gravity="center_vertical"/>
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/tv_time"
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/good_icon" />
+
+                <TextView
+                    android:id="@+id/tv_good"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="5dp"
+                    android:text="雨伞"
+                    android:textColor="#222"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:textColor="#222"
-                android:text="今天/12:30"
-                android:layout_marginLeft="5dp"
-                android:layout_gravity="center_vertical"/>
+                android:layout_marginLeft="14dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/location_icon" />
+
+                <TextView
+                    android:id="@+id/tv_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="5dp"
+                    android:text="4号教学楼"
+                    android:textColor="#222"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="14dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/time_icon" />
+
+                <TextView
+                    android:id="@+id/tv_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="5dp"
+                    android:text="今天/12:30"
+                    android:textColor="#222"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
 
         </LinearLayout>
-
     </LinearLayout>
-</LinearLayout>
+</com.daimajia.swipe.SwipeLayout>

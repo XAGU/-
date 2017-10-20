@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.enumeration.LostAndFound;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.util.ScreenUtils;
 import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundAdaptor;
@@ -57,7 +58,7 @@ public class MyPublishActivity extends LostAndFoundBaseListActivity implements I
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 Intent intent = new Intent(MyPublishActivity.this, LostAndFoundDetailActivity.class);
                 intent.putExtra(LostAndFoundDetailActivity.INTENT_KEY_LOST_AND_FOUND_DETAIL_ID, lostAndFounds.get(position).getId());
-                if (lostAndFounds.get(position).getType() == 2) {
+                if (lostAndFounds.get(position).getType() == LostAndFound.FOUND.getType()) {
                     intent.putExtra(LostAndFoundDetailActivity.INTENT_KEY_LOST_AND_FOUND_DETAIL_TYPE,
                             LostAndFoundDetailActivity.TYPE_FOUND);
                 } else {
@@ -69,7 +70,8 @@ public class MyPublishActivity extends LostAndFoundBaseListActivity implements I
 
             @Override
             public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
-                return false;
+                onSuccess("请左滑操作");
+                return true;
             }
         });
         recyclerView.setAdapter(adaptor);

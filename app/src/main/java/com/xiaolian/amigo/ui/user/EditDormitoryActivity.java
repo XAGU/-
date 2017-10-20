@@ -91,6 +91,12 @@ public class EditDormitoryActivity extends UserBaseListActivity implements IEdit
         adaptor.setOnItemClickListener((userResidenceWrapper, position) -> {
             presenter.updateResidenceId(userResidenceWrapper.getResidenceId());
         });
+        adaptor.setOnItemLongClickListener(new EditDormitoryAdaptor.OnItemLongClickListener() {
+            @Override
+            public void onItemLongClick() {
+                onSuccess("请左滑操作");
+            }
+        });
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setItemPrefetchEnabled(false);
         recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 14)));
