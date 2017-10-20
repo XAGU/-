@@ -25,6 +25,7 @@ import com.bumptech.glide.Glide;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.network.model.dto.response.DeviceCheckRespDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
 import com.xiaolian.amigo.ui.device.dispenser.ChooseDispenserActivity;
 import com.xiaolian.amigo.ui.device.dispenser.DispenserActivity;
@@ -554,6 +555,11 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         availabilityDialog.show();
     }
 
+    @Override
+    public void refreshProfile(PersonalExtraInfoDTO data) {
+        EventBus.getDefault().post(data);
+    }
+
     public void showPrepayDialog(int type, int prepaySize, DeviceCheckRespDTO data) {
         Log.d(TAG, "showPrepayDialog: " + type + "->" + prepaySize);
         if (prepayDialog == null) {
@@ -676,6 +682,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             case START_ACTIVITY:
                 startActivity((Class) event.getObject());
                 break;
+            case REFRESH_NOTICE:
+                presenter.getNoticeAmount();
+                break;
         }
     }
 
@@ -697,7 +706,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             GOTO_HEATER(1),
             GOTO_DISPENSER(2),
             GOTO_LOST_AND_FOUND(3),
-            START_ACTIVITY(4)
+            START_ACTIVITY(4),
+            REFRESH_NOTICE(5)
             ;
             private int type;
             EventType(int type) {

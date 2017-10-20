@@ -1,6 +1,5 @@
 package com.xiaolian.amigo.ui.main;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,9 +12,9 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.network.model.dto.response.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.ui.bonus.BonusActivity;
 import com.xiaolian.amigo.ui.favorite.FavoriteActivity;
-import com.xiaolian.amigo.ui.login.LoginActivity;
 import com.xiaolian.amigo.ui.main.adaptor.ProfileAdaptor;
 import com.xiaolian.amigo.ui.more.MoreActivity;
 import com.xiaolian.amigo.ui.order.OrderActivity;
@@ -25,6 +24,8 @@ import com.xiaolian.amigo.ui.wallet.WalletActivity;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,12 +39,14 @@ import butterknife.ButterKnife;
  */
 
 public class ProfileFragment2 extends Fragment {
+    ProfileAdaptor.Item wallet = new ProfileAdaptor.Item(R.drawable.profile_wallet, "我的钱包", WalletActivity.class);
+    ProfileAdaptor.Item bonus = new ProfileAdaptor.Item(R.drawable.profile_luck, "我的红包", BonusActivity.class);
 
     List<ProfileAdaptor.Item> items = new ArrayList<ProfileAdaptor.Item>() {
         {
             add(new ProfileAdaptor.Item(R.drawable.profile_edit, "编辑个人信息", EditProfileActivity.class));
-            add(new ProfileAdaptor.Item(R.drawable.profile_wallet, "我的钱包", WalletActivity.class));
-            add(new ProfileAdaptor.Item(R.drawable.profile_luck, "我的红包", BonusActivity.class));
+            add(wallet);
+            add(bonus);
             add(new ProfileAdaptor.Item(R.drawable.profile_order, "消费记录", OrderActivity.class));
             add(new ProfileAdaptor.Item(R.drawable.profile_favorite, "我收藏的设备", FavoriteActivity.class));
             add(new ProfileAdaptor.Item(R.drawable.profile_repair, "设备报修", RepairNavActivity.class));
@@ -81,11 +84,23 @@ public class ProfileFragment2 extends Fragment {
             }
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(adaptor);
         LayoutAnimationController animation = AnimationUtils
                 .loadLayoutAnimation(getContext(), R.anim.layout_animation_slide_left);
         recyclerView.setLayoutAnimation(animation);
+        EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.REFRESH_NOTICE));
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(PersonalExtraInfoDTO data) {
+        wallet.setBalance(data.getBalance());
+        bonus.setBonusAmount(data.getBonusAmount());
+        if (recyclerView.getAdapter() == null) {
+            recyclerView.setAdapter(adaptor);
+        } else {
+            adaptor.notifyDataSetChanged();
+        }
+    }
+
 
     @Override
     public void onHiddenChanged(boolean hidden) {
@@ -93,6 +108,18 @@ public class ProfileFragment2 extends Fragment {
         if (!hidden) {
             recyclerView.scheduleLayoutAnimation();
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
     }
 
 }

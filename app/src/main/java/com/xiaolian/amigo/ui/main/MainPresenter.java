@@ -76,6 +76,7 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
                     if (result.getData().getBonusAmount() != null) {
                         manager.setBonusAmount(result.getData().getBonusAmount());
                     }
+                    getMvpView().refreshProfile(result.getData());
                     getMvpView().showNoticeAmount(result.getData().getNotifyAmount());
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());

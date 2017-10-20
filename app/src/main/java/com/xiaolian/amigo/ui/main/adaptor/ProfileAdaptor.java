@@ -2,6 +2,7 @@ package com.xiaolian.amigo.ui.main.adaptor;
 
 import android.app.Activity;
 import android.content.Context;
+import android.view.View;
 
 import com.xiaolian.amigo.R;
 import com.zhy.adapter.recyclerview.CommonAdapter;
@@ -26,6 +27,15 @@ public class ProfileAdaptor extends CommonAdapter<ProfileAdaptor.Item> {
     protected void convert(ViewHolder holder, Item item, int position) {
         holder.setImageResource(R.id.imageLeft, item.getLeftImageId());
         holder.setText(R.id.textMid, item.getText());
+        if (item.getLeftImageId() == R.drawable.profile_wallet) {
+            holder.getView(R.id.tv_amount).setVisibility(View.VISIBLE);
+            holder.setText(R.id.tv_amount, "¥" + item.getBalance());
+        } else if (item.getLeftImageId() == R.drawable.profile_luck) {
+            holder.getView(R.id.tv_amount).setVisibility(View.VISIBLE);
+            holder.setText(R.id.tv_amount, String.valueOf(item.getBonusAmount()));
+        } else {
+            holder.getView(R.id.tv_amount).setVisibility(View.GONE);
+        }
     }
 
     @Data
@@ -39,5 +49,7 @@ public class ProfileAdaptor extends CommonAdapter<ProfileAdaptor.Item> {
         int leftImageId;
         String text;
         Class<? extends Activity> activityClazz;
+        String balance = "0";
+        int bonusAmount = 0;
     }
 }
