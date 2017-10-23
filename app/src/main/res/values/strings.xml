@@ -72,7 +72,7 @@
     <string name="repair_apply">报修申请</string>
     <string name="device_type">设备类型</string>
     <string name="repair_evaluation">报修评价</string>
-    <string name="device_repair">设备保修</string>
+    <string name="device_repair">设备报修</string>
     <string name="my_bonus">我的红包</string>
     <string name="exchange_bonus">兑换红包</string>
     <string name="order_record">消费记录</string>

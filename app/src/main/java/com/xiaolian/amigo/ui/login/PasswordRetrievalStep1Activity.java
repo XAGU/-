@@ -128,11 +128,7 @@ public class PasswordRetrievalStep1Activity extends LoginBaseActivity implements
      */
     @OnClick(R.id.bt_submit)
     void jump2Step2() {
-        Intent intent = new Intent();
-        intent.setClass(this, PasswordRetrievalStep2Activity.class);
-        intent.putExtra(PasswordRetrievalStep2Activity.INTENT_KEY_PASSWORD_RETRIEVAL_CODE, et_verificationCode.getText().toString());
-        intent.putExtra(PasswordRetrievalStep2Activity.INTENT_KEY_PASSWORD_RETRIEVAL_MOBILE, et_mobile.getText().toString());
-        startActivity(intent);
+        presenter.checkVerification(et_mobile.getText().toString(), et_verificationCode.getText().toString());
     }
 
     @OnClick(R.id.iv_back)
@@ -150,7 +146,11 @@ public class PasswordRetrievalStep1Activity extends LoginBaseActivity implements
 
     @Override
     public void next() {
-
+        Intent intent = new Intent();
+        intent.setClass(this, PasswordRetrievalStep2Activity.class);
+        intent.putExtra(PasswordRetrievalStep2Activity.INTENT_KEY_PASSWORD_RETRIEVAL_CODE, et_verificationCode.getText().toString());
+        intent.putExtra(PasswordRetrievalStep2Activity.INTENT_KEY_PASSWORD_RETRIEVAL_MOBILE, et_mobile.getText().toString());
+        startActivity(intent);
     }
 
     @Override

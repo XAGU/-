@@ -145,7 +145,7 @@ public class RepairAdaptor extends RecyclerView.Adapter<RepairAdaptor.ViewHolder
         String repairmanName;
         // 维修人员Id
         Long repairmanId;
-        // 保修单id
+        // 报修单id
         Long id;
         // 设备类型
         Integer deviceType;

@@ -26,7 +26,7 @@ public interface IRepairApi {
     @POST("/repair/personal/list")
     Observable<ApiResult<RepairRespDTO>> queryRepairs(@Body RepairReqDTO reqDTO);
 
-    // 查询保修单详情
+    // 查询报修单详情
     @POST("/repair/one")
     Observable<ApiResult<RepairDetailRespDTO>> queryRepairDetail(@Body RepairDetailReqDTO reqDTO);
 
