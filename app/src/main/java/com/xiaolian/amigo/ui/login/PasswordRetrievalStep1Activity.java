@@ -149,6 +149,11 @@ public class PasswordRetrievalStep1Activity extends LoginBaseActivity implements
     }
 
     @Override
+    public void next() {
+
+    }
+
+    @Override
     public void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         if (timer != null) {

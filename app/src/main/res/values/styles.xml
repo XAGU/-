@@ -323,4 +323,12 @@
         <item name="android:textSize">28sp</item>
     </style>
 
+    <style name="EditTextLogin">
+        <item name="android:textColor">@color/colorDark2</item>
+        <item name="android:textColorHint">@color/colorDarkB</item>
+        <item name="android:textCursorDrawable">@drawable/cursor</item>
+        <item name="android:textSize">@dimen/login_edit_text_size</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 </resources>

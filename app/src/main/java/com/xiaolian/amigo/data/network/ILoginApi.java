@@ -40,4 +40,8 @@ public interface ILoginApi {
     // 获取验证码
     @POST("/login/verification/one")
     Observable<ApiResult<BooleanRespDTO>> getVerification(@Body VerificationCodeGetReqDTO body);
+
+    // 校验重置密码验证码
+    @POST("/login/password/reset/check")
+    Observable<ApiResult<BooleanRespDTO>> verificationResetCheck(@Body VerificationCodeCheckReqDTO body);
 }

@@ -2,6 +2,7 @@ package com.xiaolian.amigo.ui.login;
 
 import com.xiaolian.amigo.data.manager.intf.ILoginDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.dto.request.VerificationCodeCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.VerificationCodeGetReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
@@ -37,6 +38,24 @@ public class PasswordRetrievalStep1Presenter<V extends IPasswordRetrievalStep1Vi
                 if (null == result.getError()) {
                     getMvpView().onSuccess("验证码发送成功");
                     getMvpView().startTimer();
+                } else {
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+        });
+    }
+
+    @Override
+    public void checkVerification(String mobile, String code) {
+        VerificationCodeCheckReqDTO reqDTO = new VerificationCodeCheckReqDTO();
+        reqDTO.setCode(code);
+        reqDTO.setMobile(mobile);
+        addObserver(manager.verificationResetCheck(reqDTO), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
+
+            @Override
+            public void onReady(ApiResult<BooleanRespDTO> result) {
+                if (null == result.getError()) {
+                    getMvpView().next();
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }

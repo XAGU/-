@@ -93,7 +93,7 @@ public class PasswordRetrievalStep2Activity extends LoginBaseActivity implements
      */
     void toggleLoginBtnStatus() {
         // 两次密码输入一致时才会触发状态变更
-        boolean condition = !TextUtils.isEmpty(et_userpwd.getText()) && !TextUtils.isEmpty(et_confirm_userpwd.getText())
+        boolean condition = et_userpwd.length() >= 6 && !TextUtils.isEmpty(et_userpwd.getText()) && !TextUtils.isEmpty(et_confirm_userpwd.getText())
                 && et_userpwd.getText().toString().equals(et_confirm_userpwd.getText().toString());
         bt_submit.setEnabled(condition);
         bt_submit.getBackground().setAlpha(condition ? 255 : 100);

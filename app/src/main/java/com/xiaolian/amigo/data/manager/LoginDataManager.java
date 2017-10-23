@@ -64,6 +64,11 @@ public class LoginDataManager implements ILoginDataManager {
     }
 
     @Override
+    public Observable<ApiResult<BooleanRespDTO>> verificationResetCheck(@Body VerificationCodeCheckReqDTO body) {
+        return loginApi.verificationResetCheck(body);
+    }
+
+    @Override
     public String getToken() {
         return sharedPreferencesHelp.getToken();
     }

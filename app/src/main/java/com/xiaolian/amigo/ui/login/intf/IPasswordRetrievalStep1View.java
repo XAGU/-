@@ -10,4 +10,6 @@ import com.xiaolian.amigo.ui.base.intf.IBaseView;
 
 public interface IPasswordRetrievalStep1View extends IBaseView{
     void startTimer();
+
+    void next();
 }

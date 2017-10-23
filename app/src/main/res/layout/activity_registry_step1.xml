@@ -29,10 +29,8 @@
         android:inputType="phone"
         android:maxLength="@integer/phone_max_length"
         android:maxLines="1"
-        android:textColor="#222"
-        android:textColorHint="#bbb"
-        android:textCursorDrawable="@drawable/cursor"
-        android:textSize="@dimen/login_hint_text_size" />
+        style="@style/EditTextLogin"
+        />
 
     <TextView
         android:layout_width="wrap_content"
@@ -58,10 +56,8 @@
             android:imeOptions="actionNext"
             android:inputType="number"
             android:maxLines="1"
-            android:textColor="#222"
-            android:textColorHint="#bbb"
-            android:textCursorDrawable="@drawable/cursor"
-            android:textSize="@dimen/login_edit_text_size" />
+            style="@style/EditTextLogin"
+            />
 
         <Button
             style="?android:attr/borderlessButtonStyle"

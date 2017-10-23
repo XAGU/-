@@ -10,4 +10,7 @@ import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 
 public interface IPasswordRetrievalStep1Presenter<V extends IPasswordRetrievalStep1View> extends IBasePresenter<V> {
     void getVerification(String mobile);
+
+    // 校验验证码
+    void checkVerification(String mobile, String code);
 }

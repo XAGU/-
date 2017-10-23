@@ -31,10 +31,8 @@
         android:maxLength="@integer/password_max_length"
         android:maxLines="1"
         android:gravity="center_vertical"
-        android:textColor="#222"
-        android:textColorHint="#bbb"
-        android:textCursorDrawable="@drawable/cursor"
-        android:textSize="@dimen/login_edit_text_size" />
+        style="@style/EditTextLogin"
+        />
 
     <TextView
         android:layout_width="wrap_content"

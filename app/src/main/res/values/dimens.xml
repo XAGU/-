@@ -19,7 +19,7 @@
     <dimen name="verification_height">29dp</dimen>
     <dimen name="login_hint_text_size">14sp</dimen>
     <dimen name="verification_text_size">11sp</dimen>
-    <dimen name="login_edit_text_size">14sp</dimen>
+    <dimen name="login_edit_text_size">22sp</dimen>
     
     <!--toolbar-->
     <dimen name="toolBarMarginLeft">21dp</dimen>
