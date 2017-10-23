@@ -241,6 +241,12 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         ImageView imageView = btSwitch;
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if (current == 0) {
+            // 未登录跳转到登录页
+            if (!presenter.isLogin()) {
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+                return;
+            }
             if (profileFragment == null) {
                 profileFragment = new ProfileFragment2();
             }

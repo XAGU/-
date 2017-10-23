@@ -102,6 +102,8 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
 
         presenter.onAttach(this);
 
+        tv_location.requestFocus();
+
         viewList = new ArrayList<TextView>(){
             {
                 add(et_tel);

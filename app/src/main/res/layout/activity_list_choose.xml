@@ -57,10 +57,9 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <View
-            android:visibility="gone"
+            android:visibility="visible"
             android:layout_width="match_parent"
             android:layout_height="1dip"
-            android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/mainMarginLeftRight"
             android:layout_marginRight="@dimen/mainMarginLeftRight"
             android:background="#eee" />
@@ -72,7 +71,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/mainMarginLeftRight"
             android:layout_marginRight="@dimen/mainMarginLeftRight" />
-
 
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

@@ -306,4 +306,11 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <!--充值提现金额样式-->
+    <style name="TextWalletDetailMoney">
+        <item name="android:textColor">@color/colorDark2</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">28sp</item>
+    </style>
+
 </resources>

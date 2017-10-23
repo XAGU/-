@@ -2,6 +2,7 @@ package com.xiaolian.amigo.ui.repair;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -13,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
+import com.xiaolian.amigo.data.enumeration.EvaluateStatus;
 import com.xiaolian.amigo.data.enumeration.RepairStatus;
 import com.xiaolian.amigo.data.network.model.dto.response.RepairDetailRespDTO;
 import com.xiaolian.amigo.ui.base.WebActivity;
@@ -64,6 +66,14 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
     TextView left_oper;
     @BindView(R.id.right_oper)
     TextView right_oper;
+    @BindView(R.id.ll_extra)
+    LinearLayout ll_extra;
+    @BindView(R.id.tv_extra_title)
+    TextView tv_extra_title;
+    @BindView(R.id.tv_extra_content1)
+    TextView tv_extra_content1;
+    @BindView(R.id.tv_extra_content2)
+    TextView tv_extra_content2;
 
     List<RepairProgressAdaptor.ProgressWrapper> progresses = new ArrayList<>();
     Long detailId;
@@ -193,6 +203,20 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
                     break;
             }
         });
+        if (EvaluateStatus.getStatus(detail.getRated()) == EvaluateStatus.EVALUATE_DONE) {
+            left_oper.setEnabled(false);
+            left_oper.setTextColor(ContextCompat.getColor(this, R.color.colorDark6));
+            ll_extra.setVisibility(View.VISIBLE);
+            tv_extra_title.setText("评价信息");
+            tv_extra_content1.setVisibility(View.VISIBLE);
+            tv_extra_content1.setText(detail.getScore() + "分");
+            tv_extra_content2.setText(detail.getComment());
+        }
+        if (status == RepairStatus.AUDIT_FAIL) {
+            ll_extra.setVisibility(View.VISIBLE);
+            tv_extra_title.setText("客服回复");
+            tv_extra_content2.setText(detail.getReply());
+        }
     }
 
     @Override

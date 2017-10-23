@@ -32,4 +32,10 @@ public class RepairDetailRespDTO {
     private String reply;
     // 客服电话
     private String csMobile;
+    // 评价状态
+    private Integer rated;
+    // 评分
+    private Integer score;
+    // 评价
+    private String comment;
 }
