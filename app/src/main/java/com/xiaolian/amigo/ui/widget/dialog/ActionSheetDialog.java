@@ -2,6 +2,7 @@ package com.xiaolian.amigo.ui.widget.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.LayoutRes;
 import android.view.Display;
@@ -68,7 +69,7 @@ public class ActionSheetDialog {
         txt_cancel.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
+                dialog.cancel();
             }
         });
 
@@ -276,6 +277,14 @@ public class ActionSheetDialog {
             mListView.addFooterView(view);
         }
         mListView.setAdapter(dialogItemAdapter);
+    }
+
+    public void setOnDismissListener(DialogInterface.OnDismissListener listener) {
+        dialog.setOnDismissListener(listener);
+    }
+
+    public void setOnCancalListener(DialogInterface.OnCancelListener listener) {
+        dialog.setOnCancelListener(listener);
     }
 
     public void show() {

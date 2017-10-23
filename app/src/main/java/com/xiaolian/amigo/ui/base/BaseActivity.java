@@ -19,6 +19,7 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -197,13 +198,21 @@ public abstract class BaseActivity extends SwipeBackActivity
                 }
             }
         } else if (resultCode == UCrop.RESULT_ERROR) {
+            if (emptyImageCallback != null) {
+                emptyImageCallback.callback();
+            }
             if (requestCode == UCrop.REQUEST_CROP) {
                 showMessage("剪裁失败");
+            }
+        } else {
+            if (emptyImageCallback != null) {
+                emptyImageCallback.callback();
             }
         }
     }
 
     private ImageCallback imageCallback;
+    protected EmptyImageCallback emptyImageCallback;
 
     public void getImage(ImageCallback callback) {
         imageCallback = callback;
@@ -231,11 +240,22 @@ public abstract class BaseActivity extends SwipeBackActivity
                                         }
                                     }));
         }
+        actionSheetDialog.setOnCancalListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                if (emptyImageCallback != null) {
+                    emptyImageCallback.callback();
+                }
+            }
+        });
         actionSheetDialog.show();
     }
 
     public interface ImageCallback {
         void callback(Uri imageUri);
+    }
+    public interface EmptyImageCallback {
+        void callback();
     }
 
 
