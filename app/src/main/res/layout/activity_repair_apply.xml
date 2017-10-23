@@ -5,12 +5,6 @@
     android:background="@color/colorBackgroundWhite"
     android:orientation="vertical">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:overScrollMode="never"
-        android:scrollbars="none">
-
         <LinearLayout
             android:id="@+id/ll_content"
             android:layout_width="match_parent"
@@ -199,15 +193,19 @@
 
         </LinearLayout>
 
-    </ScrollView>
+    <View
+        android:id="@+id/v_holder"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/mainMarginLeftRight"/>
 
     <Button
+        android:layout_above="@id/v_holder"
         android:id="@+id/bt_submit"
         style="@style/Button"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="21dp"
         android:layout_marginTop="14dp"
         android:background="@drawable/button_disable"
         android:enabled="true"
         android:text="提交申请" />
+
 </RelativeLayout>

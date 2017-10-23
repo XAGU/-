@@ -15,6 +15,7 @@ import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.enumeration.Payment;
 import com.xiaolian.amigo.data.enumeration.TradeError;
 import com.xiaolian.amigo.data.network.model.dto.response.OrderDetailRespDTO;
+import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.ui.device.intf.IDeviceOrderPresenter;
 import com.xiaolian.amigo.ui.device.intf.IDeviceOrderView;
 import com.xiaolian.amigo.ui.main.MainActivity;
@@ -114,7 +115,8 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
      */
     @OnClick(R.id.tv_complaint)
     public void complaint() {
-        // TODO 投诉
+        startActivity(new Intent(this, WebActivity.class)
+                .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_COMPLAINT));
     }
 
     /**

@@ -48,10 +48,17 @@ public class MoreAdapter extends CommonAdapter<MoreAdapter.MoreModel> {
     public static class MoreModel {
         String content;
         Class clz;
+        String extra;
 
         public MoreModel(String content, Class clz) {
             this.content = content;
             this.clz = clz;
+        }
+
+        public MoreModel(String content, Class clz, String extra) {
+            this.content = content;
+            this.clz = clz;
+            this.extra = extra;
         }
     }
 }

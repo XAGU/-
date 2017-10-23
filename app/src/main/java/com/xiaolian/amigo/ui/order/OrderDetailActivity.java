@@ -11,6 +11,7 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.enumeration.Payment;
 import com.xiaolian.amigo.data.network.model.order.Order;
+import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.ui.order.intf.IOrderDetailView;
 import com.xiaolian.amigo.ui.order.intf.IOrderView;
 import com.xiaolian.amigo.util.CommonUtil;
@@ -65,7 +66,8 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
      */
     @OnClick(R.id.tv_complaint)
     public void complaint() {
-        // TODO 投诉
+        startActivity(new Intent(this, WebActivity.class)
+                .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_COMPLAINT));
     }
 
     /**

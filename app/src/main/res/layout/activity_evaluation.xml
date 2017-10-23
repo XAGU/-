@@ -1,156 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackgroundGray"
-    android:orientation="vertical"
-    >
-    <android.support.v4.widget.NestedScrollView
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ll_desc"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="76dp"
+        android:background="@color/colorBackgroundWhite"
+        android:paddingLeft="14dp">
+
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            >
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical">
 
             <LinearLayout
-                android:paddingLeft="14dp"
-                android:id="@+id/ll_desc"
-                android:layout_width="match_parent"
-                android:layout_height="76dp"
-                android:background="@color/colorBackgroundWhite"
-                >
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical">
-
-                    <LinearLayout
-                        android:id="@+id/ll_device"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/tv_device_type"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="热水器："
-                            android:textColor="#222"
-                            android:textSize="12sp" />
-
-                        <TextView
-                            android:id="@+id/tv_location"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="男寝1楼202"
-                            android:textColor="#222"
-                            android:textSize="12sp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/ll_device"
-                        android:layout_marginTop="9dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="报修时间："
-                            android:textColor="#222"
-                            android:textSize="12sp" />
-
-                        <TextView
-                            android:id="@+id/tv_time"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="2020-10-10"
-                            android:textColor="#222"
-                            android:textSize="12sp" />
-
-                    </LinearLayout>
-
-                </RelativeLayout>
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:id="@+id/ll_evaluation"
-                android:layout_below="@id/ll_desc"
+                android:id="@+id/ll_device"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
-                android:background="@color/colorBackgroundWhite"
-                android:orientation="vertical"
-                android:paddingBottom="21dp"
-                android:paddingLeft="14dp"
-                android:paddingRight="14dp"
-                android:paddingTop="21dp">
+                android:orientation="horizontal">
 
                 <TextView
-                    style="@style/ContentText_main"
+                    android:id="@+id/tv_device_type"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="维修员评价" />
+                    android:text="热水器："
+                    android:textColor="#222"
+                    android:textSize="12sp" />
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/tv_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        style="@style/ContentText_main"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="维修员：" />
-
-                    <TextView
-                        android:id="@+id/tv_repair_man"
-                        style="@style/ContentText_main"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="xxx" />
-
-                </LinearLayout>
-
-                <android.support.v7.widget.RecyclerView
-                    android:layout_marginTop="14dp"
-                    android:id="@+id/rv_evaluations"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_stars"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="14dp" />
-
-                <EditText
-                    android:id="@+id/et_content"
-                    style="@style/EditText_No_Border_Sm"
-                    android:layout_width="match_parent"
-                    android:layout_height="72dp"
-                    android:layout_marginTop="14dp"
-                    android:background="#f5f5f5"
-                    android:gravity="start"
-                    android:inputType="text"
-                    android:hint="请输入评价内容"
-                    android:padding="10dp" />
+                    android:text="男寝1楼202"
+                    android:textColor="#222"
+                    android:textSize="12sp" />
 
             </LinearLayout>
-            <Button
-                android:layout_below="@id/ll_evaluation"
-                android:id="@+id/bt_submit"
-                style="@style/Button"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="21dp"
-                android:enabled="false"
-                android:text="确认评价" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ll_device"
+                android:layout_marginTop="9dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="报修时间："
+                    android:textColor="#222"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tv_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2020-10-10"
+                    android:textColor="#222"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
         </RelativeLayout>
-    </android.support.v4.widget.NestedScrollView>
-</LinearLayout>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ll_evaluation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ll_desc"
+        android:layout_marginTop="14dp"
+        android:background="@color/colorBackgroundWhite"
+        android:orientation="vertical"
+        android:paddingBottom="21dp"
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp"
+        android:paddingTop="21dp">
+
+        <TextView
+            style="@style/ContentText_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="维修员评价" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/ContentText_main"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="维修员：" />
+
+            <TextView
+                android:id="@+id/tv_repair_man"
+                style="@style/ContentText_main"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="xxx" />
+
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_evaluations"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_stars"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp" />
+
+        <EditText
+            android:id="@+id/et_content"
+            style="@style/EditText_No_Border_Sm"
+            android:layout_width="match_parent"
+            android:layout_height="72dp"
+            android:layout_marginTop="14dp"
+            android:background="#f5f5f5"
+            android:gravity="start"
+            android:hint="请输入评价内容"
+            android:inputType="text"
+            android:padding="10dp" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_marginTop="@dimen/mainMarginLeftRight"
+        android:id="@+id/v_holder"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/mainMarginLeftRight"/>
+
+    <Button
+        android:layout_above="@id/v_holder"
+        android:id="@+id/bt_submit"
+        style="@style/Rect_button"
+        android:enabled="false"
+        android:text="确认评价" />
+</RelativeLayout>

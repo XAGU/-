@@ -37,6 +37,13 @@ public final class Constant {
 //    public static final String H5_SERVER = "http://10.0.0.5:5000";
     // H5帮助中心
     public static final String H5_HELP = H5_SERVER + "/help/list";
+    // H5用户协议
+    public static final String H5_AGREEMENT = H5_SERVER + "/agreement";
+    // H5投诉建议
+    public static final String H5_COMPLAINT = H5_SERVER + "/complaint";
+    // H5意见反馈
+    public static final String H5_FEEDBACK = H5_SERVER + "/feedback";
+
 
     // activity之间跳转携带的bundle id key
     public static final String BUNDLE_ID = "id";

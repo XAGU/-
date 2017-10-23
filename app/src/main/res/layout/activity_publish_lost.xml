@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         android:background="@color/colorBackgroundWhite"
         android:orientation="vertical"
-        android:paddingBottom="14dp"
+        android:paddingBottom="@dimen/mainMarginLeftRight"
         android:paddingLeft="@dimen/mainMarginLeftRight"
         android:paddingRight="@dimen/mainMarginLeftRight"
         >

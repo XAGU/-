@@ -34,9 +34,9 @@ public class MoreActivity extends MoreBaseActivity implements IMoreView {
 
     List<MoreAdapter.MoreModel> items = new ArrayList<MoreAdapter.MoreModel>() {
         {
-            add(new MoreAdapter.MoreModel("帮助中心", WebActivity.class));
-            add(new MoreAdapter.MoreModel("意见反馈", null));
-            add(new MoreAdapter.MoreModel("用户协议", null));
+            add(new MoreAdapter.MoreModel("帮助中心", WebActivity.class, Constant.H5_HELP));
+            add(new MoreAdapter.MoreModel("意见反馈", WebActivity.class, Constant.H5_FEEDBACK));
+            add(new MoreAdapter.MoreModel("用户协议", WebActivity.class, Constant.H5_AGREEMENT));
             add(new MoreAdapter.MoreModel("关于我们", AboutUsActivity.class));
             add(new MoreAdapter.MoreModel("\"校OK\"账户迁移", null));
         }
@@ -63,7 +63,8 @@ public class MoreActivity extends MoreBaseActivity implements IMoreView {
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 Class clz = items.get(position).getClz();
                 if (clz != null) {
-                    startActivity(new Intent(getApplicationContext(), clz).putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_HELP));
+                    startActivity(new Intent(getApplicationContext(), clz)
+                            .putExtra(WebActivity.INTENT_KEY_URL, items.get(position).getExtra()));
                 }
             }
 
