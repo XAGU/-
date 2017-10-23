@@ -3,6 +3,7 @@ package com.xiaolian.amigo.data.prefs;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.provider.Settings;
+import android.text.TextUtils;
 
 import com.xiaolian.amigo.data.network.model.user.User;
 import com.xiaolian.amigo.di.ApplicationContext;
@@ -29,6 +30,8 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     private static final String PREF_CMD_CONNECT_PREFIX = "PREF_CMD_CONNECT_";
     private static final String PREF_CMD_CLOSE_PREFIX = "PREF_CMD_CLOSE_";
     private static final String PREF_LAST_CONNECT_TIME = "PREF_LAST_CONNECT_TIME";
+    private static final String PREF_KEY_BALANCE = "PREF_KEY_BALANCE";
+    private static final String PREF_KEY_BONUS = "PREF_KEY_BONUS";
 
     private String tokenHolder;
     private String deviceTokenHolder;
@@ -36,6 +39,7 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
 
     private boolean isShowUrgencyNotify = true;
     private int bonusAmount = 0;
+    private String balance = "";
 
     private final SharedPreferences mSharedPreferences;
 
@@ -124,11 +128,29 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     @Override
     public void setBonusAmount(int amount) {
         this.bonusAmount = amount;
+        mSharedPreferences.edit().putInt(PREF_KEY_BONUS, amount).apply();
     }
 
     @Override
     public int getBonusAmount() {
+        if (bonusAmount == 0) {
+            bonusAmount = mSharedPreferences.getInt(PREF_KEY_BONUS, 0);
+        }
         return this.bonusAmount;
+    }
+
+    @Override
+    public void setBalance(String balance) {
+        this.balance = balance;
+        mSharedPreferences.edit().putString(PREF_KEY_BALANCE, balance).apply();
+    }
+
+    @Override
+    public String getBalance() {
+        if (TextUtils.isEmpty(balance)) {
+            balance = mSharedPreferences.getString(PREF_KEY_BALANCE, "");
+        }
+        return this.balance;
     }
 
     @Override
@@ -147,6 +169,7 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
         tokenHolder = null;
         userHolder = null;
         bonusAmount = 0;
+        balance = "";
         isShowUrgencyNotify = true;
     }
 

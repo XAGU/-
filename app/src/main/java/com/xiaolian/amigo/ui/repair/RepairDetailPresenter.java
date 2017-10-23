@@ -18,8 +18,10 @@ package com.xiaolian.amigo.ui.repair;
 
 import com.xiaolian.amigo.data.manager.intf.IRepairDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.dto.request.RemindReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.RepairDetailReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.RepairReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.RepairDetailRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.RepairRespDTO;
 import com.xiaolian.amigo.data.network.model.repair.Repair;
@@ -65,6 +67,28 @@ public class RepairDetailPresenter<V extends IRepairDetailView> extends BasePres
                     }
                     getMvpView().addMoreProgresses(wrappers);
                     getMvpView().render(result.getData());
+                }
+            }
+        });
+    }
+
+    @Override
+    public void remind(Long sourceId) {
+        RemindReqDTO reqDTO = new RemindReqDTO();
+        reqDTO.setSourceId(sourceId);
+        reqDTO.setType(2);
+        addObserver(manager.remind(reqDTO), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
+
+            @Override
+            public void onReady(ApiResult<BooleanRespDTO> result) {
+                if (null == result.getError()) {
+                    if (result.getData().isResult()) {
+                        getMvpView().onSuccess("提醒客服成功");
+                    } else {
+                        getMvpView().onError("提醒客服失败");
+                    }
+                } else {
+                    getMvpView().onError(result.getError().getDisplayMessage());
                 }
             }
         });

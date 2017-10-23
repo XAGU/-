@@ -15,6 +15,7 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.enumeration.RepairStatus;
 import com.xiaolian.amigo.data.network.model.dto.response.RepairDetailRespDTO;
+import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.ui.widget.RecycleViewDivider;
 import com.xiaolian.amigo.ui.repair.adaptor.RepairProgressAdaptor;
 import com.xiaolian.amigo.ui.repair.intf.IRepairDetailPresenter;
@@ -164,8 +165,31 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
                     startActivity(intent);
                     break;
                 case AUDIT_FAIL:
+                    startActivity(new Intent(RepairDetailActivity.this, WebActivity.class)
+                            .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_HELP));
+                    break;
+                case AUDIT_PENDING:
+                case REPAIR_PENDING:
+                case REPAIRING:
+                    presenter.remind(detail.getId());
                     break;
                 default:
+                    break;
+            }
+        });
+        right_oper.setOnClickListener(v -> {
+            switch (status) {
+                case REPAIR_DONE:
+                    // TODO 我要投诉
+                    break;
+                case REPAIR_PENDING:
+                case REPAIRING:
+                case AUDIT_PENDING:
+                    startActivity(new Intent(RepairDetailActivity.this, WebActivity.class)
+                            .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_HELP));
+                    break;
+                case AUDIT_FAIL:
+                    CommonUtil.call(RepairDetailActivity.this, detail.getCsMobile());
                     break;
             }
         });

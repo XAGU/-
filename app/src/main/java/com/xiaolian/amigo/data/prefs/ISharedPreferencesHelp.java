@@ -24,6 +24,10 @@ public interface ISharedPreferencesHelp {
 
     int getBonusAmount();
 
+    void setBalance(String balance);
+
+    String getBalance();
+
     void logout();
 
     // current http device token

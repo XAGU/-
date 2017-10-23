@@ -25,4 +25,7 @@ public interface IRepairDetailPresenter<V extends IRepairDetailView> extends IBa
     // 查询报修单详情
     void requestRepailDetail(Long id);
 
+    // 提醒客服
+    void remind(Long sourceId);
+
 }

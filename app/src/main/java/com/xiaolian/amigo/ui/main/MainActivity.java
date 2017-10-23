@@ -41,6 +41,7 @@ import com.xiaolian.amigo.ui.widget.dialog.AvailabilityDialog;
 import com.xiaolian.amigo.ui.widget.dialog.NoticeAlertDialog;
 import com.xiaolian.amigo.ui.widget.dialog.PrepayDialog;
 import com.xiaolian.amigo.util.CommonUtil;
+import com.xiaolian.amigo.util.NetworkUtil;
 import com.youth.banner.Banner;
 
 import org.greenrobot.eventbus.EventBus;
@@ -557,8 +558,25 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public void refreshProfile(PersonalExtraInfoDTO data) {
+        presenter.setBalance(data.getBalance());
+        presenter.setBonusAmount(data.getBonusAmount());
         EventBus.getDefault().post(data);
     }
+
+    public void refreshProfile() {
+        PersonalExtraInfoDTO data = new PersonalExtraInfoDTO();
+        data.setBalance(presenter.getBalance());
+        data.setBonusAmount(presenter.getBonusAmount());
+        EventBus.getDefault().post(data);
+    }
+
+//    public String getBalance() {
+//        presenter.getBalance();
+//    }
+//
+//    public int getBonusAmount() {
+//        presenter.getBonusAmount();
+//    }
 
     public void showPrepayDialog(int type, int prepaySize, DeviceCheckRespDTO data) {
         Log.d(TAG, "showPrepayDialog: " + type + "->" + prepaySize);
@@ -683,7 +701,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 startActivity((Class) event.getObject());
                 break;
             case REFRESH_NOTICE:
-                presenter.getNoticeAmount();
+                refreshProfile();
                 break;
         }
     }

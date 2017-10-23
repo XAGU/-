@@ -20,6 +20,14 @@ public interface IMainPresenter<V extends IMainView> extends IBasePresenter<V> {
 
     void getNoticeAmount();
 
+    void setBalance(String balance);
+
+    String getBalance();
+
+    void setBonusAmount(int bonusAmount);
+
+    int getBonusAmount();
+
     void readUrgentNotify(Long id);
 
     boolean isShowUrgencyNotify();

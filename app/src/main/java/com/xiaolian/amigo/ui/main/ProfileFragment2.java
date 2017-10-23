@@ -87,7 +87,6 @@ public class ProfileFragment2 extends Fragment {
         LayoutAnimationController animation = AnimationUtils
                 .loadLayoutAnimation(getContext(), R.anim.layout_animation_slide_left);
         recyclerView.setLayoutAnimation(animation);
-        EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.REFRESH_NOTICE));
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -114,6 +113,7 @@ public class ProfileFragment2 extends Fragment {
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
+        EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.REFRESH_NOTICE));
     }
 
     @Override

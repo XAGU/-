@@ -91,6 +91,16 @@ public class MainDataManager implements IMainDataManager {
     }
 
     @Override
+    public void setBalance(String balance) {
+        sharedPreferencesHelp.setBalance(balance);
+    }
+
+    @Override
+    public String getBalance() {
+        return sharedPreferencesHelp.getBalance();
+    }
+
+    @Override
     public Observable<ApiResult<OrderRespDTO>> queryOrders(@Body OrderReqDTO reqDTO) {
         return orderApi.queryOrders(reqDTO);
     }

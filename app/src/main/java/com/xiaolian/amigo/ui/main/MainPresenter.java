@@ -86,6 +86,26 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
     }
 
     @Override
+    public void setBalance(String balance) {
+        manager.setBalance(balance);
+    }
+
+    @Override
+    public String getBalance() {
+        return manager.getBalance();
+    }
+
+    @Override
+    public void setBonusAmount(int bonusAmount) {
+        manager.setBonusAmount(bonusAmount);
+    }
+
+    @Override
+    public int getBonusAmount() {
+        return manager.getBonusAmount();
+    }
+
+    @Override
     public void readUrgentNotify(Long id) {
         if (TextUtils.isEmpty(manager.getToken())) {
             return;

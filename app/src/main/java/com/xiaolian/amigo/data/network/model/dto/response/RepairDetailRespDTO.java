@@ -28,4 +28,8 @@ public class RepairDetailRespDTO {
     private Long id;
     // 维修人员名称
     private String repairmanName;
+    // 回复
+    private String reply;
+    // 客服电话
+    private String csMobile;
 }

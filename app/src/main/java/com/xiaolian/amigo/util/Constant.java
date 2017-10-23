@@ -34,6 +34,7 @@ public final class Constant {
 
     // H5地址
     public static final String H5_SERVER = "https://c.h5.xiaolian365.com";
+//    public static final String H5_SERVER = "http://10.0.0.5:5000";
     // H5帮助中心
     public static final String H5_HELP = H5_SERVER + "/help/list";
 

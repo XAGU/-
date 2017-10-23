@@ -35,6 +35,10 @@ public interface IMainDataManager extends IMainApi {
 
     int getBonusAmount();
 
+    void setBalance(String balance);
+
+    String getBalance();
+
     // 获取个人订单
     Observable<ApiResult<OrderRespDTO>> queryOrders(@Body OrderReqDTO reqDTO);
 }
