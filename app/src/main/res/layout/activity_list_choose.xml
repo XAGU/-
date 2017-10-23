@@ -72,5 +72,14 @@
             android:layout_marginLeft="@dimen/mainMarginLeftRight"
             android:layout_marginRight="@dimen/mainMarginLeftRight" />
 
+        <View
+            android:id="@+id/v_divide"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:layout_marginLeft="@dimen/mainMarginLeftRight"
+            android:layout_marginRight="@dimen/mainMarginLeftRight"
+            android:background="#eee" />
+
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

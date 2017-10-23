@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.MvpApp;
@@ -84,6 +85,9 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
     @BindView(R.id.tv_title)
     TextView tv_title;
 
+    @BindView(R.id.v_divide)
+    View v_divide;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,6 +106,7 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
         presenter.onAttach(ListChooseActivity.this);
 
         adapter = new ListChooseAdaptor(items);
+        // TODO ItemDecoration不显示最后一条divide
         recyclerView.addItemDecoration(new RecycleViewDivider(this, RecycleViewDivider.VERTICAL_LIST));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
@@ -134,6 +139,7 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                             this.items.add(new ListChooseAdaptor.Item("女", false));
                         }
                     }
+                    v_divide.setVisibility(View.VISIBLE);
                     adapter.notifyDataSetChanged();
                     break;
                 case ACTION_LIST_BUILDING:
@@ -242,6 +248,7 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                         intent.putExtra(INTENT_KEY_LIST_SRC_ACTIVITY, Constant.REPAIR_APPLY_ACTIVITY_SRC);
                         startActivity(intent);
                     });
+                    v_divide.setVisibility(View.VISIBLE);
                     break;
             }
         }
@@ -277,6 +284,7 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
 
     @Override
     public void addMore(List<ListChooseAdaptor.Item> item) {
+        v_divide.setVisibility(View.VISIBLE);
         this.items.addAll(item);
         adapter.notifyDataSetChanged();
     }

@@ -205,7 +205,7 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
         });
         if (EvaluateStatus.getStatus(detail.getRated()) == EvaluateStatus.EVALUATE_DONE) {
             left_oper.setEnabled(false);
-            left_oper.setTextColor(ContextCompat.getColor(this, R.color.colorDark6));
+            left_oper.setTextColor(ContextCompat.getColor(this, R.color.colorDark9));
             ll_extra.setVisibility(View.VISIBLE);
             tv_extra_title.setText("评价信息");
             tv_extra_content1.setVisibility(View.VISIBLE);
