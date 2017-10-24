@@ -33,14 +33,14 @@ public final class Constant {
     public static final String IMAGE_PREFIX = SERVER + "/images/";
 
     // H5地址
-    public static final String H5_SERVER = "https://c.h5.xiaolian365.com";
-//    public static final String H5_SERVER = "http://10.0.0.5:5000";
+//    public static final String H5_SERVER = "https://c.h5.xiaolian365.com";
+    public static final String H5_SERVER = "http://10.0.0.5:5000";
     // H5帮助中心
     public static final String H5_HELP = H5_SERVER + "/help/list";
 
     // H5用户协议
-//    public static final String H5_AGREEMENT = H5_SERVER + "/agreement";
-    public static final String H5_AGREEMENT = "http://www.script-tutorials.com/demos/199/index.html";
+    public static final String H5_AGREEMENT = H5_SERVER + "/agreement";
+//    public static final String H5_AGREEMENT = "http://www.script-tutorials.com/demos/199/index.html";
 
     // H5投诉建议
     public static final String H5_COMPLAINT = H5_SERVER + "/complaint";

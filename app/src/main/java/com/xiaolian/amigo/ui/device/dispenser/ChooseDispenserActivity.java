@@ -7,21 +7,23 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.DispenserWater;
 import com.xiaolian.amigo.data.enumeration.TradeError;
 import com.xiaolian.amigo.data.network.model.device.ScanDeviceGroup;
 import com.xiaolian.amigo.ui.device.DeviceBaseActivity;
-import com.xiaolian.amigo.ui.device.DeviceBaseListActivity;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IChooseDispenerView;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IChooseDispenserPresenter;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
+import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutFooter;
+import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutHeader;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.ScreenUtils;
 
@@ -60,6 +62,7 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
     LinearLayout ll_footer;
 
     RecyclerView recyclerView;
+    SmartRefreshLayout refreshLayout;
 
     RelativeLayout rl_empty;
     RelativeLayout rl_error;
@@ -75,6 +78,24 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 14)));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        refreshLayout = (SmartRefreshLayout) findViewById(R.id.refreshLayout);
+
+        refreshLayout.setOnRefreshLoadmoreListener(new OnRefreshLoadmoreListener() {
+            @Override
+            public void onRefresh(com.scwang.smartrefresh.layout.api.RefreshLayout refreshlayout) {
+                presenter.onLoad();
+            }
+
+            @Override
+            public void onLoadmore(com.scwang.smartrefresh.layout.api.RefreshLayout refreshlayout) {
+
+            }
+        });
+        refreshLayout.setRefreshHeader(new RefreshLayoutHeader(this));
+        refreshLayout.setRefreshFooter(new RefreshLayoutFooter(this));
+        refreshLayout.setReboundDuration(200);
+        refreshLayout.setEnableLoadmore(false);
+        refreshLayout.autoRefresh(0);
 
         rl_empty = (RelativeLayout) findViewById(R.id.rl_empty);
         rl_error = (RelativeLayout) findViewById(R.id.rl_error);
@@ -95,7 +116,6 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
                 onFavoriteClick();
             }
         });
-        presenter.onLoad();
     }
 
     private void onNearbyClick() {
@@ -185,8 +205,14 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
         rl_error.setVisibility(View.GONE);
     }
 
+    @Override
+    public void completeRefresh() {
+        refreshLayout.finishRefresh(100);
+    }
+
     private void updateDevice(List<ScanDeviceGroup> devices) {
         if (devices.isEmpty()) {
+            showEmptyView();
             return;
         }
         if (nearbyItems.isEmpty()) {

@@ -1,45 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:id="@+id/cl_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackgroundGray"
-    android:id="@+id/cl_main"
-    xmlns:tool="http://schemas.android.com/tools">
+    android:background="@color/colorBackgroundGray">
 
     <android.support.design.widget.AppBarLayout
-        android:fitsSystemWindows="true"
         android:id="@+id/abl_actionbar"
-        app:elevation="0dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:fitsSystemWindows="true"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:elevation="0dp">
 
         <LinearLayout
-            app:layout_scrollFlags="scroll|enterAlways"
-            android:background="@color/colorBackgroundGray"
             android:id="@+id/ll_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:background="@color/colorBackgroundGray"
+            android:orientation="vertical"
+            app:layout_scrollFlags="scroll|enterAlways">
 
             <ImageView
                 android:id="@+id/iv_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingRight="@dimen/toolBarMarginLeft"
-                android:paddingLeft="@dimen/toolBarMarginLeft"
-                android:paddingTop="@dimen/toolBarMarginTop"
                 android:paddingBottom="@dimen/toolBarMarginBottom"
+                android:paddingLeft="@dimen/toolBarMarginLeft"
+                android:paddingRight="@dimen/toolBarMarginLeft"
+                android:paddingTop="@dimen/toolBarMarginTop"
                 android:src="@drawable/back" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/mainMarginLeftRight"
-                android:layout_marginRight="@dimen/mainMarginLeftRight"
                 android:layout_marginBottom="@dimen/toolBarMarginBottom"
-                >
+                android:layout_marginLeft="@dimen/mainMarginLeftRight"
+                android:layout_marginRight="@dimen/mainMarginLeftRight">
 
                 <TextView
                     android:id="@+id/tv_toolbar_title"
@@ -50,14 +49,14 @@
                     android:text="@string/nearby_dispenser" />
 
                 <View
-                    android:visibility="gone"
                     android:id="@+id/v_divide"
                     android:layout_width="1dp"
                     android:layout_height="14dp"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="14dp"
                     android:layout_toRightOf="@id/tv_toolbar_title"
-                    android:background="#eee" />
+                    android:background="#eee"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/tv_toolbar_title2"
@@ -71,92 +70,109 @@
             </RelativeLayout>
         </LinearLayout>
     </android.support.design.widget.AppBarLayout>
-    <android.support.v7.widget.RecyclerView
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/mainMarginLeftRight"
         android:layout_marginRight="@dimen/mainMarginLeftRight"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:overScrollMode="never"
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+        app:srlFooterHeight="60dp"
+        app:srlHeaderHeight="40dp">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never"
+            />
+
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
     <RelativeLayout
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:id="@+id/rl_empty"
         android:layout_width="match_parent"
-        android:visibility="gone"
+        android:layout_height="match_parent"
         android:background="@color/colorBackgroundGray"
-        android:layout_height="match_parent">
+        android:visibility="gone"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
         <TextView
             android:id="@+id/tv_empty_tip"
-            android:textSize="14sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:text="@string/empty_tip"
             android:textColor="@color/colorDark2"
-            android:layout_centerInParent="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:textSize="14sp" />
+
         <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/tv_empty_tip"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="14dp"
-            android:layout_above="@id/tv_empty_tip"
-            android:src="@drawable/ic_empty_box"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:src="@drawable/ic_empty_box" />
     </RelativeLayout>
+
     <RelativeLayout
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:id="@+id/rl_error"
         android:layout_width="match_parent"
-        android:visibility="gone"
+        android:layout_height="match_parent"
         android:background="@color/colorBackgroundGray"
-        android:layout_height="match_parent">
+        android:visibility="gone"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
         <TextView
             android:id="@+id/tv_error_tip"
-            android:textSize="14sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:text="@string/error_tip"
             android:textColor="@color/colorDark2"
-            android:layout_centerInParent="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:textSize="14sp" />
+
         <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/tv_error_tip"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="14dp"
-            android:layout_above="@id/tv_error_tip"
-            android:src="@drawable/ic_error_ballon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:src="@drawable/ic_error_ballon" />
     </RelativeLayout>
 
     <LinearLayout
-        android:orientation="vertical"
         android:id="@+id/ll_footer"
-        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="58dp"
+        android:layout_gravity="bottom|center_horizontal"
         android:background="@color/white"
         android:gravity="center"
-        android:layout_gravity="bottom|center_horizontal"
-        app:layout_behavior="com.xiaolian.amigo.ui.lostandfound.behavior.FooterBehavior"
-        >
+        android:orientation="vertical"
+        android:visibility="visible"
+        app:layout_behavior="com.xiaolian.amigo.ui.lostandfound.behavior.FooterBehavior">
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <pl.droidsonroids.gif.GifImageView
                 android:id="@+id/gif_scan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scaleType="centerCrop"
-                android:src="@mipmap/gif_scan"
-                />
+                android:src="@mipmap/gif_scan" />
+
             <TextView
-                android:layout_marginLeft="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
+                android:layout_marginLeft="5dp"
                 android:text="正在扫描附近的设备"
                 android:textColor="@color/colorDarkB"
-                android:textSize="14sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:textSize="14sp" />
         </LinearLayout>
 
     </LinearLayout>

@@ -169,5 +169,10 @@ public class WebActivity extends BaseActivity {
             super.onBackPressed();
         }
     }
+
+    @Override
+    public boolean supportSlideBack() {
+        return false;
+    }
 }
 

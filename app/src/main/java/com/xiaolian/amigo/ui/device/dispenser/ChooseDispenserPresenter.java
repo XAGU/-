@@ -132,11 +132,21 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
         addObserver(tradeDataManager.handleScanDevices(scanDeviceReqDTO), new NetworkObserver<ApiResult<ScanDeviceRespDTO>>(false) {
             @Override
             public void onReady(ApiResult<ScanDeviceRespDTO> result) {
+                getMvpView().post(() -> getMvpView().completeRefresh());
+                getMvpView().post(() -> getMvpView().hideEmptyView());
+                getMvpView().post(() -> getMvpView().hideErrorView());
                 if (null == result.getError()) {
                     getMvpView().post(() -> {
                         getMvpView().addScanDevices(result.getData().getDevices());
                     });
                 }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                getMvpView().post(() -> getMvpView().completeRefresh());
+                getMvpView().post(() -> getMvpView().showErrorView());
             }
         }, Schedulers.io());
     }
