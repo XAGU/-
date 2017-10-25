@@ -1,9 +1,11 @@
 package com.xiaolian.amigo.ui.wallet.adaptor;
 
 import android.content.Context;
+import android.view.View;
 
 import com.xiaolian.amigo.data.network.model.wallet.RechargeDenominations;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
+import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.List;
 
@@ -30,6 +32,7 @@ public class RechargeAdaptor extends MultiItemTypeAdapter<RechargeAdaptor.Rechar
         String main;
         // 附信息
         String sub;
+        boolean isSelected = false;
 
         public RechargeWrapper(Integer type, String main, String sub) {
             this.type = type;

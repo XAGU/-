@@ -15,4 +15,6 @@ public interface IRechargeView extends IBaseView {
     void addMore(List<RechargeAdaptor.RechargeWrapper> rechargeWrappers);
 
     void back();
+
+    void alipay(String reqArgs);
 }

@@ -26,5 +26,10 @@ public class BonusItemDelegate implements ItemViewDelegate<RechargeAdaptor.Recha
         holder.setImageResource(R.id.iv_recharge, R.drawable.wallet_ticket);
         holder.setText(R.id.tv_recharge_main, rechargeWrapper.main);
         holder.setText(R.id.tv_recharge_sub, rechargeWrapper.sub);
+        if (rechargeWrapper.isSelected()) {
+            holder.setBackgroundRes(R.id.rl_item, R.drawable.content_border_selected);
+        } else {
+            holder.setBackgroundRes(R.id.rl_item, R.drawable.content_border);
+        }
     }
 }

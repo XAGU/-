@@ -24,5 +24,10 @@ public class NormalItemDelegate implements ItemViewDelegate<RechargeAdaptor.Rech
     @Override
     public void convert(ViewHolder holder, RechargeAdaptor.RechargeWrapper rechargeWrapper, int position) {
         holder.setText(R.id.tv_recharge_main, rechargeWrapper.main);
+        if (rechargeWrapper.isSelected()) {
+            holder.setBackgroundRes(R.id.rl_item, R.drawable.content_border_selected);
+        } else {
+            holder.setBackgroundRes(R.id.rl_item, R.drawable.content_border);
+        }
     }
 }

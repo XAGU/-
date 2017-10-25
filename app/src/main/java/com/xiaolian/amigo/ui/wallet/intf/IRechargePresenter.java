@@ -12,4 +12,6 @@ public interface IRechargePresenter<V extends IRechargeView> extends IBasePresen
     void getRechargeList();
 
     void recharge(Long id);
+
+    void parseAlipayResult(String resultStatus, String result, String memo);
 }

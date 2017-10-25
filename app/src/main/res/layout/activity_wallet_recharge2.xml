@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -7,6 +7,36 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"/>
 
-</LinearLayout>
+    <TextView
+        android:layout_below="@id/recyclerView"
+        android:layout_marginTop="29dp"
+        android:id="@+id/tv_pay_title"
+        style="@style/ToolBarTextView"
+        android:text="选择充值方式"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_below="@id/tv_pay_title"
+        android:layout_marginTop="21dp"
+        android:id="@+id/recyclerView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <View
+        android:id="@+id/v_holder"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/mainMarginLeftRight"/>
+
+    <Button
+        android:layout_above="@id/v_holder"
+        android:id="@+id/bt_submit"
+        style="@style/SubmitButton"
+        android:enabled="false"
+        android:text="确认充值" />
+
+</RelativeLayout>
