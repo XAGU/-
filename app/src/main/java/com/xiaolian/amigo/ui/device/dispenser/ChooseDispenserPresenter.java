@@ -22,6 +22,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
@@ -76,7 +77,7 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
                 super.onError(e);
                 getMvpView().showErrorView();
             }
-        });
+        }, AndroidSchedulers.mainThread());
     }
 
     @Override

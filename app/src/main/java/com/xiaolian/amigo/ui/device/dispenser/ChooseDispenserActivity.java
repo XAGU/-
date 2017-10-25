@@ -126,6 +126,8 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
                 presenter.onLoad();
                 adaptor.notifyDataSetChanged();
             } else {
+                hideEmptyView();
+                hideErrorView();
                 this.items.addAll(nearbyItems);
                 adaptor.notifyDataSetChanged();
             }
@@ -139,6 +141,8 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
             if (favoriteItems.isEmpty()) {
                 presenter.requestFavorites();
             } else {
+                hideEmptyView();
+                hideErrorView();
                 this.items.addAll(favoriteItems);
                 adaptor.notifyDataSetChanged();
 //                adaptor.notifyItemRangeChanged(0, items.size());
@@ -212,7 +216,9 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
 
     private void updateDevice(List<ScanDeviceGroup> devices) {
         if (devices.isEmpty()) {
-            showEmptyView();
+            if (nearbyItems.isEmpty()) {
+                showEmptyView();
+            }
             return;
         }
         if (nearbyItems.isEmpty()) {

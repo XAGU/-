@@ -277,8 +277,12 @@ public abstract class BaseActivity extends SwipeBackActivity
         if (mProgressDialog == null) {
             mProgressDialog = new LodingDialog(this);
         }
-        hideLoading();
-        mProgressDialog.show();
+        try {
+            hideLoading();
+            mProgressDialog.show();
+        } catch (Exception e) {
+            Log.wtf(TAG, e.getMessage());
+        }
     }
 
     @Override

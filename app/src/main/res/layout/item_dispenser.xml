@@ -32,6 +32,7 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
         <ImageView
+            android:id="@+id/iv_arrow"
             android:layout_alignParentRight="true"
             android:layout_marginRight="14dp"
             android:layout_centerVertical="true"

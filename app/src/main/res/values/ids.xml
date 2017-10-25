@@ -3,4 +3,5 @@
     <item name="timestamp" type="id"/>
     <item name="money_pay_amount" type="id"/>
     <item name="click_time" type="id"/>
+    <item name="view_extra" type="id"/>
 </resources>

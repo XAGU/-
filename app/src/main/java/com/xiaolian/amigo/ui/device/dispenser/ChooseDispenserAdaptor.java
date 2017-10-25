@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.device.dispenser;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -7,6 +8,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -99,13 +101,21 @@ public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenser
                 if (lastExpandPosition != -1) {
                     mData.get(lastExpandPosition).setExpanded(false);
                 }
+                boolean expand = false;
                 if (lastExpandPosition == position) {
+                    expand = false;
                     mData.get(position).setExpanded(false);
                     lastExpandPosition = -1;
                 } else {
+                    expand = true;
                     mData.get(position).setExpanded(true);
                     lastExpandPosition = position;
                 }
+                ObjectAnimator anim =
+                        ObjectAnimator.ofFloat(holder.iv_arrow,
+                                "rotation", expand ? 0f : -180f, expand ? 180f : 0f);
+                anim.setDuration(200);
+                anim.start();
                 notifyDataSetChanged();
             }
         });
@@ -114,6 +124,13 @@ public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenser
             holder.rl_bottom.setVisibility(View.VISIBLE);
             lastExpandPosition = position;
         } else {
+            if (holder.rl_bottom.getVisibility() == View.VISIBLE) {
+                ObjectAnimator anim =
+                        ObjectAnimator.ofFloat(holder.iv_arrow,
+                                "rotation", -180f, 0f);
+                anim.setDuration(200);
+                anim.start();
+            }
             holder.v_divide.setVisibility(View.GONE);
             holder.rl_bottom.setVisibility(View.GONE);
         }
@@ -176,8 +193,10 @@ public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenser
         TextView tv_cold_water;
         TextView tv_ice_water;
         TextView tv_hot_water;
+        ImageView iv_arrow;
         public ViewHolder(View itemView) {
             super(itemView);
+            iv_arrow = (ImageView) itemView.findViewById(R.id.iv_arrow);
             tv_location = (TextView) itemView.findViewById(R.id.tv_location);
             rl_top = (RelativeLayout) itemView.findViewById(R.id.rl_top);
             v_divide = itemView.findViewById(R.id.v_divide);
