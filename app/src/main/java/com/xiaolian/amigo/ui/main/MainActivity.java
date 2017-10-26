@@ -288,37 +288,63 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     public void imageViewAnimatedChange(Context context, ImageView imageView, int res) {
         final Animation anim_out_right = AnimationUtils.loadAnimation(context, R.anim.item_slide_out_right);
         final Animation anim_out_left = AnimationUtils.loadAnimation(context, R.anim.item_slide_out_left);
-        final Animation anim_in_left  = AnimationUtils.loadAnimation(context, R.anim.item_slide_in_left);
-        final Animation anim_in_right  = AnimationUtils.loadAnimation(context, R.anim.item_slide_in_right);
+        final Animation anim_in_left = AnimationUtils.loadAnimation(context, R.anim.item_slide_in_left);
+        final Animation anim_in_right = AnimationUtils.loadAnimation(context, R.anim.item_slide_in_right);
         if (current == 0) {
-            anim_out_right.setAnimationListener(new Animation.AnimationListener()
-            {
-                @Override public void onAnimationStart(Animation animation) {}
-                @Override public void onAnimationRepeat(Animation animation) {}
-                @Override public void onAnimationEnd(Animation animation)
-                {
+            anim_out_right.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
                     imageView.setBackgroundResource(res);
                     anim_in_right.setAnimationListener(new Animation.AnimationListener() {
-                        @Override public void onAnimationStart(Animation animation) {}
-                        @Override public void onAnimationRepeat(Animation animation) {}
-                        @Override public void onAnimationEnd(Animation animation) {}
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                        }
                     });
                     imageView.startAnimation(anim_in_right);
                 }
             });
             imageView.startAnimation(anim_out_right);
         } else {
-            anim_out_left.setAnimationListener(new Animation.AnimationListener()
-            {
-                @Override public void onAnimationStart(Animation animation) {}
-                @Override public void onAnimationRepeat(Animation animation) {}
-                @Override public void onAnimationEnd(Animation animation)
-                {
+            anim_out_left.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
                     imageView.setBackgroundResource(res);
                     anim_in_right.setAnimationListener(new Animation.AnimationListener() {
-                        @Override public void onAnimationStart(Animation animation) {}
-                        @Override public void onAnimationRepeat(Animation animation) {}
-                        @Override public void onAnimationEnd(Animation animation) {}
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                        }
                     });
                     imageView.startAnimation(anim_in_left);
                 }
@@ -385,8 +411,13 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             availabilityDialog = new AvailabilityDialog(this);
         }
         if (availabilityDialog.isShowing()) {
-            return;
+            if (availabilityDialog.getType() == AvailabilityDialog.Type.TIME_VALID) {
+                return;
+            } else {
+                availabilityDialog.dismiss();
+            }
         }
+        availabilityDialog.setType(AvailabilityDialog.Type.TIME_VALID);
         availabilityDialog.setOkText(getString(R.string.keep_use));
         availabilityDialog.setTip(data.getTitle());
         availabilityDialog.setSubTip(data.getRemark());
@@ -519,7 +550,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                                 data.getResidenceId());
                     } else {
                         // 进入饮水机选择页面
-                        startActivity(new Intent(getApplicationContext(), ChooseDispenserActivity.class));
+                        startActivity(new Intent(MainActivity.this, ChooseDispenserActivity.class));
                     }
                 }
             }
@@ -532,14 +563,16 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         if (null == availabilityDialog) {
             availabilityDialog = new AvailabilityDialog(this);
         }
-        if (availabilityDialog.isShowing()) {
+        if (availabilityDialog.isShowing()
+                && availabilityDialog.getType() == AvailabilityDialog.Type.BIND_DORMITORY) {
             return;
         }
+        availabilityDialog.setType(AvailabilityDialog.Type.BIND_DORMITORY);
         availabilityDialog.setOkText("前往绑定");
         availabilityDialog.setTip("需要先绑定宿舍信息");
         availabilityDialog.setSubTipVisible(false);
         availabilityDialog.setOnOkClickListener(dialog1 -> {
-            startActivity(new Intent(getApplicationContext(), EditDormitoryActivity.class));
+            startActivity(new Intent(MainActivity.this, EditDormitoryActivity.class));
         });
         availabilityDialog.show();
     }
@@ -551,13 +584,18 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             availabilityDialog = new AvailabilityDialog(this);
         }
         if (availabilityDialog.isShowing()) {
-            return;
+            if (availabilityDialog.getType() == AvailabilityDialog.Type.NO_DEVICE) {
+                return;
+            } else {
+                availabilityDialog.cancel();
+            }
         }
+        availabilityDialog.setType(AvailabilityDialog.Type.NO_DEVICE);
         availabilityDialog.setOkText("前往设置");
         availabilityDialog.setTip("你的默认宿舍无设备");
         availabilityDialog.setSubTipVisible(false);
         availabilityDialog.setOnOkClickListener(dialog1 -> {
-            startActivity(new Intent(getApplicationContext(), EditDormitoryActivity.class));
+            startActivity(new Intent(MainActivity.this, EditDormitoryActivity.class));
         });
         availabilityDialog.show();
     }
@@ -596,7 +634,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         prepayDialog.setOnOkClickListener(new PrepayDialog.OnOkClickListener() {
             @Override
             public void onOkClick(Dialog dialog) {
-                startActivity(new Intent(getApplicationContext(), PrepayActivity.class));
+                startActivity(new Intent(MainActivity.this, PrepayActivity.class));
             }
         });
         prepayDialog.setOnCancelClickListener(new PrepayDialog.OnCancelClickListener() {
@@ -731,9 +769,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             GOTO_DISPENSER(2),
             GOTO_LOST_AND_FOUND(3),
             START_ACTIVITY(4),
-            REFRESH_NOTICE(5)
-            ;
+            REFRESH_NOTICE(5);
             private int type;
+
             EventType(int type) {
                 this.type = type;
             }

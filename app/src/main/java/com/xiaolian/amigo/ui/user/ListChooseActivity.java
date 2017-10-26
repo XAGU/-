@@ -13,10 +13,12 @@ import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.BuildingType;
 import com.xiaolian.amigo.data.enumeration.Device;
+import com.xiaolian.amigo.data.enumeration.WithdrawWay;
 import com.xiaolian.amigo.di.componet.DaggerUserActivityComponent;
 import com.xiaolian.amigo.di.componet.UserActivityComponent;
 import com.xiaolian.amigo.di.module.UserActivityModule;
 import com.xiaolian.amigo.ui.main.MainActivity;
+import com.xiaolian.amigo.ui.wallet.WithdrawalActivity;
 import com.xiaolian.amigo.ui.widget.RecycleViewDivider;
 import com.xiaolian.amigo.ui.base.BaseActivity;
 import com.xiaolian.amigo.ui.repair.RepairApplyActivity;
@@ -58,6 +60,7 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
     public static final int ACTION_LIST_SCHOOL_RESULT = 6;
     // 选择设备，热水澡 or 饮水机
     public static final int ACTION_LIST_DEVICE = 7;
+    public static final int ACTION_LIST_WITHDRAW_WAY = 8;
 
 
     private UserActivityComponent mActivityComponent;
@@ -153,7 +156,7 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                     // page size 为null 加载全部
                     presenter.getBuildList(null, null, deviceType);
                     adapter.setOnItemClickListener((view, position) -> {
-                        Intent intent = new Intent(getApplicationContext(), ListChooseActivity.class);
+                        Intent intent = new Intent(ListChooseActivity.this, ListChooseActivity.class);
                         intent.putExtra(INTENT_KEY_LIST_CHOOSE_ACTION, ACTION_LIST_FLOOR);
                         intent.putExtra(INTENT_KEY_LIST_CHOOSE_PARENT_ID, items.get(position).getId());
                         intent.putExtra(INTENT_KEY_LIST_CHOOSE_IS_EDIT, isEditDormitory);
@@ -177,7 +180,7 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                         }
                     }
                     adapter.setOnItemClickListener((view, position) -> {
-                        Intent intent = new Intent(getApplicationContext(), ListChooseActivity.class);
+                        Intent intent = new Intent(ListChooseActivity.this, ListChooseActivity.class);
                         intent.putExtra(INTENT_KEY_LIST_CHOOSE_ACTION, ACTION_LIST_DORMITOR);
                         intent.putExtra(INTENT_KEY_LIST_CHOOSE_PARENT_ID, items.get(position).getId());
                         intent.putExtra(INTENT_KEY_LIST_CHOOSE_IS_EDIT, isEditDormitory);
@@ -215,7 +218,7 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                         if (Constant.REPAIR_APPLY_ACTIVITY_SRC.equals(activitySrc)) {
                             ListChooseAdaptor.Item item = items.get(position);
 
-                            Intent intent = new Intent(getApplicationContext(), RepairApplyActivity.class);
+                            Intent intent = new Intent(ListChooseActivity.this, RepairApplyActivity.class);
                             intent.putExtra(Constant.LOCATION_ID, (long) item.getId());
                             intent.putExtra(Constant.DEVICE_TYPE, deviceType);
                             intent.putExtra(Constant.LOCATION, Device.getDevice(deviceType).getDesc() + Constant.CHINEASE_COLON + item.getExtra());
@@ -242,11 +245,26 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                     adapter.notifyDataSetChanged();
                     adapter.setOnItemClickListener((view, position) -> {
                         ListChooseAdaptor.Item item = items.get(position);
-                        Intent intent = new Intent(getApplicationContext(), ListChooseActivity.class);
+                        Intent intent = new Intent(ListChooseActivity.this, ListChooseActivity.class);
                         intent.putExtra(INTENT_KEY_LIST_CHOOSE_ACTION, ACTION_LIST_BUILDING);
                         intent.putExtra(INTENT_KEY_LIST_DEVICE_TYPE, item.getDeviceType());
                         intent.putExtra(INTENT_KEY_LIST_SRC_ACTIVITY, Constant.REPAIR_APPLY_ACTIVITY_SRC);
                         startActivity(intent);
+                    });
+                    v_divide.setVisibility(View.VISIBLE);
+                    break;
+                case ACTION_LIST_WITHDRAW_WAY:
+                    tv_title.setText("选择提现方式");
+                    for (WithdrawWay way : WithdrawWay.values()) {
+                        this.items.add(new ListChooseAdaptor.Item(way.getDesc(), way.getType()));
+                    }
+                    adapter.notifyDataSetChanged();
+                    adapter.setOnItemClickListener((view, position) -> {
+                        ListChooseAdaptor.Item item = items.get(position);
+                        Intent intent = new Intent(ListChooseActivity.this, WithdrawalActivity.class);
+                        intent.putExtra(INTENT_KEY_LIST_CHOOSE_ITEM_RESULT, item.getContent());
+                        setResult(RESULT_OK, intent);
+                        finish();
                     });
                     v_divide.setVisibility(View.VISIBLE);
                     break;

@@ -2,6 +2,7 @@ package com.xiaolian.amigo.ui.wallet;
 
 import android.util.Log;
 
+import com.xiaolian.amigo.data.enumeration.AlipayPayOrderCheckResult;
 import com.xiaolian.amigo.data.manager.intf.IWalletDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.AlipayTradeAppPayArgsReqDTO;
@@ -111,7 +112,7 @@ public class RechargePresenter<V extends IRechargeView> extends BasePresenter<V>
             @Override
             public void onReady(ApiResult<AlipayTradeAppPayResultParseRespDTO> apiResult) {
                 if (apiResult.getError() == null) {
-                    if (apiResult.getData().getCode() == 1) {
+                    if (apiResult.getData().getCode() == AlipayPayOrderCheckResult.SUCCESS.getType()) {
                         getMvpView().onSuccess("充值成功");
                         // TODO 充值订单详情
                     } else {

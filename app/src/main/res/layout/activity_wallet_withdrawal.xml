@@ -15,6 +15,7 @@
         android:paddingRight="14dp">
 
         <RelativeLayout
+            android:id="@+id/rl_choose_withdraw_way"
             android:layout_width="match_parent"
             android:layout_height="48dp">
 
@@ -35,13 +36,17 @@
                 android:background="@drawable/forward" />
 
             <TextView
-                style="@style/ContentText_value_grey"
+                android:id="@+id/tv_withdraw_way"
+                android:textColorHint="@color/colorDark9"
+                android:textColor="@color/colorDark2"
+                android:textSize="14sp"
+                android:hint="@string/unselected"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
                 android:layout_toLeftOf="@id/iv_withdrawal_forward"
-                android:text="未选择" />
+                />
         </RelativeLayout>
 
         <View

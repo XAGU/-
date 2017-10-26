@@ -1,12 +1,16 @@
 package com.xiaolian.amigo.ui.wallet;
 
+import android.content.Intent;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.ui.user.ListChooseActivity;
 import com.xiaolian.amigo.ui.wallet.intf.IWithdrawalPresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IWithdrawalView;
 
@@ -25,6 +29,7 @@ import butterknife.OnTextChanged;
  */
 
 public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawalView {
+    private static final int REQUEST_CODE_CHOOSE_WITHDRAW_WAY = 0x0121;
     @Inject
     IWithdrawalPresenter<IWithdrawalView> presenter;
 
@@ -33,6 +38,12 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
 
     @BindView(R.id.bt_submit)
     Button bt_submit;
+
+    @BindView(R.id.rl_choose_withdraw_way)
+    RelativeLayout rl_choose_withdraw_way;
+
+    @BindView(R.id.tv_withdraw_way)
+    TextView tv_withdraw_way;
 
     @Override
     protected void initView() {
@@ -100,8 +111,31 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
         presenter.withdraw(et_amount.getText().toString().trim());
     }
 
+    @OnClick(R.id.rl_choose_withdraw_way)
+    void chooseWithdrawWay() {
+        startActivityForResult(new Intent(this, ListChooseActivity.class).
+                        putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION,
+                        ListChooseActivity.ACTION_LIST_WITHDRAW_WAY),
+                REQUEST_CODE_CHOOSE_WITHDRAW_WAY);
+    }
+
     @Override
     public void back() {
         onBackPressed();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case REQUEST_CODE_CHOOSE_WITHDRAW_WAY:
+                    if (data != null) {
+                        tv_withdraw_way.setText(data.getStringExtra(
+                                ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ITEM_RESULT));
+                    }
+                    break;
+            }
+        }
     }
 }

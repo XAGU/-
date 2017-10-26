@@ -17,13 +17,13 @@ public enum  Notice {
             return R.drawable.ic_emergency_notice;
         }
     },
-    CUSTOMER_SERVICE(2, "客服通知") {
+    CUSTOMER_SERVICE(3, "客服通知") {
         @Override
         public int getDrawableRes() {
             return R.drawable.ic_customer_service_notice;
         }
     },
-    SYSTEM(3, "系统通知") {
+    SYSTEM(2, "系统通知") {
         @Override
         public int getDrawableRes() {
             return R.drawable.ic_system_notice;

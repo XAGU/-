@@ -144,4 +144,5 @@
     <string name="bonus_exchange_success">红包兑换成功</string>
     <string name="change_school_success">学校更换成功，请重新登录</string>
     <string name="withdrawal_record">充值提现记录</string>
+    <string name="unselected">未选择</string>
 </resources>

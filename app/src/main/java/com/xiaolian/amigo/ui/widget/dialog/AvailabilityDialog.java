@@ -24,6 +24,7 @@ public class AvailabilityDialog extends Dialog {
     private TextView tv_sub_tip;
     private TextView tv_cancel;
     private TextView tv_ok;
+    private Type type;
     private OnOkClickListener listener;
 
     public AvailabilityDialog(@NonNull Context context) {
@@ -47,11 +48,19 @@ public class AvailabilityDialog extends Dialog {
         tv_cancel.setOnClickListener(v -> dismiss());
         tv_ok = (TextView) findViewById(R.id.tv_ok);
         tv_ok.setOnClickListener(v -> {
+            dismiss();
             if (listener != null) {
                 listener.onOkClick(this);
             }
-            dismiss();
         });
+    }
+
+    public void setType(Type type) {
+        this.type = type;
+    }
+
+    public Type getType() {
+        return this.type;
     }
 
     public void setTip(String tip) {
@@ -76,5 +85,19 @@ public class AvailabilityDialog extends Dialog {
 
     public interface OnOkClickListener{
         void onOkClick(Dialog dialog);
+    }
+
+    public enum Type {
+        NO_DEVICE(1, "默认宿舍无设备"),
+        TIME_VALID(2, "时间段错误"),
+        BIND_DORMITORY(3, "绑定宿舍"),
+        ;
+        private int type;
+        private String desc;
+
+        Type(int type, String desc) {
+            this.type = type;
+            this.desc = desc;
+        }
     }
 }
