@@ -84,6 +84,8 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
                         getMvpView().onError("服务器飞走啦，努力修复中");
                         break;
                 }
+            } else {
+                getMvpView().onError("服务器飞走啦，努力修复中");
             }
         }
     }
