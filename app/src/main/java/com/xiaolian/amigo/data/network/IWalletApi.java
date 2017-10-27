@@ -74,5 +74,5 @@ public interface IWalletApi {
 
     // 删除第三方账户
     @POST("/user/third/account/delete")
-    Observable<ApiResult<BooleanRespDTO>> deleteAccount(SimpleReqDTO reqDTO);
+    Observable<ApiResult<BooleanRespDTO>> deleteAccount(@Body SimpleReqDTO reqDTO);
 }
