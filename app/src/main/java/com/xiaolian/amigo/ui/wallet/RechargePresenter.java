@@ -65,9 +65,10 @@ public class RechargePresenter<V extends IRechargeView> extends BasePresenter<V>
     }
 
     @Override
-    public void recharge(Long id) {
+    public void recharge(Long id, int type) {
         RechargeReqDTO reqDTO = new RechargeReqDTO();
         reqDTO.setDenominationId(id);
+        reqDTO.setThirdAccountType(type);
         addObserver(manager.recharge(reqDTO), new NetworkObserver<ApiResult<SimpleRespDTO>>() {
 
             @Override

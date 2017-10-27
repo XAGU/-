@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.xiaolian.amigo.ui.widget.ClearableEditText
+        android:id="@+id/et_account"
+        style="@style/EditText"
+        android:maxLength="100"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:drawableEnd="@drawable/clear"
+        android:drawableRight="@drawable/clear"
+        android:hint="@string/please_enter_alipay_account"
+        android:imeOptions="actionDone"
+        android:tag="nickname" />
+
+    <com.xiaolian.amigo.ui.widget.ClearableEditText
+        android:layout_marginTop="14dp"
+        android:id="@+id/et_real_name"
+        style="@style/EditText"
+        android:maxLength="100"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:drawableEnd="@drawable/clear"
+        android:drawableRight="@drawable/clear"
+        android:hint="@string/please_enter_real_name"
+        android:imeOptions="actionDone"
+        android:tag="nickname" />
+    <TextView
+        android:text="@string/add_alipay_account_tip"
+        android:layout_marginTop="21dp"
+        android:textColor="@color/colorDark6"
+        android:textSize="11sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    
+    <Button
+        android:id="@+id/bt_submit"
+        android:text="确认添加"
+        android:layout_marginTop="28dp"
+        style="@style/SubmitButton"
+        />
+
+</LinearLayout>

@@ -15,6 +15,7 @@
         android:paddingRight="14dp">
 
         <RelativeLayout
+            android:visibility="gone"
             android:id="@+id/rl_choose_withdraw_way"
             android:layout_width="match_parent"
             android:layout_height="48dp">
@@ -50,26 +51,46 @@
         </RelativeLayout>
 
         <View
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="1dip"
             android:layout_centerVertical="true"
             android:background="#eee" />
 
-        <LinearLayout
+        <RelativeLayout
+            android:id="@+id/rl_choose_withdraw_way2"
             android:layout_width="match_parent"
             android:layout_height="48dp">
 
-            <EditText
+            <TextView
                 style="@style/ContentText_main"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="@null"
-                android:gravity="center_vertical"
-                android:hint="请输入收款账户"
-                android:textColorHint="#bbb" />
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:text="提现至支付宝：" />
 
-        </LinearLayout>
+            <ImageView
+                android:id="@+id/iv_withdrawal_forward2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/forward" />
+
+            <TextView
+                android:id="@+id/tv_withdraw_way2"
+                android:textColorHint="@color/colorDark9"
+                android:textColor="@color/colorDark2"
+                android:textSize="14sp"
+                android:hint="@string/unselected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:layout_toLeftOf="@id/iv_withdrawal_forward2"
+                />
+        </RelativeLayout>
 
     </LinearLayout>
 

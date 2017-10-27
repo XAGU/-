@@ -27,6 +27,14 @@ public enum PayWay {
         this.desc = desc;
     }
 
+    public int getType() {
+        return type;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
     private int type;
     private String desc;
     public abstract int getDrawableRes();

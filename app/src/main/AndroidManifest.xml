@@ -314,6 +314,16 @@
             <!--</intent-filter>-->
         </activity>
 
+        <!--选择提现账户-->
+        <activity android:name=".ui.wallet.ChooseWithdrawActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
+
+        <!--添加提现账户-->
+        <activity android:name=".ui.wallet.AddAccountActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
+
         <!-- 支付宝 -->
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"

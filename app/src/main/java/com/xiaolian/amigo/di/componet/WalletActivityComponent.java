@@ -18,6 +18,8 @@ package com.xiaolian.amigo.di.componet;
 
 import com.xiaolian.amigo.di.WalletActivityContext;
 import com.xiaolian.amigo.di.module.WalletActivityModule;
+import com.xiaolian.amigo.ui.wallet.AddAccountActivity;
+import com.xiaolian.amigo.ui.wallet.ChooseWithdrawActivity;
 import com.xiaolian.amigo.ui.wallet.PrepayActivity;
 import com.xiaolian.amigo.ui.wallet.PrepayOrderActivity;
 import com.xiaolian.amigo.ui.wallet.RechargeActivity;
@@ -43,4 +45,8 @@ public interface WalletActivityComponent {
     void inject(WithdrawalActivity activity);
 
     void inject(WithdrawalRecordActivity activity);
+
+    void inject(ChooseWithdrawActivity activity);
+
+    void inject(AddAccountActivity activity);
 }

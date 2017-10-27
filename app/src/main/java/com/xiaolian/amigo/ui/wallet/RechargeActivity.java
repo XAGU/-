@@ -60,7 +60,7 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
     // 充值方式列表
     List<RechargeTypeAdaptor.RechargeWrapper> rechargeTypes = new ArrayList<RechargeTypeAdaptor.RechargeWrapper>() {
         {
-            add(new RechargeTypeAdaptor.RechargeWrapper(R.drawable.ic_alipay, "支付宝", true));
+            add(new RechargeTypeAdaptor.RechargeWrapper(PayWay.ALIAPY.getType(), R.drawable.ic_alipay, "支付宝", true));
         }
     };
 
@@ -131,7 +131,8 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
 
     @OnClick(R.id.bt_submit)
     public void recharge() {
-        presenter.recharge(recharges.get(rechargeSelectedPosition).getId());
+        presenter.recharge(recharges.get(rechargeSelectedPosition).getId(),
+                rechargeTypes.get(rechargeTypeSelectedPosition).getType());
     }
 
     private void toggleSubmitButton() {

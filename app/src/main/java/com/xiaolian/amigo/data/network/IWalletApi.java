@@ -1,11 +1,14 @@
 package com.xiaolian.amigo.data.network;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.dto.request.AddThirdAccountReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.AlipayTradeAppPayArgsReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.AlipayTradeAppPayResultParseReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.QueryPersonalFundsListReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.request.QueryUserThirdAccountReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.RechargeReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.SimpleQueryReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.request.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.WithdrawReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.AlipayTradeAppPayArgsRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.AlipayTradeAppPayResultParseRespDTO;
@@ -14,6 +17,7 @@ import com.xiaolian.amigo.data.network.model.dto.response.PersonalWalletDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryFundsListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryRechargeAmountsRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryTimeValidRespDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.QueryUserThirdAccountRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.SimpleRespDTO;
 
 import retrofit2.http.Body;
@@ -59,4 +63,16 @@ public interface IWalletApi {
     // 解析app支付j结果
     @POST("/alipay/trade/app/pay/resp/result/parse")
     Observable<ApiResult<AlipayTradeAppPayResultParseRespDTO>> parseAlipayResule(@Body AlipayTradeAppPayResultParseReqDTO reqDTO);
+
+    // 第三方账号列表
+    @POST("/user/third/account/list")
+    Observable<ApiResult<QueryUserThirdAccountRespDTO>> requestThirdAccounts(@Body QueryUserThirdAccountReqDTO reqDTO);
+
+    // 新增第三方账号
+    @POST("/user/third/account/add")
+    Observable<ApiResult<BooleanRespDTO>> addAccount(@Body AddThirdAccountReqDTO reqDTO);
+
+    // 删除第三方账户
+    @POST("/user/third/account/delete")
+    Observable<ApiResult<BooleanRespDTO>> deleteAccount(SimpleReqDTO reqDTO);
 }

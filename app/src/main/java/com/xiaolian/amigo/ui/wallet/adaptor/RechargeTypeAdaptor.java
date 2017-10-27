@@ -30,11 +30,13 @@ public class RechargeTypeAdaptor extends CommonAdapter<RechargeTypeAdaptor.Recha
 
     @Data
     public static class RechargeWrapper {
+        int type;
         int imageRes;
         String content;
         boolean isSelected;
 
-        public RechargeWrapper(int imageRes, String content, boolean isSelected) {
+        public RechargeWrapper(int type, int imageRes, String content, boolean isSelected) {
+            this.type = type;
             this.imageRes = imageRes;
             this.content = content;
             this.isSelected = isSelected;

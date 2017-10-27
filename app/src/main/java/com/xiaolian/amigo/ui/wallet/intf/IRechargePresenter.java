@@ -11,7 +11,7 @@ import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 public interface IRechargePresenter<V extends IRechargeView> extends IBasePresenter<V> {
     void getRechargeList();
 
-    void recharge(Long id);
+    void recharge(Long id, int type);
 
     void parseAlipayResult(String resultStatus, String result, String memo);
 }

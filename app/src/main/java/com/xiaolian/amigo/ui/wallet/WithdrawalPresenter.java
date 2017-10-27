@@ -26,9 +26,10 @@ public class WithdrawalPresenter<V extends IWithdrawalView> extends BasePresente
     }
 
     @Override
-    public void withdraw(String amount) {
+    public void withdraw(String amount, Long withdrawId) {
         WithdrawReqDTO reqDTO = new WithdrawReqDTO();
         reqDTO.setAmount(amount);
+        reqDTO.setUserThirdAccountId(withdrawId);
         addObserver(manager.withdraw(reqDTO), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
 
             @Override

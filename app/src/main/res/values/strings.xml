@@ -145,4 +145,9 @@
     <string name="change_school_success">学校更换成功，请重新登录</string>
     <string name="withdrawal_record">充值提现记录</string>
     <string name="unselected">未选择</string>
+    <string name="choose_alipay_account">选择支付宝账号</string>
+    <string name="add_alipay_account">添加支付宝账号</string>
+    <string name="please_enter_alipay_account">请输入支付宝账户</string>
+    <string name="please_enter_real_name">请输入真实姓名</string>
+    <string name="add_alipay_account_tip">温馨提示：请输入该支付宝账户已实名认证的姓名，否则会导致提现失败</string>
 </resources>

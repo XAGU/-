@@ -10,4 +10,5 @@ import lombok.Data;
 @Data
 public class RechargeReqDTO {
     private Long denominationId;
+    private Integer thirdAccountType;
 }
