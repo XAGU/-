@@ -51,7 +51,7 @@ public class PrepayActivity extends WalletBaseListActivity implements IPrepayVie
         adaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                startActivity(new Intent(getApplicationContext(), PrepayOrderActivity.class)
+                startActivity(new Intent(PrepayActivity.this, PrepayOrderActivity.class)
                                 .putExtra(Constant.EXTRA_KEY, orders.get(position)));
             }
 

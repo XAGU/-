@@ -44,6 +44,7 @@
             android:layout_height="58dp">
 
             <TextView
+                android:id="@+id/tv_location_title"
                 style="@style/ContentText_main"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -52,6 +53,10 @@
                 android:text="设备位置" />
 
             <TextView
+                android:layout_toRightOf="@id/tv_location_title"
+                android:gravity="right"
+                android:maxLines="1"
+                android:ellipsize="end"
                 android:id="@+id/tv_location"
                 style="@style/ContentText_main"
                 android:textColor="#666"
