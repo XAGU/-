@@ -99,8 +99,14 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
 
                 String macAddress = result.getBleDevice().getMacAddress();
 
-                if (!existDevices.contains(macAddress) && !scanDevices.contains(macAddress)) { // 如果已经在上报的集合中，忽略
-                    scanDevices.add(macAddress);
+                String[] temp = macAddress.split(":");
+                StringBuilder deviceNo = new StringBuilder(temp[temp.length-3]);
+                deviceNo.append(temp[temp.length - 2]);
+                deviceNo.append(temp[temp.length - 1]);
+
+                if (!existDevices.contains(deviceNo.toString())
+                        && !scanDevices.contains(deviceNo.toString())) { // 如果已经在上报的集合中，忽略
+                    scanDevices.add(deviceNo.toString());
                 }
 
                 long now = System.currentTimeMillis();

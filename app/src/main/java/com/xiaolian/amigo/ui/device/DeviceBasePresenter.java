@@ -5,7 +5,6 @@ import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
@@ -28,15 +27,11 @@ import com.xiaolian.amigo.data.manager.intf.ITradeDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.CmdResultReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.ConnectCommandReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.LatestOrderReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.PayReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.ScanDeviceReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.UnsettledOrderStatusCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.CmdResultRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.ConnectCommandRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.LatestOrderRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.PayRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.ScanDeviceRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.UnsettledOrderStatusCheckRespDTO;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.ui.base.BasePresenter;
@@ -47,9 +42,6 @@ import com.xiaolian.amigo.util.ble.Agreement;
 import com.xiaolian.amigo.util.ble.HexBytesUtils;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -83,6 +75,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     private PublishSubject<Void> disconnectTriggerSubject = PublishSubject.create();
     // 当前连接的设备
     private String currentMacAddress;
+    // 设备编号 macAddress后六位 用于和服务器交互
+    private String deviceNo;
     // 表示是否正在处理蓝牙被主动关闭
     private AtomicBoolean handleBleAdaptorClose = new AtomicBoolean(false);
     // 处理蓝牙关闭时的时间戳(取当前时间往前推20秒)
@@ -178,15 +172,17 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             Log.wtf(TAG, "macAddress为空!");
             return;
         }
-        // 校验macAddress是否合法
-        try {
-            bleDataManager.getStatus(macAddress);
-        } catch (Exception e) {
-            Log.wtf(TAG, "macAddress不合法", e);
-            getMvpView().post(() -> getMvpView().onError(TradeError.DEVICE_BROKEN_2));
-            getMvpView().post(() -> getMvpView().hideLoading());
-            return;
-        }
+
+
+//        // 校验macAddress是否合法
+//        try {
+//            bleDataManager.getStatus(macAddress);
+//        } catch (Exception e) {
+//            Log.wtf(TAG, "macAddress不合法", e);
+//            getMvpView().post(() -> getMvpView().onError(TradeError.DEVICE_BROKEN_2));
+//            getMvpView().post(() -> getMvpView().hideLoading());
+//            return;
+//        }
 
         Long lastConnectTime = TimeHolder.get().getLastConnectTime();
         if (null != lastConnectTime) {
@@ -204,7 +200,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
     @Override
     public void onConnect(@NonNull String macAddress) {
-
+        deviceNo = macAddress;
 
         // 重置正在连接标识
         connecting = true;
@@ -233,8 +229,55 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         timer.start();
 
         // 设备连接上存储mac地址供后续读写数据使用
-        currentMacAddress = macAddress;
+//        currentMacAddress = macAddress;
 
+        // 扫描macAddress
+        addObserver(bleDataManager.scan(), new BleObserver<ScanResult>() {
+            Long begin = null;
+
+            @Override
+            public void onNext(ScanResult result) {
+                if (currentMacAddress != null) {
+                    return;
+                }
+
+                if (null == begin) {
+                    // 起始时间设置为当前时间
+                    begin = System.currentTimeMillis();
+                }
+
+                String scannedMacAddress = result.getBleDevice().getMacAddress();
+                String[] temp = scannedMacAddress.split(":");
+                StringBuilder deviceNo = new StringBuilder(temp[temp.length-3]);
+                deviceNo.append(temp[temp.length - 2]);
+                deviceNo.append(temp[temp.length - 1]);
+                if (TextUtils.equals(deviceNo.toString(), macAddress)) {
+                    currentMacAddress = scannedMacAddress;
+                    Log.i(TAG, "获取macAddress成功。macAddress:" + currentMacAddress);
+                    realConnect(macAddress);
+                    return;
+                }
+                long now = System.currentTimeMillis();
+                if (now - begin > 2000) { // 列表数目到达10条或者时间超过2s都去服务端请求一次接口
+                    currentMacAddress = "";
+                    Log.i(TAG, "2s时间到，获取macAddress失败");
+                    realConnect(macAddress);
+                }
+            }
+
+            @Override
+            public void onConnectError() {
+                Log.wtf(TAG, "扫描失败 onConnectError");
+            }
+
+            @Override
+            public void onExecuteError(Throwable e) {
+                Log.wtf(TAG, "扫描失败 onExecuteError", e);
+            }
+        }, Schedulers.io());
+    }
+
+    private void realConnect(String macAddress) {
         // 1、网络请求获取握手指令
         if (null == connectCmd) {
             getConnectCommand(macAddress);
@@ -250,8 +293,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     .subscribe(this::handleResult, throwable -> Log.wtf(TAG, "接收设备返回的数据失败", throwable));
         }
 
+
         // 3、开启设备状态监控
-        addObserver(bleDataManager.monitorStatus(macAddress), new BleObserver<RxBleConnection.RxBleConnectionState>() {
+        addObserver(bleDataManager.monitorStatus(currentMacAddress), new BleObserver<RxBleConnection.RxBleConnectionState>() {
 
             @Override
             public void onNext(RxBleConnection.RxBleConnectionState state) {
@@ -274,7 +318,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
         // 4、创建共享连接
         connectionObservable = bleDataManager
-                .prepareConnectionObservable(macAddress, false, disconnectTriggerSubject)
+                .prepareConnectionObservable(currentMacAddress, false, disconnectTriggerSubject)
                 .compose(bindUntilEvent(PAUSE));
 
         // 5、连接设备
@@ -302,7 +346,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         notifyCharacteristic = characteristic;
 
                         // 6、开启notify，向蓝牙设备写notify特征值描述，为后续接受蓝牙设备notify通知做铺垫
-                        if (bleDataManager.getStatus(macAddress) == RxBleConnection.RxBleConnectionState.CONNECTED) {
+                        if (bleDataManager.getStatus(currentMacAddress) == RxBleConnection.RxBleConnectionState.CONNECTED) {
                             Log.i(TAG, "准备开启notify通道");
                             enableNotify();
                         } else {
@@ -642,7 +686,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     private void processCommandResult(String result) {
         CmdResultReqDTO reqDTO = new CmdResultReqDTO();
         reqDTO.setData(result);
-        reqDTO.setMacAddress(currentMacAddress);
+        reqDTO.setMacAddress(deviceNo);
         addObserver(tradeDataManager.processCmdResult(reqDTO), new NetworkObserver<ApiResult<CmdResultRespDTO>>(false) {
             @Override
             public void onReady(ApiResult<CmdResultRespDTO> result) {
@@ -812,7 +856,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         }
 
         PayReqDTO reqDTO = new PayReqDTO();
-        reqDTO.setMacAddress(currentMacAddress);
+        reqDTO.setMacAddress(deviceNo);
         reqDTO.setBonusId(bonusId);
         reqDTO.setPrepay(prepay);
         reqDTO.setMethod(method);
