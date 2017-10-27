@@ -1,15 +1,19 @@
 package com.xiaolian.amigo.ui.wallet;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.enumeration.WithdrawOperationType;
 import com.xiaolian.amigo.ui.wallet.adaptor.WithdrawalAdaptor;
 import com.xiaolian.amigo.ui.wallet.intf.IWithdrawRecordPresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IWithdrawalRecordView;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.ScreenUtils;
+import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +50,20 @@ public class WithdrawalRecordActivity extends WalletBaseListActivity implements 
     @Override
     protected void setRecyclerView(RecyclerView recyclerView) {
         adaptor = new WithdrawalAdaptor(this, R.layout.item_withdrawal_record, items);
+        adaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                startActivity(new Intent(WithdrawalRecordActivity.this,
+                        WithdrawOperationType.getOperationType(items.get(position).getType())
+                            .getClz())
+                    .putExtra(Constant.EXTRA_KEY, items.get(position).getId()));
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adaptor);
         recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 10)));

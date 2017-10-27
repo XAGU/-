@@ -36,10 +36,14 @@ public class WithdrawalAdaptor extends CommonAdapter<WithdrawalAdaptor.Withdrawa
     public static class WithdrawalWrapper {
         private Long time;
         private String title;
+        private Integer type;
         private int status;
+        private Long id;
 
         public WithdrawalWrapper(FundsInListDTO dto) {
+            this.id = dto.getId();
             this.time = dto.getCreateTime();
+            this.type = dto.getOperationType();
             this.title = WithdrawOperationType.getOperationType(dto.getOperationType()).getDesc()
                             + "：￥" + dto.getAmount();
             this.status = dto.getStatus();

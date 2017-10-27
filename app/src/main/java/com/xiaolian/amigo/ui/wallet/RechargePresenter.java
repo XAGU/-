@@ -35,6 +35,7 @@ public class RechargePresenter<V extends IRechargeView> extends BasePresenter<V>
         implements IRechargePresenter<V> {
     private static final String TAG = RechargePresenter.class.getSimpleName();
     private IWalletDataManager manager;
+    private Long fundsId;
 
     @Inject
     public RechargePresenter(IWalletDataManager manager) {
@@ -85,6 +86,7 @@ public class RechargePresenter<V extends IRechargeView> extends BasePresenter<V>
     }
 
     private void requestAlipayArgs(Long fundsId) {
+        this.fundsId = fundsId;
         AlipayTradeAppPayArgsReqDTO reqDTO = new AlipayTradeAppPayArgsReqDTO();
         reqDTO.setFundsId(fundsId);
         addObserver(manager.requestAlipayArgs(reqDTO), new NetworkObserver<ApiResult<AlipayTradeAppPayArgsRespDTO>>(){
@@ -116,6 +118,7 @@ public class RechargePresenter<V extends IRechargeView> extends BasePresenter<V>
                     if (apiResult.getData().getCode() == AlipayPayOrderCheckResult.SUCCESS.getType()) {
                         getMvpView().onSuccess("充值成功");
                         // TODO 充值订单详情
+                        getMvpView().gotoDetail(fundsId);
                     } else {
                         getMvpView().onError(apiResult.getData().getMsg());
                     }

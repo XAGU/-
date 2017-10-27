@@ -1,5 +1,8 @@
 package com.xiaolian.amigo.data.enumeration;
 
+import com.xiaolian.amigo.ui.wallet.RechargeDetailActivity;
+import com.xiaolian.amigo.ui.wallet.WithdrawalDetailActivity;
+
 /**
  * 充值提现类型
  * <p>
@@ -7,10 +10,24 @@ package com.xiaolian.amigo.data.enumeration;
  */
 
 public enum  WithdrawOperationType {
-    UNKNOWN(-1, "未知操作"),
-    RECHARGE(1, "充值"),
-    WITHDRAW(2, "提现")
-    ;
+    UNKNOWN(-1, "未知操作") {
+        @Override
+        public Class getClz() {
+            return null;
+        }
+    },
+    RECHARGE(1, "充值") {
+        @Override
+        public Class getClz() {
+            return RechargeDetailActivity.class;
+        }
+    },
+    WITHDRAW(2, "提现") {
+        @Override
+        public Class getClz() {
+            return WithdrawalDetailActivity.class;
+        }
+    };
     private int type;
     private String desc;
 
@@ -18,6 +35,8 @@ public enum  WithdrawOperationType {
         this.type = type;
         this.desc = desc;
     }
+
+    public abstract Class getClz();
 
     public int getType() {
         return type;

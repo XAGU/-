@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.wallet.intf;
 
+import com.xiaolian.amigo.data.network.model.dto.response.FundsDTO;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 
 /**
@@ -9,4 +10,5 @@ import com.xiaolian.amigo.ui.base.intf.IBaseView;
  */
 
 public interface IRechargeDetailView extends IBaseView {
+    void render(FundsDTO data);
 }

@@ -3,12 +3,12 @@ package com.xiaolian.amigo.data.enumeration;
 import com.xiaolian.amigo.R;
 
 /**
- * 充值提现状态
+ * 提现状态
  * <p>
- * Created by zcd on 10/24/17.
+ * Created by zcd on 10/27/17.
  */
 
-public enum WithdrawalStatus {
+public enum  RechargeStatus {
     KNOWN(0, "未知状态") {
         @Override
         public int getColorRes() {
@@ -39,13 +39,13 @@ public enum WithdrawalStatus {
             return R.color.colorFullRed;
         }
     },
-    WITHDRAWAL_SUCCESS(5, "提现成功") {
+    WITHDRAWAL_SUCCESS(5, "充值成功") {
         @Override
         public int getColorRes() {
             return R.color.device_dispenser;
         }
     },
-    WITHDRAWAL_FAIL(6, "提现失败") {
+    WITHDRAWAL_FAIL(6, "充值失败") {
         @Override
         public int getColorRes() {
             return R.color.colorFullRed;
@@ -54,7 +54,7 @@ public enum WithdrawalStatus {
     private int type;
     private String desc;
 
-    WithdrawalStatus(int type, String desc) {
+    RechargeStatus(int type, String desc) {
         this.type = type;
         this.desc = desc;
     }
@@ -69,8 +69,8 @@ public enum WithdrawalStatus {
         return desc;
     }
 
-    public static WithdrawalStatus getWithdrawalStatus(int type) {
-        for (WithdrawalStatus status : WithdrawalStatus.values()) {
+    public static RechargeStatus getRechargeStatus(int type) {
+        for (RechargeStatus status : RechargeStatus.values()) {
             if (status.getType() == type) {
                 return status;
             }

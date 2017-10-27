@@ -13,6 +13,7 @@ import com.xiaolian.amigo.data.network.model.dto.request.WithdrawReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.AlipayTradeAppPayArgsRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.AlipayTradeAppPayResultParseRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.FundsDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.PersonalWalletDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryFundsListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryRechargeAmountsRespDTO;
@@ -50,7 +51,7 @@ public interface IWalletApi {
 
     // 提现
     @POST("/funds/withdraw")
-    Observable<ApiResult<BooleanRespDTO>> withdraw(@Body WithdrawReqDTO reqDTO);
+    Observable<ApiResult<SimpleRespDTO>> withdraw(@Body WithdrawReqDTO reqDTO);
 
     // 用户个人充值提现记录列表
     @POST("/funds/personal/list")
@@ -75,4 +76,8 @@ public interface IWalletApi {
     // 删除第三方账户
     @POST("/user/third/account/delete")
     Observable<ApiResult<BooleanRespDTO>> deleteAccount(@Body SimpleReqDTO reqDTO);
+
+    // 充值提现
+    @POST("/funds/one")
+    Observable<ApiResult<FundsDTO>> queryWithdrawRechargeDetail(@Body SimpleReqDTO reqDTO);
 }

@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.wallet;
 
+import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +10,7 @@ import android.widget.Button;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.PayWay;
 import com.xiaolian.amigo.ui.wallet.adaptor.RechargeTypeAdaptor;
+import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.PayUtil;
 import com.xiaolian.amigo.util.ScreenUtils;
 import com.xiaolian.amigo.ui.wallet.adaptor.BonusItemDelegate;
@@ -149,6 +151,13 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
     @Override
     public void alipay(String reqArgs) {
         PayUtil.alpay(this, reqArgs);
+    }
+
+    @Override
+    public void gotoDetail(Long fundsId) {
+        startActivity(new Intent(this, RechargeDetailActivity.class)
+                .putExtra(Constant.EXTRA_KEY, fundsId));
+        finish();
     }
 
     @Override

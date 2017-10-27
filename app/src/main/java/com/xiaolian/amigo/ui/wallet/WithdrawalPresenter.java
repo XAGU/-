@@ -4,6 +4,7 @@ import com.xiaolian.amigo.data.manager.intf.IWalletDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.WithdrawReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.SimpleRespDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IWithdrawalPresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IWithdrawalView;
@@ -30,10 +31,10 @@ public class WithdrawalPresenter<V extends IWithdrawalView> extends BasePresente
         WithdrawReqDTO reqDTO = new WithdrawReqDTO();
         reqDTO.setAmount(amount);
         reqDTO.setUserThirdAccountId(withdrawId);
-        addObserver(manager.withdraw(reqDTO), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
+        addObserver(manager.withdraw(reqDTO), new NetworkObserver<ApiResult<SimpleRespDTO>>() {
 
             @Override
-            public void onReady(ApiResult<BooleanRespDTO> result) {
+            public void onReady(ApiResult<SimpleRespDTO> result) {
                 if (null == result.getError()) {
                     getMvpView().onSuccess("提现成功");
                     getMvpView().back();
