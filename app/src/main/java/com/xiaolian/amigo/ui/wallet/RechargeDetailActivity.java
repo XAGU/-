@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.enumeration.PayWay;
 import com.xiaolian.amigo.data.enumeration.RechargeStatus;
 import com.xiaolian.amigo.data.enumeration.WithdrawOperationType;
 import com.xiaolian.amigo.data.network.model.dto.response.FundsDTO;
@@ -40,6 +41,7 @@ import butterknife.OnClick;
 public class RechargeDetailActivity extends WalletBaseActivity implements IRechargeDetailView {
     @Inject
     IRechargeDetailPresenter<IRechargeDetailView> presenter;
+
     private List<WithdrawRechargeDetailAdapter.Item> items = new ArrayList<>();
 
     private WithdrawRechargeDetailAdapter adapter;
@@ -79,7 +81,7 @@ public class RechargeDetailActivity extends WalletBaseActivity implements IRecha
         recyclerView.addItemDecoration(new RecycleViewDivider(this, RecycleViewDivider.VERTICAL_LIST));
         recyclerView.setAdapter(adapter);
 
-        if (id == -1) {
+        if (id == null || id == -1) {
             onError("状态错误");
         }
         presenter.requestData(id);
@@ -113,11 +115,11 @@ public class RechargeDetailActivity extends WalletBaseActivity implements IRecha
                 && !TextUtils.isEmpty(data.getReason())) {
             ll_reason.setVisibility(View.VISIBLE);
             tv_reason_content.setText(data.getReason());
-            tv_reason.setText("未通过原因");
+            tv_reason.setText("失败原因");
         }
 
-        items.add(new WithdrawRechargeDetailAdapter.Item("提现方式：",
-                WithdrawOperationType.getOperationType(data.getOperationType()).getDesc()));
+        items.add(new WithdrawRechargeDetailAdapter.Item("充值方式：",
+                PayWay.getPayWay(data.getThirdAccountType()).getDesc()));
         items.add(new WithdrawRechargeDetailAdapter.Item("充值账号：",
                 data.getThirdAccountName()));
         items.add(new WithdrawRechargeDetailAdapter.Item("充值时间：",
@@ -125,6 +127,7 @@ public class RechargeDetailActivity extends WalletBaseActivity implements IRecha
         items.add(new WithdrawRechargeDetailAdapter.Item("流水号：",
                 data.getOrderNo()));
         items.add(new WithdrawRechargeDetailAdapter.Item(null, null));
+        adapter.notifyDataSetChanged();
     }
 
     @OnClick(R.id.left_oper)

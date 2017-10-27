@@ -36,8 +36,8 @@ public class WithdrawalPresenter<V extends IWithdrawalView> extends BasePresente
             @Override
             public void onReady(ApiResult<SimpleRespDTO> result) {
                 if (null == result.getError()) {
-                    getMvpView().onSuccess("提现成功");
-                    getMvpView().back();
+//                    getMvpView().onSuccess("提现成功");
+                    getMvpView().gotoWithdrawDetail(result.getData().getId());
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }

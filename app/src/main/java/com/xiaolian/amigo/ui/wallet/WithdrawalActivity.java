@@ -144,6 +144,13 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
     }
 
     @Override
+    public void gotoWithdrawDetail(Long id) {
+        startActivity(new Intent(this, WithdrawalDetailActivity.class)
+                .putExtra(Constant.EXTRA_KEY, id));
+        finish();
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {

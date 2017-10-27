@@ -21,31 +21,25 @@ public enum  RechargeStatus {
             return R.color.colorFullRed;
         }
     },
-    AUDIT_PASSED(2, "审核通过") {
-        @Override
-        public int getColorRes() {
-            return R.color.device_dispenser;
-        }
-    },
-    AUDIT_FAIL(3, "审核失败") {
+    AUDIT_FAIL(2, "审核失败") {
         @Override
         public int getColorRes() {
             return R.color.colorFullRed;
         }
     },
-    THIRD_PENDING(4, "等待支付确认") {
+    THIRD_PENDING(3, "等待支付确认") {
         @Override
         public int getColorRes() {
             return R.color.colorFullRed;
         }
     },
-    WITHDRAWAL_SUCCESS(5, "充值成功") {
+    WITHDRAWAL_SUCCESS(4, "充值成功") {
         @Override
         public int getColorRes() {
             return R.color.device_dispenser;
         }
     },
-    WITHDRAWAL_FAIL(6, "充值失败") {
+    WITHDRAWAL_FAIL(5, "充值失败") {
         @Override
         public int getColorRes() {
             return R.color.colorFullRed;

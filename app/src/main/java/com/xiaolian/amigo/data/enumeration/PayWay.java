@@ -9,6 +9,12 @@ import com.xiaolian.amigo.R;
  */
 
 public enum PayWay {
+    KNOWN(0, "未知方式") {
+        @Override
+        public int getDrawableRes() {
+            return 0;
+        }
+    },
     ALIAPY(1, "支付宝") {
         @Override
         public int getDrawableRes() {
@@ -38,4 +44,13 @@ public enum PayWay {
     private int type;
     private String desc;
     public abstract int getDrawableRes();
+
+    public static PayWay getPayWay(int type) {
+        for (PayWay payWay : PayWay.values()) {
+            if (payWay.getType() == type) {
+                return payWay;
+            }
+        }
+        return KNOWN;
+    }
 }

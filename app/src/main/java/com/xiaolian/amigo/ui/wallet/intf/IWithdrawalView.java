@@ -10,4 +10,6 @@ import com.xiaolian.amigo.ui.base.intf.IBaseView;
 
 public interface IWithdrawalView extends IBaseView {
     void back();
+
+    void gotoWithdrawDetail(Long id);
 }
