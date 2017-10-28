@@ -230,6 +230,12 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
         // 设备连接上存储mac地址供后续读写数据使用
 //        currentMacAddress = macAddress;
+        // 查询是否存在改deviceNo的macAddress
+        if (sharedPreferencesHelp.getMacAddressByDeviceNo(macAddress) != null) {
+            currentMacAddress = sharedPreferencesHelp.getMacAddressByDeviceNo(macAddress);
+            realConnect(macAddress);
+            return;
+        }
 
         // 扫描macAddress
         addObserver(bleDataManager.scan(), new BleObserver<ScanResult>() {
@@ -254,6 +260,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 if (TextUtils.equals(deviceNo.toString(), macAddress)) {
                     currentMacAddress = scannedMacAddress;
                     Log.i(TAG, "获取macAddress成功。macAddress:" + currentMacAddress);
+                    sharedPreferencesHelp.setDeviceNoAndMacAddress(macAddress, currentMacAddress);
                     realConnect(macAddress);
                     return;
                 }

@@ -32,6 +32,7 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     private static final String PREF_LAST_CONNECT_TIME = "PREF_LAST_CONNECT_TIME";
     private static final String PREF_KEY_BALANCE = "PREF_KEY_BALANCE";
     private static final String PREF_KEY_BONUS = "PREF_KEY_BONUS";
+    private static final String PREF_BLUETOOTH_MAC_ADDRESS_PREFIX = "PREF_BLUETOOTH_MAC_ADDRESS_PREFIX";
 
     private String tokenHolder;
     private String deviceTokenHolder;
@@ -203,5 +204,15 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     @Override
     public String getCloseCmd(String macAddress) {
         return mSharedPreferences.getString(PREF_CMD_CLOSE_PREFIX + macAddress, null);
+    }
+
+    @Override
+    public void setDeviceNoAndMacAddress(String deviceNo, String macAddress) {
+        mSharedPreferences.edit().putString(PREF_BLUETOOTH_MAC_ADDRESS_PREFIX + deviceNo, macAddress).apply();
+    }
+
+    @Override
+    public String getMacAddressByDeviceNo(String deviceNo) {
+        return mSharedPreferences.getString(PREF_BLUETOOTH_MAC_ADDRESS_PREFIX + deviceNo, null);
     }
 }

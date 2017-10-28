@@ -8,6 +8,7 @@ import com.xiaolian.amigo.data.network.model.user.User;
  */
 
 public interface ISharedPreferencesHelp {
+    // 储存蓝牙地址和编号的映射关系
     String getToken();
 
     void setToken(String token);
@@ -49,6 +50,10 @@ public interface ISharedPreferencesHelp {
     void setCloseCmd(String macAddress, String closeCmd);
 
     String getCloseCmd(String macAddress);
+
+    void setDeviceNoAndMacAddress(String deviceNo, String macAddress);
+
+    String getMacAddressByDeviceNo(String deviceNo);
 
     // 上次连接时间
     void setLastConnectTime(Long lastConnectTime);
