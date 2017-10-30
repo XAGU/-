@@ -9,9 +9,9 @@ import com.xiaolian.amigo.ui.base.intf.IBaseView;
  */
 
 public interface IWalletView extends IBaseView {
-    void setBalanceText(String balance);
+    void setBalanceText(Double balance);
 
-    void setPrepayText(String prepay);
+    void setPrepayText(Double prepay);
 
     void gotoWithDraw();
 

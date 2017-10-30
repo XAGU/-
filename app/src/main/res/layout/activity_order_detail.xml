@@ -101,6 +101,7 @@
                         android:id="@+id/tv_device_location"
                         android:layout_toRightOf="@id/tv_location_title"
                         style="@style/ContentText_main"
+                        android:gravity="right"
                         android:maxLines="1"
                         android:ellipsize="end"
                         android:textColor="#666"

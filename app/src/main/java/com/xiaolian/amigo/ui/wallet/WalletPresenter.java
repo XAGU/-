@@ -34,8 +34,8 @@ public class WalletPresenter<V extends IWalletView> extends BasePresenter<V>
             @Override
             public void onReady(ApiResult<PersonalWalletDTO> result) {
                 if (null == result.getError()) {
-                    getMvpView().setBalanceText("¥" + result.getData().getBalance());
-                    getMvpView().setPrepayText("¥" + result.getData().getPrepay());
+                    getMvpView().setBalanceText(result.getData().getBalance());
+                    getMvpView().setPrepayText(result.getData().getPrepay());
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }

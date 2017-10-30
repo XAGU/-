@@ -52,8 +52,11 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
     TextView tv_withdraw_way;
     @BindView(R.id.tv_withdraw_way2)
     TextView tv_withdraw_way2;
+    @BindView(R.id.tv_withdraw_all)
+    TextView tv_withdraw_all;
 
     private Long withdrawId;
+    private String balance;
 
     @Override
     protected void initView() {
@@ -61,6 +64,14 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
         getActivityComponent().inject(this);
         setUpEditText();
         presenter.onAttach(WithdrawalActivity.this);
+    }
+
+    @Override
+    protected void setUp() {
+        super.setUp();
+        if (getIntent() != null) {
+            balance = getIntent().getStringExtra(Constant.EXTRA_KEY);
+        }
     }
 
     @Override
@@ -123,6 +134,11 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
             return;
         }
         presenter.withdraw(et_amount.getText().toString().trim(), withdrawId);
+    }
+
+    @OnClick(R.id.tv_withdraw_all)
+    void withdrawAll() {
+        et_amount.setText(balance);
     }
 
     @OnClick(R.id.rl_choose_withdraw_way)

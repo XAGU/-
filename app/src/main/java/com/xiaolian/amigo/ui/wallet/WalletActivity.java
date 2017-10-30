@@ -8,6 +8,7 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.wallet.intf.IWalletPresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IWalletView;
 import com.xiaolian.amigo.ui.widget.dialog.AvailabilityDialog;
+import com.xiaolian.amigo.util.Constant;
 
 import javax.inject.Inject;
 
@@ -82,21 +83,23 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
     // 充值提现记录
     @OnClick(R.id.rl_withdrawal_record)
     void withdrawalRecord() {
-        startActivity(new Intent(getApplicationContext(), WithdrawalRecordActivity.class));
+        startActivity(new Intent(this, WithdrawalRecordActivity.class));
     }
     @Override
-    public void setBalanceText(String balance) {
-        tv_balance.setText(balance);
+    public void setBalanceText(Double balance) {
+
+        tv_balance.setText("¥" + balance);
     }
 
     @Override
-    public void setPrepayText(String prepay) {
-        tv_prepay.setText(prepay);
+    public void setPrepayText(Double prepay) {
+        tv_prepay.setText("¥" + prepay);
     }
 
     @Override
     public void gotoWithDraw() {
-        startActivity(this, WithdrawalActivity.class);
+        startActivity(new Intent(this, WithdrawalActivity.class)
+                .putExtra(Constant.EXTRA_KEY, tv_balance.getText().toString().replace("¥", "")));
     }
 
     @Override

@@ -173,17 +173,6 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             return;
         }
 
-
-//        // 校验macAddress是否合法
-//        try {
-//            bleDataManager.getStatus(macAddress);
-//        } catch (Exception e) {
-//            Log.wtf(TAG, "macAddress不合法", e);
-//            getMvpView().post(() -> getMvpView().onError(TradeError.DEVICE_BROKEN_2));
-//            getMvpView().post(() -> getMvpView().hideLoading());
-//            return;
-//        }
-
         Long lastConnectTime = TimeHolder.get().getLastConnectTime();
         if (null != lastConnectTime) {
             Long diff = System.currentTimeMillis() - lastConnectTime;
