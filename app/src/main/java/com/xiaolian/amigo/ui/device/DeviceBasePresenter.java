@@ -229,7 +229,6 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         timer.start();
 
         // 设备连接上存储mac地址供后续读写数据使用
-//        currentMacAddress = macAddress;
         // 查询是否存在改deviceNo的macAddress
         if (sharedPreferencesHelp.getMacAddressByDeviceNo(macAddress) != null) {
             currentMacAddress = sharedPreferencesHelp.getMacAddressByDeviceNo(macAddress);

@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.LostAndFound;
+import com.xiaolian.amigo.ui.lostandfound.adapter.MyPublishAdaptor;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.util.ScreenUtils;
 import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundAdaptor;
@@ -31,7 +32,7 @@ public class MyPublishActivity extends LostAndFoundBaseListActivity implements I
     // 失物招领列表
     List<LostAndFoundAdaptor.LostAndFoundWapper> lostAndFounds = new ArrayList<>();
 
-    LostAndFoundAdaptor adaptor;
+    MyPublishAdaptor adaptor;
 
     @Inject
     ILostAndFoundPresenter<ILostAndFoundView> presenter;
@@ -51,28 +52,25 @@ public class MyPublishActivity extends LostAndFoundBaseListActivity implements I
     @Override
     protected void setRecyclerView(RecyclerView recyclerView) {
 
-        adaptor = new LostAndFoundAdaptor(this, R.layout.item_lost_and_found, lostAndFounds, true);
+        adaptor = new MyPublishAdaptor(this, R.layout.item_my_publish, lostAndFounds, true);
         recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 10)));
-        adaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                Intent intent = new Intent(MyPublishActivity.this, LostAndFoundDetailActivity.class);
-                intent.putExtra(LostAndFoundDetailActivity.INTENT_KEY_LOST_AND_FOUND_DETAIL_ID, lostAndFounds.get(position).getId());
-                if (lostAndFounds.get(position).getType() == LostAndFound.FOUND.getType()) {
-                    intent.putExtra(LostAndFoundDetailActivity.INTENT_KEY_LOST_AND_FOUND_DETAIL_TYPE,
-                            LostAndFoundDetailActivity.TYPE_FOUND);
-                } else {
-                    intent.putExtra(LostAndFoundDetailActivity.INTENT_KEY_LOST_AND_FOUND_DETAIL_TYPE,
-                            LostAndFoundDetailActivity.TYPE_LOST);
-                }
-                startActivity(intent);
+        adaptor.setClickListener(position -> {
+            Intent intent = new Intent(MyPublishActivity.this, LostAndFoundDetailActivity.class);
+            intent.putExtra(LostAndFoundDetailActivity.INTENT_KEY_LOST_AND_FOUND_DETAIL_ID, lostAndFounds.get(position).getId());
+            if (lostAndFounds.get(position).getType() == LostAndFound.FOUND.getType()) {
+                intent.putExtra(LostAndFoundDetailActivity.INTENT_KEY_LOST_AND_FOUND_DETAIL_TYPE,
+                        LostAndFoundDetailActivity.TYPE_FOUND);
+            } else {
+                intent.putExtra(LostAndFoundDetailActivity.INTENT_KEY_LOST_AND_FOUND_DETAIL_TYPE,
+                        LostAndFoundDetailActivity.TYPE_LOST);
             }
-
-            @Override
-            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
-                onSuccess("请左滑操作");
-                return true;
-            }
+            startActivity(intent);
+        });
+        adaptor.setLongClickListener(() -> {
+            onSuccess("请左滑操作");
+        });
+        adaptor.setDeleteListener(position -> {
+            presenter.deleteLostAndFounds(lostAndFounds.get(position).getId());
         });
         recyclerView.setAdapter(adaptor);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -117,5 +115,10 @@ public class MyPublishActivity extends LostAndFoundBaseListActivity implements I
     @Override
     public void showSearchResult(List<LostAndFoundAdaptor.LostAndFoundWapper> wappers) {
         // this is for LostAndFoundActivity
+    }
+
+    @Override
+    public void refresh() {
+        onRefresh();
     }
 }

@@ -32,4 +32,5 @@ public interface ILostAndFoundView extends IBaseListView {
 
     void showSearchResult(List<LostAndFoundAdaptor.LostAndFoundWapper> wappers);
 
+    void refresh();
 }

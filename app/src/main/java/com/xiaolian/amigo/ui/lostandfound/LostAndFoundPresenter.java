@@ -4,6 +4,8 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.manager.intf.ILostAndFoundDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.QueryLostAndFoundListReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.request.SimpleReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryLostAndFoundListRespDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.LostAndFound;
 import com.xiaolian.amigo.ui.base.BasePresenter;
@@ -140,8 +142,10 @@ public class LostAndFoundPresenter<V extends ILostAndFoundView> extends BasePres
                         getMvpView().addMore(wrappers);
                     } else {
                         getMvpView().showEmptyView(R.string.empty_tip_1);
+                        getMvpView().addMore(new ArrayList<>());
                     }
                 } else {
+                    getMvpView().addMore(new ArrayList<>());
                     getMvpView().onError(result.getError().getDisplayMessage());
                     getMvpView().showErrorView();
                 }
@@ -150,9 +154,28 @@ public class LostAndFoundPresenter<V extends ILostAndFoundView> extends BasePres
             @Override
             public void onError(Throwable e) {
                 super.onError(e);
+                getMvpView().addMore(new ArrayList<>());
                 getMvpView().setRefreshComplete();
                 getMvpView().setLoadMoreComplete();
                 getMvpView().showErrorView();
+            }
+        });
+    }
+
+    @Override
+    public void deleteLostAndFounds(Long id) {
+        SimpleReqDTO reqDTO = new SimpleReqDTO();
+        reqDTO.setId(id);
+        addObserver(manager.deleteLostAndFounds(reqDTO), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
+
+            @Override
+            public void onReady(ApiResult<BooleanRespDTO> result) {
+                if (null == result.getError()) {
+                    getMvpView().onSuccess("删除成功");
+                    getMvpView().refresh();
+                } else {
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
             }
         });
     }

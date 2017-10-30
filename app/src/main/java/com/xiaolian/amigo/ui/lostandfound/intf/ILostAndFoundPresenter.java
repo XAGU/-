@@ -20,4 +20,6 @@ public interface ILostAndFoundPresenter<V extends ILostAndFoundView> extends IBa
     void searchFoundList(Integer page, Integer size, String selectKey);
 
     void getMyLostAndFounds();
+
+    void deleteLostAndFounds(Long id);
 }

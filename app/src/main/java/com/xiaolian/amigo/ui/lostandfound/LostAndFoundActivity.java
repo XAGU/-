@@ -358,8 +358,13 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
         searchDialog.showResult(searchRecyclerView);
     }
 
+    @Override
+    public void refresh() {
+        onRefresh();
+    }
 
-//    @OnClick(R.id.tv_lost)
+
+    //    @OnClick(R.id.tv_lost)
     void onLostClick() {
         if (listStatus) {
             switchListStatus();
