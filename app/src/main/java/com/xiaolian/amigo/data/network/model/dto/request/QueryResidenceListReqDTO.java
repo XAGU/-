@@ -11,6 +11,7 @@ import lombok.Data;
 @Data
 public class QueryResidenceListReqDTO {
     Integer buildingType;
+    Integer deviceType;
     Integer page;
     Integer size;
     Long parentId;

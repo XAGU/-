@@ -294,5 +294,6 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
     private void renderProblems() {
         v_divide.setVisibility(View.VISIBLE);
         ll_problems.setVisibility(View.VISIBLE);
+
     }
 }

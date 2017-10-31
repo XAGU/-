@@ -18,9 +18,9 @@ public interface IListChoosePresenter<V extends IListChooseView> extends IBasePr
 
     void updateSex(int sex);
 
-    void getFloorList(Integer page, Integer size, Long parentId);
+    void getFloorList(Integer page, Integer size, Integer deviceType, Long parentId);
 
-    void getDormitoryList(Integer page, Integer size, Long parentId, boolean existDevice);
+    void getDormitoryList(Integer page, Integer size, Integer deviceType, Long parentId, boolean existDevice);
 
     void bindDormitory(Long id, Long residenceId, boolean isEdit);
 }

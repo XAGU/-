@@ -77,6 +77,7 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
         if (deviceType == Device.HEATER.getType()) {
             dto.setBuildingType(BuildingType.DORMITORY.getType());
         }
+        dto.setDeviceType(deviceType);
         dto.setSchoolId(manager.getUser().getSchoolId());
         // residencelevel 1 表示楼栋
         dto.setResidenceLevel(ResidenceLevel.BUILDING.getType());
@@ -139,11 +140,12 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
     }
 
     @Override
-    public void getFloorList(Integer page, Integer size, Long parentId) {
+    public void getFloorList(Integer page, Integer size, Integer deviceType, Long parentId) {
         QueryResidenceListReqDTO dto = new QueryResidenceListReqDTO();
         dto.setPage(page);
         dto.setSize(size);
         dto.setParentId(parentId);
+        dto.setDeviceType(deviceType);
         dto.setSchoolId(manager.getUser().getSchoolId());
         // residencelevel 2 表示楼层
         dto.setResidenceLevel(ResidenceLevel.FLOOR.getType());
@@ -167,11 +169,12 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
     }
 
     @Override
-    public void getDormitoryList(Integer page, Integer size, Long parentId, boolean existDevice) {
+    public void getDormitoryList(Integer page, Integer size, Integer deviceType, Long parentId, boolean existDevice) {
         QueryResidenceListReqDTO dto = new QueryResidenceListReqDTO();
         dto.setPage(page);
         dto.setSize(size);
         dto.setExistDevice(existDevice);
+        dto.setDeviceType(deviceType);
         dto.setParentId(parentId);
         dto.setSchoolId(manager.getUser().getSchoolId());
         // residencelevel 3 表示宿舍

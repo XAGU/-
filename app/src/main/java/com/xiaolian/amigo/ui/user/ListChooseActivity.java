@@ -176,7 +176,7 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                         Long parentId = getIntent().getLongExtra(INTENT_KEY_LIST_CHOOSE_PARENT_ID, -1);
                         if (parentId != -1) {
                             // page size 为null 加载全部
-                            presenter.getFloorList(null, null, parentId);
+                            presenter.getFloorList(null, null, deviceType, parentId);
                         }
                     }
                     adapter.setOnItemClickListener((view, position) -> {
@@ -207,9 +207,9 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                         if (parentId != -1) {
                             // page size 为null 加载全部
                             if (TextUtils.isEmpty(activitySrc)) {
-                                presenter.getDormitoryList(null, null, parentId, false);
+                                presenter.getDormitoryList(null, null, deviceType, parentId, false);
                             } else {
-                                presenter.getDormitoryList(null, null, parentId, true);
+                                presenter.getDormitoryList(null, null, deviceType, parentId, true);
                             }
                         }
                     }
