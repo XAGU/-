@@ -14,6 +14,10 @@
         <item name="android:listDivider">@drawable/divider</item>
     </style>
 
+    <style name="UpdateDialog" parent="@style/Theme.AppCompat.Light.Dialog">
+        <item name="windowNoTitle">true</item>
+    </style>
+
     <style name="DeviceTheme" parent="AppTheme.NoActionBar">
         <item name="colorControlNormal">#fff</item>
     </style>

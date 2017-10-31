@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.main;
 
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -33,6 +34,9 @@ import com.xiaolian.amigo.ui.login.LoginActivity;
 import com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity;
 import com.xiaolian.amigo.ui.main.intf.IMainPresenter;
 import com.xiaolian.amigo.ui.main.intf.IMainView;
+import com.xiaolian.amigo.ui.main.update.IVersionModel;
+import com.xiaolian.amigo.ui.main.update.IntentKey;
+import com.xiaolian.amigo.ui.main.update.UpdateActivity;
 import com.xiaolian.amigo.ui.notice.NoticeListActivity;
 import com.xiaolian.amigo.ui.user.EditDormitoryActivity;
 import com.xiaolian.amigo.ui.user.EditProfileActivity;
@@ -40,8 +44,8 @@ import com.xiaolian.amigo.ui.wallet.PrepayActivity;
 import com.xiaolian.amigo.ui.widget.dialog.AvailabilityDialog;
 import com.xiaolian.amigo.ui.widget.dialog.NoticeAlertDialog;
 import com.xiaolian.amigo.ui.widget.dialog.PrepayDialog;
+import com.xiaolian.amigo.util.AppUtils;
 import com.xiaolian.amigo.util.CommonUtil;
-import com.xiaolian.amigo.util.NetworkUtil;
 import com.youth.banner.Banner;
 
 import org.greenrobot.eventbus.EventBus;
@@ -180,6 +184,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 return super.onFling(e1, e2, velocityX, velocityY);
             }
         });
+
+//        presenter.checkUpdate(AppUtils.getAppVersionCode(this),
+//                AppUtils.getVersionName(this));
     }
 
     @Override
@@ -605,6 +612,22 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         presenter.setBalance(data.getBalance());
         presenter.setBonusAmount(data.getBonusAmount());
         EventBus.getDefault().post(data);
+    }
+
+    @Override
+    public void showUpdateDialog(IVersionModel model) {
+        rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .subscribe(granted -> {
+                    if (granted) {
+                        Intent intent = new Intent(this, UpdateActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.putExtra(IntentKey.MODEL, model);
+                        intent.putExtra(IntentKey.NOTIFICATION_ICON, R.mipmap.ic_launcher);
+                        startActivity(intent);
+                    } else {
+                        showMessage("没有SD卡权限");
+                    }
+                });
     }
 
     public void refreshProfile() {

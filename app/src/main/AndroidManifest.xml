@@ -335,6 +335,10 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"/>
 
+        <activity android:name=".ui.main.update.UpdateActivity"
+            android:theme="@style/UpdateDialog"
+            android:screenOrientation="portrait"/>
+
         <!-- 支付宝 -->
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"
@@ -355,6 +359,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service android:name=".ui.main.update.DownLoadService" />
 
         <!--兼容API24的provider-->
         <provider

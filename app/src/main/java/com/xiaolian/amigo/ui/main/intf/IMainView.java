@@ -3,9 +3,11 @@ package com.xiaolian.amigo.ui.main.intf;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.network.model.dto.response.DeviceCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.PersonalExtraInfoDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.VersionDTO;
 import com.xiaolian.amigo.data.network.model.order.Order;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
+import com.xiaolian.amigo.ui.main.update.IVersionModel;
 
 import java.util.List;
 
@@ -39,4 +41,6 @@ public interface IMainView extends IBaseView {
     void showNoDeviceDialog();
 
     void refreshProfile(PersonalExtraInfoDTO data);
+
+    void showUpdateDialog(IVersionModel version);
 }

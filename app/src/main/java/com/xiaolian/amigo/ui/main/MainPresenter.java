@@ -5,9 +5,11 @@ import android.text.TextUtils;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.manager.intf.IMainDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.dto.request.CheckVersionUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.DeviceCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.ReadNotifyReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.CheckVersionUpdateRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.DeviceCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QuerySchoolBizListRespDTO;
@@ -186,6 +188,24 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
             public void onError(Throwable e) {
                 super.onError(e);
                 EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.ENABLE_VIEW));
+            }
+        });
+    }
+
+    @Override
+    public void checkUpdate(Integer code, String versionNo) {
+        CheckVersionUpdateReqDTO reqDTO = new CheckVersionUpdateReqDTO();
+        reqDTO.setCode(code);
+        reqDTO.setVersionNo(versionNo);
+        addObserver(manager.checkUpdate(reqDTO), new NetworkObserver<ApiResult<CheckVersionUpdateRespDTO>>() {
+
+            @Override
+            public void onReady(ApiResult<CheckVersionUpdateRespDTO> result) {
+                if (null == result.getError()) {
+                    if (result.getData().getResult()) {
+                        getMvpView().showUpdateDialog(result.getData().getVersion());
+                    }
+                }
             }
         });
     }

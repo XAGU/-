@@ -1,16 +1,19 @@
 package com.xiaolian.amigo.data.network;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.dto.request.CheckVersionUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.DeviceCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.QueryDeviceListReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.QueryTimeValidReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.ReadNotifyReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.CheckVersionUpdateRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.DeviceCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryDeviceListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QuerySchoolBizListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryTimeValidRespDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.VersionDTO;
 
 import retrofit2.http.Body;
 import retrofit2.http.POST;
@@ -42,4 +45,12 @@ public interface IMainApi {
     // 获取学校业务列表
     @POST("/school/business/list")
     Observable<ApiResult<QuerySchoolBizListRespDTO>> getSchoolBizList();
+
+    // 检查更新
+    @POST("/version/check/update")
+    Observable<ApiResult<CheckVersionUpdateRespDTO>> checkUpdate(@Body CheckVersionUpdateReqDTO reqDTO);
+
+    // 获取更新信息
+    @POST("/version/one")
+    Observable<ApiResult<VersionDTO>> getUpdateInfo();
 }

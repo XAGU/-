@@ -4,18 +4,21 @@ import com.xiaolian.amigo.data.manager.intf.IMainDataManager;
 import com.xiaolian.amigo.data.network.IMainApi;
 import com.xiaolian.amigo.data.network.IOrderApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.dto.request.CheckVersionUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.DeviceCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.OrderReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.QueryDeviceListReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.QueryTimeValidReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.ReadNotifyReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.CheckVersionUpdateRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.DeviceCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.OrderRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryDeviceListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QuerySchoolBizListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryTimeValidRespDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.VersionDTO;
 import com.xiaolian.amigo.data.network.model.user.User;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 
@@ -128,5 +131,15 @@ public class MainDataManager implements IMainDataManager {
     @Override
     public Observable<ApiResult<QuerySchoolBizListRespDTO>> getSchoolBizList() {
         return mainApi.getSchoolBizList();
+    }
+
+    @Override
+    public Observable<ApiResult<CheckVersionUpdateRespDTO>> checkUpdate(CheckVersionUpdateReqDTO reqDTO) {
+        return mainApi.checkUpdate(reqDTO);
+    }
+
+    @Override
+    public Observable<ApiResult<VersionDTO>> getUpdateInfo() {
+        return mainApi.getUpdateInfo();
     }
 }

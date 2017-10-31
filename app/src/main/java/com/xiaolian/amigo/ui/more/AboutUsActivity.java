@@ -6,8 +6,6 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.base.BaseToolBarActivity;
 import com.xiaolian.amigo.util.AppUtils;
 
-import org.w3c.dom.Text;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -29,7 +27,7 @@ public class AboutUsActivity extends BaseToolBarActivity {
     protected void initView() {
         setUnBinder(ButterKnife.bind(this));
         setMainBackground(R.color.colorBackgroundWhite);
-        tv_version.setText(getString(R.string.app_name) + " " +AppUtils.getVersion(getApplicationContext()));
+        tv_version.setText(getString(R.string.app_name) + " " +AppUtils.getVersionName(getApplicationContext()));
     }
 
     @Override

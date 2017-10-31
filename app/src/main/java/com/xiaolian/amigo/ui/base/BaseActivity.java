@@ -80,7 +80,7 @@ public abstract class BaseActivity extends SwipeBackActivity
     private Uri mPickImageUri;
     private Uri mCropImageUri;
 
-    RxPermissions rxPermissions;
+    protected RxPermissions rxPermissions;
 
     private LodingDialog mProgressDialog;
 

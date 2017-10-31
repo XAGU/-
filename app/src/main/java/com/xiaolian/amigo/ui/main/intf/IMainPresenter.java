@@ -39,4 +39,6 @@ public interface IMainPresenter<V extends IMainView> extends IBasePresenter<V> {
     void getSchoolBusiness();
 
     void checkDeviceUsage(int type);
+
+    void checkUpdate(Integer code, String versionNo);
 }
