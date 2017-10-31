@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/rl_main"
     android:background="@color/colorBackgroundWhite"
     android:orientation="vertical">
 
@@ -193,19 +194,31 @@
 
         </LinearLayout>
 
-    <View
-        android:id="@+id/v_holder"
-        android:layout_alignParentBottom="true"
+    <LinearLayout
+        android:layout_below="@id/ll_content"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/mainMarginLeftRight"/>
+        android:layout_height="match_parent">
+        <View
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"/>
+        <Button
+            android:layout_above="@id/v_holder"
+            android:id="@+id/bt_submit"
+            style="@style/Button"
+            android:layout_marginTop="14dp"
+            android:background="@drawable/button_disable"
+            android:enabled="true"
+            android:text="提交申请" />
 
-    <Button
-        android:layout_above="@id/v_holder"
-        android:id="@+id/bt_submit"
-        style="@style/Button"
-        android:layout_marginTop="14dp"
-        android:background="@drawable/button_disable"
-        android:enabled="true"
-        android:text="提交申请" />
+        <View
+            android:id="@+id/v_holder"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/mainMarginLeftRight"/>
+
+    </LinearLayout>
+
 
 </RelativeLayout>

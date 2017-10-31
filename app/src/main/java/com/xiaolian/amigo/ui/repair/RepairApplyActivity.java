@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -34,6 +35,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
+import retrofit2.http.Body;
 
 /**
  * 报修申请
@@ -60,6 +62,11 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
     TextView et_content;
     @BindView(R.id.bt_submit)
     Button bt_submit;
+
+    @BindView(R.id.ll_content)
+    LinearLayout ll_content;
+    @BindView(R.id.rl_main)
+    RelativeLayout rl_main;
 
     @BindView(R.id.ll_problems)
     LinearLayout ll_problems;
@@ -289,6 +296,11 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
             problems.addAll(problemWrappers);
         }
         adapter.notifyDataSetChanged();
+        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) bt_submit.getLayoutParams();
+        lp.addRule(RelativeLayout.BELOW, ll_content.getId());
+        bt_submit.setLayoutParams(lp);
+        rl_main.requestLayout();
+        getScrollView().requestLayout();
     }
 
     private void renderProblems() {

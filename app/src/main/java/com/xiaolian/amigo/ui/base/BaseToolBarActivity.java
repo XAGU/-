@@ -46,6 +46,10 @@ public abstract class BaseToolBarActivity extends BaseActivity {
         return ll_main_content;
     }
 
+    protected ScrollView getScrollView() {
+        return sv_main_container;
+    }
+
     protected abstract void initInject();
 
     protected abstract void initView();
