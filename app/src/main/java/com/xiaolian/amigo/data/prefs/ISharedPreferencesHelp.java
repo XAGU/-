@@ -59,4 +59,8 @@ public interface ISharedPreferencesHelp {
     void setLastConnectTime(Long lastConnectTime);
 
     Long getLastConnectTime();
+
+    Long getLastUpdateRemindTime();
+
+    void setLastUpdateRemindTime();
 }

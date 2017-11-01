@@ -109,6 +109,16 @@ public class MainDataManager implements IMainDataManager {
     }
 
     @Override
+    public void setLastUpdateRemindTime() {
+        sharedPreferencesHelp.setLastUpdateRemindTime();
+    }
+
+    @Override
+    public Long getLastUpdateRemindTime() {
+        return sharedPreferencesHelp.getLastUpdateRemindTime();
+    }
+
+    @Override
     public Observable<ApiResult<PersonalExtraInfoDTO>> getExtraInfo() {
         return mainApi.getExtraInfo();
     }

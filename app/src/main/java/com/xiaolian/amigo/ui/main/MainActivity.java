@@ -135,6 +135,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
         btSwitch.setBackgroundResource(R.drawable.profile);
 
+        presenter.checkUpdate(AppUtils.getAppVersionCode(this),
+                AppUtils.getVersionName(this));
+
         if (savedInstanceState == null) {
             homeFragment = new HomeFragment2();
             getSupportFragmentManager().beginTransaction().add(R.id.fm_container, homeFragment).commit();
@@ -185,8 +188,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             }
         });
 
-//        presenter.checkUpdate(AppUtils.getAppVersionCode(this),
-//                AppUtils.getVersionName(this));
     }
 
     @Override
@@ -637,14 +638,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         EventBus.getDefault().post(data);
     }
 
-//    public String getBalance() {
-//        presenter.getBalance();
-//    }
-//
-//    public int getBonusAmount() {
-//        presenter.getBonusAmount();
-//    }
-
     public void showPrepayDialog(int type, int prepaySize, DeviceCheckRespDTO data) {
         Log.d(TAG, "showPrepayDialog: " + type + "->" + prepaySize);
         if (prepayDialog == null) {
@@ -734,6 +727,16 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     public void logout() {
         Log.d(TAG, "logout");
         presenter.logout();
+    }
+
+    @Override
+    public void onBackPressed() {
+        //返回桌面
+        Intent intent= new Intent(Intent.ACTION_MAIN);
+        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); //如果是服务里调用，必须加入new task标识
+        intent.addCategory(Intent.CATEGORY_HOME);
+        startActivity(intent);
+
     }
 
     @Override

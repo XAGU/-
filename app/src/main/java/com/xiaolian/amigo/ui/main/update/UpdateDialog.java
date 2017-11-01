@@ -60,13 +60,13 @@ public class UpdateDialog extends DialogFragment {
 
     private String getContent() {
         StringBuilder sb = new StringBuilder();
-        sb.append(mModel.getVersionDescription());
+        sb.append(mModel.getVersionDescription() == null ? "" : mModel.getVersionDescription());
         return sb.toString();
     }
 
     private String getTitle() {
         StringBuilder sb = new StringBuilder();
-        sb.append("发现新版本")
+        sb.append("发现新版本V")
                 .append(mModel.getVersionName());
         return sb.toString();
     }

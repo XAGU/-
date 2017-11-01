@@ -31,7 +31,6 @@ public class DownLoadService extends Service {
     public void onCreate() {
         super.onCreate();
         mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-
     }
 
     public void startDownLoad(String url) {
@@ -58,8 +57,6 @@ public class DownLoadService extends Service {
                 if (mProgressListener != null) {
                     mProgressListener.update(bytesRead, contentLength, done);
                 }
-
-
             }
         });
         mDownLoadTask.start();
