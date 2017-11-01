@@ -836,4 +836,14 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         }
     }
 
+    @OnClick(R.id.iv_back)
+    void back2Main() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        back2Main();
+    }
 }
