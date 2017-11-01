@@ -256,18 +256,21 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 if (now - begin > 2000) { // 列表数目到达10条或者时间超过2s都去服务端请求一次接口
                     currentMacAddress = "";
                     Log.i(TAG, "2s时间到，获取macAddress失败");
-                    realConnect(macAddress);
+                    // realConnect(macAddress);
+                    getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
                 }
             }
 
             @Override
             public void onConnectError() {
                 Log.wtf(TAG, "扫描失败 onConnectError");
+                getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
             }
 
             @Override
             public void onExecuteError(Throwable e) {
                 Log.wtf(TAG, "扫描失败 onExecuteError", e);
+                getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
             }
         }, Schedulers.io());
     }
@@ -636,7 +639,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     private void getConnectCommand(String macAddress) {
         ConnectCommandReqDTO reqDTO = new ConnectCommandReqDTO();
         reqDTO.setMacAddress(macAddress);
-        addObserver(tradeDataManager.getConnectCommand(reqDTO), new NetworkObserver<ApiResult<ConnectCommandRespDTO>>() {
+        addObserver(tradeDataManager.getConnectCommand(reqDTO), new NetworkObserver<ApiResult<ConnectCommandRespDTO>>(false) {
             @Override
             public void onReady(ApiResult<ConnectCommandRespDTO> result) {
                 if (null == result.getError()) {

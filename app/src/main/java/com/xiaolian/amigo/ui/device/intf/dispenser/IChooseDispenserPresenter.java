@@ -13,4 +13,7 @@ public interface IChooseDispenserPresenter<V extends IChooseDispenerView> extend
 
     // 页面加载时触发
     void onLoad();
+
+    // 关闭蓝牙连接
+    void closeBleConnection();
 }

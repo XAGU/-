@@ -91,6 +91,7 @@ public class AvailabilityDialog extends Dialog {
         NO_DEVICE(1, "默认宿舍无设备"),
         TIME_VALID(2, "时间段错误"),
         BIND_DORMITORY(3, "绑定宿舍"),
+        OPEN_LOCAION_SERVICE(4, "打开位置服务"),
         ;
         private int type;
         private String desc;

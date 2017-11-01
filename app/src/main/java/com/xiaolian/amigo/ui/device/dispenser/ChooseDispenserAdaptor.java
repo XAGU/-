@@ -17,6 +17,8 @@ import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.enumeration.DispenserWater;
 import com.xiaolian.amigo.data.network.model.device.ScanDevice;
 import com.xiaolian.amigo.data.network.model.device.ScanDeviceGroup;
+import com.xiaolian.amigo.ui.device.intf.dispenser.IChooseDispenerView;
+import com.xiaolian.amigo.ui.device.intf.dispenser.IChooseDispenserPresenter;
 import com.xiaolian.amigo.ui.main.MainActivity;
 
 import java.util.List;
@@ -33,10 +35,13 @@ public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenser
     private List<ChooseDispenserAdaptor.DispenserWrapper> mData;
     private Context context;
     private int layoutId;
-    public ChooseDispenserAdaptor(Context context, int layoutId, List<DispenserWrapper> datas) {
+    private IChooseDispenserPresenter<IChooseDispenerView> presenter;
+
+    public ChooseDispenserAdaptor(Context context, int layoutId, List<DispenserWrapper> datas , IChooseDispenserPresenter<IChooseDispenerView> presenter) {
         this.context = context;
         this.mData = datas;
         this.layoutId = layoutId;
+        this.presenter = presenter;
     }
 
     @Override
@@ -47,6 +52,7 @@ public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenser
         holder.tv_cold_water.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                presenter.closeBleConnection();
                 ChooseDispenserAdaptor.DispenserWrapper dispenserWrapper = mData.get(holder.getAdapterPosition());
                 context.startActivity(new Intent(context.getApplicationContext(), DispenserActivity.class)
                         .putExtra(MainActivity.INTENT_KEY_MAC_ADDRESS, dispenserWrapper.getCold().getMacAddress())
@@ -61,6 +67,7 @@ public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenser
         holder.tv_ice_water.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                presenter.closeBleConnection();
                 ChooseDispenserAdaptor.DispenserWrapper dispenserWrapper = mData.get(holder.getAdapterPosition());
                 context.startActivity(new Intent(context.getApplicationContext(), DispenserActivity.class)
                         .putExtra(MainActivity.INTENT_KEY_MAC_ADDRESS, dispenserWrapper.getIce().getMacAddress())
@@ -75,6 +82,7 @@ public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenser
         holder.tv_hot_water.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                presenter.closeBleConnection();
                 ChooseDispenserAdaptor.DispenserWrapper dispenserWrapper = mData.get(holder.getAdapterPosition());
                 context.startActivity(new Intent(context.getApplicationContext(), DispenserActivity.class)
                         .putExtra(MainActivity.INTENT_KEY_MAC_ADDRESS, dispenserWrapper.getHot().getMacAddress())

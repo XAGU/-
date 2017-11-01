@@ -41,6 +41,7 @@ android {
     configurations.all {
         resolutionStrategy.force 'com.google.code.findbugs:jsr305:3.0.1'
     }
+    buildToolsVersion '26.0.2'
 }
 
 //greendao {
@@ -138,6 +139,7 @@ dependencies {
     compile "com.mindorks:placeholderview:$rootProject.placeholderviewVersion"
 
     provided "org.projectlombok:lombok:1.16.18"
+    annotationProcessor "org.projectlombok:lombok:1.16.18"
 //    compile "org.projectlombok:lombok:1.16.18"
 
     // logger
