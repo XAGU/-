@@ -74,7 +74,7 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
         presenter.onAttach(ChooseDispenserActivity.this);
-        adaptor = new ChooseDispenserAdaptor(this, R.layout.item_dispenser, items);
+        adaptor = new ChooseDispenserAdaptor(this, R.layout.item_dispenser, items, presenter);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 14)));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

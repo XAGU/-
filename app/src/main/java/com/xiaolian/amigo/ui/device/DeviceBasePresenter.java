@@ -256,18 +256,21 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 if (now - begin > 2000) { // 列表数目到达10条或者时间超过2s都去服务端请求一次接口
                     currentMacAddress = "";
                     Log.i(TAG, "2s时间到，获取macAddress失败");
-                    realConnect(macAddress);
+                    // realConnect(macAddress);
+                    getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
                 }
             }
 
             @Override
             public void onConnectError() {
                 Log.wtf(TAG, "扫描失败 onConnectError");
+                getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
             }
 
             @Override
             public void onExecuteError(Throwable e) {
                 Log.wtf(TAG, "扫描失败 onExecuteError", e);
+                getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
             }
         }, Schedulers.io());
     }
@@ -488,8 +491,11 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 reconnect = false; // 重置重连标志
             } else if (TradeStep.PAY == getStep()) { // 支付页面重连
                 // 重新连接成功时不需要再次握手
-                Log.i(TAG, "当前为支付页面重连，不需要重新下发握手指令，只需要页面显示重连成功。");
-                getMvpView().post(() -> getMvpView().onReconnectSuccess());
+                // Log.i(TAG, "当前为支付页面重连，不需要重新下发握手指令，只需要页面显示重连成功。");
+                // getMvpView().post(() -> getMvpView().onReconnectSuccess());
+                // 最新修改，支付页面重连，继续下发握手指令，否则单纯物理连接上会被设备踢掉
+                waitConnectCmdResult();
+                onWrite(connectCmd);
                 reconnect = false; // 重置重连标志
             } else { // 结算页面重连
                 Log.i(TAG, "当前为结算页面重连");
@@ -525,6 +531,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 } else {
                     Log.i(TAG, String.format("正常连接发现有订单未被结算，继续下发握手指令。command: %s, orderId:%s", connectCmd, orderStatus.getOrderId()));
                     // orderId = orderStatus.getOrderId();
+                    waitConnectCmdResult();
                     onWrite(connectCmd);
                     purelyCheckoutFlag = true;
                 }
@@ -636,7 +643,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     private void getConnectCommand(String macAddress) {
         ConnectCommandReqDTO reqDTO = new ConnectCommandReqDTO();
         reqDTO.setMacAddress(macAddress);
-        addObserver(tradeDataManager.getConnectCommand(reqDTO), new NetworkObserver<ApiResult<ConnectCommandRespDTO>>() {
+        addObserver(tradeDataManager.getConnectCommand(reqDTO), new NetworkObserver<ApiResult<ConnectCommandRespDTO>>(false) {
             @Override
             public void onReady(ApiResult<ConnectCommandRespDTO> result) {
                 if (null == result.getError()) {
@@ -692,7 +699,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     }
 
     @Override
-    public void handleResult(ApiResult<CmdResultRespDTO> result) {
+    public void     handleResult(ApiResult<CmdResultRespDTO> result) {
         Log.i(TAG, "主线程开始处理指令响应结果");
         if (null == result.getError()) {
             // 下一步执行指令
@@ -708,7 +715,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                             reopenNextCmd = nextCommand;
                             getMvpView().onConnectSuccess(TradeStep.SETTLE, orderStatus);
 
-                            connectCmd = sharedPreferencesHelp.getConnectCmd(currentMacAddress);
+                            // connectCmd = sharedPreferencesHelp.getConnectCmd(currentMacAddress);
                             closeCmd = sharedPreferencesHelp.getCloseCmd(currentMacAddress);
                         } else {
                             Log.i(TAG, "未结算订单已经超出指定时间范围，继续下发预结账指令，走正常流程");

@@ -38,6 +38,9 @@ public interface IMainView extends IBaseView {
 
     void showBindDormitoryDialog();
 
+    // 打开定位服务
+    void showOpenLocationDialog();
+
     void showNoDeviceDialog();
 
     void refreshProfile(PersonalExtraInfoDTO data);

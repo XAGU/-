@@ -100,7 +100,7 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
                 String macAddress = result.getBleDevice().getMacAddress();
 
                 String[] temp = macAddress.split(":");
-                StringBuilder deviceNo = new StringBuilder(temp[temp.length-3]);
+                StringBuilder deviceNo = new StringBuilder(temp[temp.length - 3]);
                 deviceNo.append(temp[temp.length - 2]);
                 deviceNo.append(temp[temp.length - 1]);
 
@@ -130,6 +130,14 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
                 Log.wtf(TAG, "扫描设备失败", e);
             }
         }, Schedulers.io());
+    }
+
+    @Override
+    public void closeBleConnection() {
+        if (null != subscriptions && !subscriptions.isUnsubscribed()) {
+            subscriptions.unsubscribe();
+            subscriptions.clear();
+        }
     }
 
     // 网络请求蓝牙扫描到的结果

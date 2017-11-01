@@ -22,11 +22,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
@@ -48,6 +50,7 @@ import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 import com.xiaolian.amigo.ui.login.LoginActivity;
 import com.xiaolian.amigo.ui.main.HomeFragment2;
+import com.xiaolian.amigo.ui.main.MainActivity;
 import com.xiaolian.amigo.ui.widget.dialog.ActionSheetDialog;
 import com.xiaolian.amigo.ui.widget.dialog.LodingDialog;
 import com.xiaolian.amigo.util.NetworkUtil;
@@ -75,6 +78,7 @@ public abstract class BaseActivity extends SwipeBackActivity
     private static final int REQUEST_CODE_PICK = 0x1104;
     private static final int REQUEST_CODE_ICON = 0x1105;
     private static final int REQUEST_BLE = 0x1106;
+    protected static final int REQUEST_LOCATION = 0x1107;
 
     private Uri mPhotoImageUri;
     private Uri mPickImageUri;
@@ -193,8 +197,20 @@ public abstract class BaseActivity extends SwipeBackActivity
                             .start(this);
                 }
             } else if (requestCode == REQUEST_BLE) {
-                if (null != blePermissonCallback) {
-                    blePermissonCallback.execute();
+                if (isLocationEnable()) {
+                    if (null != blePermissonCallback) {
+                        blePermissonCallback.execute();
+                    }
+                } else {
+                    ((MainActivity)this).showOpenLocationDialog();
+                }
+            } else if (requestCode == REQUEST_LOCATION) {
+                if (isLocationEnable()) {
+                    if (null != blePermissonCallback) {
+                        blePermissonCallback.execute();
+                    }
+                } else {
+                    Log.i(TAG, "用户定位没有打开，无法进入设备用水");
                 }
             }
         } else if (resultCode == UCrop.RESULT_ERROR) {
@@ -254,6 +270,7 @@ public abstract class BaseActivity extends SwipeBackActivity
     public interface ImageCallback {
         void callback(Uri imageUri);
     }
+
     public interface EmptyImageCallback {
         void callback();
     }
@@ -449,11 +466,11 @@ public abstract class BaseActivity extends SwipeBackActivity
     @Override
     public void getBlePermission() {
         RxPermissions rxPermissions = RxPermissions.getInstance(this);
-        rxPermissions.request(Manifest.permission.BLUETOOTH, Manifest.permission.ACCESS_COARSE_LOCATION)
+        rxPermissions.request(Manifest.permission.BLUETOOTH, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
                 .subscribe(granted -> {
                     if (granted) {
-                        Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                        startActivityForResult(enableBtIntent, REQUEST_BLE);
+                        Intent bleIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                        startActivityForResult(bleIntent, REQUEST_BLE);
                         Log.i(TAG, "动态授权蓝牙操作成功！");
                     } else {
                         Log.e(TAG, "动态授权蓝牙操作失败！");
@@ -483,6 +500,13 @@ public abstract class BaseActivity extends SwipeBackActivity
     @Override
     public void post(Runnable task) {
         this.runOnUiThread(task);
+    }
+
+    private boolean isLocationEnable() {
+        LocationManager locationManager = (LocationManager) this.getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+        boolean networkProvider = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        boolean gpsProvider = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        return networkProvider || gpsProvider;
     }
 
     public interface Callback {

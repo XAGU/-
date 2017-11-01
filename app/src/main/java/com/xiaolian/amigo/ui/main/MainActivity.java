@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.RectF;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -120,6 +121,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     private boolean hasBanners;
     List<BriefSchoolBusiness> businesses;
     private AvailabilityDialog availabilityDialog;
+    private AvailabilityDialog openLocationDialog;
     private int heaterOrderSize;
     private int dispenserOrderSize;
     private PrepayDialog prepayDialog;
@@ -583,6 +585,28 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             startActivity(new Intent(MainActivity.this, EditDormitoryActivity.class));
         });
         availabilityDialog.show();
+    }
+
+    @Override
+    public void showOpenLocationDialog() {
+        Log.d(TAG, "showOpenLocationDialog");
+        if (null == openLocationDialog) {
+            openLocationDialog = new AvailabilityDialog(this);
+        }
+        if (openLocationDialog.isShowing()
+                && openLocationDialog.getType() == AvailabilityDialog.Type.OPEN_LOCAION_SERVICE) {
+            return;
+        }
+        openLocationDialog.setType(AvailabilityDialog.Type.OPEN_LOCAION_SERVICE);
+        openLocationDialog.setOkText("前往设置");
+        openLocationDialog.setTip("设备用水需要开启位置服务");
+        openLocationDialog.setSubTipVisible(false);
+        openLocationDialog.setOnOkClickListener(dialog1 -> {
+            // startActivity(new Intent(MainActivity.this, EditDormitoryActivity.class));
+            Intent locationIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            this.startActivityForResult(locationIntent, REQUEST_LOCATION);
+        });
+        openLocationDialog.show();
     }
 
     @Override

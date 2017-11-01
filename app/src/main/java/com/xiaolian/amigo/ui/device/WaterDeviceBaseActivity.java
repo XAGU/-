@@ -3,6 +3,7 @@ package com.xiaolian.amigo.ui.device;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -264,6 +265,8 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     // 标记是否为恢复用水
     private boolean recorvery;
     private String location;
+    private CountDownTimer timer;
+    private volatile boolean  userWater  = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -513,6 +516,27 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             } catch (InterruptedException e) {
                 Log.wtf(TAG, e);
             }
+            timer = new CountDownTimer(90 * 1000, 1000) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    if (userWater) {
+                        this.cancel();
+                        Log.i(TAG, "已支付进入用水环节，取消定时器。");
+                    }
+                }
+
+                @Override
+                public void onFinish() {
+                    Log.i(TAG, "设备连接到达90s用户仍然未支付进入用水环节。");
+
+                    // 关闭蓝牙连接
+                    presenter.closeBleConnecttion();
+
+                    onError(TradeError.CONNECT_ERROR_1);
+                }
+            };
+            Log.i(TAG, "启动90s定时器，监测用户是否长时间占用设备连接。");
+            timer.start();
         } else { // TradeStep.SETTLE
             showStep2((UnsettledOrderStatusCheckRespDTO) extra[0]);
 
@@ -570,6 +594,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
      */
     @OnClick(R.id.bt_pay)
     void pay(Button button) {
+        userWater = true;
         if (!isMoneyPay) {
             if (choosedBonus == null) {
                 showMessage("请选择红包");
@@ -811,4 +836,14 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         }
     }
 
+    @OnClick(R.id.iv_back)
+    void back2Main() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        back2Main();
+    }
 }
