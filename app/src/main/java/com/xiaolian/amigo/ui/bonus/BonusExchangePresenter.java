@@ -40,6 +40,7 @@ public class BonusExchangePresenter<V extends IBonusExchangeView> extends BasePr
                 if (null == result.getError()) {
                     if (result.getData().isResult()) {
                         getMvpView().onSuccess(R.string.bonus_exchange_success);
+                        getMvpView().backToBonus();
                     }
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());

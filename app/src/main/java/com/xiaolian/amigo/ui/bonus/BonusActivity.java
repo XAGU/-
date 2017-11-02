@@ -76,6 +76,12 @@ public class BonusActivity extends BonusBaseListActivity implements IBonusView {
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        onRefresh();
+    }
+
+    @Override
     protected void initView() {
         switch (action) {
             case ACTION_CHOOSE:

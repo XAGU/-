@@ -120,6 +120,13 @@ public class NoticeListActivity extends NoticeBaseListActivity implements INotic
     }
 
     @Override
+    public void showErrorView(int colorRes) {
+        super.showErrorView(colorRes);
+        notices.clear();
+        adaptor.notifyDataSetChanged();
+    }
+
+    @Override
     public void readNotify(Long id) {
         for (NoticeAdaptor.NoticeWapper notice : notices) {
             if (CommonUtil.equals(notice.getId(), id)) {
