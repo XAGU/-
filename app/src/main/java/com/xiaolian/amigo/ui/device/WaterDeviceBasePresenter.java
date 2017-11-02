@@ -1,17 +1,21 @@
 package com.xiaolian.amigo.ui.device;
 
 import com.xiaolian.amigo.data.manager.intf.IBleDataManager;
+import com.xiaolian.amigo.data.manager.intf.IClientServiceDataManager;
 import com.xiaolian.amigo.data.manager.intf.IDeviceDataManager;
 import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
 import com.xiaolian.amigo.data.manager.intf.ITradeDataManager;
 import com.xiaolian.amigo.data.manager.intf.IWalletDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.QueryPrepayOptionReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.CsMobileRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.OrderPreInfoDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.PersonalWalletDTO;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.ui.device.intf.IWaterDeviceBasePresenter;
 import com.xiaolian.amigo.ui.device.intf.IWaterDeviceBaseView;
+
+import rx.schedulers.Schedulers;
 
 /**
  * <p>
@@ -22,14 +26,17 @@ public abstract class WaterDeviceBasePresenter<V extends IWaterDeviceBaseView> e
         implements IWaterDeviceBasePresenter<V> {
     private IWalletDataManager walletDataManager;
     private IOrderDataManager orderDataManager;
+    private IClientServiceDataManager clientServiceDataManager;
     public WaterDeviceBasePresenter(IBleDataManager bleDataManager,
                                     ITradeDataManager tradeDataManager,
                                     IOrderDataManager orderDataManager,
                                     IWalletDataManager walletDataManager,
+                                    IClientServiceDataManager clientServiceDataManager,
                                     ISharedPreferencesHelp sharedPreferencesHelp) {
         super(bleDataManager, tradeDataManager, orderDataManager, sharedPreferencesHelp);
         this.orderDataManager = orderDataManager;
         this.walletDataManager = walletDataManager;
+        this.clientServiceDataManager = clientServiceDataManager;
     }
 
 
@@ -81,5 +88,26 @@ public abstract class WaterDeviceBasePresenter<V extends IWaterDeviceBaseView> e
                 super.onError(e);
             }
         });
+    }
+
+    @Override
+    public void queryCsInfo() {
+        resetSubscriptions();
+        addObserver(clientServiceDataManager.queryCsInfo(), new NetworkObserver<ApiResult<CsMobileRespDTO>>(false) {
+
+            @Override
+            public void onReady(ApiResult<CsMobileRespDTO> result) {
+                if (null == result.getError()) {
+                    getMvpView().showCsCallDialog(result.getData().getMobile().toString());
+                } else {
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+            }
+        }, Schedulers.io());
     }
 }

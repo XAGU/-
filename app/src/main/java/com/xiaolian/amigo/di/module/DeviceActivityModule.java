@@ -19,12 +19,14 @@ import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
 import com.xiaolian.amigo.data.manager.BleDataManager;
+import com.xiaolian.amigo.data.manager.ClientServiceDataManager;
 import com.xiaolian.amigo.data.manager.DeviceDataManager;
 import com.xiaolian.amigo.data.manager.FavoriteManager;
 import com.xiaolian.amigo.data.manager.OrderDataManager;
 import com.xiaolian.amigo.data.manager.TradeDataManager;
 import com.xiaolian.amigo.data.manager.WalletDataManager;
 import com.xiaolian.amigo.data.manager.intf.IBleDataManager;
+import com.xiaolian.amigo.data.manager.intf.IClientServiceDataManager;
 import com.xiaolian.amigo.data.manager.intf.IDeviceDataManager;
 import com.xiaolian.amigo.data.manager.intf.IFavoriteManager;
 import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
@@ -118,6 +120,12 @@ public class DeviceActivityModule {
     @Provides
     @DeviceActivityContext
     IFavoriteManager provideFavoriteDataManager(FavoriteManager manager) {
+        return manager;
+    }
+
+    @Provides
+    @DeviceActivityContext
+    IClientServiceDataManager provideClientServiceDataManager(ClientServiceDataManager manager) {
         return manager;
     }
 

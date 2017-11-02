@@ -41,6 +41,7 @@ import com.xiaolian.amigo.ui.widget.BezierWaveView;
 import com.xiaolian.amigo.ui.widget.DotFlashView;
 import com.xiaolian.amigo.ui.widget.dialog.ActionSheetDialog;
 import com.xiaolian.amigo.ui.widget.dialog.IOSAlertDialog;
+import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.TimeUtils;
 
@@ -656,7 +657,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                 finish();
                 break;
             case CALL:
-                // TODO 联系客服
+                presenter.queryCsInfo();
                 break;
         }
     }
@@ -840,6 +841,11 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             bt_error_handler.setText(getString(tradeError.getBtnText()));
             bt_error_handler.setTag(tradeError.getBtnTag());
         }
+    }
+
+    @Override
+    public void showCsCallDialog(String tel) {
+        CommonUtil.call(this.getApplicationContext(), tel);
     }
 
     @OnClick(R.id.iv_back)
