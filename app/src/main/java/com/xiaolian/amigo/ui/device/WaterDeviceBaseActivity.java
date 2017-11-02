@@ -816,7 +816,13 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     @Override
     public void onError(TradeError tradeError) {
 
+        // 断开物理连接定时器
         presenter.cancelTimer();
+
+        // 断开握手连接定时器
+        if (null != timer) {
+            timer.cancel();
+        }
 
         // 异常发生时关闭蓝牙连接
         presenter.closeBleConnecttion();
