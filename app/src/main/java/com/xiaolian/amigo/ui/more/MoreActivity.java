@@ -63,7 +63,7 @@ public class MoreActivity extends MoreBaseActivity implements IMoreView {
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 Class clz = items.get(position).getClz();
                 if (clz != null) {
-                    startActivity(new Intent(getApplicationContext(), clz)
+                    startActivity(new Intent(MoreActivity.this, clz)
                             .putExtra(WebActivity.INTENT_KEY_URL, items.get(position).getExtra()));
                 }
             }

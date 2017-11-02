@@ -54,6 +54,7 @@ public class NoticePresenter<V extends INoticeView> extends BasePresenter<V>
                             wappers.add(new NoticeAdaptor.NoticeWapper(notify));
                         }
                         getMvpView().addMore(wappers);
+                        getMvpView().addPage();
                     } else {
                         getMvpView().showEmptyView(R.string.empty_tip, R.color.colorBackgroundWhite);
                     }
