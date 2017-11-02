@@ -11,4 +11,5 @@ import lombok.Data;
 public class CheckVersionUpdateReqDTO {
     private Integer code;
     private String versionNo;
+    private Integer systemType = 2;
 }

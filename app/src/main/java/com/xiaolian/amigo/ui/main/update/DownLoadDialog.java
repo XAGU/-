@@ -68,14 +68,11 @@ public class DownLoadDialog extends DialogFragment implements View.OnClickListen
         setTitle(view, R.id.tv_update_title);
 
         mTvOk = (TextView) view.findViewById(R.id.tv_ok);
+        mTvOk.setOnClickListener(this);
+        mTvOk.setEnabled(false);
 
         Intent intent = new Intent(getActivity(), DownLoadService.class);
-        getActivity().bindService(intent,mConnection , Context.BIND_AUTO_CREATE);
-
-        if (!mModel.isMustUpdate()) {
-            doBackground();
-        }
-
+        getActivity().bindService(intent, mConnection , Context.BIND_AUTO_CREATE);
     }
 
     protected void setContent(View view, int contentId) {
@@ -109,6 +106,10 @@ public class DownLoadDialog extends DialogFragment implements View.OnClickListen
             mDownLoadService.registerProgressListener(mProgressListener);
             mDownLoadService.startDownLoad(mDownloadUrl);
             mDownLoadService.setNotificationIcon(notificationIcon);
+
+            if (!mModel.isMustUpdate()) {
+                doBackground();
+            }
         }
 
         @Override
@@ -144,6 +145,10 @@ public class DownLoadDialog extends DialogFragment implements View.OnClickListen
 //        } else if (id == R.id.btnBackground) {
 //            doBackground();
 //        }
+        if (view.getId() == R.id.tv_ok) {
+            getActivity().startActivity(AppUtils.openApkFile(getActivity(),
+                    new File(AppUtils.getApkFilePath(getActivity(),mDownloadUrl))));
+        }
     }
 
     @Override
@@ -181,7 +186,8 @@ public class DownLoadDialog extends DialogFragment implements View.OnClickListen
 //                            Formatter.formatFileSize(getActivity().getApplication(),contentLength)));
                     break;
                 case DONE:
-                    mTvOk.setText("立即更新");
+                    mTvOk.setText("立即安装");
+                    mTvOk.setEnabled(true);
                     getActivity().startActivity(AppUtils.openApkFile(getActivity(),
                             new File(AppUtils.getApkFilePath(getActivity(),mDownloadUrl))));
 //                    getActivity().finish();

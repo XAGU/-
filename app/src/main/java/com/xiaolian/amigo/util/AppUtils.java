@@ -68,7 +68,11 @@ public class AppUtils {
     }
 
     public static String getApkFilePath(Context context, String downLoadUrl) {
-        String filePath = Environment.getExternalStorageDirectory().getAbsolutePath();
+        String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xiaolian/";
+        File path = new File(filePath);
+        if (!path.exists()) {
+            path.mkdirs();
+        }
         String fileName;
         if (downLoadUrl.endsWith(".apk")) {
             int index = downLoadUrl.lastIndexOf("/");

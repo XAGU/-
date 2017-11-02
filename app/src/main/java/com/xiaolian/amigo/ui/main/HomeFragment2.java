@@ -3,8 +3,10 @@ package com.xiaolian.amigo.ui.main;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -82,11 +84,12 @@ public class HomeFragment2 extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         adaptor = new HomeAdaptor(getActivity(),items);
-        recyclerView.scheduleLayoutAnimation();
+//        recyclerView.scheduleLayoutAnimation();
         adaptor.addItemViewDelegate(new HomeNormalDelegate());
         adaptor.addItemViewDelegate(new HomeBannerDelegate(getActivity()));
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adaptor);
+        ((DefaultItemAnimator)recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
         LayoutAnimationController animation = AnimationUtils
                 .loadLayoutAnimation(getContext(), R.anim.layout_animation_slide_right);
         recyclerView.setLayoutAnimation(animation);
@@ -114,7 +117,6 @@ public class HomeFragment2 extends Fragment {
                     }
                 }));
     }
-
 
     @Override
     public void onHiddenChanged(boolean hidden) {
@@ -184,11 +186,17 @@ public class HomeFragment2 extends Fragment {
     }
 
     private void onPrepayOrderEvent(HomeAdaptor.ItemWrapper itemWrapper) {
+        boolean needNotify = false;
         for (HomeAdaptor.ItemWrapper item : items) {
             if (CommonUtil.equals(itemWrapper.getRes(), item.getRes())) {
-                item.setPrepaySize(itemWrapper.getPrepaySize());
-                adaptor.notifyDataSetChanged();
+                if (!CommonUtil.equals(item.getPrepaySize(), itemWrapper.getPrepaySize())) {
+                    needNotify = true;
+                    item.setPrepaySize(itemWrapper.getPrepaySize());
+                }
             }
+        }
+        if (needNotify) {
+            adaptor.notifyDataSetChanged();
         }
     }
 

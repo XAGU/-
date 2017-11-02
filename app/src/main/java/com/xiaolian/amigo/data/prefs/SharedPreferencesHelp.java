@@ -33,6 +33,7 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     private static final String PREF_KEY_BALANCE = "PREF_KEY_BALANCE";
     private static final String PREF_KEY_BONUS = "PREF_KEY_BONUS";
     private static final String PREF_BLUETOOTH_MAC_ADDRESS_PREFIX = "PREF_BLUETOOTH_MAC_ADDRESS_PREFIX";
+    private static final String PREF_LAST_UPDATE_REMIND_TIME = "PREF_LAST_UPDATE_REMIND_TIME";
 
     private String tokenHolder;
     private String deviceTokenHolder;
@@ -162,6 +163,16 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     @Override
     public Long getLastConnectTime() {
         return mSharedPreferences.getLong(PREF_LAST_CONNECT_TIME, 0L);
+    }
+
+    @Override
+    public Long getLastUpdateRemindTime() {
+        return mSharedPreferences.getLong(PREF_LAST_UPDATE_REMIND_TIME, 0L);
+    }
+
+    @Override
+    public void setLastUpdateRemindTime() {
+        mSharedPreferences.edit().putLong(PREF_LAST_UPDATE_REMIND_TIME, System.currentTimeMillis()).apply();
     }
 
     @Override

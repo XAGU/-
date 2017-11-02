@@ -16,6 +16,7 @@
 
     <style name="UpdateDialog" parent="@style/Theme.AppCompat.Light.Dialog">
         <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@drawable/bg_rect_corner_dialog_inset</item>
     </style>
 
     <style name="DeviceTheme" parent="AppTheme.NoActionBar">

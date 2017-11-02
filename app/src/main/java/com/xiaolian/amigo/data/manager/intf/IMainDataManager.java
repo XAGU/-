@@ -41,4 +41,8 @@ public interface IMainDataManager extends IMainApi {
 
     // 获取个人订单
     Observable<ApiResult<OrderRespDTO>> queryOrders(@Body OrderReqDTO reqDTO);
+
+    void setLastUpdateRemindTime();
+
+    Long getLastUpdateRemindTime();
 }
