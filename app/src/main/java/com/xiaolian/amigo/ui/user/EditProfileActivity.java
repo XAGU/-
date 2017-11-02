@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.ui.user.intf.IEditProfilePresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditProfileView;
 import com.xiaolian.amigo.ui.widget.dialog.AvailabilityDialog;
@@ -130,7 +131,7 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
                 startActivityForResult(intent, REQUEST_CODE_EDIT_AVATAR);
                 break;
             case R.id.rel_edit_nickname:
-                intent = new Intent(getApplicationContext(), EditNickNameActivity.class);
+                intent = new Intent(this, EditNickNameActivity.class);
                 intent.putExtra(Constant.EXTRA_KEY, new EditNickNameActivity.Model(tv_nickname.getText().toString().trim()));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     startActivityForResult(intent, REQUEST_CODE_EDIT_NICKNAME, new Bundle());
@@ -139,7 +140,7 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
                 }
                 break;
             case R.id.rel_edit_sex:
-                intent = new Intent(getApplicationContext(), ListChooseActivity.class);
+                intent = new Intent(this, ListChooseActivity.class);
                 if (!TextUtils.isEmpty(tv_sex.getText())) {
                     intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_SEX_TYPE,
                             TextUtils.equals(tv_sex.getText(), "男") ? 1 : 2);
@@ -150,14 +151,14 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
                 startActivityForResult(intent, REQUEST_CODE_EDIT_SEX);
                 break;
             case R.id.rel_edit_mobile:
-                intent = new Intent(getApplicationContext(), CheckPasswordActivity.class);
+                intent = new Intent(this, CheckPasswordActivity.class);
                 startActivityForResult(intent, REQUEST_CODE_CHECK_PASSWORD);
 //                ChangeMobileDialog dialog = new ChangeMobileDialog(this);
 //                dialog.setOnOkClickListener((dialog1, password) -> presenter.checkPassword(password));
 //                dialog.show();
                 break;
             case R.id.rel_edit_password:
-                intent = new Intent(getApplicationContext(), EditPasswordActivity.class);
+                intent = new Intent(this, EditPasswordActivity.class);
                 intent.putExtra("nickName", "");
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     startActivityForResult(intent, 1, new Bundle());
@@ -169,8 +170,20 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
                 presenter.checkChangeSchool();
                 break;
             case R.id.rel_edit_room:
-                intent = new Intent(this, EditDormitoryActivity.class);
-                startActivityForResult(intent, REQUEST_CODE_EDIT_DORMITORY);
+                if (TextUtils.isEmpty(tv_residence.getText())) {
+                    intent = new Intent(this, EditDormitoryActivity.class);
+                    intent.putExtra(Constant.EXTRA_KEY, false);
+                    startActivityForResult(intent, REQUEST_CODE_EDIT_DORMITORY);
+                    intent = new Intent(this, ListChooseActivity.class);
+                    intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
+                    intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION,
+                            ListChooseActivity.ACTION_LIST_BUILDING);
+                    intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_DEVICE_TYPE, Device.HEATER.getType());
+                    startActivity(intent);
+                } else {
+                    intent = new Intent(this, EditDormitoryActivity.class);
+                    startActivityForResult(intent, REQUEST_CODE_EDIT_DORMITORY);
+                }
                 break;
         }
     }

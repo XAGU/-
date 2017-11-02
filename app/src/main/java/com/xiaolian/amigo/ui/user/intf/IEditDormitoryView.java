@@ -17,5 +17,5 @@ public interface IEditDormitoryView extends IBaseListView {
 
     void notifyAdaptor();
 
-    void refreshList();
+    void refreshList(Long defaultId);
 }

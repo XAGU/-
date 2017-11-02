@@ -153,4 +153,6 @@
     <string name="recharge_detail">充值详情</string>
     <string name="withdraw_detail">提现详情</string>
     <string name="withdraw_available">可提现金额%1$s，</string>
+    <string name="unknown">未知</string>
+    <string name="unbind">未绑定</string>
 </resources>
