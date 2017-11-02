@@ -664,7 +664,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     private void checkOrderStatus(String macAddress) {
         UnsettledOrderStatusCheckReqDTO reqDTO = new UnsettledOrderStatusCheckReqDTO();
         reqDTO.setMacAddress(macAddress);
-        addObserver(orderDataManager.checkOrderStatus(reqDTO), new NetworkObserver<ApiResult<UnsettledOrderStatusCheckRespDTO>>() {
+        addObserver(orderDataManager.checkOrderStatus(reqDTO), new NetworkObserver<ApiResult<UnsettledOrderStatusCheckRespDTO>>(false) {
             @Override
             public void onReady(ApiResult<UnsettledOrderStatusCheckRespDTO> result) {
                 if (null == result.getError()) {
