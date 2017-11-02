@@ -215,6 +215,7 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
 
     // 重置订阅列表集合
     public void resetSubscriptions() {
+        clearObservers();
         subscriptions = new CompositeSubscription();
     }
 

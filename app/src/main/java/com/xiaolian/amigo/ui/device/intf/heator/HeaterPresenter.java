@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.device.intf.heator;
 
 import com.xiaolian.amigo.data.manager.intf.IBleDataManager;
+import com.xiaolian.amigo.data.manager.intf.IClientServiceDataManager;
 import com.xiaolian.amigo.data.manager.intf.IDeviceDataManager;
 import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
 import com.xiaolian.amigo.data.manager.intf.ITradeDataManager;
@@ -24,8 +25,9 @@ public class HeaterPresenter<V extends IHeaterView> extends WaterDeviceBasePrese
                     ITradeDataManager tradeDataManager,
                     IOrderDataManager orderDataManager,
                     IWalletDataManager walletDataManager,
+                    IClientServiceDataManager clientServiceDataManager,
                     ISharedPreferencesHelp sharedPreferencesHelp) {
-        super(bleDataManager, tradeDataManager, orderDataManager, walletDataManager, sharedPreferencesHelp);
+        super(bleDataManager, tradeDataManager, orderDataManager, walletDataManager, clientServiceDataManager, sharedPreferencesHelp);
     }
 
 }

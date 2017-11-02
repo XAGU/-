@@ -17,4 +17,7 @@ public interface IWaterDeviceBaseView extends IDeviceView {
 
 
     void setPrepayOption(OrderPreInfoDTO data);
+
+    // 打电话给客服
+    void showCsCallDialog(String tel);
 }

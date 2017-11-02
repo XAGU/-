@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.device.dispenser;
 
 import com.xiaolian.amigo.data.manager.intf.IBleDataManager;
+import com.xiaolian.amigo.data.manager.intf.IClientServiceDataManager;
 import com.xiaolian.amigo.data.manager.intf.IFavoriteManager;
 import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
 import com.xiaolian.amigo.data.manager.intf.ITradeDataManager;
@@ -29,9 +30,10 @@ public class DispenserPresenter<V extends IDispenserView> extends WaterDeviceBas
                               ITradeDataManager tradeDataManager,
                               IOrderDataManager orderDataManager,
                               IWalletDataManager walletDataManager,
+                              IClientServiceDataManager clientServiceDataManager,
                               ISharedPreferencesHelp sharedPreferencesHelp,
                               IFavoriteManager favoriteManager) {
-        super(bleDataManager, tradeDataManager, orderDataManager, walletDataManager, sharedPreferencesHelp);
+        super(bleDataManager, tradeDataManager, orderDataManager, walletDataManager, clientServiceDataManager, sharedPreferencesHelp);
         this.favoriteManager = favoriteManager;
     }
 
