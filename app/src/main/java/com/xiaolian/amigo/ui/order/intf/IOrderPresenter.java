@@ -25,4 +25,5 @@ public interface IOrderPresenter<V extends IOrderView> extends IBasePresenter<V>
     // 刷新个人消费账单
     void requestOrders(int page);
 
+    String getToken();
 }

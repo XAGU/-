@@ -54,6 +54,9 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
     TextView tv_withdraw_way2;
     @BindView(R.id.tv_withdraw_all)
     TextView tv_withdraw_all;
+    // 可提现金额
+    @BindView(R.id.tv_withdraw_available)
+    TextView tv_withdraw_available;
 
     private Long withdrawId;
     private String balance;
@@ -64,6 +67,7 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
         getActivityComponent().inject(this);
         setUpEditText();
         presenter.onAttach(WithdrawalActivity.this);
+        tv_withdraw_available.setText(getString(R.string.withdraw_available, balance));
     }
 
     @Override

@@ -22,6 +22,7 @@ import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.OrderReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.OrderRespDTO;
 import com.xiaolian.amigo.data.network.model.order.Order;
+import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.order.adaptor.OrderAdaptor;
 import com.xiaolian.amigo.ui.order.intf.IOrderPresenter;
@@ -38,11 +39,13 @@ public class OrderPresenter<V extends IOrderView> extends BasePresenter<V>
 
     private static final String TAG = OrderPresenter.class.getSimpleName();
     private IOrderDataManager manager;
+    private ISharedPreferencesHelp sharedPreferencesHelp;
 
     @Inject
-    public OrderPresenter(IOrderDataManager manager) {
+    public OrderPresenter(IOrderDataManager manager, ISharedPreferencesHelp sharedPreferencesHelp) {
         super();
         this.manager = manager;
+        this.sharedPreferencesHelp = sharedPreferencesHelp;
     }
 
 
@@ -85,6 +88,11 @@ public class OrderPresenter<V extends IOrderView> extends BasePresenter<V>
                 getMvpView().showErrorView();
             }
         });
+    }
+
+    @Override
+    public String getToken() {
+        return sharedPreferencesHelp.getToken();
     }
 
 }

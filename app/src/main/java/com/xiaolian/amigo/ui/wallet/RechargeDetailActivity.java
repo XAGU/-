@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.enumeration.ComplaintType;
 import com.xiaolian.amigo.data.enumeration.PayWay;
 import com.xiaolian.amigo.data.enumeration.RechargeStatus;
 import com.xiaolian.amigo.data.enumeration.WithdrawOperationType;
@@ -68,7 +69,9 @@ public class RechargeDetailActivity extends WalletBaseActivity implements IRecha
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
 
+    // orderId
     private Long id;
+    private String orderNo;
 
     @Override
     protected void initView() {
@@ -107,6 +110,7 @@ public class RechargeDetailActivity extends WalletBaseActivity implements IRecha
 
     @Override
     public void render(FundsDTO data) {
+        orderNo = data.getOrderNo();
         tv_amount.setText("¥" + data.getAmount());
         tv_status.setText(RechargeStatus.getRechargeStatus(data.getStatus()).getDesc());
         tv_status.setTextColor(
@@ -139,6 +143,10 @@ public class RechargeDetailActivity extends WalletBaseActivity implements IRecha
     @OnClick(R.id.right_oper)
     public void onRightOper() {
         startActivity(new Intent(this, WebActivity.class)
-                .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_COMPLAINT));
+                .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_COMPLAINT
+                        + "?token=" + presenter.getToken()
+                        + "&orderId=" + id
+                        + "&orderNo=" + orderNo
+                        + "&orderType=" + ComplaintType.RECHARGE.getType()));
     }
 }

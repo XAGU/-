@@ -16,11 +16,11 @@ import com.xiaolian.amigo.ui.widget.indicator.ProgressDrawable;
  * Created by zcd on 10/9/17.
  */
 
-public class LodingDialog extends Dialog {
+public class LoadingDialog extends Dialog {
     private ImageView iv_loding;
     private ProgressDrawable mProgressDrawable;//刷新动画
 
-    public LodingDialog(@NonNull Context context) {
+    public LoadingDialog(@NonNull Context context) {
         super(context, android.R.style.Theme_Translucent);
         initView(context);
     }

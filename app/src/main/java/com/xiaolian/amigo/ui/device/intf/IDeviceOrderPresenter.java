@@ -11,4 +11,5 @@ public interface IDeviceOrderPresenter<V extends IDeviceOrderView> extends IBase
     // 页面初次加载
     void onLoad(long orderId);
 
+    String getToken();
 }

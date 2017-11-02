@@ -155,10 +155,10 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/tv_withdraw_available"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="可提现金额1000，"
                 android:textColor="#666"
                 android:textSize="12sp" />
 

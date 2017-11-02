@@ -28,10 +28,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
@@ -52,7 +50,7 @@ import com.xiaolian.amigo.ui.login.LoginActivity;
 import com.xiaolian.amigo.ui.main.HomeFragment2;
 import com.xiaolian.amigo.ui.main.MainActivity;
 import com.xiaolian.amigo.ui.widget.dialog.ActionSheetDialog;
-import com.xiaolian.amigo.ui.widget.dialog.LodingDialog;
+import com.xiaolian.amigo.ui.widget.dialog.LoadingDialog;
 import com.xiaolian.amigo.util.NetworkUtil;
 import com.yalantis.ucrop.UCrop;
 
@@ -86,7 +84,7 @@ public abstract class BaseActivity extends SwipeBackActivity
 
     protected RxPermissions rxPermissions;
 
-    private LodingDialog mProgressDialog;
+    private LoadingDialog mProgressDialog;
 
 
     private Unbinder mUnBinder;
@@ -292,7 +290,7 @@ public abstract class BaseActivity extends SwipeBackActivity
     @Override
     public void showLoading() {
         if (mProgressDialog == null) {
-            mProgressDialog = new LodingDialog(this);
+            mProgressDialog = new LoadingDialog(this);
         }
         try {
             hideLoading();

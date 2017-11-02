@@ -7,8 +7,10 @@ import com.xiaolian.amigo.data.network.model.dto.request.PersonalUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.SimpleQueryReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.DeleteResidenceRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.EntireUserDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryUserResidenceListRespDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.SimpleRespDTO;
 import com.xiaolian.amigo.data.network.model.user.User;
 import com.xiaolian.amigo.data.network.model.user.UserResidence;
 import com.xiaolian.amigo.ui.base.BasePresenter;
@@ -90,13 +92,13 @@ public class EditDormitoryPresenter<V extends IEditDormitoryView> extends BasePr
     public void deleteDormitory(Long residenceId) {
         SimpleReqDTO dto = new SimpleReqDTO();
         dto.setId(residenceId);
-        addObserver(manager.deleteResidence(dto), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
+        addObserver(manager.deleteResidence(dto), new NetworkObserver<ApiResult<DeleteResidenceRespDTO>>() {
 
             @Override
-            public void onReady(ApiResult<BooleanRespDTO> result) {
+            public void onReady(ApiResult<DeleteResidenceRespDTO> result) {
                 if (null == result.getError()) {
                     getMvpView().onSuccess(R.string.delete_success);
-                    getMvpView().refreshList();
+                    getMvpView().refreshList(result.getData().getResidenceId());
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }

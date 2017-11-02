@@ -26,12 +26,19 @@ import lombok.Data;
  * Created by caidong on 2017/9/12.
  */
 public class OrderAdaptor extends RecyclerView.Adapter<OrderAdaptor.ViewHolder> {
-
+    public interface OrderDetailClickListener {
+        void orderDetailClick(Order order);
+    }
+    private OrderDetailClickListener listener;
     private List<OrderWrapper> orders;
     private Context context;
 
     public OrderAdaptor(List<OrderWrapper> orders) {
         this.orders = orders;
+    }
+
+    public void setOrderDetailClickListener(OrderDetailClickListener listener) {
+        this.listener = listener;
     }
 
     @Override
@@ -44,6 +51,9 @@ public class OrderAdaptor extends RecyclerView.Adapter<OrderAdaptor.ViewHolder> 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         OrderWrapper wrapper = orders.get(position);
+        holder.itemView.setOnClickListener(v -> {
+            listener.orderDetailClick(holder.order);
+        });
         if (null != wrapper) {
             holder.v_type.setBackgroundResource(Device.getDevice(wrapper.getType()).getColorRes());
             holder.tv_device.setText(wrapper.getDevice());
@@ -58,7 +68,7 @@ public class OrderAdaptor extends RecyclerView.Adapter<OrderAdaptor.ViewHolder> 
         return null == orders ? 0 : orders.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.v_type)
         View v_type;
         @BindView(R.id.tv_device)
@@ -74,16 +84,7 @@ public class OrderAdaptor extends RecyclerView.Adapter<OrderAdaptor.ViewHolder> 
         public ViewHolder(View itemView) {
             super(itemView);
             this.context = itemView.getContext();
-            itemView.setOnClickListener(this);
             ButterKnife.bind(this, itemView);
-        }
-
-        @Override
-        public void onClick(View v) {
-            // 跳转至订单详情
-            Intent intent = new Intent(context, OrderDetailActivity.class);
-            intent.putExtra(Constant.EXTRA_KEY, order);
-            context.startActivity(intent);
         }
     }
 

@@ -107,6 +107,7 @@
             android:src="@drawable/arrow_right" />
 
         <TextView
+            android:hint="@string/unknown"
             android:id="@+id/tv_sex"
             style="@style/ListItemSubText"
             android:layout_toLeftOf="@id/imageView3"
@@ -244,10 +245,10 @@
             android:src="@drawable/arrow_right" />
 
         <TextView
+            android:hint="@string/unbind"
             android:id="@+id/tv_residence"
             style="@style/ListItemSubText"
             android:layout_toLeftOf="@id/imageView7"
-            android:text="未绑定"
             />
 
         <View

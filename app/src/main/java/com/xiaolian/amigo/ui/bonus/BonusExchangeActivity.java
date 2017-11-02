@@ -1,7 +1,7 @@
 package com.xiaolian.amigo.ui.bonus;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.content.Intent;
+import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -13,6 +13,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * 兑换红包
@@ -49,9 +50,22 @@ public class BonusExchangeActivity extends BonusBaseActivity implements IBonusEx
         return R.layout.activity_bonus_exchange;
     }
 
+    @OnClick(R.id.bt_submit)
+    public void exchange() {
+        if (TextUtils.isEmpty(et_changeCode.getText())) {
+            onError("请输入兑换码");
+            return;
+        }
+        presenter.exchangeBonus(et_changeCode.getText().toString());
+    }
+
     @Override
     protected void setUp() {
 
     }
 
+    @Override
+    public void backToBonus() {
+        startActivity(new Intent(this, BonusActivity.class));
+    }
 }

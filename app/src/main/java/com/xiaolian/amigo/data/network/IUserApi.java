@@ -12,6 +12,7 @@ import com.xiaolian.amigo.data.network.model.dto.request.SimpleQueryReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.VerificationCodeGetReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.DeleteResidenceRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.EntireUserDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryAvatarDTO;
@@ -76,7 +77,7 @@ public interface IUserApi {
 
     // 用户删除绑定寝室
     @POST("/user/residence/delete")
-    Observable<ApiResult<BooleanRespDTO>> deleteResidence(@Body SimpleReqDTO body);
+    Observable<ApiResult<DeleteResidenceRespDTO>> deleteResidence(@Body SimpleReqDTO body);
 
     // 获取建筑列表
     // residenceLevel 1幢 2楼层 3宿舍 具体位置 buildingType 1宿舍楼 parentId上一层事物Id

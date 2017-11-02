@@ -1,23 +1,13 @@
 package com.xiaolian.amigo.ui.device;
 
-import com.xiaolian.amigo.data.manager.intf.IBonusDataManager;
 import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.bonus.Bonus;
 import com.xiaolian.amigo.data.network.model.dto.request.OrderDetailReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.QueryUserBonusReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.OrderDetailRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.QueryUserBonusListRespDTO;
+import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.ui.base.BasePresenter;
-import com.xiaolian.amigo.ui.bonus.adaptor.BonusAdaptor;
-import com.xiaolian.amigo.ui.bonus.intf.IBonusPresenter;
-import com.xiaolian.amigo.ui.bonus.intf.IBonusView;
 import com.xiaolian.amigo.ui.device.intf.IDeviceOrderPresenter;
 import com.xiaolian.amigo.ui.device.intf.IDeviceOrderView;
-import com.xiaolian.amigo.util.Constant;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -26,11 +16,14 @@ public class DeviceOrderPresenter<V extends IDeviceOrderView> extends BasePresen
 
     private static final String TAG = DeviceOrderPresenter.class.getSimpleName();
     private IOrderDataManager manager;
+    private ISharedPreferencesHelp sharedPreferencesHelp;
 
     @Inject
-    public DeviceOrderPresenter(IOrderDataManager manager) {
+    public DeviceOrderPresenter(IOrderDataManager manager,
+                                ISharedPreferencesHelp sharedPreferencesHelp) {
         super();
         this.manager = manager;
+        this.sharedPreferencesHelp = sharedPreferencesHelp;
     }
 
     @Override
@@ -48,5 +41,10 @@ public class DeviceOrderPresenter<V extends IDeviceOrderView> extends BasePresen
                 }
             }
         });
+    }
+
+    @Override
+    public String getToken() {
+        return sharedPreferencesHelp.getToken();
     }
 }

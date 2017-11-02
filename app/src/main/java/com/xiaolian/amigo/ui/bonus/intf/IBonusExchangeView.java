@@ -7,4 +7,5 @@ import com.xiaolian.amigo.ui.base.intf.IBaseView;
  * @author zcd
  */
 public interface IBonusExchangeView extends IBaseView {
+    void backToBonus();
 }
