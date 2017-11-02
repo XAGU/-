@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.enumeration.ComplaintType;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.enumeration.Payment;
 import com.xiaolian.amigo.data.enumeration.TradeError;
@@ -53,6 +54,9 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
     RelativeLayout rl_odd;
     @Inject
     IDeviceOrderPresenter<IDeviceOrderView> presenter;
+    private String orderNo;
+    private long orderId;
+    private Integer orderType;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,7 +68,7 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
         presenter.onAttach(this);
 
         Intent intent = getIntent();
-        long orderId = intent.getLongExtra(Constant.BUNDLE_ID, 0L);
+        orderId = intent.getLongExtra(Constant.BUNDLE_ID, 0L);
         if (orderId != 0L) {
             presenter.onLoad(orderId);
         }
@@ -72,6 +76,9 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
 
     @Override
     public void setRefreshComplete(OrderDetailRespDTO respDTO) {
+        orderNo = respDTO.getOrderNo();
+        orderType = ComplaintType.getComplaintTypeByDeviceType(
+                Device.getDevice(respDTO.getDeviceType())).getType();
         if (respDTO.getPaymentType() == Payment.BALANCE.getType()) { // 余额支付
             iv_order_free.setVisibility(View.GONE);
         } else { // 红包支付
@@ -116,7 +123,12 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
     @OnClick(R.id.tv_complaint)
     public void complaint() {
         startActivity(new Intent(this, WebActivity.class)
-                .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_COMPLAINT));
+                .putExtra(WebActivity.INTENT_KEY_URL,
+                        Constant.H5_COMPLAINT
+                        + "?token=" + presenter.getToken()
+                        + "&orderId=" + orderId
+                        + "&orderNo=" + orderNo
+                        + "&orderType=" + orderType));
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.order;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -63,6 +64,13 @@ public class OrderActivity extends OrderBaseListActivity implements IOrderView {
     protected void setRecyclerView(RecyclerView recyclerView) {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adaptor = new OrderAdaptor(orders);
+        adaptor.setOrderDetailClickListener((order) -> {
+            // 跳转至订单详情
+            Intent intent = new Intent(OrderActivity.this, OrderDetailActivity.class);
+            intent.putExtra(Constant.EXTRA_KEY, order);
+            intent.putExtra(Constant.TOKEN, presenter.getToken());
+            startActivity(intent);
+        });
         recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 14)));
         recyclerView.setAdapter(adaptor);
     }

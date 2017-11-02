@@ -8,12 +8,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.enumeration.ComplaintType;
 import com.xiaolian.amigo.data.enumeration.Device;
-import com.xiaolian.amigo.data.enumeration.Payment;
 import com.xiaolian.amigo.data.network.model.order.Order;
 import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.ui.order.intf.IOrderDetailView;
-import com.xiaolian.amigo.ui.order.intf.IOrderView;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 
@@ -45,7 +44,8 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
     @BindView(R.id.rl_odd)
     RelativeLayout rl_odd;
 
-    Order order;
+    private Order order;
+    private String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +59,7 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
     protected void setUp() {
         Intent intent = getIntent();
         this.order = (Order) intent.getSerializableExtra(Constant.EXTRA_KEY);
+        this.token = intent.getStringExtra(Constant.TOKEN);
     }
 
     /**
@@ -67,7 +68,13 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
     @OnClick(R.id.tv_complaint)
     public void complaint() {
         startActivity(new Intent(this, WebActivity.class)
-                .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_COMPLAINT));
+                .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_COMPLAINT
+                        + "?token=" + token
+                        + "&orderId=" + order.getId()
+                        + "&orderNo=" + order.getOrderNo()
+                        + "&orderType="
+                        + ComplaintType.getComplaintTypeByDeviceType(
+                                Device.getDevice(order.getDeviceType())).getType()));
     }
 
     /**

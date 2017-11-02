@@ -10,4 +10,6 @@ import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 
 public interface IMorePresenter<V extends IMoreView> extends IBasePresenter<V> {
     void logout();
+
+    String getToken();
 }

@@ -10,4 +10,6 @@ import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 
 public interface IRechargeDetailPresenter<V extends IRechargeDetailView> extends IBasePresenter<V> {
     void requestData(Long id);
+
+    String getToken();
 }

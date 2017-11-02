@@ -10,11 +10,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.enumeration.ComplaintType;
 import com.xiaolian.amigo.data.enumeration.PayWay;
 import com.xiaolian.amigo.data.enumeration.RechargeStatus;
 import com.xiaolian.amigo.data.network.model.dto.response.FundsDTO;
 import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.ui.wallet.adaptor.WithdrawRechargeDetailAdapter;
+import com.xiaolian.amigo.ui.wallet.intf.IWithdrawalDetailPresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IWithdrawalDetailView;
 import com.xiaolian.amigo.ui.widget.RecycleViewDivider;
 import com.xiaolian.amigo.util.CommonUtil;
@@ -39,7 +41,7 @@ import butterknife.OnClick;
 public class WithdrawalDetailActivity extends WalletBaseActivity implements IWithdrawalDetailView {
 
     @Inject
-    WithdrawalDetailPresenter<IWithdrawalDetailView> presenter;
+    IWithdrawalDetailPresenter<IWithdrawalDetailView> presenter;
 
     private List<WithdrawRechargeDetailAdapter.Item> items = new ArrayList<>();
 
@@ -68,6 +70,7 @@ public class WithdrawalDetailActivity extends WalletBaseActivity implements IWit
     RecyclerView recyclerView;
 
     private Long id;
+    private String deviceNo;
     @Override
     protected void initView() {
         setUnBinder(ButterKnife.bind(this));
@@ -105,6 +108,7 @@ public class WithdrawalDetailActivity extends WalletBaseActivity implements IWit
 
     @Override
     public void render(FundsDTO data) {
+        deviceNo = data.getOrderNo();
         tv_amount.setText("¥" + data.getAmount());
         tv_status.setText(RechargeStatus.getRechargeStatus(data.getStatus()).getDesc());
         tv_status.setTextColor(
@@ -137,6 +141,10 @@ public class WithdrawalDetailActivity extends WalletBaseActivity implements IWit
     @OnClick(R.id.right_oper)
     public void onRightOper() {
         startActivity(new Intent(this, WebActivity.class)
-                .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_COMPLAINT));
+                .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_COMPLAINT
+                            + "?token=" + presenter.getToken()
+                            + "&orderId=" + id
+                            + "&orderNo=" + deviceNo
+                            + "&orderType=" + ComplaintType.WITHDRAW.getType()));
     }
 }

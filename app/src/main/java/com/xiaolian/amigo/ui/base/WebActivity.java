@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.webkit.SslErrorHandler;
 import android.webkit.ValueCallback;
@@ -27,6 +28,7 @@ import butterknife.ButterKnife;
 public class WebActivity extends BaseActivity {
     public static final String INTENT_KEY_URL = "intent_key_url";
     private static final int FILECHOOSER_RESULTCODE = 0x0012;
+    private static final String TAG = WebActivity.class.getSimpleName();
 
     @BindView(R.id.webview)
     WebView webView;
@@ -98,6 +100,7 @@ public class WebActivity extends BaseActivity {
         webView.addJavascriptInterface(new WebAppInterface(), "WebViewInterface");
         webSettings.setJavaScriptEnabled(true);
         webView.loadUrl(url);
+        Log.i(TAG, url);
     }
 
     private class MyWebChromeClient extends WebChromeClient {

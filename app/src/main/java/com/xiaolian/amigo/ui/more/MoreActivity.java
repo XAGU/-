@@ -64,7 +64,8 @@ public class MoreActivity extends MoreBaseActivity implements IMoreView {
                 Class clz = items.get(position).getClz();
                 if (clz != null) {
                     startActivity(new Intent(MoreActivity.this, clz)
-                            .putExtra(WebActivity.INTENT_KEY_URL, items.get(position).getExtra()));
+                            .putExtra(WebActivity.INTENT_KEY_URL, items.get(position).getExtra()
+                                        + "?token=" + presenter.getToken()));
                 }
             }
 
