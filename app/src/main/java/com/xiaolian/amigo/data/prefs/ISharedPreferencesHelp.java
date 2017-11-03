@@ -63,4 +63,12 @@ public interface ISharedPreferencesHelp {
     Long getLastUpdateRemindTime();
 
     void setLastUpdateRemindTime();
+
+    void setLastWithdrawId(Long id);
+
+    Long getLastWithdrawId();
+
+    void setLastWithdrawName(String name);
+
+    String getLastWithdrawName();
 }

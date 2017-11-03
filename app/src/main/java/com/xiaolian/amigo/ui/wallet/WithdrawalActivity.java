@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.enumeration.PayWay;
 import com.xiaolian.amigo.ui.user.ListChooseActivity;
 import com.xiaolian.amigo.ui.wallet.adaptor.ChooseWithdrawAdapter;
 import com.xiaolian.amigo.ui.wallet.intf.IWithdrawalPresenter;
@@ -68,6 +69,7 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
         setUpEditText();
         presenter.onAttach(WithdrawalActivity.this);
         tv_withdraw_available.setText(getString(R.string.withdraw_available, balance));
+        presenter.requestAccounts(PayWay.ALIAPY.getType());
     }
 
     @Override
@@ -168,6 +170,12 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
         startActivity(new Intent(this, WithdrawalDetailActivity.class)
                 .putExtra(Constant.EXTRA_KEY, id));
         finish();
+    }
+
+    @Override
+    public void showWithdrawAccount(String accountName, Long id) {
+        withdrawId = id;
+        tv_withdraw_way2.setText(accountName);
     }
 
     @Override

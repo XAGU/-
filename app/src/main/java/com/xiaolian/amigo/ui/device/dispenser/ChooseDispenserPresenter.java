@@ -1,6 +1,8 @@
 package com.xiaolian.amigo.ui.device.dispenser;
 
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.TextureView;
 
 import com.polidea.rxandroidble.scan.ScanResult;
 import com.xiaolian.amigo.data.manager.intf.IBleDataManager;
@@ -13,6 +15,7 @@ import com.xiaolian.amigo.data.network.model.dto.request.FavoriteReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.ScanDeviceReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.FavoriteRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.ScanDeviceRespDTO;
+import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IChooseDispenerView;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IChooseDispenserPresenter;
@@ -38,13 +41,18 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
     private IFavoriteManager favoriteManager;
     private ITradeDataManager tradeDataManager;
     private IBleDataManager bleDataManager;
+    private ISharedPreferencesHelp sharedPreferencesHelp;
 
     @Inject
-    public ChooseDispenserPresenter(IFavoriteManager favoriteManager, ITradeDataManager tradeDataManager, IBleDataManager bleDataManager) {
+    public ChooseDispenserPresenter(IFavoriteManager favoriteManager,
+                                    ITradeDataManager tradeDataManager,
+                                    IBleDataManager bleDataManager,
+                                    ISharedPreferencesHelp sharedPreferencesHelp) {
         super();
         this.favoriteManager = favoriteManager;
         this.tradeDataManager = tradeDataManager;
         this.bleDataManager = bleDataManager;
+        this.sharedPreferencesHelp = sharedPreferencesHelp;
     }
 
     @Override
@@ -103,6 +111,9 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
                 StringBuilder deviceNo = new StringBuilder(temp[temp.length - 3]);
                 deviceNo.append(temp[temp.length - 2]);
                 deviceNo.append(temp[temp.length - 1]);
+                if (TextUtils.isEmpty(sharedPreferencesHelp.getMacAddressByDeviceNo(deviceNo.toString()))) {
+                    sharedPreferencesHelp.setDeviceNoAndMacAddress(deviceNo.toString(), macAddress);
+                }
 
                 if (!existDevices.contains(deviceNo.toString())
                         && !scanDevices.contains(deviceNo.toString())) { // 如果已经在上报的集合中，忽略

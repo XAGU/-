@@ -12,4 +12,6 @@ public interface IWithdrawalView extends IBaseView {
     void back();
 
     void gotoWithdrawDetail(Long id);
+
+    void showWithdrawAccount(String accountName, Long id);
 }

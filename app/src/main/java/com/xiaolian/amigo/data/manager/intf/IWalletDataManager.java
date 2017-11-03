@@ -9,4 +9,11 @@ import com.xiaolian.amigo.data.network.IWalletApi;
  */
 
 public interface IWalletDataManager extends IWalletApi {
+    void setLastWithdrawId(Long id);
+
+    Long getLastWithdrawId();
+
+    void setLastWithdrawName(String name);
+
+    String getLastWithdrawName();
 }

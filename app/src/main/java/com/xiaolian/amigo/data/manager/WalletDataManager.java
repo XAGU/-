@@ -23,6 +23,7 @@ import com.xiaolian.amigo.data.network.model.dto.response.QueryRechargeAmountsRe
 import com.xiaolian.amigo.data.network.model.dto.response.QueryTimeValidRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryUserThirdAccountRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.SimpleRespDTO;
+import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 
 import javax.inject.Inject;
 
@@ -41,10 +42,12 @@ public class WalletDataManager implements IWalletDataManager {
     private static final String TAG = WalletDataManager.class.getSimpleName();
 
     private IWalletApi walletApi;
+    private ISharedPreferencesHelp sharedPreferencesHelp;
 
     @Inject
-    public WalletDataManager(Retrofit retrofit) {
+    public WalletDataManager(Retrofit retrofit, ISharedPreferencesHelp sharedPreferencesHelp) {
         walletApi = retrofit.create(IWalletApi.class);
+        this.sharedPreferencesHelp = sharedPreferencesHelp;
     }
 
     @Override
@@ -105,5 +108,25 @@ public class WalletDataManager implements IWalletDataManager {
     @Override
     public Observable<ApiResult<FundsDTO>> queryWithdrawRechargeDetail(@Body SimpleReqDTO reqDTO) {
         return walletApi.queryWithdrawRechargeDetail(reqDTO);
+    }
+
+    @Override
+    public void setLastWithdrawId(Long id) {
+        sharedPreferencesHelp.setLastWithdrawId(id);
+    }
+
+    @Override
+    public Long getLastWithdrawId() {
+        return sharedPreferencesHelp.getLastWithdrawId();
+    }
+
+    @Override
+    public void setLastWithdrawName(String name) {
+        sharedPreferencesHelp.setLastWithdrawName(name);
+    }
+
+    @Override
+    public String getLastWithdrawName() {
+        return sharedPreferencesHelp.getLastWithdrawName();
     }
 }

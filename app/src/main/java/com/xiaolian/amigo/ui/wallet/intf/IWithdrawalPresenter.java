@@ -11,4 +11,6 @@ import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 public interface IWithdrawalPresenter<V extends IWithdrawalView> extends IBasePresenter<V> {
 
     void withdraw(String amount, Long withdrawId);
+
+    void requestAccounts(int type);
 }

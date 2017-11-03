@@ -34,6 +34,9 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     private static final String PREF_KEY_BONUS = "PREF_KEY_BONUS";
     private static final String PREF_BLUETOOTH_MAC_ADDRESS_PREFIX = "PREF_BLUETOOTH_MAC_ADDRESS_PREFIX";
     private static final String PREF_LAST_UPDATE_REMIND_TIME = "PREF_LAST_UPDATE_REMIND_TIME";
+    private static final String PREF_LAST_VIEW_REPAIR = "PREF_LAST_VIEW_REPAIR";
+    private static final String PREF_LAST_WITHDRAW_ID = "PREF_LAST_WITHDRAW_ID";
+    private static final String PREF_LAST_WITHDRAW_NAME = "PREF_LAST_WITHDRAW_NAME";
 
     private String tokenHolder;
     private String deviceTokenHolder;
@@ -173,6 +176,26 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     @Override
     public void setLastUpdateRemindTime() {
         mSharedPreferences.edit().putLong(PREF_LAST_UPDATE_REMIND_TIME, System.currentTimeMillis()).apply();
+    }
+
+    @Override
+    public void setLastWithdrawId(Long id) {
+        mSharedPreferences.edit().putLong(PREF_LAST_WITHDRAW_ID, id).apply();
+    }
+
+    @Override
+    public Long getLastWithdrawId() {
+        return mSharedPreferences.getLong(PREF_LAST_WITHDRAW_ID, -1);
+    }
+
+    @Override
+    public void setLastWithdrawName(String name) {
+        mSharedPreferences.edit().putString(PREF_LAST_WITHDRAW_NAME, name).apply();
+    }
+
+    @Override
+    public String getLastWithdrawName() {
+        return mSharedPreferences.getString(PREF_LAST_WITHDRAW_NAME, "");
     }
 
     @Override
