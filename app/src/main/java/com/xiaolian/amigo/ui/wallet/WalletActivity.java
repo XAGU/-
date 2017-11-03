@@ -113,7 +113,8 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
         dialog.setSubTipVisible(false);
         dialog.setOkText(getString(R.string.ok));
         dialog.setOnOkClickListener(dialog1 -> {
-            startActivity(this, WithdrawalActivity.class);
+            startActivity(new Intent(this, WithdrawalActivity.class)
+                    .putExtra(Constant.EXTRA_KEY, tv_balance.getText().toString().replace("¥", "")));
         });
         dialog.show();
     }

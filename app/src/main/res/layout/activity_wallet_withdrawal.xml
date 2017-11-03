@@ -122,7 +122,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
                 android:background="@null"
-                android:text="￥"
+                android:text="¥"
                 android:textColor="@color/colorFullRed"
                 android:textSize="34sp"
                 android:textStyle="bold" />
