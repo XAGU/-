@@ -228,6 +228,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         // 扫描macAddress
         addObserver(bleDataManager.scan(), new BleObserver<ScanResult>() {
             Long begin = null;
+            // 延时15s
+            Integer delay = 15000;
 
             @Override
             public void onNext(ScanResult result) {
@@ -253,9 +255,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     return;
                 }
                 long now = System.currentTimeMillis();
-                if (now - begin > 2000) { // 列表数目到达10条或者时间超过2s都去服务端请求一次接口
+                if (now - begin > delay) { // 列表数目到达10条或者时间超过2s都去服务端请求一次接口
                     currentMacAddress = "";
-                    Log.i(TAG, "2s时间到，获取macAddress失败");
+                    Log.i(TAG, delay + "s时间到，获取macAddress失败");
                     // realConnect(macAddress);
                     getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
                 }
