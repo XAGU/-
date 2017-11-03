@@ -97,6 +97,9 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
             List<String> scanDevices = new ArrayList<String>();
 
             Long begin = null;
+            // 延时1s
+            int delay = 1000;
+            int maxDelay = 1000;
 
             @Override
             public void onNext(ScanResult result) {
@@ -121,8 +124,11 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
                 }
 
                 long now = System.currentTimeMillis();
-                if (scanDevices.size() >= 10 || now - begin > 2000) { // 列表数目到达10条或者时间超过2s都去服务端请求一次接口
+                if (scanDevices.size() >= 10 || now - begin > delay) { // 列表数目到达10条或者时间超过2s都去服务端请求一次接口
                     if (scanDevices.size() > 0) {
+                        if (delay < maxDelay) {
+                            delay ++;
+                        }
                         existDevices.addAll(scanDevices);
                         handleScanDevices(new ArrayList<>(scanDevices)); // 请求服务器处理扫描到的设备
                         scanDevices.clear(); // 重置扫描到的设备集合
