@@ -26,17 +26,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <View
-        android:id="@+id/v_holder"
-        android:layout_alignParentBottom="true"
+    <LinearLayout
+        android:layout_below="@id/recyclerView1"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/mainMarginLeftRight"/>
+        android:layout_height="match_parent">
+        <View
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"/>
+        <Button
+            android:layout_above="@id/v_holder"
+            android:id="@+id/bt_submit"
+            style="@style/SubmitButton"
+            android:enabled="false"
+            android:layout_marginTop="14dp"
+            android:text="@string/confirm_recharge" />
 
-    <Button
-        android:layout_above="@id/v_holder"
-        android:id="@+id/bt_submit"
-        style="@style/SubmitButton"
-        android:enabled="false"
-        android:text="确认充值" />
+        <View
+            android:id="@+id/v_holder"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/mainMarginLeftRight"/>
+    </LinearLayout>
 
 </RelativeLayout>
