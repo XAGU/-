@@ -142,10 +142,12 @@ public class LostAndFoundDetailActivity extends LostAndFoundBaseActivity impleme
         tv_itemName.setText(lostAndFound.getItemName());
         tv_location.setText(lostAndFound.getLocation());
         tv_mobile.setText(lostAndFound.getMobile());
-        tv_lostTime.setText(TimeUtils.convertTimestampToFormat(lostAndFound.getLostTime()) +
-                "/" + TimeUtils.millis2String(lostAndFound.getLostTime(), TimeUtils.MY_TIME_FORMAT));
-        tv_createTime.setText(TimeUtils.convertTimestampToFormat(lostAndFound.getCreateTime()) +
-                "/" + TimeUtils.millis2String(lostAndFound.getCreateTime(), TimeUtils.MY_TIME_FORMAT));
+        tv_lostTime.setText(getString(R.string.time_format,
+                TimeUtils.convertTimestampToFormat(lostAndFound.getLostTime()),
+                TimeUtils.millis2String(lostAndFound.getLostTime(), TimeUtils.MY_TIME_FORMAT)));
+        tv_createTime.setText(getString(R.string.publish_time,
+                TimeUtils.convertTimestampToFormat(lostAndFound.getCreateTime()),
+                TimeUtils.millis2String(lostAndFound.getCreateTime(), TimeUtils.MY_TIME_FORMAT)));
         List<String> images = lostAndFound.getImages();
         if(null != images){
             this.images.clear();

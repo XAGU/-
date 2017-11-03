@@ -8,11 +8,11 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <com.xiaolian.amigo.ui.widget.CircleImageView
+
+        <de.hdodenhof.circleimageview.CircleImageView
             android:layout_marginTop="21dp"
             android:layout_gravity="center_horizontal"
             android:id="@+id/iv_current_avatar"
-            android:scaleType="centerInside"
             android:layout_width="67dp"
             android:layout_height="67dp" />
         <TextView

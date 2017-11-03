@@ -56,7 +56,7 @@
                     android:layout_marginLeft="14dp"
                     android:layout_toRightOf="@id/tv_toolbar_title"
                     android:background="#eee"
-                    android:visibility="gone" />
+                    />
 
                 <TextView
                     android:id="@+id/tv_toolbar_title2"

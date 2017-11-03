@@ -156,4 +156,6 @@
     <string name="unknown">未知</string>
     <string name="unbind">未绑定</string>
     <string name="confirm_recharge">确认充值</string>
+    <string name="publish_time">发布时间 %1$s/%2$s</string>
+    <string name="time_format">%1$s/%2$s</string>
 </resources>
