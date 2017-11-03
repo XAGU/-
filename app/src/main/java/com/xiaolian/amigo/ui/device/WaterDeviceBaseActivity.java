@@ -267,7 +267,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     private boolean recorvery;
     private String location;
     private CountDownTimer timer;
-    private volatile boolean  userWater  = false;
+    private volatile boolean userWater = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -772,6 +772,9 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     protected void onDestroy() {
         presenter.onDisConnect();
         super.onDestroy();
+        if (null != timer) {
+            timer.cancel();
+        }
         TimeHolder.get().setLastConnectTime(System.currentTimeMillis());
     }
 
@@ -858,4 +861,5 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     public void onBackPressed() {
         back2Main();
     }
+
 }
