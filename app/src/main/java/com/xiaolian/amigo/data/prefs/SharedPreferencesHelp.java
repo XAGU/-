@@ -37,6 +37,7 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     private static final String PREF_LAST_VIEW_REPAIR = "PREF_LAST_VIEW_REPAIR";
     private static final String PREF_LAST_WITHDRAW_ID = "PREF_LAST_WITHDRAW_ID";
     private static final String PREF_LAST_WITHDRAW_NAME = "PREF_LAST_WITHDRAW_NAME";
+    private static final String PREF_LAST_RECHARGE_AMOUNT = "PREF_LAST_RECHARGE_AMOUNT";
 
     private String tokenHolder;
     private String deviceTokenHolder;
@@ -196,6 +197,16 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     @Override
     public String getLastWithdrawName() {
         return mSharedPreferences.getString(PREF_LAST_WITHDRAW_NAME, "");
+    }
+
+    @Override
+    public String getLastRechargeAmount() {
+        return mSharedPreferences.getString(PREF_LAST_RECHARGE_AMOUNT, "");
+    }
+
+    @Override
+    public void setLastRechargeAmount(String amount) {
+        mSharedPreferences.edit().putString(PREF_LAST_RECHARGE_AMOUNT, amount).apply();
     }
 
     @Override

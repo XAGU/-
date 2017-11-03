@@ -129,4 +129,14 @@ public class WalletDataManager implements IWalletDataManager {
     public String getLastWithdrawName() {
         return sharedPreferencesHelp.getLastWithdrawName();
     }
+
+    @Override
+    public String getLastRechargeAmount() {
+        return sharedPreferencesHelp.getLastRechargeAmount();
+    }
+
+    @Override
+    public void setLastRechargeAmount(String amount) {
+        sharedPreferencesHelp.setLastRechargeAmount(amount);
+    }
 }

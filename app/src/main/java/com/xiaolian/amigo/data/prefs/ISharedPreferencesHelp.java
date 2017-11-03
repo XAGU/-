@@ -71,4 +71,8 @@ public interface ISharedPreferencesHelp {
     void setLastWithdrawName(String name);
 
     String getLastWithdrawName();
+
+    String getLastRechargeAmount();
+
+    void setLastRechargeAmount(String amount);
 }

@@ -133,7 +133,7 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
 
     @OnClick(R.id.bt_submit)
     public void recharge() {
-        presenter.recharge(recharges.get(rechargeSelectedPosition).getId(),
+        presenter.recharge(recharges.get(rechargeSelectedPosition).getAmount(),
                 rechargeTypes.get(rechargeTypeSelectedPosition).getType());
     }
 

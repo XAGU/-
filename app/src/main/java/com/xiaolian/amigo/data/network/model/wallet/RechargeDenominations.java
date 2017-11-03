@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 public class RechargeDenominations {
     private Integer activityType;
-    private Long amount;
+    private Double amount;
     private Long id;
     private Long value;
 }

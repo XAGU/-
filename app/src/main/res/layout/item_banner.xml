@@ -14,6 +14,8 @@
         android:layout_height="4dp"/>
 
     <com.youth.banner.Banner
+        app:indicator_drawable_selected="@drawable/dot_big_white"
+        app:indicator_drawable_unselected="@drawable/dot_small_white"
         android:id="@+id/banner"
         android:layout_width="match_parent"
         android:layout_marginLeft="21dp"

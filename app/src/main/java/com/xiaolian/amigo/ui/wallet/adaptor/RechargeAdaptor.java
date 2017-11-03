@@ -28,6 +28,7 @@ public class RechargeAdaptor extends MultiItemTypeAdapter<RechargeAdaptor.Rechar
         Long id;
         // 充值类型
         int type;
+        Double amount;
         // 主信息
         String main;
         // 附信息
@@ -40,7 +41,13 @@ public class RechargeAdaptor extends MultiItemTypeAdapter<RechargeAdaptor.Rechar
             this.sub = sub;
         }
 
+        public RechargeWrapper(RechargeDenominations rechargeDenominations, boolean isSelected) {
+            this(rechargeDenominations);
+            this.isSelected = isSelected;
+        }
+
         public RechargeWrapper(RechargeDenominations rechargeDenominations) {
+            this.amount = rechargeDenominations.getAmount();
             if (rechargeDenominations.getId() != null) {
                 this.id = rechargeDenominations.getId();
             }

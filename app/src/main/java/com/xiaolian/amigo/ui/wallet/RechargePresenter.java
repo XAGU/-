@@ -1,8 +1,10 @@
 package com.xiaolian.amigo.ui.wallet;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.xiaolian.amigo.data.enumeration.AlipayPayOrderCheckResult;
+import com.xiaolian.amigo.data.manager.WalletDataManager;
 import com.xiaolian.amigo.data.manager.intf.IWalletDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.AlipayTradeAppPayArgsReqDTO;
@@ -22,6 +24,7 @@ import com.xiaolian.amigo.ui.wallet.intf.IRechargeView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -52,9 +55,16 @@ public class RechargePresenter<V extends IRechargeView> extends BasePresenter<V>
                 if (null == result.getError()) {
                     if (result.getData().getRechargeDenominations() != null
                             && result.getData().getRechargeDenominations().size() > 0) {
+                        // 上次选择的amount
+                        String lastAmount = manager.getLastRechargeAmount();
                         List<RechargeAdaptor.RechargeWrapper> rechargeWrapper = new ArrayList<>();
                         for (RechargeDenominations rechargeDenominations : result.getData().getRechargeDenominations()) {
-                            rechargeWrapper.add(new RechargeAdaptor.RechargeWrapper(rechargeDenominations));
+                            if (TextUtils.equals(lastAmount, String.format(Locale.getDefault(), "%.2f",
+                                    rechargeDenominations.getAmount()))) {
+                                rechargeWrapper.add(new RechargeAdaptor.RechargeWrapper(rechargeDenominations, true));
+                            } else {
+                                rechargeWrapper.add(new RechargeAdaptor.RechargeWrapper(rechargeDenominations));
+                            }
                         }
                         getMvpView().addMore(rechargeWrapper);
                     }
@@ -66,9 +76,13 @@ public class RechargePresenter<V extends IRechargeView> extends BasePresenter<V>
     }
 
     @Override
-    public void recharge(Long id, int type) {
+    public void recharge(Double amount, int type) {
+        String _amount = String.format(Locale.getDefault(),"%.2f", amount);
+        manager.setLastRechargeAmount(_amount);
+        Log.i(TAG, "储存充值amount: " + _amount);
         RechargeReqDTO reqDTO = new RechargeReqDTO();
-        reqDTO.setDenominationId(id);
+//        reqDTO.setDenominationId(id);
+        reqDTO.setAmount(amount);
         reqDTO.setThirdAccountType(type);
         addObserver(manager.recharge(reqDTO), new NetworkObserver<ApiResult<SimpleRespDTO>>() {
 
