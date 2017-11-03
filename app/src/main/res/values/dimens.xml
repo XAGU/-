@@ -29,4 +29,5 @@
 
     <!--wheel-->
     <dimen name="WheelMargins">8dp</dimen>
+    <dimen name="listBottomMargin">10dp</dimen>
 </resources>

@@ -34,7 +34,7 @@ public class BonusAdaptor extends CommonAdapter<BonusAdaptor.BonusWrapper> {
         holder.setText(R.id.tv_time_end, TimeUtils.millis2String(bonusWrapper.getTimeEnd(),
                 TimeUtils.MY_DATE_FORMAT2) + "到期");
         holder.setText(R.id.tv_desc, bonusWrapper.desc);
-        if (bonusWrapper.timeLeft <= 3) {
+        if (bonusWrapper.timeLeft != null && bonusWrapper.timeLeft <= 3) {
             holder.setText(R.id.tv_time_left, "剩" + String.valueOf(bonusWrapper.timeLeft) + "日");
         } else {
             holder.setText(R.id.tv_time_left, "");

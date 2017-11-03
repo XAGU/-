@@ -16,4 +16,6 @@ public interface IChooseDispenserPresenter<V extends IChooseDispenerView> extend
 
     // 关闭蓝牙连接
     void closeBleConnection();
+
+    void setListStatus(boolean listStatus);
 }

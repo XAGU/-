@@ -42,6 +42,12 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
     private ITradeDataManager tradeDataManager;
     private IBleDataManager bleDataManager;
     private ISharedPreferencesHelp sharedPreferencesHelp;
+    /**
+     * 列表显示的是附近列表还是收藏列表
+     * false 表示附近列表
+     * true 表示收藏列表
+     */
+    private boolean listStatus = false;
 
     @Inject
     public ChooseDispenserPresenter(IFavoriteManager favoriteManager,
@@ -62,6 +68,9 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
         addObserver(favoriteManager.queryFavorites(reqDTO), new NetworkObserver<ApiResult<ScanDeviceRespDTO>>(false) {
             @Override
             public void onReady(ApiResult<ScanDeviceRespDTO> result) {
+                if (getListStatus()) {
+                    return;
+                }
                 getMvpView().hideEmptyView();
                 getMvpView().hideErrorView();
                 if (null == result.getError()) {
@@ -157,6 +166,15 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
         }
     }
 
+    @Override
+    public synchronized void setListStatus(boolean listStatus) {
+        this.listStatus = listStatus;
+    }
+
+    private synchronized boolean getListStatus() {
+        return listStatus;
+    }
+
     // 网络请求蓝牙扫描到的结果
     private void handleScanDevices(List<String> macAddresses) {
         ScanDeviceReqDTO scanDeviceReqDTO = new ScanDeviceReqDTO();
@@ -164,13 +182,15 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
         addObserver(tradeDataManager.handleScanDevices(scanDeviceReqDTO), new NetworkObserver<ApiResult<ScanDeviceRespDTO>>(false) {
             @Override
             public void onReady(ApiResult<ScanDeviceRespDTO> result) {
-                getMvpView().post(() -> getMvpView().completeRefresh());
                 getMvpView().post(() -> getMvpView().hideEmptyView());
                 getMvpView().post(() -> getMvpView().hideErrorView());
                 if (null == result.getError()) {
-                    getMvpView().post(() -> {
-                        getMvpView().addScanDevices(result.getData().getDevices());
-                    });
+                    if (result.getData().getDevices() != null && !result.getData().getDevices().isEmpty()) {
+                        getMvpView().post(() -> getMvpView().completeRefresh());
+                        getMvpView().post(() -> {
+                            getMvpView().addScanDevices(result.getData().getDevices());
+                        });
+                    }
                 }
             }
 
