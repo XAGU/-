@@ -41,6 +41,7 @@ import com.xiaolian.amigo.ui.widget.BezierWaveView;
 import com.xiaolian.amigo.ui.widget.DotFlashView;
 import com.xiaolian.amigo.ui.widget.dialog.ActionSheetDialog;
 import com.xiaolian.amigo.ui.widget.dialog.IOSAlertDialog;
+import com.xiaolian.amigo.ui.widget.swipebutton.SlideUnlockView;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.TimeUtils;
@@ -129,6 +130,9 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
      */
     @BindView(R.id.bt_stop_shower)
     Button bt_stop_shower;
+
+    @BindView(R.id.slideView)
+    SlideUnlockView slideView;
 
 
     /**
@@ -327,6 +331,18 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         setTempText(tv_temp);
         // 默认显示连接中状态
         showConnecting();
+        initSlideView();
+    }
+
+    private void initSlideView() {
+        slideView.setOnUnLockListener(new SlideUnlockView.OnUnLockListener() {
+            @Override
+            public void setUnLocked(boolean lock) {
+                if (lock) {
+                    onSlideUnlock();
+                }
+            }
+        });
     }
 
     protected void setTempText(TextView tempText) {
@@ -629,6 +645,15 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         getBlePermission();
     }
 
+    void onSlideUnlock() {
+        // 点击结束用水操作时蓝牙必须为开启状态
+        setBleCallback(() -> {
+            presenter.onClose();
+        });
+        getBlePermission();
+
+    }
+
     /**
      * 重新连接
      */
@@ -678,6 +703,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     private void startShower(UnsettledOrderStatusCheckRespDTO orderStatus) {
         hideBottomLayout();
         ll_content_shower.setVisibility(View.VISIBLE);
+        slideView.reset();
 
         if (null != orderStatus) {
             if (Payment.getPayment(orderStatus.getPaymentType()) == Payment.BALANCE) {
@@ -692,20 +718,36 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                     trade_tip.setText(getString(R.string.balance_trade_tip));
                 }
                 bt_stop_shower.setText("结算找零");
+                bt_stop_shower.setVisibility(View.GONE);
+                slideView.setVisibility(View.VISIBLE);
+                slideView.setDisableStr(getString(R.string.slide_to_settlement));
+                slideView.setEnableStr(getString(R.string.settlement));
             } else {
                 tv_shower_payed.setText(orderStatus.getExtra());
                 trade_tip.setText(getString(R.string.bonus_trade_tip));
                 bt_stop_shower.setText("结束用水");
+                bt_stop_shower.setVisibility(View.GONE);
+                slideView.setVisibility(View.VISIBLE);
+                slideView.setDisableStr(getString(R.string.slide_to_stop_use));
+                slideView.setEnableStr(getString(R.string.stop_use));
             }
         } else {
             if (isMoneyPay) {
                 tv_shower_payed.setText("已预付" + (Double) tv_water_right.getTag(R.id.money_pay_amount) + "元");
                 trade_tip.setText(getString(R.string.balance_trade_tip));
                 bt_stop_shower.setText("结算找零");
+                bt_stop_shower.setVisibility(View.GONE);
+                slideView.setVisibility(View.VISIBLE);
+                slideView.setDisableStr(getString(R.string.slide_to_settlement));
+                slideView.setEnableStr(getString(R.string.settlement));
             } else {
                 tv_shower_payed.setText("已使用" + tv_water_right.getText().toString());
                 trade_tip.setText(getString(R.string.bonus_trade_tip));
                 bt_stop_shower.setText("结束用水");
+                bt_stop_shower.setVisibility(View.GONE);
+                slideView.setVisibility(View.VISIBLE);
+                slideView.setDisableStr(getString(R.string.slide_to_stop_use));
+                slideView.setEnableStr(getString(R.string.stop_use));
             }
         }
 

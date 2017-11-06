@@ -158,4 +158,8 @@
     <string name="confirm_recharge">确认充值</string>
     <string name="publish_time">发布时间：%1$s/%2$s</string>
     <string name="time_format">%1$s/%2$s</string>
+    <string name="settlement">正在结算找零，请稍候...</string>
+    <string name="slide_to_settlement">滑动到最右侧，结算找零</string>
+    <string name="slide_to_stop_use">滑动到最右侧，结束用水</string>
+    <string name="stop_use">正在结束用水，请稍候...</string>
 </resources>

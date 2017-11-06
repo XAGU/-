@@ -304,6 +304,22 @@
             android:layout_width="12dp"
             android:layout_height="2dp"/>
 
+        <com.xiaolian.amigo.ui.widget.swipebutton.SlideUnlockView
+            android:background="@color/colorDarke"
+            app:slideEnableText="@string/settlement"
+            app:slideDisableText="@string/slide_to_settlement"
+            app:slideDisableUnlockBlockResource="@drawable/ic_swipe_disable"
+            app:slideEnabledUnlockBlockResource="@drawable/ic_swipe_enable"
+            app:slideUnlockBlockResource="@drawable/ic_swipe_moving"
+            android:visibility="gone"
+            android:layout_marginTop="21dp"
+            android:layout_marginLeft="21dp"
+            android:layout_marginRight="21dp"
+            android:layout_marginBottom="21dp"
+            android:id="@+id/slideView"
+            android:layout_width="match_parent"
+            android:layout_height="48dp" />
+
         <Button
             android:enabled="true"
             android:id="@+id/bt_stop_shower"

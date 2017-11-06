@@ -4,22 +4,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerview"
+    <com.xiaolian.amigo.ui.widget.swipebutton.SwipeButton
+        android:visibility="gone"
+        app:has_activate_state="true"
+        app:inner_text="滑动到最右侧，结算找零"
+        app:inner_text_color="#fff"
+        app:inner_text_background="@drawable/button_enable"
+        app:button_image_disabled="@drawable/ic_swipe_moving"
+        app:button_image_enabled="@drawable/ic_swipe_enable"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"/>
 
-    <TextView
+    <com.xiaolian.amigo.ui.widget.swipebutton.SlideUnlockView
+        android:background="@color/colorDarke"
+        android:id="@+id/slideView"
+        app:slideEnableText="@string/settlement"
+        app:slideDisableText="@string/slide_to_settlement"
+        app:slideDisableUnlockBlockResource="@drawable/ic_swipe_disable"
+        app:slideEnabledUnlockBlockResource="@drawable/ic_swipe_enable"
+        app:slideUnlockBlockResource="@drawable/ic_swipe_moving"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#689F38"
-        android:gravity="center"
-        android:padding="16dp"
-        android:layout_gravity="bottom"
-        android:textColor="@android:color/white"
-        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-        android:text="QuickReturn Footer"
-        app:layout_behavior="com.example.quickreturnbehavior.QuickReturnFooterBehavior"/>
+        android:layout_height="48dp" />
 
 </android.support.design.widget.CoordinatorLayout>
