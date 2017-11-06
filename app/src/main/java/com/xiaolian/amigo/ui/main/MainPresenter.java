@@ -79,7 +79,14 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
                     if (result.getData().getBonusAmount() != null) {
                         manager.setBonusAmount(result.getData().getBonusAmount());
                     }
-                    getMvpView().refreshProfile(result.getData());
+                    PersonalExtraInfoDTO dto = result.getData();
+                    if (manager.getLastRepairTime() < dto.getLastRepairTime()) {
+                        dto.setNeedShowDot(true);
+                    } else {
+                        dto.setNeedShowDot(false);
+                        dto.setLastRepairTime(null);
+                    }
+                    getMvpView().refreshProfile(dto);
                     getMvpView().showNoticeAmount(result.getData().getNotifyAmount());
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());

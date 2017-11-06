@@ -25,4 +25,5 @@ public interface IRepairPresenter<V extends IRepairView> extends IBasePresenter<
     // 刷新报修记录
     void requestRepairs(int page);
 
+    void setLastRepairTime(Long time);
 }

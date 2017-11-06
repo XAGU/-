@@ -36,6 +36,11 @@ public class ProfileAdaptor extends CommonAdapter<ProfileAdaptor.Item> {
         } else {
             holder.getView(R.id.tv_amount).setVisibility(View.GONE);
         }
+        if (item.isShowDot()) {
+            holder.getView(R.id.v_dot).setVisibility(View.VISIBLE);
+        } else {
+            holder.getView(R.id.v_dot).setVisibility(View.GONE);
+        }
     }
 
     @Data
@@ -51,5 +56,6 @@ public class ProfileAdaptor extends CommonAdapter<ProfileAdaptor.Item> {
         Class<? extends Activity> activityClazz;
         String balance = "0";
         int bonusAmount = 0;
+        boolean isShowDot = false;
     }
 }

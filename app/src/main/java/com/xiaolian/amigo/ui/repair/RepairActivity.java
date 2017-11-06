@@ -24,6 +24,7 @@ import butterknife.ButterKnife;
  * Created by caidong on 2017/9/18.
  */
 public class RepairActivity extends RepairBaseListActivity implements IRepairView {
+    public static final String INTENT_KEY_LAST_REPAIR_TIME = "intent_last_repair_time";
 
     @Inject
     IRepairPresenter<IRepairView> presenter;
@@ -31,10 +32,13 @@ public class RepairActivity extends RepairBaseListActivity implements IRepairVie
     List<RepairAdaptor.RepairWrapper> repairs = new ArrayList<>();
 
     RepairAdaptor adapter;
+    Long lastRepairTime;
 
     @Override
     protected void setUp() {
-
+        if (getIntent() != null) {
+            lastRepairTime = getIntent().getLongExtra(INTENT_KEY_LAST_REPAIR_TIME, -1);
+        }
     }
 
     @Override
@@ -82,5 +86,8 @@ public class RepairActivity extends RepairBaseListActivity implements IRepairVie
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
         presenter.onAttach(this);
+        if (lastRepairTime != null && lastRepairTime != -1) {
+            presenter.setLastRepairTime(lastRepairTime);
+        }
     }
 }

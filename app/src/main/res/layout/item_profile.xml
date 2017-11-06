@@ -41,9 +41,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <View
+            android:visibility="gone"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/imageRight"
+            android:layout_marginRight="5dp"
             android:id="@+id/v_dot"
             android:layout_width="6dp"
-            android:visibility="gone"
             android:layout_height="6dp"
             android:background="@drawable/dot_circle_red"
             />

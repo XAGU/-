@@ -4,6 +4,9 @@ import android.view.View;
 
 import com.xiaolian.amigo.R;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -15,6 +18,8 @@ import butterknife.OnClick;
  */
 public class RepairNavActivity extends RepairBaseActivity {
 
+    private Long lastRepairTime;
+
     @BindView(R.id.v_dot)
     View v_dot;
 
@@ -22,6 +27,9 @@ public class RepairNavActivity extends RepairBaseActivity {
     protected void initView() {
         setMainBackground(R.color.white);
         ButterKnife.bind(this);
+        if (lastRepairTime != null && lastRepairTime != -1) {
+            v_dot.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -36,7 +44,15 @@ public class RepairNavActivity extends RepairBaseActivity {
 
     @Override
     protected void setUp() {
+        if (getIntent() != null) {
+            lastRepairTime = getIntent().getLongExtra(RepairActivity.INTENT_KEY_LAST_REPAIR_TIME, -1);
+        }
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        v_dot.setVisibility(View.GONE);
     }
 
     // 申请报修
@@ -48,6 +64,11 @@ public class RepairNavActivity extends RepairBaseActivity {
     // 报修记录
     @OnClick(R.id.rl_repair_record_entry)
     void queryRepairs() {
-        startActivity(this, RepairActivity.class);
+        Map<String, Long> extraMap = new HashMap<String, Long>() {
+            {
+                put(RepairActivity.INTENT_KEY_LAST_REPAIR_TIME, lastRepairTime);
+            }
+        };
+        startActivity(this, RepairActivity.class, extraMap);
     }
 }

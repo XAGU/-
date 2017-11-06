@@ -41,6 +41,7 @@ import butterknife.ButterKnife;
 public class ProfileFragment2 extends Fragment {
     ProfileAdaptor.Item wallet = new ProfileAdaptor.Item(R.drawable.profile_wallet, "我的钱包", WalletActivity.class);
     ProfileAdaptor.Item bonus = new ProfileAdaptor.Item(R.drawable.profile_luck, "我的红包", BonusActivity.class);
+    ProfileAdaptor.Item repair = new ProfileAdaptor.Item(R.drawable.profile_repair, "设备报修", RepairNavActivity.class);
 
     List<ProfileAdaptor.Item> items = new ArrayList<ProfileAdaptor.Item>() {
         {
@@ -49,7 +50,7 @@ public class ProfileFragment2 extends Fragment {
             add(bonus);
             add(new ProfileAdaptor.Item(R.drawable.profile_order, "消费记录", OrderActivity.class));
             add(new ProfileAdaptor.Item(R.drawable.profile_favorite, "我收藏的设备", FavoriteActivity.class));
-            add(new ProfileAdaptor.Item(R.drawable.profile_repair, "设备报修", RepairNavActivity.class));
+            add(repair);
             add(new ProfileAdaptor.Item(R.drawable.profile_more, "更多", MoreActivity.class));
         }
     };
@@ -93,13 +94,17 @@ public class ProfileFragment2 extends Fragment {
     public void onEvent(PersonalExtraInfoDTO data) {
         wallet.setBalance(data.getBalance());
         bonus.setBonusAmount(data.getBonusAmount());
+        if (data.isNeedShowDot()) {
+            repair.setShowDot(true);
+        } else {
+            repair.setShowDot(false);
+        }
         if (recyclerView.getAdapter() == null) {
             recyclerView.setAdapter(adaptor);
         } else {
             adaptor.notifyDataSetChanged();
         }
     }
-
 
     @Override
     public void onHiddenChanged(boolean hidden) {

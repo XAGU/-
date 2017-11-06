@@ -16,12 +16,15 @@
 package com.xiaolian.amigo.ui.repair;
 
 
+import android.content.SharedPreferences;
+
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.manager.intf.IRepairDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.RepairReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.RepairRespDTO;
 import com.xiaolian.amigo.data.network.model.repair.Repair;
+import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.repair.adaptor.RepairAdaptor;
 import com.xiaolian.amigo.ui.repair.intf.IRepairPresenter;
@@ -38,11 +41,13 @@ public class RepairPresenter<V extends IRepairView> extends BasePresenter<V>
 
     private static final String TAG = RepairPresenter.class.getSimpleName();
     private IRepairDataManager manager;
+    private ISharedPreferencesHelp sharedPreferencesHelp;
 
     @Inject
-    public RepairPresenter(IRepairDataManager manager) {
+    public RepairPresenter(IRepairDataManager manager, ISharedPreferencesHelp sharedPreferencesHelp) {
         super();
         this.manager = manager;
+        this.sharedPreferencesHelp = sharedPreferencesHelp;
     }
 
 
@@ -84,5 +89,10 @@ public class RepairPresenter<V extends IRepairView> extends BasePresenter<V>
                 getMvpView().showErrorView();
             }
         });
+    }
+
+    @Override
+    public void setLastRepairTime(Long time) {
+        sharedPreferencesHelp.setLastRepairTime(time);
     }
 }

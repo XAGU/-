@@ -40,6 +40,7 @@ import com.xiaolian.amigo.ui.main.update.IVersionModel;
 import com.xiaolian.amigo.ui.main.update.IntentKey;
 import com.xiaolian.amigo.ui.main.update.UpdateActivity;
 import com.xiaolian.amigo.ui.notice.NoticeListActivity;
+import com.xiaolian.amigo.ui.repair.RepairActivity;
 import com.xiaolian.amigo.ui.user.EditDormitoryActivity;
 import com.xiaolian.amigo.ui.user.EditProfileActivity;
 import com.xiaolian.amigo.ui.wallet.PrepayActivity;
@@ -55,7 +56,9 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -127,6 +130,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     private int heaterOrderSize;
     private int dispenserOrderSize;
     private PrepayDialog prepayDialog;
+    private Long lastRepairTime;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -642,6 +646,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public void refreshProfile(PersonalExtraInfoDTO data) {
+        lastRepairTime = data.getLastRepairTime();
         presenter.setBalance(data.getBalance());
         presenter.setBonusAmount(data.getBonusAmount());
         EventBus.getDefault().post(data);
@@ -709,7 +714,12 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         if (TextUtils.isEmpty(presenter.getToken())) {
             startActivity(new Intent(this, LoginActivity.class));
         } else {
-            super.startActivity(activity, clazz);
+            Map<String, Long> extraMap = new HashMap<String, Long>() {
+                {
+                    put(RepairActivity.INTENT_KEY_LAST_REPAIR_TIME, lastRepairTime);
+                }
+            };
+            super.startActivity(activity, clazz, extraMap);
         }
     }
 
