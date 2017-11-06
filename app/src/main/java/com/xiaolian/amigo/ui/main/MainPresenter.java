@@ -227,5 +227,15 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
         manager.doneMainGuide();
     }
 
+    @Override
+    public void setLastRepairTime(Long time) {
+        manager.setLastRepairTime(time);
+    }
+
+    @Override
+    public Long getLastRepairTime() {
+        return manager.getLastRepairTime();
+    }
+
 
 }

@@ -14,7 +14,7 @@ import lombok.Data;
 @Data
 public class PersonalExtraInfoDTO {
     private String balance;
-    private List<String> banners;
+    private List<BannerDTO> banners;
     private Integer bonusAmount;
     private Integer notifyAmount;
     private Integer prepay;

@@ -245,6 +245,16 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     }
 
     @Override
+    public void setLastRepairTime(Long time) {
+        mSharedPreferences.edit().putLong(PREF_LAST_VIEW_REPAIR, time).apply();
+    }
+
+    @Override
+    public Long getLastRepairTime() {
+        return mSharedPreferences.getLong(PREF_LAST_VIEW_REPAIR, 0);
+    }
+
+    @Override
     public void logout() {
         mSharedPreferences.edit().clear().apply();
         tokenHolder = null;

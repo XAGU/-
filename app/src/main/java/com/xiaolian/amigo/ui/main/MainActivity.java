@@ -26,6 +26,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
+import com.xiaolian.amigo.data.network.model.dto.response.BannerDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.DeviceCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
@@ -515,7 +516,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     }
 
     @Override
-    public void showBanners(List<String> banners) {
+    public void showBanners(List<BannerDTO> banners) {
         Log.d(TAG, "showBanners");
         hasBanners = true;
         EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.BANNER,

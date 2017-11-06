@@ -49,4 +49,7 @@ public interface IMainDataManager extends IMainApi {
     boolean isMainGuideDone();
 
     void doneMainGuide();
+
+    void setLastRepairTime(Long time);
+    Long getLastRepairTime();
 }

@@ -2,6 +2,7 @@ package com.xiaolian.amigo.ui.main.adaptor;
 
 import android.content.Context;
 
+import com.xiaolian.amigo.data.network.model.dto.response.BannerDTO;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class HomeAdaptor extends MultiItemTypeAdapter<HomeAdaptor.ItemWrapper> {
 
     @Data
     public static class ItemWrapper {
-        public ItemWrapper(int type, List<String> banners, String deviceName, String desc, String descColor, int res) {
+        public ItemWrapper(int type, List<BannerDTO> banners, String deviceName, String desc, String descColor, int res) {
 
             this.type = type;
             this.banners = banners;
@@ -32,7 +33,7 @@ public class HomeAdaptor extends MultiItemTypeAdapter<HomeAdaptor.ItemWrapper> {
         }
 
         int type;
-        List<String> banners;
+        List<BannerDTO> banners;
         String deviceName;
         String desc;
         String descColor;

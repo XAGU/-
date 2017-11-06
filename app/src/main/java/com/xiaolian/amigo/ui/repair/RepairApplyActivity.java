@@ -296,11 +296,6 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
             problems.addAll(problemWrappers);
         }
         adapter.notifyDataSetChanged();
-        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) bt_submit.getLayoutParams();
-        lp.addRule(RelativeLayout.BELOW, ll_content.getId());
-        bt_submit.setLayoutParams(lp);
-        rl_main.requestLayout();
-        getScrollView().requestLayout();
     }
 
     private void renderProblems() {

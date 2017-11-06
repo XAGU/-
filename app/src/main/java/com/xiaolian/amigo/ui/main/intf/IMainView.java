@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.main.intf;
 
 import com.xiaolian.amigo.data.enumeration.Device;
+import com.xiaolian.amigo.data.network.model.dto.response.BannerDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.DeviceCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.VersionDTO;
@@ -30,7 +31,7 @@ public interface IMainView extends IBaseView {
 
     void refreshNoticeAmount();
 
-    void showBanners(List<String> banners);
+    void showBanners(List<BannerDTO> banners);
 
     void showSchoolBiz(List<BriefSchoolBusiness> businesses);
 

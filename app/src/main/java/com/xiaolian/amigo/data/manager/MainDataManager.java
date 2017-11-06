@@ -129,6 +129,16 @@ public class MainDataManager implements IMainDataManager {
     }
 
     @Override
+    public void setLastRepairTime(Long time) {
+        sharedPreferencesHelp.setLastRepairTime(time);
+    }
+
+    @Override
+    public Long getLastRepairTime() {
+        return sharedPreferencesHelp.getLastRepairTime();
+    }
+
+    @Override
     public Observable<ApiResult<PersonalExtraInfoDTO>> getExtraInfo() {
         return mainApi.getExtraInfo();
     }

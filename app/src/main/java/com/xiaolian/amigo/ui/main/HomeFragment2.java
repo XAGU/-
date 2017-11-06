@@ -10,6 +10,7 @@ import android.support.v7.widget.SimpleItemAnimator;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
@@ -17,6 +18,7 @@ import android.view.animation.LayoutAnimationController;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.network.model.dto.response.BannerDTO;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
 import com.xiaolian.amigo.ui.base.aspect.SingleClick;
 import com.xiaolian.amigo.ui.main.adaptor.HomeAdaptor;
@@ -96,8 +98,12 @@ public class HomeFragment2 extends Fragment {
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), recyclerView,
                 new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
-                    public void onItemClick(View view, int position) {
+                    public void onItemClick(View view, int position, MotionEvent e) {
                         Log.d(TAG, "recycler view onItemClick " + position);
+                        if (items.get(position).getType() != 1) {
+                            view.dispatchTouchEvent(e);
+                            return;
+                        }
                         if (items.get(position).getType() == 1) {
                             disabledView = view;
                             view.setEnabled(false);
@@ -131,7 +137,7 @@ public class HomeFragment2 extends Fragment {
         super.onActivityCreated(savedInstanceState);
     }
 
-    public void onBannerEvent(List<String> banners) {
+    public void onBannerEvent(List<BannerDTO> banners) {
         if (items.get(items.size() - 1).getType() == 1) {
             items.add(new HomeAdaptor.ItemWrapper(2, banners, null, null, null, 0));
             adaptor.notifyDataSetChanged();
@@ -205,7 +211,7 @@ public class HomeFragment2 extends Fragment {
     public void onEvent(Event event) {
         switch (event.getType()) {
             case BANNER:
-                onBannerEvent((List<String>) event.getObject());
+                onBannerEvent((List<BannerDTO>) event.getObject());
                 break;
             case SCHOOL_BIZ:
                 onSchoolBizEvent((List<BriefSchoolBusiness>) event.getObject());
@@ -224,12 +230,12 @@ public class HomeFragment2 extends Fragment {
 
 
 
-    private boolean isBannersEqual(List<String> banners1, List<String> banners2) {
+    private boolean isBannersEqual(List<BannerDTO> banners1, List<BannerDTO> banners2) {
         if (banners1.size() != banners2.size()) {
             return false;
         }
         for (int i = 0; i < banners1.size(); i ++) {
-            if (!TextUtils.equals(banners1.get(i), banners2.get(i))) {
+            if (!TextUtils.equals(banners1.get(i).getImage(), banners2.get(i).getImage())) {
                 return false;
             }
         }

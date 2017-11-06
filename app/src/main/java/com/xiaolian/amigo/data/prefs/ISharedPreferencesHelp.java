@@ -60,31 +60,29 @@ public interface ISharedPreferencesHelp {
 
     Long getLastConnectTime();
 
+    // 更新提示
     Long getLastUpdateRemindTime();
-
     void setLastUpdateRemindTime();
 
+    // 上次选择的充值id
     void setLastWithdrawId(Long id);
-
     Long getLastWithdrawId();
 
+    // 上次选择的提现账户
     void setLastWithdrawName(String name);
-
     String getLastWithdrawName();
-
+    // 上次选择的提现金额
     String getLastRechargeAmount();
-
     void setLastRechargeAmount(String amount);
 
+    // 引导页相关
     void doneMainGuide();
-
     boolean isMainGuideDone();
-
     void doneHeaterGuide();
-
     boolean isHeaterGuideDone();
-
     void doneDispenserGuide();
-
     boolean isDispenserGuideDone();
+
+    void setLastRepairTime(Long time);
+    Long getLastRepairTime();
 }
