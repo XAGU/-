@@ -140,6 +140,11 @@ public class EditAvatarActivity extends UserBaseActivity implements IEditAvatarV
 
     @Override
     public void addAvatar(List<EditAvatarAdaptor.AvatarWrapper> avatar) {
+        for (EditAvatarAdaptor.AvatarWrapper wrapper : avatar) {
+            if (TextUtils.equals(wrapper.getAvatarUrl(), avatarUrl)) {
+                wrapper.setSelected(true);
+            }
+        }
         avatars.addAll(avatar);
         adaptor.notifyDataSetChanged();
     }

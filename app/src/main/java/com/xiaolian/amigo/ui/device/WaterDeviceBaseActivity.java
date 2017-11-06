@@ -348,6 +348,10 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     protected void setTempText(TextView tempText) {
     }
 
+    protected String getLocation() {
+        return location;
+    }
+
     protected abstract String setSubtitleString();
 
     protected void setSubtitle(@NonNull String titile) {

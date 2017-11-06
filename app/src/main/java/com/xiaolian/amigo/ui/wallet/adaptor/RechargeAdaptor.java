@@ -8,6 +8,7 @@ import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.List;
+import java.util.Locale;
 
 import lombok.Data;
 
@@ -54,7 +55,8 @@ public class RechargeAdaptor extends MultiItemTypeAdapter<RechargeAdaptor.Rechar
             if (rechargeDenominations.getActivityType() != null) {
                 this.type = rechargeDenominations.getActivityType();
             }
-            this.main = rechargeDenominations.getAmount() + "元";
+            this.main = String.format(Locale.getDefault(),
+                    "%.0f元", rechargeDenominations.getAmount());
             if (this.type == 1) {
                 this.sub = "售价" + rechargeDenominations.getValue() + "元";
             } else if (this.type == 2) {

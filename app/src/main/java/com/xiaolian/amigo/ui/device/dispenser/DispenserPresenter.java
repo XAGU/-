@@ -24,6 +24,7 @@ import javax.inject.Inject;
 public class DispenserPresenter<V extends IDispenserView> extends WaterDeviceBasePresenter<V>
         implements IDispenserPresenter<V> {
     private IFavoriteManager favoriteManager;
+    private ISharedPreferencesHelp sharedPreferencesHelp;
 
     @Inject
     public DispenserPresenter(IBleDataManager bleDataManager,
@@ -35,6 +36,16 @@ public class DispenserPresenter<V extends IDispenserView> extends WaterDeviceBas
                               IFavoriteManager favoriteManager) {
         super(bleDataManager, tradeDataManager, orderDataManager, walletDataManager, clientServiceDataManager, sharedPreferencesHelp);
         this.favoriteManager = favoriteManager;
+        this.sharedPreferencesHelp = sharedPreferencesHelp;
+    }
+
+    @Override
+    public void onAttach(V view) {
+        super.onAttach(view);
+        if (!sharedPreferencesHelp.isDispenserGuideDone()) {
+            getMvpView().showGuide();
+            sharedPreferencesHelp.doneDispenserGuide();
+        }
     }
 
     @Override

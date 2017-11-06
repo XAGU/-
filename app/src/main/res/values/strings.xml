@@ -162,4 +162,5 @@
     <string name="slide_to_settlement">滑动到最右侧，结算找零</string>
     <string name="slide_to_stop_use">滑动到最右侧，结束用水</string>
     <string name="stop_use">正在结束用水，请稍候...</string>
+    <string name="change_dispenser">更换饮水机</string>
 </resources>

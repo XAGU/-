@@ -41,4 +41,8 @@ public interface IMainPresenter<V extends IMainView> extends IBasePresenter<V> {
     void checkDeviceUsage(int type);
 
     void checkUpdate(Integer code, String versionNo);
+
+    boolean isMainGuideDone();
+
+    void doneMainGuide();
 }

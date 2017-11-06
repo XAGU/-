@@ -119,6 +119,16 @@ public class MainDataManager implements IMainDataManager {
     }
 
     @Override
+    public boolean isMainGuideDone() {
+        return sharedPreferencesHelp.isMainGuideDone();
+    }
+
+    @Override
+    public void doneMainGuide() {
+        sharedPreferencesHelp.doneMainGuide();
+    }
+
+    @Override
     public Observable<ApiResult<PersonalExtraInfoDTO>> getExtraInfo() {
         return mainApi.getExtraInfo();
     }

@@ -20,6 +20,8 @@ import javax.inject.Inject;
 public class HeaterPresenter<V extends IHeaterView> extends WaterDeviceBasePresenter<V>
         implements IHeaterPresenter<V> {
 
+    private ISharedPreferencesHelp sharedPreferencesHelp;
+
     @Inject
     HeaterPresenter(IBleDataManager bleDataManager,
                     ITradeDataManager tradeDataManager,
@@ -28,6 +30,16 @@ public class HeaterPresenter<V extends IHeaterView> extends WaterDeviceBasePrese
                     IClientServiceDataManager clientServiceDataManager,
                     ISharedPreferencesHelp sharedPreferencesHelp) {
         super(bleDataManager, tradeDataManager, orderDataManager, walletDataManager, clientServiceDataManager, sharedPreferencesHelp);
+        this.sharedPreferencesHelp = sharedPreferencesHelp;
+    }
+
+    @Override
+    public void onAttach(V view) {
+        super.onAttach(view);
+        if (!sharedPreferencesHelp.isHeaterGuideDone()) {
+            getMvpView().showGuide();
+            sharedPreferencesHelp.doneHeaterGuide();
+        }
     }
 
 }

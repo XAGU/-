@@ -61,9 +61,11 @@ public class RechargePresenter<V extends IRechargeView> extends BasePresenter<V>
                         for (RechargeDenominations rechargeDenominations : result.getData().getRechargeDenominations()) {
                             if (TextUtils.equals(lastAmount, String.format(Locale.getDefault(), "%.2f",
                                     rechargeDenominations.getAmount()))) {
-                                rechargeWrapper.add(new RechargeAdaptor.RechargeWrapper(rechargeDenominations, true));
+                                rechargeWrapper.add(
+                                        new RechargeAdaptor.RechargeWrapper(rechargeDenominations, true));
                             } else {
-                                rechargeWrapper.add(new RechargeAdaptor.RechargeWrapper(rechargeDenominations));
+                                rechargeWrapper.add(
+                                        new RechargeAdaptor.RechargeWrapper(rechargeDenominations));
                             }
                         }
                         getMvpView().addMore(rechargeWrapper);

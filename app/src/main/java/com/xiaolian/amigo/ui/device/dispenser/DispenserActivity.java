@@ -11,6 +11,7 @@ import com.xiaolian.amigo.data.network.model.device.ScanDeviceGroup;
 import com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IDispenserPresenter;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IDispenserView;
+import com.xiaolian.amigo.ui.widget.dialog.GuideDialog;
 
 import java.util.List;
 
@@ -59,7 +60,7 @@ public class DispenserActivity extends WaterDeviceBaseActivity<IDispenserPresent
 
     @Override
     protected String setSubtitleString() {
-        return "切换饮水机";
+        return getString(R.string.change_dispenser);
     }
 
     @Override
@@ -130,5 +131,13 @@ public class DispenserActivity extends WaterDeviceBaseActivity<IDispenserPresent
     public void setUnFavoriteIcon() {
         isFavor = false;
         setTopRightIcon(R.drawable.uncollected);
+    }
+
+    @Override
+    public void showGuide() {
+        // 显示引导页
+        GuideDialog guideDialog = new GuideDialog(this, GuideDialog.TYPE_DISPENER);
+        guideDialog.setLocation(getLocation());
+        guideDialog.show();
     }
 }

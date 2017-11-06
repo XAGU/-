@@ -20,4 +20,6 @@ public interface IWaterDeviceBaseView extends IDeviceView {
 
     // 打电话给客服
     void showCsCallDialog(String tel);
+
+    void showGuide();
 }

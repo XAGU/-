@@ -75,4 +75,16 @@ public interface ISharedPreferencesHelp {
     String getLastRechargeAmount();
 
     void setLastRechargeAmount(String amount);
+
+    void doneMainGuide();
+
+    boolean isMainGuideDone();
+
+    void doneHeaterGuide();
+
+    boolean isHeaterGuideDone();
+
+    void doneDispenserGuide();
+
+    boolean isDispenserGuideDone();
 }

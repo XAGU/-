@@ -2,14 +2,12 @@ package com.xiaolian.amigo.data.prefs;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.provider.Settings;
 import android.text.TextUtils;
 
 import com.xiaolian.amigo.data.network.model.user.User;
 import com.xiaolian.amigo.di.ApplicationContext;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 /**
  * SharedPreferencesHelp实现类
@@ -38,6 +36,11 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     private static final String PREF_LAST_WITHDRAW_ID = "PREF_LAST_WITHDRAW_ID";
     private static final String PREF_LAST_WITHDRAW_NAME = "PREF_LAST_WITHDRAW_NAME";
     private static final String PREF_LAST_RECHARGE_AMOUNT = "PREF_LAST_RECHARGE_AMOUNT";
+    /************* 引导页相关 *******************/
+    private static final String PREF_GUIDE_NAME = "PREF_GUIDE_NAME";
+    private static final String PREF_GUIDE_MAIN = "PREF_GUIDE_MAIN";
+    private static final String PREF_GUIDE_HEATER = "PREF_GUIDE_HEATER";
+    private static final String PREF_GUIDE_DISPENSER = "PREF_GUIDE_DISPENSER";
 
     private String tokenHolder;
     private String deviceTokenHolder;
@@ -48,10 +51,12 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     private String balance = "";
 
     private final SharedPreferences mSharedPreferences;
+    private final SharedPreferences mGuideSharedPreferences;
 
     @Inject
     public SharedPreferencesHelp(@ApplicationContext Context context) {
         mSharedPreferences = context.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
+        mGuideSharedPreferences = context.getSharedPreferences(PREF_GUIDE_NAME, Context.MODE_PRIVATE);
     }
 
     @Override
@@ -207,6 +212,36 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     @Override
     public void setLastRechargeAmount(String amount) {
         mSharedPreferences.edit().putString(PREF_LAST_RECHARGE_AMOUNT, amount).apply();
+    }
+
+    @Override
+    public void doneMainGuide() {
+        mGuideSharedPreferences.edit().putBoolean(PREF_GUIDE_MAIN, true).apply();
+    }
+
+    @Override
+    public boolean isMainGuideDone() {
+        return mGuideSharedPreferences.getBoolean(PREF_GUIDE_MAIN, false);
+    }
+
+    @Override
+    public void doneHeaterGuide() {
+        mGuideSharedPreferences.edit().putBoolean(PREF_GUIDE_HEATER, true).apply();
+    }
+
+    @Override
+    public boolean isHeaterGuideDone() {
+        return mGuideSharedPreferences.getBoolean(PREF_GUIDE_HEATER, false);
+    }
+
+    @Override
+    public void doneDispenserGuide() {
+        mGuideSharedPreferences.edit().putBoolean(PREF_GUIDE_DISPENSER, true).apply();
+    }
+
+    @Override
+    public boolean isDispenserGuideDone() {
+        return mGuideSharedPreferences.getBoolean(PREF_GUIDE_DISPENSER, false);
     }
 
     @Override

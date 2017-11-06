@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="42dp">
+
+        <TextView
+            android:id="@+id/tv_device_title"
+            style="@style/Device_ToolBar_Text"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:paddingBottom="5dp"
+            />
+
+        <View
+            android:layout_width="103dp"
+            android:layout_height="1px"
+            android:layout_below="@id/tv_device_title"
+            android:layout_centerHorizontal="true"
+            android:background="@color/white" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_sub_title"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:text="切换宿舍"
+        android:textColor="@color/white"
+        android:textSize="12sp"/>
+    <ImageView
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="21dp"
+        android:src="@drawable/ic_guide_heater_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <ImageView
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/iv_button"
+        android:layout_marginTop="47dp"
+        android:src="@drawable/ic_guide_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</LinearLayout>

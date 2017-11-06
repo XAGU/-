@@ -43,6 +43,7 @@ import com.xiaolian.amigo.ui.user.EditDormitoryActivity;
 import com.xiaolian.amigo.ui.user.EditProfileActivity;
 import com.xiaolian.amigo.ui.wallet.PrepayActivity;
 import com.xiaolian.amigo.ui.widget.dialog.AvailabilityDialog;
+import com.xiaolian.amigo.ui.widget.dialog.GuideDialog;
 import com.xiaolian.amigo.ui.widget.dialog.NoticeAlertDialog;
 import com.xiaolian.amigo.ui.widget.dialog.PrepayDialog;
 import com.xiaolian.amigo.util.AppUtils;
@@ -256,6 +257,12 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
                 return;
+            }
+            if (!presenter.isMainGuideDone()) {
+                // 显示引导页
+                GuideDialog guideDialog = new GuideDialog(this, GuideDialog.TYPE_MAIN);
+                guideDialog.show();
+                presenter.doneMainGuide();
             }
             if (profileFragment == null) {
                 profileFragment = new ProfileFragment2();
