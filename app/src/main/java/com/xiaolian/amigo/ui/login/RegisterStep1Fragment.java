@@ -58,6 +58,7 @@ public class RegisterStep1Fragment extends Fragment {
         if (getActivity() instanceof LoginActivity) {
             ((LoginActivity) getActivity()).sendVerificationCode(et_mobile.getText().toString());
         }
+        et_verification_code.requestFocus();
     }
 
     @BindView(R.id.et_verification_code)
