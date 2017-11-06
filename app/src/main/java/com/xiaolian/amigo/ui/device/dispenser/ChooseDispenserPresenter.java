@@ -68,9 +68,10 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
         addObserver(favoriteManager.queryFavorites(reqDTO), new NetworkObserver<ApiResult<ScanDeviceRespDTO>>(false) {
             @Override
             public void onReady(ApiResult<ScanDeviceRespDTO> result) {
-                if (getListStatus()) {
+                if (!getListStatus()) {
                     return;
                 }
+                getMvpView().completeRefresh();
                 getMvpView().hideEmptyView();
                 getMvpView().hideErrorView();
                 if (null == result.getError()) {

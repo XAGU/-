@@ -83,7 +83,11 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
         refreshLayout.setOnRefreshLoadmoreListener(new OnRefreshLoadmoreListener() {
             @Override
             public void onRefresh(com.scwang.smartrefresh.layout.api.RefreshLayout refreshlayout) {
-                presenter.onLoad();
+                if (listStatus) {
+                    presenter.requestFavorites();
+                } else {
+                    presenter.onLoad();
+                }
             }
 
             @Override
@@ -121,13 +125,15 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
     private void onNearbyClick() {
         if (listStatus) {
             switchListStatus();
+            presenter.setListStatus(false);
             this.items.clear();
+            hideEmptyView();
+            hideErrorView();
             if (nearbyItems.isEmpty()) {
-                presenter.onLoad();
+//                presenter.onLoad();
+                refreshLayout.autoRefresh(0);
                 adaptor.notifyDataSetChanged();
             } else {
-                hideEmptyView();
-                hideErrorView();
                 this.items.addAll(nearbyItems);
                 adaptor.notifyDataSetChanged();
             }
@@ -137,6 +143,7 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
     private void onFavoriteClick() {
         if (!listStatus) {
             switchListStatus();
+            presenter.setListStatus(true);
             this.items.clear();
             if (favoriteItems.isEmpty()) {
                 presenter.requestFavorites();
@@ -168,7 +175,7 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
 
     @Override
     public void addMore(List<ChooseDispenserAdaptor.DispenserWrapper> wrappers) {
-        if (wrappers.isEmpty()) {
+        if (wrappers.isEmpty() && !listStatus) {
             return;
         }
         items.addAll(wrappers);
