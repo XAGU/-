@@ -50,6 +50,8 @@ public class EditAvatarActivity extends UserBaseActivity implements IEditAvatarV
 
     EditAvatarAdaptor adaptor;
     private String avatarUrl;
+    private MultiItemTypeAdapter.OnItemClickListener itemClickListener;
+    public int lastSelectedPosition = -1;
 
     @Override
     protected void initView() {
@@ -71,8 +73,7 @@ public class EditAvatarActivity extends UserBaseActivity implements IEditAvatarV
         }
 
         adaptor = new EditAvatarAdaptor(this, R.layout.item_avatar, avatars);
-        adaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
-            int lastSelectedPosition = -1;
+        itemClickListener = new MultiItemTypeAdapter.OnItemClickListener() {
 
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
@@ -98,7 +99,8 @@ public class EditAvatarActivity extends UserBaseActivity implements IEditAvatarV
             public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
                 return false;
             }
-        });
+        };
+        adaptor.setOnItemClickListener(itemClickListener);
         recyclerView.addItemDecoration(new GridSpacesItemDecoration(3, ScreenUtils.dpToPxInt(this, 21), false));
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
         recyclerView.setAdapter(adaptor);
@@ -140,6 +142,12 @@ public class EditAvatarActivity extends UserBaseActivity implements IEditAvatarV
 
     @Override
     public void addAvatar(List<EditAvatarAdaptor.AvatarWrapper> avatar) {
+        for (int i = 0; i < avatar.size(); i++) {
+            if (TextUtils.equals(avatar.get(i).getAvatarUrl(), avatarUrl)) {
+                avatar.get(i).setSelected(true);
+                lastSelectedPosition = i;
+            }
+        }
         for (EditAvatarAdaptor.AvatarWrapper wrapper : avatar) {
             if (TextUtils.equals(wrapper.getAvatarUrl(), avatarUrl)) {
                 wrapper.setSelected(true);

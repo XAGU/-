@@ -80,7 +80,7 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
                         manager.setBonusAmount(result.getData().getBonusAmount());
                     }
                     PersonalExtraInfoDTO dto = result.getData();
-                    if (manager.getLastRepairTime() < dto.getLastRepairTime()) {
+                    if (dto.getLastRepairTime() != null && manager.getLastRepairTime()  < dto.getLastRepairTime()) {
                         dto.setNeedShowDot(true);
                     } else {
                         dto.setNeedShowDot(false);
