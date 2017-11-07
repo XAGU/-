@@ -227,12 +227,12 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         presenter.getNoticeAmount();
         presenter.getSchoolBusiness();
         if (!presenter.isLogin()) {
+            showNoticeAmount(0);
             Log.d(TAG, "onResume: not login");
             tv_nickName.setText("登录／注册");
             tv_schoolName.setText("登录以后才能使用哦");
             iv_avatar.setImageResource(R.drawable.ic_picture_error);
         } else {
-            showNoticeAmount(0);
             Log.d(TAG, "onResume: login");
             // 设置昵称
             tv_nickName.setText(presenter.getUserInfo().getNickName());
@@ -391,7 +391,11 @@ public class MainActivity extends MainBaseActivity implements IMainView {
      */
     @OnClick(R.id.iv_notice)
     void gotoNoticeList() {
-        startActivity(new Intent(this, NoticeListActivity.class));
+        if (presenter.isLogin()) {
+            startActivity(new Intent(this, NoticeListActivity.class));
+        } else {
+            gotoLoginView();
+        }
     }
 
     /**
