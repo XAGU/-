@@ -108,7 +108,8 @@ public final class CommonUtil {
      */
     public static String stampToDate(Long s) {
         String res;
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",
+                                                                    Locale.getDefault());
         Date date = new Date(s);
         res = simpleDateFormat.format(date);
         return res;

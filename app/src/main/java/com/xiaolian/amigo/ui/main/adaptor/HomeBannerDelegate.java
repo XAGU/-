@@ -45,7 +45,7 @@ public class HomeBannerDelegate implements ItemViewDelegate<HomeAdaptor.ItemWrap
 
     @Override
     public void convert(ViewHolder holder, HomeAdaptor.ItemWrapper itemWrapper, int position) {
-        Banner banner = (Banner) holder.getView(R.id.banner);
+        Banner banner = holder.getView(R.id.banner);
         banner.setImageLoader(new GlideImageLoader());
         List<String> images = new ArrayList<>();
         for (BannerDTO dto : itemWrapper.getBanners()) {

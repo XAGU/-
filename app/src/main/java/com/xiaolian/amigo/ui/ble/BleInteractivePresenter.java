@@ -27,6 +27,7 @@ import rx.subjects.PublishSubject;
 import static com.trello.rxlifecycle.android.ActivityEvent.PAUSE;
 
 /**
+ *
  * Created by caidong on 2017/9/22.
  */
 public class BleInteractivePresenter<V extends IBleInteractiveView> extends BasePresenter<V>

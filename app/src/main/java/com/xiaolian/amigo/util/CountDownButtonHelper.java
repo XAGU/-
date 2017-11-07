@@ -83,7 +83,7 @@ public class CountDownButtonHelper {
      *
      */
     public interface OnFinishListener {
-        public void finish();
+        void finish();
     }
 
     public void cancel() {

@@ -737,7 +737,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             }
         } else {
             if (isMoneyPay) {
-                tv_shower_payed.setText("已预付" + (Double) tv_water_right.getTag(R.id.money_pay_amount) + "元");
+                tv_shower_payed.setText("已预付" + tv_water_right.getTag(R.id.money_pay_amount) + "元");
                 trade_tip.setText(getString(R.string.balance_trade_tip));
                 bt_stop_shower.setText("结算找零");
                 bt_stop_shower.setVisibility(View.GONE);

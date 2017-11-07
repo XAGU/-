@@ -92,7 +92,7 @@ public class SearchDialog extends Dialog implements TextWatcher {
         // 判断如果用户输入的是搜索键
         if (actionId == EditorInfo.IME_ACTION_SEARCH) {
 //            this.dismiss();
-            InputMethodManager imm = (InputMethodManager) context.getSystemService(context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
             if (listener != null) {
                 listener.onSearch(et_search_content.getText().toString());

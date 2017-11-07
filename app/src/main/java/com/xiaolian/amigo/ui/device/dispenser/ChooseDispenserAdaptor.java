@@ -113,14 +113,14 @@ public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenser
                     mData.get(lastExpandPosition).setExpanded(false);
                 }
                 boolean expand = false;
-                if (lastExpandPosition == position) {
+                if (lastExpandPosition == holder.getAdapterPosition()) {
                     expand = false;
-                    mData.get(position).setExpanded(false);
+                    mData.get(holder.getAdapterPosition()).setExpanded(false);
                     lastExpandPosition = -1;
                 } else {
                     expand = true;
-                    mData.get(position).setExpanded(true);
-                    lastExpandPosition = position;
+                    mData.get(holder.getAdapterPosition()).setExpanded(true);
+                    lastExpandPosition = holder.getAdapterPosition();
                 }
                 ObjectAnimator anim =
                         ObjectAnimator.ofFloat(holder.iv_arrow,
@@ -133,7 +133,7 @@ public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenser
         if (dispenserWrapper.isExpanded()) {
             holder.v_divide.setVisibility(View.VISIBLE);
             holder.rl_bottom.setVisibility(View.VISIBLE);
-            lastExpandPosition = position;
+            lastExpandPosition = holder.getAdapterPosition();
         } else {
             if (holder.rl_bottom.getVisibility() == View.VISIBLE) {
                 ObjectAnimator anim =

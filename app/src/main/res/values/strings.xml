@@ -165,4 +165,20 @@
     <string name="change_dispenser">更换饮水机</string>
     <string name="current_temperature_colon">当前水温：%1$s</string>
     <string name="change_school_tip">更换学校后所有信息将清空，且需要重新登录</string>
+    <string name="please_enter_exchange_code">请输入兑换码</string>
+    <string name="i_know">朕知道了</string>
+    <string name="choose_school_tip">PS:当前仅支持可选学校，更多学校敬请期待</string>
+    <string name="where_the_building">所在楼栋</string>
+    <string name="where_the_floor">所在楼层</string>
+    <string name="location_detail">具体位置</string>
+    <string name="order_bills">消费账单</string>
+    <string name="i_want_complaint">我要投诉</string>
+    <string name="use_time">使用时间</string>
+    <string name="device_location">设备位置</string>
+    <string name="order_number">订单号</string>
+    <string name="copy">复制</string>
+    <string name="pay_way">支付方式</string>
+    <string name="publish_found">招领发布</string>
+    <string name="publish_lost">失物发布</string>
+    <string name="real_bill">实际消费</string>
 </resources>

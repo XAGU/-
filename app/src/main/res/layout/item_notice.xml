@@ -17,8 +17,6 @@
             android:layout_height="20dp" />
         <TextView
             android:layout_gravity="center"
-            android:layout_toRightOf="@id/iv_image"
-            android:layout_toEndOf="@id/iv_image"
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
             tool:text="紧急通知"

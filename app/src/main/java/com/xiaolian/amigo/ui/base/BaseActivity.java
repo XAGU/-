@@ -16,6 +16,7 @@
 package com.xiaolian.amigo.ui.base;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
@@ -339,7 +340,7 @@ public abstract class BaseActivity extends SwipeBackActivity
             };
         }
         LayoutInflater inflater = getLayoutInflater();
-        View layout = inflater.inflate(R.layout.view_toast, null, false);
+        @SuppressLint("InflateParams") View layout = inflater.inflate(R.layout.view_toast, null, false);
         TextView tv_content = (TextView) layout.findViewById(R.id.tv_content);
         tv_content.setText(message);
         toast.setView(layout);
@@ -371,7 +372,7 @@ public abstract class BaseActivity extends SwipeBackActivity
             };
         }
         LayoutInflater inflater = getLayoutInflater();
-        View layout = inflater.inflate(R.layout.view_toast, null, false);
+        @SuppressLint("InflateParams") View layout = inflater.inflate(R.layout.view_toast, null, false);
         TextView tv_content = (TextView) layout.findViewById(R.id.tv_content);
         tv_content.setBackgroundColor(ContextCompat.getColor(this, R.color.colorFullRed));
         tv_content.setText(message);

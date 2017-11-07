@@ -15,7 +15,6 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dip"
-            android:layout_centerVertical="true"
             android:background="#eee" />
 
         <RelativeLayout
@@ -54,7 +53,6 @@
             android:id="@+id/v_divide"
             android:layout_width="match_parent"
             android:layout_height="1dip"
-            android:layout_centerVertical="true"
             android:background="#eee"
             android:visibility="gone" />
 
@@ -85,7 +83,6 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dip"
-            android:layout_centerVertical="true"
             android:background="#eee" />
 
         <LinearLayout
@@ -97,7 +94,6 @@
                 style="@style/ContentText_main"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:layout_gravity="center_vertical"
                 android:text="添加图片：" />
 
@@ -144,7 +140,6 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dip"
-            android:layout_centerVertical="true"
             android:background="#eee" />
 
         <LinearLayout
@@ -162,7 +157,6 @@
                 style="@style/ContentText_main"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:layout_gravity="center_vertical"
                 android:text="联系电话：" />
 
@@ -183,7 +177,6 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dip"
-            android:layout_centerVertical="true"
             android:background="#eee" />
 
         <EditText
@@ -214,7 +207,6 @@
         <Button
             android:id="@+id/bt_submit"
             style="@style/Button"
-            android:layout_above="@id/v_holder"
             android:layout_marginTop="14dp"
             android:background="@drawable/button_disable"
             android:enabled="true"
@@ -224,7 +216,7 @@
             android:id="@+id/v_holder"
             android:layout_width="match_parent"
             android:layout_height="@dimen/mainMarginLeftRight"
-            android:layout_alignParentBottom="true" />
+            />
 
     </LinearLayout>
 

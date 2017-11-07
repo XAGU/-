@@ -1,10 +1,5 @@
 package com.xiaolian.amigo.ui.ble;
 
-/**
- * 测试BLE
- * <p>
- * Created by caidong on 2017/9/21.
- */
 
 import android.annotation.TargetApi;
 import android.os.Build;
@@ -32,6 +27,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+/**
+ * 测试BLE
+ * <p>
+ * Created by caidong on 2017/9/21.
+ */
 @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
 public class BleActivity extends BleBaseActivity implements IBleView {
 

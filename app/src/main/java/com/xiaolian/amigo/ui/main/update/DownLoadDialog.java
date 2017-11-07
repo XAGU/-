@@ -26,6 +26,7 @@ import com.xiaolian.amigo.util.AppUtils;
 import java.io.File;
 
 /**
+ * 下载
  * Created by adamzfc on 2017/3/29.
  */
 

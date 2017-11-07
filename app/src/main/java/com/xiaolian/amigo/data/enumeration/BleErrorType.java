@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.data.enumeration;
 
 /**
+ *
  * Created by caidong on 2017/10/12.
  */
 public enum BleErrorType {

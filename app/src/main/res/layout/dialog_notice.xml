@@ -63,7 +63,7 @@
 
     <Button
         android:id="@+id/bt_ok"
-        android:text="朕知道了"
+        android:text="@string/i_know"
         android:background="@drawable/button_oval_red"
         android:layout_marginBottom="29dp"
         android:textColor="#fff"

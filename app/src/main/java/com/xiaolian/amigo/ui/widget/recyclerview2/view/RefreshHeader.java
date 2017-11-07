@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.widget.recyclerview2.view;
 
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -50,9 +51,11 @@ public class RefreshHeader extends LinearLayout {
         initView();
     }
 
+    @SuppressLint("InflateParams")
     private void initView() {
         //初始化header布局
-        mContainer = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.recyclerview_header_layout, null);
+        mContainer = (LinearLayout) LayoutInflater.from(getContext())
+                .inflate(R.layout.recyclerview_header_layout, null);
         LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         lp.setMargins(0, 0, 0, 0);
         setLayoutParams(lp);

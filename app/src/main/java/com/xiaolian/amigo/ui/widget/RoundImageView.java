@@ -109,7 +109,7 @@ public class RoundImageView extends android.support.v7.widget.AppCompatImageView
         path.moveTo(getWidth(), roundHeight);
         path.lineTo(getWidth(), 0);
         path.lineTo(getWidth() - roundWidth, 0);
-        path.arcTo(new RectF(getWidth() - roundWidth * 2, 0, getWidth(), 0 + roundHeight * 2), -90, 90);
+        path.arcTo(new RectF(getWidth() - roundWidth * 2, 0, getWidth(), roundHeight * 2), -90, 90);
         path.close();
         canvas.drawPath(path, paint);
     }

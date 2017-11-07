@@ -95,7 +95,7 @@ public class AlbumViewPager extends ViewPager {
 
         @Override
         public void destroyItem(ViewGroup container, int arg1, Object object) {
-            ((ViewPager) container).removeView((View) object);
+            container.removeView((View) object);
         }
 
         @Override

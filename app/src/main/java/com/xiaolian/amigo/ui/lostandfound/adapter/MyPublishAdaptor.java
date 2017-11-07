@@ -95,7 +95,7 @@ public class MyPublishAdaptor extends CommonAdapter<LostAndFoundAdaptor.LostAndF
         }
 
         if (isShowIcon) {
-            ((ImageView)holder.getView(R.id.iv_icon)).setVisibility(View.VISIBLE);
+            holder.getView(R.id.iv_icon).setVisibility(View.VISIBLE);
             if (CommonUtil.equals(lostAndFoundWapper.getType(), 1)) {
                 // 失物
                 ((ImageView)holder.getView(R.id.iv_icon)).setImageResource(R.drawable.ic_lost);
@@ -103,7 +103,7 @@ public class MyPublishAdaptor extends CommonAdapter<LostAndFoundAdaptor.LostAndF
                 ((ImageView)holder.getView(R.id.iv_icon)).setImageResource(R.drawable.ic_found);
             }
         } else {
-            ((ImageView)holder.getView(R.id.iv_icon)).setVisibility(View.GONE);
+            holder.getView(R.id.iv_icon).setVisibility(View.GONE);
         }
     }
 

@@ -36,7 +36,6 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"/>
         <Button
-            android:layout_above="@id/v_holder"
             android:id="@+id/bt_submit"
             style="@style/SubmitButton"
             android:enabled="false"
@@ -45,7 +44,6 @@
 
         <View
             android:id="@+id/v_holder"
-            android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
             android:layout_height="@dimen/mainMarginLeftRight"/>
     </LinearLayout>

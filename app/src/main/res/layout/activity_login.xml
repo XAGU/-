@@ -54,9 +54,8 @@
         android:inputType="textPassword"
         android:ellipsize="start"
         android:maxLength="@integer/password_max_length"
-        android:maxLines="1"
         style="@style/EditTextLogin"
-        />
+        android:singleLine="true" />
 
     <TextView
         android:id="@+id/tv_password_retrieval_link"

@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.util.Random;
 
 /**
+ *
  * Created by caidong on 2017/9/28.
  */
 public class Agreement {

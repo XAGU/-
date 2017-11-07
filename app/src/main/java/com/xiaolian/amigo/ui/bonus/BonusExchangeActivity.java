@@ -53,7 +53,7 @@ public class BonusExchangeActivity extends BonusBaseActivity implements IBonusEx
     @OnClick(R.id.bt_submit)
     public void exchange() {
         if (TextUtils.isEmpty(et_changeCode.getText())) {
-            onError("请输入兑换码");
+            onError(getString(R.string.please_enter_exchange_code));
             return;
         }
         presenter.exchangeBonus(et_changeCode.getText().toString());

@@ -51,7 +51,7 @@ public class NoticeAdaptor extends CommonAdapter<NoticeAdaptor.NoticeWapper> {
             }
         }
 
-        TextView tv_type = (TextView) holder.getView(R.id.tv_type);
+        TextView tv_type = holder.getView(R.id.tv_type);
         if (CommonUtil.equals(noticeWapper.getReadStatus(), NoticeReadStatus.UNREAD.getType())) {
             // 未读
             tv_type.setCompoundDrawables(tv_type.getCompoundDrawables()[0],

@@ -91,7 +91,7 @@ public class EditAvatarActivity extends UserBaseActivity implements IEditAvatarV
                             .error(R.drawable.ic_picture_error)
                             .into(iv_current_avatar);
                 }
-                toggleSumbitBtnStatus();
+                toggleSubmitBtnStatus();
                 adaptor.notifyDataSetChanged();
             }
 
@@ -121,6 +121,7 @@ public class EditAvatarActivity extends UserBaseActivity implements IEditAvatarV
     @OnClick(R.id.iv_current_avatar)
     void setCustomAvatar() {
         getImage(imageUri -> {
+            // 在上次选择默认头像的情况下，这次选择自定义头像，则取消上次的选中状态
             if (lastSelectedPosition != -1) {
                 avatars.get(lastSelectedPosition).setSelected(false);
                 lastSelectedPosition = -1;
@@ -136,7 +137,7 @@ public class EditAvatarActivity extends UserBaseActivity implements IEditAvatarV
             avatarUrl = pictureUrl;
             Glide.with(this).load(pictureUrl).asBitmap().into(iv_current_avatar);
         }
-        toggleSumbitBtnStatus();
+        toggleSubmitBtnStatus();
     }
 
     @Override
@@ -171,7 +172,7 @@ public class EditAvatarActivity extends UserBaseActivity implements IEditAvatarV
     /**
      * 触发提交按钮状态更新
      */
-    public void toggleSumbitBtnStatus() {
+    public void toggleSubmitBtnStatus() {
         boolean condition = !TextUtils.isEmpty(avatarUrl);
         bt_submit.setEnabled(condition);
         bt_submit.getBackground().setAlpha(condition ? 255 : 100);

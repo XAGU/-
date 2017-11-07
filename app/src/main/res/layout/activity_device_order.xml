@@ -37,11 +37,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="21dp"
-                    android:text="消费账单" />
+                    android:text="@string/order_bills" />
 
                 <TextView
                     android:id="@+id/tv_complaint"
-                    android:text="我要投诉"
+                    android:text="@string/i_want_complaint"
                     android:textSize="14sp"
                     android:textColor="@color/colorDark2"
                     android:gravity="right"
@@ -67,7 +67,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
-                        android:text="使用时间" />
+                        android:text="@string/use_time" />
 
                     <TextView
                         android:id="@+id/tv_time"
@@ -82,7 +82,6 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dip"
-                    android:layout_centerVertical="true"
                     android:background="#eee" />
 
                 <RelativeLayout
@@ -96,7 +95,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
-                        android:text="设备位置" />
+                        android:text="@string/device_location" />
 
                     <TextView
                         android:layout_toRightOf="@id/tv_location_title"
@@ -115,7 +114,6 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dip"
-                    android:layout_centerVertical="true"
                     android:background="#eee" />
 
                 <RelativeLayout
@@ -128,11 +126,11 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
-                        android:text="订单号" />
+                        android:text="@string/order_number" />
 
                     <TextView
                         android:id="@+id/tv_copy"
-                        android:text="复制"
+                        android:text="@string/copy"
                         android:gravity="center"
                         android:textSize="11sp"
                         android:textStyle="bold"
@@ -165,7 +163,6 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dip"
-                    android:layout_centerVertical="true"
                     android:background="#eee" />
 
                 <RelativeLayout
@@ -178,7 +175,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
-                        android:text="支付方式" />
+                        android:text="@string/pay_way" />
 
                     <TextView
                         android:id="@+id/tv_pay_method"
@@ -227,7 +224,6 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dip"
-                    android:layout_centerVertical="true"
                     android:background="#eee" />
 
                 <RelativeLayout

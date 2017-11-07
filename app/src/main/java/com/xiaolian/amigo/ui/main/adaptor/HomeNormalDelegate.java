@@ -35,7 +35,7 @@ public class HomeNormalDelegate implements ItemViewDelegate<HomeAdaptor.ItemWrap
         } else {
             holder.itemView.setVisibility(View.GONE);
         }
-        ((RelativeLayout)holder.getView(R.id.rl_item)).setBackgroundResource(itemWrapper.getRes());
+        holder.getView(R.id.rl_item).setBackgroundResource(itemWrapper.getRes());
         holder.setText(R.id.tv_device_title, itemWrapper.getDeviceName());
         holder.setText(R.id.tv_desc, itemWrapper.getDesc());
         holder.setTextColor(R.id.tv_desc, Color.parseColor(itemWrapper.getDescColor()));
@@ -47,11 +47,11 @@ public class HomeNormalDelegate implements ItemViewDelegate<HomeAdaptor.ItemWrap
         }
         if (itemWrapper.isUsing()) {
             holder.setText(R.id.tv_device_title, "正在使用" + itemWrapper.getDeviceName());
-            ((DotFlashView)holder.getView(R.id.dfv_dot)).setVisibility(View.VISIBLE);
+            holder.getView(R.id.dfv_dot).setVisibility(View.VISIBLE);
             ((DotFlashView)holder.getView(R.id.dfv_dot)).startAnimation();
         } else {
             holder.setText(R.id.tv_device_title, itemWrapper.getDeviceName());
-            ((DotFlashView)holder.getView(R.id.dfv_dot)).setVisibility(View.GONE);
+            holder.getView(R.id.dfv_dot).setVisibility(View.GONE);
             ((DotFlashView)holder.getView(R.id.dfv_dot)).endAnimation();
         }
     }

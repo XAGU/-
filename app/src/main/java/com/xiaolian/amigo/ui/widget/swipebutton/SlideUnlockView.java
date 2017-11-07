@@ -30,7 +30,7 @@ public class SlideUnlockView extends View {
 
     // 解锁的监听
     public interface OnUnLockListener {
-        public void setUnLocked(boolean lock);
+        void setUnLocked(boolean lock);
     }
 
     // 滑块当前的状态
@@ -85,7 +85,6 @@ public class SlideUnlockView extends View {
             }
         }
 
-        ;
     };
 
     // 解锁的监听
@@ -148,7 +147,7 @@ public class SlideUnlockView extends View {
         // 在一开始的使用将背景图绘制出来
 //        canvas.drawBitmap(slideUnlockBackground, 0, 0, null);
         int unlockX = getMeasuredWidth() - blockWidth;
-        /**
+        /*
          * 判断当前状态
          */
         switch (currentState) {
@@ -298,10 +297,7 @@ public class SlideUnlockView extends View {
     public boolean isDownOnBlock(float x1, float x2, float y1, float y2) {
         float sqrt = (float) Math.sqrt(Math.abs(x1 - x2) * Math.abs(x1 - x2)
                 + Math.abs(y1 - y2) * Math.abs(y1 - y2));
-        if (sqrt <= blockWidth / 2) {
-            return true;
-        }
-        return false;
+        return sqrt <= blockWidth / 2;
     }
 
     /**
@@ -334,9 +330,6 @@ public class SlideUnlockView extends View {
 
     //判断手指是否在滑块的背景区域移动
     public boolean isOnBackground(int x, int y) {
-        if (x <= getMeasuredWidth() && y <= getMeasuredHeight()) {
-            return true;
-        }
-        return false;
+        return x <= getMeasuredWidth() && y <= getMeasuredHeight();
     }
 }

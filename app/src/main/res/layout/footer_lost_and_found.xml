@@ -27,7 +27,6 @@
         <View
             android:layout_width="1dp"
             android:layout_height="18dp"
-            android:layout_centerVertical="true"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="14dp"
             android:background="#fff" />
@@ -46,7 +45,6 @@
         <View
             android:layout_width="1dp"
             android:layout_height="18dp"
-            android:layout_centerVertical="true"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="14dp"
             android:background="#fff" />

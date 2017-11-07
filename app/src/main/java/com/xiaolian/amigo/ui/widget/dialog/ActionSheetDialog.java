@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.widget.dialog;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -53,7 +54,7 @@ public class ActionSheetDialog {
 
     public ActionSheetDialog builder() {
         // 获取Dialog布局
-        View view = LayoutInflater.from(context).inflate(
+        @SuppressLint("InflateParams") View view = LayoutInflater.from(context).inflate(
                 R.layout.view_actionsheet, null);
 
         // 设置Dialog最小宽度为屏幕宽度
@@ -129,23 +130,6 @@ public class ActionSheetDialog {
         return this;
     }
 
-    /**
-     *
-     * @param strItem
-     *            条目名称
-     * @param color
-     *            条目字体颜色，设置null则默认蓝色
-     * @param listener
-     * @return
-     */
-/*	public ActionSheetDialog addSheetItem(int iconResId,String strItem, SheetItemColor color,OnSheetItemClickListener listener) {
-		if (sheetItemList == null) {
-			sheetItemList = new ArrayList<SheetItem>();
-		}
-		sheetItemList.add(new SheetItem(context.getResources().getDrawable(iconResId),strItem, color, listener));
-		return this;
-	}*/
-
     public ActionSheetDialog addSheetItem(int iconResId, String strItem, SheetItemColor color, OnSheetItemClickListener listener) {
         if (sheetItemList == null) {
             sheetItemList = new ArrayList<SheetItem>();
@@ -167,7 +151,6 @@ public class ActionSheetDialog {
      * @param isInvalid 是否无效(默认false)
      * @param color 颜色
      * @param listener 事件
-     * @return
      */
     public ActionSheetDialog addSheetItem(String strItem, boolean isInvalid, SheetItemColor color, OnSheetItemClickListener listener) {
         if (sheetItemList == null) {
@@ -342,7 +325,7 @@ public class ActionSheetDialog {
             this.icon = icon;
         }
 
-        private SheetItemColor(String name) {
+        SheetItemColor(String name) {
             this.name = name;
         }
 
@@ -384,6 +367,7 @@ public class ActionSheetDialog {
             return 0;
         }
 
+        @SuppressLint("InflateParams")
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             ViewHolder holder;

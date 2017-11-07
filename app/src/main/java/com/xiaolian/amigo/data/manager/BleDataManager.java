@@ -23,6 +23,7 @@ import rx.Observable;
 import rx.subjects.PublishSubject;
 
 /**
+ *
  * Created by caidong on 2017/9/22.
  */
 public class BleDataManager implements IBleDataManager {

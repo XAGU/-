@@ -235,11 +235,7 @@ public class IRecyclerView extends RecyclerView {
     }
 
     private boolean isOnTop() {
-        if (mRefreshHeader.getParent() != null) {
-            return true;
-        } else {
-            return false;
-        }
+        return mRefreshHeader.getParent() != null;
     }
 
     public void setLoadingListener(LoadingListener listener) {
@@ -302,9 +298,7 @@ public class IRecyclerView extends RecyclerView {
      * @return
      */
     private boolean isReservedItemViewType(int itemType){
-        if(itemType == TYPE_REFRESH_HEADER || itemType == TYPE_FOOTER || sHeaderTypes.contains(itemType))
-            return true;
-        return false;
+        return itemType == TYPE_REFRESH_HEADER || itemType == TYPE_FOOTER || sHeaderTypes.contains(itemType);
     }
 
     /** adapter  */

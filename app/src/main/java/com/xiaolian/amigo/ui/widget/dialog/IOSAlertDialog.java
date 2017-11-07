@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.widget.dialog;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface.OnDismissListener;
@@ -55,7 +56,7 @@ public class IOSAlertDialog {
 
     public IOSAlertDialog builder() {
         // 获取Dialog布局
-        View view = LayoutInflater.from(context).inflate(R.layout.view_alertdialog, null);
+        @SuppressLint("InflateParams") View view = LayoutInflater.from(context).inflate(R.layout.view_alertdialog, null);
 
         // 获取自定义Dialog布局中的控件
         lLayout_bg = (LinearLayout) view.findViewById(R.id.lLayout_bg);

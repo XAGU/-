@@ -22,12 +22,11 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="21dp"
         android:layout_marginTop="24dp"
-        android:text="所在楼层" />
+        android:text="@string/where_the_floor" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dip"
-        android:layout_centerVertical="true"
         android:background="#eee" />
 
     <android.support.v7.widget.RecyclerView
@@ -38,7 +37,6 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dip"
-        android:layout_centerVertical="true"
         android:background="#eee" />
 
 </LinearLayout>

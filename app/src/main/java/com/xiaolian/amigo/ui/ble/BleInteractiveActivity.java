@@ -19,6 +19,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
+ *
  * Created by caidong on 2017/9/23.
  */
 public class BleInteractiveActivity extends BleBaseActivity implements IBleInteractiveView {

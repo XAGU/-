@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.base;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.net.http.SslError;
@@ -52,6 +53,7 @@ public class WebActivity extends BaseActivity {
         }
     };
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

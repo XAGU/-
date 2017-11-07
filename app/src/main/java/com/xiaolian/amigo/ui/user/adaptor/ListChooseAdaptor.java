@@ -59,28 +59,28 @@ public class ListChooseAdaptor extends RecyclerView.Adapter<ListChooseAdaptor.Vi
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
+    public void onBindViewHolder(ViewHolder holder, int position) {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mOnItemClickListener.onItemClick(v, position);
+                mOnItemClickListener.onItemClick(v, holder.getAdapterPosition());
                 if (lastTickPostion != -1) {
                     datas.get(lastTickPostion).tick = false;
                 }
-                datas.get(position).tick = true;
-                lastTickPostion = position;
+                datas.get(holder.getAdapterPosition()).tick = true;
+                lastTickPostion = holder.getAdapterPosition();
                 notifyDataSetChanged();
             }
         });
-        holder.tv_content.setText(datas.get(position).content);
-        if (datas.get(position).tick) {
+        holder.tv_content.setText(datas.get(holder.getAdapterPosition()).content);
+        if (datas.get(holder.getAdapterPosition()).tick) {
             holder.iv_tick.setVisibility(View.VISIBLE);
-            lastTickPostion = position;
+            lastTickPostion = holder.getAdapterPosition();
         } else {
             holder.iv_tick.setVisibility(View.GONE);
         }
         if (checkDeviceExist) {
-            if (datas.get(position).isDeviceExist()) {
+            if (datas.get(holder.getAdapterPosition()).isDeviceExist()) {
                 holder.tv_device_exist.setVisibility(View.GONE);
             } else {
                 holder.tv_device_exist.setVisibility(View.VISIBLE);

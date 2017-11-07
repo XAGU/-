@@ -10,7 +10,7 @@ import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.widget.ImageView;
 
-public class PhotoView extends ImageView implements IPhotoView {
+public class PhotoView extends android.support.v7.widget.AppCompatImageView implements IPhotoView {
 
     private PhotoViewAttacher mAttacher;
 

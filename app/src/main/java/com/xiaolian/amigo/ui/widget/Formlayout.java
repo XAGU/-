@@ -120,11 +120,7 @@ public class Formlayout extends LinearLayout {
 
         @Override
         public void onTextChanged(CharSequence text, int start, int before, int count) {
-            if (TextUtils.getTrimmedLength(text) > 0) {
-                editText.validated = true;
-            } else {
-                editText.validated = false;
-            }
+            editText.validated = TextUtils.getTrimmedLength(text) > 0;
 
             //可以想办法去掉循环，提高性能
             boolean allValidated = true;

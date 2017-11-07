@@ -61,7 +61,7 @@ public class LostAndFoundAdaptor extends CommonAdapter<LostAndFoundAdaptor.LostA
         }
 
         if (isShowIcon) {
-            ((ImageView)holder.getView(R.id.iv_icon)).setVisibility(View.VISIBLE);
+            holder.getView(R.id.iv_icon).setVisibility(View.VISIBLE);
             if (CommonUtil.equals(lostAndFoundWapper.getType(), 1)) {
                 // 失物
                 ((ImageView)holder.getView(R.id.iv_icon)).setImageResource(R.drawable.ic_lost);
@@ -69,7 +69,7 @@ public class LostAndFoundAdaptor extends CommonAdapter<LostAndFoundAdaptor.LostA
                 ((ImageView)holder.getView(R.id.iv_icon)).setImageResource(R.drawable.ic_found);
             }
         } else {
-            ((ImageView)holder.getView(R.id.iv_icon)).setVisibility(View.GONE);
+            holder.getView(R.id.iv_icon).setVisibility(View.GONE);
         }
     }
 
@@ -88,11 +88,7 @@ public class LostAndFoundAdaptor extends CommonAdapter<LostAndFoundAdaptor.LostA
             this.good = lostAndFound.getItemName();
             this.location = lostAndFound.getLocation();
             this.time = lostAndFound.getCreateTime();
-            if (null != lostAndFound.getImages() && lostAndFound.getImages().size() > 0) {
-                this.hasImage = true;
-            } else {
-                this.hasImage = false;
-            }
+            this.hasImage = null != lostAndFound.getImages() && lostAndFound.getImages().size() > 0;
             this.type = lostAndFound.getType();
         }
 

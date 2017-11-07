@@ -7,7 +7,7 @@
             android:scrollbars="none">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/colorBackgroundWhite"
         android:orientation="vertical"
         android:paddingBottom="@dimen/mainMarginLeftRight"
@@ -40,7 +40,6 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dip"
-                android:layout_centerVertical="true"
                 android:background="#eee" />
 
             <LinearLayout
@@ -53,7 +52,6 @@
                     style="@style/ContentText_main"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
                     android:text="标题：" />
 
@@ -75,7 +73,6 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dip"
-                android:layout_centerVertical="true"
                 android:background="#eee" />
 
             <LinearLayout
@@ -88,7 +85,6 @@
                     style="@style/ContentText_main"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
                     android:text="名称：" />
 
@@ -110,7 +106,6 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dip"
-                android:layout_centerVertical="true"
                 android:background="#eee" />
 
             <LinearLayout
@@ -123,7 +118,6 @@
                     style="@style/ContentText_main"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
                     android:text="地址：" />
 
@@ -145,7 +139,6 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dip"
-                android:layout_centerVertical="true"
                 android:background="#eee" />
 
             <LinearLayout
@@ -158,7 +151,6 @@
                     style="@style/ContentText_main"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
                     android:text="时间：" />
 
@@ -185,7 +177,6 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dip"
-                android:layout_centerVertical="true"
                 android:background="#eee" />
 
             <LinearLayout
@@ -197,7 +188,6 @@
                     style="@style/ContentText_main"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
                     android:text="添加图片：" />
 
@@ -246,7 +236,6 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dip"
-                android:layout_centerVertical="true"
                 android:background="#eee" />
 
             <LinearLayout
@@ -258,7 +247,6 @@
                     style="@style/ContentText_main"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
                     android:text="联系方式：" />
 
@@ -280,7 +268,6 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dip"
-                android:layout_centerVertical="true"
                 android:background="#eee" />
 
             <EditText

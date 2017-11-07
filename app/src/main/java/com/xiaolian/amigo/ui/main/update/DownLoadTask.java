@@ -20,6 +20,7 @@ import okio.Okio;
 import okio.Source;
 
 /**
+ * 下载线程
  * Created by adamzfc on 2017/3/29.
  */
 

@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.widget.recyclerview2.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -35,9 +36,11 @@ public class LoadMoreFooter extends LinearLayout{
         initView();
     }
 
+    @SuppressLint("InflateParams")
     private void initView() {
         // 将loadmore布局加载到这个View中
-        mContainer = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.load_more_footer,null);
+        mContainer = (LinearLayout) LayoutInflater.from(getContext())
+                .inflate(R.layout.load_more_footer,null);
         LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT);
         lp.setMargins(0,0,0,0);
         setLayoutParams(lp);

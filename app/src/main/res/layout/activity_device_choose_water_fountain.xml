@@ -46,12 +46,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:text="附近的饮水机" />
+                    android:text="@string/nearby_dispenser" />
                 
                 <View
                     android:id="@+id/v_divide"
-                    android:layout_width="3px"
-                    android:layout_height="42px"
+                    android:layout_width="1dp"
+                    android:layout_height="14dp"
+                    android:layout_centerVertical="true"
                     android:layout_marginLeft="14dp"
                     android:layout_toRightOf="@id/tv_recent_water_fountain"
                     android:background="#bbb"
@@ -66,7 +67,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="收藏的饮水机" />
+                    android:text="@string/favorite_dispenser" />
 
             </RelativeLayout>
         </LinearLayout>

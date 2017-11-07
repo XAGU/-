@@ -51,7 +51,7 @@ public class FavoriteAdaptor extends RecyclerView.Adapter<FavoriteAdaptor.ViewHo
             holder.tv_device.setText(Device.DISPENSER.getDesc());
             holder.tv_location.setText(wrapper.getLocation());
             holder.deviceId = wrapper.getId();
-            holder.index = position;
+            holder.index = holder.getAdapterPosition();
         }
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
