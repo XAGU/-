@@ -49,4 +49,6 @@ public interface IRepairApplyPresenter<V extends IRepairApplyView> extends IBase
      * 请求报修问题列表
      */
     void requestRepairProblems(int deviceType);
+
+    void setLastRepairTime(long l);
 }

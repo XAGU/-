@@ -88,6 +88,8 @@ public class RepairActivity extends RepairBaseListActivity implements IRepairVie
         presenter.onAttach(this);
         if (lastRepairTime != null && lastRepairTime != -1) {
             presenter.setLastRepairTime(lastRepairTime);
+        } else {
+            presenter.setLastRepairTime(System.currentTimeMillis());
         }
     }
 }

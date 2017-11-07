@@ -54,8 +54,6 @@ public class RepairProblemAdaptor extends CommonAdapter<RepairProblemAdaptor.Pro
         toggleButton(holder.getView(R.id.bt_problem), problemWrapper.isChoose());
     }
 
-
-
     private void toggleButton(Button button, boolean isChoose) {
         if (isChoose) {
             button.setTextColor(ContextCompat.getColor(context, R.color.problem_blue));

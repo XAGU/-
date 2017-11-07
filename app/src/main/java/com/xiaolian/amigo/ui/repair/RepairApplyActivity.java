@@ -249,6 +249,7 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
 
     @Override
     public void backToRepairNav() {
+        presenter.setLastRepairTime(System.currentTimeMillis());
         startActivity(this, RepairNavActivity.class);
     }
 
