@@ -27,7 +27,7 @@ import lombok.Data;
  */
 public class RepairProblemAdaptor extends CommonAdapter<RepairProblemAdaptor.ProblemWrapper> {
 
-    private int lastChoosePosition = -1;
+//    private int lastChoosePosition = -1;
     private Context context;
 
     public RepairProblemAdaptor(Context context, int layoutId, List<ProblemWrapper> datas) {
@@ -41,11 +41,12 @@ public class RepairProblemAdaptor extends CommonAdapter<RepairProblemAdaptor.Pro
         holder.getView(R.id.bt_problem).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (lastChoosePosition != -1) {
-                    getDatas().get(lastChoosePosition).setChoose(false);
-                }
-                getDatas().get(position).setChoose(true);
-                lastChoosePosition = position;
+//                if (lastChoosePosition != -1) {
+//                    getDatas().get(lastChoosePosition).setChoose(false);
+//                }
+                boolean lastChooseStatus = getDatas().get(holder.getAdapterPosition()).isChoose();
+                getDatas().get(holder.getAdapterPosition()).setChoose(!lastChooseStatus);
+//                lastChoosePosition = position;
                 notifyDataSetChanged();
                 listener.onItemClick();
             }
