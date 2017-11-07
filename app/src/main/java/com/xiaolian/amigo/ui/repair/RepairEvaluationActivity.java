@@ -20,6 +20,8 @@ import com.xiaolian.amigo.ui.widget.GridSpacesItemDecoration;
 import com.xiaolian.amigo.util.Constant;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -221,6 +223,7 @@ public class RepairEvaluationActivity extends RepairBaseActivity implements IRep
 
     @Override
     public void finishView() {
+        EventBus.getDefault().post(RepairEvent.REFRESH_REPAIR_LIST);
         finish();
     }
 }

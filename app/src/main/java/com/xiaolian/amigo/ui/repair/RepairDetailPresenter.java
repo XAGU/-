@@ -16,23 +16,18 @@
 package com.xiaolian.amigo.ui.repair;
 
 
+import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.manager.intf.IRepairDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.RemindReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.RepairDetailReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.RepairReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.RepairDetailRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.RepairRespDTO;
-import com.xiaolian.amigo.data.network.model.repair.Repair;
 import com.xiaolian.amigo.data.network.model.repair.RepairStep;
 import com.xiaolian.amigo.ui.base.BasePresenter;
-import com.xiaolian.amigo.ui.repair.adaptor.RepairAdaptor;
 import com.xiaolian.amigo.ui.repair.adaptor.RepairProgressAdaptor;
 import com.xiaolian.amigo.ui.repair.intf.IRepairDetailPresenter;
 import com.xiaolian.amigo.ui.repair.intf.IRepairDetailView;
-import com.xiaolian.amigo.ui.repair.intf.IRepairPresenter;
-import com.xiaolian.amigo.ui.repair.intf.IRepairView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +39,7 @@ public class RepairDetailPresenter<V extends IRepairDetailView> extends BasePres
 
     private static final String TAG = RepairDetailPresenter.class.getSimpleName();
     private IRepairDataManager manager;
+    private Device device;
 
     @Inject
     public RepairDetailPresenter(IRepairDataManager manager) {
@@ -66,6 +62,7 @@ public class RepairDetailPresenter<V extends IRepairDetailView> extends BasePres
                         wrappers.add(new RepairProgressAdaptor.ProgressWrapper(step));
                     }
                     getMvpView().addMoreProgresses(wrappers);
+                    device = Device.getDevice(result.getData().getDeviceType());
                     getMvpView().render(result.getData());
                 }
             }
@@ -92,5 +89,10 @@ public class RepairDetailPresenter<V extends IRepairDetailView> extends BasePres
                 }
             }
         });
+    }
+
+    @Override
+    public Device getDevice() {
+        return device;
     }
 }

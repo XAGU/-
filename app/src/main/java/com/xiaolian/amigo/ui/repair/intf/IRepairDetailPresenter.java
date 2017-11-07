@@ -16,6 +16,7 @@
 package com.xiaolian.amigo.ui.repair.intf;
 
 
+import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.di.RepairActivityContext;
 import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 
@@ -27,5 +28,7 @@ public interface IRepairDetailPresenter<V extends IRepairDetailView> extends IBa
 
     // 提醒客服
     void remind(Long sourceId);
+
+    Device getDevice();
 
 }

@@ -67,7 +67,7 @@ public enum RepairStatus {
 
         @Override
         public String[] getNextOperations() {
-            return new String[]{"前往评价", "我要投诉"};
+            return new String[]{"前往评价", "常见问题"};
         }
     }, AUDIT_FAIL(5, "审核未通过") {
         @Override

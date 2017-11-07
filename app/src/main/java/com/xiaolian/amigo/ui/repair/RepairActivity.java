@@ -11,6 +11,10 @@ import com.xiaolian.amigo.ui.repair.intf.IRepairPresenter;
 import com.xiaolian.amigo.ui.repair.intf.IRepairView;
 import com.xiaolian.amigo.util.Constant;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +50,7 @@ public class RepairActivity extends RepairBaseListActivity implements IRepairVie
         presenter.onDetach();
         presenter.clearObservers();
         repairs.clear();
+        EventBus.getDefault().unregister(this);
         super.onDestroy();
     }
 
@@ -83,6 +88,7 @@ public class RepairActivity extends RepairBaseListActivity implements IRepairVie
 
     @Override
     protected void initView() {
+        EventBus.getDefault().register(this);
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
         presenter.onAttach(this);
@@ -90,6 +96,15 @@ public class RepairActivity extends RepairBaseListActivity implements IRepairVie
             presenter.setLastRepairTime(lastRepairTime);
         } else {
             presenter.setLastRepairTime(System.currentTimeMillis());
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(RepairEvent event) {
+        switch (event) {
+            case REFRESH_REPAIR_LIST:
+                onRefresh();
+                break;
         }
     }
 }

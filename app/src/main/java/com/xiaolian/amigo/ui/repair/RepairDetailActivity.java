@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.enumeration.ComplaintType;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.enumeration.EvaluateStatus;
 import com.xiaolian.amigo.data.enumeration.RepairStatus;
@@ -41,7 +42,6 @@ import butterknife.OnClick;
  * <p>
  * Created by caidong on 2017/9/18.
  */
-// TODO: 提醒客服 ／repair/remind
 public class RepairDetailActivity extends RepairBaseActivity implements IRepairDetailView {
 
     @Inject
@@ -96,6 +96,11 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
         rv_repair_progresses.setLayoutManager(manager);
         rv_repair_progresses.setAdapter(adapter);
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         presenter.requestRepailDetail(detailId);
     }
 
@@ -190,8 +195,6 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
         right_oper.setOnClickListener(v -> {
             switch (status) {
                 case REPAIR_DONE:
-                    // TODO 我要投诉
-                    break;
                 case REPAIR_PENDING:
                 case REPAIRING:
                 case AUDIT_PENDING:
