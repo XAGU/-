@@ -30,7 +30,7 @@
         android:id="@+id/tv_sub_title"
         android:layout_width="match_parent"
         android:gravity="center"
-        android:text="切换宿舍"
+        android:text="@string/change_dormitory"
         android:textColor="@color/white"
         android:textSize="12sp"/>
     <ImageView

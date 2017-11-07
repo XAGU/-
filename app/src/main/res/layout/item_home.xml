@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:gravity="center_vertical"
+        android:layout_marginBottom="1dp"
         android:layout_marginRight="22dp"
         android:orientation="vertical">
         <TextView

@@ -1,8 +1,10 @@
 package com.xiaolian.amigo.ui.lostandfound;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -112,6 +114,15 @@ public class PublishFoundActivity extends LostAndFoundBaseActivity implements IP
                 add(et_desc);
             }
         };
+
+        if (et_title != null) {
+            et_title.requestFocus();
+            et_title.postDelayed(() -> {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//                imm.toggleSoftInput(0, InputMethodManager.SHOW_FORCED);
+                imm.showSoftInput(et_title, 0);
+            }, 200);
+        }
     }
 
     @Override
