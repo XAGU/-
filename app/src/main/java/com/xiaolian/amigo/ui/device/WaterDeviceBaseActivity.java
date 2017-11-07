@@ -824,12 +824,6 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         TimeHolder.get().setLastConnectTime(System.currentTimeMillis());
     }
 
-    // 单击回退按钮返回 解决返回区域过小问题
-    @OnClick({R.id.iv_back, R.id.v_back_placeholder})
-    @Optional
-    void back() {
-        super.onBackPressed();
-    }
 
     @Override
     public void showRechargeDialog(double amount) {
@@ -897,15 +891,21 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         CommonUtil.call(this.getApplicationContext(), tel);
     }
 
-    @OnClick(R.id.iv_back)
-    void back2Main() {
+    protected void back2Main() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
-    @Override
-    public void onBackPressed() {
+    // 单击回退按钮返回 解决返回区域过小问题
+    @OnClick({R.id.iv_back, R.id.v_back_placeholder})
+    @Optional
+    void back() {
         back2Main();
     }
+
+//    @Override
+//    public void onBackPressed() {
+//        back2Main();
+//    }
 
 }

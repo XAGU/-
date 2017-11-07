@@ -28,4 +28,6 @@ public interface IChooseDispenerView extends IBaseView {
     void hideErrorView();
 
     void completeRefresh();
+
+    void finishView();
 }

@@ -163,4 +163,5 @@
     <string name="slide_to_stop_use">滑动到最右侧，结束用水</string>
     <string name="stop_use">正在结束用水，请稍候...</string>
     <string name="change_dispenser">更换饮水机</string>
+    <string name="current_temperature_colon">当前水温：%1$s</string>
 </resources>

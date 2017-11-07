@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.device.dispenser;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -7,13 +8,10 @@ import android.widget.TextView;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.DispenserWater;
 import com.xiaolian.amigo.data.enumeration.TradeStep;
-import com.xiaolian.amigo.data.network.model.device.ScanDeviceGroup;
 import com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IDispenserPresenter;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IDispenserView;
 import com.xiaolian.amigo.ui.widget.dialog.GuideDialog;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -66,7 +64,7 @@ public class DispenserActivity extends WaterDeviceBaseActivity<IDispenserPresent
     @Override
     protected void setTempText(TextView tempText) {
         tempText.setVisibility(View.VISIBLE);
-        tempText.setText("当前水温：" + temperature.getDesc());
+        tempText.setText(getString(R.string.current_temperature_colon, temperature.getDesc()));
     }
 
     @Override
@@ -82,7 +80,8 @@ public class DispenserActivity extends WaterDeviceBaseActivity<IDispenserPresent
     public void changeDispenser() {
         // 只有在step为SETILE时才不能更换饮水机
         if (presenter.getStep() != TradeStep.SETTLE) {
-            onBackPressed();
+            startActivity(new Intent(this, ChooseDispenserActivity.class)
+                    .putExtra(ChooseDispenserActivity.INTENT_KEY_ACTION, ChooseDispenserActivity.ACTION_CHANGE_DISPENSER));
         }
     }
 
@@ -139,5 +138,10 @@ public class DispenserActivity extends WaterDeviceBaseActivity<IDispenserPresent
         GuideDialog guideDialog = new GuideDialog(this, GuideDialog.TYPE_DISPENER);
         guideDialog.setLocation(getLocation());
         guideDialog.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        back2Main();
     }
 }

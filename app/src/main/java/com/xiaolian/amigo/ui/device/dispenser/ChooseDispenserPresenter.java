@@ -42,6 +42,7 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
     private ITradeDataManager tradeDataManager;
     private IBleDataManager bleDataManager;
     private ISharedPreferencesHelp sharedPreferencesHelp;
+    private int action;
     /**
      * 列表显示的是附近列表还是收藏列表
      * false 表示附近列表
@@ -170,6 +171,21 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
     @Override
     public synchronized void setListStatus(boolean listStatus) {
         this.listStatus = listStatus;
+    }
+
+    @Override
+    public void setAction(int action) {
+        this.action = action;
+    }
+
+    @Override
+    public int getAction() {
+        return action;
+    }
+
+    @Override
+    public void finishView() {
+        getMvpView().finishView();
     }
 
     private synchronized boolean getListStatus() {

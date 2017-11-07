@@ -18,4 +18,10 @@ public interface IChooseDispenserPresenter<V extends IChooseDispenerView> extend
     void closeBleConnection();
 
     void setListStatus(boolean listStatus);
+
+    void setAction(int action);
+
+    int getAction();
+
+    void finishView();
 }

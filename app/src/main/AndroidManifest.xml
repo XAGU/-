@@ -191,6 +191,7 @@
         <!--选择饮水机页面-->
         <activity
             android:name=".ui.device.dispenser.ChooseDispenserActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 

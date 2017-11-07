@@ -42,6 +42,9 @@ import butterknife.ButterKnife;
 public class ChooseDispenserActivity extends DeviceBaseActivity implements IChooseDispenerView {
 
     private static final String TAG = ChooseDispenserActivity.class.getSimpleName();
+    public static final String INTENT_KEY_ACTION = "intent_key_action";
+    public static final int ACTION_NORMAL = 0;
+    public static final int ACTION_CHANGE_DISPENSER = 1;
 
     @Inject
     IChooseDispenserPresenter<IChooseDispenerView> presenter;
@@ -66,6 +69,7 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
 
     RelativeLayout rl_empty;
     RelativeLayout rl_error;
+    int action = ACTION_NORMAL;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -120,6 +124,14 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
                 onFavoriteClick();
             }
         });
+    }
+
+    @Override
+    protected void setUp() {
+        super.setUp();
+        if (getIntent() != null) {
+            action = getIntent().getIntExtra(INTENT_KEY_ACTION, ACTION_NORMAL);
+        }
     }
 
     private void onNearbyClick() {
@@ -219,6 +231,11 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
     @Override
     public void completeRefresh() {
         refreshLayout.finishRefresh(100);
+    }
+
+    @Override
+    public void finishView() {
+        finish();
     }
 
     private void updateDevice(List<ScanDeviceGroup> devices) {

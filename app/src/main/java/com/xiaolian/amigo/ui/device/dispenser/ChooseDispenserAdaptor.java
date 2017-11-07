@@ -61,6 +61,9 @@ public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenser
                         .putExtra(DispenserActivity.INTENT_KEY_TEMPERATURE, DispenserWater.COLD.getType())
                         .putExtra(MainActivity.INTENT_KEY_LOCATION, dispenserWrapper.getLocation())
                         .putExtra(MainActivity.INTENT_KEY_DEVICE_TYPE, Device.DISPENSER.getType()));
+                if (presenter.getAction() == ChooseDispenserActivity.ACTION_CHANGE_DISPENSER) {
+                    presenter.finishView();
+                }
             }
         });
         // 冰水
