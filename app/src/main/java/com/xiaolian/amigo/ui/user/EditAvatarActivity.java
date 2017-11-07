@@ -121,6 +121,11 @@ public class EditAvatarActivity extends UserBaseActivity implements IEditAvatarV
     @OnClick(R.id.iv_current_avatar)
     void setCustomAvatar() {
         getImage(imageUri -> {
+            if (lastSelectedPosition != -1) {
+                avatars.get(lastSelectedPosition).setSelected(false);
+                lastSelectedPosition = -1;
+                adaptor.notifyDataSetChanged();
+            }
             presenter.uploadImage(imageUri);
         });
     }

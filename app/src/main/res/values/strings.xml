@@ -164,4 +164,5 @@
     <string name="stop_use">正在结束用水，请稍候...</string>
     <string name="change_dispenser">更换饮水机</string>
     <string name="current_temperature_colon">当前水温：%1$s</string>
+    <string name="change_school_tip">更换学校后所有信息将清空，且需要重新登录</string>
 </resources>

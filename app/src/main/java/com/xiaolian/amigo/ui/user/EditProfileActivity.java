@@ -110,7 +110,6 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
     protected void onDestroy() {
         presenter.onDetach();
         super.onDestroy();
-        Log.d("test", "onDestroy");
     }
 
 
@@ -197,8 +196,8 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
         if (availabilityDialog.isShowing()) {
             return;
         }
-        availabilityDialog.setOkText("确定");
-        availabilityDialog.setTip("更换学校后所有信息将清空，且需要重新登录");
+        availabilityDialog.setOkText(getString(R.string.confirm));
+        availabilityDialog.setTip(getString(R.string.change_school_tip));
         availabilityDialog.setSubTipVisible(false);
         availabilityDialog.setOnOkClickListener(dialog1 -> {
             Intent intent = new Intent(this, ListChooseActivity.class);
@@ -318,7 +317,6 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Log.d("test", "onBackPressed");
     }
 
 }

@@ -125,8 +125,13 @@ public abstract class BaseActivity extends SwipeBackActivity
 
 
     private Uri getImageUri(String fileName) {
+        String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xiaolian/";
+        File path = new File(filePath);
+        if (!path.exists()) {
+            path.mkdirs();
+        }
         Uri imageUri;
-        File outputImage = new File(getExternalCacheDir(), fileName + ".jpg");
+        File outputImage = new File(path, fileName + ".jpg");
         try {
             if (outputImage.exists()) {
                 outputImage.delete();
@@ -144,7 +149,12 @@ public abstract class BaseActivity extends SwipeBackActivity
     }
 
     private Uri getCropUri(String fileName) {
-        File outputImage = new File(Environment.getExternalStorageDirectory(), fileName + ".jpg");
+        String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xiaolian/";
+        File path = new File(filePath);
+        if (!path.exists()) {
+            path.mkdirs();
+        }
+        File outputImage = new File(path, fileName + ".jpg");
         try {
             if (outputImage.exists()) {
                 outputImage.delete();
@@ -238,7 +248,7 @@ public abstract class BaseActivity extends SwipeBackActivity
                     .builder()
                     .setTitle("选择")
                     .addSheetItem("相机", ActionSheetDialog.SheetItemColor.Orange,
-                            i -> rxPermissions.request(Manifest.permission.CAMERA)
+                            i -> rxPermissions.request(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
                                     .subscribe(granted -> {
                                         if (granted) {
                                             takePhoto();
