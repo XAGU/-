@@ -41,8 +41,8 @@ public class BezierWaveView extends View {
     private int mDisplacement3 = 0;
 //    private int mDisplacement4 = 0;
 
-    private int mItemWaveWidth1 = 1200;
-    private int mItemWaveWidth2 = 1050;
+    private int mItemWaveWidth1 = 1000;
+    private int mItemWaveWidth2 = 1200;
     private int mItemWaveWidth3 = 1400;
 //    private int mItemWaveWidth4 = 1100;
 
@@ -66,25 +66,25 @@ public class BezierWaveView extends View {
 //        mPath4.reset();
 
 
-        mPath1.moveTo(-mItemWaveWidth1 + mDisplacement1, 67);
-        mPath2.moveTo(-mItemWaveWidth2 + mDisplacement2, 77);
-        mPath3.moveTo(-mItemWaveWidth3 + mDisplacement3, 70);
+        mPath1.moveTo(-mItemWaveWidth1 + mDisplacement1, 76);
+        mPath2.moveTo(-mItemWaveWidth2 + mDisplacement2, 76);
+        mPath3.moveTo(-mItemWaveWidth3 + mDisplacement3, 76);
 //        mPath4.moveTo(-mItemWaveWidth4 + mDisplacement4, 63);
 
 
         for (int i = -mItemWaveWidth1; i <= getWidth() + mItemWaveWidth1; i += mItemWaveWidth1) {
-            mPath1.rQuadTo(280, -76, mItemWaveWidth1 / 2, 5);
-            mPath1.rQuadTo(280, 76, mItemWaveWidth1 / 2, -5);
+            mPath1.rQuadTo(200, -76, mItemWaveWidth1 / 2, 5);
+            mPath1.rQuadTo(200, 76, mItemWaveWidth1 / 2, -5);
         }
 
         for (int i = -mItemWaveWidth2; i <= getWidth() + mItemWaveWidth2; i += mItemWaveWidth2) {
-            mPath2.rQuadTo(240, 70, mItemWaveWidth2 / 2, 8);
-            mPath2.rQuadTo(240, -70, mItemWaveWidth2 / 2, -8);
+            mPath2.rQuadTo(240, 76, mItemWaveWidth2 / 2, 10);
+            mPath2.rQuadTo(240, -76, mItemWaveWidth2 / 2, -10);
         }
 
         for (int i = -mItemWaveWidth3; i <= getWidth() + mItemWaveWidth3; i += mItemWaveWidth3) {
-            mPath3.rQuadTo(380, 80, mItemWaveWidth3 / 2, 15);
-            mPath3.rQuadTo(380, -80, mItemWaveWidth3 / 2, -15);
+            mPath3.rQuadTo(380, 76, mItemWaveWidth3 / 2, 15);
+            mPath3.rQuadTo(380, -76, mItemWaveWidth3 / 2, -15);
         }
 
 //        for (int i = -mItemWaveWidth4; i <= getWidth() + mItemWaveWidth4; i += mItemWaveWidth4) {
@@ -133,8 +133,8 @@ public class BezierWaveView extends View {
         mPaint3.setStyle(Paint.Style.FILL_AND_STROKE);
 //        mPaint4.setStyle(Paint.Style.FILL_AND_STROKE);
 
-        mPaint1.setColor(getResources().getColor(R.color.white80));
-        mPaint2.setColor(getResources().getColor(R.color.white80));
+        mPaint1.setColor(getResources().getColor(R.color.white50));
+        mPaint2.setColor(getResources().getColor(R.color.white70));
         mPaint3.setColor(getResources().getColor(R.color.white80));
 //        mPaint4.setColor(getResources().getColor(R.color.white70));
     }
@@ -142,7 +142,7 @@ public class BezierWaveView extends View {
 
     public void startAnim() {
         mAnimator1 = ValueAnimator.ofInt(0, mItemWaveWidth1);
-        mAnimator1.setDuration(7950);
+        mAnimator1.setDuration(6500);
         mAnimator1.setRepeatCount(ValueAnimator.INFINITE);
         mAnimator1.setInterpolator(new LinearInterpolator());
         mAnimator1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -155,7 +155,7 @@ public class BezierWaveView extends View {
 
 
         mAnimator2 = ValueAnimator.ofInt(0, mItemWaveWidth2);
-        mAnimator2.setDuration(7400);
+        mAnimator2.setDuration(6500);
         mAnimator2.setRepeatCount(ValueAnimator.INFINITE);
         mAnimator2.setInterpolator(new LinearInterpolator());
         mAnimator2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {

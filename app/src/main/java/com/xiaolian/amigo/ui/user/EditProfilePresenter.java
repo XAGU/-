@@ -105,17 +105,28 @@ public class EditProfilePresenter<V extends IEditProfileView> extends BasePresen
 
     @Override
     public void checkChangeSchool() {
-        addObserver(manager.getUserExtraInfo(), new NetworkObserver<ApiResult<PersonalExtraInfoDTO>>() {
+//        addObserver(manager.getUserExtraInfo(), new NetworkObserver<ApiResult<PersonalExtraInfoDTO>>() {
+//
+//            @Override
+//            public void onReady(ApiResult<PersonalExtraInfoDTO> result) {
+//                if (null == result.getError()) {
+//                    if (result.getData().getPrepay() > 0
+//                            || Double.valueOf(result.getData().getBalance()) > 0) {
+//                        getMvpView().onError("需要把余额都提现才能更换学校哦");
+//                    } else {
+//                        getMvpView().showChangeSchoolDialog();
+//                    }
+//                } else {
+//                    getMvpView().onError(result.getError().getDisplayMessage());
+//                }
+//            }
+//        });
+        addObserver(manager.changeSchoolCheck(), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
 
             @Override
-            public void onReady(ApiResult<PersonalExtraInfoDTO> result) {
+            public void onReady(ApiResult<BooleanRespDTO> result) {
                 if (null == result.getError()) {
-                    if (result.getData().getPrepay() > 0
-                            || Double.valueOf(result.getData().getBalance()) > 0) {
-                        getMvpView().onError("需要把余额都提现才能更换学校哦");
-                    } else {
-                        getMvpView().showChangeSchoolDialog();
-                    }
+                    getMvpView().showChangeSchoolDialog();
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }

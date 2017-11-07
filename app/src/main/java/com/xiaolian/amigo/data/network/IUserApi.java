@@ -91,4 +91,8 @@ public interface IUserApi {
     // 用户密码校验
     @POST("/user/password/check")
     Observable<ApiResult<BooleanRespDTO>> checkPasswordValid(@Body PasswordCheckReqDTO reqDTO);
+
+    // 用户密码校验
+    @POST("/user/changeSchool/check")
+    Observable<ApiResult<BooleanRespDTO>> changeSchoolCheck();
 }
