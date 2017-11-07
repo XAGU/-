@@ -232,6 +232,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             tv_schoolName.setText("登录以后才能使用哦");
             iv_avatar.setImageResource(R.drawable.ic_picture_error);
         } else {
+            showNoticeAmount(0);
             Log.d(TAG, "onResume: login");
             // 设置昵称
             tv_nickName.setText(presenter.getUserInfo().getNickName());
@@ -836,7 +837,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             GOTO_DISPENSER(2),
             GOTO_LOST_AND_FOUND(3),
             START_ACTIVITY(4),
-            REFRESH_NOTICE(5);
+            REFRESH_NOTICE(5),
+            LOGOUT(6)
+            ;
             private int type;
 
             EventType(int type) {

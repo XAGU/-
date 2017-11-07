@@ -56,7 +56,7 @@ public class OrderPresenter<V extends IOrderView> extends BasePresenter<V>
         reqDTO.setSize(Constant.PAGE_SIZE);
         // 查看已结束账单
         reqDTO.setOrderStatus(2);
-        addObserver(manager.queryOrders(reqDTO), new NetworkObserver<ApiResult<OrderRespDTO>>(false) {
+        addObserver(manager.queryOrders(reqDTO), new NetworkObserver<ApiResult<OrderRespDTO>>(false, true) {
             @Override
             public void onReady(ApiResult<OrderRespDTO> result) {
                 getMvpView().setRefreshComplete();

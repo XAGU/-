@@ -48,7 +48,7 @@ public class EditDormitoryPresenter<V extends IEditDormitoryView> extends BasePr
         SimpleQueryReqDTO dto = new SimpleQueryReqDTO();
         dto.setPage(page);
         dto.setSize(size);
-        addObserver(manager.queryUserResidenceList(dto), new NetworkObserver<ApiResult<QueryUserResidenceListRespDTO>>(false){
+        addObserver(manager.queryUserResidenceList(dto), new NetworkObserver<ApiResult<QueryUserResidenceListRespDTO>>(false, true){
 
             @Override
             public void onReady(ApiResult<QueryUserResidenceListRespDTO> result) {

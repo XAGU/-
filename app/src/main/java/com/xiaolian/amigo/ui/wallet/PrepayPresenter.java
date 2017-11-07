@@ -44,7 +44,7 @@ public class PrepayPresenter<V extends IPrepayView> extends BasePresenter<V>
         reqDTO.setOrderStatus(1);
         // 默认只获取余额支付的未找零账单
         reqDTO.setPaymentType(Payment.BALANCE.getType());
-        addObserver(manager.queryOrders(reqDTO), new NetworkObserver<ApiResult<OrderRespDTO>>(false) {
+        addObserver(manager.queryOrders(reqDTO), new NetworkObserver<ApiResult<OrderRespDTO>>(false, true) {
             @Override
             public void onReady(ApiResult<OrderRespDTO> result) {
                 getMvpView().setRefreshComplete();

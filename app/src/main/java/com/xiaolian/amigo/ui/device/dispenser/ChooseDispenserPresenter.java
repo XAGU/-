@@ -66,7 +66,7 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
     public void requestFavorites() {
         FavoriteReqDTO reqDTO = new FavoriteReqDTO();
         // 查看收藏设备列表
-        addObserver(favoriteManager.queryFavorites(reqDTO), new NetworkObserver<ApiResult<ScanDeviceRespDTO>>(false) {
+        addObserver(favoriteManager.queryFavorites(reqDTO), new NetworkObserver<ApiResult<ScanDeviceRespDTO>>(false, true) {
             @Override
             public void onReady(ApiResult<ScanDeviceRespDTO> result) {
                 if (!getListStatus()) {

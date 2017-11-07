@@ -41,6 +41,15 @@ import rx.subscriptions.CompositeSubscription;
 public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
     private static final String TAG = BasePresenter.class.getSimpleName();
 
+    private static final int UNAUTHORIZED = 401;
+    private static final int FORBIDDEN = 403;
+    private static final int NOT_FOUND = 404;
+    private static final int REQUEST_TIMEOUT = 408;
+    private static final int INTERNAL_SERVER_ERROR = 500;
+    private static final int BAD_GATEWAY = 502;
+    private static final int SERVICE_UNAVAILABLE = 503;
+    private static final int GATEWAY_TIMEOUT = 504;
+
     // 统一管理observer，防止内存泄露
     protected CompositeSubscription subscriptions;
     private V view;
@@ -68,15 +77,14 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
     public void onRemoteInvocationError(Throwable e) {
         if (!getMvpView().isNetworkAvailable()) {
             getMvpView().onError("你的网络不太好哦");
-        }
-        else if (e instanceof ConnectException) {
+        } else if (e instanceof ConnectException) {
             getMvpView().onError("服务器飞走啦，努力修复中");
         } else if (e instanceof SocketTimeoutException) {
             getMvpView().onError("服务器飞走啦，努力修复中");
         } else {
             if (e instanceof HttpException) {
                 switch (((HttpException) e).code()) {
-                    case 401:
+                    case UNAUTHORIZED:
                         getMvpView().onError(R.string.please_login);
                         getMvpView().redirectToLogin();
                         break;
@@ -148,6 +156,19 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
                 break;
             default:
                 break;
+        }
+    }
+
+    private void onHttpError(Throwable e) {
+        if (e instanceof HttpException) {
+            switch (((HttpException) e).code()) {
+                case UNAUTHORIZED:
+                    getMvpView().onError(R.string.please_login);
+                    getMvpView().redirectToLogin();
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -254,9 +275,16 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
     public abstract class NetworkObserver<T extends ApiResult> extends Subscriber<T> {
 
         private boolean renderView = true;
+        // 用于列表页token失效后跳转到登录页
+        private boolean checkHttpError = false;
 
         public NetworkObserver(boolean renderView) {
             this.renderView = renderView;
+        }
+
+        public NetworkObserver(boolean renderView, boolean checkHttpError) {
+            this.renderView = renderView;
+            this.checkHttpError = checkHttpError;
         }
 
         public NetworkObserver() {
@@ -266,7 +294,7 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
         @Override
         public void onStart() {
             super.onStart();
-            if(renderView) {
+            if (renderView) {
                 view.showLoading();
             }
         }
@@ -278,7 +306,7 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
                 onBizCodeError(error);
             }
             onReady(t);
-            if(renderView) {
+            if (renderView) {
                 view.hideLoading();
             }
         }
@@ -288,18 +316,23 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
         @Override
         public void onError(Throwable e) {
             Log.d(TAG, e.getMessage());
-            if(renderView) {
+            if (renderView) {
                 onRemoteInvocationError(e);
                 view.hideLoading();
+            }
+            if (checkHttpError) {
+                // 处理toke失效需要重新登录的错误
+                onHttpError(e);
             }
         }
 
         @Override
         public void onCompleted() {
-            if(renderView) {
+            if (renderView) {
                 view.hideLoading();
             }
         }
     }
+
 
 }

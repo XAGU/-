@@ -38,7 +38,7 @@ public class WithdrawalRecordPresenter<V extends IWithdrawalRecordView> extends 
         QueryPersonalFundsListReqDTO reqDTO = new QueryPersonalFundsListReqDTO();
         reqDTO.setPage(page);
         reqDTO.setSize(Constant.PAGE_SIZE);
-        addObserver(manager.queryWithdrawList(reqDTO), new NetworkObserver<ApiResult<QueryFundsListRespDTO>>(false) {
+        addObserver(manager.queryWithdrawList(reqDTO), new NetworkObserver<ApiResult<QueryFundsListRespDTO>>(false, true) {
 
             @Override
             public void onReady(ApiResult<QueryFundsListRespDTO> result) {
