@@ -161,6 +161,11 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
     }
 
     @Override
+    public void enableRecharge() {
+        bt_submit.setEnabled(true);
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);

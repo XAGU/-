@@ -8,6 +8,7 @@ import com.xiaolian.amigo.data.enumeration.PayWay;
 import com.xiaolian.amigo.ui.wallet.intf.IAddAccountPresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IAddAccountView;
 import com.xiaolian.amigo.ui.widget.ClearableEditText;
+import com.xiaolian.amigo.util.CommonUtil;
 
 import javax.inject.Inject;
 
@@ -37,6 +38,8 @@ public class AddAccountActivity extends WalletBaseActivity implements IAddAccoun
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
         presenter.onAttach(AddAccountActivity.this);
+
+        CommonUtil.showSoftInput(this, et_account);
     }
 
     @OnClick(R.id.bt_submit)

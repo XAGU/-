@@ -15,6 +15,7 @@ import com.xiaolian.amigo.ui.user.ListChooseActivity;
 import com.xiaolian.amigo.ui.wallet.adaptor.ChooseWithdrawAdapter;
 import com.xiaolian.amigo.ui.wallet.intf.IWithdrawalPresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IWithdrawalView;
+import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 
 import javax.inject.Inject;
@@ -70,6 +71,8 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
         presenter.onAttach(WithdrawalActivity.this);
         tv_withdraw_available.setText(getString(R.string.withdraw_available, balance));
         presenter.requestAccounts(PayWay.ALIAPY.getType());
+
+        CommonUtil.showSoftInput(this, et_amount);
     }
 
     @Override

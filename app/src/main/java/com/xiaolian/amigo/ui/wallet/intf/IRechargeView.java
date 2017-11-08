@@ -19,4 +19,6 @@ public interface IRechargeView extends IBaseView {
     void alipay(String reqArgs);
 
     void gotoDetail(Long fundsId);
+
+    void enableRecharge();
 }

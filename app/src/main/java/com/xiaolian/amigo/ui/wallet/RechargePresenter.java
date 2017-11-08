@@ -63,6 +63,7 @@ public class RechargePresenter<V extends IRechargeView> extends BasePresenter<V>
                                     rechargeDenominations.getAmount()))) {
                                 rechargeWrapper.add(
                                         new RechargeAdaptor.RechargeWrapper(rechargeDenominations, true));
+                                getMvpView().enableRecharge();
                             } else {
                                 rechargeWrapper.add(
                                         new RechargeAdaptor.RechargeWrapper(rechargeDenominations));
