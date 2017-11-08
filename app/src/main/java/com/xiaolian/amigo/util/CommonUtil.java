@@ -28,6 +28,8 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
 import com.xiaolian.amigo.R;
 
@@ -150,5 +152,23 @@ public final class CommonUtil {
         Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+phone));
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
+    }
+
+    /**
+     * 弹出软键盘
+     * @param context 上下文
+     * @param editText 输入框
+     */
+    public static void showSoftInput(Context context, EditText editText) {
+        if (context != null && editText != null) {
+            editText.requestFocus();
+            editText.postDelayed(() -> {
+                InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+//                imm.toggleSoftInput(0, InputMethodManager.SHOW_FORCED);
+                if (imm != null) {
+                    imm.showSoftInput(editText, 0);
+                }
+            }, 200);
+        }
     }
 }

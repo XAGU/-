@@ -1,12 +1,15 @@
 package com.xiaolian.amigo.ui.user;
 
+import android.content.Context;
 import android.text.TextUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.widget.ClearableEditText;
 import com.xiaolian.amigo.ui.user.intf.IEditPasswordPresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditPasswordView;
+import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.ViewUtil;
 
 import javax.inject.Inject;
@@ -62,7 +65,7 @@ public class EditPasswordActivity extends UserBaseActivity implements IEditPassw
                 14, et_new_password);
         ViewUtil.setEditHintAndSize(getString(R.string.please_enter_new_password_again),
                 14, et_new_password_again);
-
+        CommonUtil.showSoftInput(this, et_old_password);
     }
 
     @Override

@@ -7,6 +7,7 @@ import android.widget.EditText;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.user.intf.ICheckPasswordPresenter;
 import com.xiaolian.amigo.ui.user.intf.ICheckPasswordView;
+import com.xiaolian.amigo.util.CommonUtil;
 
 import javax.inject.Inject;
 
@@ -35,6 +36,8 @@ public class CheckPasswordActivity extends UserBaseActivity implements ICheckPas
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
         presenter.onAttach(CheckPasswordActivity.this);
+
+        CommonUtil.showSoftInput(this, et_password);
     }
 
     @Override

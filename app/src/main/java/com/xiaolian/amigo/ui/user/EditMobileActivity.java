@@ -10,6 +10,7 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.widget.ClearableEditText;
 import com.xiaolian.amigo.ui.user.intf.IEditMobilePresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditMobileView;
+import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.CountDownButtonHelper;
 
 import javax.inject.Inject;
@@ -92,6 +93,8 @@ public class EditMobileActivity extends UserBaseActivity implements IEditMobileV
             public void afterTextChanged(Editable s) {
             }
         });
+
+        CommonUtil.showSoftInput(this, et_mobile);
     }
 
     @Override

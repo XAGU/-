@@ -9,6 +9,7 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.widget.ClearableEditText;
 import com.xiaolian.amigo.ui.user.intf.IEditNickNamePresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditNickNameView;
+import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 
 import java.io.Serializable;
@@ -52,6 +53,7 @@ public class EditNickNameActivity extends UserBaseActivity implements IEditNickN
             edit_nickname.setSelection(edit_nickname.getText().length());
             bt_submit.setEnabled(true);
         }
+        CommonUtil.showSoftInput(this, edit_nickname);
     }
 
     @Override

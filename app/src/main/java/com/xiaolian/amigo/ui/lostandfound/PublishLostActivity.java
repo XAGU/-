@@ -17,6 +17,7 @@ import com.xiaolian.amigo.ui.lostandfound.intf.IPublishLostPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.IPublishLostView;
 import com.xiaolian.amigo.ui.widget.dialog.DatePickerDialog;
 import com.xiaolian.amigo.ui.widget.wheelpicker.WheelDateTimePicker;
+import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.TimeUtils;
 
@@ -115,14 +116,7 @@ public class PublishLostActivity extends LostAndFoundBaseActivity implements IPu
             }
         };
 
-        if (et_title != null) {
-            et_title.requestFocus();
-            et_title.postDelayed(() -> {
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//                imm.toggleSoftInput(0, InputMethodManager.SHOW_FORCED);
-            imm.showSoftInput(et_title, 0);
-            }, 200);
-        }
+        CommonUtil.showSoftInput(this, et_title);
     }
 
     @Override
