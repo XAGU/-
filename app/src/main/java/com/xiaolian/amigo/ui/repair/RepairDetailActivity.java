@@ -210,14 +210,14 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
             left_oper.setEnabled(false);
             left_oper.setTextColor(ContextCompat.getColor(this, R.color.colorDark9));
             ll_extra.setVisibility(View.VISIBLE);
-            tv_extra_title.setText("评价信息");
+            tv_extra_title.setText(getString(R.string.evaluation_info));
             tv_extra_content1.setVisibility(View.VISIBLE);
-            tv_extra_content1.setText(detail.getScore() + "分");
+            tv_extra_content1.setText(getString(R.string.score, detail.getScore()));
             tv_extra_content2.setText(detail.getComment());
         }
         if (status == RepairStatus.AUDIT_FAIL) {
             ll_extra.setVisibility(View.VISIBLE);
-            tv_extra_title.setText("客服回复");
+            tv_extra_title.setText(getString(R.string.customer_response));
             tv_extra_content2.setText(detail.getReply());
         }
     }
@@ -241,7 +241,7 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
     void onFirstImageClick() {
         if (images != null) {
             Intent intent = new Intent(this, AlbumItemActivity.class);
-            intent.putExtra(AlbumItemActivity.EXTRA_CURRENT, 0);
+            intent.putExtra(AlbumItemActivity.EXTRA_CURRENT, getResources().getInteger(R.integer.first));
             intent.putStringArrayListExtra(AlbumItemActivity.EXTRA_TYPE_LIST, images);
             startActivity(intent);
         }
@@ -251,7 +251,7 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
     void onSecondImageClick() {
         if (images != null) {
             Intent intent = new Intent(this, AlbumItemActivity.class);
-            intent.putExtra(AlbumItemActivity.EXTRA_CURRENT, 1);
+            intent.putExtra(AlbumItemActivity.EXTRA_CURRENT, getResources().getInteger(R.integer.second));
             intent.putStringArrayListExtra(AlbumItemActivity.EXTRA_TYPE_LIST, images);
             startActivity(intent);
         }
@@ -261,7 +261,7 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
     void onThirdImageClick() {
         if (images != null) {
             Intent intent = new Intent(this, AlbumItemActivity.class);
-            intent.putExtra(AlbumItemActivity.EXTRA_CURRENT, 2);
+            intent.putExtra(AlbumItemActivity.EXTRA_CURRENT, getResources().getInteger(R.integer.third));
             intent.putStringArrayListExtra(AlbumItemActivity.EXTRA_TYPE_LIST, images);
             startActivity(intent);
         }

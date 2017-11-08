@@ -181,4 +181,24 @@
     <string name="publish_found">招领发布</string>
     <string name="publish_lost">失物发布</string>
     <string name="real_bill">实际消费</string>
+    <string name="scan_nearby_device">正在扫描附近的设备</string>
+    <string name="please_choose_device_info">请选择设备信息</string>
+    <string name="please_choose_device_problem">请选择设备问题</string>
+    <string name="evaluation_info">评价信息</string>
+    <string name="customer_response">客服回复</string>
+    <string name="score">%1$d分</string>
+    <string name="use_bonus_colon">使用红包：</string>
+    <string name="need_prepay_amount">需预付%1$s元</string>
+    <string name="connect_prepay_tip_1">使用结束后请务必滑动按钮进行结算找零\n当前没有可用红包哦</string>
+    <string name="prepay_start_shower">预付%1$s元，开始洗澡</string>
+    <string name="connect_prepay_tip_2">你当前余额不足%1$s元，需预付全部余额\n使用结束后请结算找零</string>
+    <string name="prepay_no_balance">余额不足</string>
+    <string name="connect_prepay_tip_3">你当前余额不足%1$s元，请前往充值\n充值后再来使用哦</string>
+    <string name="to_recharge">前往充值</string>
+    <string name="connect_prepay_tip_4">（需预付%1$s元,使用结束后请结算找零）</string>
+    <string name="connect_prepay_tip_5">（你当前预付总金额超过%1$s元,可以正常使用）</string>
+    <string name="connect_prepay_tip_7">（你当前预付总金额不足%1$s元，请前往充值）</string>
+    <string name="connect_prepay_tip_6">（你当前预付总金额不足%1$s元,需预付全部余额）</string>
+    <string name="prepaid">已预付%1$s元</string>
+    <string name="settlement_and_change">结算找零</string>
 </resources>

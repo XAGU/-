@@ -118,7 +118,6 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     @BindView(R.id.trade_tip)
     TextView trade_tip;
 
-
     /**
      * 设备连接状态
      */
@@ -133,7 +132,6 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
     @BindView(R.id.slideView)
     SlideUnlockView slideView;
-
 
     /**
      * 布局头部
@@ -166,22 +164,10 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     TextView tv_sub_title;
 
     /**
-     * 余额支付
+     * 选择红包
      */
-    @BindView(R.id.tv_money_pay)
-    TextView tv_money_pay;
-
-    /**
-     * 红包支付
-     */
-    @BindView(R.id.tv_bonus_pay)
-    TextView tv_bonus_pay;
-
-    /**
-     * 预计用水量
-     */
-    @BindView(R.id.rl_pay_way)
-    RelativeLayout rl_pay_way;
+    @BindView(R.id.rl_choose_bonus)
+    RelativeLayout rl_choose_bonus;
 
     /**
      * 支付方式左侧textview
@@ -244,14 +230,25 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     ImageView iv_header_icon;
 
     /**
-     * 预计用水量 选中项
+     * 已连接待支付状态标题
      */
-    private int mItemIndex;
+    @BindView(R.id.tv_connect_tip_title)
+    TextView tv_connect_tip_title;
+    @BindView(R.id.tv_connect_tip)
+    TextView tv_connect_tip;
+    @BindView(R.id.v_connect_tip_bar)
+    View v_connect_tip_bar;
 
     /**
-     * 支付方式状态
+     * 支付信息
      */
-    private boolean isMoneyPay = true;
+    private Long bonusId;
+    private String bonusRemark;
+    private Double bonusAmount;
+    private Double prepay;
+    private Double minPrepay;
+    private Double balance;
+    private Double prepayAmount;
 
     P presenter;
 
@@ -264,14 +261,13 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     private String deviceLocation;
     // 设备位置id
     private Long residenceId;
-    private String prepayDefaultDesc = "预付5元";
-    private Double prepayDefaultAmount = 5.00;
     private boolean homePageJump;
     // 标记是否为恢复用水
     private boolean recorvery;
     private String location;
     private CountDownTimer timer;
     private volatile boolean userWater = false;
+    private boolean needRecharge;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -321,10 +317,6 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         setTopRightIconClickEvent(setTopRightIconClickListener());
         setTitleClickEvent(setTitleClickListener());
         setSubtitle(setSubtitleString());
-        // TODO title click
-        // 默认选择预付5元
-        tv_water_right.setTag(R.id.money_pay_amount, prepayDefaultAmount);
-        tv_water_right.setText(prepayDefaultDesc);
         if (bsv_wave != null && !bsv_wave.isRunning()) {
             bsv_wave.startAnim();
         }
@@ -392,100 +384,141 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         rl_header.setBackgroundResource(headBackground);
     }
 
+    // 更新预付界面
+    private void refreshPrepayStatus() {
+        if (minPrepay == null || prepay == null || balance == null) {
+            Log.wtf(TAG, "预付信息不全!");
+            return;
+        }
+        // 有红包
+        if (bonusId != null) {
+            String tip;
+            String buttonText;
+            // 余额为0
+            if (balance == 0) {
+                // 红包金额大于等于最小预付金额
+                if (bonusAmount >= minPrepay) {
+                    tip = getString(R.string.connect_prepay_tip_5, String.valueOf(minPrepay));
+                    prepayAmount = 0.0;
+                    needRecharge = false;
+                    buttonText = getString(R.string.prepay_start_shower, "0");
+                    showBonusLayout(tip, buttonText, bonusRemark);
+                }
+                // 红包金额小于最小预付金额  需要充值
+                else {
+                    tip = getString(R.string.connect_prepay_tip_7, String.valueOf(minPrepay));
+                    needRecharge = true;
+                    buttonText = getString(R.string.to_recharge);
+                    showBonusLayout(tip, buttonText, bonusRemark);
+                }
+
+            }
+            // 余额不为0
+            else {
+                // 余额加红包大于等于预付金额
+                if (balance + bonusAmount >= prepay) {
+                    tip = getString(R.string.connect_prepay_tip_4, String.valueOf(prepay));
+                    prepayAmount = prepay - bonusAmount;
+                    needRecharge = false;
+                    buttonText = getString(R.string.prepay_start_shower, String.valueOf(prepayAmount));
+                    showBonusLayout(tip, buttonText, bonusRemark);
+                }
+                // 余额加红包小于预付金额 大于等于最小预付金额
+                else if (balance + bonusAmount >= minPrepay
+                        && balance + bonusAmount < prepay) {
+                    tip = getString(R.string.connect_prepay_tip_6, String.valueOf(prepay));
+                    prepayAmount = balance;
+                    needRecharge = false;
+                    buttonText = getString(R.string.prepay_start_shower, String.valueOf(prepayAmount));
+                    showBonusLayout(tip, buttonText, bonusRemark);
+                }
+                // 余额加红包小于最小预付金额
+                else if (balance + bonusAmount < minPrepay) {
+                    tip = getString(R.string.connect_prepay_tip_7, String.valueOf(minPrepay));
+                    needRecharge = true;
+                    buttonText = getString(R.string.to_recharge);
+                    showBonusLayout(tip, buttonText, bonusRemark);
+                }
+            }
+        }
+        // 无红包
+        else {
+            String title;
+            String tip;
+            String buttonText;
+            // 余额大于等于最小预付金额
+            if (balance >= minPrepay) {
+                // 余额大于等于预付金额
+                if (balance >= prepay) {
+                    prepayAmount = prepay;
+                    title = getString(R.string.need_prepay_amount, String.valueOf(prepayAmount));
+                    tip = getString(R.string.connect_prepay_tip_1);
+                    buttonText = getString(R.string.prepay_start_shower, String.valueOf(prepayAmount));
+                    needRecharge = false;
+                    showNoBonusLayout(title, tip, buttonText);
+                } else {
+                    prepayAmount = balance;
+                    title = getString(R.string.need_prepay_amount, String.valueOf(prepayAmount));
+                    tip = getString(R.string.connect_prepay_tip_2, String.valueOf(prepay));
+                    buttonText = getString(R.string.prepay_start_shower, String.valueOf(prepayAmount));
+                    needRecharge = false;
+                    showNoBonusLayout(title, tip, buttonText);
+                }
+            }
+            // 余额不足
+            else {
+                title = getString(R.string.prepay_no_balance);
+                tip = getString(R.string.connect_prepay_tip_3, String.valueOf(minPrepay));
+                buttonText = getString(R.string.to_recharge);
+                needRecharge = true;
+                showNoBonusLayout(title, tip, buttonText);
+            }
+        }
+
+    }
+
     @Override
     public void setPrepayOption(OrderPreInfoDTO data) {
         orderPreInfo = data;
-        try {
-            prepayDefaultDesc = data.getOptions().get(0).getItems().get(0).getDescription();
-            prepayDefaultAmount = data.getOptions().get(0).getItems().get(0).getPrepay();
-            tv_water_right.setTag(R.id.money_pay_amount, prepayDefaultAmount);
-            tv_water_right.setText(prepayDefaultDesc);
-        } catch (Exception e) {
-            Log.w(TAG, "服务器返回的prepayOption为空");
+        if (data.getBonus() != null) {
+            bonusId = data.getBonus().getId();
+            bonusAmount = data.getBonus().getAmount();
         }
-        // TODO 子类重写
+        prepay = data.getPrepay();
+        minPrepay = data.getMinPrepay();
+        balance = data.getBalance();
+        refreshPrepayStatus();
+    }
+
+    private void showBonusLayout(String tip, String buttonText, String remarks) {
+        rl_choose_bonus.setVisibility(View.VISIBLE);
+        tv_connect_tip_title.setVisibility(View.GONE);
+        tv_connect_tip.setVisibility(View.VISIBLE);
+        v_connect_tip_bar.setVisibility(View.GONE);
+        tv_connect_tip.setText(tip);
+        bt_pay.setText(buttonText);
+        tv_water_right.setText(remarks);
+    }
+
+    private void showNoBonusLayout(String title, String tip, String buttonText) {
+        rl_choose_bonus.setVisibility(View.GONE);
+        tv_connect_tip_title.setVisibility(View.VISIBLE);
+        tv_connect_tip.setVisibility(View.VISIBLE);
+        v_connect_tip_bar.setVisibility(View.VISIBLE);
+        tv_connect_tip_title.setText(title);
+        tv_connect_tip.setText(tip);
+        bt_pay.setText(buttonText);
     }
 
     /**
      * 点击选择用水量或选择红包
      */
-    @OnClick(R.id.rl_pay_way)
-    void onPayWayClick() {
-        if (isMoneyPay) {
-            ActionSheetDialog actionSheetDialog = new ActionSheetDialog(this).builder();
-            if (orderPreInfo.getOptions() != null && !orderPreInfo.getOptions().isEmpty()) {
-                PrepayOptionDTO option = orderPreInfo.getOptions().get(0);
-                for (int i = 0; i < option.getItems().size(); i++) {
-                    String desc = option.getItems().get(i).getDescription();
-                    Double prepay = option.getItems().get(i).getPrepay();
-                    int position = i;
-                    actionSheetDialog.addSheetItem(desc, ActionSheetDialog.SheetItemColor.Blue,
-                            new ActionSheetDialog.OnSheetItemClickListener() {
-                                @Override
-                                public void onClick(int which) {
-                                    mItemIndex = position;
-                                    tv_water_right.setText(desc);
-                                    tv_water_right.setTag(R.id.money_pay_amount, prepay);
-                                }
-                            });
-                }
-            }
-            actionSheetDialog.setTitle("选择水量上限")
-                    .setItemGravity(Gravity.LEFT)
-                    .setShowCanceleButton(false)
-                    .addFooter(R.layout.view_actionsheet_foot)
-                    .setSelectItem(mItemIndex).show();
-        } else {
-            Intent intent = new Intent(this, BonusActivity.class);
-            intent.putExtra(BonusActivity.INTENT_KEY_BONUS_ACTION, BonusActivity.ACTION_CHOOSE);
-            intent.putExtra(BonusActivity.INTENT_KEY_BONUS_DEVICE_TYPE, deviceType);
-            startActivityForResult(intent, CHOOSE_BONUS_CODE);
-        }
-    }
-
-    /**
-     * 选择余额支付
-     */
-    @OnClick(R.id.tv_money_pay)
-    void chooseMoneyPay() {
-        clearPayTabStatus();
-        isMoneyPay = true;
-        tv_money_pay.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.line_red);
-        tv_money_pay.setTextColor(ContextCompat.getColor(this, R.color.black));
-        tv_money_pay.setTypeface(tv_money_pay.getTypeface(), Typeface.BOLD);
-        tv_water_left.setText(getString(R.string.excepted_water));
-        tv_water_right.setText(prepayDefaultDesc);
-    }
-
-    /**
-     * 选择红包支付
-     */
-    @OnClick(R.id.tv_bonus_pay)
-    void chooseBonusPay() {
-        clearPayTabStatus();
-        isMoneyPay = false;
-        tv_bonus_pay.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.line_red);
-        tv_bonus_pay.setTextColor(ContextCompat.getColor(this, R.color.black));
-        tv_bonus_pay.setTypeface(tv_bonus_pay.getTypeface(), Typeface.BOLD);
-        tv_water_left.setText(getString(R.string.choose_bonus));
-        int bonusAmount = orderPreInfo.getBonus();
-        tv_water_right.setText(bonusAmount == 0 ? "没有可用红包" : bonusAmount + "个可用");
-        if (bonusAmount == 0) {
-            bt_pay.setEnabled(false);
-        }
-    }
-
-    /**
-     * 清除状态
-     */
-    void clearPayTabStatus() {
-        tv_money_pay.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-        tv_bonus_pay.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-        tv_money_pay.setTextColor(ContextCompat.getColor(this, R.color.colorTextGray));
-        tv_bonus_pay.setTextColor(ContextCompat.getColor(this, R.color.colorTextGray));
-        tv_money_pay.setTypeface(null, Typeface.NORMAL);
-        tv_bonus_pay.setTypeface(null, Typeface.NORMAL);
-        bt_pay.setEnabled(true);
+    @OnClick(R.id.rl_choose_bonus)
+    void onChooseBonusClick() {
+        Intent intent = new Intent(this, BonusActivity.class);
+        intent.putExtra(BonusActivity.INTENT_KEY_BONUS_ACTION, BonusActivity.ACTION_CHOOSE);
+        intent.putExtra(BonusActivity.INTENT_KEY_BONUS_DEVICE_TYPE, deviceType);
+        startActivityForResult(intent, CHOOSE_BONUS_CODE);
     }
 
     /**
@@ -615,24 +648,17 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
      */
     @OnClick(R.id.bt_pay)
     void pay(Button button) {
-        userWater = true;
-        if (!isMoneyPay) {
-            if (choosedBonus == null) {
-                showMessage("请选择红包");
-                return;
-            }
+        // 需要充值
+        if (needRecharge) {
+            startActivity(new Intent(this, RechargeActivity.class));
+        } else {
+            userWater = true;
             // 点击支付操作时蓝牙必须为开启状态
             setBleCallback(() -> {
                 button.setEnabled(false);
-                presenter.onPay(Payment.BONUS.getType(), null, choosedBonus.getId());
+                presenter.onPay(Payment.BALANCE.getType(), prepayAmount, null);
             });
             getBlePermission();
-        } else {
-            if (tv_water_right.getTag(R.id.money_pay_amount) == null) {
-                showMessage("请选择预计用水量");
-                return;
-            }
-            presenter.queryWallet((Double) tv_water_right.getTag(R.id.money_pay_amount));
         }
     }
 
@@ -710,49 +736,29 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         slideView.reset();
 
         if (null != orderStatus) {
-            if (Payment.getPayment(orderStatus.getPaymentType()) == Payment.BALANCE) {
-                tv_shower_payed.setText(orderStatus.getExtra());
-                // 从未结算订单列表跳转过来，tip展示需要标注订单时间等信息
-                if (!homePageJump) {
-                    String time = TimeUtils.convertTimestampToAccurateFormat(orderStatus.getCreateTime());
-                    String tip = String.format("你%s在%s使用了%s\n点击下方按钮进行找零", time, orderStatus.getLocation(), Device.getDevice(deviceType).getDesc());
+            tv_shower_payed.setText(orderStatus.getExtra());
+            // 从未结算订单列表跳转过来，tip展示需要标注订单时间等信息
+            if (!homePageJump) {
+                String time = TimeUtils.convertTimestampToAccurateFormat(orderStatus.getCreateTime());
+                String tip = String.format("你%s在%s使用了%s\n点击下方按钮进行找零", time, orderStatus.getLocation(), Device.getDevice(deviceType).getDesc());
 //                    String tip = String.format("您%s在%s使用预付了%s元的用水已结束\n点击下方按钮进行找零", time, orderStatus.getLocation(), String.valueOf(orderStatus.getPrepay().intValue()));
-                    trade_tip.setText(tip);
-                } else {
-                    trade_tip.setText(getString(R.string.balance_trade_tip));
-                }
-                bt_stop_shower.setText("结算找零");
-                bt_stop_shower.setVisibility(View.GONE);
-                slideView.setVisibility(View.VISIBLE);
-                slideView.setDisableStr(getString(R.string.slide_to_settlement));
-                slideView.setEnableStr(getString(R.string.settlement));
+                trade_tip.setText(tip);
             } else {
-                tv_shower_payed.setText(orderStatus.getExtra());
-                trade_tip.setText(getString(R.string.bonus_trade_tip));
-                bt_stop_shower.setText("结束用水");
-                bt_stop_shower.setVisibility(View.GONE);
-                slideView.setVisibility(View.VISIBLE);
-                slideView.setDisableStr(getString(R.string.slide_to_stop_use));
-                slideView.setEnableStr(getString(R.string.stop_use));
-            }
-        } else {
-            if (isMoneyPay) {
-                tv_shower_payed.setText("已预付" + tv_water_right.getTag(R.id.money_pay_amount) + "元");
                 trade_tip.setText(getString(R.string.balance_trade_tip));
-                bt_stop_shower.setText("结算找零");
-                bt_stop_shower.setVisibility(View.GONE);
-                slideView.setVisibility(View.VISIBLE);
-                slideView.setDisableStr(getString(R.string.slide_to_settlement));
-                slideView.setEnableStr(getString(R.string.settlement));
-            } else {
-                tv_shower_payed.setText("已使用" + tv_water_right.getText().toString());
-                trade_tip.setText(getString(R.string.bonus_trade_tip));
-                bt_stop_shower.setText("结束用水");
-                bt_stop_shower.setVisibility(View.GONE);
-                slideView.setVisibility(View.VISIBLE);
-                slideView.setDisableStr(getString(R.string.slide_to_stop_use));
-                slideView.setEnableStr(getString(R.string.stop_use));
             }
+            bt_stop_shower.setText(getString(R.string.settlement_and_change));
+            bt_stop_shower.setVisibility(View.GONE);
+            slideView.setVisibility(View.VISIBLE);
+            slideView.setDisableStr(getString(R.string.slide_to_settlement));
+            slideView.setEnableStr(getString(R.string.settlement));
+        } else {
+            tv_shower_payed.setText(getString(R.string.prepaid, String.valueOf(prepayAmount)));
+            trade_tip.setText(getString(R.string.balance_trade_tip));
+            bt_stop_shower.setText(getString(R.string.settlement_and_change));
+            bt_stop_shower.setVisibility(View.GONE);
+            slideView.setVisibility(View.VISIBLE);
+            slideView.setDisableStr(getString(R.string.slide_to_settlement));
+            slideView.setEnableStr(getString(R.string.settlement));
         }
 
     }
@@ -775,13 +781,16 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CHOOSE_BONUS_CODE) {
             if (resultCode == RESULT_CANCELED) {
-                tv_water_right.setText(R.string.not_use_bonus);
-                bt_pay.setEnabled(false);
+                bonusAmount = 0.0;
+                bonusRemark = getString(R.string.not_use_bonus);
+                refreshPrepayStatus();
             } else if (resultCode == RESULT_OK) {
                 choosedBonus = (BonusAdaptor.BonusWrapper) data.getExtras().getSerializable(BonusActivity.INTENT_KEY_BONUS_RESULT);
                 if (choosedBonus != null) {
-                    tv_water_right.setText(choosedBonus.getAmount() + "元" + choosedBonus.getName());
-                    bt_pay.setEnabled(true);
+                    bonusId = choosedBonus.getId();
+                    bonusAmount = choosedBonus.getAmount();
+                    bonusRemark = choosedBonus.getRemark();
+                    refreshPrepayStatus();
                 }
             }
         } else if (requestCode == CHOOSE_DORMITORY_CODE) {

@@ -49,12 +49,7 @@ public class HeaterActivity extends WaterDeviceBaseActivity<IHeaterPresenter> im
 
     @Override
     protected View.OnClickListener setTitleClickListener() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changeDormitory();
-            }
-        };
+        return v -> changeDormitory();
     }
 
     public void changeDormitory() {
@@ -66,13 +61,8 @@ public class HeaterActivity extends WaterDeviceBaseActivity<IHeaterPresenter> im
 
     @Override
     protected View.OnClickListener setTopRightIconClickListener() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), WebActivity.class)
-                        .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_HELP));
-            }
-        };
+        return v -> startActivity(new Intent(getApplicationContext(), WebActivity.class)
+                .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_HELP));
     }
 
     @Override

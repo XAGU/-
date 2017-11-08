@@ -1,0 +1,63 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white80"
+    android:visibility="gone"
+    android:layout_marginTop="16dp"
+    android:id="@+id/ll_content_shower"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_shower_payed"
+        android:layout_gravity="center_horizontal"
+        tool:text="已预付10元"
+        android:textColor="#ff5555"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/trade_tip"
+        android:textColor="#999"
+        android:textSize="10sp"
+        android:layout_marginTop="13dp"
+        android:text="(100s)内未打开放水阀门，系统将自动停止本次服务\n消费金额以实际用水量为准"
+        android:gravity="center"
+        android:lineSpacingExtra="8dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <View
+        android:layout_marginTop="20dp"
+        android:background="#f3f3f3"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="12dp"
+        android:layout_height="2dp"/>
+
+    <com.xiaolian.amigo.ui.widget.swipebutton.SlideUnlockView
+        android:background="@color/colorDarke"
+        app:slideEnableText="@string/settlement"
+        app:slideDisableText="@string/slide_to_settlement"
+        app:slideDisableUnlockBlockResource="@drawable/ic_swipe_disable"
+        app:slideEnabledUnlockBlockResource="@drawable/ic_swipe_enable"
+        app:slideUnlockBlockResource="@drawable/ic_swipe_moving"
+        android:visibility="gone"
+        android:layout_marginTop="21dp"
+        android:layout_marginLeft="21dp"
+        android:layout_marginRight="21dp"
+        android:layout_marginBottom="21dp"
+        android:id="@+id/slideView"
+        android:layout_width="match_parent"
+        android:layout_height="48dp" />
+
+    <Button
+        android:enabled="true"
+        android:id="@+id/bt_stop_shower"
+        style="@style/Rect_button"
+        android:text="结束用水"
+        />
+</LinearLayout>

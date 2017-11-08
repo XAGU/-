@@ -9,4 +9,7 @@
     <integer name="publish_address_max_length">15</integer>
     <integer name="publish_contact_max_length">15</integer>
     <integer name="publish_content_max_length">100</integer>
+    <integer name="first">0</integer>
+    <integer name="second">1</integer>
+    <integer name="third">2</integer>
 </resources>

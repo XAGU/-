@@ -1,0 +1,53 @@
+<LinearLayout
+    android:background="@color/white90"
+    android:layout_marginTop="16dp"
+    android:id="@+id/ll_content_unconnected"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:visibility="visible"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.xiaolian.amigo.ui.widget.DotFlashView
+        android:id="@+id/dfv_dot"
+        app:firstColor="#4cff5555"
+        app:secondColor="#ff5555"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"/>
+
+
+    <TextView
+        android:id="@+id/tv_connect_status"
+        android:layout_marginTop="20dp"
+        android:text="正在连接设备, 请稍后"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        android:textColor="#ff5555"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:layout_marginTop="8dp"
+        android:textColor="#999"
+        android:textSize="10sp"
+        android:text="请靠近设备"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <View
+        android:layout_marginTop="20dp"
+        android:background="#f3f3f3"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="12dp"
+        android:layout_height="2dp"/>
+
+    <Button
+        android:enabled="false"
+        style="@style/Rect_button"
+        android:text="重新连接"
+        />
+</LinearLayout>
+

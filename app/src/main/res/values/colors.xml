@@ -47,6 +47,7 @@
     <color name="white40">#7fffffff</color>
     <color name="white33">#55ffffff</color>
     <color name="white80">#ccffffff</color>
+    <color name="white90">#e9ffffff</color>
 
 
     <color name="tag_edit_text_left">#aa000000</color>

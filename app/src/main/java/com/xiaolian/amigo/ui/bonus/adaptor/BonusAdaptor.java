@@ -11,6 +11,7 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Locale;
 
 import lombok.Data;
 
@@ -29,7 +30,7 @@ public class BonusAdaptor extends CommonAdapter<BonusAdaptor.BonusWrapper> {
 
     @Override
     protected void convert(ViewHolder holder, BonusWrapper bonusWrapper, int position) {
-        holder.setText(R.id.tv_amount, "¥" + String.valueOf(bonusWrapper.amount));
+        holder.setText(R.id.tv_amount, String.format(Locale.getDefault(), "¥%.0f", bonusWrapper.amount));
         holder.setText(R.id.tv_type, bonusWrapper.getName());
         holder.setText(R.id.tv_time_end, TimeUtils.millis2String(bonusWrapper.getTimeEnd(),
                 TimeUtils.MY_DATE_FORMAT2) + "到期");
@@ -55,7 +56,7 @@ public class BonusAdaptor extends CommonAdapter<BonusAdaptor.BonusWrapper> {
         // 红包类型
         Integer type;
         // 红包金额
-        Integer amount;
+        Double amount;
         // 到期时间
         Long timeEnd;
         // 描述信息
@@ -66,15 +67,18 @@ public class BonusAdaptor extends CommonAdapter<BonusAdaptor.BonusWrapper> {
         String name;
         // 红包id
         Long id;
+        // 备注
+        String remark;
 
         public BonusWrapper(Bonus bonus) {
             this.id = bonus.getId();
             this.type = bonus.getDeviceType();
-            this.amount = bonus.getAmount().intValue();
+            this.amount = bonus.getAmount();
             this.timeEnd = bonus.getEndTime();
             this.desc = bonus.getRemarks();
             this.timeLeft = bonus.getTimeLimit();
             this.name = bonus.getName();
+            this.remark = bonus.getRemarks();
         }
     }
 }

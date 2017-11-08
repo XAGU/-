@@ -1,5 +1,7 @@
 package com.xiaolian.amigo.data.network.model.dto.response;
 
+import com.xiaolian.amigo.data.network.model.bonus.Bonus;
+
 import java.util.List;
 
 import lombok.Data;
@@ -12,10 +14,24 @@ import lombok.Data;
 @Data
 public class OrderPreInfoDTO {
     /**
-     * 红包个数
+     * 红包
      */
-    Integer bonus;
-
-    List<PrepayOptionDTO> options;
+    Bonus bonus;
+    /**
+     * 预付金额
+     */
+    Double prepay;
+    /**
+     * 最小预付金额
+     */
+    Double minPrepay;
+    /**
+     * 余额
+     */
+    Double balance;
+    /**
+     * 客服电话
+     */
+    String csMobile;
 
 }

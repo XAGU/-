@@ -234,10 +234,6 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
                 selectedProblem += (problem.isChoose() ? 1 : 0);
             }
         }
-//        bt_submit.setEnabled(!TextUtils.isEmpty(et_tel.getText())
-//                && !TextUtils.isEmpty(et_content.getText())
-//                && !TextUtils.isEmpty(tv_location.getText())
-//                && selectedProblem != 0);
 
         allValidated = !TextUtils.isEmpty(location)
                 && selectedProblem > 0
@@ -262,11 +258,11 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
     void submit() {
         if (!allValidated) {
             if (TextUtils.isEmpty(location)) {
-                onError("请选择设备信息");
+                onError(getString(R.string.please_choose_device_info));
                 return;
             }
             if (selectedProblem == 0) {
-                onError("请选择设备问题");
+                onError(getString(R.string.please_choose_device_problem));
                 return;
             }
             for (TextView view : viewList) {

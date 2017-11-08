@@ -108,6 +108,6 @@ public abstract class WaterDeviceBasePresenter<V extends IWaterDeviceBaseView> e
             public void onError(Throwable e) {
                 super.onError(e);
             }
-        }, Schedulers.io());
+        });
     }
 }
