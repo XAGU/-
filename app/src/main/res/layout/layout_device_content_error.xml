@@ -1,9 +1,10 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
     android:background="@color/white90"
-    android:layout_marginTop="16dp"
+    android:paddingTop="21dp"
     android:id="@+id/ll_error"
+    tool:visibility="visible"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:visibility="gone"
@@ -19,8 +20,8 @@
 
     <TextView
         android:id="@+id/tv_error_title"
-        android:layout_marginTop="20dp"
-        android:text="与设备连接失败"
+        android:layout_marginTop="14dp"
+        android:text="@string/connect_error_title_1"
         android:textSize="17sp"
         android:textStyle="bold"
         android:textColor="#ff5555"
@@ -33,15 +34,16 @@
         android:layout_marginTop="13dp"
         android:textColor="#999"
         android:textSize="10sp"
-        android:text="请靠近设备"
+        android:text="@string/connect_error_tip_1"
         android:lineSpacingExtra="8dp"
         android:layout_gravity="center_horizontal"
         android:gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
+    <!--由于上方TextView行距为8dp，所以下方margin从20dp变为12dp-->
     <View
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="12dp"
         android:background="#f3f3f3"
         android:layout_gravity="center_horizontal"
         android:layout_width="12dp"
@@ -50,6 +52,6 @@
     <Button
         android:id="@+id/bt_error_handler"
         style="@style/Rect_button"
-        android:text="重新连接"
+        android:text="@string/connect_error_btn"
         />
 </LinearLayout>

@@ -73,6 +73,7 @@ public class RepairDetailPresenter<V extends IRepairDetailView> extends BasePres
     public void remind(Long sourceId) {
         RemindReqDTO reqDTO = new RemindReqDTO();
         reqDTO.setSourceId(sourceId);
+        // 2 表示维修
         reqDTO.setType(2);
         addObserver(manager.remind(reqDTO), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
 

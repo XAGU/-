@@ -10,6 +10,7 @@ import com.xiaolian.amigo.data.network.model.dto.request.QueryPersonalFundsListR
 import com.xiaolian.amigo.data.network.model.dto.request.QueryTimeValidReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.QueryUserThirdAccountReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.RechargeReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.request.RemindReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.SimpleQueryReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.WithdrawReqDTO;
@@ -108,6 +109,11 @@ public class WalletDataManager implements IWalletDataManager {
     @Override
     public Observable<ApiResult<FundsDTO>> queryWithdrawRechargeDetail(@Body SimpleReqDTO reqDTO) {
         return walletApi.queryWithdrawRechargeDetail(reqDTO);
+    }
+
+    @Override
+    public Observable<ApiResult<BooleanRespDTO>> remind(RemindReqDTO reqDTO) {
+        return walletApi.remind(reqDTO);
     }
 
     @Override

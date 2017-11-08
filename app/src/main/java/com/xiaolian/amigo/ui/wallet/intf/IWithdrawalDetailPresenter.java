@@ -12,4 +12,7 @@ public interface IWithdrawalDetailPresenter<V extends IWithdrawalDetailView> ext
     void requestData(Long id);
 
     String getToken();
+
+    // 提醒客服
+    void remind(Long sourceId);
 }

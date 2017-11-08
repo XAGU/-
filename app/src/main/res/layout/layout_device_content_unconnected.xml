@@ -1,6 +1,6 @@
 <LinearLayout
     android:background="@color/white90"
-    android:layout_marginTop="16dp"
+    android:paddingTop="21dp"
     android:id="@+id/ll_content_unconnected"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -19,8 +19,8 @@
 
     <TextView
         android:id="@+id/tv_connect_status"
-        android:layout_marginTop="20dp"
-        android:text="正在连接设备, 请稍后"
+        android:layout_marginTop="14dp"
+        android:text="@string/connecting_tip_1"
         android:textSize="17sp"
         android:textStyle="bold"
         android:textColor="#ff5555"
@@ -32,7 +32,7 @@
         android:layout_marginTop="8dp"
         android:textColor="#999"
         android:textSize="10sp"
-        android:text="请靠近设备"
+        android:text="@string/connect_error_tip_1"
         android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
@@ -47,7 +47,7 @@
     <Button
         android:enabled="false"
         style="@style/Rect_button"
-        android:text="重新连接"
+        android:text="@string/connect_error_btn"
         />
 </LinearLayout>
 

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:id="@+id/ll_order_error"
+    android:visibility="gone"
+    tool:visibility="visible"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/rl_back_bonus"
+        android:layout_width="match_parent"
+        android:layout_height="59dp">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:background="#eee" />
+
+        <TextView
+            style="@style/ContentText_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="@string/back_bonus_colon" />
+
+        <TextView
+            style="@style/ContentText_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/tv_change_amount"
+            android:text="￥"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_change_amount"
+            style="@style/ContentText_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/colorFullRed"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:background="#eee" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="117dp">
+
+        <TextView
+            style="@style/ContentText_main"
+            android:layout_width="wrap_content"
+            android:layout_height="58dp"
+            android:layout_alignParentLeft="true"
+            android:gravity="center"
+            android:text="@string/back_amount_colon" />
+
+        <TextView
+            android:id="@+id/tv_amount"
+            style="@style/ContentText_main"
+            android:layout_width="wrap_content"
+            android:layout_height="58dp"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:textColor="@color/colorFullRed"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            style="@style/ContentText_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/tv_amount"
+            android:text="￥"
+            android:textColor="@color/colorFullRed"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:layout_centerVertical="true"
+            android:background="#eee" />
+
+        <ImageView
+            android:id="@+id/iv_order_free"
+            android:layout_width="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@id/tv_amount"
+            android:src="@drawable/ic_order_free" />
+
+    </RelativeLayout>
+
+</LinearLayout>

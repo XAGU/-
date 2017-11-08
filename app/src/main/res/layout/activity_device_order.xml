@@ -267,21 +267,12 @@
 
             </LinearLayout>
 
-            <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_gravity="center_horizontal"-->
-                <!--android:layout_marginTop="21dp"-->
-                <!--android:layout_marginBottom="21dp"-->
-                <!--android:text="@string/prepay_order_tip"-->
-                <!--android:textColor="#999"-->
-                <!--android:textSize="12sp" />-->
             <Button
                 android:id="@+id/bt_ok"
                 style="@style/Rect_button"
                 android:layout_marginLeft="0dp"
                 android:layout_marginRight="0dp"
-                android:text="朕知道了"
+                android:text="@string/i_know"
                 android:enabled="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />

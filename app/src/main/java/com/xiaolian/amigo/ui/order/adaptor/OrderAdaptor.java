@@ -1,8 +1,6 @@
 package com.xiaolian.amigo.ui.order.adaptor;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +10,7 @@ import android.widget.TextView;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.network.model.order.Order;
-import com.xiaolian.amigo.ui.order.OrderDetailActivity;
 import com.xiaolian.amigo.util.CommonUtil;
-import com.xiaolian.amigo.util.Constant;
 
 import java.util.List;
 
@@ -32,6 +28,7 @@ public class OrderAdaptor extends RecyclerView.Adapter<OrderAdaptor.ViewHolder> 
     private OrderDetailClickListener listener;
     private List<OrderWrapper> orders;
     private Context context;
+    private int errorOrderColorRes = R.color.order_error;
 
     public OrderAdaptor(List<OrderWrapper> orders) {
         this.orders = orders;

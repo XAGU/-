@@ -18,4 +18,5 @@ public class FundsDTO {
     private Integer status;
     private Integer thirdAccountType;
     private String thirdAccountName;
+    private String csMobile;
 }

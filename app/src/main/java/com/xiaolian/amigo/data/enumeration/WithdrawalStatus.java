@@ -14,11 +14,21 @@ public enum WithdrawalStatus {
         public int getColorRes() {
             return R.color.colorFullRed;
         }
+
+        @Override
+        public String[] getNextOperations() {
+            return new String[] {"常见问题", "我要投诉"};
+        }
     },
     AUDIT_PENDING(1, "等待审核") {
         @Override
         public int getColorRes() {
             return R.color.colorFullRed;
+        }
+
+        @Override
+        public String[] getNextOperations() {
+            return new String[] {"提醒客服尽快处理", "常见问题"};
         }
     },
     AUDIT_FAIL(2, "审核失败") {
@@ -26,11 +36,21 @@ public enum WithdrawalStatus {
         public int getColorRes() {
             return R.color.colorFullRed;
         }
+
+        @Override
+        public String[] getNextOperations() {
+            return new String[] {"常见问题", "联系客服"};
+        }
     },
     THIRD_PENDING(3, "等待支付确认") {
         @Override
         public int getColorRes() {
             return R.color.colorFullRed;
+        }
+
+        @Override
+        public String[] getNextOperations() {
+            return new String[] {"常见问题", "我要投诉"};
         }
     },
     WITHDRAWAL_SUCCESS(4, "提现成功") {
@@ -38,11 +58,21 @@ public enum WithdrawalStatus {
         public int getColorRes() {
             return R.color.device_dispenser;
         }
+
+        @Override
+        public String[] getNextOperations() {
+            return new String[] {"常见问题", "我要投诉"};
+        }
     },
     WITHDRAWAL_FAIL(5, "提现失败") {
         @Override
         public int getColorRes() {
             return R.color.colorFullRed;
+        }
+
+        @Override
+        public String[] getNextOperations() {
+            return new String[] {"常见问题", "联系客服"};
         }
     };
     private int type;
@@ -54,6 +84,9 @@ public enum WithdrawalStatus {
     }
 
     public abstract int getColorRes();
+
+    // 获取下一步操作
+    public abstract String[] getNextOperations();
 
     public int getType() {
         return type;

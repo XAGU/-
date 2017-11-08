@@ -1,16 +1,17 @@
-<LinearLayout
-    android:background="@color/white90"
+<LinearLayout android:background="@color/white90"
     android:visibility="gone"
     android:id="@+id/ll_content_normal"
+    tool:visibility="visible"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingTop="21dp"
     android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tool="http://schemas.android.com/tools">
 
     <TextView
         android:id="@+id/tv_connect_tip_title"
-        android:layout_marginTop="20dp"
-        android:text="正在连接设备, 请稍后"
+        android:text="@string/connecting_tip_1"
         android:textSize="17sp"
         android:textStyle="bold"
         android:textColor="#ff5555"
@@ -23,7 +24,8 @@
         android:layout_marginTop="8dp"
         android:textColor="#999"
         android:textSize="10sp"
-        android:text="请靠近设备"
+        android:text="@string/connect_error_tip_1"
+        android:gravity="center"
         android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
@@ -37,11 +39,18 @@
         android:layout_height="2dp"/>
 
     <RelativeLayout
+        android:layout_marginTop="21dp"
         android:id="@+id/rl_choose_bonus"
-        android:background="@drawable/bg_tag_onclick"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         >
+        <View
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="@dimen/mainMarginLeftRight"
+            android:layout_marginRight="@dimen/mainMarginLeftRight"
+            android:background="#eee"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
 
         <TextView
             android:layout_marginLeft="@dimen/mainMarginLeftRight"
@@ -51,7 +60,8 @@
             android:textColor="#222"
             android:layout_centerVertical="true"
             android:textSize="12sp"
-            android:text="预计用水量" />
+            android:text="@string/use_bonus_colon"
+            />
 
 
         <ImageView
@@ -70,14 +80,14 @@
             android:textSize="12sp"
             android:textColor="#ff5555"
             android:layout_toLeftOf="@id/imageView2"
-            android:text="预付5元／1吨水" />
-
-        <!--<View-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="1dip"-->
-            <!--android:layout_alignParentBottom="true"-->
-            <!--android:layout_centerVertical="true"-->
-            <!--android:background="#eee" />-->
+            />
+        <View
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="@dimen/mainMarginLeftRight"
+            android:layout_marginRight="@dimen/mainMarginLeftRight"
+            android:background="#eee"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
 
     </RelativeLayout>
 

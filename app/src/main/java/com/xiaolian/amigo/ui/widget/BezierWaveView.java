@@ -119,6 +119,10 @@ public class BezierWaveView extends View {
         mPaint2.setStyle(Paint.Style.FILL_AND_STROKE);
         mPaint3.setStyle(Paint.Style.FILL_AND_STROKE);
 
+        mPaint1.setAntiAlias(true);
+        mPaint2.setAntiAlias(true);
+        mPaint3.setAntiAlias(true);
+
         mPaint1.setColor(getResources().getColor(R.color.white20));
         mPaint2.setColor(getResources().getColor(R.color.white50));
         mPaint3.setColor(getResources().getColor(R.color.white80));
@@ -176,13 +180,13 @@ public class BezierWaveView extends View {
         }
     }
 
-    @Override
-    public void onWindowFocusChanged(boolean hasWindowFocus) {
-        super.onWindowFocusChanged(hasWindowFocus);
-        if (!hasWindowFocus) {
-            endAnimation();
-        }
-    }
+//    @Override
+//    public void onWindowFocusChanged(boolean hasWindowFocus) {
+//        super.onWindowFocusChanged(hasWindowFocus);
+//        if (!hasWindowFocus) {
+//            endAnimation();
+//        }
+//    }
 
     private void endAnimation() {
         if (mAnimator1 != null) {
@@ -197,6 +201,11 @@ public class BezierWaveView extends View {
             mAnimator3.cancel();
             mAnimator3.end();
         }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
     }
 
     @Override

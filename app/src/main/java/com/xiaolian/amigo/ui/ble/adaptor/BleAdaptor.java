@@ -10,14 +10,8 @@ import android.widget.TextView;
 
 import com.polidea.rxandroidble.scan.ScanResult;
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.data.enumeration.Device;
-import com.xiaolian.amigo.data.network.model.order.Order;
 import com.xiaolian.amigo.ui.ble.BleInteractiveActivity;
-import com.xiaolian.amigo.ui.order.OrderDetailActivity;
-import com.xiaolian.amigo.ui.order.adaptor.OrderAdaptor;
 import com.xiaolian.amigo.util.Constant;
-import com.zhy.adapter.recyclerview.CommonAdapter;
-import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.List;
 

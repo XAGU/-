@@ -1,17 +1,27 @@
 package com.xiaolian.amigo.ui.device;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.AbsoluteSizeSpan;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -44,7 +54,10 @@ import com.xiaolian.amigo.ui.widget.dialog.IOSAlertDialog;
 import com.xiaolian.amigo.ui.widget.swipebutton.SlideUnlockView;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.util.DensityUtil;
+import com.xiaolian.amigo.util.DimentionUtils;
 import com.xiaolian.amigo.util.TimeUtils;
+import com.xiaolian.amigo.util.Truss;
 
 import java.util.List;
 
@@ -138,6 +151,12 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
      */
     @BindView(R.id.rl_header)
     RelativeLayout rl_header;
+
+    /**
+     * 底部
+     */
+    @BindView(R.id.fl_bottom)
+    FrameLayout fl_bottom;
 
     /**
      * 右上角按钮
@@ -303,6 +322,9 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     protected abstract
     @DrawableRes
     int setHeaderBackgroundDrawable();
+    protected abstract
+    @ColorRes
+    int setBottomBackgroundColor();
 
     private void initPresenter() {
         presenter = setPresenter();
@@ -312,6 +334,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         tv_connect_status.setText(recorvery ? "正在恢复上一次用水" : "正在连接设备, 请稍后");
         tv_device_title.setText(location);
         setHeaderBackground(setHeaderBackgroundDrawable());
+        setBottomBackground(setBottomBackgroundColor());
         setHeaderIcon(setHeaderIconDrawable());
         setTopRightIcon(setTopRightIconDrawable());
         setTopRightIconClickEvent(setTopRightIconClickListener());
@@ -383,6 +406,10 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     public void setHeaderBackground(int headBackground) {
         rl_header.setBackgroundResource(headBackground);
     }
+    // 设置底部颜色
+    private void setBottomBackground(int color) {
+        fl_bottom.setBackgroundResource(color);
+    }
 
     // 更新预付界面
     private void refreshPrepayStatus() {
@@ -402,14 +429,15 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                     prepayAmount = 0.0;
                     needRecharge = false;
                     buttonText = getString(R.string.prepay_start_shower, "0");
-                    showBonusLayout(tip, buttonText, bonusRemark);
+
+                    showBonusLayout(tip, new SpannableStringBuilder(buttonText), bonusRemark);
                 }
                 // 红包金额小于最小预付金额  需要充值
                 else {
                     tip = getString(R.string.connect_prepay_tip_7, String.valueOf(minPrepay));
                     needRecharge = true;
                     buttonText = getString(R.string.to_recharge);
-                    showBonusLayout(tip, buttonText, bonusRemark);
+                    showBonusLayout(tip, new SpannableStringBuilder(buttonText), bonusRemark);
                 }
 
             }
@@ -419,9 +447,20 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                 if (balance + bonusAmount >= prepay) {
                     tip = getString(R.string.connect_prepay_tip_4, String.valueOf(prepay));
                     prepayAmount = prepay - bonusAmount;
+                    if (prepayAmount < 0) {
+                        prepayAmount = 0.0;
+                    }
                     needRecharge = false;
-                    buttonText = getString(R.string.prepay_start_shower, String.valueOf(prepayAmount));
-                    showBonusLayout(tip, buttonText, bonusRemark);
+                    SpannableStringBuilder builder = new SpannableStringBuilder();
+                    builder.append(getString(R.string.prepay));
+                    buttonText = String.valueOf(prepayAmount) + getString(R.string.yuan);
+                    SpannableString buttonSpan = new SpannableString(buttonText);
+                    buttonSpan.setSpan(new AbsoluteSizeSpan(
+                            DimentionUtils.convertSpToPixels(18, this)), 0, buttonText.length(),
+                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    builder.append(buttonSpan);
+                    builder.append(getString(R.string.comma_start_shower));
+                    showBonusLayout(tip, builder, bonusRemark);
                 }
                 // 余额加红包小于预付金额 大于等于最小预付金额
                 else if (balance + bonusAmount >= minPrepay
@@ -429,15 +468,23 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                     tip = getString(R.string.connect_prepay_tip_6, String.valueOf(prepay));
                     prepayAmount = balance;
                     needRecharge = false;
-                    buttonText = getString(R.string.prepay_start_shower, String.valueOf(prepayAmount));
-                    showBonusLayout(tip, buttonText, bonusRemark);
+                    SpannableStringBuilder builder = new SpannableStringBuilder();
+                    builder.append(getString(R.string.prepay));
+                    buttonText = String.valueOf(prepayAmount) + getString(R.string.yuan);
+                    SpannableString buttonSpan = new SpannableString(buttonText);
+                    buttonSpan.setSpan(new AbsoluteSizeSpan(
+                                    DimentionUtils.convertSpToPixels(18, this)), 0, buttonText.length(),
+                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    builder.append(buttonSpan);
+                    builder.append(getString(R.string.comma_start_shower));
+                    showBonusLayout(tip, builder, bonusRemark);
                 }
                 // 余额加红包小于最小预付金额
                 else if (balance + bonusAmount < minPrepay) {
                     tip = getString(R.string.connect_prepay_tip_7, String.valueOf(minPrepay));
                     needRecharge = true;
                     buttonText = getString(R.string.to_recharge);
-                    showBonusLayout(tip, buttonText, bonusRemark);
+                    showBonusLayout(tip, new SpannableStringBuilder(buttonText), bonusRemark);
                 }
             }
         }
@@ -453,16 +500,32 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                     prepayAmount = prepay;
                     title = getString(R.string.need_prepay_amount, String.valueOf(prepayAmount));
                     tip = getString(R.string.connect_prepay_tip_1);
-                    buttonText = getString(R.string.prepay_start_shower, String.valueOf(prepayAmount));
+                    SpannableStringBuilder builder = new SpannableStringBuilder();
+                    builder.append(getString(R.string.prepay));
+                    buttonText = String.valueOf(prepayAmount) + getString(R.string.yuan);
+                    SpannableString buttonSpan = new SpannableString(buttonText);
+                    buttonSpan.setSpan(new AbsoluteSizeSpan(
+                                    DimentionUtils.convertSpToPixels(18, this)), 0, buttonText.length(),
+                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    builder.append(buttonSpan);
+                    builder.append(getString(R.string.comma_start_shower));
                     needRecharge = false;
-                    showNoBonusLayout(title, tip, buttonText);
+                    showNoBonusLayout(title, tip, builder);
                 } else {
                     prepayAmount = balance;
                     title = getString(R.string.need_prepay_amount, String.valueOf(prepayAmount));
                     tip = getString(R.string.connect_prepay_tip_2, String.valueOf(prepay));
-                    buttonText = getString(R.string.prepay_start_shower, String.valueOf(prepayAmount));
                     needRecharge = false;
-                    showNoBonusLayout(title, tip, buttonText);
+                    SpannableStringBuilder builder = new SpannableStringBuilder();
+                    builder.append(getString(R.string.prepay));
+                    buttonText = String.valueOf(prepayAmount) + getString(R.string.yuan);
+                    SpannableString buttonSpan = new SpannableString(buttonText);
+                    buttonSpan.setSpan(new AbsoluteSizeSpan(
+                                    DimentionUtils.convertSpToPixels(18, this)), 0, buttonText.length(),
+                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    builder.append(buttonSpan);
+                    builder.append(getString(R.string.comma_start_shower));
+                    showNoBonusLayout(title, tip, builder);
                 }
             }
             // 余额不足
@@ -471,7 +534,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                 tip = getString(R.string.connect_prepay_tip_3, String.valueOf(minPrepay));
                 buttonText = getString(R.string.to_recharge);
                 needRecharge = true;
-                showNoBonusLayout(title, tip, buttonText);
+                showNoBonusLayout(title, tip, new SpannableStringBuilder(buttonText));
             }
         }
 
@@ -483,6 +546,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         if (data.getBonus() != null) {
             bonusId = data.getBonus().getId();
             bonusAmount = data.getBonus().getAmount();
+            bonusRemark = data.getBonus().getRemarks();
         }
         prepay = data.getPrepay();
         minPrepay = data.getMinPrepay();
@@ -490,7 +554,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         refreshPrepayStatus();
     }
 
-    private void showBonusLayout(String tip, String buttonText, String remarks) {
+    private void showBonusLayout(String tip, SpannableStringBuilder buttonText, String remarks) {
         rl_choose_bonus.setVisibility(View.VISIBLE);
         tv_connect_tip_title.setVisibility(View.GONE);
         tv_connect_tip.setVisibility(View.VISIBLE);
@@ -500,7 +564,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         tv_water_right.setText(remarks);
     }
 
-    private void showNoBonusLayout(String title, String tip, String buttonText) {
+    private void showNoBonusLayout(String title, String tip, SpannableStringBuilder buttonText) {
         rl_choose_bonus.setVisibility(View.GONE);
         tv_connect_tip_title.setVisibility(View.VISIBLE);
         tv_connect_tip.setVisibility(View.VISIBLE);
@@ -740,11 +804,11 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             // 从未结算订单列表跳转过来，tip展示需要标注订单时间等信息
             if (!homePageJump) {
                 String time = TimeUtils.convertTimestampToAccurateFormat(orderStatus.getCreateTime());
-                String tip = String.format("你%s在%s使用了%s\n点击下方按钮进行找零", time, orderStatus.getLocation(), Device.getDevice(deviceType).getDesc());
+                String tip = String.format("你%s在%s使用了%s\n点击滑动下方按钮进行结算找零", time, orderStatus.getLocation(), Device.getDevice(deviceType).getDesc());
 //                    String tip = String.format("您%s在%s使用预付了%s元的用水已结束\n点击下方按钮进行找零", time, orderStatus.getLocation(), String.valueOf(orderStatus.getPrepay().intValue()));
                 trade_tip.setText(tip);
             } else {
-                trade_tip.setText(getString(R.string.balance_trade_tip));
+                trade_tip.setText(getString(R.string.balance_trade_tip_2));
             }
             bt_stop_shower.setText(getString(R.string.settlement_and_change));
             bt_stop_shower.setVisibility(View.GONE);
@@ -753,7 +817,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             slideView.setEnableStr(getString(R.string.settlement));
         } else {
             tv_shower_payed.setText(getString(R.string.prepaid, String.valueOf(prepayAmount)));
-            trade_tip.setText(getString(R.string.balance_trade_tip));
+            trade_tip.setText(getString(R.string.balance_trade_tip_2));
             bt_stop_shower.setText(getString(R.string.settlement_and_change));
             bt_stop_shower.setVisibility(View.GONE);
             slideView.setVisibility(View.VISIBLE);

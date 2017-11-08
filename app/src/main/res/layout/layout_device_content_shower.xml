@@ -1,9 +1,10 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/white80"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:background="@color/white90"
+    android:paddingTop="21dp"
     android:visibility="gone"
-    android:layout_marginTop="16dp"
+    tool:visibility="visible"
     android:id="@+id/ll_content_shower"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -24,15 +25,16 @@
         android:textColor="#999"
         android:textSize="10sp"
         android:layout_marginTop="13dp"
-        android:text="(100s)内未打开放水阀门，系统将自动停止本次服务\n消费金额以实际用水量为准"
+        android:text="@string/connected_tip_1"
         android:gravity="center"
         android:lineSpacingExtra="8dp"
         android:layout_gravity="center_horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
+    <!--由于上方TextView行距为8dp，所以下方margin从20dp变为12dp-->
     <View
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="12dp"
         android:background="#f3f3f3"
         android:layout_gravity="center_horizontal"
         android:layout_width="12dp"
@@ -58,6 +60,5 @@
         android:enabled="true"
         android:id="@+id/bt_stop_shower"
         style="@style/Rect_button"
-        android:text="结束用水"
         />
 </LinearLayout>

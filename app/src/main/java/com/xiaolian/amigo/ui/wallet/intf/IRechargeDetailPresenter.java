@@ -12,4 +12,6 @@ public interface IRechargeDetailPresenter<V extends IRechargeDetailView> extends
     void requestData(Long id);
 
     String getToken();
+
+    void remind(Long id);
 }

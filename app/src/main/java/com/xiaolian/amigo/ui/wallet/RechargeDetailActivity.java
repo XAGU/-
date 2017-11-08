@@ -122,6 +122,41 @@ public class RechargeDetailActivity extends WalletBaseActivity implements IRecha
             tv_reason.setText("失败原因");
         }
 
+        left_oper.setText(RechargeStatus.getRechargeStatus(data.getStatus()).getNextOperations()[0]);
+        right_oper.setText(RechargeStatus.getRechargeStatus(data.getStatus()).getNextOperations()[1]);
+        left_oper.setOnClickListener((v) -> {
+            switch (RechargeStatus.getRechargeStatus(data.getStatus())) {
+                case AUDIT_PENDING:
+                    // 提现客服尽快处理
+                    presenter.remind(data.getId());
+                    break;
+                default:
+                    startActivity(new Intent(this, WebActivity.class)
+                            .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_HELP));
+                    break;
+            }
+        });
+        right_oper.setOnClickListener((v) -> {
+            switch (RechargeStatus.getRechargeStatus(data.getStatus())) {
+                case AUDIT_PENDING:
+                    startActivity(new Intent(this, WebActivity.class)
+                            .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_HELP));
+                    break;
+                case AUDIT_FAIL:
+                case WITHDRAWAL_FAIL:
+                    CommonUtil.call(RechargeDetailActivity.this, data.getCsMobile());
+                    break;
+                default:
+                    startActivity(new Intent(this, WebActivity.class)
+                            .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_COMPLAINT
+                                    + "?token=" + presenter.getToken()
+                                    + "&orderId=" + id
+                                    + "&orderNo=" + orderNo
+                                    + "&orderType=" + ComplaintType.WITHDRAW.getType()));
+                    break;
+            }
+        });
+
         items.add(new WithdrawRechargeDetailAdapter.Item("充值方式：",
                 PayWay.getPayWay(data.getThirdAccountType()).getDesc()));
         items.add(new WithdrawRechargeDetailAdapter.Item("充值账号：",

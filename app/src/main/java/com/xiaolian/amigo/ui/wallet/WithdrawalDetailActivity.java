@@ -13,6 +13,7 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.ComplaintType;
 import com.xiaolian.amigo.data.enumeration.PayWay;
 import com.xiaolian.amigo.data.enumeration.RechargeStatus;
+import com.xiaolian.amigo.data.enumeration.WithdrawalStatus;
 import com.xiaolian.amigo.data.network.model.dto.response.FundsDTO;
 import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.ui.wallet.adaptor.WithdrawRechargeDetailAdapter;
@@ -70,7 +71,7 @@ public class WithdrawalDetailActivity extends WalletBaseActivity implements IWit
     RecyclerView recyclerView;
 
     private Long id;
-    private String deviceNo;
+    private String orderNo;
     @Override
     protected void initView() {
         setUnBinder(ButterKnife.bind(this));
@@ -108,17 +109,51 @@ public class WithdrawalDetailActivity extends WalletBaseActivity implements IWit
 
     @Override
     public void render(FundsDTO data) {
-        deviceNo = data.getOrderNo();
+        orderNo = data.getOrderNo();
         tv_amount.setText("¥" + data.getAmount());
-        tv_status.setText(RechargeStatus.getRechargeStatus(data.getStatus()).getDesc());
+        tv_status.setText(WithdrawalStatus.getWithdrawalStatus(data.getStatus()).getDesc());
         tv_status.setTextColor(
-                ContextCompat.getColor(this,RechargeStatus.getRechargeStatus(data.getStatus()).getColorRes()));
-        if (CommonUtil.equals(data.getStatus(), RechargeStatus.AUDIT_FAIL)
+                ContextCompat.getColor(this,WithdrawalStatus.getWithdrawalStatus(data.getStatus()).getColorRes()));
+        if (CommonUtil.equals(data.getStatus(), WithdrawalStatus.AUDIT_FAIL)
                 && !TextUtils.isEmpty(data.getReason())) {
             ll_reason.setVisibility(View.VISIBLE);
             tv_reason_content.setText(data.getReason());
             tv_reason.setText("未通过原因");
         }
+        left_oper.setText(WithdrawalStatus.getWithdrawalStatus(data.getStatus()).getNextOperations()[0]);
+        right_oper.setText(WithdrawalStatus.getWithdrawalStatus(data.getStatus()).getNextOperations()[1]);
+        left_oper.setOnClickListener((v) -> {
+            switch (WithdrawalStatus.getWithdrawalStatus(data.getStatus())) {
+                case AUDIT_PENDING:
+                    // 提现客服尽快处理
+                    presenter.remind(data.getId());
+                    break;
+                default:
+                    startActivity(new Intent(this, WebActivity.class)
+                            .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_HELP));
+                    break;
+            }
+        });
+        right_oper.setOnClickListener((v) -> {
+            switch (WithdrawalStatus.getWithdrawalStatus(data.getStatus())) {
+                case AUDIT_PENDING:
+                    startActivity(new Intent(this, WebActivity.class)
+                            .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_HELP));
+                    break;
+                case AUDIT_FAIL:
+                case WITHDRAWAL_FAIL:
+                    CommonUtil.call(WithdrawalDetailActivity.this, data.getCsMobile());
+                    break;
+                default:
+                    startActivity(new Intent(this, WebActivity.class)
+                            .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_COMPLAINT
+                                    + "?token=" + presenter.getToken()
+                                    + "&orderId=" + id
+                                    + "&orderNo=" + orderNo
+                                    + "&orderType=" + ComplaintType.WITHDRAW.getType()));
+                    break;
+            }
+        });
 
         items.add(new WithdrawRechargeDetailAdapter.Item("提现方式：",
                 PayWay.getPayWay(data.getThirdAccountType()).getDesc()));
@@ -130,21 +165,5 @@ public class WithdrawalDetailActivity extends WalletBaseActivity implements IWit
                 data.getOrderNo()));
         items.add(new WithdrawRechargeDetailAdapter.Item(null, null));
         adapter.notifyDataSetChanged();
-    }
-
-    @OnClick(R.id.left_oper)
-    public void onLeftOper() {
-        startActivity(new Intent(this, WebActivity.class)
-                .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_HELP));
-    }
-
-    @OnClick(R.id.right_oper)
-    public void onRightOper() {
-        startActivity(new Intent(this, WebActivity.class)
-                .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_COMPLAINT
-                            + "?token=" + presenter.getToken()
-                            + "&orderId=" + id
-                            + "&orderNo=" + deviceNo
-                            + "&orderType=" + ComplaintType.WITHDRAW.getType()));
     }
 }

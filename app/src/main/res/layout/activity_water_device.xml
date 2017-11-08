@@ -57,7 +57,7 @@
 
     </RelativeLayout>
     <FrameLayout
-        android:background="#ff9a64"
+        android:id="@+id/fl_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
             <include

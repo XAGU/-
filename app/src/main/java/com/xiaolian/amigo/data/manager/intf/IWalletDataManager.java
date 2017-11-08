@@ -20,4 +20,5 @@ public interface IWalletDataManager extends IWalletApi {
     String getLastRechargeAmount();
 
     void setLastRechargeAmount(String amount);
+
 }

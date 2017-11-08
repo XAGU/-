@@ -103,6 +103,7 @@
     <string name="please_choose_found_time">请选择捡到物品的时间</string>
     <string name="not_use_bonus">不使用红包</string>
     <string name="prepay_money">预付金额</string>
+    <string name="prepay_money_colon">预付金额：</string>
     <string name="withdrawal">提现</string>
     <string name="error_tip">网络异常</string>
     <string name="please_enter_password_to_verify">请输入登录密码进行验证</string>
@@ -110,9 +111,12 @@
     <string name="notice_center">通知中心</string>
     <string name="prepay_order">待找零订单</string>
     <string name="balance_trade_tip">100s内未打开放水阀门，系统将自动停止本次服务\n消费金额以实际用水量为准\n用水结束后请务必点击下方"结束找零"按钮</string>
+    <string name="balance_trade_tip_2">用水结束后请务必滑动下方按钮，进行结算找零\n消费金额以实际用水量为准</string>
     <string name="bonus_trade_tip">红包金额对应水量上线，一旦使用则立即消耗\n点击下方按钮即结束用水</string>
     <string name="more">更多</string>
     <string name="about_us">关于我们</string>
+    <string name="connected_tip_1">(100s)内未打开放水阀门，系统将自动停止本次服务\n消费金额以实际用水量为准</string>
+    <string name="connecting_tip_1">正在连接设备, 请稍后</string>
     <string name="connect_error_tip_1">请靠近设备</string>
     <string name="connect_error_tip_2">请长按设备上的物理按钮以结束用水，然后重新连接\n给你带来的不便敬请谅解！</string>
     <string name="connect_error_tip_3">网络连接超时，请检查你的网络</string>
@@ -191,6 +195,7 @@
     <string name="need_prepay_amount">需预付%1$s元</string>
     <string name="connect_prepay_tip_1">使用结束后请务必滑动按钮进行结算找零\n当前没有可用红包哦</string>
     <string name="prepay_start_shower">预付%1$s元，开始洗澡</string>
+    <string name="comma_start_shower">，开始洗澡</string>
     <string name="connect_prepay_tip_2">你当前余额不足%1$s元，需预付全部余额\n使用结束后请结算找零</string>
     <string name="prepay_no_balance">余额不足</string>
     <string name="connect_prepay_tip_3">你当前余额不足%1$s元，请前往充值\n充值后再来使用哦</string>
@@ -201,4 +206,13 @@
     <string name="connect_prepay_tip_6">（你当前预付总金额不足%1$s元,需预付全部余额）</string>
     <string name="prepaid">已预付%1$s元</string>
     <string name="settlement_and_change">结算找零</string>
+    <string name="use_time_colon">使用时间：</string>
+    <string name="device_location_colon">设备位置：</string>
+    <string name="order_number_colon">订单号：</string>
+    <string name="back_bonus_colon">退还红包：</string>
+    <string name="back_amount_colon">退还金额：</string>
+    <string name="real_pay_colon">实际扣款：</string>
+    <string name="change_amount_colon">找零金额：</string>
+    <string name="yuan">元</string>
+    <string name="prepay">预付</string>
 </resources>

@@ -43,6 +43,11 @@ public class HeaterActivity extends WaterDeviceBaseActivity<IHeaterPresenter> im
     }
 
     @Override
+    protected int setBottomBackgroundColor() {
+        return R.color.heater_gradient_start;
+    }
+
+    @Override
     protected String setSubtitleString() {
         return getString(R.string.change_dormitory);
     }
