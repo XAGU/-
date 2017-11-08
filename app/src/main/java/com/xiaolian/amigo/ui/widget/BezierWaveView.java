@@ -206,14 +206,15 @@ public class BezierWaveView extends View {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
+        endAnimation();
     }
 
-    @Override
-    protected void onWindowVisibilityChanged(int visibility) {
-        super.onWindowVisibilityChanged(visibility);
-        if (visibility != VISIBLE) {
-            endAnimation();
-        }
-    }
+//    @Override
+//    protected void onWindowVisibilityChanged(int visibility) {
+//        super.onWindowVisibilityChanged(visibility);
+//        if (visibility != VISIBLE) {
+//            endAnimation();
+//        }
+//    }
 
 }

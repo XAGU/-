@@ -38,8 +38,8 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
 
     @BindView(R.id.tv_time)
     TextView tv_time;
-    @BindView(R.id.tv_device_info)
-    TextView tv_device_info;
+    @BindView(R.id.tv_device_location)
+    TextView tv_device_location;
     @BindView(R.id.tv_order_no)
     TextView tv_order_no;
     @BindView(R.id.tv_pay_method)
@@ -91,9 +91,9 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
         tv_time.setText(CommonUtil.stampToDate(respDTO.getCreateTime()));
         Device device = Device.getDevice(respDTO.getDeviceType());
         if (device != null) {
-            tv_device_info.setText(device.getDesc() + " " + respDTO.getLocation());
+            tv_device_location.setText(device.getDesc() + " " + respDTO.getLocation());
         } else {
-            tv_device_info.setText("未知设备 " + respDTO.getLocation());
+            tv_device_location.setText("未知设备 " + respDTO.getLocation());
         }
         tv_order_no.setText(respDTO.getOrderNo());
     }

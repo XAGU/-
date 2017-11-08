@@ -52,11 +52,20 @@ public class OrderAdaptor extends RecyclerView.Adapter<OrderAdaptor.ViewHolder> 
             listener.orderDetailClick(holder.order);
         });
         if (null != wrapper) {
-            holder.v_type.setBackgroundResource(Device.getDevice(wrapper.getType()).getColorRes());
-            holder.tv_device.setText(wrapper.getDevice());
-            holder.tv_time.setText(wrapper.getTime());
-            holder.tv_amount.setText(String.valueOf(wrapper.getAmount()));
-            holder.order = wrapper.getOrder();
+            // status为3表示异常订单
+            if (CommonUtil.equals(wrapper.getOrder().getStatus(), 3)) {
+                holder.v_type.setBackgroundResource(errorOrderColorRes);
+                holder.tv_device.setText(wrapper.getDevice());
+                holder.tv_time.setText(wrapper.getTime());
+                holder.tv_amount.setText("免费");
+                holder.order = wrapper.getOrder();
+            } else {
+                holder.v_type.setBackgroundResource(Device.getDevice(wrapper.getType()).getColorRes());
+                holder.tv_device.setText(wrapper.getDevice());
+                holder.tv_time.setText(wrapper.getTime());
+                holder.tv_amount.setText(String.valueOf(wrapper.getAmount()));
+                holder.order = wrapper.getOrder();
+            }
         }
     }
 

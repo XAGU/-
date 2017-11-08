@@ -59,6 +59,7 @@ import com.xiaolian.amigo.util.DimentionUtils;
 import com.xiaolian.amigo.util.TimeUtils;
 import com.xiaolian.amigo.util.Truss;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import butterknife.BindView;
@@ -287,6 +288,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     private CountDownTimer timer;
     private volatile boolean userWater = false;
     private boolean needRecharge;
+    private DecimalFormat df = new DecimalFormat("###.##");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -425,16 +427,25 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             if (balance == 0) {
                 // 红包金额大于等于最小预付金额
                 if (bonusAmount >= minPrepay) {
-                    tip = getString(R.string.connect_prepay_tip_5, String.valueOf(minPrepay));
+                    tip = getString(R.string.connect_prepay_tip_5, df.format(minPrepay));
                     prepayAmount = 0.0;
                     needRecharge = false;
                     buttonText = getString(R.string.prepay_start_shower, "0");
+                    SpannableStringBuilder builder = new SpannableStringBuilder();
+                    builder.append(getString(R.string.prepay));
+                    buttonText = df.format(prepayAmount) + getString(R.string.yuan);
+                    SpannableString buttonSpan = new SpannableString(buttonText);
+                    buttonSpan.setSpan(new AbsoluteSizeSpan(
+                                    DimentionUtils.convertSpToPixels(18, this)), 0, buttonText.length(),
+                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    builder.append(buttonSpan);
+                    builder.append(getString(R.string.comma_start_shower));
 
-                    showBonusLayout(tip, new SpannableStringBuilder(buttonText), bonusRemark);
+                    showBonusLayout(tip, builder, bonusRemark);
                 }
                 // 红包金额小于最小预付金额  需要充值
                 else {
-                    tip = getString(R.string.connect_prepay_tip_7, String.valueOf(minPrepay));
+                    tip = getString(R.string.connect_prepay_tip_7, df.format(minPrepay));
                     needRecharge = true;
                     buttonText = getString(R.string.to_recharge);
                     showBonusLayout(tip, new SpannableStringBuilder(buttonText), bonusRemark);
@@ -445,7 +456,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             else {
                 // 余额加红包大于等于预付金额
                 if (balance + bonusAmount >= prepay) {
-                    tip = getString(R.string.connect_prepay_tip_4, String.valueOf(prepay));
+                    tip = getString(R.string.connect_prepay_tip_4, df.format(prepay));
                     prepayAmount = prepay - bonusAmount;
                     if (prepayAmount < 0) {
                         prepayAmount = 0.0;
@@ -453,7 +464,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                     needRecharge = false;
                     SpannableStringBuilder builder = new SpannableStringBuilder();
                     builder.append(getString(R.string.prepay));
-                    buttonText = String.valueOf(prepayAmount) + getString(R.string.yuan);
+                    buttonText = df.format(prepayAmount) + getString(R.string.yuan);
                     SpannableString buttonSpan = new SpannableString(buttonText);
                     buttonSpan.setSpan(new AbsoluteSizeSpan(
                             DimentionUtils.convertSpToPixels(18, this)), 0, buttonText.length(),
@@ -465,12 +476,12 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                 // 余额加红包小于预付金额 大于等于最小预付金额
                 else if (balance + bonusAmount >= minPrepay
                         && balance + bonusAmount < prepay) {
-                    tip = getString(R.string.connect_prepay_tip_6, String.valueOf(prepay));
+                    tip = getString(R.string.connect_prepay_tip_6, df.format(prepay));
                     prepayAmount = balance;
                     needRecharge = false;
                     SpannableStringBuilder builder = new SpannableStringBuilder();
                     builder.append(getString(R.string.prepay));
-                    buttonText = String.valueOf(prepayAmount) + getString(R.string.yuan);
+                    buttonText = df.format(prepayAmount) + getString(R.string.yuan);
                     SpannableString buttonSpan = new SpannableString(buttonText);
                     buttonSpan.setSpan(new AbsoluteSizeSpan(
                                     DimentionUtils.convertSpToPixels(18, this)), 0, buttonText.length(),
@@ -481,7 +492,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                 }
                 // 余额加红包小于最小预付金额
                 else if (balance + bonusAmount < minPrepay) {
-                    tip = getString(R.string.connect_prepay_tip_7, String.valueOf(minPrepay));
+                    tip = getString(R.string.connect_prepay_tip_7, df.format(minPrepay));
                     needRecharge = true;
                     buttonText = getString(R.string.to_recharge);
                     showBonusLayout(tip, new SpannableStringBuilder(buttonText), bonusRemark);
@@ -498,11 +509,11 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                 // 余额大于等于预付金额
                 if (balance >= prepay) {
                     prepayAmount = prepay;
-                    title = getString(R.string.need_prepay_amount, String.valueOf(prepayAmount));
+                    title = getString(R.string.need_prepay_amount, df.format(prepayAmount));
                     tip = getString(R.string.connect_prepay_tip_1);
                     SpannableStringBuilder builder = new SpannableStringBuilder();
                     builder.append(getString(R.string.prepay));
-                    buttonText = String.valueOf(prepayAmount) + getString(R.string.yuan);
+                    buttonText = df.format(prepayAmount) + getString(R.string.yuan);
                     SpannableString buttonSpan = new SpannableString(buttonText);
                     buttonSpan.setSpan(new AbsoluteSizeSpan(
                                     DimentionUtils.convertSpToPixels(18, this)), 0, buttonText.length(),
@@ -513,12 +524,12 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                     showNoBonusLayout(title, tip, builder);
                 } else {
                     prepayAmount = balance;
-                    title = getString(R.string.need_prepay_amount, String.valueOf(prepayAmount));
-                    tip = getString(R.string.connect_prepay_tip_2, String.valueOf(prepay));
+                    title = getString(R.string.need_prepay_amount, df.format(prepayAmount));
+                    tip = getString(R.string.connect_prepay_tip_2, df.format(prepay));
                     needRecharge = false;
                     SpannableStringBuilder builder = new SpannableStringBuilder();
                     builder.append(getString(R.string.prepay));
-                    buttonText = String.valueOf(prepayAmount) + getString(R.string.yuan);
+                    buttonText = df.format(prepayAmount) + getString(R.string.yuan);
                     SpannableString buttonSpan = new SpannableString(buttonText);
                     buttonSpan.setSpan(new AbsoluteSizeSpan(
                                     DimentionUtils.convertSpToPixels(18, this)), 0, buttonText.length(),
@@ -531,7 +542,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             // 余额不足
             else {
                 title = getString(R.string.prepay_no_balance);
-                tip = getString(R.string.connect_prepay_tip_3, String.valueOf(minPrepay));
+                tip = getString(R.string.connect_prepay_tip_3, df.format(minPrepay));
                 buttonText = getString(R.string.to_recharge);
                 needRecharge = true;
                 showNoBonusLayout(title, tip, new SpannableStringBuilder(buttonText));

@@ -215,4 +215,5 @@
     <string name="change_amount_colon">找零金额：</string>
     <string name="yuan">元</string>
     <string name="prepay">预付</string>
+    <string name="to_change">前往找零</string>
 </resources>
