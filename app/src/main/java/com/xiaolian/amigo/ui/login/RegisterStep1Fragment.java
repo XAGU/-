@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.login;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,6 +19,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.ui.base.WebActivity;
+import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.CountDownButtonHelper;
 import com.xiaolian.amigo.util.ViewUtil;
 
@@ -59,6 +62,12 @@ public class RegisterStep1Fragment extends Fragment {
             ((LoginActivity) getActivity()).sendVerificationCode(et_mobile.getText().toString());
         }
         et_verification_code.requestFocus();
+    }
+
+    @OnClick(R.id.tv_agreement)
+    void onAgreementClick() {
+        startActivity(new Intent(getActivity(), WebActivity.class)
+                .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_AGREEMENT));
     }
 
     @BindView(R.id.et_verification_code)

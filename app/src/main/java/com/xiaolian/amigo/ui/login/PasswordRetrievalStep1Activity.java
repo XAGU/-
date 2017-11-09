@@ -18,8 +18,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.ui.login.intf.IPasswordRetrievalStep1Presenter;
 import com.xiaolian.amigo.ui.login.intf.IPasswordRetrievalStep1View;
+import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.ViewUtil;
 
 import javax.inject.Inject;
@@ -134,6 +136,12 @@ public class PasswordRetrievalStep1Activity extends LoginBaseActivity implements
     @OnClick(R.id.iv_back)
     void back() {
         finish();
+    }
+
+    @OnClick(R.id.tv_agreement)
+    void onAgreementClick() {
+        startActivity(new Intent(this, WebActivity.class)
+                .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_AGREEMENT));
     }
 
     @Override
