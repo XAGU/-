@@ -32,13 +32,14 @@ public class NoticeDetailActivity extends BaseToolBarActivity {
     @Override
     protected void initView() {
         ButterKnife.bind(this);
+        setMainBackground(R.color.white);
         if (noticeWapper != null) {
             Notice notice = Notice.getNotice(noticeWapper.getType());
             setToolBarTitle(notice.getDesc());
             tv_content.setText(noticeWapper.getContent());
-            tv_time.setText(
-                    TimeUtils.convertTimestampToFormat(noticeWapper.getCreateTime())
-                + "/" + TimeUtils.millis2String(noticeWapper.getCreateTime(), TimeUtils.MY_TIME_FORMAT));
+            tv_time.setText(getString(R.string.time_format,
+                    TimeUtils.convertTimestampToFormat(noticeWapper.getCreateTime()),
+                    TimeUtils.millis2String(noticeWapper.getCreateTime(), TimeUtils.MY_TIME_FORMAT)));
         }
     }
 

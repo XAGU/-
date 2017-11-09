@@ -11,6 +11,12 @@ import com.xiaolian.amigo.R;
  */
 
 public enum  Notice {
+    UNKNOWN(0, "通知") {
+        @Override
+        public int getDrawableRes() {
+            return 0;
+        }
+    },
     EMERGENCY(1, "紧急通知") {
         @Override
         public int getDrawableRes() {
@@ -62,6 +68,6 @@ public enum  Notice {
                 return notice;
             }
         }
-        return null;
+        return UNKNOWN;
     }
 }

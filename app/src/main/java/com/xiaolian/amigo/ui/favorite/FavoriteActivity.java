@@ -71,6 +71,8 @@ public class FavoriteActivity extends FavoriteBaseActivity implements IFavoriteV
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
         presenter.onAttach(this);
+        setMainBackground(R.color.white);
+        setHeaderBackground(R.color.white);
     }
 
     @Override
@@ -88,6 +90,16 @@ public class FavoriteActivity extends FavoriteBaseActivity implements IFavoriteV
             Log.i(TAG, "删除收藏设备成功！deviceId=" + result.getId());
             adaptor.notifyDataSetChanged();
         }
+    }
+
+    @Override
+    public void showEmptyView() {
+        super.showEmptyView(getString(R.string.empty_tip), R.color.white);
+    }
+
+    @Override
+    public void showErrorView() {
+        super.showErrorView(R.color.white);
     }
 
     @Override
