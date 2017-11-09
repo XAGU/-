@@ -148,6 +148,7 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
     @OnClick(R.id.tv_withdraw_all)
     void withdrawAll() {
         et_amount.setText(balance);
+        et_amount.setSelection(balance.length());
     }
 
     @OnClick(R.id.rl_choose_withdraw_way)
