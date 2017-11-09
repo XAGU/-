@@ -4,8 +4,10 @@ import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
 import com.xiaolian.amigo.data.manager.BonusDataManager;
+import com.xiaolian.amigo.data.manager.MainDataManager;
 import com.xiaolian.amigo.data.manager.MoreDataManager;
 import com.xiaolian.amigo.data.manager.intf.IBonusDataManager;
+import com.xiaolian.amigo.data.manager.intf.IMainDataManager;
 import com.xiaolian.amigo.data.manager.intf.IMoreDataManager;
 import com.xiaolian.amigo.di.BonusActivityContext;
 import com.xiaolian.amigo.di.MoreActivityContext;
@@ -15,7 +17,10 @@ import com.xiaolian.amigo.ui.bonus.intf.IBonusExchangePresenter;
 import com.xiaolian.amigo.ui.bonus.intf.IBonusExchangeView;
 import com.xiaolian.amigo.ui.bonus.intf.IBonusPresenter;
 import com.xiaolian.amigo.ui.bonus.intf.IBonusView;
+import com.xiaolian.amigo.ui.more.AboutUsPresenter;
 import com.xiaolian.amigo.ui.more.MorePresenter;
+import com.xiaolian.amigo.ui.more.intf.IAboutUsPresenter;
+import com.xiaolian.amigo.ui.more.intf.IAboutUsView;
 import com.xiaolian.amigo.ui.more.intf.IMorePresenter;
 import com.xiaolian.amigo.ui.more.intf.IMoreView;
 
@@ -52,7 +57,19 @@ public class MoreActivityModule {
     }
 
     @Provides
+    @MoreActivityContext
+    IAboutUsPresenter<IAboutUsView> provideAboutUsPresenter(
+            AboutUsPresenter<IAboutUsView> presenter) {
+        return presenter;
+    }
+
+    @Provides
     IMoreDataManager provideMoreDataManager(MoreDataManager manager) {
+        return manager;
+    }
+
+    @Provides
+    IMainDataManager provideMainDataManager(MainDataManager manager) {
         return manager;
     }
 }

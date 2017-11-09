@@ -66,7 +66,8 @@ public class WithdrawalRecordActivity extends WalletBaseListActivity implements 
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adaptor);
-        recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 10)));
+//        recyclerView.addItemDecoration(new SpaceItemDecoration(
+//                ScreenUtils.dpToPxInt(this, 14)));
     }
 
     @Override

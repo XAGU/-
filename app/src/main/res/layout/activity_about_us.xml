@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <ImageView
@@ -20,6 +22,54 @@
 
     <RelativeLayout
         android:layout_below="@id/tv_version"
+        android:visibility="gone"
+        android:id="@+id/rl_update"
+        android:layout_width="wrap_content"
+        android:layout_height="59dp"
+        >
+        <View
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:background="#eee" />
+
+
+        <TextView
+            android:paddingLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/ContentText_main"
+            android:text="发现新版本"
+            android:layout_centerVertical="true"/>
+
+
+        <ImageView
+            android:id="@+id/iv_update_forward"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/forward"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"/>
+
+        <TextView
+            android:background="@drawable/bg_rect_red_corner_4dp"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:textColor="@color/white"
+            android:layout_marginRight="10dp"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/iv_update_forward"
+            android:id="@+id/tv_new_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_below="@id/rl_update"
         android:id="@+id/rl_attention"
         android:layout_width="wrap_content"
         android:layout_height="58dp"

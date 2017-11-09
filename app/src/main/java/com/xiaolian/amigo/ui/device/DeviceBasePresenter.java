@@ -426,7 +426,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     @Override
     public void onWrite(@NonNull String command) {
         if (bleDataManager.getStatus(currentMacAddress) != RxBleConnection.RxBleConnectionState.CONNECTED) {
-            getMvpView().onError(TradeError.CONNECT_ERROR_1);
+            getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
             return;
         }
 
@@ -852,7 +852,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     }
 
     @Override
-    public void onPay(int method, Double prepay, Long bonusId) {
+    public void onPay(Double prepay, Long bonusId) {
         // 校验网络
         if (!getMvpView().isNetworkAvailable()) {
             getMvpView().onError(TradeError.CONNECT_ERROR_3);
@@ -863,9 +863,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         reqDTO.setMacAddress(deviceNo);
         reqDTO.setBonusId(bonusId);
         reqDTO.setPrepay(prepay);
-        reqDTO.setMethod(method);
 
-        addObserver(tradeDataManager.pay(reqDTO), new NetworkObserver<ApiResult<PayRespDTO>>() {
+        addObserver(tradeDataManager.pay(reqDTO), new NetworkObserver<ApiResult<PayRespDTO>>(false) {
             @Override
             public void onReady(ApiResult<PayRespDTO> result) {
                 if (null == result.getError()) {
@@ -882,6 +881,12 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     Log.wtf(TAG, "支付创建订单失败。");
                     getMvpView().post(() -> getMvpView().onError(TradeError.DEVICE_BROKEN_2));
                 }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_3));
             }
         }, Schedulers.io());
     }

@@ -19,8 +19,8 @@ public class PayReqDTO {
     private String macAddress;
 
     // 付款方式（余额支付 or 红包支付）
-    @NonNull
-    private Integer method;
+//    @NonNull
+//    private Integer method;
 
     // 预付金额
     private Double prepay;

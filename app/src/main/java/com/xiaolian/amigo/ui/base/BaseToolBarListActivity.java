@@ -82,7 +82,7 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
         refreshLayout.setRefreshFooter(new RefreshLayoutFooter(this));
         refreshLayout.setReboundDuration(200);
         if (autoRefresh) {
-            refreshLayout.autoRefresh(0);
+            refreshLayout.autoRefresh(20);
         }
     }
 

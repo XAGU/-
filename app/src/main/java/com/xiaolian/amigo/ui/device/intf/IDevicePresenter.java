@@ -29,7 +29,7 @@ public interface IDevicePresenter<V extends IBaseView> extends IBasePresenter<V>
     void onWrite(@NonNull String command);
 
     // 点击支付
-    void onPay(int method, @Nullable Double prepay, @Nullable Long bonusId);
+    void onPay(@Nullable Double prepay, @Nullable Long bonusId);
 
     // 点击结束用水
     void onClose();

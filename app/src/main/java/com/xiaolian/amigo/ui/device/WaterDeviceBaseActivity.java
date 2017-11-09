@@ -731,7 +731,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             // 点击支付操作时蓝牙必须为开启状态
             setBleCallback(() -> {
                 button.setEnabled(false);
-                presenter.onPay(Payment.BALANCE.getType(), prepayAmount, null);
+                presenter.onPay(prepayAmount, bonusId);
             });
             getBlePermission();
         }
@@ -933,7 +933,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         // 点击支付操作时蓝牙必须为开启状态
         setBleCallback(() -> {
             bt_pay.setEnabled(false);
-            presenter.onPay(Payment.BALANCE.getType(), (Double) tv_water_right.getTag(R.id.money_pay_amount), null);
+            presenter.onPay((Double) tv_water_right.getTag(R.id.money_pay_amount), null);
 
         });
         getBlePermission();
