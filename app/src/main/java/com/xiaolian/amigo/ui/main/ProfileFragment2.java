@@ -27,6 +27,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,6 +58,7 @@ public class ProfileFragment2 extends Fragment {
     };
 
     ProfileAdaptor adaptor;
+    private DecimalFormat df = new DecimalFormat("###.##");
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
@@ -93,7 +95,7 @@ public class ProfileFragment2 extends Fragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(PersonalExtraInfoDTO data) {
-        wallet.setBalance(data.getBalance());
+        wallet.setBalance(df.format(data.getBalance()));
         bonus.setBonusAmount(data.getBonusAmount());
         if (data.isNeedShowDot()) {
             repair.setShowDot(true);

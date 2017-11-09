@@ -57,6 +57,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -119,6 +120,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     ScrollView sl_main;
 
     private GestureDetector mGestureDetector;
+
+    private DecimalFormat df = new DecimalFormat("###.##");
 
     HomeFragment2 homeFragment;
     ProfileFragment2 profileFragment;
@@ -706,7 +709,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @Override
     public void refreshProfile(PersonalExtraInfoDTO data) {
         lastRepairTime = data.getLastRepairTime();
-        presenter.setBalance(data.getBalance());
+        presenter.setBalance(df.format(data.getBalance()));
         presenter.setBonusAmount(data.getBonusAmount());
         EventBus.getDefault().post(data);
     }
@@ -729,7 +732,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     public void refreshProfile() {
         PersonalExtraInfoDTO data = new PersonalExtraInfoDTO();
-        data.setBalance(presenter.getBalance());
+        data.setBalance(Double.valueOf(presenter.getBalance()));
         data.setBonusAmount(presenter.getBonusAmount());
         EventBus.getDefault().post(data);
     }

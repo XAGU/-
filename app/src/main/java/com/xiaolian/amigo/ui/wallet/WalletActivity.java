@@ -10,6 +10,9 @@ import com.xiaolian.amigo.ui.wallet.intf.IWalletView;
 import com.xiaolian.amigo.ui.widget.dialog.AvailabilityDialog;
 import com.xiaolian.amigo.util.Constant;
 
+import java.text.DecimalFormat;
+import java.util.Locale;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -37,6 +40,8 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
      */
     @BindView(R.id.tv_prepay)
     TextView tv_prepay;
+
+    private DecimalFormat df = new DecimalFormat("###.##");
 
     @Override
     protected void initView() {
@@ -85,15 +90,15 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
     void withdrawalRecord() {
         startActivity(new Intent(this, WithdrawalRecordActivity.class));
     }
+
     @Override
     public void setBalanceText(Double balance) {
-
-        tv_balance.setText("¥" + balance);
+        tv_balance.setText(String.format(Locale.getDefault(), "¥%s", df.format(balance)));
     }
 
     @Override
     public void setPrepayText(Double prepay) {
-        tv_prepay.setText("¥" + prepay);
+        tv_prepay.setText(String.format(Locale.getDefault(), "¥%s", df.format(prepay)));
     }
 
     @Override
@@ -112,10 +117,9 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
         }
         dialog.setSubTipVisible(false);
         dialog.setOkText(getString(R.string.ok));
-        dialog.setOnOkClickListener(dialog1 -> {
-            startActivity(new Intent(this, WithdrawalActivity.class)
-                    .putExtra(Constant.EXTRA_KEY, tv_balance.getText().toString().replace("¥", "")));
-        });
+        dialog.setOnOkClickListener(dialog1 ->
+                startActivity(new Intent(this, WithdrawalActivity.class)
+                        .putExtra(Constant.EXTRA_KEY, tv_balance.getText().toString().replace("¥", ""))));
         dialog.show();
     }
 }
