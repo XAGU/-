@@ -29,6 +29,9 @@ import butterknife.OnClick;
  */
 public class OrderDetailActivity extends OrderBaseActivity implements IOrderDetailView {
 
+    // 账单标题
+    @BindView(R.id.tv_order_title)
+    TextView tv_order_title;
     /************** 正常账单内容 ****************/
     @BindView(R.id.ll_order_normal)
     LinearLayout ll_order_normal;
@@ -41,6 +44,9 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
     @BindView(R.id.tv_prepay)
     TextView tv_prepay;
     // 实际扣款
+    @BindView(R.id.tv_actual_debit)
+    TextView tv_actual_debit;
+    // 实际消费
     @BindView(R.id.tv_consume)
     TextView tv_consume;
     // 找零金额
@@ -127,6 +133,7 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
         }
         tv_order_no.setText(order.getOrderNo());
         if (CommonUtil.equals(order.getStatus(), 3)) {
+            tv_order_title.setText(getString(R.string.error_order_title));
             // 异常账单
             tv_order_error_tip.setVisibility(View.VISIBLE);
             ll_order_normal.setVisibility(View.GONE);
@@ -153,11 +160,12 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
             } else {
                 // 有红包
                 rl_use_bonus.setVisibility(View.VISIBLE);
-                tv_bonus_remark.setText(order.getBonus());
+                tv_bonus_remark.setText(getString(R.string.minus, order.getBonus()));
             }
             tv_consume.setText(order.getConsume());
             tv_prepay.setText(order.getPrepay());
             tv_odd.setText(order.getOdd());
+            tv_actual_debit.setText(getString(R.string.minus, order.getActualDebit()));
         }
     }
 

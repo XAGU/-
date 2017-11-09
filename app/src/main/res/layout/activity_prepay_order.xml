@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
@@ -16,29 +18,120 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <include
-            layout="@layout/layout_order_normal"
+        <LinearLayout android:id="@+id/ll_order_normal"
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp">
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dip"
+                    android:background="#eee" />
+                <View
+                    android:layout_alignParentBottom="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dip"
+                    android:background="#eee" />
+
+                <TextView
+                    style="@style/ContentText_main"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:text="@string/prepay_money_colon" />
+
+                <TextView
+                    tool:text="预付0元"
+                    android:id="@+id/tv_prepay"
+                    style="@style/ContentText_main"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:textColor="#666"
+                    />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="58dp"
+                android:id="@+id/rl_odd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/ContentText_main"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:gravity="center"
+                    android:text="@string/change_amount_colon" />
+
+                <TextView
+                    tool:text="0元"
+                    android:id="@+id/tv_odd"
+                    style="@style/ContentText_main"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:gravity="center"
+                    android:textColor="@color/colorFullRed"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+
+
     </LinearLayout>
 
     <TextView
+        android:id="@+id/tv_prepay_order_tip"
         android:layout_width="wrap_content"
+        android:gravity="center"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="14dp"
-        android:layout_marginBottom="21dp"
+        android:paddingTop="14dp"
+        android:paddingBottom="14dp"
+        android:layout_marginBottom="7dp"
         android:text="@string/prepay_order_tip"
         android:textColor="#999"
         android:textSize="12sp" />
 
-    <Button
-        android:id="@+id/bt_ok"
-        style="@style/Rect_button"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp"
-        android:text="@string/to_change"
-        android:enabled="true"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:layout_below="@id/ll_content"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/bt_ok"
+            style="@style/Rect_button"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginBottom="0dp"
+            android:text="@string/to_change"
+            android:enabled="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:id="@+id/v_holder"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/mainMarginLeftRight"
+            />
+    </LinearLayout>
+
 </LinearLayout>

@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.MvpApp;
@@ -53,6 +54,9 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
     @BindView(R.id.tv_prepay)
     TextView tv_prepay;
     // 实际扣款
+    @BindView(R.id.tv_actual_debit)
+    TextView tv_actual_debit;
+    // 实际消费
     @BindView(R.id.tv_consume)
     TextView tv_consume;
     // 找零金额
@@ -123,6 +127,7 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
         tv_order_no.setText(orderNo);
         if (CommonUtil.equals(respDTO.getStatus(), 3)) {
             // 异常账单
+            tv_order_title.setText(getString(R.string.error_order_title));
             tv_order_error_tip.setVisibility(View.VISIBLE);
             ll_order_normal.setVisibility(View.GONE);
             ll_order_error.setVisibility(View.VISIBLE);
@@ -148,11 +153,12 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
             } else {
                 // 有红包
                 rl_use_bonus.setVisibility(View.VISIBLE);
-                tv_bonus_remark.setText(respDTO.getBonus());
+                tv_bonus_remark.setText(getString(R.string.minus, respDTO.getBonus()));
             }
             tv_consume.setText(respDTO.getConsume());
             tv_prepay.setText(respDTO.getPrepay());
             tv_odd.setText(respDTO.getOdd());
+            tv_actual_debit.setText(getString(R.string.minus, respDTO.getActualDebit()));
         }
     }
 

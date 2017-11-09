@@ -219,4 +219,8 @@
     <string name="wait_to_settlement">待结算</string>
     <string name="wait_to_change">待找零</string>
     <string name="order_error_tip">你本次消费由于设备故障，系统已自动退款</string>
+    <string name="actual_consume_colon">实际消费：</string>
+    <string name="actual_debit_colon">实际扣款：</string>
+    <string name="minus">-%1$s</string>
+    <string name="error_order_title">异常账单</string>
 </resources>

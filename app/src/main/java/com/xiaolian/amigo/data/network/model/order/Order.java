@@ -50,4 +50,6 @@ public class Order implements Serializable {
     private String macAddress;
     // 红包
     private String bonus;
+    // 实际扣款
+    private String actualDebit;
 }
