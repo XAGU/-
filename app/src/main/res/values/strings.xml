@@ -223,4 +223,5 @@
     <string name="actual_debit_colon">实际扣款：</string>
     <string name="minus">-%1$s</string>
     <string name="error_order_title">异常账单</string>
+    <string name="copy_success">复制成功</string>
 </resources>

@@ -118,7 +118,7 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
     @OnClick(R.id.tv_copy)
     public void copy() {
         CommonUtil.copy(tv_order_no.getText().toString(), getApplicationContext());
-        onSuccess("复制成功");
+        onSuccess(R.string.copy_success);
     }
 
     @Override

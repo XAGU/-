@@ -86,7 +86,6 @@ public class HomeFragment2 extends Fragment {
         adaptor.addItemViewDelegate(new HomeNormalDelegate());
         adaptor.addItemViewDelegate(new HomeBannerDelegate(getActivity()));
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(adaptor);
         ((DefaultItemAnimator)recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
         LayoutAnimationController animation = AnimationUtils
                 .loadLayoutAnimation(getContext(), R.anim.layout_animation_home_slide_left_to_right);
@@ -136,12 +135,22 @@ public class HomeFragment2 extends Fragment {
     public void onBannerEvent(List<BannerDTO> banners) {
         if (items.get(items.size() - 1).getType() == 1) {
             items.add(new HomeAdaptor.ItemWrapper(2, banners, null, null, null, 0));
-            adaptor.notifyDataSetChanged();
+            Log.d(TAG, "onBannerEvent notify");
+            adaptor.notifyItemInserted(items.size()-1);
         } else {
             if (!isBannersEqual(items.get(items.size() - 1).getBanners(), banners)) {
                 items.get(items.size() - 1).setBanners(banners);
-                adaptor.notifyDataSetChanged();
+                Log.d(TAG, "onBannerEvent notify");
+                notifyAdaptor();
             }
+        }
+    }
+
+    private void notifyAdaptor() {
+        if (recyclerView.getAdapter() == null) {
+            recyclerView.setAdapter(adaptor);
+        } else {
+            adaptor.notifyDataSetChanged();
         }
     }
 
@@ -183,7 +192,8 @@ public class HomeFragment2 extends Fragment {
             needNotify = true;
         }
         if (needNotify) {
-            adaptor.notifyDataSetChanged();
+            Log.d(TAG, "onSchoolBizEvent notify");
+            notifyAdaptor();
         }
     }
 
@@ -198,7 +208,8 @@ public class HomeFragment2 extends Fragment {
             }
         }
         if (needNotify) {
-            adaptor.notifyDataSetChanged();
+            Log.d(TAG, "onPrepayOrderEvent notify");
+            notifyAdaptor();
         }
     }
 

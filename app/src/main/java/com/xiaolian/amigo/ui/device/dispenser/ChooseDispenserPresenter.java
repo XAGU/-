@@ -2,18 +2,15 @@ package com.xiaolian.amigo.ui.device.dispenser;
 
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.TextureView;
 
 import com.polidea.rxandroidble.scan.ScanResult;
 import com.xiaolian.amigo.data.manager.intf.IBleDataManager;
 import com.xiaolian.amigo.data.manager.intf.IFavoriteManager;
 import com.xiaolian.amigo.data.manager.intf.ITradeDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.device.Device;
 import com.xiaolian.amigo.data.network.model.device.ScanDeviceGroup;
 import com.xiaolian.amigo.data.network.model.dto.request.FavoriteReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.ScanDeviceReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.FavoriteRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.ScanDeviceRespDTO;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.ui.base.BasePresenter;
@@ -51,10 +48,10 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
     private boolean listStatus = false;
 
     @Inject
-    public ChooseDispenserPresenter(IFavoriteManager favoriteManager,
-                                    ITradeDataManager tradeDataManager,
-                                    IBleDataManager bleDataManager,
-                                    ISharedPreferencesHelp sharedPreferencesHelp) {
+    ChooseDispenserPresenter(IFavoriteManager favoriteManager,
+                             ITradeDataManager tradeDataManager,
+                             IBleDataManager bleDataManager,
+                             ISharedPreferencesHelp sharedPreferencesHelp) {
         super();
         this.favoriteManager = favoriteManager;
         this.tradeDataManager = tradeDataManager;
@@ -103,9 +100,9 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
     public void onLoad() {
         addObserver(bleDataManager.scan(), new BleObserver<ScanResult>() {
             // 已经上报的mac地址的集合
-            List<String> existDevices = new ArrayList<String>();
+            List<String> existDevices = new ArrayList<>();
             // 新扫描到的mac地址的集合
-            List<String> scanDevices = new ArrayList<String>();
+            List<String> scanDevices = new ArrayList<>();
 
             Long begin = null;
             // 延时1s
@@ -138,7 +135,7 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
                 if (scanDevices.size() >= 10 || now - begin > delay) { // 列表数目到达10条或者时间超过2s都去服务端请求一次接口
                     if (scanDevices.size() > 0) {
                         if (delay < maxDelay) {
-                            delay ++;
+                            delay++;
                         }
                         existDevices.addAll(scanDevices);
                         handleScanDevices(new ArrayList<>(scanDevices)); // 请求服务器处理扫描到的设备
@@ -199,14 +196,11 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
         addObserver(tradeDataManager.handleScanDevices(scanDeviceReqDTO), new NetworkObserver<ApiResult<ScanDeviceRespDTO>>(false) {
             @Override
             public void onReady(ApiResult<ScanDeviceRespDTO> result) {
-                getMvpView().post(() -> getMvpView().hideEmptyView());
-                getMvpView().post(() -> getMvpView().hideErrorView());
                 if (null == result.getError()) {
                     if (result.getData().getDevices() != null && !result.getData().getDevices().isEmpty()) {
                         getMvpView().post(() -> getMvpView().completeRefresh());
-                        getMvpView().post(() -> {
-                            getMvpView().addScanDevices(result.getData().getDevices());
-                        });
+                        getMvpView().post(() ->
+                                getMvpView().addScanDevices(result.getData().getDevices()));
                     }
                 }
             }
@@ -214,8 +208,6 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
             @Override
             public void onError(Throwable e) {
                 super.onError(e);
-                getMvpView().post(() -> getMvpView().completeRefresh());
-                getMvpView().post(() -> getMvpView().showErrorView());
             }
         }, Schedulers.io());
     }

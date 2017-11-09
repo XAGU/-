@@ -82,6 +82,7 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 14)));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adaptor);
         refreshLayout = (SmartRefreshLayout) findViewById(R.id.refreshLayout);
 
         refreshLayout.setOnRefreshLoadmoreListener(new OnRefreshLoadmoreListener() {
@@ -111,19 +112,9 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
         ll_footer = (LinearLayout) findViewById(R.id.ll_footer);
 
         tv_nearby = (TextView) findViewById(R.id.tv_toolbar_title);
-        tv_nearby.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onNearbyClick();
-            }
-        });
+        tv_nearby.setOnClickListener(v -> onNearbyClick());
         tv_favorite = (TextView) findViewById(R.id.tv_toolbar_title2);
-        tv_favorite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onFavoriteClick();
-            }
-        });
+        tv_favorite.setOnClickListener(v -> onFavoriteClick());
     }
 
     @Override
@@ -192,9 +183,8 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
         }
         items.addAll(wrappers);
         favoriteItems.addAll(wrappers);
-        if (recyclerView.getAdapter() == null) {
-            recyclerView.setAdapter(adaptor);
-        }
+//        if (recyclerView.getAdapter() == null) {
+//        }
         adaptor.notifyDataSetChanged();
     }
 
@@ -206,25 +196,29 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
 
     @Override
     public void showEmptyView() {
-        recyclerView.setVisibility(View.GONE);
+//        recyclerView.setVisibility(View.GONE);
+        items.clear();
+        adaptor.notifyDataSetChanged();
         rl_empty.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideEmptyView() {
-        recyclerView.setVisibility(View.VISIBLE);
+//        recyclerView.setVisibility(View.VISIBLE);
         rl_empty.setVisibility(View.GONE);
     }
 
     @Override
     public void showErrorView() {
-        recyclerView.setVisibility(View.GONE);
+//        recyclerView.setVisibility(View.GONE);
+        items.clear();
+        adaptor.notifyDataSetChanged();
         rl_error.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideErrorView() {
-        recyclerView.setVisibility(View.VISIBLE);
+//        recyclerView.setVisibility(View.VISIBLE);
         rl_error.setVisibility(View.GONE);
     }
 

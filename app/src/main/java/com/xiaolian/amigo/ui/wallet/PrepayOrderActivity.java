@@ -91,6 +91,12 @@ public class PrepayOrderActivity extends WalletBaseActivity implements IPrepayOr
         orderWrapper = (PrepayAdaptor.OrderWrapper) getIntent().getSerializableExtra(Constant.EXTRA_KEY);
     }
 
+    @OnClick(R.id.tv_copy)
+    public void copy() {
+        CommonUtil.copy(tv_order_no.getText().toString(), getApplicationContext());
+        onSuccess(R.string.copy_success);
+    }
+
     @Override
     protected int setTitle() {
         return R.string.prepay_order;

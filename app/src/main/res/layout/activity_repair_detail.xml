@@ -127,9 +127,10 @@
                         android:layout_height="57dp"
                         android:layout_gravity="center_vertical"
                         android:background="#ddd"
-                        android:scaleType="fitXY"
+                        android:scaleType="centerCrop"
                         android:visibility="gone"/>
 
+                    <!--android:scaleType="fitXY"-->
                     <ImageView
                         android:id="@+id/iv_second"
                         android:layout_width="57dp"
@@ -137,7 +138,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="10dp"
                         android:background="#ddd"
-                        android:scaleType="fitXY"
+                        android:scaleType="centerCrop"
                         android:visibility="gone"/>
 
                     <ImageView
@@ -146,8 +147,8 @@
                         android:layout_height="57dp"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="10dp"
+                        android:scaleType="centerCrop"
                         android:background="#ddd"
-                        android:scaleType="fitXY"
                         android:visibility="gone"/>
 
                 </LinearLayout>

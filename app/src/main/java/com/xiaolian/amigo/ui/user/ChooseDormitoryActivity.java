@@ -117,4 +117,12 @@ public class ChooseDormitoryActivity extends UserBaseListActivity implements ICh
         setResult(RESULT_CANCELED);
         super.onBackPressed();
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_EDIT_DORMITOTY) {
+            onRefresh();
+        }
+    }
 }
