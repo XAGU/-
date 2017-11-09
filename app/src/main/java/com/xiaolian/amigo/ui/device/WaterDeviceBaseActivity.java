@@ -718,7 +718,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             // 点击支付操作时蓝牙必须为开启状态
             setBleCallback(() -> {
                 button.setEnabled(false);
-                presenter.onPay(prepayAmount, bonusAmount > 0 ? bonusId : null);
+                presenter.onPay(prepayAmount, bonusAmount != null && bonusAmount > 0 ? bonusId : null);
             });
             getBlePermission();
         }
