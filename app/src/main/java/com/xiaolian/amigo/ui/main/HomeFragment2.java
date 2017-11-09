@@ -236,6 +236,9 @@ public class HomeFragment2 extends Fragment {
                 int animationRes = (int) event.getObject();
                 changeAnimation(animationRes);
                 break;
+            case INIT_BIZ:
+                notifyAdaptor();
+                break;
         }
     }
 
@@ -276,7 +279,8 @@ public class HomeFragment2 extends Fragment {
             BANNER(1),
             SCHOOL_BIZ(2),
             ENABLE_VIEW(3),
-            CHANGE_ANIMATION(4)
+            CHANGE_ANIMATION(4),
+            INIT_BIZ(5)
             ;
 
             EventType(int type) {

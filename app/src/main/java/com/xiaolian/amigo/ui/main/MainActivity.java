@@ -229,16 +229,19 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume");
-        // 请求通知
-        presenter.getNoticeAmount();
-        presenter.getSchoolBusiness();
         if (!presenter.isLogin()) {
             showNoticeAmount(0);
+            EventBus.getDefault()
+                    .post(new HomeFragment2.Event(HomeFragment2.Event.EventType.INIT_BIZ,
+                    null));
             Log.d(TAG, "onResume: not login");
             tv_nickName.setText("登录／注册");
             tv_schoolName.setText("登录以后才能使用哦");
             iv_avatar.setImageResource(R.drawable.ic_picture_error);
         } else {
+            // 请求通知
+            presenter.getNoticeAmount();
+            presenter.getSchoolBusiness();
             Log.d(TAG, "onResume: login");
             // 设置昵称
             tv_nickName.setText(presenter.getUserInfo().getNickName());
