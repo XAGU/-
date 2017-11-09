@@ -76,8 +76,8 @@ public interface ISharedPreferencesHelp {
     void setLastRechargeAmount(String amount);
 
     // 引导页相关
-    void doneMainGuide();
-    boolean isMainGuideDone();
+    void setMainGuide(Integer guideTime);
+    Integer getMainGuide();
     void doneHeaterGuide();
     boolean isHeaterGuideDone();
     void doneDispenserGuide();

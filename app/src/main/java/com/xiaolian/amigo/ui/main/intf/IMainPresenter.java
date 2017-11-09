@@ -44,8 +44,6 @@ public interface IMainPresenter<V extends IMainView> extends IBasePresenter<V> {
 
     boolean isMainGuideDone();
 
-    void doneMainGuide();
-
     void setLastRepairTime(Long time);
     Long getLastRepairTime();
 

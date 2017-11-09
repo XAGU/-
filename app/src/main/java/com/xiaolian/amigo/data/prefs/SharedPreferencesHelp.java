@@ -215,13 +215,13 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     }
 
     @Override
-    public void doneMainGuide() {
-        mGuideSharedPreferences.edit().putBoolean(PREF_GUIDE_MAIN, true).apply();
+    public void setMainGuide(Integer guideTime) {
+        mGuideSharedPreferences.edit().putInt(PREF_GUIDE_MAIN, guideTime).apply();
     }
 
     @Override
-    public boolean isMainGuideDone() {
-        return mGuideSharedPreferences.getBoolean(PREF_GUIDE_MAIN, false);
+    public Integer getMainGuide() {
+        return mGuideSharedPreferences.getInt(PREF_GUIDE_MAIN, 0);
     }
 
     @Override

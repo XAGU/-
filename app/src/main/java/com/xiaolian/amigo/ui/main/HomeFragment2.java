@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SimpleItemAnimator;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,18 +14,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
-import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.dto.response.BannerDTO;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
-import com.xiaolian.amigo.ui.base.aspect.SingleClick;
 import com.xiaolian.amigo.ui.main.adaptor.HomeAdaptor;
 import com.xiaolian.amigo.ui.main.adaptor.HomeBannerDelegate;
 import com.xiaolian.amigo.ui.main.adaptor.HomeNormalDelegate;
 import com.xiaolian.amigo.ui.widget.RecyclerItemClickListener;
 import com.xiaolian.amigo.util.CommonUtil;
-import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -93,7 +89,7 @@ public class HomeFragment2 extends Fragment {
         recyclerView.setAdapter(adaptor);
         ((DefaultItemAnimator)recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
         LayoutAnimationController animation = AnimationUtils
-                .loadLayoutAnimation(getContext(), R.anim.layout_animation_slide_right);
+                .loadLayoutAnimation(getContext(), R.anim.layout_animation_home_slide_left_to_right);
         recyclerView.setLayoutAnimation(animation);
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), recyclerView,
                 new RecyclerItemClickListener.OnItemClickListener() {
@@ -225,9 +221,18 @@ public class HomeFragment2 extends Fragment {
                     disabledView.setEnabled(true);
                 }
                 break;
+            case CHANGE_ANIMATION:
+                int animationRes = (int) event.getObject();
+                changeAnimation(animationRes);
+                break;
         }
     }
 
+    private void changeAnimation(int animationRes) {
+        LayoutAnimationController animation = AnimationUtils
+                .loadLayoutAnimation(getContext(), animationRes);
+        recyclerView.setLayoutAnimation(animation);
+    }
 
 
     private boolean isBannersEqual(List<BannerDTO> banners1, List<BannerDTO> banners2) {
@@ -259,7 +264,8 @@ public class HomeFragment2 extends Fragment {
         public enum EventType {
             BANNER(1),
             SCHOOL_BIZ(2),
-            ENABLE_VIEW(3)
+            ENABLE_VIEW(3),
+            CHANGE_ANIMATION(4)
             ;
 
             EventType(int type) {

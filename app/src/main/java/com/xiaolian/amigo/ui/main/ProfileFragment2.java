@@ -32,6 +32,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import lombok.Data;
 
 /**
  * <p>
@@ -86,7 +87,7 @@ public class ProfileFragment2 extends Fragment {
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         LayoutAnimationController animation = AnimationUtils
-                .loadLayoutAnimation(getContext(), R.anim.layout_animation_slide_left);
+                .loadLayoutAnimation(getContext(), R.anim.layout_animation_profile_slide_left_to_right);
         recyclerView.setLayoutAnimation(animation);
     }
 
@@ -106,11 +107,53 @@ public class ProfileFragment2 extends Fragment {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(Event event) {
+        switch (event.getType()) {
+            case CHANGE_ANIMATION:
+                int animationRes = (int) event.getObject();
+                changeAnimation(animationRes);
+                break;
+        }
+    }
+
+    private void changeAnimation(int animationRes) {
+        LayoutAnimationController animation = AnimationUtils
+                .loadLayoutAnimation(getContext(), animationRes);
+        recyclerView.setLayoutAnimation(animation);
+    }
+
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (!hidden) {
             recyclerView.scheduleLayoutAnimation();
+        }
+    }
+
+    @Data
+    public static class Event {
+        private EventType type;
+        private Object object;
+
+        public Event(EventType type, Object object) {
+            this.type = type;
+            this.object = object;
+        }
+
+        public Event(EventType type) {
+            this.type = type;
+        }
+
+        public enum EventType {
+            CHANGE_ANIMATION(1)
+            ;
+
+            EventType(int type) {
+                this.type = type;
+            }
+
+            private int type;
         }
     }
 

@@ -119,13 +119,13 @@ public class MainDataManager implements IMainDataManager {
     }
 
     @Override
-    public boolean isMainGuideDone() {
-        return sharedPreferencesHelp.isMainGuideDone();
+    public Integer getMainGuide() {
+        return sharedPreferencesHelp.getMainGuide();
     }
 
     @Override
-    public void doneMainGuide() {
-        sharedPreferencesHelp.doneMainGuide();
+    public void setMainGuide(Integer guideTime) {
+        sharedPreferencesHelp.setMainGuide(guideTime);
     }
 
     @Override

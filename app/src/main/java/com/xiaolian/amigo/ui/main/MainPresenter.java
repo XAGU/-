@@ -33,6 +33,7 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
         implements IMainPresenter<V> {
     private static final String TAG = MainPresenter.class.getSimpleName();
     private IMainDataManager manager;
+    private Integer guideTime;
 
     @Inject
     public MainPresenter(IMainDataManager manager) {
@@ -226,12 +227,18 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
 
     @Override
     public boolean isMainGuideDone() {
-        return manager.isMainGuideDone();
-    }
-
-    @Override
-    public void doneMainGuide() {
-        manager.doneMainGuide();
+        if (guideTime == null) {
+            guideTime = manager.getMainGuide();
+            if (guideTime < 3) {
+                guideTime ++;
+                manager.setMainGuide(guideTime);
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return true;
+        }
     }
 
     @Override

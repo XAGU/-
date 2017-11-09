@@ -26,6 +26,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
+import com.xiaolian.amigo.data.enumeration.Orientation;
 import com.xiaolian.amigo.data.network.model.dto.response.BannerDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.DeviceCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.PersonalExtraInfoDTO;
@@ -180,16 +181,18 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                     }
                 }
                 if ((e1.getRawX() - e2.getRawX()) > 200) {
-                    if (current == 1) {
-                        onSwitch();
-                    }
+//                    if (current == 1) {
+//                        onSwitch();
+//                    }
+                    onSwitch(Orientation.RIGHT_TO_LEFT);
                     return true;
                 }
 
                 if ((e2.getRawX() - e1.getRawX()) > 200) {
-                    if (current == 0) {
-                        onSwitch();
-                    }
+                    onSwitch(Orientation.LEFT_TO_RIGHT);
+//                    if (current == 0) {
+//                        onSwitch();
+//                    }
                     return true;//消费掉当前事件  不让当前事件继续向下传递
                 }
                 return super.onFling(e1, e2, velocityX, velocityY);
@@ -253,7 +256,59 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         }
     }
 
+    // orientation 1 表示左->右 右->左
+    void onSwitch(Orientation orientation) {
+        switch (orientation) {
+            case LEFT_TO_RIGHT:
+                // 当前在home
+                if (current == 0) {
+                    EventBus.getDefault().post(new ProfileFragment2.Event(
+                            ProfileFragment2.Event.EventType.CHANGE_ANIMATION,
+                            R.anim.layout_animation_profile_slide_left_to_right));
+                    imageViewAnimatedChange(this, btSwitch, R.drawable.home, orientation);
+                } else {
+                    EventBus.getDefault().post(
+                            new HomeFragment2.Event(
+                                    HomeFragment2.Event.EventType.CHANGE_ANIMATION,
+                                    R.anim.layout_animation_home_slide_left_to_right));
+                    imageViewAnimatedChange(this, btSwitch, R.drawable.profile, orientation);
+                }
+                break;
+            case RIGHT_TO_LEFT:
+                if (current == 0) {
+                    EventBus.getDefault().post(new ProfileFragment2.Event(
+                            ProfileFragment2.Event.EventType.CHANGE_ANIMATION,
+                            R.anim.layout_animation_profile_slide_right_to_left));
+                    imageViewAnimatedChange(this, btSwitch, R.drawable.home, orientation);
+                } else {
+                    EventBus.getDefault().post(
+                            new HomeFragment2.Event(
+                                    HomeFragment2.Event.EventType.CHANGE_ANIMATION,
+                                    R.anim.layout_animation_home_slide_right_to_left));
+                    imageViewAnimatedChange(this, btSwitch, R.drawable.profile, orientation);
+                }
+                break;
+        }
+        onSwitch();
+    }
+
     @OnClick(R.id.bt_switch)
+    void onSwitchClick() {
+        if (current == 0) {
+            EventBus.getDefault().post(new ProfileFragment2.Event(
+                    ProfileFragment2.Event.EventType.CHANGE_ANIMATION,
+                    R.anim.layout_animation_profile_slide_left_to_right));
+            imageViewAnimatedChange(this, btSwitch, R.drawable.home, Orientation.LEFT_TO_RIGHT);
+        } else {
+            EventBus.getDefault().post(
+                    new HomeFragment2.Event(
+                            HomeFragment2.Event.EventType.CHANGE_ANIMATION,
+                            R.anim.layout_animation_home_slide_right_to_left));
+            imageViewAnimatedChange(this, btSwitch, R.drawable.profile, Orientation.RIGHT_TO_LEFT);
+        }
+        onSwitch();
+    }
+
     void onSwitch() {
         ImageView imageView = btSwitch;
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -268,7 +323,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 // 显示引导页
                 GuideDialog guideDialog = new GuideDialog(this, GuideDialog.TYPE_MAIN);
                 guideDialog.show();
-                presenter.doneMainGuide();
             }
             if (profileFragment == null) {
                 profileFragment = new ProfileFragment2();
@@ -279,7 +333,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 transaction.hide(homeFragment).show(profileFragment).commit();
             }
 //            imageView.setBackgroundResource(R.drawable.home);
-            imageViewAnimatedChange(this, imageView, R.drawable.home);
             current = 1;
             // 改为切换不隐藏
 //            rl_notice.setVisibility(View.GONE);
@@ -293,7 +346,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 transaction.hide(profileFragment).show(homeFragment).commit();
             }
 //            imageView.setBackgroundResource(R.drawable.profile);
-            imageViewAnimatedChange(this, imageView, R.drawable.profile);
             current = 0;
             // 改为切换不隐藏
 //            rl_notice.setVisibility(View.VISIBLE);
@@ -308,72 +360,74 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         }
     }
 
-    public void imageViewAnimatedChange(Context context, ImageView imageView, int res) {
+    public void imageViewAnimatedChange(Context context, ImageView imageView, int res, Orientation orientation) {
         final Animation anim_out_right = AnimationUtils.loadAnimation(context, R.anim.item_slide_out_right);
         final Animation anim_out_left = AnimationUtils.loadAnimation(context, R.anim.item_slide_out_left);
         final Animation anim_in_left = AnimationUtils.loadAnimation(context, R.anim.item_slide_in_left);
         final Animation anim_in_right = AnimationUtils.loadAnimation(context, R.anim.item_slide_in_right);
-        if (current == 0) {
-            anim_out_right.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-                }
+        switch (orientation) {
+            case LEFT_TO_RIGHT:
+                anim_out_right.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+                    }
 
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-                }
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+                    }
 
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    imageView.setBackgroundResource(res);
-                    anim_in_right.setAnimationListener(new Animation.AnimationListener() {
-                        @Override
-                        public void onAnimationStart(Animation animation) {
-                        }
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        imageView.setBackgroundResource(res);
+                        anim_in_right.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) {
+                            }
 
-                        @Override
-                        public void onAnimationRepeat(Animation animation) {
-                        }
+                            @Override
+                            public void onAnimationRepeat(Animation animation) {
+                            }
 
-                        @Override
-                        public void onAnimationEnd(Animation animation) {
-                        }
-                    });
-                    imageView.startAnimation(anim_in_right);
-                }
-            });
-            imageView.startAnimation(anim_out_right);
-        } else {
-            anim_out_left.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-                }
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+                            }
+                        });
+                        imageView.startAnimation(anim_in_right);
+                    }
+                });
+                imageView.startAnimation(anim_out_right);
+                break;
+            case RIGHT_TO_LEFT:
+                anim_out_left.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+                    }
 
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-                }
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+                    }
 
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    imageView.setBackgroundResource(res);
-                    anim_in_right.setAnimationListener(new Animation.AnimationListener() {
-                        @Override
-                        public void onAnimationStart(Animation animation) {
-                        }
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        imageView.setBackgroundResource(res);
+                        anim_in_right.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) {
+                            }
 
-                        @Override
-                        public void onAnimationRepeat(Animation animation) {
-                        }
+                            @Override
+                            public void onAnimationRepeat(Animation animation) {
+                            }
 
-                        @Override
-                        public void onAnimationEnd(Animation animation) {
-                        }
-                    });
-                    imageView.startAnimation(anim_in_left);
-                }
-            });
-            imageView.startAnimation(anim_out_left);
-
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+                            }
+                        });
+                        imageView.startAnimation(anim_in_left);
+                    }
+                });
+                imageView.startAnimation(anim_out_left);
+                break;
         }
     }
 

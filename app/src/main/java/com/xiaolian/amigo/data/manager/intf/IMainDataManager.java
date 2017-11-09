@@ -46,9 +46,9 @@ public interface IMainDataManager extends IMainApi {
 
     Long getLastUpdateRemindTime();
 
-    boolean isMainGuideDone();
+    Integer getMainGuide();
 
-    void doneMainGuide();
+    void setMainGuide(Integer guideTime);
 
     void setLastRepairTime(Long time);
     Long getLastRepairTime();
