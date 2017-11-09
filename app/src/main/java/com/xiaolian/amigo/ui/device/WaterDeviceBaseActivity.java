@@ -1,24 +1,17 @@
 package com.xiaolian.amigo.ui.device;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
-import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.StyleSpan;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -31,36 +24,28 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.base.TimeHolder;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.enumeration.ErrorTag;
-import com.xiaolian.amigo.data.enumeration.Payment;
 import com.xiaolian.amigo.data.enumeration.TradeError;
 import com.xiaolian.amigo.data.enumeration.TradeStep;
-import com.xiaolian.amigo.data.network.model.device.ScanDeviceGroup;
 import com.xiaolian.amigo.data.network.model.dto.response.OrderPreInfoDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.PrepayOptionDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.UnsettledOrderStatusCheckRespDTO;
 import com.xiaolian.amigo.ui.bonus.BonusActivity;
 import com.xiaolian.amigo.ui.bonus.adaptor.BonusAdaptor;
 import com.xiaolian.amigo.ui.device.intf.IWaterDeviceBasePresenter;
 import com.xiaolian.amigo.ui.device.intf.IWaterDeviceBaseView;
 import com.xiaolian.amigo.ui.main.MainActivity;
-import com.xiaolian.amigo.ui.more.MoreActivity;
 import com.xiaolian.amigo.ui.repair.RepairApplyActivity;
 import com.xiaolian.amigo.ui.user.ChooseDormitoryActivity;
 import com.xiaolian.amigo.ui.wallet.RechargeActivity;
 import com.xiaolian.amigo.ui.widget.BezierWaveView;
 import com.xiaolian.amigo.ui.widget.DotFlashView;
-import com.xiaolian.amigo.ui.widget.dialog.ActionSheetDialog;
 import com.xiaolian.amigo.ui.widget.dialog.IOSAlertDialog;
 import com.xiaolian.amigo.ui.widget.swipebutton.SlideUnlockView;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
-import com.xiaolian.amigo.util.DensityUtil;
 import com.xiaolian.amigo.util.DimentionUtils;
 import com.xiaolian.amigo.util.TimeUtils;
-import com.xiaolian.amigo.util.Truss;
 
 import java.text.DecimalFormat;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -83,6 +68,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
      */
     private static final int CHOOSE_BONUS_CODE = 0x0010;
     protected static final int CHOOSE_DORMITORY_CODE = 0x0011;
+    private static final int REQUEST_CODE_RECHARGE = 0x0012;
 
     /**
      * 确认支付
@@ -263,7 +249,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
      * 支付信息
      */
     private Long bonusId;
-    private String bonusRemark;
+    private String bonusDescription;
     private Double bonusAmount;
     private Double prepay;
     private Double minPrepay;
@@ -441,14 +427,14 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                     builder.append(buttonSpan);
                     builder.append(getString(R.string.comma_start_shower));
 
-                    showBonusLayout(tip, builder, bonusRemark);
+                    showBonusLayout(tip, builder, bonusDescription);
                 }
                 // 红包金额小于最小预付金额  需要充值
                 else {
                     tip = getString(R.string.connect_prepay_tip_7, df.format(minPrepay));
                     needRecharge = true;
                     buttonText = getString(R.string.to_recharge);
-                    showBonusLayout(tip, new SpannableStringBuilder(buttonText), bonusRemark);
+                    showBonusLayout(tip, new SpannableStringBuilder(buttonText), bonusDescription);
                 }
 
             }
@@ -471,7 +457,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     builder.append(buttonSpan);
                     builder.append(getString(R.string.comma_start_shower));
-                    showBonusLayout(tip, builder, bonusRemark);
+                    showBonusLayout(tip, builder, bonusDescription);
                 }
                 // 余额加红包小于预付金额 大于等于最小预付金额
                 else if (balance + bonusAmount >= minPrepay
@@ -488,14 +474,14 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     builder.append(buttonSpan);
                     builder.append(getString(R.string.comma_start_shower));
-                    showBonusLayout(tip, builder, bonusRemark);
+                    showBonusLayout(tip, builder, bonusDescription);
                 }
                 // 余额加红包小于最小预付金额
                 else if (balance + bonusAmount < minPrepay) {
                     tip = getString(R.string.connect_prepay_tip_7, df.format(minPrepay));
                     needRecharge = true;
                     buttonText = getString(R.string.to_recharge);
-                    showBonusLayout(tip, new SpannableStringBuilder(buttonText), bonusRemark);
+                    showBonusLayout(tip, new SpannableStringBuilder(buttonText), bonusDescription);
                 }
             }
         }
@@ -557,7 +543,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         if (data.getBonus() != null) {
             bonusId = data.getBonus().getId();
             bonusAmount = data.getBonus().getAmount();
-            bonusRemark = data.getBonus().getRemarks();
+            bonusDescription = data.getBonus().getDescription();
         }
         prepay = data.getPrepay();
         minPrepay = data.getMinPrepay();
@@ -725,7 +711,8 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     void pay(Button button) {
         // 需要充值
         if (needRecharge) {
-            startActivity(new Intent(this, RechargeActivity.class));
+            startActivityForResult(new Intent(this, RechargeActivity.class),
+                    REQUEST_CODE_RECHARGE);
         } else {
             userWater = true;
             // 点击支付操作时蓝牙必须为开启状态
@@ -857,14 +844,14 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         if (requestCode == CHOOSE_BONUS_CODE) {
             if (resultCode == RESULT_CANCELED) {
                 bonusAmount = 0.0;
-                bonusRemark = getString(R.string.not_use_bonus);
+                bonusDescription = getString(R.string.not_use_bonus);
                 refreshPrepayStatus();
             } else if (resultCode == RESULT_OK) {
                 choosedBonus = (BonusAdaptor.BonusWrapper) data.getExtras().getSerializable(BonusActivity.INTENT_KEY_BONUS_RESULT);
                 if (choosedBonus != null) {
                     bonusId = choosedBonus.getId();
                     bonusAmount = choosedBonus.getAmount();
-                    bonusRemark = choosedBonus.getRemark();
+                    bonusDescription = choosedBonus.getDescription();
                     refreshPrepayStatus();
                 }
             }
@@ -894,6 +881,8 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                 this.macAddress = chosenMacAddress;
                 presenter.onConnect(chosenMacAddress);
             }
+        } else if (requestCode == REQUEST_CODE_RECHARGE) {
+            presenter.queryPrepayOption(deviceType);
         }
     }
 

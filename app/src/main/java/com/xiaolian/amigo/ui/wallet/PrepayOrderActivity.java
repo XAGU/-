@@ -1,13 +1,16 @@
 package com.xiaolian.amigo.ui.wallet;
 
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.base.TimeHolder;
 import com.xiaolian.amigo.data.enumeration.Device;
+import com.xiaolian.amigo.data.network.model.order.Order;
 import com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity;
 import com.xiaolian.amigo.ui.device.dispenser.DispenserActivity;
 import com.xiaolian.amigo.ui.device.heater.HeaterActivity;
@@ -33,36 +36,32 @@ public class PrepayOrderActivity extends WalletBaseActivity implements IPrepayOr
     @Inject
     IPrepayOrderPresenter<IPrepayOrderView> presenter;
 
-    /**
-     * 使用时间
-     */
+    @BindView(R.id.ll_order_normal)
+    LinearLayout ll_order_normal;
+    @BindView(R.id.rl_use_bonus)
+    RelativeLayout rl_use_bonus;
+    // 使用红包
+    @BindView(R.id.tv_bonus_remark)
+    TextView tv_bonus_remark;
+    // 预付金额
+    @BindView(R.id.tv_prepay)
+    TextView tv_prepay;
+    // 实际扣款
+    @BindView(R.id.tv_consume)
+    TextView tv_consume;
+    // 找零金额
+    @BindView(R.id.tv_odd)
+    TextView tv_odd;
+
+    // 使用时间
     @BindView(R.id.tv_time)
     TextView tv_time;
-
-    /**
-     * 设备位置
-     */
-    @BindView(R.id.tv_location)
-    TextView tv_location;
-
-    /**
-     * 订单号
-     */
+    // 设备位置
+    @BindView(R.id.tv_device_location)
+    TextView tv_device_location;
+    // 订单号
     @BindView(R.id.tv_order_no)
     TextView tv_order_no;
-
-    /**
-     * 支付方式
-     */
-    @BindView(R.id.tv_pay_method)
-    TextView tv_pay_method;
-
-    /**
-     * 找零金额
-     */
-    @BindView(R.id.rl_odd)
-    RelativeLayout rl_odd;
-
     private PrepayAdaptor.OrderWrapper orderWrapper;
 
     @Override
@@ -72,18 +71,35 @@ public class PrepayOrderActivity extends WalletBaseActivity implements IPrepayOr
         presenter.onAttach(PrepayOrderActivity.this);
 
         if (orderWrapper != null) {
-            tv_time.setText(CommonUtil.stampToDate(orderWrapper.getTime()));
-            Device device = Device.getDevice(orderWrapper.getType());
-            if (device != null) {
-                tv_location.setText(device.getDesc() + " " + orderWrapper.getOrder().getLocation());
-            } else {
-                tv_location.setText("未知设备 " + orderWrapper.getOrder().getLocation());
-            }
-            tv_order_no.setText(orderWrapper.getOrder().getOrderNo());
-            tv_pay_method.setText(orderWrapper.getOrder().getPrepay());
-            rl_odd.setVisibility(orderWrapper.getOrder().getPaymentType() == 1 ?
-                    View.VISIBLE : View.GONE);
+            render(orderWrapper);
         }
+    }
+
+    private void render(PrepayAdaptor.OrderWrapper orderWrapper) {
+        Order order = orderWrapper.getOrder();
+        // 设置基础信息
+        tv_time.setText(CommonUtil.stampToDate(order.getCreateTime()));
+        Device device = Device.getDevice(order.getDeviceType());
+        if (device != null) {
+            tv_device_location.setText(device.getDesc() + " " + order.getLocation());
+        } else {
+            tv_device_location.setText("未知设备 " + order.getLocation());
+        }
+        tv_order_no.setText(order.getOrderNo());
+        // 正常账单
+        ll_order_normal.setVisibility(View.VISIBLE);
+        // 是否有红包
+        if (TextUtils.isEmpty(order.getBonus())) {
+            // 没有红包
+            rl_use_bonus.setVisibility(View.GONE);
+        } else {
+            // 有红包
+            rl_use_bonus.setVisibility(View.VISIBLE);
+            tv_bonus_remark.setText(order.getBonus());
+        }
+        tv_consume.setText(getString(R.string.wait_to_settlement));
+        tv_prepay.setText(order.getPrepay());
+        tv_odd.setText(getString(R.string.wait_to_change));
     }
 
     @Override

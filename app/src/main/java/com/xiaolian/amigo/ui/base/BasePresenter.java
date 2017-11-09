@@ -303,7 +303,7 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
         public void onNext(T t) {
             Error error = t.getError();
             if (null != error) {
-                onBizCodeError(error);
+                getMvpView().post(() -> onBizCodeError(error));
             }
             onReady(t);
             if (renderView) {

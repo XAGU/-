@@ -82,7 +82,13 @@ public class LogInterceptor implements Interceptor {
         }
         String url = newRequest.url().toString();
         String header = newRequest.headers().toString();
-        okhttp3.Response response = chain.proceed(newRequest);
+        okhttp3.Response response;
+        try {
+            response = chain.proceed(newRequest);
+        } catch (Exception e) {
+            Log.wtf(TAG, "网络请求错误: " + newRequest.url(), e);
+            return null;
+        }
         okhttp3.MediaType mediaType = response.body().contentType();
         String content;
         if (null != response.header("deviceToken")) {

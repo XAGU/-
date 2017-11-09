@@ -30,15 +30,13 @@ public class Order implements Serializable {
     private String location;
     // 订单编号
     private String orderNo;
-    // 支付类型，1 - 余额支付， 2 - 红包支付
-    private Integer paymentType;
     // 预付金额
     private String prepay;
     // 学校id
     private Integer schoolId;
     // 学校名称
     private String schoolName;
-    // 订单状态， 1 - 使用中， 2 - 已结束
+    // 订单状态， 1 - 使用中， 2 - 已结束 3 - 异常
     private Integer status;
     // 用户id
     private Long userId;
@@ -50,4 +48,6 @@ public class Order implements Serializable {
     private String odd;
     // 设备mac地址
     private String macAddress;
+    // 红包
+    private String bonus;
 }

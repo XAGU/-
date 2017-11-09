@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:id="@+id/ll_order_normal"
+<LinearLayout android:id="@+id/ll_order_normal"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tool="http://schemas.android.com/tools">
     <RelativeLayout
         android:id="@+id/rl_use_bonus"
         android:layout_width="match_parent"
@@ -26,13 +26,13 @@
         <TextView
             android:id="@+id/tv_bonus_remark"
             style="@style/ContentText_main"
+            tool:text="0元1234"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:textColor="#666"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            />
     </RelativeLayout>
 
     <View
@@ -53,13 +53,15 @@
             android:text="@string/prepay_money_colon" />
 
         <TextView
-            android:id="@+id/tv_pay_method"
+            tool:text="预付0元"
+            android:id="@+id/tv_prepay"
             style="@style/ContentText_main"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:textColor="#666" />
+            android:textColor="#666"
+            />
     </RelativeLayout>
 
 
@@ -81,7 +83,8 @@
             android:text="@string/real_pay_colon" />
 
         <TextView
-            android:id="@+id/tv_amount"
+            tool:text="0元"
+            android:id="@+id/tv_consume"
             style="@style/ContentText_main"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -111,7 +114,8 @@
             android:text="@string/change_amount_colon" />
 
         <TextView
-            android:id="@+id/tv_change_amount"
+            tool:text="0元"
+            android:id="@+id/tv_odd"
             style="@style/ContentText_main"
             android:layout_width="wrap_content"
             android:layout_height="58dp"
@@ -120,18 +124,6 @@
             android:textColor="@color/colorFullRed"
             android:textSize="16sp"
             android:textStyle="bold" />
-
-        <TextView
-            style="@style/ContentText_main"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@id/tv_change_amount"
-            android:text="￥"
-            android:textColor="@color/colorFullRed"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:visibility="gone" />
 
         <View
             android:layout_width="match_parent"

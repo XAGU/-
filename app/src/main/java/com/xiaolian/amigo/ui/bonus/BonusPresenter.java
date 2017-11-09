@@ -32,7 +32,8 @@ public class BonusPresenter<V extends IBonusView> extends BasePresenter<V>
     }
 
     @Override
-    public void requestBonusList(int page, Integer deviceType) {
+    public void requestBonusList(int page, Integer deviceType, boolean checkUse) {
+        // checkUse 是否检查生效时间
         QueryUserBonusReqDTO dto = new QueryUserBonusReqDTO();
         dto.setPage(page);
         dto.setDeviceType(deviceType);
@@ -51,7 +52,13 @@ public class BonusPresenter<V extends IBonusView> extends BasePresenter<V>
                     if (null != result.getData().getBonuses() && result.getData().getBonuses().size() > 0) {
                         List<BonusAdaptor.BonusWrapper> wrappers = new ArrayList<>();
                         for (Bonus bonus : result.getData().getBonuses()) {
-                            wrappers.add(new BonusAdaptor.BonusWrapper(bonus));
+                            if (checkUse) {
+                                if (bonus.getStartTime() != null && result.getTimestamp() >= bonus.getStartTime()) {
+                                    wrappers.add(new BonusAdaptor.BonusWrapper(bonus));
+                                }
+                            } else {
+                                wrappers.add(new BonusAdaptor.BonusWrapper(bonus));
+                            }
                         }
                         getMvpView().addMore(wrappers);
                         getMvpView().addPage();

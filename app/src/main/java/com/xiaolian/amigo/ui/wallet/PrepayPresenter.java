@@ -42,8 +42,6 @@ public class PrepayPresenter<V extends IPrepayView> extends BasePresenter<V>
         reqDTO.setSize(Constant.PAGE_SIZE);
         // 查看未结束账单
         reqDTO.setOrderStatus(1);
-        // 默认只获取余额支付的未找零账单
-        reqDTO.setPaymentType(Payment.BALANCE.getType());
         addObserver(manager.queryOrders(reqDTO), new NetworkObserver<ApiResult<OrderRespDTO>>(false, true) {
             @Override
             public void onReady(ApiResult<OrderRespDTO> result) {

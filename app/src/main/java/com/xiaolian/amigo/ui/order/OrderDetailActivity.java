@@ -2,8 +2,10 @@ package com.xiaolian.amigo.ui.order;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -27,22 +29,49 @@ import butterknife.OnClick;
  */
 public class OrderDetailActivity extends OrderBaseActivity implements IOrderDetailView {
 
+    /************** 正常账单内容 ****************/
+    @BindView(R.id.ll_order_normal)
+    LinearLayout ll_order_normal;
+    @BindView(R.id.rl_use_bonus)
+    RelativeLayout rl_use_bonus;
+    // 使用红包
+    @BindView(R.id.tv_bonus_remark)
+    TextView tv_bonus_remark;
+    // 预付金额
+    @BindView(R.id.tv_prepay)
+    TextView tv_prepay;
+    // 实际扣款
+    @BindView(R.id.tv_consume)
+    TextView tv_consume;
+    // 找零金额
+    @BindView(R.id.tv_odd)
+    TextView tv_odd;
+
+
+    /************** 异常账单内容 ****************/
+    @BindView(R.id.tv_order_error_tip)
+    TextView tv_order_error_tip;
+    @BindView(R.id.ll_order_error)
+    LinearLayout ll_order_error;
+    @BindView(R.id.rl_back_bonus)
+    RelativeLayout rl_back_bonus;
+    // 退还红包
+    @BindView(R.id.tv_back_bonus)
+    TextView tv_back_bonus;
+    // 退还金额
+    @BindView(R.id.tv_back_amount)
+    TextView tv_back_amount;
+
+    /************** 基础信息 *****************/
+    // 使用时间
     @BindView(R.id.tv_time)
     TextView tv_time;
+    // 设备位置
     @BindView(R.id.tv_device_location)
     TextView tv_device_location;
+    // 订单号
     @BindView(R.id.tv_order_no)
     TextView tv_order_no;
-    @BindView(R.id.tv_pay_method)
-    TextView tv_pay_method;
-    @BindView(R.id.tv_change_amount)
-    TextView tv_change_amount;
-    @BindView(R.id.tv_amount)
-    TextView tv_amount;
-    @BindView(R.id.iv_order_free)
-    ImageView iv_order_free;
-    @BindView(R.id.rl_odd)
-    RelativeLayout rl_odd;
 
     private Order order;
     private String token;
@@ -88,6 +117,7 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
 
     @Override
     public void render() {
+        // 设置基础信息
         tv_time.setText(CommonUtil.stampToDate(order.getCreateTime()));
         Device device = Device.getDevice(order.getDeviceType());
         if (device != null) {
@@ -96,13 +126,39 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
             tv_device_location.setText("未知设备 " + order.getLocation());
         }
         tv_order_no.setText(order.getOrderNo());
-        tv_pay_method.setText(order.getPrepay());
-        rl_odd.setVisibility(order.getPaymentType() == 1 ?
-                View.VISIBLE : View.GONE);
-        iv_order_free.setVisibility(order.getPaymentType() == 1 ?
-                View.GONE : View.VISIBLE);
-        tv_change_amount.setText(String.valueOf(order.getOdd()));
-        tv_amount.setText(String.valueOf(order.getConsume()));
+        if (CommonUtil.equals(order.getStatus(), 3)) {
+            // 异常账单
+            tv_order_error_tip.setVisibility(View.VISIBLE);
+            ll_order_normal.setVisibility(View.GONE);
+            ll_order_error.setVisibility(View.VISIBLE);
+            // 是否有红包
+            if (TextUtils.isEmpty(order.getBonus())) {
+                // 没有红包
+                rl_back_bonus.setVisibility(View.GONE);
+            } else {
+                // 有红包
+                rl_back_bonus.setVisibility(View.VISIBLE);
+                tv_back_bonus.setText(order.getBonus());
+            }
+            tv_back_amount.setText(order.getPrepay());
+        } else {
+            // 正常账单
+            tv_order_error_tip.setVisibility(View.GONE);
+            ll_order_normal.setVisibility(View.VISIBLE);
+            ll_order_error.setVisibility(View.GONE);
+            // 是否有红包
+            if (TextUtils.isEmpty(order.getBonus())) {
+                // 没有红包
+                rl_use_bonus.setVisibility(View.GONE);
+            } else {
+                // 有红包
+                rl_use_bonus.setVisibility(View.VISIBLE);
+                tv_bonus_remark.setText(order.getBonus());
+            }
+            tv_consume.setText(order.getConsume());
+            tv_prepay.setText(order.getPrepay());
+            tv_odd.setText(order.getOdd());
+        }
     }
 
 }

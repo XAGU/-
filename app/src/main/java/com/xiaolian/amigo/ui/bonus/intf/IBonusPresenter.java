@@ -10,7 +10,7 @@ import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 @BonusActivityContext
 public interface IBonusPresenter<V extends IBonusView> extends IBasePresenter<V> {
 
-    void requestBonusList(int page, Integer deviceType);
+    void requestBonusList(int page, Integer deviceType, boolean checkUse);
 
     void requestExpiredBonusList(int page);
 }

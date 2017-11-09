@@ -15,8 +15,11 @@ public class Bonus {
     private Long id;
     private String name;
     private String remarks;
+    private String description;
     private Long timeLimit;
     private String updateTime;
     private Integer useStatus;
     private Integer validStatus;
+    // 生效时间
+    private Long startTime;
 }

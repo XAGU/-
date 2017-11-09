@@ -117,6 +117,7 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
     @Override
     public void addMoreProgresses(List<RepairProgressAdaptor.ProgressWrapper> progresses) {
         Collections.reverse(progresses);
+        this.progresses.clear();
         this.progresses.addAll(progresses);
         adapter.notifyDataSetChanged();
     }

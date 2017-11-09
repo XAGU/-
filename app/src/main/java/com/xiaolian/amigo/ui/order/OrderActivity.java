@@ -50,7 +50,7 @@ public class OrderActivity extends OrderBaseListActivity implements IOrderView {
 
     @Override
     protected void onRefresh() {
-        page = 1;
+        page = Constant.PAGE_START_NUM;
         presenter.requestOrders(Constant.PAGE_START_NUM);
         orders.clear();
     }

@@ -157,6 +157,7 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
     public void gotoDetail(Long fundsId) {
         startActivity(new Intent(this, RechargeDetailActivity.class)
                 .putExtra(Constant.EXTRA_KEY, fundsId));
+        setResult(RESULT_OK);
         finish();
     }
 

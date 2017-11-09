@@ -35,7 +35,7 @@ public class PrepayActivity extends WalletBaseListActivity implements IPrepayVie
 
     @Override
     protected void onRefresh() {
-        page = 1;
+        page = Constant.PAGE_START_NUM;
         presenter.requestPrepay(Constant.PAGE_START_NUM);
         orders.clear();
     }
@@ -82,10 +82,4 @@ public class PrepayActivity extends WalletBaseListActivity implements IPrepayVie
         this.orders.addAll(orders);
         adaptor.notifyDataSetChanged();
     }
-
-//    // 查看待找零账单
-//    @OnItemClick(lv_prepays)
-//    void queryPrepayOrder() {
-//        startActivity(this, PrepayOrderActivity.class);
-//    }
 }

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="86dp">
+    android:layout_height="86dp"
+    xmlns:tool="http://schemas.android.com/tools">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -14,7 +15,7 @@
             android:layout_width="86dp"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="￥10"
+            tool:text="￥10"
             android:textColor="@color/colorFullRed"
             android:textSize="28sp"
             android:textStyle="bold" />
@@ -30,7 +31,7 @@
                 style="@style/ContentText_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="新人红包" />
+                tool:text="新人红包" />
 
             <TextView
                 android:id="@+id/tv_time_end"
@@ -38,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_type"
                 android:layout_marginTop="4dp"
-                android:text="2018-01-01到期"
+                tool:text="2018-01-01到期"
                 android:textColor="#222"
                 android:textSize="9sp" />
 
@@ -48,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_time_end"
                 android:layout_marginTop="1dp"
-                android:text="约一吨水/限热水器一次性使用"
+                tool:text="约一吨水/限热水器一次性使用"
                 android:textColor="#222"
                 android:textSize="9sp" />
 

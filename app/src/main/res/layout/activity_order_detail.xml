@@ -74,6 +74,17 @@
                     android:layout_height="wrap_content" />
             </LinearLayout>
 
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tv_order_error_tip"
+                android:text="@string/order_error_tip"
+                android:textColor="@color/colorFullRed"
+                android:textSize="12sp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

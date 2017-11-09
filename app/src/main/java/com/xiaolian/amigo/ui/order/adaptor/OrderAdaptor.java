@@ -12,6 +12,8 @@ import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.network.model.order.Order;
 import com.xiaolian.amigo.util.CommonUtil;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 import butterknife.BindView;
@@ -58,8 +60,10 @@ public class OrderAdaptor extends RecyclerView.Adapter<OrderAdaptor.ViewHolder> 
                 holder.tv_device.setText(wrapper.getDevice());
                 holder.tv_time.setText(wrapper.getTime());
                 holder.tv_amount.setText("免费");
+                holder.tv_minus.setVisibility(View.GONE);
                 holder.order = wrapper.getOrder();
             } else {
+                holder.tv_minus.setVisibility(View.VISIBLE);
                 holder.v_type.setBackgroundResource(Device.getDevice(wrapper.getType()).getColorRes());
                 holder.tv_device.setText(wrapper.getDevice());
                 holder.tv_time.setText(wrapper.getTime());
@@ -83,6 +87,8 @@ public class OrderAdaptor extends RecyclerView.Adapter<OrderAdaptor.ViewHolder> 
         TextView tv_time;
         @BindView(R.id.tv_amount)
         TextView tv_amount;
+        @BindView(R.id.tv_minus)
+        TextView tv_minus;
 
         Context context;
         Order order;

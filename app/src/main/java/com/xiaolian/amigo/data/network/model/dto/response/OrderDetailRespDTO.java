@@ -26,9 +26,6 @@ public class OrderDetailRespDTO {
     // 实际消费
     private String consume;
 
-    // 支付方式
-    private Integer paymentType;
-
     // 创建时间
     private Long createTime;
 
@@ -37,5 +34,14 @@ public class OrderDetailRespDTO {
 
     // 设备类型
     private Integer deviceType;
+
+    private Boolean favor;
+    private String macAddress;
+    // status为3表示异常账单
+    private Integer status;
+    private Long residenceId;
+    private Integer usefor;
+    // 红包
+    private String bonus;
 
 }

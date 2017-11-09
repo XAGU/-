@@ -30,6 +30,7 @@ import butterknife.ButterKnife;
 
 public class ChooseDormitoryActivity extends UserBaseListActivity implements IChooseDormitoryView {
 
+    private static final int REQUEST_CODE_EDIT_DORMITOTY = 0x1020;
     @Inject
     IChooseDormitoryPresenter<IChooseDormitoryView> presenter;
 
@@ -82,7 +83,8 @@ public class ChooseDormitoryActivity extends UserBaseListActivity implements ICh
         getSubTitle().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(ChooseDormitoryActivity.this, EditDormitoryActivity.class));
+                startActivityForResult(new Intent(ChooseDormitoryActivity.this,
+                        EditDormitoryActivity.class), REQUEST_CODE_EDIT_DORMITOTY);
             }
         });
         return R.string.manage_dormitory;

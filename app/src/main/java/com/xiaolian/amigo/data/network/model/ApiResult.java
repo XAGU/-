@@ -8,7 +8,7 @@ package com.xiaolian.amigo.data.network.model;
 public class ApiResult<T> {
     T data;
     Error error;
-    String timestamp;
+    Long timestamp;
 
     public T getData() {
         return data;
@@ -26,11 +26,11 @@ public class ApiResult<T> {
         this.error = error;
     }
 
-    public String getTimestamp() {
+    public Long getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(Long timestamp) {
         this.timestamp = timestamp;
     }
 }

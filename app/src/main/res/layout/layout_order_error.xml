@@ -2,8 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tool="http://schemas.android.com/tools"
     android:id="@+id/ll_order_error"
-    android:visibility="gone"
     android:orientation="vertical"
+    android:visibility="gone"
+    tool:visibility="visible"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <RelativeLayout
@@ -25,18 +26,7 @@
             android:text="@string/back_bonus_colon" />
 
         <TextView
-            style="@style/ContentText_main"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@id/tv_change_amount"
-            android:text="￥"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/tv_change_amount"
+            android:id="@+id/tv_back_bonus"
             style="@style/ContentText_main"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -65,7 +55,7 @@
             android:text="@string/back_amount_colon" />
 
         <TextView
-            android:id="@+id/tv_amount"
+            android:id="@+id/tv_back_amount"
             style="@style/ContentText_main"
             android:layout_width="wrap_content"
             android:layout_height="58dp"
@@ -74,18 +64,6 @@
             android:textColor="@color/colorFullRed"
             android:textSize="16sp"
             android:textStyle="bold" />
-
-        <TextView
-            style="@style/ContentText_main"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@id/tv_amount"
-            android:text="￥"
-            android:textColor="@color/colorFullRed"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:visibility="gone" />
 
         <View
             android:layout_width="match_parent"
@@ -99,9 +77,10 @@
             android:layout_centerVertical="true"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
-            android:layout_toLeftOf="@id/tv_amount"
+            android:layout_toLeftOf="@id/tv_back_amount"
             android:src="@drawable/ic_order_free" />
 
     </RelativeLayout>
+
 
 </LinearLayout>

@@ -50,12 +50,12 @@ public class BonusActivity extends BonusBaseListActivity implements IBonusView {
     protected void onRefresh() {
         page = Constant.PAGE_START_NUM;
         bonuses.clear();
-        presenter.requestBonusList(page, deviceType ==  -1 ? null : deviceType);
+        presenter.requestBonusList(page, deviceType ==  -1 ? null : deviceType, deviceType != -1);
     }
 
     @Override
     public void onLoadMore() {
-        presenter.requestBonusList(page, deviceType ==  -1 ? null : deviceType);
+        presenter.requestBonusList(page, deviceType ==  -1 ? null : deviceType, deviceType != -1);
     }
 
     @Override

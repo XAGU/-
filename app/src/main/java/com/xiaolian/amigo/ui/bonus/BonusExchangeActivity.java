@@ -8,6 +8,7 @@ import android.widget.EditText;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.bonus.intf.IBonusExchangePresenter;
 import com.xiaolian.amigo.ui.bonus.intf.IBonusExchangeView;
+import com.xiaolian.amigo.util.CommonUtil;
 
 import javax.inject.Inject;
 
@@ -38,6 +39,8 @@ public class BonusExchangeActivity extends BonusBaseActivity implements IBonusEx
         getActivityComponent().inject(this);
 
         presenter.onAttach(BonusExchangeActivity.this);
+
+        CommonUtil.showSoftInput(this, et_changeCode);
     }
 
     @Override

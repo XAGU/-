@@ -23,7 +23,6 @@
                 android:visibility="invisible"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="14dp"
                 android:paddingRight="40dp"
                 android:paddingBottom="24dp"
                 android:src="@drawable/back" />
@@ -33,6 +32,7 @@
                 android:layout_height="wrap_content">
 
                 <TextView
+                    android:id="@+id/tv_order_title"
                     style="@style/TitleText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -73,224 +73,16 @@
                     android:layout_height="wrap_content" />
             </LinearLayout>
 
-            <!--<LinearLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:background="@color/colorBackgroundWhite"-->
-                <!--android:orientation="vertical"-->
-                <!--android:paddingLeft="14dp"-->
-                <!--android:paddingRight="14dp">-->
-
-                <!--<RelativeLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="58dp">-->
-
-                    <!--<TextView-->
-                        <!--style="@style/ContentText_main"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_alignParentLeft="true"-->
-                        <!--android:layout_centerVertical="true"-->
-                        <!--android:text="@string/use_time" />-->
-
-                    <!--<TextView-->
-                        <!--android:id="@+id/tv_time"-->
-                        <!--style="@style/ContentText_main"-->
-                        <!--android:textColor="#666"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_alignParentRight="true"-->
-                        <!--android:layout_centerVertical="true"/>-->
-                <!--</RelativeLayout>-->
-                <!---->
-
-                <!--<View-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="1dip"-->
-                    <!--android:background="#eee" />-->
-
-                <!--<RelativeLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="58dp">-->
-
-                    <!--<TextView-->
-                        <!--android:id="@+id/tv_location_title"-->
-                        <!--style="@style/ContentText_main"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_alignParentLeft="true"-->
-                        <!--android:layout_centerVertical="true"-->
-                        <!--android:text="@string/device_location" />-->
-
-                    <!--<TextView-->
-                        <!--android:layout_toRightOf="@id/tv_location_title"-->
-                        <!--android:gravity="right"-->
-                        <!--android:id="@+id/tv_device_info"-->
-                        <!--android:maxLines="1"-->
-                        <!--android:ellipsize="end"-->
-                        <!--style="@style/ContentText_main"-->
-                        <!--android:textColor="#666"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_alignParentRight="true"-->
-                        <!--android:layout_centerVertical="true"/>-->
-                <!--</RelativeLayout>-->
-
-                <!--<View-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="1dip"-->
-                    <!--android:background="#eee" />-->
-
-                <!--<RelativeLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="58dp">-->
-
-                    <!--<TextView-->
-                        <!--style="@style/ContentText_main"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_alignParentLeft="true"-->
-                        <!--android:layout_centerVertical="true"-->
-                        <!--android:text="@string/order_number" />-->
-
-                    <!--<TextView-->
-                        <!--android:id="@+id/tv_copy"-->
-                        <!--android:text="@string/copy"-->
-                        <!--android:gravity="center"-->
-                        <!--android:textSize="11sp"-->
-                        <!--android:textStyle="bold"-->
-                        <!--android:layout_alignParentRight="true"-->
-                        <!--android:textColor="@color/colorBlue"-->
-                        <!--android:paddingLeft="7dp"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="match_parent" />-->
-
-                    <!--<View-->
-                        <!--android:id="@+id/v_divide"-->
-                        <!--android:layout_toLeftOf="@id/tv_copy"-->
-                        <!--android:layout_marginLeft="7dp"-->
-                        <!--android:background="#e5e5e5"-->
-                        <!--android:layout_centerVertical="true"-->
-                        <!--android:layout_width="1dp"-->
-                        <!--android:layout_height="14dp"/>-->
-
-                    <!--<TextView-->
-                        <!--android:layout_toLeftOf="@id/v_divide"-->
-                        <!--android:id="@+id/tv_order_no"-->
-                        <!--style="@style/ContentText_main"-->
-                        <!--android:textSize="11sp"-->
-                        <!--android:textColor="#666"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_centerVertical="true"/>-->
-                <!--</RelativeLayout>-->
-
-                <!--<View-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="1dip"-->
-                    <!--android:background="#eee" />-->
-
-                <!--<RelativeLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="58dp">-->
-
-                    <!--<TextView-->
-                        <!--style="@style/ContentText_main"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_alignParentLeft="true"-->
-                        <!--android:layout_centerVertical="true"-->
-                        <!--android:text="@string/pay_way" />-->
-
-                    <!--<TextView-->
-                        <!--android:id="@+id/tv_pay_method"-->
-                        <!--style="@style/ContentText_main"-->
-                        <!--android:textColor="#666"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_alignParentRight="true"-->
-                        <!--android:layout_centerVertical="true"/>-->
-                <!--</RelativeLayout>-->
-
-
-                <!--<RelativeLayout-->
-                    <!--android:id="@+id/rl_odd"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="59dp">-->
-                    <!--<View-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="1dip"-->
-                        <!--android:layout_centerHorizontal="true"-->
-                        <!--android:background="#eee" />-->
-
-                    <!--<TextView-->
-                        <!--style="@style/ContentText_main"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_alignParentLeft="true"-->
-                        <!--android:layout_centerVertical="true"-->
-                        <!--android:text="找零金额" />-->
-
-
-                    <!--<TextView-->
-                        <!--android:id="@+id/tv_change_amount"-->
-                        <!--style="@style/ContentText_main"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:textColor="@color/colorDark2"-->
-                        <!--android:textSize="16sp"-->
-                        <!--android:textStyle="bold"-->
-                        <!--android:layout_alignParentRight="true"-->
-                        <!--android:layout_centerVertical="true"-->
-                        <!--/>-->
-
-                <!--</RelativeLayout>-->
-
-                <!--<View-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="1dip"-->
-                    <!--android:background="#eee" />-->
-
-                <!--<RelativeLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="117dp">-->
-
-                    <!--<TextView-->
-                        <!--style="@style/ContentText_main"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:gravity="center"-->
-                        <!--android:layout_height="58dp"-->
-                        <!--android:layout_alignParentLeft="true"-->
-                        <!--android:text="实际消费" />-->
-
-                    <!--<TextView-->
-                        <!--android:id="@+id/tv_amount"-->
-                        <!--style="@style/ContentText_main"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="58dp"-->
-                        <!--android:gravity="center"-->
-                        <!--android:layout_alignParentRight="true"-->
-                        <!--android:textColor="@color/colorFullRed"-->
-                        <!--android:textSize="16sp"-->
-                        <!--android:textStyle="bold" />-->
-
-                    <!--<View-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="1dip"-->
-                        <!--android:layout_centerVertical="true"-->
-                        <!--android:background="#eee" />-->
-
-                    <!--<ImageView-->
-                        <!--android:id="@+id/iv_order_free"-->
-                        <!--android:layout_toLeftOf="@id/tv_amount"-->
-                        <!--android:src="@drawable/ic_order_free"-->
-                        <!--android:layout_marginRight="10dp"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content" />-->
-
-                <!--</RelativeLayout>-->
-
-            <!--</LinearLayout>-->
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tv_order_error_tip"
+                android:text="@string/order_error_tip"
+                android:textColor="@color/colorFullRed"
+                android:textSize="12sp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
             <Button
                 android:id="@+id/bt_ok"
