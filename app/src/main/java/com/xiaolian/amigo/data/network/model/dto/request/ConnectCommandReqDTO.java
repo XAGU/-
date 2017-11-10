@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
  * Created by caidong on 2017/10/13.
  */
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class ConnectCommandReqDTO {
 
     private String macAddress;

@@ -10,8 +10,6 @@ import lombok.NoArgsConstructor;
  * Created by caidong on 2017/10/16.
  */
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class ScanDeviceGroup {
     /**
      * 是否已收藏

@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
  * Created by caidong on 2017/10/16.
  */
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class ScanDevice {
 
     private Long id;

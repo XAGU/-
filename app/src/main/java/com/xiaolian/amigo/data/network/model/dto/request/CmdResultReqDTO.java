@@ -11,15 +11,11 @@ import lombok.NonNull;
  * Created by caidong on 2017/10/9.
  */
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class CmdResultReqDTO {
 
     // 设备mac地址
-    @NonNull
     String macAddress;
 
     // 指令响应内容
-    @NonNull
     String data;
 }

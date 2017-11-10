@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
  * Created by caidong on 2017/10/12.
  */
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class UnsettledOrderStatusCheckRespDTO {
 
     // 订单id
