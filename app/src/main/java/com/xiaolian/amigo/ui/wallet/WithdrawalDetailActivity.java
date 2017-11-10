@@ -67,6 +67,9 @@ public class WithdrawalDetailActivity extends WalletBaseActivity implements IWit
     @BindView(R.id.tv_reason_content)
     TextView tv_reason_content;
 
+    @BindView(R.id.tv_cancel_withdraw)
+    TextView tv_cancel_withdraw;
+
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
 
@@ -110,15 +113,20 @@ public class WithdrawalDetailActivity extends WalletBaseActivity implements IWit
     @Override
     public void render(FundsDTO data) {
         orderNo = data.getOrderNo();
-        tv_amount.setText("¥" + data.getAmount());
+        tv_amount.setText(getString(R.string.money_format, data.getAmount()));
         tv_status.setText(WithdrawalStatus.getWithdrawalStatus(data.getStatus()).getDesc());
         tv_status.setTextColor(
                 ContextCompat.getColor(this,WithdrawalStatus.getWithdrawalStatus(data.getStatus()).getColorRes()));
+        if (WithdrawalStatus.getWithdrawalStatus(data.getStatus()) == WithdrawalStatus.AUDIT_PENDING) {
+            tv_cancel_withdraw.setVisibility(View.VISIBLE);
+        } else {
+            tv_cancel_withdraw.setVisibility(View.GONE);
+        }
         if (CommonUtil.equals(data.getStatus(), WithdrawalStatus.AUDIT_FAIL)
                 && !TextUtils.isEmpty(data.getReason())) {
             ll_reason.setVisibility(View.VISIBLE);
             tv_reason_content.setText(data.getReason());
-            tv_reason.setText("未通过原因");
+            tv_reason.setText(getString(R.string.unpass_reason));
         }
         left_oper.setText(WithdrawalStatus.getWithdrawalStatus(data.getStatus()).getNextOperations()[0]);
         right_oper.setText(WithdrawalStatus.getWithdrawalStatus(data.getStatus()).getNextOperations()[1]);
@@ -155,15 +163,26 @@ public class WithdrawalDetailActivity extends WalletBaseActivity implements IWit
             }
         });
 
-        items.add(new WithdrawRechargeDetailAdapter.Item("提现方式：",
+        items.add(new WithdrawRechargeDetailAdapter.Item(getString(R.string.withdraw_way_colon),
                 PayWay.getPayWay(data.getThirdAccountType()).getDesc()));
-        items.add(new WithdrawRechargeDetailAdapter.Item("提现账号：",
+        items.add(new WithdrawRechargeDetailAdapter.Item(getString(R.string.withdraw_account_colon),
                 data.getThirdAccountName()));
-        items.add(new WithdrawRechargeDetailAdapter.Item("提现时间：",
+        items.add(new WithdrawRechargeDetailAdapter.Item(getString(R.string.withdraw_time_colon),
                 TimeUtils.millis2String(data.getCreateTime())));
-        items.add(new WithdrawRechargeDetailAdapter.Item("流水号：",
+        items.add(new WithdrawRechargeDetailAdapter.Item(getString(R.string.serial_number_colon),
                 data.getOrderNo()));
         items.add(new WithdrawRechargeDetailAdapter.Item(null, null));
         adapter.notifyDataSetChanged();
+    }
+
+    @OnClick(R.id.tv_cancel_withdraw)
+    void onCancelWithdrawClick() {
+        presenter.cancelWithdraw(id);
+    }
+
+    @Override
+    public void gotoBack() {
+        setResult(RESULT_OK);
+        super.onBackPressed();
     }
 }

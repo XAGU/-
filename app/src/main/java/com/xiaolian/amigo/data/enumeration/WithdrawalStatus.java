@@ -74,6 +74,17 @@ public enum WithdrawalStatus {
         public String[] getNextOperations() {
             return new String[] {"常见问题", "联系客服"};
         }
+    },
+    WITHDRAWAL_CANCEL(6, "取消提现") {
+        @Override
+        public int getColorRes() {
+            return R.color.colorTextGray;
+        }
+
+        @Override
+        public String[] getNextOperations() {
+            return new String[] {"常见问题", "联系客服"};
+        }
     };
     private int type;
     private String desc;

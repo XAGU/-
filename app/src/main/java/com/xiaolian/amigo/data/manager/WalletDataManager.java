@@ -117,6 +117,11 @@ public class WalletDataManager implements IWalletDataManager {
     }
 
     @Override
+    public Observable<ApiResult<BooleanRespDTO>> cancelWithdraw(SimpleReqDTO reqDTO) {
+        return walletApi.cancelWithdraw(reqDTO);
+    }
+
+    @Override
     public void setLastWithdrawId(Long id) {
         sharedPreferencesHelp.setLastWithdrawId(id);
     }

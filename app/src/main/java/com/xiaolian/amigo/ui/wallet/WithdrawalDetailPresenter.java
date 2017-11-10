@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.wallet;
 
+import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.manager.intf.IWalletDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.RemindReqDTO;
@@ -70,6 +71,24 @@ public class WithdrawalDetailPresenter<V extends IWithdrawalDetailView> extends 
                     } else {
                         getMvpView().onError("提醒客服失败");
                     }
+                } else {
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+        });
+    }
+
+    @Override
+    public void cancelWithdraw(Long id) {
+        SimpleReqDTO reqDTO = new SimpleReqDTO();
+        reqDTO.setId(id);
+        addObserver(walletDataManager.cancelWithdraw(reqDTO), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
+
+            @Override
+            public void onReady(ApiResult<BooleanRespDTO> result) {
+                if (null == result.getError()) {
+                    getMvpView().onSuccess(R.string.cancel_withdraw_success);
+                    getMvpView().gotoBack();
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }

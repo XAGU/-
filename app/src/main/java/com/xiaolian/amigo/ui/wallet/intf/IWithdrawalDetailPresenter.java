@@ -15,4 +15,6 @@ public interface IWithdrawalDetailPresenter<V extends IWithdrawalDetailView> ext
 
     // 提醒客服
     void remind(Long sourceId);
+
+    void cancelWithdraw(Long id);
 }

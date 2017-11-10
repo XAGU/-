@@ -29,6 +29,7 @@ import butterknife.ButterKnife;
  */
 
 public class WithdrawalRecordActivity extends WalletBaseListActivity implements IWithdrawalRecordView {
+    private static final int REQUEST_CODE_DETAIL = 0x1201;
     @Inject
     IWithdrawRecordPresenter<IWithdrawalRecordView> presenter;
 
@@ -53,10 +54,11 @@ public class WithdrawalRecordActivity extends WalletBaseListActivity implements 
         adaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                startActivity(new Intent(WithdrawalRecordActivity.this,
+                startActivityForResult(new Intent(WithdrawalRecordActivity.this,
                         WithdrawOperationType.getOperationType(items.get(position).getType())
                             .getClz())
-                    .putExtra(Constant.EXTRA_KEY, items.get(position).getId()));
+                    .putExtra(Constant.EXTRA_KEY, items.get(position).getId()),
+                        REQUEST_CODE_DETAIL);
             }
 
             @Override
@@ -86,5 +88,13 @@ public class WithdrawalRecordActivity extends WalletBaseListActivity implements 
     public void addMore(List<WithdrawalAdaptor.WithdrawalWrapper> wrappers) {
         items.addAll(wrappers);
         adaptor.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_DETAIL) {
+            onRefresh();
+        }
     }
 }

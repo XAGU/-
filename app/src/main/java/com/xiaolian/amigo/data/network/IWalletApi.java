@@ -85,4 +85,8 @@ public interface IWalletApi {
     // 提醒客服
     @POST("/cs/remind")
     Observable<ApiResult<BooleanRespDTO>> remind(@Body RemindReqDTO reqDTO);
+
+    // 取消充值
+    @POST("/withdraw/cancel")
+    Observable<ApiResult<BooleanRespDTO>> cancelWithdraw(@Body SimpleReqDTO reqDTO);
 }
