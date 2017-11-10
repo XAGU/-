@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
  */
 @Data
 public class Order implements Serializable {
-    private int id;
+    private Long id;
     // 消费金额
     private String consume;
     // 创建时间

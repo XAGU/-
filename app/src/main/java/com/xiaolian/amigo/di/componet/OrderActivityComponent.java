@@ -22,6 +22,7 @@ import com.xiaolian.amigo.di.module.LoginActivityModule;
 import com.xiaolian.amigo.di.module.OrderActivityModule;
 import com.xiaolian.amigo.ui.login.LoginActivity;
 import com.xiaolian.amigo.ui.order.OrderActivity;
+import com.xiaolian.amigo.ui.order.OrderDetailActivity;
 
 import dagger.Component;
 
@@ -31,4 +32,6 @@ import dagger.Component;
 public interface OrderActivityComponent {
 
     void inject(OrderActivity activity);
+
+    void inject(OrderDetailActivity activity);
 }

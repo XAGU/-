@@ -32,7 +32,7 @@ public enum RepairStatus {
 
         @Override
         public int getDotColorDrawableRes() {
-            return R.drawable.dot_circle_red;
+            return R.drawable.dot_circle_yellow;
         }
 
         @Override
@@ -47,7 +47,7 @@ public enum RepairStatus {
 
         @Override
         public int getDotColorDrawableRes() {
-            return R.drawable.dot_circle_blue;
+            return R.drawable.dot_circle_yellow;
         }
 
         @Override

@@ -11,4 +11,6 @@ import com.xiaolian.amigo.ui.base.intf.IBaseView;
 
 public interface IRechargeDetailView extends IBaseView {
     void render(FundsDTO data);
+
+    void toComplaint();
 }

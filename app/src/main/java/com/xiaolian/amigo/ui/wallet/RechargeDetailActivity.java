@@ -111,7 +111,7 @@ public class RechargeDetailActivity extends WalletBaseActivity implements IRecha
     @Override
     public void render(FundsDTO data) {
         orderNo = data.getOrderNo();
-        tv_amount.setText("¥" + data.getAmount());
+        tv_amount.setText(getString(R.string.money_format, data.getAmount()));
         tv_status.setText(RechargeStatus.getRechargeStatus(data.getStatus()).getDesc());
         tv_status.setTextColor(
                 ContextCompat.getColor(this,RechargeStatus.getRechargeStatus(data.getStatus()).getColorRes()));
@@ -147,12 +147,7 @@ public class RechargeDetailActivity extends WalletBaseActivity implements IRecha
                     CommonUtil.call(RechargeDetailActivity.this, data.getCsMobile());
                     break;
                 default:
-                    startActivity(new Intent(this, WebActivity.class)
-                            .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_COMPLAINT
-                                    + "?token=" + presenter.getToken()
-                                    + "&orderId=" + id
-                                    + "&orderNo=" + orderNo
-                                    + "&orderType=" + ComplaintType.WITHDRAW.getType()));
+                    presenter.complaint(id, ComplaintType.RECHARGE.getType());
                     break;
             }
         });
@@ -167,6 +162,16 @@ public class RechargeDetailActivity extends WalletBaseActivity implements IRecha
                 data.getOrderNo()));
         items.add(new WithdrawRechargeDetailAdapter.Item(null, null));
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void toComplaint() {
+        startActivity(new Intent(this, WebActivity.class)
+                .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_COMPLAINT
+                        + "?token=" + presenter.getToken()
+                        + "&orderId=" + id
+                        + "&orderNo=" + orderNo
+                        + "&orderType=" + ComplaintType.WITHDRAW.getType()));
     }
 
     @OnClick(R.id.left_oper)

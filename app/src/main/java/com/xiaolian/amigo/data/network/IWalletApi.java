@@ -4,6 +4,7 @@ import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.AddThirdAccountReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.AlipayTradeAppPayArgsReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.AlipayTradeAppPayResultParseReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.request.CheckComplaintReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.QueryPersonalFundsListReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.QueryUserThirdAccountReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.RechargeReqDTO;
@@ -87,6 +88,10 @@ public interface IWalletApi {
     Observable<ApiResult<BooleanRespDTO>> remind(@Body RemindReqDTO reqDTO);
 
     // 取消充值
-    @POST("/withdraw/cancel")
+    @POST("/funds/withdraw/cancel")
     Observable<ApiResult<BooleanRespDTO>> cancelWithdraw(@Body SimpleReqDTO reqDTO);
+
+    // 投诉查重
+    @POST("/complaint/check")
+    Observable<ApiResult<BooleanRespDTO>> checkComplaint(@Body CheckComplaintReqDTO reqDTO);
 }

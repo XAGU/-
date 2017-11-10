@@ -52,6 +52,8 @@ public class WithdrawalDetailActivity extends WalletBaseActivity implements IWit
     TextView left_oper;
     @BindView(R.id.right_oper)
     TextView right_oper;
+    @BindView(R.id.ll_bottom)
+    LinearLayout ll_bottom;
 
     @BindView(R.id.tv_amount)
     TextView tv_amount;
@@ -128,41 +130,41 @@ public class WithdrawalDetailActivity extends WalletBaseActivity implements IWit
             tv_reason_content.setText(data.getReason());
             tv_reason.setText(getString(R.string.unpass_reason));
         }
-        left_oper.setText(WithdrawalStatus.getWithdrawalStatus(data.getStatus()).getNextOperations()[0]);
-        right_oper.setText(WithdrawalStatus.getWithdrawalStatus(data.getStatus()).getNextOperations()[1]);
-        left_oper.setOnClickListener((v) -> {
-            switch (WithdrawalStatus.getWithdrawalStatus(data.getStatus())) {
-                case AUDIT_PENDING:
-                    // 提现客服尽快处理
-                    presenter.remind(data.getId());
-                    break;
-                default:
-                    startActivity(new Intent(this, WebActivity.class)
-                            .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_HELP));
-                    break;
-            }
-        });
-        right_oper.setOnClickListener((v) -> {
-            switch (WithdrawalStatus.getWithdrawalStatus(data.getStatus())) {
-                case AUDIT_PENDING:
-                    startActivity(new Intent(this, WebActivity.class)
-                            .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_HELP));
-                    break;
-                case AUDIT_FAIL:
-                case WITHDRAWAL_FAIL:
-                    CommonUtil.call(WithdrawalDetailActivity.this, data.getCsMobile());
-                    break;
-                default:
-                    startActivity(new Intent(this, WebActivity.class)
-                            .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_COMPLAINT
-                                    + "?token=" + presenter.getToken()
-                                    + "&orderId=" + id
-                                    + "&orderNo=" + orderNo
-                                    + "&orderType=" + ComplaintType.WITHDRAW.getType()));
-                    break;
-            }
-        });
+        if (WithdrawalStatus.getWithdrawalStatus(data.getStatus()) == WithdrawalStatus.WITHDRAWAL_CANCEL) {
+            ll_bottom.setVisibility(View.GONE);
+        } else {
+            ll_bottom.setVisibility(View.VISIBLE);
+            left_oper.setText(WithdrawalStatus.getWithdrawalStatus(data.getStatus()).getNextOperations()[0]);
+            right_oper.setText(WithdrawalStatus.getWithdrawalStatus(data.getStatus()).getNextOperations()[1]);
+            left_oper.setOnClickListener((v) -> {
+                switch (WithdrawalStatus.getWithdrawalStatus(data.getStatus())) {
+                    case AUDIT_PENDING:
+                        // 提现客服尽快处理
+                        presenter.remind(data.getId());
+                        break;
+                    default:
+                        startActivity(new Intent(this, WebActivity.class)
+                                .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_HELP));
+                        break;
+                }
+            });
+            right_oper.setOnClickListener((v) -> {
+                switch (WithdrawalStatus.getWithdrawalStatus(data.getStatus())) {
+                    case AUDIT_PENDING:
+                        startActivity(new Intent(this, WebActivity.class)
+                                .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_HELP));
+                        break;
+                    case AUDIT_FAIL:
+                    case WITHDRAWAL_FAIL:
+                        CommonUtil.call(WithdrawalDetailActivity.this, data.getCsMobile());
+                        break;
+                    default:
+                        presenter.complaint(id, ComplaintType.WITHDRAW.getType());
+                        break;
+                }
+            });
 
+        }
         items.add(new WithdrawRechargeDetailAdapter.Item(getString(R.string.withdraw_way_colon),
                 PayWay.getPayWay(data.getThirdAccountType()).getDesc()));
         items.add(new WithdrawRechargeDetailAdapter.Item(getString(R.string.withdraw_account_colon),
@@ -184,5 +186,15 @@ public class WithdrawalDetailActivity extends WalletBaseActivity implements IWit
     public void gotoBack() {
         setResult(RESULT_OK);
         super.onBackPressed();
+    }
+
+    @Override
+    public void toComplaint() {
+        startActivity(new Intent(this, WebActivity.class)
+                .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_COMPLAINT
+                        + "?token=" + presenter.getToken()
+                        + "&orderId=" + id
+                        + "&orderNo=" + orderNo
+                        + "&orderType=" + ComplaintType.WITHDRAW.getType()));
     }
 }

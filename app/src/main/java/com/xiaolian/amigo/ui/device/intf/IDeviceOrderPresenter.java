@@ -12,4 +12,7 @@ public interface IDeviceOrderPresenter<V extends IDeviceOrderView> extends IBase
     void onLoad(long orderId);
 
     String getToken();
+
+    void checkComplaint(Long orderId, Integer orderType);
+
 }

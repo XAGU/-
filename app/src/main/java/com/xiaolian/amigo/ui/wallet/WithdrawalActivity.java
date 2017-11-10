@@ -120,7 +120,8 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
     }
 
     private void toggleButton() {
-        if (TextUtils.isEmpty(et_amount.getText()) && withdrawId != null) {
+        if (TextUtils.isEmpty(et_amount.getText())
+                || withdrawId == null) {
             bt_submit.setEnabled(false);
         } else {
             bt_submit.setEnabled(true);
@@ -141,6 +142,39 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
         if (withdrawId == null) {
             onError("请选择提现账户");
             return;
+        }
+        double withdrawAmount;
+        double balanceAmount;
+        try {
+            withdrawAmount = Double.valueOf(et_amount.getText().toString());
+            balanceAmount = Double.valueOf(balance);
+        } catch (NumberFormatException e) {
+            withdrawAmount = 0.0;
+            balanceAmount = 0.0;
+        }
+        if (balanceAmount < withdrawAmount) {
+            onError("余额不足");
+            return;
+        }
+        // 提现金额小于0.1
+        if (withdrawAmount < 0.1) {
+            onError(R.string.withdraw_amount_error_tip);
+            return;
+        }
+        // 正常情况 余额大于10
+        if (balanceAmount >= 10) {
+            if (withdrawAmount < 10) {
+                onError(R.string.withdraw_amount_error_tip);
+                return;
+            }
+        }
+        // 余额低于10元
+        else {
+            // 不是全部提现
+            if (!TextUtils.equals(String.valueOf(withdrawAmount), String.valueOf(balanceAmount))) {
+                onError(R.string.withdraw_amount_error_tip);
+                return;
+            }
         }
         presenter.withdraw(et_amount.getText().toString().trim(), withdrawId);
     }

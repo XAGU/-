@@ -10,4 +10,5 @@ public interface IDeviceOrderView extends IBaseView {
 
     void setRefreshComplete(OrderDetailRespDTO respDTO);
 
+    void toComplaint();
 }

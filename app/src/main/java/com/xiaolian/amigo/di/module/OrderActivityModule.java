@@ -21,7 +21,10 @@ import android.support.v7.app.AppCompatActivity;
 import com.xiaolian.amigo.data.manager.OrderDataManager;
 import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
 import com.xiaolian.amigo.di.OrderActivityContext;
+import com.xiaolian.amigo.ui.order.OrderDetailPresenter;
 import com.xiaolian.amigo.ui.order.OrderPresenter;
+import com.xiaolian.amigo.ui.order.intf.IOrderDetailPresenter;
+import com.xiaolian.amigo.ui.order.intf.IOrderDetailView;
 import com.xiaolian.amigo.ui.order.intf.IOrderPresenter;
 import com.xiaolian.amigo.ui.order.intf.IOrderView;
 
@@ -51,6 +54,13 @@ public class OrderActivityModule {
     @OrderActivityContext
     IOrderPresenter<IOrderView> provideOrderPresenter(
             OrderPresenter<IOrderView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    @OrderActivityContext
+    IOrderDetailPresenter<IOrderDetailView> provideOrderDetailPresenter(
+            OrderDetailPresenter<IOrderDetailView> presenter) {
         return presenter;
     }
 

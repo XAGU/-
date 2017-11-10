@@ -14,9 +14,12 @@ import com.xiaolian.amigo.data.enumeration.ComplaintType;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.network.model.order.Order;
 import com.xiaolian.amigo.ui.base.WebActivity;
+import com.xiaolian.amigo.ui.order.intf.IOrderDetailPresenter;
 import com.xiaolian.amigo.ui.order.intf.IOrderDetailView;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,6 +31,8 @@ import butterknife.OnClick;
  * Created by caidong on 2017/9/18.
  */
 public class OrderDetailActivity extends OrderBaseActivity implements IOrderDetailView {
+    @Inject
+    IOrderDetailPresenter<IOrderDetailView> presenter;
 
     // 账单标题
     @BindView(R.id.tv_order_title)
@@ -86,7 +91,10 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_detail);
-        ButterKnife.bind(this);
+        setUnBinder(ButterKnife.bind(this));
+        getActivityComponent().inject(this);
+
+        presenter.onAttach(this);
         render();
     }
 
@@ -102,14 +110,8 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
      */
     @OnClick(R.id.tv_complaint)
     public void complaint() {
-        startActivity(new Intent(this, WebActivity.class)
-                .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_COMPLAINT
-                        + "?token=" + token
-                        + "&orderId=" + order.getId()
-                        + "&orderNo=" + order.getOrderNo()
-                        + "&orderType="
-                        + ComplaintType.getComplaintTypeByDeviceType(
-                                Device.getDevice(order.getDeviceType())).getType()));
+        presenter.checkComplaint(order.getId(), ComplaintType.getComplaintTypeByDeviceType(
+                Device.getDevice(order.getDeviceType())).getType());
     }
 
     /**
@@ -167,6 +169,18 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
             tv_odd.setText(order.getOdd());
             tv_actual_debit.setText(getString(R.string.minus, order.getActualDebit()));
         }
+    }
+
+    @Override
+    public void toComplaint() {
+        startActivity(new Intent(this, WebActivity.class)
+                .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_COMPLAINT
+                        + "?token=" + token
+                        + "&orderId=" + order.getId()
+                        + "&orderNo=" + order.getOrderNo()
+                        + "&orderType="
+                        + ComplaintType.getComplaintTypeByDeviceType(
+                        Device.getDevice(order.getDeviceType())).getType()));
     }
 
 }

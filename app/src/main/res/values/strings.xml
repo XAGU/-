@@ -239,4 +239,6 @@
     <string name="serial_number_colon">流水号：</string>
     <string name="cancel_withdraw">取消提现</string>
     <string name="cancel_withdraw_success">取消提现成功</string>
+    <string name="withdraw_amount_error_tip">提现金额不能低于10元</string>
+    <string name="complaint_error">你已经投诉过该订单</string>
 </resources>

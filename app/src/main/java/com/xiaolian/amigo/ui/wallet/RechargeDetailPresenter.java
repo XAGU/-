@@ -1,7 +1,9 @@
 package com.xiaolian.amigo.ui.wallet;
 
+import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.manager.intf.IWalletDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.dto.request.CheckComplaintReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.RemindReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
@@ -68,6 +70,28 @@ public class RechargeDetailPresenter<V extends IRechargeDetailView> extends Base
                         getMvpView().onSuccess("提醒客服成功");
                     } else {
                         getMvpView().onError("提醒客服失败");
+                    }
+                } else {
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+        });
+    }
+
+    @Override
+    public void complaint(Long orderId, int orderType) {
+        CheckComplaintReqDTO reqDTO = new CheckComplaintReqDTO();
+        reqDTO.setOrderId(orderId);
+        reqDTO.setOrderType(orderType);
+        addObserver(walletDataManager.checkComplaint(reqDTO), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
+
+            @Override
+            public void onReady(ApiResult<BooleanRespDTO> result) {
+                if (null == result.getError()) {
+                    if (result.getData().isResult()) {
+                        getMvpView().onError(R.string.complaint_error);
+                    } else {
+                        getMvpView().toComplaint();
                     }
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());

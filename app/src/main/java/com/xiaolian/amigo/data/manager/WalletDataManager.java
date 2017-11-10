@@ -6,6 +6,7 @@ import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.AddThirdAccountReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.AlipayTradeAppPayArgsReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.AlipayTradeAppPayResultParseReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.request.CheckComplaintReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.QueryPersonalFundsListReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.QueryTimeValidReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.QueryUserThirdAccountReqDTO;
@@ -119,6 +120,11 @@ public class WalletDataManager implements IWalletDataManager {
     @Override
     public Observable<ApiResult<BooleanRespDTO>> cancelWithdraw(SimpleReqDTO reqDTO) {
         return walletApi.cancelWithdraw(reqDTO);
+    }
+
+    @Override
+    public Observable<ApiResult<BooleanRespDTO>> checkComplaint(CheckComplaintReqDTO reqDTO) {
+        return walletApi.checkComplaint(reqDTO);
     }
 
     @Override

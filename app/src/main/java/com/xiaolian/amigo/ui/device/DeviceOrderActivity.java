@@ -162,6 +162,17 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
         }
     }
 
+    @Override
+    public void toComplaint() {
+        startActivity(new Intent(this, WebActivity.class)
+                .putExtra(WebActivity.INTENT_KEY_URL,
+                        Constant.H5_COMPLAINT
+                                + "?token=" + presenter.getToken()
+                                + "&orderId=" + orderId
+                                + "&orderNo=" + orderNo
+                                + "&orderType=" + orderType));
+    }
+
     @OnClick(R.id.bt_ok)
     void onOkClick(Button button) {
         button.setEnabled(false);
@@ -186,13 +197,7 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
      */
     @OnClick(R.id.tv_complaint)
     public void complaint() {
-        startActivity(new Intent(this, WebActivity.class)
-                .putExtra(WebActivity.INTENT_KEY_URL,
-                        Constant.H5_COMPLAINT
-                        + "?token=" + presenter.getToken()
-                        + "&orderId=" + orderId
-                        + "&orderNo=" + orderNo
-                        + "&orderType=" + orderType));
+        presenter.checkComplaint(orderId, orderType);
     }
 
     /**

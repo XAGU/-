@@ -1,11 +1,13 @@
 package com.xiaolian.amigo.data.network;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.dto.request.CheckComplaintReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.LatestOrderReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.OrderDetailReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.OrderReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.QueryPrepayOptionReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.UnsettledOrderStatusCheckReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.LatestOrderRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.OrderDetailRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.OrderPreInfoDTO;
@@ -42,4 +44,8 @@ public interface IOrderApi {
     // 订单预备信息：options是预付金额选项，bonus是可用红包数量
     @POST("/order/pre")
     Observable<ApiResult<OrderPreInfoDTO>> queryPrepayOption(@Body QueryPrepayOptionReqDTO reqDTO);
+
+    // 投诉查重
+    @POST("/complaint/check")
+    Observable<ApiResult<BooleanRespDTO>> checkComplaint(@Body CheckComplaintReqDTO reqDTO);
 }

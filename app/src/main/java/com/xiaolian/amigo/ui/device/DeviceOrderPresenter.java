@@ -1,8 +1,11 @@
 package com.xiaolian.amigo.ui.device;
 
+import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.dto.request.CheckComplaintReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.OrderDetailReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.OrderDetailRespDTO;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.ui.base.BasePresenter;
@@ -46,5 +49,27 @@ public class DeviceOrderPresenter<V extends IDeviceOrderView> extends BasePresen
     @Override
     public String getToken() {
         return sharedPreferencesHelp.getToken();
+    }
+
+    @Override
+    public void checkComplaint(Long orderId, Integer orderType) {
+        CheckComplaintReqDTO reqDTO = new CheckComplaintReqDTO();
+        reqDTO.setOrderId(orderId);
+        reqDTO.setOrderType(orderType);
+        addObserver(manager.checkComplaint(reqDTO), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
+
+            @Override
+            public void onReady(ApiResult<BooleanRespDTO> result) {
+                if (null == result.getError()) {
+                    if (result.getData().isResult()) {
+                        getMvpView().onError(R.string.complaint_error);
+                    } else {
+                        getMvpView().toComplaint();
+                    }
+                } else {
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+        });
     }
 }

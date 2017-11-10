@@ -13,4 +13,6 @@ public interface IWithdrawalDetailView extends IBaseView {
     void render(FundsDTO data);
 
     void gotoBack();
+
+    void toComplaint();
 }
