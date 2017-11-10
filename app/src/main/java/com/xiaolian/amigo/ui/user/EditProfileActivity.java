@@ -170,6 +170,7 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
                 presenter.checkChangeSchool();
                 break;
             case R.id.rel_edit_room:
+                isNeedRefresh = true;
                 if (TextUtils.isEmpty(tv_residence.getText())) {
 //                    intent = new Intent(this, EditDormitoryActivity.class);
 //                    intent.putExtra(Constant.EXTRA_KEY, false);
@@ -178,6 +179,7 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
                     intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
                     intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION,
                             ListChooseActivity.ACTION_LIST_BUILDING);
+                    intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_SRC_ACTIVITY, Constant.EDIT_PROFILE_ACTIVITY_SRC);
                     intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_DEVICE_TYPE, Device.HEATER.getType());
                     startActivity(intent);
                 } else {

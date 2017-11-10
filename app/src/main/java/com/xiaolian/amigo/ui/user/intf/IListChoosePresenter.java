@@ -23,4 +23,6 @@ public interface IListChoosePresenter<V extends IListChooseView> extends IBasePr
     void getDormitoryList(Integer page, Integer size, Integer deviceType, Long parentId, boolean existDevice);
 
     void bindDormitory(Long id, Long residenceId, boolean isEdit);
+
+    void bindDormitory(Long id, Long residenceId, boolean isEdit, String activitySrc);
 }

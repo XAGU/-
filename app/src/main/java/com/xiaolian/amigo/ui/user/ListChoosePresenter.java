@@ -1,5 +1,7 @@
 package com.xiaolian.amigo.ui.user;
 
+import android.text.TextUtils;
+
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.BuildingType;
 import com.xiaolian.amigo.data.enumeration.Device;
@@ -22,6 +24,7 @@ import com.xiaolian.amigo.ui.user.intf.IListChoosePresenter;
 import com.xiaolian.amigo.ui.user.intf.IListChooseView;
 import com.xiaolian.amigo.util.Constant;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import javax.inject.Inject;
@@ -198,8 +201,15 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
         });
     }
 
+
+
     @Override
     public void bindDormitory(Long id, Long residenceId, boolean isEdit) {
+        bindDormitory(id, residenceId, isEdit, null);
+    }
+
+    @Override
+    public void bindDormitory(Long id, Long residenceId, boolean isEdit, String activitySrc) {
         BindResidenceReq dto = new BindResidenceReq();
         dto.setResidenceId(residenceId);
         if (isEdit) {
@@ -211,7 +221,11 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
             public void onReady(ApiResult<UserResidenceInListDTO> result) {
                 if (null == result.getError()) {
                     getMvpView().onSuccess(R.string.add_dormitory_success);
-                    getMvpView().backToDormitory();
+                    if (TextUtils.equals(activitySrc, Constant.EDIT_PROFILE_ACTIVITY_SRC)) {
+                        getMvpView().backToEditProfile();
+                    } else {
+                        getMvpView().backToDormitory();
+                    }
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }

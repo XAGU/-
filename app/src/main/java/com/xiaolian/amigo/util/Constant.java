@@ -58,6 +58,8 @@ public final class Constant {
     // 跳转至ListChooseActivity的来源
     public static final String REPAIR_APPLY_ACTIVITY_SRC = "repair_apply";
 
+    public static final String EDIT_PROFILE_ACTIVITY_SRC = "edit_profile";
+
     // 位置
     public static final String LOCATION = "location";
 

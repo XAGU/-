@@ -208,8 +208,10 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                             // page size 为null 加载全部
                             if (TextUtils.isEmpty(activitySrc)) {
                                 presenter.getDormitoryList(null, null, deviceType, parentId, false);
-                            } else {
+                            } else if (TextUtils.equals(activitySrc, Constant.REPAIR_APPLY_ACTIVITY_SRC)) {
                                 presenter.getDormitoryList(null, null, deviceType, parentId, true);
+                            } else if (TextUtils.equals(activitySrc, Constant.EDIT_PROFILE_ACTIVITY_SRC)) {
+                                presenter.getDormitoryList(null, null, deviceType, parentId, false);
                             }
                         }
                     }
@@ -217,12 +219,13 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                     adapter.setOnItemClickListener((view, position) -> {
                         if (Constant.REPAIR_APPLY_ACTIVITY_SRC.equals(activitySrc)) {
                             ListChooseAdaptor.Item item = items.get(position);
-
                             Intent intent = new Intent(ListChooseActivity.this, RepairApplyActivity.class);
                             intent.putExtra(Constant.LOCATION_ID, (long) item.getId());
                             intent.putExtra(Constant.DEVICE_TYPE, deviceType);
                             intent.putExtra(Constant.LOCATION, Device.getDevice(deviceType).getDesc() + Constant.CHINEASE_COLON + item.getExtra());
                             startActivity(intent);
+                        } else if (Constant.EDIT_PROFILE_ACTIVITY_SRC.endsWith(activitySrc)) {
+                            presenter.bindDormitory(residenceBindId, items.get(position).getId(), isEditDormitory, activitySrc);
                         } else {
                             presenter.bindDormitory(residenceBindId, items.get(position).getId(), isEditDormitory);
                         }
@@ -309,6 +312,11 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
 
     @Override
     public void backToMain() {
-        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        startActivity(new Intent(this, MainActivity.class));
+    }
+
+    @Override
+    public void backToEditProfile() {
+        startActivity(new Intent(this, EditProfileActivity.class));
     }
 }

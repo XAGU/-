@@ -21,4 +21,6 @@ public interface IListChooseView extends IBaseView {
     void addMore(List<ListChooseAdaptor.Item> item);
 
     void backToMain();
+
+    void backToEditProfile();
 }
