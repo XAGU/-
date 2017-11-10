@@ -38,6 +38,8 @@ public final class Constant {
 //    public static final String H5_SERVER = "http://10.0.0.5:5000";
     // H5帮助中心
     public static final String H5_HELP = H5_SERVER + "/help/list";
+    // 设备未找零
+    public static final String H5_PREPAY_HELP = H5_SERVER + "/help?first=1&last=1";
 
     // H5用户协议
     public static final String H5_AGREEMENT = H5_SERVER + "/agreement";

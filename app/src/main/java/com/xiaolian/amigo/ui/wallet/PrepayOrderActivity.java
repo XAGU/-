@@ -110,7 +110,7 @@ public class PrepayOrderActivity extends WalletBaseActivity implements IPrepayOr
     @OnClick(R.id.tv_prepay_order_tip)
     public void onPrepayOrderTipClick() {
         startActivity(new Intent(this, WebActivity.class)
-                .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_HELP));
+                .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_PREPAY_HELP));
     }
 
     // 前往结算订单

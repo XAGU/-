@@ -621,7 +621,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @Override
     public void showDeviceUsageDialog(int type, DeviceCheckRespDTO data) {
         Log.d(TAG, "showDeviceUsageDialog: " + type);
-        // 存在未找零订单
+        // 2小时内存在未找零订单
         if (data.getExistsUnsettledOrder() != null && data.getExistsUnsettledOrder()) {
             // 1 表示热水澡 2 表示饮水机
             if (type == 1) {
@@ -788,7 +788,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                         presenter.gotoHeaterDevice(data.getDefaultMacAddress(), data.getLocation(),
                                 data.getResidenceId());
                     } else {
-                        gotoDevice(DispenserActivity.class);
+                        gotoDevice(ChooseDispenserActivity.class);
                     }
                 } else {
                     showTimeValidDialog(type, data);
