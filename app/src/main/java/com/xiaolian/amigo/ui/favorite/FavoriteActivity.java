@@ -1,11 +1,15 @@
 package com.xiaolian.amigo.ui.favorite;
 
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.enumeration.Device;
+import com.xiaolian.amigo.data.enumeration.IntentAction;
+import com.xiaolian.amigo.ui.repair.RepairApplyActivity;
 import com.xiaolian.amigo.ui.widget.RecycleViewDivider;
 import com.xiaolian.amigo.ui.favorite.adaptor.FavoriteAdaptor;
 import com.xiaolian.amigo.ui.favorite.intf.IFavoritePresenter;
@@ -34,6 +38,7 @@ public class FavoriteActivity extends FavoriteBaseActivity implements IFavoriteV
 
     // 收藏设备recycleView适配器
     FavoriteAdaptor adaptor;
+    private IntentAction action;
 
     @Override
     protected void onRefresh() {
@@ -50,10 +55,15 @@ public class FavoriteActivity extends FavoriteBaseActivity implements IFavoriteV
     @Override
     protected void setRecyclerView(RecyclerView recyclerView) {
         adaptor = new FavoriteAdaptor(favorites, presenter);
-        adaptor.setOnItemLongClickListener(new FavoriteAdaptor.OnItemLongClickListener() {
-            @Override
-            public void onItemLongClick() {
-                onSuccess("请左滑操作");
+        adaptor.setOnItemLongClickListener(() -> onSuccess("请左滑操作"));
+        adaptor.setOnItemClickListener(position -> {
+            if (action == IntentAction.ACTION_CHOOSE_FAVORITE_FOR_REPAIR) {
+                Intent intent = new Intent(FavoriteActivity.this, RepairApplyActivity.class);
+                intent.putExtra(Constant.LOCATION_ID, favorites.get(position).getId());
+                intent.putExtra(Constant.DEVICE_TYPE, Device.DISPENSER.getType());
+                intent.putExtra(Constant.LOCATION, Device.DISPENSER.getDesc()
+                        + Constant.CHINEASE_COLON + favorites.get(position).getLocation());
+                startActivity(intent);
             }
         });
         recyclerView.addItemDecoration(new RecycleViewDivider(this, RecycleViewDivider.VERTICAL_LIST));
@@ -104,6 +114,9 @@ public class FavoriteActivity extends FavoriteBaseActivity implements IFavoriteV
 
     @Override
     protected void setUp() {
-
+        if (getIntent() != null) {
+            int actionType = getIntent().getIntExtra(Constant.INTENT_ACTION, 0);
+            action = IntentAction.getAction(actionType);
+        }
     }
 }

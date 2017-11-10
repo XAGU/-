@@ -224,4 +224,11 @@
     <string name="minus">-%1$s</string>
     <string name="error_order_title">异常账单</string>
     <string name="copy_success">复制成功</string>
+    <string name="heater">热水澡</string>
+    <string name="dispenser">饮水机</string>
+    <string name="quick_choose_colon">快捷选择：</string>
+    <string name="device_in_my_default_dormitory">我默认宿舍的设备</string>
+    <string name="my_favorite_device">我收藏的设备</string>
+    <string name="dormitory_empty_tip">你的宿舍信息为空</string>
+    <string name="mac_address_empty_tip">你的默认宿舍没有设备</string>
 </resources>

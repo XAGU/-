@@ -37,8 +37,8 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
     TextView tv_registry;
 
     LoginFragment loginFragment;
-    RegisterFragment registerFragment;
     RegisterStep1Fragment registerStep1Fragment;
+    RegisterStep2Fragment registerStep2Fragment;
 
     private String mobile;
     private String code;
@@ -61,14 +61,22 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
 
         presenter.logout();
 
-        if (findViewById(R.id.sv_container) != null) {
-            if (savedInstanceState != null) {
-                return;
+        if (savedInstanceState == null) {
+            loginFragment = new LoginFragment();
+            getSupportFragmentManager().beginTransaction().add(R.id.ll_main, loginFragment).commit();
+        } else {
+            LoginFragment login = (LoginFragment) getSupportFragmentManager().findFragmentByTag("login");
+            RegisterStep1Fragment registerStep1 =
+                    (RegisterStep1Fragment) getSupportFragmentManager().findFragmentByTag("registerStep1");
+            RegisterStep2Fragment registerStep2 =
+                    (RegisterStep2Fragment) getSupportFragmentManager().findFragmentByTag("registerStep2");
+            if (login != null && registerStep1 != null && registerStep2 != null) {
+                getSupportFragmentManager().beginTransaction()
+                        .show(login)
+                        .hide(registerStep1)
+                        .hide(registerStep2)
+                        .commit();
             }
-            LoginFragment loginFragment = new LoginFragment();
-            loginFragment.setArguments(getIntent().getExtras());
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.sv_container, loginFragment).commit();
         }
     }
 
@@ -79,13 +87,23 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
     }
 
     @OnClick(R.id.tv_registry)
-    void gotoRegister() {
+    void gotoRegisterStep1() {
         if (registerStep1Fragment == null) {
             registerStep1Fragment = new RegisterStep1Fragment();
         }
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.sv_container, registerStep1Fragment);
-        transaction.commit();
+
+        if (loginFragment != null && loginFragment.isAdded()) {
+            transaction = transaction.hide(loginFragment);
+        }
+        if (registerStep2Fragment != null && registerStep2Fragment.isAdded()) {
+            transaction = transaction.hide(registerStep2Fragment);
+        }
+        if (!registerStep1Fragment.isAdded()) {
+            transaction.add(R.id.ll_main, registerStep1Fragment, "registerStep1").commit();
+        } else {
+            transaction.show(registerStep1Fragment).commit();
+        }
 
         tv_login.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorTextGray));
         tv_registry.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorDark2));
@@ -98,20 +116,39 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
             loginFragment = new LoginFragment();
         }
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.sv_container, loginFragment);
-        transaction.commit();
+        if (registerStep1Fragment != null && registerStep1Fragment.isAdded()) {
+            transaction = transaction.hide(registerStep1Fragment);
+        }
+        if (registerStep2Fragment != null && registerStep2Fragment.isAdded()) {
+            transaction = transaction.hide(registerStep2Fragment);
+        }
 
+        if (!loginFragment.isAdded()) {
+            transaction.add(R.id.ll_main, loginFragment, "login").commit();
+        } else {
+            transaction.show(loginFragment).commit();
+        }
         tv_login.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorDark2));
         tv_registry.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorTextGray));
     }
 
-    public void registerSetp2() {
-        if (registerFragment == null) {
-            registerFragment = new RegisterFragment();
+    public void gotoRegisterStep2() {
+        if (registerStep2Fragment == null) {
+            registerStep2Fragment = new RegisterStep2Fragment();
         }
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.sv_container, registerFragment);
-        transaction.commit();
+
+        if (loginFragment != null && loginFragment.isAdded()) {
+            transaction = transaction.hide(loginFragment);
+        }
+        if (registerStep1Fragment != null && registerStep1Fragment.isAdded()) {
+            transaction = transaction.hide(registerStep1Fragment);
+        }
+        if (!registerStep2Fragment.isAdded()) {
+            transaction.add(R.id.ll_main, registerStep2Fragment, "registerStep2").commit();
+        } else {
+            transaction.show(registerStep2Fragment).commit();
+        }
     }
 
     @Override
@@ -121,7 +158,7 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
 
     @Override
     public void gotoRegisterStep2View() {
-        registerSetp2();
+        gotoRegisterStep2();
     }
 
     @Override

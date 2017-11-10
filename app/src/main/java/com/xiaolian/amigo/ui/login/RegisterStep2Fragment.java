@@ -36,7 +36,7 @@ import static android.app.Activity.RESULT_OK;
  * Created by zcd on 9/19/17.
  */
 
-public class RegisterFragment extends Fragment {
+public class RegisterStep2Fragment extends Fragment {
 
     private static final int REQUEST_CODE_CHOOSE_SCHOOL = 0x1101;
 

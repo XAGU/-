@@ -12,6 +12,7 @@ import lombok.Data;
 public class User {
     private String residenceName;
     private Long residenceId;
+    private String macAddress;
     private String floor;
     private Long floorId;
     private Long id;
@@ -43,5 +44,6 @@ public class User {
         this.schoolName = entireUserDTO.getSchoolName();
         this.sex = entireUserDTO.getSex();
         this.type = entireUserDTO.getType();
+        this.macAddress = entireUserDTO.getMacAddress();
     }
 }

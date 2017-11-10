@@ -64,6 +64,9 @@ public final class Constant {
     // 位置id
     public static final String LOCATION_ID = "location_id";
 
+    // intent action
+    public static final String INTENT_ACTION = "intent_action";
+
     // 设备类型
     public static final String DEVICE_TYPE = "device_type";
 

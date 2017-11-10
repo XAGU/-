@@ -162,12 +162,13 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
 
     @OnClick(R.id.rl_device)
     void selectDevice() {
-        Map<String, Integer> extraMap = new HashMap<String, Integer>() {
-            {
-                put(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION, ListChooseActivity.ACTION_LIST_DEVICE);
-            }
-        };
-        startActivity(this, ListChooseActivity.class, extraMap);
+//        Map<String, Integer> extraMap = new HashMap<String, Integer>() {
+//            {
+//                put(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION, ListChooseActivity.ACTION_LIST_DEVICE);
+//            }
+//        };
+//        startActivity(this, ListChooseActivity.class, extraMap);
+        startActivity(this, ChooseRepairActivity.class);
     }
 
     @OnClick({R.id.iv_first, R.id.iv_second, R.id.iv_third})

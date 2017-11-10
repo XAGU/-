@@ -20,6 +20,8 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     private static final String PREF_DEVICE_TOKEN_PREFIX = "PREF_DEVICE_TOKEN_";
     private static final String PREF_CURRENT_DEVICE_TOKEN = "PREF_CURRENT_DEVICE_TOKEN";
     private static final String PREF_KEY_RESIDENCEID = "PREF_KEY_RESIDENCEID";
+    private static final String PREF_KEY_RESIDENCE_NAME = "PREF_KEY_RESIDENCE_NAME";
+    private static final String PREF_KEY_MAC_ADDRESS = "PREF_KEY_MAC_ADDRESS";
     private static final String PREF_KEY_SCHOOLID = "PREF_KEY_SCHOOLID";
     private static final String PREF_KEY_SCHOOLNAME = "PREF_KEY_SCHOOLNAME";
     private static final String PREF_KEY_NICKNAME = "PREF_KEY_NICKNAME";
@@ -103,6 +105,8 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
             userHolder = new User();
         }
         userHolder.setResidenceId(mSharedPreferences.getLong(PREF_KEY_RESIDENCEID, -1));
+        userHolder.setResidenceName(mSharedPreferences.getString(PREF_KEY_RESIDENCE_NAME, null));
+        userHolder.setMacAddress(mSharedPreferences.getString(PREF_KEY_MAC_ADDRESS, null));
         userHolder.setSchoolId(mSharedPreferences.getLong(PREF_KEY_SCHOOLID, -1));
         userHolder.setSchoolName(mSharedPreferences.getString(PREF_KEY_SCHOOLNAME, null));
         userHolder.setNickName(mSharedPreferences.getString(PREF_KEY_NICKNAME, null));
@@ -116,6 +120,10 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
         userHolder = user;
         if (null != user.getResidenceId()) {
             mSharedPreferences.edit().putLong(PREF_KEY_RESIDENCEID, user.getResidenceId()).apply();
+            mSharedPreferences.edit().putString(PREF_KEY_RESIDENCE_NAME, user.getResidenceName()).apply();
+        }
+        if (null != user.getMacAddress()) {
+            mSharedPreferences.edit().putString(PREF_KEY_MAC_ADDRESS, user.getMacAddress()).apply();
         }
         mSharedPreferences.edit().putLong(PREF_KEY_SCHOOLID, user.getSchoolId()).apply();
         mSharedPreferences.edit().putString(PREF_KEY_SCHOOLNAME, user.getSchoolName()).apply();

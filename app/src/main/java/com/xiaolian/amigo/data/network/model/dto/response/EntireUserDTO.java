@@ -11,6 +11,7 @@ public class EntireUserDTO {
 
     private String residenceName;
     private Long residenceId;
+    private String macAddress;
     private String floor;
     private Long floorId;
     private Long id;

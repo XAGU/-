@@ -409,6 +409,11 @@
             <!--<category android:name="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
         </activity>
+        <!--选择设备类型-->
+        <activity android:name=".ui.repair.ChooseRepairActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
 
         <service android:name=".ui.main.update.DownLoadService" />
 

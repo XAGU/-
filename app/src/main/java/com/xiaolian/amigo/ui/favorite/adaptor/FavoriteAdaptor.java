@@ -11,7 +11,6 @@ import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.network.model.device.ScanDeviceGroup;
 import com.xiaolian.amigo.ui.favorite.intf.IFavoritePresenter;
 import com.xiaolian.amigo.ui.favorite.intf.IFavoriteView;
-import com.xiaolian.amigo.ui.user.adaptor.EditDormitoryAdaptor;
 
 import java.util.List;
 
@@ -21,13 +20,15 @@ import butterknife.OnClick;
 import lombok.Data;
 
 /**
+ *
  * Created by caidong on 2017/9/12.
  */
 public class FavoriteAdaptor extends RecyclerView.Adapter<FavoriteAdaptor.ViewHolder> {
 
     private List<FavoriteWrapper> favorites;
     private IFavoritePresenter<IFavoriteView> presenter;
-    private OnItemLongClickListener listener;
+    private OnItemLongClickListener longClickListener;
+    private OnItemClickListener clickListener;
 
     private FavoriteAdaptor(List<FavoriteWrapper> favorites) {
         this.favorites = favorites;
@@ -53,11 +54,13 @@ public class FavoriteAdaptor extends RecyclerView.Adapter<FavoriteAdaptor.ViewHo
             holder.deviceId = wrapper.getId();
             holder.index = holder.getAdapterPosition();
         }
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                listener.onItemLongClick();
-                return true;
+        holder.itemView.setOnLongClickListener(v -> {
+            longClickListener.onItemLongClick();
+            return true;
+        });
+        holder.itemView.setOnClickListener(v -> {
+            if (clickListener != null) {
+                clickListener.onItemClick(holder.getAdapterPosition());
             }
         });
     }
@@ -93,12 +96,20 @@ public class FavoriteAdaptor extends RecyclerView.Adapter<FavoriteAdaptor.ViewHo
     }
 
     public void setOnItemLongClickListener(OnItemLongClickListener listener) {
-        this.listener = listener;
+        this.longClickListener = listener;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.clickListener = listener;
     }
 
     public interface OnItemLongClickListener {
         void onItemLongClick();
     }
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+
 
     @Data
     public static class FavoriteWrapper {
@@ -115,11 +126,6 @@ public class FavoriteAdaptor extends RecyclerView.Adapter<FavoriteAdaptor.ViewHo
                 break;
             }
             this.location = device.getLocation();
-        }
-
-        public FavoriteWrapper(Integer type, String location) {
-            this.type = type;
-            this.location = location;
         }
     }
 }
