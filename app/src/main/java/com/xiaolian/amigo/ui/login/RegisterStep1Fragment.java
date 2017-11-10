@@ -7,11 +7,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
-import android.text.SpannableString;
-import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.text.style.AbsoluteSizeSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -92,7 +89,8 @@ public class RegisterStep1Fragment extends Fragment {
         ViewUtil.setEditHintAndSize(getString(R.string.mobile_hint), 14, et_mobile);
         ViewUtil.setEditHintAndSize(getString(R.string.verification_code_hint), 14, et_verification_code);
 
-        cdb = new CountDownButtonHelper(bt_send_verification_code, "获取验证码", 60, 1);
+        cdb = new CountDownButtonHelper(bt_send_verification_code, "获取验证码",
+                Constant.VERIFY_CODE_TIME, 1);
         cdb.setOnFinishListener(() -> {
             if (getContext() != null) {
                 bt_send_verification_code.setEnabled(true);
