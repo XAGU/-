@@ -1,0 +1,12 @@
+签名文件 android_amigo.jks
+签名文件密码 LqV+aJ9gfIoseCEsBCcIHP2Hx2SrV6RixSIyc9LVmwU=
+签名别名 android_amigo
+签名密码 LqV+aJ9gfIoseCEsBCcIHP2Hx2SrV6RixSIyc9LVmwU=
+签名信息
+Validity 100
+First and Last Name xiaolian
+Organizational Unit xiaolian
+Organization        xiaolian
+City or Locality    hangzhou
+State or Province   zhejiang
+Country Code        china
