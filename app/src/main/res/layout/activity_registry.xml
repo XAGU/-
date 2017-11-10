@@ -30,6 +30,7 @@
         android:inputType="textPassword"
         android:maxLength="@integer/password_max_length"
         android:maxLines="1"
+        android:minLines="@integer/password_min_length"
         android:gravity="center_vertical"
         style="@style/EditTextLogin"
         />
@@ -68,12 +69,12 @@
 
     <Button
         android:id="@+id/bt_submit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/Rect_button"
+        android:enabled="false"
+        android:layout_marginBottom="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
         android:layout_marginTop="34dp"
-        android:background="#ff5555"
         android:text="完成"
-        android:textColor="#fff"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+        />
 </LinearLayout>

@@ -4,8 +4,6 @@ import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.di.componet.DaggerLostAndFoundActivityComponent;
 import com.xiaolian.amigo.di.componet.LostAndFoundActivityComponent;
 import com.xiaolian.amigo.di.module.LostAndFoundActivityModule;
-import com.xiaolian.amigo.ui.base.BaseListActivity;
-import com.xiaolian.amigo.ui.base.BaseToolBarActivity;
 import com.xiaolian.amigo.ui.base.BaseToolBarListActivity;
 
 /**

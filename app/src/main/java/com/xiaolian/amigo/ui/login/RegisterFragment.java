@@ -7,8 +7,10 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
 import android.view.LayoutInflater;
+import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -24,6 +26,7 @@ import com.xiaolian.amigo.util.ViewUtil;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnTextChanged;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -92,7 +95,20 @@ public class RegisterFragment extends Fragment {
                     }
                 }
             }
+            toggleButton();
         }
+    }
+
+    @OnTextChanged(R.id.et_userpwd)
+    public void onTextEdit() {
+        toggleButton();
+    }
+
+    private void toggleButton() {
+        boolean valid = !TextUtils.isEmpty(tv_school.getText())
+                            && !TextUtils.isEmpty(et_userpwd.getText())
+                            && et_userpwd.getText().length() >= 6;
+        bt_submit.setEnabled(valid);
     }
 
     @Override

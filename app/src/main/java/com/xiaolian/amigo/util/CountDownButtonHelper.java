@@ -4,8 +4,6 @@ import android.os.CountDownTimer;
 import android.util.Log;
 import android.widget.Button;
 
-import com.andview.refreshview.utils.LogUtils;
-
 /**
  * 倒计时
  * <p>

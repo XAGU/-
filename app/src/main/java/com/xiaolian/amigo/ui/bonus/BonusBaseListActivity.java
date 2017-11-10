@@ -4,8 +4,6 @@ import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.di.componet.BonusActivityComponent;
 import com.xiaolian.amigo.di.componet.DaggerBonusActivityComponent;
 import com.xiaolian.amigo.di.module.BonusActivityModule;
-import com.xiaolian.amigo.ui.base.BaseListActivity;
-import com.xiaolian.amigo.ui.base.BaseToolBarActivity;
 import com.xiaolian.amigo.ui.base.BaseToolBarListActivity;
 
 /**

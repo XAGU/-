@@ -55,9 +55,7 @@ ext {
     timberVersion = '4.5.1'
 
     nineoldandroids = '2.4.0'
-    bgaRefreshlayout = '1.1.7'
     baseRvadapter = '3.0.3'
-    xrefreshview = '3.6.9'
     retrofit = '2.3.0'
 
     //daimajia

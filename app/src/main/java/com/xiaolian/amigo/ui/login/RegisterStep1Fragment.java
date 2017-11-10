@@ -9,6 +9,7 @@ import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.style.AbsoluteSizeSpan;
 import android.view.LayoutInflater;
@@ -27,6 +28,7 @@ import com.xiaolian.amigo.util.ViewUtil;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnTextChanged;
 
 /**
  * 注册第一步
@@ -113,6 +115,7 @@ public class RegisterStep1Fragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                toggleButton();
                 if (et_mobile.length() == 11) {
                     bt_send_verification_code.setEnabled(true);
                     bt_send_verification_code.setText("获取验证码");
@@ -133,6 +136,7 @@ public class RegisterStep1Fragment extends Fragment {
 
             }
         });
+        toggleButton();
     }
 
 
@@ -149,6 +153,18 @@ public class RegisterStep1Fragment extends Fragment {
         if (cdb != null) {
             cdb.cancel();
         }
+    }
+
+    @OnTextChanged(R.id.et_verification_code)
+    public void onVerifyCodeEdit() {
+        toggleButton();
+    }
+
+    private void toggleButton() {
+        boolean valid = !TextUtils.isEmpty(et_verification_code.getText())
+                && !TextUtils.isEmpty(et_mobile.getText())
+                && et_mobile.getText().length() == 11;
+        bt_submit.setEnabled(valid);
     }
 
     @Override

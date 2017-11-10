@@ -25,7 +25,9 @@ android {
         }
 
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
+            zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -63,11 +65,9 @@ dependencies {
     compile "com.daimajia.easing:library:$rootProject.easing"
     compile "com.daimajia.androidanimations:library:$rootProject.androidanimations"
     compile "com.nineoldandroids:library:$rootProject.nineoldandroids"
-    compile "cn.bingoogolapple:bga-refreshlayout:$rootProject.bgaRefreshlayout"
 
     // recyclerview adapter
     compile "com.zhy:base-rvadapter:$rootProject.baseRvadapter"
-    compile "com.huxq17.xrefreshview:xrefreshview:$rootProject.xrefreshview"
     compile "com.scwang.smartrefresh:SmartRefreshLayout:1.0.3"
     compile "com.youth.banner:banner:1.4.10"
 
