@@ -69,8 +69,8 @@
     <color name="device_dispenser">#00d3c7</color>
 
     <color name="repair_todo">@color/colorFullRed</color>
-    <color name="repair_doing">@color/colorBlue</color>
-    <color name="repair_done">@color/colorDark9</color>
+    <color name="repair_doing">@color/colorYellow</color>
+    <color name="repair_done">@color/colorGreen</color>
     
     <color name="evaluate_todo">@color/colorBlue</color>
     <color name="evaluate_done">@color/colorDarkB</color>
@@ -85,4 +85,6 @@
 
     <color name="heater_gradient_start">#ff9a64</color>
     <color name="dispenser_gradient_start">#43eda3</color>
+    <color name="colorYellow">#ffc460</color>
+    <color name="repair_waiting">@color/colorYellow</color>
 </resources>

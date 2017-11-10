@@ -27,7 +27,7 @@ public enum RepairStatus {
     }, REPAIR_PENDING(2, "等待维修") {
         @Override
         public int getTextCorlorRes() {
-            return R.color.repair_todo;
+            return R.color.repair_waiting;
         }
 
         @Override

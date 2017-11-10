@@ -237,7 +237,7 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
         }
 
         allValidated = !TextUtils.isEmpty(location)
-                && selectedProblem > 0
+//                && selectedProblem > 0 // 不校验常见问题
                 && !TextUtils.isEmpty(et_tel.getText())
                 && !TextUtils.isEmpty(et_content.getText());
         bt_submit.setBackgroundResource(allValidated ?
@@ -284,15 +284,16 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
 
     @Override
     public void refreshProblems(List<RepairProblem> repairProblems) {
+        if (repairProblems == null || repairProblems.isEmpty()) {
+            return;
+        }
         renderProblems();
         problems.clear();
-        if (null != repairProblems) {
-            List<RepairProblemAdaptor.ProblemWrapper> problemWrappers = new ArrayList<>();
-            for (RepairProblem problem : repairProblems) {
-                problemWrappers.add(new RepairProblemAdaptor.ProblemWrapper(problem));
-            }
-            problems.addAll(problemWrappers);
+        List<RepairProblemAdaptor.ProblemWrapper> problemWrappers = new ArrayList<>();
+        for (RepairProblem problem : repairProblems) {
+            problemWrappers.add(new RepairProblemAdaptor.ProblemWrapper(problem));
         }
+        problems.addAll(problemWrappers);
         adapter.notifyDataSetChanged();
     }
 
