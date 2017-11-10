@@ -12,8 +12,6 @@ import lombok.NoArgsConstructor;
  * Created by caidong on 2017/9/15.
  */
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class Order implements Serializable {
     private int id;
     // 消费金额

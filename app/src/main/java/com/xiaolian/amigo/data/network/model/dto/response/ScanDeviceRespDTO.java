@@ -12,8 +12,6 @@ import lombok.NoArgsConstructor;
  * Created by caidong on 2017/10/16.
  */
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class ScanDeviceRespDTO {
 
     private Integer total;

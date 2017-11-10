@@ -11,8 +11,6 @@ import lombok.NonNull;
  * Created by caidong on 2017/10/9.
  */
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class PayReqDTO {
 
     // 设备mac地址

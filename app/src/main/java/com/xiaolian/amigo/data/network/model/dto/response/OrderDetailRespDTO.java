@@ -10,8 +10,6 @@ import lombok.NoArgsConstructor;
  * Created by caidong on 2017/10/11.
  */
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class OrderDetailRespDTO {
 
     // 订单编号

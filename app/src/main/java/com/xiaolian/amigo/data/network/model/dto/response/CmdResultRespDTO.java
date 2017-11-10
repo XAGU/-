@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
  * Created by caidong on 2017/10/9.
  */
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class CmdResultRespDTO {
 
     /**

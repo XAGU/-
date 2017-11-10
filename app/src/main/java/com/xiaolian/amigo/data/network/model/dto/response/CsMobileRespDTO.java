@@ -9,7 +9,6 @@ import lombok.NonNull;
 @Data
 public class CsMobileRespDTO {
 
-    @NonNull
     private Long mobile;
 
 }
