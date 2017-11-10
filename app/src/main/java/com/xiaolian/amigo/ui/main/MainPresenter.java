@@ -163,6 +163,14 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
     }
 
     @Override
+    public boolean checkDefaultDormitoryExist() {
+        if (manager.getUserInfo().getResidenceId() == null) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
     public void getSchoolBusiness() {
         addObserver(manager.getSchoolBizList(), new NetworkObserver<ApiResult<QuerySchoolBizListRespDTO>>(false) {
 

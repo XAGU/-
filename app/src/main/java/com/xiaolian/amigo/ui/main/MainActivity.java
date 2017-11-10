@@ -26,6 +26,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
+import com.xiaolian.amigo.data.enumeration.IntentAction;
 import com.xiaolian.amigo.data.enumeration.Orientation;
 import com.xiaolian.amigo.data.network.model.dto.response.BannerDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.DeviceCheckRespDTO;
@@ -44,6 +45,7 @@ import com.xiaolian.amigo.ui.notice.NoticeListActivity;
 import com.xiaolian.amigo.ui.repair.RepairActivity;
 import com.xiaolian.amigo.ui.user.EditDormitoryActivity;
 import com.xiaolian.amigo.ui.user.EditProfileActivity;
+import com.xiaolian.amigo.ui.user.ListChooseActivity;
 import com.xiaolian.amigo.ui.wallet.PrepayActivity;
 import com.xiaolian.amigo.ui.widget.dialog.AvailabilityDialog;
 import com.xiaolian.amigo.ui.widget.dialog.GuideDialog;
@@ -51,6 +53,7 @@ import com.xiaolian.amigo.ui.widget.dialog.NoticeAlertDialog;
 import com.xiaolian.amigo.ui.widget.dialog.PrepayDialog;
 import com.xiaolian.amigo.util.AppUtils;
 import com.xiaolian.amigo.util.CommonUtil;
+import com.xiaolian.amigo.util.Constant;
 import com.youth.banner.Banner;
 
 import org.greenrobot.eventbus.EventBus;
@@ -178,9 +181,11 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 //                }
                 if (hasBanners && current == 0) {
                     Banner banner = (Banner) sl_main.getRootView().findViewById(R.id.banner);
-                    RectF rectF = CommonUtil.calcViewScreenLocation(banner);
-                    if (rectF.contains(e1.getRawX(), e1.getRawY())) {
-                        return false;
+                    if (banner != null) {
+                        RectF rectF = CommonUtil.calcViewScreenLocation(banner);
+                        if (rectF.contains(e1.getRawX(), e1.getRawY())) {
+                            return false;
+                        }
                     }
                 }
                 if ((e1.getRawX() - e2.getRawX()) > 200) {
@@ -211,6 +216,12 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             boolean isSwitchToHome = intent.getBooleanExtra(INTENT_KEY_SWITCH_TO_HOME, false);
             if (isSwitchToHome) {
                 onSwitch(0);
+            }
+            int actionType = intent.getIntExtra(Constant.INTENT_ACTION, 0);
+            if (IntentAction.getAction(actionType) == IntentAction.ACTION_GOTO_HEATER) {
+                if (btSwitch != null) {
+                    btSwitch.postDelayed(this::gotoHeater, 200);
+                }
             }
         }
     }
@@ -610,6 +621,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @Override
     public void showDeviceUsageDialog(int type, DeviceCheckRespDTO data) {
         Log.d(TAG, "showDeviceUsageDialog: " + type);
+        // 存在未找零订单
         if (data.getExistsUnsettledOrder() != null && data.getExistsUnsettledOrder()) {
             // 1 表示热水澡 2 表示饮水机
             if (type == 1) {
@@ -628,6 +640,11 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             } else if (type == 2 && dispenserOrderSize > 0) {
                 showPrepayDialog(type, dispenserOrderSize, data);
             } else {
+                // 如果热水澡 检查默认宿舍
+                if (!presenter.checkDefaultDormitoryExist()) {
+                    showBindDormitoryDialog();
+                    return;
+                }
                 if (!data.getTimeValid()) {
                     showTimeValidDialog(type, data);
                 } else {
@@ -659,7 +676,14 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         availabilityDialog.setTip("需要先绑定宿舍信息");
         availabilityDialog.setSubTipVisible(false);
         availabilityDialog.setOnOkClickListener(dialog1 -> {
-            startActivity(new Intent(MainActivity.this, EditDormitoryActivity.class));
+            Intent intent;
+            intent = new Intent(this, ListChooseActivity.class);
+            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
+            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION,
+                    ListChooseActivity.ACTION_LIST_BUILDING);
+            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_SRC_ACTIVITY, Constant.MAIN_ACTIVITY_SRC);
+            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_DEVICE_TYPE, Device.HEATER.getType());
+            startActivity(intent);
         });
         availabilityDialog.show();
     }

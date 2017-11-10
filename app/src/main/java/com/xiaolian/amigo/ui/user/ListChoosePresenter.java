@@ -18,11 +18,15 @@ import com.xiaolian.amigo.data.network.model.dto.response.ResidenceListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.UserResidenceInListDTO;
 import com.xiaolian.amigo.data.network.model.user.Residence;
 import com.xiaolian.amigo.data.network.model.user.School;
+import com.xiaolian.amigo.data.network.model.user.User;
 import com.xiaolian.amigo.ui.base.BasePresenter;
+import com.xiaolian.amigo.ui.main.MainActivity;
 import com.xiaolian.amigo.ui.user.adaptor.ListChooseAdaptor;
 import com.xiaolian.amigo.ui.user.intf.IListChoosePresenter;
 import com.xiaolian.amigo.ui.user.intf.IListChooseView;
 import com.xiaolian.amigo.util.Constant;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -221,8 +225,14 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
             public void onReady(ApiResult<UserResidenceInListDTO> result) {
                 if (null == result.getError()) {
                     getMvpView().onSuccess(R.string.add_dormitory_success);
+                    User user = manager.getUser();
+                    user.setResidenceName(result.getData().getResidenceName());
+                    user.setResidenceId(result.getData().getResidenceId());
+                    manager.setUser(user);
                     if (TextUtils.equals(activitySrc, Constant.EDIT_PROFILE_ACTIVITY_SRC)) {
                         getMvpView().backToEditProfile();
+                    } else if (TextUtils.equals(activitySrc, Constant.MAIN_ACTIVITY_SRC)) {
+                        getMvpView().backToMain(activitySrc);
                     } else {
                         getMvpView().backToDormitory();
                     }

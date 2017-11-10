@@ -13,6 +13,7 @@ import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.BuildingType;
 import com.xiaolian.amigo.data.enumeration.Device;
+import com.xiaolian.amigo.data.enumeration.IntentAction;
 import com.xiaolian.amigo.data.enumeration.WithdrawWay;
 import com.xiaolian.amigo.di.componet.DaggerUserActivityComponent;
 import com.xiaolian.amigo.di.componet.UserActivityComponent;
@@ -212,6 +213,8 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                                 presenter.getDormitoryList(null, null, deviceType, parentId, true);
                             } else if (TextUtils.equals(activitySrc, Constant.EDIT_PROFILE_ACTIVITY_SRC)) {
                                 presenter.getDormitoryList(null, null, deviceType, parentId, false);
+                            } else if (TextUtils.equals(activitySrc, Constant.MAIN_ACTIVITY_SRC)) {
+                                presenter.getDormitoryList(null, null, deviceType, parentId, false);
                             }
                         }
                     }
@@ -224,7 +227,9 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                             intent.putExtra(Constant.DEVICE_TYPE, deviceType);
                             intent.putExtra(Constant.LOCATION, Device.getDevice(deviceType).getDesc() + Constant.CHINEASE_COLON + item.getExtra());
                             startActivity(intent);
-                        } else if (Constant.EDIT_PROFILE_ACTIVITY_SRC.endsWith(activitySrc)) {
+                        } else if (Constant.EDIT_PROFILE_ACTIVITY_SRC.equals(activitySrc)) {
+                            presenter.bindDormitory(residenceBindId, items.get(position).getId(), isEditDormitory, activitySrc);
+                        } else if (Constant.MAIN_ACTIVITY_SRC.equals(activitySrc)) {
                             presenter.bindDormitory(residenceBindId, items.get(position).getId(), isEditDormitory, activitySrc);
                         } else {
                             presenter.bindDormitory(residenceBindId, items.get(position).getId(), isEditDormitory);
@@ -308,6 +313,16 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
         v_divide.setVisibility(View.VISIBLE);
         this.items.addAll(item);
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void backToMain(String activitySrc) {
+        if (Constant.MAIN_ACTIVITY_SRC.equals(activitySrc)) {
+            startActivity(new Intent(this, MainActivity.class)
+                    .putExtra(Constant.INTENT_ACTION, IntentAction.ACTION_GOTO_HEATER.getType()));
+        } else {
+            backToMain();
+        }
     }
 
     @Override

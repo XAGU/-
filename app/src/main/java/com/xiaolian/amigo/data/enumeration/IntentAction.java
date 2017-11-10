@@ -8,7 +8,9 @@ package com.xiaolian.amigo.data.enumeration;
 
 public enum  IntentAction {
     UNKNOWN(0),
-    ACTION_CHOOSE_FAVORITE_FOR_REPAIR(1);
+    ACTION_CHOOSE_FAVORITE_FOR_REPAIR(1),
+    ACTION_GOTO_HEATER(2)
+    ;
     private int type;
 
     IntentAction(int type) {

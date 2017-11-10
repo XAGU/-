@@ -36,6 +36,8 @@ public interface IMainPresenter<V extends IMainView> extends IBasePresenter<V> {
 
     void gotoHeaterDevice(String defaultMacAddress, String location, Long residenceId);
 
+    boolean checkDefaultDormitoryExist();
+
     void getSchoolBusiness();
 
     void checkDeviceUsage(int type);
