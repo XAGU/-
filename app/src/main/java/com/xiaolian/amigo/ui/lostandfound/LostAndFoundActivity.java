@@ -391,6 +391,21 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
             }
         }
     }
+
+    @Override
+    public void showEmptyView(int tipRes) {
+        this.lostAndFounds.clear();
+        adaptor.notifyDataSetChanged();
+        super.showEmptyView(tipRes);
+    }
+
+    @Override
+    public void showErrorView() {
+        this.lostAndFounds.clear();
+        adaptor.notifyDataSetChanged();
+        super.showErrorView();
+    }
+
     private void switchListStatus() {
         if (listStatus) {
             listStatus = false;

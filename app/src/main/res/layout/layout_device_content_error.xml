@@ -51,7 +51,7 @@
 
     <Button
         android:id="@+id/bt_error_handler"
-        style="@style/Rect_button"
+        style="@style/DeviceButton"
         android:text="@string/connect_error_btn"
         />
 </LinearLayout>

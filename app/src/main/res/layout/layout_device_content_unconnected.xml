@@ -46,7 +46,7 @@
 
     <Button
         android:enabled="false"
-        style="@style/Rect_button"
+        style="@style/DeviceButton"
         android:text="@string/connect_error_btn"
         />
 </LinearLayout>

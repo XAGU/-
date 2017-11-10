@@ -93,7 +93,7 @@
 
     <Button
         android:id="@+id/bt_pay"
-        style="@style/Rect_button"
+        style="@style/DeviceButton"
         />
 
 </LinearLayout>

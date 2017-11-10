@@ -107,6 +107,7 @@
 
         <TextView
             android:hint="@string/unknown"
+            android:gravity="end|center_vertical"
             android:id="@+id/tv_sex"
             style="@style/ListItemSubText"
             android:layout_toLeftOf="@id/imageView3"
