@@ -21,6 +21,7 @@ import com.xiaolian.amigo.di.OrderActivityContext;
 import com.xiaolian.amigo.di.module.MainActivityModule;
 import com.xiaolian.amigo.di.module.OrderActivityModule;
 import com.xiaolian.amigo.ui.main.MainActivity;
+import com.xiaolian.amigo.ui.main.SplashActivity;
 import com.xiaolian.amigo.ui.order.OrderActivity;
 
 import dagger.Component;
@@ -31,4 +32,6 @@ import dagger.Component;
 public interface MainActivityComponent {
 
     void inject(MainActivity activity);
+
+    void inject(SplashActivity activity);
 }

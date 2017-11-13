@@ -127,7 +127,7 @@ public class EditAvatarActivity extends UserBaseActivity implements IEditAvatarV
                 lastSelectedPosition = -1;
                 adaptor.notifyDataSetChanged();
             }
-            presenter.uploadImage(imageUri);
+            presenter.uploadImage(EditAvatarActivity.this, imageUri);
         });
     }
 

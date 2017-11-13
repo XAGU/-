@@ -16,6 +16,7 @@
 package com.xiaolian.amigo.ui.repair.intf;
 
 
+import android.content.Context;
 import android.net.Uri;
 
 import com.xiaolian.amigo.di.RepairActivityContext;
@@ -40,10 +41,8 @@ public interface IRepairApplyPresenter<V extends IRepairApplyView> extends IBase
 
     /**
      * 上传报修图片
-     *
-     * @param imageUri 报修图片uri
      */
-    void onUpload(Uri imageUri);
+    void onUpload(Context context, Uri imageUri);
 
     /**
      * 请求报修问题列表

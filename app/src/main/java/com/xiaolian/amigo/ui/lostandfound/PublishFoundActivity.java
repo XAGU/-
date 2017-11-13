@@ -198,7 +198,7 @@ public class PublishFoundActivity extends LostAndFoundBaseActivity implements IP
                             .into(iv_first);
                     iv_first.setScaleType(ImageView.ScaleType.FIT_XY);
                     iv_second.setVisibility(View.VISIBLE);
-                    presenter.uploadImage(imageUri, 0);
+                    presenter.uploadImage(PublishFoundActivity.this, imageUri, 0);
                 });
                 break;
             }
@@ -213,7 +213,7 @@ public class PublishFoundActivity extends LostAndFoundBaseActivity implements IP
                             .into(iv_second);
                     iv_second.setScaleType(ImageView.ScaleType.FIT_XY);
                     iv_third.setVisibility(View.VISIBLE);
-                    presenter.uploadImage(imageUri, 1);
+                    presenter.uploadImage(PublishFoundActivity.this, imageUri, 1);
                 });
                 break;
             }
@@ -227,7 +227,7 @@ public class PublishFoundActivity extends LostAndFoundBaseActivity implements IP
                             .diskCacheStrategy(DiskCacheStrategy.NONE)
                             .into(iv_third);
                     iv_third.setScaleType(ImageView.ScaleType.FIT_XY);
-                    presenter.uploadImage(imageUri, 2);
+                    presenter.uploadImage(PublishFoundActivity.this, imageUri, 2);
                 });
                 break;
             }

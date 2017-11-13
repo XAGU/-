@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.user.intf;
 
+import android.content.Context;
 import android.net.Uri;
 
 import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
@@ -13,7 +14,7 @@ import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 public interface IEditAvatarPresenter<V extends IEditAvatarVIew> extends IBasePresenter<V> {
     void getAvatarList();
 
-    void uploadImage(Uri imageUri);
+    void uploadImage(Context context, Uri imageUri);
 
     void updateAvatarUrl(String avatarUrl);
 }

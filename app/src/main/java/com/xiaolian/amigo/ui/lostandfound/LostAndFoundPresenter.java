@@ -27,22 +27,22 @@ import javax.inject.Inject;
 public class LostAndFoundPresenter<V extends ILostAndFoundView> extends BasePresenter<V>
         implements ILostAndFoundPresenter<V> {
 
-    private ILostAndFoundDataManager manager;
+    private ILostAndFoundDataManager lostAndFoundDataManager;
 
     @Inject
-    LostAndFoundPresenter(ILostAndFoundDataManager manager) {
+    LostAndFoundPresenter(ILostAndFoundDataManager lostAndFoundDataManager) {
         super();
-        this.manager = manager;
+        this.lostAndFoundDataManager = lostAndFoundDataManager;
     }
 
     private void queryLostAndFoundList(Integer page, Integer size, Integer type, String selectKey, boolean isSearch) {
         QueryLostAndFoundListReqDTO dto = new QueryLostAndFoundListReqDTO();
         dto.setPage(page);
-        dto.setSchoolId(manager.getUserInfo().getSchoolId());
+        dto.setSchoolId(lostAndFoundDataManager.getUserInfo().getSchoolId());
         dto.setSelectKey(selectKey);
         dto.setSize(size);
         dto.setType(type);
-        addObserver(manager.queryLostAndFounds(dto), new NetworkObserver<ApiResult<QueryLostAndFoundListRespDTO>>(false) {
+        addObserver(lostAndFoundDataManager.queryLostAndFounds(dto), new NetworkObserver<ApiResult<QueryLostAndFoundListRespDTO>>(false) {
 
             @Override
             public void onReady(ApiResult<QueryLostAndFoundListRespDTO> result) {
@@ -125,7 +125,7 @@ public class LostAndFoundPresenter<V extends ILostAndFoundView> extends BasePres
 
     @Override
     public void getMyLostAndFounds() {
-        addObserver(manager.getMyLostAndFounds(), new NetworkObserver<ApiResult<QueryLostAndFoundListRespDTO>>(false) {
+        addObserver(lostAndFoundDataManager.getMyLostAndFounds(), new NetworkObserver<ApiResult<QueryLostAndFoundListRespDTO>>(false) {
 
             @Override
             public void onReady(ApiResult<QueryLostAndFoundListRespDTO> result) {
@@ -166,7 +166,7 @@ public class LostAndFoundPresenter<V extends ILostAndFoundView> extends BasePres
     public void deleteLostAndFounds(Long id) {
         SimpleReqDTO reqDTO = new SimpleReqDTO();
         reqDTO.setId(id);
-        addObserver(manager.deleteLostAndFounds(reqDTO), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
+        addObserver(lostAndFoundDataManager.deleteLostAndFounds(reqDTO), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
 
             @Override
             public void onReady(ApiResult<BooleanRespDTO> result) {

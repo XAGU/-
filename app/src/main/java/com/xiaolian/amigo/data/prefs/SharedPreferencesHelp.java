@@ -25,6 +25,7 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     private static final String PREF_KEY_SCHOOLID = "PREF_KEY_SCHOOLID";
     private static final String PREF_KEY_SCHOOLNAME = "PREF_KEY_SCHOOLNAME";
     private static final String PREF_KEY_NICKNAME = "PREF_KEY_NICKNAME";
+    private static final String PREF_KEY_UID = "PREF_KEY_UID";
     private static final String PREF_KEY_MOBILE = "PREF_KEY_MOBILE";
     private static final String PREF_KEY_PICTURE_URL = "PREF_KEY_PICTURE_URL";
     private static final String PREF_CMD_CONNECT_PREFIX = "PREF_CMD_CONNECT_";
@@ -104,6 +105,7 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
         if (userHolder == null) {
             userHolder = new User();
         }
+        userHolder.setId(mSharedPreferences.getLong(PREF_KEY_UID, -1));
         userHolder.setResidenceId(mSharedPreferences.getLong(PREF_KEY_RESIDENCEID, -1));
         userHolder.setResidenceName(mSharedPreferences.getString(PREF_KEY_RESIDENCE_NAME, null));
         userHolder.setMacAddress(mSharedPreferences.getString(PREF_KEY_MAC_ADDRESS, null));
@@ -125,6 +127,7 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
         if (null != user.getMacAddress()) {
             mSharedPreferences.edit().putString(PREF_KEY_MAC_ADDRESS, user.getMacAddress()).apply();
         }
+        mSharedPreferences.edit().putLong(PREF_KEY_UID, user.getId()).apply();
         mSharedPreferences.edit().putLong(PREF_KEY_SCHOOLID, user.getSchoolId()).apply();
         mSharedPreferences.edit().putString(PREF_KEY_SCHOOLNAME, user.getSchoolName()).apply();
         mSharedPreferences.edit().putString(PREF_KEY_NICKNAME, user.getNickName()).apply();

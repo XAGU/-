@@ -14,10 +14,10 @@ import com.xiaolian.amigo.data.network.model.dto.response.DeviceCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QuerySchoolBizListRespDTO;
 import com.xiaolian.amigo.data.network.model.user.User;
-import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.main.intf.IMainPresenter;
 import com.xiaolian.amigo.ui.main.intf.IMainView;
+import com.xiaolian.amigo.util.Constant;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -67,6 +67,9 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
             @Override
             public void onReady(ApiResult<PersonalExtraInfoDTO> result) {
                 if (null == result.getError()) {
+                    if (!TextUtils.isEmpty(result.getData().getPreFileUrl())) {
+                        Constant.IMAGE_PREFIX = result.getData().getPreFileUrl();
+                    }
                     if (result.getData().getBanners() != null && result.getData().getBanners().size() > 0) {
                         getMvpView().showBanners(result.getData().getBanners());
                     }
@@ -92,6 +95,11 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
             }
         });
     }
@@ -164,10 +172,7 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
 
     @Override
     public boolean checkDefaultDormitoryExist() {
-        if (manager.getUserInfo().getResidenceId() == null) {
-            return false;
-        }
-        return true;
+        return manager.getUserInfo().getResidenceId() != null;
     }
 
     @Override

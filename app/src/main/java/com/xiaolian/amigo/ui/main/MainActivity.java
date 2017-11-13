@@ -89,6 +89,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     public static final String INTENT_KEY_RESIDENCE_ID = "intent_key_residence_id";
     public static final String INTENT_KEY_RECOVERY = "intent_key_recovery";
     public static final String INTENT_KEY_SWITCH_TO_HOME = "intent_key_switch_to_home";
+    public static final String INTENT_KEY_SERVER_ERROR = "intent_key_server_error";
 
     @Inject
     IMainPresenter<IMainView> presenter;
@@ -139,6 +140,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     private int dispenserOrderSize;
     private PrepayDialog prepayDialog;
     private Long lastRepairTime;
+    private Boolean isServerError;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -230,6 +232,14 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     }
 
     @Override
+    protected void setUp() {
+        super.setUp();
+        if (getIntent() != null) {
+            isServerError = getIntent().getBooleanExtra(INTENT_KEY_SERVER_ERROR, false);
+        }
+    }
+
+    @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         Log.d(TAG, "dispatchTouchEvent");
         if (mGestureDetector.onTouchEvent(ev)) {
@@ -243,6 +253,14 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume");
+        if (!isNetworkAvailable()) {
+            showNoticeAmount(0);
+            EventBus.getDefault()
+                    .post(new HomeFragment2.Event(HomeFragment2.Event.EventType.INIT_BIZ,
+                            null));
+            onError(R.string.error_tip);
+            return;
+        }
         if (!presenter.isLogin()) {
             showNoticeAmount(0);
             EventBus.getDefault()
@@ -253,6 +271,12 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             tv_schoolName.setText("登录以后才能使用哦");
             iv_avatar.setImageResource(R.drawable.ic_picture_error);
         } else {
+            if (isServerError) {
+                showNoticeAmount(0);
+                EventBus.getDefault()
+                        .post(new HomeFragment2.Event(HomeFragment2.Event.EventType.INIT_BIZ,
+                                null));
+            }
             // 请求通知
             presenter.getNoticeAmount();
             presenter.getSchoolBusiness();

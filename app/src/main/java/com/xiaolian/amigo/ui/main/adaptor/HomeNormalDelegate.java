@@ -1,8 +1,11 @@
 package com.xiaolian.amigo.ui.main.adaptor;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
 
 import com.xiaolian.amigo.R;
@@ -18,6 +21,14 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 public class HomeNormalDelegate implements ItemViewDelegate<HomeAdaptor.ItemWrapper> {
     private static final String TAG = HomeNormalDelegate.class.getSimpleName();
+    // Allows to remember the last item shown on screen
+    private int lastPosition = -1;
+    private Context context;
+
+    public HomeNormalDelegate(Context context) {
+        this.context = context;
+    }
+
     @Override
     public int getItemViewLayoutId() {
         return R.layout.item_home;
@@ -53,6 +64,20 @@ public class HomeNormalDelegate implements ItemViewDelegate<HomeAdaptor.ItemWrap
             holder.setText(R.id.tv_device_title, itemWrapper.getDeviceName());
             holder.getView(R.id.dfv_dot).setVisibility(View.GONE);
             ((DotFlashView)holder.getView(R.id.dfv_dot)).endAnimation();
+        }
+    }
+
+    /**
+     * Here is the key method to apply the animation
+     */
+    private void setAnimation(View viewToAnimate, int position)
+    {
+        // If the bound view wasn't previously displayed on screen, it's animated
+        if (position > lastPosition)
+        {
+            Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left);
+            viewToAnimate.startAnimation(animation);
+            lastPosition = position;
         }
     }
 }

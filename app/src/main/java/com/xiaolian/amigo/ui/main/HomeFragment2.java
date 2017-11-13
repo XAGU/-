@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 
@@ -83,7 +85,7 @@ public class HomeFragment2 extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         adaptor = new HomeAdaptor(getActivity(),items);
 //        recyclerView.scheduleLayoutAnimation();
-        adaptor.addItemViewDelegate(new HomeNormalDelegate());
+        adaptor.addItemViewDelegate(new HomeNormalDelegate(getActivity()));
         adaptor.addItemViewDelegate(new HomeBannerDelegate(getActivity()));
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         ((DefaultItemAnimator)recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
@@ -149,6 +151,12 @@ public class HomeFragment2 extends Fragment {
     private void notifyAdaptor() {
         if (recyclerView.getAdapter() == null) {
             recyclerView.setAdapter(adaptor);
+            recyclerView.setVisibility(View.VISIBLE);
+            LayoutAnimationController animation = AnimationUtils
+                    .loadLayoutAnimation(getContext(), R.anim.layout_animation_home_slide_left_to_right);
+            AlphaAnimation anim = new AlphaAnimation(0.0f, 1.0f);
+            anim.setDuration(500);
+            recyclerView.startAnimation(animation.getAnimation());
         } else {
             adaptor.notifyDataSetChanged();
         }

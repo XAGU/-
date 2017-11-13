@@ -188,7 +188,7 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
                             .into(iv_first);
                     iv_first.setScaleType(ImageView.ScaleType.FIT_XY);
                     iv_second.setVisibility(View.VISIBLE);
-                    presenter.onUpload(imageUri);
+                    presenter.onUpload(RepairApplyActivity.this, imageUri);
                 });
                 break;
             }
@@ -203,7 +203,7 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
                             .into(iv_second);
                     iv_second.setScaleType(ImageView.ScaleType.FIT_XY);
                     iv_third.setVisibility(View.VISIBLE);
-                    presenter.onUpload(imageUri);
+                    presenter.onUpload(RepairApplyActivity.this, imageUri);
                 });
                 break;
             }
@@ -217,7 +217,7 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
                             .diskCacheStrategy(DiskCacheStrategy.NONE)
                             .into(iv_third);
                     iv_third.setScaleType(ImageView.ScaleType.FIT_XY);
-                    presenter.onUpload(imageUri);
+                    presenter.onUpload(RepairApplyActivity.this, imageUri);
                 });
                 break;
             }

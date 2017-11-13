@@ -3,7 +3,9 @@ package com.xiaolian.amigo.di.module;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
+import com.xiaolian.amigo.data.manager.OssDataManager;
 import com.xiaolian.amigo.data.manager.UserDataManager;
+import com.xiaolian.amigo.data.manager.intf.IOssDataManager;
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.di.UserActivityContext;
 import com.xiaolian.amigo.ui.user.CheckPasswordPresenter;
@@ -64,6 +66,11 @@ public class UserActivityModule {
 
     @Provides
     IUserDataManager provideUserDataManager(UserDataManager manager) {
+        return manager;
+    }
+
+    @Provides
+    IOssDataManager provideOssDataManager(OssDataManager manager) {
         return manager;
     }
 

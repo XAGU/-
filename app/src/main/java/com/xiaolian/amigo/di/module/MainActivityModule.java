@@ -25,8 +25,11 @@ import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
 import com.xiaolian.amigo.di.MainActivityContext;
 import com.xiaolian.amigo.di.OrderActivityContext;
 import com.xiaolian.amigo.ui.main.MainPresenter;
+import com.xiaolian.amigo.ui.main.SplashPresenter;
 import com.xiaolian.amigo.ui.main.intf.IMainPresenter;
 import com.xiaolian.amigo.ui.main.intf.IMainView;
+import com.xiaolian.amigo.ui.main.intf.ISplashPresenter;
+import com.xiaolian.amigo.ui.main.intf.ISplashView;
 import com.xiaolian.amigo.ui.order.OrderPresenter;
 import com.xiaolian.amigo.ui.order.intf.IOrderPresenter;
 import com.xiaolian.amigo.ui.order.intf.IOrderView;
@@ -57,6 +60,13 @@ public class MainActivityModule {
     @MainActivityContext
     IMainPresenter<IMainView> provideMainPresenter(
             MainPresenter<IMainView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    @MainActivityContext
+    ISplashPresenter<ISplashView> provideSplashPresenter(
+            SplashPresenter<ISplashView> presenter) {
         return presenter;
     }
 

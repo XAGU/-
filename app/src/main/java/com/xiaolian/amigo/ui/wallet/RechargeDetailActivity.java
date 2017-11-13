@@ -16,6 +16,8 @@ import com.xiaolian.amigo.data.enumeration.RechargeStatus;
 import com.xiaolian.amigo.data.enumeration.WithdrawOperationType;
 import com.xiaolian.amigo.data.network.model.dto.response.FundsDTO;
 import com.xiaolian.amigo.ui.base.WebActivity;
+import com.xiaolian.amigo.ui.wallet.adaptor.TitleContentCopyDelegate;
+import com.xiaolian.amigo.ui.wallet.adaptor.TitleContentDelegate;
 import com.xiaolian.amigo.ui.wallet.adaptor.WithdrawRechargeDetailAdapter;
 import com.xiaolian.amigo.ui.wallet.intf.IRechargeDetailPresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IRechargeDetailView;
@@ -79,7 +81,14 @@ public class RechargeDetailActivity extends WalletBaseActivity implements IRecha
         getActivityComponent().inject(this);
         presenter.onAttach(RechargeDetailActivity.this);
 
-        adapter = new WithdrawRechargeDetailAdapter(this, R.layout.item_withdral_recharge_detail, items);
+        adapter = new WithdrawRechargeDetailAdapter(this, items);
+        TitleContentCopyDelegate contentCopyDelegate = new TitleContentCopyDelegate();
+        contentCopyDelegate.setCopyListener((string -> {
+            CommonUtil.copy(string, getApplicationContext());
+            onSuccess(R.string.copy_success);
+        }));
+        adapter.addItemViewDelegate(contentCopyDelegate);
+        adapter.addItemViewDelegate(new TitleContentDelegate());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new RecycleViewDivider(this, RecycleViewDivider.VERTICAL_LIST));
         recyclerView.setAdapter(adapter);
@@ -153,14 +162,14 @@ public class RechargeDetailActivity extends WalletBaseActivity implements IRecha
         });
 
         items.add(new WithdrawRechargeDetailAdapter.Item("充值方式：",
-                PayWay.getPayWay(data.getThirdAccountType()).getDesc()));
+                PayWay.getPayWay(data.getThirdAccountType()).getDesc(), 1));
         items.add(new WithdrawRechargeDetailAdapter.Item("充值账号：",
-                data.getThirdAccountName()));
+                data.getThirdAccountName(), 1));
         items.add(new WithdrawRechargeDetailAdapter.Item("充值时间：",
-                TimeUtils.millis2String(data.getCreateTime())));
+                TimeUtils.millis2String(data.getCreateTime()), 1));
         items.add(new WithdrawRechargeDetailAdapter.Item("流水号：",
-                data.getOrderNo()));
-        items.add(new WithdrawRechargeDetailAdapter.Item(null, null));
+                data.getOrderNo(), 2));
+        items.add(new WithdrawRechargeDetailAdapter.Item(null, null, 1));
         adapter.notifyDataSetChanged();
     }
 

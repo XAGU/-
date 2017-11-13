@@ -5,6 +5,7 @@
     android:layout_marginTop="@dimen/subMarginTop"
     android:orientation="vertical">
     <android.support.v7.widget.RecyclerView
+        android:visibility="gone"
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

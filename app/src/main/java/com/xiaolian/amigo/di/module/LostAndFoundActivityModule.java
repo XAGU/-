@@ -20,9 +20,11 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.xiaolian.amigo.data.manager.LostAndFoundDataManager;
 import com.xiaolian.amigo.data.manager.OrderDataManager;
+import com.xiaolian.amigo.data.manager.OssDataManager;
 import com.xiaolian.amigo.data.manager.UserDataManager;
 import com.xiaolian.amigo.data.manager.intf.ILostAndFoundDataManager;
 import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
+import com.xiaolian.amigo.data.manager.intf.IOssDataManager;
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.di.LostAndFoundActivityContext;
 import com.xiaolian.amigo.di.OrderActivityContext;
@@ -89,6 +91,11 @@ public class LostAndFoundActivityModule {
 
     @Provides
     IUserDataManager provideUserDataManager(UserDataManager manager) {
+        return manager;
+    }
+
+    @Provides
+    IOssDataManager provideOssDataManager(OssDataManager manager) {
         return manager;
     }
 
