@@ -75,6 +75,7 @@
                 android:textSize="10sp" />
 
             <Button
+                android:visibility="gone"
                 style="?android:attr/borderlessButtonStyle"
                 android:id="@+id/bt_bonus_use"
                 android:layout_width="38dp"

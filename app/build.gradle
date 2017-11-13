@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-//apply plugin: 'org.greenrobot.greendao'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.archinamon.aspectj'
 
@@ -98,18 +97,6 @@ android {
     }
 }
 
-//greendao {
-//    schemaVersion 1
-//}
-
-// greendao plugin
-apply plugin: 'org.greenrobot.greendao'
-
-//lombok { // optional: values below are the defaults
-//    version = "1.16.4"
-//    sha256 = "3ca225ce3917eac8bf4b7d2186845df4e70dcdede356dca8537b6d78a535c91e"
-//}
-
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -155,9 +142,6 @@ dependencies {
 
     // parser
     implementation "com.google.code.gson:gson:$rootProject.gsonVersion"
-
-    // database
-    implementation "org.greenrobot:greendao:$rootProject.greenDaoVersion"
 
     // network
     implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofit"

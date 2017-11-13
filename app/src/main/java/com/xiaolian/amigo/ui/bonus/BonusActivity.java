@@ -106,7 +106,6 @@ public class BonusActivity extends BonusBaseListActivity implements IBonusView {
                 });
                 break;
             case ACTION_NORMAL:
-                adaptor.setShowButton(false);
                 getSubTitle().setOnClickListener(v -> startActivity(new Intent(BonusActivity.this, BonusExchangeActivity.class)));
                 getFooter().findViewById(R.id.tv_expired_entry).setOnClickListener(v -> {
                     startActivity(new Intent(this, ExpiredBonusActivity.class));
