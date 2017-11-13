@@ -613,7 +613,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     }
 
     private void toggleSubTitle(boolean visible) {
-        if (tv_sub_title != null && deviceType == 1) {
+        if (tv_sub_title != null && (deviceType == 1 || deviceType == 2)) {
             tv_sub_title.setVisibility(visible ?
                     View.VISIBLE : View.GONE);
         }

@@ -74,12 +74,7 @@ public class DispenserActivity extends WaterDeviceBaseActivity<IDispenserPresent
 
     @Override
     protected View.OnClickListener setTitleClickListener() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changeDispenser();
-            }
-        };
+        return v -> changeDispenser();
     }
 
     public void changeDispenser() {
@@ -93,15 +88,12 @@ public class DispenserActivity extends WaterDeviceBaseActivity<IDispenserPresent
 
     @Override
     protected View.OnClickListener setTopRightIconClickListener() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO 设置饮水机事件
-                if (isFavor) {
-                    presenter.unFavorite(id);
-                } else {
-                    presenter.favorite(id);
-                }
+        return v -> {
+            // TODO 设置饮水机事件
+            if (isFavor) {
+                presenter.unFavorite(id);
+            } else {
+                presenter.favorite(id);
             }
         };
     }
