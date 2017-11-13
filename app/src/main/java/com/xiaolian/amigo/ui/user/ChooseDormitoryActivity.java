@@ -75,7 +75,7 @@ public class ChooseDormitoryActivity extends UserBaseListActivity implements ICh
 
     @Override
     protected int setTitle() {
-        return R.string.edit_dormitory;
+        return R.string.choose_dormitory;
     }
 
     @Override
