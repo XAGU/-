@@ -23,9 +23,7 @@ android {
         versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
-//        jackOptions {
-//            enabled true
-//        }
+        multiDexEnabled true
     }
     signingConfigs {
         config {
@@ -98,7 +96,6 @@ android {
     configurations.all {
         resolutionStrategy.force 'com.google.code.findbugs:jsr305:3.0.1'
     }
-    buildToolsVersion '26.0.2'
 }
 
 //greendao {
@@ -114,111 +111,107 @@ apply plugin: 'org.greenrobot.greendao'
 //}
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    compile "com.daimajia.swipelayout:library:$rootProject.swipelayout"
-    compile "com.daimajia.easing:library:$rootProject.easing"
-    compile "com.daimajia.androidanimations:library:$rootProject.androidanimations"
-    compile "com.nineoldandroids:library:$rootProject.nineoldandroids"
+    implementation "com.daimajia.swipelayout:library:$rootProject.swipelayout"
+    implementation "com.daimajia.easing:library:$rootProject.easing"
+    implementation "com.daimajia.androidanimations:library:$rootProject.androidanimations"
+    implementation "com.nineoldandroids:library:$rootProject.nineoldandroids"
 
     // recyclerview adapter
-    compile "com.zhy:base-rvadapter:$rootProject.baseRvadapter"
-    compile "com.scwang.smartrefresh:SmartRefreshLayout:1.0.3"
+    implementation "com.zhy:base-rvadapter:$rootProject.baseRvadapter"
+    implementation "com.scwang.smartrefresh:SmartRefreshLayout:1.0.3"
     compile "com.youth.banner:banner:1.4.10"
 
     // android support libraries
-    compile "com.android.support:palette-v7:$rootProject.supportLibraryVersion"
-    compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
-    compile "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
-    compile "com.android.support:cardview-v7:$rootProject.supportLibraryVersion"
-    compile "com.android.support:design:$rootProject.supportLibraryVersion"
-    compile "com.android.support:support-vector-drawable:$rootProject.supportLibraryVersion"
-    compile "com.android.support:animated-vector-drawable:$rootProject.supportLibraryVersion"
+    implementation "com.android.support:palette-v7:$rootProject.supportLibraryVersion"
+    implementation "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
+    implementation "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
+    implementation "com.android.support:cardview-v7:$rootProject.supportLibraryVersion"
+    implementation "com.android.support:design:$rootProject.supportLibraryVersion"
+    implementation "com.android.support:support-vector-drawable:$rootProject.supportLibraryVersion"
+    implementation "com.android.support:animated-vector-drawable:$rootProject.supportLibraryVersion"
 
     // image
-    compile "com.github.bumptech.glide:glide:$rootProject.glideVersion"
-    compile "com.github.yalantis:ucrop:$rootProject.ucropVersion"
-    compile 'me.everything:overscroll-decor-android:1.0.4'
-    compile 'de.hdodenhof:circleimageview:2.1.0'
+    implementation "com.github.bumptech.glide:glide:$rootProject.glideVersion"
+    implementation "com.github.yalantis:ucrop:$rootProject.ucropVersion"
+    implementation 'me.everything:overscroll-decor-android:1.0.4'
+    implementation 'de.hdodenhof:circleimageview:2.1.0'
 
     // event bus
-    compile 'org.greenrobot:eventbus:3.0.0'
+    implementation 'org.greenrobot:eventbus:3.0.0'
 
     // gif
-    compile "pl.droidsonroids.gif:android-gif-drawable:1.2.3"
+    implementation "pl.droidsonroids.gif:android-gif-drawable:1.2.3"
 
     // date picker
-    compile "cn.aigestudio.wheelpicker:WheelPicker:$rootProject.wheelpickerVersion"
+    implementation "cn.aigestudio.wheelpicker:WheelPicker:$rootProject.wheelpickerVersion"
 
     // rx permission
-    compile 'com.tbruyelle.rxpermissions:rxpermissions:0.7.0@aar'
+    implementation 'com.tbruyelle.rxpermissions:rxpermissions:0.7.0@aar'
 
     // 滑动返回
-    compile "com.aitangba:swipeback:$rootProject.swipebackVersion"
+    implementation "com.aitangba:swipeback:$rootProject.swipebackVersion"
 
     // parser
-    compile "com.google.code.gson:gson:$rootProject.gsonVersion"
+    implementation "com.google.code.gson:gson:$rootProject.gsonVersion"
 
     // database
-    compile "org.greenrobot:greendao:$rootProject.greenDaoVersion"
+    implementation "org.greenrobot:greendao:$rootProject.greenDaoVersion"
 
     // network
-    compile "com.squareup.retrofit2:retrofit:$rootProject.retrofit"
-    compile "com.squareup.retrofit2:converter-gson:$rootProject.retrofit"
-    compile "com.squareup.retrofit2:adapter-rxjava:$rootProject.retrofit"
+    implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofit"
+    implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofit"
+    implementation "com.squareup.retrofit2:adapter-rxjava:$rootProject.retrofit"
 
     // debug database
     // debugCompile "com.amitshekhar.android:debug-db:$rootProject.debugDBVersion"
 
     // dependency injection
-    compile "com.google.dagger:dagger:$rootProject.dagger2Version"
+    implementation "com.google.dagger:dagger:$rootProject.dagger2Version"
     annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.dagger2Version"
-    provided 'javax.annotation:jsr250-api:1.0'
-    compile 'javax.inject:javax.inject:1'
+    compileOnly 'javax.annotation:jsr250-api:1.0'
+    implementation 'javax.inject:javax.inject:1'
 
     // reactive
-//    compile "io.reactivex.rxjava2:rxjava:$rootProject.rxjava2Version"
-//    compile "io.reactivex.rxjava2:rxandroid:$rootProject.rxandroidVersion"
+//    implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxjava2Version"
+//    implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxandroidVersion"
 
-    compile "io.reactivex:rxjava:$rootProject.rxjava"
-    compile "io.reactivex:rxandroid:$rootProject.rxandroid"
+    implementation "io.reactivex:rxjava:$rootProject.rxjava"
+    implementation "io.reactivex:rxandroid:$rootProject.rxandroid"
 
     // code generator for view
-    compile "com.jakewharton:butterknife:$rootProject.butterKnifeVersion"
+    implementation "com.jakewharton:butterknife:$rootProject.butterKnifeVersion"
     annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.butterKnifeVersion"
 
-    // lambda
-//    compile "me.tatarka:gradle-retrolambda:$rootProject.retrolambda"
-
     // swipe view
-    compile "com.mindorks:placeholderview:$rootProject.placeholderviewVersion"
+    implementation "com.mindorks:placeholderview:$rootProject.placeholderviewVersion"
 
-    provided "org.projectlombok:lombok:1.16.18"
+    compileOnly "org.projectlombok:lombok:1.16.18"
     annotationProcessor "org.projectlombok:lombok:1.16.18"
-//    compile "org.projectlombok:lombok:1.16.18"
-
-    // logger
-    // compile "com.jakewharton.timber:timber:$rootProject.timberVersion"
 
     // dependencies for local unit tests
-    testCompile "junit:junit:$rootProject.ext.junitVersion"
-    testCompile "org.mockito:mockito-core:$rootProject.mockitoVersion"
+    testImplementation "junit:junit:$rootProject.ext.junitVersion"
+    testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
     testAnnotationProcessor "com.google.dagger:dagger-compiler:$rootProject.dagger2Version"
 
 
     // UI Testing
-    androidTestCompile "com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion"
-    androidTestCompile "com.android.support.test.espresso:espresso-intents:$rootProject.espressoVersion"
-    androidTestCompile "org.mockito:mockito-core:$rootProject.mockitoVersion"
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion"
+    androidTestImplementation "com.android.support.test.espresso:espresso-intents:$rootProject.espressoVersion"
+    androidTestImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
     androidTestAnnotationProcessor "com.google.dagger:dagger-compiler:$rootProject.dagger2Version"
 
     // RxBLE
-    compile "com.polidea.rxandroidble:rxandroidble:$rootProject.polidea"
-    compile 'com.trello:rxlifecycle:1.0'
-    compile 'com.trello:rxlifecycle-components:1.0'
+    implementation "com.polidea.rxandroidble:rxandroidble:$rootProject.polidea"
+    implementation 'com.trello:rxlifecycle:1.0'
+    implementation 'com.trello:rxlifecycle-components:1.0'
+
+    // multi dex
+    implementation 'com.android.support:multidex:1.0.2'
 
     // 友盟
-    compile "com.umeng.analytics:analytics:$rootProject.umeng"
+    implementation "com.umeng.analytics:analytics:$rootProject.umeng"
 }
 
 configurations.all {
