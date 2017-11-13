@@ -68,8 +68,8 @@ android {
             resValue "string", "app_name", "笑联测试版"
             // 动态修改 常量 字段
             buildConfigField "String", "ENVIRONMENT", '"dev"'
-            buildConfigField "String", "SERVER", "https://c.api.xiaolian365.com"
-            buildConfigField "String", "H5_SERVER", "https://c.h5.xiaolian365.com"
+            buildConfigField "String", "SERVER", "\"https://c.api.xiaolian365.com\""
+            buildConfigField "String", "H5_SERVER", "\"https://c.h5.xiaolian365.com\""
             // 修改 AndroidManifest.xml 里渠道变量
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "dev"]
         }
@@ -79,8 +79,8 @@ android {
             resValue "string", "app_name", "笑联"
 
             buildConfigField "String", "ENVIRONMENT", '"prod"'
-            buildConfigField "String", "SERVER", "https://c.api.xiaolian365.com"
-            buildConfigField "String", "H5_SERVER", "https://c.h5.xiaolian365.com"
+            buildConfigField "String", "SERVER", "\"https://c.api.xiaolian365.com\""
+            buildConfigField "String", "H5_SERVER", "\"https://c.h5.xiaolian365.com\""
 
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "prod"]
         }

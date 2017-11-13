@@ -44,6 +44,7 @@
             android:textSize="12sp"
             android:textColor="@color/colorDark9"
             android:text="@string/cancel"
+            android:textStyle="bold"
             android:layout_height="match_parent" />
         <View
             android:background="@color/colorDarke"
@@ -56,6 +57,7 @@
             android:textColor="@color/colorBlue"
             android:textSize="12sp"
             android:gravity="center"
+            android:textStyle="bold"
             tool:text="@string/ok"
             android:layout_height="match_parent" />
 
