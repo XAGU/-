@@ -27,15 +27,15 @@ import javax.inject.Inject;
 public class LostAndFoundPresenter<V extends ILostAndFoundView> extends BasePresenter<V>
         implements ILostAndFoundPresenter<V> {
 
-    ILostAndFoundDataManager manager;
+    private ILostAndFoundDataManager manager;
 
     @Inject
-    public LostAndFoundPresenter(ILostAndFoundDataManager manager) {
+    LostAndFoundPresenter(ILostAndFoundDataManager manager) {
         super();
         this.manager = manager;
     }
 
-    public void queryLostAndFoundList(Integer page, Integer size, Integer type, String selectKey, boolean isSearch) {
+    private void queryLostAndFoundList(Integer page, Integer size, Integer type, String selectKey, boolean isSearch) {
         QueryLostAndFoundListReqDTO dto = new QueryLostAndFoundListReqDTO();
         dto.setPage(page);
         dto.setSchoolId(manager.getUserInfo().getSchoolId());

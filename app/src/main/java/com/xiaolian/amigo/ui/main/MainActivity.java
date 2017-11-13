@@ -24,6 +24,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.umeng.analytics.MobclickAgent;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.enumeration.IntentAction;
@@ -147,6 +148,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         getActivityComponent().inject(this);
 
         presenter.onAttach(this);
+        // 友盟日志加密
+        MobclickAgent.enableEncrypt(true);
 
         btSwitch.setBackgroundResource(R.drawable.profile);
 

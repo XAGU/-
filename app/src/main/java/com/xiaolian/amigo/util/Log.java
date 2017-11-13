@@ -1,5 +1,10 @@
 package com.xiaolian.amigo.util;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+
+import com.umeng.analytics.MobclickAgent;
+
 /**
  * <p>
  * Created by zcd on 17/11/10.
@@ -7,7 +12,18 @@ package com.xiaolian.amigo.util;
 
 public class Log {
     public static final boolean DEBUG = true;
+    public static final boolean UMENG = true;
     private static final int ZERO = 0;
+    @SuppressLint("StaticFieldLeak")
+    private static Context context;
+
+    public static Context getContext() {
+        return context;
+    }
+
+    public static void setContext(Context context) {
+        Log.context = context;
+    }
 
     public static int v(String tag, String msg) {
         if (DEBUG) {
@@ -65,42 +81,61 @@ public class Log {
         return ZERO;
     }
 
-//    public static int w(String tag, Throwable tr) {
-//        return printlns(LOG_ID_MAIN, WARN, tag, "", tr);
-//    }
-//
-//    public static int e(String tag, String msg) {
-//        return println_native(LOG_ID_MAIN, ERROR, tag, msg);
-//    }
-//    public static int e(String tag, String msg, Throwable tr) {
-//        return printlns(LOG_ID_MAIN, ERROR, tag, msg, tr);
-//    }
-//
-//    public static int wtf(String tag, String msg) {
-//        return wtf(LOG_ID_MAIN, tag, msg, null, false, false);
-//    }
-//
-//    public static int wtfStack(String tag, String msg) {
-//        return wtf(LOG_ID_MAIN, tag, msg, null, true, false);
-//    }
-//
-//    public static int wtf(String tag, Throwable tr) {
-//        return wtf(LOG_ID_MAIN, tag, tr.getMessage(), tr, false, false);
-//    }
-//
-//    public static int wtf(String tag, String msg, Throwable tr) {
-//        return wtf(LOG_ID_MAIN, tag, msg, tr, false, false);
-//    }
-//
-//    static int wtf(int logId, String tag, String msg, Throwable tr, boolean localStack,
-//                   boolean system) {
-//        TerribleFailure what = new TerribleFailure(msg, tr);
-//        // Only mark this as ERROR, do not use ASSERT since that should be
-//        // reserved for cases where the system is guaranteed to abort.
-//        // The onTerribleFailure call does not always cause a crash.
-//        int bytes = printlns(logId, ERROR, tag, msg, localStack ? what : tr);
-//        sWtfHandler.onTerribleFailure(tag, what, system);
-//        return bytes;
-//    }
+    public static int w(String tag, Throwable tr) {
+        if (DEBUG) {
+            return android.util.Log.w(tag, tr);
+        }
+        return ZERO;
+    }
 
+    public static int e(String tag, String msg) {
+        if (DEBUG) {
+            return android.util.Log.e(tag, msg);
+        }
+        if (UMENG) {
+            MobclickAgent.reportError(getContext(), "customReport tag:" + tag + " msg:" + msg);
+        }
+        return ZERO;
+    }
+
+    public static int e(String tag, String msg, Throwable tr) {
+        if (DEBUG) {
+            return android.util.Log.e(tag, msg, tr);
+        }
+        if (UMENG) {
+            MobclickAgent.reportError(getContext(), "customReport tag:" + tag + " msg:" + msg + " tr:" + tr.getMessage());
+        }
+        return ZERO;
+    }
+
+    public static int wtf(String tag, String msg) {
+        if (DEBUG) {
+            return android.util.Log.wtf(tag, msg);
+        }
+        if (UMENG) {
+            MobclickAgent.reportError(getContext(), "customReport tag:" + tag
+                    + " msg:" + msg);
+        }
+        return ZERO;
+    }
+
+    public static int wtf(String tag, Throwable tr) {
+        if (DEBUG) {
+            return android.util.Log.wtf(tag, tr);
+        }
+        if (UMENG) {
+            MobclickAgent.reportError(getContext(), "customReport tag:" + tag + "tr:" + tr.getMessage());
+        }
+        return ZERO;
+    }
+
+    public static int wtf(String tag, String msg, Throwable tr) {
+        if (DEBUG) {
+            return android.util.Log.wtf(tag, msg, tr);
+        }
+        if (UMENG) {
+            MobclickAgent.reportError(getContext(), "customReport tag:" + tag + " msg:" + msg + " tr:" + tr.getMessage());
+        }
+        return ZERO;
+    }
 }

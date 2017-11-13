@@ -18,10 +18,10 @@ import javax.inject.Inject;
 
 public class LostAndFoundDetailPresenter<V extends ILostAndFoundDetailView> extends BasePresenter<V>
         implements ILostAndFoundDetailPresenter<V> {
-    ILostAndFoundDataManager manager;
+    private ILostAndFoundDataManager manager;
 
     @Inject
-    public LostAndFoundDetailPresenter(ILostAndFoundDataManager manager) {
+    LostAndFoundDetailPresenter(ILostAndFoundDataManager manager) {
         super();
         this.manager = manager;
     }

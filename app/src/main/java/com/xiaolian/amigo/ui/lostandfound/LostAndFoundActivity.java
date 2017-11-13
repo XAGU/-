@@ -1,6 +1,5 @@
 package com.xiaolian.amigo.ui.lostandfound;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,13 +8,13 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
-import com.xiaolian.amigo.util.ScreenUtils;
 import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundAdaptor;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundView;
+import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.ui.widget.dialog.SearchDialog;
 import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.util.ScreenUtils;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import java.util.ArrayList;
@@ -131,28 +130,20 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
         foundPage = Constant.PAGE_START_NUM;
     }
 
-   //  点击搜索
+    //  点击搜索
     void search() {
         if (searchDialog == null) {
             searchDialog = new SearchDialog(this);
-            searchDialog.setSearchListener(new SearchDialog.OnSearchListener() {
-                @Override
-                public void onSearch(String searchStr) {
-                    if (listStatus) {
-                        presenter.searchFoundList(null, null, searchStr);
-                    } else {
-                        presenter.searchLostList(null, null, searchStr);
-                    }
+            searchDialog.setSearchListener(searchStr -> {
+                if (listStatus) {
+                    presenter.searchFoundList(null, null, searchStr);
+                } else {
+                    presenter.searchLostList(null, null, searchStr);
                 }
             });
             searchDialog.setCanceledOnTouchOutside(true);
             searchDialog.setCancelable(true);
-            searchDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                @Override
-                public void onDismiss(DialogInterface dialog) {
-                    searchResult.clear();
-                }
-            });
+            searchDialog.setOnDismissListener(dialog -> searchResult.clear());
         }
         searchDialog.show();
     }
@@ -223,26 +214,11 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
     @Override
     protected void setFooter() {
         tv_my_publish = (TextView) getFooter().findViewById(R.id.tv_my_publish);
-        tv_my_publish.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                gotoMyPublish();
-            }
-        });
+        tv_my_publish.setOnClickListener(v -> gotoMyPublish());
         tv_publish_found = (TextView) getFooter().findViewById(R.id.tv_publish_found);
-        tv_publish_found.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                gotoPublishFound();
-            }
-        });
+        tv_publish_found.setOnClickListener(v -> gotoPublishFound());
         tv_publish_lost = (TextView) getFooter().findViewById(R.id.tv_publish_lost);
-        tv_publish_lost.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                gotoPublishLost();
-            }
-        });
+        tv_publish_lost.setOnClickListener(v -> gotoPublishLost());
     }
 
     @Override
@@ -253,12 +229,7 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
     @Override
     protected int setSubTitle() {
         getSubTitle().setTextColor(ContextCompat.getColor(this, R.color.colorBlue));
-        getSubTitle().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                search();
-            }
-        });
+        getSubTitle().setOnClickListener(v -> search());
         return R.string.search;
     }
 
@@ -276,19 +247,9 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
         getActivityComponent().inject(this);
         presenter.onAttach(LostAndFoundActivity.this);
         tv_lost = getToolBarTitle();
-        tv_lost.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onLostClick();
-            }
-        });
+        tv_lost.setOnClickListener(v -> onLostClick());
         tv_found = getToolBarTitle2();
-        tv_found.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onFoundClick();
-            }
-        });
+        tv_found.setOnClickListener(v -> onFoundClick());
 //        presenter.queryLostList(page, Constant.PAGE_SIZE);
     }
 
@@ -297,7 +258,7 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
         this.losts.addAll(lost);
         this.lostAndFounds.addAll(lost);
         adaptor.notifyDataSetChanged();
-        lostPage ++;
+        lostPage++;
         page = lostPage;
     }
 
@@ -306,7 +267,7 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
         this.founds.addAll(found);
         this.lostAndFounds.addAll(found);
         adaptor.notifyDataSetChanged();
-        foundPage ++;
+        foundPage++;
         page = foundPage;
     }
 
@@ -378,6 +339,7 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
             }
         }
     }
+
     void onFoundClick() {
         if (!listStatus) {
             switchListStatus();

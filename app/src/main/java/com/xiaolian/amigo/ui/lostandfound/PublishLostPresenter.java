@@ -34,7 +34,7 @@ public class PublishLostPresenter<V extends IPublishLostView> extends BasePresen
     private IUserDataManager userManager;
 
     @Inject
-    public PublishLostPresenter(ILostAndFoundDataManager lostAndFoundManager, IUserDataManager userManager) {
+    PublishLostPresenter(ILostAndFoundDataManager lostAndFoundManager, IUserDataManager userManager) {
         super();
         this.lostAndFoundManager = lostAndFoundManager;
         this.userManager = userManager;

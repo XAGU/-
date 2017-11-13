@@ -120,12 +120,12 @@ public class LostAndFoundDetailActivity extends LostAndFoundBaseActivity impleme
         presenter.onAttach(LostAndFoundDetailActivity.this);
 
         if (getIntent() != null) {
-            if (getIntent().getExtras().getInt(INTENT_KEY_LOST_AND_FOUND_DETAIL_TYPE) == TYPE_LOST) {
+            if (getIntent().getIntExtra(INTENT_KEY_LOST_AND_FOUND_DETAIL_TYPE, TYPE_FOUND) == TYPE_LOST) {
                 tv_title.setText("失物详情");
             } else {
                 tv_title.setText("招领详情");
             }
-            id = getIntent().getExtras().getLong(INTENT_KEY_LOST_AND_FOUND_DETAIL_ID);
+            id = getIntent().getLongExtra(INTENT_KEY_LOST_AND_FOUND_DETAIL_ID, -1);
             presenter.getLostAndFoundDetail(id);
         }
     }
@@ -149,7 +149,7 @@ public class LostAndFoundDetailActivity extends LostAndFoundBaseActivity impleme
                 TimeUtils.convertTimestampToFormat(lostAndFound.getCreateTime()),
                 TimeUtils.millis2String(lostAndFound.getCreateTime(), TimeUtils.MY_TIME_FORMAT)));
         List<String> images = lostAndFound.getImages();
-        if(null != images){
+        if (null != images) {
             this.images.clear();
             this.images.addAll(images);
             // 获取图片数量

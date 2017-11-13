@@ -1,5 +1,7 @@
 package com.xiaolian.amigo.util;
 
+import com.xiaolian.amigo.BuildConfig;
+
 public final class Constant {
 
     private static final String TAG = "Constant";
@@ -23,7 +25,7 @@ public final class Constant {
 
     // 测试服务器
 //    public static final String SERVER_TEST = "http://116.62.236.67:5081";
-    public static final String SERVER_TEST = "https://c.api.xiaolian365.com";
+    public static final String SERVER_TEST = BuildConfig.SERVER;
 //    public static final String SERVER_TEST = "http://10.0.0.4:8081";
 //    public static final String SERVER_TEST = "http://10.0.0.2:5081";
 
@@ -34,7 +36,7 @@ public final class Constant {
     public static final String IMAGE_PREFIX = SERVER + "/images/";
 
     // H5地址
-    public static final String H5_SERVER = "https://c.h5.xiaolian365.com";
+    public static final String H5_SERVER = BuildConfig.H5_SERVER;
 //    public static final String H5_SERVER = "http://10.0.0.5:5000";
     // H5帮助中心
     public static final String H5_HELP = H5_SERVER + "/help/list";

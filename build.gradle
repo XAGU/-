@@ -22,6 +22,7 @@ allprojects {
     repositories {
         jcenter()
         maven { url 'https://jitpack.io' }
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/'}
     }
 }
 
@@ -80,4 +81,7 @@ ext {
     wheelpickerVersion = '1.1.2'
 
     polidea = '1.4.1'
+
+    // 友盟
+    umeng = '6.1.2'
 }

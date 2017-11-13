@@ -1,10 +1,8 @@
 package com.xiaolian.amigo.ui.lostandfound;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -178,12 +176,9 @@ public class PublishFoundActivity extends LostAndFoundBaseActivity implements IP
     @OnClick(R.id.ll_time)
     void onTimeChoose() {
         DatePickerDialog datePickerDialog = new DatePickerDialog(this);
-        datePickerDialog.setOnItemSelectedListener(new DatePickerDialog.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(WheelDateTimePicker picker, Date date) {
-                tv_lostTime.setTag(R.id.timestamp, TimeUtils.date2Millis(date));
-                tv_lostTime.setText(TimeUtils.date2String(date, TimeUtils.MY_DATE_TIME_FORMAT));
-            }
+        datePickerDialog.setOnItemSelectedListener((picker, date) -> {
+            tv_lostTime.setTag(R.id.timestamp, TimeUtils.date2Millis(date));
+            tv_lostTime.setText(TimeUtils.date2String(date, TimeUtils.MY_DATE_TIME_FORMAT));
         });
         datePickerDialog.show();
     }

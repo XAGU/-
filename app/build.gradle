@@ -3,6 +3,15 @@ apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.archinamon.aspectj'
 
+// 加载 local.properties 资源
+Properties properties = new Properties()
+InputStream inputStream = project.rootProject.file('local.properties').newDataInputStream() ;
+properties.load( inputStream )
+
+static def releaseTime() {
+    return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
+}
+
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
@@ -18,19 +27,65 @@ android {
 //            enabled true
 //        }
     }
+    signingConfigs {
+        config {
+            keyAlias 'android_amigo'
+            keyPassword properties.getProperty('keyPassword')
+            storeFile file('../android_amigo.jks')
+            storePassword properties.getProperty('storePassword')
+        }
+    }
+
     buildTypes {
         debug {
-            buildConfigField("String", "BASE_URL", "\"http://www.xiaolian.io\"")
-            buildConfigField("String", "API_KEY", "\"111111\"")
+//            buildConfigField("String", "BASE_URL", "\"http://www.xiaolian.io\"")
+//            buildConfigField("String", "API_KEY", "\"111111\"")
+            signingConfig signingConfigs.config
         }
 
         release {
+            signingConfig signingConfigs.config
             minifyEnabled true
             shrinkResources true
             zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            // 批量打包
+            applicationVariants.all { variant ->
+                variant.outputs.each { output ->
+                    def fileName = "${variant.productFlavors[0].name}_v${defaultConfig.versionName}_${releaseTime()}.apk"
+                    output.outputFileName = fileName
+                }
+            }
         }
     }
+    flavorDimensions "default"
+    productFlavors {
+        dev {
+            // 包名
+            applicationId defaultConfig.applicationId
+            // 动态添加 string.xml 字段；
+            // 注意，这里是添加，在 string.xml 不能有这个字段，会重名！！！
+            resValue "string", "app_name", "笑联测试版"
+            // 动态修改 常量 字段
+            buildConfigField "String", "ENVIRONMENT", '"dev"'
+            buildConfigField "String", "SERVER", "https://c.api.xiaolian365.com"
+            buildConfigField "String", "H5_SERVER", "https://c.h5.xiaolian365.com"
+            // 修改 AndroidManifest.xml 里渠道变量
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "dev"]
+        }
+        prod {
+            applicationId defaultConfig.applicationId
+
+            resValue "string", "app_name", "笑联"
+
+            buildConfigField "String", "ENVIRONMENT", '"prod"'
+            buildConfigField "String", "SERVER", "https://c.api.xiaolian365.com"
+            buildConfigField "String", "H5_SERVER", "https://c.h5.xiaolian365.com"
+
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "prod"]
+        }
+    }
+
     lintOptions {
         disable 'MissingTranslation'
         checkReleaseBuilds false
@@ -161,6 +216,9 @@ dependencies {
     compile "com.polidea.rxandroidble:rxandroidble:$rootProject.polidea"
     compile 'com.trello:rxlifecycle:1.0'
     compile 'com.trello:rxlifecycle-components:1.0'
+
+    // 友盟
+    compile "com.umeng.analytics:analytics:$rootProject.umeng"
 }
 
 configurations.all {
