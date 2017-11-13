@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tool="http://schemas.android.com/tools"
     android:background="@color/colorBackgroundWhite"
     android:orientation="vertical"
     android:padding="@dimen/toolBarMarginLeft">
@@ -18,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:text="我丢失了一把雨伞"
+            tool:text="我丢失了一把雨伞"
             android:textStyle="bold" />
 
         <ImageView
@@ -26,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="7dp"
+            android:layout_marginStart="7dp"
             android:src="@drawable/picture_light" />
 
         <ImageView
@@ -34,7 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
             android:src="@drawable/ic_lost"
             android:visibility="gone" />
     </LinearLayout>
@@ -47,7 +48,7 @@
         android:layout_marginTop="10dp"
         android:ellipsize="end"
         android:maxLines="1"
-        android:text="我在食堂2楼丢了女朋友，有遇见的请与我联系" />
+        tool:text="我在食堂2楼丢了女朋友，有遇见的请与我联系" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -72,8 +73,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="5dp"
-                android:text="雨伞"
+                android:layout_marginStart="5dp"
+                tool:text="雨伞"
+                android:maxLength="5"
+                android:ellipsize="end"
                 android:textColor="#222"
                 android:textSize="12sp" />
 
@@ -83,7 +86,7 @@
             android:id="@+id/ll_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="14dp"
+            android:layout_marginStart="14dp"
             android:orientation="horizontal">
 
             <ImageView
@@ -97,8 +100,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="5dp"
-                android:text="4号教学楼"
+                android:layout_marginStart="5dp"
+                tool:text="4号教学楼"
+                android:maxLength="7"
+                android:ellipsize="end"
                 android:textColor="#222"
                 android:textSize="12sp" />
 
@@ -108,7 +113,7 @@
             android:id="@+id/ll_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="14dp"
+            android:layout_marginStart="14dp"
             android:orientation="horizontal">
 
             <ImageView
@@ -122,8 +127,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="5dp"
-                android:text="今天/12:30"
+                android:layout_marginStart="5dp"
+                tool:text="今天/12:30"
                 android:textColor="#222"
                 android:textSize="12sp" />
 
