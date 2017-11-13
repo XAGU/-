@@ -127,6 +127,11 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
 
     @Override
     public void addMore(List<RechargeAdaptor.RechargeWrapper> rechargeWrappers) {
+        for (int i = 0; i < rechargeWrappers.size(); i ++) {
+            if (rechargeWrappers.get(i).isSelected()) {
+                rechargeSelectedPosition = i;
+            }
+        }
         recharges.addAll(rechargeWrappers);
         adaptor.notifyDataSetChanged();
     }

@@ -68,7 +68,7 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
     }
 
     // 充值
-    @OnClick(R.id.iv_recharge)
+    @OnClick({R.id.iv_recharge, R.id.rl_recharge})
     void recharge() {
         startActivity(this, RechargeActivity.class);
     }
