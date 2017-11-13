@@ -51,4 +51,6 @@ public interface IRepairApplyPresenter<V extends IRepairApplyView> extends IBase
     void requestRepairProblems(int deviceType);
 
     void setLastRepairTime(long l);
+
+    String getMobile();
 }

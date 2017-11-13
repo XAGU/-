@@ -158,6 +158,9 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
             tv_location.setText(location);
             toggleBtnStatus();
         }
+        if (!TextUtils.isEmpty(presenter.getMobile())) {
+            et_tel.setText(presenter.getMobile());
+        }
     }
 
     @OnClick(R.id.rl_device)

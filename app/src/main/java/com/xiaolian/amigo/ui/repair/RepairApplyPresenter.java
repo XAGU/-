@@ -125,4 +125,9 @@ public class RepairApplyPresenter<V extends IRepairApplyView> extends BasePresen
     public void setLastRepairTime(long l) {
         sharedPreferencesHelp.setLastRepairTime(l);
     }
+
+    @Override
+    public String getMobile() {
+        return sharedPreferencesHelp.getUserInfo().getMobile();
+    }
 }

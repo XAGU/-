@@ -3,11 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
+    android:layout_marginEnd="8dp"
     android:orientation="horizontal">
 
     <com.aigestudio.wheelpicker.widgets.WheelYearPicker
+        android:layout_weight="4"
         android:id="@+id/wheel_date_picker_year"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content" />
 
     <TextView
@@ -20,8 +22,9 @@
         android:text="年" />
 
     <com.aigestudio.wheelpicker.widgets.WheelMonthPicker
+        android:layout_weight="2"
         android:id="@+id/wheel_date_picker_month"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content" />
 
     <TextView
@@ -34,8 +37,9 @@
         android:text="月" />
 
     <com.aigestudio.wheelpicker.widgets.WheelDayPicker
+        android:layout_weight="2"
         android:id="@+id/wheel_date_picker_day"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content" />
 
     <TextView
@@ -48,8 +52,9 @@
         android:text="日" />
 
     <com.xiaolian.amigo.ui.widget.wheelpicker.WheelHourPicker
+        android:layout_weight="2"
         android:id="@+id/wheel_date_picker_hour"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content" />
 
     <TextView
@@ -62,8 +67,9 @@
         android:text="时" />
 
     <com.xiaolian.amigo.ui.widget.wheelpicker.WheelMinutePicker
+        android:layout_weight="2"
         android:id="@+id/wheel_date_picker_minute"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content" />
 
     <TextView

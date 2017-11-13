@@ -62,12 +62,9 @@ public class DatePickerDialog extends Dialog {
         wp_date.setItemTextSize(ScreenUtils.dpToPxInt(context, 16));
         wp_date.setVisibleItemCount(5);
         wp_date.setCurtainColor(Color.BLACK);
-        wp_date.setOnDateTimeSelectedListener(new WheelDateTimePicker.OnDateTimeSelectedListener() {
-            @Override
-            public void onDateTimeSelected(WheelDateTimePicker picker, Date date) {
-                if (listener != null) {
-                    listener.onItemSelected(picker, date);
-                }
+        wp_date.setOnDateTimeSelectedListener((picker, date) -> {
+            if (listener != null) {
+                listener.onItemSelected(picker, date);
             }
         });
     }
