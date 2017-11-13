@@ -9,20 +9,21 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@color/colorBackgroundWhite"
-        android:paddingLeft="@dimen/mainMarginLeftRight"
-        android:paddingRight="@dimen/mainMarginLeftRight"
         >
 
         <ImageView
             android:paddingTop="14dp"
+            android:paddingLeft="@dimen/mainMarginLeftRight"
+            android:paddingRight="@dimen/mainMarginLeftRight"
             android:id="@+id/iv_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="24dp"
-            android:paddingRight="40dp"
+            android:paddingBottom="21dp"
             android:src="@drawable/back" />
 
         <RelativeLayout
+            android:paddingLeft="@dimen/mainMarginLeftRight"
+            android:paddingRight="@dimen/mainMarginLeftRight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="21dp"
@@ -60,6 +61,13 @@
                 android:layout_marginRight="14dp"
                 android:layout_toLeftOf="@id/tv_cancel"
                 android:background="#ccc" />
+
+            <View
+                android:id="@+id/v_clear_holder"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/v_divide"
+                android:layout_width="30dp"
+                android:layout_height="24dp"/>
 
             <ImageView
                 android:id="@+id/iv_clear"

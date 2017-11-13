@@ -104,11 +104,10 @@ public class SearchDialog extends Dialog implements TextWatcher {
 
 
     // 点击清除图标
-    @OnClick(R.id.iv_clear)
+    @OnClick({R.id.iv_clear, R.id.v_clear_holder})
     void clear() {
         et_search_content.setText("");
         iv_clear.setVisibility(View.GONE);
-        this.dismiss();
     }
 
     @OnClick(R.id.iv_back)
