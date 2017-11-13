@@ -37,7 +37,8 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="5dp"
             android:src="@drawable/ic_lost"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:contentDescription="@string/content_description" />
     </LinearLayout>
 
     <TextView
@@ -131,8 +132,6 @@
                 tool:text="今天/12:30"
                 android:textColor="#222"
                 android:textSize="12sp" />
-
         </LinearLayout>
-
     </LinearLayout>
 </LinearLayout>

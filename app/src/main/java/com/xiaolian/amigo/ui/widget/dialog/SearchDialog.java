@@ -2,7 +2,6 @@ package com.xiaolian.amigo.ui.widget.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -20,7 +19,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,6 +26,7 @@ import butterknife.OnClick;
 import butterknife.OnEditorAction;
 
 /**
+ *
  * Created by caidong on 2017/9/13.
  */
 
@@ -123,7 +122,6 @@ public class SearchDialog extends Dialog implements TextWatcher {
     }
 
     public void showNoResult(String selectKey) {
-        tv_no_result_tip.setText(context.getResources().getString(R.string.no_search_result, selectKey));
         rl_result.setVisibility(View.VISIBLE);
     }
 
