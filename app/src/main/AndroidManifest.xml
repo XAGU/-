@@ -427,7 +427,7 @@
         <!--兼容API24的provider-->
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.xiaolian.amigo.fileprovider"
+            android:authorities="${FILE_PROVIDER_AUTHORITIES}"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

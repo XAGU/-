@@ -67,7 +67,8 @@ android {
             buildConfigField "String", "H5_SERVER", "\"http://116.62.236.67:5081\""
             buildConfigField "String", "FILE_PREFIX", "\"https://s.xiaolian365.com/\""
             // 修改 AndroidManifest.xml 里渠道变量
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "dev"]
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "dev",
+                                    FILE_PROVIDER_AUTHORITIES: applicationId + ".fileprovider"]
         }
         prod {
             applicationId defaultConfig.applicationId
@@ -79,7 +80,8 @@ android {
             buildConfigField "String", "H5_SERVER", "\"https://c.h5.xiaolian365.com\""
             buildConfigField "String", "FILE_PREFIX", "\"https://s.xiaolian365.com/\""
 
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "prod"]
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "prod",
+                                    FILE_PROVIDER_AUTHORITIES: applicationId + ".fileprovider"]
         }
     }
 
