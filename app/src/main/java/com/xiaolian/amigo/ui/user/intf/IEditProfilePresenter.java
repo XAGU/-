@@ -1,7 +1,5 @@
 package com.xiaolian.amigo.ui.user.intf;
 
-import android.net.Uri;
-
 import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 
 /**
@@ -11,10 +9,6 @@ import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 
 public interface IEditProfilePresenter <V extends IEditProfileView> extends IBasePresenter<V> {
     void getPersonProfile();
-
-    void uploadImage(Uri imageUri);
-
-    void checkPassword(String password);
 
     void checkChangeSchool();
 }

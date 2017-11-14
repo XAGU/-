@@ -65,62 +65,7 @@ public class EditProfilePresenter<V extends IEditProfileView> extends BasePresen
     }
 
     @Override
-    public void uploadImage(Uri imageUri) {
-        RequestBody image = RequestBody.create(MediaType.parse(Constant.UPLOAD_IMAGE_CONTENT_TYPE),
-                new File(imageUri.getPath()));
-        addObserver(manager.uploadFile(image), new NetworkObserver<ApiResult<String>>() {
-
-            @Override
-            public void onReady(ApiResult<String> result) {
-                if (null == result.getError()) {
-                    getMvpView().onSuccess(R.string.change_success);
-                    getMvpView().setAvatar(Constant.SERVER + "/images/" + result.getData());
-                } else {
-                    getMvpView().onError(result.getError().getDisplayMessage());
-                }
-            }
-        });
-    }
-
-    @Override
-    public void checkPassword(String password) {
-        PasswordCheckReqDTO reqDTO = new PasswordCheckReqDTO();
-        reqDTO.setPassword(password);
-        addObserver(manager.checkPasswordValid(reqDTO), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
-
-            @Override
-            public void onReady(ApiResult<BooleanRespDTO> result) {
-                if (null == result.getError()) {
-                    if (result.getData().isResult()) {
-                        getMvpView().gotoChangeMobile();
-                    } else {
-                        getMvpView().onError(R.string.password_invalid);
-                    }
-                } else {
-                    getMvpView().onError(result.getError().getDisplayMessage());
-                }
-            }
-        });
-    }
-
-    @Override
     public void checkChangeSchool() {
-//        addObserver(manager.getUserExtraInfo(), new NetworkObserver<ApiResult<PersonalExtraInfoDTO>>() {
-//
-//            @Override
-//            public void onReady(ApiResult<PersonalExtraInfoDTO> result) {
-//                if (null == result.getError()) {
-//                    if (result.getData().getPrepay() > 0
-//                            || Double.valueOf(result.getData().getBalance()) > 0) {
-//                        getMvpView().onError("需要把余额都提现才能更换学校哦");
-//                    } else {
-//                        getMvpView().showChangeSchoolDialog();
-//                    }
-//                } else {
-//                    getMvpView().onError(result.getError().getDisplayMessage());
-//                }
-//            }
-//        });
         addObserver(manager.changeSchoolCheck(), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
 
             @Override

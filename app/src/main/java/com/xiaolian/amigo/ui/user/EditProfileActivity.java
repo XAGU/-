@@ -1,10 +1,8 @@
 package com.xiaolian.amigo.ui.user;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -117,15 +115,6 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
         Intent intent;
         switch (v.getId()) {
             case R.id.rel_edit_avatar:
-//                getImage(imageUri -> {
-//                    presenter.uploadImage(imageUri);
-////                    Log.d("imageUri", imageUri.getPath());
-////                    iv_avatar.setImageDrawable(null);
-////                    Glide.with(EditProfileActivity.this)
-////                        .load(imageUri)
-////                        .asBitmap().skipMemoryCache(true)
-////                            .diskCacheStrategy(DiskCacheStrategy.NONE).into(iv_avatar);
-//                });
                 intent = new Intent(this, EditAvatarActivity.class);
                 intent.putExtra(EditAvatarActivity.INTENT_KEY_CURRENT_AVATAR, avatarUrl);
                 startActivityForResult(intent, REQUEST_CODE_EDIT_AVATAR);
@@ -133,11 +122,7 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
             case R.id.rel_edit_nickname:
                 intent = new Intent(this, EditNickNameActivity.class);
                 intent.putExtra(Constant.EXTRA_KEY, new EditNickNameActivity.Model(tv_nickname.getText().toString().trim()));
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    startActivityForResult(intent, REQUEST_CODE_EDIT_NICKNAME, new Bundle());
-                } else {
-                    startActivityForResult(intent, REQUEST_CODE_EDIT_NICKNAME);
-                }
+                startActivityForResult(intent, REQUEST_CODE_EDIT_NICKNAME, new Bundle());
                 break;
             case R.id.rel_edit_sex:
                 intent = new Intent(this, ListChooseActivity.class);
@@ -160,11 +145,7 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
             case R.id.rel_edit_password:
                 intent = new Intent(this, EditPasswordActivity.class);
                 intent.putExtra("nickName", "");
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    startActivityForResult(intent, 1, new Bundle());
-                } else {
-                    startActivityForResult(intent, 1);
-                }
+                startActivityForResult(intent, 1, new Bundle());
                 break;
             case R.id.rel_edit_school:
                 presenter.checkChangeSchool();
@@ -231,7 +212,7 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
     public void setAvatar(String pictureUrl) {
         if (!TextUtils.isEmpty(pictureUrl)) {
             avatarUrl = pictureUrl;
-            Glide.with(this).load(pictureUrl)
+            Glide.with(this).load(Constant.IMAGE_PREFIX + pictureUrl)
                     .asBitmap()
                     .placeholder(R.drawable.ic_picture_error)
                     .error(R.drawable.ic_picture_error)
@@ -271,11 +252,7 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
         Intent intent;
         intent = new Intent(getApplicationContext(), EditMobileActivity.class);
         intent.putExtra("nickName", "");
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            startActivityForResult(intent, REQUEST_CODE_CHECK_PASSWORD, new Bundle());
-        } else {
-            startActivityForResult(intent, REQUEST_CODE_CHECK_PASSWORD);
-        }
+        startActivityForResult(intent, REQUEST_CODE_CHECK_PASSWORD, new Bundle());
     }
 
     @Override
@@ -302,6 +279,7 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
     @Data
     public static class Event {
         EventType type;
+
         Event(EventType type) {
             this.type = type;
         }

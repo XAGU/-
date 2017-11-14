@@ -290,7 +290,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             tv_schoolName.setText(presenter.getUserInfo().getSchoolName());
             // 设置头像
             if (presenter.getUserInfo().getPictureUrl() != null) {
-                Glide.with(this).load(presenter.getUserInfo().getPictureUrl())
+                Glide.with(this).load(Constant.IMAGE_PREFIX + presenter.getUserInfo().getPictureUrl())
                         .asBitmap()
                         .placeholder(R.drawable.ic_picture_error)
                         .error(R.drawable.ic_picture_error)
