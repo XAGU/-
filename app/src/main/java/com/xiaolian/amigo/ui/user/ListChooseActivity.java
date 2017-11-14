@@ -362,4 +362,13 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
     public void backToEditDormitory() {
         startActivity(new Intent(this, EditDormitoryActivity.class));
     }
+
+    @Override
+    public void onBackPressed() {
+        if (TextUtils.equals(activitySrc, Constant.EDIT_PROFILE_ACTIVITY_SRC)) {
+            backToEditProfile();
+        } else {
+            super.onBackPressed();
+        }
+    }
 }

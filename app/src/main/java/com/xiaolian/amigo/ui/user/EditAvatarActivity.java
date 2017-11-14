@@ -63,7 +63,7 @@ public class EditAvatarActivity extends UserBaseActivity implements IEditAvatarV
         if (getIntent() != null) {
             avatarUrl = getIntent().getStringExtra(INTENT_KEY_CURRENT_AVATAR);
             if (!TextUtils.isEmpty(avatarUrl)) {
-                Glide.with(this).load(avatarUrl)
+                Glide.with(this).load(Constant.IMAGE_PREFIX + avatarUrl)
                         .asBitmap()
                         .placeholder(R.drawable.ic_picture_error)
                         .error(R.drawable.ic_picture_error)
