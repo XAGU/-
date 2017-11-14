@@ -6,11 +6,10 @@ import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.PersonalUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.SimpleQueryReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.SimpleReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.DeleteResidenceRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.EntireUserDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryUserResidenceListRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.SimpleRespDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.UserResidenceDTO;
 import com.xiaolian.amigo.data.network.model.user.User;
 import com.xiaolian.amigo.data.network.model.user.UserResidence;
 import com.xiaolian.amigo.ui.base.BasePresenter;
@@ -18,9 +17,6 @@ import com.xiaolian.amigo.ui.user.adaptor.EditDormitoryAdaptor;
 import com.xiaolian.amigo.ui.user.intf.IEditDormitoryPresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditDormitoryView;
 import com.xiaolian.amigo.util.CommonUtil;
-import com.xiaolian.amigo.util.Constant;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,12 +31,12 @@ import javax.inject.Inject;
 
 public class EditDormitoryPresenter<V extends IEditDormitoryView> extends BasePresenter<V>
         implements IEditDormitoryPresenter<V> {
-    private IUserDataManager manager;
+    private IUserDataManager userDataManager;
 
     @Inject
     public EditDormitoryPresenter(IUserDataManager manager) {
         super();
-        this.manager = manager;
+        this.userDataManager = manager;
     }
 
     @Override
@@ -48,7 +44,7 @@ public class EditDormitoryPresenter<V extends IEditDormitoryView> extends BasePr
         SimpleQueryReqDTO dto = new SimpleQueryReqDTO();
         dto.setPage(page);
         dto.setSize(size);
-        addObserver(manager.queryUserResidenceList(dto), new NetworkObserver<ApiResult<QueryUserResidenceListRespDTO>>(false, true){
+        addObserver(userDataManager.queryUserResidenceList(dto), new NetworkObserver<ApiResult<QueryUserResidenceListRespDTO>>(false, true){
 
             @Override
             public void onReady(ApiResult<QueryUserResidenceListRespDTO> result) {
@@ -62,7 +58,7 @@ public class EditDormitoryPresenter<V extends IEditDormitoryView> extends BasePr
                         for (UserResidence userResidence : result.getData().getUserResidences()) {
                             wrappers.add(new EditDormitoryAdaptor.UserResidenceWrapper(userResidence,
                                     CommonUtil.equals(userResidence.getResidenceId(),
-                                            manager.getUser().getResidenceId())));
+                                            userDataManager.getUser().getResidenceId())));
                         }
                         getMvpView().addMore(wrappers);
                         getMvpView().addPage();
@@ -92,7 +88,7 @@ public class EditDormitoryPresenter<V extends IEditDormitoryView> extends BasePr
     public void deleteDormitory(Long residenceId) {
         SimpleReqDTO dto = new SimpleReqDTO();
         dto.setId(residenceId);
-        addObserver(manager.deleteResidence(dto), new NetworkObserver<ApiResult<DeleteResidenceRespDTO>>() {
+        addObserver(userDataManager.deleteResidence(dto), new NetworkObserver<ApiResult<DeleteResidenceRespDTO>>() {
 
             @Override
             public void onReady(ApiResult<DeleteResidenceRespDTO> result) {
@@ -110,12 +106,12 @@ public class EditDormitoryPresenter<V extends IEditDormitoryView> extends BasePr
     public void updateResidenceId(Long residenceId) {
         PersonalUpdateReqDTO dto = new PersonalUpdateReqDTO();
         dto.setResidenceId(residenceId);
-        addObserver(manager.updateUserInfo(dto), new NetworkObserver<ApiResult<EntireUserDTO>>() {
+        addObserver(userDataManager.updateUserInfo(dto), new NetworkObserver<ApiResult<EntireUserDTO>>() {
 
             @Override
             public void onReady(ApiResult<EntireUserDTO> result) {
                 if (null == result.getError()) {
-                    manager.setUser(new User(result.getData()));
+                    userDataManager.setUser(new User(result.getData()));
                     getMvpView().notifyAdaptor();
                     getMvpView().onSuccess(R.string.setting_success);
                 } else {
@@ -127,6 +123,30 @@ public class EditDormitoryPresenter<V extends IEditDormitoryView> extends BasePr
 
     @Override
     public void saveDefaultResidenceId(Long residenceId) {
-        manager.getUser().setResidenceId(residenceId);
+        userDataManager.getUser().setResidenceId(residenceId);
+    }
+
+    @Override
+    public void queryDormitoryDetail(Long id, int position) {
+        SimpleReqDTO reqDTO = new SimpleReqDTO();
+        reqDTO.setId(id);
+        addObserver(userDataManager.queryResidenceDetail(reqDTO),
+                new NetworkObserver<ApiResult<UserResidenceDTO>>() {
+
+                    @Override
+                    public void onReady(ApiResult<UserResidenceDTO> result) {
+                        if (null == result.getError()) {
+                            getMvpView().editDormitory(id, result.getData(), position);
+                        } else {
+                            getMvpView().editDormitory(id, null, position);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        getMvpView().editDormitory(id, null, position);
+                    }
+                });
     }
 }

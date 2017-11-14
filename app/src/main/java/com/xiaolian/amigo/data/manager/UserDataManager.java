@@ -25,6 +25,7 @@ import com.xiaolian.amigo.data.network.model.dto.response.QuerySchoolBizListResp
 import com.xiaolian.amigo.data.network.model.dto.response.QueryUserResidenceListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.ResidenceListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.SimpleRespDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.UserResidenceDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.UserResidenceInListDTO;
 import com.xiaolian.amigo.data.network.model.user.User;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
@@ -133,6 +134,11 @@ public class UserDataManager implements IUserDataManager {
     @Override
     public Observable<ApiResult<BooleanRespDTO>> changeSchoolCheck() {
         return userApi.changeSchoolCheck();
+    }
+
+    @Override
+    public Observable<ApiResult<UserResidenceDTO>> queryResidenceDetail(SimpleReqDTO reqDTO) {
+        return userApi.queryResidenceDetail(reqDTO);
     }
 
     @Override

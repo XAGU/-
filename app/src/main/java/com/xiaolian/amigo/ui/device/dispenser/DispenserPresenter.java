@@ -57,7 +57,7 @@ public class DispenserPresenter<V extends IDispenserView> extends WaterDeviceBas
             @Override
             public void onReady(ApiResult<SimpleRespDTO> result) {
                 if (null == result.getError()) {
-                    getMvpView().onSuccess("收藏成功");
+                    getMvpView().onSuccess("设备收藏成功");
                     getMvpView().setFavoriteIcon();
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
@@ -75,7 +75,7 @@ public class DispenserPresenter<V extends IDispenserView> extends WaterDeviceBas
             @Override
             public void onReady(ApiResult<SimpleRespDTO> result) {
                 if (null == result.getError()) {
-                    getMvpView().onSuccess("取消收藏成功");
+//                    getMvpView().onSuccess("取消收藏成功");
                     getMvpView().setUnFavoriteIcon();
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());

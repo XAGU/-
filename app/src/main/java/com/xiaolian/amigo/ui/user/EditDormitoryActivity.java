@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
+import com.xiaolian.amigo.data.network.model.dto.response.UserResidenceDTO;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.util.ScreenUtils;
 import com.xiaolian.amigo.ui.user.adaptor.EditDormitoryAdaptor;
@@ -83,6 +84,21 @@ public class EditDormitoryActivity extends UserBaseListActivity implements IEdit
     }
 
     @Override
+    public void editDormitory(Long id, UserResidenceDTO data, int position) {
+        Intent intent = new Intent(EditDormitoryActivity.this, ListChooseActivity.class);
+        if (data != null) {
+            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_RESIDENCE_DETAIL, data);
+            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_IS_EDIT, true);
+            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION,
+                    ListChooseActivity.ACTION_LIST_BUILDING);
+            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_DEVICE_TYPE, Device.HEATER.getType());
+            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_RESIDENCE_BIND_ID,
+                    items.get(position).getId());
+        }
+        startActivity(intent);
+    }
+
+    @Override
     protected void onRefresh() {
         if (!needRefresh) {
             setRefreshComplete();
@@ -106,11 +122,9 @@ public class EditDormitoryActivity extends UserBaseListActivity implements IEdit
         adaptor.setOnItemClickListener((userResidenceWrapper, position) -> {
             presenter.updateResidenceId(userResidenceWrapper.getResidenceId());
         });
-        adaptor.setOnItemLongClickListener(new EditDormitoryAdaptor.OnItemLongClickListener() {
-            @Override
-            public void onItemLongClick() {
-                onSuccess("请左滑操作");
-            }
+        adaptor.setOnItemLongClickListener(() -> onSuccess("请左滑操作"));
+        adaptor.setOnItemEditListener(position -> {
+            presenter.queryDormitoryDetail(items.get(position).getId(), position);
         });
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setItemPrefetchEnabled(false);

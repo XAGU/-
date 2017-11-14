@@ -16,4 +16,6 @@ public interface IEditDormitoryPresenter<V extends IEditDormitoryView> extends I
     void updateResidenceId(Long residenceId);
 
     void saveDefaultResidenceId(Long residenceId);
+
+    void queryDormitoryDetail(Long id, int position);
 }

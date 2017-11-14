@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.user.intf;
 
+import com.xiaolian.amigo.data.network.model.dto.response.UserResidenceDTO;
 import com.xiaolian.amigo.ui.base.intf.IBaseListView;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 import com.xiaolian.amigo.ui.user.adaptor.EditDormitoryAdaptor;
@@ -18,4 +19,6 @@ public interface IEditDormitoryView extends IBaseListView {
     void notifyAdaptor();
 
     void refreshList(Long defaultId);
+
+    void editDormitory(Long id, UserResidenceDTO data, int position);
 }

@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.network.model.user.UserResidence;
 import com.xiaolian.amigo.ui.user.ListChooseActivity;
 import com.xiaolian.amigo.ui.user.intf.IEditDormitoryPresenter;
@@ -32,6 +33,7 @@ public class EditDormitoryAdaptor extends CommonAdapter<EditDormitoryAdaptor.Use
     private IEditDormitoryPresenter<IEditDormitoryView> presenter;
     private OnItemClickListener listener;
     private OnItemLongClickListener longClickListener;
+    private OnItemEditListener editListener;
 
     public EditDormitoryAdaptor(Context context, int layoutId, List<UserResidenceWrapper> datas) {
         super(context, layoutId, datas);
@@ -66,20 +68,14 @@ public class EditDormitoryAdaptor extends CommonAdapter<EditDormitoryAdaptor.Use
         }
         holder.getView(R.id.tv_delete).setOnClickListener(v -> presenter.deleteDormitory(userResidenceWrapper.getId()));
         holder.getView(R.id.tv_edit).setOnClickListener(v -> {
-            Intent intent = new Intent(context, ListChooseActivity.class);
-            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_IS_EDIT, true);
-            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION,
-                    ListChooseActivity.ACTION_LIST_BUILDING);
-            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_RESIDENCE_BIND_ID, userResidenceWrapper.getId());
-            context.startActivity(intent);
+            if (editListener != null) {
+                editListener.onItemEdit(holder.getAdapterPosition());
+            }
         });
         holder.getView(R.id.ll_dormitory).setOnClickListener(v -> listener.onItemClick(userResidenceWrapper, position));
-        holder.getView(R.id.ll_dormitory).setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                longClickListener.onItemLongClick();
-                return true;
-            }
+        holder.getView(R.id.ll_dormitory).setOnLongClickListener(v -> {
+            longClickListener.onItemLongClick();
+            return true;
         });
         // 是否存在设备
         if (userResidenceWrapper.isExist()) {
@@ -97,6 +93,10 @@ public class EditDormitoryAdaptor extends CommonAdapter<EditDormitoryAdaptor.Use
         void onItemLongClick();
     }
 
+    public interface OnItemEditListener {
+        void onItemEdit(int position);
+    }
+
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
     }
@@ -105,6 +105,9 @@ public class EditDormitoryAdaptor extends CommonAdapter<EditDormitoryAdaptor.Use
         this.longClickListener = listener;
     }
 
+    public void setOnItemEditListener(OnItemEditListener listener) {
+        this.editListener = listener;
+    }
 
     @Data
     public static class UserResidenceWrapper {

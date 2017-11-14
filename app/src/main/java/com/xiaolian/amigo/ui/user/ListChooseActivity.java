@@ -15,6 +15,7 @@ import com.xiaolian.amigo.data.enumeration.BuildingType;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.enumeration.IntentAction;
 import com.xiaolian.amigo.data.enumeration.WithdrawWay;
+import com.xiaolian.amigo.data.network.model.dto.response.UserResidenceDTO;
 import com.xiaolian.amigo.di.componet.DaggerUserActivityComponent;
 import com.xiaolian.amigo.di.componet.UserActivityComponent;
 import com.xiaolian.amigo.di.module.UserActivityModule;
@@ -26,6 +27,7 @@ import com.xiaolian.amigo.ui.repair.RepairApplyActivity;
 import com.xiaolian.amigo.ui.user.adaptor.ListChooseAdaptor;
 import com.xiaolian.amigo.ui.user.intf.IListChoosePresenter;
 import com.xiaolian.amigo.ui.user.intf.IListChooseView;
+import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 
 import java.util.ArrayList;
@@ -53,6 +55,7 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
     public static final String INTENT_KEY_LIST_CHOOSE_RESIDENCE_BIND_ID = "intent_key_list_choose_residence_bind_id";
     public static final String INTENT_KEY_LIST_CHOOSE_ITEM_RESULT = "intent_key_list_choose_item_result";
     public static final String INTENT_KEY_LIST_SEX_TYPE = "intent_key_list_sex_type";
+    public static final String INTENT_KEY_LIST_RESIDENCE_DETAIL = "intent_key_list_residence_detail";
     public static final int ACTION_LIST_SCHOOL = 1;
     public static final int ACTION_LIST_DORMITOR = 2;
     public static final int ACTION_LIST_FLOOR = 3;
@@ -77,6 +80,8 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
     private int deviceType;
 
     private String activitySrc = null;
+
+    private UserResidenceDTO residenceDetail;
 
     @Inject
     IListChoosePresenter<IListChooseView> presenter;
@@ -153,6 +158,7 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                         residenceBindId = getIntent().getLongExtra(INTENT_KEY_LIST_CHOOSE_RESIDENCE_BIND_ID, -1);
                         deviceType = getIntent().getIntExtra(INTENT_KEY_LIST_DEVICE_TYPE, Device.UNKNOWN.getType());
                         activitySrc = getIntent().getStringExtra(INTENT_KEY_LIST_SRC_ACTIVITY);
+                        residenceDetail = (UserResidenceDTO) getIntent().getSerializableExtra(INTENT_KEY_LIST_RESIDENCE_DETAIL);
                     }
                     // page size 为null 加载全部
                     presenter.getBuildList(null, null, deviceType);
@@ -164,6 +170,7 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                         intent.putExtra(INTENT_KEY_LIST_CHOOSE_RESIDENCE_BIND_ID, residenceBindId);
                         intent.putExtra(INTENT_KEY_LIST_DEVICE_TYPE, deviceType);
                         intent.putExtra(INTENT_KEY_LIST_SRC_ACTIVITY, activitySrc);
+                        intent.putExtra(INTENT_KEY_LIST_RESIDENCE_DETAIL, residenceDetail);
                         startActivity(intent);
                     });
                     break;
@@ -174,6 +181,7 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                         residenceBindId = getIntent().getLongExtra(INTENT_KEY_LIST_CHOOSE_RESIDENCE_BIND_ID, -1);
                         deviceType = getIntent().getIntExtra(INTENT_KEY_LIST_DEVICE_TYPE, Device.UNKNOWN.getType());
                         activitySrc = getIntent().getStringExtra(INTENT_KEY_LIST_SRC_ACTIVITY);
+                        residenceDetail = (UserResidenceDTO) getIntent().getSerializableExtra(INTENT_KEY_LIST_RESIDENCE_DETAIL);
                         Long parentId = getIntent().getLongExtra(INTENT_KEY_LIST_CHOOSE_PARENT_ID, -1);
                         if (parentId != -1) {
                             // page size 为null 加载全部
@@ -188,6 +196,7 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                         intent.putExtra(INTENT_KEY_LIST_CHOOSE_RESIDENCE_BIND_ID, residenceBindId);
                         intent.putExtra(INTENT_KEY_LIST_DEVICE_TYPE, deviceType);
                         intent.putExtra(INTENT_KEY_LIST_SRC_ACTIVITY, activitySrc);
+                        intent.putExtra(INTENT_KEY_LIST_RESIDENCE_DETAIL, residenceDetail);
                         startActivity(intent);
                     });
                     break;
@@ -197,6 +206,7 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                         residenceBindId = getIntent().getLongExtra(INTENT_KEY_LIST_CHOOSE_RESIDENCE_BIND_ID, -1);
                         deviceType = getIntent().getIntExtra(INTENT_KEY_LIST_DEVICE_TYPE, Device.UNKNOWN.getType());
                         activitySrc = getIntent().getStringExtra(INTENT_KEY_LIST_SRC_ACTIVITY);
+                        residenceDetail = (UserResidenceDTO) getIntent().getSerializableExtra(INTENT_KEY_LIST_RESIDENCE_DETAIL);
                         if (deviceType == Device.HEATER.getType()) {
                             tv_title.setText("选择宿舍");
                         } else {
@@ -309,9 +319,22 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
     }
 
     @Override
-    public void addMore(List<ListChooseAdaptor.Item> item) {
+    public void addMore(List<ListChooseAdaptor.Item> items) {
+        if (residenceDetail != null) {
+            for (ListChooseAdaptor.Item item : items) {
+                if (CommonUtil.equals(item.getId(), residenceDetail.getBuildingId())) {
+                    item.setTick(true);
+                }
+                if (CommonUtil.equals(item.getId(), residenceDetail.getFloorId())) {
+                    item.setTick(true);
+                }
+                if (CommonUtil.equals(item.getId(), residenceDetail.getResidenceId())) {
+                    item.setTick(true);
+                }
+            }
+        }
         v_divide.setVisibility(View.VISIBLE);
-        this.items.addAll(item);
+        this.items.addAll(items);
         adapter.notifyDataSetChanged();
     }
 

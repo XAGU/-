@@ -22,6 +22,7 @@ import com.xiaolian.amigo.data.network.model.dto.response.QuerySchoolBizListResp
 import com.xiaolian.amigo.data.network.model.dto.response.QueryUserResidenceListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.ResidenceListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.SimpleRespDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.UserResidenceDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.UserResidenceInListDTO;
 
 
@@ -95,4 +96,8 @@ public interface IUserApi {
     // 用户密码校验
     @POST("/user/changeSchool/check")
     Observable<ApiResult<BooleanRespDTO>> changeSchoolCheck();
+
+    // 用户绑定宿舍详情
+    @POST("/user/residence/one")
+    Observable<ApiResult<UserResidenceDTO>> queryResidenceDetail(@Body SimpleReqDTO reqDTO);
 }
