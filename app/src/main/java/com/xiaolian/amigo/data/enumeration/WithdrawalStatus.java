@@ -31,7 +31,7 @@ public enum WithdrawalStatus {
             return new String[] {"提醒客服尽快处理", "常见问题"};
         }
     },
-    AUDIT_FAIL(2, "审核失败") {
+    AUDIT_FAIL(2, "审核未通过") {
         @Override
         public int getColorRes() {
             return R.color.colorFullRed;

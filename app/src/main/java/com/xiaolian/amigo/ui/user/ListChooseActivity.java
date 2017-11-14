@@ -334,4 +334,9 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
     public void backToEditProfile() {
         startActivity(new Intent(this, EditProfileActivity.class));
     }
+
+    @Override
+    public void backToEditDormitory() {
+        startActivity(new Intent(this, EditDormitoryActivity.class));
+    }
 }

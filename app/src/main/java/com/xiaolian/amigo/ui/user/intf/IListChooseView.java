@@ -25,4 +25,6 @@ public interface IListChooseView extends IBaseView {
     void backToMain();
 
     void backToEditProfile();
+
+    void backToEditDormitory();
 }

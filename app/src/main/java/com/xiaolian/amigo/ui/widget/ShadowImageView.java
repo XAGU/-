@@ -11,7 +11,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.support.v7.graphics.Palette;
+//import android.support.v7.graphics.Palette;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -124,54 +124,32 @@ public class ShadowImageView extends RelativeLayout {
         mInvalidat = true;
     }
 
-    @Override
-    protected void dispatchDraw(Canvas canvas) {
-
-        if (mInvalidat) {
-
-            mInvalidat = false;
-
-            View view = getChildAt(0);
-
-            Paint shadowPaint = new Paint();
-
-            shadowPaint.setColor(Color.WHITE);
-            shadowPaint.setStyle(Paint.Style.FILL);
-            shadowPaint.setAntiAlias(true);
-
-            int radius = view.getHeight() / 12 > 40 ? 40 : view.getHeight() / 12;
-            int shadowColor = view.getHeight() / 16 > 28 ? 28 : view.getHeight() / 16;
-
-            Bitmap bitmap;
-            int rgb;
-
-            if (((ImageView) view).getDrawable() instanceof ColorDrawable) {
-                rgb = ((ColorDrawable) ((ImageView) view).getDrawable()).getColor();
-                shadowPaint.setShadowLayer(40, 0, 28, getDarkerColor(rgb));
-            } else if (((ImageView) view).getDrawable() instanceof BitmapDrawable) {
-                bitmap = ((BitmapDrawable) ((ImageView) view).getDrawable()).getBitmap();
-                Palette.Swatch mSwatch = Palette.from(bitmap).generate().getDominantSwatch();
-
-                if (null != mSwatch) {
-                    rgb = mSwatch.getRgb();
-                } else {
-                    rgb = Color.parseColor("#8D8D8D");
-                }
-
-                shadowPaint.setShadowLayer(radius, 0, shadowColor, getDarkerColor(rgb));
-                Bitmap bitmapT = Bitmap.createBitmap(bitmap, 0, bitmap.getHeight() / 4 * 3,
-                        bitmap.getWidth(), bitmap.getHeight() / 4);
-
-                if (null != Palette.from(bitmapT).generate().getDominantSwatch()) {
-                    rgb = Palette.from(bitmapT).generate().getDominantSwatch().getRgb();
-                    shadowPaint.setShadowLayer(radius, 0, shadowColor, rgb);
-                }
-            } else if (((ImageView) view).getDrawable() instanceof GradientDrawable) {
-//                GradientDrawable drawable = ((GradientDrawable) ((ImageView) view).getDrawable());
-//                bitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
-//                Canvas canvas1 = new Canvas(bitmap);
-//                drawable.draw(canvas1);
+//    @Override
+//    protected void dispatchDraw(Canvas canvas) {
 //
+//        if (mInvalidat) {
+//
+//            mInvalidat = false;
+//
+//            View view = getChildAt(0);
+//
+//            Paint shadowPaint = new Paint();
+//
+//            shadowPaint.setColor(Color.WHITE);
+//            shadowPaint.setStyle(Paint.Style.FILL);
+//            shadowPaint.setAntiAlias(true);
+//
+//            int radius = view.getHeight() / 12 > 40 ? 40 : view.getHeight() / 12;
+//            int shadowColor = view.getHeight() / 16 > 28 ? 28 : view.getHeight() / 16;
+//
+//            Bitmap bitmap;
+//            int rgb;
+//
+//            if (((ImageView) view).getDrawable() instanceof ColorDrawable) {
+//                rgb = ((ColorDrawable) ((ImageView) view).getDrawable()).getColor();
+//                shadowPaint.setShadowLayer(40, 0, 28, getDarkerColor(rgb));
+//            } else if (((ImageView) view).getDrawable() instanceof BitmapDrawable) {
+//                bitmap = ((BitmapDrawable) ((ImageView) view).getDrawable()).getBitmap();
 //                Palette.Swatch mSwatch = Palette.from(bitmap).generate().getDominantSwatch();
 //
 //                if (null != mSwatch) {
@@ -188,22 +166,44 @@ public class ShadowImageView extends RelativeLayout {
 //                    rgb = Palette.from(bitmapT).generate().getDominantSwatch().getRgb();
 //                    shadowPaint.setShadowLayer(radius, 0, shadowColor, rgb);
 //                }
-                rgb = Color.parseColor("#ff9a64");
-                shadowPaint.setShadowLayer(radius, 0, shadowColor, rgb);
-
-            } else {
-                rgb = Color.parseColor("#8D8D8D");
-                shadowPaint.setShadowLayer(radius, 0, shadowColor, getDarkerColor(rgb));
-            }
-
-            RectF rectF = new RectF(view.getX() + (view.getWidth() / 20), view.getY(), view.getX() + view.getWidth() - (view.getWidth() / 20), view.getY() + view.getHeight() - ((view.getHeight() / 40)));
-
-            canvas.drawRoundRect(rectF, shadowRound, shadowRound, shadowPaint);
-
-            canvas.save();
-        }
-        super.dispatchDraw(canvas);
-    }
+//            } else if (((ImageView) view).getDrawable() instanceof GradientDrawable) {
+////                GradientDrawable drawable = ((GradientDrawable) ((ImageView) view).getDrawable());
+////                bitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
+////                Canvas canvas1 = new Canvas(bitmap);
+////                drawable.draw(canvas1);
+////
+////                Palette.Swatch mSwatch = Palette.from(bitmap).generate().getDominantSwatch();
+////
+////                if (null != mSwatch) {
+////                    rgb = mSwatch.getRgb();
+////                } else {
+////                    rgb = Color.parseColor("#8D8D8D");
+////                }
+////
+////                shadowPaint.setShadowLayer(radius, 0, shadowColor, getDarkerColor(rgb));
+////                Bitmap bitmapT = Bitmap.createBitmap(bitmap, 0, bitmap.getHeight() / 4 * 3,
+////                        bitmap.getWidth(), bitmap.getHeight() / 4);
+////
+////                if (null != Palette.from(bitmapT).generate().getDominantSwatch()) {
+////                    rgb = Palette.from(bitmapT).generate().getDominantSwatch().getRgb();
+////                    shadowPaint.setShadowLayer(radius, 0, shadowColor, rgb);
+////                }
+//                rgb = Color.parseColor("#ff9a64");
+//                shadowPaint.setShadowLayer(radius, 0, shadowColor, rgb);
+//
+//            } else {
+//                rgb = Color.parseColor("#8D8D8D");
+//                shadowPaint.setShadowLayer(radius, 0, shadowColor, getDarkerColor(rgb));
+//            }
+//
+//            RectF rectF = new RectF(view.getX() + (view.getWidth() / 20), view.getY(), view.getX() + view.getWidth() - (view.getWidth() / 20), view.getY() + view.getHeight() - ((view.getHeight() / 40)));
+//
+//            canvas.drawRoundRect(rectF, shadowRound, shadowRound, shadowPaint);
+//
+//            canvas.save();
+//        }
+//        super.dispatchDraw(canvas);
+//    }
 
 
     public int getDarkerColor(int color) {

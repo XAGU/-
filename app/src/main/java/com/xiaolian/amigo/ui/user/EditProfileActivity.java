@@ -172,9 +172,9 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
             case R.id.rel_edit_room:
                 isNeedRefresh = true;
                 if (TextUtils.isEmpty(tv_residence.getText())) {
-//                    intent = new Intent(this, EditDormitoryActivity.class);
-//                    intent.putExtra(Constant.EXTRA_KEY, false);
-//                    startActivityForResult(intent, REQUEST_CODE_EDIT_DORMITORY);
+                    intent = new Intent(this, EditDormitoryActivity.class);
+                    intent.putExtra(Constant.EXTRA_KEY, false);
+                    startActivityForResult(intent, REQUEST_CODE_EDIT_DORMITORY);
                     intent = new Intent(this, ListChooseActivity.class);
                     intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
                     intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION,

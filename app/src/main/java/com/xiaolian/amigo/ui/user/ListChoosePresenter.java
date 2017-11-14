@@ -230,7 +230,7 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
                     user.setResidenceId(result.getData().getResidenceId());
                     manager.setUser(user);
                     if (TextUtils.equals(activitySrc, Constant.EDIT_PROFILE_ACTIVITY_SRC)) {
-                        getMvpView().backToEditProfile();
+                        getMvpView().backToEditDormitory();
                     } else if (TextUtils.equals(activitySrc, Constant.MAIN_ACTIVITY_SRC)) {
                         getMvpView().backToMain(activitySrc);
                     } else {
