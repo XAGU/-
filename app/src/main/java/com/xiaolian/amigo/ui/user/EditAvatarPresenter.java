@@ -126,7 +126,7 @@ public class EditAvatarPresenter<V extends IEditAvatarVIew> extends BasePresente
                             new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
                                 @Override
                                 public void onSuccess(PutObjectRequest request, PutObjectResult result) {
-                                    getMvpView().post(() -> getMvpView().setAvatar(Constant.IMAGE_PREFIX + request.getObjectKey()));
+                                    getMvpView().post(() -> getMvpView().setAvatar(request.getObjectKey()));
                                     Log.d("PutObject", "UploadSuccess " + request.getObjectKey());
                                 }
 
@@ -144,6 +144,7 @@ public class EditAvatarPresenter<V extends IEditAvatarVIew> extends BasePresente
                                         Log.e("HostId", serviceException.getHostId());
                                         Log.e("RawMessage", serviceException.getRawMessage());
                                     }
+                                    getMvpView().onError("图片上传失败，请重试");
                                 }
                             });
                 });
@@ -230,7 +231,7 @@ public class EditAvatarPresenter<V extends IEditAvatarVIew> extends BasePresente
 
     private String generateObjectKey(String serverTime) {
         return OssFileType.AVATAR.getDesc() + "/" + userDataManager.getUser().getId() + "_"
-                + serverTime + "_" + generateRandom();
+                + serverTime + "_" + generateRandom()  + ".jpg";
     }
 
     private String generateRandom() {

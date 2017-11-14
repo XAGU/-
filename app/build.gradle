@@ -66,7 +66,7 @@ android {
             buildConfigField "String", "ENVIRONMENT", '"dev"'
             buildConfigField "String", "SERVER", "\"http://116.62.236.67:5081\""
             buildConfigField "String", "H5_SERVER", "\"http://116.62.236.67:5081\""
-            buildConfigField "String", "FILE_PREFIX", "\"http://img-qa.xiaolian365.com/\""
+            buildConfigField "String", "FILE_PREFIX", "\"https://s.xiaolian365.com/\""
             // 修改 AndroidManifest.xml 里渠道变量
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "dev"]
         }
@@ -78,7 +78,7 @@ android {
             buildConfigField "String", "ENVIRONMENT", '"prod"'
             buildConfigField "String", "SERVER", "\"https://c.api.xiaolian365.com\""
             buildConfigField "String", "H5_SERVER", "\"https://c.h5.xiaolian365.com\""
-            buildConfigField "String", "FILE_PREFIX", "\"http://img.xiaolian365.com/\""
+            buildConfigField "String", "FILE_PREFIX", "\"https://s.xiaolian365.com/\""
 
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "prod"]
         }

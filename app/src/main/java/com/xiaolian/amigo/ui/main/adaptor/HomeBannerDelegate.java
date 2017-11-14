@@ -12,6 +12,7 @@ import com.xiaolian.amigo.data.enumeration.BannerType;
 import com.xiaolian.amigo.data.network.model.dto.response.BannerDTO;
 import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.util.CommonUtil;
+import com.xiaolian.amigo.util.Constant;
 import com.youth.banner.Banner;
 import com.youth.banner.loader.ImageLoader;
 import com.zhy.adapter.recyclerview.base.ItemViewDelegate;
@@ -49,7 +50,7 @@ public class HomeBannerDelegate implements ItemViewDelegate<HomeAdaptor.ItemWrap
         banner.setImageLoader(new GlideImageLoader());
         List<String> images = new ArrayList<>();
         for (BannerDTO dto : itemWrapper.getBanners()) {
-            images.add(dto.getImage());
+            images.add(Constant.IMAGE_PREFIX + dto.getImage());
         }
         banner.setImages(images);
         banner.setOnBannerListener(position1 -> {

@@ -264,8 +264,8 @@ public class RepairApplyPresenter<V extends IRepairApplyView> extends BasePresen
     }
 
     private String generateObjectKey(String serverTime) {
-        return OssFileType.AVATAR.getDesc() + "/" + userDataManager.getUser().getId() + "_"
-                + serverTime + "_" + generateRandom();
+        return OssFileType.REPAIR.getDesc() + "/" + userDataManager.getUser().getId() + "_"
+                + serverTime + "_" + generateRandom() + ".jpg";
     }
 
     private String generateRandom() {

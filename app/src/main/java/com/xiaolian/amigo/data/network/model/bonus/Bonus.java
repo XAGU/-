@@ -1,5 +1,7 @@
 package com.xiaolian.amigo.data.network.model.bonus;
 
+import java.io.Serializable;
+
 import lombok.Data;
 
 /**
@@ -7,7 +9,7 @@ import lombok.Data;
  * @author zcd
  */
 @Data
-public class Bonus {
+public class Bonus implements Serializable {
     private Double amount;
     private String createTime;
     private Integer deviceType;

@@ -31,8 +31,10 @@ import com.xiaolian.amigo.data.enumeration.IntentAction;
 import com.xiaolian.amigo.data.enumeration.Orientation;
 import com.xiaolian.amigo.data.network.model.dto.response.BannerDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.DeviceCheckRespDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.OrderPreInfoDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
+import com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity;
 import com.xiaolian.amigo.ui.device.dispenser.ChooseDispenserActivity;
 import com.xiaolian.amigo.ui.device.dispenser.DispenserActivity;
 import com.xiaolian.amigo.ui.login.LoginActivity;
@@ -141,6 +143,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     private PrepayDialog prepayDialog;
     private Long lastRepairTime;
     private Boolean isServerError;
+    private OrderPreInfoDTO orderPreInfo;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -579,6 +582,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             intent.putExtra(INTENT_KEY_DEVICE_TYPE, device.getType());
             intent.putExtra(INTENT_KEY_RESIDENCE_ID, residenceId);
             intent.putExtra(MainActivity.INTENT_KEY_RECOVERY, recovery);
+            intent.putExtra(WaterDeviceBaseActivity.INTENT_PREPAY_INFO, orderPreInfo);
             startActivity(intent);
         }
     }
@@ -596,6 +600,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             intent.putExtra(MainActivity.INTENT_KEY_RECOVERY, recovery);
             intent.putExtra(DispenserActivity.INTENT_KEY_FAVOR, favor);
             intent.putExtra(DispenserActivity.INTENT_KEY_TEMPERATURE, String.valueOf(usefor));
+            intent.putExtra(WaterDeviceBaseActivity.INTENT_PREPAY_INFO, orderPreInfo);
             startActivity(intent);
         }
     }
@@ -605,12 +610,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         Log.d(TAG, "showUrgentNotify: " + content + "->" + id);
         NoticeAlertDialog dialog = new NoticeAlertDialog(this);
         dialog.setContent(content);
-        dialog.setOnOkClickListener(new NoticeAlertDialog.OnOkClickListener() {
-            @Override
-            public void onOkClick(Dialog dialog, boolean isNotReminder) {
-                if (isNotReminder) {
-                    presenter.readUrgentNotify(id);
-                }
+        dialog.setOnOkClickListener((dialog1, isNotReminder) -> {
+            if (isNotReminder) {
+                presenter.readUrgentNotify(id);
             }
         });
         dialog.show();
@@ -648,6 +650,14 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @Override
     public void showDeviceUsageDialog(int type, DeviceCheckRespDTO data) {
         Log.d(TAG, "showDeviceUsageDialog: " + type);
+        if (orderPreInfo == null) {
+            orderPreInfo = new OrderPreInfoDTO();
+        }
+        orderPreInfo.setBalance(data.getBalance());
+        orderPreInfo.setBonus(data.getBonus());
+        orderPreInfo.setCsMobile(data.getCsMobile());
+        orderPreInfo.setMinPrepay(data.getMinPrepay());
+        orderPreInfo.setPrepay(data.getPrepay());
         // 2小时内存在未找零订单
         if (data.getExistsUnsettledOrder() != null && data.getExistsUnsettledOrder()) {
             // 1 表示热水澡 2 表示饮水机

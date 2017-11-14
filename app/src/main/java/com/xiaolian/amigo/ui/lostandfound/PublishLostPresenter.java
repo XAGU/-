@@ -57,6 +57,7 @@ public class PublishLostPresenter<V extends IPublishLostView> extends BasePresen
     private OssModel ossModel;
     private Random random = new Random();
     private int currentImagePosition;
+    private OssFileType currentType;
 
     @Inject
     PublishLostPresenter(ILostAndFoundDataManager lostAndFoundManager,
@@ -96,24 +97,26 @@ public class PublishLostPresenter<V extends IPublishLostView> extends BasePresen
     }
 
     @Override
-    public void uploadImage(Context context, Uri imageUri, int position) {
+    public void uploadImage(Context context, Uri imageUri, int position, OssFileType type) {
         currentImagePosition = position;
-        RequestBody image = RequestBody.create(MediaType.parse(Constant.UPLOAD_IMAGE_CONTENT_TYPE),
-                new File(imageUri.getPath()));
-        addObserver(userDataManager.uploadFile(image), new NetworkObserver<ApiResult<String>>() {
-
-            @Override
-            public void onReady(ApiResult<String> result) {
-                if (null == result.getError()) {
-                    getMvpView().addImage(result.getData(), position);
-                } else {
-                    getMvpView().onError(result.getError().getDisplayMessage());
-                }
-            }
-        });
+        currentType = type;
+        uploadImage(context, imageUri.getPath());
+//        RequestBody image = RequestBody.create(MediaType.parse(Constant.UPLOAD_IMAGE_CONTENT_TYPE),
+//                new File(imageUri.getPath()));
+//        addObserver(userDataManager.uploadFile(image), new NetworkObserver<ApiResult<String>>() {
+//
+//            @Override
+//            public void onReady(ApiResult<String> result) {
+//                if (null == result.getError()) {
+//                    getMvpView().addImage(result.getData(), position);
+//                } else {
+//                    getMvpView().onError(result.getError().getDisplayMessage());
+//                }
+//            }
+//        });
     }
 
-    private void updateImage(Context context, String filePath) {
+    private void uploadImage(Context context, String filePath) {
         Observable.just(1)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
@@ -233,8 +236,8 @@ public class PublishLostPresenter<V extends IPublishLostView> extends BasePresen
     }
 
     private String generateObjectKey(String serverTime) {
-        return OssFileType.AVATAR.getDesc() + "/" + userDataManager.getUser().getId() + "_"
-                + serverTime + "_" + generateRandom();
+        return currentType.getDesc() + "/" + userDataManager.getUser().getId() + "_"
+                + serverTime + "_" + generateRandom() + ".jpg";
     }
 
     private String generateRandom() {

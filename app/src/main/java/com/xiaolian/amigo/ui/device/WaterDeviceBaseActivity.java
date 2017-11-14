@@ -61,6 +61,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
     public static final String INTENT_HOME_PAGE_JUMP = "intent_home_page_jump";
     public static final String INTENT_RECOVER = "intent_recover";
+    public static final String INTENT_PREPAY_INFO = "intent_prepay_info";
 
     private static final String TAG = WaterDeviceBaseActivity.class.getSimpleName();
     /**
@@ -259,7 +260,6 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     P presenter;
 
     private BonusAdaptor.BonusWrapper choosedBonus;
-    private OrderPreInfoDTO orderPreInfo;
 
     // 设备类型
     private int deviceType;
@@ -289,7 +289,11 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         // 连接蓝牙设备
         presenter.setHomePageJump(homePageJump);
         presenter.onPreConnect(macAddress);
-        presenter.queryPrepayOption(deviceType);
+        if (prepay == null) {
+            presenter.queryPrepayOption(deviceType);
+        } else {
+            refreshPrepayStatus();
+        }
     }
 
     @Override
@@ -302,6 +306,17 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             residenceId = getIntent().getLongExtra(MainActivity.INTENT_KEY_RESIDENCE_ID, 0L);
             homePageJump = getIntent().getBooleanExtra(INTENT_HOME_PAGE_JUMP, true);
             recorvery = getIntent().getBooleanExtra(MainActivity.INTENT_KEY_RECOVERY, false);
+            OrderPreInfoDTO orderPreInfo = (OrderPreInfoDTO) getIntent().getSerializableExtra(INTENT_PREPAY_INFO);
+            if (orderPreInfo != null) {
+                balance = orderPreInfo.getBalance();
+                minPrepay = orderPreInfo.getMinPrepay();
+                if (orderPreInfo.getBonus() != null) {
+                    bonusId = orderPreInfo.getBonus().getId();
+                    bonusDescription = orderPreInfo.getBonus().getDescription();
+                    bonusAmount = orderPreInfo.getBonus().getAmount();
+                }
+                prepay = orderPreInfo.getPrepay();
+            }
         }
     }
 
@@ -539,7 +554,6 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
     @Override
     public void setPrepayOption(OrderPreInfoDTO data) {
-        orderPreInfo = data;
         if (data.getBonus() != null) {
             bonusId = data.getBonus().getId();
             bonusAmount = data.getBonus().getAmount();

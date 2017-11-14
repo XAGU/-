@@ -3,6 +3,7 @@ package com.xiaolian.amigo.ui.lostandfound.intf;
 import android.content.Context;
 import android.net.Uri;
 
+import com.xiaolian.amigo.data.enumeration.OssFileType;
 import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 
 import java.util.List;
@@ -17,5 +18,5 @@ public interface IPublishLostPresenter<V extends IPublishLostView> extends IBase
     void publishLostAndFound(String desc, List<String> images, String itemName, String location,
                              Long lostTime, String mobile, String title, Integer type);
 
-    void uploadImage(Context context, Uri imageUri, int position);
+    void uploadImage(Context context, Uri imageUri, int position, OssFileType type);
 }

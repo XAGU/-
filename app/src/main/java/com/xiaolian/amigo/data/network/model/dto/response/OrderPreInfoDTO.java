@@ -2,6 +2,7 @@ package com.xiaolian.amigo.data.network.model.dto.response;
 
 import com.xiaolian.amigo.data.network.model.bonus.Bonus;
 
+import java.io.Serializable;
 import java.util.List;
 
 import lombok.Data;
@@ -12,7 +13,7 @@ import lombok.Data;
  * Created by zcd on 10/13/17.
  */
 @Data
-public class OrderPreInfoDTO {
+public class OrderPreInfoDTO implements Serializable {
     /**
      * 红包
      */

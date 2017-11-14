@@ -125,6 +125,12 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
         }
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        finish();
+    }
+
     private void onNearbyClick() {
         if (listStatus) {
             switchListStatus();

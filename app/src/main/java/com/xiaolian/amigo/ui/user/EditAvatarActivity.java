@@ -9,6 +9,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.ScreenUtils;
 import com.xiaolian.amigo.ui.user.adaptor.EditAvatarAdaptor;
 import com.xiaolian.amigo.ui.user.intf.IEditAvatarPresenter;
@@ -135,7 +136,7 @@ public class EditAvatarActivity extends UserBaseActivity implements IEditAvatarV
     public void setAvatar(String pictureUrl) {
         if (!TextUtils.isEmpty(pictureUrl)) {
             avatarUrl = pictureUrl;
-            Glide.with(this).load(pictureUrl).asBitmap().into(iv_current_avatar);
+            Glide.with(this).load(Constant.IMAGE_PREFIX + pictureUrl).asBitmap().into(iv_current_avatar);
         }
         toggleSubmitBtnStatus();
     }

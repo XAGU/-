@@ -1,5 +1,7 @@
 package com.xiaolian.amigo.data.network.model.dto.response;
 
+import com.xiaolian.amigo.data.network.model.bonus.Bonus;
+
 import lombok.Data;
 
 /**
@@ -24,5 +26,24 @@ public class DeviceCheckRespDTO {
     private Long residenceId;
     private Boolean favor;
     private Integer usefor;
-
+    /**
+     * 红包
+     */
+    Bonus bonus;
+    /**
+     * 预付金额
+     */
+    Double prepay;
+    /**
+     * 最小预付金额
+     */
+    Double minPrepay;
+    /**
+     * 余额
+     */
+    Double balance;
+    /**
+     * 客服电话
+     */
+    String csMobile;
 }
