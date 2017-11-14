@@ -6,6 +6,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.util.Constant;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -29,7 +30,7 @@ public class EditAvatarAdaptor extends CommonAdapter<EditAvatarAdaptor.AvatarWra
 
     @Override
     protected void convert(ViewHolder holder, AvatarWrapper avatarWrapper, int position) {
-        Glide.with(context).load(avatarWrapper.getAvatarUrl())
+        Glide.with(context).load(Constant.IMAGE_PREFIX + avatarWrapper.getAvatarUrl())
                 .asBitmap()
                 .placeholder(R.drawable.ic_picture_error)
                 .error(R.drawable.ic_picture_error)

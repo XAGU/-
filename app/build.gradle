@@ -35,8 +35,6 @@ android {
 
     buildTypes {
         debug {
-//            buildConfigField("String", "BASE_URL", "\"http://www.xiaolian.io\"")
-//            buildConfigField("String", "API_KEY", "\"111111\"")
             signingConfig signingConfigs.config
         }
 
@@ -49,7 +47,8 @@ android {
             // 批量打包
             applicationVariants.all { variant ->
                 variant.outputs.each { output ->
-                    def fileName = "${variant.productFlavors[0].name}_v${defaultConfig.versionName}_${releaseTime()}.apk"
+//                    def fileName = "${variant.productFlavors[0].name}_v${defaultConfig.versionName}_${releaseTime()}.apk"
+                    def fileName = "${variant.productFlavors[0].applicationId}_${defaultConfig.versionName}.apk"
                     output.outputFileName = fileName
                 }
             }
@@ -59,7 +58,7 @@ android {
     productFlavors {
         dev {
             // 包名
-            applicationId defaultConfig.applicationId
+            applicationId "com.xiaolian.amigo_dev"
             // 动态添加 string.xml 字段；
             resValue "string", "app_name", "笑联测试版"
             // 动态修改 常量 字段
