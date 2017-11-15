@@ -661,7 +661,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         // 2小时内存在未找零订单
         if (data.getExistsUnsettledOrder() != null && data.getExistsUnsettledOrder()) {
             // 1 表示热水澡 2 表示饮水机
-            if (type == 1) {
+            if (type == Device.HEATER.getType()) {
                 // 直接前往热水澡处理找零
                 gotoDevice(HEATER, data.getUnsettledMacAddress(), data.getLocation(),
                         data.getResidenceId(), true);
@@ -672,20 +672,20 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
             }
         } else {
-            if (type == 1 && heaterOrderSize > 0) {
+            if (type == Device.HEATER.getType() && heaterOrderSize > 0) {
                 showPrepayDialog(type, heaterOrderSize, data);
-            } else if (type == 2 && dispenserOrderSize > 0) {
+            } else if (type == Device.DISPENSER.getType() && dispenserOrderSize > 0) {
                 showPrepayDialog(type, dispenserOrderSize, data);
             } else {
                 // 如果热水澡 检查默认宿舍
-                if (!presenter.checkDefaultDormitoryExist()) {
+                if (type == Device.HEATER.getType() && !presenter.checkDefaultDormitoryExist()) {
                     showBindDormitoryDialog();
                     return;
                 }
                 if (!data.getTimeValid()) {
                     showTimeValidDialog(type, data);
                 } else {
-                    if (type == 1) {
+                    if (type == Device.HEATER.getType()) {
                         // 前往默认宿舍的热水澡
                         presenter.gotoHeaterDevice(data.getDefaultMacAddress(), data.getLocation(),
                                 data.getResidenceId());

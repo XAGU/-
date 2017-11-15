@@ -122,16 +122,28 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
         userHolder = user;
         if (null != user.getResidenceId()) {
             mSharedPreferences.edit().putLong(PREF_KEY_RESIDENCEID, user.getResidenceId()).apply();
+        }
+        if (null != user.getResidenceName()) {
             mSharedPreferences.edit().putString(PREF_KEY_RESIDENCE_NAME, user.getResidenceName()).apply();
         }
         if (null != user.getMacAddress()) {
             mSharedPreferences.edit().putString(PREF_KEY_MAC_ADDRESS, user.getMacAddress()).apply();
         }
-        mSharedPreferences.edit().putLong(PREF_KEY_UID, user.getId()).apply();
-        mSharedPreferences.edit().putLong(PREF_KEY_SCHOOLID, user.getSchoolId()).apply();
-        mSharedPreferences.edit().putString(PREF_KEY_SCHOOLNAME, user.getSchoolName()).apply();
-        mSharedPreferences.edit().putString(PREF_KEY_NICKNAME, user.getNickName()).apply();
-        mSharedPreferences.edit().putString(PREF_KEY_MOBILE, user.getMobile()).apply();
+        if (null != user.getId()) {
+            mSharedPreferences.edit().putLong(PREF_KEY_UID, user.getId()).apply();
+        }
+        if (null != user.getSchoolId()) {
+            mSharedPreferences.edit().putLong(PREF_KEY_SCHOOLID, user.getSchoolId()).apply();
+        }
+        if (null != user.getSchoolName()) {
+            mSharedPreferences.edit().putString(PREF_KEY_SCHOOLNAME, user.getSchoolName()).apply();
+        }
+        if (null != user.getNickName()) {
+            mSharedPreferences.edit().putString(PREF_KEY_NICKNAME, user.getNickName()).apply();
+        }
+        if (null != user.getMobile()) {
+            mSharedPreferences.edit().putString(PREF_KEY_MOBILE, user.getMobile()).apply();
+        }
         if (null != user.getPictureUrl()) {
             mSharedPreferences.edit().putString(PREF_KEY_PICTURE_URL, user.getPictureUrl()).apply();
         }

@@ -151,6 +151,8 @@ public class PublishLostPresenter<V extends IPublishLostView> extends BasePresen
                                         Log.e("HostId", serviceException.getHostId());
                                         Log.e("RawMessage", serviceException.getRawMessage());
                                     }
+                                    getMvpView().post(() ->
+                                            getMvpView().onError("图片上传失败，请重试"));
                                 }
                             });
                 });

@@ -195,6 +195,7 @@
     <string name="connect_prepay_tip_1">使用结束后请务必滑动按钮进行结算找零\n当前没有可用红包哦</string>
     <string name="prepay_start_shower">预付%1$s元，开始洗澡</string>
     <string name="comma_start_shower">，开始洗澡</string>
+    <string name="comma_start_drink">，开始接水</string>
     <string name="connect_prepay_tip_2">你当前余额不足%1$s元，需预付全部余额\n使用结束后请结算找零</string>
     <string name="prepay_no_balance">余额不足</string>
     <string name="connect_prepay_tip_3">你当前余额不足%1$s元，请前往充值\n充值后再来使用哦</string>
