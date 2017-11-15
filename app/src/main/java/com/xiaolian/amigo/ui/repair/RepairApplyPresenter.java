@@ -54,6 +54,7 @@ import javax.inject.Inject;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import rx.Observable;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -71,6 +72,7 @@ public class RepairApplyPresenter<V extends IRepairApplyView> extends BasePresen
     private Random random = new Random();
     private int currentImagePosition;
     private ISharedPreferencesHelp sharedPreferencesHelp;
+    private int currentPosition;
 
     @Inject
     public RepairApplyPresenter(IRepairDataManager repairmanager,
@@ -111,7 +113,8 @@ public class RepairApplyPresenter<V extends IRepairApplyView> extends BasePresen
     }
 
     @Override
-    public void onUpload(Context context, Uri imageUri) {
+    public void onUpload(Context context, Uri imageUri, int position) {
+        currentPosition = position;
         updateImage(context, imageUri.getPath());
     }
 
@@ -153,43 +156,60 @@ public class RepairApplyPresenter<V extends IRepairApplyView> extends BasePresen
                         initOssModel(context);
                     }
                 })
-                .subscribe(integer -> {
-                    PutObjectRequest put = new PutObjectRequest(OssClientHolder.get().getOssModel().getBucket(),
-                            generateObjectKey(String.valueOf(System.currentTimeMillis())),
-                            filePath);
-                    OSSAsyncTask task = OssClientHolder.get().getClient().asyncPutObject(put,
-                            new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
-                                @Override
-                                public void onSuccess(PutObjectRequest request, PutObjectResult result) {
-                                    getMvpView().post(() -> getMvpView().addImage(request.getObjectKey()));
-                                    Log.d("PutObject", "UploadSuccess " + request.getObjectKey());
-                                }
+                .subscribe(new Subscriber<Integer>() {
+                    @Override
+                    public void onCompleted() {
 
-                                @Override
-                                public void onFailure(PutObjectRequest request, ClientException clientExcepion, ServiceException serviceException) {
-                                    // Request exception
-                                    if (clientExcepion != null) {
-                                        // Local exception, such as a network exception
-                                        clientExcepion.printStackTrace();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        // ignore
+                    }
+
+                    @Override
+                    public void onNext(Integer integer) {
+                        if (OssClientHolder.get().getClient() == null) {
+                            return;
+                        }
+                        PutObjectRequest put = new PutObjectRequest(OssClientHolder.get().getOssModel().getBucket(),
+                                generateObjectKey(String.valueOf(System.currentTimeMillis())),
+                                filePath);
+                        OSSAsyncTask task = OssClientHolder.get().getClient().asyncPutObject(put,
+                                new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
+                                    @Override
+                                    public void onSuccess(PutObjectRequest request, PutObjectResult result) {
+                                        getMvpView().post(() ->
+                                                getMvpView().addImage(request.getObjectKey(), currentPosition));
+                                        Log.d("PutObject", "UploadSuccess " + request.getObjectKey());
                                     }
-                                    if (serviceException != null) {
-                                        // Service exception
-                                        Log.e("ErrorCode", serviceException.getErrorCode());
-                                        Log.e("RequestId", serviceException.getRequestId());
-                                        Log.e("HostId", serviceException.getHostId());
-                                        Log.e("RawMessage", serviceException.getRawMessage());
+
+                                    @Override
+                                    public void onFailure(PutObjectRequest request, ClientException clientExcepion, ServiceException serviceException) {
+                                        // Request exception
+                                        if (clientExcepion != null) {
+                                            // Local exception, such as a network exception
+                                            clientExcepion.printStackTrace();
+                                        }
+                                        if (serviceException != null) {
+                                            // Service exception
+                                            Log.e("ErrorCode", serviceException.getErrorCode());
+                                            Log.e("RequestId", serviceException.getRequestId());
+                                            Log.e("HostId", serviceException.getHostId());
+                                            Log.e("RawMessage", serviceException.getRawMessage());
+                                        }
+                                        getMvpView().post(() ->
+                                                getMvpView().onError("图片上传失败，请重试"));
                                     }
-                                    getMvpView().post(() ->
-                                            getMvpView().onError("图片上传失败，请重试"));
-                                }
-                            });
+                                });
+                    }
                 });
     }
 
 
 
     private void updateOssModel() {
-        addObserver(ossDataManager.getOssModel(), new NetworkObserver<ApiResult<OssModel>>(false) {
+        addObserver(ossDataManager.getOssModel(), new NetworkObserver<ApiResult<OssModel>>(false, true) {
 
             @Override
             public void onReady(ApiResult<OssModel> result) {
@@ -210,7 +230,7 @@ public class RepairApplyPresenter<V extends IRepairApplyView> extends BasePresen
     }
 
     private void initOssModel(Context context) {
-        addObserver(ossDataManager.getOssModel(), new NetworkObserver<ApiResult<OssModel>>(false) {
+        addObserver(ossDataManager.getOssModel(), new NetworkObserver<ApiResult<OssModel>>(false, true) {
 
             @Override
             public void onReady(ApiResult<OssModel> result) {

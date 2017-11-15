@@ -21,7 +21,7 @@ public interface IRepairApplyView extends IBaseView {
     void backToRepairNav();
 
     // 添加图片
-    void addImage(String url);
+    void addImage(String url, int position);
 
     // 刷新报修问题
     void refreshProblems(List<RepairProblem> problems);

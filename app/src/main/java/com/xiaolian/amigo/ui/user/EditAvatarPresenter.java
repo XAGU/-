@@ -36,6 +36,7 @@ import java.util.Random;
 import javax.inject.Inject;
 
 import rx.Observable;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -118,44 +119,61 @@ public class EditAvatarPresenter<V extends IEditAvatarVIew> extends BasePresente
                         initOssModel(context);
                     }
                 })
-                .subscribe(integer -> {
-                    PutObjectRequest put = new PutObjectRequest(OssClientHolder.get().getOssModel().getBucket(),
-                            generateObjectKey(String.valueOf(System.currentTimeMillis())),
-                            filePath);
-                    OSSAsyncTask task = OssClientHolder.get().getClient().asyncPutObject(put,
-                            new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
-                                @Override
-                                public void onSuccess(PutObjectRequest request, PutObjectResult result) {
-                                    getMvpView().post(() -> getMvpView().setAvatar(request.getObjectKey()));
-                                    Log.d("PutObject", "UploadSuccess " + request.getObjectKey());
-                                }
+                .subscribe(new Subscriber<Integer>() {
+                    @Override
+                    public void onCompleted() {
 
-                                @Override
-                                public void onFailure(PutObjectRequest request, ClientException clientExcepion, ServiceException serviceException) {
-                                    // Request exception
-                                    if (clientExcepion != null) {
-                                        // Local exception, such as a network exception
-                                        clientExcepion.printStackTrace();
-                                    }
-                                    if (serviceException != null) {
-                                        // Service exception
-                                        Log.e("ErrorCode", serviceException.getErrorCode());
-                                        Log.e("RequestId", serviceException.getRequestId());
-                                        Log.e("HostId", serviceException.getHostId());
-                                        Log.e("RawMessage", serviceException.getRawMessage());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        // ignore
+                    }
+
+                    @Override
+                    public void onNext(Integer integer) {
+                        if (OssClientHolder.get().getClient() == null) {
+                            return;
+                        }
+                        PutObjectRequest put = new PutObjectRequest(OssClientHolder.get().getOssModel().getBucket(),
+                                generateObjectKey(String.valueOf(System.currentTimeMillis())),
+                                filePath);
+                        OSSAsyncTask task = OssClientHolder.get().getClient().asyncPutObject(put,
+                                new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
+                                    @Override
+                                    public void onSuccess(PutObjectRequest request, PutObjectResult result) {
+                                        getMvpView().post(() -> getMvpView().setAvatar(request.getObjectKey()));
+                                        Log.d("PutObject", "UploadSuccess " + request.getObjectKey());
                                     }
 
-                                    getMvpView().post(() ->
-                                            getMvpView().onError("图片上传失败，请重试"));
-                                }
-                            });
+                                    @Override
+                                    public void onFailure(PutObjectRequest request, ClientException clientExcepion, ServiceException serviceException) {
+                                        // Request exception
+                                        if (clientExcepion != null) {
+                                            // Local exception, such as a network exception
+                                            clientExcepion.printStackTrace();
+                                        }
+                                        if (serviceException != null) {
+                                            // Service exception
+                                            Log.e("ErrorCode", serviceException.getErrorCode());
+                                            Log.e("RequestId", serviceException.getRequestId());
+                                            Log.e("HostId", serviceException.getHostId());
+                                            Log.e("RawMessage", serviceException.getRawMessage());
+                                        }
+
+                                        getMvpView().post(() ->
+                                                getMvpView().onError("图片上传失败，请重试"));
+                                    }
+                                });
+
+                    }
                 });
     }
 
 
 
     private void updateOssModel() {
-        addObserver(ossDataManager.getOssModel(), new NetworkObserver<ApiResult<OssModel>>(false) {
+        addObserver(ossDataManager.getOssModel(), new NetworkObserver<ApiResult<OssModel>>(false, true) {
 
             @Override
             public void onReady(ApiResult<OssModel> result) {
@@ -176,7 +194,7 @@ public class EditAvatarPresenter<V extends IEditAvatarVIew> extends BasePresente
     }
 
     private void initOssModel(Context context) {
-        addObserver(ossDataManager.getOssModel(), new NetworkObserver<ApiResult<OssModel>>(false) {
+        addObserver(ossDataManager.getOssModel(), new NetworkObserver<ApiResult<OssModel>>(false, true) {
 
             @Override
             public void onReady(ApiResult<OssModel> result) {

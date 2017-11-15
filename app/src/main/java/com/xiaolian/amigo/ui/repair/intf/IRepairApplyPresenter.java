@@ -42,7 +42,7 @@ public interface IRepairApplyPresenter<V extends IRepairApplyView> extends IBase
     /**
      * 上传报修图片
      */
-    void onUpload(Context context, Uri imageUri);
+    void onUpload(Context context, Uri imageUri, int position);
 
     /**
      * 请求报修问题列表
