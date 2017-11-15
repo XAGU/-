@@ -61,7 +61,7 @@ public class WithdrawalAdaptor extends CommonAdapter<WithdrawalAdaptor.Withdrawa
             this.time = dto.getCreateTime();
             this.type = dto.getOperationType();
             this.title = WithdrawOperationType.getOperationType(dto.getOperationType()).getDesc()
-                            + "：￥" + dto.getAmount();
+                            + "：¥" + dto.getAmount();
             this.status = dto.getStatus();
         }
     }

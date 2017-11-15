@@ -126,7 +126,7 @@ public class LostAndFoundDetailActivity extends LostAndFoundBaseActivity impleme
             } else {
                 tv_title.setText("招领详情");
             }
-            id = getIntent().getLongExtra(INTENT_KEY_LOST_AND_FOUND_DETAIL_ID, -1);
+            id = getIntent().getLongExtra(INTENT_KEY_LOST_AND_FOUND_DETAIL_ID, Constant.INVALID_ID);
             presenter.getLostAndFoundDetail(id);
         }
     }

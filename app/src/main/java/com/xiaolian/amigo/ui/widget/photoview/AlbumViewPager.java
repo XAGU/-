@@ -22,12 +22,20 @@ import java.util.List;
  */
 
 public class AlbumViewPager extends ViewPager {
+    public interface OnSingleTapListener {
+        void onSingleTap();
+    }
+    public OnSingleTapListener listener;
     public final static String TAG = "AlbumViewPager";
     public NumberFormat percentFormat;
 
     public AlbumViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
         percentFormat = NumberFormat.getPercentInstance();
+    }
+
+    public void setOnSingleTapListener(OnSingleTapListener listener) {
+        this.listener = listener;
     }
 
 
@@ -71,6 +79,11 @@ public class AlbumViewPager extends ViewPager {
             viewGroup.addView(imageLayout);
             assert imageLayout != null;
             PhotoView imageView = (PhotoView) imageLayout.findViewById(R.id.matrix_imageview);
+            imageView.setOnViewTapListener((View view, float x, float y) -> {
+                if (listener != null) {
+                    listener.onSingleTap();
+                }
+            });
             final TextView mTvProgress = (TextView) imageLayout.findViewById(R.id.album_textview_progress);
             String path = paths.get(position);
             imageLayout.setTag(path);

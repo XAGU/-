@@ -1,6 +1,9 @@
 package com.xiaolian.amigo.ui.lostandfound;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -14,11 +17,16 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.OssFileType;
 import com.xiaolian.amigo.ui.lostandfound.intf.IPublishLostPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.IPublishLostView;
+import com.xiaolian.amigo.ui.repair.adaptor.ImageAddAdapter;
+import com.xiaolian.amigo.ui.widget.GridSpacesItemDecoration;
 import com.xiaolian.amigo.ui.widget.dialog.DatePickerDialog;
+import com.xiaolian.amigo.ui.widget.photoview.AlbumItemActivity;
 import com.xiaolian.amigo.ui.widget.wheelpicker.WheelDateTimePicker;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.util.ScreenUtils;
 import com.xiaolian.amigo.util.TimeUtils;
+import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,6 +45,7 @@ import butterknife.OnTextChanged;
  */
 
 public class PublishFoundActivity extends LostAndFoundBaseActivity implements IPublishLostView {
+    private static final int REQUEST_IMAGE = 0x3302;
     @Inject
     IPublishLostPresenter<IPublishLostView> presenter;
 
@@ -89,6 +98,11 @@ public class PublishFoundActivity extends LostAndFoundBaseActivity implements IP
     @BindView(R.id.iv_third)
     ImageView iv_third;
 
+    @BindView(R.id.rv_image)
+    RecyclerView rv_image;
+    private ImageAddAdapter imageAddAdapter;
+    List<ImageAddAdapter.ImageItem> addImages = new ArrayList<>();
+
     List<String> images = new ArrayList<>();
 
     private boolean allValidated = false;
@@ -116,6 +130,37 @@ public class PublishFoundActivity extends LostAndFoundBaseActivity implements IP
         };
 
         CommonUtil.showSoftInput(this, et_title);
+        initImageAdd();
+    }
+
+    private void initImageAdd() {
+        addImages.add(new ImageAddAdapter.ImageItem());
+        imageAddAdapter = new ImageAddAdapter(this, R.layout.item_image_add, addImages);
+        imageAddAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                if (images.isEmpty() || (images.size() < 3 && position == images.size())) {
+                    getImage(imageUri -> {
+                        presenter.uploadImage(PublishFoundActivity.this,
+                                imageUri, position, OssFileType.FOUND);
+                    });
+                } else {
+                    Intent intent = new Intent(PublishFoundActivity.this, AlbumItemActivity.class);
+                    intent.putExtra(AlbumItemActivity.INTENT_POSITION, position);
+                    intent.putExtra(AlbumItemActivity.EXTRA_TYPE_SINGLE, images.get(position));
+                    intent.putExtra(AlbumItemActivity.INTENT_ACTION, AlbumItemActivity.ACTION_DELETEABLE);
+                    startActivityForResult(intent, REQUEST_IMAGE);
+                }
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
+        rv_image.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        rv_image.addItemDecoration(new GridSpacesItemDecoration(3, ScreenUtils.dpToPxInt(this, 10), false));
+        rv_image.setAdapter(imageAddAdapter);
     }
 
     @Override
@@ -172,6 +217,18 @@ public class PublishFoundActivity extends LostAndFoundBaseActivity implements IP
         } else {
             this.images.add(url);
         }
+        refreshAddImage();
+    }
+
+    private void refreshAddImage() {
+        addImages.clear();
+        for (String image : images) {
+            addImages.add(new ImageAddAdapter.ImageItem(image));
+        }
+        if (images.size() < 3) {
+            addImages.add(new ImageAddAdapter.ImageItem());
+        }
+        imageAddAdapter.notifyDataSetChanged();
     }
 
     @OnClick(R.id.ll_time)
@@ -234,6 +291,18 @@ public class PublishFoundActivity extends LostAndFoundBaseActivity implements IP
                             imageUri, 2, OssFileType.FOUND);
                 });
                 break;
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_IMAGE && resultCode == RESULT_OK) {
+            int position = data.getIntExtra(AlbumItemActivity.INTENT_POSITION, -1);
+            if (position != -1) {
+                images.remove(position);
+                refreshAddImage();
             }
         }
     }

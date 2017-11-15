@@ -134,7 +134,6 @@ public class RechargePresenter<V extends IRechargeView> extends BasePresenter<V>
                 if (apiResult.getError() == null) {
                     if (apiResult.getData().getCode() == AlipayPayOrderCheckResult.SUCCESS.getType()) {
                         getMvpView().onSuccess("充值成功");
-                        // TODO 充值订单详情
                         getMvpView().gotoDetail(fundsId);
                     } else {
                         getMvpView().onError(apiResult.getData().getMsg());

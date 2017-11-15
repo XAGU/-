@@ -93,7 +93,7 @@ public class RechargeDetailActivity extends WalletBaseActivity implements IRecha
         recyclerView.addItemDecoration(new RecycleViewDivider(this, RecycleViewDivider.VERTICAL_LIST));
         recyclerView.setAdapter(adapter);
 
-        if (id == null || id == -1) {
+        if (id == null || id == Constant.INVALID_ID) {
             onError("状态错误");
         }
         presenter.requestData(id);
@@ -103,7 +103,7 @@ public class RechargeDetailActivity extends WalletBaseActivity implements IRecha
     protected void setUp() {
         super.setUp();
         if (getIntent() != null) {
-            id = getIntent().getLongExtra(Constant.EXTRA_KEY, -1);
+            id = getIntent().getLongExtra(Constant.EXTRA_KEY, Constant.INVALID_ID);
         }
     }
 

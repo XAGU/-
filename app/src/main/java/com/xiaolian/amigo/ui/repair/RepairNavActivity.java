@@ -3,6 +3,7 @@ package com.xiaolian.amigo.ui.repair;
 import android.view.View;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.util.Constant;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +28,7 @@ public class RepairNavActivity extends RepairBaseActivity {
     protected void initView() {
         setMainBackground(R.color.white);
         ButterKnife.bind(this);
-        if (lastRepairTime != null && lastRepairTime != -1) {
+        if (lastRepairTime != null && lastRepairTime != Constant.INVALID_ID) {
             v_dot.setVisibility(View.VISIBLE);
         }
     }
@@ -45,7 +46,7 @@ public class RepairNavActivity extends RepairBaseActivity {
     @Override
     protected void setUp() {
         if (getIntent() != null) {
-            lastRepairTime = getIntent().getLongExtra(RepairActivity.INTENT_KEY_LAST_REPAIR_TIME, -1);
+            lastRepairTime = getIntent().getLongExtra(RepairActivity.INTENT_KEY_LAST_REPAIR_TIME, Constant.INVALID_ID);
         }
     }
 

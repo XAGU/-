@@ -55,7 +55,13 @@ public class AlbumItemActivity extends AppCompatActivity implements View.OnClick
     private ImageView mBackView;
     private TextView mCountView;
     private View mHeaderBar, mBottomBar;
+    private TextView mDelete;
     private Button mDeleteButton;
+    public static final String INTENT_ACTION = "intent_action";
+    public static final String INTENT_POSITION = "intent_position";
+    public static final int ACTION_NORMAL = 1;
+    public static final int ACTION_DELETEABLE = 2;
+    private int action = ACTION_NORMAL;
 
     //0是网络图片无pop，1是本地图片有pop，2是本地图片没有pop
     public static int POPANDURL = 0;
@@ -69,6 +75,7 @@ public class AlbumItemActivity extends AppCompatActivity implements View.OnClick
     private List<String> mPaths = new ArrayList<String>();
 
     private List<String> deletePaths;
+    private int position;
 
     /**
      * 跳转至大图
@@ -97,12 +104,20 @@ public class AlbumItemActivity extends AppCompatActivity implements View.OnClick
         mHeaderBar = findViewById(R.id.album_item_header_bar);
         mBottomBar = findViewById(R.id.album_item_bottom_bar);
         mDeleteButton = (Button) findViewById(R.id.delete);
+        mDelete = (TextView) findViewById(R.id.tv_delete);
 
         mBackView.setOnClickListener(this);
         mCountView.setOnClickListener(this);
         mDeleteButton.setOnClickListener(this);
+        mDelete.setOnClickListener(this);
+        mViewPager.setOnSingleTapListener(super::onBackPressed);
 
         setPath();
+        if (action == ACTION_DELETEABLE) {
+            mDelete.setVisibility(View.VISIBLE);
+        } else {
+            mDelete.setVisibility(View.GONE);
+        }
         deletePaths = new ArrayList<String>();
         deletePaths.addAll(mPaths);
         loadAlbum();
@@ -116,11 +131,13 @@ public class AlbumItemActivity extends AppCompatActivity implements View.OnClick
             return;
         }
         try {
+            position = getIntent().getIntExtra(INTENT_POSITION, -1);
+            action = getIntent().getIntExtra(INTENT_ACTION, ACTION_NORMAL);
             mPaths.clear();
             mCurrent = getIntent().getIntExtra(EXTRA_CURRENT, 0);
             String pathSingle = getIntent().getStringExtra(EXTRA_TYPE_SINGLE);
             if (pathSingle != null) {
-                mPaths.add(pathSingle);
+                mPaths.add(Constant.IMAGE_PREFIX + pathSingle);
                 return;
             }
             List<String> paths = getIntent().getStringArrayListExtra(EXTRA_TYPE_LIST);
@@ -227,7 +244,11 @@ public class AlbumItemActivity extends AppCompatActivity implements View.OnClick
 				Toast.makeText(this,  R.string.delete_success, Toast.LENGTH_SHORT).show();
 			}
 			break;*/
-        } else {
+        } else if (i == R.id.tv_delete) {
+            Intent intent = new Intent();
+            intent.putExtra(INTENT_POSITION, position);
+            setResult(RESULT_OK, intent);
+            finish();
         }
     }
 

@@ -1,6 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.xiaolian.amigo.ui.widget.MyWebView  xmlns:android="http://schemas.android.com/apk/res/android"
-          android:id="@+id/webview"
-          android:layout_width="fill_parent"
-          android:layout_height="fill_parent"
-    />
+<FrameLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+    <com.xiaolian.amigo.ui.widget.MyWebView  xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/webview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        />
+
+    <LinearLayout
+        android:id="@+id/ll_error_view"
+        android:visibility="gone"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/toolBarMarginLeft"
+            android:paddingBottom="@dimen/toolBarInnerMargin"
+            android:paddingRight="@dimen/toolBarMarginLeft"
+            android:paddingTop="@dimen/toolBarMarginTop"
+            android:src="@drawable/back" />
+
+        <TextView
+            android:id="@+id/tv_toolbar_title"
+            style="@style/ToolBarTextView"
+            android:layout_marginLeft="@dimen/toolBarMarginLeft"
+            android:layout_marginRight="@dimen/toolBarMarginLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/toolBarMarginBottom"
+            />
+        <RelativeLayout
+            android:id="@+id/rl_empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/tv_empty_tip"
+                android:textSize="14sp"
+                android:text="@string/empty_tip"
+                android:textColor="@color/colorDark2"
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <ImageView
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="14dp"
+                android:layout_above="@id/tv_empty_tip"
+                android:src="@drawable/ic_empty_box"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+    </LinearLayout>
+</FrameLayout>

@@ -1,19 +1,26 @@
 package com.xiaolian.amigo.ui.base;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.SslErrorHandler;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.util.CommonUtil;
@@ -52,6 +59,8 @@ public class WebActivity extends BaseActivity {
 
         }
     };
+    private boolean loadError;
+    private LinearLayout ll_error_view;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -73,6 +82,13 @@ public class WebActivity extends BaseActivity {
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 hideLoading();
+                if (!isNetworkAvailable()) {
+                    ll_error_view.setVisibility(View.VISIBLE);
+                    return;
+                }
+                if (loadError) {
+                    ll_error_view.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override
@@ -83,6 +99,7 @@ public class WebActivity extends BaseActivity {
 
             @Override
             public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+                // ignore ssl error
 //                super.onReceivedSslError(view, handler, error);
             }
 
@@ -97,12 +114,38 @@ public class WebActivity extends BaseActivity {
                 return super.shouldOverrideUrlLoading(view, url);
             }
 
+            @Override
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                super.onReceivedError(view, errorCode, description, failingUrl);
+                loadError = true;
+            }
+
+            @TargetApi(android.os.Build.VERSION_CODES.M)
+            @Override
+            public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
+                super.onReceivedHttpError(view, request, errorResponse);
+                // 这个方法在6.0才出现
+                int statusCode = errorResponse.getStatusCode();
+                System.out.println("onReceivedHttpError code = " + statusCode);
+                if (404 == statusCode || 500 == statusCode) {
+                    loadError = true;
+                }
+            }
+
         });
         webView.setWebChromeClient(new MyWebChromeClient());
         webView.addJavascriptInterface(new WebAppInterface(), "WebViewInterface");
         webSettings.setJavaScriptEnabled(true);
         webView.loadUrl(url);
         Log.i(TAG, url);
+
+        initErrorView();
+    }
+
+    private void initErrorView() {
+        ImageView iv_back = (ImageView) findViewById(R.id.iv_back);
+        iv_back.setOnClickListener(v -> super.onBackPressed());
+        ll_error_view = (LinearLayout) findViewById(R.id.ll_error_view);
     }
 
     private class MyWebChromeClient extends WebChromeClient {
@@ -131,6 +174,19 @@ public class WebActivity extends BaseActivity {
         // For Android  > 4.1.1
         public void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType, String capture) {
             openFileChooser(uploadMsg, acceptType);
+        }
+
+        @Override
+        public void onReceivedTitle(WebView view, String title) {
+            //判断标题 title 中是否包含有“error”字段，如果包含“error”字段，则设置加载失败，显示加载失败的视图
+            Log.d(TAG, "title: " + title);
+            if (!TextUtils.isEmpty(title) && title.toLowerCase().contains("error")) {
+                loadError = true;
+            } else if (!TextUtils.isEmpty(title) && title.toLowerCase().contains("404")) {
+                loadError = true;
+            } else if (!TextUtils.isEmpty(title) && title.toLowerCase().contains("500")) {
+                loadError = true;
+            }
         }
 
     }

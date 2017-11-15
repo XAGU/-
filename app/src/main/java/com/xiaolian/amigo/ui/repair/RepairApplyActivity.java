@@ -2,6 +2,7 @@ package com.xiaolian.amigo.ui.repair;
 
 import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
@@ -16,6 +17,9 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.network.model.repair.RepairProblem;
+import com.xiaolian.amigo.ui.repair.adaptor.ImageAddAdapter;
+import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
+import com.xiaolian.amigo.ui.widget.photoview.AlbumItemActivity;
 import com.xiaolian.amigo.util.ScreenUtils;
 import com.xiaolian.amigo.ui.repair.adaptor.RepairProblemAdaptor;
 import com.xiaolian.amigo.ui.repair.intf.IRepairApplyPresenter;
@@ -23,6 +27,7 @@ import com.xiaolian.amigo.ui.repair.intf.IRepairApplyView;
 import com.xiaolian.amigo.ui.user.ListChooseActivity;
 import com.xiaolian.amigo.ui.widget.GridSpacesItemDecoration;
 import com.xiaolian.amigo.util.Constant;
+import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,6 +49,7 @@ import retrofit2.http.Body;
  */
 public class RepairApplyActivity extends RepairBaseActivity implements IRepairApplyView {
 
+    private static final int REQUEST_IMAGE = 0x3301;
     @Inject
     IRepairApplyPresenter<IRepairApplyView> presenter;
     @BindView(R.id.rv_problems)
@@ -72,6 +78,11 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
     LinearLayout ll_problems;
     @BindView(R.id.v_divide)
     View v_divide;
+
+    @BindView(R.id.rv_image)
+    RecyclerView rv_image;
+    private ImageAddAdapter imageAddAdapter;
+    List<ImageAddAdapter.ImageItem> addImages = new ArrayList<>();
 
     List<RepairProblemAdaptor.ProblemWrapper> problems = new ArrayList<>();
 
@@ -129,6 +140,36 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
         rv_problems.setLayoutManager(new GridLayoutManager(this, 3));
         rv_problems.setAdapter(adapter);
         render();
+        initImageAdd();
+    }
+
+    private void initImageAdd() {
+        addImages.add(new ImageAddAdapter.ImageItem());
+        imageAddAdapter = new ImageAddAdapter(this, R.layout.item_image_add, addImages);
+        imageAddAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                if (images.isEmpty() || (images.size() < 3 && position == images.size())) {
+                    getImage(imageUri -> {
+                        presenter.onUpload(RepairApplyActivity.this, imageUri, position);
+                    });
+                } else {
+                    Intent intent = new Intent(RepairApplyActivity.this, AlbumItemActivity.class);
+                    intent.putExtra(AlbumItemActivity.INTENT_POSITION, position);
+                    intent.putExtra(AlbumItemActivity.EXTRA_TYPE_SINGLE, images.get(position));
+                    intent.putExtra(AlbumItemActivity.INTENT_ACTION, AlbumItemActivity.ACTION_DELETEABLE);
+                    startActivityForResult(intent, REQUEST_IMAGE);
+                }
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
+        rv_image.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        rv_image.addItemDecoration(new GridSpacesItemDecoration(3, ScreenUtils.dpToPxInt(this, 10), false));
+        rv_image.setAdapter(imageAddAdapter);
     }
 
     @Override
@@ -261,6 +302,18 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
         } else {
             this.images.add(url);
         }
+        refreshAddImage();
+    }
+
+    private void refreshAddImage() {
+        addImages.clear();
+        for (String image : images) {
+            addImages.add(new ImageAddAdapter.ImageItem(image));
+        }
+        if (images.size() < 3) {
+            addImages.add(new ImageAddAdapter.ImageItem());
+        }
+        imageAddAdapter.notifyDataSetChanged();
     }
 
     @OnClick(R.id.bt_submit)
@@ -308,6 +361,17 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
     private void renderProblems() {
         v_divide.setVisibility(View.VISIBLE);
         ll_problems.setVisibility(View.VISIBLE);
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_IMAGE && resultCode == RESULT_OK) {
+            int position = data.getIntExtra(AlbumItemActivity.INTENT_POSITION, -1);
+            if (position != -1) {
+                images.remove(position);
+                refreshAddImage();
+            }
+        }
     }
 }

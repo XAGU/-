@@ -232,6 +232,7 @@
     <string name="dormitory_empty_tip">你的宿舍信息为空</string>
     <string name="mac_address_empty_tip">你的默认宿舍没有设备</string>
     <string name="money_format">¥%1$s</string>
+    <string name="rmb_symbol">¥</string>
     <string name="unpass_reason">未通过原因</string>
     <string name="withdraw_way_colon">提现方式：</string>
     <string name="withdraw_account_colon">提现账号：</string>
