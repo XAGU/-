@@ -7,6 +7,7 @@ import com.xiaolian.amigo.data.network.model.wallet.RechargeDenominations;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Locale;
 
@@ -35,6 +36,7 @@ public class RechargeAdaptor extends MultiItemTypeAdapter<RechargeAdaptor.Rechar
         // 附信息
         String sub;
         boolean isSelected = false;
+        private DecimalFormat df = new DecimalFormat("###.##");
 
         public RechargeWrapper(Integer type, String main, String sub) {
             this.type = type;
@@ -58,9 +60,9 @@ public class RechargeAdaptor extends MultiItemTypeAdapter<RechargeAdaptor.Rechar
             this.main = String.format(Locale.getDefault(),
                     "%.0f元", rechargeDenominations.getAmount());
             if (this.type == 1) {
-                this.sub = "售价" + rechargeDenominations.getValue() + "元";
+                this.sub = "售价" + df.format(rechargeDenominations.getValue()) + "元";
             } else if (this.type == 2) {
-                this.sub = "送" + rechargeDenominations.getValue() + "元红包";
+                this.sub = "送" + df.format(rechargeDenominations.getValue()) + "元红包";
             }
         }
     }

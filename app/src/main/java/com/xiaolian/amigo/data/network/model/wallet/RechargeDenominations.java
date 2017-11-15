@@ -12,5 +12,5 @@ public class RechargeDenominations {
     private Integer activityType;
     private Double amount;
     private Long id;
-    private Long value;
+    private Double value;
 }
