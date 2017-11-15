@@ -85,8 +85,8 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
             if (e instanceof HttpException) {
                 switch (((HttpException) e).code()) {
                     case UNAUTHORIZED:
-                        getMvpView().onError(R.string.please_login);
-                        getMvpView().redirectToLogin();
+                        getMvpView().post(() -> getMvpView().onError(R.string.please_login));
+                        getMvpView().post(() -> getMvpView().redirectToLogin());
                         break;
                     default:
                         getMvpView().onError("服务器飞走啦，努力修复中");
@@ -163,8 +163,8 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
         if (e instanceof HttpException) {
             switch (((HttpException) e).code()) {
                 case UNAUTHORIZED:
-                    getMvpView().onError(R.string.please_login);
-                    getMvpView().redirectToLogin();
+                    getMvpView().post(() -> getMvpView().onError(R.string.please_login));
+                    getMvpView().post(() -> getMvpView().redirectToLogin());
                     break;
                 default:
                     break;

@@ -168,9 +168,9 @@ public class PublishLostActivity extends LostAndFoundBaseActivity implements IPu
     @Override
     public void addImage(String url, int position) {
         if (this.images.size() > position) {
-            this.images.add(position, Constant.IMAGE_PREFIX + url);
+            this.images.add(position, url);
         } else {
-            this.images.add(Constant.IMAGE_PREFIX + url);
+            this.images.add(url);
         }
     }
 

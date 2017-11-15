@@ -14,6 +14,7 @@ import com.xiaolian.amigo.data.network.model.lostandfound.LostAndFound;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundDetailPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundDetailView;
 import com.xiaolian.amigo.ui.widget.photoview.AlbumItemActivity;
+import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.TimeUtils;
 
 import java.util.ArrayList;
@@ -159,17 +160,17 @@ public class LostAndFoundDetailActivity extends LostAndFoundBaseActivity impleme
             if (num > 0) {
                 ll_images.setVisibility(View.VISIBLE);
                 iv_first.setVisibility(View.VISIBLE);
-                manager.load(images.get(0)).into(iv_first);
+                manager.load(Constant.IMAGE_PREFIX + images.get(0)).into(iv_first);
             }
             // 渲染第二张图
             if (num > 1) {
                 iv_second.setVisibility(View.VISIBLE);
-                manager.load(images.get(1)).into(iv_second);
+                manager.load(Constant.IMAGE_PREFIX + images.get(1)).into(iv_second);
             }
             // 渲染第三张图
             if (num > 2) {
                 iv_third.setVisibility(View.VISIBLE);
-                manager.load(images.get(2)).into(iv_third);
+                manager.load(Constant.IMAGE_PREFIX + images.get(2)).into(iv_third);
             }
         }
     }

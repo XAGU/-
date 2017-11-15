@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.util.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -124,7 +125,9 @@ public class AlbumItemActivity extends AppCompatActivity implements View.OnClick
             }
             List<String> paths = getIntent().getStringArrayListExtra(EXTRA_TYPE_LIST);
             if (paths != null) {
-                mPaths.addAll(paths);
+                for (String image : paths) {
+                    mPaths.add(Constant.IMAGE_PREFIX + image);
+                }
                 return;
             }
             String[] pathArray = getIntent().getStringArrayExtra(EXTRA_TYPE_ARRAY);
