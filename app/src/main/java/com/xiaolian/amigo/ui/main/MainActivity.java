@@ -157,7 +157,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         // 友盟日志加密
         MobclickAgent.enableEncrypt(true);
         MobclickAgent.setCatchUncaughtExceptions(true);
-        MobclickAgent.reportError(this, "测试");
 
         btSwitch.setBackgroundResource(R.drawable.profile);
 
