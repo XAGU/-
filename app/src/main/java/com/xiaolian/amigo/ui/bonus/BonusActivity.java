@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.ui.bonus.adaptor.BonusAdaptor;
 import com.xiaolian.amigo.ui.bonus.intf.IBonusPresenter;
 import com.xiaolian.amigo.ui.bonus.intf.IBonusView;
@@ -107,9 +106,8 @@ public class BonusActivity extends BonusBaseListActivity implements IBonusView {
                 break;
             case ACTION_NORMAL:
                 getSubTitle().setOnClickListener(v -> startActivity(new Intent(BonusActivity.this, BonusExchangeActivity.class)));
-                getFooter().findViewById(R.id.tv_expired_entry).setOnClickListener(v -> {
-                    startActivity(new Intent(this, ExpiredBonusActivity.class));
-                });
+                getFooter().findViewById(R.id.tv_expired_entry).setOnClickListener(v ->
+                        startActivity(new Intent(this, ExpiredBonusActivity.class)));
             default:
                 break;
         }

@@ -55,6 +55,7 @@ import rx.subjects.PublishSubject;
 import static com.trello.rxlifecycle.android.ActivityEvent.PAUSE;
 
 /**
+ * 设备BasePresenter
  * Created by caidong on 2017/9/22.
  */
 public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePresenter<V>
@@ -124,7 +125,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     // 结束标识
     private volatile boolean closeFlag = false;
 
-    public DeviceBasePresenter(IBleDataManager bleDataManager, ITradeDataManager tradeDataManager, IOrderDataManager orderDataManager, ISharedPreferencesHelp sharedPreferencesHelp) {
+    DeviceBasePresenter(IBleDataManager bleDataManager, ITradeDataManager tradeDataManager, IOrderDataManager orderDataManager, ISharedPreferencesHelp sharedPreferencesHelp) {
         super();
         this.bleDataManager = bleDataManager;
         this.tradeDataManager = tradeDataManager;
@@ -701,7 +702,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     }
 
     @Override
-    public void     handleResult(ApiResult<CmdResultRespDTO> result) {
+    public void handleResult(ApiResult<CmdResultRespDTO> result) {
         Log.i(TAG, "主线程开始处理指令响应结果");
         if (null == result.getError()) {
             // 下一步执行指令
@@ -791,6 +792,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     precheckFlag = true;
                     // 下发结账指令
                     onWrite(checkoutCmd);
+                    break;
+                case UNKNOWN:
+                    Log.wtf(TAG, "服务器返回未知指令");
                     break;
             }
         } else {

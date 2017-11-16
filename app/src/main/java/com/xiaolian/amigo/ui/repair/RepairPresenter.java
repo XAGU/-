@@ -16,8 +16,6 @@
 package com.xiaolian.amigo.ui.repair;
 
 
-import android.content.SharedPreferences;
-
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.manager.intf.IRepairDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;

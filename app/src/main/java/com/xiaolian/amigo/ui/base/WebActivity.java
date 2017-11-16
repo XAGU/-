@@ -8,7 +8,6 @@ import android.net.http.SslError;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import com.xiaolian.amigo.util.Log;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.SslErrorHandler;
@@ -24,6 +23,7 @@ import android.widget.LinearLayout;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.util.CommonUtil;
+import com.xiaolian.amigo.util.Log;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

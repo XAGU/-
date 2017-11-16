@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -107,11 +106,15 @@ public class LoginFragment extends Fragment {
             if (!TextUtils.isEmpty(et_mobile.getText())) {
                 et_userpwd.requestFocus();
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.showSoftInput(et_userpwd, InputMethodManager.SHOW_IMPLICIT);
+                if (imm != null) {
+                    imm.showSoftInput(et_userpwd, InputMethodManager.SHOW_IMPLICIT);
+                }
             } else {
                 et_mobile.requestFocus();
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.showSoftInput(et_mobile, InputMethodManager.SHOW_IMPLICIT);
+                if (imm != null) {
+                    imm.showSoftInput(et_mobile, InputMethodManager.SHOW_IMPLICIT);
+                }
             }
         }
     }

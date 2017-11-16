@@ -6,17 +6,13 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.ComplaintType;
 import com.xiaolian.amigo.data.enumeration.Device;
-import com.xiaolian.amigo.data.enumeration.Payment;
 import com.xiaolian.amigo.data.enumeration.TradeError;
 import com.xiaolian.amigo.data.network.model.dto.response.OrderDetailRespDTO;
 import com.xiaolian.amigo.ui.base.WebActivity;
@@ -119,9 +115,9 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
         tv_time.setText(CommonUtil.stampToDate(respDTO.getCreateTime()));
         Device device = Device.getDevice(respDTO.getDeviceType());
         if (device != null) {
-            tv_device_location.setText(device.getDesc() + " " + respDTO.getLocation());
+            tv_device_location.setText(String.format("%s %s", device.getDesc(), respDTO.getLocation()));
         } else {
-            tv_device_location.setText("未知设备 " + respDTO.getLocation());
+            tv_device_location.setText(String.format("未知设备 %s", respDTO.getLocation()));
         }
         orderNo = respDTO.getOrderNo();
         tv_order_no.setText(orderNo);

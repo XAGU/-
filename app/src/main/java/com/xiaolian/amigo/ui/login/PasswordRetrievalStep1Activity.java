@@ -7,12 +7,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.text.SpannableString;
-import android.text.Spanned;
 import android.text.TextUtils;
-import android.text.style.AbsoluteSizeSpan;
-import com.xiaolian.amigo.util.Log;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
@@ -22,6 +17,7 @@ import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.ui.login.intf.IPasswordRetrievalStep1Presenter;
 import com.xiaolian.amigo.ui.login.intf.IPasswordRetrievalStep1View;
 import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.util.Log;
 import com.xiaolian.amigo.util.ViewUtil;
 
 import javax.inject.Inject;
@@ -76,7 +72,7 @@ public class PasswordRetrievalStep1Activity extends LoginBaseActivity implements
     }
 
     @OnTextChanged(R.id.et_mobile)
-    void inputMobile(CharSequence s, int start, int before, int count) {
+    void inputMobile() {
         toggleSubmitBtnStatus();
     }
 
@@ -175,7 +171,9 @@ public class PasswordRetrievalStep1Activity extends LoginBaseActivity implements
         if (et_mobile != null) {
             et_mobile.requestFocus();
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(et_mobile, InputMethodManager.SHOW_IMPLICIT);
+            if (imm != null) {
+                imm.showSoftInput(et_mobile, InputMethodManager.SHOW_IMPLICIT);
+            }
         }
     }
 

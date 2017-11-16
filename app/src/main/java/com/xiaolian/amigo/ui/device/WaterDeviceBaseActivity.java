@@ -11,7 +11,6 @@ import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
-import com.xiaolian.amigo.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -43,6 +42,7 @@ import com.xiaolian.amigo.ui.widget.swipebutton.SlideUnlockView;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.DimentionUtils;
+import com.xiaolian.amigo.util.Log;
 import com.xiaolian.amigo.util.TimeUtils;
 
 import java.text.DecimalFormat;
@@ -878,7 +878,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                 bonusDescription = getString(R.string.not_use_bonus);
                 refreshPrepayStatus();
             } else if (resultCode == RESULT_OK) {
-                choosedBonus = (BonusAdaptor.BonusWrapper) data.getExtras().getSerializable(BonusActivity.INTENT_KEY_BONUS_RESULT);
+                choosedBonus = (BonusAdaptor.BonusWrapper) data.getSerializableExtra(BonusActivity.INTENT_KEY_BONUS_RESULT);
                 if (choosedBonus != null) {
                     bonusId = choosedBonus.getId();
                     bonusAmount = choosedBonus.getAmount();
@@ -933,18 +933,8 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     public void showRechargeDialog(double amount) {
         new IOSAlertDialog(this).builder()
                 .setMsg("sorry,你的账户余额不足" + amount + "元~")
-                .setPositiveButton("前往充值", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        startActivity(new Intent(getApplicationContext(), RechargeActivity.class));
-                    }
-                })
-                .setNegativeClickListener("取消", new IOSAlertDialog.OnDialogClickListener() {
-                    @Override
-                    public void onDialogClickListener(IOSAlertDialog iosAlertDialog) {
-                        iosAlertDialog.dismiss();
-                    }
-                }).show();
+                .setPositiveButton("前往充值", v -> startActivity(new Intent(getApplicationContext(), RechargeActivity.class)))
+                .setNegativeClickListener("取消", IOSAlertDialog::dismiss).show();
     }
 
 

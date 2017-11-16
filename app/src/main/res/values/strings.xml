@@ -244,4 +244,5 @@
     <string name="complaint_error">你已经投诉过该订单</string>
     <string name="choose_dormitory">选择宿舍</string>
     <string name="content_description">content_description</string>
+    <string name="no_sd_card_premission">没有SD卡权限</string>
 </resources>

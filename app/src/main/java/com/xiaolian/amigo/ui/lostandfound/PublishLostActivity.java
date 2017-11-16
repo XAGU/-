@@ -1,13 +1,11 @@
 package com.xiaolian.amigo.ui.lostandfound;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -25,7 +23,6 @@ import com.xiaolian.amigo.ui.widget.dialog.DatePickerDialog;
 import com.xiaolian.amigo.ui.widget.photoview.AlbumItemActivity;
 import com.xiaolian.amigo.ui.widget.wheelpicker.WheelDateTimePicker;
 import com.xiaolian.amigo.util.CommonUtil;
-import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.ScreenUtils;
 import com.xiaolian.amigo.util.TimeUtils;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
@@ -235,12 +232,9 @@ public class PublishLostActivity extends LostAndFoundBaseActivity implements IPu
     @OnClick(R.id.ll_time)
     void onTimeChoose() {
         DatePickerDialog datePickerDialog = new DatePickerDialog(this);
-        datePickerDialog.setOnItemSelectedListener(new DatePickerDialog.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(WheelDateTimePicker picker, Date date) {
-                tv_lostTime.setTag(R.id.timestamp, TimeUtils.date2Millis(date));
-                tv_lostTime.setText(TimeUtils.date2String(date, TimeUtils.MY_DATE_TIME_FORMAT));
-            }
+        datePickerDialog.setOnItemSelectedListener((picker, date) -> {
+            tv_lostTime.setTag(R.id.timestamp, TimeUtils.date2Millis(date));
+            tv_lostTime.setText(TimeUtils.date2String(date, TimeUtils.MY_DATE_TIME_FORMAT));
         });
         datePickerDialog.show();
     }

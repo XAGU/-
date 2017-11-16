@@ -11,13 +11,13 @@ import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
-import com.xiaolian.amigo.util.ScreenUtils;
 import com.xiaolian.amigo.ui.repair.adaptor.RepairEvaluationLabelAdaptor;
 import com.xiaolian.amigo.ui.repair.adaptor.RepairEvaluationStarAdaptor;
 import com.xiaolian.amigo.ui.repair.intf.IRepairEvaluationPresenter;
 import com.xiaolian.amigo.ui.repair.intf.IRepairEvaluationView;
 import com.xiaolian.amigo.ui.widget.GridSpacesItemDecoration;
 import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.util.ScreenUtils;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import org.greenrobot.eventbus.EventBus;

@@ -18,21 +18,17 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.network.model.repair.RepairProblem;
 import com.xiaolian.amigo.ui.repair.adaptor.ImageAddAdapter;
-import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
-import com.xiaolian.amigo.ui.widget.photoview.AlbumItemActivity;
-import com.xiaolian.amigo.util.ScreenUtils;
 import com.xiaolian.amigo.ui.repair.adaptor.RepairProblemAdaptor;
 import com.xiaolian.amigo.ui.repair.intf.IRepairApplyPresenter;
 import com.xiaolian.amigo.ui.repair.intf.IRepairApplyView;
-import com.xiaolian.amigo.ui.user.ListChooseActivity;
 import com.xiaolian.amigo.ui.widget.GridSpacesItemDecoration;
+import com.xiaolian.amigo.ui.widget.photoview.AlbumItemActivity;
 import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.util.ScreenUtils;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -40,7 +36,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
-import retrofit2.http.Body;
 
 /**
  * 报修申请

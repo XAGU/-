@@ -10,7 +10,6 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.enumeration.IntentAction;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
-import com.xiaolian.amigo.ui.base.BaseToolBarActivity;
 import com.xiaolian.amigo.ui.favorite.FavoriteActivity;
 import com.xiaolian.amigo.ui.user.ListChooseActivity;
 import com.xiaolian.amigo.util.Constant;

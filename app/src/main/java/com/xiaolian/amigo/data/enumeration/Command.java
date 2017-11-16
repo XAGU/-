@@ -7,6 +7,7 @@ package com.xiaolian.amigo.data.enumeration;
  */
 public enum Command {
 
+    UNKNOWN(0, "未知指令", ""),
     CONNECT(1, "握手", "a801"),
     PRE_CHECK(2, "预结账", "a808"),
     CHECK_OUT(3, "结账", "a807"),
@@ -33,7 +34,7 @@ public enum Command {
                 return command;
             }
         }
-        return null;
+        return UNKNOWN;
     }
 
     // 根据指令的响应结果查找

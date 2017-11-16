@@ -3,11 +3,7 @@ package com.xiaolian.amigo.ui.login;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.text.SpannableString;
-import android.text.Spanned;
 import android.text.TextUtils;
-import android.text.style.AbsoluteSizeSpan;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
@@ -79,7 +75,7 @@ public class PasswordRetrievalStep2Activity extends LoginBaseActivity implements
     }
 
     @OnTextChanged(R.id.et_userpwd)
-    void inputPassword(CharSequence s, int start, int before, int count) {
+    void inputPassword() {
         toggleLoginBtnStatus();
     }
 
@@ -116,7 +112,9 @@ public class PasswordRetrievalStep2Activity extends LoginBaseActivity implements
         if (et_userpwd != null) {
             et_userpwd.requestFocus();
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(et_userpwd, InputMethodManager.SHOW_IMPLICIT);
+            if (imm != null) {
+                imm.showSoftInput(et_userpwd, InputMethodManager.SHOW_IMPLICIT);
+            }
         }
     }
 }

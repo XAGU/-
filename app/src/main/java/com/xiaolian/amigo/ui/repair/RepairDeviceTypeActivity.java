@@ -3,7 +3,6 @@ package com.xiaolian.amigo.ui.repair;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.ui.user.ListChooseActivity;
-import com.xiaolian.amigo.util.Constant;
 
 import java.util.HashMap;
 import java.util.Map;

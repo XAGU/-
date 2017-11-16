@@ -171,7 +171,9 @@ public class RegisterStep1Fragment extends Fragment {
         if (et_mobile != null) {
             et_mobile.requestFocus();
             InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(et_mobile, InputMethodManager.SHOW_IMPLICIT);
+            if (imm != null) {
+                imm.showSoftInput(et_mobile, InputMethodManager.SHOW_IMPLICIT);
+            }
         }
     }
 }

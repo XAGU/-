@@ -3,18 +3,16 @@ package com.xiaolian.amigo.ui.lostandfound;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.LostAndFound;
-import com.xiaolian.amigo.ui.lostandfound.adapter.MyPublishAdaptor;
-import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
-import com.xiaolian.amigo.util.ScreenUtils;
 import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundAdaptor;
+import com.xiaolian.amigo.ui.lostandfound.adapter.MyPublishAdaptor;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundView;
+import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.util.Constant;
-import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
+import com.xiaolian.amigo.util.ScreenUtils;
 
 import java.util.ArrayList;
 import java.util.List;

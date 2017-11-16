@@ -1,7 +1,6 @@
 package com.xiaolian.amigo.ui.more;
 
 import com.xiaolian.amigo.data.manager.intf.IMainDataManager;
-import com.xiaolian.amigo.data.manager.intf.IMoreDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.CheckVersionUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.CheckVersionUpdateRespDTO;

@@ -2,7 +2,6 @@ package com.xiaolian.amigo.ui.lostandfound;
 
 import android.content.Context;
 import android.net.Uri;
-import com.xiaolian.amigo.util.Log;
 
 import com.alibaba.sdk.android.oss.ClientException;
 import com.alibaba.sdk.android.oss.ServiceException;
@@ -24,17 +23,14 @@ import com.xiaolian.amigo.data.network.model.file.OssModel;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.IPublishLostPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.IPublishLostView;
-import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.util.Log;
 
-import java.io.File;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
 import javax.inject.Inject;
 
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;

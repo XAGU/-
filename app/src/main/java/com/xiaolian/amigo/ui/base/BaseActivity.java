@@ -20,7 +20,6 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
@@ -35,7 +34,6 @@ import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
-import com.xiaolian.amigo.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,7 +43,6 @@ import android.widget.Toast;
 
 import com.aitangba.swipeback.SwipeBackActivity;
 import com.tbruyelle.rxpermissions.RxPermissions;
-import com.umeng.analytics.MobclickAgent;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
@@ -54,6 +51,7 @@ import com.xiaolian.amigo.ui.main.HomeFragment2;
 import com.xiaolian.amigo.ui.main.MainActivity;
 import com.xiaolian.amigo.ui.widget.dialog.ActionSheetDialog;
 import com.xiaolian.amigo.ui.widget.dialog.LoadingDialog;
+import com.xiaolian.amigo.util.Log;
 import com.xiaolian.amigo.util.NetworkUtil;
 import com.yalantis.ucrop.UCrop;
 
@@ -77,7 +75,6 @@ public abstract class BaseActivity extends SwipeBackActivity
 
     private static final int REQUEST_CODE_CAMERA = 0x1103;
     private static final int REQUEST_CODE_PICK = 0x1104;
-    private static final int REQUEST_CODE_ICON = 0x1105;
     private static final int REQUEST_BLE = 0x1106;
     protected static final int REQUEST_LOCATION = 0x1107;
 
@@ -130,15 +127,26 @@ public abstract class BaseActivity extends SwipeBackActivity
         String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xiaolian/";
         File path = new File(filePath);
         if (!path.exists()) {
-            path.mkdirs();
+            boolean isPathSuccess = path.mkdirs();
+            if (!isPathSuccess) {
+                onError("没有SD卡权限");
+                return null;
+            }
         }
         Uri imageUri;
         File outputImage = new File(path, fileName + ".jpg");
         try {
             if (outputImage.exists()) {
-                outputImage.delete();
+                boolean isDeleteSuccess = outputImage.delete();
+                if (!isDeleteSuccess) {
+                    onError(R.string.no_sd_card_premission);
+                    return null;
+                }
             }
-            outputImage.createNewFile();
+            if (!outputImage.createNewFile()) {
+                onError(R.string.no_sd_card_premission);
+                return null;
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -154,14 +162,23 @@ public abstract class BaseActivity extends SwipeBackActivity
         String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xiaolian/";
         File path = new File(filePath);
         if (!path.exists()) {
-            path.mkdirs();
+            if (!path.mkdirs()) {
+                onError(R.string.no_sd_card_premission);
+                return null;
+            }
         }
         File outputImage = new File(path, fileName + ".jpg");
         try {
             if (outputImage.exists()) {
-                outputImage.delete();
+                if (!outputImage.delete()) {
+                    onError(R.string.no_sd_card_premission);
+                    return null;
+                }
             }
-            outputImage.createNewFile();
+            if (!outputImage.createNewFile()) {
+                onError(R.string.no_sd_card_premission);
+                return null;
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -268,12 +285,9 @@ public abstract class BaseActivity extends SwipeBackActivity
                                         }
                                     }));
         }
-        actionSheetDialog.setOnCancalListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                if (emptyImageCallback != null) {
-                    emptyImageCallback.callback();
-                }
+        actionSheetDialog.setOnCancalListener(dialog -> {
+            if (emptyImageCallback != null) {
+                emptyImageCallback.callback();
             }
         });
         actionSheetDialog.show();
@@ -443,7 +457,9 @@ public abstract class BaseActivity extends SwipeBackActivity
         if (view != null) {
             InputMethodManager imm = (InputMethodManager)
                     getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            if (imm != null) {
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
         }
     }
 
@@ -544,8 +560,12 @@ public abstract class BaseActivity extends SwipeBackActivity
 
     private boolean isLocationEnable() {
         LocationManager locationManager = (LocationManager) this.getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
-        boolean networkProvider = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-        boolean gpsProvider = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        boolean networkProvider = false;
+        boolean gpsProvider = false;
+        if (locationManager != null) {
+            networkProvider = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+            gpsProvider = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        }
         return networkProvider || gpsProvider;
     }
 

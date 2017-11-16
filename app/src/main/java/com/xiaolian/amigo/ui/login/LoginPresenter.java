@@ -38,9 +38,9 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
     private ILoginDataManager loginDataManager;
 
     @Inject
-    public LoginPresenter(ILoginDataManager manager) {
+    public LoginPresenter(ILoginDataManager loginDataManager) {
         super();
-        this.loginDataManager = manager;
+        this.loginDataManager = loginDataManager;
     }
 
 
