@@ -2,7 +2,7 @@ package com.xiaolian.amigo.ui.ble;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import com.xiaolian.amigo.util.Log;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;

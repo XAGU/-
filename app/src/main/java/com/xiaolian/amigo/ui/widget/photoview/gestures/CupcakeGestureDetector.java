@@ -1,7 +1,7 @@
 package com.xiaolian.amigo.ui.widget.photoview.gestures;
 
 import android.content.Context;
-import android.util.Log;
+import com.xiaolian.amigo.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.ViewConfiguration;

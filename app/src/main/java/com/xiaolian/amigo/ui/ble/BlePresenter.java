@@ -1,6 +1,6 @@
 package com.xiaolian.amigo.ui.ble;
 
-import android.util.Log;
+import com.xiaolian.amigo.util.Log;
 
 import com.polidea.rxandroidble.scan.ScanResult;
 import com.xiaolian.amigo.data.manager.intf.IBleDataManager;

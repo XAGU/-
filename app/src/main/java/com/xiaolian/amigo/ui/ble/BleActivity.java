@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import com.xiaolian.amigo.util.Log;
 import android.view.View;
 
 import com.polidea.rxandroidble.scan.ScanResult;

@@ -6,7 +6,7 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.support.annotation.FloatRange;
 import android.support.annotation.RequiresApi;
-import android.util.Log;
+import com.xiaolian.amigo.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;

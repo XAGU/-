@@ -1,7 +1,7 @@
 package com.xiaolian.amigo.util;
 
 import android.os.CountDownTimer;
-import android.util.Log;
+import com.xiaolian.amigo.util.Log;
 import android.widget.Button;
 
 /**

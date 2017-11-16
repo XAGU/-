@@ -1,6 +1,6 @@
 package com.xiaolian.amigo.ui.ble.util;
 
-import android.util.Log;
+import com.xiaolian.amigo.util.Log;
 
 public class HexBytesUtils {
 

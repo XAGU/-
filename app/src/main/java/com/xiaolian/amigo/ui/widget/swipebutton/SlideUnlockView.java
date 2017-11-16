@@ -12,7 +12,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
+import com.xiaolian.amigo.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 

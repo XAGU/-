@@ -162,7 +162,9 @@ public class RechargeDetailActivity extends WalletBaseActivity implements IRecha
         });
 
         items.add(new WithdrawRechargeDetailAdapter.Item("充值方式：",
-                PayWay.getPayWay(data.getThirdAccountType()).getDesc(), 1));
+                PayWay.getPayWay(
+                        data.getThirdAccountType() == null ? 0 : data.getThirdAccountType()
+                ).getDesc(), 1));
         items.add(new WithdrawRechargeDetailAdapter.Item("充值账号：",
                 data.getThirdAccountName(), 1));
         items.add(new WithdrawRechargeDetailAdapter.Item("充值时间：",

@@ -2,17 +2,17 @@ package com.xiaolian.amigo.ui.main;
 
 
 import android.Manifest;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
+import com.xiaolian.amigo.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -79,6 +79,7 @@ import static com.xiaolian.amigo.data.enumeration.Device.DISPENSER;
 import static com.xiaolian.amigo.data.enumeration.Device.HEATER;
 
 /**
+ * 首页
  * Created by yik on 2017/9/5.
  */
 
@@ -155,6 +156,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         presenter.onAttach(this);
         // 友盟日志加密
         MobclickAgent.enableEncrypt(true);
+        MobclickAgent.setCatchUncaughtExceptions(true);
+        MobclickAgent.reportError(this, "测试");
 
         btSwitch.setBackgroundResource(R.drawable.profile);
 
@@ -165,13 +168,27 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             homeFragment = new HomeFragment2();
             getSupportFragmentManager().beginTransaction().add(R.id.fm_container, homeFragment).commit();
         } else {
-            HomeFragment2 home = (HomeFragment2) getSupportFragmentManager().findFragmentByTag("home");
-            ProfileFragment2 profile = (ProfileFragment2) getSupportFragmentManager().findFragmentByTag("profile");
-            if (home != null && profile != null) {
+            homeFragment = (HomeFragment2) getSupportFragmentManager().findFragmentByTag("home");
+            profileFragment = (ProfileFragment2) getSupportFragmentManager().findFragmentByTag("profile");
+            if (homeFragment != null && profileFragment != null) {
                 getSupportFragmentManager().beginTransaction()
-                        .show(home)
-                        .hide(profile)
+                        .show(homeFragment)
+                        .hide(profileFragment)
                         .commit();
+            } else {
+                if (homeFragment != null) {
+                    getSupportFragmentManager().beginTransaction()
+                            .remove(homeFragment).commit();
+                }
+                if (profileFragment != null) {
+                    getSupportFragmentManager().beginTransaction()
+                            .remove(profileFragment).commit();
+                }
+                for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+                    getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+                }
+                homeFragment = new HomeFragment2();
+                getSupportFragmentManager().beginTransaction().add(R.id.fm_container, homeFragment).commit();
             }
         }
 
@@ -179,14 +196,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             @Override
             public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
 
-//                if(Math.abs(e1.getRawY() - e2.getRawY())>100){
-//                    //Toast.makeText(getApplicationContext(), "动作不合法", 0).show();
-//                    return true;
-//                }
-//                if(Math.abs(velocityX)<150){
-//                    //Toast.makeText(getApplicationContext(), "移动的太慢", 0).show();
-//                    return true;
-//                }
                 if (hasBanners && current == 0) {
                     Banner banner = (Banner) sl_main.getRootView().findViewById(R.id.banner);
                     if (banner != null) {
@@ -197,18 +206,12 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                     }
                 }
                 if ((e1.getRawX() - e2.getRawX()) > 200) {
-//                    if (current == 1) {
-//                        onSwitch();
-//                    }
                     onSwitch(Orientation.RIGHT_TO_LEFT);
                     return true;
                 }
 
                 if ((e2.getRawX() - e1.getRawX()) > 200) {
                     onSwitch(Orientation.LEFT_TO_RIGHT);
-//                    if (current == 0) {
-//                        onSwitch();
-//                    }
                     return true;//消费掉当前事件  不让当前事件继续向下传递
                 }
                 return super.onFling(e1, e2, velocityX, velocityY);
@@ -268,7 +271,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             showNoticeAmount(0);
             EventBus.getDefault()
                     .post(new HomeFragment2.Event(HomeFragment2.Event.EventType.INIT_BIZ,
-                    null));
+                            null));
             Log.d(TAG, "onResume: not login");
             tv_nickName.setText("登录／注册");
             tv_schoolName.setText("登录以后才能使用哦");
@@ -298,8 +301,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             } else {
                 iv_avatar.setImageResource(R.drawable.ic_picture_error);
             }
-            // 请求待找零订单
-//            presenter.getPrepayOrder();
         }
     }
 
@@ -357,7 +358,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     }
 
     void onSwitch() {
-        ImageView imageView = btSwitch;
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if (current == 0) {
             // 未登录跳转到登录页
@@ -374,35 +374,39 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             if (profileFragment == null) {
                 profileFragment = new ProfileFragment2();
             }
-            if (!profileFragment.isAdded()) {
-                transaction.hide(homeFragment).add(R.id.fm_container, profileFragment, "profile").commit();
-            } else {
-                transaction.hide(homeFragment).show(profileFragment).commit();
-            }
-//            imageView.setBackgroundResource(R.drawable.home);
-            current = 1;
-            // 改为切换不隐藏
-//            rl_notice.setVisibility(View.GONE);
-        } else {
             if (homeFragment == null) {
                 homeFragment = new HomeFragment2();
             }
-            if (!homeFragment.isAdded()) {
-                transaction.hide(profileFragment).add(R.id.fm_container, homeFragment, "home").commit();
-            } else {
-                transaction.hide(profileFragment).show(homeFragment).commit();
+            if (homeFragment.isAdded() && homeFragment.isVisible()) {
+                transaction = transaction.hide(homeFragment);
             }
-//            imageView.setBackgroundResource(R.drawable.profile);
+            if (!profileFragment.isAdded()) {
+                transaction.add(R.id.fm_container, profileFragment, "profile").commit();
+            } else {
+                transaction.show(profileFragment).commit();
+            }
+            current = 1;
+        } else {
+            if (profileFragment == null) {
+                profileFragment = new ProfileFragment2();
+            }
+            if (homeFragment == null) {
+                homeFragment = new HomeFragment2();
+            }
+            if (profileFragment.isAdded() && homeFragment.isVisible()) {
+                transaction = transaction.hide(profileFragment);
+            }
+            if (!homeFragment.isAdded()) {
+                transaction.add(R.id.fm_container, homeFragment, "home").commit();
+            } else {
+                transaction.show(homeFragment).commit();
+            }
             current = 0;
-            // 改为切换不隐藏
-//            rl_notice.setVisibility(View.VISIBLE);
         }
     }
 
     void onSwitch(int current) {
-        if (this.current == current) {
-            return;
-        } else {
+        if (this.current != current) {
             onSwitch();
         }
     }
@@ -650,6 +654,12 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @Override
     public void showDeviceUsageDialog(int type, DeviceCheckRespDTO data) {
         Log.d(TAG, "showDeviceUsageDialog: " + type);
+        if (data == null || data.getBalance() == null
+                || data.getPrepay() == null || data.getMinPrepay() == null
+                || data.getTimeValid() == null) {
+            onError("服务器飞走啦，努力修复中");
+            return;
+        }
         if (orderPreInfo == null) {
             orderPreInfo = new OrderPreInfoDTO();
         }
@@ -668,7 +678,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             } else {
                 gotoDispenser(data.getUnsettledMacAddress(), data.getLocation(), data.getResidenceId(),
                         data.getFavor(), data.getUsefor(), Device.DISPENSER.getType(), true);
-//                gotoDevice(DISPENSER, data.getUnsettledMacAddress(), data.getLocation(), data.getResidenceId(), true);
 
             }
         } else {
@@ -740,7 +749,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         openLocationDialog.setTip("设备用水需要开启位置服务");
         openLocationDialog.setSubTipVisible(false);
         openLocationDialog.setOnOkClickListener(dialog1 -> {
-            // startActivity(new Intent(MainActivity.this, EditDormitoryActivity.class));
             Intent locationIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
             this.startActivityForResult(locationIntent, REQUEST_LOCATION);
         });
@@ -764,9 +772,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         availabilityDialog.setOkText("前往设置");
         availabilityDialog.setTip("你的默认宿舍无设备");
         availabilityDialog.setSubTipVisible(false);
-        availabilityDialog.setOnOkClickListener(dialog1 -> {
-            startActivity(new Intent(MainActivity.this, EditDormitoryActivity.class));
-        });
+        availabilityDialog.setOnOkClickListener(dialog1 ->
+                startActivity(new Intent(MainActivity.this, EditDormitoryActivity.class)));
         availabilityDialog.show();
     }
 
@@ -810,26 +817,18 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             return;
         }
         prepayDialog.setDeviceTypeAndPrepaySize(type, prepaySize);
-        prepayDialog.setOnOkClickListener(new PrepayDialog.OnOkClickListener() {
-            @Override
-            public void onOkClick(Dialog dialog) {
-                startActivity(new Intent(MainActivity.this, PrepayActivity.class));
-            }
-        });
-        prepayDialog.setOnCancelClickListener(new PrepayDialog.OnCancelClickListener() {
-            @Override
-            public void onCancelClick(Dialog dialog) {
-                if (data.getTimeValid()) {
-                    // 1 表示热水澡 2 表示饮水机
-                    if (type == 1) {
-                        presenter.gotoHeaterDevice(data.getDefaultMacAddress(), data.getLocation(),
-                                data.getResidenceId());
-                    } else {
-                        gotoDevice(ChooseDispenserActivity.class);
-                    }
+        prepayDialog.setOnOkClickListener(dialog -> startActivity(new Intent(MainActivity.this, PrepayActivity.class)));
+        prepayDialog.setOnCancelClickListener(dialog -> {
+            if (data.getTimeValid()) {
+                // 1 表示热水澡 2 表示饮水机
+                if (type == 1) {
+                    presenter.gotoHeaterDevice(data.getDefaultMacAddress(), data.getLocation(),
+                            data.getResidenceId());
                 } else {
-                    showTimeValidDialog(type, data);
+                    gotoDevice(ChooseDispenserActivity.class);
                 }
+            } else {
+                showTimeValidDialog(type, data);
             }
         });
         prepayDialog.show();
@@ -869,7 +868,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
      */
     public void gotoHeater() {
         Log.d(TAG, "gotoHeater");
-//        setBleCallback(() -> checkTimeValid(HEATER, HeaterActivity.class));
         setBleCallback(() -> checkDeviceUsage(HEATER));
         getBlePermission();
     }
@@ -879,7 +877,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
      */
     public void gotoDispenser() {
         Log.d(TAG, "gotoDispenser");
-//        setBleCallback(() -> checkTimeValid(DISPENSER, DispenserActivity.class));
         setBleCallback(() -> checkDeviceUsage(DISPENSER));
         getBlePermission();
     }
@@ -900,7 +897,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @Override
     public void onBackPressed() {
         //返回桌面
-        Intent intent= new Intent(Intent.ACTION_MAIN);
+        Intent intent = new Intent(Intent.ACTION_MAIN);
         //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); //如果是服务里调用，必须加入new task标识
         intent.addCategory(Intent.CATEGORY_HOME);
         startActivity(intent);
@@ -963,8 +960,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             GOTO_LOST_AND_FOUND(3),
             START_ACTIVITY(4),
             REFRESH_NOTICE(5),
-            LOGOUT(6)
-            ;
+            LOGOUT(6);
             private int type;
 
             EventType(int type) {

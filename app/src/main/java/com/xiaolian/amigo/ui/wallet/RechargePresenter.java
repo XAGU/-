@@ -1,7 +1,7 @@
 package com.xiaolian.amigo.ui.wallet;
 
 import android.text.TextUtils;
-import android.util.Log;
+import com.xiaolian.amigo.util.Log;
 
 import com.xiaolian.amigo.data.enumeration.AlipayPayOrderCheckResult;
 import com.xiaolian.amigo.data.manager.WalletDataManager;

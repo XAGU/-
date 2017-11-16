@@ -3,7 +3,7 @@ package com.xiaolian.amigo.ui.device;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
+import com.xiaolian.amigo.util.Log;
 
 import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.data.enumeration.TradeStep;

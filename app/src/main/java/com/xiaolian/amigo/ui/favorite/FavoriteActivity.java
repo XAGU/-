@@ -4,7 +4,7 @@ package com.xiaolian.amigo.ui.favorite;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import com.xiaolian.amigo.util.Log;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;

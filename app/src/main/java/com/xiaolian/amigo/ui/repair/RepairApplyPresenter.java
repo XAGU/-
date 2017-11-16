@@ -18,7 +18,6 @@ package com.xiaolian.amigo.ui.repair;
 
 import android.content.Context;
 import android.net.Uri;
-import android.util.Log;
 
 import com.alibaba.sdk.android.oss.ClientException;
 import com.alibaba.sdk.android.oss.ServiceException;
@@ -43,16 +42,14 @@ import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.repair.intf.IRepairApplyPresenter;
 import com.xiaolian.amigo.ui.repair.intf.IRepairApplyView;
 import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.util.Log;
 
-import java.io.File;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
 import javax.inject.Inject;
 
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -225,6 +222,11 @@ public class RepairApplyPresenter<V extends IRepairApplyView> extends BasePresen
             public void onError(Throwable e) {
                 super.onError(e);
                 notifyOssResult();
+                // ignore IllegalStateException
+                if (e instanceof IllegalStateException) {
+                    return;
+                }
+                getMvpView().post(() -> getMvpView().onError("上传图片失败"));
             }
         }, Schedulers.io());
     }
@@ -257,6 +259,11 @@ public class RepairApplyPresenter<V extends IRepairApplyView> extends BasePresen
             public void onError(Throwable e) {
                 super.onError(e);
                 notifyOssResult();
+                // ignore IllegalStateException
+                if (e instanceof IllegalStateException) {
+                    return;
+                }
+                getMvpView().post(() -> getMvpView().onError("上传图片失败"));
             }
         }, Schedulers.io());
         waitOssResult();

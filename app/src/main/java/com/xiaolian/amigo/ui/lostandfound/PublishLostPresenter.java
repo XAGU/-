@@ -2,7 +2,7 @@ package com.xiaolian.amigo.ui.lostandfound;
 
 import android.content.Context;
 import android.net.Uri;
-import android.util.Log;
+import com.xiaolian.amigo.util.Log;
 
 import com.alibaba.sdk.android.oss.ClientException;
 import com.alibaba.sdk.android.oss.ServiceException;
@@ -195,6 +195,11 @@ public class PublishLostPresenter<V extends IPublishLostView> extends BasePresen
             public void onError(Throwable e) {
                 super.onError(e);
                 notifyOssResult();
+                // ignore IllegalStateException
+                if (e instanceof IllegalStateException) {
+                    return;
+                }
+                getMvpView().post(() -> getMvpView().onError("上传图片失败"));
             }
         }, Schedulers.io());
     }
@@ -227,6 +232,11 @@ public class PublishLostPresenter<V extends IPublishLostView> extends BasePresen
             public void onError(Throwable e) {
                 super.onError(e);
                 notifyOssResult();
+                // ignore IllegalStateException
+                if (e instanceof IllegalStateException) {
+                    return;
+                }
+                getMvpView().post(() -> getMvpView().onError("上传图片失败"));
             }
         }, Schedulers.io());
         waitOssResult();

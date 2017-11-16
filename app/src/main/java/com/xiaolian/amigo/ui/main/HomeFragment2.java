@@ -7,7 +7,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
+import com.xiaolian.amigo.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -53,8 +53,8 @@ public class HomeFragment2 extends Fragment {
 
     List<HomeAdaptor.ItemWrapper> items = new ArrayList<HomeAdaptor.ItemWrapper>() {
         {
-            add(shower);
-            add(water);
+//            add(shower);
+//            add(water);
             add(lost);
         }
     };
@@ -150,6 +150,7 @@ public class HomeFragment2 extends Fragment {
 
     private void notifyAdaptor() {
         if (recyclerView.getAdapter() == null) {
+            resetItem();
             recyclerView.setAdapter(adaptor);
             recyclerView.setVisibility(View.VISIBLE);
             LayoutAnimationController animation = AnimationUtils
@@ -158,7 +159,21 @@ public class HomeFragment2 extends Fragment {
             anim.setDuration(500);
             recyclerView.startAnimation(animation.getAnimation());
         } else {
+            resetItem();
             adaptor.notifyDataSetChanged();
+        }
+    }
+
+    private void resetItem() {
+        items.clear();
+        if (shower.isActive()) {
+            items.add(shower);
+        }
+        if (water.isActive()) {
+            items.add(water);
+        }
+        if (lost.isActive()) {
+            items.add(lost);
         }
     }
 
@@ -169,6 +184,11 @@ public class HomeFragment2 extends Fragment {
         boolean needNotify = false;
         shower.setActive(false);
         water.setActive(false);
+        /// business为空则不显示shower和water
+        if (businesses == null || businesses.isEmpty()) {
+            notifyAdaptor();
+            return;
+        }
         for (BriefSchoolBusiness business : businesses) {
             if (business.getUsing()) {
                 currentUsingAmount += 1;

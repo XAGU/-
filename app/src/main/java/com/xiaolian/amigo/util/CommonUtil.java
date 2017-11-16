@@ -171,4 +171,8 @@ public final class CommonUtil {
             }, 200);
         }
     }
+
+    public static void crash() {
+        throw new NullPointerException();
+    }
 }

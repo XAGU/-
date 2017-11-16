@@ -8,7 +8,7 @@ import android.os.Handler;
 import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import android.util.Log;
+import com.xiaolian.amigo.util.Log;
 
 import com.polidea.rxandroidble.RxBleConnection;
 import com.polidea.rxandroidble.scan.ScanResult;

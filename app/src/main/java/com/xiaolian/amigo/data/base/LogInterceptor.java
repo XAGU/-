@@ -1,7 +1,7 @@
 package com.xiaolian.amigo.data.base;
 
 import android.text.TextUtils;
-import android.util.Log;
+import com.xiaolian.amigo.util.Log;
 
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 

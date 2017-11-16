@@ -176,7 +176,10 @@ public class WithdrawalDetailActivity extends WalletBaseActivity implements IWit
 
         }
         items.add(new WithdrawRechargeDetailAdapter.Item(getString(R.string.withdraw_way_colon),
-                PayWay.getPayWay(data.getThirdAccountType()).getDesc(), 1));
+                PayWay.getPayWay(
+                        data.getThirdAccountType() == null ?
+                                0 : data.getThirdAccountType()
+                ).getDesc(), 1));
         items.add(new WithdrawRechargeDetailAdapter.Item(getString(R.string.withdraw_account_colon),
                 data.getThirdAccountName(), 1));
         items.add(new WithdrawRechargeDetailAdapter.Item(getString(R.string.withdraw_time_colon),

@@ -3,7 +3,7 @@ package com.xiaolian.amigo.util;
 import android.app.Activity;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
+import com.xiaolian.amigo.util.Log;
 
 import com.alipay.sdk.app.PayTask;
 import com.xiaolian.amigo.data.enumeration.PayWay;

@@ -5,13 +5,14 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import com.xiaolian.amigo.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 
+import com.umeng.analytics.MobclickAgent;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.dto.response.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.ui.bonus.BonusActivity;
@@ -22,6 +23,7 @@ import com.xiaolian.amigo.ui.order.OrderActivity;
 import com.xiaolian.amigo.ui.repair.RepairNavActivity;
 import com.xiaolian.amigo.ui.user.EditProfileActivity;
 import com.xiaolian.amigo.ui.wallet.WalletActivity;
+import com.xiaolian.amigo.util.CommonUtil;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import org.greenrobot.eventbus.EventBus;
@@ -97,12 +99,19 @@ public class ProfileFragment2 extends Fragment {
         LayoutAnimationController animation = AnimationUtils
                 .loadLayoutAnimation(getContext(), R.anim.layout_animation_profile_slide_left_to_right);
         recyclerView.setLayoutAnimation(animation);
+        recyclerView.setAdapter(adaptor);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(PersonalExtraInfoDTO data) {
-        wallet.setBalance(df.format(data.getBalance()));
-        bonus.setBonusAmount(data.getBonusAmount());
+        try {
+            wallet.setBalance(df.format(data.getBalance()));
+            bonus.setBonusAmount(data.getBonusAmount());
+        } catch (Exception e) {
+            MobclickAgent.reportError(getContext(), "customReport tag: " + TAG + e.getMessage());
+            wallet.setBalance(String.valueOf(data.getBalance()));
+            bonus.setBonusAmount(data.getBonusAmount());
+        }
         if (data.isNeedShowDot()) {
             repair.setShowDot(true);
         } else {

@@ -2,14 +2,11 @@ package com.xiaolian.amigo.ui.main.adaptor;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.RelativeLayout;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.ui.base.aspect.SingleClick;
 import com.xiaolian.amigo.ui.widget.DotFlashView;
 import com.zhy.adapter.recyclerview.base.ItemViewDelegate;
 import com.zhy.adapter.recyclerview.base.ViewHolder;

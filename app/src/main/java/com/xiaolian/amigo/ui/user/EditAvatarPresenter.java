@@ -2,7 +2,6 @@ package com.xiaolian.amigo.ui.user;
 
 import android.content.Context;
 import android.net.Uri;
-import android.util.Log;
 
 import com.alibaba.sdk.android.oss.ClientException;
 import com.alibaba.sdk.android.oss.ServiceException;
@@ -26,7 +25,7 @@ import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.user.adaptor.EditAvatarAdaptor;
 import com.xiaolian.amigo.ui.user.intf.IEditAvatarPresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditAvatarVIew;
-import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -189,6 +188,11 @@ public class EditAvatarPresenter<V extends IEditAvatarVIew> extends BasePresente
             public void onError(Throwable e) {
                 super.onError(e);
                 notifyOssResult();
+                // ignore IllegalStateException
+                if (e instanceof IllegalStateException) {
+                    return;
+                }
+                getMvpView().post(() -> getMvpView().onError("上传图片失败"));
             }
         }, Schedulers.io());
     }
@@ -221,6 +225,11 @@ public class EditAvatarPresenter<V extends IEditAvatarVIew> extends BasePresente
             public void onError(Throwable e) {
                 super.onError(e);
                 notifyOssResult();
+                // ignore IllegalStateException
+                if (e instanceof IllegalStateException) {
+                    return;
+                }
+                getMvpView().post(() -> getMvpView().onError("上传图片失败"));
             }
         }, Schedulers.io());
         waitOssResult();

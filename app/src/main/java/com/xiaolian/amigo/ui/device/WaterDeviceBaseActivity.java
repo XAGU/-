@@ -11,7 +11,7 @@ import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
-import android.util.Log;
+import com.xiaolian.amigo.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -253,7 +253,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     private String bonusDescription;
     private Double bonusAmount;
     private Double prepay;
-    private Double minPrepay;
+    private Double minPrepay = 0.01;
     private Double balance;
     private Double prepayAmount;
 
@@ -314,8 +314,17 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                     bonusId = orderPreInfo.getBonus().getId();
                     bonusDescription = orderPreInfo.getBonus().getDescription();
                     bonusAmount = orderPreInfo.getBonus().getAmount();
+                    if (bonusAmount == null || bonusAmount < 0) {
+                        bonusAmount = 0.0;
+                    }
                 }
                 prepay = orderPreInfo.getPrepay();
+                if (balance == null || balance < 0) {
+                    balance = 0.0;
+                }
+                if (minPrepay == null || minPrepay < 0) {
+                    minPrepay = 0.0;
+                }
             }
         }
     }
@@ -353,12 +362,9 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     }
 
     private void initSlideView() {
-        slideView.setOnUnLockListener(new SlideUnlockView.OnUnLockListener() {
-            @Override
-            public void setUnLocked(boolean lock) {
-                if (lock) {
-                    onSlideUnlock();
-                }
+        slideView.setOnUnLockListener(lock -> {
+            if (lock) {
+                onSlideUnlock();
             }
         });
     }
@@ -732,6 +738,13 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             startActivityForResult(new Intent(this, RechargeActivity.class),
                     REQUEST_CODE_RECHARGE);
         } else {
+            if (prepayAmount == null || prepayAmount < 0) {
+                prepayAmount = 0.0;
+            }
+            if (prepayAmount <= 0 && bonusId == null) {
+                onError("预付金额不能为0");
+                return;
+            }
             userWater = true;
             // 点击支付操作时蓝牙必须为开启状态
             setBleCallback(() -> {
@@ -950,6 +963,10 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
     @Override
     public void onError(TradeError tradeError) {
+        // 如果是在结算页面，则充值slideView
+        if (presenter.getStep() == TradeStep.SETTLE && slideView != null) {
+            slideView.reset();
+        }
 
         // 断开物理连接定时器
         presenter.cancelTimer();

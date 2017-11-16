@@ -3,7 +3,7 @@ package com.xiaolian.amigo.ui.main.adaptor;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
-import android.util.Log;
+import com.xiaolian.amigo.util.Log;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;

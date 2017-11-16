@@ -1,7 +1,7 @@
 package com.xiaolian.amigo.ui.user;
 
 import android.text.TextUtils;
-import android.util.Log;
+import com.xiaolian.amigo.util.Log;
 import android.view.View;
 import android.widget.Button;
 

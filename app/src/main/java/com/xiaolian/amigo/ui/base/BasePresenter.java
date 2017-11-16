@@ -18,7 +18,7 @@ package com.xiaolian.amigo.ui.base;
 
 import android.os.Handler;
 import android.os.HandlerThread;
-import android.util.Log;
+import com.xiaolian.amigo.util.Log;
 
 import com.polidea.rxandroidble.exceptions.BleDisconnectedException;
 import com.xiaolian.amigo.R;

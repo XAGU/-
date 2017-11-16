@@ -2,7 +2,7 @@ package com.xiaolian.amigo.ui.widget.recyclerview;
 
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
+import com.xiaolian.amigo.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 

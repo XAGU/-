@@ -1,6 +1,6 @@
 package com.xiaolian.amigo.util.ble;
 
-import android.util.Log;
+import com.xiaolian.amigo.util.Log;
 
 import java.math.BigDecimal;
 import java.util.Random;

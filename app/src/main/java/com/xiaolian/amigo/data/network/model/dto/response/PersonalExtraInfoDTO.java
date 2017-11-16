@@ -17,7 +17,7 @@ public class PersonalExtraInfoDTO {
     private List<BannerDTO> banners;
     private Integer bonusAmount;
     private Integer notifyAmount;
-    private Integer prepay;
+    private Double prepay;
     private Long repair;
     private Long lastRepairTime;
     private Notify urgentNotify;

@@ -4,7 +4,7 @@ import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
-import android.util.Log;
+import com.xiaolian.amigo.util.Log;
 
 import com.polidea.rxandroidble.RxBleConnection;
 import com.trello.rxlifecycle.LifecycleTransformer;
