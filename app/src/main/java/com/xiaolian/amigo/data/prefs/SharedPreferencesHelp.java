@@ -44,6 +44,8 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     private static final String PREF_GUIDE_MAIN = "PREF_GUIDE_MAIN";
     private static final String PREF_GUIDE_HEATER = "PREF_GUIDE_HEATER";
     private static final String PREF_GUIDE_DISPENSER = "PREF_GUIDE_DISPENSER";
+    /************* 记住手机号 ******************/
+    private static final String PREF_REMEMBER_MOBILE = "PREF_REMEMBER_MOBILE";
 
     private String tokenHolder;
     private String deviceTokenHolder;
@@ -275,6 +277,16 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     @Override
     public Long getLastRepairTime() {
         return mSharedPreferences.getLong(PREF_LAST_VIEW_REPAIR, 0);
+    }
+
+    @Override
+    public void setRememberMobile(String mobile) {
+        mGuideSharedPreferences.edit().putString(PREF_REMEMBER_MOBILE, mobile).apply();
+    }
+
+    @Override
+    public String getRememberMobile() {
+        return mGuideSharedPreferences.getString(PREF_REMEMBER_MOBILE, "");
     }
 
     @Override

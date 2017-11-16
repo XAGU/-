@@ -85,4 +85,8 @@ public interface ISharedPreferencesHelp {
 
     void setLastRepairTime(Long time);
     Long getLastRepairTime();
+
+    void setRememberMobile(String mobile);
+
+    String getRememberMobile();
 }

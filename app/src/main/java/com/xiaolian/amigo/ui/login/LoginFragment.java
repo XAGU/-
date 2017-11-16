@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -70,6 +71,12 @@ public class LoginFragment extends Fragment {
         TextChange textChange = new TextChange();
         et_mobile.addTextChangedListener(textChange);
         et_userpwd.addTextChangedListener(textChange);
+        if (getActivity() instanceof LoginActivity) {
+            String mobile = ((LoginActivity)getActivity()).getMobile();
+            if (!TextUtils.isEmpty(mobile)) {
+                et_mobile.setText(mobile);
+            }
+        }
     }
 
 
@@ -96,10 +103,16 @@ public class LoginFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (et_mobile != null) {
-            et_mobile.requestFocus();
-            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(et_mobile, InputMethodManager.SHOW_IMPLICIT);
+        if (et_mobile != null && et_userpwd != null) {
+            if (!TextUtils.isEmpty(et_mobile.getText())) {
+                et_userpwd.requestFocus();
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(et_userpwd, InputMethodManager.SHOW_IMPLICIT);
+            } else {
+                et_mobile.requestFocus();
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(et_mobile, InputMethodManager.SHOW_IMPLICIT);
+            }
         }
     }
 }

@@ -21,7 +21,9 @@ import com.aitangba.swipeback.ActivityLifecycleHelper;
 import com.xiaolian.amigo.di.componet.ApplicationComponent;
 import com.xiaolian.amigo.di.componet.DaggerApplicationComponent;
 import com.xiaolian.amigo.di.module.ApplicationModule;
+import com.xiaolian.amigo.ui.main.SplashActivity;
 import com.xiaolian.amigo.util.Log;
+import com.xiaolian.amigo.util.crash.CrashHandler;
 
 
 public class MvpApp extends Application {
@@ -34,6 +36,8 @@ public class MvpApp extends Application {
         super.onCreate();
         Log.setContext(this.getApplicationContext());
         registerActivityLifecycleCallbacks(ActivityLifecycleHelper.build());
+
+        CrashHandler.getInstance().init(this, BuildConfig.DEBUG, true, 0, SplashActivity.class);
 
         mApplicationComponent = DaggerApplicationComponent.builder()
                 .applicationModule(new ApplicationModule(this)).build();

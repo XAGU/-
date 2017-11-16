@@ -35,12 +35,12 @@ import javax.inject.Inject;
 public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
         implements ILoginPresenter<V> {
 
-    private ILoginDataManager manager;
+    private ILoginDataManager loginDataManager;
 
     @Inject
     public LoginPresenter(ILoginDataManager manager) {
         super();
-        this.manager = manager;
+        this.loginDataManager = manager;
     }
 
 
@@ -49,13 +49,14 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
         LoginReqDTO dto = new LoginReqDTO();
         dto.setMobile(mobile);
         dto.setPassword(password);
-        addObserver(manager.login(dto), new NetworkObserver<ApiResult<LoginRespDTO>>() {
+        addObserver(loginDataManager.login(dto), new NetworkObserver<ApiResult<LoginRespDTO>>() {
 
             @Override
             public void onReady(ApiResult<LoginRespDTO> result) {
                 if (null == result.getError()) {
-                    manager.setUserInfo(result.getData().getUser());
-                    manager.setToken(result.getData().getToken());
+                    loginDataManager.setUserInfo(result.getData().getUser());
+                    loginDataManager.setToken(result.getData().getToken());
+                    loginDataManager.setRememberMobile(mobile);
                     getMvpView().onSuccess(R.string.login_success);
                     getMvpView().gotoMainView();
                 } else {
@@ -72,14 +73,15 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
         dto.setMobile(mobile);
         dto.setPassword(password);
         dto.setSchoolId(schoolId);
-        addObserver(manager.register(dto), new NetworkObserver<ApiResult<LoginRespDTO>>() {
+        addObserver(loginDataManager.register(dto), new NetworkObserver<ApiResult<LoginRespDTO>>() {
 
             @Override
             public void onReady(ApiResult<LoginRespDTO> result) {
                 if (null == result.getError()) {
-                    manager.setUserInfo(result.getData().getUser());
-                    manager.setToken(result.getData().getToken());
+                    loginDataManager.setUserInfo(result.getData().getUser());
+                    loginDataManager.setToken(result.getData().getToken());
                     getMvpView().onSuccess(R.string.register_success);
+                    loginDataManager.setRememberMobile(mobile);
                     getMvpView().gotoMainView();
 //                    getMvpView().gotoLoginView();
                 } else {
@@ -93,7 +95,7 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
     public void getVerification(String mobile) {
         VerificationCodeGetReqDTO dto = new VerificationCodeGetReqDTO();
         dto.setMobile(mobile);
-        addObserver(manager.getVerification(dto), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
+        addObserver(loginDataManager.getVerification(dto), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
 
             @Override
             public void onReady(ApiResult<BooleanRespDTO> result) {
@@ -116,7 +118,7 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
         VerificationCodeCheckReqDTO dto = new VerificationCodeCheckReqDTO();
         dto.setMobile(mobile);
         dto.setCode(code);
-        addObserver(manager.verificationCheck(dto), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
+        addObserver(loginDataManager.verificationCheck(dto), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
 
             @Override
             public void onReady(ApiResult<BooleanRespDTO> result) {
@@ -139,7 +141,7 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
         dto.setCode(code);
         dto.setMobile(mobile);
         dto.setPassword(password);
-        addObserver(manager.passwordReset(dto), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
+        addObserver(loginDataManager.passwordReset(dto), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
 
             @Override
             public void onReady(ApiResult<BooleanRespDTO> result) {
@@ -159,6 +161,11 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
 
     @Override
     public void logout() {
-        manager.logout();
+        loginDataManager.logout();
+    }
+
+    @Override
+    public String getMobile() {
+        return loginDataManager.getRememberMobile();
     }
 }

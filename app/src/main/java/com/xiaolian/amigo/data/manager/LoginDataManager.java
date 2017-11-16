@@ -92,4 +92,14 @@ public class LoginDataManager implements ILoginDataManager {
     public void logout() {
         sharedPreferencesHelp.logout();
     }
+
+    @Override
+    public String getRememberMobile() {
+        return sharedPreferencesHelp.getRememberMobile();
+    }
+
+    @Override
+    public void setRememberMobile(String mobile) {
+        sharedPreferencesHelp.setRememberMobile(mobile);
+    }
 }

@@ -17,4 +17,8 @@ public interface ILoginDataManager extends ILoginApi {
     void setUserInfo(User user);
 
     void logout();
+
+    String getRememberMobile();
+
+    void setRememberMobile(String mobile);
 }

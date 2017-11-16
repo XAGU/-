@@ -195,4 +195,8 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
         presenter.onLoginClick(mobile, password);
     }
 
+    public String getMobile() {
+        return presenter.getMobile();
+    }
+
 }
