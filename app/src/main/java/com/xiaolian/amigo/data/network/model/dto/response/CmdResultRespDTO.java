@@ -1,8 +1,6 @@
 package com.xiaolian.amigo.data.network.model.dto.response;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  * Created by caidong on 2017/10/9.
@@ -24,4 +22,7 @@ public class CmdResultRespDTO {
 
     // 原指令类型
     Integer srcCommandType;
+
+    String macAddress;
+    String deviceToken;
 }

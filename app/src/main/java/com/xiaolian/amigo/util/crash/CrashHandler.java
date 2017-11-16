@@ -266,7 +266,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
                 if (!dir.exists()) dir.createNewFile();
 
                 FileOutputStream fos = new FileOutputStream(path + fileName);
-                fos.write(sb.toString().getBytes());
+                fos.write(sb.toString().getBytes("UTF-8"));
                 // 答出log日志到控制台
                 LogcatCrashInfo(path + fileName);
                 fos.close();

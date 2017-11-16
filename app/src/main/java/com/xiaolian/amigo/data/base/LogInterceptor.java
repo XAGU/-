@@ -29,7 +29,7 @@ public class LogInterceptor implements Interceptor {
     private Request lastRequest;
     private final static long NETWORK_INTERVAL = 500;
 
-    ISharedPreferencesHelp sharedPreferencesHelp;
+    private ISharedPreferencesHelp sharedPreferencesHelp;
 
     public LogInterceptor(ISharedPreferencesHelp sharedPreferencesHelp) {
         this.sharedPreferencesHelp = sharedPreferencesHelp;

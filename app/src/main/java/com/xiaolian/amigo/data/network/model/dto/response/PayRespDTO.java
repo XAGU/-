@@ -16,4 +16,7 @@ public class PayRespDTO {
 
     // 开阀指令
     private String openValveCommand;
+
+    private String macAddress;
+    private String deviceToken;
 }

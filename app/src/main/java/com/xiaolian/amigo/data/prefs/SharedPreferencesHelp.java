@@ -81,7 +81,7 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
 
     @Override
     public void setCurrentDeviceToken(String deviceToken) {
-        mSharedPreferences.edit().putString(PREF_CURRENT_DEVICE_TOKEN, deviceToken).apply();
+        mSharedPreferences.edit().putString(PREF_CURRENT_DEVICE_TOKEN, deviceToken).commit();
     }
 
     @Override
@@ -91,7 +91,7 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
 
     @Override
     public void setDeviceToken(String macAddress, String deviceToken) {
-        mSharedPreferences.edit().putString(PREF_DEVICE_TOKEN_PREFIX + macAddress, deviceToken).apply();
+        mSharedPreferences.edit().putString(PREF_DEVICE_TOKEN_PREFIX + macAddress, deviceToken).commit();
     }
 
     @Override

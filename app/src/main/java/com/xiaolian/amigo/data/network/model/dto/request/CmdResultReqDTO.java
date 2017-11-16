@@ -1,9 +1,6 @@
 package com.xiaolian.amigo.data.network.model.dto.request;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 /**
  * 对应"上一次"指令下发至设备的响应结果

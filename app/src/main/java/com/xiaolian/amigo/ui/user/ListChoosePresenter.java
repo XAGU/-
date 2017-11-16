@@ -24,6 +24,7 @@ import com.xiaolian.amigo.ui.main.MainActivity;
 import com.xiaolian.amigo.ui.user.adaptor.ListChooseAdaptor;
 import com.xiaolian.amigo.ui.user.intf.IListChoosePresenter;
 import com.xiaolian.amigo.ui.user.intf.IListChooseView;
+import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 
 import org.greenrobot.eventbus.EventBus;
@@ -65,7 +66,7 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
                         ArrayList<ListChooseAdaptor.Item> schoolWapper = new ArrayList<>();
                         for (School school : result.getData().getSchools()) {
                             schoolWapper.add(new ListChooseAdaptor.Item(school,
-                                    school.getId() == manager.getUser().getSchoolId()));
+                                    CommonUtil.equals(school.getId(), manager.getUser().getSchoolId())));
                         }
                         getMvpView().addMore(schoolWapper);
                     }

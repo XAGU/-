@@ -650,6 +650,12 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             @Override
             public void onReady(ApiResult<ConnectCommandRespDTO> result) {
                 if (null == result.getError()) {
+                    // 存储deviceToken
+                    if (result.getData() != null && result.getData().getMacAddress() != null
+                            && result.getData().getDeviceToken() != null) {
+                        sharedPreferencesHelp.setDeviceToken(result.getData().getMacAddress(), result.getData().getDeviceToken());
+                        Log.i(TAG, "收到deviceToken：" + result.getData().getDeviceToken());
+                    }
                     synchronized (connectCmdLock) {
                         connectCmd = result.getData().getConnectCmd();
                         Log.i(TAG, "获取握手指令成功。command:" + connectCmd);
@@ -695,6 +701,12 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         addObserver(tradeDataManager.processCmdResult(reqDTO), new NetworkObserver<ApiResult<CmdResultRespDTO>>(false) {
             @Override
             public void onReady(ApiResult<CmdResultRespDTO> result) {
+                // 存储deviceToken
+                if (result.getData() != null && result.getData().getMacAddress() != null
+                        && result.getData().getDeviceToken() != null) {
+                    sharedPreferencesHelp.setDeviceToken(result.getData().getMacAddress(), result.getData().getDeviceToken());
+                    Log.i(TAG, "收到deviceToken：" + result.getData().getDeviceToken());
+                }
                 Log.i(TAG, "通知主线程更新数据。" + result.getData());
                 RxBus.getDefault().post(result);
             }
@@ -707,6 +719,12 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         if (null == result.getError()) {
             // 下一步执行指令
             String nextCommand = result.getData().getNextCommand();
+            if (result.getData().getSrcCommandType() == null) {
+                Log.wtf(TAG, "服务器未返回ScrCommandType");
+                closeBleConnecttion();
+                getMvpView().onError(TradeError.SYSTEM_ERROR);
+                return;
+            }
             switch (Command.getCommand(result.getData().getSrcCommandType())) {
                 case CONNECT:
                     // 如果用户本人在三小时之内再次连接该设备，需要进入第二步账单结算页面
@@ -872,6 +890,12 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             @Override
             public void onReady(ApiResult<PayRespDTO> result) {
                 if (null == result.getError()) {
+                    // 存储deviceToken
+                    if (result.getData() != null && result.getData().getMacAddress() != null
+                            && result.getData().getDeviceToken() != null) {
+                        sharedPreferencesHelp.setDeviceToken(result.getData().getMacAddress(), result.getData().getDeviceToken());
+                        Log.i(TAG, "收到deviceToken：" + result.getData().getDeviceToken());
+                    }
                     // 初始化订单id
                     orderId = result.getData().getOrderId();
 

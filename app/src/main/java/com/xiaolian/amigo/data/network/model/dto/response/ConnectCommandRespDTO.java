@@ -10,4 +10,6 @@ public class ConnectCommandRespDTO {
 
     // 连接设备指令内容
     private String connectCmd;
+    String macAddress;
+    String deviceToken;
 }

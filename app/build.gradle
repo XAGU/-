@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.archinamon.aspectj'
+apply from: '../buildsystem/quality.gradle'
 
 // 加载 local.properties 资源
 Properties properties = new Properties()
