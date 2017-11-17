@@ -781,6 +781,10 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
                             // connectCmd = sharedPreferencesHelp.getConnectCmd(currentMacAddress);
                             closeCmd = sharedPreferencesHelp.getCloseCmd(currentMacAddress);
+                            if (TextUtils.isEmpty(closeCmd)) {
+                                Log.e(TAG, "用户本人在三小时之内再次连接该设备, 但是关阀指令丢失，直接使用预结账指令");
+                                onWrite(reopenNextCmd);
+                            }
                         } else {
                             Log.i(TAG, "未结算订单已经超出指定时间范围，继续下发预结账指令，走正常流程");
                             precheckCmd = nextCommand;
@@ -870,7 +874,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 if (reconnect) {
                     // 显示重连成功
                     getMvpView().onReconnectSuccess();
-                    reconnectNextCmd = closeCmd;
+                    if (checkCloseCmd()) {
+                        reconnectNextCmd = closeCmd;
+                    }
                 } else { // 首次连接
                     if (null != orderStatus && null != orderStatus.getStatus() && OrderStatus.getOrderStatus(orderStatus.getStatus()) == OrderStatus.USING) { // 用户主动上来结账
                         //if (orderStatus.isExistsUnsettledOrder() || !homePageJump) { // 未结账订单在指定时间范围内
@@ -926,6 +932,28 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 getMvpView().onError(TradeError.SYSTEM_ERROR);
             }
         }
+    }
+
+    // 检测关阀指令
+    private boolean checkCloseCmd() {
+        if (TextUtils.isEmpty(closeCmd)) {
+            Log.e(TAG, "重连状态关阀指令为空, 从缓存中获取关阀指令");
+            String savedCloseCmd = sharedPreferencesHelp.getCloseCmd(deviceNo);
+            if (TextUtils.isEmpty(savedCloseCmd)) {
+                Log.e(TAG, "从缓存中获取关阀指令为空，获取上次设备响应重新向服务器请求关阀指令");
+                String savedDeviceResult = sharedPreferencesHelp.getDeviceResult(deviceNo);
+                if (TextUtils.isEmpty(savedCloseCmd)) {
+                    Log.e(TAG, "从缓存中获取设备响应为空");
+                    getMvpView().onError(TradeError.CONNECT_ERROR_2);
+                } else {
+                    processCommandResult(savedDeviceResult);
+                }
+                return false;
+            } else {
+                closeCmd = savedCloseCmd;
+            }
+        }
+        return true;
     }
 
     @Override
@@ -986,8 +1014,10 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
         if (reconnect) {
             // 重连状态下指令有两种 1 - 关阀 2 - 预结账
+            Log.i(TAG, "重连状态，开始关阀" + reconnectNextCmd);
             onWrite(reconnectNextCmd);
         } else {
+            Log.i(TAG, "非重连状态，开始关阀");
             if (purelyCheckoutFlag) { // 直接跳转至第二步结算
                 if (null == reopenNextCmd) { // 用户卸载掉app时取回的关阀指令为空
                     // 获取缓存中的设备响应，去重新获取关阀指令
@@ -1005,7 +1035,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 }
             } else {
                 // 向设备下发关阀指令
-                onWrite(closeCmd);
+                if (checkCloseCmd()) {
+                    onWrite(closeCmd);
+                }
             }
         }
     }
