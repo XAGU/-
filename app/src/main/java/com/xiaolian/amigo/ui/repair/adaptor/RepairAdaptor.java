@@ -71,21 +71,27 @@ public class RepairAdaptor extends RecyclerView.Adapter<RepairAdaptor.ViewHolder
             } else {
                 evaluate = EvaluateStatus.EVALUATE_PENDING;
             }
+            if (evaluate == null) {
+                holder.bt_evaluate.setVisibility(View.GONE);
+                return;
+            }
+            if (evaluate == EvaluateStatus.EVALUATE_DONE) {
+                holder.bt_evaluate.setEnabled(false);
+            } else {
+                holder.bt_evaluate.setEnabled(true);
+            }
             holder.bt_evaluate.setText(evaluate.getDesc());
             holder.bt_evaluate.setBackgroundResource(evaluate.getBackGroundRes());
             holder.bt_evaluate.setTextColor(ContextCompat.getColor(context, evaluate.getTextColor()));
             holder.bt_evaluate.setVisibility(View.VISIBLE);
-            holder.bt_evaluate.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(context, RepairEvaluationActivity.class);
-                    intent.putExtra(RepairEvaluationActivity.INTENT_KEY_REPAIR_EVALUATION_ID, wrapper.id);
-                    intent.putExtra(RepairEvaluationActivity.INTENT_KEY_REPAIR_EVALUATION_REPAIR_MAN_NAME, wrapper.repairmanName);
-                    intent.putExtra(RepairEvaluationActivity.INTENT_KEY_REPAIR_EVALUATION_DEVICE_LOCATION, wrapper.location);
-                    intent.putExtra(RepairEvaluationActivity.INTENT_KEY_REPAIR_EVALUATION_DEVICE_TYPE, wrapper.deviceType);
-                    intent.putExtra(RepairEvaluationActivity.INTENT_KEY_REPAIR_EVALUATION_TIME, wrapper.time);
-                    context.startActivity(intent);
-                }
+            holder.bt_evaluate.setOnClickListener(v -> {
+                Intent intent = new Intent(context, RepairEvaluationActivity.class);
+                intent.putExtra(RepairEvaluationActivity.INTENT_KEY_REPAIR_EVALUATION_ID, wrapper.id);
+                intent.putExtra(RepairEvaluationActivity.INTENT_KEY_REPAIR_EVALUATION_REPAIR_MAN_NAME, wrapper.repairmanName);
+                intent.putExtra(RepairEvaluationActivity.INTENT_KEY_REPAIR_EVALUATION_DEVICE_LOCATION, wrapper.location);
+                intent.putExtra(RepairEvaluationActivity.INTENT_KEY_REPAIR_EVALUATION_DEVICE_TYPE, wrapper.deviceType);
+                intent.putExtra(RepairEvaluationActivity.INTENT_KEY_REPAIR_EVALUATION_TIME, wrapper.time);
+                context.startActivity(intent);
             });
         } else {
             holder.bt_evaluate.setVisibility(View.GONE);
