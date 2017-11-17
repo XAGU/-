@@ -18,6 +18,7 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     private static final String PREF_FILE_NAME = "amigo";
     private static final String PREF_KEY_TOKEN = "PREF_KEY_TOKEN";
     private static final String PREF_DEVICE_TOKEN_PREFIX = "PREF_DEVICE_TOKEN_";
+    private static final String PREF_DEVICE_RESULT_PREFIX = "PREF_DEVICE_RESULT_PREFIX";
     private static final String PREF_CURRENT_DEVICE_TOKEN = "PREF_CURRENT_DEVICE_TOKEN";
     private static final String PREF_KEY_RESIDENCEID = "PREF_KEY_RESIDENCEID";
     private static final String PREF_KEY_RESIDENCE_NAME = "PREF_KEY_RESIDENCE_NAME";
@@ -30,6 +31,7 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     private static final String PREF_KEY_PICTURE_URL = "PREF_KEY_PICTURE_URL";
     private static final String PREF_CMD_CONNECT_PREFIX = "PREF_CMD_CONNECT_";
     private static final String PREF_CMD_CLOSE_PREFIX = "PREF_CMD_CLOSE_";
+    private static final String PREF_RESULT_DEVICE = "PREF_RESULT_DEVICE";
     private static final String PREF_LAST_CONNECT_TIME = "PREF_LAST_CONNECT_TIME";
     private static final String PREF_KEY_BALANCE = "PREF_KEY_BALANCE";
     private static final String PREF_KEY_BONUS = "PREF_KEY_BONUS";
@@ -287,6 +289,16 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     @Override
     public String getRememberMobile() {
         return mGuideSharedPreferences.getString(PREF_REMEMBER_MOBILE, "");
+    }
+
+    @Override
+    public void setDeviceResult(String deviceNo, String result) {
+        mSharedPreferences.edit().putString(PREF_DEVICE_RESULT_PREFIX + deviceNo, result).commit();
+    }
+
+    @Override
+    public String getDeviceResult(String deviceNo) {
+        return mSharedPreferences.getString(PREF_DEVICE_RESULT_PREFIX + deviceNo, "");
     }
 
     @Override

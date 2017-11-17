@@ -709,6 +709,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         } catch (Exception e) {
             Log.wtf(TAG, "获取设备相应结果前缀失败");
         }
+        // 存储设备响应结果
+        sharedPreferencesHelp.setDeviceResult(deviceNo, result);
 
         CmdResultReqDTO reqDTO = new CmdResultReqDTO();
         reqDTO.setData(result);
@@ -863,8 +865,16 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                             reopenNextCmd = savedCloseCmd;
                             closeCmd = reopenNextCmd;
                         } else {
-                            Log.wtf(TAG, "从缓存中获取关阀指令为空，APP有可能被用户卸载过");
-                            getMvpView().onError(TradeError.CONNECT_ERROR_2);
+                            Log.wtf(TAG, "从缓存中获取关阀指令为空，APP有可能被用户卸载过, 从缓存中获取上一次的设备响应");
+                            // 获取缓存中的设备响应，去重新获取关阀指令
+                            String saveDeviceResult = sharedPreferencesHelp.getDeviceResult(deviceNo);
+                            if (TextUtils.isEmpty(saveDeviceResult)) {
+                                Log.wtf(TAG, "从缓存中获取上一次的设备响应失败");
+                                getMvpView().onError(TradeError.CONNECT_ERROR_2);
+                            } else {
+                                Log.i(TAG, "关阀指令获取失败，重新使用设备响应请求指令");
+                                processCommandResult(saveDeviceResult);
+                            }
                         }
 
                         //} else {
@@ -963,8 +973,16 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         } else {
             if (purelyCheckoutFlag) { // 直接跳转至第二步结算
                 if (null == reopenNextCmd) { // 用户卸载掉app时取回的关阀指令为空
-                    closeBleConnecttion();
-                    getMvpView().onError(TradeError.CONNECT_ERROR_2);
+                    // 获取缓存中的设备响应，去重新获取关阀指令
+                    String saveDeviceResult = sharedPreferencesHelp.getDeviceResult(deviceNo);
+                    if (TextUtils.isEmpty(saveDeviceResult)) {
+                        closeBleConnecttion();
+                        Log.wtf(TAG, "从缓存中获取上一次的设备响应失败");
+                        getMvpView().onError(TradeError.CONNECT_ERROR_2);
+                    } else {
+                        Log.i(TAG, "关阀指令获取失败，重新使用设备响应请求指令");
+                        processCommandResult(saveDeviceResult);
+                    }
                 } else {
                     onWrite(reopenNextCmd); // 正常下发
                 }

@@ -89,4 +89,8 @@ public interface ISharedPreferencesHelp {
     void setRememberMobile(String mobile);
 
     String getRememberMobile();
+
+    void setDeviceResult(String deviceNo, String result);
+
+    String getDeviceResult(String deviceNo);
 }
