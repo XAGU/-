@@ -5,7 +5,7 @@ import com.zhy.adapter.recyclerview.base.ItemViewDelegate;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 /**
- * 红包
+ * 代金券
  * <p>
  * Created by zcd on 9/20/17.
  */

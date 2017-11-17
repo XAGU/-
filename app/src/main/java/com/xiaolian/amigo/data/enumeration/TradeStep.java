@@ -5,7 +5,8 @@ package com.xiaolian.amigo.data.enumeration;
  */
 public enum TradeStep {
 
-    PAY(1, "支付页"), SETTLE(2, "结算页");
+    // 结账中状态是为了防止结账后设备断开蓝牙导致app端无法接受到服务器的返回数据
+    PAY(1, "支付页"), SETTLE(2, "结算页"), CLOSE_VALVE(3, "结账中");
 
     private int step;
     private String desc;

@@ -15,7 +15,7 @@ import retrofit2.Retrofit;
 import retrofit2.http.Body;
 
 /**
- * 红包DataManager实现类
+ * 代金券DataManager实现类
  * @author zcd
  */
 

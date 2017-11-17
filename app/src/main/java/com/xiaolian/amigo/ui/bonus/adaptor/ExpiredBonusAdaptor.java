@@ -10,7 +10,7 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
 import java.util.List;
 
 /**
- * 过期红包
+ * 过期代金券
  * <p>
  * Created by zcd on 9/18/17.
  */

@@ -39,7 +39,7 @@ public class OrderDetailRespDTO {
     private Integer status;
     private Long residenceId;
     private Integer usefor;
-    // 红包
+    // 代金券
     private String bonus;
     // 实际扣款
     private String actualDebit;

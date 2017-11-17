@@ -6,7 +6,7 @@ package com.xiaolian.amigo.data.enumeration;
  * Created by caidong on 2017/10/12.
  */
 public enum OrderStatus {
-    USING(1), FINISHED(2);
+    UNKNOWN(0), USING(1), FINISHED(2);
 
     private Integer code;
 
@@ -24,6 +24,6 @@ public enum OrderStatus {
                 return status;
             }
         }
-        return null;
+        return UNKNOWN;
     }
 }

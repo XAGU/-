@@ -43,9 +43,9 @@ public class BonusAdaptor extends CommonAdapter<BonusAdaptor.BonusWrapper> {
 
     @Data
     public static class BonusWrapper implements Serializable {
-        // 红包类型
+        // 代金券类型
         Integer type;
-        // 红包金额
+        // 代金券金额
         Double amount;
         // 到期时间
         Long timeEnd;
@@ -55,9 +55,9 @@ public class BonusAdaptor extends CommonAdapter<BonusAdaptor.BonusWrapper> {
         String desc;
         // 剩余时间
         Long timeLeft;
-        // 红包名称
+        // 名称
         String name;
-        // 红包id
+        // 代金券id
         Long id;
         // 备注
         String remark;

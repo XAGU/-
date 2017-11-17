@@ -31,7 +31,7 @@
                 style="@style/ContentText_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tool:text="新人红包" />
+                tool:text="代金券" />
 
             <TextView
                 android:id="@+id/tv_time_end"

@@ -259,7 +259,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
             String time = formatter.format(new Date());
             String fileName = "crash-" + time + "-" + timestamp + ".txt";
             if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-                String path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "crash/";
+                String path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "xiaolian/crash/";
                 File dir = new File(path);
                 if (!dir.exists()) dir.mkdirs();
                 // 创建新的文件

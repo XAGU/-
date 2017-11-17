@@ -26,7 +26,7 @@ import rx.Observable;
  */
 
 public interface IMainApi {
-    // 用户个人中心额外信息：包括我的钱包余额、我的红包数量、是否用设备报修中、目前在进行中的订单
+    // 用户个人中心额外信息：包括我的钱包余额、我的代金券数量、是否用设备报修中、目前在进行中的订单
     @POST("/user/extraInfo/one")
     Observable<ApiResult<PersonalExtraInfoDTO>> getExtraInfo();
 

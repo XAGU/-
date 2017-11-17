@@ -62,7 +62,7 @@ public class RechargeAdaptor extends MultiItemTypeAdapter<RechargeAdaptor.Rechar
             if (this.type == 1) {
                 this.sub = "售价" + df.format(rechargeDenominations.getValue()) + "元";
             } else if (this.type == 2) {
-                this.sub = "送" + df.format(rechargeDenominations.getValue()) + "元红包";
+                this.sub = "送" + df.format(rechargeDenominations.getValue()) + "元代金券";
             }
         }
     }

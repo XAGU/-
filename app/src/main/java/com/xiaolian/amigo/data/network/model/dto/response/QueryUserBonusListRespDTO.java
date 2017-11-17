@@ -7,7 +7,7 @@ import java.util.List;
 import lombok.Data;
 
 /**
- * 红包列表DTO
+ * 代金券列表DTO
  * @author zcd
  */
 @Data

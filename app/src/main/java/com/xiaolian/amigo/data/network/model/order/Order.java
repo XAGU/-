@@ -46,7 +46,7 @@ public class Order implements Serializable {
     private String odd;
     // 设备mac地址
     private String macAddress;
-    // 红包
+    // 代金券
     private String bonus;
     // 实际扣款
     private String actualDebit;

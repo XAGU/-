@@ -30,7 +30,7 @@
         <u>全部提现</u>
     </string>
     <string name="query_expired_bonus_tip">
-        <u>查看过期红包</u>
+        <u>查看过期代金券</u>
     </string>
 
     <string name="app_loading">加载中…</string>
@@ -51,7 +51,7 @@
     <string name="please_enter_old_password">请输入原密码</string>
     <string name="please_enter_new_password">请输入新密码</string>
     <string name="please_enter_new_password_again">请再次输入新密码</string>
-    <string name="choose_bonus">挑选红包</string>
+    <string name="choose_bonus">挑选代金券</string>
 
     <string name="shower_process">以预付%1$d元，请尽快放水洗澡(%2$ds)</string>
     <string name="no_search_result">未搜到相关的内容</string>
@@ -72,8 +72,8 @@
     <string name="device_type">设备类型</string>
     <string name="repair_evaluation">报修评价</string>
     <string name="device_repair">设备报修</string>
-    <string name="my_bonus">我的红包</string>
-    <string name="exchange_bonus">兑换红包</string>
+    <string name="my_bonus">我的代金券</string>
+    <string name="exchange_bonus">兑换代金券</string>
     <string name="order_record">消费记录</string>
     <string name="empty_tip">空空如也</string>
     <string name="empty_tip_1">暂无记录</string>
@@ -83,7 +83,7 @@
     <string name="edit_dormitory">宿舍列表</string>
     <string name="search">搜索</string>
     <string name="found">招领</string>
-    <string name="expried_bonus">过期红包</string>
+    <string name="expried_bonus">过期代金券</string>
     <string name="change_success">修改成功</string>
     <string name="delete_success">删除成功</string>
     <string name="setting_success">设置成功</string>
@@ -100,7 +100,7 @@
     <string name="my_favorite">我收藏的设备</string>
     <string name="please_choose_lost_time">请选择丢失的时间</string>
     <string name="please_choose_found_time">请选择捡到物品的时间</string>
-    <string name="not_use_bonus">不使用红包</string>
+    <string name="not_use_bonus">不使用代金券</string>
     <string name="prepay_money">预付金额</string>
     <string name="prepay_money_colon">预付金额：</string>
     <string name="withdrawal">提现</string>
@@ -111,7 +111,7 @@
     <string name="prepay_order">待找零订单</string>
     <string name="balance_trade_tip">100s内未打开放水阀门，系统将自动停止本次服务\n消费金额以实际用水量为准\n用水结束后请务必点击下方"结束找零"按钮</string>
     <string name="balance_trade_tip_2">用水结束后请务必滑动下方按钮，进行结算找零\n消费金额以实际用水量为准</string>
-    <string name="bonus_trade_tip">红包金额对应水量上线，一旦使用则立即消耗\n点击下方按钮即结束用水</string>
+    <string name="bonus_trade_tip">代金券金额对应水量上线，一旦使用则立即消耗\n点击下方按钮即结束用水</string>
     <string name="more">更多</string>
     <string name="about_us">关于我们</string>
     <string name="connected_tip_1">(100s)内未打开放水阀门，系统将自动停止本次服务\n消费金额以实际用水量为准</string>
@@ -144,7 +144,7 @@
     <string name="change_mobile_success">手机号修改成功</string>
     <string name="change_password_success">密码修改成功</string>
     <string name="add_dormitory_success">宿舍添加成功</string>
-    <string name="bonus_exchange_success">红包兑换成功</string>
+    <string name="bonus_exchange_success">代金券兑换成功</string>
     <string name="change_school_success">学校更换成功，请重新登录</string>
     <string name="withdrawal_record">充值提现记录</string>
     <string name="unselected">未选择</string>
@@ -190,9 +190,9 @@
     <string name="evaluation_info">评价信息</string>
     <string name="customer_response">客服回复</string>
     <string name="score">%1$d分</string>
-    <string name="use_bonus_colon">使用红包：</string>
+    <string name="use_bonus_colon">代金券抵扣：</string>
     <string name="need_prepay_amount">需预付%1$s元</string>
-    <string name="connect_prepay_tip_1">使用结束后请务必滑动按钮进行结算找零\n当前没有可用红包哦</string>
+    <string name="connect_prepay_tip_1">使用结束后请务必滑动按钮进行结算找零\n当前没有可用代金券哦</string>
     <string name="prepay_start_shower">预付%1$s元，开始洗澡</string>
     <string name="comma_start_shower">，开始洗澡</string>
     <string name="comma_start_drink">，开始接水</string>
@@ -209,7 +209,7 @@
     <string name="use_time_colon">使用时间：</string>
     <string name="device_location_colon">设备位置：</string>
     <string name="order_number_colon">订单号：</string>
-    <string name="back_bonus_colon">退还红包：</string>
+    <string name="back_bonus_colon">退还代金券：</string>
     <string name="back_amount_colon">退还金额：</string>
     <string name="real_pay_colon">实际扣款：</string>
     <string name="change_amount_colon">找零金额：</string>

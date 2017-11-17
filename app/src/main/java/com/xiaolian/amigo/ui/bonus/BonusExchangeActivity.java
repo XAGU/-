@@ -17,7 +17,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * 兑换红包
+ * 兑换代金券
  * @author zcd
  */
 

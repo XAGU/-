@@ -786,6 +786,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public void showUpdateDialog(IVersionModel model) {
+        Log.i(TAG, "showUpdateDialog");
         rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .subscribe(granted -> {
                     if (granted) {

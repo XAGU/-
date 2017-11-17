@@ -12,7 +12,7 @@ import com.xiaolian.amigo.ui.bonus.intf.IBonusExchangeView;
 import javax.inject.Inject;
 
 /**
- * 兑换红包
+ * 兑换代金券
  * <p>
  * Created by zcd on 9/18/17.
  */

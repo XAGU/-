@@ -163,6 +163,8 @@ public class PublishLostPresenter<V extends IPublishLostView> extends BasePresen
                                             Log.e("HostId", serviceException.getHostId());
                                             Log.e("RawMessage", serviceException.getRawMessage());
                                         }
+                                        // 失败后重新初始化ossClient
+                                        initOssModel(context);
                                         getMvpView().post(() ->
                                                 getMvpView().onError("图片上传失败，请重试"));
                                     }
@@ -215,7 +217,7 @@ public class PublishLostPresenter<V extends IPublishLostView> extends BasePresen
                         return new OSSFederationToken(ossModel.getAccessKeyId(),
                                 ossModel.getAccessKeySecret(),
                                 ossModel.getSecurityToken(),
-                                ossModel.getExpiration());
+                                ossModel.getExpiration()/1000);
                     });
                     notifyOssResult();
                 } else {

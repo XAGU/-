@@ -431,6 +431,11 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             return;
         }
 
+        if (TextUtils.isEmpty(command)) {
+            Log.wtf(TAG, "指令丢失");
+            getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
+            return;
+        }
         byte[] commandBytes = HexBytesUtils.hexStr2Bytes(command);
         addObserver(bleDataManager.write(connectionObservable, commandBytes),
                 new BleObserver<byte[]>() {
@@ -503,8 +508,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             } else { // 结算页面重连
                 Log.i(TAG, "当前为结算页面重连");
                 waitOrderCheckResult();
-                if (null == orderStatus) {
+                if (null == orderStatus || orderStatus.getStatus() == null) {
                     Log.wtf(TAG, "查不到对应的未结账订单，不应该发生此种状况！！！");
+                    getMvpView().onError(TradeError.CONNECT_ERROR_1);
                 } else {
                     if (OrderStatus.getOrderStatus(orderStatus.getStatus()) == OrderStatus.FINISHED) { // 订单已结单
                         Log.i(TAG, "重连后发现订单已被结算，跳转至订单详情页。orderId:" + orderStatus.getOrderId());
@@ -695,6 +701,15 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
     // 网络请求处理设备响应结果
     private void processCommandResult(String result) {
+        try {
+            String prefix = result.substring(0, 4);
+            if (TextUtils.equals(Command.CLOSE_VALVE.getRespPrefix(), prefix)) {
+                setStep(TradeStep.CLOSE_VALVE);
+            }
+        } catch (Exception e) {
+            Log.wtf(TAG, "获取设备相应结果前缀失败");
+        }
+
         CmdResultReqDTO reqDTO = new CmdResultReqDTO();
         reqDTO.setData(result);
         reqDTO.setMacAddress(deviceNo);
@@ -709,6 +724,15 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 }
                 Log.i(TAG, "通知主线程更新数据。" + result.getData());
                 RxBus.getDefault().post(result);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                if (getStep() == TradeStep.CLOSE_VALVE) {
+                    setStep(TradeStep.SETTLE);
+                }
+                getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_3));
             }
         }, Schedulers.io());
     }
@@ -817,6 +841,10 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             }
         } else {
             Log.e(TAG, String.format("处理异常返回结果。code:%s, msg:%s", result.getError().getCode(), result.getError().getDisplayMessage()));
+            // 如果在结账时服务器返回异常则状态改为SETTLE
+            if (getStep() == TradeStep.CLOSE_VALVE) {
+                setStep(TradeStep.SETTLE);
+            }
             if (result.getError().getCode() == BleErrorType.BLE_DEVICE_BUSY.getCode()) {
                 Log.e(TAG, "设备正在被使用");
                 // 如果是重连状态下，此时可以直接下发关阀指令

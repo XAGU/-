@@ -41,7 +41,7 @@ public interface IOrderApi {
     @POST("/order/latest")
     Observable<ApiResult<LatestOrderRespDTO>> queryLatestOrder(@Body LatestOrderReqDTO reqDTO);
 
-    // 订单预备信息：options是预付金额选项，bonus是可用红包数量
+    // 订单预备信息：options是预付金额选项，bonus是可用代金券数量
     @POST("/order/pre")
     Observable<ApiResult<OrderPreInfoDTO>> queryPrepayOption(@Body QueryPrepayOptionReqDTO reqDTO);
 

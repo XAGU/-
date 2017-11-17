@@ -1,9 +1,6 @@
 package com.xiaolian.amigo.data.network.model.dto.request;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 /**
  * 支付请求
@@ -16,14 +13,14 @@ public class PayReqDTO {
     // 设备mac地址
     private String macAddress;
 
-    // 付款方式（余额支付 or 红包支付）
+    // 付款方式（余额支付 or 代金券支付）
 //    @NonNull
 //    private Integer method;
 
     // 预付金额
     private Double prepay;
 
-    // 红包id
+    // 代金券id
     private Long bonusId;
 
 }

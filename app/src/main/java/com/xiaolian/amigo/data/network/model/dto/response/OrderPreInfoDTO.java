@@ -15,7 +15,7 @@ import lombok.Data;
 @Data
 public class OrderPreInfoDTO implements Serializable {
     /**
-     * 红包
+     * 代金券
      */
     Bonus bonus;
     /**

@@ -17,7 +17,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 /**
- * 红包Presenter实现类
+ * 代金券Presenter实现类
  * @author zcd
  */
 public class BonusPresenter<V extends IBonusView> extends BasePresenter<V>
@@ -38,7 +38,7 @@ public class BonusPresenter<V extends IBonusView> extends BasePresenter<V>
         dto.setPage(page);
         dto.setDeviceType(deviceType);
         dto.setSize(Constant.PAGE_SIZE);
-        // 显示红包 未使用1 未过期1 过期红包 未使用1 已过期2
+        // 显示代金券 未使用1 未过期1 过期代金券 未使用1 已过期2
         dto.setUseStatus(1);
         dto.setValidStatus(1);
         addObserver(manager.queryOrders(dto), new NetworkObserver<ApiResult<QueryUserBonusListRespDTO>>(false) {
@@ -86,7 +86,7 @@ public class BonusPresenter<V extends IBonusView> extends BasePresenter<V>
         QueryUserBonusReqDTO dto = new QueryUserBonusReqDTO();
         dto.setPage(page);
         dto.setSize(Constant.PAGE_SIZE);
-        // 显示红包 未使用1 未过期1 过期红包 未使用1 已过期2
+        // 显示代金券 未使用1 未过期1 过期代金券 未使用1 已过期2
         dto.setUseStatus(1);
         dto.setValidStatus(2);
         addObserver(manager.queryOrders(dto), new NetworkObserver<ApiResult<QueryUserBonusListRespDTO>>(false) {

@@ -127,20 +127,20 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--红包页面-->
+        <!--代金券页面-->
         <activity
             android:name=".ui.bonus.BonusActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--兑换红包-->
+        <!--兑换代金券-->
         <activity
             android:name=".ui.bonus.BonusExchangeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--过期红包-->
+        <!--过期代金券-->
         <activity
             android:name=".ui.bonus.ExpiredBonusActivity"
             android:screenOrientation="portrait"

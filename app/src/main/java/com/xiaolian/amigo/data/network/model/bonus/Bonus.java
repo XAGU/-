@@ -5,7 +5,7 @@ import java.io.Serializable;
 import lombok.Data;
 
 /**
- * 红包
+ * 代金券
  * @author zcd
  */
 @Data

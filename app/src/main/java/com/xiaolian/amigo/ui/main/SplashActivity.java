@@ -58,12 +58,15 @@ public class SplashActivity extends MainBaseActivity implements ISplashView {
     @Override
     protected void onDestroy() {
         Log.d(TAG, "onDestroy");
-        cancelTimer();
         super.onDestroy();
     }
 
     @Override
     public void startMain() {
+        Log.i(TAG, "startMain");
+        cancelTimer();
+        Log.i(TAG, "clearObserver");
+        presenter.clearObservers();
         iv_logo.postDelayed(() -> {
             startActivity(new Intent(this, MainActivity.class));
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
@@ -72,7 +75,18 @@ public class SplashActivity extends MainBaseActivity implements ISplashView {
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        Log.i(TAG, "onStop");
+    }
+
+
+
+    @Override
     public void startMainServerNoResponse() {
+        Log.i(TAG, "startMainServerNoResponse");
+        Log.i(TAG, "clearObserver");
+        presenter.clearObservers();
         startActivity(new Intent(this, MainActivity.class)
                 .putExtra(MainActivity.INTENT_KEY_SERVER_ERROR, true));
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);

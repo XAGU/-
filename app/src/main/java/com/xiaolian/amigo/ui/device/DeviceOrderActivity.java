@@ -43,7 +43,7 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
     LinearLayout ll_order_normal;
     @BindView(R.id.rl_use_bonus)
     RelativeLayout rl_use_bonus;
-    // 使用红包
+    // 代金券抵扣
     @BindView(R.id.tv_bonus_remark)
     TextView tv_bonus_remark;
     // 预付金额
@@ -67,7 +67,7 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
     LinearLayout ll_order_error;
     @BindView(R.id.rl_back_bonus)
     RelativeLayout rl_back_bonus;
-    // 退还红包
+    // 退还代金券
     @BindView(R.id.tv_back_bonus)
     TextView tv_back_bonus;
     // 退还金额
@@ -127,12 +127,12 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
             tv_order_error_tip.setVisibility(View.VISIBLE);
             ll_order_normal.setVisibility(View.GONE);
             ll_order_error.setVisibility(View.VISIBLE);
-            // 是否有红包
+            // 是否有代金券
             if (TextUtils.isEmpty(respDTO.getBonus())) {
-                // 没有红包
+                // 没有代金券
                 rl_back_bonus.setVisibility(View.GONE);
             } else {
-                // 有红包
+                // 有代金券
                 rl_back_bonus.setVisibility(View.VISIBLE);
                 tv_back_bonus.setText(respDTO.getBonus());
             }
@@ -142,12 +142,12 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
             tv_order_error_tip.setVisibility(View.GONE);
             ll_order_normal.setVisibility(View.VISIBLE);
             ll_order_error.setVisibility(View.GONE);
-            // 是否有红包
+            // 是否有代金券
             if (TextUtils.isEmpty(respDTO.getBonus())) {
-                // 没有红包
+                // 没有代金券
                 rl_use_bonus.setVisibility(View.GONE);
             } else {
-                // 有红包
+                // 有代金券
                 rl_use_bonus.setVisibility(View.VISIBLE);
                 tv_bonus_remark.setText(getString(R.string.minus, respDTO.getBonus()));
             }

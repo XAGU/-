@@ -27,7 +27,7 @@ public class DeviceCheckRespDTO {
     private Boolean favor;
     private Integer usefor;
     /**
-     * 红包
+     * 代金券
      */
     Bonus bonus;
     /**

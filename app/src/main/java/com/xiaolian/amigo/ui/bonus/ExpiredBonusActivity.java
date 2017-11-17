@@ -18,7 +18,7 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 
 /**
- * 过期红包
+ * 过期代金券
  * <p>
  * Created by caidong on 2017/9/8.
  */

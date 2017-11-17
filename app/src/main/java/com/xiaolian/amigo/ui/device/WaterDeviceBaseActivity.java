@@ -65,7 +65,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
     private static final String TAG = WaterDeviceBaseActivity.class.getSimpleName();
     /**
-     * 跳转到选择红包页面的request code
+     * 跳转到选择代金券页面的request code
      */
     private static final int CHOOSE_BONUS_CODE = 0x0010;
     protected static final int CHOOSE_DORMITORY_CODE = 0x0011;
@@ -108,7 +108,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     LinearLayout ll_content_shower;
 
     /**
-     * et.已使用10元红包
+     * et.已使用10元代金券
      */
     @BindView(R.id.tv_shower_payed)
     TextView tv_shower_payed;
@@ -171,7 +171,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     TextView tv_sub_title;
 
     /**
-     * 选择红包
+     * 选择代金券
      */
     @BindView(R.id.rl_choose_bonus)
     RelativeLayout rl_choose_bonus;
@@ -426,13 +426,13 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             Log.wtf(TAG, "预付信息不全!");
             return;
         }
-        // 有红包
+        // 有代金券
         if (bonusId != null) {
             String tip;
             String buttonText;
             // 余额为0
             if (balance == 0) {
-                // 红包金额大于等于最小预付金额
+                // 代金券金额大于等于最小预付金额
                 if (bonusAmount >= minPrepay) {
                     tip = getString(R.string.connect_prepay_tip_5, df.format(minPrepay));
                     prepayAmount = 0.0;
@@ -450,7 +450,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
                     showBonusLayout(tip, builder, bonusDescription);
                 }
-                // 红包金额小于最小预付金额  需要充值
+                // 代金券金额小于最小预付金额  需要充值
                 else {
                     tip = getString(R.string.connect_prepay_tip_7, df.format(minPrepay));
                     needRecharge = true;
@@ -461,7 +461,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             }
             // 余额不为0
             else {
-                // 余额加红包大于等于预付金额
+                // 余额加代金券大于等于预付金额
                 if (balance + bonusAmount >= prepay) {
                     tip = getString(R.string.connect_prepay_tip_4, df.format(prepay));
                     prepayAmount = prepay - bonusAmount;
@@ -481,7 +481,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                             getString(R.string.comma_start_shower) : getString(R.string.comma_start_drink));
                     showBonusLayout(tip, builder, bonusDescription);
                 }
-                // 余额加红包小于预付金额 大于等于最小预付金额
+                // 余额加代金券小于预付金额 大于等于最小预付金额
                 else if (balance + bonusAmount >= minPrepay
                         && balance + bonusAmount < prepay) {
                     tip = getString(R.string.connect_prepay_tip_6, df.format(prepay));
@@ -499,7 +499,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                             getString(R.string.comma_start_shower) : getString(R.string.comma_start_drink));
                     showBonusLayout(tip, builder, bonusDescription);
                 }
-                // 余额加红包小于最小预付金额
+                // 余额加代金券小于最小预付金额
                 else if (balance + bonusAmount < minPrepay) {
                     tip = getString(R.string.connect_prepay_tip_7, df.format(minPrepay));
                     needRecharge = true;
@@ -508,7 +508,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                 }
             }
         }
-        // 无红包
+        // 无代金券
         else {
             String title;
             String tip;
@@ -596,7 +596,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     }
 
     /**
-     * 点击选择用水量或选择红包
+     * 点击选择用水量或选择代金券
      */
     @OnClick(R.id.rl_choose_bonus)
     void onChooseBonusClick() {
@@ -953,7 +953,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
     @Override
     public void onError(TradeError tradeError) {
-        // 如果是在结算页面，则充值slideView
+        // 如果是在结算页面，则重置slideView
         if (presenter.getStep() == TradeStep.SETTLE && slideView != null) {
             slideView.reset();
         }
@@ -966,8 +966,11 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             timer.cancel();
         }
 
-        // 异常发生时关闭蓝牙连接
-        presenter.closeBleConnecttion();
+        // 结账中不关闭观察者
+        if (presenter.getStep() != TradeStep.CLOSE_VALVE) {
+            // 异常发生时关闭蓝牙连接
+            presenter.closeBleConnecttion();
+        }
 
         // 显示错误页面，必须加这行判断，否则在activity销毁时会报空指针错误
         if (null != ll_content_normal && null != ll_content_shower && null != ll_content_unconnected && null != ll_error) {

@@ -11,16 +11,16 @@ import retrofit2.http.POST;
 import rx.Observable;
 
 /**
- * 红包相关接口
+ * 代金券相关接口
  *
  * @author zcd
  */
 public interface IBonusApi {
-    // 获取红包列表
+    // 获取代金券列表
     @POST("/bonus/personal/list")
     Observable<ApiResult<QueryUserBonusListRespDTO>> queryOrders(@Body QueryUserBonusReqDTO reqDTO);
 
-    // 兑换红包
+    // 兑换代金券
     @POST("/bonus/redeem")
     Observable<ApiResult<BooleanRespDTO>> redeem(@Body RedeemBonusReqDTO reqDTO);
 }

@@ -3,7 +3,7 @@ package com.xiaolian.amigo.data.network.model.dto.request;
 import lombok.Data;
 
 /**
- * 红包接口请求DTO
+ * 代金券接口请求DTO
  * @author zcd
  */
 @Data

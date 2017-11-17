@@ -216,10 +216,6 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
 
     @Override
     public void checkUpdate(Integer code, String versionNo) {
-        // 小于6小时不再提醒
-        if (System.currentTimeMillis() - manager.getLastUpdateRemindTime() < 6 * 1000 * 60 * 60) {
-            return;
-        }
         CheckVersionUpdateReqDTO reqDTO = new CheckVersionUpdateReqDTO();
         reqDTO.setCode(code);
         reqDTO.setVersionNo(versionNo);
@@ -231,7 +227,14 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
                 if (null == result.getError()) {
                     if (result.getData().getResult()) {
                         manager.setLastUpdateRemindTime();
-                        getMvpView().showUpdateDialog(result.getData().getVersion());
+                        if (result.getData().getVersion().isMustUpdate()) {
+                            getMvpView().showUpdateDialog(result.getData().getVersion());
+                        } else {
+                            // 小于6小时不再提醒
+                            if (System.currentTimeMillis() - manager.getLastUpdateRemindTime() >= 6 * 1000 * 60 * 60) {
+                                getMvpView().showUpdateDialog(result.getData().getVersion());
+                            }
+                        }
                     }
                 }
             }
