@@ -217,7 +217,7 @@ public class PublishLostPresenter<V extends IPublishLostView> extends BasePresen
                         return new OSSFederationToken(ossModel.getAccessKeyId(),
                                 ossModel.getAccessKeySecret(),
                                 ossModel.getSecurityToken(),
-                                ossModel.getExpiration()/1000);
+                                (ossModel.getExpiration() - 2 * 60 * 1000)/1000);
                     });
                     notifyOssResult();
                 } else {

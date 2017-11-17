@@ -124,6 +124,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     private volatile boolean homePageJump = true;
     // 结束标识
     private volatile boolean closeFlag = false;
+    // 正在恢复上次设备响应标识
+    private volatile boolean deviceResultFlag = false;
 
     DeviceBasePresenter(IBleDataManager bleDataManager, ITradeDataManager tradeDataManager, IOrderDataManager orderDataManager, ISharedPreferencesHelp sharedPreferencesHelp) {
         super();
@@ -279,12 +281,21 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     }
 
     private void realConnect(String macAddress) {
-        // 1、网络请求获取握手指令
-        if (null == connectCmd) {
-            getConnectCommand(macAddress);
+        // 如果缓存中存在待处理的设备响应则直接去请求服务器
+        String savedDeviceResult = sharedPreferencesHelp.getDeviceResult(deviceNo);
+        if (!TextUtils.isEmpty(savedDeviceResult)) {
+            Log.i(TAG, "缓存中存在待处理的设备响应, 直接去请求服务器");
+            deviceResultFlag = true;
+            processCommandResult(savedDeviceResult);
+        } else {
+            // 正常流程
+            // 1、网络请求获取握手指令
+            if (null == connectCmd) {
+                getConnectCommand(macAddress);
+            }
+            // 检测当前用户对该设备订单使用状态
+            checkOrderStatus(macAddress);
         }
-        // 检测当前用户对该设备订单使用状态
-        checkOrderStatus(macAddress);
 
         // 2、初始化设备消息接收者
         if (null == busSubscriber) {
@@ -490,6 +501,10 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         connecting = false;
         handleConnectError.set(false);
 
+        // 缓存中存在设备响应服务器未处理，则直接return
+        if (deviceResultFlag) {
+            return;
+        }
         if (reconnect) {
             Log.i(TAG, "当前为重连状态");
             if (null == getStep()) {
@@ -724,6 +739,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     sharedPreferencesHelp.setDeviceToken(result.getData().getMacAddress(), result.getData().getDeviceToken());
                     Log.i(TAG, "收到deviceToken：" + result.getData().getDeviceToken());
                 }
+                // 服务器已接收到设备响应 清除缓存中的设备响应
+                sharedPreferencesHelp.setDeviceResult(deviceNo, "");
                 Log.i(TAG, "通知主线程更新数据。" + result.getData());
                 RxBus.getDefault().post(result);
             }

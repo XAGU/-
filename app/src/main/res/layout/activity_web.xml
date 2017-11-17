@@ -41,7 +41,7 @@
             <TextView
                 android:id="@+id/tv_empty_tip"
                 android:textSize="14sp"
-                android:text="@string/empty_tip"
+                android:text="@string/loading_error"
                 android:textColor="@color/colorDark2"
                 android:layout_centerInParent="true"
                 android:layout_width="wrap_content"
@@ -50,7 +50,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="14dp"
                 android:layout_above="@id/tv_empty_tip"
-                android:src="@drawable/ic_empty_box"
+                android:src="@drawable/ic_loading_error"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </RelativeLayout>

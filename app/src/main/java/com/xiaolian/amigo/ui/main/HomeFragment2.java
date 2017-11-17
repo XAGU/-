@@ -71,6 +71,7 @@ public class HomeFragment2 extends Fragment {
     // 正在使用的设备个数
     private int usingAmount = 0;
     private View disabledView;
+    private HomeAdaptor.ItemWrapper banner;
 
     @Nullable
     @Override
@@ -137,7 +138,8 @@ public class HomeFragment2 extends Fragment {
 
     public void onBannerEvent(List<BannerDTO> banners) {
         if (items.get(items.size() - 1).getType() == 1) {
-            items.add(new HomeAdaptor.ItemWrapper(2, banners, null, null, null, 0));
+            banner = new HomeAdaptor.ItemWrapper(2, banners, null, null, null, 0);
+            items.add(banner);
             Log.d(TAG, "onBannerEvent notify");
             adaptor.notifyItemInserted(items.size()-1);
         } else {
@@ -175,6 +177,9 @@ public class HomeFragment2 extends Fragment {
         }
         if (lost.isActive()) {
             items.add(lost);
+        }
+        if (banner != null) {
+            items.add(banner);
         }
     }
 

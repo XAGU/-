@@ -225,6 +225,7 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
         };
     }
 
+
     public void clearObservers() {
         if (null != subscriptions && !subscriptions.isUnsubscribed()) {
             // handler.post(() -> {

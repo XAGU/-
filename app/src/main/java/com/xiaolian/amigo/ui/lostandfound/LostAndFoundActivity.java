@@ -183,7 +183,6 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
         adaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                CommonUtil.crash();
                 // 防止数组越界
                 if (position > lostAndFounds.size() + 1) {
                     return;
