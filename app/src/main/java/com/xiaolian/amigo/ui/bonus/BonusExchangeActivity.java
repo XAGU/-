@@ -68,6 +68,12 @@ public class BonusExchangeActivity extends BonusBaseActivity implements IBonusEx
     }
 
     @Override
+    protected void onDestroy() {
+        presenter.onDetach();
+        super.onDestroy();
+    }
+
+    @Override
     public void backToBonus() {
         startActivity(new Intent(this, BonusActivity.class));
     }

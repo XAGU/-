@@ -205,4 +205,9 @@ public class LostAndFoundDetailActivity extends LostAndFoundBaseActivity impleme
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        presenter.onDetach();
+        super.onDestroy();
+    }
 }

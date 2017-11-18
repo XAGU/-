@@ -122,4 +122,10 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
                         .putExtra(Constant.EXTRA_KEY, tv_balance.getText().toString().replace("¥", ""))));
         dialog.show();
     }
+
+    @Override
+    protected void onDestroy() {
+        presenter.onDetach();
+        super.onDestroy();
+    }
 }

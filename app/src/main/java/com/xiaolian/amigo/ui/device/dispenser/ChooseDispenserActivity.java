@@ -289,4 +289,10 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
     public void onError(TradeError tradeError) {
 
     }
+
+    @Override
+    protected void onDestroy() {
+        presenter.onDetach();
+        super.onDestroy();
+    }
 }

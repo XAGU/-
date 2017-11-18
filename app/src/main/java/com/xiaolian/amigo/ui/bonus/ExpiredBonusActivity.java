@@ -70,4 +70,10 @@ public class ExpiredBonusActivity extends BonusBaseListActivity implements IBonu
         this.bonuses.addAll(bonuses);
         adaptor.notifyDataSetChanged();
     }
+
+    @Override
+    protected void onDestroy() {
+        presenter.onDetach();
+        super.onDestroy();
+    }
 }

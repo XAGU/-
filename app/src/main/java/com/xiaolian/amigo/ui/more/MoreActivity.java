@@ -99,4 +99,10 @@ public class MoreActivity extends MoreBaseActivity implements IMoreView {
     public void backToMain() {
         startActivity(new Intent(this, MainActivity.class));
     }
+
+    @Override
+    protected void onDestroy() {
+        presenter.onDetach();
+        super.onDestroy();
+    }
 }

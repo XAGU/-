@@ -77,4 +77,10 @@ public class CheckPasswordActivity extends UserBaseActivity implements ICheckPas
             }
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        presenter.onDetach();
+        super.onDestroy();
+    }
 }

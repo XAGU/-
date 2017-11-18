@@ -306,4 +306,10 @@ public class PublishFoundActivity extends LostAndFoundBaseActivity implements IP
             }
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        presenter.onDetach();
+        super.onDestroy();
+    }
 }

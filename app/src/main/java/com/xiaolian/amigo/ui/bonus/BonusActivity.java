@@ -152,4 +152,10 @@ public class BonusActivity extends BonusBaseListActivity implements IBonusView {
             }
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        presenter.onDetach();
+        super.onDestroy();
+    }
 }

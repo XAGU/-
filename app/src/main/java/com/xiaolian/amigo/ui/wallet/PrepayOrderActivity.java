@@ -133,4 +133,10 @@ public class PrepayOrderActivity extends WalletBaseActivity implements IPrepayOr
         TimeHolder.get().setLastConnectTime(System.currentTimeMillis());
         startActivity(intent);
     }
+
+    @Override
+    protected void onDestroy() {
+        presenter.onDetach();
+        super.onDestroy();
+    }
 }

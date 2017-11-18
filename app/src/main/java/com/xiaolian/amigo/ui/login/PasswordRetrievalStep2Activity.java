@@ -117,4 +117,10 @@ public class PasswordRetrievalStep2Activity extends LoginBaseActivity implements
             }
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        presenter.onDetach();
+        super.onDestroy();
+    }
 }

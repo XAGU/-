@@ -163,4 +163,10 @@ public class EditDormitoryActivity extends UserBaseListActivity implements IEdit
         setResult(RESULT_OK);
         super.onBackPressed();
     }
+
+    @Override
+    protected void onDestroy() {
+        presenter.onDetach();
+        super.onDestroy();
+    }
 }

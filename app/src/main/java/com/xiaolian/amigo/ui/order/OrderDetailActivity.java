@@ -182,4 +182,9 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
                         Device.getDevice(order.getDeviceType())).getType()));
     }
 
+    @Override
+    protected void onDestroy() {
+        presenter.onDetach();
+        super.onDestroy();
+    }
 }

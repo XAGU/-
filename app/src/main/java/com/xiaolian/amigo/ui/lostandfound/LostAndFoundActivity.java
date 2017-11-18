@@ -15,6 +15,7 @@ import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.ui.widget.dialog.SearchDialog;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.util.Log;
 import com.xiaolian.amigo.util.ScreenUtils;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
@@ -32,6 +33,7 @@ import butterknife.ButterKnife;
  */
 public class LostAndFoundActivity extends LostAndFoundBaseListActivity implements ILostAndFoundView {
     private static final int REQUEST_CODE_PUBLISH = 0x0101;
+    private static final String TAG = LostAndFoundActivity.class.getSimpleName();
     // 失物招领列表
     List<LostAndFoundAdaptor.LostAndFoundWapper> lostAndFounds = new ArrayList<>();
     List<LostAndFoundAdaptor.LostAndFoundWapper> losts = new ArrayList<>();
@@ -183,23 +185,25 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
         adaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                // 防止数组越界
-                if (position > lostAndFounds.size() + 1) {
-                    return;
-                }
-                Intent intent = new Intent(LostAndFoundActivity.this, LostAndFoundDetailActivity.class);
-                intent.putExtra(LostAndFoundDetailActivity.INTENT_KEY_LOST_AND_FOUND_DETAIL_ID,
-                        lostAndFounds.get(position).getId());
-                // listStatus false表示失物 true表示招领
-                if (listStatus) {
-                    intent.putExtra(LostAndFoundDetailActivity.INTENT_KEY_LOST_AND_FOUND_DETAIL_TYPE,
-                            LostAndFoundDetailActivity.TYPE_FOUND);
-                } else {
-                    intent.putExtra(LostAndFoundDetailActivity.INTENT_KEY_LOST_AND_FOUND_DETAIL_TYPE,
-                            LostAndFoundDetailActivity.TYPE_LOST);
-                }
-                startActivity(intent);
+                try {
+                    Intent intent = new Intent(LostAndFoundActivity.this, LostAndFoundDetailActivity.class);
+                    intent.putExtra(LostAndFoundDetailActivity.INTENT_KEY_LOST_AND_FOUND_DETAIL_ID,
+                            lostAndFounds.get(position).getId());
+                    // listStatus false表示失物 true表示招领
+                    if (listStatus) {
+                        intent.putExtra(LostAndFoundDetailActivity.INTENT_KEY_LOST_AND_FOUND_DETAIL_TYPE,
+                                LostAndFoundDetailActivity.TYPE_FOUND);
+                    } else {
+                        intent.putExtra(LostAndFoundDetailActivity.INTENT_KEY_LOST_AND_FOUND_DETAIL_TYPE,
+                                LostAndFoundDetailActivity.TYPE_LOST);
+                    }
+                    startActivity(intent);
 
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    Log.wtf(TAG, "数组越界", e);
+                } catch (Exception e) {
+                    Log.wtf(TAG, e);
+                }
             }
 
             @Override
@@ -383,5 +387,11 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
             tv_lost.setTextColor(ContextCompat.getColor(this, R.color.colorDarkB));
             tv_found.setTextColor(ContextCompat.getColor(this, R.color.colorDark2));
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        presenter.onDetach();
+        super.onDestroy();
     }
 }

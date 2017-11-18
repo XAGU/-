@@ -226,4 +226,10 @@ public class RepairEvaluationActivity extends RepairBaseActivity implements IRep
         EventBus.getDefault().post(RepairEvent.REFRESH_REPAIR_LIST);
         finish();
     }
+
+    @Override
+    protected void onDestroy() {
+        presenter.onDetach();
+        super.onDestroy();
+    }
 }

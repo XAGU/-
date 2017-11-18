@@ -87,6 +87,8 @@ public class ProfileFragment2 extends Fragment {
                             items.get(position).getActivityClazz()));
                 } catch (ArrayIndexOutOfBoundsException e) {
                     Log.wtf(TAG, "数组越界", e);
+                } catch (Exception e) {
+                    Log.wtf(TAG, e);
                 }
             }
 

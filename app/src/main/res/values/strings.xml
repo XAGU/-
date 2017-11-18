@@ -104,7 +104,7 @@
     <string name="prepay_money">预付金额</string>
     <string name="prepay_money_colon">预付金额：</string>
     <string name="withdrawal">提现</string>
-    <string name="error_tip">网络异常</string>
+    <string name="error_tip">你的网络不太好哦</string>
     <string name="please_enter_password_to_verify">请输入登录密码进行验证</string>
     <string name="manage_dormitory">管理宿舍</string>
     <string name="notice_center">通知中心</string>

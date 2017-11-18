@@ -237,4 +237,10 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
             }
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        presenter.onDetach();
+        super.onDestroy();
+    }
 }

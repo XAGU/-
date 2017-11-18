@@ -92,4 +92,10 @@ public class HeaterActivity extends WaterDeviceBaseActivity<IHeaterPresenter> im
         guideDialog.setLocation(getLocation());
         guideDialog.show();
     }
+
+    @Override
+    protected void onDestroy() {
+        presenter.onDetach();
+        super.onDestroy();
+    }
 }

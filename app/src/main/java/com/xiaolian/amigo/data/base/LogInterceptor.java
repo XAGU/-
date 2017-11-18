@@ -8,11 +8,17 @@ import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import java.io.IOException;
 import java.util.Calendar;
 
+import javax.annotation.Nullable;
+
 import okhttp3.Interceptor;
+import okhttp3.MediaType;
+import okhttp3.Protocol;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import okio.Buffer;
+import okio.BufferedSource;
 
 /**
  * Log拦截器
@@ -74,6 +80,25 @@ public class LogInterceptor implements Interceptor {
                     return new Response.Builder()
                             .code(600) //Simply put whatever value you want to designate to aborted request.
                             .request(chain.request())
+                            .protocol(Protocol.HTTP_1_1)
+                            .message("ignore message")
+                            .body(new ResponseBody() {
+                                @Nullable
+                                @Override
+                                public MediaType contentType() {
+                                    return MediaType.parse("application/json;charset=UTF-8");
+                                }
+
+                                @Override
+                                public long contentLength() {
+                                    return 0;
+                                }
+
+                                @Override
+                                public BufferedSource source() {
+                                    return null;
+                                }
+                            })
                             .build();
                 }
             }

@@ -304,4 +304,10 @@ public class PublishLostActivity extends LostAndFoundBaseActivity implements IPu
             }
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        presenter.onDetach();
+        super.onDestroy();
+    }
 }

@@ -7,13 +7,11 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import com.xiaolian.amigo.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 
@@ -25,6 +23,7 @@ import com.xiaolian.amigo.ui.main.adaptor.HomeBannerDelegate;
 import com.xiaolian.amigo.ui.main.adaptor.HomeNormalDelegate;
 import com.xiaolian.amigo.ui.widget.RecyclerItemClickListener;
 import com.xiaolian.amigo.util.CommonUtil;
+import com.xiaolian.amigo.util.Log;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -46,9 +45,9 @@ public class HomeFragment2 extends Fragment {
 
     private static final String TAG = HomeFragment2.class.getSimpleName();
     HomeAdaptor.ItemWrapper shower = new HomeAdaptor.ItemWrapper(1, null, "热水澡", "TAKE A SHOWER", "#ffb6c5",
-                    R.drawable.shower);
+            R.drawable.shower);
     HomeAdaptor.ItemWrapper water = new HomeAdaptor.ItemWrapper(1, null, "饮水机", "DRINK A WATER", "#aaebe4",
-                    R.drawable.water);
+            R.drawable.water);
     HomeAdaptor.ItemWrapper lost = new HomeAdaptor.ItemWrapper(1, null, "失物招领", "LOST AND FOUND", "#b3d4ff",
             R.drawable.lost);
 
@@ -85,12 +84,12 @@ public class HomeFragment2 extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        adaptor = new HomeAdaptor(getActivity(),items);
+        adaptor = new HomeAdaptor(getActivity(), items);
 //        recyclerView.scheduleLayoutAnimation();
         adaptor.addItemViewDelegate(new HomeNormalDelegate(getActivity()));
         adaptor.addItemViewDelegate(new HomeBannerDelegate(getActivity()));
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        ((DefaultItemAnimator)recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
+        ((DefaultItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
         LayoutAnimationController animation = AnimationUtils
                 .loadLayoutAnimation(getContext(), R.anim.layout_animation_home_slide_left_to_right);
         recyclerView.setLayoutAnimation(animation);
@@ -98,21 +97,27 @@ public class HomeFragment2 extends Fragment {
                 new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position, MotionEvent e) {
-                        Log.d(TAG, "recycler view onItemClick " + position);
-                        if (items.get(position).getType() != 1) {
-                            view.dispatchTouchEvent(e);
-                            return;
-                        }
-                        if (items.get(position).getType() == 1) {
-                            disabledView = view;
-                            view.setEnabled(false);
-                            if (items.get(position).getRes() == R.drawable.shower) {
-                                EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_HEATER));
-                            } else if (items.get(position).getRes() == R.drawable.water) {
-                                EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_DISPENSER));
-                            } else if (items.get(position).getRes() == R.drawable.lost) {
-                                EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_LOST_AND_FOUND));
+                        try {
+                            Log.d(TAG, "recycler view onItemClick " + position);
+                            if (items.get(position).getType() != 1) {
+                                view.dispatchTouchEvent(e);
+                                return;
                             }
+                            if (items.get(position).getType() == 1) {
+                                disabledView = view;
+                                view.setEnabled(false);
+                                if (items.get(position).getRes() == R.drawable.shower) {
+                                    EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_HEATER));
+                                } else if (items.get(position).getRes() == R.drawable.water) {
+                                    EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_DISPENSER));
+                                } else if (items.get(position).getRes() == R.drawable.lost) {
+                                    EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_LOST_AND_FOUND));
+                                }
+                            }
+                        } catch (ArrayIndexOutOfBoundsException ex) {
+                            Log.wtf(TAG, "数组越界", ex);
+                        } catch (Exception ex) {
+                            Log.wtf(TAG, ex);
                         }
                     }
 
@@ -141,7 +146,7 @@ public class HomeFragment2 extends Fragment {
             banner = new HomeAdaptor.ItemWrapper(2, banners, null, null, null, 0);
             items.add(banner);
             Log.d(TAG, "onBannerEvent notify");
-            adaptor.notifyItemInserted(items.size()-1);
+            adaptor.notifyItemInserted(items.size() - 1);
         } else {
             if (!isBannersEqual(items.get(items.size() - 1).getBanners(), banners)) {
                 items.get(items.size() - 1).setBanners(banners);
@@ -287,7 +292,7 @@ public class HomeFragment2 extends Fragment {
         if (banners1.size() != banners2.size()) {
             return false;
         }
-        for (int i = 0; i < banners1.size(); i ++) {
+        for (int i = 0; i < banners1.size(); i++) {
             if (!TextUtils.equals(banners1.get(i).getImage(), banners2.get(i).getImage())) {
                 return false;
             }
@@ -314,8 +319,7 @@ public class HomeFragment2 extends Fragment {
             SCHOOL_BIZ(2),
             ENABLE_VIEW(3),
             CHANGE_ANIMATION(4),
-            INIT_BIZ(5)
-            ;
+            INIT_BIZ(5);
 
             EventType(int type) {
                 this.type = type;
@@ -324,7 +328,6 @@ public class HomeFragment2 extends Fragment {
             private int type;
         }
     }
-
 
 
     @Override

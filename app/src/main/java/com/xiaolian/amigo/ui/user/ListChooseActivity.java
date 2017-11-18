@@ -29,6 +29,7 @@ import com.xiaolian.amigo.ui.user.intf.IListChoosePresenter;
 import com.xiaolian.amigo.ui.user.intf.IListChooseView;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +66,7 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
     // 选择设备，热水澡 or 饮水机
     public static final int ACTION_LIST_DEVICE = 7;
     public static final int ACTION_LIST_WITHDRAW_WAY = 8;
+    private static final String TAG = ListChooseActivity.class.getSimpleName();
 
 
     private UserActivityComponent mActivityComponent;
@@ -132,8 +134,14 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                 case ACTION_LIST_SEX:
                     tv_title.setText("选择性别");
                     adapter.setOnItemClickListener((view, position) -> {
-                        presenter.updateSex(
-                                TextUtils.equals(items.get(position).getContent(), "男") ? 1 : 2);
+                        try {
+                            presenter.updateSex(
+                                    TextUtils.equals(items.get(position).getContent(), "男") ? 1 : 2);
+                        } catch (ArrayIndexOutOfBoundsException e) {
+                            Log.e(TAG, "数组越界");
+                        } catch (Exception e) {
+                            Log.wtf(TAG, e);
+                        }
                     });
                     if (getIntent() != null) {
                         int sexType = getIntent().getIntExtra(INTENT_KEY_LIST_SEX_TYPE, -1);
@@ -370,5 +378,11 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        presenter.onDetach();
+        super.onDestroy();
     }
 }

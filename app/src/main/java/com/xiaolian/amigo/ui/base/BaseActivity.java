@@ -41,11 +41,11 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.aitangba.swipeback.SwipeBackActivity;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
+import com.xiaolian.amigo.ui.base.swipeback.SwipeBackActivity;
 import com.xiaolian.amigo.ui.login.LoginActivity;
 import com.xiaolian.amigo.ui.main.HomeFragment2;
 import com.xiaolian.amigo.ui.main.MainActivity;
@@ -324,14 +324,18 @@ public abstract class BaseActivity extends SwipeBackActivity
             hideLoading();
             mProgressDialog.show();
         } catch (Exception e) {
-            Log.wtf(TAG, e);
+            Log.wtf(TAG, "showLoading出错", e);
         }
     }
 
     @Override
     public void hideLoading() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.cancel();
+        try {
+            if (mProgressDialog != null && mProgressDialog.isShowing()) {
+                mProgressDialog.cancel();
+            }
+        } catch (Exception e) {
+            Log.wtf(TAG, "hideLoading出错", e);
         }
     }
 
@@ -473,9 +477,14 @@ public abstract class BaseActivity extends SwipeBackActivity
 
     @Override
     protected void onDestroy() {
-
         if (mUnBinder != null) {
             mUnBinder.unbind();
+        }
+        if (mProgressDialog != null) {
+            mProgressDialog.dismiss();
+        }
+        if (actionSheetDialog != null && actionSheetDialog.getDialog() != null) {
+            actionSheetDialog.getDialog().dismiss();
         }
         super.onDestroy();
     }

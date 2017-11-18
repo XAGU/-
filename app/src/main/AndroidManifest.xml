@@ -84,12 +84,6 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
 
-        <!--设备类型-->
-        <activity
-            android:name=".ui.repair.RepairDeviceTypeActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-
         <!--web页面-->
         <activity
             android:name=".ui.base.WebActivity"
@@ -408,15 +402,6 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".ui.main.TestActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-            <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.MAIN" />-->
-            <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
-        </activity>
         <!--选择设备类型-->
         <activity
             android:name=".ui.repair.ChooseRepairActivity"

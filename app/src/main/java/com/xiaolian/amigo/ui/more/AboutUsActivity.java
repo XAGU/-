@@ -94,4 +94,10 @@ public class AboutUsActivity extends MoreBaseActivity implements IAboutUsView {
 //        presenter.checkUpdate(versionCode, versionName, true);
         showUpdateDialog(model);
     }
+
+    @Override
+    protected void onDestroy() {
+        presenter.onDetach();
+        super.onDestroy();
+    }
 }

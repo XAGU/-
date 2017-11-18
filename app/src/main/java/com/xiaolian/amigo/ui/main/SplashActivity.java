@@ -58,6 +58,7 @@ public class SplashActivity extends MainBaseActivity implements ISplashView {
     @Override
     protected void onDestroy() {
         Log.d(TAG, "onDestroy");
+        presenter.onDetach();
         super.onDestroy();
     }
 
@@ -79,8 +80,6 @@ public class SplashActivity extends MainBaseActivity implements ISplashView {
         super.onStop();
         Log.i(TAG, "onStop");
     }
-
-
 
     @Override
     public void startMainServerNoResponse() {

@@ -74,7 +74,7 @@ ext {
     ucropVersion = '2.2.1'
 
     // 滑动返回
-    swipebackVersion = '1.0.1'
+    swipebackVersion = '1.0.2'
 
     wheelpickerVersion = '1.1.2'
 

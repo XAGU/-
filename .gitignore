@@ -9,6 +9,7 @@ target/
 .settings
 .springBeans
 app/release/
+captures/
 
 ### IntelliJ IDEA ###
 .idea/

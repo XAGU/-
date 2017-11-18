@@ -125,4 +125,10 @@ public class ChooseDormitoryActivity extends UserBaseListActivity implements ICh
             onRefresh();
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        presenter.onDetach();
+        super.onDestroy();
+    }
 }

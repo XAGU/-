@@ -97,4 +97,10 @@ public class ChooseWithdrawActivity extends WalletBaseActivity implements IChoos
     public void refreshList() {
         refresh();
     }
+
+    @Override
+    protected void onDestroy() {
+        presenter.onDetach();
+        super.onDestroy();
+    }
 }

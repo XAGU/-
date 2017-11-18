@@ -200,4 +200,10 @@ public class RechargeDetailActivity extends WalletBaseActivity implements IRecha
                         + "&orderNo=" + orderNo
                         + "&orderType=" + ComplaintType.RECHARGE.getType()));
     }
+
+    @Override
+    protected void onDestroy() {
+        presenter.onDetach();
+        super.onDestroy();
+    }
 }

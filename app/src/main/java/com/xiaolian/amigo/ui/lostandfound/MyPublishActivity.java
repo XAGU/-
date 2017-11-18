@@ -119,4 +119,10 @@ public class MyPublishActivity extends LostAndFoundBaseListActivity implements I
     public void refresh() {
         onRefresh();
     }
+
+    @Override
+    protected void onDestroy() {
+        presenter.onDetach();
+        super.onDestroy();
+    }
 }

@@ -82,4 +82,10 @@ public class PrepayActivity extends WalletBaseListActivity implements IPrepayVie
         this.orders.addAll(orders);
         adaptor.notifyDataSetChanged();
     }
+
+    @Override
+    protected void onDestroy() {
+        presenter.onDetach();
+        super.onDestroy();
+    }
 }

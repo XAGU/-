@@ -49,6 +49,7 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
     private static final int BAD_GATEWAY = 502;
     private static final int SERVICE_UNAVAILABLE = 503;
     private static final int GATEWAY_TIMEOUT = 504;
+    private static final int IGNORE = 600;
 
     // 统一管理observer，防止内存泄露
     protected CompositeSubscription subscriptions;
@@ -62,6 +63,7 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
 
     @Override
     public void onDetach() {
+        clearObservers();
         view = null;
     }
 
@@ -88,11 +90,15 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
                         getMvpView().post(() -> getMvpView().onError(R.string.please_login));
                         getMvpView().post(() -> getMvpView().redirectToLogin());
                         break;
+                    case IGNORE:
+                        // ignore
+                        break;
                     default:
                         getMvpView().onError("服务器飞走啦，努力修复中");
                         break;
                 }
             } else {
+                Log.wtf(TAG, "sorry，程序上出现错误", e);
                 getMvpView().onError("sorry，程序上出现错误");
             }
         }
@@ -316,14 +322,18 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
 
         @Override
         public void onError(Throwable e) {
-            Log.d(TAG, e.getMessage());
-            if (renderView) {
-                onRemoteInvocationError(e);
-                view.hideLoading();
-            }
-            if (checkHttpError) {
-                // 处理toke失效需要重新登录的错误
-                onHttpError(e);
+            try {
+                Log.d(TAG, e.getMessage());
+                if (renderView) {
+                    onRemoteInvocationError(e);
+                    view.hideLoading();
+                }
+                if (checkHttpError) {
+                    // 处理toke失效需要重新登录的错误
+                    onHttpError(e);
+                }
+            } catch (Exception e1) {
+                Log.wtf(TAG, e1);
             }
         }
 

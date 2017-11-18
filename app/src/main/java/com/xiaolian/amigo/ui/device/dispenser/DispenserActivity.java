@@ -141,4 +141,10 @@ public class DispenserActivity extends WaterDeviceBaseActivity<IDispenserPresent
     public void onBackPressed() {
         back2Main();
     }
+
+    @Override
+    protected void onDestroy() {
+        presenter.onDetach();
+        super.onDestroy();
+    }
 }

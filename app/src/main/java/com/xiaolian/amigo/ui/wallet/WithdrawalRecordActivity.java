@@ -97,4 +97,10 @@ public class WithdrawalRecordActivity extends WalletBaseListActivity implements 
             onRefresh();
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        presenter.onDetach();
+        super.onDestroy();
+    }
 }

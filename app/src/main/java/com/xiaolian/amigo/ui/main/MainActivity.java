@@ -8,16 +8,15 @@ import android.graphics.RectF;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import com.xiaolian.amigo.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -57,6 +56,7 @@ import com.xiaolian.amigo.ui.widget.dialog.PrepayDialog;
 import com.xiaolian.amigo.util.AppUtils;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.util.Log;
 import com.youth.banner.Banner;
 
 import org.greenrobot.eventbus.EventBus;
@@ -119,6 +119,12 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     TextView tv_notice_count;
 
     /**
+     * MainActivity根View
+     */
+    @BindView(R.id.rl_main)
+    RelativeLayout rl_main;
+
+    /**
      * 通知
      */
     @BindView(R.id.rl_notice)
@@ -173,21 +179,16 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 getSupportFragmentManager().beginTransaction()
                         .show(homeFragment)
                         .hide(profileFragment)
-                        .commit();
+                        .commitAllowingStateLoss();
             } else {
                 if (homeFragment != null) {
                     getSupportFragmentManager().beginTransaction()
-                            .remove(homeFragment).commit();
+                            .show(homeFragment).commitAllowingStateLoss();
                 }
-                if (profileFragment != null) {
+                if (profileFragment != null && homeFragment == null) {
                     getSupportFragmentManager().beginTransaction()
-                            .remove(profileFragment).commit();
+                            .show(profileFragment).commitAllowingStateLoss();
                 }
-                for (Fragment fragment : getSupportFragmentManager().getFragments()) {
-                    getSupportFragmentManager().beginTransaction().remove(fragment).commit();
-                }
-                homeFragment = new HomeFragment2();
-                getSupportFragmentManager().beginTransaction().add(R.id.fm_container, homeFragment).commit();
             }
         }
 
@@ -257,6 +258,22 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @Override
     protected void onResume() {
         super.onResume();
+//        try {
+//            // 检测MainActivity的RootView是否为空，为空表示出现白屏的情况，要重新把rl_main添加到RootView里
+//            FrameLayout contentView = (FrameLayout) getWindow().getDecorView().findViewById(android.R.id.content);
+//            if (rl_main.getParent() == null) {
+//                Log.wtf(TAG, "rl_main的parent为null");
+//                contentView.removeAllViews();
+//                contentView.addView(rl_main);
+//            } else if (rl_main.getParent() != contentView) {
+//                Log.wtf(TAG, "rl_main的parent和RootView不一致");
+//                contentView.removeAllViews();
+//                ((FrameLayout) rl_main.getParent()).removeView(rl_main);
+//                contentView.addView(rl_main);
+//            }
+//        } catch (Exception e) {
+//            Log.wtf(TAG, e);
+//        }
         Log.d(TAG, "onResume");
         if (!isNetworkAvailable()) {
             showNoticeAmount(0);
@@ -380,9 +397,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 transaction = transaction.hide(homeFragment);
             }
             if (!profileFragment.isAdded()) {
-                transaction.add(R.id.fm_container, profileFragment, "profile").commit();
+                transaction.add(R.id.fm_container, profileFragment, "profile").commitAllowingStateLoss();
             } else {
-                transaction.show(profileFragment).commit();
+                transaction.show(profileFragment).commitAllowingStateLoss();
             }
             current = 1;
         } else {
@@ -396,9 +413,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 transaction = transaction.hide(profileFragment);
             }
             if (!homeFragment.isAdded()) {
-                transaction.add(R.id.fm_container, homeFragment, "home").commit();
+                transaction.add(R.id.fm_container, homeFragment, "home").commitAllowingStateLoss();
             } else {
-                transaction.show(homeFragment).commit();
+                transaction.show(homeFragment).commitAllowingStateLoss();
             }
             current = 0;
         }
@@ -915,6 +932,21 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         Log.d(TAG, "onStop");
         super.onStop();
         EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (prepayDialog != null) {
+            prepayDialog.dismiss();
+        }
+        if (availabilityDialog != null) {
+            availabilityDialog.dismiss();
+        }
+        if (openLocationDialog != null) {
+            openLocationDialog.dismiss();
+        }
+        presenter.onDetach();
+        super.onDestroy();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

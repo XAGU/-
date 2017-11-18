@@ -275,6 +275,10 @@ public class ActionSheetDialog {
         dialog.show();
     }
 
+    public Dialog getDialog() {
+        return dialog;
+    }
+
     public interface OnSheetItemClickListener {
         void onClick(int which);
     }

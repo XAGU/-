@@ -369,4 +369,10 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
             }
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        presenter.onDetach();
+        super.onDestroy();
+    }
 }

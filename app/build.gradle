@@ -140,7 +140,7 @@ dependencies {
     implementation 'com.tbruyelle.rxpermissions:rxpermissions:0.7.0@aar'
 
     // 滑动返回
-    implementation "com.aitangba:swipeback:$rootProject.swipebackVersion"
+//    implementation "com.aitangba:swipeback:$rootProject.swipebackVersion"
 
     // parser
     implementation "com.google.code.gson:gson:$rootProject.gsonVersion"

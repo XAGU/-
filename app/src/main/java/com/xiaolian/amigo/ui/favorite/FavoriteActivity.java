@@ -121,4 +121,10 @@ public class FavoriteActivity extends FavoriteBaseActivity implements IFavoriteV
             action = IntentAction.getAction(actionType);
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        presenter.onDetach();
+        super.onDestroy();
+    }
 }

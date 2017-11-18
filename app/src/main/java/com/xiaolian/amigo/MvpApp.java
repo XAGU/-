@@ -17,10 +17,10 @@ package com.xiaolian.amigo;
 
 import android.app.Application;
 
-import com.aitangba.swipeback.ActivityLifecycleHelper;
 import com.xiaolian.amigo.di.componet.ApplicationComponent;
 import com.xiaolian.amigo.di.componet.DaggerApplicationComponent;
 import com.xiaolian.amigo.di.module.ApplicationModule;
+import com.xiaolian.amigo.ui.base.swipeback.ActivityLifecycleHelper;
 import com.xiaolian.amigo.ui.main.SplashActivity;
 import com.xiaolian.amigo.util.Log;
 import com.xiaolian.amigo.util.crash.CrashHandler;

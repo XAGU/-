@@ -215,4 +215,10 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
     public void onError(TradeError tradeError) {
 
     }
+
+    @Override
+    protected void onDestroy() {
+        presenter.onDetach();
+        super.onDestroy();
+    }
 }

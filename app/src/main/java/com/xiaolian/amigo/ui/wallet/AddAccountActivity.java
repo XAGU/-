@@ -70,4 +70,10 @@ public class AddAccountActivity extends WalletBaseActivity implements IAddAccoun
     public void back() {
         onBackPressed();
     }
+
+    @Override
+    protected void onDestroy() {
+        presenter.onDetach();
+        super.onDestroy();
+    }
 }

@@ -57,6 +57,4 @@ public class NoticeDetailActivity extends BaseToolBarActivity {
     protected void setUp() {
         noticeWapper = (NoticeAdaptor.NoticeWapper) getIntent().getSerializableExtra(Constant.EXTRA_KEY);
     }
-
-
 }

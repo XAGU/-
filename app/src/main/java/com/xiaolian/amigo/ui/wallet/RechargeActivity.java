@@ -206,4 +206,10 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
             this.alipayResult = alipayResult;
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        presenter.onDetach();
+        super.onDestroy();
+    }
 }

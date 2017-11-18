@@ -134,4 +134,10 @@ public class NoticeListActivity extends NoticeBaseListActivity implements INotic
             }
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        presenter.onDetach();
+        super.onDestroy();
+    }
 }

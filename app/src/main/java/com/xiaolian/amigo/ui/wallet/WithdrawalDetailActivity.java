@@ -210,4 +210,10 @@ public class WithdrawalDetailActivity extends WalletBaseActivity implements IWit
                         + "&orderNo=" + orderNo
                         + "&orderType=" + ComplaintType.WITHDRAW.getType()));
     }
+
+    @Override
+    protected void onDestroy() {
+        presenter.onDetach();
+        super.onDestroy();
+    }
 }
