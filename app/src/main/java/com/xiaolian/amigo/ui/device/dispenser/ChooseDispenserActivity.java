@@ -6,6 +6,9 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+
+import com.xiaolian.amigo.data.network.model.dto.response.OrderPreInfoDTO;
+import com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity;
 import com.xiaolian.amigo.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -70,6 +73,7 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
     RelativeLayout rl_empty;
     RelativeLayout rl_error;
     int action = ACTION_NORMAL;
+    private OrderPreInfoDTO orderPreInfo;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -78,7 +82,8 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
         presenter.onAttach(ChooseDispenserActivity.this);
-        adaptor = new ChooseDispenserAdaptor(this, R.layout.item_dispenser, items, presenter);
+        adaptor = new ChooseDispenserAdaptor(this, R.layout.item_dispenser,
+                items, presenter, orderPreInfo);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 14)));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -122,6 +127,8 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
         super.setUp();
         if (getIntent() != null) {
             action = getIntent().getIntExtra(INTENT_KEY_ACTION, ACTION_NORMAL);
+            orderPreInfo = (OrderPreInfoDTO) getIntent()
+                    .getSerializableExtra(WaterDeviceBaseActivity.INTENT_PREPAY_INFO);
         }
     }
 

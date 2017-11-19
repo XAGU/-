@@ -18,6 +18,9 @@ package com.xiaolian.amigo.ui.base;
 
 import android.os.Handler;
 import android.os.HandlerThread;
+
+import com.xiaolian.amigo.data.enumeration.BizError;
+import com.xiaolian.amigo.data.enumeration.CommonError;
 import com.xiaolian.amigo.util.Log;
 
 import com.polidea.rxandroidble.exceptions.BleDisconnectedException;
@@ -107,62 +110,104 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
     @Override
     public void onBizCodeError(Error error) {
         // TODO 和mMvpView关联
-        switch (error.getCode()) {
-            // PERMISSION_DENIED(10001, "请重新登录"),
-            case 10001:
-                getMvpView().onError(R.string.please_login);
-                getMvpView().redirectToLogin();
-                break;
-            // ACCOUNT_EXIST(10002, "该手机号已注册，请直接登录"),
-            case 10002:
-                getMvpView().onError("该手机号已注册，请直接登录");
-                break;
-            // SERVER_SYSTEM_ERROR(10003, "服务器错误"),
-            case 10003:
-                getMvpView().onError("服务器错误");
-                break;
-            // INVALID_SMS_CODE(10004, "短信验证码输入错误"),
-            case 10004:
-                getMvpView().onError("短信验证码输入错误");
-                break;
-            // ACCOUNT_NOT_EXIST(10005,"账号不存在"),
-            case 10005:
-                getMvpView().onError("账号不存在");
-                break;
-            // UNMATCHED_PASSWORD(10006,"密码错误" ),
-            case 10006:
-                getMvpView().onError("密码错误");
-                break;
-            // ACCOUNT_LOCKED(10007,"账号不可用" ),
-            case 10007:
-                getMvpView().onError("账号不可用");
-                break;
-            // BIZ_ERROR(10008, "业务错误"),
-            case 10008:
-                getMvpView().onError("业务错误");
-                break;
-            // CLIENT_PARAM_ERROR(10009, "缺少参数"),
-            case 10009:
-                getMvpView().onError("缺少参数");
-                break;
-            // INVALID_MOBILE(10010, "手机号不合法:"),
-            case 10010:
-                getMvpView().onError("手机号不合法");
-                break;
-            // DATA_NOT_FOUND(10011, "数据不存在:"),
-            case 10011:
-                getMvpView().onError("数据不存在");
-                break;
-            // SQL_ERROR(10012, "数据库操作错误"),
-            case 10012:
-                getMvpView().onError("数据库操作错误");
-                break;
-            // DUPLICATE_KEY_ERROR(10013, "主键冲突");
-            case 10013:
-                break;
-            default:
-                break;
+        int errorCode = error.getCode();
+        // 处理通用异常
+        if (errorCode == CommonError.PERMISSION_DENIED.getCode()) {
+            Log.w(TAG, "请重新登录");
+            getMvpView().onError(CommonError.PERMISSION_DENIED.getDesc());
+            getMvpView().redirectToLogin();
+        } else if (errorCode == CommonError.SERVER_SYSTEM_ERROR.getCode()) {
+            Log.w(TAG, "服务器错误");
+            getMvpView().onError("服务器飞走啦，努力修复中");
+        } else if (errorCode == CommonError.CLIENT_PARAM_ERROR.getCode()) {
+            Log.w(TAG, "参数异常");
+        } else if (errorCode == CommonError.NO_ACCESS.getCode()) {
+            Log.w(TAG, "没有权限");
+        } else if (errorCode == CommonError.DATA_NOT_EXIST.getCode()) {
+            Log.w(TAG, "数据不存在");
+        } else if (errorCode == CommonError.DATA_EXIST.getCode()) {
+            Log.w(TAG, "数据已存在");
+        } else if (errorCode == CommonError.SQL_ERROR.getCode()) {
+            Log.w(TAG, "数据库操作错误");
+        } else if (errorCode == CommonError.DUPLICATE_KEY_ERROR.getCode()) {
+            Log.w(TAG, "主键冲突");
+        } else if (errorCode == CommonError.STATUS_ERROR.getCode()) {
+            Log.w(TAG, "状态异常");
+        } else if (errorCode == CommonError.AES_ENCODE_ERROR.getCode()) {
+            Log.w(TAG, "AES加密出错");
+        } else if (errorCode == CommonError.AES_DECODE_ERROR.getCode()) {
+            Log.w(TAG, "AES解密出错");
         }
+
+        // 处理业务异常
+        if (errorCode == BizError.INVALID_MOBILE.getCode()) {
+            Log.w(TAG, "手机号不合法");
+        } else if (errorCode == BizError.ACCOUNT_EXIST.getCode()) {
+            Log.w(TAG, "该手机号已注册");
+        } else if (errorCode == BizError.INVALID_SMS_CODE.getCode()) {
+            Log.w(TAG, "短信验证码错误");
+        } else if (errorCode == BizError.ACCOUNT_NOT_EXIST.getCode()) {
+            Log.w(TAG, "账号不存在");
+        } else if (errorCode == BizError.UNMATCHED_PASSWORD.getCode()) {
+            Log.w(TAG, "密码错误");
+        } else if (errorCode == BizError.ACCOUNT_LOCKED.getCode()) {
+            Log.w(TAG, "账号冻结");
+        } else if (errorCode == BizError.SCHOOL_NOT_BOUND.getCode()) {
+            Log.w(TAG, "该学校超出管理范围");
+        } else if (errorCode == BizError.DEVICE_EXISTS.getCode()) {
+            Log.w(TAG, "该位置已有设备");
+        } else if (errorCode == BizError.RESIDENCE_EXISTS.getCode()) {
+            Log.w(TAG, "位置已存在");
+        } else if (errorCode == BizError.DEVICE_MAC_ADDRESS_EXISTS.getCode()) {
+            Log.w(TAG, "备mac地址重复");
+        } else if (errorCode == BizError.RESIDENCE_USED.getCode()) {
+            Log.w(TAG, "请先解绑所有设备");
+        } else if (errorCode == BizError.RESIDENCE_NOT_BIND.getCode()) {
+            Log.w(TAG, "请先绑定寝室");
+        } else if (errorCode == BizError.LOST_BEYOND_LIMIT.getCode()) {
+            Log.w(TAG, "今日可发布的失物招领信息已经超过10条限额");
+        } else if (errorCode == BizError.REDEEM_CODE_INVALID.getCode()) {
+            Log.w(TAG, "兑换码无效");
+        } else if (errorCode == BizError.REDEEM_DONE.getCode()) {
+            Log.w(TAG, "你已兑换");
+        } else if (errorCode == BizError.REDEEM_BONUS_END.getCode()) {
+            Log.w(TAG, "红包已被兑换完");
+        } else if (errorCode == BizError.SCHOOL_CANNOT_CHANGE.getCode()) {
+            Log.w(TAG, "暂不支持切换学校");
+        } else if (errorCode == BizError.BALANCE_NOT_ENOUGH.getCode()) {
+            Log.w(TAG, "余额不足");
+        } else if (errorCode == BizError.DEVICE_USEFOR_EXISTS.getCode()) {
+            Log.w(TAG, "水温设置冲突");
+        } else if (errorCode == BizError.FUNDS_OPERATION_ERROR.getCode()) {
+            Log.w(TAG, "不是充值订单");
+        } else if (errorCode == BizError.NO_VERSION.getCode()) {
+            Log.w(TAG, "当前没有版本信息");
+        } else if (errorCode == BizError.WITHDRAW_NOT_VALID.getCode()) {
+            Log.w(TAG, "当前时间无法提现");
+        } else if (errorCode == BizError.SCHOOL_CONFIG_NOT_FINISHED.getCode()) {
+            Log.w(TAG, "请先完成学校基础配置");
+        } else if (errorCode == BizError.SCHOOL_HAS_BUILDING.getCode()) {
+            Log.w(TAG, "请先删除所有楼栋");
+        } else if (errorCode == BizError.ACTIVITY_NOT_EXIST.getCode()) {
+            Log.w(TAG, "你所在学校没有新人有礼活动");
+        } else if (errorCode == BizError.BONUS_RECEIVED.getCode()) {
+            Log.w(TAG, "你已领取过红包");
+        } else if (errorCode == BizError.SCHOOL_IS_ONLINE.getCode()) {
+            Log.w(TAG, "请先下线学校");
+        } else if (errorCode == BizError.SMS_CODE_SEND_FAILED.getCode()) {
+            Log.w(TAG, "验证码发送失败");
+        } else if (errorCode == BizError.COMPLAINT_DUPLICATE.getCode()) {
+            Log.w(TAG, "该账单已有投诉");
+        } else if (errorCode == BizError.SCHOOL_BUSINESS_EMPTY.getCode()) {
+            Log.w(TAG, "已上线学校支持功能不能为空");
+        } else if (errorCode == BizError.BONUS_DUPLICATE.getCode()) {
+            Log.w(TAG, "已存在一样的红包");
+        } else if (errorCode == BizError.WITHDRAW_LESS_THAN_MIN.getCode()) {
+            Log.w(TAG, "提现金额不能低于10元");
+        } else if (errorCode == BizError.REMIND_TOO_OFTEN.getCode()) {
+            Log.w(TAG, "提醒太频繁");
+        }
+
     }
 
     private void onHttpError(Throwable e) {

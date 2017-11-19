@@ -716,7 +716,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                                 data.getResidenceId());
                     } else {
                         // 进入饮水机选择页面
-                        startActivity(new Intent(MainActivity.this, ChooseDispenserActivity.class));
+                        startActivity(new Intent(MainActivity.this, ChooseDispenserActivity.class)
+                                .putExtra(WaterDeviceBaseActivity.INTENT_PREPAY_INFO, orderPreInfo));
                     }
                 }
             }

@@ -17,6 +17,8 @@ import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.enumeration.DispenserWater;
 import com.xiaolian.amigo.data.network.model.device.ScanDevice;
 import com.xiaolian.amigo.data.network.model.device.ScanDeviceGroup;
+import com.xiaolian.amigo.data.network.model.dto.response.OrderPreInfoDTO;
+import com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IChooseDispenerView;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IChooseDispenserPresenter;
 import com.xiaolian.amigo.ui.main.MainActivity;
@@ -36,12 +38,17 @@ public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenser
     private Context context;
     private int layoutId;
     private IChooseDispenserPresenter<IChooseDispenerView> presenter;
+    private OrderPreInfoDTO orderPreInfo;
 
-    public ChooseDispenserAdaptor(Context context, int layoutId, List<DispenserWrapper> datas , IChooseDispenserPresenter<IChooseDispenerView> presenter) {
+    public ChooseDispenserAdaptor(Context context, int layoutId,
+                                  List<DispenserWrapper> datas ,
+                                  IChooseDispenserPresenter<IChooseDispenerView> presenter,
+                                  OrderPreInfoDTO orderPreInfo) {
         this.context = context;
         this.mData = datas;
         this.layoutId = layoutId;
         this.presenter = presenter;
+        this.orderPreInfo = orderPreInfo;
     }
 
     @Override
@@ -49,52 +56,46 @@ public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenser
         View view = LayoutInflater.from(parent.getContext()).inflate(layoutId, parent, false);
         ViewHolder holder = new ViewHolder(view);
         // 添加饮水机点击事件
-        holder.tv_cold_water.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                presenter.closeBleConnection();
-                ChooseDispenserAdaptor.DispenserWrapper dispenserWrapper = mData.get(holder.getAdapterPosition());
-                context.startActivity(new Intent(context.getApplicationContext(), DispenserActivity.class)
-                        .putExtra(MainActivity.INTENT_KEY_MAC_ADDRESS, dispenserWrapper.getCold().getMacAddress())
-                        .putExtra(DispenserActivity.INTENT_KEY_FAVOR, dispenserWrapper.isFavor())
-                        .putExtra(DispenserActivity.INTENT_KEY_ID, dispenserWrapper.getResidenceId())
-                        .putExtra(DispenserActivity.INTENT_KEY_TEMPERATURE, DispenserWater.COLD.getType())
-                        .putExtra(MainActivity.INTENT_KEY_LOCATION, dispenserWrapper.getLocation())
-                        .putExtra(MainActivity.INTENT_KEY_DEVICE_TYPE, Device.DISPENSER.getType()));
-                if (presenter.getAction() == ChooseDispenserActivity.ACTION_CHANGE_DISPENSER) {
-                    presenter.finishView();
-                }
+        holder.tv_cold_water.setOnClickListener(v -> {
+            presenter.closeBleConnection();
+            DispenserWrapper dispenserWrapper = mData.get(holder.getAdapterPosition());
+            context.startActivity(new Intent(context.getApplicationContext(), DispenserActivity.class)
+                    .putExtra(MainActivity.INTENT_KEY_MAC_ADDRESS, dispenserWrapper.getCold().getMacAddress())
+                    .putExtra(DispenserActivity.INTENT_KEY_FAVOR, dispenserWrapper.isFavor())
+                    .putExtra(DispenserActivity.INTENT_KEY_ID, dispenserWrapper.getResidenceId())
+                    .putExtra(DispenserActivity.INTENT_KEY_TEMPERATURE, DispenserWater.COLD.getType())
+                    .putExtra(MainActivity.INTENT_KEY_LOCATION, dispenserWrapper.getLocation())
+                    .putExtra(MainActivity.INTENT_KEY_DEVICE_TYPE, Device.DISPENSER.getType())
+                    .putExtra(WaterDeviceBaseActivity.INTENT_PREPAY_INFO, orderPreInfo));
+            if (presenter.getAction() == ChooseDispenserActivity.ACTION_CHANGE_DISPENSER) {
+                presenter.finishView();
             }
         });
         // 冰水
-        holder.tv_ice_water.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                presenter.closeBleConnection();
-                ChooseDispenserAdaptor.DispenserWrapper dispenserWrapper = mData.get(holder.getAdapterPosition());
-                context.startActivity(new Intent(context.getApplicationContext(), DispenserActivity.class)
-                        .putExtra(MainActivity.INTENT_KEY_MAC_ADDRESS, dispenserWrapper.getIce().getMacAddress())
-                        .putExtra(DispenserActivity.INTENT_KEY_FAVOR, dispenserWrapper.isFavor())
-                        .putExtra(DispenserActivity.INTENT_KEY_ID, dispenserWrapper.getResidenceId())
-                        .putExtra(DispenserActivity.INTENT_KEY_TEMPERATURE, DispenserWater.ICE.getType())
-                        .putExtra(MainActivity.INTENT_KEY_LOCATION, dispenserWrapper.getLocation())
-                        .putExtra(MainActivity.INTENT_KEY_DEVICE_TYPE, Device.DISPENSER.getType()));
-            }
+        holder.tv_ice_water.setOnClickListener(v -> {
+            presenter.closeBleConnection();
+            DispenserWrapper dispenserWrapper = mData.get(holder.getAdapterPosition());
+            context.startActivity(new Intent(context.getApplicationContext(), DispenserActivity.class)
+                    .putExtra(MainActivity.INTENT_KEY_MAC_ADDRESS, dispenserWrapper.getIce().getMacAddress())
+                    .putExtra(DispenserActivity.INTENT_KEY_FAVOR, dispenserWrapper.isFavor())
+                    .putExtra(DispenserActivity.INTENT_KEY_ID, dispenserWrapper.getResidenceId())
+                    .putExtra(DispenserActivity.INTENT_KEY_TEMPERATURE, DispenserWater.ICE.getType())
+                    .putExtra(MainActivity.INTENT_KEY_LOCATION, dispenserWrapper.getLocation())
+                    .putExtra(MainActivity.INTENT_KEY_DEVICE_TYPE, Device.DISPENSER.getType())
+                    .putExtra(WaterDeviceBaseActivity.INTENT_PREPAY_INFO, orderPreInfo));
         });
         // 热水
-        holder.tv_hot_water.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                presenter.closeBleConnection();
-                ChooseDispenserAdaptor.DispenserWrapper dispenserWrapper = mData.get(holder.getAdapterPosition());
-                context.startActivity(new Intent(context.getApplicationContext(), DispenserActivity.class)
-                        .putExtra(MainActivity.INTENT_KEY_MAC_ADDRESS, dispenserWrapper.getHot().getMacAddress())
-                        .putExtra(DispenserActivity.INTENT_KEY_FAVOR, dispenserWrapper.isFavor())
-                        .putExtra(DispenserActivity.INTENT_KEY_ID, dispenserWrapper.getResidenceId())
-                        .putExtra(DispenserActivity.INTENT_KEY_TEMPERATURE, DispenserWater.HOT.getType())
-                        .putExtra(MainActivity.INTENT_KEY_LOCATION, dispenserWrapper.getLocation())
-                        .putExtra(MainActivity.INTENT_KEY_DEVICE_TYPE, Device.DISPENSER.getType()));
-            }
+        holder.tv_hot_water.setOnClickListener(v -> {
+            presenter.closeBleConnection();
+            DispenserWrapper dispenserWrapper = mData.get(holder.getAdapterPosition());
+            context.startActivity(new Intent(context.getApplicationContext(), DispenserActivity.class)
+                    .putExtra(MainActivity.INTENT_KEY_MAC_ADDRESS, dispenserWrapper.getHot().getMacAddress())
+                    .putExtra(DispenserActivity.INTENT_KEY_FAVOR, dispenserWrapper.isFavor())
+                    .putExtra(DispenserActivity.INTENT_KEY_ID, dispenserWrapper.getResidenceId())
+                    .putExtra(DispenserActivity.INTENT_KEY_TEMPERATURE, DispenserWater.HOT.getType())
+                    .putExtra(MainActivity.INTENT_KEY_LOCATION, dispenserWrapper.getLocation())
+                    .putExtra(MainActivity.INTENT_KEY_DEVICE_TYPE, Device.DISPENSER.getType())
+                    .putExtra(WaterDeviceBaseActivity.INTENT_PREPAY_INFO, orderPreInfo));
         });
         return holder;
     }
@@ -103,32 +104,29 @@ public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenser
     public void onBindViewHolder(ViewHolder holder, int position) {
         ChooseDispenserAdaptor.DispenserWrapper dispenserWrapper = mData.get(holder.getAdapterPosition());
         holder.tv_location.setText(dispenserWrapper.getLocation());
-        holder.rl_top.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        holder.rl_top.setOnClickListener(v -> {
 //                if (mOnItemClickListener != null) {
 //                    mOnItemClickListener.onItemClick(v, position);
 //                }
-                if (lastExpandPosition != -1) {
-                    mData.get(lastExpandPosition).setExpanded(false);
-                }
-                boolean expand = false;
-                if (lastExpandPosition == holder.getAdapterPosition()) {
-                    expand = false;
-                    mData.get(holder.getAdapterPosition()).setExpanded(false);
-                    lastExpandPosition = -1;
-                } else {
-                    expand = true;
-                    mData.get(holder.getAdapterPosition()).setExpanded(true);
-                    lastExpandPosition = holder.getAdapterPosition();
-                }
-                ObjectAnimator anim =
-                        ObjectAnimator.ofFloat(holder.iv_arrow,
-                                "rotation", expand ? 0f : -180f, expand ? 180f : 0f);
-                anim.setDuration(200);
-                anim.start();
-                notifyDataSetChanged();
+            if (lastExpandPosition != -1) {
+                mData.get(lastExpandPosition).setExpanded(false);
             }
+            boolean expand = false;
+            if (lastExpandPosition == holder.getAdapterPosition()) {
+                expand = false;
+                mData.get(holder.getAdapterPosition()).setExpanded(false);
+                lastExpandPosition = -1;
+            } else {
+                expand = true;
+                mData.get(holder.getAdapterPosition()).setExpanded(true);
+                lastExpandPosition = holder.getAdapterPosition();
+            }
+            ObjectAnimator anim =
+                    ObjectAnimator.ofFloat(holder.iv_arrow,
+                            "rotation", expand ? 0f : -180f, expand ? 180f : 0f);
+            anim.setDuration(200);
+            anim.start();
+            notifyDataSetChanged();
         });
         if (dispenserWrapper.isExpanded()) {
             holder.v_divide.setVisibility(View.VISIBLE);
@@ -148,47 +146,10 @@ public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenser
         // 添加饮水机点击事件
         // 冷水
         holder.tv_cold_water.setEnabled(dispenserWrapper.getCold() != null);
-//        holder.tv_cold_water.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                context.startActivity(new Intent(context.getApplicationContext(), DispenserActivity.class)
-//                        .putExtra(MainActivity.INTENT_KEY_MAC_ADDRESS, dispenserWrapper.getCold().getMacAddress())
-//                        .putExtra(DispenserActivity.INTENT_KEY_FAVOR, dispenserWrapper.isFavor())
-//                        .putExtra(DispenserActivity.INTENT_KEY_ID, dispenserWrapper.getResidenceId())
-//                        .putExtra(DispenserActivity.INTENT_KEY_TEMPERATURE, DispenserWater.COLD.getType())
-//                        .putExtra(MainActivity.INTENT_KEY_LOCATION, dispenserWrapper.getLocation())
-//                        .putExtra(MainActivity.INTENT_KEY_DEVICE_TYPE, Device.DISPENSER.getType()));
-//            }
-//        });
         // 冰水
         holder.tv_ice_water.setEnabled(dispenserWrapper.getIce() != null);
-//        holder.tv_ice_water.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                context.startActivity(new Intent(context.getApplicationContext(), DispenserActivity.class)
-//                        .putExtra(MainActivity.INTENT_KEY_MAC_ADDRESS, dispenserWrapper.getIce().getMacAddress())
-//                        .putExtra(DispenserActivity.INTENT_KEY_FAVOR, dispenserWrapper.isFavor())
-//                        .putExtra(DispenserActivity.INTENT_KEY_ID, dispenserWrapper.getResidenceId())
-//                        .putExtra(DispenserActivity.INTENT_KEY_TEMPERATURE, DispenserWater.ICE.getType())
-//                        .putExtra(MainActivity.INTENT_KEY_LOCATION, dispenserWrapper.getLocation())
-//                        .putExtra(MainActivity.INTENT_KEY_DEVICE_TYPE, Device.DISPENSER.getType()));
-//            }
-//        });
         // 热水
         holder.tv_hot_water.setEnabled(dispenserWrapper.getHot() != null);
-//        holder.tv_hot_water.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                context.startActivity(new Intent(context.getApplicationContext(), DispenserActivity.class)
-//                        .putExtra(MainActivity.INTENT_KEY_MAC_ADDRESS, dispenserWrapper.getHot().getMacAddress())
-//                        .putExtra(DispenserActivity.INTENT_KEY_FAVOR, dispenserWrapper.isFavor())
-//                        .putExtra(DispenserActivity.INTENT_KEY_ID, dispenserWrapper.getResidenceId())
-//                        .putExtra(DispenserActivity.INTENT_KEY_TEMPERATURE, DispenserWater.HOT.getType())
-//                        .putExtra(MainActivity.INTENT_KEY_LOCATION, dispenserWrapper.getLocation())
-//                        .putExtra(MainActivity.INTENT_KEY_DEVICE_TYPE, Device.DISPENSER.getType()));
-//            }
-//        });
-
     }
 
     @Override
