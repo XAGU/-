@@ -22,7 +22,7 @@ public enum  BizError {
     LOST_BEYOND_LIMIT(30013, "今日可发布的失物招领信息已经超过10条限额"),
     REDEEM_CODE_INVALID(30014, "兑换码无效"),
     REDEEM_DONE(30015, "你已兑换"),
-    REDEEM_BONUS_END(30016, "红包已被兑换完"),
+    REDEEM_BONUS_END(30016, "代金券已被兑换完"),
     SCHOOL_CANNOT_CHANGE(30017, "暂不支持切换学校"),
     BALANCE_NOT_ENOUGH(30018, "余额不足"),
     DEVICE_USEFOR_EXISTS(30019, "水温设置冲突"),
@@ -32,12 +32,12 @@ public enum  BizError {
     SCHOOL_CONFIG_NOT_FINISHED(30023, "请先完成学校基础配置"),
     SCHOOL_HAS_BUILDING(30024, "请先删除所有楼栋"),
     ACTIVITY_NOT_EXIST(30025, "你所在学校没有新人有礼活动"),
-    BONUS_RECEIVED(30026, "你已领取过红包"),
+    BONUS_RECEIVED(30026, "你已领取过代金券"),
     SCHOOL_IS_ONLINE(30027, "请先下线学校"),
     SMS_CODE_SEND_FAILED(30028, "验证码发送失败"),
     COMPLAINT_DUPLICATE(30029, "该账单已有投诉"),
     SCHOOL_BUSINESS_EMPTY(30030, "已上线学校支持功能不能为空"),
-    BONUS_DUPLICATE(30031, "已存在一样的红包"),
+    BONUS_DUPLICATE(30031, "已存在一样的代金券"),
     WITHDRAW_LESS_THAN_MIN(30032, "提现金额不能低于10元"),
     REMIND_TOO_OFTEN(30033, "提醒太频繁");
     private int code;

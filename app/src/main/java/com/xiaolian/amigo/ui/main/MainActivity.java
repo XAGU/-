@@ -16,7 +16,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -570,24 +569,20 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         availabilityDialog.setTip(data.getTitle());
         availabilityDialog.setSubTip(data.getRemark());
         availabilityDialog.setOnOkClickListener(dialog1 -> {
-            if (deviceType == 1) {
+            if (deviceType == Device.HEATER.getType()) {
                 presenter.gotoHeaterDevice(data.getDefaultMacAddress(), data.getLocation(),
                         data.getResidenceId());
-            } else {
-                startActivity(ChooseDispenserActivity.class);
+            } else if (deviceType == Device.DISPENSER.getType()){
+                gotoChooseDispenser();
             }
         });
         availabilityDialog.show();
     }
 
-    @Override
-    public void gotoDevice(Class clz) {
-        Log.d(TAG, "gotoDevice: " + clz.getSimpleName());
-        if (TextUtils.isEmpty(presenter.getToken())) {
-            startActivity(new Intent(this, LoginActivity.class));
-        } else {
-            startActivity(clz);
-        }
+    private void gotoChooseDispenser() {
+        Intent intent = new Intent(this, ChooseDispenserActivity.class);
+        intent.putExtra(WaterDeviceBaseActivity.INTENT_PREPAY_INFO, orderPreInfo);
+        startActivity(intent);
     }
 
     @Override
@@ -607,7 +602,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         }
     }
 
-    public void gotoDispenser(String macAddress, String location, Long residenceId, boolean favor, int usefor, int type,
+    public void gotoDispenser(String macAddress, String location, Long residenceId,
+                              boolean favor, int usefor,
                               boolean recovery) {
         if (TextUtils.isEmpty(macAddress)) {
             onError("设备macAddress不合法");
@@ -615,7 +611,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             Intent intent = new Intent(this, DispenserActivity.class);
             intent.putExtra(INTENT_KEY_LOCATION, location);
             intent.putExtra(INTENT_KEY_MAC_ADDRESS, macAddress);
-            intent.putExtra(INTENT_KEY_DEVICE_TYPE, type);
+            intent.putExtra(INTENT_KEY_DEVICE_TYPE, Device.DISPENSER.getType());
             intent.putExtra(DispenserActivity.INTENT_KEY_ID, residenceId);
             intent.putExtra(MainActivity.INTENT_KEY_RECOVERY, recovery);
             intent.putExtra(DispenserActivity.INTENT_KEY_FAVOR, favor);
@@ -691,10 +687,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 // 直接前往热水澡处理找零
                 gotoDevice(HEATER, data.getUnsettledMacAddress(), data.getLocation(),
                         data.getResidenceId(), true);
-            } else {
+            } else if (type == Device.DISPENSER.getType()){
                 gotoDispenser(data.getUnsettledMacAddress(), data.getLocation(), data.getResidenceId(),
-                        data.getFavor(), data.getUsefor(), Device.DISPENSER.getType(), true);
-
+                        data.getFavor(), data.getUsefor(),true);
             }
         } else {
             if (type == Device.HEATER.getType() && heaterOrderSize > 0) {
@@ -714,10 +709,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                         // 前往默认宿舍的热水澡
                         presenter.gotoHeaterDevice(data.getDefaultMacAddress(), data.getLocation(),
                                 data.getResidenceId());
-                    } else {
+                    } else if (type == Device.DISPENSER.getType()){
                         // 进入饮水机选择页面
-                        startActivity(new Intent(MainActivity.this, ChooseDispenserActivity.class)
-                                .putExtra(WaterDeviceBaseActivity.INTENT_PREPAY_INFO, orderPreInfo));
+                        gotoChooseDispenser();
                     }
                 }
             }
@@ -839,11 +833,11 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         prepayDialog.setOnCancelClickListener(dialog -> {
             if (data.getTimeValid()) {
                 // 1 表示热水澡 2 表示饮水机
-                if (type == 1) {
+                if (type == Device.HEATER.getType()) {
                     presenter.gotoHeaterDevice(data.getDefaultMacAddress(), data.getLocation(),
                             data.getResidenceId());
-                } else {
-                    gotoDevice(ChooseDispenserActivity.class);
+                } else if (type == Device.DISPENSER.getType()){
+                    gotoChooseDispenser();
                 }
             } else {
                 showTimeValidDialog(type, data);
@@ -854,31 +848,26 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public void startActivity(AppCompatActivity activity, Class<?> clazz) {
-        if (TextUtils.isEmpty(presenter.getToken())) {
-            startActivity(new Intent(this, LoginActivity.class));
-        } else {
-            Map<String, Long> extraMap = new HashMap<String, Long>() {
-                {
-                    put(RepairActivity.INTENT_KEY_LAST_REPAIR_TIME, lastRepairTime);
-                }
-            };
-            super.startActivity(activity, clazz, extraMap);
-        }
-    }
-
-    public void startActivity(Class<?> clz) {
-        startActivity(this, clz);
+        Map<String, Long> extraMap = new HashMap<String, Long>() {
+            {
+                put(RepairActivity.INTENT_KEY_LAST_REPAIR_TIME, lastRepairTime);
+            }
+        };
+        super.startActivity(activity, clazz, extraMap);
     }
 
     // 设备用水检查
     public void checkDeviceUsage(Device device) {
         Log.d(TAG, "checkDeviceUsage");
+        presenter.checkDeviceUsage(device.getType());
+    }
+
+    private boolean checkLogin() {
         if (TextUtils.isEmpty(presenter.getToken())) {
-            startActivity(new Intent(this, LoginActivity.class));
-            EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.ENABLE_VIEW));
-        } else {
-            presenter.checkDeviceUsage(device.getType());
+            redirectToLogin();
+            return false;
         }
+        return true;
     }
 
     /**
@@ -904,7 +893,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
      */
     public void gotoLostAndFound() {
         Log.d(TAG, "gotoLostAndFound");
-        startActivity(LostAndFoundActivity.class);
+        startActivity(this, LostAndFoundActivity.class);
     }
 
     public void logout() {
@@ -955,17 +944,27 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         Log.d(TAG, "onEvent: " + event.getType().type);
         switch (event.getType()) {
             case GOTO_HEATER:
-                gotoHeater();
+                if (checkLogin()) {
+                    gotoHeater();
+                } else {
+                    EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.ENABLE_VIEW));
+                }
                 break;
             case GOTO_DISPENSER:
-                gotoDispenser();
+                if (checkLogin()) {
+                    gotoDispenser();
+                }
                 break;
             case GOTO_LOST_AND_FOUND:
-                gotoLostAndFound();
+                if (checkLogin()) {
+                    gotoLostAndFound();
+                }
                 EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.ENABLE_VIEW));
                 break;
             case START_ACTIVITY:
-                startActivity((Class) event.getObject());
+                if (checkLogin()) {
+                    startActivity(this, (Class) event.getObject());
+                }
                 break;
             case REFRESH_NOTICE:
                 refreshProfile();

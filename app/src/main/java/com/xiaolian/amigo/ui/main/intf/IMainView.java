@@ -23,8 +23,6 @@ public interface IMainView extends IBaseView {
 
     void showTimeValidDialog(int deviceType, DeviceCheckRespDTO data);
 
-    void gotoDevice(Class clz);
-
     void gotoDevice(Device device, String macAddress, String location, Long residenceId, boolean recovery);
 
     void showUrgentNotify(String content, Long id);

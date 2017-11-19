@@ -171,7 +171,7 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
         } else if (errorCode == BizError.REDEEM_DONE.getCode()) {
             Log.w(TAG, "你已兑换");
         } else if (errorCode == BizError.REDEEM_BONUS_END.getCode()) {
-            Log.w(TAG, "红包已被兑换完");
+            Log.w(TAG, "代金券已被兑换完");
         } else if (errorCode == BizError.SCHOOL_CANNOT_CHANGE.getCode()) {
             Log.w(TAG, "暂不支持切换学校");
         } else if (errorCode == BizError.BALANCE_NOT_ENOUGH.getCode()) {
@@ -191,7 +191,7 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
         } else if (errorCode == BizError.ACTIVITY_NOT_EXIST.getCode()) {
             Log.w(TAG, "你所在学校没有新人有礼活动");
         } else if (errorCode == BizError.BONUS_RECEIVED.getCode()) {
-            Log.w(TAG, "你已领取过红包");
+            Log.w(TAG, "你已领取过代金券");
         } else if (errorCode == BizError.SCHOOL_IS_ONLINE.getCode()) {
             Log.w(TAG, "请先下线学校");
         } else if (errorCode == BizError.SMS_CODE_SEND_FAILED.getCode()) {
@@ -201,7 +201,7 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
         } else if (errorCode == BizError.SCHOOL_BUSINESS_EMPTY.getCode()) {
             Log.w(TAG, "已上线学校支持功能不能为空");
         } else if (errorCode == BizError.BONUS_DUPLICATE.getCode()) {
-            Log.w(TAG, "已存在一样的红包");
+            Log.w(TAG, "已存在一样的代金券");
         } else if (errorCode == BizError.WITHDRAW_LESS_THAN_MIN.getCode()) {
             Log.w(TAG, "提现金额不能低于10元");
         } else if (errorCode == BizError.REMIND_TOO_OFTEN.getCode()) {

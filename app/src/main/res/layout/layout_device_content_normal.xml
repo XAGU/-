@@ -26,13 +26,15 @@
         android:textSize="10sp"
         android:text="@string/connect_error_tip_1"
         android:gravity="center"
+        android:lineSpacingExtra="8dp"
         android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
+    <!--由于上方TextView行距为8dp，所以下方margin从20dp变为12dp-->
     <View
         android:id="@+id/v_connect_tip_bar"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="12dp"
         android:background="#f3f3f3"
         android:layout_gravity="center_horizontal"
         android:layout_width="12dp"
