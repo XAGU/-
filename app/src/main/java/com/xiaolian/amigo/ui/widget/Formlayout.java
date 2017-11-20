@@ -14,8 +14,6 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.ui.widget.ClearableEditText;
-
 
 import java.util.ArrayList;
 import java.util.HashMap;

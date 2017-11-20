@@ -21,14 +21,12 @@ import com.xiaolian.amigo.ui.repair.adaptor.ImageAddAdapter;
 import com.xiaolian.amigo.ui.widget.GridSpacesItemDecoration;
 import com.xiaolian.amigo.ui.widget.dialog.DatePickerDialog;
 import com.xiaolian.amigo.ui.widget.photoview.AlbumItemActivity;
-import com.xiaolian.amigo.ui.widget.wheelpicker.WheelDateTimePicker;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.ScreenUtils;
 import com.xiaolian.amigo.util.TimeUtils;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;

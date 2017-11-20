@@ -1,8 +1,6 @@
 package com.xiaolian.amigo.ui.widget;
 
 import android.content.Context;
-import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.InputType;

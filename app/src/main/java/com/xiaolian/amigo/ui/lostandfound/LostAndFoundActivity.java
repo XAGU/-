@@ -14,7 +14,6 @@ import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundView;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.ui.widget.dialog.SearchDialog;
-import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
 import com.xiaolian.amigo.util.ScreenUtils;
@@ -260,7 +259,6 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
         tv_lost.setOnClickListener(v -> onLostClick());
         tv_found = getToolBarTitle2();
         tv_found.setOnClickListener(v -> onFoundClick());
-//        presenter.queryLostList(page, Constant.PAGE_SIZE);
     }
 
     @Override
@@ -338,8 +336,6 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
         onRefresh();
     }
 
-
-    //    @OnClick(R.id.tv_lost)
     void onLostClick() {
         if (listStatus) {
             switchListStatus();
@@ -360,12 +356,10 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
                 return;
             }
             switchListStatus();
-            boolean needNotify = false;
-            needNotify = !this.lostAndFounds.isEmpty();
+            boolean needNotify = !this.lostAndFounds.isEmpty();
             this.lostAndFounds.clear();
-            if (foundPage == 1) {
+            if (foundPage == Constant.PAGE_START_NUM) {
                 page = foundPage;
-//                presenter.queryFoundList(page, Constant.PAGE_SIZE);
                 getRefreshLayout().autoRefresh(0);
                 if (needNotify) {
                     adaptor.notifyDataSetChanged();

@@ -3,15 +3,8 @@ package com.xiaolian.amigo.ui.widget;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.RectF;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
-//import android.support.v7.graphics.Palette;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -20,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.xiaolian.amigo.R;
+
+//import android.support.v7.graphics.Palette;
 
 /**
  * <p>
