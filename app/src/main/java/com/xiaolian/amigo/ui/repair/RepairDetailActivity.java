@@ -22,6 +22,7 @@ import com.xiaolian.amigo.ui.repair.adaptor.RepairProgressAdaptor;
 import com.xiaolian.amigo.ui.repair.intf.IRepairDetailPresenter;
 import com.xiaolian.amigo.ui.repair.intf.IRepairDetailView;
 import com.xiaolian.amigo.ui.widget.RecycleViewDivider;
+import com.xiaolian.amigo.ui.widget.dialog.IOSAlertDialog;
 import com.xiaolian.amigo.ui.widget.photoview.AlbumItemActivity;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
@@ -93,7 +94,10 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
 
         adapter = new RepairProgressAdaptor(progresses);
         adapter.setOnCancelRepairListener(() -> {
-            presenter.cancelRepair();
+            new IOSAlertDialog(this).builder()
+                    .setMsg("确认取消报修？")
+                    .setPositiveButton("确认", v -> presenter.cancelRepair())
+                    .setNegativeClickListener("取消", IOSAlertDialog::dismiss).show();
         });
         rv_repair_progresses.addItemDecoration(new RecycleViewDivider(this, RecycleViewDivider.VERTICAL_LIST, "deductLast"));
         manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);

@@ -103,12 +103,12 @@ public enum RepairStatus {
     }, REPAIR_CANCEL(6, "取消报修") {
         @Override
         public int getTextCorlorRes() {
-            return R.color.colorTextGray;
+            return R.color.colorDark2;
         }
 
         @Override
         public int getDotColorDrawableRes() {
-            return R.drawable.dot_circle_grey;
+            return R.drawable.dot_circle_dark;
         }
 
         @Override

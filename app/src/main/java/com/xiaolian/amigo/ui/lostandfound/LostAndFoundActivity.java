@@ -265,19 +265,23 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
     @Override
     public void addMoreLost(List<LostAndFoundAdaptor.LostAndFoundWapper> lost) {
         this.losts.addAll(lost);
-        this.lostAndFounds.addAll(lost);
-        adaptor.notifyDataSetChanged();
         lostPage++;
-        page = lostPage;
+        if (!listStatus) {
+            this.lostAndFounds.addAll(lost);
+            adaptor.notifyDataSetChanged();
+            page = lostPage;
+        }
     }
 
     @Override
     public void addMoreFound(List<LostAndFoundAdaptor.LostAndFoundWapper> found) {
         this.founds.addAll(found);
-        this.lostAndFounds.addAll(found);
-        adaptor.notifyDataSetChanged();
         foundPage++;
-        page = foundPage;
+        if (listStatus) {
+            this.lostAndFounds.addAll(found);
+            adaptor.notifyDataSetChanged();
+            page = foundPage;
+        }
     }
 
     @Override
@@ -351,11 +355,20 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
 
     void onFoundClick() {
         if (!listStatus) {
+            if (getRefreshLayout().isRefreshing()) {
+                return;
+            }
             switchListStatus();
+            boolean needNotify = false;
+            needNotify = !this.lostAndFounds.isEmpty();
             this.lostAndFounds.clear();
             if (foundPage == 1) {
                 page = foundPage;
-                presenter.queryFoundList(page, Constant.PAGE_SIZE);
+//                presenter.queryFoundList(page, Constant.PAGE_SIZE);
+                getRefreshLayout().autoRefresh(0);
+                if (needNotify) {
+                    adaptor.notifyDataSetChanged();
+                }
             } else {
                 this.lostAndFounds.addAll(founds);
                 adaptor.notifyDataSetChanged();

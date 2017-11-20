@@ -48,6 +48,8 @@ public class LostAndFoundPresenter<V extends ILostAndFoundView> extends BasePres
             public void onReady(ApiResult<QueryLostAndFoundListRespDTO> result) {
                 getMvpView().setRefreshComplete();
                 getMvpView().setLoadMoreComplete();
+                getMvpView().hideEmptyView();
+                getMvpView().hideErrorView();
                 if (null == result.getError()) {
 
                     if (null != result.getData().getLostAndFounds()) {

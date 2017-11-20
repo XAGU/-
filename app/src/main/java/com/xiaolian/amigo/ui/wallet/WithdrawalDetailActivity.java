@@ -22,6 +22,7 @@ import com.xiaolian.amigo.ui.wallet.adaptor.WithdrawRechargeDetailAdapter;
 import com.xiaolian.amigo.ui.wallet.intf.IWithdrawalDetailPresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IWithdrawalDetailView;
 import com.xiaolian.amigo.ui.widget.RecycleViewDivider;
+import com.xiaolian.amigo.ui.widget.dialog.IOSAlertDialog;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.TimeUtils;
@@ -192,7 +193,10 @@ public class WithdrawalDetailActivity extends WalletBaseActivity implements IWit
 
     @OnClick(R.id.tv_cancel_withdraw)
     void onCancelWithdrawClick() {
-        presenter.cancelWithdraw(id);
+        new IOSAlertDialog(this).builder()
+                .setMsg("确认取消提现？")
+                .setPositiveButton("确认", v -> presenter.cancelWithdraw(id))
+                .setNegativeClickListener("取消", IOSAlertDialog::dismiss).show();
     }
 
     @Override
