@@ -312,7 +312,7 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     }
 
 
-    boolean isUserHolderEmpty() {
+    private boolean isUserHolderEmpty() {
         if (userHolder != null) {
             if (userHolder.getNickName() != null
                     && userHolder.getSchoolName() != null

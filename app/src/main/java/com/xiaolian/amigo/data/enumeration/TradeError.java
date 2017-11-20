@@ -3,6 +3,7 @@ package com.xiaolian.amigo.data.enumeration;
 import com.xiaolian.amigo.R;
 
 /**
+ * trade error
  * Created by caidong on 2017/10/13.
  */
 public enum TradeError {

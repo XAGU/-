@@ -115,7 +115,7 @@
                 <TextView
                     android:id="@+id/tv_error_tip"
                     android:textSize="14sp"
-                    android:text="@string/error_tip"
+                    android:text="@string/network_available_error_tip"
                     android:textColor="@color/colorDark2"
                     android:layout_centerInParent="true"
                     android:layout_width="wrap_content"

@@ -8,7 +8,6 @@ import com.xiaolian.amigo.data.network.model.dto.request.AlipayTradeAppPayArgsRe
 import com.xiaolian.amigo.data.network.model.dto.request.AlipayTradeAppPayResultParseReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.CheckComplaintReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.QueryPersonalFundsListReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.QueryTimeValidReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.QueryUserThirdAccountReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.RechargeReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.RemindReqDTO;
@@ -29,9 +28,9 @@ import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 
 import javax.inject.Inject;
 
-import rx.Observable;
 import retrofit2.Retrofit;
 import retrofit2.http.Body;
+import rx.Observable;
 
 /**
  * 我的钱包

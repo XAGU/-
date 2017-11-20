@@ -11,6 +11,7 @@ import retrofit2.Retrofit;
 import rx.Observable;
 
 /**
+ * client service
  * Created by caidong on 2017/11/2.
  */
 public class ClientServiceDataManager implements IClientServiceDataManager {

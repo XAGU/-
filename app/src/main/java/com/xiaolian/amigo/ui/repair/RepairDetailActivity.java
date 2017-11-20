@@ -26,6 +26,8 @@ import com.xiaolian.amigo.ui.widget.photoview.AlbumItemActivity;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -77,7 +79,7 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
     List<RepairProgressAdaptor.ProgressWrapper> progresses = new ArrayList<>();
     Long detailId;
 
-    RecyclerView.Adapter adapter;
+    RepairProgressAdaptor adapter;
     RecyclerView.LayoutManager manager;
 
     private ArrayList<String> images = new ArrayList<>();
@@ -90,6 +92,9 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
         presenter.onAttach(this);
 
         adapter = new RepairProgressAdaptor(progresses);
+        adapter.setOnCancelRepairListener(() -> {
+            presenter.cancelRepair();
+        });
         rv_repair_progresses.addItemDecoration(new RecycleViewDivider(this, RecycleViewDivider.VERTICAL_LIST, "deductLast"));
         manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rv_repair_progresses.setLayoutManager(manager);
@@ -221,6 +226,12 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
             tv_extra_title.setText(getString(R.string.customer_response));
             tv_extra_content2.setText(detail.getReply());
         }
+    }
+
+    @Override
+    public void backToList() {
+        EventBus.getDefault().post(RepairEvent.REFRESH_REPAIR_LIST);
+        super.onBackPressed();
     }
 
     @Override

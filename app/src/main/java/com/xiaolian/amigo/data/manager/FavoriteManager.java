@@ -6,18 +6,18 @@ import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.FavoriteReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.UnFavoriteReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.FavoriteRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.ScanDeviceRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.SimpleRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.UnFavoriteRespDTO;
 
 import javax.inject.Inject;
 
-import rx.Observable;
 import retrofit2.Retrofit;
 import retrofit2.http.Body;
+import rx.Observable;
 
 /**
+ * favorite manager
  * Created by caidong on 2017/9/18.
  */
 public class FavoriteManager implements IFavoriteManager {

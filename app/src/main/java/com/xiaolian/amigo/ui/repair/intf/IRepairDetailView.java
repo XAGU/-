@@ -8,6 +8,7 @@ import com.xiaolian.amigo.ui.repair.adaptor.RepairProgressAdaptor;
 import java.util.List;
 
 /**
+ * 报修详情
  * Created by caidong on 2017/9/18.
  */
 public interface IRepairDetailView extends IBaseView {
@@ -25,4 +26,7 @@ public interface IRepairDetailView extends IBaseView {
      * @param detail 报修详情
      */
     void render(RepairDetailRespDTO detail);
+
+    // 返回列表页
+    void backToList();
 }

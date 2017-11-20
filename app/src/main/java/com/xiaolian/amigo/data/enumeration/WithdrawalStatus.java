@@ -20,7 +20,7 @@ public enum WithdrawalStatus {
             return new String[] {"常见问题", "我要投诉"};
         }
     },
-    AUDIT_PENDING(1, "等待审核") {
+    AUDIT_PENDING(1, "正在处理") {
         @Override
         public int getColorRes() {
             return R.color.colorFullRed;

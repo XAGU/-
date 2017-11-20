@@ -279,7 +279,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             EventBus.getDefault()
                     .post(new HomeFragment2.Event(HomeFragment2.Event.EventType.INIT_BIZ,
                             null));
-            onError(R.string.error_tip);
+            onError(R.string.network_available_error_tip);
             return;
         }
         if (!presenter.isLogin()) {

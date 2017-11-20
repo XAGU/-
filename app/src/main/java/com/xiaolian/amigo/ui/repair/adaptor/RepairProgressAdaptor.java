@@ -18,12 +18,17 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
+ * 报修进度
  * Created by caidong on 2017/9/12.
  */
 public class RepairProgressAdaptor extends RecyclerView.Adapter<RepairProgressAdaptor.ViewHolder> {
+    public interface OnCancelRepairListener {
+        void onCacelRepair();
+    }
 
     private List<ProgressWrapper> progresses;
     private Context context;
+    private OnCancelRepairListener listener;
 
     public RepairProgressAdaptor(List<ProgressWrapper> progresses) {
         this.progresses = progresses;
@@ -56,6 +61,23 @@ public class RepairProgressAdaptor extends RecyclerView.Adapter<RepairProgressAd
             holder.tv_desc.setTextColor(colorGreyRes);
             holder.v_dot.setBackgroundResource(R.drawable.dot_circle_grey);
         }
+        if (status == RepairStatus.AUDIT_PENDING
+                && RepairStatus.getStatus(progresses.get(0).status) == RepairStatus.AUDIT_PENDING) {
+            holder.tv_cancel_repair.setVisibility(View.VISIBLE);
+            holder.tv_cancel_repair.setEnabled(true);
+            holder.tv_cancel_repair.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onCacelRepair();
+                }
+            });
+        } else {
+            holder.tv_cancel_repair.setEnabled(false);
+            holder.tv_cancel_repair.setVisibility(View.GONE);
+        }
+    }
+
+    public void setOnCancelRepairListener(OnCancelRepairListener listener) {
+        this.listener = listener;
     }
 
     @Override
@@ -72,6 +94,8 @@ public class RepairProgressAdaptor extends RecyclerView.Adapter<RepairProgressAd
         TextView tv_time;
         @BindView(R.id.tv_desc)
         TextView tv_desc;
+        @BindView(R.id.tv_cancel_repair)
+        TextView tv_cancel_repair;
 
         public ViewHolder(View itemView) {
             super(itemView);

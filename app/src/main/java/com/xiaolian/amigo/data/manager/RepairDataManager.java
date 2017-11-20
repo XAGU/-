@@ -9,6 +9,7 @@ import com.xiaolian.amigo.data.network.model.dto.request.RepairApplyReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.RepairDetailReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.RepairProblemReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.RepairReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.request.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.RepairApplyRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.RepairDetailRespDTO;
@@ -65,5 +66,10 @@ public class RepairDataManager implements IRepairDataManager{
     @Override
     public Observable<ApiResult<BooleanRespDTO>> remind(@Body RemindReqDTO reqDTO) {
         return repairApi.remind(reqDTO);
+    }
+
+    @Override
+    public Observable<ApiResult<BooleanRespDTO>> cancelRepair(@Body SimpleReqDTO reqDTO) {
+        return repairApi.cancelRepair(reqDTO);
     }
 }

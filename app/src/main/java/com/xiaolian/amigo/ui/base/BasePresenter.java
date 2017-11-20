@@ -19,6 +19,7 @@ package com.xiaolian.amigo.ui.base;
 import android.os.Handler;
 import android.os.HandlerThread;
 
+import com.xiaolian.amigo.BuildConfig;
 import com.xiaolian.amigo.data.enumeration.BizError;
 import com.xiaolian.amigo.data.enumeration.CommonError;
 import com.xiaolian.amigo.util.Log;
@@ -81,7 +82,7 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
     @Override
     public void onRemoteInvocationError(Throwable e) {
         if (!getMvpView().isNetworkAvailable()) {
-            getMvpView().onError("你的网络不太好哦");
+            getMvpView().onError(R.string.network_available_error_tip);
         } else if (e instanceof ConnectException) {
             getMvpView().onError("服务器飞走啦，努力修复中");
         } else if (e instanceof SocketTimeoutException) {
@@ -102,6 +103,12 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
                 }
             } else {
                 Log.wtf(TAG, "sorry，程序上出现错误", e);
+                if (e instanceof NullPointerException) {
+                    if ("prod".equals(BuildConfig.ENVIRONMENT)
+                            && "release".equals(BuildConfig.BUILD_TYPE)) {
+                        return;
+                    }
+                }
                 getMvpView().onError("sorry，程序上出现错误");
             }
         }

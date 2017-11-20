@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.data.enumeration;
 
 /**
+ * 失物招领
  * <p>
  * Created by zcd on 10/17/17.
  */

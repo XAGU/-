@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.data.base;
 
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import com.xiaolian.amigo.util.Log;
 
@@ -29,7 +30,6 @@ import okio.BufferedSource;
 public class LogInterceptor implements Interceptor {
     private final static String TAG = LogInterceptor.class.getSimpleName();
     private final static boolean DEBUG = true;
-//    private final static String TOKEN = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaXNzIjoiaHR0cHM6Ly94aWFvbGlhbi5pbyIsImlhdCI6MTUwNTczOTM1NCwiZXhwIjoxNTA2NDk1MzU0fQ.0MWlDmGbf_GRb8g6zAsyN3nVSseF9Hb_mlO7vM3HN60kgkqnzOoqh2hfRc4i2CXaxMH82CX0liSneL3OTVY3wA";
 
     private long lastTime = 0;
     private Request lastRequest;
@@ -42,7 +42,7 @@ public class LogInterceptor implements Interceptor {
     }
 
     @Override
-    public Response intercept(Chain chain) throws IOException {
+    public Response intercept(@NonNull Chain chain) throws IOException {
         Request request = chain.request();
         Request newRequest;
         String token = sharedPreferencesHelp.getToken();
@@ -82,23 +82,7 @@ public class LogInterceptor implements Interceptor {
                             .request(chain.request())
                             .protocol(Protocol.HTTP_1_1)
                             .message("ignore message")
-                            .body(new ResponseBody() {
-                                @Nullable
-                                @Override
-                                public MediaType contentType() {
-                                    return MediaType.parse("application/json;charset=UTF-8");
-                                }
-
-                                @Override
-                                public long contentLength() {
-                                    return 0;
-                                }
-
-                                @Override
-                                public BufferedSource source() {
-                                    return null;
-                                }
-                            })
+                            .body(ResponseBody.create(null, new byte[0]))
                             .build();
                 }
             }
@@ -114,17 +98,19 @@ public class LogInterceptor implements Interceptor {
             Log.wtf(TAG, "网络请求错误: " + newRequest.url(), e);
             return null;
         }
-        okhttp3.MediaType mediaType = response.body().contentType();
-        String content;
         if (null != response.header("deviceToken")) {
             // 有device_token,一定配对一个macAddress
             String macAddress = response.header("macAddress");
             sharedPreferencesHelp.setDeviceToken(macAddress, response.header("deviceToken"));
         }
+        String content;
+        okhttp3.MediaType mediaType;
         if (response.body() != null) {
             content = response.body().string();
+            mediaType = response.body().contentType();
         } else {
             content = "";
+            mediaType = MediaType.parse("application/json;charset=UTF-8");
         }
         int code = response.code();
         if (DEBUG) {
@@ -140,6 +126,25 @@ public class LogInterceptor implements Interceptor {
         return response.newBuilder()
                 .body(okhttp3.ResponseBody.create(mediaType, content))
                 .build();
+    }
+
+    private static class EmptyBody extends ResponseBody {
+
+        @Nullable
+        @Override
+        public MediaType contentType() {
+            return MediaType.parse("application/json;charset=UTF-8");
+        }
+
+        @Override
+        public long contentLength() {
+            return 0;
+        }
+
+        @Override
+        public BufferedSource source() {
+            return null;
+        }
     }
 
     private boolean isRequestEqual(Request request, Request lastRequest) {
@@ -168,9 +173,8 @@ public class LogInterceptor implements Interceptor {
 
     private String bodyToString(final RequestBody request) {
         try {
-            final RequestBody copy = request;
             final Buffer buffer = new Buffer();
-            copy.writeTo(buffer);
+            request.writeTo(buffer);
             return buffer.readUtf8();
         } catch (final IOException e) {
             return "did not work";

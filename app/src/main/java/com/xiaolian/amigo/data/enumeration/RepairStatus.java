@@ -9,7 +9,23 @@ import com.xiaolian.amigo.R;
  */
 public enum RepairStatus {
 
-    AUDIT_PENDING(1, "等待审核") {
+    UNKNOWN(0, "未知状态") {
+        @Override
+        public int getTextCorlorRes() {
+            return R.color.colorTextGray;
+        }
+
+        @Override
+        public int getDotColorDrawableRes() {
+            return R.drawable.dot_circle_grey;
+        }
+
+        @Override
+        public String[] getNextOperations() {
+            return new String[]{"常见问题", "联系客服"};
+        }
+    },
+    AUDIT_PENDING(1, "正在处理") {
         @Override
         public int getTextCorlorRes() {
             return R.color.repair_todo;
@@ -84,6 +100,21 @@ public enum RepairStatus {
         public String[] getNextOperations() {
             return new String[]{"常见问题", "联系客服"};
         }
+    }, REPAIR_CANCEL(6, "取消报修") {
+        @Override
+        public int getTextCorlorRes() {
+            return R.color.colorTextGray;
+        }
+
+        @Override
+        public int getDotColorDrawableRes() {
+            return R.drawable.dot_circle_grey;
+        }
+
+        @Override
+        public String[] getNextOperations() {
+            return new String[]{"常见问题", "联系客服"};
+        }
     };
 
     private int type;
@@ -125,6 +156,6 @@ public enum RepairStatus {
                 return status;
             }
         }
-        return null;
+        return UNKNOWN;
     }
 }

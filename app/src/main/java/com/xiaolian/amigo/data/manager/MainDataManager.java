@@ -7,7 +7,6 @@ import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.CheckVersionUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.DeviceCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.OrderReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.QueryDeviceListReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.QueryTimeValidReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.ReadNotifyReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
@@ -15,7 +14,6 @@ import com.xiaolian.amigo.data.network.model.dto.response.CheckVersionUpdateResp
 import com.xiaolian.amigo.data.network.model.dto.response.DeviceCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.OrderRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.PersonalExtraInfoDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.QueryDeviceListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QuerySchoolBizListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryTimeValidRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.VersionDTO;

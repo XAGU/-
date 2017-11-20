@@ -18,7 +18,6 @@ import com.xiaolian.amigo.data.network.model.file.OssModel;
 
 public class OssClientHolder {
     private volatile static OssClientHolder holder;
-    private String endpoint;
     private OssModel ossModel;
     private OSSClient client;
 
@@ -80,12 +79,8 @@ public class OssClientHolder {
         OssClientHolder.holder = holder;
     }
 
-    public String getEndpoint() {
-        return endpoint;
-    }
-
-    public void setEndpoint(String endpoint) {
-        this.endpoint = endpoint;
+    private String getEndpoint() {
+        return ossModel.getEndpoint();
     }
 
     public OSSClient getClient() {

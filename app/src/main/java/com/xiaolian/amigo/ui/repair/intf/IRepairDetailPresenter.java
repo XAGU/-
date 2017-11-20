@@ -31,4 +31,6 @@ public interface IRepairDetailPresenter<V extends IRepairDetailView> extends IBa
 
     Device getDevice();
 
+    // 取消报修
+    void cancelRepair();
 }

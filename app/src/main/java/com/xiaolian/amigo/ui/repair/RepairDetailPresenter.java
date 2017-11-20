@@ -16,11 +16,13 @@
 package com.xiaolian.amigo.ui.repair;
 
 
+import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.manager.intf.IRepairDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.RemindReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.RepairDetailReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.request.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.RepairDetailRespDTO;
 import com.xiaolian.amigo.data.network.model.repair.RepairStep;
@@ -40,6 +42,7 @@ public class RepairDetailPresenter<V extends IRepairDetailView> extends BasePres
     private static final String TAG = RepairDetailPresenter.class.getSimpleName();
     private IRepairDataManager manager;
     private Device device;
+    private Long id;
 
     @Inject
     public RepairDetailPresenter(IRepairDataManager manager) {
@@ -50,6 +53,7 @@ public class RepairDetailPresenter<V extends IRepairDetailView> extends BasePres
 
     @Override
     public void requestRepailDetail(Long id) {
+        this.id = id;
         RepairDetailReqDTO reqDTO = new RepairDetailReqDTO();
         reqDTO.setId(id);
         addObserver(manager.queryRepairDetail(reqDTO), new NetworkObserver<ApiResult<RepairDetailRespDTO>>() {
@@ -95,5 +99,25 @@ public class RepairDetailPresenter<V extends IRepairDetailView> extends BasePres
     @Override
     public Device getDevice() {
         return device;
+    }
+
+    @Override
+    public void cancelRepair() {
+        SimpleReqDTO reqDTO = new SimpleReqDTO();
+        reqDTO.setId(this.id);
+        addObserver(manager.cancelRepair(reqDTO), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
+
+            @Override
+            public void onReady(ApiResult<BooleanRespDTO> result) {
+                if (null == result.getError()) {
+                    if (result.getData().isResult()) {
+                        getMvpView().onSuccess(R.string.cancel_repair_success);
+                        getMvpView().backToList();
+                    }
+                } else {
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+        });
     }
 }

@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.data.enumeration;
 
 /**
+ * error tag
  * Created by caidong on 2017/10/13.
  */
 public enum ErrorTag {

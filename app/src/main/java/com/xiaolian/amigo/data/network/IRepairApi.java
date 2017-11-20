@@ -7,6 +7,7 @@ import com.xiaolian.amigo.data.network.model.dto.request.RepairApplyReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.RepairDetailReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.RepairProblemReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.RepairReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.request.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.RepairApplyRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.RepairDetailRespDTO;
@@ -45,4 +46,8 @@ public interface IRepairApi {
     // 提醒客服
     @POST("/cs/remind")
     Observable<ApiResult<BooleanRespDTO>> remind(@Body RemindReqDTO reqDTO);
+
+    // 取消报修
+    @POST("/repair/cancel")
+    Observable<ApiResult<BooleanRespDTO>> cancelRepair(@Body SimpleReqDTO reqDTO);
 }

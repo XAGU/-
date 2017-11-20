@@ -2,8 +2,6 @@ package com.xiaolian.amigo.data.enumeration;
 
 import android.text.TextUtils;
 
-import java.util.Objects;
-
 /**
  * 饮水机水温
  * <p>
