@@ -93,4 +93,7 @@ public final class Constant {
     // 设备mac
     public static final String MAC = "mac";
 
+    // 等比缩放
+    public static final String OSS_IMAGE_RESIZE = "?x-oss-process=image/resize,m_mfit,h_%d,w_%d";
+
 }

@@ -31,6 +31,7 @@ import java.util.Random;
 
 import javax.inject.Inject;
 
+import retrofit2.HttpException;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -138,6 +139,7 @@ public class PublishLostPresenter<V extends IPublishLostView> extends BasePresen
                         if (OssClientHolder.get().getClient() == null) {
                             return;
                         }
+                        getMvpView().post(() -> getMvpView().showLoading());
                         PutObjectRequest put = new PutObjectRequest(OssClientHolder.get().getOssModel().getBucket(),
                                 generateObjectKey(String.valueOf(System.currentTimeMillis())),
                                 filePath);
@@ -145,12 +147,14 @@ public class PublishLostPresenter<V extends IPublishLostView> extends BasePresen
                                 new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
                                     @Override
                                     public void onSuccess(PutObjectRequest request, PutObjectResult result) {
+                                        getMvpView().post(() -> getMvpView().hideLoading());
                                         getMvpView().post(() -> getMvpView().addImage(request.getObjectKey(), currentImagePosition));
                                         Log.d("PutObject", "UploadSuccess " + request.getObjectKey());
                                     }
 
                                     @Override
                                     public void onFailure(PutObjectRequest request, ClientException clientExcepion, ServiceException serviceException) {
+                                        getMvpView().post(() -> getMvpView().hideLoading());
                                         // Request exception
                                         if (clientExcepion != null) {
                                             // Local exception, such as a network exception
@@ -196,6 +200,11 @@ public class PublishLostPresenter<V extends IPublishLostView> extends BasePresen
                 // ignore IllegalStateException
                 if (e instanceof IllegalStateException) {
                     return;
+                }
+                if (e instanceof HttpException) {
+                    if (((HttpException) e).code() == 600) {
+                        return;
+                    }
                 }
                 getMvpView().post(() -> getMvpView().onError("上传图片失败"));
             }

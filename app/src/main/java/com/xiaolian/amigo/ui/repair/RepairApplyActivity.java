@@ -125,12 +125,7 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
         };
 
         adapter = new RepairProblemAdaptor(this, R.layout.item_problem, problems);
-        adapter.setOnItemClickListener(new RepairProblemAdaptor.OnItemClickListener() {
-            @Override
-            public void onItemClick() {
-                toggleBtnStatus();
-            }
-        });
+        adapter.setOnItemClickListener(this::toggleBtnStatus);
         rv_problems.addItemDecoration(new GridSpacesItemDecoration(3, ScreenUtils.dpToPxInt(this, 10), false));
         rv_problems.setLayoutManager(new GridLayoutManager(this, 3));
         rv_problems.setAdapter(adapter);

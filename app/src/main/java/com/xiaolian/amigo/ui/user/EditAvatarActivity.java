@@ -19,6 +19,7 @@ import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -136,7 +137,13 @@ public class EditAvatarActivity extends UserBaseActivity implements IEditAvatarV
     public void setAvatar(String pictureUrl) {
         if (!TextUtils.isEmpty(pictureUrl)) {
             avatarUrl = pictureUrl;
-            Glide.with(this).load(Constant.IMAGE_PREFIX + pictureUrl).asBitmap().into(iv_current_avatar);
+            int imageSize = ScreenUtils.dpToPxInt(this, 57);
+            Glide.with(this)
+                    .load(Constant.IMAGE_PREFIX + pictureUrl
+                            + String.format(Locale.getDefault(), Constant.OSS_IMAGE_RESIZE,
+                                    imageSize, imageSize))
+//                    .asBitmap()
+                    .into(iv_current_avatar);
         }
         toggleSubmitBtnStatus();
     }

@@ -26,12 +26,14 @@ import com.xiaolian.amigo.ui.widget.dialog.IOSAlertDialog;
 import com.xiaolian.amigo.ui.widget.photoview.AlbumItemActivity;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.util.ScreenUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -76,6 +78,8 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
     TextView tv_extra_content1;
     @BindView(R.id.tv_extra_content2)
     TextView tv_extra_content2;
+    @BindView(R.id.ll_bottom)
+    LinearLayout ll_bottom;
 
     List<RepairProgressAdaptor.ProgressWrapper> progresses = new ArrayList<>();
     Long detailId;
@@ -136,6 +140,7 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
         tv_type.setText(Device.getDevice(detail.getDeviceType()).getDesc());
         tv_location.setText(detail.getLocation());
         tv_content.setText(detail.getContent());
+        int imageSize = ScreenUtils.dpToPxInt(this, 57);
 
         List<String> images = detail.getImages();
         if(null != images){
@@ -147,7 +152,9 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
             if (num > 0) {
                 ll_images.setVisibility(View.VISIBLE);
                 iv_first.setVisibility(View.VISIBLE);
-                manager.load(Constant.IMAGE_PREFIX + images.get(0))
+                manager.load(Constant.IMAGE_PREFIX + images.get(0)
+                        + String.format(Locale.getDefault(), Constant.OSS_IMAGE_RESIZE,
+                        imageSize, imageSize))
                         .asBitmap()
                         .placeholder(R.drawable.ic_picture_error)
                         .error(R.drawable.ic_picture_error)
@@ -156,7 +163,9 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
             // 渲染第二张图
             if (num > 1) {
                 iv_second.setVisibility(View.VISIBLE);
-                manager.load(Constant.IMAGE_PREFIX + images.get(1))
+                manager.load(Constant.IMAGE_PREFIX + images.get(1)
+                        + String.format(Locale.getDefault(), Constant.OSS_IMAGE_RESIZE,
+                        imageSize, imageSize))
                         .asBitmap()
                         .placeholder(R.drawable.ic_picture_error)
                         .error(R.drawable.ic_picture_error)
@@ -165,7 +174,9 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
             // 渲染第三张图
             if (num > 2) {
                 iv_third.setVisibility(View.VISIBLE);
-                manager.load(Constant.IMAGE_PREFIX + images.get(2))
+                manager.load(Constant.IMAGE_PREFIX + images.get(2)
+                        + String.format(Locale.getDefault(), Constant.OSS_IMAGE_RESIZE,
+                        imageSize, imageSize))
                         .asBitmap()
                         .placeholder(R.drawable.ic_picture_error)
                         .error(R.drawable.ic_picture_error)
@@ -175,6 +186,11 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
 
         // 设置操作按钮中的显示文案
         RepairStatus status = RepairStatus.getStatus(detail.getSteps().get(detail.getSteps().size()-1).getStatus());
+        if (status == RepairStatus.REPAIR_CANCEL) {
+            ll_bottom.setVisibility(View.GONE);
+        } else {
+            ll_bottom.setVisibility(View.VISIBLE);
+        }
         String[] opers = status.getNextOperations();
         left_oper.setText(opers[0]);
         right_oper.setText(opers[1]);

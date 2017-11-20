@@ -197,6 +197,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@id/ll_extra"
+                android:id="@+id/ll_bottom"
                 android:layout_marginBottom="21dp"
                 android:layout_marginTop="14dp"
                 android:background="@color/colorBackgroundWhite"

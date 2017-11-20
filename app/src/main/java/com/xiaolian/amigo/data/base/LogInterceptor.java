@@ -78,6 +78,8 @@ public class LogInterceptor implements Interceptor {
             if (currentTime - lastTime < NETWORK_INTERVAL) {
                 if (isRequestEqual(newRequest, lastRequest)) {
                     Log.w(TAG, "请求间隔过短 url:" + request.url());
+                    lastRequest = newRequest;
+                    lastTime = Calendar.getInstance().getTimeInMillis();
                     return new Response.Builder()
                             .code(600) //Simply put whatever value you want to designate to aborted request.
                             .request(chain.request())
