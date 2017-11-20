@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import com.scwang.smartrefresh.layout.constant.RefreshState;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundAdaptor;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundPresenter;
@@ -355,7 +356,7 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
 
     void onFoundClick() {
         if (!listStatus) {
-            if (getRefreshLayout().isRefreshing()) {
+            if (getRefreshLayout().getState() != RefreshState.None) {
                 return;
             }
             switchListStatus();
