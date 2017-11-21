@@ -273,8 +273,10 @@ public class HttpSender implements ReportSender {
     }
 
     private void signature(CrashReportData handledReport) {
-        String data = handledReport.toJSON(mMapping).toString();
-        String dataMd5 = CommonUtil.getMD5(data);
+        String reportId = handledReport.getProperty(ReportField.REPORT_ID);
+        String appVersionName = handledReport.getProperty(ReportField.APP_VERSION_NAME);
+        String appVersionCode = handledReport.getProperty(ReportField.APP_VERSION_CODE);
+        String dataMd5 = CommonUtil.getMD5(reportId + appVersionName + appVersionCode);
         String signature = CommonUtil.getMD5(dataMd5 + Constant.MD5_SIG);
         handledReport.putString(ReportField.SIGNATURE, signature);
     }

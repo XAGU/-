@@ -12,6 +12,7 @@ import com.xiaolian.amigo.util.crash.acra.dialog.BaseCrashReportDialog;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import static  com.xiaolian.amigo.util.crash.acra.ACRA.LOG_TAG;
@@ -25,7 +26,7 @@ public final class LastActivityManager {
 
     @NonNull
     private WeakReference<Activity> lastActivityCreated = new WeakReference<Activity>(null);
-    private List<WeakReference<Activity>> activitys = new ArrayList<>();
+    private List<Activity> activities;
 
     public LastActivityManager(@NonNull Application application) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
@@ -39,7 +40,7 @@ public final class LastActivityManager {
                         // Ignore CrashReportDialog because we want the last
                         // application Activity that was started so that we can explicitly kill it off.
                         lastActivityCreated = new WeakReference<Activity>(activity);
-                        activitys.add(new WeakReference<Activity>(activity));
+                        addActivity(activity);
                     }
                 }
 
@@ -74,6 +75,7 @@ public final class LastActivityManager {
                 @Override
                 public void onActivityDestroyed(@NonNull Activity activity) {
                     if (ACRA.DEV_LOGGING) ACRA.log.d(LOG_TAG, "onActivityDestroyed " + activity.getClass());
+                    removeActivity(activity);
                 }
             });
         }
@@ -98,13 +100,39 @@ public final class LastActivityManager {
     }
 
     /**
+     * 移除Activity
+     */
+    public void removeActivity(Activity activity) {
+        if (activities.contains(activity)) {
+            activities.remove(activity);
+        }
+
+        if (activities.size() == 0) {
+            activities = null;
+        }
+    }
+
+    /**
+     * 添加Activity
+     */
+    public void addActivity(Activity activity) {
+        if (activities == null) {
+            activities = new LinkedList<>();
+        }
+
+        if (!activities.contains(activity)) {
+            activities.add(activity);//把当前Activity添加到集合中
+        }
+    }
+
+    /**
      * 销毁所有activity
      */
     public void removeAllActivities() {
-        for (WeakReference<Activity> activity : activitys) {
+        for (Activity activity : activities) {
             if (null != activity) {
-                activity.get().finish();
-                activity.get().overridePendingTransition(0, 0);
+                activity.finish();
+                activity.overridePendingTransition(0, 0);
             }
         }
     }

@@ -14,6 +14,7 @@ import com.xiaolian.amigo.ui.main.update.UpdateActivity;
 import com.xiaolian.amigo.ui.more.intf.IAboutUsPresenter;
 import com.xiaolian.amigo.ui.more.intf.IAboutUsView;
 import com.xiaolian.amigo.util.AppUtils;
+import com.xiaolian.amigo.util.CommonUtil;
 
 import javax.inject.Inject;
 
@@ -84,6 +85,9 @@ public class AboutUsActivity extends MoreBaseActivity implements IAboutUsView {
 
     @Override
     public void showUpdateButton(VersionDTO version) {
+        if (version == null) {
+            return;
+        }
         model = version;
         rl_update.setVisibility(View.VISIBLE);
         tv_new_version.setText("V" + version.getVersionName());
@@ -93,6 +97,10 @@ public class AboutUsActivity extends MoreBaseActivity implements IAboutUsView {
     void onUpdateClick() {
 //        presenter.checkUpdate(versionCode, versionName, true);
         showUpdateDialog(model);
+    }
+
+    @OnClick(R.id.rl_attention)
+    void onAttentionClick() {
     }
 
     @Override

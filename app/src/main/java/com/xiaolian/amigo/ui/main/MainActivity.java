@@ -246,7 +246,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        Log.d(TAG, "dispatchTouchEvent");
+//        Log.d(TAG, "dispatchTouchEvent");
         if (mGestureDetector.onTouchEvent(ev)) {
             Log.d(TAG, "mGestureDetector onTouchEvent");
             return true;
@@ -511,7 +511,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
      */
     @OnClick(R.id.iv_notice)
     void gotoNoticeList() {
-        CommonUtil.crash();
         if (presenter.isLogin()) {
             startActivity(new Intent(this, NoticeListActivity.class));
         } else {

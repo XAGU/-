@@ -42,7 +42,7 @@ public class MvpApp extends Application {
         super.attachBaseContext(base);
         try {
             final ACRAConfiguration config = new ConfigurationBuilder(this)
-                    .setFormUri("http://10.0.0.10:55000/send")
+                    .setFormUri(BuildConfig.SERVER + "/crash")
                     .setReportType(HttpSender.Type.JSON)
                     .setHttpMethod(HttpSender.Method.POST)
                     .setReportSenderFactoryClasses(MyHttpSenderFactory.class)

@@ -114,7 +114,9 @@ public final class ProcessFinisher {
             Intent intent = new Intent(context, SplashActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             PendingIntent restartIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
-            mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 10, restartIntent); // x秒钟后重启应用
+            if (mgr != null) {
+                mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 10, restartIntent); // x秒钟后重启应用
+            }
         } catch (Exception e) {
             Log.e("ACRA", "first class error:" + e);
         }
