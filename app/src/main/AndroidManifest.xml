@@ -404,6 +404,20 @@
 
         <service android:name=".ui.main.update.DownLoadService" />
 
+        <!--ACRA-->
+        <activity
+            android:name=".util.crash.acra.dialog.CrashReportDialog"
+            android:theme="@android:style/Theme.Dialog"
+            android:launchMode="singleInstance"
+            android:excludeFromRecents="true"
+            android:finishOnTaskLaunch="true"
+            android:process=":acra"/>
+
+        <service
+            android:name=".util.crash.acra.sender.SenderService"
+            android:exported="false"
+            android:process=":acra" />
+
         <!--兼容API24的provider-->
         <provider
             android:name="android.support.v4.content.FileProvider"

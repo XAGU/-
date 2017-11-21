@@ -30,12 +30,18 @@ public class BonusAdaptor extends CommonAdapter<BonusAdaptor.BonusWrapper> {
     protected void convert(ViewHolder holder, BonusWrapper bonusWrapper, int position) {
         holder.setText(R.id.tv_amount, String.format(Locale.getDefault(), "¥%.0f", bonusWrapper.amount));
         holder.setText(R.id.tv_type, bonusWrapper.getName());
-        holder.setText(R.id.tv_time_end, "有效期" + TimeUtils.millis2String(bonusWrapper.getStartTime(),
-                TimeUtils.MY_DATE_FORMAT2) + "至" + TimeUtils.millis2String(bonusWrapper.getTimeEnd(),
-                TimeUtils.MY_DATE_FORMAT2) );
+        if (bonusWrapper.getStartTime() != null && bonusWrapper.getTimeEnd() != null) {
+            holder.setText(R.id.tv_time_end, "有效期" + TimeUtils.millis2String(bonusWrapper.getStartTime(),
+                    TimeUtils.MY_DATE_FORMAT2) + "至" + TimeUtils.millis2String(bonusWrapper.getTimeEnd(),
+                    TimeUtils.MY_DATE_FORMAT2) );
+        }
         holder.setText(R.id.tv_desc, bonusWrapper.desc);
         if (bonusWrapper.timeLeft != null && bonusWrapper.timeLeft <= 3) {
-            holder.setText(R.id.tv_time_left, "剩" + String.valueOf(bonusWrapper.timeLeft) + "日");
+            if (bonusWrapper.timeLeft == 0) {
+                holder.setText(R.id.tv_time_left, "今日截止");
+            } else {
+                holder.setText(R.id.tv_time_left, "剩" + String.valueOf(bonusWrapper.timeLeft) + "日");
+            }
         } else {
             holder.setText(R.id.tv_time_left, "");
         }

@@ -103,4 +103,5 @@ ext.deps = [
         'umeng'                  : "com.umeng.analytics:analytics:6.1.2",
         'lombok'                 : 'org.projectlombok:lombok:1.16.18',
         'magicIndicator'         : 'com.github.hackware1993:MagicIndicator:1.5.0',
+        'acra'                   : 'ch.acra:acra:4.9.2',
 ]

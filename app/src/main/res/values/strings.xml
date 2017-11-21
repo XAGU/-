@@ -248,4 +248,5 @@
     <string name="loading_error">加载失败</string>
     <string name="cancel_repair">取消报修</string>
     <string name="cancel_repair_success">取消报修成功</string>
+    <string name="crash_toast_text">很抱歉,程序出现异常,即将退出.</string>
 </resources>

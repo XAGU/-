@@ -511,6 +511,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
      */
     @OnClick(R.id.iv_notice)
     void gotoNoticeList() {
+        CommonUtil.crash();
         if (presenter.isLogin()) {
             startActivity(new Intent(this, NoticeListActivity.class));
         } else {

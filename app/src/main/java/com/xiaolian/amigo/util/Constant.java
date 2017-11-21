@@ -96,4 +96,7 @@ public final class Constant {
     // 等比缩放
     public static final String OSS_IMAGE_RESIZE = "?x-oss-process=image/resize,m_mfit,h_%d,w_%d";
 
+    // md5签名
+    public static final String MD5_SIG = "1234567";
+
 }
