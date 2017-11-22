@@ -248,8 +248,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 String scannedMacAddress = result.getBleDevice().getMacAddress();
                 String[] temp = scannedMacAddress.split(":");
                 StringBuilder deviceNo = new StringBuilder(temp[temp.length-3]);
-                deviceNo.append(temp[temp.length - 2]);
-                deviceNo.append(temp[temp.length - 1]);
+                deviceNo.append(temp[temp.length - 2]).append(temp[temp.length - 1]);
                 if (TextUtils.equals(deviceNo.toString(), macAddress)) {
                     currentMacAddress = scannedMacAddress;
                     Log.i(TAG, "获取macAddress成功。macAddress:" + currentMacAddress);

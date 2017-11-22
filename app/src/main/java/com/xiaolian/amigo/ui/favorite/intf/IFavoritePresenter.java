@@ -17,9 +17,7 @@ package com.xiaolian.amigo.ui.favorite.intf;
 
 
 import com.xiaolian.amigo.di.FavoriteActivityContext;
-import com.xiaolian.amigo.di.LoginActivityContext;
 import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
-import com.xiaolian.amigo.ui.order.intf.IOrderView;
 
 @FavoriteActivityContext
 public interface IFavoritePresenter<V extends IFavoriteView> extends IBasePresenter<V> {

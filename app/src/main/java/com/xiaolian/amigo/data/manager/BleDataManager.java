@@ -4,7 +4,6 @@ import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.os.ParcelUuid;
 import android.support.annotation.NonNull;
-import com.xiaolian.amigo.util.Log;
 
 import com.polidea.rxandroidble.RxBleClient;
 import com.polidea.rxandroidble.RxBleConnection;

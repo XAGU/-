@@ -2,9 +2,7 @@ package com.xiaolian.amigo.data.network.model.order;
 
 import java.io.Serializable;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  * 订单

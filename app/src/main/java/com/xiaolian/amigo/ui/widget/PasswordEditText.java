@@ -58,10 +58,11 @@ public class PasswordEditText extends AppCompatEditText {
     public void setmDrawableRight(boolean isOpen) {
         int drawableId;
         // 通过状态设置DrawableRight的样式
-        if (!isOpen)
+        if (!isOpen) {
             drawableId = R.drawable.pwd_eye_open;
-        else
+        } else {
             drawableId = R.drawable.pwd_eye_close;
+        }
         // 初始化DrawableRight
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mDrawableRight = getResources().getDrawable(drawableId, null);

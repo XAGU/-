@@ -2,7 +2,6 @@ package com.xiaolian.amigo.ui.repair.intf;
 
 import com.xiaolian.amigo.data.network.model.dto.response.RepairDetailRespDTO;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
-import com.xiaolian.amigo.ui.repair.adaptor.RepairAdaptor;
 import com.xiaolian.amigo.ui.repair.adaptor.RepairProgressAdaptor;
 
 import java.util.List;

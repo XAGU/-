@@ -34,6 +34,7 @@ import butterknife.OnTextChanged;
  */
 
 public class RegisterStep1Fragment extends Fragment {
+    private static final String GET_VERIVICATION_CODE = "获取验证码";
 
     @BindView(R.id.bt_submit)
     Button bt_submit;
@@ -89,12 +90,12 @@ public class RegisterStep1Fragment extends Fragment {
         ViewUtil.setEditHintAndSize(getString(R.string.mobile_hint), 14, et_mobile);
         ViewUtil.setEditHintAndSize(getString(R.string.verification_code_hint), 14, et_verification_code);
 
-        cdb = new CountDownButtonHelper(bt_send_verification_code, "获取验证码",
+        cdb = new CountDownButtonHelper(bt_send_verification_code, GET_VERIVICATION_CODE,
                 Constant.VERIFY_CODE_TIME, 1);
         cdb.setOnFinishListener(() -> {
             if (getContext() != null) {
                 bt_send_verification_code.setEnabled(true);
-                bt_send_verification_code.setText("获取验证码");
+                bt_send_verification_code.setText(GET_VERIVICATION_CODE);
                 int color = ContextCompat.getColor(getContext(), R.color.colorFullRed);
                 bt_send_verification_code.setTextColor(color);
                 bt_send_verification_code.setBackgroundResource(R.drawable.bg_rect_red_stroke);
@@ -116,12 +117,12 @@ public class RegisterStep1Fragment extends Fragment {
                 toggleButton();
                 if (et_mobile.length() == 11) {
                     bt_send_verification_code.setEnabled(true);
-                    bt_send_verification_code.setText("获取验证码");
+                    bt_send_verification_code.setText(GET_VERIVICATION_CODE);
                     int color = ContextCompat.getColor(getContext(), R.color.colorFullRed);
                     bt_send_verification_code.setTextColor(color);
                     bt_send_verification_code.setBackgroundResource(R.drawable.bg_rect_red_stroke);
                 } else {
-                    bt_send_verification_code.setText("获取验证码");
+                    bt_send_verification_code.setText(GET_VERIVICATION_CODE);
                     int color = ContextCompat.getColor(getContext(), R.color.colorDarkB);
                     bt_send_verification_code.setTextColor(color);
                     bt_send_verification_code.setBackgroundResource(R.drawable.bg_rect_gray_stroke);

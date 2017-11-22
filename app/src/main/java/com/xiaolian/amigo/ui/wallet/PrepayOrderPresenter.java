@@ -4,7 +4,6 @@ import com.xiaolian.amigo.data.manager.intf.IWalletDataManager;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IPrepayOrderPresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IPrepayOrderView;
-import com.xiaolian.amigo.ui.wallet.intf.IPrepayPresenter;
 
 import javax.inject.Inject;
 

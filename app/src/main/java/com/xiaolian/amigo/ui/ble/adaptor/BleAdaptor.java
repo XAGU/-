@@ -93,8 +93,12 @@ public class BleAdaptor extends RecyclerView.Adapter<BleAdaptor.ViewHolder> {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
 
             Device device = (Device) o;
 

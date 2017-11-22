@@ -107,7 +107,7 @@ public class WebActivity extends BaseActivity {
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 String tag = "tel:";
                 if (url.contains(tag)) {
-                    String mobile = url.substring(url.lastIndexOf(":") + 1);
+                    String mobile = url.substring(url.lastIndexOf(':') + 1);
                     CommonUtil.call(WebActivity.this, mobile);
                     return true;
                 }
@@ -126,7 +126,7 @@ public class WebActivity extends BaseActivity {
                 super.onReceivedHttpError(view, request, errorResponse);
                 // 这个方法在6.0才出现
                 int statusCode = errorResponse.getStatusCode();
-                System.out.println("onReceivedHttpError code = " + statusCode);
+                Log.d(TAG, "onReceivedHttpError code = " + statusCode);
                 if (404 == statusCode || 500 == statusCode) {
                     loadError = true;
                 }
@@ -153,7 +153,9 @@ public class WebActivity extends BaseActivity {
         public boolean onShowFileChooser(
                 WebView webView, ValueCallback<Uri[]> filePathCallback,
                 WebChromeClient.FileChooserParams fileChooserParams) {
-            if (mFilePathCallback != null) return true;
+            if (mFilePathCallback != null) {
+                return true;
+            }
             mFilePathCallback = filePathCallback;
             getImage();
             return true;
@@ -161,7 +163,9 @@ public class WebActivity extends BaseActivity {
 
         // For Android 3.0+
         public void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType) {
-            if (mUploadMessage != null) return;
+            if (mUploadMessage != null) {
+                return;
+            }
             mUploadMessage = uploadMsg;
             getImage();
         }

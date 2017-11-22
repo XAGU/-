@@ -1,9 +1,5 @@
 package com.xiaolian.amigo.data.network.model.dto.response;
 
-import com.xiaolian.amigo.data.network.model.device.Device;
-
-import java.util.List;
-
 import lombok.Data;
 
 /**

@@ -1,7 +1,6 @@
 package com.xiaolian.amigo.data.network.model.dto.response;
 
 import com.xiaolian.amigo.data.network.model.device.Device;
-import com.xiaolian.amigo.data.network.model.order.Order;
 
 import java.util.List;
 

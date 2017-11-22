@@ -1,14 +1,12 @@
 package com.xiaolian.amigo.ui.wallet;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.data.enumeration.Payment;
 import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.OrderReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.OrderRespDTO;
 import com.xiaolian.amigo.data.network.model.order.Order;
 import com.xiaolian.amigo.ui.base.BasePresenter;
-import com.xiaolian.amigo.ui.order.adaptor.OrderAdaptor;
 import com.xiaolian.amigo.ui.wallet.adaptor.PrepayAdaptor;
 import com.xiaolian.amigo.ui.wallet.intf.IPrepayPresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IPrepayView;

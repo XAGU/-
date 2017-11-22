@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.ComplaintType;
 import com.xiaolian.amigo.data.enumeration.PayWay;
-import com.xiaolian.amigo.data.enumeration.RechargeStatus;
 import com.xiaolian.amigo.data.enumeration.WithdrawalStatus;
 import com.xiaolian.amigo.data.network.model.dto.response.FundsDTO;
 import com.xiaolian.amigo.ui.base.WebActivity;

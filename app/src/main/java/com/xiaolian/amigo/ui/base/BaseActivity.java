@@ -148,7 +148,7 @@ public abstract class BaseActivity extends SwipeBackActivity
                 return null;
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
         }
         if (Build.VERSION.SDK_INT >= 24) {
             imageUri = FileProvider.getUriForFile(this, getPackageName() + ".fileprovider", outputImage);
@@ -161,26 +161,22 @@ public abstract class BaseActivity extends SwipeBackActivity
     private Uri getCropUri(String fileName) {
         String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xiaolian/";
         File path = new File(filePath);
-        if (!path.exists()) {
-            if (!path.mkdirs()) {
-                onError(R.string.no_sd_card_premission);
-                return null;
-            }
+        if (!path.exists() && !path.mkdirs()) {
+            onError(R.string.no_sd_card_premission);
+            return null;
         }
         File outputImage = new File(path, fileName + ".jpg");
         try {
-            if (outputImage.exists()) {
-                if (!outputImage.delete()) {
-                    onError(R.string.no_sd_card_premission);
-                    return null;
-                }
+            if (outputImage.exists() && !outputImage.delete()) {
+                onError(R.string.no_sd_card_premission);
+                return null;
             }
             if (!outputImage.createNewFile()) {
                 onError(R.string.no_sd_card_premission);
                 return null;
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
         }
         return Uri.fromFile(outputImage);
     }
@@ -231,7 +227,7 @@ public abstract class BaseActivity extends SwipeBackActivity
                         blePermissonCallback.execute();
                     }
                 } else {
-                    ((MainActivity)this).showOpenLocationDialog();
+                    ((MainActivity) this).showOpenLocationDialog();
                 }
             } else if (requestCode == REQUEST_LOCATION) {
                 if (isLocationEnable()) {

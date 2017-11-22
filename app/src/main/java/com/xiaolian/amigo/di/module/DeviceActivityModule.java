@@ -33,8 +33,6 @@ import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
 import com.xiaolian.amigo.data.manager.intf.ITradeDataManager;
 import com.xiaolian.amigo.data.manager.intf.IWalletDataManager;
 import com.xiaolian.amigo.di.DeviceActivityContext;
-import com.xiaolian.amigo.ui.ble.BlePresenter;
-import com.xiaolian.amigo.ui.ble.intf.IBleView;
 import com.xiaolian.amigo.ui.device.DeviceOrderPresenter;
 import com.xiaolian.amigo.ui.device.dispenser.ChooseDispenserPresenter;
 import com.xiaolian.amigo.ui.device.dispenser.DispenserPresenter;

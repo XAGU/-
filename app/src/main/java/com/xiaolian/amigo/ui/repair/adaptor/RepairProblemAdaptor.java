@@ -2,24 +2,16 @@ package com.xiaolian.amigo.ui.repair.adaptor;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.repair.RepairProblem;
-import com.xiaolian.amigo.ui.user.adaptor.EditDormitoryAdaptor;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import lombok.Data;
 
 /**

@@ -1,27 +1,15 @@
 package com.xiaolian.amigo.ui.user;
 
-import android.net.Uri;
-
-import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.dto.request.PasswordCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.EntireUserDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.data.network.model.user.User;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditProfilePresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditProfileView;
-import com.xiaolian.amigo.util.Constant;
-
-import java.io.File;
-import java.util.logging.Handler;
 
 import javax.inject.Inject;
-
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
 
 /**
  * EditProfilePresenter实现类

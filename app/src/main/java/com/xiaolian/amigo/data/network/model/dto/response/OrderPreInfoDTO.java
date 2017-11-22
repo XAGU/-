@@ -3,7 +3,6 @@ package com.xiaolian.amigo.data.network.model.dto.response;
 import com.xiaolian.amigo.data.network.model.bonus.Bonus;
 
 import java.io.Serializable;
-import java.util.List;
 
 import lombok.Data;
 
@@ -18,7 +17,7 @@ public class OrderPreInfoDTO implements Serializable {
      * 代金券
      */
     Bonus bonus;
-    /**
+    /*Order*
      * 预付金额
      */
     Double prepay;

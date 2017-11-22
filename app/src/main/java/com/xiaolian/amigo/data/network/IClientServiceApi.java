@@ -1,11 +1,8 @@
 package com.xiaolian.amigo.data.network;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.dto.request.QueryUserBonusReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.CsMobileRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.QueryUserBonusListRespDTO;
 
-import retrofit2.http.Body;
 import retrofit2.http.POST;
 import rx.Observable;
 

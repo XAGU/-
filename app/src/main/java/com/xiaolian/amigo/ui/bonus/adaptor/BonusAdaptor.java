@@ -40,7 +40,7 @@ public class BonusAdaptor extends CommonAdapter<BonusAdaptor.BonusWrapper> {
             if (bonusWrapper.timeLeft == 0) {
                 holder.setText(R.id.tv_time_left, "今日截止");
             } else {
-                holder.setText(R.id.tv_time_left, "剩" + String.valueOf(bonusWrapper.timeLeft) + "日");
+                holder.setText(R.id.tv_time_left, "剩" + bonusWrapper.timeLeft + "日");
             }
         } else {
             holder.setText(R.id.tv_time_left, "");

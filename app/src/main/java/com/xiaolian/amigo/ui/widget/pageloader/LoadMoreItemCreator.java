@@ -1,7 +1,6 @@
 package com.xiaolian.amigo.ui.widget.pageloader;
 
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.view.ViewGroup;
 
 /**

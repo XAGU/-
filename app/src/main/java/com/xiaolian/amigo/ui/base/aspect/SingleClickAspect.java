@@ -19,8 +19,7 @@ import java.util.Calendar;
  */
 @Aspect
 public class SingleClickAspect {
-    static int TIME_TAG = R.id.click_time;
-    public static final int MIN_CLICK_DELAY_TIME = 600;
+    private static final int MIN_CLICK_DELAY_TIME = 600;
 
     @Pointcut("execution(@com.xiaolian.amigo.ui.base.aspect.SingleClick * *(..))")//方法切入点
     public void methodAnnotated() {
@@ -29,9 +28,13 @@ public class SingleClickAspect {
     @Around("methodAnnotated()")//在连接点进行方法替换
     public void aroundJoinPoint(ProceedingJoinPoint joinPoint) throws Throwable {
         View view = null;
-        for (Object arg : joinPoint.getArgs())
-            if (arg instanceof View) view = (View) arg;
+        for (Object arg : joinPoint.getArgs()) {
+            if (arg instanceof View) {
+                view = (View) arg;
+            }
+        }
         if (view != null) {
+            int TIME_TAG = R.id.click_time;
             Object tag = view.getTag(TIME_TAG);
             long lastClickTime = ((tag != null) ? (long) tag : 0);
             long currentTime = Calendar.getInstance().getTimeInMillis();

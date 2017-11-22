@@ -1,7 +1,6 @@
 package com.xiaolian.amigo.ui.notice.intf;
 
 import com.xiaolian.amigo.ui.base.intf.IBaseListView;
-import com.xiaolian.amigo.ui.base.intf.IBaseView;
 import com.xiaolian.amigo.ui.notice.adaptor.NoticeAdaptor;
 
 import java.util.List;

@@ -21,6 +21,7 @@ import com.xiaolian.amigo.ui.device.intf.IDeviceOrderView;
 import com.xiaolian.amigo.ui.main.MainActivity;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.util.Log;
 
 import javax.inject.Inject;
 
@@ -35,6 +36,7 @@ import butterknife.OnClick;
 
 public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOrderView {
 
+    private static final String TAG = DeviceOrderActivity.class.getSimpleName();
     // 账单标题
     @BindView(R.id.tv_order_title)
     TextView tv_order_title;
@@ -182,7 +184,7 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
         try {
             Thread.sleep(500);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
         }
         startActivity(new Intent(this, MainActivity.class)
                 .putExtra(MainActivity.INTENT_KEY_SWITCH_TO_HOME, true));

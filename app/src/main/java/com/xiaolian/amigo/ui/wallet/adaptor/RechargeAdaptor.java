@@ -1,11 +1,9 @@
 package com.xiaolian.amigo.ui.wallet.adaptor;
 
 import android.content.Context;
-import android.view.View;
 
 import com.xiaolian.amigo.data.network.model.wallet.RechargeDenominations;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
-import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.text.DecimalFormat;
 import java.util.List;

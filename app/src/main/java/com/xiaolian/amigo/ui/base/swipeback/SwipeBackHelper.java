@@ -200,7 +200,9 @@ public class SwipeBackHelper extends Handler {
                     inputMethod.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 }
 
-                if(!mViewManager.addViewFromPreviousActivity()) return;
+                if(!mViewManager.addViewFromPreviousActivity()) {
+                    return;
+                }
 
                 // add shadow view on the left of content view
                 mViewManager.addShadowView();
@@ -422,7 +424,9 @@ public class SwipeBackHelper extends Handler {
          * Remove the PreviousContentView at current Activity and put it into previous Activity.
          */
         private void resetPreviousView() {
-            if(mPreviousContentView == null) return;
+            if(mPreviousContentView == null) {
+                return;
+            }
 
             View view = mPreviousContentView;
             FrameLayout contentView = mCurrentContentView;
@@ -430,7 +434,9 @@ public class SwipeBackHelper extends Handler {
             contentView.removeView(view);
             mPreviousContentView = null;
 
-            if(mPreviousActivity == null || mPreviousActivity.isFinishing()) return;
+            if(mPreviousActivity == null || mPreviousActivity.isFinishing()) {
+                return;
+            }
             Activity preActivity = mPreviousActivity;
             final ViewGroup previewContentView = getContentView(preActivity);
             previewContentView.addView(view);
@@ -458,7 +464,9 @@ public class SwipeBackHelper extends Handler {
         }
 
         private synchronized void removeShadowView() {
-            if(mShadowView == null) return;
+            if(mShadowView == null) {
+                return;
+            }
             final FrameLayout contentView = getContentView(mActivity);
             contentView.removeView(mShadowView);
             mShadowView = null;

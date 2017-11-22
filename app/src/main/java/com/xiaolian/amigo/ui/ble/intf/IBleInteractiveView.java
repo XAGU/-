@@ -1,7 +1,6 @@
 package com.xiaolian.amigo.ui.ble.intf;
 
 
-import com.polidea.rxandroidble.scan.ScanResult;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 
 /**

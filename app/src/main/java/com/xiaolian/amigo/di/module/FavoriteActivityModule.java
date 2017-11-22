@@ -19,17 +19,11 @@ import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
 import com.xiaolian.amigo.data.manager.FavoriteManager;
-import com.xiaolian.amigo.data.manager.OrderDataManager;
 import com.xiaolian.amigo.data.manager.intf.IFavoriteManager;
-import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
 import com.xiaolian.amigo.di.FavoriteActivityContext;
-import com.xiaolian.amigo.di.OrderActivityContext;
 import com.xiaolian.amigo.ui.favorite.FavoritePresenter;
 import com.xiaolian.amigo.ui.favorite.intf.IFavoritePresenter;
 import com.xiaolian.amigo.ui.favorite.intf.IFavoriteView;
-import com.xiaolian.amigo.ui.order.OrderPresenter;
-import com.xiaolian.amigo.ui.order.intf.IOrderPresenter;
-import com.xiaolian.amigo.ui.order.intf.IOrderView;
 
 import dagger.Module;
 import dagger.Provides;

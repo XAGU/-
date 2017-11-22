@@ -3,7 +3,6 @@ package com.xiaolian.amigo.ui.widget.indicator;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
@@ -265,7 +264,7 @@ public class LoadingIndicatorView extends View {
             final int intrinsicHeight = mIndicator.getIntrinsicHeight();
             final float intrinsicAspect = (float) intrinsicWidth / intrinsicHeight;
             final float boundAspect = (float) w / h;
-            if (intrinsicAspect != boundAspect) {
+            if (!equal(intrinsicAspect, boundAspect)) {
                 if (boundAspect > intrinsicAspect) {
                     // New width is larger. Make it smaller to match height.
                     final int width = (int) (h * intrinsicAspect);
@@ -280,6 +279,10 @@ public class LoadingIndicatorView extends View {
             }
             mIndicator.setBounds(left, top, right, bottom);
         }
+    }
+
+    private boolean equal(final float a, final float b) {
+        return (Math.abs(a - b)) < 0.0000001;
     }
 
     @Override

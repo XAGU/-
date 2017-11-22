@@ -14,7 +14,6 @@ import com.xiaolian.amigo.ui.main.update.UpdateActivity;
 import com.xiaolian.amigo.ui.more.intf.IAboutUsPresenter;
 import com.xiaolian.amigo.ui.more.intf.IAboutUsView;
 import com.xiaolian.amigo.util.AppUtils;
-import com.xiaolian.amigo.util.CommonUtil;
 
 import javax.inject.Inject;
 

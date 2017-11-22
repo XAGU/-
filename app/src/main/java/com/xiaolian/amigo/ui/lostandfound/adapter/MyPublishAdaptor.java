@@ -6,7 +6,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.data.network.model.lostandfound.LostAndFound;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.ScreenUtils;
 import com.xiaolian.amigo.util.TimeUtils;
@@ -14,8 +13,6 @@ import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.List;
-
-import lombok.Data;
 
 /**
  * <p>

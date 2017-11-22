@@ -2,13 +2,10 @@ package com.xiaolian.amigo.ui.user;
 
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.dto.request.QueryDeviceListReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.SimpleQueryReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.QueryDeviceListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryUserResidenceListRespDTO;
 import com.xiaolian.amigo.data.network.model.user.UserResidence;
 import com.xiaolian.amigo.ui.base.BasePresenter;
-import com.xiaolian.amigo.ui.device.heater.HeaterActivity;
 import com.xiaolian.amigo.ui.user.adaptor.EditDormitoryAdaptor;
 import com.xiaolian.amigo.ui.user.intf.IChooseDormitoryPresenter;
 import com.xiaolian.amigo.ui.user.intf.IChooseDormitoryView;

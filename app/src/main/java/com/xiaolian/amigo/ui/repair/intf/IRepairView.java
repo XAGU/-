@@ -1,8 +1,6 @@
 package com.xiaolian.amigo.ui.repair.intf;
 
 import com.xiaolian.amigo.ui.base.intf.IBaseListView;
-import com.xiaolian.amigo.ui.base.intf.IBaseView;
-import com.xiaolian.amigo.ui.order.adaptor.OrderAdaptor;
 import com.xiaolian.amigo.ui.repair.adaptor.RepairAdaptor;
 
 import java.util.List;

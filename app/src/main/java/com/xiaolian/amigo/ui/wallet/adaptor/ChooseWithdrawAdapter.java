@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.dto.response.UserThirdAccountDTO;
-import com.xiaolian.amigo.ui.user.adaptor.EditDormitoryAdaptor;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 

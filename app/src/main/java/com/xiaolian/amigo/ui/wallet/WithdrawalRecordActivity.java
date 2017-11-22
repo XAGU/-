@@ -10,9 +10,7 @@ import com.xiaolian.amigo.data.enumeration.WithdrawOperationType;
 import com.xiaolian.amigo.ui.wallet.adaptor.WithdrawalAdaptor;
 import com.xiaolian.amigo.ui.wallet.intf.IWithdrawRecordPresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IWithdrawalRecordView;
-import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.util.Constant;
-import com.xiaolian.amigo.util.ScreenUtils;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import java.util.ArrayList;

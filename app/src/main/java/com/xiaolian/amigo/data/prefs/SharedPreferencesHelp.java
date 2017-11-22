@@ -53,7 +53,7 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     private String deviceTokenHolder;
     private User userHolder;
 
-    private boolean isShowUrgencyNotify = true;
+    private boolean showUrgencyNotify = true;
     private int bonusAmount = 0;
     private String balance = "";
 
@@ -155,12 +155,12 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
 
     @Override
     public boolean isShowUrgencyNotify() {
-        return this.isShowUrgencyNotify;
+        return this.showUrgencyNotify;
     }
 
     @Override
     public void setShowUrgencyNotify(boolean isShow) {
-        this.isShowUrgencyNotify = isShow;
+        this.showUrgencyNotify = isShow;
     }
 
     @Override
@@ -308,7 +308,7 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
         userHolder = null;
         bonusAmount = 0;
         balance = "";
-        isShowUrgencyNotify = true;
+        showUrgencyNotify = true;
     }
 
 

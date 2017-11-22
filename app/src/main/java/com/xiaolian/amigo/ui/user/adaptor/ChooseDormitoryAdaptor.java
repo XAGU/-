@@ -1,10 +1,7 @@
 package com.xiaolian.amigo.ui.user.adaptor;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.zhy.adapter.recyclerview.CommonAdapter;

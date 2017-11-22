@@ -1,6 +1,5 @@
 package com.xiaolian.amigo.ui.device.intf.heator;
 
-import com.xiaolian.amigo.ui.device.intf.IDeviceView;
 import com.xiaolian.amigo.ui.device.intf.IWaterDeviceBaseView;
 
 /**

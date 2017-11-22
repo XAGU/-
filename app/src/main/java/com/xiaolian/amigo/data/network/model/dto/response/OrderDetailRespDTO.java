@@ -1,8 +1,6 @@
 package com.xiaolian.amigo.data.network.model.dto.response;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  * 网络返回-订单详情

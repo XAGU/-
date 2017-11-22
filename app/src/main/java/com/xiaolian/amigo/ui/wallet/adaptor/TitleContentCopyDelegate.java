@@ -3,7 +3,6 @@ package com.xiaolian.amigo.ui.wallet.adaptor;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.util.CommonUtil;
 import com.zhy.adapter.recyclerview.base.ItemViewDelegate;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 

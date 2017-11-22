@@ -10,15 +10,11 @@ import android.os.IBinder;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.text.format.Formatter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.util.AppUtils;

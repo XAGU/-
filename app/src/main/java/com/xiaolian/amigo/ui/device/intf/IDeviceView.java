@@ -3,10 +3,7 @@ package com.xiaolian.amigo.ui.device.intf;
 
 import com.xiaolian.amigo.data.enumeration.TradeError;
 import com.xiaolian.amigo.data.enumeration.TradeStep;
-import com.xiaolian.amigo.data.network.model.device.ScanDeviceGroup;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
-
-import java.util.List;
 
 /**
  * Created by caidong on 2017/9/22.

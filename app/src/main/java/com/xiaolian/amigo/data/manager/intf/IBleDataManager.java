@@ -5,8 +5,6 @@ import android.bluetooth.BluetoothGattDescriptor;
 import android.support.annotation.NonNull;
 
 import com.polidea.rxandroidble.RxBleConnection;
-import com.polidea.rxandroidble.RxBleDevice;
-import com.polidea.rxandroidble.RxBleDeviceServices;
 import com.polidea.rxandroidble.scan.ScanResult;
 
 import rx.Observable;

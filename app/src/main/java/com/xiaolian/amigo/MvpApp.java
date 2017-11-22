@@ -77,7 +77,7 @@ public class MvpApp extends Application {
                     .build();
             ACRA.init(this, config);
         } catch (ACRAConfigurationException e) {
-            e.printStackTrace();
+            Log.e("MvpApp", "ACRA初始化失败");
         }
     }
 

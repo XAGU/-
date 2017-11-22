@@ -16,11 +16,8 @@
 package com.xiaolian.amigo.di.componet;
 
 
-import com.xiaolian.amigo.di.LoginActivityContext;
 import com.xiaolian.amigo.di.OrderActivityContext;
-import com.xiaolian.amigo.di.module.LoginActivityModule;
 import com.xiaolian.amigo.di.module.OrderActivityModule;
-import com.xiaolian.amigo.ui.login.LoginActivity;
 import com.xiaolian.amigo.ui.order.OrderActivity;
 import com.xiaolian.amigo.ui.order.OrderDetailActivity;
 

@@ -19,20 +19,14 @@ import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
 import com.xiaolian.amigo.data.manager.MainDataManager;
-import com.xiaolian.amigo.data.manager.OrderDataManager;
 import com.xiaolian.amigo.data.manager.intf.IMainDataManager;
-import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
 import com.xiaolian.amigo.di.MainActivityContext;
-import com.xiaolian.amigo.di.OrderActivityContext;
 import com.xiaolian.amigo.ui.main.MainPresenter;
 import com.xiaolian.amigo.ui.main.SplashPresenter;
 import com.xiaolian.amigo.ui.main.intf.IMainPresenter;
 import com.xiaolian.amigo.ui.main.intf.IMainView;
 import com.xiaolian.amigo.ui.main.intf.ISplashPresenter;
 import com.xiaolian.amigo.ui.main.intf.ISplashView;
-import com.xiaolian.amigo.ui.order.OrderPresenter;
-import com.xiaolian.amigo.ui.order.intf.IOrderPresenter;
-import com.xiaolian.amigo.ui.order.intf.IOrderView;
 
 import dagger.Module;
 import dagger.Provides;

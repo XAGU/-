@@ -1,10 +1,6 @@
 package com.xiaolian.amigo.ui.wallet;
 
 import android.content.Intent;
-import android.text.TextUtils;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;

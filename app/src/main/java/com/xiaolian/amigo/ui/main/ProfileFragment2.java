@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import com.xiaolian.amigo.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +22,7 @@ import com.xiaolian.amigo.ui.order.OrderActivity;
 import com.xiaolian.amigo.ui.repair.RepairNavActivity;
 import com.xiaolian.amigo.ui.user.EditProfileActivity;
 import com.xiaolian.amigo.ui.wallet.WalletActivity;
-import com.xiaolian.amigo.util.CommonUtil;
+import com.xiaolian.amigo.util.Log;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import org.greenrobot.eventbus.EventBus;

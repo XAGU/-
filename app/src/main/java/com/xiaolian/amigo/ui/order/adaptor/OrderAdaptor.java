@@ -12,8 +12,6 @@ import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.network.model.order.Order;
 import com.xiaolian.amigo.util.CommonUtil;
 
-import org.w3c.dom.Text;
-
 import java.util.List;
 
 import butterknife.BindView;

@@ -19,17 +19,11 @@ import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
 import com.xiaolian.amigo.data.manager.NoticeDataManager;
-import com.xiaolian.amigo.data.manager.OrderDataManager;
 import com.xiaolian.amigo.data.manager.intf.INoticeDataManager;
-import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
 import com.xiaolian.amigo.di.NoticeActivityContext;
-import com.xiaolian.amigo.di.OrderActivityContext;
 import com.xiaolian.amigo.ui.notice.NoticePresenter;
 import com.xiaolian.amigo.ui.notice.intf.INoticePresenter;
 import com.xiaolian.amigo.ui.notice.intf.INoticeView;
-import com.xiaolian.amigo.ui.order.OrderPresenter;
-import com.xiaolian.amigo.ui.order.intf.IOrderPresenter;
-import com.xiaolian.amigo.ui.order.intf.IOrderView;
 
 import dagger.Module;
 import dagger.Provides;

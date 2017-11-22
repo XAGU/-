@@ -1,10 +1,8 @@
 package com.xiaolian.amigo.ui.wallet;
 
 import android.text.TextUtils;
-import com.xiaolian.amigo.util.Log;
 
 import com.xiaolian.amigo.data.enumeration.AlipayPayOrderCheckResult;
-import com.xiaolian.amigo.data.manager.WalletDataManager;
 import com.xiaolian.amigo.data.manager.intf.IWalletDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.AlipayTradeAppPayArgsReqDTO;
@@ -13,7 +11,6 @@ import com.xiaolian.amigo.data.network.model.dto.request.RechargeReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.SimpleQueryReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.AlipayTradeAppPayArgsRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.AlipayTradeAppPayResultParseRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryRechargeAmountsRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.SimpleRespDTO;
 import com.xiaolian.amigo.data.network.model.wallet.RechargeDenominations;
@@ -21,6 +18,7 @@ import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.wallet.adaptor.RechargeAdaptor;
 import com.xiaolian.amigo.ui.wallet.intf.IRechargePresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IRechargeView;
+import com.xiaolian.amigo.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;

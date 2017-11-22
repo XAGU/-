@@ -6,7 +6,6 @@ import com.xiaolian.amigo.data.network.model.dto.request.MobileUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.PasswordCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.PasswordUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.PersonalUpdateReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.QueryDeviceListReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.QueryResidenceListReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.SimpleQueryReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.SimpleReqDTO;
@@ -17,7 +16,6 @@ import com.xiaolian.amigo.data.network.model.dto.response.EntireUserDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryAvatarDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryBriefSchoolListRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.QueryDeviceListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QuerySchoolBizListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryUserResidenceListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.ResidenceListRespDTO;
@@ -25,12 +23,9 @@ import com.xiaolian.amigo.data.network.model.dto.response.SimpleRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.UserResidenceDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.UserResidenceInListDTO;
 
-
-import java.util.List;
-
-import rx.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
+import rx.Observable;
 
 /**
  * 个人信息模块Api接口

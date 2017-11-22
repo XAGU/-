@@ -45,6 +45,6 @@ public class WheelHourPicker extends WheelPicker implements IWheelHourPicker {
 
     @Override
     public int getCurrentHour() {
-        return Integer.valueOf(String.valueOf(getData().get(getCurrentItemPosition())));
+        return Integer.parseInt(String.valueOf(getData().get(getCurrentItemPosition())));
     }
 }

@@ -2,14 +2,12 @@ package com.xiaolian.amigo.data.base;
 
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import com.xiaolian.amigo.util.Log;
 
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
+import com.xiaolian.amigo.util.Log;
 
 import java.io.IOException;
 import java.util.Calendar;
-
-import javax.annotation.Nullable;
 
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
@@ -19,7 +17,6 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import okio.Buffer;
-import okio.BufferedSource;
 
 /**
  * Log拦截器
@@ -30,7 +27,10 @@ import okio.BufferedSource;
 public class LogInterceptor implements Interceptor {
     private final static String TAG = LogInterceptor.class.getSimpleName();
     private final static boolean DEBUG = true;
-
+    private final static String TOKEN = "token";
+    private final static String DEVICE_TOKEN = "deviceToken";
+    private final static String GET = "GET";
+    private final static String POST = "POST";
     private long lastTime = 0;
     private Request lastRequest;
     private final static long NETWORK_INTERVAL = 500;
@@ -58,14 +58,14 @@ public class LogInterceptor implements Interceptor {
 
             newRequest = request.newBuilder()
                     // 添加token
-                    .addHeader("token", token)
-                    .addHeader("deviceToken", deviceToken)
+                    .addHeader(TOKEN, token)
+                    .addHeader(DEVICE_TOKEN, deviceToken)
                     .build();
 
         } else {
             newRequest = request.newBuilder()
                     // 添加token
-                    .addHeader("token", token)
+                    .addHeader(TOKEN, token)
                     .build();
 
         }
@@ -75,39 +75,38 @@ public class LogInterceptor implements Interceptor {
             lastRequest = newRequest;
         } else {
             long currentTime = Calendar.getInstance().getTimeInMillis();
-            if (currentTime - lastTime < NETWORK_INTERVAL) {
-                if (isRequestEqual(newRequest, lastRequest)) {
-                    Log.w(TAG, "请求间隔过短 url:" + request.url());
-                    lastRequest = newRequest;
-                    lastTime = Calendar.getInstance().getTimeInMillis();
-                    return new Response.Builder()
-                            .code(600) //Simply put whatever value you want to designate to aborted request.
-                            .request(chain.request())
-                            .protocol(Protocol.HTTP_1_1)
-                            .message("ignore message")
-                            .body(ResponseBody.create(null, new byte[0]))
-                            .build();
-                }
+            if (currentTime - lastTime < NETWORK_INTERVAL
+                    && isRequestEqual(newRequest, lastRequest)) {
+                Log.w(TAG, "请求间隔过短 url:" + request.url());
+                lastRequest = newRequest;
+                lastTime = Calendar.getInstance().getTimeInMillis();
+                return new Response.Builder()
+                        .code(600) //Simply put whatever value you want to designate to aborted request.
+                        .request(chain.request())
+                        .protocol(Protocol.HTTP_1_1)
+                        .message("ignore message")
+                        .body(ResponseBody.create(null, new byte[0]))
+                        .build();
             }
             lastRequest = newRequest;
             lastTime = Calendar.getInstance().getTimeInMillis();
         }
         String url = newRequest.url().toString();
         String header = newRequest.headers().toString();
-        okhttp3.Response response;
+        Response response;
         try {
             response = chain.proceed(newRequest);
         } catch (Exception e) {
             Log.wtf(TAG, "网络请求错误: " + newRequest.url(), e);
             return null;
         }
-        if (null != response.header("deviceToken")) {
+        if (null != response.header(DEVICE_TOKEN)) {
             // 有device_token,一定配对一个macAddress
             String macAddress = response.header("macAddress");
-            sharedPreferencesHelp.setDeviceToken(macAddress, response.header("deviceToken"));
+            sharedPreferencesHelp.setDeviceToken(macAddress, response.header(DEVICE_TOKEN));
         }
         String content;
-        okhttp3.MediaType mediaType;
+        MediaType mediaType;
         if (response.body() != null) {
             content = response.body().string();
             mediaType = response.body().contentType();
@@ -117,7 +116,7 @@ public class LogInterceptor implements Interceptor {
         }
         int code = response.code();
         if (DEBUG) {
-            if (!newRequest.method().equals("GET")) {
+            if (!newRequest.method().equals(GET)) {
                 String requestContent = bodyToString(newRequest.body());
                 Log.d(TAG, "url: " + url + "\n" + "code: " + code + "\n" + "request header: " + header + "\n" + "request body: " + requestContent + "\n" + "response header: "
                         + response.headers().toString() + "\n" + "response body: " + content);
@@ -127,27 +126,8 @@ public class LogInterceptor implements Interceptor {
         }
 
         return response.newBuilder()
-                .body(okhttp3.ResponseBody.create(mediaType, content))
+                .body(ResponseBody.create(mediaType, content))
                 .build();
-    }
-
-    private static class EmptyBody extends ResponseBody {
-
-        @Nullable
-        @Override
-        public MediaType contentType() {
-            return MediaType.parse("application/json;charset=UTF-8");
-        }
-
-        @Override
-        public long contentLength() {
-            return 0;
-        }
-
-        @Override
-        public BufferedSource source() {
-            return null;
-        }
     }
 
     private boolean isRequestEqual(Request request, Request lastRequest) {
@@ -157,16 +137,16 @@ public class LogInterceptor implements Interceptor {
         if (request.headers().size() != lastRequest.headers().size()) {
             return false;
         }
-        if (!TextUtils.equals(request.headers().get("token"), lastRequest.headers().get("token"))) {
+        if (!TextUtils.equals(request.headers().get(TOKEN), lastRequest.headers().get(TOKEN))) {
             return false;
         }
-        if (!TextUtils.equals(request.headers().get("deviceToken"), lastRequest.headers().get("deviceToken"))) {
+        if (!TextUtils.equals(request.headers().get(DEVICE_TOKEN), lastRequest.headers().get(DEVICE_TOKEN))) {
             return false;
         }
         if (!TextUtils.equals(request.method(), lastRequest.method())) {
             return false;
         }
-        if (request.method().equals("POST")) {
+        if (request.method().equals(POST)) {
             if (!TextUtils.equals(bodyToString(request.body()), bodyToString(lastRequest.body()))) {
                 return false;
             }

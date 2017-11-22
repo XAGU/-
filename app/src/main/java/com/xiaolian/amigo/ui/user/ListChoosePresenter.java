@@ -20,16 +20,12 @@ import com.xiaolian.amigo.data.network.model.user.Residence;
 import com.xiaolian.amigo.data.network.model.user.School;
 import com.xiaolian.amigo.data.network.model.user.User;
 import com.xiaolian.amigo.ui.base.BasePresenter;
-import com.xiaolian.amigo.ui.main.MainActivity;
 import com.xiaolian.amigo.ui.user.adaptor.ListChooseAdaptor;
 import com.xiaolian.amigo.ui.user.intf.IListChoosePresenter;
 import com.xiaolian.amigo.ui.user.intf.IListChooseView;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 
-import org.greenrobot.eventbus.EventBus;
-
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import javax.inject.Inject;

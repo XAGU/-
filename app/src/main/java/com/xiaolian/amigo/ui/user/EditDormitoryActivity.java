@@ -9,14 +9,12 @@ import android.widget.TextView;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.network.model.dto.response.UserResidenceDTO;
-import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
-import com.xiaolian.amigo.util.ScreenUtils;
 import com.xiaolian.amigo.ui.user.adaptor.EditDormitoryAdaptor;
 import com.xiaolian.amigo.ui.user.intf.IEditDormitoryPresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditDormitoryView;
+import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.util.Constant;
-
-import org.greenrobot.eventbus.EventBus;
+import com.xiaolian.amigo.util.ScreenUtils;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,7 +1,6 @@
 package com.xiaolian.amigo.ui.user.adaptor;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.View;
@@ -9,9 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.network.model.user.UserResidence;
-import com.xiaolian.amigo.ui.user.ListChooseActivity;
 import com.xiaolian.amigo.ui.user.intf.IEditDormitoryPresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditDormitoryView;
 import com.zhy.adapter.recyclerview.CommonAdapter;

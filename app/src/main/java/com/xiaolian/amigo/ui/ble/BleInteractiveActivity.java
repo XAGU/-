@@ -2,15 +2,13 @@ package com.xiaolian.amigo.ui.ble;
 
 import android.content.Intent;
 import android.os.Bundle;
-import com.xiaolian.amigo.util.Log;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.ble.intf.IBleInteractivePresenter;
 import com.xiaolian.amigo.ui.ble.intf.IBleInteractiveView;
-import com.xiaolian.amigo.ui.ble.intf.IBlePresenter;
-import com.xiaolian.amigo.ui.ble.intf.IBleView;
 import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.util.Log;
 
 import javax.inject.Inject;
 

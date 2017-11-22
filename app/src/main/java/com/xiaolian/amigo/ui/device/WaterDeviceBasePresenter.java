@@ -2,7 +2,6 @@ package com.xiaolian.amigo.ui.device;
 
 import com.xiaolian.amigo.data.manager.intf.IBleDataManager;
 import com.xiaolian.amigo.data.manager.intf.IClientServiceDataManager;
-import com.xiaolian.amigo.data.manager.intf.IDeviceDataManager;
 import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
 import com.xiaolian.amigo.data.manager.intf.ITradeDataManager;
 import com.xiaolian.amigo.data.manager.intf.IWalletDataManager;
@@ -14,8 +13,6 @@ import com.xiaolian.amigo.data.network.model.dto.response.PersonalWalletDTO;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.ui.device.intf.IWaterDeviceBasePresenter;
 import com.xiaolian.amigo.ui.device.intf.IWaterDeviceBaseView;
-
-import rx.schedulers.Schedulers;
 
 /**
  * <p>

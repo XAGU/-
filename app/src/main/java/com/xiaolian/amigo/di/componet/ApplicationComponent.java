@@ -18,11 +18,9 @@ package com.xiaolian.amigo.di.componet;
 import android.app.Application;
 import android.content.Context;
 
-
 import com.polidea.rxandroidble.RxBleClient;
 import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
-import com.xiaolian.amigo.data.prefs.SharedPreferencesHelp;
 import com.xiaolian.amigo.di.ApplicationContext;
 import com.xiaolian.amigo.di.module.ApplicationModule;
 

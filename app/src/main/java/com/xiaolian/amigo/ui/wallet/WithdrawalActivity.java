@@ -23,7 +23,6 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.OnEditorAction;
 import butterknife.OnTextChanged;
 
 /**

@@ -16,7 +16,7 @@ public enum  RechargeStatus {
         }
         @Override
         public String[] getNextOperations() {
-            return new String[] {"常见问题", "我要投诉"};
+            return new String[] {COMMON_PROBLEM, "我要投诉"};
         }
     },
     AUDIT_PENDING(1, "等待审核") {
@@ -26,7 +26,7 @@ public enum  RechargeStatus {
         }
         @Override
         public String[] getNextOperations() {
-            return new String[] {"提醒客服尽快处理", "常见问题"};
+            return new String[] {"提醒客服尽快处理", COMMON_PROBLEM};
         }
     },
     AUDIT_FAIL(2, "审核未通过") {
@@ -36,7 +36,7 @@ public enum  RechargeStatus {
         }
         @Override
         public String[] getNextOperations() {
-            return new String[] {"常见问题", "联系客服"};
+            return new String[] {COMMON_PROBLEM, "联系客服"};
         }
     },
     THIRD_PENDING(3, "等待支付确认") {
@@ -46,7 +46,7 @@ public enum  RechargeStatus {
         }
         @Override
         public String[] getNextOperations() {
-            return new String[] {"常见问题", "我要投诉"};
+            return new String[] {COMMON_PROBLEM, "我要投诉"};
         }
     },
     WITHDRAWAL_SUCCESS(4, "充值成功") {
@@ -56,7 +56,7 @@ public enum  RechargeStatus {
         }
         @Override
         public String[] getNextOperations() {
-            return new String[] {"常见问题", "我要投诉"};
+            return new String[] {COMMON_PROBLEM, "我要投诉"};
         }
     },
     WITHDRAWAL_FAIL(5, "充值失败") {
@@ -67,9 +67,10 @@ public enum  RechargeStatus {
 
         @Override
         public String[] getNextOperations() {
-            return new String[] {"常见问题", "联系客服"};
+            return new String[] {COMMON_PROBLEM, "联系客服"};
         }
     };
+    private static final String COMMON_PROBLEM = "常见问题";
     private int type;
     private String desc;
 

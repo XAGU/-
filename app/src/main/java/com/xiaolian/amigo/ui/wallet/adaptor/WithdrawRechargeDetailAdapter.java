@@ -2,10 +2,7 @@ package com.xiaolian.amigo.ui.wallet.adaptor;
 
 import android.content.Context;
 
-import com.xiaolian.amigo.R;
-import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
-import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.List;
 

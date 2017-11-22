@@ -23,7 +23,7 @@ public class ExpiredBonusAdaptor extends CommonAdapter<BonusAdaptor.BonusWrapper
     @Override
     protected void convert(ViewHolder holder, BonusAdaptor.BonusWrapper bonusWrapper, int position) {
         if (bonusWrapper.amount != null) {
-            holder.setText(R.id.tv_amount, "¥" + String.valueOf(bonusWrapper.amount));
+            holder.setText(R.id.tv_amount, "¥" + bonusWrapper.amount);
         }
         if (bonusWrapper.name != null) {
             holder.setText(R.id.tv_type, bonusWrapper.getName());
