@@ -16,4 +16,6 @@ public interface IWaterDeviceBasePresenter<V extends IWaterDeviceBaseView> exten
     void queryPrepayOption(int deviceType);
 
     void queryCsInfo();
+
+    void setConnecting(boolean connecting);
 }

@@ -512,7 +512,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     }
                 }, Schedulers.io());
 
-        connecting = false;
+        // connecting = false;
         handleConnectError.set(false);
 
         // 缓存中存在设备响应服务器未处理，则直接return
@@ -1096,6 +1096,10 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     @Override
     public void setStep(TradeStep step) {
         this.step = step;
+    }
+
+    public void setConnecting(boolean connecting) {
+        this.connecting = connecting;
     }
 
     /*************************** 以下为测试用 *****************************/

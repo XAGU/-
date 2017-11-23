@@ -645,6 +645,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
     @Override
     public void onConnectSuccess(TradeStep step, Object... extra) {
+        presenter.setConnecting(false);
         if (TradeStep.PAY == step) {
             showStep1();
             // 标记步骤为确认支付页面
