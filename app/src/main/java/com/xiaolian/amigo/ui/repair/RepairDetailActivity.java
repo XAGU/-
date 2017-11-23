@@ -154,7 +154,7 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
                 iv_first.setVisibility(View.VISIBLE);
                 manager.load(Constant.IMAGE_PREFIX + images.get(0)
                         + String.format(Locale.getDefault(), Constant.OSS_IMAGE_RESIZE,
-                        imageSize, imageSize))
+                        imageSize))
                         .asBitmap()
                         .placeholder(R.drawable.ic_picture_error)
                         .error(R.drawable.ic_picture_error)
@@ -165,7 +165,7 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
                 iv_second.setVisibility(View.VISIBLE);
                 manager.load(Constant.IMAGE_PREFIX + images.get(1)
                         + String.format(Locale.getDefault(), Constant.OSS_IMAGE_RESIZE,
-                        imageSize, imageSize))
+                        imageSize))
                         .asBitmap()
                         .placeholder(R.drawable.ic_picture_error)
                         .error(R.drawable.ic_picture_error)
@@ -176,7 +176,7 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
                 iv_third.setVisibility(View.VISIBLE);
                 manager.load(Constant.IMAGE_PREFIX + images.get(2)
                         + String.format(Locale.getDefault(), Constant.OSS_IMAGE_RESIZE,
-                        imageSize, imageSize))
+                        imageSize))
                         .asBitmap()
                         .placeholder(R.drawable.ic_picture_error)
                         .error(R.drawable.ic_picture_error)

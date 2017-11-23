@@ -57,6 +57,7 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
 
             @Override
             public void onReady(ApiResult<QueryBriefSchoolListRespDTO> result) {
+                getMvpView().hideEmptyView();
                 if (null == result.getError()) {
                     if (null != result.getData().getSchools() && result.getData().getSchools().size() > 0) {
                         ArrayList<ListChooseAdaptor.Item> schoolWapper = new ArrayList<>();
@@ -65,6 +66,8 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
                                     CommonUtil.equals(school.getId(), manager.getUser().getSchoolId())));
                         }
                         getMvpView().addMore(schoolWapper);
+                    } else {
+                        getMvpView().showEmptyView();
                     }
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
@@ -89,6 +92,7 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
 
             @Override
             public void onReady(ApiResult<ResidenceListRespDTO> result) {
+                getMvpView().hideEmptyView();
                 if (null == result.getError()) {
                     if (result.getData().getResidences() != null && result.getData().getResidences().size() > 0) {
                         ArrayList<ListChooseAdaptor.Item> wapper = new ArrayList<>();
@@ -96,6 +100,8 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
                             wapper.add(new ListChooseAdaptor.Item(residence));
                         }
                         getMvpView().addMore(wapper);
+                    } else {
+                        getMvpView().showEmptyView();
                     }
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
@@ -157,6 +163,7 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
 
             @Override
             public void onReady(ApiResult<ResidenceListRespDTO> result) {
+                getMvpView().hideEmptyView();
                 if (null == result.getError()) {
                     if (result.getData().getResidences() != null && result.getData().getResidences().size() > 0) {
                         ArrayList<ListChooseAdaptor.Item> wapper = new ArrayList<>();
@@ -164,6 +171,8 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
                             wapper.add(new ListChooseAdaptor.Item(residence));
                         }
                         getMvpView().addMore(wapper);
+                    } else {
+                        getMvpView().showEmptyView();
                     }
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
@@ -187,6 +196,7 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
 
             @Override
             public void onReady(ApiResult<ResidenceListRespDTO> result) {
+                getMvpView().hideEmptyView();
                 if (null == result.getError()) {
                     if (result.getData().getResidences() != null && result.getData().getResidences().size() > 0) {
                         ArrayList<ListChooseAdaptor.Item> wapper = new ArrayList<>();
@@ -194,6 +204,8 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
                             wapper.add(new ListChooseAdaptor.Item(residence));
                         }
                         getMvpView().addMore(wapper);
+                    } else {
+                        getMvpView().showEmptyView();
                     }
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());

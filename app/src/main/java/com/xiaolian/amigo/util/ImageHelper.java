@@ -21,9 +21,9 @@ public class ImageHelper {
     /**
      * 相册大图
      *
-     * @param context
-     * @param imageView
-     * @param path
+     * @param context context
+     * @param imageView imageView
+     * @param path path
      */
     public static void loadAlbum(Context context, ImageView imageView, String path) {
         if (context == null) {

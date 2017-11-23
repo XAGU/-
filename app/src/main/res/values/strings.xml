@@ -123,7 +123,7 @@
     <string name="connect_error_tip_5">请靠近设备，并确保设备未被他人使用</string>
     <string name="device_busy_tip">当前设备正在被他人使用，请稍后再试或切换宿舍\n给你带来的不便敬请谅解！</string>
     <string name="device_busy_tip2">当前设备正在被他人使用，请稍后再试或切换饮水机\n给你带来的不便敬请谅解！</string>
-    <string name="device_broken_tip_1">当前设备在结算找零时出现了故障，请联系客服处理\n给你带来的不便敬请谅解！</string>
+    <string name="device_broken_tip_1">当前设备在结算找零时出现了故障，请重新连接\n给你带来的不便敬请谅解！</string>
     <string name="device_broken_tip_2">当前设备出现了故障，请稍后再试或前往报修\n给你带来的不便敬请谅解！</string>
     <string name="system_error_tip">当前设备出现了故障，请稍后再试或前往报修\n给你带来的不便敬请谅解！</string>
     <string name="connect_error_title_1">与设备连接失败</string>
@@ -250,4 +250,6 @@
     <string name="cancel_repair_success">取消报修成功</string>
     <string name="crash_toast_text">很抱歉,程序出现异常,即将退出.</string>
     <string name="server_available_error_tip">服务器飞走啦，努力修复中</string>
+    <string name="device_broken_tip_3">当前设备出现了故障，维修员正在赶来维修\n给您带来的不便敬请谅解！</string>
+    <string name="device_broken_btn_3">切换宿舍</string>
 </resources>

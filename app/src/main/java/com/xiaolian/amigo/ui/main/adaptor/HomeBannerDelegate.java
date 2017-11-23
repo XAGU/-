@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 import com.xiaolian.amigo.util.Log;
+
+import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -14,6 +16,7 @@ import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 import com.youth.banner.Banner;
+import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
 import com.zhy.adapter.recyclerview.base.ItemViewDelegate;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -58,7 +61,7 @@ public class HomeBannerDelegate implements ItemViewDelegate<HomeAdaptor.ItemWrap
             if (TextUtils.isEmpty(itemWrapper.getBanners().get(position1).getLink())) {
                 return;
             }
-            if (CommonUtil.equals(itemWrapper.getBanners().get(position1).getType(),BannerType.OUTSIDE.getType())) {
+            if (CommonUtil.equals(itemWrapper.getBanners().get(position1).getType(), BannerType.OUTSIDE.getType())) {
                 context.startActivity(new Intent(context, WebActivity.class)
                         .putExtra(WebActivity.INTENT_KEY_URL, itemWrapper.getBanners().get(position1).getLink()));
             }

@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.MvpApp;
@@ -97,6 +98,15 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
 
     @BindView(R.id.v_divide)
     View v_divide;
+
+    @BindView(R.id.v_divide_top)
+    View v_divide_top;
+
+    @BindView(R.id.rl_empty)
+    RelativeLayout rl_empty;
+
+    @BindView(R.id.rl_error)
+    RelativeLayout rl_error;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -377,6 +387,20 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public void showEmptyView() {
+        items.clear();
+        v_divide_top.setVisibility(View.GONE);
+        rl_empty.setVisibility(View.VISIBLE);
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void hideEmptyView() {
+        rl_empty.setVisibility(View.GONE);
+        v_divide_top.setVisibility(View.VISIBLE);
     }
 
     @Override

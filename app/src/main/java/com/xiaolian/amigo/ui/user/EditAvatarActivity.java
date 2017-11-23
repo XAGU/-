@@ -141,7 +141,7 @@ public class EditAvatarActivity extends UserBaseActivity implements IEditAvatarV
             Glide.with(this)
                     .load(Constant.IMAGE_PREFIX + pictureUrl
                             + String.format(Locale.getDefault(), Constant.OSS_IMAGE_RESIZE,
-                                    imageSize, imageSize))
+                                    imageSize))
 //                    .asBitmap()
                     .into(iv_current_avatar);
         }

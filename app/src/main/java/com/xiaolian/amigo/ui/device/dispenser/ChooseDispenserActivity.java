@@ -245,11 +245,11 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
         finish();
     }
 
-    private void updateDevice(List<ScanDeviceGroup> devices) {
+    private synchronized void updateDevice(List<ScanDeviceGroup> devices) {
         if (devices.isEmpty()) {
-            if (nearbyItems.isEmpty()) {
-                showEmptyView();
-            }
+//            if (nearbyItems.isEmpty()) {
+//                showEmptyView();
+//            }
             return;
         }
         if (nearbyItems.isEmpty()) {
@@ -265,10 +265,13 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
             }
         } else {
             boolean needNotify = false;
+            List<ChooseDispenserAdaptor.DispenserWrapper> tempItems = null;
             for (ScanDeviceGroup scanDeviceGroup : devices) {
+                boolean isContained = false;
                 for (ChooseDispenserAdaptor.DispenserWrapper wrapper : nearbyItems) {
                     if (CommonUtil.equals(scanDeviceGroup.getResidenceId(),
                             wrapper.getResidenceId())) {
+                        isContained = true;
                         for (String key : scanDeviceGroup.getWater().keySet()) {
                             if (TextUtils.equals(key, DispenserWater.HOT.getType())) {
                                 wrapper.setHot(scanDeviceGroup.getWater().get(key));
@@ -283,6 +286,16 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
                         }
                     }
                 }
+                if (!isContained) {
+                    if (tempItems == null) {
+                        tempItems = new ArrayList<>();
+                    }
+                    tempItems.add(new ChooseDispenserAdaptor.DispenserWrapper(scanDeviceGroup));
+                    needNotify = true;
+                }
+            }
+            if (tempItems != null) {
+                nearbyItems.addAll(tempItems);
             }
             if (needNotify && !listStatus) {
                 items.clear();

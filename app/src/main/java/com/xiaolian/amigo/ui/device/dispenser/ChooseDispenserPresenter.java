@@ -98,6 +98,8 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
 
     @Override
     public void onLoad() {
+        closeBleConnection();
+        resetSubscriptions();
         addObserver(bleDataManager.scan(), new BleObserver<ScanResult>() {
             // 已经上报的mac地址的集合
             List<String> existDevices = new ArrayList<>();

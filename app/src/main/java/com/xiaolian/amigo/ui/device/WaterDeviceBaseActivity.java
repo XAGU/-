@@ -805,7 +805,16 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                 finish();
                 break;
             case CALL:
-                presenter.queryCsInfo();
+                // 取消掉联系客服状态
+//                presenter.queryCsInfo();
+                break;
+            case CHANGE_DORMITORY:
+                if (deviceType == Device.HEATER.getType()) {
+                    // 只有在step为SETILE时才不能更换宿舍
+                    if (presenter.getStep() != TradeStep.SETTLE) {
+                        startActivityForResult(new Intent(this, ChooseDormitoryActivity.class), CHOOSE_DORMITORY_CODE);
+                    }
+                }
                 break;
         }
     }

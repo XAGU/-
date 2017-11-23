@@ -523,7 +523,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
      */
     @OnClick(R.id.iv_avatar)
     void onAvatarClick() {
-        startActivity(this, EditProfileActivity.class);
+        if (checkLogin()) {
+            startActivity(this, EditProfileActivity.class);
+        }
     }
 
     /**
@@ -531,7 +533,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
      */
     @OnClick(R.id.ll_user_info)
     void onUserInfoClick() {
-        startActivity(this, EditProfileActivity.class);
+        if (checkLogin()) {
+            startActivity(this, EditProfileActivity.class);
+        }
     }
 
 

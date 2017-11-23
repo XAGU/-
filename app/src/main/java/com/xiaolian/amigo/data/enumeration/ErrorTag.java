@@ -5,7 +5,7 @@ package com.xiaolian.amigo.data.enumeration;
  * Created by caidong on 2017/10/13.
  */
 public enum ErrorTag {
-    CONNECT_ERROR(1), DEVICE_BUSY(2), REPAIR(3), CALL(4);
+    CONNECT_ERROR(1), DEVICE_BUSY(2), REPAIR(3), CALL(4), CHANGE_DORMITORY(5);
 
     ErrorTag(int code) {
         this.code = code;

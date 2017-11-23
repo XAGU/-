@@ -316,6 +316,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
             @Override
             public void onConnectError() {
+                // 注释掉防止Rx多次报连接错误
                 // handleDisConnectError();
                 Log.wtf(TAG, "onConnectError");
             }
@@ -337,6 +338,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 new BleObserver<BluetoothGattCharacteristic>() {
                     @Override
                     public void onConnectError() {
+                        // 只在连接设备的onConnectError进行处理，防止Rx多次报连接错误
                         handleDisConnectError();
                     }
 
@@ -374,6 +376,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 new BleObserver<Observable<byte[]>>() {
                     @Override
                     public void onConnectError() {
+                        // 注释掉防止Rx多次报连接错误
                         // handleDisConnectError();
                     }
 
@@ -401,6 +404,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 new BleObserver<byte[]>() {
                     @Override
                     public void onConnectError() {
+                        // 注释掉防止Rx多次报连接错误
                         // handleDisConnectError();
                     }
 
@@ -443,7 +447,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
         if (TextUtils.isEmpty(command)) {
             Log.wtf(TAG, "指令丢失");
-            getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
+            getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_4));
             return;
         }
         byte[] commandBytes = HexBytesUtils.hexStr2Bytes(command);
@@ -451,13 +455,14 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 new BleObserver<byte[]>() {
                     @Override
                     public void onConnectError() {
+                        // 注释掉防止Rx多次报连接错误
                         // handleDisConnectError();
                     }
 
                     @Override
                     public void onExecuteError(Throwable e) {
                         Log.wtf(TAG, "发送指令失败！command:" + command, e);
-                        getMvpView().post(() -> getMvpView().onError(TradeError.DEVICE_BROKEN_1));
+                        handleWriteError(command);
                     }
 
                     @Override
@@ -465,6 +470,15 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         Log.i(TAG, "发送指令成功！command:" + HexBytesUtils.bytesToHexString(data));
                     }
                 }, Schedulers.io());
+    }
+
+    private void handleWriteError(String command) {
+        // 结算找零时写入设备失败
+        if (TextUtils.equals(command, checkoutCmd)) {
+            getMvpView().post(() -> getMvpView().onError(TradeError.DEVICE_BROKEN_1));
+        } else {
+            getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_4));
+        }
     }
 
     @Override
@@ -478,6 +492,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 new BleObserver<byte[]>() {
                     @Override
                     public void onConnectError() {
+                        // 注释掉防止Rx多次报连接错误
                         // handleDisConnectError();
                     }
 
@@ -524,7 +539,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 waitOrderCheckResult();
                 if (null == orderStatus || orderStatus.getStatus() == null) {
                     Log.wtf(TAG, "查不到对应的未结账订单，不应该发生此种状况！！！");
-                    getMvpView().onError(TradeError.CONNECT_ERROR_1);
+                    getMvpView().onError(TradeError.CONNECT_ERROR_3);
                 } else {
                     if (OrderStatus.getOrderStatus(orderStatus.getStatus()) == OrderStatus.FINISHED) { // 订单已结单
                         Log.i(TAG, "重连后发现订单已被结算，跳转至订单详情页。orderId:" + orderStatus.getOrderId());
@@ -544,6 +559,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             // 查询订单状态
             waitOrderCheckResult();
 
+            Log.d(TAG, "开始写入开阀指令" + System.currentTimeMillis());
             // String savedConnectCmd = sharedPreferencesHelp.getConnectCmd(currentMacAddress);
             // Log.i(TAG, "获取已保存的握手指令：" + savedConnectCmd);
             if (null != orderStatus && null != orderStatus.getStatus() && OrderStatus.getOrderStatus(orderStatus.getStatus()) == OrderStatus.USING) {  // 有订单未计算拿上次连接的握手指令（这里待验证是否有影响）
@@ -682,9 +698,16 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         connectCmdLock.notifyAll();
                     }
                 } else {
-                    Log.wtf(TAG, "获取握手失败");
+                    Log.wtf(TAG, "服务器返回,获取开阀指令失败");
                     getMvpView().post(() -> getMvpView().onError(TradeError.SYSTEM_ERROR));
                 }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                Log.wtf(TAG, "服务器未返回,获取开阀指令失败");
+                getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_3));
             }
         }, Schedulers.io());
     }
@@ -706,9 +729,16 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         orderStatusLock.notifyAll();
                     }
                 } else {
-                    Log.wtf(TAG, "获取握手失败");
+                    Log.wtf(TAG, "服务器返回,获取订单状态失败");
                     getMvpView().post(() -> getMvpView().onError(TradeError.SYSTEM_ERROR));
                 }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                Log.wtf(TAG, "服务器未返回,获取订单状态失败");
+                orderStatusLock.notifyAll();
             }
         }, Schedulers.io());
     }
@@ -725,7 +755,6 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         }
         // 存储设备响应结果
         sharedPreferencesHelp.setDeviceResult(deviceNo, result);
-
         CmdResultReqDTO reqDTO = new CmdResultReqDTO();
         reqDTO.setData(result);
         reqDTO.setMacAddress(deviceNo);
