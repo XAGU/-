@@ -67,6 +67,9 @@ public class RechargeDetailActivity extends WalletBaseActivity implements IRecha
     @BindView(R.id.tv_reason_content)
     TextView tv_reason_content;
 
+    @BindView(R.id.tv_reason_top)
+    TextView tv_reason_top;
+
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
 
@@ -123,11 +126,17 @@ public class RechargeDetailActivity extends WalletBaseActivity implements IRecha
         tv_status.setText(RechargeStatus.getRechargeStatus(data.getStatus()).getDesc());
         tv_status.setTextColor(
                 ContextCompat.getColor(this,RechargeStatus.getRechargeStatus(data.getStatus()).getColorRes()));
-        if (CommonUtil.equals(data.getStatus(), RechargeStatus.AUDIT_FAIL)
+        if (CommonUtil.equals(data.getStatus(), RechargeStatus.AUDIT_FAIL.getType())
                 && !TextUtils.isEmpty(data.getReason())) {
             ll_reason.setVisibility(View.VISIBLE);
             tv_reason_content.setText(data.getReason());
-            tv_reason.setText("失败原因");
+            tv_reason.setText(getString(R.string.unpass_reason));
+        }
+
+        if (RechargeStatus.getRechargeStatus(data.getStatus())
+                == RechargeStatus.WITHDRAWAL_FAIL && !TextUtils.isEmpty(data.getReason())) {
+            tv_reason_top.setVisibility(View.VISIBLE);
+            tv_reason_top.setText(data.getReason());
         }
 
         left_oper.setText(RechargeStatus.getRechargeStatus(data.getStatus()).getNextOperations()[0]);

@@ -2,10 +2,14 @@ package com.xiaolian.amigo.ui.main;
 
 import com.xiaolian.amigo.data.manager.intf.IMainDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.dto.response.PersonalExtraInfoDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.BannerDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.BaseInfoDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.main.intf.ISplashPresenter;
 import com.xiaolian.amigo.ui.main.intf.ISplashView;
+import com.xiaolian.amigo.util.Constant;
+
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -26,19 +30,29 @@ public class SplashPresenter<V extends ISplashView> extends BasePresenter<V>
     }
 
     @Override
-    public void getNoticeAmount() {
-        addObserver(mainDataManager.getExtraInfo(), new NetworkObserver<ApiResult<PersonalExtraInfoDTO>>(false) {
+    public void getSystemBaseInfo() {
+        addObserver(mainDataManager.getSystemBaseInfo(), new NetworkObserver<ApiResult<BaseInfoDTO>>(false) {
 
             @Override
-            public void onReady(ApiResult<PersonalExtraInfoDTO> result) {
-                getMvpView().startMain();
+            public void onReady(ApiResult<BaseInfoDTO> result) {
+                getMvpView().startMain(result.getData().getBanners());
             }
 
             @Override
             public void onError(Throwable e) {
                 super.onError(e);
-                getMvpView().startMainServerNoResponse();
+                getMvpView().startMainServerNoResponse(getDefaultBanners());
             }
         });
     }
+
+    @Override
+    public ArrayList<BannerDTO> getDefaultBanners() {
+        ArrayList<BannerDTO> banners = new ArrayList<>();
+        banners.add(new BannerDTO(Constant.DEFAULT_BANNER_TYPE,
+                Constant.DEFAULT_BANNER_IMAGE, Constant.DEFAULT_BANNER_LINK));
+        return banners;
+    }
+
+
 }

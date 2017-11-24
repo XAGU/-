@@ -31,12 +31,15 @@ import butterknife.ButterKnife;
 public class ChooseDormitoryActivity extends UserBaseListActivity implements IChooseDormitoryView {
 
     private static final int REQUEST_CODE_EDIT_DORMITOTY = 0x1020;
+    public static final String INTENT_KEY_LAST_DORMITORY = "intent_key_last_dormitory";
     @Inject
     IChooseDormitoryPresenter<IChooseDormitoryView> presenter;
 
     List<EditDormitoryAdaptor.UserResidenceWrapper> items = new ArrayList<>();
 
     ChooseDormitoryAdaptor adaptor;
+
+    private Long residenceId;
 
     @Override
     protected void onRefresh() {
@@ -53,11 +56,12 @@ public class ChooseDormitoryActivity extends UserBaseListActivity implements ICh
     @Override
     protected void setRecyclerView(RecyclerView recyclerView) {
         adaptor = new ChooseDormitoryAdaptor(this, R.layout.item_choose_dormitory, items);
+        adaptor.setResidenceId(residenceId);
         adaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
 //                presenter.getHeaterDeviceMacAddress(items.get(position).getResidenceId());
-                backToDevice(items.get(position).getMacAddress(), items.get(position).getResidenceName());
+                backToDevice(items.get(position).getResidenceId(), items.get(position).getMacAddress(), items.get(position).getResidenceName());
             }
 
             @Override
@@ -104,10 +108,19 @@ public class ChooseDormitoryActivity extends UserBaseListActivity implements ICh
     }
 
     @Override
-    public void backToDevice(String macAddress, String location) {
+    protected void setUp() {
+        super.setUp();
+        if (getIntent() != null) {
+            residenceId = getIntent().getLongExtra(INTENT_KEY_LAST_DORMITORY, -1);
+        }
+    }
+
+    @Override
+    public void backToDevice(Long residenceId, String macAddress, String location) {
         Intent intent = new Intent();
         intent.putExtra(MainActivity.INTENT_KEY_MAC_ADDRESS, macAddress);
         intent.putExtra(MainActivity.INTENT_KEY_LOCATION, location);
+        intent.putExtra(MainActivity.INTENT_KEY_RESIDENCE_ID, residenceId);
         setResult(RESULT_OK, intent);
         finish();
     }

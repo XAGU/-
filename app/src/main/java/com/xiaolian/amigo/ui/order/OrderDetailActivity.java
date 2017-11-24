@@ -2,6 +2,7 @@ package com.xiaolian.amigo.ui.order;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -134,7 +135,7 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
         }
         tv_order_no.setText(order.getOrderNo());
         if (CommonUtil.equals(order.getStatus(), 3)) {
-            tv_order_title.setText(getString(R.string.error_order_title));
+//            tv_order_title.setText(getString(R.string.error_order_title));
             // 异常账单
             tv_order_error_tip.setVisibility(View.VISIBLE);
             ll_order_normal.setVisibility(View.GONE);
@@ -143,10 +144,15 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
             if (TextUtils.isEmpty(order.getBonus())) {
                 // 没有代金券
                 rl_back_bonus.setVisibility(View.GONE);
+                tv_consume.setTextColor(ContextCompat.getColor(this, R.color.colorFullRed));
+                tv_actual_debit.setTextColor(ContextCompat.getColor(this, R.color.colorDark6));
+                tv_actual_debit.setVisibility(View.GONE);
             } else {
                 // 有代金券
                 rl_back_bonus.setVisibility(View.VISIBLE);
                 tv_back_bonus.setText(order.getBonus());
+                tv_consume.setTextColor(ContextCompat.getColor(this, R.color.colorDark6));
+                tv_actual_debit.setTextColor(ContextCompat.getColor(this, R.color.colorFullRed));
             }
             tv_back_amount.setText(order.getPrepay());
         } else {
@@ -158,10 +164,15 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
             if (TextUtils.isEmpty(order.getBonus())) {
                 // 没有代金券
                 rl_use_bonus.setVisibility(View.GONE);
+                tv_consume.setTextColor(ContextCompat.getColor(this, R.color.colorFullRed));
+                tv_actual_debit.setTextColor(ContextCompat.getColor(this, R.color.colorDark6));
+                tv_actual_debit.setVisibility(View.GONE);
             } else {
                 // 有代金券
                 rl_use_bonus.setVisibility(View.VISIBLE);
                 tv_bonus_remark.setText(getString(R.string.minus, order.getBonus()));
+                tv_consume.setTextColor(ContextCompat.getColor(this, R.color.colorDark6));
+                tv_actual_debit.setTextColor(ContextCompat.getColor(this, R.color.colorFullRed));
             }
             tv_consume.setText(order.getConsume());
             tv_prepay.setText(order.getPrepay());

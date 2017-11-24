@@ -2,7 +2,10 @@ package com.xiaolian.amigo.data.manager.intf;
 
 import com.xiaolian.amigo.data.network.IMainApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.dto.request.CheckVersionUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.OrderReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.BaseInfoDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.CheckVersionUpdateRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.OrderRespDTO;
 import com.xiaolian.amigo.data.network.model.user.User;
 
@@ -41,6 +44,12 @@ public interface IMainDataManager extends IMainApi {
 
     // 获取个人订单
     Observable<ApiResult<OrderRespDTO>> queryOrders(@Body OrderReqDTO reqDTO);
+
+    // 基础信息
+    Observable<ApiResult<BaseInfoDTO>> getSystemBaseInfo();
+
+    // 版本更新查询
+    Observable<ApiResult<CheckVersionUpdateRespDTO>> checkUpdate(@Body CheckVersionUpdateReqDTO reqDTO);
 
     void setLastUpdateRemindTime();
 

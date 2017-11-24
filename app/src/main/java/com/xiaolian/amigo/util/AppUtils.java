@@ -96,7 +96,7 @@ public class AppUtils {
         Uri uri;
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M){
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            uri = FileProvider.getUriForFile(context, context.getPackageName() + ".provider", outputFile);
+            uri = FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", outputFile);
         }else {
             uri = Uri.fromFile(outputFile);
         }

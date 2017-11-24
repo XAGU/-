@@ -8,6 +8,10 @@ import android.os.Handler;
 import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+
+import com.xiaolian.amigo.data.enumeration.BizError;
+import com.xiaolian.amigo.util.CommonUtil;
+import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
 
 import com.polidea.rxandroidble.RxBleConnection;
@@ -126,6 +130,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     private volatile boolean closeFlag = false;
     // 正在恢复上次设备响应标识
     private volatile boolean deviceResultFlag = false;
+    // 故障设备标志
+    private volatile boolean brokenFlag = false;
 
     DeviceBasePresenter(IBleDataManager bleDataManager, ITradeDataManager tradeDataManager, IOrderDataManager orderDataManager, ISharedPreferencesHelp sharedPreferencesHelp) {
         super();
@@ -214,7 +220,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 // 关闭蓝牙连接
                 closeBleConnecttion();
 
-                getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_5));
+                if (getMvpView() != null) {
+                    getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_5));
+                }
             }
         };
         Log.i(TAG, "启动30s定时器......");
@@ -281,7 +289,12 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
     private void realConnect(String macAddress) {
         // 如果缓存中存在待处理的设备响应则直接去请求服务器
-        String savedDeviceResult = sharedPreferencesHelp.getDeviceResult(deviceNo);
+        String savedDeviceResult;
+        if (reconnect) {
+            savedDeviceResult = getDeviceResult(orderId);
+        } else {
+            savedDeviceResult = getDeviceResult();
+        }
         if (!TextUtils.isEmpty(savedDeviceResult)) {
             Log.i(TAG, "缓存中存在待处理的设备响应, 直接去请求服务器");
             deviceResultFlag = true;
@@ -517,6 +530,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
         // 缓存中存在设备响应服务器未处理，则直接return
         if (deviceResultFlag) {
+            deviceResultFlag = false;
             return;
         }
         if (reconnect) {
@@ -539,7 +553,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 waitOrderCheckResult();
                 if (null == orderStatus || orderStatus.getStatus() == null) {
                     Log.wtf(TAG, "查不到对应的未结账订单，不应该发生此种状况！！！");
-                    getMvpView().onError(TradeError.CONNECT_ERROR_3);
+                    getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_3));
                 } else {
                     if (OrderStatus.getOrderStatus(orderStatus.getStatus()) == OrderStatus.FINISHED) { // 订单已结单
                         Log.i(TAG, "重连后发现订单已被结算，跳转至订单详情页。orderId:" + orderStatus.getOrderId());
@@ -698,8 +712,12 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         connectCmdLock.notifyAll();
                     }
                 } else {
-                    Log.wtf(TAG, "服务器返回,获取开阀指令失败");
-                    getMvpView().post(() -> getMvpView().onError(TradeError.SYSTEM_ERROR));
+                    if (result.getError().getCode() == BizError.DEVICE_BREAKDOWN.getCode()) {
+                        getMvpView().post(() -> getMvpView().onError(TradeError.DEVICE_BROKEN_3));
+                    } else {
+                        Log.wtf(TAG, "服务器返回,获取开阀指令失败");
+                        getMvpView().post(() -> getMvpView().onError(TradeError.SYSTEM_ERROR));
+                    }
                 }
             }
 
@@ -749,12 +767,15 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             String prefix = result.substring(0, 4);
             if (TextUtils.equals(Command.CLOSE_VALVE.getRespPrefix(), prefix)) {
                 setStep(TradeStep.CLOSE_VALVE);
+                // 存储设备响应结果
+                saveDeviceResult(result, orderId);
+            } else if (TextUtils.equals(Command.OPEN_VALVE.getRespPrefix(), prefix)) {
+                // 存储设备响应结果
+                saveDeviceResult(result, orderId);
             }
         } catch (Exception e) {
             Log.wtf(TAG, "获取设备相应结果前缀失败");
         }
-        // 存储设备响应结果
-        sharedPreferencesHelp.setDeviceResult(deviceNo, result);
         CmdResultReqDTO reqDTO = new CmdResultReqDTO();
         reqDTO.setData(result);
         reqDTO.setMacAddress(deviceNo);
@@ -768,7 +789,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     Log.i(TAG, "收到deviceToken：" + result.getData().getDeviceToken());
                 }
                 // 服务器已接收到设备响应 清除缓存中的设备响应
-                sharedPreferencesHelp.setDeviceResult(deviceNo, "");
+                saveDeviceResult("", orderId);
                 Log.i(TAG, "通知主线程更新数据。" + result.getData());
                 RxBus.getDefault().post(result);
             }
@@ -808,7 +829,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                             getMvpView().onConnectSuccess(TradeStep.SETTLE, orderStatus);
 
                             // connectCmd = sharedPreferencesHelp.getConnectCmd(currentMacAddress);
-                            closeCmd = sharedPreferencesHelp.getCloseCmd(currentMacAddress);
+                            closeCmd = getCloseCmd(orderId);
                             if (TextUtils.isEmpty(closeCmd)) {
                                 Log.e(TAG, "用户本人在三小时之内再次连接该设备, 但是关阀指令丢失，直接使用预结账指令");
                                 onWrite(reopenNextCmd);
@@ -842,7 +863,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 case OPEN_VALVE:
                     Log.i(TAG, "正常流程，获取到关阀指令。command:" + nextCommand);
                     closeCmd = nextCommand;
-                    sharedPreferencesHelp.setCloseCmd(currentMacAddress, closeCmd);
+                    saveCloseCmd(closeCmd, orderId);
                     getMvpView().onOpen();
                     break;
                 case CLOSE_VALVE:
@@ -910,7 +931,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         //if (orderStatus.isExistsUnsettledOrder() || !homePageJump) { // 未结账订单在指定时间范围内
                         Log.i(TAG, "处理未结账订单，此时阀门处于打开状态，下发关阀指令即可。");
                         getMvpView().onConnectSuccess(TradeStep.SETTLE, orderStatus);
-                        String savedCloseCmd = sharedPreferencesHelp.getCloseCmd(currentMacAddress);
+                        String savedCloseCmd = getCloseCmd(orderId);
                         if (null != savedCloseCmd) {
                             Log.wtf(TAG, "从缓存中成功获取关阀指令。command:" + savedCloseCmd);
                             reopenNextCmd = savedCloseCmd;
@@ -918,7 +939,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         } else {
                             Log.wtf(TAG, "从缓存中获取关阀指令为空，APP有可能被用户卸载过, 从缓存中获取上一次的设备响应");
                             // 获取缓存中的设备响应，去重新获取关阀指令
-                            String saveDeviceResult = sharedPreferencesHelp.getDeviceResult(deviceNo);
+                            String saveDeviceResult = getDeviceResult(orderId);
                             if (TextUtils.isEmpty(saveDeviceResult)) {
                                 Log.wtf(TAG, "从缓存中获取上一次的设备响应失败");
                                 getMvpView().onError(TradeError.CONNECT_ERROR_2);
@@ -966,10 +987,10 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     private boolean checkCloseCmd() {
         if (TextUtils.isEmpty(closeCmd)) {
             Log.e(TAG, "重连状态关阀指令为空, 从缓存中获取关阀指令");
-            String savedCloseCmd = sharedPreferencesHelp.getCloseCmd(deviceNo);
+            String savedCloseCmd = getCloseCmd(orderId);
             if (TextUtils.isEmpty(savedCloseCmd)) {
                 Log.e(TAG, "从缓存中获取关阀指令为空，获取上次设备响应重新向服务器请求关阀指令");
-                String savedDeviceResult = sharedPreferencesHelp.getDeviceResult(deviceNo);
+                String savedDeviceResult = getDeviceResult(orderId);
                 if (TextUtils.isEmpty(savedCloseCmd)) {
                     Log.e(TAG, "从缓存中获取设备响应为空");
                     getMvpView().onError(TradeError.CONNECT_ERROR_2);
@@ -983,6 +1004,71 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         }
         return true;
     }
+
+    private void saveDeviceResult(String result, Long orderId) {
+        if (result == null || orderId == null || orderId <= 0) {
+            return;
+        }
+        sharedPreferencesHelp.setDeviceResult(deviceNo,
+                orderId + Constant.DIVIDER + result);
+    }
+
+    private String getDeviceResult(Long orderId) {
+        String deviceResultTemp = sharedPreferencesHelp.getDeviceResult(deviceNo);
+        Long savedOrderId = null;
+        String savedDeviceResult = null;
+        try {
+            String[] temp = deviceResultTemp.split(Constant.DIVIDER);
+            savedOrderId = Long.valueOf(temp[0]);
+            savedDeviceResult = temp[1];
+            if (CommonUtil.equals(savedOrderId, orderId) || !TextUtils.isEmpty(savedDeviceResult)) {
+                return savedDeviceResult;
+            }
+        } catch (Exception e) {
+            Log.wtf(TAG, "从缓存中取设备响应失败", e);
+        }
+        return null;
+    }
+
+    private String getDeviceResult() {
+        String deviceResultTemp = sharedPreferencesHelp.getDeviceResult(deviceNo);
+        String savedDeviceResult = null;
+        try {
+            String[] temp = deviceResultTemp.split(Constant.DIVIDER);
+            savedDeviceResult = temp[1];
+            return savedDeviceResult;
+        } catch (Exception e) {
+            Log.wtf(TAG, "从缓存中取设备响应失败", e);
+        }
+        return null;
+    }
+
+    private void saveCloseCmd(String closeCmd, Long orderId) {
+        if (TextUtils.isEmpty(closeCmd) || orderId == null || orderId <= 0) {
+            return;
+        }
+        sharedPreferencesHelp.setCloseCmd(deviceNo,
+                orderId + Constant.DIVIDER + closeCmd);
+    }
+
+    private String getCloseCmd(Long orderId) {
+        String closeCmdTemp = sharedPreferencesHelp.getCloseCmd(deviceNo);
+        Long savedOrderId = null;
+        String savedCloseCmd = null;
+        try {
+            String[] temp = closeCmdTemp.split(Constant.DIVIDER);
+            savedOrderId = Long.valueOf(temp[0]);
+            savedCloseCmd = temp[1];
+            if (CommonUtil.equals(savedOrderId, orderId) || !TextUtils.isEmpty(savedCloseCmd)) {
+                return savedCloseCmd;
+            }
+        } catch (Exception e) {
+            Log.wtf(TAG, "从缓存中取关阀指令失败", e);
+        }
+        return null;
+    }
+
+
 
     @Override
     public void onPay(Double prepay, Long bonusId) {
@@ -1049,7 +1135,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             if (purelyCheckoutFlag) { // 直接跳转至第二步结算
                 if (null == reopenNextCmd) { // 用户卸载掉app时取回的关阀指令为空
                     // 获取缓存中的设备响应，去重新获取关阀指令
-                    String saveDeviceResult = sharedPreferencesHelp.getDeviceResult(deviceNo);
+                    String saveDeviceResult = getDeviceResult(orderId);
                     if (TextUtils.isEmpty(saveDeviceResult)) {
                         closeBleConnecttion();
                         Log.wtf(TAG, "从缓存中获取上一次的设备响应失败");

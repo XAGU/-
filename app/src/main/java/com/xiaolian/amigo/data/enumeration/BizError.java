@@ -39,7 +39,8 @@ public enum  BizError {
     SCHOOL_BUSINESS_EMPTY(30030, "已上线学校支持功能不能为空"),
     BONUS_DUPLICATE(30031, "已存在一样的代金券"),
     WITHDRAW_LESS_THAN_MIN(30032, "提现金额不能低于10元"),
-    REMIND_TOO_OFTEN(30033, "提醒太频繁");
+    REMIND_TOO_OFTEN(30033, "提醒太频繁"),
+    DEVICE_BREAKDOWN(30039, "设备已故障");
     private int code;
     private String desc;
 

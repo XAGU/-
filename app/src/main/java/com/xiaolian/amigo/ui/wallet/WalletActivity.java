@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.wallet;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.widget.TextView;
@@ -116,10 +117,12 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
             dialog.setTip(title);
         }
         dialog.setSubTipVisible(false);
-        dialog.setOkText(getString(R.string.ok));
-        dialog.setOnOkClickListener(dialog1 ->
-                startActivity(new Intent(this, WithdrawalActivity.class)
-                        .putExtra(Constant.EXTRA_KEY, tv_balance.getText().toString().replace("¥", ""))));
+        dialog.setCancelVisible(false);
+        dialog.setOkText(getString(R.string.i_know));
+        dialog.setOnOkClickListener(Dialog::dismiss
+//                startActivity(new Intent(this, WithdrawalActivity.class)
+//                        .putExtra(Constant.EXTRA_KEY, tv_balance.getText().toString().replace("¥", "")))
+        );
         dialog.show();
     }
 

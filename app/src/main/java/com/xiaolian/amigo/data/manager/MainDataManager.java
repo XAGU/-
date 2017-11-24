@@ -3,12 +3,14 @@ package com.xiaolian.amigo.data.manager;
 import com.xiaolian.amigo.data.manager.intf.IMainDataManager;
 import com.xiaolian.amigo.data.network.IMainApi;
 import com.xiaolian.amigo.data.network.IOrderApi;
+import com.xiaolian.amigo.data.network.ISystemApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.CheckVersionUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.DeviceCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.OrderReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.QueryTimeValidReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.ReadNotifyReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.BaseInfoDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.CheckVersionUpdateRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.DeviceCheckRespDTO;
@@ -38,12 +40,14 @@ public class MainDataManager implements IMainDataManager {
     private ISharedPreferencesHelp sharedPreferencesHelp;
     private IMainApi mainApi;
     private IOrderApi orderApi;
+    private ISystemApi systemApi;
 
     @Inject
     public MainDataManager(Retrofit retrofit, ISharedPreferencesHelp sharedPreferencesHelp) {
         this.sharedPreferencesHelp = sharedPreferencesHelp;
         this.mainApi = retrofit.create(IMainApi.class);
         this.orderApi = retrofit.create(IOrderApi.class);
+        this.systemApi = retrofit.create(ISystemApi.class);
     }
 
     @Override
@@ -107,6 +111,11 @@ public class MainDataManager implements IMainDataManager {
     }
 
     @Override
+    public Observable<ApiResult<BaseInfoDTO>> getSystemBaseInfo() {
+        return systemApi.getSystemBaseInfo();
+    }
+
+    @Override
     public void setLastUpdateRemindTime() {
         sharedPreferencesHelp.setLastUpdateRemindTime();
     }
@@ -163,7 +172,7 @@ public class MainDataManager implements IMainDataManager {
 
     @Override
     public Observable<ApiResult<CheckVersionUpdateRespDTO>> checkUpdate(CheckVersionUpdateReqDTO reqDTO) {
-        return mainApi.checkUpdate(reqDTO);
+        return systemApi.checkUpdate(reqDTO);
     }
 
     @Override

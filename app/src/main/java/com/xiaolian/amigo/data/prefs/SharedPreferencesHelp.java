@@ -20,17 +20,18 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     private static final String PREF_DEVICE_TOKEN_PREFIX = "PREF_DEVICE_TOKEN_";
     private static final String PREF_DEVICE_RESULT_PREFIX = "PREF_DEVICE_RESULT_PREFIX";
     private static final String PREF_CURRENT_DEVICE_TOKEN = "PREF_CURRENT_DEVICE_TOKEN";
-    private static final String PREF_KEY_RESIDENCEID = "PREF_KEY_RESIDENCEID";
+    private static final String PREF_KEY_RESIDENCE_ID = "PREF_KEY_RESIDENCE_ID";
     private static final String PREF_KEY_RESIDENCE_NAME = "PREF_KEY_RESIDENCE_NAME";
     private static final String PREF_KEY_MAC_ADDRESS = "PREF_KEY_MAC_ADDRESS";
-    private static final String PREF_KEY_SCHOOLID = "PREF_KEY_SCHOOLID";
-    private static final String PREF_KEY_SCHOOLNAME = "PREF_KEY_SCHOOLNAME";
+    private static final String PREF_KEY_SCHOOL_ID = "PREF_KEY_SCHOOL_ID";
+    private static final String PREF_KEY_SCHOOL_NAME = "PREF_KEY_SCHOOL_NAME";
     private static final String PREF_KEY_NICKNAME = "PREF_KEY_NICKNAME";
     private static final String PREF_KEY_UID = "PREF_KEY_UID";
     private static final String PREF_KEY_MOBILE = "PREF_KEY_MOBILE";
     private static final String PREF_KEY_PICTURE_URL = "PREF_KEY_PICTURE_URL";
     private static final String PREF_CMD_CONNECT_PREFIX = "PREF_CMD_CONNECT_";
     private static final String PREF_CMD_CLOSE_PREFIX = "PREF_CMD_CLOSE_";
+    private static final String PREF_ORDER_ID_PREFIX = "PREF_ORDER_ID_PREFIX";
     private static final String PREF_RESULT_DEVICE = "PREF_RESULT_DEVICE";
     private static final String PREF_LAST_CONNECT_TIME = "PREF_LAST_CONNECT_TIME";
     private static final String PREF_KEY_BALANCE = "PREF_KEY_BALANCE";
@@ -38,6 +39,7 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     private static final String PREF_BLUETOOTH_MAC_ADDRESS_PREFIX = "PREF_BLUETOOTH_MAC_ADDRESS_PREFIX";
     private static final String PREF_LAST_UPDATE_REMIND_TIME = "PREF_LAST_UPDATE_REMIND_TIME";
     private static final String PREF_LAST_VIEW_REPAIR = "PREF_LAST_VIEW_REPAIR";
+    private static final String PREF_LAST_VIEW_REPAIR_PREFIX = "PREF_LAST_VIEW_REPAIR_PREFIX";
     private static final String PREF_LAST_WITHDRAW_ID = "PREF_LAST_WITHDRAW_ID";
     private static final String PREF_LAST_WITHDRAW_NAME = "PREF_LAST_WITHDRAW_NAME";
     private static final String PREF_LAST_RECHARGE_AMOUNT = "PREF_LAST_RECHARGE_AMOUNT";
@@ -58,12 +60,12 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     private String balance = "";
 
     private final SharedPreferences mSharedPreferences;
-    private final SharedPreferences mGuideSharedPreferences;
+    private final SharedPreferences mUnclearSharedPreferences;
 
     @Inject
     public SharedPreferencesHelp(@ApplicationContext Context context) {
         mSharedPreferences = context.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
-        mGuideSharedPreferences = context.getSharedPreferences(PREF_GUIDE_NAME, Context.MODE_PRIVATE);
+        mUnclearSharedPreferences = context.getSharedPreferences(PREF_GUIDE_NAME, Context.MODE_PRIVATE);
     }
 
     @Override
@@ -102,6 +104,16 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     }
 
     @Override
+    public void setDeviceOrderId(String macAddress, Long orderId) {
+        mSharedPreferences.edit().putLong(PREF_ORDER_ID_PREFIX + macAddress, orderId).apply();
+    }
+
+    @Override
+    public Long getDeviceOrderId(String macAddress) {
+        return mSharedPreferences.getLong(PREF_ORDER_ID_PREFIX + macAddress, -1);
+    }
+
+    @Override
     public User getUserInfo() {
         if (!isUserHolderEmpty()) {
             return userHolder;
@@ -110,11 +122,11 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
             userHolder = new User();
         }
         userHolder.setId(mSharedPreferences.getLong(PREF_KEY_UID, -1));
-        userHolder.setResidenceId(mSharedPreferences.getLong(PREF_KEY_RESIDENCEID, -1));
+        userHolder.setResidenceId(mSharedPreferences.getLong(PREF_KEY_RESIDENCE_ID, -1));
         userHolder.setResidenceName(mSharedPreferences.getString(PREF_KEY_RESIDENCE_NAME, null));
         userHolder.setMacAddress(mSharedPreferences.getString(PREF_KEY_MAC_ADDRESS, null));
-        userHolder.setSchoolId(mSharedPreferences.getLong(PREF_KEY_SCHOOLID, -1));
-        userHolder.setSchoolName(mSharedPreferences.getString(PREF_KEY_SCHOOLNAME, null));
+        userHolder.setSchoolId(mSharedPreferences.getLong(PREF_KEY_SCHOOL_ID, -1));
+        userHolder.setSchoolName(mSharedPreferences.getString(PREF_KEY_SCHOOL_NAME, null));
         userHolder.setNickName(mSharedPreferences.getString(PREF_KEY_NICKNAME, null));
         userHolder.setMobile(mSharedPreferences.getString(PREF_KEY_MOBILE, null));
         userHolder.setPictureUrl(mSharedPreferences.getString(PREF_KEY_PICTURE_URL, null));
@@ -125,7 +137,7 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     public void setUserInfo(User user) {
         userHolder = user;
         if (null != user.getResidenceId()) {
-            mSharedPreferences.edit().putLong(PREF_KEY_RESIDENCEID, user.getResidenceId()).apply();
+            mSharedPreferences.edit().putLong(PREF_KEY_RESIDENCE_ID, user.getResidenceId()).apply();
         }
         if (null != user.getResidenceName()) {
             mSharedPreferences.edit().putString(PREF_KEY_RESIDENCE_NAME, user.getResidenceName()).apply();
@@ -137,10 +149,10 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
             mSharedPreferences.edit().putLong(PREF_KEY_UID, user.getId()).apply();
         }
         if (null != user.getSchoolId()) {
-            mSharedPreferences.edit().putLong(PREF_KEY_SCHOOLID, user.getSchoolId()).apply();
+            mSharedPreferences.edit().putLong(PREF_KEY_SCHOOL_ID, user.getSchoolId()).apply();
         }
         if (null != user.getSchoolName()) {
-            mSharedPreferences.edit().putString(PREF_KEY_SCHOOLNAME, user.getSchoolName()).apply();
+            mSharedPreferences.edit().putString(PREF_KEY_SCHOOL_NAME, user.getSchoolName()).apply();
         }
         if (null != user.getNickName()) {
             mSharedPreferences.edit().putString(PREF_KEY_NICKNAME, user.getNickName()).apply();
@@ -243,52 +255,54 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
 
     @Override
     public void setMainGuide(Integer guideTime) {
-        mGuideSharedPreferences.edit().putInt(PREF_GUIDE_MAIN, guideTime).apply();
+        mUnclearSharedPreferences.edit().putInt(PREF_GUIDE_MAIN, guideTime).apply();
     }
 
     @Override
     public Integer getMainGuide() {
-        return mGuideSharedPreferences.getInt(PREF_GUIDE_MAIN, 0);
+        return mUnclearSharedPreferences.getInt(PREF_GUIDE_MAIN, 0);
     }
 
     @Override
     public void doneHeaterGuide() {
-        mGuideSharedPreferences.edit().putBoolean(PREF_GUIDE_HEATER, true).apply();
+        mUnclearSharedPreferences.edit().putBoolean(PREF_GUIDE_HEATER, true).apply();
     }
 
     @Override
     public boolean isHeaterGuideDone() {
-        return mGuideSharedPreferences.getBoolean(PREF_GUIDE_HEATER, false);
+        return mUnclearSharedPreferences.getBoolean(PREF_GUIDE_HEATER, false);
     }
 
     @Override
     public void doneDispenserGuide() {
-        mGuideSharedPreferences.edit().putBoolean(PREF_GUIDE_DISPENSER, true).apply();
+        mUnclearSharedPreferences.edit().putBoolean(PREF_GUIDE_DISPENSER, true).apply();
     }
 
     @Override
     public boolean isDispenserGuideDone() {
-        return mGuideSharedPreferences.getBoolean(PREF_GUIDE_DISPENSER, false);
+        return mUnclearSharedPreferences.getBoolean(PREF_GUIDE_DISPENSER, false);
     }
 
     @Override
     public void setLastRepairTime(Long time) {
-        mSharedPreferences.edit().putLong(PREF_LAST_VIEW_REPAIR, time).apply();
+        Long id = getUserInfo().getId();
+        mUnclearSharedPreferences.edit().putLong(PREF_LAST_VIEW_REPAIR_PREFIX + id, time).apply();
     }
 
     @Override
     public Long getLastRepairTime() {
-        return mSharedPreferences.getLong(PREF_LAST_VIEW_REPAIR, 0);
+        Long id = getUserInfo().getId();
+        return mUnclearSharedPreferences.getLong(PREF_LAST_VIEW_REPAIR_PREFIX + id, 0);
     }
 
     @Override
     public void setRememberMobile(String mobile) {
-        mGuideSharedPreferences.edit().putString(PREF_REMEMBER_MOBILE, mobile).apply();
+        mUnclearSharedPreferences.edit().putString(PREF_REMEMBER_MOBILE, mobile).apply();
     }
 
     @Override
     public String getRememberMobile() {
-        return mGuideSharedPreferences.getString(PREF_REMEMBER_MOBILE, "");
+        return mUnclearSharedPreferences.getString(PREF_REMEMBER_MOBILE, "");
     }
 
     @Override

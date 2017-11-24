@@ -342,7 +342,7 @@ public abstract class BaseActivity extends SwipeBackActivity
             toast.setDuration(Toast.LENGTH_SHORT);
         }
         if (toastCountDown == null) {
-            toastCountDown = new CountDownTimer(800, 100) {
+            toastCountDown = new CountDownTimer(1000, 100) {
                 @Override
                 public void onTick(long millisUntilFinished) {
 

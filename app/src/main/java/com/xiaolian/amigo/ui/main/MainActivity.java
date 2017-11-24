@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.RectF;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
@@ -63,6 +64,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -92,6 +94,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     public static final String INTENT_KEY_RECOVERY = "intent_key_recovery";
     public static final String INTENT_KEY_SWITCH_TO_HOME = "intent_key_switch_to_home";
     public static final String INTENT_KEY_SERVER_ERROR = "intent_key_server_error";
+    public static final String INTENT_KEY_BANNERS = "intent_key_banners";
 
     @Inject
     IMainPresenter<IMainView> presenter;
@@ -150,6 +153,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     private Long lastRepairTime;
     private Boolean isServerError;
     private OrderPreInfoDTO orderPreInfo;
+    private ArrayList<BannerDTO> defaultBanners;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -241,6 +245,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         super.setUp();
         if (getIntent() != null) {
             isServerError = getIntent().getBooleanExtra(INTENT_KEY_SERVER_ERROR, false);
+            defaultBanners = (ArrayList<BannerDTO>) getIntent().getSerializableExtra(INTENT_KEY_BANNERS);
         }
     }
 
@@ -274,6 +279,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 //            Log.wtf(TAG, e);
 //        }
         Log.d(TAG, "onResume");
+        showBanners(null);
         if (!isNetworkAvailable()) {
             showNoticeAmount(0);
             EventBus.getDefault()
@@ -646,10 +652,19 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public void showBanners(List<BannerDTO> banners) {
-        Log.d(TAG, "showBanners");
-        hasBanners = true;
-        EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.BANNER,
-                banners));
+        List<BannerDTO> settingBanners = new ArrayList<>();
+        if (defaultBanners != null) {
+            settingBanners.addAll(defaultBanners);
+        }
+        if (banners != null) {
+            settingBanners.addAll(banners);
+        }
+        if (!settingBanners.isEmpty()) {
+            Log.d(TAG, "showBanners");
+            hasBanners = true;
+            EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.BANNER,
+                    settingBanners));
+        }
     }
 
     @Override

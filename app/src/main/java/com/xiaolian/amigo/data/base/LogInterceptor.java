@@ -7,6 +7,7 @@ import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.util.Log;
 
 import java.io.IOException;
+import java.net.ConnectException;
 import java.util.Calendar;
 
 import okhttp3.Interceptor;
@@ -98,7 +99,17 @@ public class LogInterceptor implements Interceptor {
             response = chain.proceed(newRequest);
         } catch (Exception e) {
             Log.wtf(TAG, "网络请求错误: " + newRequest.url(), e);
-            return null;
+            if (e instanceof ConnectException) {
+                throw e;
+            } else {
+                return new Response.Builder()
+                        .code(600) //Simply put whatever value you want to designate to aborted request.
+                        .request(chain.request())
+                        .protocol(Protocol.HTTP_1_1)
+                        .message("ignore message")
+                        .body(ResponseBody.create(null, new byte[0]))
+                        .build();
+            }
         }
         if (null != response.header(DEVICE_TOKEN)) {
             // 有device_token,一定配对一个macAddress

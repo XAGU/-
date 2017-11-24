@@ -651,6 +651,8 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             // 标记步骤为确认支付页面
             presenter.setStep(TradeStep.PAY);
             toggleSubTitle(true);
+            // 激活支付按钮
+            bt_pay.setEnabled(true);
             try {
                 Thread.sleep(200);
             } catch (InterruptedException e) {
@@ -905,6 +907,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                 }
                 String chosenLocation = data.getStringExtra(MainActivity.INTENT_KEY_LOCATION);
                 String chosenMacAddress = data.getStringExtra(MainActivity.INTENT_KEY_MAC_ADDRESS);
+                Long chosenResidenceId = data.getLongExtra(MainActivity.INTENT_KEY_RESIDENCE_ID, -1);
                 if (TextUtils.equals(chosenMacAddress, this.macAddress)
                         || TextUtils.isEmpty(chosenLocation)
                         || TextUtils.isEmpty(chosenMacAddress)) {
@@ -913,6 +916,9 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                 }
                 // 设置设备位置
                 tv_device_title.setText(chosenLocation);
+                if (chosenResidenceId != -1) {
+                    residenceId = chosenResidenceId;
+                }
 
                 // 重新连接设备
                 showConnecting();
@@ -1005,6 +1011,16 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     protected void back2Main() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+    }
+
+    public void changeDormitory() {
+        // 只有在step为SETILE时才不能更换宿舍
+        if (presenter.getStep() != TradeStep.SETTLE) {
+            startActivityForResult(
+                    new Intent(this, ChooseDormitoryActivity.class)
+                            .putExtra(ChooseDormitoryActivity.INTENT_KEY_LAST_DORMITORY, residenceId),
+                    CHOOSE_DORMITORY_CODE);
+        }
     }
 
     // 单击回退按钮返回 解决返回区域过小问题

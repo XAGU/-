@@ -7,9 +7,13 @@ import android.support.annotation.Nullable;
 import android.widget.ImageView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.network.model.dto.response.BannerDTO;
 import com.xiaolian.amigo.ui.main.intf.ISplashPresenter;
 import com.xiaolian.amigo.ui.main.intf.ISplashView;
 import com.xiaolian.amigo.util.Log;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -41,7 +45,7 @@ public class SplashActivity extends MainBaseActivity implements ISplashView {
 
         presenter.onAttach(this);
 
-        presenter.getNoticeAmount();
+        presenter.getSystemBaseInfo();
         timer = new CountDownTimer(1000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -49,7 +53,7 @@ public class SplashActivity extends MainBaseActivity implements ISplashView {
 
             @Override
             public void onFinish() {
-                startMainServerNoResponse();
+                startMainServerNoResponse(presenter.getDefaultBanners());
             }
         };
         timer.start();
@@ -63,13 +67,14 @@ public class SplashActivity extends MainBaseActivity implements ISplashView {
     }
 
     @Override
-    public void startMain() {
+    public void startMain(ArrayList<BannerDTO> banners) {
         Log.i(TAG, "startMain");
         cancelTimer();
         Log.i(TAG, "clearObserver");
         presenter.clearObservers();
         iv_logo.postDelayed(() -> {
-            startActivity(new Intent(this, MainActivity.class));
+            startActivity(new Intent(this, MainActivity.class)
+                .putExtra(MainActivity.INTENT_KEY_BANNERS, banners));
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             finish();
         }, 200);
@@ -82,12 +87,13 @@ public class SplashActivity extends MainBaseActivity implements ISplashView {
     }
 
     @Override
-    public void startMainServerNoResponse() {
+    public void startMainServerNoResponse(ArrayList<BannerDTO> banners) {
         Log.i(TAG, "startMainServerNoResponse");
         Log.i(TAG, "clearObserver");
         presenter.clearObservers();
         startActivity(new Intent(this, MainActivity.class)
-                .putExtra(MainActivity.INTENT_KEY_SERVER_ERROR, true));
+                .putExtra(MainActivity.INTENT_KEY_SERVER_ERROR, true)
+                .putExtra(MainActivity.INTENT_KEY_BANNERS, banners));
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         finish();
     }

@@ -49,11 +49,20 @@ public class ChooseWithdrawPresenter<V extends IChooseWithdrawView> extends Base
                             items.add(new ChooseWithdrawAdapter.Item(dto));
                         }
                         getMvpView().addMore(items);
+                    } else {
+                        getMvpView().addMore(new ArrayList<>());
                     }
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
+                    getMvpView().addMore(new ArrayList<>());
                 }
 
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                getMvpView().addMore(new ArrayList<>());
             }
         });
     }

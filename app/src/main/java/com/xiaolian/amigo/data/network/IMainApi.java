@@ -44,9 +44,9 @@ public interface IMainApi {
     @POST("/school/business/list")
     Observable<ApiResult<QuerySchoolBizListRespDTO>> getSchoolBizList();
 
-    // 检查更新
-    @POST("/version/check/update")
-    Observable<ApiResult<CheckVersionUpdateRespDTO>> checkUpdate(@Body CheckVersionUpdateReqDTO reqDTO);
+//    // 检查更新
+//    @POST("/version/check/update")
+//    Observable<ApiResult<CheckVersionUpdateRespDTO>> checkUpdate(@Body CheckVersionUpdateReqDTO reqDTO);
 
     // 获取更新信息
     @POST("/version/one")

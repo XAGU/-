@@ -11,6 +11,7 @@ import com.xiaolian.amigo.ui.wallet.intf.IChooseWithdrawPresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IChooseWithdrawView;
 import com.xiaolian.amigo.ui.widget.RecycleViewDivider;
 import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,7 @@ import butterknife.OnClick;
  */
 
 public class ChooseWithdrawActivity extends WalletBaseActivity implements IChooseWithdrawView {
+    private static final String TAG = ChooseWithdrawActivity.class.getSimpleName();
     @Inject
     IChooseWithdrawPresenter<IChooseWithdrawView> presenter;
 
@@ -54,7 +56,13 @@ public class ChooseWithdrawActivity extends WalletBaseActivity implements IChoos
             onSuccess("请左滑操作");
         });
         adapter.setOnDeleteListener(position -> {
-            presenter.deleteAccount(items.get(position).getId());
+            try {
+                presenter.deleteAccount(items.get(position).getId());
+            } catch (ArrayIndexOutOfBoundsException e) {
+                Log.wtf(TAG, "数组越界", e);
+            } catch (Exception e) {
+                Log.wtf(TAG, e);
+            }
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new RecycleViewDivider(this, RecycleViewDivider.VERTICAL_LIST));

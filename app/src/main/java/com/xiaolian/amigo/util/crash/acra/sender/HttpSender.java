@@ -32,6 +32,7 @@ import com.xiaolian.amigo.util.crash.acra.collector.CrashReportData;
 import com.xiaolian.amigo.util.crash.acra.config.ACRAConfiguration;
 import com.xiaolian.amigo.util.crash.acra.model.Element;
 import com.xiaolian.amigo.util.crash.acra.util.HttpRequest;
+import com.xiaolian.amigo.util.crash.acra.util.Md5Util;
 
 import java.io.IOException;
 import java.net.URL;
@@ -218,13 +219,23 @@ public class HttpSender implements ReportSender {
             }
             CrashReportData handledReport = new CrashReportData();
             for (ReportField field : fields) {
-                handledReport.put(field, report.get(field));
+                if (field == ReportField.APP_VERSION_CODE
+                        || field == ReportField.REPORT_ID
+                        || field == ReportField.APP_VERSION_NAME
+                        || field == ReportField.ANDROID_VERSION
+                        || field == ReportField.PRODUCT
+                        || field == ReportField.BRAND) {
+                    handledReport.put(field, report.get(field));
+                }
             }
             signature(handledReport);
+            String content = report.toJSON(mMapping).toString();
+            handledReport.putString(ReportField.CONTENT, content);
             // Generate report body depending on requested type
             final String reportAsString;
             switch (mType) {
             case JSON:
+
                 reportAsString = handledReport.toJSON(mMapping).toString();
                 break;
             case FORM:
@@ -276,8 +287,8 @@ public class HttpSender implements ReportSender {
         String reportId = handledReport.getProperty(ReportField.REPORT_ID);
         String appVersionName = handledReport.getProperty(ReportField.APP_VERSION_NAME);
         String appVersionCode = handledReport.getProperty(ReportField.APP_VERSION_CODE);
-        String dataMd5 = CommonUtil.getMD5(reportId + appVersionName + appVersionCode);
-        String signature = CommonUtil.getMD5(dataMd5 + Constant.MD5_SIG);
+        String dataMd5 = Md5Util.md5(reportId + appVersionName + appVersionCode);
+        String signature = Md5Util.md5(Constant.MD5_SIG + dataMd5);
         handledReport.putString(ReportField.SIGNATURE, signature);
     }
 

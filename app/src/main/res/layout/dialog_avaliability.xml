@@ -49,6 +49,7 @@
         <View
             android:background="@color/colorDarke"
             android:layout_width="1dp"
+            android:id="@+id/v_divide"
             android:layout_height="match_parent"/>
         <TextView
             android:id="@+id/tv_ok"

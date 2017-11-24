@@ -26,7 +26,7 @@ public final class Constant {
     // 测试服务器
 //    public static final String SERVER_TEST = "http://116.62.236.67:5081";
     public static final String SERVER_TEST = BuildConfig.SERVER;
-//    public static final String SERVER_TEST = "http://10.0.0.4:8081";
+//    public static final String SERVER_TEST = "http://10.0.0.4:5081";
 //    public static final String SERVER_TEST = "http://10.0.0.2:5081";
 
     // 当前使用的服务器
@@ -98,5 +98,12 @@ public final class Constant {
 
     // md5签名
     public static final String MD5_SIG = "crmOiRz1Bmv0b6f6Zx3BdbrGpLnvdYk";
+
+    // 默认banner
+    public static final int DEFAULT_BANNER_TYPE = 3;
+    public static final String DEFAULT_BANNER_IMAGE = "system/123.jpg";
+    public static final String DEFAULT_BANNER_LINK = "https://c.h5.xiaolian365.com/manual";
+    // 分割符
+    public static final String DIVIDER = ":";
 
 }

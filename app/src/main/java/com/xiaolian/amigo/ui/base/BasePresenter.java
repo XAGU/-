@@ -100,7 +100,8 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
                         getMvpView().onError(R.string.server_available_error_tip);
                         break;
                 }
-            } else {
+            }
+            else {
                 Log.wtf(TAG, "sorry，程序上出现错误", e);
                 if (e instanceof NullPointerException
                         && "prod".equals(BuildConfig.ENVIRONMENT)

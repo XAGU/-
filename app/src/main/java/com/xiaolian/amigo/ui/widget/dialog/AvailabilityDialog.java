@@ -23,6 +23,7 @@ public class AvailabilityDialog extends Dialog {
     private TextView tv_sub_tip;
     private TextView tv_cancel;
     private TextView tv_ok;
+    private View v_divide;
     private Type type;
     private OnOkClickListener listener;
 
@@ -41,6 +42,7 @@ public class AvailabilityDialog extends Dialog {
 
     private void initView() {
         setContentView(R.layout.dialog_avaliability);
+        v_divide = findViewById(R.id.v_divide);
         tv_tip = (TextView) findViewById(R.id.tv_tip);
         tv_sub_tip = (TextView) findViewById(R.id.tv_sub_tip);
         tv_cancel = (TextView) findViewById(R.id.tv_cancel);
@@ -80,6 +82,11 @@ public class AvailabilityDialog extends Dialog {
 
     public void setOnOkClickListener(OnOkClickListener listener) {
         this.listener = listener;
+    }
+
+    public void setCancelVisible(boolean visible) {
+        tv_cancel.setVisibility(visible ? View.VISIBLE : View.GONE);
+        v_divide.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
     public interface OnOkClickListener{

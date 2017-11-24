@@ -15,6 +15,7 @@ zipalign() {
 }
 
 if [ $# -gt 0 ];then
+    versionName=$1
     sign
     if [[ -a ${filePath}${applicationId}_${versionName}.sign.zipalign.apk ]];then
         rm ${filePath}${applicationId}_${versionName}.sign.zipalign.apk

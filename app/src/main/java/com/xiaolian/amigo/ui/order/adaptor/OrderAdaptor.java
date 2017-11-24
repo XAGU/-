@@ -54,7 +54,8 @@ public class OrderAdaptor extends RecyclerView.Adapter<OrderAdaptor.ViewHolder> 
         if (null != wrapper) {
             // status为3表示异常订单
             if (CommonUtil.equals(wrapper.getOrder().getStatus(), 3)) {
-                holder.v_type.setBackgroundResource(errorOrderColorRes);
+//                holder.v_type.setBackgroundResource(errorOrderColorRes);
+                holder.v_type.setBackgroundResource(Device.getDevice(wrapper.getType()).getColorRes());
                 holder.tv_device.setText(wrapper.getDevice());
                 holder.tv_time.setText(wrapper.getTime());
                 holder.tv_amount.setText("免费");

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.View;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.util.CommonUtil;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -15,14 +16,23 @@ import java.util.List;
  */
 
 public class ChooseDormitoryAdaptor extends CommonAdapter<EditDormitoryAdaptor.UserResidenceWrapper> {
+    private Long residenceId;
 
     public ChooseDormitoryAdaptor(Context context, int layoutId, List<EditDormitoryAdaptor.UserResidenceWrapper> datas) {
         super(context, layoutId, datas);
     }
 
+    public void setResidenceId(Long residenceId) {
+        this.residenceId = residenceId;
+    }
+
     @Override
     protected void convert(ViewHolder holder, EditDormitoryAdaptor.UserResidenceWrapper userResidenceWrapper, int position) {
-
+        if (CommonUtil.equals(residenceId, userResidenceWrapper.getResidenceId())) {
+            holder.getView(R.id.iv_tick).setVisibility(View.VISIBLE);
+        } else {
+            holder.getView(R.id.iv_tick).setVisibility(View.GONE);
+        }
         holder.setText(R.id.tv_dormitory_name, userResidenceWrapper.getResidenceName());
         if (userResidenceWrapper.isDefault()) {
             holder.getView(R.id.tv_default_dormitory).setVisibility(View.VISIBLE);

@@ -22,7 +22,7 @@
             style="@style/ContentText_main"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:text="@string/prepay_money_colon" />
 
@@ -32,9 +32,9 @@
             style="@style/ContentText_main"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:textColor="#666"
+            android:textColor="@color/colorDark6"
             />
     </RelativeLayout>
     <RelativeLayout
@@ -47,7 +47,7 @@
             style="@style/ContentText_main"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:text="@string/actual_consume_colon" />
 
@@ -57,11 +57,11 @@
             tool:text="0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:textColor="#666"
+            android:textColor="@color/colorFullRed"
             />
     </RelativeLayout>
 
@@ -75,7 +75,7 @@
             style="@style/ContentText_main"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:text="@string/use_bonus_colon" />
 
@@ -85,7 +85,7 @@
             tool:text="0元1234"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -102,7 +102,7 @@
             style="@style/ContentText_main"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:text="@string/actual_debit_colon" />
 
@@ -112,7 +112,7 @@
             style="@style/ContentText_main"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:textColor="#666"
             android:textSize="16sp"
@@ -131,7 +131,7 @@
             style="@style/ContentText_main"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:gravity="center"
             android:text="@string/change_amount_colon" />
 
@@ -141,9 +141,9 @@
             style="@style/ContentText_main"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:gravity="center"
-            android:textColor="@color/colorFullRed"
+            android:textColor="@color/colorDark6"
             android:textSize="16sp"
             android:textStyle="bold" />
 

@@ -48,6 +48,7 @@ public class MyHttpSenderFactory implements ReportSenderFactory {
         map.put(ReportField.SETTINGS_SECURE, "settingsSecure");
         map.put(ReportField.SETTINGS_SYSTEM, "settingsSystem");
         map.put(ReportField.SIGNATURE, "signature");
+        map.put(ReportField.CONTENT, "content");
         return new HttpSender(config, config.httpMethod(), config.reportType(), map);
     }
 }

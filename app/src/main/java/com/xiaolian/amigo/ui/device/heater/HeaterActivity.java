@@ -57,13 +57,6 @@ public class HeaterActivity extends WaterDeviceBaseActivity<IHeaterPresenter> im
         return v -> changeDormitory();
     }
 
-    public void changeDormitory() {
-        // 只有在step为SETILE时才不能更换宿舍
-        if (presenter.getStep() != TradeStep.SETTLE) {
-            startActivityForResult(new Intent(this, ChooseDormitoryActivity.class), CHOOSE_DORMITORY_CODE);
-        }
-    }
-
     @Override
     protected View.OnClickListener setTopRightIconClickListener() {
         return v -> startActivity(new Intent(getApplicationContext(), WebActivity.class)

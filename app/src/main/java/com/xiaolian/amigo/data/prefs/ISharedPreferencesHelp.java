@@ -41,6 +41,10 @@ public interface ISharedPreferencesHelp {
 
     String getDeviceToken(String macAddress);
 
+    void setDeviceOrderId(String macAddress, Long orderId);
+
+    Long getDeviceOrderId(String macAddress);
+
     // 握手指令
     void setConnectCmd(String macAddress, String connectCmd);
 

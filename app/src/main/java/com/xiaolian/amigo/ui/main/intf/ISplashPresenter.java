@@ -1,6 +1,9 @@
 package com.xiaolian.amigo.ui.main.intf;
 
+import com.xiaolian.amigo.data.network.model.dto.response.BannerDTO;
 import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
+
+import java.util.ArrayList;
 
 /**
  * 闪屏页
@@ -10,5 +13,7 @@ import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 
 public interface ISplashPresenter<V extends ISplashView> extends IBasePresenter<V> {
 
-    void getNoticeAmount();
+    void getSystemBaseInfo();
+
+    ArrayList<BannerDTO> getDefaultBanners();
 }

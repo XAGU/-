@@ -22,6 +22,7 @@ import com.xiaolian.amigo.di.componet.ApplicationComponent;
 import com.xiaolian.amigo.di.componet.DaggerApplicationComponent;
 import com.xiaolian.amigo.di.module.ApplicationModule;
 import com.xiaolian.amigo.ui.base.swipeback.ActivityLifecycleHelper;
+import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
 import com.xiaolian.amigo.util.crash.MyHttpSenderFactory;
 import com.xiaolian.amigo.util.crash.acra.ACRA;
@@ -42,7 +43,7 @@ public class MvpApp extends Application {
         super.attachBaseContext(base);
         try {
             final ACRAConfiguration config = new ConfigurationBuilder(this)
-                    .setFormUri(BuildConfig.SERVER + "/crash")
+                    .setFormUri(Constant.SERVER + "/android/crash/add")
                     .setReportType(HttpSender.Type.JSON)
                     .setHttpMethod(HttpSender.Method.POST)
                     .setReportSenderFactoryClasses(MyHttpSenderFactory.class)

@@ -289,7 +289,9 @@ public enum ReportField {
      */
     USER_IP,
 
-    SIGNATURE;
+    SIGNATURE,
+
+    CONTENT;
     /**
      * Whether this field is a collection of key/value pairs.
      * 

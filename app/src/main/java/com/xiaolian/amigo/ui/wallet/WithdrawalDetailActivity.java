@@ -74,6 +74,9 @@ public class WithdrawalDetailActivity extends WalletBaseActivity implements IWit
     @BindView(R.id.tv_cancel_withdraw)
     TextView tv_cancel_withdraw;
 
+    @BindView(R.id.tv_reason_top)
+    TextView tv_reason_top;
+
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
 
@@ -129,16 +132,22 @@ public class WithdrawalDetailActivity extends WalletBaseActivity implements IWit
         tv_status.setText(WithdrawalStatus.getWithdrawalStatus(data.getStatus()).getDesc());
         tv_status.setTextColor(
                 ContextCompat.getColor(this,WithdrawalStatus.getWithdrawalStatus(data.getStatus()).getColorRes()));
-        if (WithdrawalStatus.getWithdrawalStatus(data.getStatus()) == WithdrawalStatus.AUDIT_PENDING) {
+        if (WithdrawalStatus.getWithdrawalStatus(data.getStatus())
+                == WithdrawalStatus.AUDIT_PENDING) {
             tv_cancel_withdraw.setVisibility(View.VISIBLE);
         } else {
             tv_cancel_withdraw.setVisibility(View.GONE);
         }
-        if (CommonUtil.equals(data.getStatus(), WithdrawalStatus.AUDIT_FAIL)
+        if (CommonUtil.equals(data.getStatus(), WithdrawalStatus.AUDIT_FAIL.getType())
                 && !TextUtils.isEmpty(data.getReason())) {
             ll_reason.setVisibility(View.VISIBLE);
             tv_reason_content.setText(data.getReason());
             tv_reason.setText(getString(R.string.unpass_reason));
+        }
+        if (WithdrawalStatus.getWithdrawalStatus(data.getStatus())
+                == WithdrawalStatus.WITHDRAWAL_FAIL && !TextUtils.isEmpty(data.getReason())) {
+            tv_reason_top.setVisibility(View.VISIBLE);
+            tv_reason_top.setText(data.getReason());
         }
         if (WithdrawalStatus.getWithdrawalStatus(data.getStatus()) == WithdrawalStatus.WITHDRAWAL_CANCEL) {
             ll_bottom.setVisibility(View.GONE);
