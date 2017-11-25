@@ -553,6 +553,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 waitOrderCheckResult();
                 if (null == orderStatus || orderStatus.getStatus() == null) {
                     Log.wtf(TAG, "查不到对应的未结账订单，不应该发生此种状况！！！");
+                    setStep(TradeStep.PAY);
                     getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_3));
                 } else {
                     if (OrderStatus.getOrderStatus(orderStatus.getStatus()) == OrderStatus.FINISHED) { // 订单已结单
@@ -1021,7 +1022,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             String[] temp = deviceResultTemp.split(Constant.DIVIDER);
             savedOrderId = Long.valueOf(temp[0]);
             savedDeviceResult = temp[1];
-            if (CommonUtil.equals(savedOrderId, orderId) || !TextUtils.isEmpty(savedDeviceResult)) {
+            if (CommonUtil.equals(savedOrderId, orderId) && !TextUtils.isEmpty(savedDeviceResult)) {
                 return savedDeviceResult;
             }
         } catch (Exception e) {
@@ -1059,7 +1060,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             String[] temp = closeCmdTemp.split(Constant.DIVIDER);
             savedOrderId = Long.valueOf(temp[0]);
             savedCloseCmd = temp[1];
-            if (CommonUtil.equals(savedOrderId, orderId) || !TextUtils.isEmpty(savedCloseCmd)) {
+            if (CommonUtil.equals(savedOrderId, orderId) && !TextUtils.isEmpty(savedCloseCmd)) {
                 return savedCloseCmd;
             }
         } catch (Exception e) {
