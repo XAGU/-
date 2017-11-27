@@ -29,7 +29,6 @@ import butterknife.OnClick;
  * <p>
  * Created by zcd on 10/13/17.
  */
-
 public class MoreActivity extends MoreBaseActivity implements IMoreView {
 
     List<MoreAdapter.MoreModel> items = new ArrayList<MoreAdapter.MoreModel>() {
@@ -38,7 +37,7 @@ public class MoreActivity extends MoreBaseActivity implements IMoreView {
             add(new MoreAdapter.MoreModel("意见反馈", WebActivity.class, Constant.H5_FEEDBACK));
             add(new MoreAdapter.MoreModel("用户协议", WebActivity.class, Constant.H5_AGREEMENT));
             add(new MoreAdapter.MoreModel("关于我们", AboutUsActivity.class));
-            add(new MoreAdapter.MoreModel("\"校OK\"账户迁移", null));
+//            add(new MoreAdapter.MoreModel("\"校OK\"账户迁移", null));
         }
     };
 

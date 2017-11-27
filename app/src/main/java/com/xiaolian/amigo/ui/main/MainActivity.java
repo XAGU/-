@@ -256,6 +256,18 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             Log.d(TAG, "mGestureDetector onTouchEvent");
             return true;
         }
+        if (hasBanners && current == 0) {
+            Banner banner = (Banner) sl_main.getRootView().findViewById(R.id.banner);
+            if (banner != null) {
+                RectF rectF = CommonUtil.calcViewScreenLocation(banner);
+                if (rectF.contains(ev.getRawX(), ev.getRawY())) {
+                    if (!presenter.isLogin()) {
+                        redirectToLogin();
+                        return true;
+                    }
+                }
+            }
+        }
         return super.dispatchTouchEvent(ev);
     }
 
