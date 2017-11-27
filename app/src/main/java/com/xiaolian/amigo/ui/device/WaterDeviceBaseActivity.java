@@ -1000,7 +1000,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
             if (tradeError == TradeError.DEVICE_BROKEN_3 && deviceType == Device.DISPENSER.getType()) {
                 bt_error_handler.setText(getString(R.string.change_dispenser));
-                bt_error_handler.setTag(ErrorTag.CHANGE_DISPENSER);
+                bt_error_handler.setTag(ErrorTag.CHANGE_DISPENSER.getCode());
             } else {
                 bt_error_handler.setText(getString(tradeError.getBtnText()));
                 bt_error_handler.setTag(tradeError.getBtnTag());

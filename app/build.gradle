@@ -78,13 +78,13 @@ android {
             resValue "string", "app_name", "笑联"
 
             buildConfigField "String", "ENVIRONMENT", '"prod"'
-//            buildConfigField "String", "SERVER", "\"https://c.api.xiaolian365.com\""
-//            buildConfigField "String", "H5_SERVER", "\"https://c.h5.xiaolian365.com\""
-//            buildConfigField "String", "FILE_PREFIX", "\"https://s.xiaolian365.com/\""
-
-            buildConfigField "String", "SERVER", "\"https://api.xiaolian365.com/c/\""
-            buildConfigField "String", "H5_SERVER", "\"https://h5.xiaolian365.com/c/\""
+            buildConfigField "String", "SERVER", "\"https://c.api.xiaolian365.com/\""
+            buildConfigField "String", "H5_SERVER", "\"https://c.h5.xiaolian365.com/\""
             buildConfigField "String", "FILE_PREFIX", "\"https://s.xiaolian365.com/\""
+
+//            buildConfigField "String", "SERVER", "\"https://api.xiaolian365.com/c/\""
+//            buildConfigField "String", "H5_SERVER", "\"https://h5.xiaolian365.com/c/\""
+//            buildConfigField "String", "FILE_PREFIX", "\"https://s.xiaolian365.com/\""
 
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "prod",
                                     FILE_PROVIDER_AUTHORITIES: applicationId + ".fileprovider"]
