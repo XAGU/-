@@ -24,4 +24,6 @@ public interface IChooseDispenserPresenter<V extends IChooseDispenerView> extend
     int getAction();
 
     void finishView();
+
+    void gotoDispenser(String macAddress, boolean favor, Long residenceId, String usefor, String location);
 }

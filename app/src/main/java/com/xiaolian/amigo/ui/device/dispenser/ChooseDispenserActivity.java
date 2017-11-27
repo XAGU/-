@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.device.dispenser;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.enumeration.TradeError;
 import com.xiaolian.amigo.data.network.model.device.ScanDevice;
 import com.xiaolian.amigo.data.network.model.device.ScanDeviceGroup;
@@ -21,6 +23,7 @@ import com.xiaolian.amigo.ui.device.DeviceBaseActivity;
 import com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IChooseDispenerView;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IChooseDispenserPresenter;
+import com.xiaolian.amigo.ui.main.MainActivity;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutFooter;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutHeader;
@@ -133,7 +136,6 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
     @Override
     protected void onStop() {
         super.onStop();
-        finish();
     }
 
     private void onNearbyClick() {
@@ -240,6 +242,23 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
 
     @Override
     public void finishView() {
+        finish();
+    }
+
+    @Override
+    public void gotoDispenser(String macAddress, boolean favor, Long residenceId, String usefor, String location) {
+        startActivity(new Intent(this, DispenserActivity.class)
+                .putExtra(MainActivity.INTENT_KEY_MAC_ADDRESS,
+                        macAddress)
+                .putExtra(DispenserActivity.INTENT_KEY_FAVOR,
+                        favor)
+                .putExtra(DispenserActivity.INTENT_KEY_ID,
+                        residenceId)
+                .putExtra(DispenserActivity.INTENT_KEY_TEMPERATURE,
+                        usefor)
+                .putExtra(MainActivity.INTENT_KEY_LOCATION, location)
+                .putExtra(MainActivity.INTENT_KEY_DEVICE_TYPE, Device.DISPENSER.getType())
+                .putExtra(WaterDeviceBaseActivity.INTENT_PREPAY_INFO, orderPreInfo));
         finish();
     }
 

@@ -39,7 +39,7 @@
     </RelativeLayout>
     <RelativeLayout
         android:layout_marginTop="20dp"
-        android:id="@+id/rl_actual_debit"
+        android:id="@+id/rl_consume"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -95,6 +95,7 @@
 
     <RelativeLayout
         android:layout_marginTop="15dp"
+        android:id="@+id/rl_actual_debit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

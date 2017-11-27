@@ -114,17 +114,10 @@ public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenser
                     .get(i).getUsefor()).getBackgroundDrawable());
             holder.tv_water[i].setOnClickListener(v -> {
                 presenter.closeBleConnection();
-                context.startActivity(new Intent(context.getApplicationContext(), DispenserActivity.class)
-                        .putExtra(MainActivity.INTENT_KEY_MAC_ADDRESS,
-                                dispenserWrapper.getDeviceGroup().getWater().get(waterPosition).getMacAddress())
-                        .putExtra(DispenserActivity.INTENT_KEY_FAVOR,
-                                dispenserWrapper.isFavor())
-                        .putExtra(DispenserActivity.INTENT_KEY_ID, dispenserWrapper.getResidenceId())
-                        .putExtra(DispenserActivity.INTENT_KEY_TEMPERATURE,
-                                dispenserWrapper.getDeviceGroup().getWater().get(waterPosition).getUsefor())
-                        .putExtra(MainActivity.INTENT_KEY_LOCATION, dispenserWrapper.getLocation())
-                        .putExtra(MainActivity.INTENT_KEY_DEVICE_TYPE, Device.DISPENSER.getType())
-                        .putExtra(WaterDeviceBaseActivity.INTENT_PREPAY_INFO, orderPreInfo));
+                presenter.gotoDispenser(dispenserWrapper.getDeviceGroup().getWater().get(waterPosition).getMacAddress(),
+                        dispenserWrapper.isFavor(), dispenserWrapper.getResidenceId(),
+                        dispenserWrapper.getDeviceGroup().getWater().get(waterPosition).getUsefor(),
+                        dispenserWrapper.getLocation());
             });
         }
     }

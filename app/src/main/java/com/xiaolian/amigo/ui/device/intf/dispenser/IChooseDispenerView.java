@@ -29,4 +29,7 @@ public interface IChooseDispenerView extends IBaseView {
     void completeRefresh();
 
     void finishView();
+
+    void gotoDispenser(String macAddress, boolean favor, Long residenceId,
+                       String usefor, String location);
 }

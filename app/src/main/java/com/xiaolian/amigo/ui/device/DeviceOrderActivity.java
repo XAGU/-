@@ -55,6 +55,8 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
     // 实际扣款
     @BindView(R.id.tv_actual_debit)
     TextView tv_actual_debit;
+    @BindView(R.id.rl_actual_debit)
+    RelativeLayout rl_actual_debit;
     // 实际消费
     @BindView(R.id.tv_consume)
     TextView tv_consume;
@@ -136,7 +138,7 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
                 rl_back_bonus.setVisibility(View.GONE);
                 tv_consume.setTextColor(ContextCompat.getColor(this, R.color.colorFullRed));
                 tv_actual_debit.setTextColor(ContextCompat.getColor(this, R.color.colorDark6));
-                tv_actual_debit.setVisibility(View.GONE);
+                rl_actual_debit.setVisibility(View.GONE);
             } else {
                 // 有代金券
                 rl_back_bonus.setVisibility(View.VISIBLE);
@@ -156,7 +158,7 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
                 rl_use_bonus.setVisibility(View.GONE);
                 tv_consume.setTextColor(ContextCompat.getColor(this, R.color.colorFullRed));
                 tv_actual_debit.setTextColor(ContextCompat.getColor(this, R.color.colorDark6));
-                tv_actual_debit.setVisibility(View.GONE);
+                rl_actual_debit.setVisibility(View.GONE);
             } else {
                 // 有代金券
                 rl_use_bonus.setVisibility(View.VISIBLE);

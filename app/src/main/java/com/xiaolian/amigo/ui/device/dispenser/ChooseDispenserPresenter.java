@@ -187,6 +187,12 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
         getMvpView().finishView();
     }
 
+    @Override
+    public void gotoDispenser(String macAddress, boolean favor, Long residenceId,
+                              String usefor, String location) {
+        getMvpView().gotoDispenser(macAddress, favor, residenceId, usefor, location);
+    }
+
     private synchronized boolean isListStatus() {
         return listStatus;
     }
