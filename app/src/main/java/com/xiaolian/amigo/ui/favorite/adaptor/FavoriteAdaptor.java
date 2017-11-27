@@ -115,6 +115,8 @@ public class FavoriteAdaptor extends RecyclerView.Adapter<FavoriteAdaptor.ViewHo
     public static class FavoriteWrapper {
         // 设备id
         Long id;
+        // residenceId
+        Long residenceId;
         // 设备类型
         Integer type;
         // 设备
@@ -125,6 +127,7 @@ public class FavoriteAdaptor extends RecyclerView.Adapter<FavoriteAdaptor.ViewHo
                 this.id = device.getWater().get(key).getId();
                 break;
             }
+            this.residenceId = device.getResidenceId();
             this.location = device.getLocation();
         }
     }

@@ -30,7 +30,7 @@ public class WithdrawalPresenter<V extends IWithdrawalView> extends BasePresente
     }
 
     @Override
-    public void withdraw(String amount, Long withdrawId) {
+    public void withdraw(String amount, String withdrawName, Long withdrawId) {
         WithdrawReqDTO reqDTO = new WithdrawReqDTO();
         reqDTO.setAmount(amount);
         reqDTO.setUserThirdAccountId(withdrawId);
@@ -41,6 +41,8 @@ public class WithdrawalPresenter<V extends IWithdrawalView> extends BasePresente
                 if (null == result.getError()) {
 //                    getMvpView().onSuccess("提现成功");
                     getMvpView().gotoWithdrawDetail(result.getData().getId());
+                    walletDataManager.setLastWithdrawId(withdrawId);
+                    walletDataManager.setLastWithdrawName(withdrawName);
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }
@@ -67,8 +69,6 @@ public class WithdrawalPresenter<V extends IWithdrawalView> extends BasePresente
                         String withdrawName = result.getData().getThirdAccounts().get(0).getAccountName();
                         Long withdrawId = result.getData().getThirdAccounts().get(0).getId();
                         getMvpView().showWithdrawAccount(withdrawName, withdrawId);
-                        walletDataManager.setLastWithdrawId(withdrawId);
-                        walletDataManager.setLastWithdrawName(withdrawName);
                     }
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
@@ -78,4 +78,9 @@ public class WithdrawalPresenter<V extends IWithdrawalView> extends BasePresente
         });
     }
 
+    @Override
+    public void clearAccount() {
+        walletDataManager.setLastWithdrawName("");
+        walletDataManager.setLastWithdrawId(null);
+    }
 }

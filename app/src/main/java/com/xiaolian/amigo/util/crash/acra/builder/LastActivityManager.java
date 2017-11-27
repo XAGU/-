@@ -26,7 +26,7 @@ public final class LastActivityManager {
 
     @NonNull
     private WeakReference<Activity> lastActivityCreated = new WeakReference<Activity>(null);
-    private List<Activity> activities;
+    private List<Activity> activities = new LinkedList<>();
 
     public LastActivityManager(@NonNull Application application) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
@@ -129,10 +129,12 @@ public final class LastActivityManager {
      * 销毁所有activity
      */
     public void removeAllActivities() {
-        for (Activity activity : activities) {
-            if (null != activity) {
-                activity.finish();
-                activity.overridePendingTransition(0, 0);
+        if (activities != null) {
+            for (Activity activity : activities) {
+                if (null != activity) {
+                    activity.finish();
+                    activity.overridePendingTransition(0, 0);
+                }
             }
         }
     }

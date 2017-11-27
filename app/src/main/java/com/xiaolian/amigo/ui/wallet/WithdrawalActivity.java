@@ -18,6 +18,10 @@ import com.xiaolian.amigo.ui.wallet.intf.IWithdrawalView;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -175,7 +179,8 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
                 return;
             }
         }
-        presenter.withdraw(et_amount.getText().toString().trim(), withdrawId);
+        presenter.withdraw(et_amount.getText().toString().trim(), tv_withdraw_way2.getText().toString().trim(),
+                withdrawId);
     }
 
     @OnClick(R.id.tv_withdraw_all)
@@ -237,9 +242,31 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(WalletEvent event) {
+        switch (event.getEventType()) {
+            case DELETE_ACCOUNT:
+                if (CommonUtil.equals(event.getObject(), this.withdrawId)) {
+                    this.withdrawId = null;
+                    tv_withdraw_way2.setText("");
+                    presenter.clearAccount();
+                }
+                break;
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
     @Override
     protected void onDestroy() {
         presenter.onDetach();
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

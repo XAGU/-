@@ -21,7 +21,7 @@ android {
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
         versionCode 5
-        versionName "1.0.1"
+        versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
@@ -81,6 +81,10 @@ android {
             buildConfigField "String", "SERVER", "\"https://c.api.xiaolian365.com\""
             buildConfigField "String", "H5_SERVER", "\"https://c.h5.xiaolian365.com\""
             buildConfigField "String", "FILE_PREFIX", "\"https://s.xiaolian365.com/\""
+
+//            buildConfigField "String", "SERVER", "\"https://api.xiaolian365.com/c/\""
+//            buildConfigField "String", "H5_SERVER", "\"https://h5.xiaolian365.com/c/\""
+//            buildConfigField "String", "FILE_PREFIX", "\"https://s.xiaolian365.com/\""
 
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "prod",
                                     FILE_PROVIDER_AUTHORITIES: applicationId + ".fileprovider"]

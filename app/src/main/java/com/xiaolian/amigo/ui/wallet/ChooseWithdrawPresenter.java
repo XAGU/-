@@ -13,6 +13,8 @@ import com.xiaolian.amigo.ui.wallet.adaptor.ChooseWithdrawAdapter;
 import com.xiaolian.amigo.ui.wallet.intf.IChooseWithdrawPresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IChooseWithdrawView;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,6 +79,8 @@ public class ChooseWithdrawPresenter<V extends IChooseWithdrawView> extends Base
             public void onReady(ApiResult<BooleanRespDTO> result) {
                 if (null == result.getError()) {
                     getMvpView().onSuccess("删除成功");
+                    EventBus.getDefault().post(new WalletEvent(WalletEvent.EventType.DELETE_ACCOUNT,
+                            id));
                     getMvpView().refreshList();
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());

@@ -61,7 +61,7 @@ public class FavoriteActivity extends FavoriteBaseActivity implements IFavoriteV
         adaptor.setOnItemClickListener(position -> {
             if (action == IntentAction.ACTION_CHOOSE_FAVORITE_FOR_REPAIR) {
                 Intent intent = new Intent(FavoriteActivity.this, RepairApplyActivity.class);
-                intent.putExtra(Constant.LOCATION_ID, favorites.get(position).getId());
+                intent.putExtra(Constant.LOCATION_ID, favorites.get(position).getResidenceId());
                 intent.putExtra(Constant.DEVICE_TYPE, Device.DISPENSER.getType());
                 intent.putExtra(Constant.LOCATION, Device.DISPENSER.getDesc()
                         + Constant.CHINEASE_COLON + favorites.get(position).getLocation());

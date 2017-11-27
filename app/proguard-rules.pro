@@ -227,4 +227,10 @@ public static java.lang.String TABLENAME;
     public static ** valueOf(java.lang.String);
 }
 
+# ACRA
+-keepattributes SourceFile,LineNumberTable
+-keepattributes *Annotation*
+-keep class com.xiaolian.amigo.util.crash.acra.** { *; }
+-dontwarn android.support.v4.app.NotificationCompat*
+
 #-------------------------------------------------------------------------
