@@ -2,6 +2,8 @@ package com.xiaolian.amigo.data.enumeration;
 
 import android.text.TextUtils;
 
+import com.xiaolian.amigo.R;
+
 /**
  * 饮水机水温
  * <p>
@@ -9,10 +11,24 @@ import android.text.TextUtils;
  */
 
 public enum  DispenserWater {
-    HOT("1", "热水"),
-    COLD("2", "冷水"),
-    ICE("3", "冰水")
-    ;
+    HOT("1", "热水") {
+        @Override
+        public int getBackgroundDrawable() {
+            return R.drawable.bg_dispenser_hot;
+        }
+    },
+    COLD("2", "冷水") {
+        @Override
+        public int getBackgroundDrawable() {
+            return R.drawable.bg_dispenser_cold;
+        }
+    },
+    ICE("3", "冰水") {
+        @Override
+        public int getBackgroundDrawable() {
+            return R.drawable.bg_dispenser_ice;
+        }
+    };
 
     String type;
     String desc;
@@ -21,6 +37,8 @@ public enum  DispenserWater {
         this.type = type;
         this.desc = desc;
     }
+
+    public abstract int getBackgroundDrawable();
 
     public String getType() {
         return type;

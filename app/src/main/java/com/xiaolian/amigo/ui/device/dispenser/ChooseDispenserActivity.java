@@ -5,11 +5,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
-
-import com.xiaolian.amigo.data.network.model.dto.response.OrderPreInfoDTO;
-import com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity;
-import com.xiaolian.amigo.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -18,16 +13,19 @@ import android.widget.TextView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.data.enumeration.DispenserWater;
 import com.xiaolian.amigo.data.enumeration.TradeError;
+import com.xiaolian.amigo.data.network.model.device.ScanDevice;
 import com.xiaolian.amigo.data.network.model.device.ScanDeviceGroup;
+import com.xiaolian.amigo.data.network.model.dto.response.OrderPreInfoDTO;
 import com.xiaolian.amigo.ui.device.DeviceBaseActivity;
+import com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IChooseDispenerView;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IChooseDispenserPresenter;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutFooter;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutHeader;
 import com.xiaolian.amigo.util.CommonUtil;
+import com.xiaolian.amigo.util.Log;
 import com.xiaolian.amigo.util.ScreenUtils;
 
 import java.util.ArrayList;
@@ -272,16 +270,16 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
                     if (CommonUtil.equals(scanDeviceGroup.getResidenceId(),
                             wrapper.getResidenceId())) {
                         isContained = true;
-                        for (String key : scanDeviceGroup.getWater().keySet()) {
-                            if (TextUtils.equals(key, DispenserWater.HOT.getType())) {
-                                wrapper.setHot(scanDeviceGroup.getWater().get(key));
+                        for (ScanDevice device : scanDeviceGroup.getWater()) {
+                            if (!isContainDevice(device, wrapper.getDeviceGroup())) {
                                 needNotify = true;
-                            } else if (TextUtils.equals(key, DispenserWater.COLD.getType())) {
-                                wrapper.setCold(scanDeviceGroup.getWater().get(key));
-                                needNotify = true;
-                            } else if (TextUtils.equals(key, DispenserWater.ICE.getType())) {
-                                wrapper.setIce(scanDeviceGroup.getWater().get(key));
-                                needNotify = true;
+                                if (wrapper.getDeviceGroup().getWater() != null) {
+                                    wrapper.getDeviceGroup().getWater().add(device);
+                                } else {
+                                    List<ScanDevice> water = new ArrayList<>();
+                                    water.add(device);
+                                    wrapper.getDeviceGroup().setWater(water);
+                                }
                             }
                         }
                     }
@@ -303,6 +301,15 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
                 adaptor.notifyDataSetChanged();
             }
         }
+    }
+
+    private boolean isContainDevice(ScanDevice device, ScanDeviceGroup deviceGroup) {
+        for (ScanDevice contained : deviceGroup.getWater()) {
+            if (CommonUtil.equals(contained.getId(), device.getId())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

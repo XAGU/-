@@ -123,10 +123,7 @@ public class FavoriteAdaptor extends RecyclerView.Adapter<FavoriteAdaptor.ViewHo
         String location;
 
         public FavoriteWrapper(ScanDeviceGroup device) {
-            for (String key : device.getWater().keySet()) {
-                this.id = device.getWater().get(key).getId();
-                break;
-            }
+            this.id = device.getWater().get(0).getId();
             this.residenceId = device.getResidenceId();
             this.location = device.getLocation();
         }

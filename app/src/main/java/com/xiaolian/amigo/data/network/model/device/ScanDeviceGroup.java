@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.data.network.model.device;
 
+import java.util.List;
 import java.util.Map;
 
 import lombok.Data;
@@ -18,5 +19,6 @@ public class ScanDeviceGroup {
 
     private Long residenceId;
 
-    private Map<String, ScanDevice> water;
+//    private Map<String, ScanDevice> water;
+    private List<ScanDevice> water;
 }
