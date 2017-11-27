@@ -20,18 +20,18 @@ import rx.Observable;
 public interface IFavoriteApi {
 
     // 查询收藏设备列表
-    @POST("/device/water/favorite/list")
+    @POST("device/water/favorite/list")
     Observable<ApiResult<ScanDeviceRespDTO>> queryFavorites(@Body FavoriteReqDTO reqDTO);
 
     // 删除收藏的设备
-    @POST("/device/unFavorite")
+    @POST("device/unFavorite")
     Observable<ApiResult<UnFavoriteRespDTO>> deleteFavorite(@Body UnFavoriteReqDTO reqDTO);
 
     // 收藏饮水机
-    @POST("/device/water/favorite")
+    @POST("device/water/favorite")
     Observable<ApiResult<SimpleRespDTO>> favorite(@Body SimpleReqDTO reqDTO);
 
     // 取消收藏饮水机
-    @POST("/device/water/unFavorite")
+    @POST("device/water/unFavorite")
     Observable<ApiResult<SimpleReqDTO>> unFavorite(@Body SimpleReqDTO reqDTO);
 }

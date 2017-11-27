@@ -18,10 +18,10 @@ import rx.Observable;
 
 public interface INoticeApi {
     // 通知公告列表
-    @POST("/notify/list")
+    @POST("notify/list")
     Observable<ApiResult<QueryNotifyListRespDTO>> queryNotifyList(@Body QueryNotifyListReqDTO dto);
 
     // 告诉服务端通知已读（紧急公告）
-    @POST("/notify/read")
+    @POST("notify/read")
     Observable<ApiResult<BooleanRespDTO>> readUrgentNotify(@Body ReadNotifyReqDTO reqDTO);
 }

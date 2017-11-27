@@ -24,30 +24,30 @@ import retrofit2.http.POST;
 public interface IRepairApi {
 
     // 查询个人报修列表
-    @POST("/repair/personal/list")
+    @POST("repair/personal/list")
     Observable<ApiResult<RepairRespDTO>> queryRepairs(@Body RepairReqDTO reqDTO);
 
     // 查询报修单详情
-    @POST("/repair/one")
+    @POST("repair/one")
     Observable<ApiResult<RepairDetailRespDTO>> queryRepairDetail(@Body RepairDetailReqDTO reqDTO);
 
     // 申请报修
-    @POST("/repair/save")
+    @POST("repair/save")
     Observable<ApiResult<RepairApplyRespDTO>> applyRepair(@Body RepairApplyReqDTO reqDTO);
 
     // 获取报修问题列表
-    @POST("/repair/cause/list")
+    @POST("repair/cause/list")
     Observable<ApiResult<RepairProblemRespDTO>> queryRepairProblems(@Body RepairProblemReqDTO reqDTO);
 
     // 维修评价
-    @POST("/repair/rating")
+    @POST("repair/rating")
     Observable<ApiResult<BooleanRespDTO>> rateRapair(@Body RatingRepairReqDTO reqDTO);
 
     // 提醒客服
-    @POST("/cs/remind")
+    @POST("cs/remind")
     Observable<ApiResult<BooleanRespDTO>> remind(@Body RemindReqDTO reqDTO);
 
     // 取消报修
-    @POST("/repair/cancel")
+    @POST("repair/cancel")
     Observable<ApiResult<BooleanRespDTO>> cancelRepair(@Body SimpleReqDTO reqDTO);
 }

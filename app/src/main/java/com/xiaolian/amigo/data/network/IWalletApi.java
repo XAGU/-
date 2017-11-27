@@ -36,62 +36,62 @@ import rx.Observable;
 public interface IWalletApi {
 
     // 获取余额
-    @POST("/funds/wallet/personal/one")
+    @POST("funds/wallet/personal/one")
     Observable<ApiResult<PersonalWalletDTO>> queryWallet();
 
     // 获取金额列表
-    @POST("/funds/recharge/amount/list")
+    @POST("funds/recharge/amount/list")
     Observable<ApiResult<QueryRechargeAmountsRespDTO>> queryRechargeAmountList(@Body SimpleQueryReqDTO body);
 
     // 查询提现时间段
-    @POST("/time/range/withdraw")
+    @POST("time/range/withdraw")
     Observable<ApiResult<QueryTimeValidRespDTO>> queryWithDrawTimeValid();
 
     // 充值
-    @POST("/funds/recharge")
+    @POST("funds/recharge")
     Observable<ApiResult<SimpleRespDTO>> recharge(@Body RechargeReqDTO reqDTO);
 
     // 提现
-    @POST("/funds/withdraw")
+    @POST("funds/withdraw")
     Observable<ApiResult<SimpleRespDTO>> withdraw(@Body WithdrawReqDTO reqDTO);
 
     // 用户个人充值提现记录列表
-    @POST("/funds/personal/list")
+    @POST("funds/personal/list")
     Observable<ApiResult<QueryFundsListRespDTO>> queryWithdrawList(@Body QueryPersonalFundsListReqDTO reqDTO);
 
     // 获取支付宝app支付订单请求参数
-    @POST("/alipay/trade/app/pay/req/args")
+    @POST("alipay/trade/app/pay/req/args")
     Observable<ApiResult<AlipayTradeAppPayArgsRespDTO>> requestAlipayArgs(@Body AlipayTradeAppPayArgsReqDTO reqDTO);
 
     // 解析app支付j结果
-    @POST("/alipay/trade/app/pay/resp/result/parse")
+    @POST("alipay/trade/app/pay/resp/result/parse")
     Observable<ApiResult<AlipayTradeAppPayResultParseRespDTO>> parseAlipayResule(@Body AlipayTradeAppPayResultParseReqDTO reqDTO);
 
     // 第三方账号列表
-    @POST("/user/third/account/list")
+    @POST("user/third/account/list")
     Observable<ApiResult<QueryUserThirdAccountRespDTO>> requestThirdAccounts(@Body QueryUserThirdAccountReqDTO reqDTO);
 
     // 新增第三方账号
-    @POST("/user/third/account/add")
+    @POST("user/third/account/add")
     Observable<ApiResult<BooleanRespDTO>> addAccount(@Body AddThirdAccountReqDTO reqDTO);
 
     // 删除第三方账户
-    @POST("/user/third/account/delete")
+    @POST("user/third/account/delete")
     Observable<ApiResult<BooleanRespDTO>> deleteAccount(@Body SimpleReqDTO reqDTO);
 
     // 充值提现
-    @POST("/funds/one")
+    @POST("funds/one")
     Observable<ApiResult<FundsDTO>> queryWithdrawRechargeDetail(@Body SimpleReqDTO reqDTO);
 
     // 提醒客服
-    @POST("/cs/remind")
+    @POST("cs/remind")
     Observable<ApiResult<BooleanRespDTO>> remind(@Body RemindReqDTO reqDTO);
 
     // 取消充值
-    @POST("/funds/withdraw/cancel")
+    @POST("funds/withdraw/cancel")
     Observable<ApiResult<BooleanRespDTO>> cancelWithdraw(@Body SimpleReqDTO reqDTO);
 
     // 投诉查重
-    @POST("/complaint/check")
+    @POST("complaint/check")
     Observable<ApiResult<BooleanRespDTO>> checkComplaint(@Body CheckComplaintReqDTO reqDTO);
 }

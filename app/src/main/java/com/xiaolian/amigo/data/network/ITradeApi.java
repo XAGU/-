@@ -22,18 +22,18 @@ import rx.Observable;
 public interface ITradeApi {
 
     // 请求连接设备指令
-    @POST("/trade/device/connect")
+    @POST("trade/device/connect")
     Observable<ApiResult<ConnectCommandRespDTO>> getConnectCommand(@Body ConnectCommandReqDTO reqDTO);
 
     // 请求处理设备指令响应结果
-    @POST("/trade/device/command-result/process")
+    @POST("trade/device/command-result/process")
     Observable<ApiResult<CmdResultRespDTO>> processCmdResult(@Body CmdResultReqDTO reqDTO);
 
     // 网络支付，创建用水订单
-    @POST("/trade/pay")
+    @POST("trade/pay")
     Observable<ApiResult<PayRespDTO>> pay(@Body PayReqDTO reqDTO);
 
     // 处理扫描结果
-    @POST("/device/water/list")
+    @POST("device/water/list")
     Observable<ApiResult<ScanDeviceRespDTO>> handleScanDevices(@Body ScanDeviceReqDTO reqDTO);
 }

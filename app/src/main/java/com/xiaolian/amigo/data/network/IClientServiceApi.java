@@ -12,7 +12,7 @@ import rx.Observable;
 public interface IClientServiceApi {
 
     // 获取客服人员电话
-    @POST("/cs/mobile/one")
+    @POST("cs/mobile/one")
     Observable<ApiResult<CsMobileRespDTO>> queryCsInfo();
 
 }

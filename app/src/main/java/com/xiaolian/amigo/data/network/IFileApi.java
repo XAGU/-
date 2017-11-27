@@ -18,6 +18,6 @@ public interface IFileApi {
     // 上传文件
 //    @Headers("Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW")
     @Multipart
-    @POST("/file/upload")
+    @POST("file/upload")
     Observable<ApiResult<String>> uploadFile(@Part("file\"; filename=\"file.jpg\"") RequestBody images);
 }

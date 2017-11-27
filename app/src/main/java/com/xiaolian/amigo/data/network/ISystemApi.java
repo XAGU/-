@@ -17,11 +17,11 @@ import rx.Observable;
 
 public interface ISystemApi {
     // 基础信息
-    @POST("/system/baseinfo")
+    @POST("system/baseinfo")
     Observable<ApiResult<BaseInfoDTO>> getSystemBaseInfo();
 
     // 版本更新查询
-    @POST("/system/version/check/update")
+    @POST("system/version/check/update")
     Observable<ApiResult<CheckVersionUpdateRespDTO>> checkUpdate(@Body CheckVersionUpdateReqDTO reqDTO);
 
 }

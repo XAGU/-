@@ -25,23 +25,23 @@ import rx.Observable;
 
 public interface IMainApi {
     // 用户个人中心额外信息：包括我的钱包余额、我的代金券数量、是否用设备报修中、目前在进行中的订单
-    @POST("/user/extraInfo/one")
+    @POST("user/extraInfo/one")
     Observable<ApiResult<PersonalExtraInfoDTO>> getExtraInfo();
 
     // 查询热水澡热水供应时间段
-    @POST("/time/range/water")
+    @POST("time/range/water")
     Observable<ApiResult<QueryTimeValidRespDTO>> queryWaterTimeValid(@Body QueryTimeValidReqDTO reqDTO);
 
     // 首页设备用水校验
-    @POST("/device/check")
+    @POST("device/check")
     Observable<ApiResult<DeviceCheckRespDTO>> checkDeviceUseage(@Body DeviceCheckReqDTO reqDTO);
 
     // 告诉服务端通知已读（紧急公告）
-    @POST("/notify/read")
+    @POST("notify/read")
     Observable<ApiResult<BooleanRespDTO>> readUrgentNotify(@Body ReadNotifyReqDTO reqDTO);
 
     // 获取学校业务列表
-    @POST("/school/business/list")
+    @POST("school/business/list")
     Observable<ApiResult<QuerySchoolBizListRespDTO>> getSchoolBizList();
 
 //    // 检查更新
@@ -49,6 +49,6 @@ public interface IMainApi {
 //    Observable<ApiResult<CheckVersionUpdateRespDTO>> checkUpdate(@Body CheckVersionUpdateReqDTO reqDTO);
 
     // 获取更新信息
-    @POST("/version/one")
+    @POST("version/one")
     Observable<ApiResult<VersionDTO>> getUpdateInfo();
 }

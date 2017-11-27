@@ -20,27 +20,27 @@ import retrofit2.http.POST;
  */
 public interface ILostAndFoundApi {
     // 获取失物招领列表
-    @POST("/lost/list")
+    @POST("lost/list")
     Observable<ApiResult<QueryLostAndFoundListRespDTO>> queryLostAndFounds(@Body QueryLostAndFoundListReqDTO reqDTO);
 
     // 保存失物招领
-    @POST("/lost/add")
+    @POST("lost/add")
     Observable<ApiResult<SimpleRespDTO>> saveLostAndFounds(@Body SaveLostAndFoundDTO reqDTO);
 
     // 获取失物招领详情
-    @POST("/lost/one")
+    @POST("lost/one")
     Observable<ApiResult<LostAndFound>> getLostAndFound(@Body SimpleReqDTO reqDTO);
 
     // 我的失物招领
-    @POST("/lost/personal/list")
+    @POST("lost/personal/list")
     Observable<ApiResult<QueryLostAndFoundListRespDTO>> getMyLostAndFounds();
 
     // 更新失物招领
-    @POST("/lost/update")
+    @POST("lost/update")
     Observable<ApiResult<SimpleRespDTO>> updateLostAndFounds(@Body SaveLostAndFoundDTO reqDTO);
 
     // 删除失物招领
-    @POST("/lost/delete")
+    @POST("lost/delete")
     Observable<ApiResult<BooleanRespDTO>> deleteLostAndFounds(@Body SimpleReqDTO reqDTO);
 
 }

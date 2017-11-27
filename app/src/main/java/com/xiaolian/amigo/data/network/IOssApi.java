@@ -15,6 +15,6 @@ import rx.Observable;
 public interface IOssApi {
 
     // oss
-    @POST("/oss/credential/one")
+    @POST("oss/credential/one")
     Observable<ApiResult<OssModel>> getOssModel();
 }

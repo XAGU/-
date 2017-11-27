@@ -77,13 +77,6 @@ public class DispenserActivity extends WaterDeviceBaseActivity<IDispenserPresent
         return v -> changeDispenser();
     }
 
-    public void changeDispenser() {
-        // 只有在step为SETILE时才不能更换饮水机
-        if (presenter.getStep() != TradeStep.SETTLE) {
-            startActivity(new Intent(this, ChooseDispenserActivity.class)
-                    .putExtra(ChooseDispenserActivity.INTENT_KEY_ACTION, ChooseDispenserActivity.ACTION_CHANGE_DISPENSER));
-        }
-    }
 
 
     @Override

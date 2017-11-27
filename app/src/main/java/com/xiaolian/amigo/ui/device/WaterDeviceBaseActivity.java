@@ -29,6 +29,7 @@ import com.xiaolian.amigo.data.network.model.dto.response.OrderPreInfoDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.UnsettledOrderStatusCheckRespDTO;
 import com.xiaolian.amigo.ui.bonus.BonusActivity;
 import com.xiaolian.amigo.ui.bonus.adaptor.BonusAdaptor;
+import com.xiaolian.amigo.ui.device.dispenser.ChooseDispenserActivity;
 import com.xiaolian.amigo.ui.device.intf.IWaterDeviceBasePresenter;
 import com.xiaolian.amigo.ui.device.intf.IWaterDeviceBaseView;
 import com.xiaolian.amigo.ui.main.MainActivity;
@@ -812,12 +813,10 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 //                presenter.queryCsInfo();
                 break;
             case CHANGE_DORMITORY:
-                if (deviceType == Device.HEATER.getType()) {
-                    // 只有在step为SETILE时才不能更换宿舍
-                    if (presenter.getStep() != TradeStep.SETTLE) {
-                        startActivityForResult(new Intent(this, ChooseDormitoryActivity.class), CHOOSE_DORMITORY_CODE);
-                    }
-                }
+                changeDormitory();
+                break;
+            case CHANGE_DISPENSER:
+                changeDispenser();
                 break;
         }
     }
@@ -998,8 +997,14 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             v_loading.setVisibility(tradeError.isShowLoading() ? View.VISIBLE : View.GONE);
             tv_error_title.setText(getString(tradeError.getErrorTitle()));
             tv_error_tip.setText(getString(tradeError.getErrorTip()));
-            bt_error_handler.setText(getString(tradeError.getBtnText()));
-            bt_error_handler.setTag(tradeError.getBtnTag());
+
+            if (tradeError == TradeError.DEVICE_BROKEN_3 && deviceType == Device.DISPENSER.getType()) {
+                bt_error_handler.setText(getString(R.string.change_dispenser));
+                bt_error_handler.setTag(ErrorTag.CHANGE_DISPENSER);
+            } else {
+                bt_error_handler.setText(getString(tradeError.getBtnText()));
+                bt_error_handler.setTag(tradeError.getBtnTag());
+            }
         }
     }
 
@@ -1020,6 +1025,14 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                     new Intent(this, ChooseDormitoryActivity.class)
                             .putExtra(ChooseDormitoryActivity.INTENT_KEY_LAST_DORMITORY, residenceId),
                     CHOOSE_DORMITORY_CODE);
+        }
+    }
+
+    public void changeDispenser() {
+        // 只有在step为SETILE时才不能更换饮水机
+        if (presenter.getStep() != TradeStep.SETTLE) {
+            startActivity(new Intent(this, ChooseDispenserActivity.class)
+                    .putExtra(ChooseDispenserActivity.INTENT_KEY_ACTION, ChooseDispenserActivity.ACTION_CHANGE_DISPENSER));
         }
     }
 
