@@ -8,6 +8,7 @@ import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.CheckVersionUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.DeviceCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.ReadNotifyReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.BannerDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.CheckVersionUpdateRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.DeviceCheckRespDTO;
@@ -71,6 +72,10 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
                         Constant.IMAGE_PREFIX = result.getData().getPreFileUrl();
                     }
                     if (result.getData().getBanners() != null && result.getData().getBanners().size() > 0) {
+                        for (BannerDTO banner : result.getData().getBanners()) {
+                            banner.setLink(banner.getLink() + "?token="
+                                    + manager.getToken());
+                        }
                         getMvpView().showBanners(result.getData().getBanners());
                     }
                     if (result.getData().getUrgentNotify() != null) {

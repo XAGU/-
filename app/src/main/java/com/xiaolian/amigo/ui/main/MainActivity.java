@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.RectF;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
@@ -95,6 +94,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     public static final String INTENT_KEY_SWITCH_TO_HOME = "intent_key_switch_to_home";
     public static final String INTENT_KEY_SERVER_ERROR = "intent_key_server_error";
     public static final String INTENT_KEY_BANNERS = "intent_key_banners";
+    private static final String FRAGMENT_TAG_HOME = "home";
+    private static final String FRAGMENT_TAG_PROFILE = "profile";
 
     @Inject
     IMainPresenter<IMainView> presenter;
@@ -174,10 +175,10 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
         if (savedInstanceState == null) {
             homeFragment = new HomeFragment2();
-            getSupportFragmentManager().beginTransaction().add(R.id.fm_container, homeFragment).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.fm_container, homeFragment, FRAGMENT_TAG_HOME).commit();
         } else {
-            homeFragment = (HomeFragment2) getSupportFragmentManager().findFragmentByTag("home");
-            profileFragment = (ProfileFragment2) getSupportFragmentManager().findFragmentByTag("profile");
+            homeFragment = (HomeFragment2) getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG_HOME);
+            profileFragment = (ProfileFragment2) getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG_PROFILE);
             if (homeFragment != null && profileFragment != null) {
                 getSupportFragmentManager().beginTransaction()
                         .show(homeFragment)
@@ -339,6 +340,12 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     // orientation 1 表示左->右 右->左
     void onSwitch(Orientation orientation) {
+        // 未登录跳转到登录页
+        if (!presenter.isLogin()) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            return;
+        }
         switch (orientation) {
             case LEFT_TO_RIGHT:
                 // 当前在home
@@ -375,6 +382,12 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @OnClick(R.id.bt_switch)
     void onSwitchClick() {
+        // 未登录跳转到登录页
+        if (!presenter.isLogin()) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            return;
+        }
         if (current == 0) {
             EventBus.getDefault().post(new ProfileFragment2.Event(
                     ProfileFragment2.Event.EventType.CHANGE_ANIMATION,
@@ -414,7 +427,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 transaction = transaction.hide(homeFragment);
             }
             if (!profileFragment.isAdded()) {
-                transaction.add(R.id.fm_container, profileFragment, "profile").commitAllowingStateLoss();
+                transaction.add(R.id.fm_container, profileFragment, FRAGMENT_TAG_PROFILE).commitAllowingStateLoss();
             } else {
                 transaction.show(profileFragment).commitAllowingStateLoss();
             }
@@ -430,7 +443,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 transaction = transaction.hide(profileFragment);
             }
             if (!homeFragment.isAdded()) {
-                transaction.add(R.id.fm_container, homeFragment, "home").commitAllowingStateLoss();
+                transaction.add(R.id.fm_container, homeFragment, FRAGMENT_TAG_HOME).commitAllowingStateLoss();
             } else {
                 transaction.show(homeFragment).commitAllowingStateLoss();
             }

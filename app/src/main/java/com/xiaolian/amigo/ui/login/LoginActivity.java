@@ -23,6 +23,9 @@ import butterknife.OnClick;
  */
 
 public class LoginActivity extends LoginBaseActivity implements ILoginView {
+    private static final String FRAGMENT_TAG_LOGIN = "login";
+    private static final String FRAGMENT_TAG_REGISTER_STEP_1 = "registerStep1";
+    private static final String FRAGMENT_TAG_REGISTER_STEP_2 = "registerStep2";
 
     @Inject
     ILoginPresenter<ILoginView> presenter;
@@ -66,11 +69,11 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
             loginFragment = new LoginFragment();
             getSupportFragmentManager().beginTransaction().add(R.id.ll_main, loginFragment).commit();
         } else {
-            LoginFragment login = (LoginFragment) getSupportFragmentManager().findFragmentByTag("login");
+            LoginFragment login = (LoginFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG_LOGIN);
             RegisterStep1Fragment registerStep1 =
-                    (RegisterStep1Fragment) getSupportFragmentManager().findFragmentByTag("registerStep1");
+                    (RegisterStep1Fragment) getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG_REGISTER_STEP_1);
             RegisterStep2Fragment registerStep2 =
-                    (RegisterStep2Fragment) getSupportFragmentManager().findFragmentByTag("registerStep2");
+                    (RegisterStep2Fragment) getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG_REGISTER_STEP_2);
             if (login != null && registerStep1 != null && registerStep2 != null) {
                 getSupportFragmentManager().beginTransaction()
                         .show(login)
@@ -101,7 +104,7 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
             transaction = transaction.hide(registerStep2Fragment);
         }
         if (!registerStep1Fragment.isAdded()) {
-            transaction.add(R.id.ll_main, registerStep1Fragment, "registerStep1").commit();
+            transaction.add(R.id.ll_main, registerStep1Fragment, FRAGMENT_TAG_REGISTER_STEP_1).commit();
         } else {
             transaction.show(registerStep1Fragment).commit();
         }
@@ -125,7 +128,7 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
         }
 
         if (!loginFragment.isAdded()) {
-            transaction.add(R.id.ll_main, loginFragment, "login").commit();
+            transaction.add(R.id.ll_main, loginFragment, FRAGMENT_TAG_LOGIN).commit();
         } else {
             transaction.show(loginFragment).commit();
         }
@@ -146,7 +149,7 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
             transaction = transaction.hide(registerStep1Fragment);
         }
         if (!registerStep2Fragment.isAdded()) {
-            transaction.add(R.id.ll_main, registerStep2Fragment, "registerStep2").commit();
+            transaction.add(R.id.ll_main, registerStep2Fragment, FRAGMENT_TAG_REGISTER_STEP_2).commit();
         } else {
             transaction.show(registerStep2Fragment).commit();
         }

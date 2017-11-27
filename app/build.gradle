@@ -83,7 +83,7 @@ android {
 //            buildConfigField "String", "FILE_PREFIX", "\"https://s.xiaolian365.com/\""
 
             buildConfigField "String", "SERVER", "\"https://api.xiaolian365.com/c/\""
-            buildConfigField "String", "H5_SERVER", "\"https://h5.xiaolian365.com/c/\""
+            buildConfigField "String", "H5_SERVER", "\"https://h5.xiaolian365.com/c\""
             buildConfigField "String", "FILE_PREFIX", "\"https://s.xiaolian365.com/\""
 
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "prod",

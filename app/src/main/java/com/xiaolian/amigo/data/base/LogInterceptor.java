@@ -32,6 +32,7 @@ public class LogInterceptor implements Interceptor {
     private final static String DEVICE_TOKEN = "deviceToken";
     private final static String GET = "GET";
     private final static String POST = "POST";
+    private final static String TRADE_PREFIX = "/c/trade";
     private long lastTime = 0;
     private Request lastRequest;
     private final static long NETWORK_INTERVAL = 500;
@@ -51,7 +52,7 @@ public class LogInterceptor implements Interceptor {
             token = "";
         }
 
-        if (request.url().url().getPath().startsWith("/trade")) {
+        if (request.url().url().getPath().startsWith(TRADE_PREFIX)) {
             String deviceToken = sharedPreferencesHelp.getCurrentDeviceToken();
             if (deviceToken == null) {
                 deviceToken = "";
