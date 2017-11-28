@@ -36,6 +36,7 @@ public class LogInterceptor implements Interceptor {
     private long lastTime = 0;
     private Request lastRequest;
     private final static long NETWORK_INTERVAL = 500;
+    private final static boolean ENABLE_ANTI_SHAKE = false;
 
     private ISharedPreferencesHelp sharedPreferencesHelp;
 
@@ -78,7 +79,7 @@ public class LogInterceptor implements Interceptor {
         } else {
             long currentTime = Calendar.getInstance().getTimeInMillis();
             if (currentTime - lastTime < NETWORK_INTERVAL
-                    && isRequestEqual(newRequest, lastRequest)) {
+                    && isRequestEqual(newRequest, lastRequest) && ENABLE_ANTI_SHAKE) {
                 Log.w(TAG, "请求间隔过短 url:" + request.url());
                 lastRequest = null;
                 lastTime = Calendar.getInstance().getTimeInMillis();

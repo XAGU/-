@@ -200,7 +200,7 @@ public class RepairApplyPresenter<V extends IRepairApplyView> extends BasePresen
                                             Log.e("RawMessage", serviceException.getRawMessage());
                                         }
                                         // 失败后重新初始化ossClient
-                                        initOssModel(context);
+//                                        initOssModel(context);
                                         getMvpView().post(() ->
                                                 getMvpView().onError("图片上传失败，请重试"));
                                     }
@@ -257,7 +257,8 @@ public class RepairApplyPresenter<V extends IRepairApplyView> extends BasePresen
                         return new OSSFederationToken(ossModel.getAccessKeyId(),
                                 ossModel.getAccessKeySecret(),
                                 ossModel.getSecurityToken(),
-                                (ossModel.getExpiration() - 2 * 60 * 1000)/1000);
+//                                (ossModel.getExpiration() - 2 * 60 * 1000)/1000);
+                                System.currentTimeMillis()/1000 + 60);
                     });
                     notifyOssResult();
                 } else {
