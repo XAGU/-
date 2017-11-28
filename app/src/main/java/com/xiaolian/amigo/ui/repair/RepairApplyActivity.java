@@ -85,7 +85,7 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
 
     List<String> images = new ArrayList<>();
 
-    int deviceType;
+    int deviceType = Device.UNKNOWN.getType();
     long residenceId;
     String location;
     private boolean allValidated = false;
@@ -176,7 +176,7 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
     protected void setUp() {
         Intent intent = getIntent();
         if (null != intent) {
-            deviceType = intent.getIntExtra(Constant.DEVICE_TYPE, Device.HEATER.getType());
+            deviceType = intent.getIntExtra(Constant.DEVICE_TYPE, Device.UNKNOWN.getType());
             residenceId = intent.getLongExtra(Constant.LOCATION_ID, 0L);
             location = intent.getStringExtra(Constant.LOCATION);
         }
@@ -191,6 +191,10 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
         }
         if (!TextUtils.isEmpty(presenter.getMobile())) {
             et_tel.setText(presenter.getMobile());
+        }
+        if (Device.UNKNOWN.getType() != deviceType) {
+            // 获取报修问题列表
+            presenter.requestRepairProblems(deviceType);
         }
     }
 

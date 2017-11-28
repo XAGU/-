@@ -8,8 +8,6 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.0'
-        classpath 'com.archinamon:android-gradle-aspectj:3.1.1'
-        classpath 'me.tatarka:gradle-retrolambda:3.7.0'
     }
 }
 

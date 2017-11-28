@@ -265,13 +265,12 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     // 设备类型
     private int deviceType;
     // 设备位置
-    private String deviceLocation;
+    private String location;
     // 设备位置id
     private Long residenceId;
     private boolean homePageJump;
     // 标记是否为恢复用水
     private boolean recorvery;
-    private String location;
     private CountDownTimer timer;
     private volatile boolean userWater = false;
     private boolean needRecharge;
@@ -804,7 +803,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                 Intent intent = new Intent(this, RepairApplyActivity.class);
                 intent.putExtra(Constant.DEVICE_TYPE, deviceType);
                 intent.putExtra(Constant.LOCATION_ID, residenceId);
-                intent.putExtra(Constant.LOCATION, deviceLocation);
+                intent.putExtra(Constant.LOCATION, Device.getDevice(deviceType).getDesc() + "：" + location);
                 startActivity(intent);
                 finish();
                 break;

@@ -447,6 +447,11 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     void onSwitch(int current) {
         if (this.current != current) {
+            if (current == 0) {
+                btSwitch.setBackgroundResource(R.drawable.home);
+            } else {
+                btSwitch.setBackgroundResource(R.drawable.profile);
+            }
             onSwitch();
         }
     }

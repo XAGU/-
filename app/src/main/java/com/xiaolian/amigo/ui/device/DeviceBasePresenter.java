@@ -757,7 +757,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             public void onError(Throwable e) {
                 super.onError(e);
                 Log.wtf(TAG, "服务器未返回,获取订单状态失败");
-                orderStatusLock.notifyAll();
+                synchronized (orderStatusLock) {
+                    orderStatusLock.notifyAll();
+                }
             }
         }, Schedulers.io());
     }
@@ -821,7 +823,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             switch (Command.getCommand(result.getData().getSrcCommandType())) {
                 case CONNECT:
                     // 如果用户本人在三小时之内再次连接该设备，需要进入第二步账单结算页面
-                    if (null != orderStatus && null != orderStatus.getStatus() && OrderStatus.getOrderStatus(orderStatus.getStatus()) == OrderStatus.USING) {
+                    if (!reconnect && null != orderStatus && null != orderStatus.getStatus() && OrderStatus.getOrderStatus(orderStatus.getStatus()) == OrderStatus.USING) {
                         // 记录预结账指令，此时阀门已经被长按关闭，但是订单没有被其它用户带回
                         Log.i(TAG, "用户在该设备上存在未结账订单，直接跳转至结算页面，获取到预结账指令。command:" + nextCommand);
                         if (orderStatus.isExistsUnsettledOrder() || !homePageJump) { // 未结算订单在指定时间范围内
@@ -961,6 +963,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         getMvpView().onError(TradeError.DEVICE_BUSY);
                     }
                 }
+            } else if (result.getError().getCode() == BleErrorType.BLE_UNKNOWN_ERROR.getCode()){
+                closeBleConnecttion();
+                getMvpView().onError(TradeError.DEVICE_BROKEN_2);
             }
             Integer cmdType = result.getError().getBleCmdType();
             if (null != cmdType) {

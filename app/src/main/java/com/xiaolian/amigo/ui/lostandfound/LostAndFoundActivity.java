@@ -340,6 +340,8 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
 
     void onLostClick() {
         if (listStatus) {
+            hideEmptyView();
+            hideErrorView();
             switchListStatus();
             this.lostAndFounds.clear();
             if (lostPage == 1) {
@@ -357,6 +359,8 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
             if (getRefreshLayout().getState() != RefreshState.None) {
                 return;
             }
+            hideEmptyView();
+            hideErrorView();
             switchListStatus();
             boolean needNotify = !this.lostAndFounds.isEmpty();
             this.lostAndFounds.clear();
