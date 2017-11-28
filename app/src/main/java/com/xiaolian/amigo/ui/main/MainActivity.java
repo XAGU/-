@@ -295,17 +295,13 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         showBanners(null);
         if (!isNetworkAvailable()) {
             showNoticeAmount(0);
-            EventBus.getDefault()
-                    .post(new HomeFragment2.Event(HomeFragment2.Event.EventType.INIT_BIZ,
-                            null));
+            initSchoolBiz();
             onError(R.string.network_available_error_tip);
             return;
         }
         if (!presenter.isLogin()) {
             showNoticeAmount(0);
-            EventBus.getDefault()
-                    .post(new HomeFragment2.Event(HomeFragment2.Event.EventType.INIT_BIZ,
-                            null));
+            initSchoolBiz();
             Log.d(TAG, "onResume: not login");
             tv_nickName.setText("登录／注册");
             tv_schoolName.setText("登录以后才能使用哦");
@@ -313,9 +309,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         } else {
             if (isServerError) {
                 showNoticeAmount(0);
-                EventBus.getDefault()
-                        .post(new HomeFragment2.Event(HomeFragment2.Event.EventType.INIT_BIZ,
-                                null));
+                initSchoolBiz();
             }
             // 请求通知
             presenter.getNoticeAmount();
@@ -692,8 +686,18 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         }
     }
 
+    private void initSchoolBiz() {
+        EventBus.getDefault()
+                .post(new HomeFragment2.Event(HomeFragment2.Event.EventType.INIT_BIZ,
+                        null));
+    }
+
     @Override
     public void showSchoolBiz(List<BriefSchoolBusiness> businesses) {
+        if (businesses == null) {
+            initSchoolBiz();
+            return;
+        }
         Log.d(TAG, "showSchoolBiz");
         this.businesses = businesses;
         for (BriefSchoolBusiness business : businesses) {

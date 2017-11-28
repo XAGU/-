@@ -190,7 +190,14 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
                     getMvpView().showSchoolBiz(result.getData().getBusinesses());
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
+                    getMvpView().showSchoolBiz(null);
                 }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                getMvpView().showSchoolBiz(null);
             }
         });
     }

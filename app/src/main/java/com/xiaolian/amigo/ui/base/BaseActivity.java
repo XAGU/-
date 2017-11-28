@@ -373,19 +373,19 @@ public abstract class BaseActivity extends SwipeBackActivity
             toast.setGravity(Gravity.FILL_HORIZONTAL | Gravity.TOP, 0, 0);
             toast.setDuration(Toast.LENGTH_SHORT);
         }
-        if (toastCountDown == null) {
-            toastCountDown = new CountDownTimer(800, 100) {
-                @Override
-                public void onTick(long millisUntilFinished) {
-
-                }
-
-                @Override
-                public void onFinish() {
-                    toast.cancel();
-                }
-            };
-        }
+//        if (toastCountDown == null) {
+//            toastCountDown = new CountDownTimer(800, 100) {
+//                @Override
+//                public void onTick(long millisUntilFinished) {
+//
+//                }
+//
+//                @Override
+//                public void onFinish() {
+//                    toast.cancel();
+//                }
+//            };
+//        }
         LayoutInflater inflater = getLayoutInflater();
         @SuppressLint("InflateParams") View layout = inflater.inflate(R.layout.view_toast, null, false);
         TextView tv_content = (TextView) layout.findViewById(R.id.tv_content);
@@ -393,7 +393,7 @@ public abstract class BaseActivity extends SwipeBackActivity
         tv_content.setText(message);
         toast.setView(layout);
         toast.show();
-        toastCountDown.start();
+//        toastCountDown.start();
     }
 
     private void showErrorToast(int message) {

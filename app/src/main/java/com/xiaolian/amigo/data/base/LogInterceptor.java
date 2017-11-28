@@ -3,6 +3,7 @@ package com.xiaolian.amigo.data.base;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.xiaolian.amigo.BuildConfig;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.util.Log;
 
@@ -32,7 +33,7 @@ public class LogInterceptor implements Interceptor {
     private final static String DEVICE_TOKEN = "deviceToken";
     private final static String GET = "GET";
     private final static String POST = "POST";
-    private final static String TRADE_PREFIX = "/c/trade";
+    private final static String TRADE_PREFIX = BuildConfig.TRADE_PREFIX;
     private long lastTime = 0;
     private Request lastRequest;
     private final static long NETWORK_INTERVAL = 500;
