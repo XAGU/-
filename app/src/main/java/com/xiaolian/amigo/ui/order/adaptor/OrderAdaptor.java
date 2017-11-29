@@ -116,7 +116,7 @@ public class OrderAdaptor extends RecyclerView.Adapter<OrderAdaptor.ViewHolder> 
             this.type = order.getDeviceType();
             this.device = Device.getDevice(order.getDeviceType()).getDesc() + "：" + order.getLocation();
             this.time = CommonUtil.stampToDate(order.getCreateTime());
-            this.amount = order.getConsume();
+            this.amount = order.getActualDebit();
             this.order = order;
         }
     }
