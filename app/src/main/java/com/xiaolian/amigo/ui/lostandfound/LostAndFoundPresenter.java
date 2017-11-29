@@ -42,7 +42,7 @@ public class LostAndFoundPresenter<V extends ILostAndFoundView> extends BasePres
         dto.setSelectKey(selectKey);
         dto.setSize(size);
         dto.setType(type);
-        addObserver(lostAndFoundDataManager.queryLostAndFounds(dto), new NetworkObserver<ApiResult<QueryLostAndFoundListRespDTO>>(false) {
+        addObserver(lostAndFoundDataManager.queryLostAndFounds(dto), new NetworkObserver<ApiResult<QueryLostAndFoundListRespDTO>>(false, true) {
 
             @Override
             public void onReady(ApiResult<QueryLostAndFoundListRespDTO> result) {
@@ -127,7 +127,7 @@ public class LostAndFoundPresenter<V extends ILostAndFoundView> extends BasePres
 
     @Override
     public void getMyLostAndFounds() {
-        addObserver(lostAndFoundDataManager.getMyLostAndFounds(), new NetworkObserver<ApiResult<QueryLostAndFoundListRespDTO>>(false) {
+        addObserver(lostAndFoundDataManager.getMyLostAndFounds(), new NetworkObserver<ApiResult<QueryLostAndFoundListRespDTO>>(false, true) {
 
             @Override
             public void onReady(ApiResult<QueryLostAndFoundListRespDTO> result) {

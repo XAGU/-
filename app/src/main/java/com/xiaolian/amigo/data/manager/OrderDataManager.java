@@ -66,6 +66,11 @@ public class OrderDataManager implements IOrderDataManager {
     }
 
     @Override
+    public Observable<ApiResult<OrderRespDTO>> queryPrepay(OrderReqDTO reqDTO) {
+        return orderApi.queryPrepay(reqDTO);
+    }
+
+    @Override
     public Observable<ApiResult<LatestOrderRespDTO>> queryLatestOrder(@Body LatestOrderReqDTO reqDTO) {
         return orderApi.queryLatestOrder(reqDTO);
     }

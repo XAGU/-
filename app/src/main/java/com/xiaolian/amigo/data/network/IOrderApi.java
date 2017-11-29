@@ -48,4 +48,8 @@ public interface IOrderApi {
     // 投诉查重
     @POST("complaint/check")
     Observable<ApiResult<BooleanRespDTO>> checkComplaint(@Body CheckComplaintReqDTO reqDTO);
+
+    // 查看预付订单
+    @POST("order/personal/list/prepay")
+    Observable<ApiResult<OrderRespDTO>> queryPrepay(@Body OrderReqDTO reqDTO);
 }

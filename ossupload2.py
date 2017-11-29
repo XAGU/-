@@ -20,6 +20,8 @@ Bucket          = ''
 package_name    = 'apk/com.xiaolian.amigo_{}.apk'
 package_path    = 'app/build/outputs/apk/prod/release/com.xiaolian.amigo_{}.sign.zipalign.apk'
 fileName        = ''
+constantName    = 'apk/com.xiaolian.amigo.apk'
+
 
 def percentage(consumed_bytes, total_bytes):
     global filePath
@@ -35,11 +37,13 @@ def upload():
     global Endpoint
     global Bucket
     global fileName
-    print(AccessKeyId, AccessKeySecret, SecurityToken, Endpoint, Bucket, fileName, filePath)
+    print(AccessKeyId, AccessKeySecret, SecurityToken, Endpoint, Bucket, fileName, constantName, filePath)
     auth = oss2.StsAuth(AccessKeyId , AccessKeySecret, SecurityToken)
     bucket = oss2.Bucket(auth,  Endpoint, Bucket)
     oss2.resumable_upload(bucket, fileName, filePath, progress_callback=percentage)
-    print('\rUpload %s to OSS Success!' % filePath)
+    print('\r{} Upload {} to OSS Success!'.format(fileName, filePath))
+    oss2.resumable_upload(bucket, constantName, filePath, progress_callback=percentage)
+    print('\r{} Upload {} to OSS Success!'.format(constantName, filePath))
 
 def getParam():
     global AccessKeyId

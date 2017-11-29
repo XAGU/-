@@ -344,6 +344,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
     private void initView() {
         tv_connect_status.setText(recorvery ? "正在恢复上一次用水" : "正在连接设备, 请稍后");
+        toggleSubTitle(!recorvery);
         tv_device_title.setText(location);
         setHeaderBackground(setHeaderBackgroundDrawable());
         setBottomBackground(setBottomBackgroundColor());
@@ -1019,7 +1020,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
     public void changeDormitory() {
         // 只有在step为SETILE时才不能更换宿舍
-        if (presenter.getStep() != TradeStep.SETTLE) {
+        if (!recorvery && presenter.getStep() != TradeStep.SETTLE) {
             startActivityForResult(
                     new Intent(this, ChooseDormitoryActivity.class)
                             .putExtra(ChooseDormitoryActivity.INTENT_KEY_LAST_DORMITORY, residenceId),

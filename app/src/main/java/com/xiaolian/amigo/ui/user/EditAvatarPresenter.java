@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 
 import com.alibaba.sdk.android.oss.ClientException;
+import com.alibaba.sdk.android.oss.OSSClient;
 import com.alibaba.sdk.android.oss.ServiceException;
 import com.alibaba.sdk.android.oss.callback.OSSCompletedCallback;
 import com.alibaba.sdk.android.oss.common.auth.OSSFederationToken;
@@ -111,15 +112,10 @@ public class EditAvatarPresenter<V extends IEditAvatarVIew> extends BasePresente
     }
 
     private void updateImage(Context context, String filePath) {
-        Observable.just(1)
-                .observeOn(AndroidSchedulers.mainThread())
+        ossDataManager.getOssModel()
                 .subscribeOn(Schedulers.io())
-                .doOnNext(integer -> {
-                    if (OssClientHolder.get() == null) {
-                        initOssModel(context);
-                    }
-                })
-                .subscribe(new Subscriber<Integer>() {
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<ApiResult<OssModel>>() {
                     @Override
                     public void onCompleted() {
 
@@ -127,155 +123,72 @@ public class EditAvatarPresenter<V extends IEditAvatarVIew> extends BasePresente
 
                     @Override
                     public void onError(Throwable e) {
-                        // ignore
+                        onHttpError(e);
                     }
 
                     @Override
-                    public void onNext(Integer integer) {
-                        if (OssClientHolder.get().getClient() == null) {
-                            return;
-                        }
-                        getMvpView().post(() -> getMvpView().showLoading());
-                        PutObjectRequest put = new PutObjectRequest(OssClientHolder.get().getOssModel().getBucket(),
-                                generateObjectKey(String.valueOf(System.currentTimeMillis())),
-                                filePath);
-                        OSSAsyncTask task = OssClientHolder.get().getClient().asyncPutObject(put,
-                                new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
-                                    @Override
-                                    public void onSuccess(PutObjectRequest request, PutObjectResult result) {
-                                        getMvpView().post(() -> getMvpView().hideLoading());
-                                        getMvpView().post(() -> getMvpView().setAvatar(request.getObjectKey()));
-                                        Log.d("PutObject", "UploadSuccess " + request.getObjectKey());
-                                    }
-
-                                    @Override
-                                    public void onFailure(PutObjectRequest request, ClientException clientExcepion, ServiceException serviceException) {
-                                        getMvpView().post(() -> getMvpView().hideLoading());
-                                        // Request exception
-                                        if (clientExcepion != null) {
-                                            // Local exception, such as a network exception
-                                            clientExcepion.printStackTrace();
-                                        }
-                                        if (serviceException != null) {
-                                            // Service exception
-                                            Log.e("ErrorCode", serviceException.getErrorCode());
-                                            Log.e("RequestId", serviceException.getRequestId());
-                                            Log.e("HostId", serviceException.getHostId());
-                                            Log.e("RawMessage", serviceException.getRawMessage());
-                                        }
-                                        // 失败后重新初始化ossClient
-//                                        initOssModel(context);
-                                        getMvpView().post(() ->
-                                                getMvpView().onError("图片上传失败，请重试"));
-                                    }
-                                });
-
+                    public void onNext(ApiResult<OssModel> result) {
+                        uploadImage(OssClientHolder.getClient(context, result.getData()), result.getData(), filePath);
                     }
                 });
     }
 
-
-
-    private void updateOssModel() {
-        addObserver(ossDataManager.getOssModel(), new NetworkObserver<ApiResult<OssModel>>(false, true) {
-
-            @Override
-            public void onReady(ApiResult<OssModel> result) {
-                if (null == result.getError()) {
-                    OssClientHolder.get().setOssModel(result.getData());
-                } else {
-                    getMvpView().post(() -> getMvpView().onError(result.getError().getDisplayMessage()));
-                }
-                notifyOssResult();
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                super.onError(e);
-                notifyOssResult();
-                // ignore IllegalStateException
-                if (e instanceof IllegalStateException) {
-                    return;
-                }
-                if (e instanceof HttpException) {
-                    if (((HttpException) e).code() == 600) {
-                        return;
+    private void uploadImage(OSSClient client, OssModel model, String filePath) {
+        getMvpView().post(() -> getMvpView().showLoading());
+        PutObjectRequest put = new PutObjectRequest(model.getBucket(),
+                generateObjectKey(String.valueOf(System.currentTimeMillis())),
+                filePath);
+        OSSAsyncTask task = client.asyncPutObject(put,
+                new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
+                    @Override
+                    public void onSuccess(PutObjectRequest request, PutObjectResult result) {
+                        getMvpView().post(() -> getMvpView().hideLoading());
+                        getMvpView().post(() -> getMvpView().setAvatar(request.getObjectKey()));
+                        Log.d("PutObject", "UploadSuccess " + request.getObjectKey());
                     }
-                }
-                getMvpView().post(() -> getMvpView().onError("上传图片失败"));
-            }
-        }, Schedulers.io());
-    }
 
-    private void initOssModel(Context context) {
-        addObserver(ossDataManager.getOssModel(), new NetworkObserver<ApiResult<OssModel>>(false, true) {
-
-            @Override
-            public void onReady(ApiResult<OssModel> result) {
-                if (null == result.getError()) {
-                    ossModel = result.getData();
-                    OssClientHolder.get(context, ossModel, () -> {
-                        Log.d(TAG, "oss token失效，获取token中...");
-                        updateOssModel();
-                        waitOssResult();
-                        ossModel = OssClientHolder.get().getOssModel();
-//                        return new OSSFederationToken(ossModel.getAccessKeyId(),
-//                                ossModel.getAccessKeySecret(),
-//                                ossModel.getSecurityToken(),
-//                                ossModel.getExpiration()/1000);
-                        return new OSSFederationToken(ossModel.getAccessKeyId(),
-                                ossModel.getAccessKeySecret(),
-                                ossModel.getSecurityToken(),
-//                                (ossModel.getExpiration() - 2 * 60 * 1000) / 1000);
-                                System.currentTimeMillis()/1000 + 60);
-                    });
-                    notifyOssResult();
-                } else {
-                    notifyOssResult();
-                    getMvpView().post(() -> getMvpView().onError(result.getError().getDisplayMessage()));
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                super.onError(e);
-                notifyOssResult();
-                // ignore IllegalStateException
-                if (e instanceof IllegalStateException) {
-                    return;
-                }
-                getMvpView().post(() -> getMvpView().onError("上传图片失败"));
-            }
-        }, Schedulers.io());
-        waitOssResult();
-    }
-
-    private void notifyOssResult() {
-        synchronized (ossLock) {
-            ossLock.notifyAll();
-        }
-    }
-
-    // 等待握手指令到达
-    private void waitOssResult() {
-        if (null == ossModel) {
-            synchronized (ossLock) {
-                if (null == ossModel) {
-                    try {
-                        Log.i(TAG, "等待oss到达");
-                        ossLock.wait();
-                        Log.i(TAG, "oss成功到达");
-                    } catch (InterruptedException e) {
-                        Log.wtf(TAG, e);
+                    @Override
+                    public void onFailure(PutObjectRequest request, ClientException clientExcepion, ServiceException serviceException) {
+                        getMvpView().post(() -> getMvpView().hideLoading());
+                        // Request exception
+                        if (clientExcepion != null) {
+                            // Local exception, such as a network exception
+                            clientExcepion.printStackTrace();
+                        }
+                        if (serviceException != null) {
+                            // Service exception
+                            Log.e("ErrorCode", serviceException.getErrorCode());
+                            Log.e("RequestId", serviceException.getRequestId());
+                            Log.e("HostId", serviceException.getHostId());
+                            Log.e("RawMessage", serviceException.getRawMessage());
+                        }
+                        getMvpView().post(() ->
+                                getMvpView().onError("图片上传失败，请重试"));
                     }
-                }
+                });
+    }
+
+    private void onHttpError(Throwable e) {
+        if (e instanceof HttpException) {
+            switch (((HttpException) e).code()) {
+                case 401:
+                    getMvpView().post(() -> getMvpView().onError(R.string.please_login));
+                    getMvpView().post(() -> getMvpView().redirectToLogin());
+                    break;
+                default:
+                    getMvpView().post(() ->
+                            getMvpView().onError("图片上传失败，请重试"));
+                    break;
             }
+        } else {
+            getMvpView().post(() ->
+                    getMvpView().onError("图片上传失败，请重试"));
         }
     }
 
     private String generateObjectKey(String serverTime) {
         return OssFileType.AVATAR.getDesc() + "/" + userDataManager.getUser().getId() + "_"
-                + serverTime + "_" + generateRandom()  + ".jpg";
+                + serverTime + "_" + generateRandom() + ".jpg";
     }
 
     private String generateRandom() {
