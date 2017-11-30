@@ -969,7 +969,10 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     @Override
     public void onError(TradeError tradeError) {
         // 如果是在结算页面，则重置slideView
-        if (presenter.getStep() == TradeStep.SETTLE && slideView != null) {
+//        if (presenter.getStep() == TradeStep.SETTLE && slideView != null) {
+//            slideView.reset();
+//        }
+        if (slideView != null) {
             slideView.reset();
         }
 
