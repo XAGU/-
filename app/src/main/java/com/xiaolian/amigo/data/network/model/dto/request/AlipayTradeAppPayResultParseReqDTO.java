@@ -12,5 +12,5 @@ public class AlipayTradeAppPayResultParseReqDTO {
     private String resultStatus;
     private String result;
     private String memo;
-
+    private Long fundId;
 }
