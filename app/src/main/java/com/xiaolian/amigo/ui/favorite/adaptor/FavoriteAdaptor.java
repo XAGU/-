@@ -16,7 +16,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import lombok.Data;
 
 /**
@@ -29,13 +28,10 @@ public class FavoriteAdaptor extends RecyclerView.Adapter<FavoriteAdaptor.ViewHo
     private IFavoritePresenter<IFavoriteView> presenter;
     private OnItemLongClickListener longClickListener;
     private OnItemClickListener clickListener;
-
-    private FavoriteAdaptor(List<FavoriteWrapper> favorites) {
-        this.favorites = favorites;
-    }
+    private OnDeleteListener deleteListener;
 
     public FavoriteAdaptor(List<FavoriteWrapper> favorites, IFavoritePresenter<IFavoriteView> presenter) {
-        this(favorites);
+        this.favorites = favorites;
         this.presenter = presenter;
     }
 
@@ -63,6 +59,11 @@ public class FavoriteAdaptor extends RecyclerView.Adapter<FavoriteAdaptor.ViewHo
                 clickListener.onItemClick(holder.getAdapterPosition());
             }
         });
+        holder.tv_delete.setOnClickListener(v -> {
+            if (deleteListener != null) {
+                deleteListener.onDelete(holder.getAdapterPosition());
+            }
+        });
     }
 
     @Override
@@ -75,6 +76,8 @@ public class FavoriteAdaptor extends RecyclerView.Adapter<FavoriteAdaptor.ViewHo
         TextView tv_device;
         @BindView(R.id.tv_location)
         TextView tv_location;
+        @BindView(R.id.tv_delete)
+        TextView tv_delete;
 
         IFavoritePresenter<IFavoriteView> presenter;
         // 设备id
@@ -87,12 +90,6 @@ public class FavoriteAdaptor extends RecyclerView.Adapter<FavoriteAdaptor.ViewHo
             this.presenter = presenter;
             ButterKnife.bind(this, itemView);
         }
-
-        // 点击删除按钮删除设备
-        @OnClick(R.id.tv_delete)
-        void delete() {
-            presenter.onDelete(deviceId, index);
-        }
     }
 
     public void setOnItemLongClickListener(OnItemLongClickListener listener) {
@@ -103,11 +100,19 @@ public class FavoriteAdaptor extends RecyclerView.Adapter<FavoriteAdaptor.ViewHo
         this.clickListener = listener;
     }
 
+    public void setOnDeleteListener(OnDeleteListener listener) {
+        this.deleteListener = listener;
+    }
+
     public interface OnItemLongClickListener {
         void onItemLongClick();
     }
     public interface OnItemClickListener {
         void onItemClick(int position);
+    }
+
+    public interface OnDeleteListener {
+        void onDelete(int position);
     }
 
 

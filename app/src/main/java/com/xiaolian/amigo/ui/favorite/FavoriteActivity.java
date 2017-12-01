@@ -68,6 +68,8 @@ public class FavoriteActivity extends FavoriteBaseActivity implements IFavoriteV
                 startActivity(intent);
             }
         });
+        adaptor.setOnDeleteListener(position ->
+                presenter.onDelete(favorites.get(position).getResidenceId(), position));
         recyclerView.addItemDecoration(new RecycleViewDivider(this, RecycleViewDivider.VERTICAL_LIST));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adaptor);
@@ -98,6 +100,10 @@ public class FavoriteActivity extends FavoriteBaseActivity implements IFavoriteV
         Log.i(TAG, String.format(Locale.getDefault(), "删除收藏设备前列表数量为：%d", this.favorites.size()));
         FavoriteAdaptor.FavoriteWrapper result = this.favorites.remove(index);
         Log.i(TAG, String.format(Locale.getDefault(), "删除收藏设备后列表数量为：%d", this.favorites.size()));
+        if (favorites.isEmpty()) {
+            page = Constant.PAGE_START_NUM;
+            showEmptyView();
+        }
         if (null != result) {
             Log.i(TAG, "删除收藏设备成功！deviceId=" + result.getId());
             adaptor.notifyDataSetChanged();
