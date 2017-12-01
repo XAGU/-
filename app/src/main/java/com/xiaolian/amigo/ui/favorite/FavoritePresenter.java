@@ -38,12 +38,12 @@ public class FavoritePresenter<V extends IFavoriteView> extends BasePresenter<V>
         implements IFavoritePresenter<V> {
 
     private static final String TAG = FavoritePresenter.class.getSimpleName();
-    private IFavoriteManager manager;
+    private IFavoriteManager favoriteManager;
 
     @Inject
-    public FavoritePresenter(IFavoriteManager manager) {
+    public FavoritePresenter(IFavoriteManager favoriteManager) {
         super();
-        this.manager = manager;
+        this.favoriteManager = favoriteManager;
     }
 
 
@@ -53,7 +53,7 @@ public class FavoritePresenter<V extends IFavoriteView> extends BasePresenter<V>
         reqDTO.setPage(page);
         reqDTO.setSize(Constant.PAGE_SIZE);
         // 查看收藏设备列表
-        addObserver(manager.queryFavorites(reqDTO), new NetworkObserver<ApiResult<ScanDeviceRespDTO>>(false) {
+        addObserver(favoriteManager.queryFavorites(reqDTO), new NetworkObserver<ApiResult<ScanDeviceRespDTO>>(false) {
             @Override
             public void onReady(ApiResult<ScanDeviceRespDTO> result) {
                 getMvpView().setRefreshComplete();
@@ -88,11 +88,11 @@ public class FavoritePresenter<V extends IFavoriteView> extends BasePresenter<V>
     }
 
     @Override
-    public void onDelete(final Long deviceId, int index) {
+    public void onDelete(final Long residenceId, int index) {
         UnFavoriteReqDTO reqDTO = new UnFavoriteReqDTO();
-        reqDTO.setId(deviceId);
+        reqDTO.setId(residenceId);
         // 查看收藏设备列表
-        addObserver(manager.deleteFavorite(reqDTO), new NetworkObserver<ApiResult<UnFavoriteRespDTO>>() {
+        addObserver(favoriteManager.deleteFavorite(reqDTO), new NetworkObserver<ApiResult<UnFavoriteRespDTO>>() {
             @Override
             public void onReady(ApiResult<UnFavoriteRespDTO> result) {
                 if (null == result.getError()) {

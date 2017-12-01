@@ -24,7 +24,7 @@ public interface IFavoriteApi {
     Observable<ApiResult<ScanDeviceRespDTO>> queryFavorites(@Body FavoriteReqDTO reqDTO);
 
     // 删除收藏的设备
-    @POST("device/unFavorite")
+    @POST("device/water/unFavorite")
     Observable<ApiResult<UnFavoriteRespDTO>> deleteFavorite(@Body UnFavoriteReqDTO reqDTO);
 
     // 收藏饮水机
