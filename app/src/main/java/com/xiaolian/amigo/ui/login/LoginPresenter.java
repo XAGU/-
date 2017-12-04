@@ -45,10 +45,17 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
 
 
     @Override
-    public void onLoginClick(String mobile, String password) {
+    public void onLoginClick(String mobile, String password, String androidId,
+                             String brand, String model, String systemVersion) {
         LoginReqDTO dto = new LoginReqDTO();
         dto.setMobile(mobile);
         dto.setPassword(password);
+        dto.setBrand(brand);
+        dto.setModel(model);
+        dto.setUniqueId(androidId);
+        dto.setSystemVersion(systemVersion);
+        // 1表示IOS 2表示Android
+        dto.setSystem(2);
         addObserver(loginDataManager.login(dto), new NetworkObserver<ApiResult<LoginRespDTO>>() {
 
             @Override
