@@ -17,7 +17,7 @@
         android:textStyle="bold" />
 
 
-    <EditText
+    <com.xiaolian.amigo.ui.widget.ClearableEditText
         android:id="@+id/et_mobile"
         android:layout_width="match_parent"
         android:layout_height="48dp"
