@@ -23,7 +23,8 @@ import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 public interface ILoginPresenter<V extends ILoginView> extends IBasePresenter<V> {
 
     // 点击登录
-    void onLoginClick(String mobile, String password);
+    void onLoginClick(String mobile, String password, String androidId,
+                      String brand, String model, String systemVersion);
 
     // 注册
     void register(String code, String mobile, String password, Long schoolId);

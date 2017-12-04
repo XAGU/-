@@ -11,4 +11,9 @@ import lombok.Data;
 public class LoginReqDTO {
     private String mobile;
     private String password;
+    private String brand;
+    private String model;
+    private Integer system;
+    private String uniqueId;
+    private String systemVersion;
 }

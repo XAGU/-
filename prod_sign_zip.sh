@@ -1,6 +1,6 @@
 #!/bin/bash
 applicationId=com.xiaolian.amigo
-versionName=1.0.0
+versionName=1.0.1
 storepass=EOl5t9aSlb1j4whEIPIku/0K0rfHTOB1JxXSS31czZk=
 keypass=WrzwBIrMPHN5q3pzDBWFHuo0FmeReiJ3guFSX4ZYP74=
 filePath=app/build/outputs/apk/prod/release/

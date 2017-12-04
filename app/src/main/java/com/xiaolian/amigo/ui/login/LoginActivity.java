@@ -1,7 +1,10 @@
 package com.xiaolian.amigo.ui.login;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.widget.TextView;
@@ -16,6 +19,8 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.xiaolian.amigo.util.Log.getContext;
 
 /**
  * 登录页
@@ -196,7 +201,13 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
     }
 
     public void login(String mobile, String password) {
-        presenter.onLoginClick(mobile, password);
+        @SuppressLint("HardwareIds")
+        String androidId = Settings.Secure.getString(getContext().getContentResolver(),
+                Settings.Secure.ANDROID_ID);
+        String model = Build.MODEL;
+        String brand = Build.BRAND;
+        int systemVersion = Build.VERSION.SDK_INT;
+        presenter.onLoginClick(mobile, password, androidId, brand, model, String.valueOf(systemVersion));
     }
 
     public String getMobile() {
