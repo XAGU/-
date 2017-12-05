@@ -641,7 +641,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 closeBleConnecttion();
 
                 // 跳转至连接失败页面
-                getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
+                if (getMvpView() != null) {
+                    getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
+                }
             }
         }
 
