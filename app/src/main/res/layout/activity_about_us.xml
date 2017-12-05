@@ -68,7 +68,6 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:visibility="gone"
         android:layout_below="@id/rl_update"
         android:id="@+id/rl_attention"
         android:layout_width="wrap_content"
@@ -83,15 +82,25 @@
             android:layout_centerVertical="true"/>
 
         <ImageView
+            android:id="@+id/iv_attention_forward"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/forward"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"/>
+
+        <TextView
+            style="@style/ContentText_main"
+            android:text="笑联"
+            android:textColor="#999"
+            android:layout_marginEnd="10dp"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@id/iv_attention_forward"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </RelativeLayout>
 
     <View
-        android:visibility="gone"
         android:layout_below="@id/rl_attention"
         android:layout_width="match_parent"
         android:layout_height="1dip"
