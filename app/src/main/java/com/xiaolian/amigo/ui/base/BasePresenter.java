@@ -304,6 +304,8 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
 
     public abstract class BleObserver<T> extends Subscriber<T> {
 
+        private String command;
+
         @Override
         public void onError(Throwable e) {
             if (e instanceof BleDisconnectedException) {
@@ -328,6 +330,13 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
         public void onCompleted() {
         }
 
+        public void setCommand(String command) {
+            this.command = command;
+        }
+
+        public String getCommand() {
+            return command;
+        }
     }
 
     public abstract class NetworkObserver<T extends ApiResult> extends Subscriber<T> {

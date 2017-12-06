@@ -50,6 +50,7 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import rx.Observable;
+import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -74,6 +75,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     // 共享连接
     private Observable<RxBleConnection> connectionObservable;
     private Observable<Observable<byte[]>> setupNotificationObservable;
+    private BleObserver<byte[]> writeObserver;
     // notify特征值
     private BluetoothGattCharacteristic notifyCharacteristic;
     private BehaviorSubject<ActivityEvent> lifeCycleSubject = BehaviorSubject.create();
@@ -138,6 +140,25 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         this.tradeDataManager = tradeDataManager;
         this.orderDataManager = orderDataManager;
         this.sharedPreferencesHelp = sharedPreferencesHelp;
+
+        writeObserver = new BleObserver<byte[]>() {
+            @Override
+            public void onConnectError() {
+                // 注释掉防止Rx多次报连接错误
+                // handleDisConnectError();
+            }
+
+            @Override
+            public void onExecuteError(Throwable e) {
+                Log.wtf(TAG, "发送指令失败！command:" + getCommand(), e);
+                handleWriteError(getCommand());
+            }
+
+            @Override
+            public void onNext(byte[] data) {
+                Log.i(TAG, "发送指令成功！command:" + HexBytesUtils.bytesToHexString(data));
+            }
+        };
     }
 
     @Override
@@ -450,25 +471,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             return;
         }
         byte[] commandBytes = HexBytesUtils.hexStr2Bytes(command);
-        addObserver(bleDataManager.write(connectionObservable, commandBytes),
-                new BleObserver<byte[]>() {
-                    @Override
-                    public void onConnectError() {
-                        // 注释掉防止Rx多次报连接错误
-                        // handleDisConnectError();
-                    }
-
-                    @Override
-                    public void onExecuteError(Throwable e) {
-                        Log.wtf(TAG, "发送指令失败！command:" + command, e);
-                        handleWriteError(command);
-                    }
-
-                    @Override
-                    public void onNext(byte[] data) {
-                        Log.i(TAG, "发送指令成功！command:" + HexBytesUtils.bytesToHexString(data));
-                    }
-                }, Schedulers.io());
+        writeObserver.setCommand(command);
+        addObserver(bleDataManager.write(connectionObservable, commandBytes), writeObserver, Schedulers.io());
     }
 
     private void handleWriteError(String command) {
