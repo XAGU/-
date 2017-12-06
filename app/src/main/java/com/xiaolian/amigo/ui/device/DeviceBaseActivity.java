@@ -82,4 +82,9 @@ public abstract class DeviceBaseActivity extends BaseActivity implements IDevice
     public void onReconnectSuccess() {
 
     }
+
+    @Override
+    public void onReconnectSuccess(Object... extra) {
+
+    }
 }
