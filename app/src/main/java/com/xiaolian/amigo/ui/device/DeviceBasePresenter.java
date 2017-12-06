@@ -900,7 +900,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 // 如果是重连状态下，此时可以直接下发关阀指令
                 if (reconnect) {
                     // 显示重连成功
-                    getMvpView().onReconnectSuccess();
+                    getMvpView().onReconnectSuccess(orderStatus);
                     if (checkCloseCmd()) {
                         reconnectNextCmd = closeCmd;
                     }

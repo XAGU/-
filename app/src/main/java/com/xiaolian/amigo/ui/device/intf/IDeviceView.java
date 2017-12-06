@@ -38,9 +38,6 @@ public interface IDeviceView extends IBaseView {
      */
     void onConnectSuccess(TradeStep step, Object... extra);
 
-    // 设备重连成功
-    void onReconnectSuccess();
-
     void onReconnectSuccess(Object... extra);
 
 }

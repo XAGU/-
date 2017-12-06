@@ -726,26 +726,14 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     }
 
     @Override
-    public void onReconnectSuccess() {
-        hideBottomLayout();
-        if (presenter.getStep() == TradeStep.PAY) {
-            // 显示确认支付页面
-            ll_content_normal.setVisibility(View.VISIBLE);
-            initConnectSuccessTimer();
-        } else {
-            // 显示结束用水页面
-            ll_content_shower.setVisibility(View.VISIBLE);
-        }
-    }
-
-    @Override
     public void onReconnectSuccess(Object... extra) {
         super.onReconnectSuccess(extra);
+        // 能进入onReconnectSuccess，表示step为SETTLE
         presenter.setConnecting(false);
+        hideBottomLayout();
+        // 显示结束用水页面
+        ll_content_shower.setVisibility(View.VISIBLE);
         showStep2((UnsettledOrderStatusCheckRespDTO) extra[0]);
-
-        // 标记步骤为结算找零页面
-        presenter.setStep(TradeStep.SETTLE);
         toggleSubTitle(false);
     }
 
