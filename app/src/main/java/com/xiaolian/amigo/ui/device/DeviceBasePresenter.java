@@ -128,8 +128,6 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     private volatile boolean homePageJump = true;
     // 结束标识
     private volatile boolean closeFlag = false;
-    // 正在恢复上次设备响应标识
-    private volatile boolean deviceResultFlag = false;
     // 故障设备标志
     private volatile boolean brokenFlag = false;
 
@@ -288,26 +286,13 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     }
 
     private void realConnect(String macAddress) {
-        // 如果缓存中存在待处理的设备响应则直接去请求服务器
-        String savedDeviceResult;
-        if (reconnect) {
-            savedDeviceResult = getDeviceResult(orderId);
-        } else {
-            savedDeviceResult = getDeviceResult();
+        // 正常流程
+        // 1、网络请求获取握手指令
+        if (null == connectCmd) {
+            getConnectCommand(macAddress);
         }
-        if (!TextUtils.isEmpty(savedDeviceResult)) {
-            Log.i(TAG, "缓存中存在待处理的设备响应, 直接去请求服务器");
-            deviceResultFlag = true;
-            processCommandResult(savedDeviceResult);
-        } else {
-            // 正常流程
-            // 1、网络请求获取握手指令
-            if (null == connectCmd) {
-                getConnectCommand(macAddress);
-            }
-            // 检测当前用户对该设备订单使用状态
-            checkOrderStatus(macAddress);
-        }
+        // 检测当前用户对该设备订单使用状态
+        checkOrderStatus(macAddress);
 
         // 2、初始化设备消息接收者
         if (null == busSubscriber) {
@@ -528,11 +513,6 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         // connecting = false;
         handleConnectError.set(false);
 
-        // 缓存中存在设备响应服务器未处理，则直接return
-        if (deviceResultFlag) {
-            deviceResultFlag = false;
-            return;
-        }
         if (reconnect) {
             Log.i(TAG, "当前为重连状态");
             if (null == getStep()) {
@@ -553,8 +533,14 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 waitOrderCheckResult();
                 if (null == orderStatus || orderStatus.getStatus() == null) {
                     Log.wtf(TAG, "查不到对应的未结账订单，不应该发生此种状况！！！");
-                    setStep(TradeStep.PAY);
-                    getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_3));
+                    // 如果订单ID不为空，直接到订单详情页面
+                    if (orderId != 0L) {
+                        getMvpView().onFinish(orderId);
+                    } else {
+                        setStep(TradeStep.PAY);
+                        onWrite(connectCmd);
+                    }
+//                    getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_3));
                 } else {
                     if (OrderStatus.getOrderStatus(orderStatus.getStatus()) == OrderStatus.FINISHED) { // 订单已结单
                         Log.i(TAG, "重连后发现订单已被结算，跳转至订单详情页。orderId:" + orderStatus.getOrderId());
@@ -574,7 +560,6 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             // 查询订单状态
             waitOrderCheckResult();
 
-            Log.d(TAG, "开始写入开阀指令" + System.currentTimeMillis());
             // String savedConnectCmd = sharedPreferencesHelp.getConnectCmd(currentMacAddress);
             // Log.i(TAG, "获取已保存的握手指令：" + savedConnectCmd);
             if (null != orderStatus && null != orderStatus.getStatus() && OrderStatus.getOrderStatus(orderStatus.getStatus()) == OrderStatus.USING) {  // 有订单未计算拿上次连接的握手指令（这里待验证是否有影响）
@@ -772,14 +757,12 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             String prefix = result.substring(0, 4);
             if (TextUtils.equals(Command.CLOSE_VALVE.getRespPrefix(), prefix)) {
                 setStep(TradeStep.CLOSE_VALVE);
-                // 存储设备响应结果
-                saveDeviceResult(result, orderId);
             } else if (TextUtils.equals(Command.OPEN_VALVE.getRespPrefix(), prefix)) {
                 // 存储设备响应结果
                 saveDeviceResult(result, orderId);
             }
         } catch (Exception e) {
-            Log.wtf(TAG, "获取设备相应结果前缀失败");
+            Log.wtf(TAG, "获取设备响应结果前缀失败");
         }
         CmdResultReqDTO reqDTO = new CmdResultReqDTO();
         reqDTO.setData(result);
@@ -793,8 +776,6 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     sharedPreferencesHelp.setDeviceToken(result.getData().getMacAddress(), result.getData().getDeviceToken());
                     Log.i(TAG, "收到deviceToken：" + result.getData().getDeviceToken());
                 }
-                // 服务器已接收到设备响应 清除缓存中的设备响应
-                saveDeviceResult("", orderId);
                 Log.i(TAG, "通知主线程更新数据。" + result.getData());
                 RxBus.getDefault().post(result);
             }
@@ -832,19 +813,11 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                             Log.i(TAG, "未结算订单在指定时间范围内或者由未结账单页面跳转过来，显示结算页面");
                             reopenNextCmd = nextCommand;
                             getMvpView().onConnectSuccess(TradeStep.SETTLE, orderStatus);
-
-                            // connectCmd = sharedPreferencesHelp.getConnectCmd(currentMacAddress);
-                            closeCmd = getCloseCmd(orderId);
-                            if (TextUtils.isEmpty(closeCmd)) {
-                                Log.e(TAG, "用户本人在三小时之内再次连接该设备, 但是关阀指令丢失，直接使用预结账指令");
-                                onWrite(reopenNextCmd);
-                            }
                         } else {
                             Log.i(TAG, "未结算订单已经超出指定时间范围，继续下发预结账指令，走正常流程");
                             precheckCmd = nextCommand;
                             onWrite(precheckCmd);
                         }
-
                         return;
                     }
                     // 如果存在未结账订单，需要先结算旧账单
@@ -936,24 +909,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         //if (orderStatus.isExistsUnsettledOrder() || !homePageJump) { // 未结账订单在指定时间范围内
                         Log.i(TAG, "处理未结账订单，此时阀门处于打开状态，下发关阀指令即可。");
                         getMvpView().onConnectSuccess(TradeStep.SETTLE, orderStatus);
-                        String savedCloseCmd = getCloseCmd(orderId);
-                        if (null != savedCloseCmd) {
-                            Log.wtf(TAG, "从缓存中成功获取关阀指令。command:" + savedCloseCmd);
-                            reopenNextCmd = savedCloseCmd;
-                            closeCmd = reopenNextCmd;
-                        } else {
-                            Log.wtf(TAG, "从缓存中获取关阀指令为空，APP有可能被用户卸载过, 从缓存中获取上一次的设备响应");
-                            // 获取缓存中的设备响应，去重新获取关阀指令
-                            String saveDeviceResult = getDeviceResult(orderId);
-                            if (TextUtils.isEmpty(saveDeviceResult)) {
-                                Log.wtf(TAG, "从缓存中获取上一次的设备响应失败");
-                                getMvpView().onError(TradeError.CONNECT_ERROR_2);
-                            } else {
-                                Log.i(TAG, "关阀指令获取失败，重新使用设备响应请求指令");
-                                processCommandResult(saveDeviceResult);
-                            }
+                        if (checkCloseCmd()) {
+                            reopenNextCmd = closeCmd;
                         }
-
                         //} else {
                         //    Log.i(TAG, "处理未结账订单，订单时间超出指定时间范围内并且从首页跳转过来，此时阀门处于打开状态，");
                         //    Log.wtf(TAG, "未结账订单超出两个小时时间范围，阀门仍处于打开状态，不应该出现这种状况");
@@ -1013,6 +971,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         return true;
     }
 
+    // 只存开阀设备响应结果
     private void saveDeviceResult(String result, Long orderId) {
         if (result == null || orderId == null || orderId <= 0) {
             return;
@@ -1021,6 +980,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 orderId + Constant.DIVIDER + result);
     }
 
+    // 只存开阀设备响应结果
     private String getDeviceResult(Long orderId) {
         String deviceResultTemp = sharedPreferencesHelp.getDeviceResult(deviceNo);
         Long savedOrderId = null;
@@ -1032,19 +992,6 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             if (CommonUtil.equals(savedOrderId, orderId) && !TextUtils.isEmpty(savedDeviceResult)) {
                 return savedDeviceResult;
             }
-        } catch (Exception e) {
-            Log.wtf(TAG, "从缓存中取设备响应失败", e);
-        }
-        return null;
-    }
-
-    private String getDeviceResult() {
-        String deviceResultTemp = sharedPreferencesHelp.getDeviceResult(deviceNo);
-        String savedDeviceResult = null;
-        try {
-            String[] temp = deviceResultTemp.split(Constant.DIVIDER);
-            savedDeviceResult = temp[1];
-            return savedDeviceResult;
         } catch (Exception e) {
             Log.wtf(TAG, "从缓存中取设备响应失败", e);
         }
