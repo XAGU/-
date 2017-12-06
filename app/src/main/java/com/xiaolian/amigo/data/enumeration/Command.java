@@ -11,7 +11,7 @@ public enum Command {
     CONNECT(1, "握手", "a801"),
     PRE_CHECK(2, "预结账", "a808"),
     CHECK_OUT(3, "结账", "a807"),
-    OPEN_VALVE(4, "开阀", "a803"),
+    OPEN_VALVE(4, "开阀", "a802"),
     CLOSE_VALVE(5, "关阀", "a804");
 
     // 指令类型
