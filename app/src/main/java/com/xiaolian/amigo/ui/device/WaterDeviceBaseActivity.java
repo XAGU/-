@@ -288,6 +288,9 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
         // 连接蓝牙设备
         presenter.setHomePageJump(homePageJump);
+        if (recorvery) {
+            presenter.setStep(TradeStep.SETTLE);
+        }
         presenter.onPreConnect(macAddress);
         if (prepay == null) {
             presenter.queryPrepayOption(deviceType);
@@ -334,6 +337,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     protected abstract
     @DrawableRes
     int setHeaderBackgroundDrawable();
+
     protected abstract
     @ColorRes
     int setBottomBackgroundColor();
@@ -416,6 +420,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     public void setHeaderBackground(int headBackground) {
         rl_header.setBackgroundResource(headBackground);
     }
+
     // 设置底部颜色
     private void setBottomBackground(int color) {
         fl_bottom.setBackgroundResource(color);
@@ -475,7 +480,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                     buttonText = df.format(prepayAmount) + getString(R.string.yuan);
                     SpannableString buttonSpan = new SpannableString(buttonText);
                     buttonSpan.setSpan(new AbsoluteSizeSpan(
-                            DimentionUtils.convertSpToPixels(18, this)), 0, buttonText.length(),
+                                    DimentionUtils.convertSpToPixels(18, this)), 0, buttonText.length(),
                             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     builder.append(buttonSpan);
                     builder.append(deviceType == Device.HEATER.getType() ?
@@ -699,8 +704,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     }
 
     @Override
-    public void
-    onConnectError() {
+    public void onConnectError() {
         // 连接失败时显示重连页面
         if (null != ll_content_normal && null != ll_content_shower && null != ll_content_unconnected && null != ll_error) {
             ll_content_normal.setVisibility(View.GONE);

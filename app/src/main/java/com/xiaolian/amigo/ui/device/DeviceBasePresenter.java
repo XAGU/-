@@ -140,7 +140,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         this.tradeDataManager = tradeDataManager;
         this.orderDataManager = orderDataManager;
         this.sharedPreferencesHelp = sharedPreferencesHelp;
+    }
 
+    private void initWriteObserver() {
         writeObserver = new BleObserver<byte[]>() {
             @Override
             public void onConnectError() {
@@ -352,6 +354,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         connectionObservable = bleDataManager
                 .prepareConnectionObservable(currentMacAddress, false, disconnectTriggerSubject)
                 .compose(bindUntilEvent(PAUSE));
+
+        // 初始化写指令观察者
+        initWriteObserver();
 
         // 5、连接设备
         addObserver(bleDataManager.connect(connectionObservable),
