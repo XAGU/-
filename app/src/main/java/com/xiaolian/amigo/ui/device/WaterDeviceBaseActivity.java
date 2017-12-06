@@ -664,27 +664,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             } catch (InterruptedException e) {
                 Log.wtf(TAG, e);
             }
-            timer = new CountDownTimer(90 * 1000, 1000) {
-                @Override
-                public void onTick(long millisUntilFinished) {
-                    if (userWater) {
-                        this.cancel();
-                        Log.i(TAG, "已支付进入用水环节，取消定时器。");
-                    }
-                }
-
-                @Override
-                public void onFinish() {
-                    Log.i(TAG, "设备连接到达90s用户仍然未支付进入用水环节。");
-
-                    // 关闭蓝牙连接
-                    presenter.closeBleConnecttion();
-
-                    onError(TradeError.CONNECT_ERROR_1);
-                }
-            };
-            Log.i(TAG, "启动90s定时器，监测用户是否长时间占用设备连接。");
-            timer.start();
+            initConnectSuccessTimer();
         } else { // TradeStep.SETTLE
             showStep2((UnsettledOrderStatusCheckRespDTO) extra[0]);
 
@@ -693,6 +673,37 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             toggleSubTitle(false);
         }
 
+    }
+
+    /**
+     * 初始化握手成功定时器
+     */
+    private void initConnectSuccessTimer() {
+        if (null != timer) {
+            timer.cancel();
+            timer = null;
+        }
+        timer = new CountDownTimer(30 * 1000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                if (userWater) {
+                    this.cancel();
+                    Log.i(TAG, "已支付进入用水环节，取消定时器。");
+                }
+            }
+
+            @Override
+            public void onFinish() {
+                Log.i(TAG, "设备连接到达30s用户仍然未支付进入用水环节。");
+
+                // 关闭蓝牙连接
+                presenter.closeBleConnecttion();
+
+                onError(TradeError.CONNECT_ERROR_1);
+            }
+        };
+        Log.i(TAG, "启动30s定时器，监测用户是否长时间占用设备连接。");
+        timer.start();
     }
 
     @Override
@@ -720,6 +731,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         if (presenter.getStep() == TradeStep.PAY) {
             // 显示确认支付页面
             ll_content_normal.setVisibility(View.VISIBLE);
+            initConnectSuccessTimer();
         } else {
             // 显示结束用水页面
             ll_content_shower.setVisibility(View.VISIBLE);
@@ -729,6 +741,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     @Override
     public void onReconnectSuccess(Object... extra) {
         super.onReconnectSuccess(extra);
+        presenter.setConnecting(false);
         showStep2((UnsettledOrderStatusCheckRespDTO) extra[0]);
 
         // 标记步骤为结算找零页面
