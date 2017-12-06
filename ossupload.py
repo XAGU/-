@@ -1,10 +1,25 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function
-import os, sys
+import os, sys, requests, json
 import oss2
 
-filePath = ""
+filePath        = ''
+login_url       = 'https://api.xiaolian365.com/c/login'
+login_payload   = ''
+headers         = {'content-type':'application/json'}
+oss_url         = 'https://api.xiaolian365.com/c/oss/credential/one'
+oss_payload     = ''
+token           = ''
+AccessKeyId     = ''
+AccessKeySecret = ''
+SecurityToken   = ''
+Endpoint        = ''
+Bucket          = ''
+
+fileName        = ''
+filePaht        = ''
+
 
 def percentage(consumed_bytes, total_bytes):
     global filePath
@@ -14,25 +29,56 @@ def percentage(consumed_bytes, total_bytes):
         sys.stdout.flush()
 
 def upload():
+    global AccessKeyId
+    global AccessKeySecret
+    global SecurityToken
+    global Endpoint
+    global Bucket
+    global fileName
     global filePath
-    if ( len(sys.argv) > 6 ):
-        AccessKeyId     = sys.argv[1]
-        AccessKeySecret = sys.argv[2]
-        SecurityToken   = sys.argv[3]
-        Endpoint        = sys.argv[4] 
-        Bucket          = sys.argv[5]
-        fileName        = sys.argv[6]
-        filePath        = sys.argv[7]
-        print(AccessKeyId, AccessKeySecret, SecurityToken, Endpoint, Bucket, fileName, filePath)
-        auth = oss2.StsAuth(AccessKeyId , AccessKeySecret, SecurityToken)
-        bucket = oss2.Bucket(auth,  Endpoint, Bucket)
-        oss2.resumable_upload(bucket, fileName, filePath, progress_callback=percentage)
-        print('\rUpload %s to OSS Success!' % filePath)
+    print(AccessKeyId, AccessKeySecret, SecurityToken, Endpoint, Bucket, fileName, filePath)
+    auth = oss2.StsAuth(AccessKeyId , AccessKeySecret, SecurityToken)
+    bucket = oss2.Bucket(auth,  Endpoint, Bucket)
+    oss2.resumable_upload(bucket, fileName, filePath, progress_callback=percentage)
+    print('\r{} Upload {} to OSS Success!'.format(fileName, filePath))
+
+def getParam():
+    global AccessKeyId
+    global AccessKeySecret
+    global SecurityToken
+    global Endpoint
+    global Bucket
+    global headers
+    global oss_url
+    headers = {'content-type':'application/json', 'token': token}
+    response = requests.post(oss_url, headers=headers)
+    data = json.loads(response.text)
+    AccessKeyId     = data['data']['accessKeyId']
+    AccessKeySecret = data['data']['accessKeySecret']
+    SecurityToken   = data['data']['securityToken']
+    Endpoint        = data['data']['endpoint']
+    Bucket          = data['data']['bucket']
+    upload()
+
+def login():
+    global filePath
+    global fileName
+    global login_url
+    global login_payload
+    global token
+    if ( len(sys.argv) > 3 ):
+        mobile     = sys.argv[1]
+        password = sys.argv[2]
+        fileName = sys.argv[3]
+        filePath = sys.argv[4]
+        login_payload = {'mobile': mobile, 'password': password}
+        response = requests.post(login_url, data=json.dumps(login_payload), headers=headers)
+        token = json.loads(response.text)['data']['token']
+        getParam()
     else:
-        print("Example: %s AccessKeyId AccessKeySecret SecurityToken Endpoint Bucket fileName filePath" % sys.argv[0])
+        print("Example: %s mobile password filename filepath" % sys.argv[0])
         exit()
 
-
-
 if __name__ == '__main__':
-    upload()
+    #  upload()
+    login()
