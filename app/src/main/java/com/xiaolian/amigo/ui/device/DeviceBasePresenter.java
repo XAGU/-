@@ -226,7 +226,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         connecting = true;
 
         // 启动30s倒计时
-        timer = new CountDownTimer(30 * 1000, 1000) {
+        timer = new CountDownTimer(15 * 1000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 if (!connecting) {
@@ -247,7 +247,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 }
             }
         };
-        Log.i(TAG, "启动30s定时器......");
+        Log.i(TAG, "启动15s定时器......");
         timer.start();
 
         // 设备连接上存储mac地址供后续读写数据使用
