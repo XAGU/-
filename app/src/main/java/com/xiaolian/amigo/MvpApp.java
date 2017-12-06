@@ -18,6 +18,7 @@ package com.xiaolian.amigo;
 import android.app.Application;
 import android.content.Context;
 
+import com.umeng.analytics.MobclickAgent;
 import com.xiaolian.amigo.di.componet.ApplicationComponent;
 import com.xiaolian.amigo.di.componet.DaggerApplicationComponent;
 import com.xiaolian.amigo.di.module.ApplicationModule;

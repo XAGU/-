@@ -1088,15 +1088,20 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             Log.i(TAG, "非重连状态，开始关阀");
             if (purelyCheckoutFlag) { // 直接跳转至第二步结算
                 if (null == reopenNextCmd) { // 用户卸载掉app时取回的关阀指令为空
-                    // 获取缓存中的设备响应，去重新获取关阀指令
-                    String saveDeviceResult = getDeviceResult(orderId);
-                    if (TextUtils.isEmpty(saveDeviceResult)) {
-                        closeBleConnecttion();
-                        Log.wtf(TAG, "从缓存中获取上一次的设备响应失败");
-                        getMvpView().onError(TradeError.CONNECT_ERROR_2);
+                    reopenNextCmd = getCloseCmd(orderId);
+                    if (!TextUtils.isEmpty(reopenNextCmd)) {
+                        onWrite(reopenNextCmd);
                     } else {
-                        Log.i(TAG, "关阀指令获取失败，重新使用设备响应请求指令");
-                        processCommandResult(saveDeviceResult);
+                        // 获取缓存中的设备响应，去重新获取关阀指令
+                        String saveDeviceResult = getDeviceResult(orderId);
+                        if (TextUtils.isEmpty(saveDeviceResult)) {
+                            closeBleConnecttion();
+                            Log.wtf(TAG, "从缓存中获取上一次的设备响应失败");
+                            getMvpView().onError(TradeError.CONNECT_ERROR_2);
+                        } else {
+                            Log.i(TAG, "关阀指令获取失败，重新使用设备响应请求指令");
+                            processCommandResult(saveDeviceResult);
+                        }
                     }
                 } else {
                     onWrite(reopenNextCmd); // 正常下发
