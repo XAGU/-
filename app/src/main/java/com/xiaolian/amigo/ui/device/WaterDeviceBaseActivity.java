@@ -726,6 +726,16 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         }
     }
 
+    @Override
+    public void onReconnectSuccess(Object... extra) {
+        super.onReconnectSuccess(extra);
+        showStep2((UnsettledOrderStatusCheckRespDTO) extra[0]);
+
+        // 标记步骤为结算找零页面
+        presenter.setStep(TradeStep.SETTLE);
+        toggleSubTitle(false);
+    }
+
     /**
      * 隐藏底部布局
      */
