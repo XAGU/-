@@ -328,34 +328,33 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
 
         // 3、开启设备状态监控
-        addObserver(bleDataManager.monitorStatus(currentMacAddress), new BleObserver<RxBleConnection.RxBleConnectionState>() {
-
-            @Override
-            public void onNext(RxBleConnection.RxBleConnectionState state) {
-                String threadName = Thread.currentThread().getName();
-                Log.i(TAG, threadName + ":设备状态发生变化：" + state.toString());
-            }
-
-            @Override
-            public void onConnectError() {
-                // 注释掉防止Rx多次报连接错误
-                // handleDisConnectError();
-                Log.wtf(TAG, "onConnectError");
-            }
-
-            @Override
-            public void onExecuteError(Throwable e) {
-                Log.wtf(TAG, "监控设备状态失败！", e);
-                getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
-            }
-        }, Schedulers.io());
+//        addObserver(bleDataManager.monitorStatus(currentMacAddress), new BleObserver<RxBleConnection.RxBleConnectionState>() {
+//
+//            @Override
+//            public void onNext(RxBleConnection.RxBleConnectionState state) {
+//                String threadName = Thread.currentThread().getName();
+//                Log.i(TAG, threadName + ":设备状态发生变化：" + state.toString());
+//            }
+//
+//            @Override
+//            public void onConnectError() {
+//                // 注释掉防止Rx多次报连接错误
+//                // handleDisConnectError();
+//                Log.wtf(TAG, "onConnectError");
+//            }
+//
+//            @Override
+//            public void onExecuteError(Throwable e) {
+//                Log.wtf(TAG, "监控设备状态失败！", e);
+//                getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
+//            }
+//        }, Schedulers.io());
 
         // 4、创建共享连接q
         connectionObservable = bleDataManager
                 .prepareConnectionObservable(currentMacAddress, false, disconnectTriggerSubject)
                 .compose(bindUntilEvent(PAUSE));
 
-        // 初始化写指令观察者
         initWriteObserver();
 
         // 5、连接设备
@@ -630,20 +629,11 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     private void handleDisConnectError() {
         Log.wtf(TAG, "蓝牙连接已断开！");
 
-        if (!closeFlag) { // 退出时由onDisconnect方法完成关闭操作
-            if (!handleConnectError.getAndSet(true)) {
-                // 关闭蓝牙连接
-                closeBleConnecttion();
-
-                // 跳转至连接失败页面
-                if (getMvpView() != null) {
-                    getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
-                }
-            }
+        // 跳转至连接失败页面
+        if (getMvpView() != null) {
+            getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
         }
 
-        // 处理蓝牙在用水过程中被用户恶意关闭
-        // handleBluetoothAccidentClose();
     }
 
     @Override
