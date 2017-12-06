@@ -288,7 +288,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
         // 连接蓝牙设备
         presenter.setHomePageJump(homePageJump);
-        if (recorvery) {
+        if (recorvery || !homePageJump) {
             presenter.setStep(TradeStep.SETTLE);
         }
         presenter.onPreConnect(macAddress);
