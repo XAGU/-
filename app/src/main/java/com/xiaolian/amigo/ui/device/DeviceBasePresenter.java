@@ -73,6 +73,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     private ISharedPreferencesHelp sharedPreferencesHelp;
     // 共享连接
     private Observable<RxBleConnection> connectionObservable;
+    private Observable<Observable<byte[]>> setupNotificationObservable;
     // notify特征值
     private BluetoothGattCharacteristic notifyCharacteristic;
     private BehaviorSubject<ActivityEvent> lifeCycleSubject = BehaviorSubject.create();
@@ -253,7 +254,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
                 String scannedMacAddress = result.getBleDevice().getMacAddress();
                 String[] temp = scannedMacAddress.split(":");
-                StringBuilder deviceNo = new StringBuilder(temp[temp.length-3]);
+                StringBuilder deviceNo = new StringBuilder(temp[temp.length - 3]);
                 deviceNo.append(temp[temp.length - 2]).append(temp[temp.length - 1]);
                 if (TextUtils.equals(deviceNo.toString(), macAddress)) {
                     currentMacAddress = scannedMacAddress;
@@ -326,7 +327,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             }
         }, Schedulers.io());
 
-        // 4、创建共享连接
+        // 4、创建共享连接q
         connectionObservable = bleDataManager
                 .prepareConnectionObservable(currentMacAddress, false, disconnectTriggerSubject)
                 .compose(bindUntilEvent(PAUSE));
@@ -370,27 +371,27 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
     // 开启notify通道
     private void enableNotify() {
-        addObserver(bleDataManager.setupNotification(connectionObservable, notifyCharacteristic),
-                new BleObserver<Observable<byte[]>>() {
-                    @Override
-                    public void onConnectError() {
-                        // 注释掉防止Rx多次报连接错误
-                        // handleDisConnectError();
-                    }
+        setupNotificationObservable = bleDataManager.setupNotification(connectionObservable, notifyCharacteristic);
+        addObserver(setupNotificationObservable, new BleObserver<Observable<byte[]>>() {
+            @Override
+            public void onConnectError() {
+                // 注释掉防止Rx多次报连接错误
+                // handleDisConnectError();
+            }
 
-                    @Override
-                    public void onExecuteError(Throwable e) {
-                        Log.wtf(TAG, "开启notify通道失败！", e);
-                        getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
-                    }
+            @Override
+            public void onExecuteError(Throwable e) {
+                Log.wtf(TAG, "开启notify通道失败！", e);
+                getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
+            }
 
-                    @Override
-                    public void onNext(Observable<byte[]> observable) {
-                        Log.i(TAG, "开启notify通道成功！");
-                        Log.i(TAG, "准备开始写notify特征值描述");
-                        writeNotifyCharacteristicDesc();
-                    }
-                }, Schedulers.io());
+            @Override
+            public void onNext(Observable<byte[]> observable) {
+                Log.i(TAG, "开启notify通道成功！");
+                Log.i(TAG, "准备开始写notify特征值描述");
+                writeNotifyCharacteristicDesc();
+            }
+        }, Schedulers.io());
     }
 
     // 写notify特征值描述
@@ -486,7 +487,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             return;
         }
 
-        addObserver(bleDataManager.notify(connectionObservable, notifyCharacteristic),
+        addObserver(setupNotificationObservable.flatMap(notificationObservable -> notificationObservable),
                 new BleObserver<byte[]>() {
                     @Override
                     public void onConnectError() {
@@ -923,7 +924,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         getMvpView().onError(TradeError.DEVICE_BUSY);
                     }
                 }
-            } else if (result.getError().getCode() == BleErrorType.BLE_UNKNOWN_ERROR.getCode()){
+            } else if (result.getError().getCode() == BleErrorType.BLE_UNKNOWN_ERROR.getCode()) {
                 closeBleConnecttion();
                 getMvpView().onError(TradeError.DEVICE_BROKEN_2);
             }
@@ -1022,7 +1023,6 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         }
         return null;
     }
-
 
 
     @Override
