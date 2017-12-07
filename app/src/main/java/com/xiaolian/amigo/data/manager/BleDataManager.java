@@ -38,10 +38,25 @@ public class BleDataManager implements IBleDataManager {
 
     @Override
     public Observable<ScanResult> scan() {
-        return client.scanBleDevices(new ScanSettings.Builder().build(),
+        return client.scanBleDevices(new ScanSettings.Builder()
+                        .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
+                        .setCallbackType(ScanSettings.CALLBACK_TYPE_FIRST_MATCH)
+                        .build(),
                 new ScanFilter.Builder()
                         // 按照SERVICE_UUID筛选
                         .setServiceUuid(ParcelUuid.fromString(SERVICE_UUID))
+                        .build());
+    }
+
+    @Override
+    public Observable<ScanResult> scan(String deviceName) {
+        return client.scanBleDevices(
+                new ScanSettings.Builder()
+                        .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
+                        .setCallbackType(ScanSettings.CALLBACK_TYPE_FIRST_MATCH)
+                        .build(),
+                new ScanFilter.Builder()
+                        .setDeviceName(deviceName)
                         .build());
     }
 

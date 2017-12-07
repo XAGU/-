@@ -259,40 +259,23 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         }
 
         // 扫描macAddress
-        addObserver(bleDataManager.scan(), new BleObserver<ScanResult>() {
-            Long begin = null;
-            // 延时15s
-            Integer delay = 15000;
+        addObserver(bleDataManager.scan(macAddress), new BleObserver<ScanResult>() {
 
             @Override
             public void onNext(ScanResult result) {
-                if (currentMacAddress != null) {
+                if (currentMacAddress != null && currentMacAddress.equalsIgnoreCase(result.getBleDevice().getMacAddress())) {
+                    Log.i(TAG, "扫描获取macAddress在当前上下文已经存在，无需重复计算。macAddress:" + currentMacAddress);
                     return;
-                }
-
-                if (null == begin) {
-                    // 起始时间设置为当前时间
-                    begin = System.currentTimeMillis();
                 }
 
                 String scannedMacAddress = result.getBleDevice().getMacAddress();
                 String[] temp = scannedMacAddress.split(":");
                 StringBuilder deviceNo = new StringBuilder(temp[temp.length - 3]);
                 deviceNo.append(temp[temp.length - 2]).append(temp[temp.length - 1]);
-                if (TextUtils.equals(deviceNo.toString(), macAddress)) {
-                    currentMacAddress = scannedMacAddress;
-                    Log.i(TAG, "获取macAddress成功。macAddress:" + currentMacAddress);
-                    sharedPreferencesHelp.setDeviceNoAndMacAddress(macAddress, currentMacAddress);
-                    realConnect(macAddress);
-                    return;
-                }
-                long now = System.currentTimeMillis();
-                if (now - begin > delay) { // 列表数目到达10条或者时间超过2s都去服务端请求一次接口
-                    currentMacAddress = "";
-                    Log.i(TAG, delay + "s时间到，获取macAddress失败");
-                    // realConnect(macAddress);
-                    getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
-                }
+                currentMacAddress = scannedMacAddress;
+                Log.i(TAG, "扫描获取macAddress成功。macAddress:" + currentMacAddress);
+                sharedPreferencesHelp.setDeviceNoAndMacAddress(macAddress, currentMacAddress);
+                realConnect(macAddress);
             }
 
             @Override

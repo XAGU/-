@@ -20,6 +20,9 @@ public interface IBleDataManager {
     // 扫描设备
     Observable<ScanResult> scan();
 
+    //扫描指定名称的设备
+    Observable<ScanResult> scan(String deviceName);
+
     /**
      * 提供连接蓝牙设备的Observable，附带连接共享适配器供后续蓝牙操作使用
      *  @param macAddress  蓝牙设备mac地址
