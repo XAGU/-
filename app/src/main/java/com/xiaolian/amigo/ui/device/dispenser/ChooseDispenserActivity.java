@@ -332,6 +332,12 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
     }
 
     @Override
+    protected void onPause() {
+        presenter.closeBleConnection();
+        super.onPause();
+    }
+
+    @Override
     public void onError(TradeError tradeError) {
 
     }
