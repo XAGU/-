@@ -5,11 +5,13 @@ import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.ParcelUuid;
 import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.xiaolian.amigo.data.enumeration.BizError;
+import com.xiaolian.amigo.data.manager.BleDataManager;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
@@ -259,10 +261,25 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         }
 
         // 扫描macAddress
-        addObserver(bleDataManager.scan(macAddress), new BleObserver<ScanResult>() {
+        Observable<ScanResult> scanObservable = bleDataManager.scan(macAddress);
+        addObserver(scanObservable, new BleObserver<ScanResult>() {
 
             @Override
             public void onNext(ScanResult result) {
+
+                boolean validDevice = false;
+                if (null != result.getScanRecord() && null != result.getScanRecord().getServiceUuids()) {
+                    for (ParcelUuid parcelUuid : result.getScanRecord().getServiceUuids()) {
+                        if (parcelUuid.toString().equalsIgnoreCase(BleDataManager.SERVICE_UUID)) {
+                            validDevice = true;
+                            break;
+                        }
+                    }
+                }
+                if (!validDevice) {
+                    return;
+                }
+
                 if (currentMacAddress != null && currentMacAddress.equalsIgnoreCase(result.getBleDevice().getMacAddress())) {
                     Log.i(TAG, "扫描获取macAddress在当前上下文已经存在，无需重复计算。macAddress:" + currentMacAddress);
                     return;
@@ -276,6 +293,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 Log.i(TAG, "扫描获取macAddress成功。macAddress:" + currentMacAddress);
                 sharedPreferencesHelp.setDeviceNoAndMacAddress(macAddress, currentMacAddress);
                 realConnect(macAddress);
+                this.unsubscribe();
             }
 
             @Override

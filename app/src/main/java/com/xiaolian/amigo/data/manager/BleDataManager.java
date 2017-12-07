@@ -27,7 +27,7 @@ import rx.subjects.PublishSubject;
  */
 public class BleDataManager implements IBleDataManager {
     private static final String TAG = BleDataManager.class.getSimpleName();
-    private static final String SERVICE_UUID = "0000fee9-0000-1000-8000-00805f9b34fb";
+    public static final String SERVICE_UUID = "0000fee9-0000-1000-8000-00805f9b34fb";
     private static final String WRITE_CHARACTERISTIC_UUID = "d44bc439-abfd-45a2-b575-925416129600";
     private RxBleClient client;
 
@@ -39,12 +39,12 @@ public class BleDataManager implements IBleDataManager {
     @Override
     public Observable<ScanResult> scan() {
         return client.scanBleDevices(new ScanSettings.Builder()
-                        .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
-                        .setCallbackType(ScanSettings.CALLBACK_TYPE_FIRST_MATCH)
+                         .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
+//                        .setCallbackType(ScanSettings.CALLBACK_TYPE_FIRST_MATCH)
                         .build(),
                 new ScanFilter.Builder()
                         // 按照SERVICE_UUID筛选
-                        .setServiceUuid(ParcelUuid.fromString(SERVICE_UUID))
+                        //.setServiceUuid(ParcelUuid.fromString(SERVICE_UUID))
                         .build());
     }
 
@@ -53,7 +53,7 @@ public class BleDataManager implements IBleDataManager {
         return client.scanBleDevices(
                 new ScanSettings.Builder()
                         .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
-                        .setCallbackType(ScanSettings.CALLBACK_TYPE_FIRST_MATCH)
+                        .setCallbackType(ScanSettings.CALLBACK_TYPE_ALL_MATCHES)
                         .build(),
                 new ScanFilter.Builder()
                         .setDeviceName(deviceName)

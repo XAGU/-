@@ -1,6 +1,9 @@
 package com.xiaolian.amigo.ui.device.dispenser;
 
+import android.os.ParcelUuid;
 import android.text.TextUtils;
+
+import com.xiaolian.amigo.data.manager.BleDataManager;
 import com.xiaolian.amigo.util.Log;
 
 import com.polidea.rxandroidble.scan.ScanResult;
@@ -116,6 +119,21 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
                 if (null == begin) {
                     // 起始时间设置为当前时间
                     begin = System.currentTimeMillis();
+                }
+
+                // 根据SERVICE_UUID筛选出可用设备
+                boolean validDevice = false;
+                if (null != result.getScanRecord() && null != result.getScanRecord().getServiceUuids()) {
+                    for (ParcelUuid parcelUuid : result.getScanRecord().getServiceUuids()) {
+                        if (parcelUuid.toString().equalsIgnoreCase(BleDataManager.SERVICE_UUID)) {
+                            validDevice = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (!validDevice) {
+                    return;
                 }
 
                 String macAddress = result.getBleDevice().getMacAddress();
