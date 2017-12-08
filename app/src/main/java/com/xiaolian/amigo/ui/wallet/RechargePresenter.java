@@ -125,7 +125,7 @@ public class RechargePresenter<V extends IRechargeView> extends BasePresenter<V>
         reqDTO.setMemo(memo);
         reqDTO.setResult(result);
         reqDTO.setResultStatus(resultStatus);
-        reqDTO.setFundId(fundsId);
+        reqDTO.setFundsId(fundsId);
         addObserver(manager.parseAlipayResule(reqDTO), new NetworkObserver<ApiResult<AlipayTradeAppPayResultParseRespDTO>>() {
 
             @Override
