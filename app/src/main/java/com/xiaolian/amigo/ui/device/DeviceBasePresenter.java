@@ -282,6 +282,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
                 if (currentMacAddress != null && currentMacAddress.equalsIgnoreCase(result.getBleDevice().getMacAddress())) {
                     Log.i(TAG, "扫描获取macAddress在当前上下文已经存在，无需重复计算。macAddress:" + currentMacAddress);
+                    this.unsubscribe();
                     return;
                 }
 
