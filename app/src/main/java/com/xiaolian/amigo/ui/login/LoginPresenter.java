@@ -74,12 +74,20 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
     }
 
     @Override
-    public void register(String code, String mobile, String password, Long schoolId) {
+    public void register(String code, String mobile,
+                         String password, Long schoolId,
+                         String androidId, String brand,
+                         String model, String systemVersion) {
         RegisterReqDTO dto = new RegisterReqDTO();
         dto.setCode(code);
         dto.setMobile(mobile);
         dto.setPassword(password);
         dto.setSchoolId(schoolId);
+        dto.setUniqueId(androidId);
+        dto.setBrand(brand);
+        dto.setModel(model);
+        dto.setSystem(RegisterReqDTO.SYSTEM_CODE);
+        dto.setSystemVersion(systemVersion);
         addObserver(loginDataManager.register(dto), new NetworkObserver<ApiResult<LoginRespDTO>>() {
 
             @Override

@@ -197,7 +197,14 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
     }
 
     public void register(String password, Long schoolId) {
-        presenter.register(this.code, this.mobile, password, schoolId);
+        @SuppressLint("HardwareIds")
+        String androidId = Settings.Secure.getString(getContext().getContentResolver(),
+                Settings.Secure.ANDROID_ID);
+        String model = Build.MODEL;
+        String brand = Build.BRAND;
+        int systemVersion = Build.VERSION.SDK_INT;
+        presenter.register(this.code, this.mobile, password, schoolId,
+                androidId, brand, model, String.valueOf(systemVersion));
     }
 
     public void login(String mobile, String password) {

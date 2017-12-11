@@ -9,11 +9,18 @@ import lombok.Data;
  */
 @Data
 public class RegisterReqDTO {
+    public static final int SYSTEM_CODE = 2;
 
     private String code;
     private String mobile;
     private String password;
     private Long schoolId;
+
+    private String brand;
+    private String model;
+    private Integer system;
+    private String uniqueId;
+    private String systemVersion;
 
     public RegisterReqDTO(String code, String mobile, String password, Long schoolId) {
         this.code = code;
