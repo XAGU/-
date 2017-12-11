@@ -76,7 +76,9 @@ public class BleDataManager implements IBleDataManager {
                 .flatMap(rxBleDeviceServices -> Observable.from(rxBleDeviceServices.getBluetoothGattServices()))
                 .flatMap(bluetoothGattService -> Observable.from(bluetoothGattService.getCharacteristics()))
                 // notify特征值属性必须为16
-                .filter(characteristic -> null != characteristic && characteristic.getProperties() == 16);
+                .filter(characteristic -> null != characteristic
+                        && characteristic.getProperties() == 16
+                        && SERVICE_UUID.equals(characteristic.getService().getUuid().toString()));
     }
 
     @Override
