@@ -128,8 +128,7 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
         super.setUp();
         if (getIntent() != null) {
             action = getIntent().getIntExtra(INTENT_KEY_ACTION, ACTION_NORMAL);
-            orderPreInfo = (OrderPreInfoDTO) getIntent()
-                    .getSerializableExtra(WaterDeviceBaseActivity.INTENT_PREPAY_INFO);
+            orderPreInfo = getIntent().getParcelableExtra(WaterDeviceBaseActivity.INTENT_PREPAY_INFO);
         }
     }
 
