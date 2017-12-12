@@ -24,13 +24,15 @@ public interface ILoginPresenter<V extends ILoginView> extends IBasePresenter<V>
 
     // 点击登录
     void onLoginClick(String mobile, String password, String androidId,
-                      String brand, String model, String systemVersion);
+                      String brand, String model, String systemVersion,
+                      String appVersion);
 
     // 注册
     void register(String code, String mobile,
                   String password, Long schoolId,
                   String androidId, String brand,
-                  String model, String systemVersion);
+                  String model, String systemVersion,
+                  String appVersion);
 
     // 获取验证码
     void getVerification(String mobile);

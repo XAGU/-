@@ -18,6 +18,7 @@ package com.xiaolian.amigo.di.module;
 import android.app.Application;
 import android.content.Context;
 
+import com.google.gson.Gson;
 import com.polidea.rxandroidble.RxBleClient;
 import com.polidea.rxandroidble.internal.RxBleLog;
 import com.xiaolian.amigo.data.base.LogInterceptor;
@@ -79,6 +80,12 @@ public class ApplicationModule {
     @Provides
     LogInterceptor provideLogInterceptor(ISharedPreferencesHelp sharedPreferencesHelp) {
         return new LogInterceptor(sharedPreferencesHelp);
+    }
+
+    @Singleton
+    @Provides
+    Gson providerGson() {
+        return new Gson();
     }
 
     @Singleton

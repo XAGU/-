@@ -13,6 +13,7 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.login.intf.ILoginPresenter;
 import com.xiaolian.amigo.ui.login.intf.ILoginView;
 import com.xiaolian.amigo.ui.main.MainActivity;
+import com.xiaolian.amigo.util.AppUtils;
 
 import javax.inject.Inject;
 
@@ -203,8 +204,9 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
         String model = Build.MODEL;
         String brand = Build.BRAND;
         int systemVersion = Build.VERSION.SDK_INT;
+        String appVersion = AppUtils.getVersionName(this);
         presenter.register(this.code, this.mobile, password, schoolId,
-                androidId, brand, model, String.valueOf(systemVersion));
+                androidId, brand, model, String.valueOf(systemVersion), appVersion);
     }
 
     public void login(String mobile, String password) {
@@ -214,7 +216,9 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
         String model = Build.MODEL;
         String brand = Build.BRAND;
         int systemVersion = Build.VERSION.SDK_INT;
-        presenter.onLoginClick(mobile, password, androidId, brand, model, String.valueOf(systemVersion));
+        String appVersion = AppUtils.getVersionName(this);
+        presenter.onLoginClick(mobile, password, androidId, brand,
+                model, String.valueOf(systemVersion), appVersion);
     }
 
     public String getMobile() {

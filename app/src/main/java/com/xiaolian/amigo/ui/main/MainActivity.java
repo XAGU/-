@@ -2,9 +2,11 @@ package com.xiaolian.amigo.ui.main;
 
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.RectF;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
@@ -77,6 +79,7 @@ import lombok.Data;
 
 import static com.xiaolian.amigo.data.enumeration.Device.DISPENSER;
 import static com.xiaolian.amigo.data.enumeration.Device.HEATER;
+import static com.xiaolian.amigo.util.Log.getContext;
 
 /**
  * 首页
@@ -291,6 +294,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 //        } catch (Exception e) {
 //            Log.wtf(TAG, e);
 //        }
+        uploadDeviceInfo();
         Log.d(TAG, "onResume");
         showBanners(null);
         if (!isNetworkAvailable()) {
@@ -330,6 +334,18 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 iv_avatar.setImageResource(R.drawable.ic_picture_error);
             }
         }
+    }
+
+    private void uploadDeviceInfo() {
+        @SuppressLint("HardwareIds")
+        String androidId = Settings.Secure.getString(getContext().getContentResolver(),
+                Settings.Secure.ANDROID_ID);
+        String model = Build.MODEL;
+        String brand = Build.BRAND;
+        int systemVersion = Build.VERSION.SDK_INT;
+        String appVersion = AppUtils.getVersionName(this);
+        presenter.uploadDeviceInfo(appVersion, brand, model,
+                systemVersion, androidId);
     }
 
     // orientation 1 表示左->右 右->左

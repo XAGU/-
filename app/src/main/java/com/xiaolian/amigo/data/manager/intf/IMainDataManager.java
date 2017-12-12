@@ -5,8 +5,10 @@ import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.CheckVersionUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.OrderReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.BaseInfoDTO;
+import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.CheckVersionUpdateRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.OrderRespDTO;
+import com.xiaolian.amigo.data.network.model.user.UploadUserDeviceInfoReqDTO;
 import com.xiaolian.amigo.data.network.model.user.User;
 
 import retrofit2.http.Body;
@@ -60,5 +62,13 @@ public interface IMainDataManager extends IMainApi {
     void setMainGuide(Integer guideTime);
 
     void setLastRepairTime(Long time);
+
     Long getLastRepairTime();
+
+    // 提交设备信息
+    Observable<ApiResult<BooleanRespDTO>> uploadDeviceInfo(@Body UploadUserDeviceInfoReqDTO reqDTO);
+
+    void saveUploadedUserDeviceInfo(UploadUserDeviceInfoReqDTO reqDTO);
+
+    UploadUserDeviceInfoReqDTO getUploadedUserDeviceInfo();
 }
