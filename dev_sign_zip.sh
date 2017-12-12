@@ -1,6 +1,6 @@
 #!/bin/bash
 applicationId=com.xiaolian.amigo_dev
-versionName=1.0.1
+versionName=""
 storepass=EOl5t9aSlb1j4whEIPIku/0K0rfHTOB1JxXSS31czZk=
 keypass=WrzwBIrMPHN5q3pzDBWFHuo0FmeReiJ3guFSX4ZYP74=
 filePath=app/build/outputs/apk/dev/release/
@@ -15,6 +15,7 @@ zipalign() {
 }
 
 if [ $# -gt 0 ];then
+    versionName=$1
     sign
     if [[ -a ${filePath}${applicationId}_${versionName}.sign.zipalign.apk ]];then
         rm ${filePath}${applicationId}_${versionName}.sign.zipalign.apk
