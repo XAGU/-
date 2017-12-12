@@ -16,4 +16,5 @@ public class LoginReqDTO {
     private Integer system;
     private String uniqueId;
     private String systemVersion;
+    private String appVersion;
 }

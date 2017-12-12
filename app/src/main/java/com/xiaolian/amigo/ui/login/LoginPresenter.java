@@ -46,7 +46,8 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
 
     @Override
     public void onLoginClick(String mobile, String password, String androidId,
-                             String brand, String model, String systemVersion) {
+                             String brand, String model, String systemVersion,
+                             String appVersion) {
         LoginReqDTO dto = new LoginReqDTO();
         dto.setMobile(mobile);
         dto.setPassword(password);
@@ -54,6 +55,7 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
         dto.setModel(model);
         dto.setUniqueId(androidId);
         dto.setSystemVersion(systemVersion);
+        dto.setAppVersion(appVersion);
         // 1表示IOS 2表示Android
         dto.setSystem(2);
         addObserver(loginDataManager.login(dto), new NetworkObserver<ApiResult<LoginRespDTO>>() {
@@ -77,7 +79,8 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
     public void register(String code, String mobile,
                          String password, Long schoolId,
                          String androidId, String brand,
-                         String model, String systemVersion) {
+                         String model, String systemVersion,
+                         String appVersion) {
         RegisterReqDTO dto = new RegisterReqDTO();
         dto.setCode(code);
         dto.setMobile(mobile);
@@ -86,6 +89,7 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
         dto.setUniqueId(androidId);
         dto.setBrand(brand);
         dto.setModel(model);
+        dto.setAppVersion(appVersion);
         dto.setSystem(RegisterReqDTO.SYSTEM_CODE);
         dto.setSystemVersion(systemVersion);
         addObserver(loginDataManager.register(dto), new NetworkObserver<ApiResult<LoginRespDTO>>() {

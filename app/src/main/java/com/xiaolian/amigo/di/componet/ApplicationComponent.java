@@ -18,6 +18,7 @@ package com.xiaolian.amigo.di.componet;
 import android.app.Application;
 import android.content.Context;
 
+import com.google.gson.Gson;
 import com.polidea.rxandroidble.RxBleClient;
 import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
@@ -40,6 +41,8 @@ public interface ApplicationComponent {
     Application application();
 
     Retrofit retrofit();
+
+    Gson gson();
 
     RxBleClient rxBleClient();
 
