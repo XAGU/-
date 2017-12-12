@@ -294,7 +294,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 //        } catch (Exception e) {
 //            Log.wtf(TAG, e);
 //        }
-        uploadDeviceInfo();
         Log.d(TAG, "onResume");
         showBanners(null);
         if (!isNetworkAvailable()) {
@@ -315,6 +314,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 showNoticeAmount(0);
                 initSchoolBiz();
             }
+            uploadDeviceInfo();
             // 请求通知
             presenter.getNoticeAmount();
             presenter.getSchoolBusiness();
