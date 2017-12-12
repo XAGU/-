@@ -239,7 +239,6 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
             public void onReady(ApiResult<CheckVersionUpdateRespDTO> result) {
                 if (null == result.getError()) {
                     if (result.getData().getResult()) {
-                        mainDataManager.setLastUpdateRemindTime();
                         if (result.getData().getVersion().isMustUpdate()) {
                             getMvpView().showUpdateDialog(result.getData().getVersion());
                         } else {
@@ -248,6 +247,7 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
                                 getMvpView().showUpdateDialog(result.getData().getVersion());
                             }
                         }
+                        mainDataManager.setLastUpdateRemindTime();
                     }
                 }
             }
