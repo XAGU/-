@@ -4,6 +4,7 @@ import com.xiaolian.amigo.data.manager.intf.IMainDataManager;
 import com.xiaolian.amigo.data.network.IMainApi;
 import com.xiaolian.amigo.data.network.IOrderApi;
 import com.xiaolian.amigo.data.network.ISystemApi;
+import com.xiaolian.amigo.data.network.IUserApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.CheckVersionUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.DeviceCheckReqDTO;
@@ -19,6 +20,7 @@ import com.xiaolian.amigo.data.network.model.dto.response.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QuerySchoolBizListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryTimeValidRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.VersionDTO;
+import com.xiaolian.amigo.data.network.model.user.UploadUserDeviceInfoReqDTO;
 import com.xiaolian.amigo.data.network.model.user.User;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 
@@ -40,6 +42,7 @@ public class MainDataManager implements IMainDataManager {
     private ISharedPreferencesHelp sharedPreferencesHelp;
     private IMainApi mainApi;
     private IOrderApi orderApi;
+    private IUserApi userApi;
     private ISystemApi systemApi;
 
     @Inject
@@ -48,6 +51,7 @@ public class MainDataManager implements IMainDataManager {
         this.mainApi = retrofit.create(IMainApi.class);
         this.orderApi = retrofit.create(IOrderApi.class);
         this.systemApi = retrofit.create(ISystemApi.class);
+        this.userApi = retrofit.create(IUserApi.class);
     }
 
     @Override
@@ -143,6 +147,21 @@ public class MainDataManager implements IMainDataManager {
     @Override
     public Long getLastRepairTime() {
         return sharedPreferencesHelp.getLastRepairTime();
+    }
+
+    @Override
+    public Observable<ApiResult<BooleanRespDTO>> uploadDeviceInfo(UploadUserDeviceInfoReqDTO reqDTO) {
+        return userApi.uploadDeviceInfo(reqDTO);
+    }
+
+    @Override
+    public void saveUploadedUserDeviceInfo(UploadUserDeviceInfoReqDTO reqDTO) {
+        sharedPreferencesHelp.saveUploadedUserDeviceInfo(reqDTO);
+    }
+
+    @Override
+    public UploadUserDeviceInfoReqDTO getUploadedUserDeviceInfo() {
+        return sharedPreferencesHelp.getUploadedUserDeviceInfo();
     }
 
     @Override

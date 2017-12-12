@@ -21,6 +21,7 @@ public class RegisterReqDTO {
     private Integer system;
     private String uniqueId;
     private String systemVersion;
+    private String appVersion;
 
     public RegisterReqDTO(String code, String mobile, String password, Long schoolId) {
         this.code = code;

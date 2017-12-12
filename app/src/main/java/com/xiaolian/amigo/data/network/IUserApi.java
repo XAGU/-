@@ -22,6 +22,7 @@ import com.xiaolian.amigo.data.network.model.dto.response.ResidenceListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.SimpleRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.UserResidenceDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.UserResidenceInListDTO;
+import com.xiaolian.amigo.data.network.model.user.UploadUserDeviceInfoReqDTO;
 
 import retrofit2.http.Body;
 import retrofit2.http.POST;
@@ -95,4 +96,8 @@ public interface IUserApi {
     // 用户绑定宿舍详情
     @POST("user/residence/one")
     Observable<ApiResult<UserResidenceDTO>> queryResidenceDetail(@Body SimpleReqDTO reqDTO);
+
+    // 提交设备信息
+    @POST("user/deviceInfo/upload")
+    Observable<ApiResult<BooleanRespDTO>> uploadDeviceInfo(@Body UploadUserDeviceInfoReqDTO reqDTO);
 }

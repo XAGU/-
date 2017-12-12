@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
+import com.google.gson.Gson;
+import com.xiaolian.amigo.data.network.model.user.UploadUserDeviceInfoReqDTO;
 import com.xiaolian.amigo.data.network.model.user.User;
 import com.xiaolian.amigo.di.ApplicationContext;
 
@@ -43,6 +45,7 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     private static final String PREF_LAST_WITHDRAW_ID = "PREF_LAST_WITHDRAW_ID";
     private static final String PREF_LAST_WITHDRAW_NAME = "PREF_LAST_WITHDRAW_NAME";
     private static final String PREF_LAST_RECHARGE_AMOUNT = "PREF_LAST_RECHARGE_AMOUNT";
+    private static final String PREF_UPLOADED_USER_DEVICE_INFO = "PREF_UPLOADED_USER_DEVICE_INFO";
     /************* 引导页相关 *******************/
     private static final String PREF_GUIDE_NAME = "PREF_GUIDE_NAME";
     private static final String PREF_GUIDE_MAIN = "PREF_GUIDE_MAIN";
@@ -61,11 +64,13 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
 
     private final SharedPreferences mSharedPreferences;
     private final SharedPreferences mUnclearSharedPreferences;
+    private final Gson mGson;
 
     @Inject
-    public SharedPreferencesHelp(@ApplicationContext Context context) {
+    public SharedPreferencesHelp(@ApplicationContext Context context, Gson gson) {
         mSharedPreferences = context.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
         mUnclearSharedPreferences = context.getSharedPreferences(PREF_GUIDE_NAME, Context.MODE_PRIVATE);
+        mGson = gson;
     }
 
     @Override
@@ -313,6 +318,23 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     @Override
     public String getDeviceResult(String deviceNo) {
         return mSharedPreferences.getString(PREF_DEVICE_RESULT_PREFIX + deviceNo, "");
+    }
+
+    @Override
+    public void saveUploadedUserDeviceInfo(UploadUserDeviceInfoReqDTO reqDTO) {
+        String deviceInfoStr = mGson.toJson(reqDTO);
+        mSharedPreferences.edit()
+                .putString(PREF_UPLOADED_USER_DEVICE_INFO, deviceInfoStr)
+                .apply();
+    }
+
+    @Override
+    public UploadUserDeviceInfoReqDTO getUploadedUserDeviceInfo() {
+        String deviceInfoStr = mSharedPreferences.getString(PREF_UPLOADED_USER_DEVICE_INFO, null);
+        if (null != deviceInfoStr) {
+            return mGson.fromJson(deviceInfoStr, UploadUserDeviceInfoReqDTO.class);
+        }
+        return null;
     }
 
     @Override

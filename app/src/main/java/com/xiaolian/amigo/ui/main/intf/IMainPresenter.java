@@ -49,4 +49,5 @@ public interface IMainPresenter<V extends IMainView> extends IBasePresenter<V> {
     void setLastRepairTime(Long time);
     Long getLastRepairTime();
 
+    void uploadDeviceInfo(String appVersion, String brand, String model, int systemVersion, String androidId);
 }

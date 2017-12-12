@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.data.prefs;
 
+import com.xiaolian.amigo.data.network.model.user.UploadUserDeviceInfoReqDTO;
 import com.xiaolian.amigo.data.network.model.user.User;
 
 /**
@@ -97,4 +98,8 @@ public interface ISharedPreferencesHelp {
     void setDeviceResult(String deviceNo, String result);
 
     String getDeviceResult(String deviceNo);
+
+    void saveUploadedUserDeviceInfo(UploadUserDeviceInfoReqDTO reqDTO);
+
+    UploadUserDeviceInfoReqDTO getUploadedUserDeviceInfo();
 }
