@@ -228,7 +228,9 @@ public abstract class BaseActivity extends SwipeBackActivity
                         blePermissonCallback.execute();
                     }
                 } else {
-                    ((MainActivity) this).showOpenLocationDialog();
+                    if (this instanceof MainActivity) {
+                        ((MainActivity) this).showOpenLocationDialog();
+                    }
                 }
             } else if (requestCode == REQUEST_LOCATION) {
                 if (isLocationEnable()) {
