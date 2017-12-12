@@ -309,7 +309,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             residenceId = getIntent().getLongExtra(MainActivity.INTENT_KEY_RESIDENCE_ID, 0L);
             homePageJump = getIntent().getBooleanExtra(INTENT_HOME_PAGE_JUMP, true);
             recorvery = getIntent().getBooleanExtra(MainActivity.INTENT_KEY_RECOVERY, false);
-            OrderPreInfoDTO orderPreInfo = (OrderPreInfoDTO) getIntent().getSerializableExtra(INTENT_PREPAY_INFO);
+            OrderPreInfoDTO orderPreInfo = getIntent().getParcelableExtra(INTENT_PREPAY_INFO);
             if (orderPreInfo != null) {
                 balance = orderPreInfo.getBalance();
                 minPrepay = orderPreInfo.getMinPrepay();

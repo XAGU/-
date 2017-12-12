@@ -249,7 +249,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         super.setUp();
         if (getIntent() != null) {
             isServerError = getIntent().getBooleanExtra(INTENT_KEY_SERVER_ERROR, false);
-            defaultBanners = (ArrayList<BannerDTO>) getIntent().getSerializableExtra(INTENT_KEY_BANNERS);
+            defaultBanners = getIntent().getParcelableArrayListExtra(INTENT_KEY_BANNERS);
         }
     }
 
