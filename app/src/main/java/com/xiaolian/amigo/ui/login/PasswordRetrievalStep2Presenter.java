@@ -3,7 +3,7 @@ package com.xiaolian.amigo.ui.login;
 import com.xiaolian.amigo.data.manager.intf.ILoginDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.PasswordResetReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
+import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.login.intf.IPasswordRetrievalStep2Presenter;
 import com.xiaolian.amigo.ui.login.intf.IPasswordRetrievalStep2View;

@@ -1,9 +1,7 @@
-package com.xiaolian.amigo.data.network.model.bonus;
+package com.xiaolian.amigo.data.vo;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import java.io.Serializable;
 
 import lombok.Data;
 
@@ -29,6 +27,9 @@ public class Bonus implements Parcelable {
     // 生效时间
     private Long startTime;
 
+    public Bonus() {
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -50,6 +51,7 @@ public class Bonus implements Parcelable {
         dest.writeValue(this.validStatus);
         dest.writeValue(this.startTime);
     }
+
 
     protected Bonus(Parcel in) {
         this.amount = (Double) in.readValue(Double.class.getClassLoader());

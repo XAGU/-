@@ -1,6 +1,6 @@
 package com.xiaolian.amigo.data.network.model.dto.response;
 
-import com.xiaolian.amigo.data.network.model.bonus.Bonus;
+import com.xiaolian.amigo.data.vo.Bonus;
 
 import lombok.Data;
 

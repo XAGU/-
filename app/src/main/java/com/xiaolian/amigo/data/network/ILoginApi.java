@@ -5,7 +5,7 @@ import com.xiaolian.amigo.data.network.model.dto.request.LoginReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.PasswordResetReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.VerificationCodeCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.VerificationCodeGetReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
+import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.LoginRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.RegisterReqDTO;
 

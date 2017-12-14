@@ -3,9 +3,7 @@ package com.xiaolian.amigo.data.network.model.dto.response;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.xiaolian.amigo.data.network.model.bonus.Bonus;
-
-import java.io.Serializable;
+import com.xiaolian.amigo.data.vo.Bonus;
 
 import lombok.Data;
 

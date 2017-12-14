@@ -14,7 +14,7 @@ import com.xiaolian.amigo.data.network.model.dto.request.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.WithdrawReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.AlipayTradeAppPayArgsRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.AlipayTradeAppPayResultParseRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
+import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.FundsDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.PersonalWalletDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.QueryFundsListRespDTO;
