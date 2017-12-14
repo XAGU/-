@@ -7,7 +7,7 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.RechargeStatus;
 import com.xiaolian.amigo.data.enumeration.WithdrawOperationType;
 import com.xiaolian.amigo.data.enumeration.WithdrawalStatus;
-import com.xiaolian.amigo.data.network.model.dto.response.FundsInListDTO;
+import com.xiaolian.amigo.data.network.model.funds.FundsInListDTO;
 import com.xiaolian.amigo.util.TimeUtils;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;

@@ -9,7 +9,7 @@ import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.order.QueryPrepayOptionReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.CsMobileRespDTO;
 import com.xiaolian.amigo.data.network.model.order.OrderPreInfoDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.PersonalWalletDTO;
+import com.xiaolian.amigo.data.network.model.funds.PersonalWalletDTO;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.ui.device.intf.IWaterDeviceBasePresenter;
 import com.xiaolian.amigo.ui.device.intf.IWaterDeviceBaseView;

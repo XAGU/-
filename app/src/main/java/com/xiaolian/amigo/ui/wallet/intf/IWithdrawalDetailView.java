@@ -1,6 +1,6 @@
 package com.xiaolian.amigo.ui.wallet.intf;
 
-import com.xiaolian.amigo.data.network.model.dto.response.FundsDTO;
+import com.xiaolian.amigo.data.network.model.funds.FundsDTO;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 
 /**

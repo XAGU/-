@@ -1,28 +1,33 @@
 package com.xiaolian.amigo.data.manager;
 
 import com.xiaolian.amigo.data.manager.intf.IWalletDataManager;
-import com.xiaolian.amigo.data.network.IWalletApi;
+import com.xiaolian.amigo.data.network.IAlipayApi;
+import com.xiaolian.amigo.data.network.IComplaintApi;
+import com.xiaolian.amigo.data.network.ICsApi;
+import com.xiaolian.amigo.data.network.IFundsApi;
+import com.xiaolian.amigo.data.network.ITimeRangeApi;
+import com.xiaolian.amigo.data.network.IUserThirdAccountApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.dto.request.AddThirdAccountReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.AlipayTradeAppPayArgsReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.AlipayTradeAppPayResultParseReqDTO;
+import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.complaint.CheckComplaintReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.QueryPersonalFundsListReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.QueryUserThirdAccountReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.RechargeReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.RemindReqDTO;
+import com.xiaolian.amigo.data.network.model.userthirdaccount.AddThirdAccountReqDTO;
+import com.xiaolian.amigo.data.network.model.alipay.AlipayTradeAppPayArgsReqDTO;
+import com.xiaolian.amigo.data.network.model.alipay.AlipayTradeAppPayResultParseReqDTO;
+import com.xiaolian.amigo.data.network.model.funds.QueryPersonalFundsListReqDTO;
+import com.xiaolian.amigo.data.network.model.userthirdaccount.QueryUserThirdAccountReqDTO;
+import com.xiaolian.amigo.data.network.model.funds.RechargeReqDTO;
+import com.xiaolian.amigo.data.network.model.cs.RemindReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.SimpleQueryReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.SimpleReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.WithdrawReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.AlipayTradeAppPayArgsRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.AlipayTradeAppPayResultParseRespDTO;
-import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.FundsDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.PersonalWalletDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.QueryFundsListRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.QueryRechargeAmountsRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.QueryTimeValidRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.QueryUserThirdAccountRespDTO;
+import com.xiaolian.amigo.data.network.model.funds.WithdrawReqDTO;
+import com.xiaolian.amigo.data.network.model.alipay.AlipayTradeAppPayArgsRespDTO;
+import com.xiaolian.amigo.data.network.model.alipay.AlipayTradeAppPayResultParseRespDTO;
+import com.xiaolian.amigo.data.network.model.funds.FundsDTO;
+import com.xiaolian.amigo.data.network.model.funds.PersonalWalletDTO;
+import com.xiaolian.amigo.data.network.model.funds.QueryFundsListRespDTO;
+import com.xiaolian.amigo.data.network.model.funds.QueryRechargeAmountsRespDTO;
+import com.xiaolian.amigo.data.network.model.timerange.QueryTimeValidRespDTO;
+import com.xiaolian.amigo.data.network.model.userthirdaccount.QueryUserThirdAccountRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.SimpleRespDTO;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 
@@ -39,91 +44,101 @@ import rx.Observable;
  */
 
 public class WalletDataManager implements IWalletDataManager {
-
+    @SuppressWarnings("unused")
     private static final String TAG = WalletDataManager.class.getSimpleName();
 
-    private IWalletApi walletApi;
     private ISharedPreferencesHelp sharedPreferencesHelp;
+    private IAlipayApi alipayApi;
+    private ICsApi csApi;
+    private IFundsApi fundsApi;
+    private ITimeRangeApi timeRangeApi;
+    private IUserThirdAccountApi userThirdAccountApi;
+    private IComplaintApi complaintApi;
 
     @Inject
     public WalletDataManager(Retrofit retrofit, ISharedPreferencesHelp sharedPreferencesHelp) {
-        walletApi = retrofit.create(IWalletApi.class);
+        alipayApi = retrofit.create(IAlipayApi.class);
+        csApi = retrofit.create(ICsApi.class);
+        fundsApi = retrofit.create(IFundsApi.class);
+        timeRangeApi = retrofit.create(ITimeRangeApi.class);
+        userThirdAccountApi = retrofit.create(IUserThirdAccountApi.class);
+        complaintApi = retrofit.create(IComplaintApi.class);
         this.sharedPreferencesHelp = sharedPreferencesHelp;
     }
 
     @Override
     public Observable<ApiResult<PersonalWalletDTO>> queryWallet() {
-        return walletApi.queryWallet();
+        return fundsApi.queryWallet();
     }
 
     @Override
     public Observable<ApiResult<QueryRechargeAmountsRespDTO>> queryRechargeAmountList(@Body SimpleQueryReqDTO body) {
-        return walletApi.queryRechargeAmountList(body);
+        return fundsApi.queryRechargeAmountList(body);
     }
 
     @Override
     public Observable<ApiResult<QueryTimeValidRespDTO>> queryWithDrawTimeValid() {
-        return walletApi.queryWithDrawTimeValid();
+        return timeRangeApi.queryWithDrawTimeValid();
     }
 
     @Override
     public Observable<ApiResult<SimpleRespDTO>> recharge(@Body RechargeReqDTO reqDTO) {
-        return walletApi.recharge(reqDTO);
+        return fundsApi.recharge(reqDTO);
     }
 
     @Override
     public Observable<ApiResult<SimpleRespDTO>> withdraw(@Body WithdrawReqDTO reqDTO) {
-        return walletApi.withdraw(reqDTO);
+        return fundsApi.withdraw(reqDTO);
     }
 
     @Override
     public Observable<ApiResult<QueryFundsListRespDTO>> queryWithdrawList(@Body QueryPersonalFundsListReqDTO reqDTO) {
-        return walletApi.queryWithdrawList(reqDTO);
+        return fundsApi.queryWithdrawList(reqDTO);
     }
 
     @Override
     public Observable<ApiResult<AlipayTradeAppPayArgsRespDTO>> requestAlipayArgs(@Body AlipayTradeAppPayArgsReqDTO reqDTO) {
-        return walletApi.requestAlipayArgs(reqDTO);
+        return alipayApi.requestAlipayArgs(reqDTO);
     }
 
     @Override
     public Observable<ApiResult<AlipayTradeAppPayResultParseRespDTO>> parseAlipayResule(@Body AlipayTradeAppPayResultParseReqDTO reqDTO) {
-        return walletApi.parseAlipayResule(reqDTO);
+        return alipayApi.parseAlipayResule(reqDTO);
     }
 
     @Override
     public Observable<ApiResult<QueryUserThirdAccountRespDTO>> requestThirdAccounts(@Body QueryUserThirdAccountReqDTO reqDTO) {
-        return walletApi.requestThirdAccounts(reqDTO);
+        return userThirdAccountApi.requestThirdAccounts(reqDTO);
     }
 
     @Override
     public Observable<ApiResult<BooleanRespDTO>> addAccount(@Body AddThirdAccountReqDTO reqDTO) {
-        return walletApi.addAccount(reqDTO);
+        return userThirdAccountApi.addAccount(reqDTO);
     }
 
     @Override
     public Observable<ApiResult<BooleanRespDTO>> deleteAccount(SimpleReqDTO reqDTO) {
-        return walletApi.deleteAccount(reqDTO);
+        return userThirdAccountApi.deleteAccount(reqDTO);
     }
 
     @Override
     public Observable<ApiResult<FundsDTO>> queryWithdrawRechargeDetail(@Body SimpleReqDTO reqDTO) {
-        return walletApi.queryWithdrawRechargeDetail(reqDTO);
+        return fundsApi.queryWithdrawRechargeDetail(reqDTO);
     }
 
     @Override
     public Observable<ApiResult<BooleanRespDTO>> remind(RemindReqDTO reqDTO) {
-        return walletApi.remind(reqDTO);
+        return csApi.remind(reqDTO);
     }
 
     @Override
     public Observable<ApiResult<BooleanRespDTO>> cancelWithdraw(SimpleReqDTO reqDTO) {
-        return walletApi.cancelWithdraw(reqDTO);
+        return fundsApi.cancelWithdraw(reqDTO);
     }
 
     @Override
     public Observable<ApiResult<BooleanRespDTO>> checkComplaint(CheckComplaintReqDTO reqDTO) {
-        return walletApi.checkComplaint(reqDTO);
+        return complaintApi.checkComplaint(reqDTO);
     }
 
     @Override

@@ -2,7 +2,7 @@ package com.xiaolian.amigo.data.network;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.RatingRepairReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.RemindReqDTO;
+import com.xiaolian.amigo.data.network.model.cs.RemindReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.RepairApplyReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.RepairDetailReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.RepairProblemReqDTO;

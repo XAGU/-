@@ -1,4 +1,4 @@
-package com.xiaolian.amigo.data.network.model.dto.response;
+package com.xiaolian.amigo.data.network.model.alipay;
 
 import lombok.Data;
 
