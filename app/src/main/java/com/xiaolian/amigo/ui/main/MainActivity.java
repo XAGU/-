@@ -30,7 +30,7 @@ import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.enumeration.IntentAction;
 import com.xiaolian.amigo.data.enumeration.Orientation;
 import com.xiaolian.amigo.data.network.model.dto.response.BannerDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.DeviceCheckRespDTO;
+import com.xiaolian.amigo.data.network.model.device.DeviceCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.order.OrderPreInfoDTO;
 import com.xiaolian.amigo.data.network.model.user.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;

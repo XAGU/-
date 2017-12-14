@@ -1,4 +1,6 @@
-package com.xiaolian.amigo.data.network.model.dto.response;
+package com.xiaolian.amigo.data.network.model.version;
+
+import com.xiaolian.amigo.data.network.model.version.VersionDTO;
 
 import lombok.Data;
 

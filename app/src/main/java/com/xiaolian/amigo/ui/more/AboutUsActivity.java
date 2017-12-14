@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.tbruyelle.rxpermissions.RxPermissions;
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.data.network.model.dto.response.VersionDTO;
+import com.xiaolian.amigo.data.network.model.version.VersionDTO;
 import com.xiaolian.amigo.ui.main.update.IntentKey;
 import com.xiaolian.amigo.ui.main.update.UpdateActivity;
 import com.xiaolian.amigo.ui.more.intf.IAboutUsPresenter;

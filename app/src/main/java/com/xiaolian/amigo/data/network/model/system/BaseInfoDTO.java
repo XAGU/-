@@ -1,4 +1,6 @@
-package com.xiaolian.amigo.data.network.model.dto.response;
+package com.xiaolian.amigo.data.network.model.system;
+
+import com.xiaolian.amigo.data.network.model.dto.response.BannerDTO;
 
 import java.util.ArrayList;
 

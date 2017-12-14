@@ -1,4 +1,4 @@
-package com.xiaolian.amigo.data.network.model.dto.request;
+package com.xiaolian.amigo.data.network.model.device;
 
 import lombok.Data;
 

@@ -3,7 +3,7 @@ package com.xiaolian.amigo.ui.main;
 import com.xiaolian.amigo.data.manager.intf.IMainDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.response.BannerDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.BaseInfoDTO;
+import com.xiaolian.amigo.data.network.model.system.BaseInfoDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.main.intf.ISplashPresenter;
 import com.xiaolian.amigo.ui.main.intf.ISplashView;

@@ -2,13 +2,11 @@ package com.xiaolian.amigo.data.network;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.device.QueryWaterListRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.FavoriteReqDTO;
+import com.xiaolian.amigo.data.network.model.device.DeviceCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.SimpleQueryReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.SimpleReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.UnFavoriteReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.ScanDeviceRespDTO;
+import com.xiaolian.amigo.data.network.model.device.DeviceCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.SimpleRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.UnFavoriteRespDTO;
 
 import retrofit2.http.Body;
 import retrofit2.http.POST;
@@ -32,4 +30,8 @@ public interface IDeviceApi {
     // 取消收藏饮水机
     @POST("device/water/unFavorite")
     Observable<ApiResult<SimpleRespDTO>> unFavorite(@Body SimpleReqDTO reqDTO);
+
+    // 首页设备用水校验
+    @POST("device/check")
+    Observable<ApiResult<DeviceCheckRespDTO>> checkDeviceUseage(@Body DeviceCheckReqDTO reqDTO);
 }
