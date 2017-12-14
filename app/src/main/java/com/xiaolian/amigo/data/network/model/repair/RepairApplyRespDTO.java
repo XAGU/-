@@ -1,4 +1,4 @@
-package com.xiaolian.amigo.data.network.model.dto.response;
+package com.xiaolian.amigo.data.network.model.repair;
 
 /**
  * 网络返回 - 设备报修

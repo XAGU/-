@@ -19,10 +19,9 @@ package com.xiaolian.amigo.ui.repair;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.manager.intf.IRepairDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.dto.request.RepairReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.RepairRespDTO;
+import com.xiaolian.amigo.data.network.model.repair.RepairReqDTO;
+import com.xiaolian.amigo.data.network.model.repair.RepairRespDTO;
 import com.xiaolian.amigo.data.network.model.repair.Repair;
-import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.repair.adaptor.RepairAdaptor;
 import com.xiaolian.amigo.ui.repair.intf.IRepairPresenter;
@@ -36,16 +35,14 @@ import javax.inject.Inject;
 
 public class RepairPresenter<V extends IRepairView> extends BasePresenter<V>
         implements IRepairPresenter<V> {
-
+    @SuppressWarnings("unused")
     private static final String TAG = RepairPresenter.class.getSimpleName();
-    private IRepairDataManager manager;
-    private ISharedPreferencesHelp sharedPreferencesHelp;
+    private IRepairDataManager repairDataManager;
 
     @Inject
-    public RepairPresenter(IRepairDataManager manager, ISharedPreferencesHelp sharedPreferencesHelp) {
+    public RepairPresenter(IRepairDataManager repairDataManager) {
         super();
-        this.manager = manager;
-        this.sharedPreferencesHelp = sharedPreferencesHelp;
+        this.repairDataManager = repairDataManager;
     }
 
 
@@ -54,7 +51,7 @@ public class RepairPresenter<V extends IRepairView> extends BasePresenter<V>
         RepairReqDTO reqDTO = new RepairReqDTO();
         reqDTO.setPage(page);
         reqDTO.setSize(Constant.PAGE_SIZE);
-        addObserver(manager.queryRepairs(reqDTO), new NetworkObserver<ApiResult<RepairRespDTO>>(false, true) {
+        addObserver(repairDataManager.queryRepairs(reqDTO), new NetworkObserver<ApiResult<RepairRespDTO>>(false, true) {
 
             @Override
             public void onReady(ApiResult<RepairRespDTO> result) {
@@ -91,6 +88,6 @@ public class RepairPresenter<V extends IRepairView> extends BasePresenter<V>
 
     @Override
     public void setLastRepairTime(Long time) {
-        sharedPreferencesHelp.setLastRepairTime(time);
+        repairDataManager.setLastRepairTime(time);
     }
 }

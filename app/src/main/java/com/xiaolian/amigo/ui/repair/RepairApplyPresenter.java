@@ -23,23 +23,19 @@ import com.alibaba.sdk.android.oss.ClientException;
 import com.alibaba.sdk.android.oss.OSSClient;
 import com.alibaba.sdk.android.oss.ServiceException;
 import com.alibaba.sdk.android.oss.callback.OSSCompletedCallback;
-import com.alibaba.sdk.android.oss.common.auth.OSSFederationToken;
 import com.alibaba.sdk.android.oss.internal.OSSAsyncTask;
 import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 import com.alibaba.sdk.android.oss.model.PutObjectResult;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.base.OssClientHolder;
 import com.xiaolian.amigo.data.enumeration.OssFileType;
-import com.xiaolian.amigo.data.manager.intf.IOssDataManager;
 import com.xiaolian.amigo.data.manager.intf.IRepairDataManager;
-import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.dto.request.RepairApplyReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.RepairProblemReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.RepairApplyRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.RepairProblemRespDTO;
+import com.xiaolian.amigo.data.network.model.repair.RepairApplyReqDTO;
+import com.xiaolian.amigo.data.network.model.repair.RepairProblemReqDTO;
+import com.xiaolian.amigo.data.network.model.repair.RepairApplyRespDTO;
+import com.xiaolian.amigo.data.network.model.repair.RepairProblemRespDTO;
 import com.xiaolian.amigo.data.network.model.file.OssModel;
-import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.repair.intf.IRepairApplyPresenter;
 import com.xiaolian.amigo.ui.repair.intf.IRepairApplyView;
@@ -53,7 +49,6 @@ import java.util.Random;
 import javax.inject.Inject;
 
 import retrofit2.HttpException;
-import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -63,29 +58,14 @@ public class RepairApplyPresenter<V extends IRepairApplyView> extends BasePresen
 
     private static final String TAG = RepairApplyPresenter.class.getSimpleName();
     private IRepairDataManager repairManager;
-    private IUserDataManager userDataManager;
-    private IOssDataManager ossDataManager;
-
-    // oss token 失效信号量
-    private final byte[] ossLock = new byte[0];
-    private OssModel ossModel;
     private Random random = new Random();
-    private int currentImagePosition;
-    private ISharedPreferencesHelp sharedPreferencesHelp;
     private int currentPosition;
 
     @Inject
-    public RepairApplyPresenter(IRepairDataManager repairmanager,
-                                IUserDataManager userManager,
-                                IOssDataManager ossDataManager,
-                                ISharedPreferencesHelp sharedPreferencesHelp) {
+    public RepairApplyPresenter(IRepairDataManager repairmanager) {
         super();
         this.repairManager = repairmanager;
-        this.userDataManager = userManager;
-        this.ossDataManager = ossDataManager;
-        this.sharedPreferencesHelp = sharedPreferencesHelp;
     }
-
 
     @Override
     public void onSubmit(List<Long> problems, List<String> images, String content, String mobile, int deviceType, Long locationId) {
@@ -139,16 +119,16 @@ public class RepairApplyPresenter<V extends IRepairApplyView> extends BasePresen
 
     @Override
     public void setLastRepairTime(long l) {
-        sharedPreferencesHelp.setLastRepairTime(l);
+        repairManager.setLastRepairTime(l);
     }
 
     @Override
     public String getMobile() {
-        return sharedPreferencesHelp.getUserInfo().getMobile();
+        return repairManager.getUser().getMobile();
     }
 
     private void updateImage(Context context, String filePath) {
-        ossDataManager.getOssModel()
+        repairManager.getOssModel()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<ApiResult<OssModel>>() {
@@ -224,7 +204,7 @@ public class RepairApplyPresenter<V extends IRepairApplyView> extends BasePresen
     }
 
     private String generateObjectKey(String serverTime) {
-        return OssFileType.REPAIR.getDesc() + "/" + userDataManager.getUser().getId() + "_"
+        return OssFileType.REPAIR.getDesc() + "/" + repairManager.getUser().getId() + "_"
                 + serverTime + "_" + generateRandom() + ".jpg";
     }
 

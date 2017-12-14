@@ -2,7 +2,7 @@ package com.xiaolian.amigo.ui.repair;
 
 import com.xiaolian.amigo.data.manager.intf.IRepairDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.dto.request.RatingRepairReqDTO;
+import com.xiaolian.amigo.data.network.model.repair.RatingRepairReqDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.repair.intf.IRepairEvaluationPresenter;
@@ -19,13 +19,14 @@ import javax.inject.Inject;
 
 public class RepairEvaluationPresenter<V extends IRepairEvaluationView> extends BasePresenter<V>
         implements IRepairEvaluationPresenter<V> {
+    @SuppressWarnings("unused")
     private static final String TAG = RepairEvaluationPresenter.class.getSimpleName();
-    private IRepairDataManager manager;
+    private IRepairDataManager repairDataManager;
 
     @Inject
-    public RepairEvaluationPresenter(IRepairDataManager manager) {
+    public RepairEvaluationPresenter(IRepairDataManager repairDataManager) {
         super();
-        this.manager = manager;
+        this.repairDataManager = repairDataManager;
     }
 
     @Override
@@ -35,7 +36,7 @@ public class RepairEvaluationPresenter<V extends IRepairEvaluationView> extends 
         dto.setRating(rating);
         dto.setRatingOptions(ratingOptions);
         dto.setRepairId(repairId);
-        addObserver(manager.rateRapair(dto), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
+        addObserver(repairDataManager.rateRapair(dto), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
 
             @Override
             public void onReady(ApiResult<BooleanRespDTO> result) {

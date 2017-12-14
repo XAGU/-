@@ -1,18 +1,17 @@
 package com.xiaolian.amigo.data.network;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.dto.request.RatingRepairReqDTO;
-import com.xiaolian.amigo.data.network.model.cs.RemindReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.RepairApplyReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.RepairDetailReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.RepairProblemReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.RepairReqDTO;
+import com.xiaolian.amigo.data.network.model.repair.RatingRepairReqDTO;
+import com.xiaolian.amigo.data.network.model.repair.RepairApplyReqDTO;
+import com.xiaolian.amigo.data.network.model.repair.RepairDetailReqDTO;
+import com.xiaolian.amigo.data.network.model.repair.RepairProblemReqDTO;
+import com.xiaolian.amigo.data.network.model.repair.RepairReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.RepairApplyRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.RepairDetailRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.RepairProblemRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.RepairRespDTO;
+import com.xiaolian.amigo.data.network.model.repair.RepairApplyRespDTO;
+import com.xiaolian.amigo.data.network.model.repair.RepairDetailRespDTO;
+import com.xiaolian.amigo.data.network.model.repair.RepairProblemRespDTO;
+import com.xiaolian.amigo.data.network.model.repair.RepairRespDTO;
 
 import rx.Observable;
 import retrofit2.http.Body;
@@ -42,10 +41,6 @@ public interface IRepairApi {
     // 维修评价
     @POST("repair/rating")
     Observable<ApiResult<BooleanRespDTO>> rateRapair(@Body RatingRepairReqDTO reqDTO);
-
-    // 提醒客服
-    @POST("cs/remind")
-    Observable<ApiResult<BooleanRespDTO>> remind(@Body RemindReqDTO reqDTO);
 
     // 取消报修
     @POST("repair/cancel")

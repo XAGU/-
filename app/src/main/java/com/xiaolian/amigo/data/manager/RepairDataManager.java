@@ -1,20 +1,25 @@
 package com.xiaolian.amigo.data.manager;
 
 import com.xiaolian.amigo.data.manager.intf.IRepairDataManager;
+import com.xiaolian.amigo.data.network.ICsApi;
+import com.xiaolian.amigo.data.network.IOssApi;
 import com.xiaolian.amigo.data.network.IRepairApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.dto.request.RatingRepairReqDTO;
+import com.xiaolian.amigo.data.network.model.repair.RatingRepairReqDTO;
 import com.xiaolian.amigo.data.network.model.cs.RemindReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.RepairApplyReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.RepairDetailReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.RepairProblemReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.RepairReqDTO;
+import com.xiaolian.amigo.data.network.model.repair.RepairApplyReqDTO;
+import com.xiaolian.amigo.data.network.model.repair.RepairDetailReqDTO;
+import com.xiaolian.amigo.data.network.model.repair.RepairProblemReqDTO;
+import com.xiaolian.amigo.data.network.model.repair.RepairReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.RepairApplyRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.RepairDetailRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.RepairProblemRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.RepairRespDTO;
+import com.xiaolian.amigo.data.network.model.repair.RepairApplyRespDTO;
+import com.xiaolian.amigo.data.network.model.repair.RepairDetailRespDTO;
+import com.xiaolian.amigo.data.network.model.repair.RepairProblemRespDTO;
+import com.xiaolian.amigo.data.network.model.repair.RepairRespDTO;
+import com.xiaolian.amigo.data.network.model.file.OssModel;
+import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
+import com.xiaolian.amigo.data.vo.User;
 
 import javax.inject.Inject;
 
@@ -32,10 +37,16 @@ public class RepairDataManager implements IRepairDataManager{
     private static final String TAG = RepairDataManager.class.getSimpleName();
 
     private IRepairApi repairApi;
+    private ICsApi csApi;
+    private IOssApi ossApi;
+    private ISharedPreferencesHelp sharedPreferencesHelp;
 
     @Inject
-    public RepairDataManager(Retrofit retrofit) {
+    public RepairDataManager(Retrofit retrofit, ISharedPreferencesHelp sharedPreferencesHelp) {
         repairApi = retrofit.create(IRepairApi.class);
+        csApi = retrofit.create(ICsApi.class);
+        ossApi = retrofit.create(IOssApi.class);
+        this.sharedPreferencesHelp = sharedPreferencesHelp;
     }
 
     @Override
@@ -65,7 +76,22 @@ public class RepairDataManager implements IRepairDataManager{
 
     @Override
     public Observable<ApiResult<BooleanRespDTO>> remind(@Body RemindReqDTO reqDTO) {
-        return repairApi.remind(reqDTO);
+        return csApi.remind(reqDTO);
+    }
+
+    @Override
+    public Observable<ApiResult<OssModel>> getOssModel() {
+        return ossApi.getOssModel();
+    }
+
+    @Override
+    public User getUser() {
+        return sharedPreferencesHelp.getUserInfo();
+    }
+
+    @Override
+    public void setLastRepairTime(long l) {
+        sharedPreferencesHelp.setLastRepairTime(l);
     }
 
     @Override

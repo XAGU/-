@@ -21,10 +21,10 @@ import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.manager.intf.IRepairDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.cs.RemindReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.RepairDetailReqDTO;
+import com.xiaolian.amigo.data.network.model.repair.RepairDetailReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.RepairDetailRespDTO;
+import com.xiaolian.amigo.data.network.model.repair.RepairDetailRespDTO;
 import com.xiaolian.amigo.data.network.model.repair.RepairStep;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.repair.adaptor.RepairProgressAdaptor;
@@ -38,16 +38,16 @@ import javax.inject.Inject;
 
 public class RepairDetailPresenter<V extends IRepairDetailView> extends BasePresenter<V>
         implements IRepairDetailPresenter<V> {
-
+    @SuppressWarnings("unused")
     private static final String TAG = RepairDetailPresenter.class.getSimpleName();
-    private IRepairDataManager manager;
+    private IRepairDataManager repairDataManager;
     private Device device;
     private Long id;
 
     @Inject
-    public RepairDetailPresenter(IRepairDataManager manager) {
+    public RepairDetailPresenter(IRepairDataManager repairDataManager) {
         super();
-        this.manager = manager;
+        this.repairDataManager = repairDataManager;
     }
 
 
@@ -56,7 +56,7 @@ public class RepairDetailPresenter<V extends IRepairDetailView> extends BasePres
         this.id = id;
         RepairDetailReqDTO reqDTO = new RepairDetailReqDTO();
         reqDTO.setId(id);
-        addObserver(manager.queryRepairDetail(reqDTO), new NetworkObserver<ApiResult<RepairDetailRespDTO>>() {
+        addObserver(repairDataManager.queryRepairDetail(reqDTO), new NetworkObserver<ApiResult<RepairDetailRespDTO>>() {
 
             @Override
             public void onReady(ApiResult<RepairDetailRespDTO> result) {
@@ -79,7 +79,7 @@ public class RepairDetailPresenter<V extends IRepairDetailView> extends BasePres
         reqDTO.setSourceId(sourceId);
         // 2 表示维修
         reqDTO.setType(2);
-        addObserver(manager.remind(reqDTO), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
+        addObserver(repairDataManager.remind(reqDTO), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
 
             @Override
             public void onReady(ApiResult<BooleanRespDTO> result) {
@@ -105,7 +105,7 @@ public class RepairDetailPresenter<V extends IRepairDetailView> extends BasePres
     public void cancelRepair() {
         SimpleReqDTO reqDTO = new SimpleReqDTO();
         reqDTO.setId(this.id);
-        addObserver(manager.cancelRepair(reqDTO), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
+        addObserver(repairDataManager.cancelRepair(reqDTO), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
 
             @Override
             public void onReady(ApiResult<BooleanRespDTO> result) {

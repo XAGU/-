@@ -16,7 +16,7 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.enumeration.EvaluateStatus;
 import com.xiaolian.amigo.data.enumeration.RepairStatus;
-import com.xiaolian.amigo.data.network.model.dto.response.RepairDetailRespDTO;
+import com.xiaolian.amigo.data.network.model.repair.RepairDetailRespDTO;
 import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.ui.repair.adaptor.RepairProgressAdaptor;
 import com.xiaolian.amigo.ui.repair.intf.IRepairDetailPresenter;
