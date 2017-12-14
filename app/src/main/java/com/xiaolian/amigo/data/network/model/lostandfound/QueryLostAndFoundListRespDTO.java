@@ -1,6 +1,6 @@
-package com.xiaolian.amigo.data.network.model.dto.response;
+package com.xiaolian.amigo.data.network.model.lostandfound;
 
-import com.xiaolian.amigo.data.network.model.lostandfound.LostAndFound;
+import com.xiaolian.amigo.data.vo.LostAndFound;
 
 import java.util.List;
 
@@ -14,5 +14,5 @@ import lombok.Data;
 @Data
 public class QueryLostAndFoundListRespDTO {
     private Integer total;
-    private List<LostAndFound> lostAndFounds;
+    private List<LostAndFoundDTO> lostAndFounds;
 }

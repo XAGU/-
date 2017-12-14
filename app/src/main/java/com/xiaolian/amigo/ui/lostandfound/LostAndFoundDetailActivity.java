@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.data.network.model.lostandfound.LostAndFound;
+import com.xiaolian.amigo.data.vo.LostAndFound;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundDetailPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundDetailView;
 import com.xiaolian.amigo.ui.widget.photoview.AlbumItemActivity;
