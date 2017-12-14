@@ -16,21 +16,19 @@ import javax.inject.Inject;
 
 public class MorePresenter<V extends IMoreView> extends BasePresenter<V>
         implements IMorePresenter<V> {
-
+    @SuppressWarnings("unused")
     private static final String TAG = MorePresenter.class.getSimpleName();
-    private IMoreDataManager manager;
-    private ISharedPreferencesHelp sharedPreferencesHelp;
+    private IMoreDataManager moreDataManager;
 
     @Inject
-    public MorePresenter(IMoreDataManager manager, ISharedPreferencesHelp sharedPreferencesHelp) {
+    public MorePresenter(IMoreDataManager moreDataManager) {
         super();
-        this.manager = manager;
-        this.sharedPreferencesHelp = sharedPreferencesHelp;
+        this.moreDataManager = moreDataManager;
     }
 
     @Override
     public void logout() {
-        manager.logout();
+        moreDataManager.logout();
         getMvpView().onSuccess("退出登录成功");
         getMvpView().backToMain();
         getMvpView().redirectToLogin();
@@ -38,6 +36,6 @@ public class MorePresenter<V extends IMoreView> extends BasePresenter<V>
 
     @Override
     public String getToken() {
-        return sharedPreferencesHelp.getToken();
+        return moreDataManager.getToken();
     }
 }

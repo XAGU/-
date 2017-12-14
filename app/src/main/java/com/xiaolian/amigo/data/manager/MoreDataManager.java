@@ -24,4 +24,9 @@ public class MoreDataManager implements IMoreDataManager {
     public void logout() {
         sharedPreferencesHelp.logout();
     }
+
+    @Override
+    public String getToken() {
+        return sharedPreferencesHelp.getToken();
+    }
 }
