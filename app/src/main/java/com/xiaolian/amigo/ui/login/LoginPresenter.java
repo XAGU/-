@@ -19,13 +19,13 @@ package com.xiaolian.amigo.ui.login;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.manager.intf.ILoginDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.dto.request.LoginReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.PasswordResetReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.RegisterReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.VerificationCodeCheckReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.VerificationCodeGetReqDTO;
+import com.xiaolian.amigo.data.network.model.login.LoginReqDTO;
+import com.xiaolian.amigo.data.network.model.login.PasswordResetReqDTO;
+import com.xiaolian.amigo.data.network.model.login.RegisterReqDTO;
+import com.xiaolian.amigo.data.network.model.login.VerificationCodeCheckReqDTO;
+import com.xiaolian.amigo.data.network.model.login.VerificationCodeGetReqDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.LoginRespDTO;
+import com.xiaolian.amigo.data.network.model.login.LoginRespDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.login.intf.ILoginPresenter;
 import com.xiaolian.amigo.ui.login.intf.ILoginView;
@@ -42,7 +42,6 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
         super();
         this.loginDataManager = loginDataManager;
     }
-
 
     @Override
     public void onLoginClick(String mobile, String password, String androidId,
@@ -63,7 +62,7 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
             @Override
             public void onReady(ApiResult<LoginRespDTO> result) {
                 if (null == result.getError()) {
-                    loginDataManager.setUserInfo(result.getData().getUser());
+                    loginDataManager.setUserInfo(result.getData().getUser().transform());
                     loginDataManager.setToken(result.getData().getToken());
                     loginDataManager.setRememberMobile(mobile);
                     getMvpView().onSuccess(R.string.login_success);
@@ -97,7 +96,7 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
             @Override
             public void onReady(ApiResult<LoginRespDTO> result) {
                 if (null == result.getError()) {
-                    loginDataManager.setUserInfo(result.getData().getUser());
+                    loginDataManager.setUserInfo(result.getData().getUser().transform());
                     loginDataManager.setToken(result.getData().getToken());
                     getMvpView().onSuccess(R.string.register_success);
                     loginDataManager.setRememberMobile(mobile);

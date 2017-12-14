@@ -4,7 +4,7 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.PersonalUpdateReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.EntireUserDTO;
+import com.xiaolian.amigo.data.network.model.login.EntireUserDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditNickNamePresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditNickNameView;

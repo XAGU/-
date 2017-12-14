@@ -1,6 +1,6 @@
-package com.xiaolian.amigo.data.network.model.user;
+package com.xiaolian.amigo.data.vo;
 
-import com.xiaolian.amigo.data.network.model.dto.response.EntireUserDTO;
+import com.xiaolian.amigo.data.network.model.login.EntireUserDTO;
 
 import lombok.Data;
 

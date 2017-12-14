@@ -1,13 +1,13 @@
 package com.xiaolian.amigo.data.network;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.dto.request.LoginReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.PasswordResetReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.VerificationCodeCheckReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.VerificationCodeGetReqDTO;
+import com.xiaolian.amigo.data.network.model.login.LoginReqDTO;
+import com.xiaolian.amigo.data.network.model.login.PasswordResetReqDTO;
+import com.xiaolian.amigo.data.network.model.login.VerificationCodeCheckReqDTO;
+import com.xiaolian.amigo.data.network.model.login.VerificationCodeGetReqDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.LoginRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.RegisterReqDTO;
+import com.xiaolian.amigo.data.network.model.login.LoginRespDTO;
+import com.xiaolian.amigo.data.network.model.login.RegisterReqDTO;
 
 
 import rx.Observable;

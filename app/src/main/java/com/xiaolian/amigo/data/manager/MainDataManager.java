@@ -21,7 +21,7 @@ import com.xiaolian.amigo.data.network.model.dto.response.QuerySchoolBizListResp
 import com.xiaolian.amigo.data.network.model.dto.response.QueryTimeValidRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.VersionDTO;
 import com.xiaolian.amigo.data.network.model.user.UploadUserDeviceInfoReqDTO;
-import com.xiaolian.amigo.data.network.model.user.User;
+import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 
 import javax.inject.Inject;

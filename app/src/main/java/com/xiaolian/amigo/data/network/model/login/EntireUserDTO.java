@@ -1,4 +1,7 @@
-package com.xiaolian.amigo.data.network.model.dto.response;
+package com.xiaolian.amigo.data.network.model.login;
+
+import com.xiaolian.amigo.data.vo.Mapper;
+import com.xiaolian.amigo.data.vo.User;
 
 import lombok.Data;
 
@@ -7,7 +10,7 @@ import lombok.Data;
  * @author zcd
  */
 @Data
-public class EntireUserDTO {
+public class EntireUserDTO implements Mapper<User> {
 
     private String residenceName;
     private Long residenceId;
@@ -25,4 +28,9 @@ public class EntireUserDTO {
     private Integer sex;
     private Integer type;
 
+    @Override
+    public User transform() {
+        User user = new User(this);
+        return user;
+    }
 }

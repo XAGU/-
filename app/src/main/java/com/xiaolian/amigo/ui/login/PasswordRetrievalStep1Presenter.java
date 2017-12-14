@@ -2,8 +2,8 @@ package com.xiaolian.amigo.ui.login;
 
 import com.xiaolian.amigo.data.manager.intf.ILoginDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.dto.request.VerificationCodeCheckReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.VerificationCodeGetReqDTO;
+import com.xiaolian.amigo.data.network.model.login.VerificationCodeCheckReqDTO;
+import com.xiaolian.amigo.data.network.model.login.VerificationCodeGetReqDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.login.intf.IPasswordRetrievalStep1Presenter;
@@ -19,19 +19,19 @@ import javax.inject.Inject;
 
 public class PasswordRetrievalStep1Presenter<V extends IPasswordRetrievalStep1View> extends BasePresenter<V>
         implements IPasswordRetrievalStep1Presenter<V> {
-    private ILoginDataManager manager;
+    private ILoginDataManager loginDataManager;
 
     @Inject
-    public PasswordRetrievalStep1Presenter(ILoginDataManager manager) {
+    public PasswordRetrievalStep1Presenter(ILoginDataManager loginDataManager) {
         super();
-        this.manager = manager;
+        this.loginDataManager = loginDataManager;
     }
 
     @Override
     public void getVerification(String mobile) {
         VerificationCodeGetReqDTO dto = new VerificationCodeGetReqDTO();
         dto.setMobile(mobile);
-        addObserver(manager.getVerification(dto), new NetworkObserver<ApiResult<BooleanRespDTO>>(){
+        addObserver(loginDataManager.getVerification(dto), new NetworkObserver<ApiResult<BooleanRespDTO>>(){
 
             @Override
             public void onReady(ApiResult<BooleanRespDTO> result) {
@@ -50,7 +50,7 @@ public class PasswordRetrievalStep1Presenter<V extends IPasswordRetrievalStep1Vi
         VerificationCodeCheckReqDTO reqDTO = new VerificationCodeCheckReqDTO();
         reqDTO.setCode(code);
         reqDTO.setMobile(mobile);
-        addObserver(manager.verificationResetCheck(reqDTO), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
+        addObserver(loginDataManager.verificationResetCheck(reqDTO), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
 
             @Override
             public void onReady(ApiResult<BooleanRespDTO> result) {
