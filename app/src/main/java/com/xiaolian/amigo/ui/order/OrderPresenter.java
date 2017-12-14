@@ -19,8 +19,9 @@ package com.xiaolian.amigo.ui.order;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.dto.request.OrderReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.OrderRespDTO;
+import com.xiaolian.amigo.data.network.model.order.OrderInListDTO;
+import com.xiaolian.amigo.data.network.model.order.OrderReqDTO;
+import com.xiaolian.amigo.data.network.model.order.OrderRespDTO;
 import com.xiaolian.amigo.data.network.model.order.Order;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.ui.base.BasePresenter;
@@ -36,16 +37,14 @@ import javax.inject.Inject;
 
 public class OrderPresenter<V extends IOrderView> extends BasePresenter<V>
         implements IOrderPresenter<V> {
-
+    @SuppressWarnings("unused")
     private static final String TAG = OrderPresenter.class.getSimpleName();
-    private IOrderDataManager manager;
-    private ISharedPreferencesHelp sharedPreferencesHelp;
+    private IOrderDataManager orderDataManager;
 
     @Inject
-    public OrderPresenter(IOrderDataManager manager, ISharedPreferencesHelp sharedPreferencesHelp) {
+    public OrderPresenter(IOrderDataManager orderDataManager) {
         super();
-        this.manager = manager;
-        this.sharedPreferencesHelp = sharedPreferencesHelp;
+        this.orderDataManager = orderDataManager;
     }
 
 
@@ -56,7 +55,7 @@ public class OrderPresenter<V extends IOrderView> extends BasePresenter<V>
         reqDTO.setSize(Constant.PAGE_SIZE);
         // 查看已结束账单
         reqDTO.setOrderStatus(2);
-        addObserver(manager.queryOrders(reqDTO), new NetworkObserver<ApiResult<OrderRespDTO>>(false, true) {
+        addObserver(orderDataManager.queryOrders(reqDTO), new NetworkObserver<ApiResult<OrderRespDTO>>(false, true) {
             @Override
             public void onReady(ApiResult<OrderRespDTO> result) {
                 getMvpView().setRefreshComplete();
@@ -65,9 +64,9 @@ public class OrderPresenter<V extends IOrderView> extends BasePresenter<V>
                 getMvpView().hideErrorView();
                 if (null == result.getError()) {
                     if (null != result.getData().getOrders() && result.getData().getOrders().size() > 0) {
-                        List<OrderAdaptor.OrderWrapper> wrappers = new ArrayList<OrderAdaptor.OrderWrapper>();
-                        for (Order order : result.getData().getOrders()) {
-                            wrappers.add(new OrderAdaptor.OrderWrapper(order));
+                        List<OrderAdaptor.OrderWrapper> wrappers = new ArrayList<>();
+                        for (OrderInListDTO order : result.getData().getOrders()) {
+                            wrappers.add(new OrderAdaptor.OrderWrapper(order.transform()));
                         }
                         getMvpView().addMore(wrappers);
                         getMvpView().addPage();
@@ -92,7 +91,7 @@ public class OrderPresenter<V extends IOrderView> extends BasePresenter<V>
 
     @Override
     public String getToken() {
-        return sharedPreferencesHelp.getToken();
+        return orderDataManager.getToken();
     }
 
 }

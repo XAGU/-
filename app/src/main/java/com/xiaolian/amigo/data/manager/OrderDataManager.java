@@ -1,20 +1,22 @@
 package com.xiaolian.amigo.data.manager;
 
 import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
+import com.xiaolian.amigo.data.network.IComplaintApi;
 import com.xiaolian.amigo.data.network.IOrderApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.dto.request.CheckComplaintReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.LatestOrderReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.OrderDetailReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.OrderReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.QueryPrepayOptionReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.UnsettledOrderStatusCheckReqDTO;
+import com.xiaolian.amigo.data.network.model.complaint.CheckComplaintReqDTO;
+import com.xiaolian.amigo.data.network.model.order.LatestOrderReqDTO;
+import com.xiaolian.amigo.data.network.model.order.OrderDetailReqDTO;
+import com.xiaolian.amigo.data.network.model.order.OrderReqDTO;
+import com.xiaolian.amigo.data.network.model.order.QueryPrepayOptionReqDTO;
+import com.xiaolian.amigo.data.network.model.order.UnsettledOrderStatusCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.LatestOrderRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.OrderDetailRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.OrderPreInfoDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.OrderRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.UnsettledOrderStatusCheckRespDTO;
+import com.xiaolian.amigo.data.network.model.order.LatestOrderRespDTO;
+import com.xiaolian.amigo.data.network.model.order.OrderDetailRespDTO;
+import com.xiaolian.amigo.data.network.model.order.OrderPreInfoDTO;
+import com.xiaolian.amigo.data.network.model.order.OrderRespDTO;
+import com.xiaolian.amigo.data.network.model.order.UnsettledOrderStatusCheckRespDTO;
+import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 
 import javax.inject.Inject;
 
@@ -32,11 +34,15 @@ public class OrderDataManager implements IOrderDataManager {
 
     private static final String TAG = LoginDataManager.class.getSimpleName();
 
+    private IComplaintApi complaintApi;
     private IOrderApi orderApi;
+    private ISharedPreferencesHelp sharedPreferencesHelp;
 
     @Inject
-    public OrderDataManager(Retrofit retrofit) {
+    public OrderDataManager(Retrofit retrofit, ISharedPreferencesHelp sharedPreferencesHelp) {
         orderApi = retrofit.create(IOrderApi.class);
+        complaintApi = retrofit.create(IComplaintApi.class);
+        this.sharedPreferencesHelp = sharedPreferencesHelp;
     }
 
     // 查询个人订单
@@ -62,7 +68,12 @@ public class OrderDataManager implements IOrderDataManager {
 
     @Override
     public Observable<ApiResult<BooleanRespDTO>> checkComplaint(CheckComplaintReqDTO reqDTO) {
-        return orderApi.checkComplaint(reqDTO);
+        return complaintApi.checkComplaint(reqDTO);
+    }
+
+    @Override
+    public String getToken() {
+        return sharedPreferencesHelp.getToken();
     }
 
     @Override

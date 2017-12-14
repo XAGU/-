@@ -1,6 +1,6 @@
 package com.xiaolian.amigo.ui.device.intf;
 
-import com.xiaolian.amigo.data.network.model.dto.response.OrderPreInfoDTO;
+import com.xiaolian.amigo.data.network.model.order.OrderPreInfoDTO;
 
 /**
  * 用水设备 热水澡 饮水机

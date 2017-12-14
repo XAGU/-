@@ -18,7 +18,7 @@ import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.enumeration.TradeError;
 import com.xiaolian.amigo.data.network.model.device.ScanDevice;
 import com.xiaolian.amigo.data.network.model.device.ScanDeviceGroup;
-import com.xiaolian.amigo.data.network.model.dto.response.OrderPreInfoDTO;
+import com.xiaolian.amigo.data.network.model.order.OrderPreInfoDTO;
 import com.xiaolian.amigo.ui.device.DeviceBaseActivity;
 import com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IChooseDispenerView;

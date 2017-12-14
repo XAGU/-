@@ -1,6 +1,6 @@
 package com.xiaolian.amigo.ui.device.intf;
 
-import com.xiaolian.amigo.data.network.model.dto.response.OrderDetailRespDTO;
+import com.xiaolian.amigo.data.network.model.order.OrderDetailRespDTO;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 
 /**

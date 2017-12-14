@@ -2,9 +2,7 @@ package com.xiaolian.amigo.ui.device.dispenser;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,15 +11,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.enumeration.DispenserWater;
-import com.xiaolian.amigo.data.network.model.device.ScanDevice;
 import com.xiaolian.amigo.data.network.model.device.ScanDeviceGroup;
-import com.xiaolian.amigo.data.network.model.dto.response.OrderPreInfoDTO;
-import com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity;
+import com.xiaolian.amigo.data.network.model.order.OrderPreInfoDTO;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IChooseDispenerView;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IChooseDispenserPresenter;
-import com.xiaolian.amigo.ui.main.MainActivity;
 
 import java.util.List;
 

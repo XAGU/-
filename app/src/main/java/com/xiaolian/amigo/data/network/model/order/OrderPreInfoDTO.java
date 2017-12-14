@@ -1,4 +1,4 @@
-package com.xiaolian.amigo.data.network.model.dto.response;
+package com.xiaolian.amigo.data.network.model.order;
 
 import android.os.Parcel;
 import android.os.Parcelable;

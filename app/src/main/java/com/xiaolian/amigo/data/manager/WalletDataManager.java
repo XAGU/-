@@ -6,7 +6,7 @@ import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.AddThirdAccountReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.AlipayTradeAppPayArgsReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.AlipayTradeAppPayResultParseReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.CheckComplaintReqDTO;
+import com.xiaolian.amigo.data.network.model.complaint.CheckComplaintReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.QueryPersonalFundsListReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.QueryUserThirdAccountReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.RechargeReqDTO;

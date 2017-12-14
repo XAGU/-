@@ -31,7 +31,7 @@ import com.xiaolian.amigo.data.enumeration.IntentAction;
 import com.xiaolian.amigo.data.enumeration.Orientation;
 import com.xiaolian.amigo.data.network.model.dto.response.BannerDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.DeviceCheckRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.OrderPreInfoDTO;
+import com.xiaolian.amigo.data.network.model.order.OrderPreInfoDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
 import com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity;

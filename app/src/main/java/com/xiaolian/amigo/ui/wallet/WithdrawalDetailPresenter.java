@@ -3,7 +3,7 @@ package com.xiaolian.amigo.ui.wallet;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.manager.intf.IWalletDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.dto.request.CheckComplaintReqDTO;
+import com.xiaolian.amigo.data.network.model.complaint.CheckComplaintReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.RemindReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
