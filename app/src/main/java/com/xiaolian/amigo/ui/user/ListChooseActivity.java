@@ -15,7 +15,7 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.enumeration.IntentAction;
 import com.xiaolian.amigo.data.enumeration.WithdrawWay;
-import com.xiaolian.amigo.data.network.model.dto.response.UserResidenceDTO;
+import com.xiaolian.amigo.data.network.model.user.UserResidenceDTO;
 import com.xiaolian.amigo.di.componet.DaggerUserActivityComponent;
 import com.xiaolian.amigo.di.componet.UserActivityComponent;
 import com.xiaolian.amigo.di.module.UserActivityModule;

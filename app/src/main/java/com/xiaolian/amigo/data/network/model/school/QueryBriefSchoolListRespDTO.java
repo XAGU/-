@@ -1,4 +1,4 @@
-package com.xiaolian.amigo.data.network.model.dto.response;
+package com.xiaolian.amigo.data.network.model.school;
 
 import com.xiaolian.amigo.data.network.model.user.School;
 

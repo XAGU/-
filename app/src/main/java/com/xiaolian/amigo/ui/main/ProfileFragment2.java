@@ -13,7 +13,7 @@ import android.view.animation.LayoutAnimationController;
 
 import com.umeng.analytics.MobclickAgent;
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.data.network.model.dto.response.PersonalExtraInfoDTO;
+import com.xiaolian.amigo.data.network.model.user.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.ui.bonus.BonusActivity;
 import com.xiaolian.amigo.ui.favorite.FavoriteActivity;
 import com.xiaolian.amigo.ui.main.adaptor.ProfileAdaptor;

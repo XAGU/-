@@ -3,7 +3,7 @@ package com.xiaolian.amigo.ui.user;
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.dto.request.SimpleQueryReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.QueryUserResidenceListRespDTO;
+import com.xiaolian.amigo.data.network.model.user.QueryUserResidenceListRespDTO;
 import com.xiaolian.amigo.data.network.model.user.UserResidence;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.user.adaptor.EditDormitoryAdaptor;
@@ -25,12 +25,12 @@ import javax.inject.Inject;
 public class ChooseDormitoryPresenter<V extends IChooseDormitoryView> extends BasePresenter<V>
     implements IChooseDormitoryPresenter<V> {
 
-    private IUserDataManager manager;
+    private IUserDataManager userDataManager;
 
     @Inject
-    public ChooseDormitoryPresenter(IUserDataManager manager) {
+    public ChooseDormitoryPresenter(IUserDataManager userDataManager) {
         super();
-        this.manager = manager;
+        this.userDataManager = userDataManager;
     }
 
     @Override
@@ -38,7 +38,7 @@ public class ChooseDormitoryPresenter<V extends IChooseDormitoryView> extends Ba
         SimpleQueryReqDTO dto = new SimpleQueryReqDTO();
         dto.setPage(page);
         dto.setSize(size);
-        addObserver(manager.queryUserResidenceList(dto), new NetworkObserver<ApiResult<QueryUserResidenceListRespDTO>>(false, true){
+        addObserver(userDataManager.queryUserResidenceList(dto), new NetworkObserver<ApiResult<QueryUserResidenceListRespDTO>>(false, true){
 
             @Override
             public void onReady(ApiResult<QueryUserResidenceListRespDTO> result) {
@@ -52,7 +52,7 @@ public class ChooseDormitoryPresenter<V extends IChooseDormitoryView> extends Ba
                         for (UserResidence userResidence : result.getData().getUserResidences()) {
                             wrappers.add(new EditDormitoryAdaptor.UserResidenceWrapper(userResidence,
                                     CommonUtil.equals(userResidence.getResidenceId(),
-                                            manager.getUser().getResidenceId())));
+                                            userDataManager.getUser().getResidenceId())));
                         }
                         getMvpView().addMore(wrappers);
                         getMvpView().addPage();

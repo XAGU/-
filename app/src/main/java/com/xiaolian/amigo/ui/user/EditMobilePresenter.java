@@ -3,7 +3,7 @@ package com.xiaolian.amigo.ui.user;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.dto.request.MobileUpdateReqDTO;
+import com.xiaolian.amigo.data.network.model.user.MobileUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.login.VerificationCodeGetReqDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.login.EntireUserDTO;
@@ -20,19 +20,19 @@ import javax.inject.Inject;
 public class EditMobilePresenter<V extends IEditMobileView> extends BasePresenter<V>
         implements IEditMobilePresenter<V> {
 
-    private IUserDataManager manager;
+    private IUserDataManager userDataManager;
 
     @Inject
-    public EditMobilePresenter(IUserDataManager manager) {
+    public EditMobilePresenter(IUserDataManager userDataManager) {
         super();
-        this.manager = manager;
+        this.userDataManager = userDataManager;
     }
 
     @Override
     public void getVerifyCode(String mobile) {
         VerificationCodeGetReqDTO dto = new VerificationCodeGetReqDTO();
         dto.setMobile(mobile);
-        addObserver(manager.getVerifyCode(dto), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
+        addObserver(userDataManager.getVerifyCode(dto), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
 
             @Override
             public void onReady(ApiResult<BooleanRespDTO> result) {
@@ -55,7 +55,7 @@ public class EditMobilePresenter<V extends IEditMobileView> extends BasePresente
         MobileUpdateReqDTO dto = new MobileUpdateReqDTO();
         dto.setMobile(mobile);
         dto.setCode(code);
-        addObserver(manager.updateMobile(dto), new NetworkObserver<ApiResult<EntireUserDTO>>() {
+        addObserver(userDataManager.updateMobile(dto), new NetworkObserver<ApiResult<EntireUserDTO>>() {
 
             @Override
             public void onReady(ApiResult<EntireUserDTO> result) {
