@@ -4,6 +4,7 @@ import android.os.ParcelUuid;
 import android.text.TextUtils;
 
 import com.xiaolian.amigo.data.manager.BleDataManager;
+import com.xiaolian.amigo.data.network.model.dto.request.SimpleQueryReqDTO;
 import com.xiaolian.amigo.util.Log;
 
 import com.polidea.rxandroidble.scan.ScanResult;
@@ -64,7 +65,7 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
 
     @Override
     public void requestFavorites() {
-        FavoriteReqDTO reqDTO = new FavoriteReqDTO();
+        SimpleQueryReqDTO reqDTO = new SimpleQueryReqDTO();
         // 查看收藏设备列表
         addObserver(favoriteManager.queryFavorites(reqDTO), new NetworkObserver<ApiResult<ScanDeviceRespDTO>>(false, true) {
             @Override

@@ -10,4 +10,5 @@ import lombok.Data;
 public class SimpleQueryReqDTO {
     private Integer page;
     private Integer size;
+    private Integer schoolId;
 }

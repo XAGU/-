@@ -1,7 +1,9 @@
 package com.xiaolian.amigo.data.network;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.device.QueryWaterListRespDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.FavoriteReqDTO;
+import com.xiaolian.amigo.data.network.model.dto.request.SimpleQueryReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.UnFavoriteReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.ScanDeviceRespDTO;
@@ -13,19 +15,15 @@ import retrofit2.http.POST;
 import rx.Observable;
 
 /**
- * 收藏设备相关接口
+ * device相关api
  * <p>
- * Created by caidong on 2017/9/18.
+ * Created by zcd on 17/12/14.
  */
-public interface IFavoriteApi {
 
+public interface IDeviceApi {
     // 查询收藏设备列表
     @POST("device/water/favorite/list")
-    Observable<ApiResult<ScanDeviceRespDTO>> queryFavorites(@Body FavoriteReqDTO reqDTO);
-
-    // 删除收藏的设备
-    @POST("device/water/unFavorite")
-    Observable<ApiResult<UnFavoriteRespDTO>> deleteFavorite(@Body UnFavoriteReqDTO reqDTO);
+    Observable<ApiResult<QueryWaterListRespDTO>> queryFavorites(@Body SimpleQueryReqDTO reqDTO);
 
     // 收藏饮水机
     @POST("device/water/favorite")
@@ -33,5 +31,5 @@ public interface IFavoriteApi {
 
     // 取消收藏饮水机
     @POST("device/water/unFavorite")
-    Observable<ApiResult<SimpleReqDTO>> unFavorite(@Body SimpleReqDTO reqDTO);
+    Observable<ApiResult<SimpleRespDTO>> unFavorite(@Body SimpleReqDTO reqDTO);
 }
