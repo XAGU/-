@@ -1,12 +1,12 @@
 package com.xiaolian.amigo.data.manager;
 
 import com.xiaolian.amigo.data.manager.intf.INoticeDataManager;
-import com.xiaolian.amigo.data.network.INoticeApi;
+import com.xiaolian.amigo.data.network.INotifyApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.dto.request.QueryNotifyListReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.ReadNotifyReqDTO;
+import com.xiaolian.amigo.data.network.model.notify.QueryNotifyListReqDTO;
+import com.xiaolian.amigo.data.network.model.notify.ReadNotifyReqDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.QueryNotifyListRespDTO;
+import com.xiaolian.amigo.data.network.model.notify.QueryNotifyListRespDTO;
 
 import javax.inject.Inject;
 
@@ -21,22 +21,23 @@ import rx.Observable;
  */
 
 public class NoticeDataManager implements INoticeDataManager {
+    @SuppressWarnings("unused")
     private static final String TAG = NoticeDataManager.class.getSimpleName();
 
-    private INoticeApi noticeApi;
+    private INotifyApi notifyApi;
 
     @Inject
     public NoticeDataManager(Retrofit retrofit) {
-        noticeApi = retrofit.create(INoticeApi.class);
+        notifyApi = retrofit.create(INotifyApi.class);
     }
 
     @Override
     public Observable<ApiResult<QueryNotifyListRespDTO>> queryNotifyList(@Body QueryNotifyListReqDTO dto) {
-        return noticeApi.queryNotifyList(dto);
+        return notifyApi.queryNotifyList(dto);
     }
 
     @Override
     public Observable<ApiResult<BooleanRespDTO>> readUrgentNotify(@Body ReadNotifyReqDTO reqDTO) {
-        return noticeApi.readUrgentNotify(reqDTO);
+        return notifyApi.readUrgentNotify(reqDTO);
     }
 }

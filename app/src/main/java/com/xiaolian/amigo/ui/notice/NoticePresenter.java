@@ -3,11 +3,12 @@ package com.xiaolian.amigo.ui.notice;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.manager.intf.INoticeDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.dto.request.QueryNotifyListReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.ReadNotifyReqDTO;
+import com.xiaolian.amigo.data.network.model.notify.NotifyDTO;
+import com.xiaolian.amigo.data.network.model.notify.QueryNotifyListReqDTO;
+import com.xiaolian.amigo.data.network.model.notify.ReadNotifyReqDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.QueryNotifyListRespDTO;
-import com.xiaolian.amigo.data.network.model.notify.Notify;
+import com.xiaolian.amigo.data.network.model.notify.QueryNotifyListRespDTO;
+import com.xiaolian.amigo.data.vo.Notify;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.notice.adaptor.NoticeAdaptor;
 import com.xiaolian.amigo.ui.notice.intf.INoticePresenter;
@@ -27,13 +28,14 @@ import javax.inject.Inject;
 
 public class NoticePresenter<V extends INoticeView> extends BasePresenter<V>
         implements INoticePresenter<V> {
+    @SuppressWarnings("unused")
     private static final String TAG = NoticePresenter.class.getSimpleName();
-    private INoticeDataManager manager;
+    private INoticeDataManager noticeDataManager;
 
     @Inject
-    public NoticePresenter(INoticeDataManager manager) {
+    public NoticePresenter(INoticeDataManager noticeDataManager) {
         super();
-        this.manager = manager;
+        this.noticeDataManager = noticeDataManager;
     }
 
     @Override
@@ -41,7 +43,7 @@ public class NoticePresenter<V extends INoticeView> extends BasePresenter<V>
         QueryNotifyListReqDTO reqDTO = new QueryNotifyListReqDTO();
         reqDTO.setPage(page);
         reqDTO.setSize(Constant.PAGE_SIZE);
-        addObserver(manager.queryNotifyList(reqDTO), new NetworkObserver<ApiResult<QueryNotifyListRespDTO>>(false, true) {
+        addObserver(noticeDataManager.queryNotifyList(reqDTO), new NetworkObserver<ApiResult<QueryNotifyListRespDTO>>(false, true) {
 
             @Override
             public void onReady(ApiResult<QueryNotifyListRespDTO> result) {
@@ -51,11 +53,11 @@ public class NoticePresenter<V extends INoticeView> extends BasePresenter<V>
                 getMvpView().hideErrorView();
                 if (null == result.getError()) {
                     if (result.getData().getNotices() != null && result.getData().getNotices().size() > 0) {
-                        List<NoticeAdaptor.NoticeWapper> wappers = new ArrayList<>();
-                        for (Notify notify : result.getData().getNotices()) {
-                            wappers.add(new NoticeAdaptor.NoticeWapper(notify));
+                        List<NoticeAdaptor.NoticeWapper> wrappers = new ArrayList<>();
+                        for (NotifyDTO notify : result.getData().getNotices()) {
+                            wrappers.add(new NoticeAdaptor.NoticeWapper(notify.transform()));
                         }
-                        getMvpView().addMore(wappers);
+                        getMvpView().addMore(wrappers);
                         getMvpView().addPage();
                     } else {
                         getMvpView().addMore(new ArrayList<>());
@@ -81,7 +83,7 @@ public class NoticePresenter<V extends INoticeView> extends BasePresenter<V>
     public void readUrgentNotify(Long id) {
         ReadNotifyReqDTO reqDTO = new ReadNotifyReqDTO();
         reqDTO.setId(id);
-        addObserver(manager.readUrgentNotify(reqDTO), new NetworkObserver<ApiResult<BooleanRespDTO>>(false) {
+        addObserver(noticeDataManager.readUrgentNotify(reqDTO), new NetworkObserver<ApiResult<BooleanRespDTO>>(false) {
 
             @Override
             public void onReady(ApiResult<BooleanRespDTO> result) {

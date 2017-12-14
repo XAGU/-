@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Notice;
 import com.xiaolian.amigo.data.enumeration.NoticeReadStatus;
-import com.xiaolian.amigo.data.network.model.notify.Notify;
+import com.xiaolian.amigo.data.vo.Notify;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.TimeUtils;
 import com.zhy.adapter.recyclerview.CommonAdapter;

@@ -1,6 +1,6 @@
 package com.xiaolian.amigo.data.network.model.dto.response;
 
-import com.xiaolian.amigo.data.network.model.notify.Notify;
+import com.xiaolian.amigo.data.vo.Notify;
 
 import java.util.List;
 

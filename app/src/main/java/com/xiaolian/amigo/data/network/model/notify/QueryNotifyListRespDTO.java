@@ -1,6 +1,6 @@
-package com.xiaolian.amigo.data.network.model.dto.response;
+package com.xiaolian.amigo.data.network.model.notify;
 
-import com.xiaolian.amigo.data.network.model.notify.Notify;
+import com.xiaolian.amigo.data.vo.Notify;
 
 import java.util.List;
 
@@ -13,6 +13,6 @@ import lombok.Data;
  */
 @Data
 public class QueryNotifyListRespDTO {
-    private List<Notify> notices;
+    private List<NotifyDTO> notices;
     private Integer total;
 }

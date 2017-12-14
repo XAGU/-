@@ -1,10 +1,10 @@
 package com.xiaolian.amigo.data.network;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.dto.request.QueryNotifyListReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.ReadNotifyReqDTO;
+import com.xiaolian.amigo.data.network.model.notify.QueryNotifyListReqDTO;
+import com.xiaolian.amigo.data.network.model.notify.ReadNotifyReqDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.QueryNotifyListRespDTO;
+import com.xiaolian.amigo.data.network.model.notify.QueryNotifyListRespDTO;
 
 import retrofit2.http.Body;
 import retrofit2.http.POST;
@@ -16,7 +16,7 @@ import rx.Observable;
  * Created by zcd on 9/22/17.
  */
 
-public interface INoticeApi {
+public interface INotifyApi {
     // 通知公告列表
     @POST("notify/list")
     Observable<ApiResult<QueryNotifyListRespDTO>> queryNotifyList(@Body QueryNotifyListReqDTO dto);
