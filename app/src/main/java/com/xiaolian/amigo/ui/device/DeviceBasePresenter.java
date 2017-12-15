@@ -12,6 +12,7 @@ import android.text.TextUtils;
 
 import com.xiaolian.amigo.data.enumeration.BizError;
 import com.xiaolian.amigo.data.manager.BleDataManager;
+import com.xiaolian.amigo.data.manager.intf.IDeviceDataManager;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
@@ -70,9 +71,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     private static final String TAG = DeviceBasePresenter.class.getSimpleName();
     private static final String NOTIFY_DESCRIPTOR_UUID = "00002902-0000-1000-8000-00805f9b34fb";
     private IBleDataManager bleDataManager;
-    private ITradeDataManager tradeDataManager;
-    private IOrderDataManager orderDataManager;
-    private ISharedPreferencesHelp sharedPreferencesHelp;
+    private IDeviceDataManager deviceDataManager;
     // 共享连接
     private Observable<RxBleConnection> connectionObservable;
     private Observable<Observable<byte[]>> setupNotificationObservable;
@@ -135,12 +134,10 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     // 故障设备标志
     private volatile boolean brokenFlag = false;
 
-    DeviceBasePresenter(IBleDataManager bleDataManager, ITradeDataManager tradeDataManager, IOrderDataManager orderDataManager, ISharedPreferencesHelp sharedPreferencesHelp) {
+    DeviceBasePresenter(IBleDataManager bleDataManager, IDeviceDataManager deviceDataManager) {
         super();
         this.bleDataManager = bleDataManager;
-        this.tradeDataManager = tradeDataManager;
-        this.orderDataManager = orderDataManager;
-        this.sharedPreferencesHelp = sharedPreferencesHelp;
+        this.deviceDataManager = deviceDataManager;
     }
 
     private void initWriteObserver() {
@@ -253,8 +250,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
         // 设备连接上存储mac地址供后续读写数据使用
         // 查询是否存在改deviceNo的macAddress
-        if (sharedPreferencesHelp.getMacAddressByDeviceNo(macAddress) != null) {
-            currentMacAddress = sharedPreferencesHelp.getMacAddressByDeviceNo(macAddress);
+        if (deviceDataManager.getMacAddressByDeviceNo(macAddress) != null) {
+            currentMacAddress = deviceDataManager.getMacAddressByDeviceNo(macAddress);
             realConnect(macAddress);
             return;
         }
@@ -291,7 +288,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 deviceNo.append(temp[temp.length - 2]).append(temp[temp.length - 1]);
                 currentMacAddress = scannedMacAddress;
                 Log.i(TAG, "扫描获取macAddress成功。macAddress:" + currentMacAddress);
-                sharedPreferencesHelp.setDeviceNoAndMacAddress(macAddress, currentMacAddress);
+                deviceDataManager.setDeviceNoAndMacAddress(macAddress, currentMacAddress);
                 realConnect(macAddress);
                 this.unsubscribe();
             }
@@ -685,14 +682,14 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     private void getConnectCommand(String macAddress) {
         ConnectCommandReqDTO reqDTO = new ConnectCommandReqDTO();
         reqDTO.setMacAddress(macAddress);
-        addObserver(tradeDataManager.getConnectCommand(reqDTO), new NetworkObserver<ApiResult<ConnectCommandRespDTO>>(false) {
+        addObserver(deviceDataManager.getConnectCommand(reqDTO), new NetworkObserver<ApiResult<ConnectCommandRespDTO>>(false) {
             @Override
             public void onReady(ApiResult<ConnectCommandRespDTO> result) {
                 if (null == result.getError()) {
                     // 存储deviceToken
                     if (result.getData() != null && result.getData().getMacAddress() != null
                             && result.getData().getDeviceToken() != null) {
-                        sharedPreferencesHelp.setDeviceToken(result.getData().getMacAddress(), result.getData().getDeviceToken());
+                        deviceDataManager.setDeviceToken(result.getData().getMacAddress(), result.getData().getDeviceToken());
                         Log.i(TAG, "收到deviceToken：" + result.getData().getDeviceToken());
                     }
                     synchronized (connectCmdLock) {
@@ -723,7 +720,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     private void checkOrderStatus(String macAddress) {
         UnsettledOrderStatusCheckReqDTO reqDTO = new UnsettledOrderStatusCheckReqDTO();
         reqDTO.setMacAddress(macAddress);
-        addObserver(orderDataManager.checkOrderStatus(reqDTO), new NetworkObserver<ApiResult<UnsettledOrderStatusCheckRespDTO>>(false) {
+        addObserver(deviceDataManager.checkOrderStatus(reqDTO), new NetworkObserver<ApiResult<UnsettledOrderStatusCheckRespDTO>>(false) {
             @Override
             public void onReady(ApiResult<UnsettledOrderStatusCheckRespDTO> result) {
                 if (null == result.getError()) {
@@ -768,13 +765,13 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         CmdResultReqDTO reqDTO = new CmdResultReqDTO();
         reqDTO.setData(result);
         reqDTO.setMacAddress(deviceNo);
-        addObserver(tradeDataManager.processCmdResult(reqDTO), new NetworkObserver<ApiResult<CmdResultRespDTO>>(false) {
+        addObserver(deviceDataManager.processCmdResult(reqDTO), new NetworkObserver<ApiResult<CmdResultRespDTO>>(false) {
             @Override
             public void onReady(ApiResult<CmdResultRespDTO> result) {
                 // 存储deviceToken
                 if (result.getData() != null && result.getData().getMacAddress() != null
                         && result.getData().getDeviceToken() != null) {
-                    sharedPreferencesHelp.setDeviceToken(result.getData().getMacAddress(), result.getData().getDeviceToken());
+                    deviceDataManager.setDeviceToken(result.getData().getMacAddress(), result.getData().getDeviceToken());
                     Log.i(TAG, "收到deviceToken：" + result.getData().getDeviceToken());
                 }
                 Log.i(TAG, "通知主线程更新数据。" + result.getData());
@@ -977,13 +974,13 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         if (result == null || orderId == null || orderId <= 0) {
             return;
         }
-        sharedPreferencesHelp.setDeviceResult(deviceNo,
+        deviceDataManager.setDeviceResult(deviceNo,
                 orderId + Constant.DIVIDER + result);
     }
 
     // 只存开阀设备响应结果
     private String getDeviceResult(Long orderId) {
-        String deviceResultTemp = sharedPreferencesHelp.getDeviceResult(deviceNo);
+        String deviceResultTemp = deviceDataManager.getDeviceResult(deviceNo);
         Long savedOrderId = null;
         String savedDeviceResult = null;
         try {
@@ -1003,12 +1000,12 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         if (TextUtils.isEmpty(closeCmd) || orderId == null || orderId <= 0) {
             return;
         }
-        sharedPreferencesHelp.setCloseCmd(deviceNo,
+        deviceDataManager.setCloseCmd(deviceNo,
                 orderId + Constant.DIVIDER + closeCmd);
     }
 
     private String getCloseCmd(Long orderId) {
-        String closeCmdTemp = sharedPreferencesHelp.getCloseCmd(deviceNo);
+        String closeCmdTemp = deviceDataManager.getCloseCmd(deviceNo);
         Long savedOrderId = null;
         String savedCloseCmd = null;
         try {
@@ -1038,14 +1035,14 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         reqDTO.setBonusId(bonusId);
         reqDTO.setPrepay(prepay);
 
-        addObserver(tradeDataManager.pay(reqDTO), new NetworkObserver<ApiResult<PayRespDTO>>(false) {
+        addObserver(deviceDataManager.pay(reqDTO), new NetworkObserver<ApiResult<PayRespDTO>>(false) {
             @Override
             public void onReady(ApiResult<PayRespDTO> result) {
                 if (null == result.getError()) {
                     // 存储deviceToken
                     if (result.getData() != null && result.getData().getMacAddress() != null
                             && result.getData().getDeviceToken() != null) {
-                        sharedPreferencesHelp.setDeviceToken(result.getData().getMacAddress(), result.getData().getDeviceToken());
+                        deviceDataManager.setDeviceToken(result.getData().getMacAddress(), result.getData().getDeviceToken());
                         Log.i(TAG, "收到deviceToken：" + result.getData().getDeviceToken());
                     }
                     // 初始化订单id

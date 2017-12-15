@@ -18,15 +18,12 @@ public class DeviceOrderPresenter<V extends IDeviceOrderView> extends BasePresen
         implements IDeviceOrderPresenter<V> {
 
     private static final String TAG = DeviceOrderPresenter.class.getSimpleName();
-    private IOrderDataManager manager;
-    private ISharedPreferencesHelp sharedPreferencesHelp;
+    private IOrderDataManager orderDataManager;
 
     @Inject
-    public DeviceOrderPresenter(IOrderDataManager manager,
-                                ISharedPreferencesHelp sharedPreferencesHelp) {
+    public DeviceOrderPresenter(IOrderDataManager orderDataManager) {
         super();
-        this.manager = manager;
-        this.sharedPreferencesHelp = sharedPreferencesHelp;
+        this.orderDataManager = orderDataManager;
     }
 
     @Override
@@ -34,7 +31,7 @@ public class DeviceOrderPresenter<V extends IDeviceOrderView> extends BasePresen
         OrderDetailReqDTO reqDTO = new OrderDetailReqDTO();
         reqDTO.setId(orderId);
 
-        addObserver(manager.queryOrderDetail(reqDTO), new NetworkObserver<ApiResult<OrderDetailRespDTO>>() {
+        addObserver(orderDataManager.queryOrderDetail(reqDTO), new NetworkObserver<ApiResult<OrderDetailRespDTO>>() {
             @Override
             public void onReady(ApiResult<OrderDetailRespDTO> result) {
                 if (null == result.getError()) {
@@ -48,7 +45,7 @@ public class DeviceOrderPresenter<V extends IDeviceOrderView> extends BasePresen
 
     @Override
     public String getToken() {
-        return sharedPreferencesHelp.getToken();
+        return orderDataManager.getToken();
     }
 
     @Override
@@ -56,7 +53,7 @@ public class DeviceOrderPresenter<V extends IDeviceOrderView> extends BasePresen
         CheckComplaintReqDTO reqDTO = new CheckComplaintReqDTO();
         reqDTO.setOrderId(orderId);
         reqDTO.setOrderType(orderType);
-        addObserver(manager.checkComplaint(reqDTO), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
+        addObserver(orderDataManager.checkComplaint(reqDTO), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
 
             @Override
             public void onReady(ApiResult<BooleanRespDTO> result) {

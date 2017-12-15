@@ -18,7 +18,9 @@ package com.xiaolian.amigo.ui.favorite;
 
 import com.xiaolian.amigo.data.manager.intf.IFavoriteManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.device.QueryWaterListRespDTO;
 import com.xiaolian.amigo.data.network.model.device.ScanDeviceGroup;
+import com.xiaolian.amigo.data.network.model.device.WaterInListDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.SimpleQueryReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.request.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.dto.response.ScanDeviceRespDTO;
@@ -53,9 +55,9 @@ public class FavoritePresenter<V extends IFavoriteView> extends BasePresenter<V>
         reqDTO.setPage(page);
         reqDTO.setSize(Constant.PAGE_SIZE);
         // 查看收藏设备列表
-        addObserver(favoriteManager.queryFavorites(reqDTO), new NetworkObserver<ApiResult<ScanDeviceRespDTO>>(false, true) {
+        addObserver(favoriteManager.queryFavorites(reqDTO), new NetworkObserver<ApiResult<QueryWaterListRespDTO>>(false, true) {
             @Override
-            public void onReady(ApiResult<ScanDeviceRespDTO> result) {
+            public void onReady(ApiResult<QueryWaterListRespDTO> result) {
                 getMvpView().setRefreshComplete();
                 getMvpView().setLoadMoreComplete();
                 getMvpView().hideEmptyView();
@@ -63,7 +65,7 @@ public class FavoritePresenter<V extends IFavoriteView> extends BasePresenter<V>
                 if (null == result.getError()) {
                     if (null != result.getData().getDevices() && result.getData().getDevices().size() > 0) {
                         List<FavoriteAdaptor.FavoriteWrapper> wrappers = new ArrayList<>();
-                        for (ScanDeviceGroup device : result.getData().getDevices()) {
+                        for (WaterInListDTO device : result.getData().getDevices()) {
                             wrappers.add(new FavoriteAdaptor.FavoriteWrapper(device));
                         }
                         getMvpView().addMore(wrappers);

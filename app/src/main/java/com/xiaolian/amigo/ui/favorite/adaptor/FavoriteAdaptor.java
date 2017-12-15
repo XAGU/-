@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.network.model.device.ScanDeviceGroup;
+import com.xiaolian.amigo.data.network.model.device.WaterInListDTO;
 import com.xiaolian.amigo.ui.favorite.intf.IFavoritePresenter;
 import com.xiaolian.amigo.ui.favorite.intf.IFavoriteView;
 
@@ -128,6 +129,12 @@ public class FavoriteAdaptor extends RecyclerView.Adapter<FavoriteAdaptor.ViewHo
         String location;
 
         public FavoriteWrapper(ScanDeviceGroup device) {
+            this.id = device.getWater().get(0).getId();
+            this.residenceId = device.getResidenceId();
+            this.location = device.getLocation();
+        }
+
+        public FavoriteWrapper(WaterInListDTO device) {
             this.id = device.getWater().get(0).getId();
             this.residenceId = device.getResidenceId();
             this.location = device.getLocation();

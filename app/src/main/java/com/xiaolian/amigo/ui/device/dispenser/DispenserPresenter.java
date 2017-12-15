@@ -2,6 +2,7 @@ package com.xiaolian.amigo.ui.device.dispenser;
 
 import com.xiaolian.amigo.data.manager.intf.IBleDataManager;
 import com.xiaolian.amigo.data.manager.intf.IClientServiceDataManager;
+import com.xiaolian.amigo.data.manager.intf.IDeviceDataManager;
 import com.xiaolian.amigo.data.manager.intf.IFavoriteManager;
 import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
 import com.xiaolian.amigo.data.manager.intf.ITradeDataManager;
@@ -23,28 +24,21 @@ import javax.inject.Inject;
 
 public class DispenserPresenter<V extends IDispenserView> extends WaterDeviceBasePresenter<V>
         implements IDispenserPresenter<V> {
-    private IFavoriteManager favoriteManager;
-    private ISharedPreferencesHelp sharedPreferencesHelp;
+    private IDeviceDataManager deviceDataManager;
 
     @Inject
     public DispenserPresenter(IBleDataManager bleDataManager,
-                              ITradeDataManager tradeDataManager,
-                              IOrderDataManager orderDataManager,
-                              IWalletDataManager walletDataManager,
-                              IClientServiceDataManager clientServiceDataManager,
-                              ISharedPreferencesHelp sharedPreferencesHelp,
-                              IFavoriteManager favoriteManager) {
-        super(bleDataManager, tradeDataManager, orderDataManager, walletDataManager, clientServiceDataManager, sharedPreferencesHelp);
-        this.favoriteManager = favoriteManager;
-        this.sharedPreferencesHelp = sharedPreferencesHelp;
+                              IDeviceDataManager deviceDataManager) {
+        super(bleDataManager, deviceDataManager);
+        this.deviceDataManager = deviceDataManager;
     }
 
     @Override
     public void onAttach(V view) {
         super.onAttach(view);
-        if (!sharedPreferencesHelp.isDispenserGuideDone()) {
+        if (!deviceDataManager.isDispenserGuideDone()) {
             getMvpView().showGuide();
-            sharedPreferencesHelp.doneDispenserGuide();
+            deviceDataManager.doneDispenserGuide();
         }
     }
 
@@ -52,7 +46,7 @@ public class DispenserPresenter<V extends IDispenserView> extends WaterDeviceBas
     public void favorite(Long id) {
         SimpleReqDTO reqDTO = new SimpleReqDTO();
         reqDTO.setId(id);
-        addObserver(favoriteManager.favorite(reqDTO), new NetworkObserver<ApiResult<SimpleRespDTO>>() {
+        addObserver(deviceDataManager.favorite(reqDTO), new NetworkObserver<ApiResult<SimpleRespDTO>>() {
 
             @Override
             public void onReady(ApiResult<SimpleRespDTO> result) {
@@ -70,7 +64,7 @@ public class DispenserPresenter<V extends IDispenserView> extends WaterDeviceBas
     public void unFavorite(Long id) {
         SimpleReqDTO reqDTO = new SimpleReqDTO();
         reqDTO.setId(id);
-        addObserver(favoriteManager.unFavorite(reqDTO), new NetworkObserver<ApiResult<SimpleRespDTO>>() {
+        addObserver(deviceDataManager.unFavorite(reqDTO), new NetworkObserver<ApiResult<SimpleRespDTO>>() {
 
             @Override
             public void onReady(ApiResult<SimpleRespDTO> result) {
