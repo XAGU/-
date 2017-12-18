@@ -1,6 +1,6 @@
 package com.xiaolian.amigo.ui.device.intf.dispenser;
 
-import com.xiaolian.amigo.data.network.model.device.ScanDeviceGroup;
+import com.xiaolian.amigo.data.vo.ScanDeviceGroup;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 import com.xiaolian.amigo.ui.device.dispenser.ChooseDispenserAdaptor;
 

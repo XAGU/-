@@ -5,11 +5,9 @@ import android.support.annotation.Nullable;
 
 import com.xiaolian.amigo.data.enumeration.TradeStep;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.dto.response.CmdResultRespDTO;
+import com.xiaolian.amigo.data.network.model.trade.CmdResultRespDTO;
 import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
-import com.xiaolian.amigo.ui.ble.intf.IBleInteractiveView;
-import com.xiaolian.amigo.ui.device.DeviceBasePresenter;
 
 /**
  * Created by caidong on 2017/9/22.

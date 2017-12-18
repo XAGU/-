@@ -1,4 +1,4 @@
-package com.xiaolian.amigo.data.network.model.device;
+package com.xiaolian.amigo.data.vo;
 
 import lombok.Data;
 

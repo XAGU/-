@@ -1,16 +1,10 @@
 package com.xiaolian.amigo.ui.device.dispenser;
 
 import com.xiaolian.amigo.data.manager.intf.IBleDataManager;
-import com.xiaolian.amigo.data.manager.intf.IClientServiceDataManager;
 import com.xiaolian.amigo.data.manager.intf.IDeviceDataManager;
-import com.xiaolian.amigo.data.manager.intf.IFavoriteManager;
-import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
-import com.xiaolian.amigo.data.manager.intf.ITradeDataManager;
-import com.xiaolian.amigo.data.manager.intf.IWalletDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.dto.request.SimpleReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.SimpleRespDTO;
-import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
+import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
+import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
 import com.xiaolian.amigo.ui.device.WaterDeviceBasePresenter;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IDispenserPresenter;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IDispenserView;

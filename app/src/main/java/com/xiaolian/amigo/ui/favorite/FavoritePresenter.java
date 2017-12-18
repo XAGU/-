@@ -18,13 +18,11 @@ package com.xiaolian.amigo.ui.favorite;
 
 import com.xiaolian.amigo.data.manager.intf.IFavoriteManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.common.SimpleQueryReqDTO;
+import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
+import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
 import com.xiaolian.amigo.data.network.model.device.QueryWaterListRespDTO;
-import com.xiaolian.amigo.data.network.model.device.ScanDeviceGroup;
 import com.xiaolian.amigo.data.network.model.device.WaterInListDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.SimpleQueryReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.SimpleReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.ScanDeviceRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.UnFavoriteRespDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.favorite.adaptor.FavoriteAdaptor;
 import com.xiaolian.amigo.ui.favorite.intf.IFavoritePresenter;
@@ -94,9 +92,9 @@ public class FavoritePresenter<V extends IFavoriteView> extends BasePresenter<V>
         SimpleReqDTO reqDTO = new SimpleReqDTO();
         reqDTO.setId(residenceId);
         // 查看收藏设备列表
-        addObserver(favoriteManager.unFavorite(reqDTO), new NetworkObserver<ApiResult<UnFavoriteRespDTO>>() {
+        addObserver(favoriteManager.unFavorite(reqDTO), new NetworkObserver<ApiResult<SimpleRespDTO>>() {
             @Override
-            public void onReady(ApiResult<UnFavoriteRespDTO> result) {
+            public void onReady(ApiResult<SimpleRespDTO> result) {
                 if (null == result.getError()) {
                     getMvpView().deleteOne(index);
                 }

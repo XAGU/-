@@ -8,7 +8,7 @@ import com.xiaolian.amigo.data.network.model.repair.RepairApplyReqDTO;
 import com.xiaolian.amigo.data.network.model.repair.RepairDetailReqDTO;
 import com.xiaolian.amigo.data.network.model.repair.RepairProblemReqDTO;
 import com.xiaolian.amigo.data.network.model.repair.RepairReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.SimpleReqDTO;
+import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.repair.RepairApplyRespDTO;
 import com.xiaolian.amigo.data.network.model.repair.RepairDetailRespDTO;
 import com.xiaolian.amigo.data.network.model.repair.RepairProblemRespDTO;

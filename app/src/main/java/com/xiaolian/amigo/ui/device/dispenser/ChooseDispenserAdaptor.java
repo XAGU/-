@@ -12,7 +12,8 @@ import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.DispenserWater;
-import com.xiaolian.amigo.data.network.model.device.ScanDeviceGroup;
+import com.xiaolian.amigo.data.network.model.device.WaterInListDTO;
+import com.xiaolian.amigo.data.vo.ScanDeviceGroup;
 import com.xiaolian.amigo.data.network.model.order.OrderPreInfoDTO;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IChooseDispenerView;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IChooseDispenserPresenter;
@@ -163,6 +164,13 @@ public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenser
             this.location = device.getLocation();
             this.deviceGroup = device;
             this.residenceId = device.getResidenceId();
+        }
+
+        public DispenserWrapper(WaterInListDTO water) {
+            this.favor = water.getFavor();
+            this.location = water.getLocation();
+            this.residenceId = water.getResidenceId();
+            this.deviceGroup = water.transform();
         }
     }
 

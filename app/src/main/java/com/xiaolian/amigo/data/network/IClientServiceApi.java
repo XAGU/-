@@ -1,7 +1,7 @@
 package com.xiaolian.amigo.data.network;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.dto.response.CsMobileRespDTO;
+import com.xiaolian.amigo.data.network.model.cs.CsMobileRespDTO;
 
 import retrofit2.http.POST;
 import rx.Observable;

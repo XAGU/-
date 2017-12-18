@@ -8,7 +8,7 @@ import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.version.CheckVersionUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.notify.ReadNotifyReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.BannerDTO;
+import com.xiaolian.amigo.data.network.model.system.BannerDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.version.CheckVersionUpdateRespDTO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCheckRespDTO;

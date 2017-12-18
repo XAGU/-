@@ -1,22 +1,23 @@
 package com.xiaolian.amigo.data.manager.intf;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.dto.request.CmdResultReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.ConnectCommandReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.PayReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.ScanDeviceReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.SimpleReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.CmdResultRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.ConnectCommandRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.CsMobileRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.PayRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.ScanDeviceRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.SimpleRespDTO;
+import com.xiaolian.amigo.data.network.model.device.QueryWaterListReqDTO;
+import com.xiaolian.amigo.data.network.model.device.QueryWaterListRespDTO;
+import com.xiaolian.amigo.data.network.model.common.SimpleQueryReqDTO;
+import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
+import com.xiaolian.amigo.data.network.model.cs.CsMobileRespDTO;
+import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
 import com.xiaolian.amigo.data.network.model.funds.PersonalWalletDTO;
 import com.xiaolian.amigo.data.network.model.order.OrderPreInfoDTO;
 import com.xiaolian.amigo.data.network.model.order.QueryPrepayOptionReqDTO;
 import com.xiaolian.amigo.data.network.model.order.UnsettledOrderStatusCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.order.UnsettledOrderStatusCheckRespDTO;
+import com.xiaolian.amigo.data.network.model.trade.CmdResultReqDTO;
+import com.xiaolian.amigo.data.network.model.trade.CmdResultRespDTO;
+import com.xiaolian.amigo.data.network.model.trade.ConnectCommandReqDTO;
+import com.xiaolian.amigo.data.network.model.trade.ConnectCommandRespDTO;
+import com.xiaolian.amigo.data.network.model.trade.PayReqDTO;
+import com.xiaolian.amigo.data.network.model.trade.PayRespDTO;
 
 import retrofit2.http.Body;
 import rx.Observable;
@@ -48,7 +49,7 @@ public interface IDeviceDataManager {
     Observable<ApiResult<PayRespDTO>> pay(@Body PayReqDTO reqDTO);
 
     // 处理扫描结果
-    Observable<ApiResult<ScanDeviceRespDTO>> handleScanDevices(@Body ScanDeviceReqDTO reqDTO);
+    Observable<ApiResult<QueryWaterListRespDTO>> handleScanDevices(QueryWaterListReqDTO reqDTO);
 
     // 校验订单状态
     Observable<ApiResult<UnsettledOrderStatusCheckRespDTO>> checkOrderStatus(@Body UnsettledOrderStatusCheckReqDTO reqDTO);
@@ -83,4 +84,6 @@ public interface IDeviceDataManager {
 
     // 取消收藏饮水机
     Observable<ApiResult<SimpleRespDTO>> unFavorite(@Body SimpleReqDTO reqDTO);
+
+    Observable<ApiResult<QueryWaterListRespDTO>> queryFavorites(@Body SimpleQueryReqDTO reqDTO);
 }

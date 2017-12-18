@@ -3,7 +3,7 @@ package com.xiaolian.amigo.ui.wallet;
 import com.xiaolian.amigo.data.manager.intf.IWalletDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.userthirdaccount.QueryUserThirdAccountReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.SimpleReqDTO;
+import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.userthirdaccount.QueryUserThirdAccountRespDTO;
 import com.xiaolian.amigo.data.network.model.userthirdaccount.UserThirdAccountDTO;

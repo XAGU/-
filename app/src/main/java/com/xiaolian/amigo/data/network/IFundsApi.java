@@ -4,14 +4,14 @@ import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.funds.QueryPersonalFundsListReqDTO;
 import com.xiaolian.amigo.data.network.model.funds.RechargeReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.SimpleQueryReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.SimpleReqDTO;
+import com.xiaolian.amigo.data.network.model.common.SimpleQueryReqDTO;
+import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.funds.WithdrawReqDTO;
 import com.xiaolian.amigo.data.network.model.funds.FundsDTO;
 import com.xiaolian.amigo.data.network.model.funds.PersonalWalletDTO;
 import com.xiaolian.amigo.data.network.model.funds.QueryFundsListRespDTO;
 import com.xiaolian.amigo.data.network.model.funds.QueryRechargeAmountsRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.SimpleRespDTO;
+import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
 
 import retrofit2.http.Body;
 import retrofit2.http.POST;

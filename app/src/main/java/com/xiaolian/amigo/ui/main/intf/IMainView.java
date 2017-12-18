@@ -1,7 +1,7 @@
 package com.xiaolian.amigo.ui.main.intf;
 
 import com.xiaolian.amigo.data.enumeration.Device;
-import com.xiaolian.amigo.data.network.model.dto.response.BannerDTO;
+import com.xiaolian.amigo.data.network.model.system.BannerDTO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.user.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;

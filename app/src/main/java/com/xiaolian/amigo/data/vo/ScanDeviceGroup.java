@@ -1,7 +1,6 @@
-package com.xiaolian.amigo.data.network.model.device;
+package com.xiaolian.amigo.data.vo;
 
 import java.util.List;
-import java.util.Map;
 
 import lombok.Data;
 

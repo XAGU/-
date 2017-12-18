@@ -4,19 +4,17 @@ import android.os.ParcelUuid;
 import android.text.TextUtils;
 
 import com.xiaolian.amigo.data.manager.BleDataManager;
-import com.xiaolian.amigo.data.network.model.dto.request.SimpleQueryReqDTO;
+import com.xiaolian.amigo.data.manager.intf.IDeviceDataManager;
+import com.xiaolian.amigo.data.network.model.device.QueryWaterListReqDTO;
+import com.xiaolian.amigo.data.network.model.device.QueryWaterListRespDTO;
+import com.xiaolian.amigo.data.network.model.device.WaterInListDTO;
+import com.xiaolian.amigo.data.network.model.common.SimpleQueryReqDTO;
 import com.xiaolian.amigo.util.Log;
 
 import com.polidea.rxandroidble.scan.ScanResult;
 import com.xiaolian.amigo.data.manager.intf.IBleDataManager;
-import com.xiaolian.amigo.data.manager.intf.IFavoriteManager;
-import com.xiaolian.amigo.data.manager.intf.ITradeDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.device.ScanDeviceGroup;
-import com.xiaolian.amigo.data.network.model.dto.request.FavoriteReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.ScanDeviceReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.ScanDeviceRespDTO;
-import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
+import com.xiaolian.amigo.data.vo.ScanDeviceGroup;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IChooseDispenerView;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IChooseDispenserPresenter;
@@ -39,10 +37,8 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
         implements IChooseDispenserPresenter<V> {
 
     private static final String TAG = ChooseDispenserPresenter.class.getSimpleName();
-    private IFavoriteManager favoriteManager;
-    private ITradeDataManager tradeDataManager;
     private IBleDataManager bleDataManager;
-    private ISharedPreferencesHelp sharedPreferencesHelp;
+    private IDeviceDataManager deviceDataManager;
     private int action;
     /**
      * 列表显示的是附近列表还是收藏列表
@@ -52,24 +48,19 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
     private boolean listStatus = false;
 
     @Inject
-    ChooseDispenserPresenter(IFavoriteManager favoriteManager,
-                             ITradeDataManager tradeDataManager,
-                             IBleDataManager bleDataManager,
-                             ISharedPreferencesHelp sharedPreferencesHelp) {
+    ChooseDispenserPresenter(IBleDataManager bleDataManager, IDeviceDataManager deviceDataManager) {
         super();
-        this.favoriteManager = favoriteManager;
-        this.tradeDataManager = tradeDataManager;
         this.bleDataManager = bleDataManager;
-        this.sharedPreferencesHelp = sharedPreferencesHelp;
+        this.deviceDataManager = deviceDataManager;
     }
 
     @Override
     public void requestFavorites() {
         SimpleQueryReqDTO reqDTO = new SimpleQueryReqDTO();
         // 查看收藏设备列表
-        addObserver(favoriteManager.queryFavorites(reqDTO), new NetworkObserver<ApiResult<ScanDeviceRespDTO>>(false, true) {
+        addObserver(deviceDataManager.queryFavorites(reqDTO), new NetworkObserver<ApiResult<QueryWaterListRespDTO>>(false, true) {
             @Override
-            public void onReady(ApiResult<ScanDeviceRespDTO> result) {
+            public void onReady(ApiResult<QueryWaterListRespDTO> result) {
                 if (!isListStatus()) {
                     return;
                 }
@@ -79,7 +70,7 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
                 if (null == result.getError()) {
                     if (null != result.getData().getDevices() && result.getData().getDevices().size() > 0) {
                         List<ChooseDispenserAdaptor.DispenserWrapper> wrappers = new ArrayList<>();
-                        for (ScanDeviceGroup device : result.getData().getDevices()) {
+                        for (WaterInListDTO device : result.getData().getDevices()) {
                             wrappers.add(new ChooseDispenserAdaptor.DispenserWrapper(device));
                         }
                         getMvpView().addMore(wrappers);
@@ -138,18 +129,14 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
                 }
 
                 String macAddress = result.getBleDevice().getMacAddress();
-
-                String[] temp = macAddress.split(":");
-                StringBuilder deviceNo = new StringBuilder(temp[temp.length - 3]);
-                deviceNo.append(temp[temp.length - 2]);
-                deviceNo.append(temp[temp.length - 1]);
-                if (TextUtils.isEmpty(sharedPreferencesHelp.getMacAddressByDeviceNo(deviceNo.toString()))) {
-                    sharedPreferencesHelp.setDeviceNoAndMacAddress(deviceNo.toString(), macAddress);
+                String deviceNo = result.getBleDevice().getName();
+                if (TextUtils.isEmpty(deviceDataManager.getMacAddressByDeviceNo(deviceNo))) {
+                    deviceDataManager.setDeviceNoAndMacAddress(deviceNo, macAddress);
                 }
 
-                if (!existDevices.contains(deviceNo.toString())
-                        && !scanDevices.contains(deviceNo.toString())) { // 如果已经在上报的集合中，忽略
-                    scanDevices.add(deviceNo.toString());
+                if (!existDevices.contains(deviceNo)
+                        && !scanDevices.contains(deviceNo)) { // 如果已经在上报的集合中，忽略
+                    scanDevices.add(deviceNo);
                 }
 
                 long now = System.currentTimeMillis();
@@ -218,16 +205,20 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
 
     // 网络请求蓝牙扫描到的结果
     private void handleScanDevices(List<String> macAddresses) {
-        ScanDeviceReqDTO scanDeviceReqDTO = new ScanDeviceReqDTO();
-        scanDeviceReqDTO.setMacAddresses(macAddresses);
-        addObserver(tradeDataManager.handleScanDevices(scanDeviceReqDTO), new NetworkObserver<ApiResult<ScanDeviceRespDTO>>(false) {
+        QueryWaterListReqDTO reqDTO = new QueryWaterListReqDTO();
+        reqDTO.setMacAddresses(macAddresses);
+        addObserver(deviceDataManager.handleScanDevices(reqDTO), new NetworkObserver<ApiResult<QueryWaterListRespDTO>>(false) {
             @Override
-            public void onReady(ApiResult<ScanDeviceRespDTO> result) {
+            public void onReady(ApiResult<QueryWaterListRespDTO> result) {
                 if (null == result.getError()) {
                     if (result.getData().getDevices() != null && !result.getData().getDevices().isEmpty()) {
+                        List<ScanDeviceGroup> devices = new ArrayList<>();
+                        for (WaterInListDTO waterInListDTO : result.getData().getDevices()) {
+                            devices.add(waterInListDTO.transform());
+                        }
                         getMvpView().post(() -> getMvpView().completeRefresh());
                         getMvpView().post(() ->
-                                getMvpView().addScanDevices(result.getData().getDevices()));
+                                getMvpView().addScanDevices(devices));
                     }
                 }
             }

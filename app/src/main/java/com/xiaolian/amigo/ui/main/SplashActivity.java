@@ -7,13 +7,12 @@ import android.support.annotation.Nullable;
 import android.widget.ImageView;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.data.network.model.dto.response.BannerDTO;
+import com.xiaolian.amigo.data.network.model.system.BannerDTO;
 import com.xiaolian.amigo.ui.main.intf.ISplashPresenter;
 import com.xiaolian.amigo.ui.main.intf.ISplashView;
 import com.xiaolian.amigo.util.Log;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 

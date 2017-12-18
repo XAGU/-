@@ -1,17 +1,12 @@
 package com.xiaolian.amigo.ui.device;
 
 import com.xiaolian.amigo.data.manager.intf.IBleDataManager;
-import com.xiaolian.amigo.data.manager.intf.IClientServiceDataManager;
 import com.xiaolian.amigo.data.manager.intf.IDeviceDataManager;
-import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
-import com.xiaolian.amigo.data.manager.intf.ITradeDataManager;
-import com.xiaolian.amigo.data.manager.intf.IWalletDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.order.QueryPrepayOptionReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.CsMobileRespDTO;
+import com.xiaolian.amigo.data.network.model.cs.CsMobileRespDTO;
 import com.xiaolian.amigo.data.network.model.order.OrderPreInfoDTO;
 import com.xiaolian.amigo.data.network.model.funds.PersonalWalletDTO;
-import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.ui.device.intf.IWaterDeviceBasePresenter;
 import com.xiaolian.amigo.ui.device.intf.IWaterDeviceBaseView;
 

@@ -1,6 +1,6 @@
-package com.xiaolian.amigo.data.network.model.dto.response;
+package com.xiaolian.amigo.data.network.model.trade;
 
-import com.xiaolian.amigo.data.network.model.device.ScanDeviceGroup;
+import com.xiaolian.amigo.data.vo.ScanDeviceGroup;
 
 import java.util.List;
 
