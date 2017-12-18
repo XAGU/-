@@ -115,7 +115,6 @@ public class EditDormitoryActivity extends UserBaseListActivity implements IEdit
 
     @Override
     protected void setRecyclerView(RecyclerView recyclerView) {
-        // TODO 宿舍列表 没有设备时添加（无设备）
         adaptor = new EditDormitoryAdaptor(this, R.layout.item_dormitory, items);
         adaptor.setOnItemClickListener((userResidenceWrapper, position) -> {
             presenter.updateResidenceId(userResidenceWrapper.getResidenceId());

@@ -183,6 +183,12 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
         }
     }
 
+    @OnClick(R.id.tv_order_no_use_tip)
+    public void toNoUseHelp() {
+        startActivity(new Intent(this, WebActivity.class)
+                .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_NO_USE_HELP));
+    }
+
     @Override
     public void toComplaint() {
         startActivity(new Intent(this, WebActivity.class)

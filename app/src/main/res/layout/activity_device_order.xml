@@ -89,6 +89,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
+                <TextView
+                    android:id="@+id/tv_order_no_use_tip"
+                    android:layout_width="wrap_content"
+                    android:gravity="center"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:paddingTop="14dp"
+                    android:paddingBottom="14dp"
+                    android:layout_marginBottom="7dp"
+                    android:text="@string/order_no_use_tip"
+                    android:textColor="#999"
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
