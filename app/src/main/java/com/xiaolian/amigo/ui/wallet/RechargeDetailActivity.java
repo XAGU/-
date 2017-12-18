@@ -134,7 +134,7 @@ public class RechargeDetailActivity extends WalletBaseActivity implements IRecha
         }
 
         if (RechargeStatus.getRechargeStatus(data.getStatus())
-                == RechargeStatus.WITHDRAWAL_FAIL && !TextUtils.isEmpty(data.getReason())) {
+                == RechargeStatus.RECHAREGE_FAIL && !TextUtils.isEmpty(data.getReason())) {
             tv_reason_top.setVisibility(View.VISIBLE);
             tv_reason_top.setText(data.getReason());
         }
@@ -160,7 +160,7 @@ public class RechargeDetailActivity extends WalletBaseActivity implements IRecha
                             .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_HELP));
                     break;
                 case AUDIT_FAIL:
-                case WITHDRAWAL_FAIL:
+                case RECHAREGE_FAIL:
                     CommonUtil.call(RechargeDetailActivity.this, data.getCsMobile());
                     break;
                 default:

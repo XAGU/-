@@ -56,7 +56,7 @@ public enum WithdrawalStatus {
     WITHDRAWAL_SUCCESS(4, "提现成功") {
         @Override
         public int getColorRes() {
-            return R.color.device_dispenser;
+            return R.color.colorBlue;
         }
 
         @Override

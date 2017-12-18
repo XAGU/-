@@ -49,7 +49,7 @@ public enum  RechargeStatus {
             return new String[] {COMMON_PROBLEM, "我要投诉"};
         }
     },
-    WITHDRAWAL_SUCCESS(4, "充值成功") {
+    RECHARGE_SUCCESS(4, "充值成功") {
         @Override
         public int getColorRes() {
             return R.color.device_dispenser;
@@ -59,7 +59,7 @@ public enum  RechargeStatus {
             return new String[] {COMMON_PROBLEM, "我要投诉"};
         }
     },
-    WITHDRAWAL_FAIL(5, "充值失败") {
+    RECHARGE_FAIL(5, "充值失败") {
         @Override
         public int getColorRes() {
             return R.color.colorFullRed;
@@ -69,7 +69,8 @@ public enum  RechargeStatus {
         public String[] getNextOperations() {
             return new String[] {COMMON_PROBLEM, "联系客服"};
         }
-    };
+    }
+    ;
     private static final String COMMON_PROBLEM = "常见问题";
     private int type;
     private String desc;
