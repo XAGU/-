@@ -14,5 +14,5 @@ import java.util.List;
 public interface IChooseDormitoryView extends IBaseListView {
     void addMore(List<EditDormitoryAdaptor.UserResidenceWrapper> wrappers);
 
-    void backToDevice(Long residenceId, String macAddress, String location);
+    void backToDevice(Long residenceId, String macAddress, Long supplierId, String location);
 }

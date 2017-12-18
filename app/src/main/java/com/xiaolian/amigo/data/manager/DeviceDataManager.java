@@ -28,6 +28,9 @@ import com.xiaolian.amigo.data.network.model.trade.ConnectCommandRespDTO;
 import com.xiaolian.amigo.data.network.model.trade.PayReqDTO;
 import com.xiaolian.amigo.data.network.model.trade.PayRespDTO;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
+import com.xiaolian.amigo.data.vo.DeviceCategory;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -192,5 +195,10 @@ public class DeviceDataManager implements IDeviceDataManager {
     @Override
     public Observable<ApiResult<QueryFavorDeviceRespDTO>> getFavorites(QueryDeviceListReqDTO reqDTO) {
         return deviceApi.getFavorites(reqDTO);
+    }
+
+    @Override
+    public List<DeviceCategory> getDeviceCategory() {
+        return sharedPreferencesHelp.getDeviceCategory();
     }
 }

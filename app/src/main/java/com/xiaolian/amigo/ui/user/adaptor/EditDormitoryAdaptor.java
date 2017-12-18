@@ -112,6 +112,7 @@ public class EditDormitoryAdaptor extends CommonAdapter<EditDormitoryAdaptor.Use
         private Long residenceId;
         private String residenceName;
         private String macAddress;
+        private Long supplierId;
         private boolean isDefault = false;
         private boolean exist = true;
 
@@ -124,6 +125,7 @@ public class EditDormitoryAdaptor extends CommonAdapter<EditDormitoryAdaptor.Use
             this.residenceId = residence.getResidenceId();
             this.residenceName = residence.getResidenceName();
             this.macAddress = residence.getMacAddress();
+            this.supplierId = residence.getSupplierId();
         }
     }
 

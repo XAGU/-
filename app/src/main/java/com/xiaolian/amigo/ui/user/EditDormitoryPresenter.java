@@ -10,6 +10,7 @@ import com.xiaolian.amigo.data.network.model.user.DeleteResidenceRespDTO;
 import com.xiaolian.amigo.data.network.model.login.EntireUserDTO;
 import com.xiaolian.amigo.data.network.model.user.QueryUserResidenceListRespDTO;
 import com.xiaolian.amigo.data.network.model.user.UserResidenceDTO;
+import com.xiaolian.amigo.data.network.model.user.UserResidenceInListDTO;
 import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.data.network.model.user.UserResidence;
 import com.xiaolian.amigo.ui.base.BasePresenter;
@@ -55,8 +56,8 @@ public class EditDormitoryPresenter<V extends IEditDormitoryView> extends BasePr
                 if (null == result.getError()) {
                     if (result.getData().getUserResidences() != null && result.getData().getUserResidences().size() > 0) {
                         List<EditDormitoryAdaptor.UserResidenceWrapper> wrappers = new ArrayList<>();
-                        for (UserResidence userResidence : result.getData().getUserResidences()) {
-                            wrappers.add(new EditDormitoryAdaptor.UserResidenceWrapper(userResidence,
+                        for (UserResidenceInListDTO userResidence : result.getData().getUserResidences()) {
+                            wrappers.add(new EditDormitoryAdaptor.UserResidenceWrapper(userResidence.transform(),
                                     CommonUtil.equals(userResidence.getResidenceId(),
                                             userDataManager.getUser().getResidenceId())));
                         }

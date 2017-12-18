@@ -105,7 +105,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     // 结束洗澡
     @BindView(R.id.bt_stop_shower)
     Button bt_stop_shower;
-    // 滑动按钮
+    // 滑动结账
     @BindView(R.id.slideView)
     SlideUnlockView slideView;
     // 布局头部
@@ -191,6 +191,8 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     // 设备位置id
     private Long residenceId;
     private boolean homePageJump;
+    // 供应商id
+    private Long supplierId;
     // 标记是否为恢复用水
     private boolean recorvery;
     private CountDownTimer timer;
@@ -234,7 +236,8 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             macAddress = getIntent().getStringExtra(MainActivity.INTENT_KEY_MAC_ADDRESS);
             deviceType = getIntent().getIntExtra(MainActivity.INTENT_KEY_DEVICE_TYPE, 1);
             location = getIntent().getStringExtra(MainActivity.INTENT_KEY_LOCATION);
-            residenceId = getIntent().getLongExtra(MainActivity.INTENT_KEY_RESIDENCE_ID, 0L);
+            residenceId = getIntent().getLongExtra(MainActivity.INTENT_KEY_RESIDENCE_ID, -1L);
+            supplierId = getIntent().getLongExtra(MainActivity.INTENT_KEY_SUPPLIER_ID, -1L);
             homePageJump = getIntent().getBooleanExtra(INTENT_HOME_PAGE_JUMP, true);
             recorvery = getIntent().getBooleanExtra(MainActivity.INTENT_KEY_RECOVERY, false);
             OrderPreInfoDTO orderPreInfo = getIntent().getParcelableExtra(INTENT_PREPAY_INFO);
@@ -273,6 +276,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
     private void initPresenter() {
         presenter = setPresenter();
+        presenter.setSupplierId(supplierId);
     }
 
     private void initView() {
@@ -878,6 +882,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                 }
                 String chosenLocation = data.getStringExtra(MainActivity.INTENT_KEY_LOCATION);
                 String chosenMacAddress = data.getStringExtra(MainActivity.INTENT_KEY_MAC_ADDRESS);
+                Long chosenSupplierId = data.getLongExtra(MainActivity.INTENT_KEY_SUPPLIER_ID, -1);
                 Long chosenResidenceId = data.getLongExtra(MainActivity.INTENT_KEY_RESIDENCE_ID, -1);
                 if (TextUtils.equals(chosenMacAddress, this.macAddress)
                         || TextUtils.isEmpty(chosenLocation)
@@ -897,7 +902,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                 presenter.resetSubscriptions(); // 此步骤非常重要，不加会造成重连请求掉进黑洞的现象
                 presenter.resetContext();
                 this.macAddress = chosenMacAddress;
-                presenter.onConnect(chosenMacAddress);
+                presenter.onConnect(chosenMacAddress, chosenSupplierId);
             }
         } else if (requestCode == REQUEST_CODE_RECHARGE) {
             presenter.queryPrepayOption(deviceType);

@@ -133,6 +133,7 @@ public class PrepayOrderActivity extends WalletBaseActivity implements IPrepayOr
         }
         intent.putExtra(MainActivity.INTENT_KEY_LOCATION, location);
         intent.putExtra(MainActivity.INTENT_KEY_MAC_ADDRESS, macAddress);
+        intent.putExtra(MainActivity.INTENT_KEY_SUPPLIER_ID, orderWrapper.getSupplierId());
         intent.putExtra(WaterDeviceBaseActivity.INTENT_HOME_PAGE_JUMP, false);
         intent.putExtra(DispenserActivity.INTENT_KEY_ID, orderWrapper.getResidenceId());
         intent.putExtra(MainActivity.INTENT_KEY_RESIDENCE_ID, orderWrapper.getResidenceId());

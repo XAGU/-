@@ -34,7 +34,8 @@ public interface IMainPresenter<V extends IMainView> extends IBasePresenter<V> {
 
     void setShowUrgencyNotify(boolean isShow);
 
-    void gotoHeaterDevice(String defaultMacAddress, String location, Long residenceId);
+    void gotoHeaterDevice(String defaultMacAddress, Long defaultSupplierId,
+                          String location, Long residenceId);
 
     boolean checkDefaultDormitoryExist();
 

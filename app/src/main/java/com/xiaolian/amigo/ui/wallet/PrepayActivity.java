@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.ui.main.MainActivity;
 import com.xiaolian.amigo.ui.wallet.adaptor.PrepayAdaptor;
 import com.xiaolian.amigo.ui.wallet.intf.IPrepayPresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IPrepayView;

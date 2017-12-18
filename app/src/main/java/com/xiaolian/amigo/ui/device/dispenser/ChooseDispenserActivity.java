@@ -88,13 +88,13 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
         presenter.setDeviceType(deviceType);
         adaptor = new ChooseDispenserAdaptor(this, R.layout.item_dispenser,
                 items, Device.getDevice(deviceType) == Device.DISPENSER);
-        adaptor.setOnItemClickListener((deviceNo, isFavor, residenceId, usefor, location) -> {
+        adaptor.setOnItemClickListener((deviceNo, supplierId, isFavor, residenceId, usefor, location) -> {
             if (Device.getDevice(deviceType) == Device.DISPENSER) {
                 presenter.closeBleConnection();
-                presenter.gotoDispenser(deviceNo, isFavor, residenceId, usefor, location);
+                presenter.gotoDispenser(deviceNo, supplierId, isFavor, residenceId, usefor, location);
             } else if (Device.getDevice(deviceType) == Device.DRYER) {
                 presenter.closeBleConnection();
-                presenter.gotoDryer(deviceNo, isFavor, residenceId, location);
+                presenter.gotoDryer(deviceNo, supplierId, isFavor, residenceId, location);
             }
         });
         recyclerView = findViewById(R.id.recyclerView);
@@ -291,10 +291,11 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
     }
 
     @Override
-    public void gotoDispenser(String macAddress, boolean favor, Long residenceId, String usefor, String location) {
+    public void gotoDispenser(String macAddress, Long supplierId, boolean favor, Long residenceId, String usefor, String location) {
         startActivity(new Intent(this, DispenserActivity.class)
                 .putExtra(MainActivity.INTENT_KEY_MAC_ADDRESS,
                         macAddress)
+                .putExtra(MainActivity.INTENT_KEY_SUPPLIER_ID, supplierId)
                 .putExtra(DispenserActivity.INTENT_KEY_FAVOR,
                         favor)
                 .putExtra(DispenserActivity.INTENT_KEY_ID,
@@ -308,10 +309,11 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
     }
 
     @Override
-    public void gotoDryer(String deviceNo, Boolean isFavor, Long residenceId, String location) {
+    public void gotoDryer(String deviceNo, Long supplierId, Boolean isFavor, Long residenceId, String location) {
         startActivity(new Intent(this, DryerActivity.class)
                 .putExtra(MainActivity.INTENT_KEY_MAC_ADDRESS,
                         deviceNo)
+                .putExtra(MainActivity.INTENT_KEY_SUPPLIER_ID, supplierId)
                 .putExtra(DispenserActivity.INTENT_KEY_FAVOR,
                         isFavor)
                 .putExtra(DispenserActivity.INTENT_KEY_ID,

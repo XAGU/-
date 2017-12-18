@@ -20,6 +20,8 @@ public interface IDevicePresenter<V extends IBaseView> extends IBasePresenter<V>
     // 连接设备
     void onConnect(@NonNull String macAddress);
 
+    void onConnect(@NonNull String macAddress, Long supplierId);
+
     // 重新连接设备
     void onReconnect(@NonNull String macAddress);
 
@@ -67,4 +69,7 @@ public interface IDevicePresenter<V extends IBaseView> extends IBasePresenter<V>
 
     // 标识是否从首页跳转
     void setHomePageJump(boolean homePageJump);
+
+    // 设置供应商
+    void setSupplierId(Long supplierId);
 }

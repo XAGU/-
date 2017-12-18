@@ -15,11 +15,13 @@ import lombok.Data;
 public class DeviceCheckRespDTO {
     // 默认宿舍设备的macAddress
     private String defaultMacAddress;
+    private Long defaultSupplierId;
     // 是否存在2小时内未找零的账单
     private Boolean existsUnsettledOrder;
     private String extra;
     // 未找零设备的macAddress
     private String unsettledMacAddress;
+    private Long unsettledSupplierId;
     private String location;
     private String remark;
     private Boolean timeValid;
