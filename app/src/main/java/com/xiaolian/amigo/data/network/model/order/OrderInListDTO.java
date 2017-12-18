@@ -51,6 +51,8 @@ public class OrderInListDTO implements Mapper<Order> {
     // 是否是最低消费
     private Boolean lowest;
     private Long residenceId;
+    // 供应商id
+    private Long supplierId;
 
     @Override
     public Order transform() {
@@ -76,6 +78,7 @@ public class OrderInListDTO implements Mapper<Order> {
         order.setId(id);
         order.setLowest(lowest);
         order.setResidenceId(residenceId);
+        order.setSupplierId(supplierId);
         return order;
     }
 }

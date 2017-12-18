@@ -52,4 +52,6 @@ public class Order implements Serializable {
     private Boolean lowest;
     // residenceId
     private Long residenceId;
+    // 供应商
+    private Long supplierId;
 }

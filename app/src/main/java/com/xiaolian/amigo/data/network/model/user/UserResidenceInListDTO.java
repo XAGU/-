@@ -12,4 +12,6 @@ public class UserResidenceInListDTO {
     private Long id;
     private Long residenceId;
     private String residenceName;
+    private String macAddress;
+    private Long supplierId;
 }

@@ -2,6 +2,8 @@ package com.xiaolian.amigo.data.network.model.device;
 
 import com.xiaolian.amigo.data.vo.Bonus;
 
+import java.util.List;
+
 import lombok.Data;
 
 /**
@@ -40,4 +42,6 @@ public class DeviceCheckRespDTO {
     private Double balance;
     // 客服电话
     private String csMobile;
+    // 供应商相关模型
+    private List<DeviceCategoryBO> devices;
 }

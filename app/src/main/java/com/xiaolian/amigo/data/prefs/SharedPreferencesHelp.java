@@ -5,9 +5,14 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.xiaolian.amigo.data.network.model.user.UploadUserDeviceInfoReqDTO;
+import com.xiaolian.amigo.data.vo.DeviceCategory;
 import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.di.ApplicationContext;
+
+import java.util.Collections;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -46,6 +51,7 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     private static final String PREF_LAST_WITHDRAW_NAME = "PREF_LAST_WITHDRAW_NAME";
     private static final String PREF_LAST_RECHARGE_AMOUNT = "PREF_LAST_RECHARGE_AMOUNT";
     private static final String PREF_UPLOADED_USER_DEVICE_INFO = "PREF_UPLOADED_USER_DEVICE_INFO";
+    private static final String PREF_KEY_DEVICE_CATEGORY = "PREF_KEY_DEVICE_CATEGORY";
     /************* 引导页相关 *******************/
     private static final String PREF_GUIDE_NAME = "PREF_GUIDE_NAME";
     private static final String PREF_GUIDE_MAIN = "PREF_GUIDE_MAIN";
@@ -339,6 +345,26 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
             return mGson.fromJson(deviceInfoStr, UploadUserDeviceInfoReqDTO.class);
         }
         return null;
+    }
+
+    @Override
+    public void saveDeviceCategory(List<DeviceCategory> devices) {
+        String deviceCategoryStr = mGson.toJson(devices);
+        mSharedPreferences
+                .edit()
+                .putString(PREF_KEY_DEVICE_CATEGORY, deviceCategoryStr)
+                .apply();
+    }
+
+    @Override
+    public List<DeviceCategory> getDeviceCategory() {
+        String deviceCategoryStr = mSharedPreferences.getString(PREF_KEY_DEVICE_CATEGORY, null);
+        if (null != deviceCategoryStr) {
+            return mGson.fromJson(deviceCategoryStr,
+                    new TypeToken<List<DeviceCategory>>() {
+                    }.getType());
+        }
+        return Collections.emptyList();
     }
 
     @Override
