@@ -1,5 +1,7 @@
 package com.xiaolian.amigo.ui.device;
 
+import android.text.TextUtils;
+
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
@@ -35,7 +37,9 @@ public class DeviceOrderPresenter<V extends IDeviceOrderView> extends BasePresen
             @Override
             public void onReady(ApiResult<OrderDetailRespDTO> result) {
                 if (null == result.getError()) {
-                    if (result.getData().getLowest() != null && result.getData().getLowest()) {
+                    if (result.getData().getLowest() != null
+                            && result.getData().getLowest()
+                            && TextUtils.isEmpty(result.getData().getBonus())) {
                         getMvpView().showNoUseTip();
                     }
                     getMvpView().setRefreshComplete(result.getData());

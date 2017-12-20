@@ -1,5 +1,7 @@
 package com.xiaolian.amigo.ui.order;
 
+import android.text.TextUtils;
+
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
@@ -60,7 +62,9 @@ public class OrderDetailPresenter<V extends IOrderDetailView> extends BasePresen
             @Override
             public void onReady(ApiResult<OrderDetailRespDTO> result) {
                 if (null == result.getError()) {
-                    if (result.getData().getLowest() != null && result.getData().getLowest()) {
+                    if (result.getData().getLowest() != null
+                            && result.getData().getLowest()
+                            && TextUtils.isEmpty(result.getData().getBonus())) {
                         getMvpView().showNoUseTip();
                     }
                     order = result.getData();
