@@ -537,12 +537,10 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             } else { // 结算页面重连
                 Log.i(TAG, "当前为结算页面重连");
                 waitOrderCheckResult();
-                synchronized (orderStatusLock) {
-                    // 如果查询订单时出现错误，显示连接错误并跳过之后的步骤
-                    if (checkOrderErrorFlag) {
-                        checkOrderErrorFlag = false;
-                        return;
-                    }
+                // 如果查询订单时出现错误，显示连接错误并跳过之后的步骤
+                if (checkOrderErrorFlag) {
+                    checkOrderErrorFlag = false;
+                    return;
                 }
                 if (null == orderStatus || orderStatus.getStatus() == null) {
                     Log.wtf(TAG, "查不到对应的未结账订单，不应该发生此种状况！！！");
@@ -572,12 +570,10 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
             // 查询订单状态
             waitOrderCheckResult();
-            synchronized (orderStatusLock) {
-                // 如果查询订单时出现错误，显示连接错误并跳过之后的步骤
-                if (checkOrderErrorFlag) {
-                    checkOrderErrorFlag = false;
-                    return;
-                }
+            // 如果查询订单时出现错误，显示连接错误并跳过之后的步骤
+            if (checkOrderErrorFlag) {
+                checkOrderErrorFlag = false;
+                return;
             }
             // String savedConnectCmd = sharedPreferencesHelp.getConnectCmd(currentMacAddress);
             // Log.i(TAG, "获取已保存的握手指令：" + savedConnectCmd);
