@@ -25,6 +25,8 @@ public class DeviceInListDTO implements Mapper<ScanDevice> {
 
     private String usefor;
 
+    private String name;
+
     @Override
     public ScanDevice transform() {
         ScanDevice scanDevice = new ScanDevice();
@@ -35,6 +37,7 @@ public class DeviceInListDTO implements Mapper<ScanDevice> {
         scanDevice.setPrice(price);
         scanDevice.setPulse(pulse);
         scanDevice.setUsefor(usefor);
+        scanDevice.setName(name);
         return scanDevice;
     }
 }

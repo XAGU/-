@@ -1,10 +1,13 @@
 package com.xiaolian.amigo.ui.order;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.complaint.CheckComplaintReqDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
+import com.xiaolian.amigo.data.network.model.order.OrderDetailReqDTO;
+import com.xiaolian.amigo.data.network.model.order.OrderDetailRespDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.order.intf.IOrderDetailPresenter;
 import com.xiaolian.amigo.ui.order.intf.IOrderDetailView;
@@ -19,6 +22,7 @@ import javax.inject.Inject;
 public class OrderDetailPresenter<V extends IOrderDetailView> extends BasePresenter<V>
     implements IOrderDetailPresenter<V> {
     private IOrderDataManager orderDataManager;
+    private OrderDetailRespDTO order;
 
     @Inject
     public OrderDetailPresenter(IOrderDataManager orderDataManager) {
@@ -26,10 +30,10 @@ public class OrderDetailPresenter<V extends IOrderDetailView> extends BasePresen
     }
 
     @Override
-    public void checkComplaint(Long orderId, Integer orderType) {
+    public void checkComplaint() {
         CheckComplaintReqDTO reqDTO = new CheckComplaintReqDTO();
-        reqDTO.setOrderId(orderId);
-        reqDTO.setOrderType(orderType);
+        reqDTO.setOrderId(order.getId());
+        reqDTO.setOrderType(Device.getDevice(order.getDeviceType()).getType());
         addObserver(orderDataManager.checkComplaint(reqDTO), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
 
             @Override
@@ -45,5 +49,36 @@ public class OrderDetailPresenter<V extends IOrderDetailView> extends BasePresen
                 }
             }
         });
+    }
+
+    @Override
+    public void getOrder(Long orderId) {
+        OrderDetailReqDTO reqDTO = new OrderDetailReqDTO();
+        reqDTO.setId(orderId);
+
+        addObserver(orderDataManager.queryOrderDetail(reqDTO), new NetworkObserver<ApiResult<OrderDetailRespDTO>>() {
+            @Override
+            public void onReady(ApiResult<OrderDetailRespDTO> result) {
+                if (null == result.getError()) {
+                    if (result.getData().getLowest() != null && result.getData().getLowest()) {
+                        getMvpView().showNoUseTip();
+                    }
+                    order = result.getData();
+                    getMvpView().renderView(result.getData());
+                } else {
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+        });
+    }
+
+    @Override
+    public String getToken() {
+        return orderDataManager.getToken();
+    }
+
+    @Override
+    public OrderDetailRespDTO getOrder() {
+        return order;
     }
 }

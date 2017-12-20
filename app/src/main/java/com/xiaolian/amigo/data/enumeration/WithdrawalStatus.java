@@ -17,7 +17,7 @@ public enum WithdrawalStatus {
 
         @Override
         public String[] getNextOperations() {
-            return new String[] {COMMON_PROBLEM, "我要投诉"};
+            return new String[] {COMMON_PROBLEM, TO_COMPLAIN};
         }
     },
     AUDIT_PENDING(1, "正在处理") {
@@ -39,7 +39,7 @@ public enum WithdrawalStatus {
 
         @Override
         public String[] getNextOperations() {
-            return new String[] {COMMON_PROBLEM, "联系客服"};
+            return new String[] {COMMON_PROBLEM, CONTACT_CUSTOMER_SERVICE};
         }
     },
     THIRD_PENDING(3, "等待支付确认") {
@@ -50,7 +50,7 @@ public enum WithdrawalStatus {
 
         @Override
         public String[] getNextOperations() {
-            return new String[] {COMMON_PROBLEM, "我要投诉"};
+            return new String[] {COMMON_PROBLEM, TO_COMPLAIN};
         }
     },
     WITHDRAWAL_SUCCESS(4, "提现成功") {
@@ -61,7 +61,7 @@ public enum WithdrawalStatus {
 
         @Override
         public String[] getNextOperations() {
-            return new String[] {COMMON_PROBLEM, "我要投诉"};
+            return new String[] {COMMON_PROBLEM, TO_COMPLAIN};
         }
     },
     WITHDRAWAL_FAIL(5, "提现失败") {
@@ -72,7 +72,7 @@ public enum WithdrawalStatus {
 
         @Override
         public String[] getNextOperations() {
-            return new String[] {COMMON_PROBLEM, "联系客服"};
+            return new String[] {COMMON_PROBLEM, CONTACT_CUSTOMER_SERVICE};
         }
     },
     WITHDRAWAL_CANCEL(6, "取消提现") {
@@ -83,10 +83,12 @@ public enum WithdrawalStatus {
 
         @Override
         public String[] getNextOperations() {
-            return new String[] {COMMON_PROBLEM, "联系客服"};
+            return new String[] {COMMON_PROBLEM, CONTACT_CUSTOMER_SERVICE};
         }
     };
     private static final String COMMON_PROBLEM = "常见问题";
+    private static final String CONTACT_CUSTOMER_SERVICE = "联系客服";
+    private static final String TO_COMPLAIN = "我要投诉";
     private int type;
     private String desc;
 

@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.order.intf;
 
+import com.xiaolian.amigo.data.network.model.order.OrderDetailRespDTO;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 
 /**
@@ -7,8 +8,9 @@ import com.xiaolian.amigo.ui.base.intf.IBaseView;
  */
 public interface IOrderDetailView extends IBaseView {
 
-    // 渲染订单详情
-    void render();
-
     void toComplaint();
+
+    void renderView(OrderDetailRespDTO data);
+
+    void showNoUseTip();
 }

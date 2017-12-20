@@ -39,11 +39,18 @@ public class WithdrawalAdaptor extends CommonAdapter<WithdrawalAdaptor.Withdrawa
                     ContextCompat.getColor(context,
                             WithdrawalStatus.getWithdrawalStatus(withdrawalWrapper.getStatus()).getColorRes()));
         } else {
-            holder.setText(R.id.tv_withdrawal_status,
-                    RechargeStatus.getRechargeStatus(withdrawalWrapper.getStatus()).getDesc());
-            holder.setTextColor(R.id.tv_withdrawal_status,
-                    ContextCompat.getColor(context,
-                            RechargeStatus.getRechargeStatus(withdrawalWrapper.getStatus()).getColorRes()));
+            if (withdrawalWrapper.getInstead() != null && withdrawalWrapper.getInstead()) {
+                holder.setText(R.id.tv_withdrawal_status, RechargeStatus.BEHALF_OF_RECHARGE.getDesc());
+                holder.setTextColor(R.id.tv_withdrawal_status,
+                        ContextCompat.getColor(context,
+                                RechargeStatus.BEHALF_OF_RECHARGE.getColorRes()));
+            } else {
+                holder.setText(R.id.tv_withdrawal_status,
+                        RechargeStatus.getRechargeStatus(withdrawalWrapper.getStatus()).getDesc());
+                holder.setTextColor(R.id.tv_withdrawal_status,
+                        ContextCompat.getColor(context,
+                                RechargeStatus.getRechargeStatus(withdrawalWrapper.getStatus()).getColorRes()));
+            }
         }
         holder.setText(R.id.tv_withdrawal_time, TimeUtils.millis2String(withdrawalWrapper.getTime()));
     }
@@ -55,6 +62,8 @@ public class WithdrawalAdaptor extends CommonAdapter<WithdrawalAdaptor.Withdrawa
         private Integer type;
         private int status;
         private Long id;
+        // 是否是代充值
+        private Boolean instead;
 
         public WithdrawalWrapper(FundsInListDTO dto) {
             this.id = dto.getId();
@@ -63,6 +72,7 @@ public class WithdrawalAdaptor extends CommonAdapter<WithdrawalAdaptor.Withdrawa
             this.title = WithdrawOperationType.getOperationType(dto.getOperationType()).getDesc()
                             + "：¥" + dto.getAmount();
             this.status = dto.getStatus();
+            this.instead = dto.getInstead();
         }
     }
 }

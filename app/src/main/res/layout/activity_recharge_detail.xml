@@ -23,6 +23,7 @@
             android:id="@+id/tv_status"
             android:textSize="14sp"
             android:gravity="center"
+            tool:text="test"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -32,6 +33,8 @@
             android:id="@+id/tv_reason_top"
             android:visibility="gone"
             android:textSize="12sp"
+            tool:text="test"
+            tool:visibility="visible"
             android:textColor="@color/colorDarkB"
             android:gravity="center"
             android:layout_width="match_parent"

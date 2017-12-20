@@ -35,6 +35,9 @@ public class DeviceOrderPresenter<V extends IDeviceOrderView> extends BasePresen
             @Override
             public void onReady(ApiResult<OrderDetailRespDTO> result) {
                 if (null == result.getError()) {
+                    if (result.getData().getLowest() != null && result.getData().getLowest()) {
+                        getMvpView().showNoUseTip();
+                    }
                     getMvpView().setRefreshComplete(result.getData());
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());

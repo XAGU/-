@@ -3,6 +3,7 @@ package com.xiaolian.amigo.ui.device.dispenser;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +31,6 @@ import lombok.Data;
 public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenserAdaptor.ViewHolder> {
     private int lastExpandPosition = -1;
     private List<ChooseDispenserAdaptor.DispenserWrapper> mData;
-    private Context context;
     private int layoutId;
     private IChooseDispenserPresenter<IChooseDispenerView> presenter;
     private OrderPreInfoDTO orderPreInfo;
@@ -39,7 +39,6 @@ public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenser
                                   List<DispenserWrapper> datas ,
                                   IChooseDispenserPresenter<IChooseDispenerView> presenter,
                                   OrderPreInfoDTO orderPreInfo) {
-        this.context = context;
         this.mData = datas;
         this.layoutId = layoutId;
         this.presenter = presenter;
@@ -58,13 +57,10 @@ public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenser
                 mData.get(holder.getAdapterPosition());
         holder.tv_location.setText(dispenserWrapper.getLocation());
         holder.rl_top.setOnClickListener(v -> {
-//                if (mOnItemClickListener != null) {
-//                    mOnItemClickListener.onItemClick(v, position);
-//                }
             if (lastExpandPosition != -1) {
                 mData.get(lastExpandPosition).setExpanded(false);
             }
-            boolean expand = false;
+            boolean expand;
             if (lastExpandPosition == holder.getAdapterPosition()) {
                 expand = false;
                 mData.get(holder.getAdapterPosition()).setExpanded(false);
@@ -101,9 +97,14 @@ public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenser
         }
         for (int i = 0; i < dispenserWrapper.getDeviceGroup().getWater().size(); i ++) {
             final int waterPosition = i;
-            holder.tv_water[i].setText(
-                    DispenserWater.getTemperature(dispenserWrapper.getDeviceGroup().getWater()
-                            .get(i).getUsefor()).getDesc());
+            String tempName = dispenserWrapper.getDeviceGroup().getWater().get(i).getName();
+            if (TextUtils.isEmpty(tempName)) {
+                holder.tv_water[i].setText(
+                        DispenserWater.getTemperature(dispenserWrapper.getDeviceGroup().getWater()
+                                .get(i).getUsefor()).getDesc());
+            } else {
+                holder.tv_water[i].setText(tempName);
+            }
             holder.tv_water[i].setVisibility(View.VISIBLE);
             holder.tv_water[i].setBackgroundResource(DispenserWater.getTemperature(dispenserWrapper.getDeviceGroup().getWater()
                     .get(i).getUsefor()).getBackgroundDrawable());
@@ -139,11 +140,11 @@ public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenser
                     itemView.findViewById(R.id.tv_ice_water),
                     itemView.findViewById(R.id.tv_hot_water)
             };
-            iv_arrow = (ImageView) itemView.findViewById(R.id.iv_arrow);
-            tv_location = (TextView) itemView.findViewById(R.id.tv_location);
-            rl_top = (RelativeLayout) itemView.findViewById(R.id.rl_top);
+            iv_arrow = itemView.findViewById(R.id.iv_arrow);
+            tv_location = itemView.findViewById(R.id.tv_location);
+            rl_top = itemView.findViewById(R.id.rl_top);
             v_divide = itemView.findViewById(R.id.v_divide);
-            rl_bottom = (RelativeLayout) itemView.findViewById(R.id.rl_bottom);
+            rl_bottom = itemView.findViewById(R.id.rl_bottom);
 //            tv_cold_water = (TextView) itemView.findViewById(R.id.tv_cold_water);
 //            tv_ice_water = (TextView) itemView.findViewById(R.id.tv_ice_water);
 //            tv_hot_water = (TextView) itemView.findViewById(R.id.tv_hot_water);

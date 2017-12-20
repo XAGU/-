@@ -123,6 +123,29 @@ public class RechargeDetailActivity extends WalletBaseActivity implements IRecha
     public void render(FundsDTO data) {
         orderNo = data.getOrderNo();
         tv_amount.setText(getString(R.string.money_format, data.getAmount()));
+        if (data.getInstead() != null && data.getInstead()) {
+            tv_status.setText(RechargeStatus.BEHALF_OF_RECHARGE.getDesc());
+            tv_status.setTextColor(
+                    ContextCompat.getColor(this,RechargeStatus.BEHALF_OF_RECHARGE.getColorRes()));
+            tv_reason_top.setVisibility(View.VISIBLE);
+            tv_reason_top.setText("笑联工作人员代充值");
+            left_oper.setText(RechargeStatus.BEHALF_OF_RECHARGE.getNextOperations()[0]);
+            right_oper.setText(RechargeStatus.BEHALF_OF_RECHARGE.getNextOperations()[1]);
+            left_oper.setOnClickListener(v ->
+                    startActivity(new Intent(this, WebActivity.class)
+                        .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_HELP)));
+            right_oper.setOnClickListener(v ->
+                    presenter.complaint(id, ComplaintType.RECHARGE.getType()));
+            items.add(new WithdrawRechargeDetailAdapter.Item("被充值账号：",
+                    data.getThirdAccountName(), 1));
+            items.add(new WithdrawRechargeDetailAdapter.Item("被充值时间：",
+                    TimeUtils.millis2String(data.getCreateTime()), 1));
+            items.add(new WithdrawRechargeDetailAdapter.Item("流水号：",
+                    data.getOrderNo(), 2));
+            items.add(new WithdrawRechargeDetailAdapter.Item(null, null, 1));
+            adapter.notifyDataSetChanged();
+            return;
+        }
         tv_status.setText(RechargeStatus.getRechargeStatus(data.getStatus()).getDesc());
         tv_status.setTextColor(
                 ContextCompat.getColor(this,RechargeStatus.getRechargeStatus(data.getStatus()).getColorRes()));
@@ -134,7 +157,7 @@ public class RechargeDetailActivity extends WalletBaseActivity implements IRecha
         }
 
         if (RechargeStatus.getRechargeStatus(data.getStatus())
-                == RechargeStatus.RECHAREGE_FAIL && !TextUtils.isEmpty(data.getReason())) {
+                == RechargeStatus.RECHARGE_FAIL && !TextUtils.isEmpty(data.getReason())) {
             tv_reason_top.setVisibility(View.VISIBLE);
             tv_reason_top.setText(data.getReason());
         }
@@ -160,7 +183,7 @@ public class RechargeDetailActivity extends WalletBaseActivity implements IRecha
                             .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_HELP));
                     break;
                 case AUDIT_FAIL:
-                case RECHAREGE_FAIL:
+                case RECHARGE_FAIL:
                     CommonUtil.call(RechargeDetailActivity.this, data.getCsMobile());
                     break;
                 default:

@@ -67,8 +67,7 @@ public class OrderActivity extends OrderBaseListActivity implements IOrderView {
         adaptor.setOrderDetailClickListener((order) -> {
             // 跳转至订单详情
             Intent intent = new Intent(OrderActivity.this, OrderDetailActivity.class);
-            intent.putExtra(Constant.EXTRA_KEY, order);
-            intent.putExtra(Constant.TOKEN, presenter.getToken());
+            intent.putExtra(Constant.EXTRA_KEY, order.getId());
             startActivity(intent);
         });
         recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 14)));

@@ -48,6 +48,8 @@ public class OrderInListDTO implements Mapper<Order> {
     private String bonus;
     // 实际扣款
     private String actualDebit;
+    // 是否是最低消费
+    private Boolean lowest;
 
     @Override
     public Order transform() {
@@ -71,6 +73,7 @@ public class OrderInListDTO implements Mapper<Order> {
         order.setCreateTime(createTime);
         order.setConsume(consume);
         order.setId(id);
+        order.setLowest(lowest);
         return order;
     }
 }

@@ -1,7 +1,5 @@
 package com.xiaolian.amigo.data.network.model.order;
 
-import com.xiaolian.amigo.data.network.model.order.Order;
-
 import java.util.List;
 
 import lombok.Data;

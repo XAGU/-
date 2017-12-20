@@ -45,7 +45,7 @@ public final class Constant {
     // H5意见反馈
     public static final String H5_FEEDBACK = H5_SERVER + "/feedback";
     // 账单里没用水却扣钱的引导页
-    public static final String H5_NO_USE_HELP = H5_HELP + "/detail?toNative=1";
+    public static final String H5_NO_USE_HELP = H5_SERVER + "/help/detail?toNative=1";
 
     // activity之间跳转携带的bundle id key
     public static final String BUNDLE_ID = "id";

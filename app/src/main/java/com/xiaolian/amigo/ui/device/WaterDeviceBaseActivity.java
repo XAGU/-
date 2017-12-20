@@ -274,6 +274,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     private CountDownTimer timer;
     private volatile boolean userWater = false;
     private boolean needRecharge;
+    private boolean supportSlideBack = true;
     private DecimalFormat df = new DecimalFormat("###.##");
 
     @Override
@@ -297,6 +298,11 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         } else {
             refreshPrepayStatus();
         }
+    }
+
+    @Override
+    public boolean supportSlideBack() {
+        return supportSlideBack;
     }
 
     @Override
@@ -643,6 +649,11 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     }
 
     private void toggleSubTitle(boolean visible) {
+        if (visible) {
+            supportSlideBack = true;
+        } else {
+            supportSlideBack = false;
+        }
         if (tv_sub_title != null && (deviceType == 1 || deviceType == 2)) {
             tv_sub_title.setVisibility(visible ?
                     View.VISIBLE : View.GONE);

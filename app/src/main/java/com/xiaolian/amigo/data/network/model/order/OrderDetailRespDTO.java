@@ -9,7 +9,7 @@ import lombok.Data;
  */
 @Data
 public class OrderDetailRespDTO {
-
+    private Long id;
     // 订单编号
     private String orderNo;
 
@@ -41,5 +41,7 @@ public class OrderDetailRespDTO {
     private String bonus;
     // 实际扣款
     private String actualDebit;
+    // 是否是最低消费
+    private Boolean lowest;
 
 }

@@ -16,7 +16,7 @@ public enum  RechargeStatus {
         }
         @Override
         public String[] getNextOperations() {
-            return new String[] {COMMON_PROBLEM, "我要投诉"};
+            return new String[] {COMMON_PROBLEM, TO_COMPLAIN};
         }
     },
     AUDIT_PENDING(1, "等待审核") {
@@ -36,7 +36,7 @@ public enum  RechargeStatus {
         }
         @Override
         public String[] getNextOperations() {
-            return new String[] {COMMON_PROBLEM, "联系客服"};
+            return new String[] {COMMON_PROBLEM, CONTACT_CUSTOMER_SERVICE};
         }
     },
     THIRD_PENDING(3, "等待支付确认") {
@@ -46,7 +46,7 @@ public enum  RechargeStatus {
         }
         @Override
         public String[] getNextOperations() {
-            return new String[] {COMMON_PROBLEM, "我要投诉"};
+            return new String[] {COMMON_PROBLEM, TO_COMPLAIN};
         }
     },
     RECHARGE_SUCCESS(4, "充值成功") {
@@ -56,7 +56,7 @@ public enum  RechargeStatus {
         }
         @Override
         public String[] getNextOperations() {
-            return new String[] {COMMON_PROBLEM, "我要投诉"};
+            return new String[] {COMMON_PROBLEM, TO_COMPLAIN};
         }
     },
     RECHARGE_FAIL(5, "充值失败") {
@@ -67,11 +67,23 @@ public enum  RechargeStatus {
 
         @Override
         public String[] getNextOperations() {
-            return new String[] {COMMON_PROBLEM, "联系客服"};
+            return new String[] {COMMON_PROBLEM, CONTACT_CUSTOMER_SERVICE};
         }
-    }
-    ;
+    },
+    BEHALF_OF_RECHARGE(-1, "代充值成功") {
+        @Override
+        public int getColorRes() {
+            return R.color.colorYellow;
+        }
+
+        @Override
+        public String[] getNextOperations() {
+            return new String[] {COMMON_PROBLEM, TO_COMPLAIN};
+        }
+    };
     private static final String COMMON_PROBLEM = "常见问题";
+    private static final String CONTACT_CUSTOMER_SERVICE = "联系客服";
+    private static final String TO_COMPLAIN = "我要投诉";
     private int type;
     private String desc;
 

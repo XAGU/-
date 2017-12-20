@@ -21,4 +21,6 @@ public class ScanDevice {
     private Integer pulse;
 
     private String usefor;
+
+    private String name;
 }

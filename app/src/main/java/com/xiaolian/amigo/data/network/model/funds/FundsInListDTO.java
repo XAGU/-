@@ -16,4 +16,5 @@ public class FundsInListDTO {
     private String orderNo;
     private Integer status;
     private Long userId;
+    private Boolean instead;
 }

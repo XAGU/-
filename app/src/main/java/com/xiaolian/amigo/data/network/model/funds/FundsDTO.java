@@ -19,4 +19,5 @@ public class FundsDTO {
     private Integer thirdAccountType;
     private String thirdAccountName;
     private String csMobile;
+    private Boolean instead;
 }
