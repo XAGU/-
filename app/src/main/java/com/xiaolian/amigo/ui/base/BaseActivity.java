@@ -228,8 +228,14 @@ public abstract class BaseActivity extends SwipeBackActivity
                         blePermissonCallback.execute();
                     }
                 } else {
-                    if (this instanceof MainActivity) {
-                        ((MainActivity) this).showOpenLocationDialog();
+                    try {
+                        if (this instanceof MainActivity) {
+                            ((MainActivity) this).showOpenLocationDialog();
+                        }
+                    } catch (ClassCastException e) {
+                        Log.wtf(TAG, e);
+                    } catch (Exception e) {
+                        Log.wtf(TAG, e);
                     }
                 }
             } else if (requestCode == REQUEST_LOCATION) {
