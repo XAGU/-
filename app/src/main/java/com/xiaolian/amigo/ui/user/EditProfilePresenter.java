@@ -2,9 +2,9 @@ package com.xiaolian.amigo.ui.user;
 
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.EntireUserDTO;
-import com.xiaolian.amigo.data.network.model.user.User;
+import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
+import com.xiaolian.amigo.data.network.model.login.EntireUserDTO;
+import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditProfilePresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditProfileView;
@@ -18,19 +18,19 @@ import javax.inject.Inject;
 
 public class EditProfilePresenter<V extends IEditProfileView> extends BasePresenter<V>
         implements IEditProfilePresenter<V> {
-
+    @SuppressWarnings("unused")
     private static final String TAG = EditProfilePresenter.class.getSimpleName();
-    private IUserDataManager manager;
+    private IUserDataManager userDataManager;
 
     @Inject
-    public EditProfilePresenter(IUserDataManager manager) {
+    public EditProfilePresenter(IUserDataManager userDataManager) {
         super();
-        this.manager = manager;
+        this.userDataManager = userDataManager;
     }
 
     @Override
     public void getPersonProfile() {
-        addObserver(manager.getUserInfo(), new NetworkObserver<ApiResult<EntireUserDTO>>() {
+        addObserver(userDataManager.getUserInfo(), new NetworkObserver<ApiResult<EntireUserDTO>>() {
 
             @Override
             public void onReady(ApiResult<EntireUserDTO> result) {
@@ -44,7 +44,7 @@ public class EditProfilePresenter<V extends IEditProfileView> extends BasePresen
                         getMvpView().setSex(result.getData().getSex());
                     }
                     User user = new User(result.getData());
-                    manager.setUser(user);
+                    userDataManager.setUser(user);
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }
@@ -54,7 +54,7 @@ public class EditProfilePresenter<V extends IEditProfileView> extends BasePresen
 
     @Override
     public void checkChangeSchool() {
-        addObserver(manager.changeSchoolCheck(), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
+        addObserver(userDataManager.changeSchoolCheck(), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
 
             @Override
             public void onReady(ApiResult<BooleanRespDTO> result) {

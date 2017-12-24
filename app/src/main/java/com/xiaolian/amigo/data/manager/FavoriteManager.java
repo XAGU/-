@@ -1,19 +1,16 @@
 package com.xiaolian.amigo.data.manager;
 
 import com.xiaolian.amigo.data.manager.intf.IFavoriteManager;
-import com.xiaolian.amigo.data.network.IFavoriteApi;
+import com.xiaolian.amigo.data.network.IDeviceApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.dto.request.FavoriteReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.SimpleReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.UnFavoriteReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.ScanDeviceRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.SimpleRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.UnFavoriteRespDTO;
+import com.xiaolian.amigo.data.network.model.device.QueryWaterListRespDTO;
+import com.xiaolian.amigo.data.network.model.common.SimpleQueryReqDTO;
+import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
+import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
 
 import javax.inject.Inject;
 
 import retrofit2.Retrofit;
-import retrofit2.http.Body;
 import rx.Observable;
 
 /**
@@ -24,30 +21,25 @@ public class FavoriteManager implements IFavoriteManager {
 
     private static final String TAG = FavoriteManager.class.getSimpleName();
 
-    private IFavoriteApi favoriteApi;
+    private IDeviceApi deviceApi;
 
     @Inject
     public FavoriteManager(Retrofit retrofit) {
-        favoriteApi = retrofit.create(IFavoriteApi.class);
+        deviceApi = retrofit.create(IDeviceApi.class);
     }
 
     @Override
-    public Observable<ApiResult<ScanDeviceRespDTO>> queryFavorites(@Body FavoriteReqDTO reqDTO) {
-        return favoriteApi.queryFavorites(reqDTO);
+    public Observable<ApiResult<QueryWaterListRespDTO>> queryFavorites(SimpleQueryReqDTO reqDTO) {
+        return deviceApi.queryFavorites(reqDTO);
     }
 
     @Override
-    public Observable<ApiResult<UnFavoriteRespDTO>> deleteFavorite(@Body UnFavoriteReqDTO reqDTO) {
-        return favoriteApi.deleteFavorite(reqDTO);
+    public Observable<ApiResult<SimpleRespDTO>> favorite(SimpleReqDTO reqDTO) {
+        return deviceApi.favorite(reqDTO);
     }
 
     @Override
-    public Observable<ApiResult<SimpleRespDTO>> favorite(@Body SimpleReqDTO reqDTO) {
-        return favoriteApi.favorite(reqDTO);
-    }
-
-    @Override
-    public Observable<ApiResult<SimpleReqDTO>> unFavorite(@Body SimpleReqDTO reqDTO) {
-        return favoriteApi.unFavorite(reqDTO);
+    public Observable<ApiResult<SimpleRespDTO>> unFavorite(SimpleReqDTO reqDTO) {
+        return deviceApi.unFavorite(reqDTO);
     }
 }

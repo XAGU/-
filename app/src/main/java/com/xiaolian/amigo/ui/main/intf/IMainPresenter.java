@@ -1,6 +1,6 @@
 package com.xiaolian.amigo.ui.main.intf;
 
-import com.xiaolian.amigo.data.network.model.user.User;
+import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 
 /**

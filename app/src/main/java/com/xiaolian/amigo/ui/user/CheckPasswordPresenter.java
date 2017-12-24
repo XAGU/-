@@ -2,8 +2,8 @@ package com.xiaolian.amigo.ui.user;
 
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.dto.request.PasswordCheckReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
+import com.xiaolian.amigo.data.network.model.user.PasswordCheckReqDTO;
+import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.user.intf.ICheckPasswordPresenter;
 import com.xiaolian.amigo.ui.user.intf.ICheckPasswordView;
@@ -19,19 +19,19 @@ import javax.inject.Inject;
 public class CheckPasswordPresenter<V extends ICheckPasswordView> extends BasePresenter<V>
         implements ICheckPasswordPresenter<V> {
 
-    private IUserDataManager manager;
+    private IUserDataManager userDataManager;
 
     @Inject
-    public CheckPasswordPresenter(IUserDataManager manager) {
+    public CheckPasswordPresenter(IUserDataManager userDataManager) {
         super();
-        this.manager = manager;
+        this.userDataManager = userDataManager;
     }
 
     @Override
     public void checkPassword(String password) {
         PasswordCheckReqDTO reqDTO = new PasswordCheckReqDTO();
         reqDTO.setPassword(password);
-        addObserver(manager.checkPasswordValid(reqDTO), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
+        addObserver(userDataManager.checkPasswordValid(reqDTO), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
 
             @Override
             public void onReady(ApiResult<BooleanRespDTO> result) {

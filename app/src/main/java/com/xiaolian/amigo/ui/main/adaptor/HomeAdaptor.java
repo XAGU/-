@@ -2,7 +2,7 @@ package com.xiaolian.amigo.ui.main.adaptor;
 
 import android.content.Context;
 
-import com.xiaolian.amigo.data.network.model.dto.response.BannerDTO;
+import com.xiaolian.amigo.data.network.model.system.BannerDTO;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import java.util.List;

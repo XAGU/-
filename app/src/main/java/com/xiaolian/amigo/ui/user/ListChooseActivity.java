@@ -15,7 +15,7 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.enumeration.IntentAction;
 import com.xiaolian.amigo.data.enumeration.WithdrawWay;
-import com.xiaolian.amigo.data.network.model.dto.response.UserResidenceDTO;
+import com.xiaolian.amigo.data.network.model.user.UserResidenceDTO;
 import com.xiaolian.amigo.di.componet.DaggerUserActivityComponent;
 import com.xiaolian.amigo.di.componet.UserActivityComponent;
 import com.xiaolian.amigo.di.module.UserActivityModule;
@@ -137,7 +137,13 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                     // page size 为null 加载全部
                     presenter.getSchoolList(null, null);
                     adapter.setOnItemClickListener((view, position) -> {
-                        presenter.updateSchool(items.get(position).getId());
+                        try {
+                            presenter.updateSchool(items.get(position).getId());
+                        } catch (ArrayIndexOutOfBoundsException e) {
+                            Log.e(TAG, "数组越界");
+                        } catch (Exception e) {
+                            Log.wtf(TAG, e);
+                        }
                     });
                     break;
                 case ACTION_LIST_SEX:
@@ -180,15 +186,21 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                     // page size 为null 加载全部
                     presenter.getBuildList(null, null, deviceType);
                     adapter.setOnItemClickListener((view, position) -> {
-                        Intent intent = new Intent(ListChooseActivity.this, ListChooseActivity.class);
-                        intent.putExtra(INTENT_KEY_LIST_CHOOSE_ACTION, ACTION_LIST_FLOOR);
-                        intent.putExtra(INTENT_KEY_LIST_CHOOSE_PARENT_ID, items.get(position).getId());
-                        intent.putExtra(INTENT_KEY_LIST_CHOOSE_IS_EDIT, isEditDormitory);
-                        intent.putExtra(INTENT_KEY_LIST_CHOOSE_RESIDENCE_BIND_ID, residenceBindId);
-                        intent.putExtra(INTENT_KEY_LIST_DEVICE_TYPE, deviceType);
-                        intent.putExtra(INTENT_KEY_LIST_SRC_ACTIVITY, activitySrc);
-                        intent.putExtra(INTENT_KEY_LIST_RESIDENCE_DETAIL, residenceDetail);
-                        startActivity(intent);
+                        try {
+                            Intent intent = new Intent(ListChooseActivity.this, ListChooseActivity.class);
+                            intent.putExtra(INTENT_KEY_LIST_CHOOSE_ACTION, ACTION_LIST_FLOOR);
+                            intent.putExtra(INTENT_KEY_LIST_CHOOSE_PARENT_ID, items.get(position).getId());
+                            intent.putExtra(INTENT_KEY_LIST_CHOOSE_IS_EDIT, isEditDormitory);
+                            intent.putExtra(INTENT_KEY_LIST_CHOOSE_RESIDENCE_BIND_ID, residenceBindId);
+                            intent.putExtra(INTENT_KEY_LIST_DEVICE_TYPE, deviceType);
+                            intent.putExtra(INTENT_KEY_LIST_SRC_ACTIVITY, activitySrc);
+                            intent.putExtra(INTENT_KEY_LIST_RESIDENCE_DETAIL, residenceDetail);
+                            startActivity(intent);
+                        } catch (ArrayIndexOutOfBoundsException e) {
+                            Log.e(TAG, "数组越界");
+                        } catch (Exception e) {
+                            Log.wtf(TAG, e);
+                        }
                     });
                     break;
                 case ACTION_LIST_FLOOR:
@@ -206,15 +218,21 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                         }
                     }
                     adapter.setOnItemClickListener((view, position) -> {
-                        Intent intent = new Intent(ListChooseActivity.this, ListChooseActivity.class);
-                        intent.putExtra(INTENT_KEY_LIST_CHOOSE_ACTION, ACTION_LIST_DORMITOR);
-                        intent.putExtra(INTENT_KEY_LIST_CHOOSE_PARENT_ID, items.get(position).getId());
-                        intent.putExtra(INTENT_KEY_LIST_CHOOSE_IS_EDIT, isEditDormitory);
-                        intent.putExtra(INTENT_KEY_LIST_CHOOSE_RESIDENCE_BIND_ID, residenceBindId);
-                        intent.putExtra(INTENT_KEY_LIST_DEVICE_TYPE, deviceType);
-                        intent.putExtra(INTENT_KEY_LIST_SRC_ACTIVITY, activitySrc);
-                        intent.putExtra(INTENT_KEY_LIST_RESIDENCE_DETAIL, residenceDetail);
-                        startActivity(intent);
+                        try {
+                            Intent intent = new Intent(ListChooseActivity.this, ListChooseActivity.class);
+                            intent.putExtra(INTENT_KEY_LIST_CHOOSE_ACTION, ACTION_LIST_DORMITOR);
+                            intent.putExtra(INTENT_KEY_LIST_CHOOSE_PARENT_ID, items.get(position).getId());
+                            intent.putExtra(INTENT_KEY_LIST_CHOOSE_IS_EDIT, isEditDormitory);
+                            intent.putExtra(INTENT_KEY_LIST_CHOOSE_RESIDENCE_BIND_ID, residenceBindId);
+                            intent.putExtra(INTENT_KEY_LIST_DEVICE_TYPE, deviceType);
+                            intent.putExtra(INTENT_KEY_LIST_SRC_ACTIVITY, activitySrc);
+                            intent.putExtra(INTENT_KEY_LIST_RESIDENCE_DETAIL, residenceDetail);
+                            startActivity(intent);
+                        } catch (ArrayIndexOutOfBoundsException e) {
+                            Log.e(TAG, "数组越界");
+                        } catch (Exception e) {
+                            Log.wtf(TAG, e);
+                        }
                     });
                     break;
                 case ACTION_LIST_DORMITOR:
@@ -247,19 +265,25 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                     }
 
                     adapter.setOnItemClickListener((view, position) -> {
-                        if (Constant.REPAIR_APPLY_ACTIVITY_SRC.equals(activitySrc)) {
-                            ListChooseAdaptor.Item item = items.get(position);
-                            Intent intent = new Intent(ListChooseActivity.this, RepairApplyActivity.class);
-                            intent.putExtra(Constant.LOCATION_ID, (long) item.getId());
-                            intent.putExtra(Constant.DEVICE_TYPE, deviceType);
-                            intent.putExtra(Constant.LOCATION, Device.getDevice(deviceType).getDesc() + Constant.CHINEASE_COLON + item.getExtra());
-                            startActivity(intent);
-                        } else if (Constant.EDIT_PROFILE_ACTIVITY_SRC.equals(activitySrc)) {
-                            presenter.bindDormitory(residenceBindId, items.get(position).getId(), isEditDormitory, activitySrc);
-                        } else if (Constant.MAIN_ACTIVITY_SRC.equals(activitySrc)) {
-                            presenter.bindDormitory(residenceBindId, items.get(position).getId(), isEditDormitory, activitySrc);
-                        } else {
-                            presenter.bindDormitory(residenceBindId, items.get(position).getId(), isEditDormitory);
+                        try {
+                            if (Constant.REPAIR_APPLY_ACTIVITY_SRC.equals(activitySrc)) {
+                                ListChooseAdaptor.Item item = items.get(position);
+                                Intent intent = new Intent(ListChooseActivity.this, RepairApplyActivity.class);
+                                intent.putExtra(Constant.LOCATION_ID, (long) item.getId());
+                                intent.putExtra(Constant.DEVICE_TYPE, deviceType);
+                                intent.putExtra(Constant.LOCATION, Device.getDevice(deviceType).getDesc() + Constant.CHINEASE_COLON + item.getExtra());
+                                startActivity(intent);
+                            } else if (Constant.EDIT_PROFILE_ACTIVITY_SRC.equals(activitySrc)) {
+                                presenter.bindDormitory(residenceBindId, items.get(position).getId(), isEditDormitory, activitySrc);
+                            } else if (Constant.MAIN_ACTIVITY_SRC.equals(activitySrc)) {
+                                presenter.bindDormitory(residenceBindId, items.get(position).getId(), isEditDormitory, activitySrc);
+                            } else {
+                                presenter.bindDormitory(residenceBindId, items.get(position).getId(), isEditDormitory);
+                            }
+                        } catch (ArrayIndexOutOfBoundsException e) {
+                            Log.e(TAG, "数组越界");
+                        } catch (Exception e) {
+                            Log.wtf(TAG, e);
                         }
                     });
                     break;
@@ -267,10 +291,16 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                     tv_title.setText("选择学校");
                     presenter.getSchoolList(null, null);
                     adapter.setOnItemClickListener((view, position) -> {
-                        Intent intent = new Intent();
-                        intent.putExtra(INTENT_KEY_LIST_CHOOSE_ITEM_RESULT, items.get(position));
-                        setResult(RESULT_OK, intent);
-                        finish();
+                        try {
+                            Intent intent = new Intent();
+                            intent.putExtra(INTENT_KEY_LIST_CHOOSE_ITEM_RESULT, items.get(position));
+                            setResult(RESULT_OK, intent);
+                            finish();
+                        } catch (ArrayIndexOutOfBoundsException e) {
+                            Log.e(TAG, "数组越界");
+                        } catch (Exception e) {
+                            Log.wtf(TAG, e);
+                        }
                     });
                     break;
                 case ACTION_LIST_DEVICE:
@@ -279,12 +309,18 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                     this.items.add(new ListChooseAdaptor.Item(Device.DISPENSER.getDesc(), Device.DISPENSER.getType()));
                     adapter.notifyDataSetChanged();
                     adapter.setOnItemClickListener((view, position) -> {
-                        ListChooseAdaptor.Item item = items.get(position);
-                        Intent intent = new Intent(ListChooseActivity.this, ListChooseActivity.class);
-                        intent.putExtra(INTENT_KEY_LIST_CHOOSE_ACTION, ACTION_LIST_BUILDING);
-                        intent.putExtra(INTENT_KEY_LIST_DEVICE_TYPE, item.getDeviceType());
-                        intent.putExtra(INTENT_KEY_LIST_SRC_ACTIVITY, Constant.REPAIR_APPLY_ACTIVITY_SRC);
-                        startActivity(intent);
+                        try {
+                            ListChooseAdaptor.Item item = items.get(position);
+                            Intent intent = new Intent(ListChooseActivity.this, ListChooseActivity.class);
+                            intent.putExtra(INTENT_KEY_LIST_CHOOSE_ACTION, ACTION_LIST_BUILDING);
+                            intent.putExtra(INTENT_KEY_LIST_DEVICE_TYPE, item.getDeviceType());
+                            intent.putExtra(INTENT_KEY_LIST_SRC_ACTIVITY, Constant.REPAIR_APPLY_ACTIVITY_SRC);
+                            startActivity(intent);
+                        } catch (ArrayIndexOutOfBoundsException e) {
+                            Log.e(TAG, "数组越界");
+                        } catch (Exception e) {
+                            Log.wtf(TAG, e);
+                        }
                     });
                     v_divide.setVisibility(View.VISIBLE);
                     break;
@@ -295,11 +331,17 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                     }
                     adapter.notifyDataSetChanged();
                     adapter.setOnItemClickListener((view, position) -> {
-                        ListChooseAdaptor.Item item = items.get(position);
-                        Intent intent = new Intent(ListChooseActivity.this, WithdrawalActivity.class);
-                        intent.putExtra(INTENT_KEY_LIST_CHOOSE_ITEM_RESULT, item.getContent());
-                        setResult(RESULT_OK, intent);
-                        finish();
+                        try {
+                            ListChooseAdaptor.Item item = items.get(position);
+                            Intent intent = new Intent(ListChooseActivity.this, WithdrawalActivity.class);
+                            intent.putExtra(INTENT_KEY_LIST_CHOOSE_ITEM_RESULT, item.getContent());
+                            setResult(RESULT_OK, intent);
+                            finish();
+                        } catch (ArrayIndexOutOfBoundsException e) {
+                            Log.e(TAG, "数组越界");
+                        } catch (Exception e) {
+                            Log.wtf(TAG, e);
+                        }
                     });
                     v_divide.setVisibility(View.VISIBLE);
                     break;

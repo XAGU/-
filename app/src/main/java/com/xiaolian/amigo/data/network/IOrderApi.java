@@ -1,18 +1,16 @@
 package com.xiaolian.amigo.data.network;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.dto.request.CheckComplaintReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.LatestOrderReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.OrderDetailReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.OrderReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.QueryPrepayOptionReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.UnsettledOrderStatusCheckReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.LatestOrderRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.OrderDetailRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.OrderPreInfoDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.OrderRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.UnsettledOrderStatusCheckRespDTO;
+import com.xiaolian.amigo.data.network.model.order.LatestOrderReqDTO;
+import com.xiaolian.amigo.data.network.model.order.OrderDetailReqDTO;
+import com.xiaolian.amigo.data.network.model.order.OrderReqDTO;
+import com.xiaolian.amigo.data.network.model.order.QueryPrepayOptionReqDTO;
+import com.xiaolian.amigo.data.network.model.order.UnsettledOrderStatusCheckReqDTO;
+import com.xiaolian.amigo.data.network.model.order.LatestOrderRespDTO;
+import com.xiaolian.amigo.data.network.model.order.OrderDetailRespDTO;
+import com.xiaolian.amigo.data.network.model.order.OrderPreInfoDTO;
+import com.xiaolian.amigo.data.network.model.order.OrderRespDTO;
+import com.xiaolian.amigo.data.network.model.order.UnsettledOrderStatusCheckRespDTO;
 
 import rx.Observable;
 import retrofit2.http.Body;
@@ -44,10 +42,6 @@ public interface IOrderApi {
     // 订单预备信息：options是预付金额选项，bonus是可用代金券数量
     @POST("order/pre")
     Observable<ApiResult<OrderPreInfoDTO>> queryPrepayOption(@Body QueryPrepayOptionReqDTO reqDTO);
-
-    // 投诉查重
-    @POST("complaint/check")
-    Observable<ApiResult<BooleanRespDTO>> checkComplaint(@Body CheckComplaintReqDTO reqDTO);
 
     // 查看预付订单
     @POST("order/personal/list/prepay")

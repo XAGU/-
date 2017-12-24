@@ -252,4 +252,8 @@
     <string name="server_available_error_tip">服务器飞走啦，努力修复中</string>
     <string name="device_broken_tip_3">当前设备出现了故障，维修员正在赶来维修\n给您带来的不便敬请谅解！</string>
     <string name="device_broken_btn_3">切换宿舍</string>
+    <string name="order_no_use_tip">
+        <u>没有用水，但扣了我几分钱？</u>
+    </string>
+    <string name="no_device_tip">(无热水澡服务)</string>
 </resources>

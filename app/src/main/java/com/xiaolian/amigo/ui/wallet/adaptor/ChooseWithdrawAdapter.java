@@ -3,7 +3,7 @@ package com.xiaolian.amigo.ui.wallet.adaptor;
 import android.content.Context;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.data.network.model.dto.response.UserThirdAccountDTO;
+import com.xiaolian.amigo.data.network.model.userthirdaccount.UserThirdAccountDTO;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 

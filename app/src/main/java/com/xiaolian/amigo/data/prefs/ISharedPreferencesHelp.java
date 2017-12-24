@@ -1,7 +1,7 @@
 package com.xiaolian.amigo.data.prefs;
 
 import com.xiaolian.amigo.data.network.model.user.UploadUserDeviceInfoReqDTO;
-import com.xiaolian.amigo.data.network.model.user.User;
+import com.xiaolian.amigo.data.vo.User;
 
 /**
  * SharedPreference帮助接口

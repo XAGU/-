@@ -2,31 +2,36 @@ package com.xiaolian.amigo.data.manager;
 
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.data.network.IFileApi;
+import com.xiaolian.amigo.data.network.ILoginApi;
+import com.xiaolian.amigo.data.network.IOssApi;
+import com.xiaolian.amigo.data.network.IResidenceApi;
+import com.xiaolian.amigo.data.network.ISchoolApi;
 import com.xiaolian.amigo.data.network.IUserApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.dto.request.BindResidenceReq;
-import com.xiaolian.amigo.data.network.model.dto.request.MobileUpdateReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.PasswordCheckReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.PasswordUpdateReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.PersonalUpdateReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.QueryResidenceListReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.SimpleQueryReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.SimpleReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.VerificationCodeGetReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.DeleteResidenceRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.EntireUserDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.PersonalExtraInfoDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.QueryAvatarDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.QueryBriefSchoolListRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.QuerySchoolBizListRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.QueryUserResidenceListRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.ResidenceListRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.SimpleRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.UserResidenceDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.UserResidenceInListDTO;
-import com.xiaolian.amigo.data.network.model.user.User;
+import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
+import com.xiaolian.amigo.data.network.model.file.OssModel;
+import com.xiaolian.amigo.data.network.model.user.BindResidenceReq;
+import com.xiaolian.amigo.data.network.model.user.MobileUpdateReqDTO;
+import com.xiaolian.amigo.data.network.model.user.PasswordCheckReqDTO;
+import com.xiaolian.amigo.data.network.model.user.PasswordUpdateReqDTO;
+import com.xiaolian.amigo.data.network.model.user.PersonalUpdateReqDTO;
+import com.xiaolian.amigo.data.network.model.residence.QueryResidenceListReqDTO;
+import com.xiaolian.amigo.data.network.model.common.SimpleQueryReqDTO;
+import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
+import com.xiaolian.amigo.data.network.model.user.DeleteResidenceRespDTO;
+import com.xiaolian.amigo.data.network.model.user.PersonalExtraInfoDTO;
+import com.xiaolian.amigo.data.network.model.user.QueryAvatarDTO;
+import com.xiaolian.amigo.data.network.model.school.QueryBriefSchoolListRespDTO;
+import com.xiaolian.amigo.data.network.model.school.QuerySchoolBizListRespDTO;
+import com.xiaolian.amigo.data.network.model.user.QueryUserResidenceListRespDTO;
+import com.xiaolian.amigo.data.network.model.residence.ResidenceListRespDTO;
+import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
+import com.xiaolian.amigo.data.network.model.user.UserResidenceDTO;
+import com.xiaolian.amigo.data.network.model.user.UserResidenceInListDTO;
+import com.xiaolian.amigo.data.network.model.login.EntireUserDTO;
+import com.xiaolian.amigo.data.network.model.login.VerificationCodeGetReqDTO;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
+import com.xiaolian.amigo.data.vo.User;
 
 import javax.inject.Inject;
 
@@ -42,18 +47,25 @@ import rx.Observable;
  */
 
 public class UserDataManager implements IUserDataManager {
+    @SuppressWarnings("unused")
     private static final String TAG = UserDataManager.class.getSimpleName();
 
     private IUserApi userApi;
-
+    private IResidenceApi residenceApi;
+    private ISchoolApi schoolApi;
     private IFileApi fileApi;
-
+    private ILoginApi loginApi;
+    private IOssApi ossApi;
     private ISharedPreferencesHelp sharedPreferencesHelp;
 
     @Inject
     public UserDataManager(Retrofit retrofit, ISharedPreferencesHelp sharedPreferencesHelp) {
+        residenceApi = retrofit.create(IResidenceApi.class);
+        schoolApi = retrofit.create(ISchoolApi.class);
         userApi = retrofit.create(IUserApi.class);
         fileApi = retrofit.create(IFileApi.class);
+        loginApi = retrofit.create(ILoginApi.class);
+        ossApi = retrofit.create(IOssApi.class);
         this.sharedPreferencesHelp = sharedPreferencesHelp;
     }
 
@@ -89,17 +101,17 @@ public class UserDataManager implements IUserDataManager {
 
     @Override
     public Observable<ApiResult<QueryBriefSchoolListRespDTO>> getSchoolList(@Body SimpleQueryReqDTO body) {
-        return userApi.getSchoolList(body);
+        return schoolApi.getSchoolList(body);
     }
 
     @Override
     public Observable<ApiResult<QuerySchoolBizListRespDTO>> getSchoolBizList() {
-        return userApi.getSchoolBizList();
+        return schoolApi.getSchoolBizList();
     }
 
     @Override
     public Observable<ApiResult<BooleanRespDTO>> getVerifyCode(VerificationCodeGetReqDTO body) {
-        return userApi.getVerifyCode(body);
+        return loginApi.getVerification(body);
     }
 
     @Override
@@ -114,7 +126,7 @@ public class UserDataManager implements IUserDataManager {
 
     @Override
     public Observable<ApiResult<ResidenceListRespDTO>> queryResidenceList(@Body QueryResidenceListReqDTO body) {
-        return userApi.queryResidenceList(body);
+        return residenceApi.queryResidenceList(body);
     }
 
     @Override
@@ -135,6 +147,11 @@ public class UserDataManager implements IUserDataManager {
     @Override
     public Observable<ApiResult<UserResidenceDTO>> queryResidenceDetail(SimpleReqDTO reqDTO) {
         return userApi.queryResidenceDetail(reqDTO);
+    }
+
+    @Override
+    public Observable<ApiResult<OssModel>> getOssModel() {
+        return ossApi.getOssModel();
     }
 
     @Override

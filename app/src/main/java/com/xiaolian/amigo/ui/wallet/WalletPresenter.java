@@ -2,8 +2,8 @@ package com.xiaolian.amigo.ui.wallet;
 
 import com.xiaolian.amigo.data.manager.intf.IWalletDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.dto.response.PersonalWalletDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.QueryTimeValidRespDTO;
+import com.xiaolian.amigo.data.network.model.funds.PersonalWalletDTO;
+import com.xiaolian.amigo.data.network.model.timerange.QueryTimeValidRespDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IWalletPresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IWalletView;

@@ -8,17 +8,17 @@ import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.enumeration.ResidenceLevel;
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.dto.request.BindResidenceReq;
-import com.xiaolian.amigo.data.network.model.dto.request.PersonalUpdateReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.QueryResidenceListReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.SimpleQueryReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.EntireUserDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.QueryBriefSchoolListRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.ResidenceListRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.UserResidenceInListDTO;
+import com.xiaolian.amigo.data.network.model.user.BindResidenceReq;
+import com.xiaolian.amigo.data.network.model.user.PersonalUpdateReqDTO;
+import com.xiaolian.amigo.data.network.model.residence.QueryResidenceListReqDTO;
+import com.xiaolian.amigo.data.network.model.common.SimpleQueryReqDTO;
+import com.xiaolian.amigo.data.network.model.login.EntireUserDTO;
+import com.xiaolian.amigo.data.network.model.school.QueryBriefSchoolListRespDTO;
+import com.xiaolian.amigo.data.network.model.residence.ResidenceListRespDTO;
+import com.xiaolian.amigo.data.network.model.user.UserResidenceInListDTO;
 import com.xiaolian.amigo.data.network.model.user.Residence;
 import com.xiaolian.amigo.data.network.model.user.School;
-import com.xiaolian.amigo.data.network.model.user.User;
+import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.user.adaptor.ListChooseAdaptor;
 import com.xiaolian.amigo.ui.user.intf.IListChoosePresenter;
@@ -39,12 +39,12 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
         implements IListChoosePresenter<V> {
 
     private static final String TAG = ListChoosePresenter.class.getSimpleName();
-    private IUserDataManager manager;
+    private IUserDataManager userDataManager;
 
     @Inject
-    public ListChoosePresenter(IUserDataManager manager) {
+    public ListChoosePresenter(IUserDataManager userDataManager) {
         super();
-        this.manager = manager;
+        this.userDataManager = userDataManager;
     }
 
 
@@ -53,7 +53,7 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
         SimpleQueryReqDTO dto = new SimpleQueryReqDTO();
         dto.setPage(page);
         dto.setSize(size);
-        addObserver(manager.getSchoolList(dto), new NetworkObserver<ApiResult<QueryBriefSchoolListRespDTO>>() {
+        addObserver(userDataManager.getSchoolList(dto), new NetworkObserver<ApiResult<QueryBriefSchoolListRespDTO>>() {
 
             @Override
             public void onReady(ApiResult<QueryBriefSchoolListRespDTO> result) {
@@ -63,7 +63,7 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
                         ArrayList<ListChooseAdaptor.Item> schoolWapper = new ArrayList<>();
                         for (School school : result.getData().getSchools()) {
                             schoolWapper.add(new ListChooseAdaptor.Item(school,
-                                    CommonUtil.equals(school.getId(), manager.getUser().getSchoolId())));
+                                    CommonUtil.equals(school.getId(), userDataManager.getUser().getSchoolId())));
                         }
                         getMvpView().addMore(schoolWapper);
                     } else {
@@ -85,10 +85,10 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
             dto.setBuildingType(BuildingType.DORMITORY.getType());
         }
         dto.setDeviceType(deviceType);
-        dto.setSchoolId(manager.getUser().getSchoolId());
+        dto.setSchoolId(userDataManager.getUser().getSchoolId());
         // residencelevel 1 表示楼栋
         dto.setResidenceLevel(ResidenceLevel.BUILDING.getType());
-        addObserver(manager.queryResidenceList(dto), new NetworkObserver<ApiResult<ResidenceListRespDTO>>() {
+        addObserver(userDataManager.queryResidenceList(dto), new NetworkObserver<ApiResult<ResidenceListRespDTO>>() {
 
             @Override
             public void onReady(ApiResult<ResidenceListRespDTO> result) {
@@ -114,14 +114,14 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
     public void updateSchool(Long schoolId) {
         PersonalUpdateReqDTO dto = new PersonalUpdateReqDTO();
         dto.setSchoolId(schoolId);
-        addObserver(manager.updateUserInfo(dto), new NetworkObserver<ApiResult<EntireUserDTO>>() {
+        addObserver(userDataManager.updateUserInfo(dto), new NetworkObserver<ApiResult<EntireUserDTO>>() {
 
             @Override
             public void onReady(ApiResult<EntireUserDTO> result) {
                 if (null == result.getError()) {
                     getMvpView().onSuccess(R.string.change_school_success);
                     getMvpView().backToMain();
-                    manager.logout();
+                    userDataManager.logout();
                     getMvpView().redirectToLogin();
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
@@ -134,7 +134,7 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
     public void updateSex(int sex) {
         PersonalUpdateReqDTO dto = new PersonalUpdateReqDTO();
         dto.setSex(sex);
-        addObserver(manager.updateUserInfo(dto), new NetworkObserver<ApiResult<EntireUserDTO>>() {
+        addObserver(userDataManager.updateUserInfo(dto), new NetworkObserver<ApiResult<EntireUserDTO>>() {
 
             @Override
             public void onReady(ApiResult<EntireUserDTO> result) {
@@ -156,10 +156,10 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
         dto.setSize(size);
         dto.setParentId(parentId);
         dto.setDeviceType(deviceType);
-        dto.setSchoolId(manager.getUser().getSchoolId());
+        dto.setSchoolId(userDataManager.getUser().getSchoolId());
         // residencelevel 2 表示楼层
         dto.setResidenceLevel(ResidenceLevel.FLOOR.getType());
-        addObserver(manager.queryResidenceList(dto), new NetworkObserver<ApiResult<ResidenceListRespDTO>>() {
+        addObserver(userDataManager.queryResidenceList(dto), new NetworkObserver<ApiResult<ResidenceListRespDTO>>() {
 
             @Override
             public void onReady(ApiResult<ResidenceListRespDTO> result) {
@@ -189,10 +189,10 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
         dto.setExistDevice(existDevice);
         dto.setDeviceType(deviceType);
         dto.setParentId(parentId);
-        dto.setSchoolId(manager.getUser().getSchoolId());
+        dto.setSchoolId(userDataManager.getUser().getSchoolId());
         // residencelevel 3 表示宿舍
         dto.setResidenceLevel(ResidenceLevel.ROOM.getType());
-        addObserver(manager.queryResidenceList(dto), new NetworkObserver<ApiResult<ResidenceListRespDTO>>() {
+        addObserver(userDataManager.queryResidenceList(dto), new NetworkObserver<ApiResult<ResidenceListRespDTO>>() {
 
             @Override
             public void onReady(ApiResult<ResidenceListRespDTO> result) {
@@ -228,16 +228,16 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
         if (isEdit) {
             dto.setId(id);
         }
-        addObserver(manager.bindResidence(dto), new NetworkObserver<ApiResult<UserResidenceInListDTO>>() {
+        addObserver(userDataManager.bindResidence(dto), new NetworkObserver<ApiResult<UserResidenceInListDTO>>() {
 
             @Override
             public void onReady(ApiResult<UserResidenceInListDTO> result) {
                 if (null == result.getError()) {
                     getMvpView().onSuccess(R.string.add_dormitory_success);
-                    User user = manager.getUser();
+                    User user = userDataManager.getUser();
                     user.setResidenceName(result.getData().getResidenceName());
                     user.setResidenceId(result.getData().getResidenceId());
-                    manager.setUser(user);
+                    userDataManager.setUser(user);
                     if (TextUtils.equals(activitySrc, Constant.EDIT_PROFILE_ACTIVITY_SRC)) {
                         getMvpView().backToEditDormitory();
                     } else if (TextUtils.equals(activitySrc, Constant.MAIN_ACTIVITY_SRC)) {

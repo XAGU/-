@@ -15,7 +15,7 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.ComplaintType;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.enumeration.TradeError;
-import com.xiaolian.amigo.data.network.model.dto.response.OrderDetailRespDTO;
+import com.xiaolian.amigo.data.network.model.order.OrderDetailRespDTO;
 import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.ui.device.intf.IDeviceOrderPresenter;
 import com.xiaolian.amigo.ui.device.intf.IDeviceOrderView;
@@ -89,6 +89,9 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
     // 订单号
     @BindView(R.id.tv_order_no)
     TextView tv_order_no;
+    // 是否用水提示
+    @BindView(R.id.tv_order_no_use_tip)
+    TextView tv_order_no_use_tip;
 
     @Inject
     IDeviceOrderPresenter<IDeviceOrderView> presenter;
@@ -182,6 +185,17 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
                                 + "&orderId=" + orderId
                                 + "&orderNo=" + orderNo
                                 + "&orderType=" + orderType));
+    }
+
+    @Override
+    public void showNoUseTip() {
+        tv_order_no_use_tip.setVisibility(View.VISIBLE);
+    }
+
+    @OnClick(R.id.tv_order_no_use_tip)
+    public void toNoUseHelp() {
+        startActivity(new Intent(this, WebActivity.class)
+                .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_NO_USE_HELP));
     }
 
     @OnClick(R.id.bt_ok)

@@ -62,7 +62,7 @@
             android:gravity="center"
             android:layout_centerVertical="true"
             android:text="冷水"
-            android:layout_width="62dp"
+            android:layout_width="70dp"
             android:layout_height="26dp" />
 
         <TextView
@@ -75,7 +75,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:text="冰水"
-            android:layout_width="62dp"
+            android:layout_width="70dp"
             android:layout_height="26dp" />
 
         <TextView
@@ -88,7 +88,7 @@
             android:textStyle="bold"
             android:gravity="center"
             android:text="热水"
-            android:layout_width="62dp"
+            android:layout_width="70dp"
             android:layout_height="26dp" />
     </RelativeLayout>
 

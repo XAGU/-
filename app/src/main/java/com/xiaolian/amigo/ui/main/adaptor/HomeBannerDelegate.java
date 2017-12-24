@@ -5,18 +5,16 @@ import android.content.Intent;
 import android.text.TextUtils;
 import com.xiaolian.amigo.util.Log;
 
-import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.BannerType;
-import com.xiaolian.amigo.data.network.model.dto.response.BannerDTO;
+import com.xiaolian.amigo.data.network.model.system.BannerDTO;
 import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 import com.youth.banner.Banner;
-import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
 import com.zhy.adapter.recyclerview.base.ItemViewDelegate;
 import com.zhy.adapter.recyclerview.base.ViewHolder;

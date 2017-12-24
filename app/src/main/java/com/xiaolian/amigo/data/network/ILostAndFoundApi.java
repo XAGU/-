@@ -1,13 +1,13 @@
 package com.xiaolian.amigo.data.network;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.dto.request.QueryLostAndFoundListReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.SaveLostAndFoundDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.SimpleReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.QueryLostAndFoundListRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.SimpleRespDTO;
-import com.xiaolian.amigo.data.network.model.lostandfound.LostAndFound;
+import com.xiaolian.amigo.data.network.model.lostandfound.LostAndFoundDTO;
+import com.xiaolian.amigo.data.network.model.lostandfound.QueryLostAndFoundListReqDTO;
+import com.xiaolian.amigo.data.network.model.lostandfound.SaveLostAndFoundDTO;
+import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
+import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
+import com.xiaolian.amigo.data.network.model.lostandfound.QueryLostAndFoundListRespDTO;
+import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
 
 import rx.Observable;
 import retrofit2.http.Body;
@@ -29,7 +29,7 @@ public interface ILostAndFoundApi {
 
     // 获取失物招领详情
     @POST("lost/one")
-    Observable<ApiResult<LostAndFound>> getLostAndFound(@Body SimpleReqDTO reqDTO);
+    Observable<ApiResult<LostAndFoundDTO>> getLostAndFound(@Body SimpleReqDTO reqDTO);
 
     // 我的失物招领
     @POST("lost/personal/list")

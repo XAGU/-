@@ -6,7 +6,7 @@ import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.xiaolian.amigo.data.network.model.user.UploadUserDeviceInfoReqDTO;
-import com.xiaolian.amigo.data.network.model.user.User;
+import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.di.ApplicationContext;
 
 import javax.inject.Inject;

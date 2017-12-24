@@ -16,4 +16,6 @@ public interface IRechargeDetailPresenter<V extends IRechargeDetailView> extends
     void remind(Long id);
 
     void complaint(Long id, int type);
+
+    String getMobile();
 }

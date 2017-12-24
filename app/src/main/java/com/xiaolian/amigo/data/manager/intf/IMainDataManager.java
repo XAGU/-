@@ -1,15 +1,22 @@
 package com.xiaolian.amigo.data.manager.intf;
 
-import com.xiaolian.amigo.data.network.IMainApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.dto.request.CheckVersionUpdateReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.OrderReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.BaseInfoDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.CheckVersionUpdateRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.OrderRespDTO;
+import com.xiaolian.amigo.data.network.model.version.CheckVersionUpdateReqDTO;
+import com.xiaolian.amigo.data.network.model.device.DeviceCheckReqDTO;
+import com.xiaolian.amigo.data.network.model.timerange.QueryTimeValidReqDTO;
+import com.xiaolian.amigo.data.network.model.device.DeviceCheckRespDTO;
+import com.xiaolian.amigo.data.network.model.version.VersionDTO;
+import com.xiaolian.amigo.data.network.model.notify.ReadNotifyReqDTO;
+import com.xiaolian.amigo.data.network.model.order.OrderReqDTO;
+import com.xiaolian.amigo.data.network.model.system.BaseInfoDTO;
+import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
+import com.xiaolian.amigo.data.network.model.version.CheckVersionUpdateRespDTO;
+import com.xiaolian.amigo.data.network.model.order.OrderRespDTO;
+import com.xiaolian.amigo.data.network.model.school.QuerySchoolBizListRespDTO;
+import com.xiaolian.amigo.data.network.model.timerange.QueryTimeValidRespDTO;
+import com.xiaolian.amigo.data.network.model.user.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.data.network.model.user.UploadUserDeviceInfoReqDTO;
-import com.xiaolian.amigo.data.network.model.user.User;
+import com.xiaolian.amigo.data.vo.User;
 
 import retrofit2.http.Body;
 import rx.Observable;
@@ -20,7 +27,7 @@ import rx.Observable;
  * Created by zcd on 9/20/17.
  */
 
-public interface IMainDataManager extends IMainApi {
+public interface IMainDataManager {
 
     String getToken();
 
@@ -71,4 +78,22 @@ public interface IMainDataManager extends IMainApi {
     void saveUploadedUserDeviceInfo(UploadUserDeviceInfoReqDTO reqDTO);
 
     UploadUserDeviceInfoReqDTO getUploadedUserDeviceInfo();
+
+    // 用户个人中心额外信息：包括我的钱包余额、我的代金券数量、是否用设备报修中、目前在进行中的订单
+    Observable<ApiResult<PersonalExtraInfoDTO>> getExtraInfo();
+
+    // 查询热水澡热水供应时间段
+    Observable<ApiResult<QueryTimeValidRespDTO>> queryWaterTimeValid(@Body QueryTimeValidReqDTO reqDTO);
+
+    // 首页设备用水校验
+    Observable<ApiResult<DeviceCheckRespDTO>> checkDeviceUseage(@Body DeviceCheckReqDTO reqDTO);
+
+    // 告诉服务端通知已读（紧急公告）
+    Observable<ApiResult<BooleanRespDTO>> readUrgentNotify(@Body ReadNotifyReqDTO reqDTO);
+
+    // 获取学校业务列表
+    Observable<ApiResult<QuerySchoolBizListRespDTO>> getSchoolBizList();
+
+    // 获取更新信息
+    Observable<ApiResult<VersionDTO>> getUpdateInfo();
 }

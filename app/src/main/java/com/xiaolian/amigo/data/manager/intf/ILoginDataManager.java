@@ -1,13 +1,23 @@
 package com.xiaolian.amigo.data.manager.intf;
 
-import com.xiaolian.amigo.data.network.ILoginApi;
-import com.xiaolian.amigo.data.network.model.user.User;
+import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
+import com.xiaolian.amigo.data.network.model.login.LoginReqDTO;
+import com.xiaolian.amigo.data.network.model.login.LoginRespDTO;
+import com.xiaolian.amigo.data.network.model.login.PasswordResetReqDTO;
+import com.xiaolian.amigo.data.network.model.login.RegisterReqDTO;
+import com.xiaolian.amigo.data.network.model.login.VerificationCodeCheckReqDTO;
+import com.xiaolian.amigo.data.network.model.login.VerificationCodeGetReqDTO;
+import com.xiaolian.amigo.data.vo.User;
+
+import retrofit2.http.Body;
+import rx.Observable;
 
 /**
  * LoginDataManager接口
  * @author zcd
  */
-public interface ILoginDataManager extends ILoginApi {
+public interface ILoginDataManager {
     String getToken();
 
     void setToken(String token);
@@ -21,4 +31,22 @@ public interface ILoginDataManager extends ILoginApi {
     String getRememberMobile();
 
     void setRememberMobile(String mobile);
+
+    // 注册
+    Observable<ApiResult<LoginRespDTO>> register(@Body RegisterReqDTO body);
+
+    // 登录
+    Observable<ApiResult<LoginRespDTO>> login(@Body LoginReqDTO body);
+
+    // 密码重置
+    Observable<ApiResult<BooleanRespDTO>> passwordReset(@Body PasswordResetReqDTO body);
+
+    // 校验注册验证码
+    Observable<ApiResult<BooleanRespDTO>> verificationCheck(@Body VerificationCodeCheckReqDTO body);
+
+    // 获取验证码
+    Observable<ApiResult<BooleanRespDTO>> getVerification(@Body VerificationCodeGetReqDTO body);
+
+    // 校验重置密码验证码
+    Observable<ApiResult<BooleanRespDTO>> verificationResetCheck(@Body VerificationCodeCheckReqDTO body);
 }

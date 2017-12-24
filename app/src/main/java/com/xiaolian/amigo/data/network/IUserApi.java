@@ -1,27 +1,22 @@
 package com.xiaolian.amigo.data.network;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.dto.request.BindResidenceReq;
-import com.xiaolian.amigo.data.network.model.dto.request.MobileUpdateReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.PasswordCheckReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.PasswordUpdateReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.PersonalUpdateReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.QueryResidenceListReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.SimpleQueryReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.SimpleReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.VerificationCodeGetReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.DeleteResidenceRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.EntireUserDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.PersonalExtraInfoDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.QueryAvatarDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.QueryBriefSchoolListRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.QuerySchoolBizListRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.QueryUserResidenceListRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.ResidenceListRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.SimpleRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.UserResidenceDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.UserResidenceInListDTO;
+import com.xiaolian.amigo.data.network.model.user.BindResidenceReq;
+import com.xiaolian.amigo.data.network.model.user.MobileUpdateReqDTO;
+import com.xiaolian.amigo.data.network.model.user.PasswordCheckReqDTO;
+import com.xiaolian.amigo.data.network.model.user.PasswordUpdateReqDTO;
+import com.xiaolian.amigo.data.network.model.user.PersonalUpdateReqDTO;
+import com.xiaolian.amigo.data.network.model.common.SimpleQueryReqDTO;
+import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
+import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
+import com.xiaolian.amigo.data.network.model.user.DeleteResidenceRespDTO;
+import com.xiaolian.amigo.data.network.model.login.EntireUserDTO;
+import com.xiaolian.amigo.data.network.model.user.PersonalExtraInfoDTO;
+import com.xiaolian.amigo.data.network.model.user.QueryAvatarDTO;
+import com.xiaolian.amigo.data.network.model.user.QueryUserResidenceListRespDTO;
+import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
+import com.xiaolian.amigo.data.network.model.user.UserResidenceDTO;
+import com.xiaolian.amigo.data.network.model.user.UserResidenceInListDTO;
 import com.xiaolian.amigo.data.network.model.user.UploadUserDeviceInfoReqDTO;
 
 import retrofit2.http.Body;
@@ -56,18 +51,6 @@ public interface IUserApi {
     @POST("user/password/update")
     Observable<ApiResult<SimpleRespDTO>> updatePassword(@Body PasswordUpdateReqDTO body);
 
-    // 获取学校列表
-    @POST("school/brief/list")
-    Observable<ApiResult<QueryBriefSchoolListRespDTO>> getSchoolList(@Body SimpleQueryReqDTO body);
-
-    // 获取学校业务列表
-    @POST("school/business/list")
-    Observable<ApiResult<QuerySchoolBizListRespDTO>> getSchoolBizList();
-
-    // 获取验证码
-    @POST("login/verification/one")
-    Observable<ApiResult<BooleanRespDTO>> getVerifyCode(@Body VerificationCodeGetReqDTO body);
-
     // 用户绑定的寝室列表
     @POST("user/residence/list")
     Observable<ApiResult<QueryUserResidenceListRespDTO>> queryUserResidenceList(@Body SimpleQueryReqDTO body);
@@ -75,11 +58,6 @@ public interface IUserApi {
     // 用户删除绑定寝室
     @POST("user/residence/delete")
     Observable<ApiResult<DeleteResidenceRespDTO>> deleteResidence(@Body SimpleReqDTO body);
-
-    // 获取建筑列表
-    // residenceLevel 1幢 2楼层 3宿舍 具体位置 buildingType 1宿舍楼 parentId上一层事物Id
-    @POST("residence/list")
-    Observable<ApiResult<ResidenceListRespDTO>> queryResidenceList(@Body QueryResidenceListReqDTO body);
 
     // 用户绑定编辑寝室
     @POST("user/residence/bind")

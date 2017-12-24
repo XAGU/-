@@ -3,8 +3,8 @@ package com.xiaolian.amigo.ui.bonus;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.manager.intf.IBonusDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.dto.request.RedeemBonusReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
+import com.xiaolian.amigo.data.network.model.bonus.RedeemBonusReqDTO;
+import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.bonus.intf.IBonusExchangePresenter;
 import com.xiaolian.amigo.ui.bonus.intf.IBonusExchangeView;
@@ -19,21 +19,21 @@ import javax.inject.Inject;
 
 public class BonusExchangePresenter<V extends IBonusExchangeView> extends BasePresenter<V>
         implements IBonusExchangePresenter<V> {
-
+    @SuppressWarnings("unused")
     private static final String TAG = BonusExchangePresenter.class.getSimpleName();
-    private IBonusDataManager manager;
+    private IBonusDataManager bonusDataManager;
 
     @Inject
-    public BonusExchangePresenter(IBonusDataManager manager) {
+    public BonusExchangePresenter(IBonusDataManager bonusDataManager) {
         super();
-        this.manager = manager;
+        this.bonusDataManager = bonusDataManager;
     }
 
     @Override
     public void exchangeBonus(String code) {
         RedeemBonusReqDTO reqDTO = new RedeemBonusReqDTO();
         reqDTO.setCode(code);
-        addObserver(manager.redeem(reqDTO), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
+        addObserver(bonusDataManager.redeem(reqDTO), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
 
             @Override
             public void onReady(ApiResult<BooleanRespDTO> result) {

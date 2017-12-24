@@ -3,9 +3,9 @@ package com.xiaolian.amigo.ui.wallet;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.dto.request.OrderReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.OrderRespDTO;
-import com.xiaolian.amigo.data.network.model.order.Order;
+import com.xiaolian.amigo.data.network.model.order.OrderInListDTO;
+import com.xiaolian.amigo.data.network.model.order.OrderReqDTO;
+import com.xiaolian.amigo.data.network.model.order.OrderRespDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.wallet.adaptor.PrepayAdaptor;
 import com.xiaolian.amigo.ui.wallet.intf.IPrepayPresenter;
@@ -24,13 +24,14 @@ import javax.inject.Inject;
 
 public class PrepayPresenter<V extends IPrepayView> extends BasePresenter<V>
         implements IPrepayPresenter<V> {
+    @SuppressWarnings("unused")
     private static final String TAG = PrepayPresenter.class.getSimpleName();
-    private IOrderDataManager manager;
+    private IOrderDataManager orderDataManager;
 
     @Inject
     public PrepayPresenter(IOrderDataManager manager) {
         super();
-        this.manager = manager;
+        this.orderDataManager = manager;
     }
 
     @Override
@@ -40,7 +41,7 @@ public class PrepayPresenter<V extends IPrepayView> extends BasePresenter<V>
         reqDTO.setSize(Constant.PAGE_SIZE);
         // 查看未结束账单
         reqDTO.setOrderStatus(1);
-        addObserver(manager.queryPrepay(reqDTO), new NetworkObserver<ApiResult<OrderRespDTO>>(false, true) {
+        addObserver(orderDataManager.queryPrepay(reqDTO), new NetworkObserver<ApiResult<OrderRespDTO>>(false, true) {
             @Override
             public void onReady(ApiResult<OrderRespDTO> result) {
                 getMvpView().setRefreshComplete();
@@ -50,8 +51,8 @@ public class PrepayPresenter<V extends IPrepayView> extends BasePresenter<V>
                 if (null == result.getError()) {
                     if (null != result.getData().getOrders() && result.getData().getOrders().size() > 0) {
                         List<PrepayAdaptor.OrderWrapper> wrappers = new ArrayList<PrepayAdaptor.OrderWrapper>();
-                        for (Order order : result.getData().getOrders()) {
-                            wrappers.add(new PrepayAdaptor.OrderWrapper(order));
+                        for (OrderInListDTO order : result.getData().getOrders()) {
+                            wrappers.add(new PrepayAdaptor.OrderWrapper(order.transform()));
                         }
                         getMvpView().addMore(wrappers);
                         getMvpView().addPage();

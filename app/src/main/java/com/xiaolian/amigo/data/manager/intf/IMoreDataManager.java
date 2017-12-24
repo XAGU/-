@@ -8,4 +8,6 @@ package com.xiaolian.amigo.data.manager.intf;
 
 public interface IMoreDataManager {
     void logout();
+
+    String getToken();
 }

@@ -1,6 +1,6 @@
 package com.xiaolian.amigo.ui.lostandfound.intf;
 
-import com.xiaolian.amigo.data.network.model.lostandfound.LostAndFound;
+import com.xiaolian.amigo.data.vo.LostAndFound;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 
 /**

@@ -12,6 +12,7 @@ import android.text.TextUtils;
 
 import com.xiaolian.amigo.data.enumeration.BizError;
 import com.xiaolian.amigo.data.manager.BleDataManager;
+import com.xiaolian.amigo.data.manager.intf.IDeviceDataManager;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
@@ -28,18 +29,15 @@ import com.xiaolian.amigo.data.enumeration.OrderStatus;
 import com.xiaolian.amigo.data.enumeration.TradeError;
 import com.xiaolian.amigo.data.enumeration.TradeStep;
 import com.xiaolian.amigo.data.manager.intf.IBleDataManager;
-import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
-import com.xiaolian.amigo.data.manager.intf.ITradeDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.dto.request.CmdResultReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.ConnectCommandReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.PayReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.UnsettledOrderStatusCheckReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.CmdResultRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.ConnectCommandRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.PayRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.UnsettledOrderStatusCheckRespDTO;
-import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
+import com.xiaolian.amigo.data.network.model.trade.CmdResultReqDTO;
+import com.xiaolian.amigo.data.network.model.trade.ConnectCommandReqDTO;
+import com.xiaolian.amigo.data.network.model.trade.PayReqDTO;
+import com.xiaolian.amigo.data.network.model.order.UnsettledOrderStatusCheckReqDTO;
+import com.xiaolian.amigo.data.network.model.trade.CmdResultRespDTO;
+import com.xiaolian.amigo.data.network.model.trade.ConnectCommandRespDTO;
+import com.xiaolian.amigo.data.network.model.trade.PayRespDTO;
+import com.xiaolian.amigo.data.network.model.order.UnsettledOrderStatusCheckRespDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.base.RxBus;
 import com.xiaolian.amigo.ui.device.intf.IDevicePresenter;
@@ -52,7 +50,6 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import rx.Observable;
-import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -71,9 +68,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     private static final String TAG = DeviceBasePresenter.class.getSimpleName();
     private static final String NOTIFY_DESCRIPTOR_UUID = "00002902-0000-1000-8000-00805f9b34fb";
     private IBleDataManager bleDataManager;
-    private ITradeDataManager tradeDataManager;
-    private IOrderDataManager orderDataManager;
-    private ISharedPreferencesHelp sharedPreferencesHelp;
+    private IDeviceDataManager deviceDataManager;
     // 共享连接
     private Observable<RxBleConnection> connectionObservable;
     private Observable<Observable<byte[]>> setupNotificationObservable;
@@ -131,17 +126,17 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     private CountDownTimer timer;
     // 从首页点击设备用水跳转标识
     private volatile boolean homePageJump = true;
+    // 校验订单出现错误
+    private volatile boolean checkOrderErrorFlag = false;
     // 结束标识
     private volatile boolean closeFlag = false;
     // 故障设备标志
     private volatile boolean brokenFlag = false;
 
-    DeviceBasePresenter(IBleDataManager bleDataManager, ITradeDataManager tradeDataManager, IOrderDataManager orderDataManager, ISharedPreferencesHelp sharedPreferencesHelp) {
+    DeviceBasePresenter(IBleDataManager bleDataManager, IDeviceDataManager deviceDataManager) {
         super();
         this.bleDataManager = bleDataManager;
-        this.tradeDataManager = tradeDataManager;
-        this.orderDataManager = orderDataManager;
-        this.sharedPreferencesHelp = sharedPreferencesHelp;
+        this.deviceDataManager = deviceDataManager;
     }
 
     private void initWriteObserver() {
@@ -254,8 +249,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
         // 设备连接上存储mac地址供后续读写数据使用
         // 查询是否存在改deviceNo的macAddress
-        if (sharedPreferencesHelp.getMacAddressByDeviceNo(macAddress) != null) {
-            currentMacAddress = sharedPreferencesHelp.getMacAddressByDeviceNo(macAddress);
+        if (deviceDataManager.getMacAddressByDeviceNo(macAddress) != null) {
+            currentMacAddress = deviceDataManager.getMacAddressByDeviceNo(macAddress);
             realConnect(macAddress);
             return;
         }
@@ -292,7 +287,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 deviceNo.append(temp[temp.length - 2]).append(temp[temp.length - 1]);
                 currentMacAddress = scannedMacAddress;
                 Log.i(TAG, "扫描获取macAddress成功。macAddress:" + currentMacAddress);
-                sharedPreferencesHelp.setDeviceNoAndMacAddress(macAddress, currentMacAddress);
+                deviceDataManager.setDeviceNoAndMacAddress(macAddress, currentMacAddress);
                 realConnect(macAddress);
                 this.unsubscribe();
             }
@@ -542,6 +537,11 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             } else { // 结算页面重连
                 Log.i(TAG, "当前为结算页面重连");
                 waitOrderCheckResult();
+                // 如果查询订单时出现错误，显示连接错误并跳过之后的步骤
+                if (checkOrderErrorFlag) {
+                    checkOrderErrorFlag = false;
+                    return;
+                }
                 if (null == orderStatus || orderStatus.getStatus() == null) {
                     Log.wtf(TAG, "查不到对应的未结账订单，不应该发生此种状况！！！");
                     // 如果订单ID不为空，直接到订单详情页面
@@ -570,7 +570,11 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
             // 查询订单状态
             waitOrderCheckResult();
-
+            // 如果查询订单时出现错误，显示连接错误并跳过之后的步骤
+            if (checkOrderErrorFlag) {
+                checkOrderErrorFlag = false;
+                return;
+            }
             // String savedConnectCmd = sharedPreferencesHelp.getConnectCmd(currentMacAddress);
             // Log.i(TAG, "获取已保存的握手指令：" + savedConnectCmd);
             if (null != orderStatus && null != orderStatus.getStatus() && OrderStatus.getOrderStatus(orderStatus.getStatus()) == OrderStatus.USING) {  // 有订单未计算拿上次连接的握手指令（这里待验证是否有影响）
@@ -686,14 +690,14 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     private void getConnectCommand(String macAddress) {
         ConnectCommandReqDTO reqDTO = new ConnectCommandReqDTO();
         reqDTO.setMacAddress(macAddress);
-        addObserver(tradeDataManager.getConnectCommand(reqDTO), new NetworkObserver<ApiResult<ConnectCommandRespDTO>>(false) {
+        addObserver(deviceDataManager.getConnectCommand(reqDTO), new NetworkObserver<ApiResult<ConnectCommandRespDTO>>(false) {
             @Override
             public void onReady(ApiResult<ConnectCommandRespDTO> result) {
                 if (null == result.getError()) {
                     // 存储deviceToken
                     if (result.getData() != null && result.getData().getMacAddress() != null
                             && result.getData().getDeviceToken() != null) {
-                        sharedPreferencesHelp.setDeviceToken(result.getData().getMacAddress(), result.getData().getDeviceToken());
+                        deviceDataManager.setDeviceToken(result.getData().getMacAddress(), result.getData().getDeviceToken());
                         Log.i(TAG, "收到deviceToken：" + result.getData().getDeviceToken());
                     }
                     synchronized (connectCmdLock) {
@@ -724,7 +728,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     private void checkOrderStatus(String macAddress) {
         UnsettledOrderStatusCheckReqDTO reqDTO = new UnsettledOrderStatusCheckReqDTO();
         reqDTO.setMacAddress(macAddress);
-        addObserver(orderDataManager.checkOrderStatus(reqDTO), new NetworkObserver<ApiResult<UnsettledOrderStatusCheckRespDTO>>(false) {
+        addObserver(deviceDataManager.checkOrderStatus(reqDTO), new NetworkObserver<ApiResult<UnsettledOrderStatusCheckRespDTO>>(false) {
             @Override
             public void onReady(ApiResult<UnsettledOrderStatusCheckRespDTO> result) {
                 if (null == result.getError()) {
@@ -739,6 +743,10 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 } else {
                     Log.wtf(TAG, "服务器返回,获取订单状态失败");
                     getMvpView().post(() -> getMvpView().onError(TradeError.SYSTEM_ERROR));
+                    synchronized (orderStatusLock) {
+                        checkOrderErrorFlag = true;
+                        orderStatusLock.notifyAll();
+                    }
                 }
             }
 
@@ -746,7 +754,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             public void onError(Throwable e) {
                 super.onError(e);
                 Log.wtf(TAG, "服务器未返回,获取订单状态失败");
+                getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_3));
                 synchronized (orderStatusLock) {
+                    checkOrderErrorFlag = true;
                     orderStatusLock.notifyAll();
                 }
             }
@@ -769,13 +779,13 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         CmdResultReqDTO reqDTO = new CmdResultReqDTO();
         reqDTO.setData(result);
         reqDTO.setMacAddress(deviceNo);
-        addObserver(tradeDataManager.processCmdResult(reqDTO), new NetworkObserver<ApiResult<CmdResultRespDTO>>(false) {
+        addObserver(deviceDataManager.processCmdResult(reqDTO), new NetworkObserver<ApiResult<CmdResultRespDTO>>(false) {
             @Override
             public void onReady(ApiResult<CmdResultRespDTO> result) {
                 // 存储deviceToken
                 if (result.getData() != null && result.getData().getMacAddress() != null
                         && result.getData().getDeviceToken() != null) {
-                    sharedPreferencesHelp.setDeviceToken(result.getData().getMacAddress(), result.getData().getDeviceToken());
+                    deviceDataManager.setDeviceToken(result.getData().getMacAddress(), result.getData().getDeviceToken());
                     Log.i(TAG, "收到deviceToken：" + result.getData().getDeviceToken());
                 }
                 Log.i(TAG, "通知主线程更新数据。" + result.getData());
@@ -928,6 +938,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             } else if (result.getError().getCode() == BleErrorType.BLE_UNKNOWN_ERROR.getCode()) {
                 closeBleConnecttion();
                 getMvpView().onError(TradeError.DEVICE_BROKEN_2);
+            } else if (result.getError().getCode() == BleErrorType.BLE_CMD_RESULT_ERROR.getCode()) {
+                Log.i(TAG, "设备未完全开启");
+                getMvpView().onError(TradeError.CONNECT_ERROR_1);
             }
             Integer cmdType = result.getError().getBleCmdType();
             if (null != cmdType) {
@@ -978,13 +991,13 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         if (result == null || orderId == null || orderId <= 0) {
             return;
         }
-        sharedPreferencesHelp.setDeviceResult(deviceNo,
+        deviceDataManager.setDeviceResult(deviceNo,
                 orderId + Constant.DIVIDER + result);
     }
 
     // 只存开阀设备响应结果
     private String getDeviceResult(Long orderId) {
-        String deviceResultTemp = sharedPreferencesHelp.getDeviceResult(deviceNo);
+        String deviceResultTemp = deviceDataManager.getDeviceResult(deviceNo);
         Long savedOrderId = null;
         String savedDeviceResult = null;
         try {
@@ -1004,12 +1017,12 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         if (TextUtils.isEmpty(closeCmd) || orderId == null || orderId <= 0) {
             return;
         }
-        sharedPreferencesHelp.setCloseCmd(deviceNo,
+        deviceDataManager.setCloseCmd(deviceNo,
                 orderId + Constant.DIVIDER + closeCmd);
     }
 
     private String getCloseCmd(Long orderId) {
-        String closeCmdTemp = sharedPreferencesHelp.getCloseCmd(deviceNo);
+        String closeCmdTemp = deviceDataManager.getCloseCmd(deviceNo);
         Long savedOrderId = null;
         String savedCloseCmd = null;
         try {
@@ -1039,14 +1052,14 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         reqDTO.setBonusId(bonusId);
         reqDTO.setPrepay(prepay);
 
-        addObserver(tradeDataManager.pay(reqDTO), new NetworkObserver<ApiResult<PayRespDTO>>(false) {
+        addObserver(deviceDataManager.pay(reqDTO), new NetworkObserver<ApiResult<PayRespDTO>>(false) {
             @Override
             public void onReady(ApiResult<PayRespDTO> result) {
                 if (null == result.getError()) {
                     // 存储deviceToken
                     if (result.getData() != null && result.getData().getMacAddress() != null
                             && result.getData().getDeviceToken() != null) {
-                        sharedPreferencesHelp.setDeviceToken(result.getData().getMacAddress(), result.getData().getDeviceToken());
+                        deviceDataManager.setDeviceToken(result.getData().getMacAddress(), result.getData().getDeviceToken());
                         Log.i(TAG, "收到deviceToken：" + result.getData().getDeviceToken());
                     }
                     // 初始化订单id

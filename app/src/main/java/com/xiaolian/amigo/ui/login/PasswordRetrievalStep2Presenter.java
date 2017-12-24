@@ -2,8 +2,8 @@ package com.xiaolian.amigo.ui.login;
 
 import com.xiaolian.amigo.data.manager.intf.ILoginDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.dto.request.PasswordResetReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
+import com.xiaolian.amigo.data.network.model.login.PasswordResetReqDTO;
+import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.login.intf.IPasswordRetrievalStep2Presenter;
 import com.xiaolian.amigo.ui.login.intf.IPasswordRetrievalStep2View;
@@ -19,12 +19,12 @@ import javax.inject.Inject;
 public class PasswordRetrievalStep2Presenter<V extends IPasswordRetrievalStep2View> extends BasePresenter<V>
         implements IPasswordRetrievalStep2Presenter<V> {
 
-    private ILoginDataManager manager;
+    private ILoginDataManager loginDataManager;
 
     @Inject
-    public PasswordRetrievalStep2Presenter(ILoginDataManager manager) {
+    public PasswordRetrievalStep2Presenter(ILoginDataManager loginDataManager) {
         super();
-        this.manager = manager;
+        this.loginDataManager = loginDataManager;
     }
 
     @Override
@@ -33,7 +33,7 @@ public class PasswordRetrievalStep2Presenter<V extends IPasswordRetrievalStep2Vi
         dto.setCode(code);
         dto.setMobile(mobile);
         dto.setPassword(password);
-        addObserver(manager.passwordReset(dto), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
+        addObserver(loginDataManager.passwordReset(dto), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
             @Override
             public void onReady(ApiResult<BooleanRespDTO> result) {
                 if (null == result.getError()) {

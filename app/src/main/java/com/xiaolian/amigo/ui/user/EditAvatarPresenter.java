@@ -7,7 +7,6 @@ import com.alibaba.sdk.android.oss.ClientException;
 import com.alibaba.sdk.android.oss.OSSClient;
 import com.alibaba.sdk.android.oss.ServiceException;
 import com.alibaba.sdk.android.oss.callback.OSSCompletedCallback;
-import com.alibaba.sdk.android.oss.common.auth.OSSFederationToken;
 import com.alibaba.sdk.android.oss.internal.OSSAsyncTask;
 import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 import com.alibaba.sdk.android.oss.model.PutObjectResult;
@@ -17,11 +16,11 @@ import com.xiaolian.amigo.data.enumeration.OssFileType;
 import com.xiaolian.amigo.data.manager.intf.IOssDataManager;
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.dto.request.PersonalUpdateReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.EntireUserDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.QueryAvatarDTO;
 import com.xiaolian.amigo.data.network.model.file.OssModel;
-import com.xiaolian.amigo.data.network.model.user.User;
+import com.xiaolian.amigo.data.network.model.login.EntireUserDTO;
+import com.xiaolian.amigo.data.network.model.user.PersonalUpdateReqDTO;
+import com.xiaolian.amigo.data.network.model.user.QueryAvatarDTO;
+import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.user.adaptor.EditAvatarAdaptor;
 import com.xiaolian.amigo.ui.user.intf.IEditAvatarPresenter;
@@ -36,7 +35,6 @@ import java.util.Random;
 import javax.inject.Inject;
 
 import retrofit2.HttpException;
-import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -48,21 +46,15 @@ import rx.schedulers.Schedulers;
 
 public class EditAvatarPresenter<V extends IEditAvatarVIew> extends BasePresenter<V>
         implements IEditAvatarPresenter<V> {
-
+    @SuppressWarnings("unused")
     private static final String TAG = EditAvatarPresenter.class.getSimpleName();
     private IUserDataManager userDataManager;
-    private IOssDataManager ossDataManager;
-    // oss token 失效信号量
-    private final byte[] ossLock = new byte[0];
-    private OssModel ossModel;
     private Random random = new Random();
 
     @Inject
     public EditAvatarPresenter(IUserDataManager userDataManager, IOssDataManager ossDataManager) {
         super();
-        this.ossDataManager = ossDataManager;
         this.userDataManager = userDataManager;
-        //if null , default will be init
     }
 
 
@@ -112,7 +104,7 @@ public class EditAvatarPresenter<V extends IEditAvatarVIew> extends BasePresente
     }
 
     private void updateImage(Context context, String filePath) {
-        ossDataManager.getOssModel()
+        userDataManager.getOssModel()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<ApiResult<OssModel>>() {

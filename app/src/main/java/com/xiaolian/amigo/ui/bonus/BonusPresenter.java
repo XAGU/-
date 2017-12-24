@@ -2,9 +2,9 @@ package com.xiaolian.amigo.ui.bonus;
 
 import com.xiaolian.amigo.data.manager.intf.IBonusDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.bonus.Bonus;
-import com.xiaolian.amigo.data.network.model.dto.request.QueryUserBonusReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.QueryUserBonusListRespDTO;
+import com.xiaolian.amigo.data.network.model.bonus.UserBonusDTO;
+import com.xiaolian.amigo.data.network.model.bonus.QueryUserBonusReqDTO;
+import com.xiaolian.amigo.data.network.model.bonus.QueryUserBonusListRespDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.bonus.adaptor.BonusAdaptor;
 import com.xiaolian.amigo.ui.bonus.intf.IBonusPresenter;
@@ -22,13 +22,14 @@ import javax.inject.Inject;
  */
 public class BonusPresenter<V extends IBonusView> extends BasePresenter<V>
         implements IBonusPresenter<V> {
+    @SuppressWarnings("unused")
     private static final String TAG = BonusPresenter.class.getSimpleName();
-    private IBonusDataManager manager;
+    private IBonusDataManager bonusDataManager;
 
     @Inject
-    public BonusPresenter(IBonusDataManager manager) {
+    public BonusPresenter(IBonusDataManager bonusDataManager) {
         super();
-        this.manager = manager;
+        this.bonusDataManager = bonusDataManager;
     }
 
     @Override
@@ -41,7 +42,7 @@ public class BonusPresenter<V extends IBonusView> extends BasePresenter<V>
         // 显示代金券 未使用1 未过期1 过期代金券 未使用1 已过期2
         dto.setUseStatus(1);
         dto.setValidStatus(1);
-        addObserver(manager.queryOrders(dto), new NetworkObserver<ApiResult<QueryUserBonusListRespDTO>>(false, true) {
+        addObserver(bonusDataManager.queryOrders(dto), new NetworkObserver<ApiResult<QueryUserBonusListRespDTO>>(false, true) {
             @Override
             public void onReady(ApiResult<QueryUserBonusListRespDTO> result) {
                 getMvpView().setRefreshComplete();
@@ -51,13 +52,13 @@ public class BonusPresenter<V extends IBonusView> extends BasePresenter<V>
                 if (null == result.getError()) {
                     if (null != result.getData().getBonuses() && result.getData().getBonuses().size() > 0) {
                         List<BonusAdaptor.BonusWrapper> wrappers = new ArrayList<>();
-                        for (Bonus bonus : result.getData().getBonuses()) {
+                        for (UserBonusDTO bonus : result.getData().getBonuses()) {
                             if (checkUse) {
                                 if (bonus.getStartTime() != null && result.getTimestamp() >= bonus.getStartTime()) {
-                                    wrappers.add(new BonusAdaptor.BonusWrapper(bonus));
+                                    wrappers.add(new BonusAdaptor.BonusWrapper(bonus.transform()));
                                 }
                             } else {
-                                wrappers.add(new BonusAdaptor.BonusWrapper(bonus));
+                                wrappers.add(new BonusAdaptor.BonusWrapper(bonus.transform()));
                             }
                         }
                         getMvpView().addMore(wrappers);
@@ -89,7 +90,7 @@ public class BonusPresenter<V extends IBonusView> extends BasePresenter<V>
         // 显示代金券 未使用1 未过期1 过期代金券 未使用1 已过期2
         dto.setUseStatus(1);
         dto.setValidStatus(2);
-        addObserver(manager.queryOrders(dto), new NetworkObserver<ApiResult<QueryUserBonusListRespDTO>>(false) {
+        addObserver(bonusDataManager.queryOrders(dto), new NetworkObserver<ApiResult<QueryUserBonusListRespDTO>>(false) {
             @Override
             public void onReady(ApiResult<QueryUserBonusListRespDTO> result) {
                 getMvpView().setRefreshComplete();
@@ -99,8 +100,8 @@ public class BonusPresenter<V extends IBonusView> extends BasePresenter<V>
                 if (null == result.getError()) {
                     if (null != result.getData().getBonuses() && result.getData().getBonuses().size() > 0) {
                         List<BonusAdaptor.BonusWrapper> wrappers = new ArrayList<>();
-                        for (Bonus bonus : result.getData().getBonuses()) {
-                            wrappers.add(new BonusAdaptor.BonusWrapper(bonus));
+                        for (UserBonusDTO bonus : result.getData().getBonuses()) {
+                            wrappers.add(new BonusAdaptor.BonusWrapper(bonus.transform()));
                         }
                         getMvpView().addMore(wrappers);
                         getMvpView().addPage();

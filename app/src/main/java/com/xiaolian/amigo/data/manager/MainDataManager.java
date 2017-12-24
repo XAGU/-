@@ -1,27 +1,31 @@
 package com.xiaolian.amigo.data.manager;
 
 import com.xiaolian.amigo.data.manager.intf.IMainDataManager;
-import com.xiaolian.amigo.data.network.IMainApi;
+import com.xiaolian.amigo.data.network.IDeviceApi;
+import com.xiaolian.amigo.data.network.INotifyApi;
 import com.xiaolian.amigo.data.network.IOrderApi;
+import com.xiaolian.amigo.data.network.ISchoolApi;
 import com.xiaolian.amigo.data.network.ISystemApi;
+import com.xiaolian.amigo.data.network.ITimeRangeApi;
 import com.xiaolian.amigo.data.network.IUserApi;
+import com.xiaolian.amigo.data.network.IVersionApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.dto.request.CheckVersionUpdateReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.DeviceCheckReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.OrderReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.QueryTimeValidReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.ReadNotifyReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.BaseInfoDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.CheckVersionUpdateRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.DeviceCheckRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.OrderRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.PersonalExtraInfoDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.QuerySchoolBizListRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.QueryTimeValidRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.VersionDTO;
+import com.xiaolian.amigo.data.network.model.version.CheckVersionUpdateReqDTO;
+import com.xiaolian.amigo.data.network.model.device.DeviceCheckReqDTO;
+import com.xiaolian.amigo.data.network.model.order.OrderReqDTO;
+import com.xiaolian.amigo.data.network.model.timerange.QueryTimeValidReqDTO;
+import com.xiaolian.amigo.data.network.model.notify.ReadNotifyReqDTO;
+import com.xiaolian.amigo.data.network.model.system.BaseInfoDTO;
+import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
+import com.xiaolian.amigo.data.network.model.version.CheckVersionUpdateRespDTO;
+import com.xiaolian.amigo.data.network.model.device.DeviceCheckRespDTO;
+import com.xiaolian.amigo.data.network.model.order.OrderRespDTO;
+import com.xiaolian.amigo.data.network.model.user.PersonalExtraInfoDTO;
+import com.xiaolian.amigo.data.network.model.school.QuerySchoolBizListRespDTO;
+import com.xiaolian.amigo.data.network.model.timerange.QueryTimeValidRespDTO;
+import com.xiaolian.amigo.data.network.model.version.VersionDTO;
 import com.xiaolian.amigo.data.network.model.user.UploadUserDeviceInfoReqDTO;
-import com.xiaolian.amigo.data.network.model.user.User;
+import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 
 import javax.inject.Inject;
@@ -40,18 +44,26 @@ public class MainDataManager implements IMainDataManager {
     private static final String TAG = MainDataManager.class.getSimpleName();
 
     private ISharedPreferencesHelp sharedPreferencesHelp;
-    private IMainApi mainApi;
     private IOrderApi orderApi;
     private IUserApi userApi;
     private ISystemApi systemApi;
+    private ITimeRangeApi timeRangeApi;
+    private IDeviceApi deviceApi;
+    private INotifyApi notifyApi;
+    private ISchoolApi schoolApi;
+    private IVersionApi versionApi;
 
     @Inject
     public MainDataManager(Retrofit retrofit, ISharedPreferencesHelp sharedPreferencesHelp) {
         this.sharedPreferencesHelp = sharedPreferencesHelp;
-        this.mainApi = retrofit.create(IMainApi.class);
         this.orderApi = retrofit.create(IOrderApi.class);
         this.systemApi = retrofit.create(ISystemApi.class);
         this.userApi = retrofit.create(IUserApi.class);
+        this.timeRangeApi = retrofit.create(ITimeRangeApi.class);
+        this.deviceApi = retrofit.create(IDeviceApi.class);
+        this.notifyApi = retrofit.create(INotifyApi.class);
+        this.schoolApi = retrofit.create(ISchoolApi.class);
+        this.versionApi = retrofit.create(IVersionApi.class);
     }
 
     @Override
@@ -166,27 +178,27 @@ public class MainDataManager implements IMainDataManager {
 
     @Override
     public Observable<ApiResult<PersonalExtraInfoDTO>> getExtraInfo() {
-        return mainApi.getExtraInfo();
+        return userApi.getUserExtraInfo();
     }
 
     @Override
     public Observable<ApiResult<QueryTimeValidRespDTO>> queryWaterTimeValid(@Body QueryTimeValidReqDTO reqDTO) {
-        return mainApi.queryWaterTimeValid(reqDTO);
+        return timeRangeApi.queryWaterTimeValid(reqDTO);
     }
 
     @Override
     public Observable<ApiResult<DeviceCheckRespDTO>> checkDeviceUseage(@Body DeviceCheckReqDTO reqDTO) {
-        return mainApi.checkDeviceUseage(reqDTO);
+        return deviceApi.checkDeviceUseage(reqDTO);
     }
 
     @Override
     public Observable<ApiResult<BooleanRespDTO>> readUrgentNotify(@Body ReadNotifyReqDTO reqDTO) {
-        return mainApi.readUrgentNotify(reqDTO);
+        return notifyApi.readUrgentNotify(reqDTO);
     }
 
     @Override
     public Observable<ApiResult<QuerySchoolBizListRespDTO>> getSchoolBizList() {
-        return mainApi.getSchoolBizList();
+        return schoolApi.getSchoolBizList();
     }
 
     @Override
@@ -196,6 +208,6 @@ public class MainDataManager implements IMainDataManager {
 
     @Override
     public Observable<ApiResult<VersionDTO>> getUpdateInfo() {
-        return mainApi.getUpdateInfo();
+        return versionApi.getUpdateInfo();
     }
 }

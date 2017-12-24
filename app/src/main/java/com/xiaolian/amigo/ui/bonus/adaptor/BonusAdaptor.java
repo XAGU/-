@@ -3,7 +3,7 @@ package com.xiaolian.amigo.ui.bonus.adaptor;
 import android.content.Context;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.data.network.model.bonus.Bonus;
+import com.xiaolian.amigo.data.vo.Bonus;
 import com.xiaolian.amigo.util.TimeUtils;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;

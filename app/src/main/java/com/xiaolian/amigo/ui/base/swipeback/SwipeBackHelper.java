@@ -49,7 +49,8 @@ public class SwipeBackHelper extends Handler {
     private float mDistanceX;  //px 当前滑动距离 （正数或0）
     private float mLastPointX;  //记录手势在屏幕上的X轴坐标
 
-    private boolean mIsSupportSlideBack; //
+//    private boolean mIsSupportSlideBack; //
+    private SlideBackManager mSlideBackManager;
     private int mTouchSlop;
     private boolean mIsInThresholdArea;
 
@@ -68,7 +69,8 @@ public class SwipeBackHelper extends Handler {
         }
 
         mActivity = slideBackManager.getSlideActivity();
-        mIsSupportSlideBack = slideBackManager.supportSlideBack();
+//        mIsSupportSlideBack = slideBackManager.supportSlideBack();
+        mSlideBackManager = slideBackManager;
         mCurrentContentView = getContentView(mActivity);
         mViewManager = new ViewManager();
 
@@ -79,7 +81,7 @@ public class SwipeBackHelper extends Handler {
     }
 
     public boolean processTouchEvent(MotionEvent ev) {
-        if(!mIsSupportSlideBack) { //不支持滑动返回，则手势事件交给View处理
+        if(!mSlideBackManager.supportSlideBack()) { //不支持滑动返回，则手势事件交给View处理
             return false;
         }
 

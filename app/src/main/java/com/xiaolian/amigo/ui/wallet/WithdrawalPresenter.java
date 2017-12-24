@@ -4,10 +4,10 @@ import android.text.TextUtils;
 
 import com.xiaolian.amigo.data.manager.intf.IWalletDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.dto.request.QueryUserThirdAccountReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.WithdrawReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.QueryUserThirdAccountRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.SimpleRespDTO;
+import com.xiaolian.amigo.data.network.model.userthirdaccount.QueryUserThirdAccountReqDTO;
+import com.xiaolian.amigo.data.network.model.funds.WithdrawReqDTO;
+import com.xiaolian.amigo.data.network.model.userthirdaccount.QueryUserThirdAccountRespDTO;
+import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IWithdrawalPresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IWithdrawalView;

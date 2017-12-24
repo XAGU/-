@@ -3,14 +3,14 @@ package com.xiaolian.amigo.data.manager;
 import com.xiaolian.amigo.data.manager.intf.ILoginDataManager;
 import com.xiaolian.amigo.data.network.ILoginApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.dto.request.LoginReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.PasswordResetReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.RegisterReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.VerificationCodeCheckReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.VerificationCodeGetReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.LoginRespDTO;
-import com.xiaolian.amigo.data.network.model.user.User;
+import com.xiaolian.amigo.data.network.model.login.LoginReqDTO;
+import com.xiaolian.amigo.data.network.model.login.PasswordResetReqDTO;
+import com.xiaolian.amigo.data.network.model.login.RegisterReqDTO;
+import com.xiaolian.amigo.data.network.model.login.VerificationCodeCheckReqDTO;
+import com.xiaolian.amigo.data.network.model.login.VerificationCodeGetReqDTO;
+import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
+import com.xiaolian.amigo.data.network.model.login.LoginRespDTO;
+import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 
 import javax.inject.Inject;
@@ -25,10 +25,10 @@ import retrofit2.http.Body;
  */
 
 public class LoginDataManager implements ILoginDataManager {
+    @SuppressWarnings("unused")
     private static final String TAG = LoginDataManager.class.getSimpleName();
 
     private ILoginApi loginApi;
-
 
     private ISharedPreferencesHelp sharedPreferencesHelp;
 

@@ -3,10 +3,10 @@ package com.xiaolian.amigo.data.manager;
 import com.xiaolian.amigo.data.manager.intf.IBonusDataManager;
 import com.xiaolian.amigo.data.network.IBonusApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.dto.request.QueryUserBonusReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.RedeemBonusReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.QueryUserBonusListRespDTO;
+import com.xiaolian.amigo.data.network.model.bonus.QueryUserBonusReqDTO;
+import com.xiaolian.amigo.data.network.model.bonus.RedeemBonusReqDTO;
+import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
+import com.xiaolian.amigo.data.network.model.bonus.QueryUserBonusListRespDTO;
 
 import javax.inject.Inject;
 
@@ -21,6 +21,7 @@ import retrofit2.http.Body;
 
 public class BonusDataManager implements IBonusDataManager {
 
+    @SuppressWarnings("unused")
     private static final String TAG = BonusDataManager.class.getSimpleName();
 
     private IBonusApi bonusApi;

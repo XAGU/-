@@ -24,10 +24,7 @@ public final class Constant {
     public static final String CHINEASE_COLON = "：";
 
     // 测试服务器
-//    public static final String SERVER_TEST = "http://116.62.236.67:5081";
     public static final String SERVER_TEST = BuildConfig.SERVER;
-//    public static final String SERVER_TEST = "http://10.0.0.4:5081";
-//    public static final String SERVER_TEST = "http://10.0.0.2:5081";
 
     // 当前使用的服务器
     public static final String SERVER = SERVER_TEST;
@@ -37,21 +34,18 @@ public final class Constant {
 
     // H5地址
     public static final String H5_SERVER = BuildConfig.H5_SERVER;
-//    public static final String H5_SERVER = "http://10.0.0.5:5000";
     // H5帮助中心
     public static final String H5_HELP = H5_SERVER + "/help/list";
     // 设备未找零
     public static final String H5_PREPAY_HELP = H5_SERVER + "/help?first=1&last=1";
-
     // H5用户协议
     public static final String H5_AGREEMENT = H5_SERVER + "/agreement";
-//    public static final String H5_AGREEMENT = "http://www.script-tutorials.com/demos/199/index.html";
-
     // H5投诉建议
     public static final String H5_COMPLAINT = H5_SERVER + "/complaint";
-
     // H5意见反馈
     public static final String H5_FEEDBACK = H5_SERVER + "/feedback";
+    // 账单里没用水却扣钱的引导页
+    public static final String H5_NO_USE_HELP = H5_SERVER + "/help/detail?toNative=1";
 
     // activity之间跳转携带的bundle id key
     public static final String BUNDLE_ID = "id";

@@ -3,7 +3,7 @@ package com.xiaolian.amigo.data.manager;
 import com.xiaolian.amigo.data.manager.intf.IClientServiceDataManager;
 import com.xiaolian.amigo.data.network.IClientServiceApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.dto.response.CsMobileRespDTO;
+import com.xiaolian.amigo.data.network.model.cs.CsMobileRespDTO;
 
 import javax.inject.Inject;
 

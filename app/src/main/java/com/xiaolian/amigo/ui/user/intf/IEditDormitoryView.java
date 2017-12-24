@@ -1,8 +1,7 @@
 package com.xiaolian.amigo.ui.user.intf;
 
-import com.xiaolian.amigo.data.network.model.dto.response.UserResidenceDTO;
+import com.xiaolian.amigo.data.network.model.user.UserResidenceDTO;
 import com.xiaolian.amigo.ui.base.intf.IBaseListView;
-import com.xiaolian.amigo.ui.base.intf.IBaseView;
 import com.xiaolian.amigo.ui.user.adaptor.EditDormitoryAdaptor;
 
 import java.util.List;

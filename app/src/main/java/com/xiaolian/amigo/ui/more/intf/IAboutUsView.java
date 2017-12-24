@@ -1,6 +1,6 @@
 package com.xiaolian.amigo.ui.more.intf;
 
-import com.xiaolian.amigo.data.network.model.dto.response.VersionDTO;
+import com.xiaolian.amigo.data.network.model.version.VersionDTO;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 
 /**

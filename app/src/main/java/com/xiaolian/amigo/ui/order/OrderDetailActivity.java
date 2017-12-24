@@ -13,6 +13,7 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.ComplaintType;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.network.model.order.Order;
+import com.xiaolian.amigo.data.network.model.order.OrderDetailRespDTO;
 import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.ui.order.intf.IOrderDetailPresenter;
 import com.xiaolian.amigo.ui.order.intf.IOrderDetailView;
@@ -85,9 +86,11 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
     // 订单号
     @BindView(R.id.tv_order_no)
     TextView tv_order_no;
+    // 是否最低消费
+    @BindView(R.id.tv_order_no_use_tip)
+    TextView tv_order_no_use_tip;
 
-    private Order order;
-    private String token;
+    private Long orderId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,14 +100,13 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
         getActivityComponent().inject(this);
 
         presenter.onAttach(this);
-        render();
+        presenter.getOrder(orderId);
     }
 
     @Override
     protected void setUp() {
         Intent intent = getIntent();
-        this.order = (Order) intent.getSerializableExtra(Constant.EXTRA_KEY);
-        this.token = intent.getStringExtra(Constant.TOKEN);
+        this.orderId = intent.getLongExtra(Constant.EXTRA_KEY, -1);
     }
 
     /**
@@ -112,8 +114,7 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
      */
     @OnClick(R.id.tv_complaint)
     public void complaint() {
-        presenter.checkComplaint(order.getId(), ComplaintType.getComplaintTypeByDeviceType(
-                Device.getDevice(order.getDeviceType())).getType());
+        presenter.checkComplaint();
     }
 
     /**
@@ -126,7 +127,32 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
     }
 
     @Override
-    public void render() {
+    public void showNoUseTip() {
+        tv_order_no_use_tip.setVisibility(View.VISIBLE);
+    }
+
+    @OnClick(R.id.tv_order_no_use_tip)
+    public void toNoUseHelp() {
+        startActivity(new Intent(this, WebActivity.class)
+                .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_NO_USE_HELP));
+    }
+
+    @Override
+    public void toComplaint() {
+        String token = presenter.getToken();
+        OrderDetailRespDTO order = presenter.getOrder();
+        startActivity(new Intent(this, WebActivity.class)
+                .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_COMPLAINT
+                        + "?token=" + token
+                        + "&orderId=" + order.getId()
+                        + "&orderNo=" + order.getOrderNo()
+                        + "&orderType="
+                        + ComplaintType.getComplaintTypeByDeviceType(
+                        Device.getDevice(order.getDeviceType())).getType()));
+    }
+
+    @Override
+    public void renderView(OrderDetailRespDTO order) {
         // 设置基础信息
         tv_time.setText(CommonUtil.stampToDate(order.getCreateTime()));
         Device device = Device.getDevice(order.getDeviceType());
@@ -181,18 +207,6 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
             tv_odd.setText(order.getOdd());
             tv_actual_debit.setText(getString(R.string.minus, order.getActualDebit()));
         }
-    }
-
-    @Override
-    public void toComplaint() {
-        startActivity(new Intent(this, WebActivity.class)
-                .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_COMPLAINT
-                        + "?token=" + token
-                        + "&orderId=" + order.getId()
-                        + "&orderNo=" + order.getOrderNo()
-                        + "&orderType="
-                        + ComplaintType.getComplaintTypeByDeviceType(
-                        Device.getDevice(order.getDeviceType())).getType()));
     }
 
     @Override

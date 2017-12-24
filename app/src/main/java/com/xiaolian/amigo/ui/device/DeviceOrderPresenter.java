@@ -1,12 +1,14 @@
 package com.xiaolian.amigo.ui.device;
 
+import android.text.TextUtils;
+
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.dto.request.CheckComplaintReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.request.OrderDetailReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.BooleanRespDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.OrderDetailRespDTO;
+import com.xiaolian.amigo.data.network.model.complaint.CheckComplaintReqDTO;
+import com.xiaolian.amigo.data.network.model.order.OrderDetailReqDTO;
+import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
+import com.xiaolian.amigo.data.network.model.order.OrderDetailRespDTO;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.device.intf.IDeviceOrderPresenter;
@@ -18,15 +20,12 @@ public class DeviceOrderPresenter<V extends IDeviceOrderView> extends BasePresen
         implements IDeviceOrderPresenter<V> {
 
     private static final String TAG = DeviceOrderPresenter.class.getSimpleName();
-    private IOrderDataManager manager;
-    private ISharedPreferencesHelp sharedPreferencesHelp;
+    private IOrderDataManager orderDataManager;
 
     @Inject
-    public DeviceOrderPresenter(IOrderDataManager manager,
-                                ISharedPreferencesHelp sharedPreferencesHelp) {
+    public DeviceOrderPresenter(IOrderDataManager orderDataManager) {
         super();
-        this.manager = manager;
-        this.sharedPreferencesHelp = sharedPreferencesHelp;
+        this.orderDataManager = orderDataManager;
     }
 
     @Override
@@ -34,10 +33,15 @@ public class DeviceOrderPresenter<V extends IDeviceOrderView> extends BasePresen
         OrderDetailReqDTO reqDTO = new OrderDetailReqDTO();
         reqDTO.setId(orderId);
 
-        addObserver(manager.queryOrderDetail(reqDTO), new NetworkObserver<ApiResult<OrderDetailRespDTO>>() {
+        addObserver(orderDataManager.queryOrderDetail(reqDTO), new NetworkObserver<ApiResult<OrderDetailRespDTO>>() {
             @Override
             public void onReady(ApiResult<OrderDetailRespDTO> result) {
                 if (null == result.getError()) {
+                    if (result.getData().getLowest() != null
+                            && result.getData().getLowest()
+                            && TextUtils.isEmpty(result.getData().getBonus())) {
+                        getMvpView().showNoUseTip();
+                    }
                     getMvpView().setRefreshComplete(result.getData());
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
@@ -48,7 +52,7 @@ public class DeviceOrderPresenter<V extends IDeviceOrderView> extends BasePresen
 
     @Override
     public String getToken() {
-        return sharedPreferencesHelp.getToken();
+        return orderDataManager.getToken();
     }
 
     @Override
@@ -56,7 +60,7 @@ public class DeviceOrderPresenter<V extends IDeviceOrderView> extends BasePresen
         CheckComplaintReqDTO reqDTO = new CheckComplaintReqDTO();
         reqDTO.setOrderId(orderId);
         reqDTO.setOrderType(orderType);
-        addObserver(manager.checkComplaint(reqDTO), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
+        addObserver(orderDataManager.checkComplaint(reqDTO), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
 
             @Override
             public void onReady(ApiResult<BooleanRespDTO> result) {

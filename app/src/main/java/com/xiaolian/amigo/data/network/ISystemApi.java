@@ -1,9 +1,9 @@
 package com.xiaolian.amigo.data.network;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.dto.request.CheckVersionUpdateReqDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.BaseInfoDTO;
-import com.xiaolian.amigo.data.network.model.dto.response.CheckVersionUpdateRespDTO;
+import com.xiaolian.amigo.data.network.model.version.CheckVersionUpdateReqDTO;
+import com.xiaolian.amigo.data.network.model.system.BaseInfoDTO;
+import com.xiaolian.amigo.data.network.model.version.CheckVersionUpdateRespDTO;
 
 import retrofit2.http.Body;
 import retrofit2.http.POST;
