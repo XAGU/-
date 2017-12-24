@@ -172,15 +172,20 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
+    protected void onDestroy() {
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+        presenter.onDetach();
+        super.onDestroy();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        EventBus.getDefault().register(this);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -207,9 +212,4 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        presenter.onDetach();
-        super.onDestroy();
-    }
 }

@@ -248,21 +248,21 @@
 
         <!--蓝牙测试用-->
         <!--<activity-->
-            <!--android:name=".ui.ble.BleActivity"-->
-            <!--android:launchMode="singleTask"-->
-            <!--android:screenOrientation="portrait"-->
-            <!--android:theme="@style/AppTheme.NoActionBar">-->
-            <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.MAIN" />-->
-            <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+        <!--android:name=".ui.ble.BleActivity"-->
+        <!--android:launchMode="singleTask"-->
+        <!--android:screenOrientation="portrait"-->
+        <!--android:theme="@style/AppTheme.NoActionBar">-->
+        <!--<intent-filter>-->
+        <!--<action android:name="android.intent.action.MAIN" />-->
+        <!--<category android:name="android.intent.category.LAUNCHER" />-->
+        <!--</intent-filter>-->
         <!--</activity>-->
 
         <!--<activity-->
-            <!--android:name=".ui.ble.BleInteractiveActivity"-->
-            <!--android:launchMode="singleTask"-->
-            <!--android:screenOrientation="portrait"-->
-            <!--android:theme="@style/AppTheme.NoActionBar" />-->
+        <!--android:name=".ui.ble.BleInteractiveActivity"-->
+        <!--android:launchMode="singleTask"-->
+        <!--android:screenOrientation="portrait"-->
+        <!--android:theme="@style/AppTheme.NoActionBar" />-->
 
         <!--通知中心-->
         <activity
@@ -341,7 +341,7 @@
             android:name=".ui.main.MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <!--选择提现账户-->
         <activity
@@ -376,15 +376,16 @@
         <!-- 支付宝 -->
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"
-            android:configChanges="orientation|keyboardHidden|navigation"
+            android:configChanges="orientation|keyboardHidden|navigation|screenSize"
             android:exported="false"
-            android:screenOrientation="behind" />
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="adjustResize|stateHidden"/>
         <activity
-            android:name="com.alipay.sdk.auth.AuthActivity"
+            android:name="com.alipay.sdk.app.H5AuthActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:exported="false"
-            android:screenOrientation="behind" />
-
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="adjustResize|stateHidden"/>
         <!--闪屏页-->
         <activity
             android:name=".ui.main.SplashActivity"
@@ -407,11 +408,11 @@
         <!--ACRA-->
         <activity
             android:name=".util.crash.acra.dialog.CrashReportDialog"
-            android:theme="@android:style/Theme.Dialog"
-            android:launchMode="singleInstance"
             android:excludeFromRecents="true"
             android:finishOnTaskLaunch="true"
-            android:process=":acra"/>
+            android:launchMode="singleInstance"
+            android:process=":acra"
+            android:theme="@android:style/Theme.Dialog" />
 
         <service
             android:name=".util.crash.acra.sender.SenderService"

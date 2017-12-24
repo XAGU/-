@@ -142,6 +142,11 @@ public class WalletDataManager implements IWalletDataManager {
     }
 
     @Override
+    public String getMobile() {
+        return sharedPreferencesHelp.getUserInfo().getMobile();
+    }
+
+    @Override
     public void setLastWithdrawId(Long id) {
         sharedPreferencesHelp.setLastWithdrawId(id);
     }

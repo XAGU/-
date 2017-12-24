@@ -99,4 +99,9 @@ public class RechargeDetailPresenter<V extends IRechargeDetailView> extends Base
             }
         });
     }
+
+    @Override
+    public String getMobile() {
+        return walletDataManager.getMobile();
+    }
 }

@@ -136,8 +136,8 @@ public class RechargeDetailActivity extends WalletBaseActivity implements IRecha
                         .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_HELP)));
             right_oper.setOnClickListener(v ->
                     presenter.complaint(id, ComplaintType.RECHARGE.getType()));
-            items.add(new WithdrawRechargeDetailAdapter.Item("被充值账号：",
-                    data.getThirdAccountName(), 1));
+            items.add(new WithdrawRechargeDetailAdapter.Item("被充值手机号：",
+                    presenter.getMobile(), 1));
             items.add(new WithdrawRechargeDetailAdapter.Item("被充值时间：",
                     TimeUtils.millis2String(data.getCreateTime()), 1));
             items.add(new WithdrawRechargeDetailAdapter.Item("流水号：",

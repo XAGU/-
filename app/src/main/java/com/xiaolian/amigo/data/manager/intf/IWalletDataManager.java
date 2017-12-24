@@ -89,4 +89,6 @@ public interface IWalletDataManager {
 
     // 投诉查重
     Observable<ApiResult<BooleanRespDTO>> checkComplaint(@Body CheckComplaintReqDTO reqDTO);
+
+    String getMobile();
 }
