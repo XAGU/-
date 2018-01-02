@@ -26,4 +26,7 @@ public interface IChooseDispenserPresenter<V extends IChooseDispenerView> extend
     void finishView();
 
     void gotoDispenser(String macAddress, boolean favor, Long residenceId, String usefor, String location);
+
+    void startTimer();
+    void cancelTimer();
 }

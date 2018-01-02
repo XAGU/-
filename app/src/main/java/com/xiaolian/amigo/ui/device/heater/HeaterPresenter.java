@@ -1,8 +1,10 @@
-package com.xiaolian.amigo.ui.device.intf.heator;
+package com.xiaolian.amigo.ui.device.heater;
 
 import com.xiaolian.amigo.data.manager.intf.IBleDataManager;
 import com.xiaolian.amigo.data.manager.intf.IDeviceDataManager;
 import com.xiaolian.amigo.ui.device.WaterDeviceBasePresenter;
+import com.xiaolian.amigo.ui.device.intf.heator.IHeaterPresenter;
+import com.xiaolian.amigo.ui.device.intf.heator.IHeaterView;
 
 import javax.inject.Inject;
 

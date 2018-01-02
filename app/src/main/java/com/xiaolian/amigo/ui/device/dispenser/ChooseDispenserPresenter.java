@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.device.dispenser;
 
+import android.os.CountDownTimer;
 import android.os.ParcelUuid;
 import android.text.TextUtils;
 
@@ -40,6 +41,7 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
     private IBleDataManager bleDataManager;
     private IDeviceDataManager deviceDataManager;
     private int action;
+    private CountDownTimer timer;
     /**
      * 列表显示的是附近列表还是收藏列表
      * false 表示附近列表
@@ -56,6 +58,7 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
 
     @Override
     public void requestFavorites() {
+        cancelTimer();
         SimpleQueryReqDTO reqDTO = new SimpleQueryReqDTO();
         // 查看收藏设备列表
         addObserver(deviceDataManager.queryFavorites(reqDTO), new NetworkObserver<ApiResult<QueryWaterListRespDTO>>(false, true) {
@@ -91,8 +94,10 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
         }, AndroidSchedulers.mainThread());
     }
 
+
     @Override
     public void onLoad() {
+        startTimer();
         closeBleConnection();
         resetSubscriptions();
         addObserver(bleDataManager.scan(), new BleObserver<ScanResult>() {
@@ -197,6 +202,34 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
     public void gotoDispenser(String macAddress, boolean favor, Long residenceId,
                               String usefor, String location) {
         getMvpView().gotoDispenser(macAddress, favor, residenceId, usefor, location);
+    }
+
+    @Override
+    public void startTimer() {
+        if (timer != null) {
+            timer.start();
+            return;
+        }
+        timer = new CountDownTimer(15 * 1000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+            }
+
+            @Override
+            public void onFinish() {
+                if (getMvpView() != null) {
+                    getMvpView().post(() -> getMvpView().showScanStopView());
+                }
+            }
+        };
+        timer.start();
+    }
+
+    @Override
+    public void cancelTimer() {
+        if (null != timer) {
+            timer.cancel();
+        }
     }
 
     private synchronized boolean isListStatus() {

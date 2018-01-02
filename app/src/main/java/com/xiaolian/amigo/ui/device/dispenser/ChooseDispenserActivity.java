@@ -16,9 +16,9 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.enumeration.TradeError;
+import com.xiaolian.amigo.data.network.model.order.OrderPreInfoDTO;
 import com.xiaolian.amigo.data.vo.ScanDevice;
 import com.xiaolian.amigo.data.vo.ScanDeviceGroup;
-import com.xiaolian.amigo.data.network.model.order.OrderPreInfoDTO;
 import com.xiaolian.amigo.ui.device.DeviceBaseActivity;
 import com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IChooseDispenerView;
@@ -65,18 +65,20 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
     List<ChooseDispenserAdaptor.DispenserWrapper> nearbyItems = new ArrayList<>();
     List<ChooseDispenserAdaptor.DispenserWrapper> favoriteItems = new ArrayList<>();
 
-    TextView tv_nearby;
-    TextView tv_favorite;
+    private TextView tv_nearby;
+    private TextView tv_favorite;
 
-    LinearLayout ll_footer;
+    private LinearLayout ll_footer;
 
-    RecyclerView recyclerView;
-    SmartRefreshLayout refreshLayout;
+    private RecyclerView recyclerView;
+    private SmartRefreshLayout refreshLayout;
 
-    RelativeLayout rl_empty;
-    RelativeLayout rl_error;
     int action = ACTION_CHOOSE_DISPENSER;
+    private RelativeLayout rl_empty;
+    private RelativeLayout rl_error;
     private OrderPreInfoDTO orderPreInfo;
+    private TextView tv_rescan;
+    private TextView tv_empty_tip;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -99,6 +101,7 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
                 if (listStatus) {
                     presenter.requestFavorites();
                 } else {
+                    hideScanStopView();
                     presenter.onLoad();
                 }
             }
@@ -116,6 +119,11 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
 
         rl_empty = findViewById(R.id.rl_empty);
         rl_error = findViewById(R.id.rl_error);
+
+        tv_empty_tip = findViewById(R.id.tv_empty_tip);
+
+        tv_rescan = findViewById(R.id.tv_rescan);
+        tv_rescan.setOnClickListener(v -> onReScan());
 
         ll_footer = findViewById(R.id.ll_footer);
 
@@ -136,6 +144,18 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
         }
     }
 
+    private void onReScan() {
+        presenter.startTimer();
+        tv_rescan.setVisibility(View.GONE);
+        refreshLayout.autoRefresh(100);
+        hideScanStopView();
+    }
+
+    private void hideScanStopView() {
+        hideEmptyView();
+        ll_footer.setVisibility(View.VISIBLE);
+    }
+
     @Override
     protected void setUp() {
         super.setUp();
@@ -152,6 +172,7 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
 
     private void onNearbyClick() {
         if (listStatus) {
+            presenter.startTimer();
             switchListStatus();
             presenter.setListStatus(false);
             this.items.clear();
@@ -170,6 +191,8 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
 
     private void onFavoriteClick() {
         if (!listStatus) {
+            presenter.cancelTimer();
+            tv_rescan.setVisibility(View.GONE);
             switchListStatus();
             presenter.setListStatus(true);
             this.items.clear();
@@ -230,6 +253,7 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
     @Override
     public void hideEmptyView() {
 //        recyclerView.setVisibility(View.VISIBLE);
+        tv_empty_tip.setText(R.string.empty_tip);
         rl_empty.setVisibility(View.GONE);
     }
 
@@ -272,6 +296,18 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
                 .putExtra(MainActivity.INTENT_KEY_DEVICE_TYPE, Device.DISPENSER.getType())
                 .putExtra(WaterDeviceBaseActivity.INTENT_PREPAY_INFO, orderPreInfo));
         finish();
+    }
+
+    @Override
+    public void showScanStopView() {
+        if (!nearbyItems.isEmpty() || listStatus) {
+            return;
+        }
+        refreshLayout.finishRefresh(10);
+        ll_footer.setVisibility(View.GONE);
+        showEmptyView();
+        tv_rescan.setVisibility(View.VISIBLE);
+        tv_empty_tip.setText("未扫描出附近的饮水机");
     }
 
     private synchronized void updateDevice(List<ScanDeviceGroup> devices) {
@@ -356,6 +392,7 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
 
     @Override
     protected void onDestroy() {
+        presenter.cancelTimer();
         presenter.onDetach();
         super.onDestroy();
     }
