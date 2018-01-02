@@ -114,6 +114,8 @@ public class HomeFragment2 extends Fragment {
                                     EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_DISPENSER));
                                 } else if (items.get(position).getRes() == R.drawable.lost) {
                                     EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_LOST_AND_FOUND));
+                                } else if (items.get(position).getRes() == R.drawable.dryer) {
+                                    EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_DRYER));
                                 }
                             }
                         } catch (ArrayIndexOutOfBoundsException ex) {

@@ -47,8 +47,10 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
 
     private static final String TAG = ChooseDispenserActivity.class.getSimpleName();
     public static final String INTENT_KEY_ACTION = "intent_key_action";
-    public static final int ACTION_NORMAL = 0;
+    public static final int ACTION_CHOOSE_DISPENSER = 0;
     public static final int ACTION_CHANGE_DISPENSER = 1;
+    public static final int ACTION_CHOOSE_DRYER = 2;
+    public static final int ACTION_CHANGE_DRYER = 3;
 
     @Inject
     IChooseDispenserPresenter<IChooseDispenerView> presenter;
@@ -73,7 +75,7 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
 
     RelativeLayout rl_empty;
     RelativeLayout rl_error;
-    int action = ACTION_NORMAL;
+    int action = ACTION_CHOOSE_DISPENSER;
     private OrderPreInfoDTO orderPreInfo;
 
     @Override
@@ -84,7 +86,7 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
         getActivityComponent().inject(this);
         presenter.onAttach(ChooseDispenserActivity.this);
         adaptor = new ChooseDispenserAdaptor(this, R.layout.item_dispenser,
-                items, presenter, orderPreInfo);
+                items, presenter);
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 14)));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -121,13 +123,24 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
         tv_nearby.setOnClickListener(v -> onNearbyClick());
         tv_favorite = findViewById(R.id.tv_toolbar_title2);
         tv_favorite.setOnClickListener(v -> onFavoriteClick());
+
+        switch (action) {
+            case ACTION_CHOOSE_DISPENSER:
+            case ACTION_CHANGE_DISPENSER:
+                break;
+            case ACTION_CHOOSE_DRYER:
+            case ACTION_CHANGE_DRYER:
+                tv_nearby.setText(R.string.nearby_hair_dryer);
+                tv_favorite.setText(R.string.favorite_hair_dryer);
+                break;
+        }
     }
 
     @Override
     protected void setUp() {
         super.setUp();
         if (getIntent() != null) {
-            action = getIntent().getIntExtra(INTENT_KEY_ACTION, ACTION_NORMAL);
+            action = getIntent().getIntExtra(INTENT_KEY_ACTION, ACTION_CHOOSE_DISPENSER);
             orderPreInfo = getIntent().getParcelableExtra(WaterDeviceBaseActivity.INTENT_PREPAY_INFO);
         }
     }

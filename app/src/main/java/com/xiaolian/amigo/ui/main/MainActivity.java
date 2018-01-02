@@ -78,6 +78,7 @@ import butterknife.OnClick;
 import lombok.Data;
 
 import static com.xiaolian.amigo.data.enumeration.Device.DISPENSER;
+import static com.xiaolian.amigo.data.enumeration.Device.DRYER;
 import static com.xiaolian.amigo.data.enumeration.Device.HEATER;
 import static com.xiaolian.amigo.util.Log.getContext;
 
@@ -957,6 +958,14 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         getBlePermission();
     }
 
+    // 点击进入吹风机页面
+    private void gotoDryer() {
+        Log.d(TAG, "gotoDryer");
+        setBleCallback(() -> checkDeviceUsage(DRYER));
+        getBlePermission();
+    }
+
+
     /**
      * 点击进入失物招领
      */
@@ -1010,7 +1019,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(Event event) {
-        Log.d(TAG, "onEvent: " + event.getType().type);
+        Log.d(TAG, "onEvent: " + event.getType());
         switch (event.getType()) {
             case GOTO_HEATER:
                 if (checkLogin()) {
@@ -1022,6 +1031,11 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             case GOTO_DISPENSER:
                 if (checkLogin()) {
                     gotoDispenser();
+                }
+                break;
+            case GOTO_DRYER:
+                if (checkLogin()) {
+                    gotoDryer();
                 }
                 break;
             case GOTO_LOST_AND_FOUND:
@@ -1056,17 +1070,13 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         }
 
         public enum EventType {
-            GOTO_HEATER(1),
-            GOTO_DISPENSER(2),
-            GOTO_LOST_AND_FOUND(3),
-            START_ACTIVITY(4),
-            REFRESH_NOTICE(5),
-            LOGOUT(6);
-            private int type;
-
-            EventType(int type) {
-                this.type = type;
-            }
+            GOTO_HEATER(),
+            GOTO_DRYER(),
+            GOTO_DISPENSER(),
+            GOTO_LOST_AND_FOUND(),
+            START_ACTIVITY(),
+            REFRESH_NOTICE(),
+            LOGOUT()
         }
     }
 

@@ -33,16 +33,13 @@ public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenser
     private List<ChooseDispenserAdaptor.DispenserWrapper> mData;
     private int layoutId;
     private IChooseDispenserPresenter<IChooseDispenerView> presenter;
-    private OrderPreInfoDTO orderPreInfo;
 
     public ChooseDispenserAdaptor(Context context, int layoutId,
                                   List<DispenserWrapper> datas ,
-                                  IChooseDispenserPresenter<IChooseDispenerView> presenter,
-                                  OrderPreInfoDTO orderPreInfo) {
+                                  IChooseDispenserPresenter<IChooseDispenerView> presenter) {
         this.mData = datas;
         this.layoutId = layoutId;
         this.presenter = presenter;
-        this.orderPreInfo = orderPreInfo;
     }
 
     @Override
