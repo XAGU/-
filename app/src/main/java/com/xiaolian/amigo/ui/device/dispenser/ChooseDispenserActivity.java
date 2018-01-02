@@ -85,11 +85,11 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
         presenter.onAttach(ChooseDispenserActivity.this);
         adaptor = new ChooseDispenserAdaptor(this, R.layout.item_dispenser,
                 items, presenter, orderPreInfo);
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView = findViewById(R.id.recyclerView);
         recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 14)));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adaptor);
-        refreshLayout = (SmartRefreshLayout) findViewById(R.id.refreshLayout);
+        refreshLayout = findViewById(R.id.refreshLayout);
 
         refreshLayout.setOnRefreshLoadmoreListener(new OnRefreshLoadmoreListener() {
             @Override
@@ -112,14 +112,14 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
         refreshLayout.setEnableLoadmore(false);
         refreshLayout.autoRefresh(0);
 
-        rl_empty = (RelativeLayout) findViewById(R.id.rl_empty);
-        rl_error = (RelativeLayout) findViewById(R.id.rl_error);
+        rl_empty = findViewById(R.id.rl_empty);
+        rl_error = findViewById(R.id.rl_error);
 
-        ll_footer = (LinearLayout) findViewById(R.id.ll_footer);
+        ll_footer = findViewById(R.id.ll_footer);
 
-        tv_nearby = (TextView) findViewById(R.id.tv_toolbar_title);
+        tv_nearby = findViewById(R.id.tv_toolbar_title);
         tv_nearby.setOnClickListener(v -> onNearbyClick());
-        tv_favorite = (TextView) findViewById(R.id.tv_toolbar_title2);
+        tv_favorite = findViewById(R.id.tv_toolbar_title2);
         tv_favorite.setOnClickListener(v -> onFavoriteClick());
     }
 
