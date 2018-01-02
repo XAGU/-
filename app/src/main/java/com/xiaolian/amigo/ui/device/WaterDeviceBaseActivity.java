@@ -1065,6 +1065,14 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         }
     }
 
+    public void changeDryer() {
+        // 只有在step为SETILE时才不能更换吹风机
+        if (presenter.getStep() != TradeStep.SETTLE) {
+            startActivity(new Intent(this, ChooseDispenserActivity.class)
+                    .putExtra(ChooseDispenserActivity.INTENT_KEY_ACTION, ChooseDispenserActivity.ACTION_CHANGE_DRYER));
+        }
+    }
+
     // 单击回退按钮返回 解决返回区域过小问题
     @OnClick({R.id.iv_back, R.id.v_back_placeholder})
     @Optional

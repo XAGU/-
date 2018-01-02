@@ -1,6 +1,6 @@
 package com.xiaolian.amigo.ui.device.intf.dryer;
 
-import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
+import com.xiaolian.amigo.ui.device.intf.IWaterDeviceBasePresenter;
 
 /**
  * 吹风机
@@ -8,5 +8,7 @@ import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
  * Created by zcd on 18/1/2.
  */
 
-public interface IDryerPresenter<V extends IDryerView> extends IBasePresenter<V> {
+public interface IDryerPresenter<V extends IDryerView> extends IWaterDeviceBasePresenter<V> {
+    void favorite(Long id);
+    void unFavorite(Long id);
 }

@@ -1,6 +1,6 @@
 package com.xiaolian.amigo.ui.device.intf.dryer;
 
-import com.xiaolian.amigo.ui.base.intf.IBaseView;
+import com.xiaolian.amigo.ui.device.intf.IWaterDeviceBaseView;
 
 /**
  * 吹风机
@@ -8,5 +8,7 @@ import com.xiaolian.amigo.ui.base.intf.IBaseView;
  * Created by zcd on 18/1/2.
  */
 
-public interface IDryerView extends IBaseView {
+public interface IDryerView extends IWaterDeviceBaseView {
+    void setFavoriteIcon();
+    void setUnFavoriteIcon();
 }

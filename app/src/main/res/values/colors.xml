@@ -85,6 +85,7 @@
     <color name="order_error">#ffc460</color>
 
     <color name="heater_gradient_start">#ff9a64</color>
+    <color name="dryer_gradient_start">#ff9a64</color>
     <color name="dispenser_gradient_start">#43eda3</color>
     <color name="colorYellow">#ffc460</color>
     <color name="repair_waiting">@color/colorYellow</color>

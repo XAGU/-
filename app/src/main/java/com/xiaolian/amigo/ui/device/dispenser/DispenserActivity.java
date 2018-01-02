@@ -77,8 +77,6 @@ public class DispenserActivity extends WaterDeviceBaseActivity<IDispenserPresent
         return v -> changeDispenser();
     }
 
-
-
     @Override
     protected View.OnClickListener setTopRightIconClickListener() {
         return v -> {

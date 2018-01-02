@@ -258,4 +258,5 @@
     <string name="no_device_tip">(无热水澡服务)</string>
     <string name="nearby_hair_dryer">附近的吹风机</string>
     <string name="favorite_hair_dryer">收藏的吹风机</string>
+    <string name="change_hair_dryer">更换吹风机</string>
 </resources>
