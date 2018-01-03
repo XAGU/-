@@ -7,12 +7,14 @@
     android:background="@drawable/bg_rect_corner_dialog_inset"
     android:layout_height="match_parent">
     <ImageView
+        android:id="@+id/iv_symbol"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="29dp"
         android:src="@drawable/ic_emergency_notice2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <TextView
+        android:id="@+id/tv_title"
         android:layout_marginTop="14dp"
         android:text="@string/emergency_notice"
         android:gravity="center_horizontal"

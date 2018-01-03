@@ -5,6 +5,7 @@ import com.xiaolian.amigo.data.manager.intf.IDeviceDataManager;
 import com.xiaolian.amigo.ui.device.WaterDeviceBasePresenter;
 import com.xiaolian.amigo.ui.device.intf.heator.IHeaterPresenter;
 import com.xiaolian.amigo.ui.device.intf.heator.IHeaterView;
+import com.xiaolian.amigo.util.Constant;
 
 import javax.inject.Inject;
 
@@ -27,9 +28,13 @@ public class HeaterPresenter<V extends IHeaterView> extends WaterDeviceBasePrese
     public void onAttach(V view) {
         super.onAttach(view);
         if (!deviceDataManager.isHeaterGuideDone()) {
-            getMvpView().showGuide();
             deviceDataManager.doneHeaterGuide();
+            getMvpView().showGuide();
         }
     }
 
+    @Override
+    public void notShowRemindAlert() {
+        deviceDataManager.setHeaterGuide(Constant.REMIND_ALERT_COUNT);
+    }
 }

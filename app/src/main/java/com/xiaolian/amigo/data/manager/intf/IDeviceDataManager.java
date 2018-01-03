@@ -71,13 +71,13 @@ public interface IDeviceDataManager {
     // 获取客服人员电话
     Observable<ApiResult<CsMobileRespDTO>> queryCsInfo();
 
+    // 设置温馨提示次数
     boolean isHeaterGuideDone();
-
     void doneHeaterGuide();
-
+    void setHeaterGuide(Integer guideTime);
     boolean isDispenserGuideDone();
-
     void doneDispenserGuide();
+    void setDispenserGuide(Integer guideTime);
 
     // 收藏饮水机
     Observable<ApiResult<SimpleRespDTO>> favorite(@Body SimpleReqDTO reqDTO);

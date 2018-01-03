@@ -6,6 +6,7 @@ import android.os.CountDownTimer;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
+import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
@@ -39,6 +40,7 @@ import com.xiaolian.amigo.ui.wallet.RechargeActivity;
 import com.xiaolian.amigo.ui.widget.BezierWaveView;
 import com.xiaolian.amigo.ui.widget.DotFlashView;
 import com.xiaolian.amigo.ui.widget.dialog.IOSAlertDialog;
+import com.xiaolian.amigo.ui.widget.dialog.NoticeAlertDialog;
 import com.xiaolian.amigo.ui.widget.swipebutton.SlideUnlockView;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
@@ -71,6 +73,9 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     private static final int CHOOSE_BONUS_CODE = 0x0010;
     protected static final int CHOOSE_DORMITORY_CODE = 0x0011;
     private static final int REQUEST_CODE_RECHARGE = 0x0012;
+
+    // 温馨提示dialog
+    private NoticeAlertDialog noticeAlertDialog;
 
     /**
      * 确认支付
@@ -775,14 +780,34 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                 onError("预付金额不能为0");
                 return;
             }
-            userWater = true;
-            // 点击支付操作时蓝牙必须为开启状态
-            setBleCallback(() -> {
-                button.setEnabled(false);
-                presenter.onPay(prepayAmount, bonusAmount != null && bonusAmount > 0 ? bonusId : null);
-            });
-            getBlePermission();
+            realPay();
         }
+    }
+
+    // 显示温馨提现
+    protected void showAlertNotice(NoticeAlertDialog.OnOkClickListener listener) {
+        if (noticeAlertDialog == null) {
+            noticeAlertDialog = new NoticeAlertDialog(this);
+        }
+        if (Device.getDevice(deviceType) == Device.HEATER) {
+            noticeAlertDialog.setContent(Html.fromHtml(getString(R.string.heater_notice_content, 6)));
+        } else if (Device.getDevice(deviceType) == Device.DISPENSER) {
+            noticeAlertDialog.setContent(Html.fromHtml(getString(R.string.dispenser_notice_content, 6)));
+        }
+        noticeAlertDialog.setTitle(R.string.water_use_notice_title);
+        noticeAlertDialog.hideNoticeSymbol();
+        noticeAlertDialog.setOnOkClickListener(listener);
+        noticeAlertDialog.show();
+    }
+
+    private void realPay() {
+        userWater = true;
+        // 点击支付操作时蓝牙必须为开启状态
+        setBleCallback(() -> {
+            bt_pay.setEnabled(false);
+            presenter.onPay(prepayAmount, bonusAmount != null && bonusAmount > 0 ? bonusId : null);
+        });
+        getBlePermission();
     }
 
     /**

@@ -8,10 +8,12 @@ import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
 import com.xiaolian.amigo.ui.device.WaterDeviceBasePresenter;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IDispenserPresenter;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IDispenserView;
+import com.xiaolian.amigo.util.Constant;
 
 import javax.inject.Inject;
 
 /**
+ * 饮水机
  * <p>
  * Created by zcd on 10/13/17.
  */
@@ -31,8 +33,8 @@ public class DispenserPresenter<V extends IDispenserView> extends WaterDeviceBas
     public void onAttach(V view) {
         super.onAttach(view);
         if (!deviceDataManager.isDispenserGuideDone()) {
-            getMvpView().showGuide();
             deviceDataManager.doneDispenserGuide();
+            getMvpView().showGuide();
         }
     }
 
@@ -63,12 +65,16 @@ public class DispenserPresenter<V extends IDispenserView> extends WaterDeviceBas
             @Override
             public void onReady(ApiResult<SimpleRespDTO> result) {
                 if (null == result.getError()) {
-//                    getMvpView().onSuccess("取消收藏成功");
                     getMvpView().setUnFavoriteIcon();
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }
             }
         });
+    }
+
+    @Override
+    public void notShowRemindAlert() {
+        deviceDataManager.setDispenserGuide(Constant.REMIND_ALERT_COUNT);
     }
 }

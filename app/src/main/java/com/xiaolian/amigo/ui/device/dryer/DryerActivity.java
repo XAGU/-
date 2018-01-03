@@ -11,6 +11,7 @@ import javax.inject.Inject;
 
 
 /**
+ * 吹风机页面
  * <p>
  * Created by zcd on 18/1/2.
  */
@@ -35,7 +36,7 @@ public class DryerActivity extends WaterDeviceBaseActivity<IDryerPresenter> impl
 
     @Override
     public void showGuide() {
-
+        // TODO showGuide
     }
 
     @Override

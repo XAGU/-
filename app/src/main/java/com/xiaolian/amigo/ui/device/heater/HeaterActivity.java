@@ -80,10 +80,17 @@ public class HeaterActivity extends WaterDeviceBaseActivity<IHeaterPresenter> im
 
     @Override
     public void showGuide() {
+        // 不显示引导页
         // 显示引导页
-        GuideDialog guideDialog = new GuideDialog(this, GuideDialog.TYPE_HEATER);
-        guideDialog.setLocation(getLocation());
-        guideDialog.show();
+//        GuideDialog guideDialog = new GuideDialog(this, GuideDialog.TYPE_HEATER);
+//        guideDialog.setLocation(getLocation());
+//        guideDialog.show();
+        showAlertNotice((dialog, isNotRemind) -> {
+            dialog.dismiss();
+            if (isNotRemind) {
+                presenter.notShowRemindAlert();
+            }
+        });
     }
 
     @Override

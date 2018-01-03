@@ -10,6 +10,7 @@ import com.xiaolian.amigo.data.network.model.device.QueryWaterListReqDTO;
 import com.xiaolian.amigo.data.network.model.device.QueryWaterListRespDTO;
 import com.xiaolian.amigo.data.network.model.device.WaterInListDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleQueryReqDTO;
+import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
 
 import com.polidea.rxandroidble.scan.ScanResult;
@@ -210,7 +211,7 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
             timer.start();
             return;
         }
-        timer = new CountDownTimer(15 * 1000, 1000) {
+        timer = new CountDownTimer(Constant.DEVICE_SCAN_TIMEOUT * 1000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
             }

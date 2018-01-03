@@ -259,4 +259,7 @@
     <string name="nearby_hair_dryer">附近的吹风机</string>
     <string name="favorite_hair_dryer">收藏的吹风机</string>
     <string name="change_hair_dryer">更换吹风机</string>
+    <string name="heater_notice_content">1.热水澡最低消费&lt;font color=&quot;#ff5555&quot;&gt;%1$d分钱&lt;/font&gt;，请确认需要用水再点击“开始洗澡”按钮；&lt;br&gt;&lt;br&gt;2.洗澡时手机不用带进去浴室哦，可通过水阀门暂停用水。最终消费水表根据用水量而定，与使用时间无关。</string>
+    <string name="dispenser_notice_content">1.饮水机最低消费&lt;font color=&quot;#ff5555&quot;&gt;%1$d分钱&lt;/font&gt;，请确认需要用水再点击“开始接水”按钮；&lt;br&gt;&lt;br&gt;2.最终消费水表根据用水量而定，与使用时间无关。</string>
+    <string name="water_use_notice_title">温馨提示</string>
 </resources>

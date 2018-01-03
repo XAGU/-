@@ -146,22 +146,40 @@ public class DeviceDataManager implements IDeviceDataManager {
 
     @Override
     public boolean isHeaterGuideDone() {
-        return sharedPreferencesHelp.isHeaterGuideDone();
+        if (sharedPreferencesHelp.getHeaterGuide() != null
+                && sharedPreferencesHelp.getHeaterGuide() < 3) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     public void doneHeaterGuide() {
-        sharedPreferencesHelp.doneHeaterGuide();
+        sharedPreferencesHelp.setHeaterGuide(sharedPreferencesHelp.getHeaterGuide() + 1);
+    }
+
+    @Override
+    public void setHeaterGuide(Integer guideTime) {
+        sharedPreferencesHelp.setHeaterGuide(guideTime);
     }
 
     @Override
     public boolean isDispenserGuideDone() {
-        return sharedPreferencesHelp.isDispenserGuideDone();
+        if (sharedPreferencesHelp.getDispenserGuide() != null
+                && sharedPreferencesHelp.getDispenserGuide() < 3) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     public void doneDispenserGuide() {
-        sharedPreferencesHelp.doneDispenserGuide();
+        sharedPreferencesHelp.setDispenserGuide(sharedPreferencesHelp.getDispenserGuide() + 1);
+    }
+
+    @Override
+    public void setDispenserGuide(Integer guideTime) {
+        sharedPreferencesHelp.setDispenserGuide(guideTime);
     }
 
     @Override
