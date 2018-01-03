@@ -46,7 +46,7 @@ public class HomeFragment2 extends Fragment {
     private static final String TAG = HomeFragment2.class.getSimpleName();
     HomeAdaptor.ItemWrapper shower = new HomeAdaptor.ItemWrapper(1, null, "热水澡", "TAKE A SHOWER", "#ffb6c5",
             R.drawable.shower);
-    HomeAdaptor.ItemWrapper dryer = new HomeAdaptor.ItemWrapper(1, null, "吹风机", "HAIR DRIER", "#fddd5a",
+    HomeAdaptor.ItemWrapper dryer = new HomeAdaptor.ItemWrapper(1, null, "吹风机", "HAIR DRIER", "#fce1aa",
             R.drawable.dryer);
     HomeAdaptor.ItemWrapper water = new HomeAdaptor.ItemWrapper(1, null, "饮水机", "DRINK A WATER", "#aaebe4",
             R.drawable.water);
@@ -181,7 +181,9 @@ public class HomeFragment2 extends Fragment {
         if (shower.isActive()) {
             items.add(shower);
         }
-        items.add(dryer);
+        if (dryer.isActive()) {
+            items.add(dryer);
+        }
         if (water.isActive()) {
             items.add(water);
         }
@@ -199,6 +201,7 @@ public class HomeFragment2 extends Fragment {
         int currentUsingAmount = 0;
         boolean needNotify = false;
         shower.setActive(false);
+        dryer.setActive(false);
         water.setActive(false);
         /// business为空则不显示shower和water
         if (businesses == null || businesses.isEmpty()) {
@@ -219,6 +222,12 @@ public class HomeFragment2 extends Fragment {
                 shower.setActive(true);
                 shower.setPrepaySize(business.getPrepayOrder());
                 shower.setUsing(business.getUsing());
+                currentPrepayOrderSize += business.getPrepayOrder();
+                currentBusinessSize += 1;
+            } else if (business.getBusinessId() == 3) {
+                dryer.setActive(true);
+                dryer.setPrepaySize(business.getPrepayOrder());
+                dryer.setUsing(business.getUsing());
                 currentPrepayOrderSize += business.getPrepayOrder();
                 currentBusinessSize += 1;
             }

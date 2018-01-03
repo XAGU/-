@@ -34,6 +34,7 @@ import com.xiaolian.amigo.data.network.model.device.DeviceCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.order.OrderPreInfoDTO;
 import com.xiaolian.amigo.data.network.model.user.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
+import com.xiaolian.amigo.ui.device.DeviceConstant;
 import com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity;
 import com.xiaolian.amigo.ui.device.dispenser.ChooseDispenserActivity;
 import com.xiaolian.amigo.ui.device.dispenser.DispenserActivity;
@@ -154,6 +155,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     private AvailabilityDialog openLocationDialog;
     private int heaterOrderSize;
     private int dispenserOrderSize;
+    private int dryerOrderSize;
     private PrepayDialog prepayDialog;
     private Long lastRepairTime;
     private Boolean isServerError;
@@ -625,6 +627,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                         data.getResidenceId());
             } else if (deviceType == Device.DISPENSER.getType()){
                 gotoChooseDispenser();
+            } else if (deviceType == Device.DRYER.getType()) {
+                gotoChooseDryer();
             }
         });
         availabilityDialog.show();
@@ -632,9 +636,20 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     private void gotoChooseDispenser() {
         Intent intent = new Intent(this, ChooseDispenserActivity.class);
+        intent.putExtra(DeviceConstant.INTENT_DEVICE_TYPE, Device.DISPENSER.getType());
+        intent.putExtra(DeviceConstant.INTENT_KEY_ACTION, DeviceConstant.ACTION_CHOOSE_DISPENSER);
         intent.putExtra(WaterDeviceBaseActivity.INTENT_PREPAY_INFO, orderPreInfo);
         startActivity(intent);
     }
+
+    private void gotoChooseDryer() {
+        Intent intent = new Intent(this, ChooseDispenserActivity.class);
+        intent.putExtra(DeviceConstant.INTENT_DEVICE_TYPE, Device.DRYER.getType());
+        intent.putExtra(DeviceConstant.INTENT_KEY_ACTION, DeviceConstant.ACTION_CHOOSE_DRYER);
+        intent.putExtra(WaterDeviceBaseActivity.INTENT_PREPAY_INFO, orderPreInfo);
+        startActivity(intent);
+    }
+
 
     @Override
     public void gotoDevice(Device device, String macAddress, String location, Long residenceId, boolean recovery) {
@@ -727,6 +742,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 heaterOrderSize = business.getPrepayOrder();
             } else if (business.getBusinessId() == 2) {
                 dispenserOrderSize = business.getPrepayOrder();
+            } else if (business.getBusinessId() == 3) {
+                dryerOrderSize = business.getPrepayOrder();
             }
         }
         EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.SCHOOL_BIZ,
@@ -750,6 +767,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         orderPreInfo.setCsMobile(data.getCsMobile());
         orderPreInfo.setMinPrepay(data.getMinPrepay());
         orderPreInfo.setPrepay(data.getPrepay());
+        orderPreInfo.setPrice(data.getPrice());
         // 2小时内存在未找零订单
         if (data.getExistsUnsettledOrder() != null && data.getExistsUnsettledOrder()) {
             // 1 表示热水澡 2 表示饮水机
@@ -760,12 +778,17 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             } else if (type == Device.DISPENSER.getType()){
                 gotoDispenser(data.getUnsettledMacAddress(), data.getLocation(), data.getResidenceId(),
                         data.getFavor(), data.getUsefor(),true);
+            } else if (type == Device.DRYER.getType()) {
+                gotoDevice(DRYER, data.getUnsettledMacAddress(), data.getLocation(),
+                        data.getResidenceId(), true);
             }
         } else {
             if (type == Device.HEATER.getType() && heaterOrderSize > 0) {
                 showPrepayDialog(type, heaterOrderSize, data);
             } else if (type == Device.DISPENSER.getType() && dispenserOrderSize > 0) {
                 showPrepayDialog(type, dispenserOrderSize, data);
+            } else if (type == Device.DRYER.getType() && dryerOrderSize > 0) {
+                showPrepayDialog(type, dryerOrderSize, data);
             } else {
                 // 如果热水澡 检查默认宿舍
                 if (type == Device.HEATER.getType() && !presenter.checkDefaultDormitoryExist()) {
@@ -779,9 +802,12 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                         // 前往默认宿舍的热水澡
                         presenter.gotoHeaterDevice(data.getDefaultMacAddress(), data.getLocation(),
                                 data.getResidenceId());
-                    } else if (type == Device.DISPENSER.getType()){
+                    } else if (type == Device.DISPENSER.getType()) {
                         // 进入饮水机选择页面
                         gotoChooseDispenser();
+                    } else if (type == Device.DRYER.getType()) {
+                        // 进入吹风机选择页面 复用饮水机选择页面
+                        gotoChooseDryer();
                     }
                 }
             }
@@ -908,6 +934,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                             data.getResidenceId());
                 } else if (type == Device.DISPENSER.getType()){
                     gotoChooseDispenser();
+                } else if (type == Device.DRYER.getType()) {
+                    gotoChooseDryer();
                 }
             } else {
                 showTimeValidDialog(type, data);

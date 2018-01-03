@@ -56,7 +56,7 @@ public class FavoriteActivity extends FavoriteBaseActivity implements IFavoriteV
 
     @Override
     protected void setRecyclerView(RecyclerView recyclerView) {
-        adaptor = new FavoriteAdaptor(favorites, presenter);
+        adaptor = new FavoriteAdaptor(this, favorites);
         adaptor.setOnItemLongClickListener(() -> onSuccess("请左滑操作"));
         adaptor.setOnItemClickListener(position -> {
             if (action == IntentAction.ACTION_CHOOSE_FAVORITE_FOR_REPAIR) {

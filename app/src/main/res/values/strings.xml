@@ -60,7 +60,7 @@
     <string name="cancel">取消</string>
     <string name="ok">确定</string>
     <string name="keep_use">继续使用</string>
-    <string name="emergency_notice">紧/急/通/知</string>
+    <string name="emergency_notice">紧急通知</string>
     <string name="do_not_remind">不再提示</string>
     <string name="withdraw_tip">提现时间为：\n每周二12:00~每周四12:00</string>
     <string name="repair_detail">报修详情</string>

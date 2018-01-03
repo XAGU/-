@@ -24,26 +24,20 @@ public class DeviceCheckRespDTO {
     private String startTime;
     private String title;
     private Long residenceId;
+    // 最低费率 单位分
+    private Integer price;
+    // 是否收藏
     private Boolean favor;
+    // 水温
     private Integer usefor;
-    /**
-     * 代金券
-     */
-    Bonus bonus;
-    /**
-     * 预付金额
-     */
-    Double prepay;
-    /**
-     * 最小预付金额
-     */
-    Double minPrepay;
-    /**
-     * 余额
-     */
-    Double balance;
-    /**
-     * 客服电话
-     */
-    String csMobile;
+    // 代金券
+    private Bonus bonus;
+    // 预付金额
+    private Double prepay;
+    // 最小预付金额
+    private Double minPrepay;
+    // 余额
+    private Double balance;
+    // 客服电话
+    private String csMobile;
 }

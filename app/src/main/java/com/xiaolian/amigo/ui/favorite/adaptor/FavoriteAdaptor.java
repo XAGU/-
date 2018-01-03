@@ -1,5 +1,7 @@
 package com.xiaolian.amigo.ui.favorite.adaptor;
 
+import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,29 +26,30 @@ import lombok.Data;
  * Created by caidong on 2017/9/12.
  */
 public class FavoriteAdaptor extends RecyclerView.Adapter<FavoriteAdaptor.ViewHolder> {
-
     private List<FavoriteWrapper> favorites;
-    private IFavoritePresenter<IFavoriteView> presenter;
     private OnItemLongClickListener longClickListener;
     private OnItemClickListener clickListener;
     private OnDeleteListener deleteListener;
+    private Context context;
 
-    public FavoriteAdaptor(List<FavoriteWrapper> favorites, IFavoritePresenter<IFavoriteView> presenter) {
+    public FavoriteAdaptor(Context context, List<FavoriteWrapper> favorites) {
         this.favorites = favorites;
-        this.presenter = presenter;
+        this.context = context;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_favorite, parent, false);
-        return new ViewHolder(view, presenter);
+        return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         FavoriteWrapper wrapper = favorites.get(position);
         if (null != wrapper) {
-            holder.tv_device.setText(Device.DISPENSER.getDesc());
+            holder.tv_device.setText(Device.getDevice(wrapper.getType()).getDesc());
+            holder.tv_device.setTextColor(ContextCompat.getColor(context,
+                    Device.getDevice(wrapper.getType()).getColorRes()));
             holder.tv_location.setText(wrapper.getLocation());
             holder.deviceId = wrapper.getId();
             holder.index = holder.getAdapterPosition();
@@ -80,15 +83,13 @@ public class FavoriteAdaptor extends RecyclerView.Adapter<FavoriteAdaptor.ViewHo
         @BindView(R.id.tv_delete)
         TextView tv_delete;
 
-        IFavoritePresenter<IFavoriteView> presenter;
         // 设备id
         Long deviceId;
         // 设备在设备列表中的索引位置
         Integer index;
 
-        public ViewHolder(View itemView, IFavoritePresenter<IFavoriteView> presenter) {
+        public ViewHolder(View itemView) {
             super(itemView);
-            this.presenter = presenter;
             ButterKnife.bind(this, itemView);
         }
     }
@@ -132,12 +133,7 @@ public class FavoriteAdaptor extends RecyclerView.Adapter<FavoriteAdaptor.ViewHo
             this.id = device.getWater().get(0).getId();
             this.residenceId = device.getResidenceId();
             this.location = device.getLocation();
-        }
-
-        public FavoriteWrapper(WaterInListDTO device) {
-            this.id = device.getWater().get(0).getId();
-            this.residenceId = device.getResidenceId();
-            this.location = device.getLocation();
+            this.type = device.getType();
         }
     }
 }

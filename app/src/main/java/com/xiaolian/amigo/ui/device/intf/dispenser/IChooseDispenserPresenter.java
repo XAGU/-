@@ -10,23 +10,17 @@ import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 
 public interface IChooseDispenserPresenter<V extends IChooseDispenerView> extends IBasePresenter<V> {
     void requestFavorites();
-
     // 页面加载时触发
     void onLoad();
-
     // 关闭蓝牙连接
     void closeBleConnection();
-
     void setListStatus(boolean listStatus);
-
     void setAction(int action);
-
     int getAction();
-
     void finishView();
-
     void gotoDispenser(String macAddress, boolean favor, Long residenceId, String usefor, String location);
-
+    void gotoDryer(String deviceNo, Boolean isFavor, Long residenceId, String location);
     void startTimer();
     void cancelTimer();
+    void setDeviceType(Integer deviceType);
 }

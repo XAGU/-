@@ -1,6 +1,9 @@
 package com.xiaolian.amigo.data.manager.intf;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.device.QueryDeviceListReqDTO;
+import com.xiaolian.amigo.data.network.model.device.QueryDeviceListRespDTO;
+import com.xiaolian.amigo.data.network.model.device.QueryFavorDeviceRespDTO;
 import com.xiaolian.amigo.data.network.model.device.QueryWaterListReqDTO;
 import com.xiaolian.amigo.data.network.model.device.QueryWaterListRespDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleQueryReqDTO;
@@ -49,7 +52,7 @@ public interface IDeviceDataManager {
     Observable<ApiResult<PayRespDTO>> pay(@Body PayReqDTO reqDTO);
 
     // 处理扫描结果
-    Observable<ApiResult<QueryWaterListRespDTO>> handleScanDevices(QueryWaterListReqDTO reqDTO);
+    Observable<ApiResult<QueryDeviceListRespDTO>> handleScanDevices(QueryDeviceListReqDTO reqDTO);
 
     // 校验订单状态
     Observable<ApiResult<UnsettledOrderStatusCheckRespDTO>> checkOrderStatus(@Body UnsettledOrderStatusCheckReqDTO reqDTO);
@@ -84,6 +87,6 @@ public interface IDeviceDataManager {
 
     // 取消收藏饮水机
     Observable<ApiResult<SimpleRespDTO>> unFavorite(@Body SimpleReqDTO reqDTO);
-
-    Observable<ApiResult<QueryWaterListRespDTO>> queryFavorites(@Body SimpleQueryReqDTO reqDTO);
+    // 获取个人收藏的设备列表
+    Observable<ApiResult<QueryFavorDeviceRespDTO>> getFavorites(@Body QueryDeviceListReqDTO reqDTO);
 }

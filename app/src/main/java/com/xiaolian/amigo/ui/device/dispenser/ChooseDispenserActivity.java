@@ -20,7 +20,9 @@ import com.xiaolian.amigo.data.network.model.order.OrderPreInfoDTO;
 import com.xiaolian.amigo.data.vo.ScanDevice;
 import com.xiaolian.amigo.data.vo.ScanDeviceGroup;
 import com.xiaolian.amigo.ui.device.DeviceBaseActivity;
+import com.xiaolian.amigo.ui.device.DeviceConstant;
 import com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity;
+import com.xiaolian.amigo.ui.device.dryer.DryerActivity;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IChooseDispenerView;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IChooseDispenserPresenter;
 import com.xiaolian.amigo.ui.main.MainActivity;
@@ -46,11 +48,6 @@ import butterknife.ButterKnife;
 public class ChooseDispenserActivity extends DeviceBaseActivity implements IChooseDispenerView {
 
     private static final String TAG = ChooseDispenserActivity.class.getSimpleName();
-    public static final String INTENT_KEY_ACTION = "intent_key_action";
-    public static final int ACTION_CHOOSE_DISPENSER = 0;
-    public static final int ACTION_CHANGE_DISPENSER = 1;
-    public static final int ACTION_CHOOSE_DRYER = 2;
-    public static final int ACTION_CHANGE_DRYER = 3;
 
     @Inject
     IChooseDispenserPresenter<IChooseDispenerView> presenter;
@@ -73,12 +70,13 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
     private RecyclerView recyclerView;
     private SmartRefreshLayout refreshLayout;
 
-    int action = ACTION_CHOOSE_DISPENSER;
+    int action = DeviceConstant.ACTION_CHOOSE_DISPENSER;
     private RelativeLayout rl_empty;
     private RelativeLayout rl_error;
     private OrderPreInfoDTO orderPreInfo;
     private TextView tv_rescan;
     private TextView tv_empty_tip;
+    private int deviceType;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,8 +85,18 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
         presenter.onAttach(ChooseDispenserActivity.this);
+        presenter.setDeviceType(deviceType);
         adaptor = new ChooseDispenserAdaptor(this, R.layout.item_dispenser,
-                items, presenter);
+                items, Device.getDevice(deviceType) == Device.DISPENSER);
+        adaptor.setOnItemClickListener((deviceNo, isFavor, residenceId, usefor, location) -> {
+            if (Device.getDevice(deviceType) == Device.DISPENSER) {
+                presenter.closeBleConnection();
+                presenter.gotoDispenser(deviceNo, isFavor, residenceId, usefor, location);
+            } else if (Device.getDevice(deviceType) == Device.DRYER) {
+                presenter.closeBleConnection();
+                presenter.gotoDryer(deviceNo, isFavor, residenceId, location);
+            }
+        });
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 14)));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -133,11 +141,11 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
         tv_favorite.setOnClickListener(v -> onFavoriteClick());
 
         switch (action) {
-            case ACTION_CHOOSE_DISPENSER:
-            case ACTION_CHANGE_DISPENSER:
+            case DeviceConstant.ACTION_CHOOSE_DISPENSER:
+            case DeviceConstant.ACTION_CHANGE_DISPENSER:
                 break;
-            case ACTION_CHOOSE_DRYER:
-            case ACTION_CHANGE_DRYER:
+            case DeviceConstant.ACTION_CHOOSE_DRYER:
+            case DeviceConstant.ACTION_CHANGE_DRYER:
                 tv_nearby.setText(R.string.nearby_hair_dryer);
                 tv_favorite.setText(R.string.favorite_hair_dryer);
                 break;
@@ -160,8 +168,9 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
     protected void setUp() {
         super.setUp();
         if (getIntent() != null) {
-            action = getIntent().getIntExtra(INTENT_KEY_ACTION, ACTION_CHOOSE_DISPENSER);
+            action = getIntent().getIntExtra(DeviceConstant.INTENT_KEY_ACTION, DeviceConstant.ACTION_CHOOSE_DISPENSER);
             orderPreInfo = getIntent().getParcelableExtra(WaterDeviceBaseActivity.INTENT_PREPAY_INFO);
+            deviceType = getIntent().getIntExtra(DeviceConstant.INTENT_DEVICE_TYPE, Device.DISPENSER.getType());
         }
     }
 
@@ -299,6 +308,21 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
     }
 
     @Override
+    public void gotoDryer(String deviceNo, Boolean isFavor, Long residenceId, String location) {
+        startActivity(new Intent(this, DryerActivity.class)
+                .putExtra(MainActivity.INTENT_KEY_MAC_ADDRESS,
+                        deviceNo)
+                .putExtra(DispenserActivity.INTENT_KEY_FAVOR,
+                        isFavor)
+                .putExtra(DispenserActivity.INTENT_KEY_ID,
+                        residenceId)
+                .putExtra(MainActivity.INTENT_KEY_LOCATION, location)
+                .putExtra(MainActivity.INTENT_KEY_DEVICE_TYPE, Device.DRYER.getType())
+                .putExtra(WaterDeviceBaseActivity.INTENT_PREPAY_INFO, orderPreInfo));
+        finish();
+    }
+
+    @Override
     public void showScanStopView() {
         if (!nearbyItems.isEmpty() || listStatus) {
             return;
@@ -309,6 +333,7 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
         tv_rescan.setVisibility(View.VISIBLE);
         tv_empty_tip.setText("未扫描出附近的饮水机");
     }
+
 
     private synchronized void updateDevice(List<ScanDeviceGroup> devices) {
         if (devices.isEmpty()) {
