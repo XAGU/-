@@ -9,20 +9,27 @@
         android:orientation="vertical"
         android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="72dp">
+        android:layout_height="wrap_content">
         <TextView
-            android:id="@+id/tv_tip"
-            tool:text="@string/water_supply_tip"
-            android:textSize="14sp"
-            android:textColor="@color/colorDark2"
+            android:id="@+id/tv_title"
+            android:layout_marginTop="26dp"
+            tool:text="当前时间没有热水供应！"
+            android:textSize="17sp"
+            android:textColor="@color/colorFullRed"
+            android:textStyle="bold"
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <TextView
-            android:layout_marginTop="6dp"
+            android:id="@+id/tv_tip"
+            tool:text="热水供应时间"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_marginTop="13dp"
             android:id="@+id/tv_sub_tip"
             android:text="@string/water_supply_sub_tip"
-            android:textColor="@color/colorDark9"
+            android:textColor="@color/colorDark2"
             android:textSize="12sp"
             android:gravity="center"
             android:layout_width="match_parent"

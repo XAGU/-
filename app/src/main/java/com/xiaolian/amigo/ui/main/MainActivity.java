@@ -467,9 +467,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     void onSwitch(int current) {
         if (this.current != current) {
             if (current == 0) {
-                btSwitch.setBackgroundResource(R.drawable.home);
-            } else {
                 btSwitch.setBackgroundResource(R.drawable.profile);
+            } else {
+                btSwitch.setBackgroundResource(R.drawable.home);
             }
             onSwitch();
         }
@@ -679,6 +679,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             intent.putExtra(INTENT_KEY_MAC_ADDRESS, macAddress);
             intent.putExtra(INTENT_KEY_DEVICE_TYPE, Device.DISPENSER.getType());
             intent.putExtra(DispenserActivity.INTENT_KEY_ID, residenceId);
+            intent.putExtra(MainActivity.INTENT_KEY_RESIDENCE_ID, residenceId);
             intent.putExtra(MainActivity.INTENT_KEY_RECOVERY, recovery);
             intent.putExtra(DispenserActivity.INTENT_KEY_FAVOR, favor);
             intent.putExtra(DispenserActivity.INTENT_KEY_TEMPERATURE, String.valueOf(usefor));

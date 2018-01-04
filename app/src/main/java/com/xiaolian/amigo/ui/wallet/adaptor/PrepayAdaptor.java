@@ -40,21 +40,22 @@ public class PrepayAdaptor extends CommonAdapter<PrepayAdaptor.OrderWrapper> {
     @Data
     public static class OrderWrapper implements Serializable {
         // 设备类型
-        Integer type;
+        private Integer type;
         // 设备
-        String device;
+        private String device;
         // 时间
-        Long time;
+        private Long time;
         // 预付金额
-        String prepay;
+        private String prepay;
         // 状态
-        Integer status;
+        private Integer status;
         // 原始订单内容，供查询订单详情时使用
-        Order order;
+        private Order order;
         // 设备mac地址
-        String macAddress;
+        private String macAddress;
         // 设备地址
-        String location;
+        private String location;
+        private Long residenceId;
 
         public OrderWrapper(Order order) {
             this.order = order;
@@ -69,6 +70,7 @@ public class PrepayAdaptor extends CommonAdapter<PrepayAdaptor.OrderWrapper> {
             this.time = order.getCreateTime();
             this.prepay = order.getPrepay();
             this.status = order.getStatus();
+            this.residenceId = order.getResidenceId();
         }
     }
 }
