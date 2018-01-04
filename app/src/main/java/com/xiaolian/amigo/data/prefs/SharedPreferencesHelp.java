@@ -143,9 +143,13 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
         userHolder = user;
         if (null != user.getResidenceId()) {
             mSharedPreferences.edit().putLong(PREF_KEY_RESIDENCE_ID, user.getResidenceId()).apply();
+        } else {
+            mSharedPreferences.edit().putLong(PREF_KEY_RESIDENCE_ID, -1).apply();
         }
         if (null != user.getResidenceName()) {
             mSharedPreferences.edit().putString(PREF_KEY_RESIDENCE_NAME, user.getResidenceName()).apply();
+        } else {
+            mSharedPreferences.edit().putString(PREF_KEY_RESIDENCE_NAME, "").apply();
         }
         if (null != user.getMacAddress()) {
             mSharedPreferences.edit().putString(PREF_KEY_MAC_ADDRESS, user.getMacAddress()).apply();

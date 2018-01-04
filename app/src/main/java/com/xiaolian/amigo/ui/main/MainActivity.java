@@ -618,7 +618,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             }
         }
         availabilityDialog.setType(AvailabilityDialog.Type.TIME_VALID);
-        availabilityDialog.setOkText(getString(R.string.keep_use));
+        availabilityDialog.setOkText(getString(R.string.keep_use_cold_water));
         availabilityDialog.setTip(data.getTitle());
         availabilityDialog.setSubTip(data.getRemark());
         availabilityDialog.setOnOkClickListener(dialog1 -> {
@@ -827,7 +827,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         }
         availabilityDialog.setType(AvailabilityDialog.Type.BIND_DORMITORY);
         availabilityDialog.setOkText("前往绑定");
-        availabilityDialog.setTip("需要先绑定宿舍信息");
+        availabilityDialog.setTip("热水澡需要先绑定宿舍");
         availabilityDialog.setSubTipVisible(false);
         availabilityDialog.setOnOkClickListener(dialog1 -> {
             Intent intent;
@@ -878,7 +878,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         }
         availabilityDialog.setType(AvailabilityDialog.Type.NO_DEVICE);
         availabilityDialog.setOkText("前往设置");
-        availabilityDialog.setTip("你的默认宿舍无设备");
+        availabilityDialog.setTip("请确认宿舍信息，或更换宿舍");
         availabilityDialog.setSubTipVisible(false);
         availabilityDialog.setOnOkClickListener(dialog1 ->
                 startActivity(new Intent(MainActivity.this, EditDormitoryActivity.class)));
@@ -908,6 +908,19 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                         showMessage("没有SD卡权限");
                     }
                 });
+    }
+
+    @Override
+    public String getAndroidId() {
+        @SuppressLint("HardwareIds")
+        String androidId = Settings.Secure.getString(getContext().getContentResolver(),
+                Settings.Secure.ANDROID_ID);
+        return androidId;
+    }
+
+    @Override
+    public String getAppVersion() {
+        return AppUtils.getVersionName(this);
     }
 
     public void refreshProfile() {

@@ -1,7 +1,6 @@
 package com.xiaolian.amigo.ui.user;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
@@ -122,7 +121,7 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
             case R.id.rel_edit_nickname:
                 intent = new Intent(this, EditNickNameActivity.class);
                 intent.putExtra(Constant.EXTRA_KEY, new EditNickNameActivity.Model(tv_nickname.getText().toString().trim()));
-                startActivityForResult(intent, REQUEST_CODE_EDIT_NICKNAME, new Bundle());
+                startActivityForResult(intent, REQUEST_CODE_EDIT_NICKNAME);
                 break;
             case R.id.rel_edit_sex:
                 intent = new Intent(this, ListChooseActivity.class);
@@ -145,7 +144,7 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
             case R.id.rel_edit_password:
                 intent = new Intent(this, EditPasswordActivity.class);
                 intent.putExtra("nickName", "");
-                startActivityForResult(intent, 1, new Bundle());
+                startActivityForResult(intent, 1);
                 break;
             case R.id.rel_edit_school:
                 presenter.checkChangeSchool();
@@ -252,7 +251,7 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
         Intent intent;
         intent = new Intent(getApplicationContext(), EditMobileActivity.class);
         intent.putExtra("nickName", "");
-        startActivityForResult(intent, REQUEST_CODE_CHECK_PASSWORD, new Bundle());
+        startActivityForResult(intent, REQUEST_CODE_CHECK_PASSWORD);
     }
 
     @Override

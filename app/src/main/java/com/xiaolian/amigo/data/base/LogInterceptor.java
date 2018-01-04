@@ -7,6 +7,9 @@ import com.xiaolian.amigo.BuildConfig;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.util.Log;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.net.ConnectException;
 import java.util.Calendar;
@@ -38,6 +41,19 @@ public class LogInterceptor implements Interceptor {
     private Request lastRequest;
     private final static long NETWORK_INTERVAL = 500;
     private final static boolean ENABLE_ANTI_SHAKE = false;
+
+    private final static String APP_VERSION = "appVersion";
+    private final static String SYSTEM_VERSION = "systemVersion";
+    private final static String BRAND = "brand";
+    private final static String MODEL = "model";
+    private final static String SYSTEM = "system";
+    private final static String UNIQUE_ID = "uniqueId";
+    private String appVersion;
+    private String systemVersion;
+    private String brand;
+    private String model;
+    private String system;
+    private String uniqueId;
 
     private ISharedPreferencesHelp sharedPreferencesHelp;
 
@@ -99,6 +115,7 @@ public class LogInterceptor implements Interceptor {
         String header = newRequest.headers().toString();
         Response response;
         try {
+            newRequest = addParam(newRequest);
             response = chain.proceed(newRequest);
         } catch (Exception e) {
             Log.wtf(TAG, "网络请求错误: " + newRequest.url(), e);
@@ -166,5 +183,70 @@ public class LogInterceptor implements Interceptor {
         } catch (final IOException e) {
             return "did not work";
         }
+    }
+
+    // 添加公共参数
+    private Request addParam(Request oldRequest) {
+        if (oldRequest.body() != null) {
+            try {
+                String oldBody = oldRequest.body().toString();
+                JSONObject json = new JSONObject(oldBody);
+                if (TextUtils.isEmpty(json.getString(APP_VERSION))) {
+                    json.put(APP_VERSION, appVersion);
+                }
+                if (TextUtils.isEmpty(json.getString(SYSTEM_VERSION))) {
+                    json.put(SYSTEM_VERSION, systemVersion);
+                }
+                if (TextUtils.isEmpty(json.getString(BRAND))) {
+                    json.put(BRAND, brand);
+                }
+                if (TextUtils.isEmpty(json.getString(MODEL))) {
+                    json.put(MODEL, model);
+                }
+                if (TextUtils.isEmpty(json.getString(SYSTEM))) {
+                    json.put(SYSTEM, system);
+                }
+                if (TextUtils.isEmpty(json.getString(UNIQUE_ID))) {
+                    json.put(UNIQUE_ID, uniqueId);
+                }
+                MediaType contentType = oldRequest.body().contentType();
+                RequestBody body = RequestBody.create(contentType, json.toString());
+                return oldRequest.newBuilder()
+                        .method(oldRequest.method(), body)
+                        .build();
+            } catch (JSONException e) {
+                Log.wtf(TAG, e);
+                return oldRequest;
+            } catch (Exception e) {
+                Log.wtf(TAG, e);
+                return oldRequest;
+            }
+        } else {
+            return oldRequest;
+        }
+    }
+
+    public void setAppVersion(String appVersion) {
+        this.appVersion = appVersion;
+    }
+
+    public void setSystemVersion(String systemVersion) {
+        this.systemVersion = systemVersion;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public void setSystem(String system) {
+        this.system = system;
+    }
+
+    public void setUniqueId(String uniqueId) {
+        this.uniqueId = uniqueId;
     }
 }

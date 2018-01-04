@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.util.DimentionUtils;
 
 /**
  * 供水时段、提现时段提示
@@ -19,6 +20,7 @@ import com.xiaolian.amigo.R;
 
 public class AvailabilityDialog extends Dialog {
 
+    private TextView tv_title;
     private TextView tv_tip;
     private TextView tv_sub_tip;
     private TextView tv_cancel;
@@ -26,6 +28,7 @@ public class AvailabilityDialog extends Dialog {
     private View v_divide;
     private Type type;
     private OnOkClickListener listener;
+    private Context context;
 
     public AvailabilityDialog(@NonNull Context context) {
         super(context, R.style.AlertDialogStyle);
@@ -37,17 +40,19 @@ public class AvailabilityDialog extends Dialog {
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
         window.setAttributes(lp);
+        this.context = context;
         initView();
     }
 
     private void initView() {
         setContentView(R.layout.dialog_avaliability);
         v_divide = findViewById(R.id.v_divide);
-        tv_tip = (TextView) findViewById(R.id.tv_tip);
-        tv_sub_tip = (TextView) findViewById(R.id.tv_sub_tip);
-        tv_cancel = (TextView) findViewById(R.id.tv_cancel);
+        tv_title = findViewById(R.id.tv_title);
+        tv_tip = findViewById(R.id.tv_tip);
+        tv_sub_tip = findViewById(R.id.tv_sub_tip);
+        tv_cancel = findViewById(R.id.tv_cancel);
         tv_cancel.setOnClickListener(v -> dismiss());
-        tv_ok = (TextView) findViewById(R.id.tv_ok);
+        tv_ok = findViewById(R.id.tv_ok);
         tv_ok.setOnClickListener(v -> {
             dismiss();
             if (listener != null) {
@@ -57,6 +62,22 @@ public class AvailabilityDialog extends Dialog {
     }
 
     public void setType(Type type) {
+        switch (type) {
+            case NO_DEVICE:
+            case TIME_VALID:
+            case BIND_DORMITORY:
+            case WITHDRAW_VALID:
+                tv_title.setVisibility(View.VISIBLE);
+                tv_title.setText(type.getTitle());
+                tv_tip.setGravity(Gravity.START);
+                tv_tip.setTextSize(12);
+                break;
+            case OPEN_LOCAION_SERVICE:
+                tv_title.setVisibility(View.GONE);
+                tv_tip.setGravity(Gravity.CENTER);
+                tv_tip.setTextSize(17);
+                break;
+        }
         this.type = type;
     }
 
@@ -94,17 +115,26 @@ public class AvailabilityDialog extends Dialog {
     }
 
     public enum Type {
-        NO_DEVICE(1, "默认宿舍无设备"),
-        TIME_VALID(2, "时间段错误"),
-        BIND_DORMITORY(3, "绑定宿舍"),
-        OPEN_LOCAION_SERVICE(4, "打开位置服务"),
+        NO_DEVICE("你的默认宿舍无热水澡服务！", "默认宿舍无设备"),
+        TIME_VALID("当前时间没有热水供应", "时间段错误"),
+        BIND_DORMITORY("你还没有绑定宿舍信息哦！", "绑定宿舍"),
+        OPEN_LOCAION_SERVICE("", "打开位置服务"),
+        WITHDRAW_VALID("当前时间无法提现", "提现时间段错误")
         ;
-        private int type;
+        private String title;
         private String desc;
 
-        Type(int type, String desc) {
-            this.type = type;
+        Type(String title, String desc) {
+            this.title = title;
             this.desc = desc;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public String getDesc() {
+            return desc;
         }
     }
 }
