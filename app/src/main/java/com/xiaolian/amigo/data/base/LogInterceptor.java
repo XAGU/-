@@ -46,13 +46,11 @@ public class LogInterceptor implements Interceptor {
     private final static String SYSTEM_VERSION = "systemVersion";
     private final static String BRAND = "brand";
     private final static String MODEL = "model";
-    private final static String SYSTEM = "system";
     private final static String UNIQUE_ID = "uniqueId";
     private String appVersion;
     private String systemVersion;
     private String brand;
     private String model;
-    private String system;
     private String uniqueId;
 
     private ISharedPreferencesHelp sharedPreferencesHelp;
@@ -187,26 +185,29 @@ public class LogInterceptor implements Interceptor {
 
     // 添加公共参数
     private Request addParam(Request oldRequest) {
+        if (oldRequest.method().equals(GET)) {
+            return oldRequest;
+        }
         if (oldRequest.body() != null) {
             try {
-                String oldBody = oldRequest.body().toString();
+                String oldBody = bodyToString(oldRequest.body());
+                if (TextUtils.isEmpty(oldBody)) {
+                    return oldRequest;
+                }
                 JSONObject json = new JSONObject(oldBody);
-                if (TextUtils.isEmpty(json.getString(APP_VERSION))) {
+                if (!json.has(APP_VERSION)) {
                     json.put(APP_VERSION, appVersion);
                 }
-                if (TextUtils.isEmpty(json.getString(SYSTEM_VERSION))) {
+                if (!json.has(SYSTEM_VERSION)) {
                     json.put(SYSTEM_VERSION, systemVersion);
                 }
-                if (TextUtils.isEmpty(json.getString(BRAND))) {
+                if (!json.has(BRAND)) {
                     json.put(BRAND, brand);
                 }
-                if (TextUtils.isEmpty(json.getString(MODEL))) {
+                if (!json.has(MODEL)) {
                     json.put(MODEL, model);
                 }
-                if (TextUtils.isEmpty(json.getString(SYSTEM))) {
-                    json.put(SYSTEM, system);
-                }
-                if (TextUtils.isEmpty(json.getString(UNIQUE_ID))) {
+                if (!json.has(UNIQUE_ID)) {
                     json.put(UNIQUE_ID, uniqueId);
                 }
                 MediaType contentType = oldRequest.body().contentType();
@@ -240,10 +241,6 @@ public class LogInterceptor implements Interceptor {
 
     public void setModel(String model) {
         this.model = model;
-    }
-
-    public void setSystem(String system) {
-        this.system = system;
     }
 
     public void setUniqueId(String uniqueId) {
