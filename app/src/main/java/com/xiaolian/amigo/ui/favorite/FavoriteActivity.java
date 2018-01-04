@@ -69,7 +69,7 @@ public class FavoriteActivity extends FavoriteBaseActivity implements IFavoriteV
             }
         });
         adaptor.setOnDeleteListener(position ->
-                presenter.onDelete(favorites.get(position).getResidenceId(), position));
+                presenter.onDelete(favorites.get(position).getResidenceId(), position, favorites.get(position).getType()));
         recyclerView.addItemDecoration(new RecycleViewDivider(this, RecycleViewDivider.VERTICAL_LIST));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adaptor);

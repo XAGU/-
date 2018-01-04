@@ -1,17 +1,15 @@
 package com.xiaolian.amigo.ui.device.dispenser;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.enumeration.DispenserWater;
-import com.xiaolian.amigo.data.enumeration.TradeStep;
 import com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IDispenserPresenter;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IDispenserView;
-import com.xiaolian.amigo.ui.widget.dialog.GuideDialog;
 
 import javax.inject.Inject;
 

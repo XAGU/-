@@ -3,6 +3,7 @@ package com.xiaolian.amigo.data.manager;
 import com.xiaolian.amigo.data.manager.intf.IFavoriteManager;
 import com.xiaolian.amigo.data.network.IDeviceApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.device.FavorDeviceReqDTO;
 import com.xiaolian.amigo.data.network.model.device.QueryDeviceListReqDTO;
 import com.xiaolian.amigo.data.network.model.device.QueryFavorDeviceRespDTO;
 import com.xiaolian.amigo.data.network.model.device.QueryWaterListRespDTO;
@@ -36,12 +37,12 @@ public class FavoriteManager implements IFavoriteManager {
     }
 
     @Override
-    public Observable<ApiResult<SimpleRespDTO>> favorite(SimpleReqDTO reqDTO) {
+    public Observable<ApiResult<SimpleRespDTO>> favorite(FavorDeviceReqDTO reqDTO) {
         return deviceApi.favorite(reqDTO);
     }
 
     @Override
-    public Observable<ApiResult<SimpleRespDTO>> unFavorite(SimpleReqDTO reqDTO) {
+    public Observable<ApiResult<SimpleRespDTO>> unFavorite(FavorDeviceReqDTO reqDTO) {
         return deviceApi.unFavorite(reqDTO);
     }
 }

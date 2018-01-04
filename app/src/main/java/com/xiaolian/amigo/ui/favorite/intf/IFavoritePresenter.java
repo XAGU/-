@@ -26,6 +26,6 @@ public interface IFavoritePresenter<V extends IFavoriteView> extends IBasePresen
     void requestFavorites(int page);
 
     // 删除某一收藏设备
-    void onDelete(Long deviceId, int index);
+    void onDelete(Long deviceId, int index, int type);
 
 }

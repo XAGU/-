@@ -22,6 +22,7 @@ import com.xiaolian.amigo.data.network.model.common.SimpleQueryReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
 import com.xiaolian.amigo.data.network.model.device.FavorDeviceDTO;
+import com.xiaolian.amigo.data.network.model.device.FavorDeviceReqDTO;
 import com.xiaolian.amigo.data.network.model.device.QueryDeviceListReqDTO;
 import com.xiaolian.amigo.data.network.model.device.QueryFavorDeviceRespDTO;
 import com.xiaolian.amigo.data.network.model.device.QueryWaterListRespDTO;
@@ -91,9 +92,10 @@ public class FavoritePresenter<V extends IFavoriteView> extends BasePresenter<V>
     }
 
     @Override
-    public void onDelete(final Long residenceId, int index) {
-        SimpleReqDTO reqDTO = new SimpleReqDTO();
+    public void onDelete(final Long residenceId, int index, int type) {
+        FavorDeviceReqDTO reqDTO = new FavorDeviceReqDTO();
         reqDTO.setId(residenceId);
+        reqDTO.setType(type);
         // 查看收藏设备列表
         addObserver(favoriteManager.unFavorite(reqDTO), new NetworkObserver<ApiResult<SimpleRespDTO>>() {
             @Override

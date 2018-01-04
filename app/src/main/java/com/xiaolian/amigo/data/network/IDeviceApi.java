@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.data.network;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.device.FavorDeviceReqDTO;
 import com.xiaolian.amigo.data.network.model.device.QueryDeviceListReqDTO;
 import com.xiaolian.amigo.data.network.model.device.QueryDeviceListRespDTO;
 import com.xiaolian.amigo.data.network.model.device.QueryFavorDeviceRespDTO;
@@ -28,11 +29,11 @@ public interface IDeviceApi {
 
     // 收藏饮水机
     @POST("device/favorite")
-    Observable<ApiResult<SimpleRespDTO>> favorite(@Body SimpleReqDTO reqDTO);
+    Observable<ApiResult<SimpleRespDTO>> favorite(@Body FavorDeviceReqDTO reqDTO);
 
     // 取消收藏饮水机
     @POST("device/unFavorite")
-    Observable<ApiResult<SimpleRespDTO>> unFavorite(@Body SimpleReqDTO reqDTO);
+    Observable<ApiResult<SimpleRespDTO>> unFavorite(@Body FavorDeviceReqDTO reqDTO);
 
     // 首页设备用水校验
     @POST("device/check")

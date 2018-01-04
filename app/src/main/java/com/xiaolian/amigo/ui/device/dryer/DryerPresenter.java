@@ -1,10 +1,12 @@
 package com.xiaolian.amigo.ui.device.dryer;
 
+import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.manager.intf.IBleDataManager;
 import com.xiaolian.amigo.data.manager.intf.IDeviceDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
+import com.xiaolian.amigo.data.network.model.device.FavorDeviceReqDTO;
 import com.xiaolian.amigo.ui.device.WaterDeviceBasePresenter;
 import com.xiaolian.amigo.ui.device.intf.dryer.IDryerPresenter;
 import com.xiaolian.amigo.ui.device.intf.dryer.IDryerView;
@@ -29,7 +31,8 @@ public class DryerPresenter <V extends IDryerView> extends WaterDeviceBasePresen
 
     @Override
     public void favorite(Long id) {
-        SimpleReqDTO reqDTO = new SimpleReqDTO();
+        FavorDeviceReqDTO reqDTO = new FavorDeviceReqDTO();
+        reqDTO.setType(Device.DRYER.getType());
         reqDTO.setId(id);
         addObserver(deviceDataManager.favorite(reqDTO), new NetworkObserver<ApiResult<SimpleRespDTO>>() {
 
@@ -47,8 +50,9 @@ public class DryerPresenter <V extends IDryerView> extends WaterDeviceBasePresen
 
     @Override
     public void unFavorite(Long id) {
-        SimpleReqDTO reqDTO = new SimpleReqDTO();
+        FavorDeviceReqDTO reqDTO = new FavorDeviceReqDTO();
         reqDTO.setId(id);
+        reqDTO.setType(Device.DRYER.getType());
         addObserver(deviceDataManager.unFavorite(reqDTO), new NetworkObserver<ApiResult<SimpleRespDTO>>() {
 
             @Override

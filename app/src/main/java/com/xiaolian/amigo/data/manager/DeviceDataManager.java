@@ -11,6 +11,7 @@ import com.xiaolian.amigo.data.network.model.common.SimpleQueryReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
 import com.xiaolian.amigo.data.network.model.cs.CsMobileRespDTO;
+import com.xiaolian.amigo.data.network.model.device.FavorDeviceReqDTO;
 import com.xiaolian.amigo.data.network.model.device.QueryDeviceListReqDTO;
 import com.xiaolian.amigo.data.network.model.device.QueryDeviceListRespDTO;
 import com.xiaolian.amigo.data.network.model.device.QueryFavorDeviceRespDTO;
@@ -179,12 +180,12 @@ public class DeviceDataManager implements IDeviceDataManager {
     }
 
     @Override
-    public Observable<ApiResult<SimpleRespDTO>> favorite(SimpleReqDTO reqDTO) {
+    public Observable<ApiResult<SimpleRespDTO>> favorite(FavorDeviceReqDTO reqDTO) {
         return deviceApi.favorite(reqDTO);
     }
 
     @Override
-    public Observable<ApiResult<SimpleRespDTO>> unFavorite(SimpleReqDTO reqDTO) {
+    public Observable<ApiResult<SimpleRespDTO>> unFavorite(FavorDeviceReqDTO reqDTO) {
         return deviceApi.unFavorite(reqDTO);
     }
 
