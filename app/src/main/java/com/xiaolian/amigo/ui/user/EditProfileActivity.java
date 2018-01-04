@@ -135,8 +135,9 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
                 startActivityForResult(intent, REQUEST_CODE_EDIT_SEX);
                 break;
             case R.id.rel_edit_mobile:
-                intent = new Intent(this, CheckPasswordActivity.class);
-                startActivityForResult(intent, REQUEST_CODE_CHECK_PASSWORD);
+                onError("暂不支持修改手机号");
+//                intent = new Intent(this, CheckPasswordActivity.class);
+//                startActivityForResult(intent, REQUEST_CODE_CHECK_PASSWORD);
 //                ChangeMobileDialog dialog = new ChangeMobileDialog(this);
 //                dialog.setOnOkClickListener((dialog1, password) -> presenter.checkPassword(password));
 //                dialog.show();
