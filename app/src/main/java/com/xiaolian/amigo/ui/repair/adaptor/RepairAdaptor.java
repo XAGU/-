@@ -159,7 +159,8 @@ public class RepairAdaptor extends RecyclerView.Adapter<RepairAdaptor.ViewHolder
         String location;
 
         public RepairWrapper(Repair repair) {
-            this.device = Device.getDevice(repair.getDeviceType()).getDesc() + Constant.CHINEASE_COLON + repair.getLocation();
+            String location = repair.getLocation() == null ? "未知位置" : repair.getLocation();
+            this.device = Device.getDevice(repair.getDeviceType()).getDesc() + Constant.CHINEASE_COLON + location;
             this.time = CommonUtil.stampToDate(repair.getCreateTime());
             this.status = repair.getStatus();
             this.rated = repair.getRated();

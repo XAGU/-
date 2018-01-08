@@ -180,8 +180,8 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
             return;
         }
         availabilityDialog.setOkText(getString(R.string.confirm));
+        availabilityDialog.setTitle("更换学校");
         availabilityDialog.setTip(getString(R.string.change_school_tip));
-        availabilityDialog.setSubTipVisible(false);
         availabilityDialog.setOnOkClickListener(dialog1 -> {
             Intent intent = new Intent(this, ListChooseActivity.class);
             intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION,

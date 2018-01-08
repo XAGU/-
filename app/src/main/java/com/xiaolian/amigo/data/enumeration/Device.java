@@ -107,7 +107,10 @@ public enum Device {
 
     public abstract Class getClz();
 
-    public static Device getDevice(int type) {
+    public static Device getDevice(Integer type) {
+        if (type == null) {
+            return UNKNOWN;
+        }
         for (Device device : Device.values()) {
             if (device.getType() == type) {
                 return device;

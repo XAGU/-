@@ -68,7 +68,6 @@ public class AvailabilityDialog extends Dialog {
             case BIND_DORMITORY:
             case WITHDRAW_VALID:
                 tv_title.setVisibility(View.VISIBLE);
-                tv_title.setText(type.getTitle());
                 tv_tip.setGravity(Gravity.START);
                 tv_tip.setTextSize(12);
                 break;
@@ -83,6 +82,11 @@ public class AvailabilityDialog extends Dialog {
 
     public Type getType() {
         return this.type;
+    }
+
+    public void setTitle(String title) {
+        tv_title.setVisibility(View.VISIBLE);
+        tv_title.setText(title);
     }
 
     public void setTip(String tip) {

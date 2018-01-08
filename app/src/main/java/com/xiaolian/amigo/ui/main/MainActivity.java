@@ -619,8 +619,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         }
         availabilityDialog.setType(AvailabilityDialog.Type.TIME_VALID);
         availabilityDialog.setOkText(getString(R.string.keep_use_cold_water));
-        availabilityDialog.setTip(data.getTitle());
-        availabilityDialog.setSubTip(data.getRemark());
+        availabilityDialog.setTitle(data.getTitle());
+        availabilityDialog.setTip(data.getRemark());
         availabilityDialog.setOnOkClickListener(dialog1 -> {
             if (deviceType == Device.HEATER.getType()) {
                 presenter.gotoHeaterDevice(data.getDefaultMacAddress(), data.getLocation(),
@@ -827,8 +827,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         }
         availabilityDialog.setType(AvailabilityDialog.Type.BIND_DORMITORY);
         availabilityDialog.setOkText("前往绑定");
+        availabilityDialog.setTitle(AvailabilityDialog.Type.BIND_DORMITORY.getTitle());
         availabilityDialog.setTip("热水澡需要先绑定宿舍");
-        availabilityDialog.setSubTipVisible(false);
         availabilityDialog.setOnOkClickListener(dialog1 -> {
             Intent intent;
             intent = new Intent(this, ListChooseActivity.class);
@@ -855,7 +855,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         openLocationDialog.setType(AvailabilityDialog.Type.OPEN_LOCAION_SERVICE);
         openLocationDialog.setOkText("前往设置");
         openLocationDialog.setTip("设备用水需要开启位置服务");
-        openLocationDialog.setSubTipVisible(false);
         openLocationDialog.setOnOkClickListener(dialog1 -> {
             Intent locationIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
             this.startActivityForResult(locationIntent, REQUEST_LOCATION);
@@ -877,9 +876,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             }
         }
         availabilityDialog.setType(AvailabilityDialog.Type.NO_DEVICE);
+        availabilityDialog.setTitle(AvailabilityDialog.Type.NO_DEVICE.getTitle());
         availabilityDialog.setOkText("前往设置");
         availabilityDialog.setTip("请确认宿舍信息，或更换宿舍");
-        availabilityDialog.setSubTipVisible(false);
         availabilityDialog.setOnOkClickListener(dialog1 ->
                 startActivity(new Intent(MainActivity.this, EditDormitoryActivity.class)));
         availabilityDialog.show();

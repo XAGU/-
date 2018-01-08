@@ -30,6 +30,8 @@ public class ChooseRepairActivity extends RepairBaseActivity {
     TextView tv_heater;
     @BindView(R.id.tv_dispenser)
     TextView tv_dispenser;
+    @BindView(R.id.tv_dryer)
+    TextView tv_dryer;
     @BindView(R.id.tv_default_dormitory)
     TextView tv_default_dormitory;
     @BindView(R.id.tv_favorite)
@@ -39,6 +41,8 @@ public class ChooseRepairActivity extends RepairBaseActivity {
     ImageView iv_heater_tick;
     @BindView(R.id.iv_dispenser_tick)
     ImageView iv_dispenser_tick;
+    @BindView(R.id.iv_dryer_tick)
+    ImageView iv_dryer_tick;
     @BindView(R.id.iv_default_tick)
     ImageView iv_default_tick;
     @BindView(R.id.iv_favorite_tick)
@@ -87,6 +91,17 @@ public class ChooseRepairActivity extends RepairBaseActivity {
         startActivity(intent);
     }
 
+    @OnClick(R.id.rl_dryer)
+    void onDryerClick() {
+        clearTick();
+        iv_dryer_tick.setVisibility(View.VISIBLE);
+        Intent intent = new Intent(this, ListChooseActivity.class);
+        intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION, ListChooseActivity.ACTION_LIST_BUILDING);
+        intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_DEVICE_TYPE, Device.DRYER.getType());
+        intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_SRC_ACTIVITY, Constant.REPAIR_APPLY_ACTIVITY_SRC);
+        startActivity(intent);
+    }
+
     @OnClick(R.id.rl_default_dormitory)
     void onDefaultDormitoryClick() {
         clearTick();
@@ -122,6 +137,7 @@ public class ChooseRepairActivity extends RepairBaseActivity {
     private void clearTick() {
         iv_default_tick.setVisibility(View.GONE);
         iv_dispenser_tick.setVisibility(View.GONE);
+        iv_dryer_tick.setVisibility(View.GONE);
         iv_heater_tick.setVisibility(View.GONE);
         iv_favorite_tick.setVisibility(View.GONE);
     }
