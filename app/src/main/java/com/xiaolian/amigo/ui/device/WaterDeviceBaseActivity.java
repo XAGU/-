@@ -380,8 +380,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                                     DimentionUtils.convertSpToPixels(18, this)), 0, buttonText.length(),
                             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     builder.append(buttonSpan);
-                    builder.append(deviceType == Device.HEATER.getType() ?
-                            getString(R.string.comma_start_shower) : getString(R.string.comma_start_drink));
+                    builder.append(getSlideButtonText());
 
                     showBonusLayout(tip, builder, bonusDescription);
                 }
@@ -412,8 +411,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                                     DimentionUtils.convertSpToPixels(18, this)), 0, buttonText.length(),
                             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     builder.append(buttonSpan);
-                    builder.append(deviceType == Device.HEATER.getType() ?
-                            getString(R.string.comma_start_shower) : getString(R.string.comma_start_drink));
+                    builder.append(getSlideButtonText());
                     showBonusLayout(tip, builder, bonusDescription);
                 }
                 // 余额加代金券小于预付金额 大于等于最小预付金额
@@ -430,8 +428,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                                     DimentionUtils.convertSpToPixels(18, this)), 0, buttonText.length(),
                             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     builder.append(buttonSpan);
-                    builder.append(deviceType == Device.HEATER.getType() ?
-                            getString(R.string.comma_start_shower) : getString(R.string.comma_start_drink));
+                    builder.append(getSlideButtonText());
                     showBonusLayout(tip, builder, bonusDescription);
                 }
                 // 余额加代金券小于最小预付金额
@@ -463,8 +460,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                                     DimentionUtils.convertSpToPixels(18, this)), 0, buttonText.length(),
                             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     builder.append(buttonSpan);
-                    builder.append(deviceType == Device.HEATER.getType() ?
-                            getString(R.string.comma_start_shower) : getString(R.string.comma_start_drink));
+                    builder.append(getSlideButtonText());
                     needRecharge = false;
                     showNoBonusLayout(title, tip, builder);
                 } else {
@@ -480,8 +476,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                                     DimentionUtils.convertSpToPixels(18, this)), 0, buttonText.length(),
                             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     builder.append(buttonSpan);
-                    builder.append(deviceType == Device.HEATER.getType() ?
-                            getString(R.string.comma_start_shower) : getString(R.string.comma_start_drink));
+                    builder.append(getSlideButtonText());
                     showNoBonusLayout(title, tip, builder);
                 }
             }
@@ -496,6 +491,12 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         }
 
     }
+
+    // 滑动按钮文字 比如 热水澡显示为"开始洗澡" 饮水机显示为 "开始接水"
+    protected abstract String getSlideButtonText();
+
+    // 开始使用设备后的提示文案 比如 热水澡显示为 "用水结束后请务必滑动下方按钮，进行结算找零\n消费金额以实际用水量为"
+    protected abstract String getBalanceTradeTip();
 
     @Override
     public void setPrepayOption(OrderPreInfoDTO data) {
@@ -820,7 +821,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 //                    String tip = String.format("您%s在%s使用预付了%s元的用水已结束\n点击下方按钮进行找零", time, orderStatus.getLocation(), String.valueOf(orderStatus.getPrepay().intValue()));
                 trade_tip.setText(tip);
             } else {
-                trade_tip.setText(getString(R.string.balance_trade_tip_2));
+                trade_tip.setText(getBalanceTradeTip());
             }
             bt_stop_shower.setText(getString(R.string.settlement_and_change));
             bt_stop_shower.setVisibility(View.GONE);
@@ -829,7 +830,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             slideView.setEnableStr(getString(R.string.settlement));
         } else {
             tv_shower_payed.setText(getString(R.string.prepaid, String.valueOf(prepayAmount)));
-            trade_tip.setText(getString(R.string.balance_trade_tip_2));
+            trade_tip.setText(getBalanceTradeTip());
             bt_stop_shower.setText(getString(R.string.settlement_and_change));
             bt_stop_shower.setVisibility(View.GONE);
             slideView.setVisibility(View.VISIBLE);

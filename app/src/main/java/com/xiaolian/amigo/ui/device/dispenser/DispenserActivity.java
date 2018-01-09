@@ -102,6 +102,16 @@ public class DispenserActivity extends WaterDeviceBaseActivity<IDispenserPresent
     }
 
     @Override
+    protected String getSlideButtonText() {
+        return getString(R.string.comma_start_drink);
+    }
+
+    @Override
+    protected String getBalanceTradeTip() {
+        return getString(R.string.balance_trade_tip_water);
+    }
+
+    @Override
     public IDispenserPresenter setPresenter() {
         return presenter;
     }

@@ -74,6 +74,16 @@ public class HeaterActivity extends WaterDeviceBaseActivity<IHeaterPresenter> im
     }
 
     @Override
+    protected String getSlideButtonText() {
+        return getString(R.string.comma_start_shower);
+    }
+
+    @Override
+    protected String getBalanceTradeTip() {
+        return getString(R.string.balance_trade_tip_water);
+    }
+
+    @Override
     public IHeaterPresenter setPresenter() {
         return presenter;
     }

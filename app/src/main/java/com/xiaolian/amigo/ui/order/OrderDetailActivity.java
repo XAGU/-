@@ -80,6 +80,11 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
     // 使用时间
     @BindView(R.id.tv_time)
     TextView tv_time;
+    // 使用时长
+    @BindView(R.id.tv_used_time)
+    TextView tv_used_time;
+    @BindView(R.id.rl_used_time)
+    RelativeLayout rl_used_time;
     // 设备位置
     @BindView(R.id.tv_device_location)
     TextView tv_device_location;
@@ -155,11 +160,11 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
     public void renderView(OrderDetailRespDTO order) {
         // 设置基础信息
         tv_time.setText(CommonUtil.stampToDate(order.getCreateTime()));
-        Device device = Device.getDevice(order.getDeviceType());
-        if (device != null) {
-            tv_device_location.setText(device.getDesc() + " " + order.getLocation());
-        } else {
-            tv_device_location.setText("未知设备 " + order.getLocation());
+        tv_device_location.setText(String.format("%s %s",
+                Device.getDevice(order.getDeviceType()).getDesc(), order.getLocation()));
+        if (Device.getDevice(order.getDeviceType()) == Device.DRYER) {
+            rl_used_time.setVisibility(View.VISIBLE);
+            tv_used_time.setText(order.getUseTime());
         }
         tv_order_no.setText(order.getOrderNo());
         if (CommonUtil.equals(order.getStatus(), 3)) {

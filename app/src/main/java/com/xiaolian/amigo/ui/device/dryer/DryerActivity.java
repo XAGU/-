@@ -104,6 +104,16 @@ public class DryerActivity extends WaterDeviceBaseActivity<IDryerPresenter> impl
     }
 
     @Override
+    protected String getSlideButtonText() {
+        return getString(R.string.comma_start_dryer);
+    }
+
+    @Override
+    protected String getBalanceTradeTip() {
+        return getString(R.string.balance_trade_tip_dryer);
+    }
+
+    @Override
     public IDryerPresenter setPresenter() {
         return presenter;
     }

@@ -83,6 +83,11 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
     // 使用时间
     @BindView(R.id.tv_time)
     TextView tv_time;
+    // 使用时长
+    @BindView(R.id.tv_used_time)
+    TextView tv_used_time;
+    @BindView(R.id.rl_used_time)
+    RelativeLayout rl_used_time;
     // 设备位置
     @BindView(R.id.tv_device_location)
     TextView tv_device_location;
@@ -121,6 +126,10 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
         orderType = ComplaintType.getComplaintTypeByDeviceType(
                 Device.getDevice(respDTO.getDeviceType())).getType();
         tv_time.setText(CommonUtil.stampToDate(respDTO.getCreateTime()));
+        if (Device.getDevice(respDTO.getDeviceType()) == Device.DRYER) {
+            rl_used_time.setVisibility(View.VISIBLE);
+            tv_used_time.setText(respDTO.getUseTime());
+        }
         Device device = Device.getDevice(respDTO.getDeviceType());
         if (device != null) {
             tv_device_location.setText(String.format("%s %s", device.getDesc(), respDTO.getLocation()));
