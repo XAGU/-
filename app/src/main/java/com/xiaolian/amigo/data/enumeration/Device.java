@@ -2,6 +2,7 @@ package com.xiaolian.amigo.data.enumeration;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.device.dispenser.DispenserActivity;
+import com.xiaolian.amigo.ui.device.dryer.DryerActivity;
 import com.xiaolian.amigo.ui.device.heater.HeaterActivity;
 
 /**
@@ -57,6 +58,21 @@ public enum Device {
         public Class getClz() {
             return DispenserActivity.class;
         }
+    }, DRYER(3, "吹风机") {
+        @Override
+        public int getColorRes() {
+            return R.color.device_dryer;
+        }
+
+        @Override
+        public int getDrawableRes() {
+            return R.drawable.dryer;
+        }
+
+        @Override
+        public Class getClz() {
+            return DryerActivity.class;
+        }
     };
 
     private int type;
@@ -91,7 +107,10 @@ public enum Device {
 
     public abstract Class getClz();
 
-    public static Device getDevice(int type) {
+    public static Device getDevice(Integer type) {
+        if (type == null) {
+            return UNKNOWN;
+        }
         for (Device device : Device.values()) {
             if (device.getType() == type) {
                 return device;

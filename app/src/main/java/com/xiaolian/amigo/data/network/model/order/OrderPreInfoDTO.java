@@ -14,27 +14,18 @@ import lombok.Data;
  */
 @Data
 public class OrderPreInfoDTO implements Parcelable {
-
-    /**
-     * 代金券
-     */
-    Bonus bonus;
-    /*Order*
-     * 预付金额
-     */
-    Double prepay;
-    /**
-     * 最小预付金额
-     */
-    Double minPrepay;
-    /**
-     * 余额
-     */
-    Double balance;
-    /**
-     * 客服电话
-     */
-    String csMobile;
+    // 代金券
+    private Bonus bonus;
+    // 预付金额
+    private Double prepay;
+    // 最小预付金额
+    private Double minPrepay;
+    // 余额
+    private Double balance;
+    // 客服电话
+    private String csMobile;
+    // 最低费率
+    private Integer price;
 
     public OrderPreInfoDTO() {
     }
@@ -51,6 +42,7 @@ public class OrderPreInfoDTO implements Parcelable {
         dest.writeValue(this.minPrepay);
         dest.writeValue(this.balance);
         dest.writeString(this.csMobile);
+        dest.writeValue(this.price);
     }
 
     protected OrderPreInfoDTO(Parcel in) {
@@ -59,6 +51,7 @@ public class OrderPreInfoDTO implements Parcelable {
         this.minPrepay = (Double) in.readValue(Double.class.getClassLoader());
         this.balance = (Double) in.readValue(Double.class.getClassLoader());
         this.csMobile = in.readString();
+        this.price = (Integer) in.readValue(Integer.class.getClassLoader());
     }
 
     public static final Parcelable.Creator<OrderPreInfoDTO> CREATOR = new Parcelable.Creator<OrderPreInfoDTO>() {

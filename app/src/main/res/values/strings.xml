@@ -55,12 +55,13 @@
 
     <string name="shower_process">以预付%1$d元，请尽快放水洗澡(%2$ds)</string>
     <string name="no_search_result">未搜到相关的内容</string>
-    <string name="water_supply_sub_tip">(继续使用，则只有冷水)</string>
+    <string name="water_supply_sub_tip">继续使用，则只有冷水</string>
     <string name="water_supply_tip">供水时段为07:00~12:00、20:00~23:00</string>
     <string name="cancel">取消</string>
     <string name="ok">确定</string>
     <string name="keep_use">继续使用</string>
-    <string name="emergency_notice">紧/急/通/知</string>
+    <string name="keep_use_cold_water">使用冷水</string>
+    <string name="emergency_notice">紧急通知</string>
     <string name="do_not_remind">不再提示</string>
     <string name="withdraw_tip">提现时间为：\n每周二12:00~每周四12:00</string>
     <string name="repair_detail">报修详情</string>
@@ -256,4 +257,11 @@
         <u>没有用水，但扣了我几分钱？</u>
     </string>
     <string name="no_device_tip">(无热水澡服务)</string>
+    <string name="nearby_hair_dryer">附近的吹风机</string>
+    <string name="favorite_hair_dryer">收藏的吹风机</string>
+    <string name="change_hair_dryer">更换吹风机</string>
+    <string name="heater_notice_content">1.热水澡最低消费&lt;font color=&quot;#ff5555&quot;&gt;%1$d分钱&lt;/font&gt;，请确认需要用水再点击“开始洗澡”按钮；&lt;br&gt;&lt;br&gt;2.洗澡时手机不用带进去浴室哦，可通过水阀门暂停用水。最终消费水表根据用水量而定，与使用时间无关。</string>
+    <string name="dispenser_notice_content">1.饮水机最低消费&lt;font color=&quot;#ff5555&quot;&gt;%1$d分钱&lt;/font&gt;，请确认需要用水再点击“开始接水”按钮；&lt;br&gt;&lt;br&gt;2.最终消费水表根据用水量而定，与使用时间无关。</string>
+    <string name="water_use_notice_title">温馨提示</string>
+    <string name="hair_dryer">吹风机</string>
 </resources>

@@ -50,6 +50,7 @@ public class OrderInListDTO implements Mapper<Order> {
     private String actualDebit;
     // 是否是最低消费
     private Boolean lowest;
+    private Long residenceId;
 
     @Override
     public Order transform() {
@@ -74,6 +75,7 @@ public class OrderInListDTO implements Mapper<Order> {
         order.setConsume(consume);
         order.setId(id);
         order.setLowest(lowest);
+        order.setResidenceId(residenceId);
         return order;
     }
 }

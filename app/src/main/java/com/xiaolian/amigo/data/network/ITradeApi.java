@@ -32,8 +32,4 @@ public interface ITradeApi {
     // 网络支付，创建用水订单
     @POST("trade/pay")
     Observable<ApiResult<PayRespDTO>> pay(@Body PayReqDTO reqDTO);
-
-    // 处理扫描结果
-    @POST("device/water/list")
-    Observable<ApiResult<QueryWaterListRespDTO>> handleScanDevices(@Body QueryWaterListReqDTO reqDTO);
 }

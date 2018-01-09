@@ -7,12 +7,14 @@
     android:background="@drawable/bg_rect_corner_dialog_inset"
     android:layout_height="match_parent">
     <ImageView
+        android:id="@+id/iv_symbol"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="29dp"
         android:src="@drawable/ic_emergency_notice2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <TextView
+        android:id="@+id/tv_title"
         android:layout_marginTop="14dp"
         android:text="@string/emergency_notice"
         android:gravity="center_horizontal"
@@ -23,7 +25,7 @@
         android:layout_height="wrap_content" />
     
     <View
-        android:layout_marginTop="21dp"
+        android:layout_marginTop="15dp"
         android:background="#f3f3f3"
         android:layout_gravity="center_horizontal"
         android:layout_width="32dp"
@@ -31,18 +33,18 @@
 
     <TextView
         android:id="@+id/tv_content"
-        android:layout_marginTop="21dp"
+        android:layout_marginTop="20dp"
         android:layout_marginLeft="36dp"
         android:layout_marginStart="36dp"
         android:layout_marginRight="36dp"
         android:layout_marginEnd="36dp"
         android:text="这里是描述性文字哦这里是描述性文字哦这里是描述是描述性文字哦这里是描述性文字哦"
-        android:textSize="12sp"
-        android:textColor="@color/colorDark9"
+        android:textSize="13sp"
+        android:textColor="@color/colorDark2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <LinearLayout
-        android:layout_marginTop="47dp"
+        android:layout_marginTop="36dp"
         android:id="@+id/ll_not_remind"
         android:gravity="center"
         android:orientation="horizontal"
@@ -69,7 +71,7 @@
         android:textColor="#fff"
         android:textSize="14sp"
         android:elevation="2dp"
-        android:layout_marginTop="21dp"
+        android:layout_marginTop="15dp"
         android:layout_gravity="center_horizontal"
         android:layout_width="144dp"
         android:layout_height="34dp" />

@@ -2,6 +2,7 @@ package com.xiaolian.amigo.ui.device.dispenser;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -12,12 +13,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.enumeration.DispenserWater;
 import com.xiaolian.amigo.data.network.model.device.WaterInListDTO;
 import com.xiaolian.amigo.data.vo.ScanDeviceGroup;
-import com.xiaolian.amigo.data.network.model.order.OrderPreInfoDTO;
-import com.xiaolian.amigo.ui.device.intf.dispenser.IChooseDispenerView;
-import com.xiaolian.amigo.ui.device.intf.dispenser.IChooseDispenserPresenter;
 
 import java.util.List;
 
@@ -29,20 +28,23 @@ import lombok.Data;
  */
 
 public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenserAdaptor.ViewHolder> {
+    public interface OnItemClickListener {
+        void onItemClick(String deviceNo, Boolean isFavor, Long residenceId, String usefor, String location);
+    }
+    private OnItemClickListener itemClickListener;
     private int lastExpandPosition = -1;
     private List<ChooseDispenserAdaptor.DispenserWrapper> mData;
     private int layoutId;
-    private IChooseDispenserPresenter<IChooseDispenerView> presenter;
-    private OrderPreInfoDTO orderPreInfo;
+    private Context context;
+    private boolean expandAble = true;
 
     public ChooseDispenserAdaptor(Context context, int layoutId,
                                   List<DispenserWrapper> datas ,
-                                  IChooseDispenserPresenter<IChooseDispenerView> presenter,
-                                  OrderPreInfoDTO orderPreInfo) {
+                                  boolean expandable) {
         this.mData = datas;
+        this.context = context;
         this.layoutId = layoutId;
-        this.presenter = presenter;
-        this.orderPreInfo = orderPreInfo;
+        this.expandAble = expandable;
     }
 
     @Override
@@ -56,7 +58,20 @@ public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenser
         ChooseDispenserAdaptor.DispenserWrapper dispenserWrapper =
                 mData.get(holder.getAdapterPosition());
         holder.tv_location.setText(dispenserWrapper.getLocation());
+        if (!expandAble) {
+            holder.iv_arrow.setVisibility(View.GONE);
+        }
+        holder.tv_title.setText(Device.getDevice(dispenserWrapper.getDeviceGroup().getType()).getDesc());
+        holder.tv_title.setTextColor(ContextCompat.getColor(context,
+                Device.getDevice(dispenserWrapper.getDeviceGroup().getType()).getColorRes()));
         holder.rl_top.setOnClickListener(v -> {
+            if (!expandAble && itemClickListener != null) {
+                itemClickListener.onItemClick(dispenserWrapper.getDeviceGroup().getWater().get(0).getMacAddress(),
+                        dispenserWrapper.isFavor(), dispenserWrapper.getResidenceId(),
+                        null,
+                        dispenserWrapper.getLocation());
+                return;
+            }
             if (lastExpandPosition != -1) {
                 mData.get(lastExpandPosition).setExpanded(false);
             }
@@ -109,13 +124,18 @@ public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenser
             holder.tv_water[i].setBackgroundResource(DispenserWater.getTemperature(dispenserWrapper.getDeviceGroup().getWater()
                     .get(i).getUsefor()).getBackgroundDrawable());
             holder.tv_water[i].setOnClickListener(v -> {
-                presenter.closeBleConnection();
-                presenter.gotoDispenser(dispenserWrapper.getDeviceGroup().getWater().get(waterPosition).getMacAddress(),
-                        dispenserWrapper.isFavor(), dispenserWrapper.getResidenceId(),
-                        dispenserWrapper.getDeviceGroup().getWater().get(waterPosition).getUsefor(),
-                        dispenserWrapper.getLocation());
+                if (itemClickListener != null) {
+                    itemClickListener.onItemClick(dispenserWrapper.getDeviceGroup().getWater().get(waterPosition).getMacAddress(),
+                            dispenserWrapper.isFavor(), dispenserWrapper.getResidenceId(),
+                            dispenserWrapper.getDeviceGroup().getWater().get(waterPosition).getUsefor(),
+                            dispenserWrapper.getLocation());
+                }
             });
         }
+    }
+
+    public void setOnItemClickListener(OnItemClickListener itemClickListener) {
+        this.itemClickListener = itemClickListener;
     }
 
     @Override
@@ -125,16 +145,15 @@ public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenser
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tv_location;
+        TextView tv_title;
         RelativeLayout rl_top;
         View v_divide;
         RelativeLayout rl_bottom;
         TextView[] tv_water;
-        TextView tv_cold_water;
-        TextView tv_ice_water;
-        TextView tv_hot_water;
         ImageView iv_arrow;
         public ViewHolder(View itemView) {
             super(itemView);
+            tv_title = itemView.findViewById(R.id.tv_title);
             tv_water = new TextView[] {
                     itemView.findViewById(R.id.tv_cold_water),
                     itemView.findViewById(R.id.tv_ice_water),
@@ -145,9 +164,6 @@ public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenser
             rl_top = itemView.findViewById(R.id.rl_top);
             v_divide = itemView.findViewById(R.id.v_divide);
             rl_bottom = itemView.findViewById(R.id.rl_bottom);
-//            tv_cold_water = (TextView) itemView.findViewById(R.id.tv_cold_water);
-//            tv_ice_water = (TextView) itemView.findViewById(R.id.tv_ice_water);
-//            tv_hot_water = (TextView) itemView.findViewById(R.id.tv_hot_water);
         }
     }
 
@@ -165,13 +181,6 @@ public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenser
             this.location = device.getLocation();
             this.deviceGroup = device;
             this.residenceId = device.getResidenceId();
-        }
-
-        public DispenserWrapper(WaterInListDTO water) {
-            this.favor = water.getFavor();
-            this.location = water.getLocation();
-            this.residenceId = water.getResidenceId();
-            this.deviceGroup = water.transform();
         }
     }
 

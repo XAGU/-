@@ -19,7 +19,6 @@ package com.xiaolian.amigo.ui.base.intf;
 import android.support.annotation.StringRes;
 
 public interface IBaseView {
-
     void showLoading();
 
     void hideLoading();

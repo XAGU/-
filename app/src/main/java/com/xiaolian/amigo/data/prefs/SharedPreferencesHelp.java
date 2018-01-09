@@ -49,8 +49,8 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     /************* 引导页相关 *******************/
     private static final String PREF_GUIDE_NAME = "PREF_GUIDE_NAME";
     private static final String PREF_GUIDE_MAIN = "PREF_GUIDE_MAIN";
-    private static final String PREF_GUIDE_HEATER = "PREF_GUIDE_HEATER";
-    private static final String PREF_GUIDE_DISPENSER = "PREF_GUIDE_DISPENSER";
+    private static final String PREF_ALERT_HEATER = "PREF_ALERT_HEATER";
+    private static final String PREF_ALERT_DISPENSER = "PREF_ALERT_DISPENSER";
     /************* 记住手机号 ******************/
     private static final String PREF_REMEMBER_MOBILE = "PREF_REMEMBER_MOBILE";
 
@@ -143,9 +143,13 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
         userHolder = user;
         if (null != user.getResidenceId()) {
             mSharedPreferences.edit().putLong(PREF_KEY_RESIDENCE_ID, user.getResidenceId()).apply();
+        } else {
+            mSharedPreferences.edit().putLong(PREF_KEY_RESIDENCE_ID, -1).apply();
         }
         if (null != user.getResidenceName()) {
             mSharedPreferences.edit().putString(PREF_KEY_RESIDENCE_NAME, user.getResidenceName()).apply();
+        } else {
+            mSharedPreferences.edit().putString(PREF_KEY_RESIDENCE_NAME, "").apply();
         }
         if (null != user.getMacAddress()) {
             mSharedPreferences.edit().putString(PREF_KEY_MAC_ADDRESS, user.getMacAddress()).apply();
@@ -269,23 +273,23 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     }
 
     @Override
-    public void doneHeaterGuide() {
-        mUnclearSharedPreferences.edit().putBoolean(PREF_GUIDE_HEATER, true).apply();
+    public void setHeaterGuide(Integer guideTime) {
+        mUnclearSharedPreferences.edit().putInt(PREF_ALERT_HEATER, guideTime).apply();
     }
 
     @Override
-    public boolean isHeaterGuideDone() {
-        return mUnclearSharedPreferences.getBoolean(PREF_GUIDE_HEATER, false);
+    public Integer getHeaterGuide() {
+        return mUnclearSharedPreferences.getInt(PREF_ALERT_HEATER, 0);
     }
 
     @Override
-    public void doneDispenserGuide() {
-        mUnclearSharedPreferences.edit().putBoolean(PREF_GUIDE_DISPENSER, true).apply();
+    public void setDispenserGuide(Integer guideTime) {
+        mUnclearSharedPreferences.edit().putInt(PREF_ALERT_DISPENSER, guideTime).apply();
     }
 
     @Override
-    public boolean isDispenserGuideDone() {
-        return mUnclearSharedPreferences.getBoolean(PREF_GUIDE_DISPENSER, false);
+    public Integer getDispenserGuide() {
+        return mUnclearSharedPreferences.getInt(PREF_ALERT_DISPENSER, 0);
     }
 
     @Override

@@ -83,10 +83,11 @@ public interface ISharedPreferencesHelp {
     // 引导页相关
     void setMainGuide(Integer guideTime);
     Integer getMainGuide();
-    void doneHeaterGuide();
-    boolean isHeaterGuideDone();
-    void doneDispenserGuide();
-    boolean isDispenserGuideDone();
+    // 显示温馨提示
+    void setHeaterGuide(Integer guideTime);
+    Integer getHeaterGuide();
+    void setDispenserGuide(Integer guideTime);
+    Integer getDispenserGuide();
 
     void setLastRepairTime(Long time);
     Long getLastRepairTime();

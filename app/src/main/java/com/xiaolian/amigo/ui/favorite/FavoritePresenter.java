@@ -21,6 +21,10 @@ import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.common.SimpleQueryReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
+import com.xiaolian.amigo.data.network.model.device.FavorDeviceDTO;
+import com.xiaolian.amigo.data.network.model.device.FavorDeviceReqDTO;
+import com.xiaolian.amigo.data.network.model.device.QueryDeviceListReqDTO;
+import com.xiaolian.amigo.data.network.model.device.QueryFavorDeviceRespDTO;
 import com.xiaolian.amigo.data.network.model.device.QueryWaterListRespDTO;
 import com.xiaolian.amigo.data.network.model.device.WaterInListDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
@@ -49,13 +53,13 @@ public class FavoritePresenter<V extends IFavoriteView> extends BasePresenter<V>
 
     @Override
     public void requestFavorites(int page) {
-        SimpleQueryReqDTO reqDTO = new SimpleQueryReqDTO();
+        QueryDeviceListReqDTO reqDTO = new QueryDeviceListReqDTO();
         reqDTO.setPage(page);
         reqDTO.setSize(Constant.PAGE_SIZE);
         // 查看收藏设备列表
-        addObserver(favoriteManager.queryFavorites(reqDTO), new NetworkObserver<ApiResult<QueryWaterListRespDTO>>(false, true) {
+        addObserver(favoriteManager.getFavorites(reqDTO), new NetworkObserver<ApiResult<QueryFavorDeviceRespDTO>>(false, true) {
             @Override
-            public void onReady(ApiResult<QueryWaterListRespDTO> result) {
+            public void onReady(ApiResult<QueryFavorDeviceRespDTO> result) {
                 getMvpView().setRefreshComplete();
                 getMvpView().setLoadMoreComplete();
                 getMvpView().hideEmptyView();
@@ -63,8 +67,8 @@ public class FavoritePresenter<V extends IFavoriteView> extends BasePresenter<V>
                 if (null == result.getError()) {
                     if (null != result.getData().getDevices() && result.getData().getDevices().size() > 0) {
                         List<FavoriteAdaptor.FavoriteWrapper> wrappers = new ArrayList<>();
-                        for (WaterInListDTO device : result.getData().getDevices()) {
-                            wrappers.add(new FavoriteAdaptor.FavoriteWrapper(device));
+                        for (FavorDeviceDTO device : result.getData().getDevices()) {
+                            wrappers.add(new FavoriteAdaptor.FavoriteWrapper(device.transform()));
                         }
                         getMvpView().addMore(wrappers);
                         getMvpView().addPage();
@@ -88,9 +92,10 @@ public class FavoritePresenter<V extends IFavoriteView> extends BasePresenter<V>
     }
 
     @Override
-    public void onDelete(final Long residenceId, int index) {
-        SimpleReqDTO reqDTO = new SimpleReqDTO();
+    public void onDelete(final Long residenceId, int index, int type) {
+        FavorDeviceReqDTO reqDTO = new FavorDeviceReqDTO();
         reqDTO.setId(residenceId);
+        reqDTO.setType(type);
         // 查看收藏设备列表
         addObserver(favoriteManager.unFavorite(reqDTO), new NetworkObserver<ApiResult<SimpleRespDTO>>() {
             @Override

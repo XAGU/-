@@ -16,8 +16,9 @@ public class ScanDeviceGroup {
 
     private String location;
 
+    private Integer type;
+
     private Long residenceId;
 
-//    private Map<String, ScanDevice> water;
     private List<ScanDevice> water;
 }
