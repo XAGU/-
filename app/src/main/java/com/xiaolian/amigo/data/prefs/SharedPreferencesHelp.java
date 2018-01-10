@@ -51,6 +51,7 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     private static final String PREF_GUIDE_MAIN = "PREF_GUIDE_MAIN";
     private static final String PREF_ALERT_HEATER = "PREF_ALERT_HEATER";
     private static final String PREF_ALERT_DISPENSER = "PREF_ALERT_DISPENSER";
+    private static final String PREF_ALERT_DRYER = "PREF_ALERT_DRYER";
     /************* 记住手机号 ******************/
     private static final String PREF_REMEMBER_MOBILE = "PREF_REMEMBER_MOBILE";
 
@@ -290,6 +291,16 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     @Override
     public Integer getDispenserGuide() {
         return mUnclearSharedPreferences.getInt(PREF_ALERT_DISPENSER, 0);
+    }
+
+    @Override
+    public Integer getDryerGuide() {
+        return mUnclearSharedPreferences.getInt(PREF_ALERT_DRYER, 0);
+    }
+
+    @Override
+    public void setDryerGuide(Integer guideTime) {
+        mUnclearSharedPreferences.edit().putInt(PREF_ALERT_DRYER, guideTime).apply();
     }
 
     @Override

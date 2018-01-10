@@ -29,7 +29,7 @@ import lombok.Data;
 
 public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenserAdaptor.ViewHolder> {
     public interface OnItemClickListener {
-        void onItemClick(String deviceNo, Boolean isFavor, Long residenceId, String usefor, String location);
+        void onItemClick(String deviceNo, Boolean isFavor, Long residenceId, String usefor, String location, Integer price);
     }
     private OnItemClickListener itemClickListener;
     private int lastExpandPosition = -1;
@@ -67,9 +67,11 @@ public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenser
         holder.rl_top.setOnClickListener(v -> {
             if (!expandAble && itemClickListener != null) {
                 itemClickListener.onItemClick(dispenserWrapper.getDeviceGroup().getWater().get(0).getMacAddress(),
-                        dispenserWrapper.isFavor(), dispenserWrapper.getResidenceId(),
+                        dispenserWrapper.isFavor(),
+                        dispenserWrapper.getResidenceId(),
                         null,
-                        dispenserWrapper.getLocation());
+                        dispenserWrapper.getLocation(),
+                        dispenserWrapper.getDeviceGroup().getWater().get(0).getPrice());
                 return;
             }
             if (lastExpandPosition != -1) {
@@ -126,9 +128,11 @@ public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenser
             holder.tv_water[i].setOnClickListener(v -> {
                 if (itemClickListener != null) {
                     itemClickListener.onItemClick(dispenserWrapper.getDeviceGroup().getWater().get(waterPosition).getMacAddress(),
-                            dispenserWrapper.isFavor(), dispenserWrapper.getResidenceId(),
+                            dispenserWrapper.isFavor(),
+                            dispenserWrapper.getResidenceId(),
                             dispenserWrapper.getDeviceGroup().getWater().get(waterPosition).getUsefor(),
-                            dispenserWrapper.getLocation());
+                            dispenserWrapper.getLocation(),
+                            dispenserWrapper.getDeviceGroup().getWater().get(waterPosition).getPrice());
                 }
             });
         }

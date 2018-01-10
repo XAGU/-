@@ -9,6 +9,7 @@ import com.xiaolian.amigo.data.network.model.device.FavorDeviceReqDTO;
 import com.xiaolian.amigo.ui.device.WaterDeviceBasePresenter;
 import com.xiaolian.amigo.ui.device.intf.dryer.IDryerPresenter;
 import com.xiaolian.amigo.ui.device.intf.dryer.IDryerView;
+import com.xiaolian.amigo.util.Constant;
 
 import javax.inject.Inject;
 
@@ -26,6 +27,15 @@ public class DryerPresenter <V extends IDryerView> extends WaterDeviceBasePresen
     public DryerPresenter(IBleDataManager bleDataManager, IDeviceDataManager deviceDataManager) {
         super(bleDataManager, deviceDataManager);
         this.deviceDataManager = deviceDataManager;
+    }
+
+    @Override
+    public void onAttach(V view) {
+        super.onAttach(view);
+        if (!deviceDataManager.isDryerGuideDone()) {
+            deviceDataManager.doneDryerGuide();
+            getMvpView().showGuide();
+        }
     }
 
     @Override
@@ -63,5 +73,10 @@ public class DryerPresenter <V extends IDryerView> extends WaterDeviceBasePresen
                 }
             }
         });
+    }
+
+    @Override
+    public void notShowRemindAlert() {
+        deviceDataManager.setDryerGuide(Constant.REMIND_ALERT_COUNT);
     }
 }

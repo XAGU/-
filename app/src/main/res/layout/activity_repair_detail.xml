@@ -82,10 +82,12 @@
 
                     <TextView
                         android:id="@+id/tv_location"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:text="男寝1楼102"
+                        android:lines="1"
+                        android:ellipsize="end"
                         android:textColor="#222"
                         android:textSize="12sp" />
                 </LinearLayout>

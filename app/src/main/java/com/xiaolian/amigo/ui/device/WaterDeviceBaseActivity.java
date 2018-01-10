@@ -198,6 +198,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     private boolean needRecharge;
     private boolean supportSlideBack = true;
     private DecimalFormat df = new DecimalFormat("###.##");
+    private OrderPreInfoDTO orderPreInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -237,7 +238,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             residenceId = getIntent().getLongExtra(MainActivity.INTENT_KEY_RESIDENCE_ID, 0L);
             homePageJump = getIntent().getBooleanExtra(INTENT_HOME_PAGE_JUMP, true);
             recorvery = getIntent().getBooleanExtra(MainActivity.INTENT_KEY_RECOVERY, false);
-            OrderPreInfoDTO orderPreInfo = getIntent().getParcelableExtra(INTENT_PREPAY_INFO);
+            orderPreInfo = getIntent().getParcelableExtra(INTENT_PREPAY_INFO);
             if (orderPreInfo != null) {
                 price = orderPreInfo.getPrice();
                 balance = orderPreInfo.getBalance();
@@ -715,6 +716,8 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             noticeAlertDialog.setContent(Html.fromHtml(getString(R.string.heater_notice_content, price)));
         } else if (Device.getDevice(deviceType) == Device.DISPENSER) {
             noticeAlertDialog.setContent(Html.fromHtml(getString(R.string.dispenser_notice_content, price)));
+        } else if (Device.getDevice(deviceType) == Device.DRYER) {
+            noticeAlertDialog.setContent(Html.fromHtml(getString(R.string.dryer_notice_content, price)));
         }
         noticeAlertDialog.setTitle(R.string.water_use_notice_title);
         noticeAlertDialog.hideNoticeSymbol();
@@ -788,6 +791,9 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                 break;
             case CHANGE_DISPENSER:
                 changeDispenser();
+                break;
+            case CHANGE_DRYER:
+                changeDryer();
                 break;
         }
     }
@@ -975,6 +981,9 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             if (tradeError == TradeError.DEVICE_BROKEN_3 && deviceType == Device.DISPENSER.getType()) {
                 bt_error_handler.setText(getString(R.string.change_dispenser));
                 bt_error_handler.setTag(ErrorTag.CHANGE_DISPENSER.getCode());
+            } else if (tradeError == TradeError.DEVICE_BROKEN_3 && deviceType == Device.DRYER.getType()) {
+                bt_error_handler.setText(getString(R.string.change_dryer));
+                bt_error_handler.setTag(ErrorTag.CHANGE_DRYER.getCode());
             } else {
                 bt_error_handler.setText(getString(tradeError.getBtnText()));
                 bt_error_handler.setTag(tradeError.getBtnTag());
@@ -1006,6 +1015,8 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         // 只有在step为SETILE时才不能更换饮水机
         if (presenter.getStep() != TradeStep.SETTLE) {
             startActivity(new Intent(this, ChooseDispenserActivity.class)
+                    .putExtra(DeviceConstant.INTENT_DEVICE_TYPE, Device.DISPENSER.getType())
+                    .putExtra(WaterDeviceBaseActivity.INTENT_PREPAY_INFO, orderPreInfo)
                     .putExtra(DeviceConstant.INTENT_KEY_ACTION, DeviceConstant.ACTION_CHANGE_DISPENSER));
         }
     }
@@ -1014,7 +1025,9 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         // 只有在step为SETILE时才不能更换吹风机
         if (presenter.getStep() != TradeStep.SETTLE) {
             startActivity(new Intent(this, ChooseDispenserActivity.class)
-                    .putExtra(DeviceConstant.INTENT_KEY_ACTION, DeviceConstant.ACTION_CHANGE_DRYER));
+                    .putExtra(DeviceConstant.INTENT_KEY_ACTION, DeviceConstant.ACTION_CHANGE_DRYER)
+                    .putExtra(WaterDeviceBaseActivity.INTENT_PREPAY_INFO, orderPreInfo)
+                    .putExtra(DeviceConstant.INTENT_DEVICE_TYPE, Device.DRYER.getType()));
         }
     }
 

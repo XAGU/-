@@ -82,6 +82,10 @@ public interface IDeviceDataManager {
     boolean isDispenserGuideDone();
     void doneDispenserGuide();
     void setDispenserGuide(Integer guideTime);
+    boolean isDryerGuideDone();
+    void doneDryerGuide();
+    void setDryerGuide(Integer guideTime);
+
 
     // 收藏饮水机
     Observable<ApiResult<SimpleRespDTO>> favorite(@Body FavorDeviceReqDTO reqDTO);

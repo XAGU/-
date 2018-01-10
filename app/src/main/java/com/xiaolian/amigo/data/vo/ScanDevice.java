@@ -9,7 +9,7 @@ import lombok.Data;
 public class ScanDevice {
     private Long id;
     private String macAddress;
-    private Double price;
+    private Integer price;
     private Integer pulse;
     private String usefor;
     private String name;

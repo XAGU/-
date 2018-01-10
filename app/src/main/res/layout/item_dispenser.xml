@@ -27,6 +27,8 @@
                 android:id="@+id/tv_location"
                 android:layout_marginTop="8dp"
                 tool:text="男寝A二楼北走廊"
+                android:lines="1"
+                android:ellipsize="end"
                 android:textSize="16sp"
                 android:textColor="@color/colorDark2"
                 android:layout_width="wrap_content"

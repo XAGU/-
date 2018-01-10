@@ -88,7 +88,10 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
         presenter.setDeviceType(deviceType);
         adaptor = new ChooseDispenserAdaptor(this, R.layout.item_dispenser,
                 items, Device.getDevice(deviceType) == Device.DISPENSER);
-        adaptor.setOnItemClickListener((deviceNo, isFavor, residenceId, usefor, location) -> {
+        adaptor.setOnItemClickListener((deviceNo, isFavor, residenceId, usefor, location, price) -> {
+            if (orderPreInfo != null) {
+                orderPreInfo.setPrice(price);
+            }
             if (Device.getDevice(deviceType) == Device.DISPENSER) {
                 presenter.closeBleConnection();
                 presenter.gotoDispenser(deviceNo, isFavor, residenceId, usefor, location);

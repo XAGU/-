@@ -14,14 +14,6 @@
         android:paddingTop="18dp">
 
         <TextView
-            android:id="@+id/tv_prepay_device"
-            style="@style/ContentText_main"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:text="热水器：viplkb-12" />
-
-        <TextView
             android:id="@+id/tv_prepay_amount"
             style="@style/Money_Normal"
             android:layout_width="wrap_content"
@@ -46,6 +38,17 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:text="待找零" />
+
+        <TextView
+            android:layout_toStartOf="@id/tv_prepay_title"
+            android:lines="1"
+            android:ellipsize="end"
+            android:id="@+id/tv_prepay_device"
+            style="@style/ContentText_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="热水器：viplkb-12" />
 
     </RelativeLayout>
 

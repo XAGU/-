@@ -36,7 +36,12 @@ public class DryerActivity extends WaterDeviceBaseActivity<IDryerPresenter> impl
 
     @Override
     public void showGuide() {
-        // TODO showGuide
+        showAlertNotice((dialog, isNotRemind) -> {
+            dialog.dismiss();
+            if (isNotRemind) {
+                presenter.notShowRemindAlert();
+            }
+        });
     }
 
     @Override
