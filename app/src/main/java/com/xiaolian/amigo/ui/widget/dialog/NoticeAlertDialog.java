@@ -32,8 +32,7 @@ public class NoticeAlertDialog extends Dialog {
     private OnOkClickListener listener;
     private boolean isNotReminder;
     public NoticeAlertDialog(@NonNull Context context) {
-        super(context, R.style.AlertDialogStyle);
-
+        super(context, R.style.NoticeAlertDialogStyle);
         Window window = this.getWindow();
         window.requestFeature(Window.FEATURE_NO_TITLE);
         window.setGravity(Gravity.CENTER);  //此处可以设置dialog显示的位置
@@ -91,6 +90,9 @@ public class NoticeAlertDialog extends Dialog {
     }
 
     public void hideNoticeSymbol() {
+        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) tv_title.getLayoutParams();
+        lp.topMargin = 108;
+        tv_title.setLayoutParams(lp);
         iv_symbol.setVisibility(View.GONE);
     }
 

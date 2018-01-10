@@ -34,9 +34,9 @@
 
     <RelativeLayout
         android:id="@+id/rl_used_time"
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_width="match_parent"
-        android:layout_height="58dp">
+        android:layout_height="59dp">
 
         <TextView
             style="@style/ContentText_main"
@@ -54,12 +54,14 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"/>
+
+        <View
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:background="#eee" />
     </RelativeLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dip"
-        android:background="#eee" />
 
     <RelativeLayout
         android:layout_width="match_parent"
