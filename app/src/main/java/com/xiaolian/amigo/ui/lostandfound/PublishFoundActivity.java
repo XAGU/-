@@ -137,10 +137,9 @@ public class PublishFoundActivity extends LostAndFoundBaseActivity implements IP
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 if (images.isEmpty() || (images.size() < 3 && position == images.size())) {
-                    getImage(imageUri -> {
-                        presenter.uploadImage(PublishFoundActivity.this,
-                                imageUri, position, OssFileType.FOUND);
-                    });
+                    getImage(imageUri ->
+                            presenter.uploadImage(PublishFoundActivity.this,
+                            imageUri, position, OssFileType.FOUND));
                 } else {
                     Intent intent = new Intent(PublishFoundActivity.this, AlbumItemActivity.class);
                     intent.putExtra(AlbumItemActivity.INTENT_POSITION, position);

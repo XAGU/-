@@ -48,9 +48,8 @@ public class OrderAdaptor extends RecyclerView.Adapter<OrderAdaptor.ViewHolder> 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         OrderWrapper wrapper = orders.get(position);
-        holder.itemView.setOnClickListener(v -> {
-            listener.orderDetailClick(holder.order);
-        });
+        holder.itemView.setOnClickListener(v ->
+                listener.orderDetailClick(holder.order));
         if (null != wrapper) {
             // status为3表示异常订单
             if (CommonUtil.equals(wrapper.getOrder().getStatus(), 3)) {

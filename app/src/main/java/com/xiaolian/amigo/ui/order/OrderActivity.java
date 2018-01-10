@@ -29,7 +29,7 @@ public class OrderActivity extends OrderBaseListActivity implements IOrderView {
     @Inject
     IOrderPresenter<IOrderView> presenter;
     // 订单列表
-    List<OrderAdaptor.OrderWrapper> orders = new ArrayList<OrderAdaptor.OrderWrapper>();
+    List<OrderAdaptor.OrderWrapper> orders = new ArrayList<>();
     // 订单列表recycleView适配器
     OrderAdaptor adaptor;
 

@@ -60,17 +60,14 @@ public class ListChooseAdaptor extends RecyclerView.Adapter<ListChooseAdaptor.Vi
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mOnItemClickListener.onItemClick(v, holder.getAdapterPosition());
-                if (lastTickPostion != -1) {
-                    datas.get(lastTickPostion).tick = false;
-                }
-                datas.get(holder.getAdapterPosition()).tick = true;
-                lastTickPostion = holder.getAdapterPosition();
-                notifyDataSetChanged();
+        holder.itemView.setOnClickListener(v -> {
+            mOnItemClickListener.onItemClick(v, holder.getAdapterPosition());
+            if (lastTickPostion != -1) {
+                datas.get(lastTickPostion).tick = false;
             }
+            datas.get(holder.getAdapterPosition()).tick = true;
+            lastTickPostion = holder.getAdapterPosition();
+            notifyDataSetChanged();
         });
         holder.tv_content.setText(datas.get(holder.getAdapterPosition()).content);
         if (datas.get(holder.getAdapterPosition()).tick) {

@@ -50,7 +50,7 @@ public class PrepayPresenter<V extends IPrepayView> extends BasePresenter<V>
                 getMvpView().hideErrorView();
                 if (null == result.getError()) {
                     if (null != result.getData().getOrders() && result.getData().getOrders().size() > 0) {
-                        List<PrepayAdaptor.OrderWrapper> wrappers = new ArrayList<PrepayAdaptor.OrderWrapper>();
+                        List<PrepayAdaptor.OrderWrapper> wrappers = new ArrayList<>();
                         for (OrderInListDTO order : result.getData().getOrders()) {
                             wrappers.add(new PrepayAdaptor.OrderWrapper(order.transform()));
                         }

@@ -64,7 +64,7 @@ public class DownLoadDialog extends DialogFragment implements View.OnClickListen
         setContent(view, R.id.tv_update_content);
         setTitle(view, R.id.tv_update_title);
 
-        mTvOk = (TextView) view.findViewById(R.id.tv_ok);
+        mTvOk = view.findViewById(R.id.tv_ok);
         mTvOk.setOnClickListener(this);
         mTvOk.setEnabled(false);
 
@@ -73,7 +73,7 @@ public class DownLoadDialog extends DialogFragment implements View.OnClickListen
     }
 
     protected void setContent(View view, int contentId) {
-        TextView tvContext = (TextView) view.findViewById(contentId);
+        TextView tvContext = view.findViewById(contentId);
         tvContext.setText(getContent());
     }
 
@@ -91,7 +91,7 @@ public class DownLoadDialog extends DialogFragment implements View.OnClickListen
     }
 
     private void setTitle(View view, int titleId) {
-        TextView tvTitle = (TextView) view.findViewById(titleId);
+        TextView tvTitle = view.findViewById(titleId);
         tvTitle.setText(getTitle());
     }
 

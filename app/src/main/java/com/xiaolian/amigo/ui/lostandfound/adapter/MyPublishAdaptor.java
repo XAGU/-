@@ -60,9 +60,8 @@ public class MyPublishAdaptor extends CommonAdapter<LostAndFoundAdaptor.LostAndF
 
     @Override
     protected void convert(ViewHolder holder, LostAndFoundAdaptor.LostAndFoundWapper lostAndFoundWapper, int position) {
-        holder.getView(R.id.ll_item).setOnClickListener(v -> {
-            clickListener.onMyPublishClick(holder.getAdapterPosition());
-        });
+        holder.getView(R.id.ll_item).setOnClickListener(v ->
+                clickListener.onMyPublishClick(holder.getAdapterPosition()));
         holder.getView(R.id.ll_item).setOnLongClickListener(v -> {
             longClickListener.onMyPublishLongClick();
             return true;

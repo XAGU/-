@@ -18,15 +18,11 @@ package com.xiaolian.amigo.ui.favorite;
 
 import com.xiaolian.amigo.data.manager.intf.IFavoriteManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.common.SimpleQueryReqDTO;
-import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
 import com.xiaolian.amigo.data.network.model.device.FavorDeviceDTO;
 import com.xiaolian.amigo.data.network.model.device.FavorDeviceReqDTO;
 import com.xiaolian.amigo.data.network.model.device.QueryDeviceListReqDTO;
 import com.xiaolian.amigo.data.network.model.device.QueryFavorDeviceRespDTO;
-import com.xiaolian.amigo.data.network.model.device.QueryWaterListRespDTO;
-import com.xiaolian.amigo.data.network.model.device.WaterInListDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.favorite.adaptor.FavoriteAdaptor;
 import com.xiaolian.amigo.ui.favorite.intf.IFavoritePresenter;

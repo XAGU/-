@@ -4,6 +4,7 @@ import com.xiaolian.amigo.data.network.model.order.OrderDetailRespDTO;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 
 /**
+ * 设备账单
  * Created by caidong on 2017/10/11.
  */
 public interface IDeviceOrderView extends IBaseView {

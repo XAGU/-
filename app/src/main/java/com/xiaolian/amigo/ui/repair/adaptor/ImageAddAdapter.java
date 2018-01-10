@@ -23,7 +23,7 @@ import lombok.Data;
  */
 
 public class ImageAddAdapter extends CommonAdapter<ImageAddAdapter.ImageItem> {
-    public static final int defaultRes = R.drawable.device_picture_add;
+    private static final int defaultRes = R.drawable.device_picture_add;
     private Context context;
     private int imageSize;
     public ImageAddAdapter(Context context, int layoutId, List<ImageItem> datas) {

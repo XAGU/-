@@ -116,13 +116,11 @@ public class EditDormitoryActivity extends UserBaseListActivity implements IEdit
     @Override
     protected void setRecyclerView(RecyclerView recyclerView) {
         adaptor = new EditDormitoryAdaptor(this, R.layout.item_dormitory, items);
-        adaptor.setOnItemClickListener((userResidenceWrapper, position) -> {
-            presenter.updateResidenceId(userResidenceWrapper.getResidenceId());
-        });
+        adaptor.setOnItemClickListener((userResidenceWrapper, position) ->
+                presenter.updateResidenceId(userResidenceWrapper.getResidenceId()));
         adaptor.setOnItemLongClickListener(() -> onSuccess("请左滑操作"));
-        adaptor.setOnItemEditListener(position -> {
-            presenter.queryDormitoryDetail(items.get(position).getId(), position);
-        });
+        adaptor.setOnItemEditListener(position ->
+                presenter.queryDormitoryDetail(items.get(position).getId(), position));
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setItemPrefetchEnabled(false);
         recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 14)));
@@ -138,12 +136,7 @@ public class EditDormitoryActivity extends UserBaseListActivity implements IEdit
     @Override
     protected int setSubTitle() {
         tv_add_dormitory = getSubTitle();
-        tv_add_dormitory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onAddDormitoryClick();
-            }
-        });
+        tv_add_dormitory.setOnClickListener(v -> onAddDormitoryClick());
         return R.string.add_dormitory;
     }
 

@@ -747,9 +747,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
     void onSlideUnlock() {
         // 点击结束用水操作时蓝牙必须为开启状态
-        setBleCallback(() -> {
-            presenter.onClose();
-        });
+        setBleCallback(() -> presenter.onClose());
         getBlePermission();
 
     }

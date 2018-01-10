@@ -11,9 +11,6 @@ import android.widget.TextView;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.vo.ScanDeviceGroup;
-import com.xiaolian.amigo.data.network.model.device.WaterInListDTO;
-import com.xiaolian.amigo.ui.favorite.intf.IFavoritePresenter;
-import com.xiaolian.amigo.ui.favorite.intf.IFavoriteView;
 
 import java.util.List;
 
