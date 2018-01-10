@@ -579,7 +579,8 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         } else {
             supportSlideBack = false;
         }
-        if (tv_sub_title != null && (deviceType == 1 || deviceType == 2)) {
+        // FIXME 去掉deviceType
+        if (tv_sub_title != null && (deviceType == 1 || deviceType == 2 || deviceType == 3)) {
             tv_sub_title.setVisibility(visible ?
                     View.VISIBLE : View.GONE);
         }
