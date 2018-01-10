@@ -307,6 +307,7 @@ public abstract class BaseActivity extends SwipeBackActivity
     }
 
 
+    @SuppressWarnings("unused")
     @TargetApi(Build.VERSION_CODES.M)
     public void requestPermissionsSafely(String[] permissions, int requestCode) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -314,6 +315,7 @@ public abstract class BaseActivity extends SwipeBackActivity
         }
     }
 
+    @SuppressWarnings("unused")
     @TargetApi(Build.VERSION_CODES.M)
     public boolean hasPermission(String permission) {
         return Build.VERSION.SDK_INT < Build.VERSION_CODES.M ||
@@ -365,13 +367,14 @@ public abstract class BaseActivity extends SwipeBackActivity
         }
         LayoutInflater inflater = getLayoutInflater();
         @SuppressLint("InflateParams") View layout = inflater.inflate(R.layout.view_toast, null, false);
-        TextView tv_content = (TextView) layout.findViewById(R.id.tv_content);
+        TextView tv_content = layout.findViewById(R.id.tv_content);
         tv_content.setText(message);
         toast.setView(layout);
         toast.show();
         toastCountDown.start();
     }
 
+    @SuppressWarnings("unused")
     private void showSuccessToast(int message) {
         showSuccessToast(getString(message));
     }
@@ -397,7 +400,7 @@ public abstract class BaseActivity extends SwipeBackActivity
 //        }
         LayoutInflater inflater = getLayoutInflater();
         @SuppressLint("InflateParams") View layout = inflater.inflate(R.layout.view_toast, null, false);
-        TextView tv_content = (TextView) layout.findViewById(R.id.tv_content);
+        TextView tv_content = layout.findViewById(R.id.tv_content);
         tv_content.setBackgroundColor(ContextCompat.getColor(this, R.color.colorFullRed));
         tv_content.setText(message);
         toast.setView(layout);
@@ -405,6 +408,7 @@ public abstract class BaseActivity extends SwipeBackActivity
 //        toastCountDown.start();
     }
 
+    @SuppressWarnings("unused")
     private void showErrorToast(int message) {
         showErrorToast(getString(message));
     }

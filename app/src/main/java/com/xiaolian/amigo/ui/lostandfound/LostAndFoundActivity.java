@@ -14,7 +14,6 @@ import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundView;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.ui.widget.dialog.SearchDialog;
-import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
 import com.xiaolian.amigo.util.ScreenUtils;
@@ -224,11 +223,11 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
 
     @Override
     protected void setFooter() {
-        tv_my_publish = (TextView) getFooter().findViewById(R.id.tv_my_publish);
+        tv_my_publish = getFooter().findViewById(R.id.tv_my_publish);
         tv_my_publish.setOnClickListener(v -> gotoMyPublish());
-        tv_publish_found = (TextView) getFooter().findViewById(R.id.tv_publish_found);
+        tv_publish_found = getFooter().findViewById(R.id.tv_publish_found);
         tv_publish_found.setOnClickListener(v -> gotoPublishFound());
-        tv_publish_lost = (TextView) getFooter().findViewById(R.id.tv_publish_lost);
+        tv_publish_lost = getFooter().findViewById(R.id.tv_publish_lost);
         tv_publish_lost.setOnClickListener(v -> gotoPublishLost());
     }
 

@@ -4,26 +4,22 @@ import android.os.CountDownTimer;
 import android.os.ParcelUuid;
 import android.text.TextUtils;
 
+import com.polidea.rxandroidble.scan.ScanResult;
 import com.xiaolian.amigo.data.manager.BleDataManager;
+import com.xiaolian.amigo.data.manager.intf.IBleDataManager;
 import com.xiaolian.amigo.data.manager.intf.IDeviceDataManager;
+import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.device.DeviceDTO;
 import com.xiaolian.amigo.data.network.model.device.FavorDeviceDTO;
 import com.xiaolian.amigo.data.network.model.device.QueryDeviceListReqDTO;
 import com.xiaolian.amigo.data.network.model.device.QueryDeviceListRespDTO;
 import com.xiaolian.amigo.data.network.model.device.QueryFavorDeviceRespDTO;
-import com.xiaolian.amigo.data.network.model.device.QueryWaterListRespDTO;
-import com.xiaolian.amigo.data.network.model.device.WaterInListDTO;
-import com.xiaolian.amigo.data.network.model.common.SimpleQueryReqDTO;
-import com.xiaolian.amigo.util.Constant;
-import com.xiaolian.amigo.util.Log;
-
-import com.polidea.rxandroidble.scan.ScanResult;
-import com.xiaolian.amigo.data.manager.intf.IBleDataManager;
-import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.vo.ScanDeviceGroup;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IChooseDispenerView;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IChooseDispenserPresenter;
+import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
