@@ -21,6 +21,8 @@
         android:id="@+id/tv_device_title"
         android:layout_centerHorizontal="true"
         android:text="3栋－5楼－510"
+        android:lines="1"
+        android:ellipsize="end"
         android:layout_centerVertical="true"
         style="@style/Device_ToolBar_Text"
         android:paddingBottom="5dp"

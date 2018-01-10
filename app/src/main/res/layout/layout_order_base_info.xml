@@ -34,7 +34,7 @@
 
     <RelativeLayout
         android:id="@+id/rl_used_time"
-        android:visibility="visible"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="59dp">
 
