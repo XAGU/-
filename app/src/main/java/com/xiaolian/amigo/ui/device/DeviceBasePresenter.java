@@ -462,13 +462,17 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     @Override
     public void onWrite(@NonNull String command) {
         if (bleDataManager.getStatus(currentMacAddress) != RxBleConnection.RxBleConnectionState.CONNECTED) {
-            getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
+            if (getMvpView() != null) {
+                getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
+            }
             return;
         }
 
         if (TextUtils.isEmpty(command)) {
             Log.wtf(TAG, "指令丢失");
-            getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_4));
+            if (getMvpView() != null) {
+                getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_4));
+            }
             return;
         }
         byte[] commandBytes = HexBytesUtils.hexStr2Bytes(command);
@@ -479,9 +483,13 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     private void handleWriteError(String command) {
         // 结算找零时写入设备失败
         if (TextUtils.equals(command, checkoutCmd)) {
-            getMvpView().post(() -> getMvpView().onError(TradeError.DEVICE_BROKEN_1));
+            if (getMvpView() != null) {
+                getMvpView().post(() -> getMvpView().onError(TradeError.DEVICE_BROKEN_1));
+            }
         } else {
-            getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_4));
+            if (getMvpView() != null) {
+                getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_4));
+            }
         }
     }
 
