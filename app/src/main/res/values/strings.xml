@@ -269,4 +269,6 @@
     <string name="water_use_notice_title">温馨提示</string>
     <string name="hair_dryer">吹风机</string>
     <string name="used_time_colon">使用时长：</string>
+    <string name="washer">洗衣机</string>
+    <string name="washer_index_tip">触摸设备上的开关\n扫描屏幕里的二维码</string>
 </resources>
