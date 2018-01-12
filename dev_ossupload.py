@@ -17,8 +17,10 @@ SecurityToken   = ''
 Endpoint        = ''
 Bucket          = ''
 
+package_name    = 'apk/com.xiaolian.amigo_dev_{}.apk'
+package_path    = 'app/build/outputs/apk/dev/release/com.xiaolian.amigo_dev_{}.sign.zipalign.apk'
 fileName        = ''
-filePaht        = ''
+constantName    = 'apk/com.xiaolian.amigo_dev.apk'
 
 
 def percentage(consumed_bytes, total_bytes):
@@ -35,12 +37,13 @@ def upload():
     global Endpoint
     global Bucket
     global fileName
-    global filePath
-    print(AccessKeyId, AccessKeySecret, SecurityToken, Endpoint, Bucket, fileName, filePath)
+    print(AccessKeyId, AccessKeySecret, SecurityToken, Endpoint, Bucket, fileName, constantName, filePath)
     auth = oss2.StsAuth(AccessKeyId , AccessKeySecret, SecurityToken)
     bucket = oss2.Bucket(auth,  Endpoint, Bucket)
     oss2.resumable_upload(bucket, fileName, filePath, progress_callback=percentage)
     print('\r{} Upload {} to OSS Success!'.format(fileName, filePath))
+    oss2.resumable_upload(bucket, constantName, filePath, progress_callback=percentage)
+    print('\r{} Upload {} to OSS Success!'.format(constantName, filePath))
 
 def getParam():
     global AccessKeyId
@@ -66,17 +69,18 @@ def login():
     global login_url
     global login_payload
     global token
-    if ( len(sys.argv) > 3 ):
+    if ( len(sys.argv) > 2 ):
         mobile     = sys.argv[1]
         password = sys.argv[2]
-        fileName = sys.argv[3]
-        filePath = sys.argv[4]
+        version = sys.argv[3]
+        fileName = package_name.format(version)
+        filePath = package_path.format(version)
         login_payload = {'mobile': mobile, 'password': password}
         response = requests.post(login_url, data=json.dumps(login_payload), headers=headers)
         token = json.loads(response.text)['data']['token']
         getParam()
     else:
-        print("Example: %s mobile password filename filepath" % sys.argv[0])
+        print("Example: %s mobile password version" % sys.argv[0])
         exit()
 
 if __name__ == '__main__':

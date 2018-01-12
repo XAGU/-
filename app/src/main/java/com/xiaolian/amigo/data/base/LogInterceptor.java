@@ -47,11 +47,13 @@ public class LogInterceptor implements Interceptor {
     private final static String BRAND = "brand";
     private final static String MODEL = "model";
     private final static String UNIQUE_ID = "uniqueId";
+    private final static String SYSTEM = "system";
     private String appVersion;
     private String systemVersion;
     private String brand;
     private String model;
     private String uniqueId;
+    private String system = "2";
 
     private ISharedPreferencesHelp sharedPreferencesHelp;
 
@@ -209,6 +211,9 @@ public class LogInterceptor implements Interceptor {
                 }
                 if (!json.has(UNIQUE_ID)) {
                     json.put(UNIQUE_ID, uniqueId);
+                }
+                if (!json.has(SYSTEM)) {
+                    json.put(SYSTEM, system);
                 }
                 MediaType contentType = oldRequest.body().contentType();
                 RequestBody body = RequestBody.create(contentType, json.toString());
