@@ -1,24 +1,22 @@
 package com.xiaolian.amigo.ui.main;
 
-import android.annotation.SuppressLint;
 import android.os.Build;
-import android.provider.Settings;
 import android.text.TextUtils;
 
 import com.xiaolian.amigo.data.base.LogInterceptor;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.manager.intf.IMainDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.version.CheckVersionUpdateReqDTO;
-import com.xiaolian.amigo.data.network.model.device.DeviceCheckReqDTO;
-import com.xiaolian.amigo.data.network.model.notify.ReadNotifyReqDTO;
-import com.xiaolian.amigo.data.network.model.system.BannerDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
-import com.xiaolian.amigo.data.network.model.version.CheckVersionUpdateRespDTO;
+import com.xiaolian.amigo.data.network.model.device.DeviceCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCheckRespDTO;
-import com.xiaolian.amigo.data.network.model.user.PersonalExtraInfoDTO;
+import com.xiaolian.amigo.data.network.model.notify.ReadNotifyReqDTO;
 import com.xiaolian.amigo.data.network.model.school.QuerySchoolBizListRespDTO;
+import com.xiaolian.amigo.data.network.model.system.BannerDTO;
+import com.xiaolian.amigo.data.network.model.user.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.data.network.model.user.UploadUserDeviceInfoReqDTO;
+import com.xiaolian.amigo.data.network.model.version.CheckVersionUpdateReqDTO;
+import com.xiaolian.amigo.data.network.model.version.CheckVersionUpdateRespDTO;
 import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.main.intf.IMainPresenter;

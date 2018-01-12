@@ -5,13 +5,10 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.data.enumeration.TradeStep;
 import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity;
 import com.xiaolian.amigo.ui.device.intf.heator.IHeaterPresenter;
 import com.xiaolian.amigo.ui.device.intf.heator.IHeaterView;
-import com.xiaolian.amigo.ui.user.ChooseDormitoryActivity;
-import com.xiaolian.amigo.ui.widget.dialog.GuideDialog;
 import com.xiaolian.amigo.util.Constant;
 
 import javax.inject.Inject;

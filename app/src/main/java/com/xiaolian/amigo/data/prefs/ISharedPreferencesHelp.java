@@ -88,6 +88,8 @@ public interface ISharedPreferencesHelp {
     Integer getHeaterGuide();
     void setDispenserGuide(Integer guideTime);
     Integer getDispenserGuide();
+    Integer getDryerGuide();
+    void setDryerGuide(Integer guideTime);
 
     void setLastRepairTime(Long time);
     Long getLastRepairTime();
@@ -103,4 +105,5 @@ public interface ISharedPreferencesHelp {
     void saveUploadedUserDeviceInfo(UploadUserDeviceInfoReqDTO reqDTO);
 
     UploadUserDeviceInfoReqDTO getUploadedUserDeviceInfo();
+
 }

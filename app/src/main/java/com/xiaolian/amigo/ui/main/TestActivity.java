@@ -19,7 +19,7 @@ public class TestActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
-        SlideUnlockView slideUnlockView = (SlideUnlockView) findViewById(R.id.slideView);
+        SlideUnlockView slideUnlockView = findViewById(R.id.slideView);
         slideUnlockView.setOnUnLockListener(lock -> {
         });
     }

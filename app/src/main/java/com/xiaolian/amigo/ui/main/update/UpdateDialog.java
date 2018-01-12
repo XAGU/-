@@ -59,16 +59,12 @@ public class UpdateDialog extends DialogFragment {
     }
 
     private String getContent() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(mModel.getVersionDescription() == null ? "" : mModel.getVersionDescription());
-        return sb.toString();
+        return (mModel.getVersionDescription() == null ? "" : mModel.getVersionDescription());
     }
 
     private String getTitle() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("发现新版本V")
-                .append(mModel.getVersionName());
-        return sb.toString();
+        return "发现新版本V" +
+                mModel.getVersionName();
     }
 
     private void isLatest() {
@@ -109,12 +105,12 @@ public class UpdateDialog extends DialogFragment {
     }
 
     protected void setContent(View view, int contentId) {
-        TextView tvContext = (TextView) view.findViewById(contentId);
+        TextView tvContext = view.findViewById(contentId);
         tvContext.setText(getContent());
     }
 
     private void setTitle(View view, int titleId) {
-        TextView tvTitle = (TextView) view.findViewById(titleId);
+        TextView tvTitle = view.findViewById(titleId);
         tvTitle.setText(getTitle());
     }
 
@@ -132,20 +128,10 @@ public class UpdateDialog extends DialogFragment {
     }
 
     protected void bindUpdateListener(View view, int updateId) {
-        view.findViewById(updateId).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onUpdate();
-            }
-        });
+        view.findViewById(updateId).setOnClickListener(v -> onUpdate());
     }
 
     protected void bindCancelListener(View view, int cancelId) {
-        view.findViewById(cancelId).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onCancel();
-            }
-        });
+        view.findViewById(cancelId).setOnClickListener(v -> onCancel());
     }
 }

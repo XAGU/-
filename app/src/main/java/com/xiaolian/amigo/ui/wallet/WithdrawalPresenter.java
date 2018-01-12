@@ -22,7 +22,7 @@ import javax.inject.Inject;
 
 public class WithdrawalPresenter<V extends IWithdrawalView> extends BasePresenter<V>
         implements IWithdrawalPresenter<V> {
-    IWalletDataManager walletDataManager;
+    private IWalletDataManager walletDataManager;
 
     @Inject
     public WithdrawalPresenter(IWalletDataManager manager) {

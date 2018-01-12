@@ -139,7 +139,6 @@
     <string name="device_broken_btn_2">前往报修</string>
     <string name="nearby_dispenser">附近的饮水机</string>
     <string name="favorite_dispenser">收藏的饮水机</string>
-    <string name="change_dormitory">更换宿舍</string>
     <string name="change_avatar_success">头像更换成功</string>
     <string name="change_nickname_success">昵称修改成功</string>
     <string name="change_sex_success">性别修改成功</string>
@@ -168,6 +167,8 @@
     <string name="slide_to_stop_use">滑动到最右侧，结束用水</string>
     <string name="stop_use">正在结束用水，请稍候...</string>
     <string name="change_dispenser">更换饮水机</string>
+    <string name="change_dormitory">更换宿舍</string>
+    <string name="change_dryer">更换吹风机</string>
     <string name="current_temperature_colon">当前水温：%1$s</string>
     <string name="change_school_tip">更换学校后所有信息将清空，且需要重新登录</string>
     <string name="please_enter_exchange_code">请输入兑换码</string>
@@ -256,14 +257,15 @@
     <string name="device_broken_tip_3">当前设备出现了故障，维修员正在赶来维修\n给您带来的不便敬请谅解！</string>
     <string name="device_broken_btn_3">切换宿舍</string>
     <string name="order_no_use_tip">
-        <u>没有用水，但扣了我几分钱？</u>
+        <u>我没有使用，但扣了我几分钱？</u>
     </string>
     <string name="no_device_tip">(无热水澡服务)</string>
     <string name="nearby_hair_dryer">附近的吹风机</string>
     <string name="favorite_hair_dryer">收藏的吹风机</string>
     <string name="change_hair_dryer">更换吹风机</string>
-    <string name="heater_notice_content">1.热水澡最低消费&lt;font color=&quot;#ff5555&quot;&gt;%1$d分钱&lt;/font&gt;，请确认需要用水再点击“开始洗澡”按钮；&lt;br&gt;&lt;br&gt;2.洗澡时手机不用带进去浴室哦，可通过水阀门暂停用水。最终消费水表根据用水量而定，与使用时间无关。</string>
-    <string name="dispenser_notice_content">1.饮水机最低消费&lt;font color=&quot;#ff5555&quot;&gt;%1$d分钱&lt;/font&gt;，请确认需要用水再点击“开始接水”按钮；&lt;br&gt;&lt;br&gt;2.最终消费水表根据用水量而定，与使用时间无关。</string>
+    <string name="heater_notice_content">1.热水澡最低消费&lt;font color=&quot;#ff5555&quot;&gt;%1$d分钱&lt;/font&gt;，请确认需要用水再点击“开始洗澡”按钮；&lt;br&gt;&lt;br&gt;2.洗澡时手机不用带进浴室哦，可通过水阀门暂停用水。最终消费由水表根据用水量而定，与使用时间无关。</string>
+    <string name="dispenser_notice_content">1.饮水机最低消费&lt;font color=&quot;#ff5555&quot;&gt;%1$d分钱&lt;/font&gt;，请确认需要用水再点击“开始接水”按钮；&lt;br&gt;&lt;br&gt;2.最终消费由水表根据用水量而定，与使用时间无关。</string>
+    <string name="dryer_notice_content">1.吹风机最低消费&lt;font color=&quot;#ff5555&quot;&gt;%1$d分钱&lt;/font&gt;，请确认需要使用再点击“开始使用”按钮；&lt;br&gt;&lt;br&gt;2.最终消费根据使用时间而定。</string>
     <string name="water_use_notice_title">温馨提示</string>
     <string name="hair_dryer">吹风机</string>
     <string name="used_time_colon">使用时长：</string>

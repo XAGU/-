@@ -378,10 +378,10 @@ public class ActionSheetDialog {
             if (convertView==null) {
                 convertView = mInflater.inflate(R.layout.item_actionsheetdialog, null);
                 holder = new ViewHolder();
-                holder.mLayout=(LinearLayout) convertView.findViewById(R.id.item_actionsheetdialog_layout);
-                holder.mIvIcon=(ImageView) convertView.findViewById(R.id.item_actionsheetdialog_imageview_icon);
-                holder.mTvTitle=(TextView) convertView.findViewById(R.id.item_actionsheetdialog_textview_title);
-                holder.mIvTick=(ImageView) convertView.findViewById(R.id.item_actionsheetdialog_imageview_tick);
+                holder.mLayout= convertView.findViewById(R.id.item_actionsheetdialog_layout);
+                holder.mIvIcon= convertView.findViewById(R.id.item_actionsheetdialog_imageview_icon);
+                holder.mTvTitle= convertView.findViewById(R.id.item_actionsheetdialog_textview_title);
+                holder.mIvTick= convertView.findViewById(R.id.item_actionsheetdialog_imageview_tick);
                 convertView.setTag(holder);
             } else {
                 holder = (ViewHolder) convertView.getTag();

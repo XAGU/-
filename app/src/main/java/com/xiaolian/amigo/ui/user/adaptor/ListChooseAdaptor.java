@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.user.Residence;
 import com.xiaolian.amigo.data.network.model.user.School;
+import com.xiaolian.amigo.util.Log;
 
 import java.util.List;
 
@@ -27,6 +28,7 @@ import lombok.Data;
  */
 public class ListChooseAdaptor extends RecyclerView.Adapter<ListChooseAdaptor.ViewHolder> {
 
+    private static final String TAG = ListChooseAdaptor.class.getSimpleName();
     private List<Item> datas;
 
     private OnItemClickListener mOnItemClickListener;
@@ -60,9 +62,8 @@ public class ListChooseAdaptor extends RecyclerView.Adapter<ListChooseAdaptor.Vi
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        holder.itemView.setOnClickListener(v -> {
+            try {
                 mOnItemClickListener.onItemClick(v, holder.getAdapterPosition());
                 if (lastTickPostion != -1) {
                     datas.get(lastTickPostion).tick = false;
@@ -70,6 +71,8 @@ public class ListChooseAdaptor extends RecyclerView.Adapter<ListChooseAdaptor.Vi
                 datas.get(holder.getAdapterPosition()).tick = true;
                 lastTickPostion = holder.getAdapterPosition();
                 notifyDataSetChanged();
+            } catch (Exception e) {
+                Log.w(TAG, e);
             }
         });
         holder.tv_content.setText(datas.get(holder.getAdapterPosition()).content);

@@ -137,10 +137,9 @@ public class PublishLostActivity extends LostAndFoundBaseActivity implements IPu
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 if (images.isEmpty() || (images.size() < 3 && position == images.size())) {
-                    getImage(imageUri -> {
-                        presenter.uploadImage(PublishLostActivity.this,
-                                imageUri, position, OssFileType.FOUND);
-                    });
+                    getImage(imageUri ->
+                            presenter.uploadImage(PublishLostActivity.this,
+                            imageUri, position, OssFileType.FOUND));
                 } else {
                     Intent intent = new Intent(PublishLostActivity.this, AlbumItemActivity.class);
                     intent.putExtra(AlbumItemActivity.INTENT_POSITION, position);

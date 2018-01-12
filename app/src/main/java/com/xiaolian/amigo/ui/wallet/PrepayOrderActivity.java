@@ -73,9 +73,9 @@ public class PrepayOrderActivity extends WalletBaseActivity implements IPrepayOr
         tv_time.setText(CommonUtil.stampToDate(order.getCreateTime()));
         Device device = Device.getDevice(order.getDeviceType());
         if (device != null) {
-            tv_device_location.setText(device.getDesc() + " " + order.getLocation());
+            tv_device_location.setText(String.format("%s %s", device.getDesc(), order.getLocation()));
         } else {
-            tv_device_location.setText("未知设备 " + order.getLocation());
+            tv_device_location.setText(String.format("未知设备 %s", order.getLocation()));
         }
         tv_order_no.setText(order.getOrderNo());
         tv_prepay.setText(order.getPrepay());

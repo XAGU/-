@@ -10,6 +10,7 @@ import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 
 /**
+ * 设备账单
  * Created by caidong on 2017/9/22.
  */
 public interface IDevicePresenter<V extends IBaseView> extends IBasePresenter<V> {

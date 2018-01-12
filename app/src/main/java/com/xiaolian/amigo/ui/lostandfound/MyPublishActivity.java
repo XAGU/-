@@ -64,12 +64,10 @@ public class MyPublishActivity extends LostAndFoundBaseListActivity implements I
             }
             startActivity(intent);
         });
-        adaptor.setLongClickListener(() -> {
-            onSuccess("请左滑操作");
-        });
-        adaptor.setDeleteListener(position -> {
-            presenter.deleteLostAndFounds(lostAndFounds.get(position).getId());
-        });
+        adaptor.setLongClickListener(() ->
+                onSuccess("请左滑操作"));
+        adaptor.setDeleteListener(position ->
+                presenter.deleteLostAndFounds(lostAndFounds.get(position).getId()));
         recyclerView.setAdapter(adaptor);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

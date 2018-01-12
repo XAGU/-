@@ -9,23 +9,9 @@
     android:paddingTop="19dp"
     android:paddingBottom="19dp">
 
-    <TextView
-        android:id="@+id/tv_device"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/ContentText_main"
-        android:text="热水器：VIPLKB-17"/>
-
-    <TextView
-        android:id="@+id/tv_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/ContentText_sub"
-        android:layout_below="@id/tv_device"
-        android:layout_marginTop="10dp"
-        android:text="今天12:30"/>
 
     <RelativeLayout
+        android:id="@+id/rl_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true">
@@ -57,5 +43,24 @@
 
     </RelativeLayout>
 
+
+    <TextView
+        android:layout_toStartOf="@id/rl_status"
+        android:id="@+id/tv_device"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:lines="1"
+        android:ellipsize="end"
+        style="@style/ContentText_main"
+        android:text="热水器：VIPLKB-17"/>
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/ContentText_sub"
+        android:layout_below="@id/tv_device"
+        android:layout_marginTop="10dp"
+        android:text="今天12:30"/>
 
 </RelativeLayout>

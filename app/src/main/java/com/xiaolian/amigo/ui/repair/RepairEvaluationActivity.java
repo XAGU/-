@@ -129,7 +129,7 @@ public class RepairEvaluationActivity extends RepairBaseActivity implements IRep
             }
             Device device = Device.getDevice(getIntent().getIntExtra(INTENT_KEY_REPAIR_EVALUATION_DEVICE_TYPE, -1));
             if (device != null) {
-                tv_device_type.setText(device.getDesc() + Constant.CHINEASE_COLON);
+                tv_device_type.setText(String.format("%s%s", device.getDesc(), Constant.CHINEASE_COLON));
             }
             String time = getIntent().getStringExtra(INTENT_KEY_REPAIR_EVALUATION_TIME);
             if (time != null) {

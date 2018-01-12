@@ -396,6 +396,7 @@
         <!--闪屏页-->
         <activity
             android:name=".ui.main.SplashActivity"
+            android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

@@ -31,6 +31,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
+ * 设备账单
  * <p>
  * Created by zcd on 10/9/17.
  */

@@ -140,9 +140,8 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 if (images.isEmpty() || (images.size() < 3 && position == images.size())) {
-                    getImage(imageUri -> {
-                        presenter.onUpload(RepairApplyActivity.this, imageUri, position);
-                    });
+                    getImage(imageUri ->
+                            presenter.onUpload(RepairApplyActivity.this, imageUri, position));
                 } else {
                     Intent intent = new Intent(RepairApplyActivity.this, AlbumItemActivity.class);
                     intent.putExtra(AlbumItemActivity.INTENT_POSITION, position);

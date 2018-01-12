@@ -13,7 +13,7 @@ import lombok.Data;
 public class DeviceInListDTO implements Mapper<ScanDevice> {
     private Long id;
     private String macAddress;
-    private Double price;
+    private Integer price;
     private Integer pulse;
     private String usefor;
     private String name;

@@ -12,7 +12,7 @@ public final class Constant {
     // 温馨提示最大提醒次数
     public static final int REMIND_ALERT_COUNT = 3;
     // 设备扫描超时
-    public static final int DEVICE_SCAN_TIMEOUT = 60;
+    public static final int DEVICE_SCAN_TIMEOUT = 20;
 
     private Constant() {
     }

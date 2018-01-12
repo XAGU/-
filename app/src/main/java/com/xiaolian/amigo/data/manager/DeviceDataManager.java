@@ -180,6 +180,22 @@ public class DeviceDataManager implements IDeviceDataManager {
     }
 
     @Override
+    public boolean isDryerGuideDone() {
+        return !(sharedPreferencesHelp.getDryerGuide() != null
+                && sharedPreferencesHelp.getDryerGuide() < 3);
+    }
+
+    @Override
+    public void doneDryerGuide() {
+        sharedPreferencesHelp.setDryerGuide(sharedPreferencesHelp.getDryerGuide() + 1);
+    }
+
+    @Override
+    public void setDryerGuide(Integer guideTime) {
+        sharedPreferencesHelp.setDryerGuide(guideTime);
+    }
+
+    @Override
     public Observable<ApiResult<SimpleRespDTO>> favorite(FavorDeviceReqDTO reqDTO) {
         return deviceApi.favorite(reqDTO);
     }

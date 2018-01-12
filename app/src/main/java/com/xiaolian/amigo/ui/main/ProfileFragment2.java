@@ -103,6 +103,7 @@ public class ProfileFragment2 extends Fragment {
         recyclerView.setAdapter(adaptor);
     }
 
+    @SuppressWarnings("unchecked")
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(PersonalExtraInfoDTO data) {
         try {
@@ -125,6 +126,7 @@ public class ProfileFragment2 extends Fragment {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(Event event) {
         switch (event.getType()) {
