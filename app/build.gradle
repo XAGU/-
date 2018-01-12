@@ -166,6 +166,8 @@ dependencies {
     implementation deps.oss
 
 //    implementation deps.acra
+
+    implementation deps.zxing
 }
 
 configurations.all {
