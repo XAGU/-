@@ -104,8 +104,7 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation deps.swipelayout
     implementation deps.support.v4
     implementation deps.support.annotations
@@ -114,60 +113,43 @@ dependencies {
     implementation deps.support.design
     implementation deps.support.supportVectorDrawable
     implementation deps.support.animatedVectorDrawable
-
     implementation deps.multidex
-
     implementation deps.baseRvadapter
     implementation deps.smartrefresh
     implementation deps.banner
-
     implementation deps.glide
     implementation deps.ucrop
     implementation deps.overscroll
     implementation deps.circleimageview
     implementation deps.gifDrawable
     implementation deps.wheelPicker
-
     implementation deps.eventbus
-
     implementation deps.rxpermissions
-
     implementation deps.gson
-
     implementation deps.retrofit.core
     implementation deps.retrofit.gson
     implementation deps.retrofit.rxjava
-
     implementation deps.okhttp.core
     implementation deps.okhttp.logger
     implementation deps.okio
-
     implementation deps.dagger2.runtime
     annotationProcessor deps.dagger2.compiler
     testAnnotationProcessor deps.dagger2.compiler
     androidTestAnnotationProcessor deps.dagger2.compiler
-
     implementation deps.rx.core
     implementation deps.rx.android
     implementation deps.rx.rxandroidble
     implementation deps.rx.rxlifecycle
     implementation deps.rx.rxlifecycleComponents
-
     implementation deps.butterKnife.runtime
     annotationProcessor deps.butterKnife.compiler
-
     compileOnly deps.lombok
     annotationProcessor deps.lombok
-
     testImplementation deps.junit
-
     implementation deps.umeng
-
     implementation deps.oss
-
-//    implementation deps.acra
-
-    implementation deps.zxing
+    //    implementation deps.acra
+    implementation project(':qrcodelib')
 }
 
 configurations.all {
