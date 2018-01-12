@@ -374,6 +374,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <!--洗衣机首页-->
+        <activity android:name=".ui.washer.WasherActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+
         <!--更新窗口-->
         <activity
             android:name=".ui.main.update.UpdateActivity"
