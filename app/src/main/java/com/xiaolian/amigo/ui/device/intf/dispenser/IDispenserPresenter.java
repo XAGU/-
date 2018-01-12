@@ -10,6 +10,6 @@ import com.xiaolian.amigo.ui.device.intf.IWaterDeviceBasePresenter;
 
 public interface IDispenserPresenter<V extends IDispenserView> extends IWaterDeviceBasePresenter<V> {
     void favorite(Long id);
-
     void unFavorite(Long id);
+    void notShowRemindAlert();
 }

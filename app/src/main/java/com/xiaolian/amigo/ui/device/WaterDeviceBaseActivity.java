@@ -6,6 +6,7 @@ import android.os.CountDownTimer;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
+import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
@@ -39,6 +40,7 @@ import com.xiaolian.amigo.ui.wallet.RechargeActivity;
 import com.xiaolian.amigo.ui.widget.BezierWaveView;
 import com.xiaolian.amigo.ui.widget.DotFlashView;
 import com.xiaolian.amigo.ui.widget.dialog.IOSAlertDialog;
+import com.xiaolian.amigo.ui.widget.dialog.NoticeAlertDialog;
 import com.xiaolian.amigo.ui.widget.swipebutton.SlideUnlockView;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
@@ -65,181 +67,99 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     public static final String INTENT_PREPAY_INFO = "intent_prepay_info";
 
     private static final String TAG = WaterDeviceBaseActivity.class.getSimpleName();
-    /**
-     * 跳转到选择代金券页面的request code
-     */
+    // 跳转到选择代金券页面的request code
     private static final int CHOOSE_BONUS_CODE = 0x0010;
     protected static final int CHOOSE_DORMITORY_CODE = 0x0011;
     private static final int REQUEST_CODE_RECHARGE = 0x0012;
 
-    /**
-     * 确认支付
-     */
+    // 温馨提示dialog
+    private NoticeAlertDialog noticeAlertDialog;
+
+    // 确认支付
     @BindView(R.id.bt_pay)
     Button bt_pay;
-
-    /**
-     * 正常页面
-     */
+    // 正常页面
     @BindView(R.id.ll_content_normal)
     LinearLayout ll_content_normal;
-
-    /**
-     * 未连接页面
-     */
+    // 未连接页面
     @BindView(R.id.ll_content_unconnected)
     LinearLayout ll_content_unconnected;
-
-    /**
-     * 连接失败页面
-     */
+    // 连接失败页面
     @BindView(R.id.ll_error)
     LinearLayout ll_error;
-
-    /**
-     * 当前水温
-     */
+    // 当前水温
     @BindView(R.id.tv_temp)
     TextView tv_temp;
-
-    /**
-     * 开始使用页面
-     */
+    // 开始使用页面
     @BindView(R.id.ll_content_shower)
     LinearLayout ll_content_shower;
-
-    /**
-     * et.已使用10元代金券
-     */
+    // et.已使用10元代金券
     @BindView(R.id.tv_shower_payed)
     TextView tv_shower_payed;
-
-    /**
-     * 提示
-     */
+    // 提示
     @BindView(R.id.trade_tip)
     TextView trade_tip;
-
-    /**
-     * 设备连接状态
-     */
+    // 设备连接状态
     @BindView(R.id.tv_connect_status)
     TextView tv_connect_status;
-
-    /**
-     * 结束洗澡
-     */
+    // 结束洗澡
     @BindView(R.id.bt_stop_shower)
     Button bt_stop_shower;
-
+    // 滑动按钮
     @BindView(R.id.slideView)
     SlideUnlockView slideView;
-
-    /**
-     * 布局头部
-     */
+    // 布局头部
     @BindView(R.id.rl_header)
     RelativeLayout rl_header;
-
-    /**
-     * 底部
-     */
+    // 底部
     @BindView(R.id.fl_bottom)
     FrameLayout fl_bottom;
-
-    /**
-     * 右上角按钮
-     */
+    // 右上角按钮
     @BindView(R.id.iv_top_right_icon)
     ImageView iv_top_right_icon;
-
-    /**
-     * 右上角按钮placeholder
-     */
+    // 右上角按钮placeholder
     @BindView(R.id.v_icon_placeholder)
     View v_icon_placeholder;
-
-    /**
-     * 标题placeholder
-     */
+    // 标题placeholder
     @BindView(R.id.v_title_placeholder)
     View v_title_placeholder;
-
-    /**
-     * 子标题
-     */
+    // 子标题
     @BindView(R.id.tv_sub_title)
     TextView tv_sub_title;
-
-    /**
-     * 选择代金券
-     */
+    // 选择代金券
     @BindView(R.id.rl_choose_bonus)
     RelativeLayout rl_choose_bonus;
-
-    /**
-     * 支付方式左侧textview
-     */
+    // 支付方式左侧textview
     @BindView(R.id.tv_water_left)
     TextView tv_water_left;
-
-    /**
-     * 支付方式右侧textview
-     */
+    // 支付方式右侧textview
     @BindView(R.id.tv_water_right)
     TextView tv_water_right;
-
-    /**
-     * 波浪控件
-     */
+    // 波浪控件
     @BindView(R.id.bsv_wave)
     BezierWaveView bsv_wave;
-
-    /**
-     * 加载进度控件
-     */
+    // 加载进度控件
     @BindView(R.id.dfv_dot)
     DotFlashView dfv_dot;
-
-    /**
-     * 设备标题
-     */
+    // 设备标题
     @BindView(R.id.tv_device_title)
     TextView tv_device_title;
-
-    /**
-     * 显示加载动画
-     */
+    // 显示加载动画
     @BindView(R.id.v_loading)
     DotFlashView v_loading;
-
-    /**
-     * 错误标题
-     */
+    // 错误标题
     @BindView(R.id.tv_error_title)
     TextView tv_error_title;
-
-    /**
-     * 错误提示
-     */
+    // 错误提示
     @BindView(R.id.tv_error_tip)
     TextView tv_error_tip;
-
-    /**
-     * 错误处理器
-     */
+    // 错误处理器
     @BindView(R.id.bt_error_handler)
     Button bt_error_handler;
-
-    /**
-     * 头部icon
-     */
+    // 头部icon
     @BindView(R.id.iv_header_icon)
     ImageView iv_header_icon;
-
-    /**
-     * 已连接待支付状态标题
-     */
+    // 已连接待支付状态标题
     @BindView(R.id.tv_connect_tip_title)
     TextView tv_connect_tip_title;
     @BindView(R.id.tv_connect_tip)
@@ -257,6 +177,8 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     private Double minPrepay = 0.01;
     private Double balance;
     private Double prepayAmount;
+    // 最低费率
+    private Integer price;
 
     P presenter;
 
@@ -276,6 +198,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     private boolean needRecharge;
     private boolean supportSlideBack = true;
     private DecimalFormat df = new DecimalFormat("###.##");
+    private OrderPreInfoDTO orderPreInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -315,8 +238,9 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             residenceId = getIntent().getLongExtra(MainActivity.INTENT_KEY_RESIDENCE_ID, 0L);
             homePageJump = getIntent().getBooleanExtra(INTENT_HOME_PAGE_JUMP, true);
             recorvery = getIntent().getBooleanExtra(MainActivity.INTENT_KEY_RECOVERY, false);
-            OrderPreInfoDTO orderPreInfo = getIntent().getParcelableExtra(INTENT_PREPAY_INFO);
+            orderPreInfo = getIntent().getParcelableExtra(INTENT_PREPAY_INFO);
             if (orderPreInfo != null) {
+                price = orderPreInfo.getPrice();
                 balance = orderPreInfo.getBalance();
                 minPrepay = orderPreInfo.getMinPrepay();
                 if (orderPreInfo.getBonus() != null) {
@@ -457,8 +381,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                                     DimentionUtils.convertSpToPixels(18, this)), 0, buttonText.length(),
                             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     builder.append(buttonSpan);
-                    builder.append(deviceType == Device.HEATER.getType() ?
-                            getString(R.string.comma_start_shower) : getString(R.string.comma_start_drink));
+                    builder.append(getSlideButtonText());
 
                     showBonusLayout(tip, builder, bonusDescription);
                 }
@@ -489,8 +412,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                                     DimentionUtils.convertSpToPixels(18, this)), 0, buttonText.length(),
                             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     builder.append(buttonSpan);
-                    builder.append(deviceType == Device.HEATER.getType() ?
-                            getString(R.string.comma_start_shower) : getString(R.string.comma_start_drink));
+                    builder.append(getSlideButtonText());
                     showBonusLayout(tip, builder, bonusDescription);
                 }
                 // 余额加代金券小于预付金额 大于等于最小预付金额
@@ -507,8 +429,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                                     DimentionUtils.convertSpToPixels(18, this)), 0, buttonText.length(),
                             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     builder.append(buttonSpan);
-                    builder.append(deviceType == Device.HEATER.getType() ?
-                            getString(R.string.comma_start_shower) : getString(R.string.comma_start_drink));
+                    builder.append(getSlideButtonText());
                     showBonusLayout(tip, builder, bonusDescription);
                 }
                 // 余额加代金券小于最小预付金额
@@ -540,8 +461,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                                     DimentionUtils.convertSpToPixels(18, this)), 0, buttonText.length(),
                             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     builder.append(buttonSpan);
-                    builder.append(deviceType == Device.HEATER.getType() ?
-                            getString(R.string.comma_start_shower) : getString(R.string.comma_start_drink));
+                    builder.append(getSlideButtonText());
                     needRecharge = false;
                     showNoBonusLayout(title, tip, builder);
                 } else {
@@ -557,8 +477,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                                     DimentionUtils.convertSpToPixels(18, this)), 0, buttonText.length(),
                             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     builder.append(buttonSpan);
-                    builder.append(deviceType == Device.HEATER.getType() ?
-                            getString(R.string.comma_start_shower) : getString(R.string.comma_start_drink));
+                    builder.append(getSlideButtonText());
                     showNoBonusLayout(title, tip, builder);
                 }
             }
@@ -573,6 +492,12 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         }
 
     }
+
+    // 滑动按钮文字 比如 热水澡显示为"开始洗澡" 饮水机显示为 "开始接水"
+    protected abstract String getSlideButtonText();
+
+    // 开始使用设备后的提示文案 比如 热水澡显示为 "用水结束后请务必滑动下方按钮，进行结算找零\n消费金额以实际用水量为"
+    protected abstract String getBalanceTradeTip();
 
     @Override
     public void setPrepayOption(OrderPreInfoDTO data) {
@@ -654,7 +579,8 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         } else {
             supportSlideBack = false;
         }
-        if (tv_sub_title != null && (deviceType == 1 || deviceType == 2)) {
+        // FIXME 去掉deviceType
+        if (tv_sub_title != null && (deviceType == 1 || deviceType == 2 || deviceType == 3)) {
             tv_sub_title.setVisibility(visible ?
                     View.VISIBLE : View.GONE);
         }
@@ -775,14 +701,39 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                 onError("预付金额不能为0");
                 return;
             }
-            userWater = true;
-            // 点击支付操作时蓝牙必须为开启状态
-            setBleCallback(() -> {
-                button.setEnabled(false);
-                presenter.onPay(prepayAmount, bonusAmount != null && bonusAmount > 0 ? bonusId : null);
-            });
-            getBlePermission();
+            realPay();
         }
+    }
+
+    // 显示温馨提现
+    protected void showAlertNotice(NoticeAlertDialog.OnOkClickListener listener) {
+        if (price == null || price == 0) {
+            return;
+        }
+        if (noticeAlertDialog == null) {
+            noticeAlertDialog = new NoticeAlertDialog(this);
+        }
+        if (Device.getDevice(deviceType) == Device.HEATER) {
+            noticeAlertDialog.setContent(Html.fromHtml(getString(R.string.heater_notice_content, price)));
+        } else if (Device.getDevice(deviceType) == Device.DISPENSER) {
+            noticeAlertDialog.setContent(Html.fromHtml(getString(R.string.dispenser_notice_content, price)));
+        } else if (Device.getDevice(deviceType) == Device.DRYER) {
+            noticeAlertDialog.setContent(Html.fromHtml(getString(R.string.dryer_notice_content, price)));
+        }
+        noticeAlertDialog.setTitle(R.string.water_use_notice_title);
+        noticeAlertDialog.hideNoticeSymbol();
+        noticeAlertDialog.setOnOkClickListener(listener);
+        noticeAlertDialog.show();
+    }
+
+    private void realPay() {
+        userWater = true;
+        // 点击支付操作时蓝牙必须为开启状态
+        setBleCallback(() -> {
+            bt_pay.setEnabled(false);
+            presenter.onPay(prepayAmount, bonusAmount != null && bonusAmount > 0 ? bonusId : null);
+        });
+        getBlePermission();
     }
 
     /**
@@ -800,9 +751,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
     void onSlideUnlock() {
         // 点击结束用水操作时蓝牙必须为开启状态
-        setBleCallback(() -> {
-            presenter.onClose();
-        });
+        setBleCallback(() -> presenter.onClose());
         getBlePermission();
 
     }
@@ -844,6 +793,9 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             case CHANGE_DISPENSER:
                 changeDispenser();
                 break;
+            case CHANGE_DRYER:
+                changeDryer();
+                break;
         }
     }
 
@@ -874,7 +826,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 //                    String tip = String.format("您%s在%s使用预付了%s元的用水已结束\n点击下方按钮进行找零", time, orderStatus.getLocation(), String.valueOf(orderStatus.getPrepay().intValue()));
                 trade_tip.setText(tip);
             } else {
-                trade_tip.setText(getString(R.string.balance_trade_tip_2));
+                trade_tip.setText(getBalanceTradeTip());
             }
             bt_stop_shower.setText(getString(R.string.settlement_and_change));
             bt_stop_shower.setVisibility(View.GONE);
@@ -883,7 +835,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             slideView.setEnableStr(getString(R.string.settlement));
         } else {
             tv_shower_payed.setText(getString(R.string.prepaid, String.valueOf(prepayAmount)));
-            trade_tip.setText(getString(R.string.balance_trade_tip_2));
+            trade_tip.setText(getBalanceTradeTip());
             bt_stop_shower.setText(getString(R.string.settlement_and_change));
             bt_stop_shower.setVisibility(View.GONE);
             slideView.setVisibility(View.VISIBLE);
@@ -1030,6 +982,9 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             if (tradeError == TradeError.DEVICE_BROKEN_3 && deviceType == Device.DISPENSER.getType()) {
                 bt_error_handler.setText(getString(R.string.change_dispenser));
                 bt_error_handler.setTag(ErrorTag.CHANGE_DISPENSER.getCode());
+            } else if (tradeError == TradeError.DEVICE_BROKEN_3 && deviceType == Device.DRYER.getType()) {
+                bt_error_handler.setText(getString(R.string.change_dryer));
+                bt_error_handler.setTag(ErrorTag.CHANGE_DRYER.getCode());
             } else {
                 bt_error_handler.setText(getString(tradeError.getBtnText()));
                 bt_error_handler.setTag(tradeError.getBtnTag());
@@ -1061,7 +1016,19 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         // 只有在step为SETILE时才不能更换饮水机
         if (presenter.getStep() != TradeStep.SETTLE) {
             startActivity(new Intent(this, ChooseDispenserActivity.class)
-                    .putExtra(ChooseDispenserActivity.INTENT_KEY_ACTION, ChooseDispenserActivity.ACTION_CHANGE_DISPENSER));
+                    .putExtra(DeviceConstant.INTENT_DEVICE_TYPE, Device.DISPENSER.getType())
+                    .putExtra(WaterDeviceBaseActivity.INTENT_PREPAY_INFO, orderPreInfo)
+                    .putExtra(DeviceConstant.INTENT_KEY_ACTION, DeviceConstant.ACTION_CHANGE_DISPENSER));
+        }
+    }
+
+    public void changeDryer() {
+        // 只有在step为SETILE时才不能更换吹风机
+        if (presenter.getStep() != TradeStep.SETTLE) {
+            startActivity(new Intent(this, ChooseDispenserActivity.class)
+                    .putExtra(DeviceConstant.INTENT_KEY_ACTION, DeviceConstant.ACTION_CHANGE_DRYER)
+                    .putExtra(WaterDeviceBaseActivity.INTENT_PREPAY_INFO, orderPreInfo)
+                    .putExtra(DeviceConstant.INTENT_DEVICE_TYPE, Device.DRYER.getType()));
         }
     }
 

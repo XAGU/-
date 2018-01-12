@@ -34,13 +34,16 @@ import com.xiaolian.amigo.di.DeviceActivityContext;
 import com.xiaolian.amigo.ui.device.DeviceOrderPresenter;
 import com.xiaolian.amigo.ui.device.dispenser.ChooseDispenserPresenter;
 import com.xiaolian.amigo.ui.device.dispenser.DispenserPresenter;
+import com.xiaolian.amigo.ui.device.dryer.DryerPresenter;
 import com.xiaolian.amigo.ui.device.intf.IDeviceOrderPresenter;
 import com.xiaolian.amigo.ui.device.intf.IDeviceOrderView;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IChooseDispenerView;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IChooseDispenserPresenter;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IDispenserPresenter;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IDispenserView;
-import com.xiaolian.amigo.ui.device.intf.heator.HeaterPresenter;
+import com.xiaolian.amigo.ui.device.intf.dryer.IDryerPresenter;
+import com.xiaolian.amigo.ui.device.intf.dryer.IDryerView;
+import com.xiaolian.amigo.ui.device.heater.HeaterPresenter;
 import com.xiaolian.amigo.ui.device.intf.heator.IHeaterPresenter;
 import com.xiaolian.amigo.ui.device.intf.heator.IHeaterView;
 
@@ -81,6 +84,12 @@ public class DeviceActivityModule {
     @Provides
     @DeviceActivityContext
     IDispenserPresenter<IDispenserView> provideDispenserPresenter(DispenserPresenter<IDispenserView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    @DeviceActivityContext
+    IDryerPresenter<IDryerView> provideDryerPresenter(DryerPresenter<IDryerView> presenter) {
         return presenter;
     }
 

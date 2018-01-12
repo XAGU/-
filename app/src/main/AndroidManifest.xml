@@ -204,6 +204,13 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <!--吹风机页面-->
+        <activity
+            android:name=".ui.device.dryer.DryerActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+
         <!--充值金额页面-->
         <activity
             android:name=".ui.wallet.RechargeActivity"
@@ -389,6 +396,7 @@
         <!--闪屏页-->
         <activity
             android:name=".ui.main.SplashActivity"
+            android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

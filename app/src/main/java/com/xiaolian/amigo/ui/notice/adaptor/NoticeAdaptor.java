@@ -30,7 +30,7 @@ import lombok.Data;
 
 public class NoticeAdaptor extends CommonAdapter<NoticeAdaptor.NoticeWapper> {
 
-    Drawable dot;
+    private Drawable dot;
 
     public NoticeAdaptor(Context context, int layoutId, List<NoticeWapper> datas) {
         super(context, layoutId, datas);

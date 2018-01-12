@@ -12,28 +12,17 @@ import lombok.Data;
 @Data
 public class DeviceInListDTO implements Mapper<ScanDevice> {
     private Long id;
-
-    private String hardwareNo;
-
     private String macAddress;
-
-    private Integer type;
-
-    private Double price;
-
+    private Integer price;
     private Integer pulse;
-
     private String usefor;
-
     private String name;
 
     @Override
     public ScanDevice transform() {
         ScanDevice scanDevice = new ScanDevice();
         scanDevice.setId(id);
-        scanDevice.setHardwareNo(hardwareNo);
         scanDevice.setMacAddress(macAddress);
-        scanDevice.setType(type);
         scanDevice.setPrice(price);
         scanDevice.setPulse(pulse);
         scanDevice.setUsefor(usefor);

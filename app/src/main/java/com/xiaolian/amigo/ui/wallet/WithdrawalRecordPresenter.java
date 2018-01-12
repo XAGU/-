@@ -49,7 +49,7 @@ public class WithdrawalRecordPresenter<V extends IWithdrawalRecordView> extends 
                 if (null == result.getError()) {
                     if (result.getData() != null && result.getData().getFunds() != null
                             && result.getData().getFunds().size() > 0) {
-                        List<WithdrawalAdaptor.WithdrawalWrapper> wrappers = new ArrayList<WithdrawalAdaptor.WithdrawalWrapper>();
+                        List<WithdrawalAdaptor.WithdrawalWrapper> wrappers = new ArrayList<>();
                         for (FundsInListDTO dto : result.getData().getFunds()) {
                             wrappers.add(new WithdrawalAdaptor.WithdrawalWrapper(dto));
                         }

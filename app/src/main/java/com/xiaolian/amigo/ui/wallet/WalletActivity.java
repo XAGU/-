@@ -114,9 +114,10 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
         if (TextUtils.isEmpty(title)) {
             dialog.setTip(getString(R.string.withdraw_tip));
         } else {
-            dialog.setTip(title);
+            dialog.setTip(remark);
         }
-        dialog.setSubTipVisible(false);
+        dialog.setType(AvailabilityDialog.Type.WITHDRAW_VALID);
+        dialog.setTitle(title);
         dialog.setCancelVisible(false);
         dialog.setOkText(getString(R.string.i_know));
         dialog.setOnOkClickListener(Dialog::dismiss

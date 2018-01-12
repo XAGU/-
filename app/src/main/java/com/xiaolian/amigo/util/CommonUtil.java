@@ -111,6 +111,9 @@ public final class CommonUtil {
      * 将时间戳转换为时间
      */
     public static String stampToDate(Long s) {
+        if (s == null) {
+            return "----";
+        }
         String res;
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",
                                                                     Locale.getDefault());

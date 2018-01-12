@@ -5,13 +5,10 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.data.enumeration.TradeStep;
 import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity;
 import com.xiaolian.amigo.ui.device.intf.heator.IHeaterPresenter;
 import com.xiaolian.amigo.ui.device.intf.heator.IHeaterView;
-import com.xiaolian.amigo.ui.user.ChooseDormitoryActivity;
-import com.xiaolian.amigo.ui.widget.dialog.GuideDialog;
 import com.xiaolian.amigo.util.Constant;
 
 import javax.inject.Inject;
@@ -74,16 +71,33 @@ public class HeaterActivity extends WaterDeviceBaseActivity<IHeaterPresenter> im
     }
 
     @Override
+    protected String getSlideButtonText() {
+        return getString(R.string.comma_start_shower);
+    }
+
+    @Override
+    protected String getBalanceTradeTip() {
+        return getString(R.string.balance_trade_tip_water);
+    }
+
+    @Override
     public IHeaterPresenter setPresenter() {
         return presenter;
     }
 
     @Override
     public void showGuide() {
+        // 不显示引导页
         // 显示引导页
-        GuideDialog guideDialog = new GuideDialog(this, GuideDialog.TYPE_HEATER);
-        guideDialog.setLocation(getLocation());
-        guideDialog.show();
+//        GuideDialog guideDialog = new GuideDialog(this, GuideDialog.TYPE_HEATER);
+//        guideDialog.setLocation(getLocation());
+//        guideDialog.show();
+        showAlertNotice((dialog, isNotRemind) -> {
+            dialog.dismiss();
+            if (isNotRemind) {
+                presenter.notShowRemindAlert();
+            }
+        });
     }
 
     @Override

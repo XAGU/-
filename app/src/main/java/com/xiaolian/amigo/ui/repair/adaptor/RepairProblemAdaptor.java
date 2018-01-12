@@ -30,18 +30,15 @@ public class RepairProblemAdaptor extends CommonAdapter<RepairProblemAdaptor.Pro
     @Override
     protected void convert(ViewHolder holder, ProblemWrapper problemWrapper, int position) {
         holder.setText(R.id.bt_problem, problemWrapper.getDesc());
-        holder.getView(R.id.bt_problem).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        holder.getView(R.id.bt_problem).setOnClickListener(v -> {
 //                if (lastChoosePosition != -1) {
 //                    getDatas().get(lastChoosePosition).setChoose(false);
 //                }
-                boolean lastChooseStatus = getDatas().get(holder.getAdapterPosition()).isChoose();
-                getDatas().get(holder.getAdapterPosition()).setChoose(!lastChooseStatus);
+            boolean lastChooseStatus = getDatas().get(holder.getAdapterPosition()).isChoose();
+            getDatas().get(holder.getAdapterPosition()).setChoose(!lastChooseStatus);
 //                lastChoosePosition = position;
-                notifyDataSetChanged();
-                listener.onItemClick();
-            }
+            notifyDataSetChanged();
+            listener.onItemClick();
         });
         toggleButton(holder.getView(R.id.bt_problem), problemWrapper.isChoose());
     }

@@ -65,11 +65,13 @@
                     android:layout_height="wrap_content" />
 
                 <include
+                    android:visibility="gone"
                     layout="@layout/layout_order_normal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
                 <include
+                    android:visibility="gone"
                     layout="@layout/layout_order_error"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
@@ -100,6 +102,9 @@
                 android:textColor="#999"
                 android:textSize="12sp" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/mainMarginLeftRight"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

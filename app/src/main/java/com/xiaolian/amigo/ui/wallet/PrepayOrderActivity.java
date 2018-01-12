@@ -10,6 +10,7 @@ import com.xiaolian.amigo.data.network.model.order.Order;
 import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity;
 import com.xiaolian.amigo.ui.device.dispenser.DispenserActivity;
+import com.xiaolian.amigo.ui.device.dryer.DryerActivity;
 import com.xiaolian.amigo.ui.device.heater.HeaterActivity;
 import com.xiaolian.amigo.ui.main.MainActivity;
 import com.xiaolian.amigo.ui.wallet.adaptor.PrepayAdaptor;
@@ -72,9 +73,9 @@ public class PrepayOrderActivity extends WalletBaseActivity implements IPrepayOr
         tv_time.setText(CommonUtil.stampToDate(order.getCreateTime()));
         Device device = Device.getDevice(order.getDeviceType());
         if (device != null) {
-            tv_device_location.setText(device.getDesc() + " " + order.getLocation());
+            tv_device_location.setText(String.format("%s %s", device.getDesc(), order.getLocation()));
         } else {
-            tv_device_location.setText("未知设备 " + order.getLocation());
+            tv_device_location.setText(String.format("未知设备 %s", order.getLocation()));
         }
         tv_order_no.setText(order.getOrderNo());
         tv_prepay.setText(order.getPrepay());
@@ -118,14 +119,23 @@ public class PrepayOrderActivity extends WalletBaseActivity implements IPrepayOr
         if(Device.getDevice(orderWrapper.getType()) == Device.HEATER) {
             intent = new Intent(this, HeaterActivity.class);
             intent.putExtra(MainActivity.INTENT_KEY_DEVICE_TYPE, Device.HEATER.getType());
-        }else {
+        } else if (Device.getDevice(orderWrapper.getType()) == Device.DISPENSER){
             intent = new Intent(this, DispenserActivity.class);
             intent.putExtra(MainActivity.INTENT_KEY_DEVICE_TYPE, Device.DISPENSER.getType());
+        } else if (Device.getDevice(orderWrapper.getType()) == Device.DRYER) {
+            intent = new Intent(this, DryerActivity.class);
+            intent.putExtra(MainActivity.INTENT_KEY_DEVICE_TYPE, Device.DRYER.getType());
+        }
+        // FIXME 添加新设备需要改动此处
+        if (intent == null) {
+            onError(R.string.network_available_error_tip);
+            return;
         }
         intent.putExtra(MainActivity.INTENT_KEY_LOCATION, location);
         intent.putExtra(MainActivity.INTENT_KEY_MAC_ADDRESS, macAddress);
-        intent.putExtra(MainActivity.INTENT_KEY_MAC_ADDRESS, macAddress);
         intent.putExtra(WaterDeviceBaseActivity.INTENT_HOME_PAGE_JUMP, false);
+        intent.putExtra(DispenserActivity.INTENT_KEY_ID, orderWrapper.getResidenceId());
+        intent.putExtra(MainActivity.INTENT_KEY_RESIDENCE_ID, orderWrapper.getResidenceId());
         TimeHolder.get().setLastConnectTime(System.currentTimeMillis());
         startActivity(intent);
     }

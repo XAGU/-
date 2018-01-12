@@ -7,30 +7,25 @@
     android:layout_height="match_parent">
     <LinearLayout
         android:orientation="vertical"
-        android:gravity="center"
+        android:layout_marginTop="26dp"
+        android:layout_marginBottom="26dp"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
-            android:layout_marginBottom="14dp"
             android:id="@+id/tv_update_title"
-            android:text="发现新版本"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:textSize="16sp"
-            android:textColor="@color/colorDark2"
-            android:gravity="left"
+            tool:text="发现新版本"
+            android:textSize="17sp"
+            android:textColor="@color/colorFullRed"
+            android:textStyle="bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <TextView
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="13dp"
             android:id="@+id/tv_update_content"
             android:textColor="@color/colorDark2"
-            android:layout_marginBottom="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
             android:textSize="12sp"
-            android:gravity="left"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
@@ -63,9 +58,9 @@
             android:layout_weight="1"
             android:layout_width="0dp"
             android:textColor="@color/colorBlue"
-            android:textSize="12sp"
+            android:textSize="14sp"
             android:gravity="center"
-            android:text="正在更新"
+            android:text="正在升级"
             android:textStyle="bold"
             android:layout_height="match_parent" />
     </LinearLayout>

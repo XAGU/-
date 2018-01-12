@@ -3,6 +3,7 @@ package com.xiaolian.amigo.ui.device.intf;
 import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 
 /**
+ * 设备账单
  * Created by caidong on 2017/10/11.
  */
 public interface IDeviceOrderPresenter<V extends IDeviceOrderView> extends IBasePresenter<V> {

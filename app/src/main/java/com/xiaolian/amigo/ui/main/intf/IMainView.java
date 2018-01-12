@@ -43,4 +43,8 @@ public interface IMainView extends IBaseView {
     void refreshProfile(PersonalExtraInfoDTO data);
 
     void showUpdateDialog(IVersionModel version);
+
+    String getAndroidId();
+
+    String getAppVersion();
 }

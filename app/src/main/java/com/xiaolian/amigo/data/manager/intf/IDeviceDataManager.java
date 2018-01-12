@@ -1,6 +1,10 @@
 package com.xiaolian.amigo.data.manager.intf;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.device.FavorDeviceReqDTO;
+import com.xiaolian.amigo.data.network.model.device.QueryDeviceListReqDTO;
+import com.xiaolian.amigo.data.network.model.device.QueryDeviceListRespDTO;
+import com.xiaolian.amigo.data.network.model.device.QueryFavorDeviceRespDTO;
 import com.xiaolian.amigo.data.network.model.device.QueryWaterListReqDTO;
 import com.xiaolian.amigo.data.network.model.device.QueryWaterListRespDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleQueryReqDTO;
@@ -49,7 +53,7 @@ public interface IDeviceDataManager {
     Observable<ApiResult<PayRespDTO>> pay(@Body PayReqDTO reqDTO);
 
     // 处理扫描结果
-    Observable<ApiResult<QueryWaterListRespDTO>> handleScanDevices(QueryWaterListReqDTO reqDTO);
+    Observable<ApiResult<QueryDeviceListRespDTO>> handleScanDevices(QueryDeviceListReqDTO reqDTO);
 
     // 校验订单状态
     Observable<ApiResult<UnsettledOrderStatusCheckRespDTO>> checkOrderStatus(@Body UnsettledOrderStatusCheckReqDTO reqDTO);
@@ -71,19 +75,23 @@ public interface IDeviceDataManager {
     // 获取客服人员电话
     Observable<ApiResult<CsMobileRespDTO>> queryCsInfo();
 
+    // 设置温馨提示次数
     boolean isHeaterGuideDone();
-
     void doneHeaterGuide();
-
+    void setHeaterGuide(Integer guideTime);
     boolean isDispenserGuideDone();
-
     void doneDispenserGuide();
+    void setDispenserGuide(Integer guideTime);
+    boolean isDryerGuideDone();
+    void doneDryerGuide();
+    void setDryerGuide(Integer guideTime);
+
 
     // 收藏饮水机
-    Observable<ApiResult<SimpleRespDTO>> favorite(@Body SimpleReqDTO reqDTO);
+    Observable<ApiResult<SimpleRespDTO>> favorite(@Body FavorDeviceReqDTO reqDTO);
 
     // 取消收藏饮水机
-    Observable<ApiResult<SimpleRespDTO>> unFavorite(@Body SimpleReqDTO reqDTO);
-
-    Observable<ApiResult<QueryWaterListRespDTO>> queryFavorites(@Body SimpleQueryReqDTO reqDTO);
+    Observable<ApiResult<SimpleRespDTO>> unFavorite(@Body FavorDeviceReqDTO reqDTO);
+    // 获取个人收藏的设备列表
+    Observable<ApiResult<QueryFavorDeviceRespDTO>> getFavorites(@Body QueryDeviceListReqDTO reqDTO);
 }

@@ -6,6 +6,7 @@ import com.xiaolian.amigo.data.enumeration.TradeStep;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 
 /**
+ * 设备View
  * Created by caidong on 2017/9/22.
  */
 public interface IDeviceView extends IBaseView {

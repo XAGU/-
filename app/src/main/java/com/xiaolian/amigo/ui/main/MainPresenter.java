@@ -1,20 +1,22 @@
 package com.xiaolian.amigo.ui.main;
 
+import android.os.Build;
 import android.text.TextUtils;
 
+import com.xiaolian.amigo.data.base.LogInterceptor;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.manager.intf.IMainDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.version.CheckVersionUpdateReqDTO;
-import com.xiaolian.amigo.data.network.model.device.DeviceCheckReqDTO;
-import com.xiaolian.amigo.data.network.model.notify.ReadNotifyReqDTO;
-import com.xiaolian.amigo.data.network.model.system.BannerDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
-import com.xiaolian.amigo.data.network.model.version.CheckVersionUpdateRespDTO;
+import com.xiaolian.amigo.data.network.model.device.DeviceCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCheckRespDTO;
-import com.xiaolian.amigo.data.network.model.user.PersonalExtraInfoDTO;
+import com.xiaolian.amigo.data.network.model.notify.ReadNotifyReqDTO;
 import com.xiaolian.amigo.data.network.model.school.QuerySchoolBizListRespDTO;
+import com.xiaolian.amigo.data.network.model.system.BannerDTO;
+import com.xiaolian.amigo.data.network.model.user.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.data.network.model.user.UploadUserDeviceInfoReqDTO;
+import com.xiaolian.amigo.data.network.model.version.CheckVersionUpdateReqDTO;
+import com.xiaolian.amigo.data.network.model.version.CheckVersionUpdateRespDTO;
 import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.main.intf.IMainPresenter;
@@ -36,10 +38,31 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
     private static final String TAG = MainPresenter.class.getSimpleName();
     private IMainDataManager mainDataManager;
     private Integer guideTime;
+    private LogInterceptor interceptor;
 
     @Inject
-    public MainPresenter(IMainDataManager mainDataManager) {
+    public MainPresenter(IMainDataManager mainDataManager, LogInterceptor interceptor) {
         this.mainDataManager = mainDataManager;
+        this.interceptor = interceptor;
+    }
+
+    @Override
+    public void onAttach(V view) {
+        super.onAttach(view);
+        setUpInterceptor();
+    }
+
+    private void setUpInterceptor() {
+        String androidId = getMvpView().getAndroidId();
+        String model = Build.MODEL;
+        String brand = Build.BRAND;
+        int systemVersion = Build.VERSION.SDK_INT;
+        String appVersion = getMvpView().getAppVersion();
+        interceptor.setAppVersion(appVersion);
+        interceptor.setUniqueId(androidId);
+        interceptor.setModel(model);
+        interceptor.setBrand(brand);
+        interceptor.setSystemVersion(String.valueOf(systemVersion));
     }
 
     @Override
@@ -165,7 +188,8 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
     @Override
     public void gotoHeaterDevice(String defaultAddress, String location, Long residenceId) {
         if (TextUtils.isEmpty(defaultAddress)) {
-            if (mainDataManager.getUserInfo().getResidenceId() == null) {
+            if (mainDataManager.getUserInfo().getResidenceId() == null
+                    || mainDataManager.getUserInfo().getResidenceId() == -1) {
                 getMvpView().showBindDormitoryDialog();
             } else {
                 getMvpView().showNoDeviceDialog();

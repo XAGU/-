@@ -1,17 +1,14 @@
 package com.xiaolian.amigo.ui.device.dispenser;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.DispenserWater;
-import com.xiaolian.amigo.data.enumeration.TradeStep;
 import com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IDispenserPresenter;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IDispenserView;
-import com.xiaolian.amigo.ui.widget.dialog.GuideDialog;
 
 import javax.inject.Inject;
 
@@ -77,8 +74,6 @@ public class DispenserActivity extends WaterDeviceBaseActivity<IDispenserPresent
         return v -> changeDispenser();
     }
 
-
-
     @Override
     protected View.OnClickListener setTopRightIconClickListener() {
         return v -> {
@@ -106,6 +101,16 @@ public class DispenserActivity extends WaterDeviceBaseActivity<IDispenserPresent
     }
 
     @Override
+    protected String getSlideButtonText() {
+        return getString(R.string.comma_start_drink);
+    }
+
+    @Override
+    protected String getBalanceTradeTip() {
+        return getString(R.string.balance_trade_tip_water);
+    }
+
+    @Override
     public IDispenserPresenter setPresenter() {
         return presenter;
     }
@@ -125,9 +130,15 @@ public class DispenserActivity extends WaterDeviceBaseActivity<IDispenserPresent
     @Override
     public void showGuide() {
         // 显示引导页
-        GuideDialog guideDialog = new GuideDialog(this, GuideDialog.TYPE_DISPENER);
-        guideDialog.setLocation(getLocation());
-        guideDialog.show();
+//        GuideDialog guideDialog = new GuideDialog(this, GuideDialog.TYPE_DISPENER);
+//        guideDialog.setLocation(getLocation());
+//        guideDialog.show();
+        showAlertNotice((dialog, isNotRemind) -> {
+            dialog.dismiss();
+            if (isNotRemind) {
+                presenter.notShowRemindAlert();
+            }
+        });
     }
 
     @Override

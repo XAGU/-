@@ -3,6 +3,7 @@ package com.xiaolian.amigo.ui.order;
 import android.text.TextUtils;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.enumeration.ComplaintType;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
@@ -35,7 +36,8 @@ public class OrderDetailPresenter<V extends IOrderDetailView> extends BasePresen
     public void checkComplaint() {
         CheckComplaintReqDTO reqDTO = new CheckComplaintReqDTO();
         reqDTO.setOrderId(order.getId());
-        reqDTO.setOrderType(Device.getDevice(order.getDeviceType()).getType());
+        reqDTO.setOrderType(ComplaintType.getComplaintTypeByDeviceType(
+                Device.getDevice(order.getDeviceType())).getType());
         addObserver(orderDataManager.checkComplaint(reqDTO), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
 
             @Override

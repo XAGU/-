@@ -9,7 +9,7 @@ import com.xiaolian.amigo.ui.base.BaseFragment;
  * <p>
  * Created by zcd on 17/11/6.
  */
-
+@Deprecated
 public class FavoriteDispenserFragment extends BaseFragment {
     @Override
     protected int setLayout() {

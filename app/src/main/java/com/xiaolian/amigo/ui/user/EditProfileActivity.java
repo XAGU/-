@@ -1,7 +1,6 @@
 package com.xiaolian.amigo.ui.user;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
@@ -122,7 +121,7 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
             case R.id.rel_edit_nickname:
                 intent = new Intent(this, EditNickNameActivity.class);
                 intent.putExtra(Constant.EXTRA_KEY, new EditNickNameActivity.Model(tv_nickname.getText().toString().trim()));
-                startActivityForResult(intent, REQUEST_CODE_EDIT_NICKNAME, new Bundle());
+                startActivityForResult(intent, REQUEST_CODE_EDIT_NICKNAME);
                 break;
             case R.id.rel_edit_sex:
                 intent = new Intent(this, ListChooseActivity.class);
@@ -136,8 +135,9 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
                 startActivityForResult(intent, REQUEST_CODE_EDIT_SEX);
                 break;
             case R.id.rel_edit_mobile:
-                intent = new Intent(this, CheckPasswordActivity.class);
-                startActivityForResult(intent, REQUEST_CODE_CHECK_PASSWORD);
+                onError("暂不支持修改手机号");
+//                intent = new Intent(this, CheckPasswordActivity.class);
+//                startActivityForResult(intent, REQUEST_CODE_CHECK_PASSWORD);
 //                ChangeMobileDialog dialog = new ChangeMobileDialog(this);
 //                dialog.setOnOkClickListener((dialog1, password) -> presenter.checkPassword(password));
 //                dialog.show();
@@ -145,7 +145,7 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
             case R.id.rel_edit_password:
                 intent = new Intent(this, EditPasswordActivity.class);
                 intent.putExtra("nickName", "");
-                startActivityForResult(intent, 1, new Bundle());
+                startActivityForResult(intent, 1);
                 break;
             case R.id.rel_edit_school:
                 presenter.checkChangeSchool();
@@ -180,8 +180,8 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
             return;
         }
         availabilityDialog.setOkText(getString(R.string.confirm));
+        availabilityDialog.setTitle("更换学校");
         availabilityDialog.setTip(getString(R.string.change_school_tip));
-        availabilityDialog.setSubTipVisible(false);
         availabilityDialog.setOnOkClickListener(dialog1 -> {
             Intent intent = new Intent(this, ListChooseActivity.class);
             intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION,
@@ -252,7 +252,7 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
         Intent intent;
         intent = new Intent(getApplicationContext(), EditMobileActivity.class);
         intent.putExtra("nickName", "");
-        startActivityForResult(intent, REQUEST_CODE_CHECK_PASSWORD, new Bundle());
+        startActivityForResult(intent, REQUEST_CODE_CHECK_PASSWORD);
     }
 
     @Override

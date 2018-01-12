@@ -34,6 +34,7 @@ import com.xiaolian.amigo.data.network.model.device.DeviceCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.order.OrderPreInfoDTO;
 import com.xiaolian.amigo.data.network.model.user.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
+import com.xiaolian.amigo.ui.device.DeviceConstant;
 import com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity;
 import com.xiaolian.amigo.ui.device.dispenser.ChooseDispenserActivity;
 import com.xiaolian.amigo.ui.device.dispenser.DispenserActivity;
@@ -78,6 +79,7 @@ import butterknife.OnClick;
 import lombok.Data;
 
 import static com.xiaolian.amigo.data.enumeration.Device.DISPENSER;
+import static com.xiaolian.amigo.data.enumeration.Device.DRYER;
 import static com.xiaolian.amigo.data.enumeration.Device.HEATER;
 import static com.xiaolian.amigo.util.Log.getContext;
 
@@ -153,6 +155,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     private AvailabilityDialog openLocationDialog;
     private int heaterOrderSize;
     private int dispenserOrderSize;
+    private int dryerOrderSize;
     private PrepayDialog prepayDialog;
     private Long lastRepairTime;
     private Boolean isServerError;
@@ -464,9 +467,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     void onSwitch(int current) {
         if (this.current != current) {
             if (current == 0) {
-                btSwitch.setBackgroundResource(R.drawable.home);
-            } else {
                 btSwitch.setBackgroundResource(R.drawable.profile);
+            } else {
+                btSwitch.setBackgroundResource(R.drawable.home);
             }
             onSwitch();
         }
@@ -615,15 +618,17 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             }
         }
         availabilityDialog.setType(AvailabilityDialog.Type.TIME_VALID);
-        availabilityDialog.setOkText(getString(R.string.keep_use));
-        availabilityDialog.setTip(data.getTitle());
-        availabilityDialog.setSubTip(data.getRemark());
+        availabilityDialog.setOkText(getString(R.string.keep_use_cold_water));
+        availabilityDialog.setTitle(data.getTitle());
+        availabilityDialog.setTip(data.getRemark());
         availabilityDialog.setOnOkClickListener(dialog1 -> {
             if (deviceType == Device.HEATER.getType()) {
                 presenter.gotoHeaterDevice(data.getDefaultMacAddress(), data.getLocation(),
                         data.getResidenceId());
             } else if (deviceType == Device.DISPENSER.getType()){
                 gotoChooseDispenser();
+            } else if (deviceType == Device.DRYER.getType()) {
+                gotoChooseDryer();
             }
         });
         availabilityDialog.show();
@@ -631,9 +636,20 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     private void gotoChooseDispenser() {
         Intent intent = new Intent(this, ChooseDispenserActivity.class);
+        intent.putExtra(DeviceConstant.INTENT_DEVICE_TYPE, Device.DISPENSER.getType());
+        intent.putExtra(DeviceConstant.INTENT_KEY_ACTION, DeviceConstant.ACTION_CHOOSE_DISPENSER);
         intent.putExtra(WaterDeviceBaseActivity.INTENT_PREPAY_INFO, orderPreInfo);
         startActivity(intent);
     }
+
+    private void gotoChooseDryer() {
+        Intent intent = new Intent(this, ChooseDispenserActivity.class);
+        intent.putExtra(DeviceConstant.INTENT_DEVICE_TYPE, Device.DRYER.getType());
+        intent.putExtra(DeviceConstant.INTENT_KEY_ACTION, DeviceConstant.ACTION_CHOOSE_DRYER);
+        intent.putExtra(WaterDeviceBaseActivity.INTENT_PREPAY_INFO, orderPreInfo);
+        startActivity(intent);
+    }
+
 
     @Override
     public void gotoDevice(Device device, String macAddress, String location, Long residenceId, boolean recovery) {
@@ -663,6 +679,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             intent.putExtra(INTENT_KEY_MAC_ADDRESS, macAddress);
             intent.putExtra(INTENT_KEY_DEVICE_TYPE, Device.DISPENSER.getType());
             intent.putExtra(DispenserActivity.INTENT_KEY_ID, residenceId);
+            intent.putExtra(MainActivity.INTENT_KEY_RESIDENCE_ID, residenceId);
             intent.putExtra(MainActivity.INTENT_KEY_RECOVERY, recovery);
             intent.putExtra(DispenserActivity.INTENT_KEY_FAVOR, favor);
             intent.putExtra(DispenserActivity.INTENT_KEY_TEMPERATURE, String.valueOf(usefor));
@@ -726,6 +743,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 heaterOrderSize = business.getPrepayOrder();
             } else if (business.getBusinessId() == 2) {
                 dispenserOrderSize = business.getPrepayOrder();
+            } else if (business.getBusinessId() == 3) {
+                dryerOrderSize = business.getPrepayOrder();
             }
         }
         EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.SCHOOL_BIZ,
@@ -749,6 +768,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         orderPreInfo.setCsMobile(data.getCsMobile());
         orderPreInfo.setMinPrepay(data.getMinPrepay());
         orderPreInfo.setPrepay(data.getPrepay());
+        orderPreInfo.setPrice(data.getPrice());
         // 2小时内存在未找零订单
         if (data.getExistsUnsettledOrder() != null && data.getExistsUnsettledOrder()) {
             // 1 表示热水澡 2 表示饮水机
@@ -759,12 +779,17 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             } else if (type == Device.DISPENSER.getType()){
                 gotoDispenser(data.getUnsettledMacAddress(), data.getLocation(), data.getResidenceId(),
                         data.getFavor(), data.getUsefor(),true);
+            } else if (type == Device.DRYER.getType()) {
+                gotoDevice(DRYER, data.getUnsettledMacAddress(), data.getLocation(),
+                        data.getResidenceId(), true);
             }
         } else {
             if (type == Device.HEATER.getType() && heaterOrderSize > 0) {
                 showPrepayDialog(type, heaterOrderSize, data);
             } else if (type == Device.DISPENSER.getType() && dispenserOrderSize > 0) {
                 showPrepayDialog(type, dispenserOrderSize, data);
+            } else if (type == Device.DRYER.getType() && dryerOrderSize > 0) {
+                showPrepayDialog(type, dryerOrderSize, data);
             } else {
                 // 如果热水澡 检查默认宿舍
                 if (type == Device.HEATER.getType() && !presenter.checkDefaultDormitoryExist()) {
@@ -778,9 +803,12 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                         // 前往默认宿舍的热水澡
                         presenter.gotoHeaterDevice(data.getDefaultMacAddress(), data.getLocation(),
                                 data.getResidenceId());
-                    } else if (type == Device.DISPENSER.getType()){
+                    } else if (type == Device.DISPENSER.getType()) {
                         // 进入饮水机选择页面
                         gotoChooseDispenser();
+                    } else if (type == Device.DRYER.getType()) {
+                        // 进入吹风机选择页面 复用饮水机选择页面
+                        gotoChooseDryer();
                     }
                 }
             }
@@ -799,8 +827,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         }
         availabilityDialog.setType(AvailabilityDialog.Type.BIND_DORMITORY);
         availabilityDialog.setOkText("前往绑定");
-        availabilityDialog.setTip("需要先绑定宿舍信息");
-        availabilityDialog.setSubTipVisible(false);
+        availabilityDialog.setTitle(AvailabilityDialog.Type.BIND_DORMITORY.getTitle());
+        availabilityDialog.setTip("热水澡需要先绑定宿舍");
         availabilityDialog.setOnOkClickListener(dialog1 -> {
             Intent intent;
             intent = new Intent(this, ListChooseActivity.class);
@@ -827,7 +855,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         openLocationDialog.setType(AvailabilityDialog.Type.OPEN_LOCAION_SERVICE);
         openLocationDialog.setOkText("前往设置");
         openLocationDialog.setTip("设备用水需要开启位置服务");
-        openLocationDialog.setSubTipVisible(false);
         openLocationDialog.setOnOkClickListener(dialog1 -> {
             Intent locationIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
             this.startActivityForResult(locationIntent, REQUEST_LOCATION);
@@ -849,9 +876,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             }
         }
         availabilityDialog.setType(AvailabilityDialog.Type.NO_DEVICE);
+        availabilityDialog.setTitle(AvailabilityDialog.Type.NO_DEVICE.getTitle());
         availabilityDialog.setOkText("前往设置");
-        availabilityDialog.setTip("你的默认宿舍无设备");
-        availabilityDialog.setSubTipVisible(false);
+        availabilityDialog.setTip("请确认宿舍信息，或更换宿舍");
         availabilityDialog.setOnOkClickListener(dialog1 ->
                 startActivity(new Intent(MainActivity.this, EditDormitoryActivity.class)));
         availabilityDialog.show();
@@ -882,6 +909,19 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 });
     }
 
+    @Override
+    public String getAndroidId() {
+        @SuppressLint("HardwareIds")
+        String androidId = Settings.Secure.getString(getContext().getContentResolver(),
+                Settings.Secure.ANDROID_ID);
+        return androidId;
+    }
+
+    @Override
+    public String getAppVersion() {
+        return AppUtils.getVersionName(this);
+    }
+
     public void refreshProfile() {
         PersonalExtraInfoDTO data = new PersonalExtraInfoDTO();
         data.setBalance(Double.valueOf(presenter.getBalance()));
@@ -907,6 +947,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                             data.getResidenceId());
                 } else if (type == Device.DISPENSER.getType()){
                     gotoChooseDispenser();
+                } else if (type == Device.DRYER.getType()) {
+                    gotoChooseDryer();
                 }
             } else {
                 showTimeValidDialog(type, data);
@@ -956,6 +998,14 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         setBleCallback(() -> checkDeviceUsage(DISPENSER));
         getBlePermission();
     }
+
+    // 点击进入吹风机页面
+    private void gotoDryer() {
+        Log.d(TAG, "gotoDryer");
+        setBleCallback(() -> checkDeviceUsage(DRYER));
+        getBlePermission();
+    }
+
 
     /**
      * 点击进入失物招领
@@ -1010,7 +1060,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(Event event) {
-        Log.d(TAG, "onEvent: " + event.getType().type);
+        Log.d(TAG, "onEvent: " + event.getType());
         switch (event.getType()) {
             case GOTO_HEATER:
                 if (checkLogin()) {
@@ -1022,6 +1072,11 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             case GOTO_DISPENSER:
                 if (checkLogin()) {
                     gotoDispenser();
+                }
+                break;
+            case GOTO_DRYER:
+                if (checkLogin()) {
+                    gotoDryer();
                 }
                 break;
             case GOTO_LOST_AND_FOUND:
@@ -1056,17 +1111,13 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         }
 
         public enum EventType {
-            GOTO_HEATER(1),
-            GOTO_DISPENSER(2),
-            GOTO_LOST_AND_FOUND(3),
-            START_ACTIVITY(4),
-            REFRESH_NOTICE(5),
-            LOGOUT(6);
-            private int type;
-
-            EventType(int type) {
-                this.type = type;
-            }
+            GOTO_HEATER(),
+            GOTO_DRYER(),
+            GOTO_DISPENSER(),
+            GOTO_LOST_AND_FOUND(),
+            START_ACTIVITY(),
+            REFRESH_NOTICE(),
+            LOGOUT()
         }
     }
 

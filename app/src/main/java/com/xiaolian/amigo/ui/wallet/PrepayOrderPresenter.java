@@ -16,11 +16,11 @@ import javax.inject.Inject;
 public class PrepayOrderPresenter<V extends IPrepayOrderView> extends BasePresenter<V>
         implements IPrepayOrderPresenter<V> {
     private static final String TAG = PrepayOrderPresenter.class.getSimpleName();
-    private IWalletDataManager manager;
+    private IWalletDataManager walletDataManager;
 
     @Inject
-    public PrepayOrderPresenter(IWalletDataManager manager) {
+    public PrepayOrderPresenter(IWalletDataManager walletDataManager) {
         super();
-        this.manager = manager;
+        this.walletDataManager = walletDataManager;
     }
 }

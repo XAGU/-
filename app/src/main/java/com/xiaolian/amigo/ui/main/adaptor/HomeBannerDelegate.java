@@ -3,8 +3,6 @@ package com.xiaolian.amigo.ui.main.adaptor;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
-import com.xiaolian.amigo.util.Log;
-
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -14,6 +12,7 @@ import com.xiaolian.amigo.data.network.model.system.BannerDTO;
 import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.util.Log;
 import com.youth.banner.Banner;
 import com.youth.banner.loader.ImageLoader;
 import com.zhy.adapter.recyclerview.base.ItemViewDelegate;

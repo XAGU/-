@@ -7,12 +7,15 @@ import com.xiaolian.amigo.data.network.IFundsApi;
 import com.xiaolian.amigo.data.network.IOrderApi;
 import com.xiaolian.amigo.data.network.ITradeApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.device.QueryWaterListReqDTO;
-import com.xiaolian.amigo.data.network.model.device.QueryWaterListRespDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleQueryReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
-import com.xiaolian.amigo.data.network.model.cs.CsMobileRespDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
+import com.xiaolian.amigo.data.network.model.cs.CsMobileRespDTO;
+import com.xiaolian.amigo.data.network.model.device.FavorDeviceReqDTO;
+import com.xiaolian.amigo.data.network.model.device.QueryDeviceListReqDTO;
+import com.xiaolian.amigo.data.network.model.device.QueryDeviceListRespDTO;
+import com.xiaolian.amigo.data.network.model.device.QueryFavorDeviceRespDTO;
+import com.xiaolian.amigo.data.network.model.device.QueryWaterListRespDTO;
 import com.xiaolian.amigo.data.network.model.funds.PersonalWalletDTO;
 import com.xiaolian.amigo.data.network.model.order.OrderPreInfoDTO;
 import com.xiaolian.amigo.data.network.model.order.QueryPrepayOptionReqDTO;
@@ -100,8 +103,8 @@ public class DeviceDataManager implements IDeviceDataManager {
     }
 
     @Override
-    public Observable<ApiResult<QueryWaterListRespDTO>> handleScanDevices(QueryWaterListReqDTO reqDTO) {
-        return tradeApi.handleScanDevices(reqDTO);
+    public Observable<ApiResult<QueryDeviceListRespDTO>> handleScanDevices(QueryDeviceListReqDTO reqDTO) {
+        return deviceApi.getDeviceList(reqDTO);
     }
 
     @Override
@@ -146,36 +149,64 @@ public class DeviceDataManager implements IDeviceDataManager {
 
     @Override
     public boolean isHeaterGuideDone() {
-        return sharedPreferencesHelp.isHeaterGuideDone();
+        return !(sharedPreferencesHelp.getHeaterGuide() != null
+                && sharedPreferencesHelp.getHeaterGuide() < 3);
     }
 
     @Override
     public void doneHeaterGuide() {
-        sharedPreferencesHelp.doneHeaterGuide();
+        sharedPreferencesHelp.setHeaterGuide(sharedPreferencesHelp.getHeaterGuide() + 1);
+    }
+
+    @Override
+    public void setHeaterGuide(Integer guideTime) {
+        sharedPreferencesHelp.setHeaterGuide(guideTime);
     }
 
     @Override
     public boolean isDispenserGuideDone() {
-        return sharedPreferencesHelp.isDispenserGuideDone();
+        return !(sharedPreferencesHelp.getDispenserGuide() != null
+                && sharedPreferencesHelp.getDispenserGuide() < 3);
     }
 
     @Override
     public void doneDispenserGuide() {
-        sharedPreferencesHelp.doneDispenserGuide();
+        sharedPreferencesHelp.setDispenserGuide(sharedPreferencesHelp.getDispenserGuide() + 1);
     }
 
     @Override
-    public Observable<ApiResult<SimpleRespDTO>> favorite(SimpleReqDTO reqDTO) {
+    public void setDispenserGuide(Integer guideTime) {
+        sharedPreferencesHelp.setDispenserGuide(guideTime);
+    }
+
+    @Override
+    public boolean isDryerGuideDone() {
+        return !(sharedPreferencesHelp.getDryerGuide() != null
+                && sharedPreferencesHelp.getDryerGuide() < 3);
+    }
+
+    @Override
+    public void doneDryerGuide() {
+        sharedPreferencesHelp.setDryerGuide(sharedPreferencesHelp.getDryerGuide() + 1);
+    }
+
+    @Override
+    public void setDryerGuide(Integer guideTime) {
+        sharedPreferencesHelp.setDryerGuide(guideTime);
+    }
+
+    @Override
+    public Observable<ApiResult<SimpleRespDTO>> favorite(FavorDeviceReqDTO reqDTO) {
         return deviceApi.favorite(reqDTO);
     }
 
     @Override
-    public Observable<ApiResult<SimpleRespDTO>> unFavorite(SimpleReqDTO reqDTO) {
+    public Observable<ApiResult<SimpleRespDTO>> unFavorite(FavorDeviceReqDTO reqDTO) {
         return deviceApi.unFavorite(reqDTO);
     }
 
     @Override
-    public Observable<ApiResult<QueryWaterListRespDTO>> queryFavorites(SimpleQueryReqDTO reqDTO) {
-        return deviceApi.queryFavorites(reqDTO);
+    public Observable<ApiResult<QueryFavorDeviceRespDTO>> getFavorites(QueryDeviceListReqDTO reqDTO) {
+        return deviceApi.getFavorites(reqDTO);
     }
 }

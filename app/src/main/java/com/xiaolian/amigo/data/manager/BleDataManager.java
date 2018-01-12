@@ -2,7 +2,6 @@ package com.xiaolian.amigo.data.manager;
 
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
-import android.os.ParcelUuid;
 import android.support.annotation.NonNull;
 
 import com.polidea.rxandroidble.RxBleClient;

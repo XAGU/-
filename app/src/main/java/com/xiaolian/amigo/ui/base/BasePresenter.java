@@ -383,7 +383,7 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
         @Override
         public void onError(Throwable e) {
             try {
-                Log.d(TAG, e.getMessage());
+                Log.wtf(TAG, e);
                 if (renderView) {
                     onRemoteInvocationError(e);
                     view.hideLoading();

@@ -7,20 +7,10 @@ import lombok.Data;
  */
 @Data
 public class ScanDevice {
-
     private Long id;
-
-    private String hardwareNo;
-
     private String macAddress;
-
-    private Integer type;
-
-    private Double price;
-
+    private Integer price;
     private Integer pulse;
-
     private String usefor;
-
     private String name;
 }

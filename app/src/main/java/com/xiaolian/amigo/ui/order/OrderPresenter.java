@@ -22,8 +22,6 @@ import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.order.OrderInListDTO;
 import com.xiaolian.amigo.data.network.model.order.OrderReqDTO;
 import com.xiaolian.amigo.data.network.model.order.OrderRespDTO;
-import com.xiaolian.amigo.data.network.model.order.Order;
-import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.order.adaptor.OrderAdaptor;
 import com.xiaolian.amigo.ui.order.intf.IOrderPresenter;

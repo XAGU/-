@@ -50,4 +50,6 @@ public class Order implements Serializable {
     private String actualDebit;
     // 是否是最低消费
     private Boolean lowest;
+    // residenceId
+    private Long residenceId;
 }
