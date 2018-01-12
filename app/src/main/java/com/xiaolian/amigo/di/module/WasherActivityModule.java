@@ -18,10 +18,15 @@ package com.xiaolian.amigo.di.module;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
+import com.xiaolian.amigo.data.manager.WasherDataManager;
+import com.xiaolian.amigo.data.manager.intf.IWasherDataManager;
 import com.xiaolian.amigo.di.WasherActivityContext;
-import com.xiaolian.amigo.ui.washer.WashPresenter;
-import com.xiaolian.amigo.ui.washer.intf.IWashPresenter;
-import com.xiaolian.amigo.ui.washer.intf.IWashView;
+import com.xiaolian.amigo.ui.washer.ChooseWashModePresenter;
+import com.xiaolian.amigo.ui.washer.WasherPresenter;
+import com.xiaolian.amigo.ui.washer.intf.IChooseWashModePresenter;
+import com.xiaolian.amigo.ui.washer.intf.IChooseWashModeView;
+import com.xiaolian.amigo.ui.washer.intf.IWasherPresenter;
+import com.xiaolian.amigo.ui.washer.intf.IWasherView;
 
 import dagger.Module;
 import dagger.Provides;
@@ -47,9 +52,21 @@ public class WasherActivityModule {
 
     @Provides
     @WasherActivityContext
-    IWashPresenter<IWashView> provideWasherPresenter(
-            WashPresenter<IWashView> presenter) {
+    IWasherPresenter<IWasherView> provideWasherPresenter(
+            WasherPresenter<IWasherView> presenter) {
         return presenter;
+    }
+
+    @Provides
+    @WasherActivityContext
+    IChooseWashModePresenter<IChooseWashModeView> provideChooseWashModePresenter(
+            ChooseWashModePresenter<IChooseWashModeView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    IWasherDataManager provideWasherDataManager(WasherDataManager manager) {
+        return manager;
     }
 
 }

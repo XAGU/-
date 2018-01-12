@@ -384,6 +384,10 @@
             </intent-filter>
         </activity>
 
+        <!--选择洗衣机模式页面-->
+        <activity android:name=".ui.washer.ChooseWashModeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
         <!--更新窗口-->
         <activity
