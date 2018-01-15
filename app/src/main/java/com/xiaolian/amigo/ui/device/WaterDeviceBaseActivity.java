@@ -277,7 +277,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     }
 
     private void initView() {
-        tv_connect_status.setText(recorvery ? "正在恢复上一次用水" : "正在连接设备, 请稍后");
+        tv_connect_status.setText(recorvery ? "正在恢复上一次使用" : "正在连接设备, 请稍后");
         toggleSubTitle(!recorvery);
         tv_device_title.setText(location);
         setHeaderBackground(setHeaderBackgroundDrawable());
