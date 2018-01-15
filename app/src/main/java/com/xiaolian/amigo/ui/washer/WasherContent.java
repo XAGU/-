@@ -6,7 +6,8 @@ package com.xiaolian.amigo.ui.washer;
  * Created by zcd on 18/1/15.
  */
 
-public class WasherContent {
-    public static final String INTENT_KEY_PRICE = "intent_key_price";
-    public static final String INTENT_KEY_MODE = "intent_key_mode";
+class WasherContent {
+    static final String INTENT_KEY_PRICE = "intent_key_price";
+    static final String INTENT_KEY_MODE = "intent_key_mode";
+    static final String INTENT_KEY_QR_CODE_URL = "intent_key_qr_code_url";
 }

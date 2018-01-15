@@ -44,21 +44,20 @@ public class ScanActivity extends Activity
 //        }
 
         capture = new CustomCaptureManager(this, barcodeScannerView);
-        capture.setResultCallback(new CustomCaptureManager.ResultCallback() {
-            @Override
-            public void callback(int requestCode, int resultCode, Intent intent) {
-                IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-                if(result != null) {
-                    if(result.getContents() == null) {
-                        Log.d(TAG, "Cancelled");
-                        Toast.makeText(ScanActivity.this, "Cancelled", Toast.LENGTH_LONG).show();
-                    } else {
-                        Log.d(TAG, "Scanned: " + result.getContents());
-                        Toast.makeText(ScanActivity.this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
-                    }
+        capture.setResultCallback((requestCode, resultCode, intent) -> {
+            IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+            if(result != null) {
+                if(result.getContents() == null) {
+                    Log.d(TAG, "Cancelled");
+                    Toast.makeText(ScanActivity.this, "Cancelled", Toast.LENGTH_LONG).show();
+                } else {
+                    Log.d(TAG, "Scanned: " + result.getContents());
+                    Toast.makeText(ScanActivity.this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(ScanActivity.this, ChooseWashModeActivity.class));
+                    finish();
                 }
-
             }
+
         });
         capture.initializeFromIntent(getIntent(), savedInstanceState);
         capture.decode();

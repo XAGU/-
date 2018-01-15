@@ -31,17 +31,6 @@
             android:layout_alignParentStart="true"
             android:text="@string/choose_washer_mode" />
     </LinearLayout>
-
-    <Button
-        android:visibility="gone"
-        tools:text="支付4元，开始使用"
-        android:layout_alignParentBottom="true"
-        android:enabled="true"
-        android:id="@+id/bt_submit"
-        style="@style/DeviceButton"
-        android:layout_marginTop="0dp"
-        />
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:overScrollMode="never"

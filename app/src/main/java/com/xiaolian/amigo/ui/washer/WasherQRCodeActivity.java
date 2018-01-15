@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.washer;
 
+import android.graphics.Bitmap;
 import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -23,6 +24,7 @@ public class WasherQRCodeActivity extends WasherBaseActivity implements IWasherQ
     @Inject
     IWasherQRCodePresenter<IWasherQRCodeView> presenter;
     private TextView tv_top_bar;
+    private ImageView iv_qr_code;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,17 +42,25 @@ public class WasherQRCodeActivity extends WasherBaseActivity implements IWasherQ
             hideLoading();
             onBackPressed();
         });
+        iv_qr_code = findViewById(R.id.iv_qr_code);
     }
 
     @Override
     protected void setUp() {
         String mode = getIntent().getStringExtra(WasherContent.INTENT_KEY_MODE);
         String price = getIntent().getStringExtra(WasherContent.INTENT_KEY_PRICE);
+        String url = getIntent().getStringExtra(WasherContent.INTENT_KEY_QR_CODE_URL);
         renderTopBar(price, mode);
-        presenter.generateQRCode(price, mode);
+        iv_qr_code.post(() ->
+                presenter.generateQRCode(price, mode, iv_qr_code.getWidth()));
     }
 
     private void renderTopBar(String price, String mode) {
         tv_top_bar.setText(getString(R.string.washer_qr_code_top_bar_tip, price, mode));
+    }
+
+    @Override
+    public void renderQRCode(Bitmap bitmap) {
+        iv_qr_code.setImageBitmap(bitmap);
     }
 }

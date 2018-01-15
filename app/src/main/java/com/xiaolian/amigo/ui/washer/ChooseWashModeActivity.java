@@ -17,6 +17,7 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.washer.intf.IChooseWashModePresenter;
 import com.xiaolian.amigo.ui.washer.intf.IChooseWashModeView;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
+import com.xiaolian.amigo.ui.widget.dialog.WasherModeDialog;
 import com.xiaolian.amigo.util.DimentionUtils;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
@@ -51,7 +52,7 @@ public class ChooseWashModeActivity extends WasherBaseActivity implements IChoos
                 }
             };
     private RecyclerView recyclerView;
-    private Button bt_submit;
+    private WasherModeDialog dialog;
     private ChooseWashModeAdapter adapter;
 
     @Override
@@ -68,15 +69,16 @@ public class ChooseWashModeActivity extends WasherBaseActivity implements IChoos
         adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                if (adapter.getLastChoosePosition() != -1) {
-                    items.get(adapter.getLastChoosePosition()).setChoose(false);
-                    items.get(position).setChoose(true);
-                } else {
-                    items.get(position).setChoose(true);
-                }
-                adapter.setLastChoosePosition(position);
-                adapter.notifyDataSetChanged();
-                toggleSubmitButton();
+//                if (adapter.getLastChoosePosition() != -1) {
+//                    items.get(adapter.getLastChoosePosition()).setChoose(false);
+//                    items.get(position).setChoose(true);
+//                } else {
+//                    items.get(position).setChoose(true);
+//                }
+//                adapter.setLastChoosePosition(position);
+//                adapter.notifyDataSetChanged();
+//                toggleSubmitButton();
+                showModeDetailDialog(items.get(position).getName(), items.get(position).getPrice());
             }
 
             @Override
@@ -86,26 +88,43 @@ public class ChooseWashModeActivity extends WasherBaseActivity implements IChoos
         });
     }
 
+    private void showModeDetailDialog(String name, String price) {
+        if (dialog == null) {
+            dialog = new WasherModeDialog(this);
+            dialog.setConfirmClickListener(() -> onModeConfirm(name, price));
+        }
+        dialog.setMode(name, price);
+        dialog.setSubmit(price);
+        dialog.show();
+    }
+
+    private void onModeConfirm(String name, String price) {
+        startActivity(new Intent(this, WasherQRCodeActivity.class)
+                .putExtra(WasherContent.INTENT_KEY_MODE, name)
+                .putExtra(WasherContent.INTENT_KEY_PRICE, price)
+                .putExtra(WasherContent.INTENT_KEY_QR_CODE_URL, "https://www.baidu.com"));
+    }
+
     private void toggleSubmitButton() {
-        if (adapter.getLastChoosePosition() == -1) {
-            return;
-        }
-        if (bt_submit.getVisibility() == View.GONE) {
-            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) recyclerView.getLayoutParams();
-            lp.bottomMargin = 0;
-            recyclerView.setLayoutParams(lp);
-            bt_submit.setVisibility(View.VISIBLE);
-        }
-        SpannableStringBuilder builder = new SpannableStringBuilder();
-        builder.append("支付");
-        String priceText = String.format("%s元", items.get(adapter.getLastChoosePosition()).getPrice());
-        SpannableString buttonSpan = new SpannableString(priceText);
-        buttonSpan.setSpan(new AbsoluteSizeSpan(
-                        DimentionUtils.convertSpToPixels(18, this)), 0, priceText.length(),
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        builder.append(buttonSpan);
-        builder.append("，开始使用");
-        bt_submit.setText(builder);
+//        if (adapter.getLastChoosePosition() == -1) {
+//            return;
+//        }
+//        if (bt_submit.getVisibility() == View.GONE) {
+//            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) recyclerView.getLayoutParams();
+//            lp.bottomMargin = 0;
+//            recyclerView.setLayoutParams(lp);
+//            bt_submit.setVisibility(View.VISIBLE);
+//        }
+//        SpannableStringBuilder builder = new SpannableStringBuilder();
+//        builder.append("支付");
+//        String priceText = String.format("%s元", items.get(adapter.getLastChoosePosition()).getPrice());
+//        SpannableString buttonSpan = new SpannableString(priceText);
+//        buttonSpan.setSpan(new AbsoluteSizeSpan(
+//                        DimentionUtils.convertSpToPixels(18, this)), 0, priceText.length(),
+//                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//        builder.append(buttonSpan);
+//        builder.append("，开始使用");
+//        bt_submit.setText(builder);
     }
 
     private void initRecyclerView() {
@@ -116,8 +135,8 @@ public class ChooseWashModeActivity extends WasherBaseActivity implements IChoos
 
     private void bindView() {
         recyclerView = findViewById(R.id.recyclerView);
-        bt_submit = findViewById(R.id.bt_submit);
-        bt_submit.setOnClickListener(v -> submit());
+//        bt_submit = findViewById(R.id.bt_submit);
+//        bt_submit.setOnClickListener(v -> submit());
         findViewById(R.id.iv_back).setOnClickListener(v -> {
             hideLoading();
             onBackPressed();

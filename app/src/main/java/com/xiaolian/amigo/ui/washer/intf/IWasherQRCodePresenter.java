@@ -9,5 +9,5 @@ import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
  */
 
 public interface IWasherQRCodePresenter<V extends IWasherQRCodeView> extends IBasePresenter<V> {
-    void generateQRCode(String price, String mode);
+    void generateQRCode(String price, String mode, int dimension);
 }

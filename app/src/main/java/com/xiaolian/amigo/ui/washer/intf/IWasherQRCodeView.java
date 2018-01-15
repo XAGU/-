@@ -1,5 +1,7 @@
 package com.xiaolian.amigo.ui.washer.intf;
 
+import android.graphics.Bitmap;
+
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 
 /**
@@ -9,4 +11,5 @@ import com.xiaolian.amigo.ui.base.intf.IBaseView;
  */
 
 public interface IWasherQRCodeView extends IBaseView {
+    void renderQRCode(Bitmap bitmap);
 }

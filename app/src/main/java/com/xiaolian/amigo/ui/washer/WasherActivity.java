@@ -56,16 +56,16 @@ public class WasherActivity extends WasherBaseActivity implements IWasherView {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-        if(result != null) {
-            if(result.getContents() == null) {
-                Log.d(TAG, "Cancelled");
-                Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
-            } else {
-                Log.d(TAG, "Scanned: " + result.getContents());
-                Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
-            }
-        }
+//        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+//        if(result != null) {
+//            if(result.getContents() == null) {
+//                Log.d(TAG, "Cancelled");
+//                Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
+//            } else {
+//                Log.d(TAG, "Scanned: " + result.getContents());
+//                Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
+//            }
+//        }
     }
 
     @Override

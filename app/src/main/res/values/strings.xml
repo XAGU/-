@@ -271,6 +271,6 @@
     <string name="used_time_colon">使用时长：</string>
     <string name="washer">洗衣机</string>
     <string name="washer_index_tip">触摸设备上的开关\n扫描屏幕里的二维码</string>
-    <string name="choose_washer_mode">选择洗衣机模式</string>
+    <string name="choose_washer_mode">请确认使用时再购买</string>
     <string name="washer_qr_code_top_bar_tip">已成功支付%1$s元(%2$s)</string>
 </resources>

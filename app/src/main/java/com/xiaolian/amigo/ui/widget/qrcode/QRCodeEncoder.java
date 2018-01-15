@@ -25,6 +25,7 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 
 import java.util.EnumMap;
+import java.util.Hashtable;
 import java.util.Map;
 
 /**
@@ -47,12 +48,13 @@ public final class QRCodeEncoder {
         if (contentsToEncode == null) {
             return null;
         }
-        Map<EncodeHintType, Object> hints = null;
+        Map<EncodeHintType, Object> hints = new Hashtable<>();
         String encoding = guessAppropriateEncoding(contentsToEncode);
         if (encoding != null) {
-            hints = new EnumMap<>(EncodeHintType.class);
+//            hints = new EnumMap<>(EncodeHintType.class);
             hints.put(EncodeHintType.CHARACTER_SET, encoding);
         }
+        hints.put(EncodeHintType.MARGIN, 0);
         BitMatrix result;
         try {
             result = new MultiFormatWriter().encode(contentsToEncode, BarcodeFormat.QR_CODE, dimension, dimension, hints);
