@@ -3,8 +3,12 @@ package com.xiaolian.amigo.ui.washer;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.washer.intf.IWasherPresenter;
 import com.xiaolian.amigo.ui.washer.intf.IWasherView;
@@ -18,6 +22,7 @@ import javax.inject.Inject;
  */
 
 public class WasherActivity extends WasherBaseActivity implements IWasherView {
+    private static final String TAG = WasherActivity.class.getSimpleName();
     @Inject
     IWasherPresenter<IWasherView> presenter;
 
@@ -31,11 +36,36 @@ public class WasherActivity extends WasherBaseActivity implements IWasherView {
     private void bindView() {
         LinearLayout ll_start_wash = findViewById(R.id.ll_start_wash);
         ll_start_wash.setOnClickListener(v ->
-            startActivity(new Intent(WasherActivity.this, ChooseWashModeActivity.class)));
+                scanQRCode());
         findViewById(R.id.iv_back).setOnClickListener(v -> {
             hideLoading();
             onBackPressed();
         });
+    }
+
+    private void scanQRCode() {
+//        startActivity(new Intent(this, CaptureActivity.class));
+        IntentIntegrator integrator = new IntentIntegrator(this);
+        integrator.setPrompt(""); //底部的提示文字，设为""可以置空
+        integrator.setCameraId(0); //前置或者后置摄像头
+        integrator.setBeepEnabled(false); //扫描成功的「哔哔」声，默认开启
+        integrator.setCaptureActivity(ScanActivity.class);
+        integrator.initiateScan();
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+        if(result != null) {
+            if(result.getContents() == null) {
+                Log.d(TAG, "Cancelled");
+                Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
+            } else {
+                Log.d(TAG, "Scanned: " + result.getContents());
+                Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     @Override

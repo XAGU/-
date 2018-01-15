@@ -149,7 +149,8 @@ dependencies {
     implementation deps.umeng
     implementation deps.oss
     //    implementation deps.acra
-    implementation project(':qrcodelib')
+    implementation deps.zxing
+    implementation deps.zxingEmbed
 }
 
 configurations.all {
