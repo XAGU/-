@@ -389,6 +389,14 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
 
+        <!--洗衣机展示二维码页面-->
+        <activity android:name=".ui.washer.WasherQRCodeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+
+
+
         <!--更新窗口-->
         <activity
             android:name=".ui.main.update.UpdateActivity"

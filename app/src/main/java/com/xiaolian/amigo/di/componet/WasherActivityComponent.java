@@ -19,6 +19,7 @@ package com.xiaolian.amigo.di.componet;
 import com.xiaolian.amigo.di.WasherActivityContext;
 import com.xiaolian.amigo.di.module.WasherActivityModule;
 import com.xiaolian.amigo.ui.washer.WasherActivity;
+import com.xiaolian.amigo.ui.washer.WasherQRCodeActivity;
 
 import dagger.Component;
 
@@ -27,4 +28,5 @@ import dagger.Component;
 @Component(dependencies = ApplicationComponent.class, modules = WasherActivityModule.class)
 public interface WasherActivityComponent {
     void inject(WasherActivity activity);
+    void inject(WasherQRCodeActivity activity);
 }

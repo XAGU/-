@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.washer;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -121,7 +122,11 @@ public class ChooseWashModeActivity extends WasherBaseActivity implements IChoos
 
     private void submit() {
         if (adapter.getLastChoosePosition() != -1) {
-            onSuccess(items.get(adapter.getLastChoosePosition()).getName());
+            String price = items.get(adapter.getLastChoosePosition()).getPrice();
+            String mode = items.get(adapter.getLastChoosePosition()).getName();
+            startActivity(new Intent(this, WasherQRCodeActivity.class)
+                    .putExtra(WasherContent.INTENT_KEY_MODE, mode)
+                    .putExtra(WasherContent.INTENT_KEY_PRICE, price));
         }
     }
 

@@ -23,9 +23,12 @@ import com.xiaolian.amigo.data.manager.intf.IWasherDataManager;
 import com.xiaolian.amigo.di.WasherActivityContext;
 import com.xiaolian.amigo.ui.washer.ChooseWashModePresenter;
 import com.xiaolian.amigo.ui.washer.WasherPresenter;
+import com.xiaolian.amigo.ui.washer.WasherQRCodePresenter;
 import com.xiaolian.amigo.ui.washer.intf.IChooseWashModePresenter;
 import com.xiaolian.amigo.ui.washer.intf.IChooseWashModeView;
 import com.xiaolian.amigo.ui.washer.intf.IWasherPresenter;
+import com.xiaolian.amigo.ui.washer.intf.IWasherQRCodePresenter;
+import com.xiaolian.amigo.ui.washer.intf.IWasherQRCodeView;
 import com.xiaolian.amigo.ui.washer.intf.IWasherView;
 
 import dagger.Module;
@@ -61,6 +64,13 @@ public class WasherActivityModule {
     @WasherActivityContext
     IChooseWashModePresenter<IChooseWashModeView> provideChooseWashModePresenter(
             ChooseWashModePresenter<IChooseWashModeView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    @WasherActivityContext
+    IWasherQRCodePresenter<IWasherQRCodeView> provideWasherQRCodePresenter(
+            WasherQRCodePresenter<IWasherQRCodeView> presenter) {
         return presenter;
     }
 

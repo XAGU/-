@@ -1,9 +1,11 @@
 package com.xiaolian.amigo.ui.washer;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-
+import com.xiaolian.amigo.data.manager.intf.IWasherDataManager;
+import com.xiaolian.amigo.ui.base.BasePresenter;
+import com.xiaolian.amigo.ui.washer.intf.IWasherQRCodePresenter;
 import com.xiaolian.amigo.ui.washer.intf.IWasherQRCodeView;
+
+import javax.inject.Inject;
 
 /**
  * 洗衣机展示二维码
@@ -11,14 +13,17 @@ import com.xiaolian.amigo.ui.washer.intf.IWasherQRCodeView;
  * Created by zcd on 18/1/12.
  */
 
-public class WasherQRCodePresenter extends WasherBaseActivity implements IWasherQRCodeView{
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+public class WasherQRCodePresenter<V extends IWasherQRCodeView> extends BasePresenter<V>
+        implements IWasherQRCodePresenter<V>{
+    private IWasherDataManager washerDataManager;
+
+    @Inject
+    WasherQRCodePresenter(IWasherDataManager washerDataManager) {
+        this.washerDataManager = washerDataManager;
     }
 
     @Override
-    protected void setUp() {
+    public void generateQRCode(String price, String mode) {
 
     }
 }

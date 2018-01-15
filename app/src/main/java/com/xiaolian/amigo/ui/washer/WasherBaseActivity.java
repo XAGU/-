@@ -33,7 +33,6 @@ public abstract class WasherBaseActivity extends BaseActivity {
                 .washerActivityModule(new WasherActivityModule(this))
                 .applicationComponent(((MvpApp) getApplication()).getComponent())
                 .build();
-
     }
 
     public WasherActivityComponent getActivityComponent() {
