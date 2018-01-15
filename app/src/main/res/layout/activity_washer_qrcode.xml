@@ -7,13 +7,15 @@
     android:layout_height="match_parent">
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="42dp">
+        android:layout_height="wrap_content">
         <ImageView
             android:id="@+id/iv_back"
             android:layout_gravity="center_vertical"
             android:layout_width="wrap_content"
-            android:paddingStart="@dimen/mainMarginLeftRight"
-            android:paddingEnd="0dp"
+            android:paddingLeft="@dimen/toolBarMarginLeft"
+            android:paddingBottom="@dimen/toolBarInnerMargin"
+            android:paddingRight="@dimen/toolBarMarginLeft"
+            android:paddingTop="@dimen/toolBarMarginTop"
             android:layout_height="wrap_content"
             android:src="@drawable/arrow_left_white" />
         <TextView

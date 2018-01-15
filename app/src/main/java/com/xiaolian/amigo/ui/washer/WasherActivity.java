@@ -32,6 +32,10 @@ public class WasherActivity extends WasherBaseActivity implements IWasherView {
         LinearLayout ll_start_wash = findViewById(R.id.ll_start_wash);
         ll_start_wash.setOnClickListener(v ->
             startActivity(new Intent(WasherActivity.this, ChooseWashModeActivity.class)));
+        findViewById(R.id.iv_back).setOnClickListener(v -> {
+            hideLoading();
+            onBackPressed();
+        });
     }
 
     @Override

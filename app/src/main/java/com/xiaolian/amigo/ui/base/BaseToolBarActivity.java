@@ -31,10 +31,10 @@ public abstract class BaseToolBarActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base_toolbar);
-        ll_main_content = (LinearLayout) findViewById(R.id.ll_main_content);
+        ll_main_content = findViewById(R.id.ll_main_content);
         View layout = LayoutInflater.from(this).inflate(setLayout(), null, true);
         ll_main_content.addView(layout);
-        sv_main_container = (ScrollView) findViewById(R.id.sv_main_container);
+        sv_main_container = findViewById(R.id.sv_main_container);
         OverScrollDecoratorHelper.setUpOverScroll(sv_main_container);
         setUp();
         initToolBar();

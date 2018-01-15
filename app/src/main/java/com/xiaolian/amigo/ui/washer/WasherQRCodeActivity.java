@@ -1,7 +1,9 @@
 package com.xiaolian.amigo.ui.washer;
 
+import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
@@ -16,7 +18,7 @@ import javax.inject.Inject;
  * Created by zcd on 18/1/12.
  */
 
-public class WasherQRCodeActivity extends WasherBaseActivity implements IWasherQRCodeView{
+public class WasherQRCodeActivity extends WasherBaseActivity implements IWasherQRCodeView {
 
     @Inject
     IWasherQRCodePresenter<IWasherQRCodeView> presenter;
@@ -34,6 +36,10 @@ public class WasherQRCodeActivity extends WasherBaseActivity implements IWasherQ
 
     private void bindView() {
         tv_top_bar = findViewById(R.id.tv_top_bar);
+        findViewById(R.id.iv_back).setOnClickListener(v -> {
+            hideLoading();
+            onBackPressed();
+        });
     }
 
     @Override

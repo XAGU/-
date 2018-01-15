@@ -118,6 +118,10 @@ public class ChooseWashModeActivity extends WasherBaseActivity implements IChoos
         recyclerView = findViewById(R.id.recyclerView);
         bt_submit = findViewById(R.id.bt_submit);
         bt_submit.setOnClickListener(v -> submit());
+        findViewById(R.id.iv_back).setOnClickListener(v -> {
+            hideLoading();
+            onBackPressed();
+        });
     }
 
     private void submit() {
