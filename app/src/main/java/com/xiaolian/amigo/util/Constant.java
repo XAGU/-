@@ -50,6 +50,8 @@ public final class Constant {
     public static final String H5_COMPLAINT = H5_SERVER + "/complaint";
     // H5意见反馈
     public static final String H5_FEEDBACK = H5_SERVER + "/feedback";
+    // H5账户迁移
+    public static final String H5_MIGRATE = H5_SERVER + "/migration/home";
     // 账单里没用水却扣钱的引导页
     public static final String H5_NO_USE_HELP = H5_SERVER + "/help/detail?toNative=1";
 
