@@ -1,4 +1,4 @@
-package com.xiaolian.amigo.ui.washer;
+package com.xiaolian.amigo.ui.device.washer;
 
 import android.content.Context;
 

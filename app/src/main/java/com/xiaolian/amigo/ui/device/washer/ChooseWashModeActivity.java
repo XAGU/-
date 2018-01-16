@@ -1,24 +1,17 @@
-package com.xiaolian.amigo.ui.washer;
+package com.xiaolian.amigo.ui.device.washer;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
-import android.text.style.AbsoluteSizeSpan;
 import android.view.View;
-import android.widget.Button;
-import android.widget.RelativeLayout;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.ui.washer.intf.IChooseWashModePresenter;
-import com.xiaolian.amigo.ui.washer.intf.IChooseWashModeView;
+import com.xiaolian.amigo.ui.device.washer.intf.IChooseWashModePresenter;
+import com.xiaolian.amigo.ui.device.washer.intf.IChooseWashModeView;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.ui.widget.dialog.WasherModeDialog;
-import com.xiaolian.amigo.util.DimentionUtils;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import java.util.ArrayList;

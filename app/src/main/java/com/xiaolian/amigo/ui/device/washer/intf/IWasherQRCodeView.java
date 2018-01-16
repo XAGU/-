@@ -1,4 +1,4 @@
-package com.xiaolian.amigo.ui.washer.intf;
+package com.xiaolian.amigo.ui.device.washer.intf;
 
 import android.graphics.Bitmap;
 

@@ -18,8 +18,8 @@ package com.xiaolian.amigo.di.componet;
 
 import com.xiaolian.amigo.di.WasherActivityContext;
 import com.xiaolian.amigo.di.module.WasherActivityModule;
-import com.xiaolian.amigo.ui.washer.WasherActivity;
-import com.xiaolian.amigo.ui.washer.WasherQRCodeActivity;
+import com.xiaolian.amigo.ui.device.washer.WasherActivity;
+import com.xiaolian.amigo.ui.device.washer.WasherQRCodeActivity;
 
 import dagger.Component;
 

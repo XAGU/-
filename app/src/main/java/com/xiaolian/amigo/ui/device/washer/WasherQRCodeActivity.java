@@ -1,15 +1,14 @@
-package com.xiaolian.amigo.ui.washer;
+package com.xiaolian.amigo.ui.device.washer;
 
 import android.graphics.Bitmap;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.ui.washer.intf.IWasherQRCodePresenter;
-import com.xiaolian.amigo.ui.washer.intf.IWasherQRCodeView;
+import com.xiaolian.amigo.ui.device.washer.intf.IWasherQRCodePresenter;
+import com.xiaolian.amigo.ui.device.washer.intf.IWasherQRCodeView;
 
 import javax.inject.Inject;
 

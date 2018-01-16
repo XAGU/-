@@ -1,4 +1,4 @@
-package com.xiaolian.amigo.ui.washer;
+package com.xiaolian.amigo.ui.device.washer;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,9 +9,6 @@ import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-import com.journeyapps.barcodescanner.CaptureActivity;
-import com.journeyapps.barcodescanner.CaptureManager;
-import com.journeyapps.barcodescanner.CompoundBarcodeView;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.widget.qrcode.CustomCaptureManager;

@@ -375,7 +375,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <!--洗衣机首页-->
-        <activity android:name=".ui.washer.WasherActivity"
+        <activity android:name=".ui.device.washer.WasherActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -385,17 +385,17 @@
         </activity>
 
         <!--选择洗衣机模式页面-->
-        <activity android:name=".ui.washer.ChooseWashModeActivity"
+        <activity android:name=".ui.device.washer.ChooseWashModeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
 
         <!--洗衣机展示二维码页面-->
-        <activity android:name=".ui.washer.WasherQRCodeActivity"
+        <activity android:name=".ui.device.washer.WasherQRCodeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             />
 
-        <activity android:name=".ui.washer.ScanActivity"
+        <activity android:name=".ui.device.washer.ScanActivity"
             android:screenOrientation="portrait"
             android:stateNotNeeded="true"
             android:theme="@style/zxing_CaptureTheme"

@@ -1,4 +1,4 @@
-package com.xiaolian.amigo.ui.washer;
+package com.xiaolian.amigo.ui.device.washer;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -6,12 +6,9 @@ import android.support.annotation.Nullable;
 import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.di.componet.DaggerWalletActivityComponent;
 import com.xiaolian.amigo.di.componet.DaggerWasherActivityComponent;
-import com.xiaolian.amigo.di.componet.WalletActivityComponent;
 import com.xiaolian.amigo.di.componet.WasherActivityComponent;
-import com.xiaolian.amigo.di.module.WalletActivityModule;
 import com.xiaolian.amigo.di.module.WasherActivityModule;
 import com.xiaolian.amigo.ui.base.BaseActivity;
-import com.xiaolian.amigo.ui.base.BaseToolBarActivity;
 
 /**
  * 洗衣机模块base activity

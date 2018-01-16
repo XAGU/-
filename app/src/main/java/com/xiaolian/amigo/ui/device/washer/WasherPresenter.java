@@ -1,8 +1,8 @@
-package com.xiaolian.amigo.ui.washer;
+package com.xiaolian.amigo.ui.device.washer;
 
 import com.xiaolian.amigo.ui.base.BasePresenter;
-import com.xiaolian.amigo.ui.washer.intf.IWasherPresenter;
-import com.xiaolian.amigo.ui.washer.intf.IWasherView;
+import com.xiaolian.amigo.ui.device.washer.intf.IWasherPresenter;
+import com.xiaolian.amigo.ui.device.washer.intf.IWasherView;
 
 import javax.inject.Inject;
 

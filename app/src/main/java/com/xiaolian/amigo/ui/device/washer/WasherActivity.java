@@ -1,17 +1,14 @@
-package com.xiaolian.amigo.ui.washer;
+package com.xiaolian.amigo.ui.device.washer;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.ui.washer.intf.IWasherPresenter;
-import com.xiaolian.amigo.ui.washer.intf.IWasherView;
+import com.xiaolian.amigo.ui.device.washer.intf.IWasherPresenter;
+import com.xiaolian.amigo.ui.device.washer.intf.IWasherView;
 
 import javax.inject.Inject;
 
