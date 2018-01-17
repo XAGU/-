@@ -1,16 +1,14 @@
 package com.xiaolian.amigo.data.manager.intf;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
+import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
+import com.xiaolian.amigo.data.network.model.connecterror.DeviceConnectErrorReqDTO;
+import com.xiaolian.amigo.data.network.model.cs.CsMobileRespDTO;
 import com.xiaolian.amigo.data.network.model.device.FavorDeviceReqDTO;
 import com.xiaolian.amigo.data.network.model.device.QueryDeviceListReqDTO;
 import com.xiaolian.amigo.data.network.model.device.QueryDeviceListRespDTO;
 import com.xiaolian.amigo.data.network.model.device.QueryFavorDeviceRespDTO;
-import com.xiaolian.amigo.data.network.model.device.QueryWaterListReqDTO;
-import com.xiaolian.amigo.data.network.model.device.QueryWaterListRespDTO;
-import com.xiaolian.amigo.data.network.model.common.SimpleQueryReqDTO;
-import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
-import com.xiaolian.amigo.data.network.model.cs.CsMobileRespDTO;
-import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
 import com.xiaolian.amigo.data.network.model.funds.PersonalWalletDTO;
 import com.xiaolian.amigo.data.network.model.order.OrderPreInfoDTO;
 import com.xiaolian.amigo.data.network.model.order.QueryPrepayOptionReqDTO;
@@ -94,4 +92,6 @@ public interface IDeviceDataManager {
     Observable<ApiResult<SimpleRespDTO>> unFavorite(@Body FavorDeviceReqDTO reqDTO);
     // 获取个人收藏的设备列表
     Observable<ApiResult<QueryFavorDeviceRespDTO>> getFavorites(@Body QueryDeviceListReqDTO reqDTO);
+
+    Observable<ApiResult<BooleanRespDTO>> reportDeviceConnectError(@Body DeviceConnectErrorReqDTO reqDTO);
 }
