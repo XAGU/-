@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.main.adaptor;
 
 import android.content.Context;
+import android.support.v7.widget.GridLayoutManager;
 
 import com.xiaolian.amigo.data.network.model.system.BannerDTO;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
@@ -15,9 +16,18 @@ import lombok.Data;
  */
 
 public class HomeAdaptor extends MultiItemTypeAdapter<HomeAdaptor.ItemWrapper> {
-
-    public HomeAdaptor(Context context, List<ItemWrapper> datas) {
+    public HomeAdaptor(Context context, List<ItemWrapper> datas, GridLayoutManager gridLayoutManager) {
         super(context, datas);
+        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                return isBannerSection(position) ? gridLayoutManager.getSpanCount() : 1;
+            }
+        });
+    }
+
+    private boolean isBannerSection(int position) {
+        return getDatas().get(position).getType() == 2;
     }
 
     @Data

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -86,11 +87,13 @@ public class HomeFragment2 extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        adaptor = new HomeAdaptor(getActivity(), items);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 1);
+        adaptor = new HomeAdaptor(getActivity(), items, gridLayoutManager);
 //        recyclerView.scheduleLayoutAnimation();
         adaptor.addItemViewDelegate(new HomeNormalDelegate(getActivity()));
         adaptor.addItemViewDelegate(new HomeBannerDelegate(getActivity()));
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+//        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setLayoutManager(gridLayoutManager);
         ((DefaultItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
         LayoutAnimationController animation = AnimationUtils
                 .loadLayoutAnimation(getContext(), R.anim.layout_animation_home_slide_left_to_right);
