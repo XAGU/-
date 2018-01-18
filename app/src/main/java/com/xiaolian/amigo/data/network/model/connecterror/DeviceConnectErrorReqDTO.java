@@ -14,7 +14,7 @@ public class DeviceConnectErrorReqDTO {
 
     private String extra;
     private String macAddress;
-    private Integer connectErrorType;
+    private Integer connnectErrorType;
     private Integer displayErrorType;
     private String reason;
     private Integer step;

@@ -914,6 +914,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     @Override
     protected void onDestroy() {
         presenter.onDisConnect();
+        presenter.onDetach();
         super.onDestroy();
         if (null != timer) {
             timer.cancel();

@@ -127,10 +127,4 @@ public class DryerActivity extends WaterDeviceBaseActivity<IDryerPresenter> impl
     public void onBackPressed() {
         back2Main();
     }
-
-    @Override
-    protected void onDestroy() {
-        presenter.onDetach();
-        super.onDestroy();
-    }
 }

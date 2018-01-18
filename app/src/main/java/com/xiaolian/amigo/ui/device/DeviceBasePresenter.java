@@ -136,6 +136,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     private volatile boolean closeFlag = false;
     // 故障设备标志
     private volatile boolean brokenFlag = false;
+    // 页面关闭触发器
+    private PublishSubject<Void> closeTriggerSubject = PublishSubject.create();
 
     DeviceBasePresenter(IBleDataManager bleDataManager, IDeviceDataManager deviceDataManager) {
         super();
@@ -695,6 +697,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     // 统一处理设备连接异常
     private void handleDisConnectError() {
         Log.wtf(TAG, "蓝牙连接已断开！");
+        reportError(getStep().getStep(), ConnectErrorType.BLE_CONNECT_ERROR.getType(),
+                DisplayErrorType.CONNECT_ERROR.getType(), "蓝牙连接已断开！",
+                "handleDisConnectError()");
 
         // 跳转至连接失败页面
         if (getMvpView() != null) {
@@ -1326,23 +1331,40 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     private void reportError(int step, int connnectErrorType, int displayErrorType,
                              String reason, String extra) {
         DeviceConnectErrorReqDTO reqDTO = new DeviceConnectErrorReqDTO();
-        reqDTO.setConnectErrorType(connnectErrorType);
+        reqDTO.setConnnectErrorType(connnectErrorType);
         reqDTO.setDisplayErrorType(displayErrorType);
         reqDTO.setReason(reason);
         reqDTO.setExtra(extra);
-        reqDTO.setMacAddress(currentMacAddress);
+        reqDTO.setMacAddress(deviceNo);
         if (step == 3) {
             step = 2;
         }
         reqDTO.setStep(step);
-        addObserver(deviceDataManager.reportDeviceConnectError(reqDTO),
-                new NetworkObserver<ApiResult<BooleanRespDTO>>(false) {
+        deviceDataManager.reportDeviceConnectError(reqDTO)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .takeUntil(closeTriggerSubject)
+                .subscribe(new NetworkObserver<ApiResult<BooleanRespDTO>>(false) {
 
                     @Override
                     public void onReady(ApiResult<BooleanRespDTO> booleanRespDTOApiResult) {
                         // do nothing
                     }
                 });
+//        addObserver(deviceDataManager.reportDeviceConnectError(reqDTO),
+//                new NetworkObserver<ApiResult<BooleanRespDTO>>(false) {
+//
+//                    @Override
+//                    public void onReady(ApiResult<BooleanRespDTO> booleanRespDTOApiResult) {
+//                        // do nothing
+//                    }
+//                });
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        closeTriggerSubject.onNext(null);
     }
 
     /*************************** 以下为测试用 *****************************/
