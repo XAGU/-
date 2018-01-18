@@ -17,24 +17,24 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
  * Created by zcd on 10/11/17.
  */
 
-public class HomeNormalDelegate implements ItemViewDelegate<HomeAdaptor.ItemWrapper> {
-    private static final String TAG = HomeNormalDelegate.class.getSimpleName();
+public class HomeSmallDelegate implements ItemViewDelegate<HomeAdaptor.ItemWrapper> {
+    private static final String TAG = HomeSmallDelegate.class.getSimpleName();
     // Allows to remember the last item shown on screen
     private int lastPosition = -1;
     private Context context;
 
-    public HomeNormalDelegate(Context context) {
+    public HomeSmallDelegate(Context context) {
         this.context = context;
     }
 
     @Override
     public int getItemViewLayoutId() {
-        return R.layout.item_home;
+        return R.layout.item_home_small;
     }
 
     @Override
     public boolean isForViewType(HomeAdaptor.ItemWrapper item, int position) {
-        return item.getType() == 1;
+        return item.getType() == HomeAdaptor.SMALL_TYPE;
     }
 
     @Override
@@ -44,17 +44,19 @@ public class HomeNormalDelegate implements ItemViewDelegate<HomeAdaptor.ItemWrap
         } else {
             holder.itemView.setVisibility(View.GONE);
         }
-        holder.getView(R.id.rl_item).setBackgroundResource(itemWrapper.getRes());
+        holder.getView(R.id.rl_item).setBackgroundResource(itemWrapper.getSmallRes());
         holder.setText(R.id.tv_device_title, itemWrapper.getDeviceName());
         holder.setText(R.id.tv_desc, itemWrapper.getDesc());
         if (itemWrapper.getPrepaySize() != 0) {
             holder.getView(R.id.tv_prepay).setVisibility(View.VISIBLE);
             holder.setText(R.id.tv_prepay, "(有" + itemWrapper.getPrepaySize() + "笔未找零金额)");
+            holder.getView(R.id.tv_desc).setVisibility(View.GONE);
         } else {
             holder.getView(R.id.tv_prepay).setVisibility(View.GONE);
+            holder.getView(R.id.tv_desc).setVisibility(View.VISIBLE);
         }
         if (itemWrapper.isUsing()) {
-            holder.setText(R.id.tv_device_title, "正在使用" + itemWrapper.getDeviceName());
+            holder.setText(R.id.tv_device_title, "正在使用");
             holder.getView(R.id.dfv_dot).setVisibility(View.VISIBLE);
             ((DotFlashView)holder.getView(R.id.dfv_dot)).startAnimation();
         } else {

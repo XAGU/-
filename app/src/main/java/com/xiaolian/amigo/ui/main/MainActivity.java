@@ -38,6 +38,7 @@ import com.xiaolian.amigo.ui.device.DeviceConstant;
 import com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity;
 import com.xiaolian.amigo.ui.device.dispenser.ChooseDispenserActivity;
 import com.xiaolian.amigo.ui.device.dispenser.DispenserActivity;
+import com.xiaolian.amigo.ui.device.washer.WasherActivity;
 import com.xiaolian.amigo.ui.login.LoginActivity;
 import com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity;
 import com.xiaolian.amigo.ui.main.intf.IMainPresenter;
@@ -114,32 +115,28 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @BindView(R.id.tv_schoolName)
     TextView tv_schoolName;
 
-    /**
-     * 头像
-     */
+    // 头像
     @BindView(R.id.iv_avatar)
     ImageView iv_avatar;
 
-    /**
-     * 通知数量上标
-     */
+    // 通知数量上标
     @BindView(R.id.tv_notice_count)
     TextView tv_notice_count;
 
-    /**
-     * MainActivity根View
-     */
+    // MainActivity根View
     @BindView(R.id.rl_main)
     RelativeLayout rl_main;
 
-    /**
-     * 通知
-     */
+    // 通知
     @BindView(R.id.rl_notice)
     RelativeLayout rl_notice;
 
     @BindView(R.id.sv_main)
     ScrollView sl_main;
+
+    // 校ok迁移
+    @BindView(R.id.iv_xok_migrate)
+    ImageView iv_xok_migrate;
 
     private GestureDetector mGestureDetector;
 
@@ -922,6 +919,12 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         return AppUtils.getVersionName(this);
     }
 
+    @Override
+    public void showXOkMigrate() {
+        iv_xok_migrate.setVisibility(View.VISIBLE);
+//        iv_xok_migrate.setOnClickListener(v -> });
+    }
+
     public void refreshProfile() {
         PersonalExtraInfoDTO data = new PersonalExtraInfoDTO();
         data.setBalance(Double.valueOf(presenter.getBalance()));
@@ -1079,6 +1082,11 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                     gotoDryer();
                 }
                 break;
+            case GOTO_WASHER:
+                if (checkLogin()) {
+                    gotoWasher();
+                }
+                break;
             case GOTO_LOST_AND_FOUND:
                 if (checkLogin()) {
                     gotoLostAndFound();
@@ -1094,6 +1102,10 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 refreshProfile();
                 break;
         }
+    }
+
+    private void gotoWasher() {
+        startActivity(new Intent(this, WasherActivity.class));
     }
 
     @Data
@@ -1115,6 +1127,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             GOTO_DRYER(),
             GOTO_DISPENSER(),
             GOTO_LOST_AND_FOUND(),
+            GOTO_WASHER(),
             START_ACTIVITY(),
             REFRESH_NOTICE(),
             LOGOUT()

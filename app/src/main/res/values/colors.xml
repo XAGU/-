@@ -68,6 +68,7 @@
     <color name="device_heator">#fe557d</color>
     <color name="device_dispenser">#00d3c7</color>
     <color name="device_dryer">#fddd5a</color>
+    <color name="device_washer">#8e8eff</color>
 
     <color name="repair_todo">@color/colorFullRed</color>
     <color name="repair_doing">@color/colorYellow</color>

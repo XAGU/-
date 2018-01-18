@@ -47,4 +47,6 @@ public interface IMainView extends IBaseView {
     String getAndroidId();
 
     String getAppVersion();
+
+    void showXOkMigrate();
 }

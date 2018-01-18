@@ -45,14 +45,14 @@ public class GuideDialog extends Dialog {
                 break;
             case TYPE_HEATER:
                 setContentView(R.layout.dialog_guide_heater);
-                tv_location = (TextView) findViewById(R.id.tv_device_title);
+                tv_location = findViewById(R.id.tv_device_title);
                 break;
             case TYPE_DISPENER:
                 setContentView(R.layout.dialog_guide_dispenser);
-                tv_location = (TextView) findViewById(R.id.tv_device_title);
+                tv_location = findViewById(R.id.tv_device_title);
                 break;
         }
-        iv_button = (ImageView) findViewById(R.id.iv_button);
+        iv_button = findViewById(R.id.iv_button);
         iv_button.setOnClickListener((v -> {
             dismiss();
         }));
