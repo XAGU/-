@@ -274,4 +274,5 @@
     <string name="choose_washer_mode">请确认使用时再购买</string>
     <string name="washer_qr_code_top_bar_tip">已成功支付%1$s元(%2$s)</string>
     <string name="refund_order">退款账单</string>
+    <string name="refund_order_tip">已退款至“我的钱包”</string>
 </resources>
