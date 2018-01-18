@@ -46,9 +46,9 @@ public class WasherQRCodeActivity extends WasherBaseActivity implements IWasherQ
 
     @Override
     protected void setUp() {
-        String mode = getIntent().getStringExtra(WasherContent.INTENT_KEY_MODE);
-        String price = getIntent().getStringExtra(WasherContent.INTENT_KEY_PRICE);
-        String url = getIntent().getStringExtra(WasherContent.INTENT_KEY_QR_CODE_URL);
+        String mode = getIntent().getStringExtra(WasherContent.KEY_MODE);
+        String price = getIntent().getStringExtra(WasherContent.KEY_PRICE);
+        String url = getIntent().getStringExtra(WasherContent.KEY_QR_CODE_URL);
         renderTopBar(price, mode);
         iv_qr_code.post(() ->
                 presenter.generateQRCode(price, mode, iv_qr_code.getWidth()));

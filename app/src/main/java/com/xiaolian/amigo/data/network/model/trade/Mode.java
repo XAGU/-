@@ -11,5 +11,5 @@ import lombok.Data;
 public class Mode {
     private String desc;
     private Integer mode;
-    private String pirce;
+    private String price;
 }

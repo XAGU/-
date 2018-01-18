@@ -1,6 +1,5 @@
 package com.xiaolian.amigo.ui.device.washer;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -11,16 +10,23 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.ui.device.washer.intf.IScanPresenter;
+import com.xiaolian.amigo.ui.device.washer.intf.IScanView;
 import com.xiaolian.amigo.ui.widget.qrcode.CustomCaptureManager;
+
+import javax.inject.Inject;
 
 /**
  * <p>
  * Created by zcd on 18/1/15.
  */
 
-public class ScanActivity extends Activity
-    implements DecoratedBarcodeView.TorchListener{
+public class ScanActivity extends WasherBaseActivity
+    implements DecoratedBarcodeView.TorchListener, IScanView {
     private static final String TAG = ScanActivity.class.getSimpleName();
+
+    @Inject
+    IScanPresenter<IScanView> presenter;
 
     private CustomCaptureManager capture;
     private DecoratedBarcodeView barcodeScannerView;
@@ -29,6 +35,9 @@ public class ScanActivity extends Activity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan);
+        getActivityComponent().inject(this);
+        presenter.onAttach(this);
+
         barcodeScannerView = findViewById(R.id.zxing_barcode_scanner);
         barcodeScannerView.setTorchListener(this);
 
@@ -49,9 +58,8 @@ public class ScanActivity extends Activity
                     Toast.makeText(ScanActivity.this, "Cancelled", Toast.LENGTH_LONG).show();
                 } else {
                     Log.d(TAG, "Scanned: " + result.getContents());
+                    presenter.scanCheckout(result.getContents());
                     Toast.makeText(ScanActivity.this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
-                    startActivity(new Intent(ScanActivity.this, ChooseWashModeActivity.class));
-                    finish();
                 }
             }
 
@@ -76,6 +84,11 @@ public class ScanActivity extends Activity
     protected void onDestroy() {
         super.onDestroy();
         capture.onDestroy();
+    }
+
+    @Override
+    protected void setUp() {
+
     }
 
     @Override
@@ -110,5 +123,11 @@ public class ScanActivity extends Activity
     @Override
     public void onTorchOff() {
 //        switchFlashlightButton.setText(R.string.turn_on_flashlight);
+    }
+
+    @Override
+    public void gotoChooseModeView() {
+        startActivity(new Intent(ScanActivity.this, ChooseWashModeActivity.class));
+        finish();
     }
 }

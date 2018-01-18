@@ -25,4 +25,7 @@ public interface IWasherDataManager {
 
     // 请求洗衣机模式
     Observable<ApiResult<WashingModeRespDTO>> getWasherMode();
+
+    // 存储deviceToken
+    void setDeviceToken(String deviceNo, String deviceToken);
 }

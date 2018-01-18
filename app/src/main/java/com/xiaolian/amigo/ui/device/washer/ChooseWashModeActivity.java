@@ -30,20 +30,7 @@ public class ChooseWashModeActivity extends WasherBaseActivity implements IChoos
     @Inject
     IChooseWashModePresenter<IChooseWashModeView> presenter;
 
-    private List<ChooseWashModeAdapter.WashModeItem> items =
-            new ArrayList<ChooseWashModeAdapter.WashModeItem>() {
-                {
-                    add(new ChooseWashModeAdapter.WashModeItem("单脱水", "1"));
-                    add(new ChooseWashModeAdapter.WashModeItem("一洗一漂一脱水", "2"));
-                    add(new ChooseWashModeAdapter.WashModeItem("两洗一漂一脱水", "3"));
-                    add(new ChooseWashModeAdapter.WashModeItem("两洗两漂一脱水", "4"));
-                    add(new ChooseWashModeAdapter.WashModeItem("单脱水", "1"));
-                    add(new ChooseWashModeAdapter.WashModeItem("两洗两漂一脱水", "4"));
-                    add(new ChooseWashModeAdapter.WashModeItem("单脱水", "1"));
-                    add(new ChooseWashModeAdapter.WashModeItem("两洗两漂一脱水", "4"));
-                    add(new ChooseWashModeAdapter.WashModeItem("单脱水", "1"));
-                }
-            };
+    private List<ChooseWashModeAdapter.WashModeItem> items = new ArrayList<>();
     private RecyclerView recyclerView;
     private WasherModeDialog dialog;
     private ChooseWashModeAdapter adapter;
@@ -52,9 +39,13 @@ public class ChooseWashModeActivity extends WasherBaseActivity implements IChoos
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_wash_mode);
+        getActivityComponent().inject(this);
+        presenter.onAttach(this);
+        setUp();
         bindView();
         initAdapter();
         initRecyclerView();
+        presenter.getWasherMode();
     }
 
     private void initAdapter() {
@@ -71,7 +62,8 @@ public class ChooseWashModeActivity extends WasherBaseActivity implements IChoos
 //                adapter.setLastChoosePosition(position);
 //                adapter.notifyDataSetChanged();
 //                toggleSubmitButton();
-                showModeDetailDialog(items.get(position).getName(), items.get(position).getPrice());
+                showModeDetailDialog(null, items.get(position).getName(),
+                        presenter.getDeviceNo(), items.get(position).getPrice(), items.get(position).getMode());
             }
 
             @Override
@@ -81,21 +73,19 @@ public class ChooseWashModeActivity extends WasherBaseActivity implements IChoos
         });
     }
 
-    private void showModeDetailDialog(String name, String price) {
+    private void showModeDetailDialog(Long bonusId, String name, String deviceNo, String price, Integer mode) {
         if (dialog == null) {
             dialog = new WasherModeDialog(this);
-            dialog.setConfirmClickListener(() -> onModeConfirm(name, price));
+            dialog.setConfirmClickListener(() -> onModeConfirm(bonusId, name,
+                    deviceNo, price, mode));
         }
         dialog.setMode(name, price);
         dialog.setSubmit(price);
         dialog.show();
     }
 
-    private void onModeConfirm(String name, String price) {
-        startActivity(new Intent(this, WasherQRCodeActivity.class)
-                .putExtra(WasherContent.INTENT_KEY_MODE, name)
-                .putExtra(WasherContent.INTENT_KEY_PRICE, price)
-                .putExtra(WasherContent.INTENT_KEY_QR_CODE_URL, "https://www.baidu.com"));
+    private void onModeConfirm(Long bonusId, String name, String deviceNo, String price, Integer mode) {
+        presenter.payAndGenerate(null, deviceNo, price, mode);
     }
 
     private void toggleSubmitButton() {
@@ -141,13 +131,24 @@ public class ChooseWashModeActivity extends WasherBaseActivity implements IChoos
             String price = items.get(adapter.getLastChoosePosition()).getPrice();
             String mode = items.get(adapter.getLastChoosePosition()).getName();
             startActivity(new Intent(this, WasherQRCodeActivity.class)
-                    .putExtra(WasherContent.INTENT_KEY_MODE, mode)
-                    .putExtra(WasherContent.INTENT_KEY_PRICE, price));
+                    .putExtra(WasherContent.KEY_MODE, mode)
+                    .putExtra(WasherContent.KEY_PRICE, price));
         }
     }
 
     @Override
     protected void setUp() {
+        presenter.setDeviceNo(getIntent().getStringExtra(WasherContent.KEY_DEVICE_NO));
+    }
 
+    @Override
+    public void addMore(List<ChooseWashModeAdapter.WashModeItem> items) {
+        this.items.addAll(items);
+    }
+
+    @Override
+    public void gotoShowQRCodeView(String data) {
+        startActivity(new Intent(this, WasherQRCodeActivity.class)
+                .putExtra(WasherContent.KEY_QR_CODE_URL, data));
     }
 }

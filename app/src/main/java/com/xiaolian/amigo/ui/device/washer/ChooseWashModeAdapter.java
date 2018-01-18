@@ -44,14 +44,16 @@ public class ChooseWashModeAdapter extends CommonAdapter<ChooseWashModeAdapter.W
     }
 
     @Data
-    static final class WashModeItem {
+    public static final class WashModeItem {
+        private Integer mode;
         private String name;
         private String price;
         private boolean choose;
 
-        WashModeItem(String name, String price) {
+        WashModeItem(String name, String price, Integer mode) {
             this.name = name;
             this.price = price;
+            this.mode = mode;
             this.choose = false;
         }
     }

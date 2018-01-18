@@ -7,7 +7,8 @@ package com.xiaolian.amigo.ui.device.washer;
  */
 
 class WasherContent {
-    static final String INTENT_KEY_PRICE = "intent_key_price";
-    static final String INTENT_KEY_MODE = "intent_key_mode";
-    static final String INTENT_KEY_QR_CODE_URL = "intent_key_qr_code_url";
+    static final String KEY_PRICE = "key_price";
+    static final String KEY_MODE = "key_mode";
+    static final String KEY_QR_CODE_URL = "key_qr_code_url";
+    static final String KEY_DEVICE_NO = "key_device_no";
 }

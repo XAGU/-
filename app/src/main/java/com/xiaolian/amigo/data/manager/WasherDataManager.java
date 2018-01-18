@@ -7,6 +7,7 @@ import com.xiaolian.amigo.data.network.model.trade.PayReqDTO;
 import com.xiaolian.amigo.data.network.model.trade.QrCodeScanReqDTO;
 import com.xiaolian.amigo.data.network.model.trade.QrCodeScanRespDTO;
 import com.xiaolian.amigo.data.network.model.trade.WashingModeRespDTO;
+import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 
 import javax.inject.Inject;
 
@@ -21,8 +22,10 @@ import rx.Observable;
 
 public class WasherDataManager implements IWasherDataManager {
     private ITradeApi tradeApi;
+    private ISharedPreferencesHelp sharedPreferencesHelp;
     @Inject
-    public WasherDataManager(Retrofit retrofit) {
+    public WasherDataManager(Retrofit retrofit, ISharedPreferencesHelp sharedPreferencesHelp) {
+        this.sharedPreferencesHelp = sharedPreferencesHelp;
         tradeApi = retrofit.create(ITradeApi.class);
     }
 
@@ -33,11 +36,17 @@ public class WasherDataManager implements IWasherDataManager {
 
     @Override
     public Observable<ApiResult<String>> generateQRCode(PayReqDTO reqDTO) {
+        sharedPreferencesHelp.setCurrentDeviceToken(sharedPreferencesHelp.getDeviceToken(reqDTO.getMacAddress()));
         return tradeApi.generateQRCode(reqDTO);
     }
 
     @Override
     public Observable<ApiResult<WashingModeRespDTO>> getWasherMode() {
         return tradeApi.getWasherMode();
+    }
+
+    @Override
+    public void setDeviceToken(String deviceNo, String deviceToken) {
+        sharedPreferencesHelp.setDeviceToken(deviceNo, deviceToken);
     }
 }
