@@ -210,4 +210,14 @@ public class MainDataManager implements IMainDataManager {
     public Observable<ApiResult<VersionDTO>> getUpdateInfo() {
         return versionApi.getUpdateInfo();
     }
+
+    @Override
+    public void setNeedTransfer() {
+        sharedPreferencesHelp.setTransfer(true);
+    }
+
+    @Override
+    public void setNotNeedTransfer() {
+        sharedPreferencesHelp.setTransfer(false);
+    }
 }

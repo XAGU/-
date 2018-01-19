@@ -37,7 +37,6 @@ public class MoreActivity extends MoreBaseActivity implements IMoreView {
             add(new MoreAdapter.MoreModel("意见反馈", WebActivity.class, Constant.H5_FEEDBACK));
             add(new MoreAdapter.MoreModel("用户协议", WebActivity.class, Constant.H5_AGREEMENT));
             add(new MoreAdapter.MoreModel("关于我们", AboutUsActivity.class));
-            add(new MoreAdapter.MoreModel("\"校OK\"账户迁移", WebActivity.class, Constant.H5_MIGRATE));
         }
     };
 
@@ -97,6 +96,11 @@ public class MoreActivity extends MoreBaseActivity implements IMoreView {
     @Override
     public void backToMain() {
         startActivity(new Intent(this, MainActivity.class));
+    }
+
+    @Override
+    public void showTransfer() {
+        items.add(new MoreAdapter.MoreModel("\"校OK\"账户迁移", WebActivity.class, Constant.H5_MIGRATE));
     }
 
     @Override

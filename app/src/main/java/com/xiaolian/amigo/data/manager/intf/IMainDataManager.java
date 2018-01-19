@@ -96,4 +96,8 @@ public interface IMainDataManager {
 
     // 获取更新信息
     Observable<ApiResult<VersionDTO>> getUpdateInfo();
+
+    // 是否需要账户迁移
+    void setNeedTransfer();
+    void setNotNeedTransfer();
 }

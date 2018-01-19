@@ -106,4 +106,6 @@ public interface ISharedPreferencesHelp {
 
     UploadUserDeviceInfoReqDTO getUploadedUserDeviceInfo();
 
+    void setTransfer(boolean b);
+    boolean getTransfer();
 }

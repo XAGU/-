@@ -120,7 +120,10 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
                         dto.setLastRepairTime(null);
                     }
                     if (result.getData().getShowTransfer() != null && result.getData().getShowTransfer()) {
+                        mainDataManager.setNeedTransfer();
                         getMvpView().showXOkMigrate();
+                    } else {
+                        mainDataManager.setNotNeedTransfer();
                     }
                     getMvpView().refreshProfile(dto);
                     getMvpView().showNoticeAmount(result.getData().getNotifyAmount());

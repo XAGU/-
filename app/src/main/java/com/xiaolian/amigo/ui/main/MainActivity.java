@@ -34,6 +34,7 @@ import com.xiaolian.amigo.data.network.model.device.DeviceCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.order.OrderPreInfoDTO;
 import com.xiaolian.amigo.data.network.model.user.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
+import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.ui.device.DeviceConstant;
 import com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity;
 import com.xiaolian.amigo.ui.device.dispenser.ChooseDispenserActivity;
@@ -922,7 +923,11 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @Override
     public void showXOkMigrate() {
         iv_xok_migrate.setVisibility(View.VISIBLE);
-//        iv_xok_migrate.setOnClickListener(v -> });
+        iv_xok_migrate.setOnClickListener(v -> {
+            startActivity(new Intent(MainActivity.this, WebActivity.class)
+                    .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_MIGRATE
+                            + "?token=" + presenter.getToken()));
+        });
     }
 
     public void refreshProfile() {
