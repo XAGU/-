@@ -104,10 +104,6 @@ public class HomeFragment2 extends Fragment {
         adaptor.addItemViewDelegate(new HomeSmallDelegate(getActivity()));
         adaptor.addItemViewDelegate(new HomeBannerDelegate(getActivity()));
 //        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) recyclerView.getLayoutParams();
-        lp.setMarginStart(41);
-        lp.setMarginEnd(41);
-        recyclerView.setLayoutParams(lp);
         recyclerView.setLayoutManager(gridLayoutManager);
         ((DefaultItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
         LayoutAnimationController animation = AnimationUtils
@@ -295,10 +291,6 @@ public class HomeFragment2 extends Fragment {
         water.setType(HomeAdaptor.NORMAL_TYPE);
         washer.setType(HomeAdaptor.NORMAL_TYPE);
         lost.setType(HomeAdaptor.NORMAL_TYPE);
-        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) recyclerView.getLayoutParams();
-        lp.setMarginStart(0);
-        lp.setMarginEnd(0);
-        recyclerView.setLayoutParams(lp);
     }
 
     private void switchSmallLayout() {
@@ -308,10 +300,6 @@ public class HomeFragment2 extends Fragment {
         water.setType(HomeAdaptor.SMALL_TYPE);
         washer.setType(HomeAdaptor.SMALL_TYPE);
         lost.setType(HomeAdaptor.SMALL_TYPE);
-        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) recyclerView.getLayoutParams();
-        lp.setMarginStart(41);
-        lp.setMarginEnd(41);
-        recyclerView.setLayoutParams(lp);
     }
 
     private void onPrepayOrderEvent(HomeAdaptor.ItemWrapper itemWrapper) {

@@ -3,6 +3,7 @@ package com.xiaolian.amigo.ui.main.adaptor;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -43,6 +44,17 @@ public class HomeSmallDelegate implements ItemViewDelegate<HomeAdaptor.ItemWrapp
             holder.itemView.setVisibility(View.VISIBLE);
         } else {
             holder.itemView.setVisibility(View.GONE);
+        }
+        if (position % 2 == 0) {
+            RecyclerView.LayoutParams lp = (RecyclerView.LayoutParams) holder.getView(R.id.rl_item).getLayoutParams();
+            lp.setMarginStart(41);
+            lp.setMarginEnd(0);
+            holder.getView(R.id.rl_item).setLayoutParams(lp);
+        } else {
+            RecyclerView.LayoutParams lp = (RecyclerView.LayoutParams) holder.getView(R.id.rl_item).getLayoutParams();
+            lp.setMarginStart(0);
+            lp.setMarginEnd(41);
+            holder.getView(R.id.rl_item).setLayoutParams(lp);
         }
         holder.getView(R.id.rl_item).setBackgroundResource(itemWrapper.getSmallRes());
         holder.setText(R.id.tv_device_title, itemWrapper.getDeviceName());

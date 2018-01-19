@@ -34,7 +34,7 @@ public class HomeNormalDelegate implements ItemViewDelegate<HomeAdaptor.ItemWrap
 
     @Override
     public boolean isForViewType(HomeAdaptor.ItemWrapper item, int position) {
-        return item.getType() == 1;
+        return item.getType() == HomeAdaptor.NORMAL_TYPE;
     }
 
     @Override

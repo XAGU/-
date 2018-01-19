@@ -31,6 +31,9 @@ public class HomeAdaptor extends MultiItemTypeAdapter<HomeAdaptor.ItemWrapper> {
     }
 
     private boolean isBannerSection(int position) {
+//        if (getDatas().size() % 2 == 0 && position == getDatas().size() - 2) {
+//            return true;
+//        }
         return getDatas().get(position).getType() == BANNER_TYPE;
     }
 
