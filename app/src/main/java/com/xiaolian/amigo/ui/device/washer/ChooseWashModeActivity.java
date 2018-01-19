@@ -73,19 +73,19 @@ public class ChooseWashModeActivity extends WasherBaseActivity implements IChoos
         });
     }
 
-    private void showModeDetailDialog(Long bonusId, String name, String deviceNo, String price, Integer mode) {
+    private void showModeDetailDialog(Long bonusId, String modeDesc, String deviceNo, String price, Integer mode) {
         if (dialog == null) {
             dialog = new WasherModeDialog(this);
-            dialog.setConfirmClickListener(() -> onModeConfirm(bonusId, name,
+            dialog.setConfirmClickListener(() -> onModeConfirm(bonusId, modeDesc,
                     deviceNo, price, mode));
         }
-        dialog.setMode(name, price);
+        dialog.setMode(modeDesc, price);
         dialog.setSubmit(price);
         dialog.show();
     }
 
-    private void onModeConfirm(Long bonusId, String name, String deviceNo, String price, Integer mode) {
-        presenter.payAndGenerate(null, deviceNo, price, mode);
+    private void onModeConfirm(Long bonusId, String modeDesc, String deviceNo, String price, Integer mode) {
+        presenter.payAndGenerate(null, modeDesc, deviceNo, price, mode);
     }
 
     private void toggleSubmitButton() {
@@ -147,8 +147,13 @@ public class ChooseWashModeActivity extends WasherBaseActivity implements IChoos
     }
 
     @Override
-    public void gotoShowQRCodeView(String data) {
+    public void gotoShowQRCodeView(String data, String price, String modeDesc) {
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+        }
         startActivity(new Intent(this, WasherQRCodeActivity.class)
+                .putExtra(WasherContent.KEY_PRICE, price)
+                .putExtra(WasherContent.KEY_MODE, modeDesc)
                 .putExtra(WasherContent.KEY_QR_CODE_URL, data));
     }
 }

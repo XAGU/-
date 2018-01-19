@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.order.intf;
 
+import com.xiaolian.amigo.data.network.model.order.OrderDetailRespDTO;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 
 /**
@@ -8,4 +9,7 @@ import com.xiaolian.amigo.ui.base.intf.IBaseView;
  */
 
 public interface INormalOrderView extends IBaseView {
+    void renderView(OrderDetailRespDTO data);
+
+    void toComplaint();
 }

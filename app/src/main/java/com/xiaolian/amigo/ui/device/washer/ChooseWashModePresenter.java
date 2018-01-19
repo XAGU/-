@@ -4,6 +4,7 @@ import com.xiaolian.amigo.data.manager.intf.IWasherDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.trade.Mode;
 import com.xiaolian.amigo.data.network.model.trade.PayReqDTO;
+import com.xiaolian.amigo.data.network.model.trade.QrCodeGenerateRespDTO;
 import com.xiaolian.amigo.data.network.model.trade.WashingModeRespDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.device.washer.intf.IChooseWashModePresenter;
@@ -11,6 +12,7 @@ import com.xiaolian.amigo.ui.device.washer.intf.IChooseWashModeView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.inject.Inject;
 
@@ -64,19 +66,23 @@ public class ChooseWashModePresenter<V extends IChooseWashModeView> extends Base
     }
 
     @Override
-    public void payAndGenerate(Long bonusId, String deviceNo, String price, Integer mode) {
+    public void payAndGenerate(Long bonusId, String modeDesc, String deviceNo, String price, Integer mode) {
         PayReqDTO reqDTO = new PayReqDTO();
-        reqDTO.setBonusId(bonusId);
-        reqDTO.setMacAddress(deviceNo);
-        reqDTO.setPrepay(Double.valueOf(price));
-        reqDTO.setMode(mode);
+//        reqDTO.setBonusId(bonusId);
+//        reqDTO.setMacAddress(deviceNo);
+//        reqDTO.setPrepay(Double.valueOf(price));
+//        reqDTO.setMode(mode);
+        // mock data
+        reqDTO.setMacAddress("AABBCCDD");
+        reqDTO.setMode(1);
+        reqDTO.setPrepay(3.14);
         addObserver(washerDataManager.generateQRCode(reqDTO),
-                new NetworkObserver<ApiResult<String>>() {
+                new NetworkObserver<ApiResult<QrCodeGenerateRespDTO>>() {
 
                     @Override
-                    public void onReady(ApiResult<String> result) {
-                        if (result.getError() != null) {
-                            getMvpView().gotoShowQRCodeView(result.getData());
+                    public void onReady(ApiResult<QrCodeGenerateRespDTO> result) {
+                        if (result.getError() == null) {
+                            getMvpView().gotoShowQRCodeView(result.getData().getQrCodeData(), price, modeDesc);
                         } else {
                             getMvpView().onError(result.getError().getDisplayMessage());
                         }

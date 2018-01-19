@@ -4,6 +4,7 @@ import com.xiaolian.amigo.data.manager.intf.IWasherDataManager;
 import com.xiaolian.amigo.data.network.ITradeApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.trade.PayReqDTO;
+import com.xiaolian.amigo.data.network.model.trade.QrCodeGenerateRespDTO;
 import com.xiaolian.amigo.data.network.model.trade.QrCodeScanReqDTO;
 import com.xiaolian.amigo.data.network.model.trade.QrCodeScanRespDTO;
 import com.xiaolian.amigo.data.network.model.trade.WashingModeRespDTO;
@@ -35,7 +36,7 @@ public class WasherDataManager implements IWasherDataManager {
     }
 
     @Override
-    public Observable<ApiResult<String>> generateQRCode(PayReqDTO reqDTO) {
+    public Observable<ApiResult<QrCodeGenerateRespDTO>> generateQRCode(PayReqDTO reqDTO) {
         sharedPreferencesHelp.setCurrentDeviceToken(sharedPreferencesHelp.getDeviceToken(reqDTO.getMacAddress()));
         return tradeApi.generateQRCode(reqDTO);
     }

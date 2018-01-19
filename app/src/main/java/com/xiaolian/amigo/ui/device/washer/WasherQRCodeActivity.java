@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.device.washer;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.device.washer.intf.IWasherQRCodePresenter;
 import com.xiaolian.amigo.ui.device.washer.intf.IWasherQRCodeView;
+import com.xiaolian.amigo.ui.main.MainActivity;
 
 import javax.inject.Inject;
 
@@ -61,5 +63,12 @@ public class WasherQRCodeActivity extends WasherBaseActivity implements IWasherQ
     @Override
     public void renderQRCode(Bitmap bitmap) {
         iv_qr_code.setImageBitmap(bitmap);
+    }
+
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
     }
 }

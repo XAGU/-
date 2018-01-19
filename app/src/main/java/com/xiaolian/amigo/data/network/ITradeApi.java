@@ -9,6 +9,7 @@ import com.xiaolian.amigo.data.network.model.trade.ConnectCommandReqDTO;
 import com.xiaolian.amigo.data.network.model.trade.ConnectCommandRespDTO;
 import com.xiaolian.amigo.data.network.model.trade.PayReqDTO;
 import com.xiaolian.amigo.data.network.model.trade.PayRespDTO;
+import com.xiaolian.amigo.data.network.model.trade.QrCodeGenerateRespDTO;
 import com.xiaolian.amigo.data.network.model.trade.QrCodeScanReqDTO;
 import com.xiaolian.amigo.data.network.model.trade.QrCodeScanRespDTO;
 import com.xiaolian.amigo.data.network.model.trade.WashingModeRespDTO;
@@ -42,7 +43,7 @@ public interface ITradeApi {
 
     // 生成支付二维码
     @POST("trade/pay/qrCode/generate")
-    Observable<ApiResult<String>> generateQRCode(@Body PayReqDTO reqDTO);
+    Observable<ApiResult<QrCodeGenerateRespDTO>> generateQRCode(@Body PayReqDTO reqDTO);
 
     // 请求洗衣机模式
     @POST("trade/device/washing/mode")

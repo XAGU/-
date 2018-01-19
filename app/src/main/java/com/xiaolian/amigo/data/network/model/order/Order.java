@@ -52,4 +52,9 @@ public class Order implements Serializable {
     private Boolean lowest;
     // residenceId
     private Long residenceId;
+
+    // 设备工作模式
+    private Integer mode;
+    // 工作模式描述
+    private String modeDesc;
 }

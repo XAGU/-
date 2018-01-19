@@ -28,7 +28,9 @@ public class ScanPresenter<V extends IScanView> extends BasePresenter<V>
     @Override
     public void scanCheckout(String content) {
         QrCodeScanReqDTO reqDTO = new QrCodeScanReqDTO();
-        reqDTO.setQrCodeData(content);
+//        reqDTO.setQrCodeData(content);
+        // mock data
+        reqDTO.setQrCodeData("200000AABBCCDD00000000000000000000000039E40ED8CFFAEFD27CFC1C92A602AE78CA");
         addObserver(washerDataManager.scanCheckout(reqDTO),
                 new NetworkObserver<ApiResult<QrCodeScanRespDTO>>() {
 
