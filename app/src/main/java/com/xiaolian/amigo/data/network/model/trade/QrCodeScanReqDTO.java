@@ -9,4 +9,5 @@ import lombok.Data;
 @Data
 public class QrCodeScanReqDTO {
     private String qrCodeData;
+    private Integer deviceType;
 }

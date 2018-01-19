@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.device.washer;
 
+import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.manager.intf.IWasherDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.trade.QrCodeScanReqDTO;
@@ -28,6 +29,7 @@ public class ScanPresenter<V extends IScanView> extends BasePresenter<V>
     @Override
     public void scanCheckout(String content) {
         QrCodeScanReqDTO reqDTO = new QrCodeScanReqDTO();
+        reqDTO.setDeviceType(Device.WASHER.getType());
 //        reqDTO.setQrCodeData(content);
         // mock data
         reqDTO.setQrCodeData("200000AABBCCDD00000000000000000000000039E40ED8CFFAEFD27CFC1C92A602AE78CA");
