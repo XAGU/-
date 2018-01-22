@@ -1,5 +1,7 @@
 package com.xiaolian.amigo.data.network.model.trade;
 
+import com.xiaolian.amigo.data.vo.Bonus;
+
 import lombok.Data;
 
 /**
@@ -11,4 +13,5 @@ import lombok.Data;
 public class QrCodeScanRespDTO {
     private String deviceToken;
     private String macAddress;
+    private Bonus bonus;
 }

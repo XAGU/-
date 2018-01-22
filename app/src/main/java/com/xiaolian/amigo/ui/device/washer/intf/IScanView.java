@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.device.washer.intf;
 
+import com.xiaolian.amigo.data.vo.Bonus;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 
 /**
@@ -9,7 +10,7 @@ import com.xiaolian.amigo.ui.base.intf.IBaseView;
  */
 
 public interface IScanView extends IBaseView {
-    void gotoChooseModeView(String deviceNo);
+    void gotoChooseModeView(Bonus bonus, String deviceNo);
 
     void resumeScan();
 }

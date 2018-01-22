@@ -40,7 +40,8 @@ public class ScanPresenter<V extends IScanView> extends BasePresenter<V>
                     public void onReady(ApiResult<QrCodeScanRespDTO> result) {
                         if (null == result.getError()) {
                             washerDataManager.setDeviceToken(result.getData().getMacAddress(), result.getData().getDeviceToken());
-                            getMvpView().gotoChooseModeView(result.getData().getMacAddress());
+                            getMvpView().gotoChooseModeView(result.getData().getBonus(),
+                                    result.getData().getMacAddress());
                         } else {
                             getMvpView().onError(result.getError().getDisplayMessage());
                             getMvpView().resumeScan();

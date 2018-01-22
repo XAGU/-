@@ -11,4 +11,7 @@ public class WasherContent {
     public static final String KEY_MODE = "key_mode";
     public static final String KEY_QR_CODE_URL = "key_qr_code_url";
     static final String KEY_DEVICE_NO = "key_device_no";
+    static final String KEY_BONUS_ID = "key_bonus_id";
+    static final String KEY_BONUS_DESC = "key_bonus_desc";
+    static final String KEY_BONUS_AMOUNT = "key_bonus_amount";
 }

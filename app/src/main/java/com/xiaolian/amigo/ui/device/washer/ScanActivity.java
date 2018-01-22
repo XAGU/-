@@ -10,6 +10,7 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.vo.Bonus;
 import com.xiaolian.amigo.ui.device.washer.intf.IScanPresenter;
 import com.xiaolian.amigo.ui.device.washer.intf.IScanView;
 import com.xiaolian.amigo.ui.widget.qrcode.CustomCaptureManager;
@@ -30,6 +31,7 @@ public class ScanActivity extends WasherBaseActivity
 
     private CustomCaptureManager capture;
     private DecoratedBarcodeView barcodeScannerView;
+    private boolean torchOn = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,13 @@ public class ScanActivity extends WasherBaseActivity
 
         barcodeScannerView = findViewById(R.id.zxing_barcode_scanner);
         barcodeScannerView.setTorchListener(this);
+        barcodeScannerView.setOnClickListener(v -> {
+            if (torchOn) {
+                barcodeScannerView.setTorchOff();
+            } else {
+                barcodeScannerView.setTorchOn();
+            }
+        });
 
 //        switchFlashlightButton = (Button) findViewById(R.id.switch_flashlight);
 //
@@ -66,6 +75,8 @@ public class ScanActivity extends WasherBaseActivity
         });
         capture.initializeFromIntent(getIntent(), savedInstanceState);
         capture.decode();
+
+        findViewById(R.id.iv_back).setOnClickListener(v -> onBackPressed());
     }
 
     @Override
@@ -117,18 +128,24 @@ public class ScanActivity extends WasherBaseActivity
 
     @Override
     public void onTorchOn() {
+        torchOn = true;
 //        switchFlashlightButton.setText(R.string.turn_off_flashlight);
     }
 
     @Override
     public void onTorchOff() {
+        torchOn = false;
 //        switchFlashlightButton.setText(R.string.turn_on_flashlight);
     }
 
     @Override
-    public void gotoChooseModeView(String deviceNo) {
+    public void gotoChooseModeView(Bonus bonus, String deviceNo) {
         startActivity(new Intent(ScanActivity.this, ChooseWashModeActivity.class)
-                .putExtra(WasherContent.KEY_DEVICE_NO, deviceNo));
+                .putExtra(WasherContent.KEY_DEVICE_NO, deviceNo)
+                .putExtra(WasherContent.KEY_BONUS_ID, bonus.getId())
+                .putExtra(WasherContent.KEY_BONUS_AMOUNT, bonus.getAmount())
+                .putExtra(WasherContent.KEY_BONUS_DESC, bonus.getDescription())
+        );
         finish();
     }
 

@@ -160,7 +160,7 @@ public class NormalOrderActivity extends OrderBaseActivity implements INormalOrd
                 listItems.add(new TitleContentListDelegate.ListItem("实际消费：", data.getConsume(), "#ff5555"));
             } else {
                 // 有代金券
-                listItems.add(new TitleContentListDelegate.ListItem("代金券抵扣：", data.getConsume(), "#222"));
+                listItems.add(new TitleContentListDelegate.ListItem("代金券抵扣：", data.getConsume(), "#222222"));
                 listItems.add(new TitleContentListDelegate.ListItem("实际消费：", data.getConsume(), "#ff5555"));
             }
         }

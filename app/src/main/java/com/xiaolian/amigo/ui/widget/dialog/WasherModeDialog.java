@@ -27,15 +27,24 @@ public class WasherModeDialog extends Dialog {
     public interface OnConfirmClickListener {
         void onConfirmClick();
     }
-    private OnConfirmClickListener listener;
+    public interface OnBonusClickListener {
+        void onBonusClick();
+    }
+    private OnConfirmClickListener confirmClickListener;
+    private OnBonusClickListener bonusClickListener;
     private TextView tv_confirm;
     private TextView tv_mode;
     private LinearLayout ll_bonus;
     private TextView tv_bonus;
     private View v_bonus;
+    private String price;
 
     public void setConfirmClickListener(OnConfirmClickListener listener) {
-        this.listener = listener;
+        this.confirmClickListener = listener;
+    }
+
+    public void setBonusClickListener(OnBonusClickListener listener) {
+        this.bonusClickListener = listener;
     }
 
     public WasherModeDialog(@NonNull Context context) {
@@ -69,7 +78,12 @@ public class WasherModeDialog extends Dialog {
         tv_bonus.setText(bonus);
     }
 
+    public String getPrice() {
+        return price;
+    }
+
     public void setSubmit(String price) {
+        this.price = price;
         SpannableStringBuilder builder = new SpannableStringBuilder();
         builder.append("支付");
         String priceText = String.format("%s元", price);
@@ -86,13 +100,18 @@ public class WasherModeDialog extends Dialog {
     private void bindView() {
         tv_confirm = findViewById(R.id.tv_confirm);
         tv_confirm.setOnClickListener(v -> {
-            if (listener != null) {
-                listener.onConfirmClick();
+            if (confirmClickListener != null) {
+                confirmClickListener.onConfirmClick();
             }
         });
         tv_mode = findViewById(R.id.tv_mode);
         tv_bonus = findViewById(R.id.tv_bonus);
         ll_bonus = findViewById(R.id.ll_bonus);
+        ll_bonus.setOnClickListener(v -> {
+            if (bonusClickListener != null) {
+                bonusClickListener.onBonusClick();
+            }
+        });
         v_bonus = findViewById(R.id.v_bonus);
     }
 }
