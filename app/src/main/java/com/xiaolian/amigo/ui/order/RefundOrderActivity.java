@@ -36,6 +36,7 @@ public class RefundOrderActivity extends OrderBaseActivity implements IRefundOrd
     private void bindView() {
         findViewById(R.id.left_oper).setOnClickListener(v -> gotoOrderDetail());
         findViewById(R.id.right_oper).setOnClickListener(v -> gotoScanQRCode());
+        findViewById(R.id.iv_back).setOnClickListener(v -> onBackPressed());
 
         tv_amount = findViewById(R.id.tv_amount);
         tv_reason_content = findViewById(R.id.tv_reason_content);

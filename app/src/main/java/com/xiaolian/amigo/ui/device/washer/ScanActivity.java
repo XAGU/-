@@ -126,8 +126,15 @@ public class ScanActivity extends WasherBaseActivity
     }
 
     @Override
-    public void gotoChooseModeView() {
-        startActivity(new Intent(ScanActivity.this, ChooseWashModeActivity.class));
+    public void gotoChooseModeView(String deviceNo) {
+        startActivity(new Intent(ScanActivity.this, ChooseWashModeActivity.class)
+                .putExtra(WasherContent.KEY_DEVICE_NO, deviceNo));
         finish();
+    }
+
+    @Override
+    public void resumeScan() {
+        capture.onResume();
+        capture.decode();
     }
 }

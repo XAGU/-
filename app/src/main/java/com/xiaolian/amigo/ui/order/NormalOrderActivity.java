@@ -68,6 +68,7 @@ public class NormalOrderActivity extends OrderBaseActivity implements INormalOrd
         findViewById(R.id.left_oper).setOnClickListener(v -> onLeftOper());
         findViewById(R.id.right_oper).setOnClickListener(v -> onRightOper());
         findViewById(R.id.tv_complaint).setOnClickListener(v -> complaint());
+        findViewById(R.id.iv_back).setOnClickListener(v -> onBackPressed());
         recyclerView = findViewById(R.id.recyclerView);
         ll_bottom = findViewById(R.id.ll_bottom);
         tv_bottom_tip = findViewById(R.id.tv_bottom_tip);
@@ -115,7 +116,8 @@ public class NormalOrderActivity extends OrderBaseActivity implements INormalOrd
         startActivity(new Intent(this, WasherQRCodeActivity.class)
                 .putExtra(WasherContent.KEY_PRICE, presenter.getOrder().getConsume())
                 .putExtra(WasherContent.KEY_MODE, presenter.getOrder().getModeDesc())
-                .putExtra(WasherContent.KEY_QR_CODE_URL, presenter.getOrder().getQrCode()));
+                .putExtra(WasherContent.KEY_QR_CODE_URL, presenter.getOrder().getQrCode())
+                .setAction("normalOrder"));
     }
 
     @Override

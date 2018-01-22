@@ -68,14 +68,14 @@ public class ChooseWashModePresenter<V extends IChooseWashModeView> extends Base
     @Override
     public void payAndGenerate(Long bonusId, String modeDesc, String deviceNo, String price, Integer mode) {
         PayReqDTO reqDTO = new PayReqDTO();
-//        reqDTO.setBonusId(bonusId);
-//        reqDTO.setMacAddress(deviceNo);
-//        reqDTO.setPrepay(Double.valueOf(price));
-//        reqDTO.setMode(mode);
+        reqDTO.setBonusId(bonusId);
+        reqDTO.setMacAddress(deviceNo);
+        reqDTO.setPrepay(Double.valueOf(price));
+        reqDTO.setMode(mode);
         // mock data
-        reqDTO.setMacAddress("AABBCCDD");
-        reqDTO.setMode(1);
-        reqDTO.setPrepay(3.14);
+//        reqDTO.setMacAddress("AABBCCDD");
+//        reqDTO.setMode(1);
+//        reqDTO.setPrepay(3.14);
         addObserver(washerDataManager.generateQRCode(reqDTO),
                 new NetworkObserver<ApiResult<QrCodeGenerateRespDTO>>() {
 

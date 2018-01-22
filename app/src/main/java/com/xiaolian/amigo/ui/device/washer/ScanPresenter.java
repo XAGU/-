@@ -30,9 +30,9 @@ public class ScanPresenter<V extends IScanView> extends BasePresenter<V>
     public void scanCheckout(String content) {
         QrCodeScanReqDTO reqDTO = new QrCodeScanReqDTO();
         reqDTO.setDeviceType(Device.WASHER.getType());
-//        reqDTO.setQrCodeData(content);
+        reqDTO.setQrCodeData(content);
         // mock data
-        reqDTO.setQrCodeData("200000AABBCCDD00000000000000000000000039E40ED8CFFAEFD27CFC1C92A602AE78CA");
+//        reqDTO.setQrCodeData("200000AABBCCDD00000000000000000000000039E40ED8CFFAEFD27CFC1C92A602AE78CA");
         addObserver(washerDataManager.scanCheckout(reqDTO),
                 new NetworkObserver<ApiResult<QrCodeScanRespDTO>>() {
 
@@ -40,10 +40,17 @@ public class ScanPresenter<V extends IScanView> extends BasePresenter<V>
                     public void onReady(ApiResult<QrCodeScanRespDTO> result) {
                         if (null == result.getError()) {
                             washerDataManager.setDeviceToken(result.getData().getMacAddress(), result.getData().getDeviceToken());
-                            getMvpView().gotoChooseModeView();
+                            getMvpView().gotoChooseModeView(result.getData().getMacAddress());
                         } else {
                             getMvpView().onError(result.getError().getDisplayMessage());
+                            getMvpView().resumeScan();
                         }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        getMvpView().resumeScan();
                     }
                 });
     }

@@ -27,10 +27,9 @@ public class WasherQRCodePresenter<V extends IWasherQRCodeView> extends BasePres
     }
 
     @Override
-    public void generateQRCode(String price, String mode, int dimension) {
+    public void generateQRCode(String data, int dimension) {
         try {
-            Bitmap bitmap = QRCodeEncoder.encodeAsBitmap("fdjfkjdfkjdkfjkdjfkdjfkjdfkjdfkjfkjfdkjfkhgjsahgeiieie"
-                    + price + mode, dimension);
+            Bitmap bitmap = QRCodeEncoder.encodeAsBitmap(data, dimension);
             getMvpView().renderQRCode(bitmap);
         } catch (WriterException e) {
             e.printStackTrace();

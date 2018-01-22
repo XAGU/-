@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,6 +27,7 @@ public class WasherQRCodeActivity extends WasherBaseActivity implements IWasherQ
     IWasherQRCodePresenter<IWasherQRCodeView> presenter;
     private TextView tv_top_bar;
     private ImageView iv_qr_code;
+    private String action;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,9 +53,10 @@ public class WasherQRCodeActivity extends WasherBaseActivity implements IWasherQ
         String mode = getIntent().getStringExtra(WasherContent.KEY_MODE);
         String price = getIntent().getStringExtra(WasherContent.KEY_PRICE);
         String url = getIntent().getStringExtra(WasherContent.KEY_QR_CODE_URL);
+        action = getIntent().getAction();
         renderTopBar(price, mode);
         iv_qr_code.post(() ->
-                presenter.generateQRCode(price, mode, iv_qr_code.getWidth()));
+                presenter.generateQRCode(url, iv_qr_code.getWidth()));
     }
 
     private void renderTopBar(String price, String mode) {
@@ -67,8 +70,11 @@ public class WasherQRCodeActivity extends WasherBaseActivity implements IWasherQ
 
     @Override
     public void onBackPressed() {
-//        super.onBackPressed();
-        startActivity(new Intent(this, MainActivity.class));
-        finish();
+        if (TextUtils.isEmpty(action)) {
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        } else {
+            super.onBackPressed();
+        }
     }
 }
