@@ -5,6 +5,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.ui.order.adaptor.OrderAdaptor;
 import com.xiaolian.amigo.ui.order.intf.IOrderPresenter;
 import com.xiaolian.amigo.ui.order.intf.IOrderView;
@@ -65,10 +66,15 @@ public class OrderActivity extends OrderBaseListActivity implements IOrderView {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adaptor = new OrderAdaptor(orders);
         adaptor.setOrderDetailClickListener((order) -> {
-            // 跳转至订单详情
-            Intent intent = new Intent(OrderActivity.this, OrderDetailActivity.class);
-            intent.putExtra(Constant.EXTRA_KEY, order.getId());
-            startActivity(intent);
+            if (Device.getDevice(order.getDeviceType()) == Device.WASHER) {
+                startActivity(new Intent(OrderActivity.this, NormalOrderActivity.class)
+                        .putExtra(OrderConstant.KEY_ORDER_ID, order.getId()));
+            } else {
+                // 跳转至订单详情
+                Intent intent = new Intent(OrderActivity.this, OrderDetailActivity.class);
+                intent.putExtra(Constant.EXTRA_KEY, order.getId());
+                startActivity(intent);
+            }
         });
         recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 14)));
         recyclerView.setAdapter(adaptor);

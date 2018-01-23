@@ -101,4 +101,8 @@ public interface IMainDataManager {
     Observable<ApiResult<VersionDTO>> getUpdateInfo();
 
     void saveDeviceCategory(List<DeviceCategoryBO> devices);
+
+    // 是否需要账户迁移
+    void setNeedTransfer();
+    void setNotNeedTransfer();
 }

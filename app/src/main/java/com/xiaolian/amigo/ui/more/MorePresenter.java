@@ -27,6 +27,14 @@ public class MorePresenter<V extends IMoreView> extends BasePresenter<V>
     }
 
     @Override
+    public void onAttach(V view) {
+        super.onAttach(view);
+        if (moreDataManager.getTransfer()) {
+            getMvpView().showTransfer();
+        }
+    }
+
+    @Override
     public void logout() {
         moreDataManager.logout();
         getMvpView().onSuccess("退出登录成功");

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
+import android.widget.LinearLayout;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.system.BannerDTO;
@@ -21,6 +23,7 @@ import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
 import com.xiaolian.amigo.ui.main.adaptor.HomeAdaptor;
 import com.xiaolian.amigo.ui.main.adaptor.HomeBannerDelegate;
 import com.xiaolian.amigo.ui.main.adaptor.HomeNormalDelegate;
+import com.xiaolian.amigo.ui.main.adaptor.HomeSmallDelegate;
 import com.xiaolian.amigo.ui.widget.RecyclerItemClickListener;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Log;
@@ -44,14 +47,21 @@ import lombok.Data;
 public class HomeFragment2 extends Fragment {
 
     private static final String TAG = HomeFragment2.class.getSimpleName();
-    HomeAdaptor.ItemWrapper shower = new HomeAdaptor.ItemWrapper(1, null, "热水澡", "TAKE A SHOWER", "#ffb6c5",
-            R.drawable.shower);
-    HomeAdaptor.ItemWrapper dryer = new HomeAdaptor.ItemWrapper(1, null, "吹风机", "HAIR DRIER", "#fce1aa",
-            R.drawable.dryer);
-    HomeAdaptor.ItemWrapper water = new HomeAdaptor.ItemWrapper(1, null, "饮水机", "DRINK A WATER", "#aaebe4",
-            R.drawable.water);
-    HomeAdaptor.ItemWrapper lost = new HomeAdaptor.ItemWrapper(1, null, "失物招领", "LOST AND FOUND", "#b3d4ff",
-            R.drawable.lost);
+    HomeAdaptor.ItemWrapper shower = new HomeAdaptor.ItemWrapper(HomeAdaptor.SMALL_TYPE,
+            null, "热水澡", "TAKE A SHOW",
+            R.drawable.shower, R.drawable.small_shower);
+    HomeAdaptor.ItemWrapper dryer = new HomeAdaptor.ItemWrapper(HomeAdaptor.SMALL_TYPE,
+            null, "吹风机", "HAIR DRIER",
+            R.drawable.dryer, R.drawable.small_dryer);
+    HomeAdaptor.ItemWrapper washer = new HomeAdaptor.ItemWrapper(HomeAdaptor.SMALL_TYPE,
+            null, "洗衣机", "WASH CLOTHES",
+            R.drawable.washer, R.drawable.small_washer);
+    HomeAdaptor.ItemWrapper water = new HomeAdaptor.ItemWrapper(HomeAdaptor.SMALL_TYPE,
+            null, "饮水机", "DRINK A WATER",
+            R.drawable.water, R.drawable.small_water);
+    HomeAdaptor.ItemWrapper lost = new HomeAdaptor.ItemWrapper(HomeAdaptor.SMALL_TYPE,
+            null, "失物招领", "LOST AND FOUND",
+            R.drawable.lost, R.drawable.small_lost);
 
     List<HomeAdaptor.ItemWrapper> items = new ArrayList<HomeAdaptor.ItemWrapper>() {
         {
@@ -73,6 +83,7 @@ public class HomeFragment2 extends Fragment {
     private int usingAmount = 0;
     private View disabledView;
     private HomeAdaptor.ItemWrapper banner;
+    private GridLayoutManager gridLayoutManager;
 
     @Nullable
     @Override
@@ -86,11 +97,14 @@ public class HomeFragment2 extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        adaptor = new HomeAdaptor(getActivity(), items);
+        gridLayoutManager = new GridLayoutManager(getActivity(), 2);
+        adaptor = new HomeAdaptor(getActivity(), items, gridLayoutManager);
 //        recyclerView.scheduleLayoutAnimation();
         adaptor.addItemViewDelegate(new HomeNormalDelegate(getActivity()));
+        adaptor.addItemViewDelegate(new HomeSmallDelegate(getActivity()));
         adaptor.addItemViewDelegate(new HomeBannerDelegate(getActivity()));
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+//        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setLayoutManager(gridLayoutManager);
         ((DefaultItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
         LayoutAnimationController animation = AnimationUtils
                 .loadLayoutAnimation(getContext(), R.anim.layout_animation_home_slide_left_to_right);
@@ -101,11 +115,13 @@ public class HomeFragment2 extends Fragment {
                     public void onItemClick(View view, int position, MotionEvent e) {
                         try {
                             Log.d(TAG, "recycler view onItemClick " + position);
-                            if (items.get(position).getType() != 1) {
+                            if (items.get(position).getType() != HomeAdaptor.NORMAL_TYPE
+                                    && items.get(position).getType() != HomeAdaptor.SMALL_TYPE) {
                                 view.dispatchTouchEvent(e);
                                 return;
                             }
-                            if (items.get(position).getType() == 1) {
+                            if (items.get(position).getType() == HomeAdaptor.NORMAL_TYPE
+                                    || items.get(position).getType() == HomeAdaptor.SMALL_TYPE) {
                                 disabledView = view;
                                 view.setEnabled(false);
                                 if (items.get(position).getRes() == R.drawable.shower) {
@@ -116,6 +132,8 @@ public class HomeFragment2 extends Fragment {
                                     EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_LOST_AND_FOUND));
                                 } else if (items.get(position).getRes() == R.drawable.dryer) {
                                     EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_DRYER));
+                                } else if (items.get(position).getRes() == R.drawable.washer) {
+                                    EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_WASHER));
                                 }
                             }
                         } catch (ArrayIndexOutOfBoundsException ex) {
@@ -146,8 +164,9 @@ public class HomeFragment2 extends Fragment {
     }
 
     public void onBannerEvent(List<BannerDTO> banners) {
-        if (items.get(items.size() - 1).getType() == 1) {
-            banner = new HomeAdaptor.ItemWrapper(2, banners, null, null, null, 0);
+        if (items.get(items.size() - 1).getType() == HomeAdaptor.NORMAL_TYPE ||
+                items.get(items.size() - 1).getType() == HomeAdaptor.SMALL_TYPE) {
+            banner = new HomeAdaptor.ItemWrapper(HomeAdaptor.BANNER_TYPE, banners, null, null, 0, 0);
             items.add(banner);
             Log.d(TAG, "onBannerEvent notify");
             adaptor.notifyItemInserted(items.size() - 1);
@@ -187,6 +206,9 @@ public class HomeFragment2 extends Fragment {
         if (water.isActive()) {
             items.add(water);
         }
+        if (washer.isActive()) {
+            items.add(washer);
+        }
         if (lost.isActive()) {
             items.add(lost);
         }
@@ -203,6 +225,7 @@ public class HomeFragment2 extends Fragment {
         shower.setActive(false);
         dryer.setActive(false);
         water.setActive(false);
+        washer.setActive(false);
         /// business为空则不显示shower和water
         if (businesses == null || businesses.isEmpty()) {
             notifyAdaptor();
@@ -230,10 +253,21 @@ public class HomeFragment2 extends Fragment {
                 dryer.setUsing(business.getUsing());
                 currentPrepayOrderSize += business.getPrepayOrder();
                 currentBusinessSize += 1;
+            } else if (business.getBusinessId() == 4) {
+                washer.setActive(true);
+                washer.setPrepaySize(business.getPrepayOrder());
+                washer.setUsing(business.getUsing());
+                currentPrepayOrderSize += business.getPrepayOrder();
+                currentBusinessSize += 1;
             }
         }
         if (currentBusinessSize != businessSize) {
             businessSize = currentBusinessSize;
+            if (businessSize >= 3) {
+                switchSmallLayout();
+            } else {
+                switchLargeLayout();
+            }
             needNotify = true;
         }
         if (currentPrepayOrderSize != prepayOrderSize) {
@@ -248,6 +282,24 @@ public class HomeFragment2 extends Fragment {
             Log.d(TAG, "onSchoolBizEvent notify");
             notifyAdaptor();
         }
+    }
+
+    private void switchLargeLayout() {
+        gridLayoutManager.setSpanCount(1);
+        shower.setType(HomeAdaptor.NORMAL_TYPE);
+        dryer.setType(HomeAdaptor.NORMAL_TYPE);
+        water.setType(HomeAdaptor.NORMAL_TYPE);
+        washer.setType(HomeAdaptor.NORMAL_TYPE);
+        lost.setType(HomeAdaptor.NORMAL_TYPE);
+    }
+
+    private void switchSmallLayout() {
+        gridLayoutManager.setSpanCount(2);
+        shower.setType(HomeAdaptor.SMALL_TYPE);
+        dryer.setType(HomeAdaptor.SMALL_TYPE);
+        water.setType(HomeAdaptor.SMALL_TYPE);
+        washer.setType(HomeAdaptor.SMALL_TYPE);
+        lost.setType(HomeAdaptor.SMALL_TYPE);
     }
 
     private void onPrepayOrderEvent(HomeAdaptor.ItemWrapper itemWrapper) {
@@ -303,6 +355,9 @@ public class HomeFragment2 extends Fragment {
 
 
     private boolean isBannersEqual(List<BannerDTO> banners1, List<BannerDTO> banners2) {
+        if (banners1 == null || banners2 == null) {
+            return false;
+        }
         if (banners1.size() != banners2.size()) {
             return false;
         }

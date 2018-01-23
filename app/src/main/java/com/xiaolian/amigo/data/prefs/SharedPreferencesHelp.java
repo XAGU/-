@@ -72,6 +72,8 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     private final SharedPreferences mSharedPreferences;
     private final SharedPreferences mUnclearSharedPreferences;
     private final Gson mGson;
+    // 是否需要账户迁移
+    private boolean transfer;
 
     @Inject
     public SharedPreferencesHelp(@ApplicationContext Context context, Gson gson) {
@@ -376,6 +378,14 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
                     }.getType());
         }
         return Collections.emptyList();
+    }
+    public void setTransfer(boolean b) {
+        transfer = b;
+    }
+
+    @Override
+    public boolean getTransfer() {
+        return transfer;
     }
 
     @Override

@@ -21,12 +21,18 @@ import android.support.v7.app.AppCompatActivity;
 import com.xiaolian.amigo.data.manager.OrderDataManager;
 import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
 import com.xiaolian.amigo.di.OrderActivityContext;
+import com.xiaolian.amigo.ui.order.NormalOrderPresenter;
 import com.xiaolian.amigo.ui.order.OrderDetailPresenter;
 import com.xiaolian.amigo.ui.order.OrderPresenter;
+import com.xiaolian.amigo.ui.order.RefundOrderPresenter;
+import com.xiaolian.amigo.ui.order.intf.INormalOrderPresenter;
+import com.xiaolian.amigo.ui.order.intf.INormalOrderView;
 import com.xiaolian.amigo.ui.order.intf.IOrderDetailPresenter;
 import com.xiaolian.amigo.ui.order.intf.IOrderDetailView;
 import com.xiaolian.amigo.ui.order.intf.IOrderPresenter;
 import com.xiaolian.amigo.ui.order.intf.IOrderView;
+import com.xiaolian.amigo.ui.order.intf.IRefundOrderPresenter;
+import com.xiaolian.amigo.ui.order.intf.IRefundOrderView;
 
 import dagger.Module;
 import dagger.Provides;
@@ -54,6 +60,20 @@ public class OrderActivityModule {
     @OrderActivityContext
     IOrderPresenter<IOrderView> provideOrderPresenter(
             OrderPresenter<IOrderView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    @OrderActivityContext
+    INormalOrderPresenter<INormalOrderView> provideNormalOrderPresenter(
+            NormalOrderPresenter<INormalOrderView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    @OrderActivityContext
+    IRefundOrderPresenter<IRefundOrderView> provideRefundOrderPresenter(
+            RefundOrderPresenter<IRefundOrderView> presenter) {
         return presenter;
     }
 

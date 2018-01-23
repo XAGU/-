@@ -9,6 +9,10 @@ import com.xiaolian.amigo.data.network.model.trade.ConnectCommandReqDTO;
 import com.xiaolian.amigo.data.network.model.trade.ConnectCommandRespDTO;
 import com.xiaolian.amigo.data.network.model.trade.PayReqDTO;
 import com.xiaolian.amigo.data.network.model.trade.PayRespDTO;
+import com.xiaolian.amigo.data.network.model.trade.QrCodeGenerateRespDTO;
+import com.xiaolian.amigo.data.network.model.trade.QrCodeScanReqDTO;
+import com.xiaolian.amigo.data.network.model.trade.QrCodeScanRespDTO;
+import com.xiaolian.amigo.data.network.model.trade.WashingModeRespDTO;
 
 import retrofit2.http.Body;
 import retrofit2.http.POST;
@@ -32,4 +36,16 @@ public interface ITradeApi {
     // 网络支付，创建用水订单
     @POST("trade/pay")
     Observable<ApiResult<PayRespDTO>> pay(@Body PayReqDTO reqDTO);
+
+    // 扫描二维码结账
+    @POST("trade/qrCode/scan/checkout")
+    Observable<ApiResult<QrCodeScanRespDTO>> scanCheckout(@Body QrCodeScanReqDTO reqDTO);
+
+    // 生成支付二维码
+    @POST("trade/pay/qrCode/generate")
+    Observable<ApiResult<QrCodeGenerateRespDTO>> generateQRCode(@Body PayReqDTO reqDTO);
+
+    // 请求洗衣机模式
+    @POST("trade/device/washing/mode")
+    Observable<ApiResult<WashingModeRespDTO>> getWasherMode();
 }

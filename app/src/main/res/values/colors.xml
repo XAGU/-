@@ -68,6 +68,7 @@
     <color name="device_heator">#fe557d</color>
     <color name="device_dispenser">#00d3c7</color>
     <color name="device_dryer">#fddd5a</color>
+    <color name="device_washer">#8e8eff</color>
 
     <color name="repair_todo">@color/colorFullRed</color>
     <color name="repair_doing">@color/colorYellow</color>
@@ -83,6 +84,8 @@
     <color name="refresh_red">#ff5555</color>
     <color name="refresh_blue">#499bff</color>
     <color name="order_error">#ffc460</color>
+
+    <color name="washer_background">#9370DB</color>
 
     <color name="heater_gradient_start">#ff9a64</color>
     <color name="dryer_gradient_start">#fddd5a</color>

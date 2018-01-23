@@ -45,6 +45,18 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <!--消费账单-->
+        <activity android:name=".ui.order.NormalOrderActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+
+        <!--退款账单-->
+        <activity android:name=".ui.order.RefundOrderActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+
         <!--订单详情-->
         <activity
             android:name=".ui.order.OrderDetailActivity"
@@ -373,6 +385,30 @@
             android:name=".ui.wallet.WithdrawalDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <!--洗衣机首页-->
+        <activity android:name=".ui.device.washer.WasherActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <!--选择洗衣机模式页面-->
+        <activity android:name=".ui.device.washer.ChooseWashModeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <!--洗衣机展示二维码页面-->
+        <activity android:name=".ui.device.washer.WasherQRCodeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+
+        <activity android:name=".ui.device.washer.ScanActivity"
+            android:screenOrientation="portrait"
+            android:stateNotNeeded="true"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            />
+
 
         <!--更新窗口-->
         <activity

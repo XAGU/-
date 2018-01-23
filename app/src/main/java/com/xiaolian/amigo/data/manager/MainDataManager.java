@@ -227,4 +227,14 @@ public class MainDataManager implements IMainDataManager {
         }
         sharedPreferencesHelp.saveDeviceCategory(deviceCategories);
     }
+
+    @Override
+    public void setNeedTransfer() {
+        sharedPreferencesHelp.setTransfer(true);
+    }
+
+    @Override
+    public void setNotNeedTransfer() {
+        sharedPreferencesHelp.setTransfer(false);
+    }
 }

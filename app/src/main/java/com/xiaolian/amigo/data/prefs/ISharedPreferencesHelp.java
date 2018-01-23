@@ -110,4 +110,7 @@ public interface ISharedPreferencesHelp {
     // 存储设备信息
     void saveDeviceCategory(List<DeviceCategory> devices);
     List<DeviceCategory> getDeviceCategory();
+
+    void setTransfer(boolean b);
+    boolean getTransfer();
 }

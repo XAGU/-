@@ -104,4 +104,6 @@ ext.deps = [
         'lombok'                 : 'org.projectlombok:lombok:1.16.18',
         'magicIndicator'         : 'com.github.hackware1993:MagicIndicator:1.5.0',
         'acra'                   : 'ch.acra:acra:4.9.2',
+        'zxing'                  : 'com.google.zxing:core:3.3.0',
+        'zxingEmbed'            : 'com.journeyapps:zxing-android-embedded:3.5.0',
 ]

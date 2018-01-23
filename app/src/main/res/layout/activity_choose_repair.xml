@@ -96,6 +96,38 @@
         android:background="@color/colorDarke"
         android:layout_width="match_parent"
         android:layout_height="1dp"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_washer"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp">
+        <TextView
+            android:text="@string/washer"
+            android:id="@+id/tv_washer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/ContentText_main"
+            android:layout_centerVertical="true"/>
+
+        <ImageView
+            android:id="@+id/iv_washer_tick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/choose_lg"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            />
+    </RelativeLayout>
+
+    <View
+        android:background="@color/colorDarke"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
     <TextView
         android:layout_marginTop="43dp"
         android:layout_marginBottom="15dp"

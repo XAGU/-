@@ -57,7 +57,11 @@ public class OrderAdaptor extends RecyclerView.Adapter<OrderAdaptor.ViewHolder> 
                 holder.v_type.setBackgroundResource(Device.getDevice(wrapper.getType()).getColorRes());
                 holder.tv_device.setText(wrapper.getDevice());
                 holder.tv_time.setText(wrapper.getTime());
-                holder.tv_amount.setText("免费");
+                if (Device.getDevice(wrapper.getOrder().getDeviceType()) == Device.WASHER) {
+                    holder.tv_amount.setText("-¥0");
+                } else {
+                    holder.tv_amount.setText("免费");
+                }
                 holder.tv_minus.setVisibility(View.GONE);
                 holder.order = wrapper.getOrder();
             } else {

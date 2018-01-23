@@ -54,4 +54,9 @@ public class Order implements Serializable {
     private Long residenceId;
     // 供应商
     private Long supplierId;
+
+    // 设备工作模式
+    private Integer mode;
+    // 工作模式描述
+    private String modeDesc;
 }

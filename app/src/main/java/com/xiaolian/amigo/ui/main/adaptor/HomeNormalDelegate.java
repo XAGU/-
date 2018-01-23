@@ -2,6 +2,7 @@ package com.xiaolian.amigo.ui.main.adaptor;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v7.widget.GridLayoutManager;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -33,7 +34,7 @@ public class HomeNormalDelegate implements ItemViewDelegate<HomeAdaptor.ItemWrap
 
     @Override
     public boolean isForViewType(HomeAdaptor.ItemWrapper item, int position) {
-        return item.getType() == 1;
+        return item.getType() == HomeAdaptor.NORMAL_TYPE;
     }
 
     @Override
@@ -46,7 +47,6 @@ public class HomeNormalDelegate implements ItemViewDelegate<HomeAdaptor.ItemWrap
         holder.getView(R.id.rl_item).setBackgroundResource(itemWrapper.getRes());
         holder.setText(R.id.tv_device_title, itemWrapper.getDeviceName());
         holder.setText(R.id.tv_desc, itemWrapper.getDesc());
-        holder.setTextColor(R.id.tv_desc, Color.parseColor(itemWrapper.getDescColor()));
         if (itemWrapper.getPrepaySize() != 0) {
             holder.getView(R.id.tv_prepay).setVisibility(View.VISIBLE);
             holder.setText(R.id.tv_prepay, "(有" + itemWrapper.getPrepaySize() + "笔未找零金额)");

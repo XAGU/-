@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:layout_height="wrap_content">
+    <TextView
+        android:text="*请勿与其他人同时扫描支付相同的洗衣机"
+        android:textSize="12sp"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:background="@color/colorBackgroundGray"
+        android:textColor="@color/colorDark2"
+        android:layout_width="match_parent"
+        android:layout_height="58dp" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:gravity="center_vertical"
+        android:paddingStart="21dp"
+        android:paddingEnd="21dp"
+        android:layout_height="48dp">
+        <TextView
+            android:text="当前选中："
+            android:textSize="14sp"
+            android:textColor="@color/colorDark2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tv_mode"
+            android:text="两洗两漂一脱水（4元）"
+            android:lines="1"
+            android:gravity="end"
+            android:ellipsize="end"
+            android:textSize="14sp"
+            android:textColor="@color/colorDark2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <View
+        android:layout_marginStart="21dp"
+        android:layout_marginEnd="21dp"
+        android:background="@color/colorDarke"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+    <LinearLayout
+        android:id="@+id/ll_bonus"
+        android:visibility="gone"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:gravity="center_vertical"
+        android:paddingStart="21dp"
+        android:paddingEnd="21dp"
+        android:layout_height="48dp">
+        <TextView
+            android:text="代金券抵扣："
+            android:textSize="14sp"
+            android:textColor="@color/colorDark2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tv_bonus"
+            android:text="1元新人有礼"
+            android:lines="1"
+            android:gravity="end"
+            android:ellipsize="end"
+            android:textSize="14sp"
+            android:textColor="@color/colorFullRed"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:layout_marginStart="10dp"
+            android:src="@drawable/arrow_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <View
+        android:visibility="gone"
+        android:id="@+id/v_bonus"
+        android:layout_marginStart="21dp"
+        android:layout_marginEnd="21dp"
+        android:background="@color/colorDarke"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
+    <TextView
+        tools:text="支付4元"
+        android:id="@+id/tv_confirm"
+        android:background="@drawable/button_shape"
+        android:layout_marginTop="21dp"
+        android:layout_marginEnd="21dp"
+        android:layout_marginStart="21dp"
+        android:layout_marginBottom="21dp"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:elevation="1dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_width="match_parent"
+        android:layout_height="48dp" />
+
+</LinearLayout>
