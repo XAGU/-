@@ -186,7 +186,8 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
     }
 
     @Override
-    public void gotoHeaterDevice(String defaultAddress, String location, Long residenceId) {
+    public void gotoHeaterDevice(String defaultAddress, Long defaultSupplierId,
+                                 String location, Long residenceId) {
         if (TextUtils.isEmpty(defaultAddress)) {
             if (mainDataManager.getUserInfo().getResidenceId() == null
                     || mainDataManager.getUserInfo().getResidenceId() == -1) {
@@ -195,7 +196,7 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
                 getMvpView().showNoDeviceDialog();
             }
         } else {
-            getMvpView().gotoDevice(Device.HEATER, defaultAddress,
+            getMvpView().gotoDevice(Device.HEATER, defaultAddress, defaultSupplierId,
                     location, residenceId, false);
         }
     }
@@ -237,6 +238,7 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
             public void onReady(ApiResult<DeviceCheckRespDTO> result) {
                 EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.ENABLE_VIEW));
                 if (null == result.getError()) {
+                    mainDataManager.saveDeviceCategory(result.getData().getDevices());
                     getMvpView().showDeviceUsageDialog(type, result.getData());
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());

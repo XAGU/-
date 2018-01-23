@@ -31,8 +31,11 @@ public interface IBleDataManager {
      */
     Observable<RxBleConnection> prepareConnectionObservable(@NonNull String macAddress, boolean autoConnect, @NonNull PublishSubject<Void> disconnectTriggerSubject);
 
-    // 连接蓝牙
+    // 好年华连接蓝牙
     Observable<BluetoothGattCharacteristic> connect(Observable<RxBleConnection> connectionObservable);
+
+    // 辛纳连接蓝牙
+    Observable<Observable<byte[]>> connect2(Observable<RxBleConnection> connectionObservable, String notifyCharacteristicUuid);
 
     // 设置notify通道模式为enable
     Observable<Observable<byte[]>> setupNotification(Observable<RxBleConnection> connectionObservable, BluetoothGattCharacteristic characteristic);
@@ -51,7 +54,7 @@ public interface IBleDataManager {
      * @param connectionObservable 连接句柄
      * @param inputBytes           待发送的数据
      */
-    Observable<byte[]> write(@NonNull Observable<RxBleConnection> connectionObservable, @NonNull byte[] inputBytes);
+    Observable<byte[]> write(@NonNull Observable<RxBleConnection> connectionObservable, @NonNull byte[] inputBytes, String writeCharacteristicUuid);
 
     /**
      * 接受蓝牙设备通知的数据

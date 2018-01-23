@@ -29,7 +29,7 @@ import lombok.Data;
 
 public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenserAdaptor.ViewHolder> {
     public interface OnItemClickListener {
-        void onItemClick(String deviceNo, Boolean isFavor, Long residenceId, String usefor, String location, Integer price);
+        void onItemClick(String deviceNo, Long supplierId, Boolean isFavor, Long residenceId, String usefor, String location, Integer price);
     }
     private OnItemClickListener itemClickListener;
     private int lastExpandPosition = -1;
@@ -67,6 +67,7 @@ public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenser
         holder.rl_top.setOnClickListener(v -> {
             if (!expandAble && itemClickListener != null) {
                 itemClickListener.onItemClick(dispenserWrapper.getDeviceGroup().getWater().get(0).getMacAddress(),
+                        dispenserWrapper.getDeviceGroup().getWater().get(0).getSupplierId(),
                         dispenserWrapper.isFavor(),
                         dispenserWrapper.getResidenceId(),
                         null,
@@ -128,6 +129,7 @@ public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenser
             holder.tv_water[i].setOnClickListener(v -> {
                 if (itemClickListener != null) {
                     itemClickListener.onItemClick(dispenserWrapper.getDeviceGroup().getWater().get(waterPosition).getMacAddress(),
+                            dispenserWrapper.getDeviceGroup().getWater().get(waterPosition).getSupplierId(),
                             dispenserWrapper.isFavor(),
                             dispenserWrapper.getResidenceId(),
                             dispenserWrapper.getDeviceGroup().getWater().get(waterPosition).getUsefor(),

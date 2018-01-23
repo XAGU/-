@@ -1,7 +1,11 @@
 package com.xiaolian.amigo.data.prefs;
 
+import com.xiaolian.amigo.data.network.model.device.DeviceCategoryBO;
 import com.xiaolian.amigo.data.network.model.user.UploadUserDeviceInfoReqDTO;
+import com.xiaolian.amigo.data.vo.DeviceCategory;
 import com.xiaolian.amigo.data.vo.User;
+
+import java.util.List;
 
 /**
  * SharedPreference帮助接口
@@ -95,15 +99,15 @@ public interface ISharedPreferencesHelp {
     Long getLastRepairTime();
 
     void setRememberMobile(String mobile);
-
     String getRememberMobile();
 
     void setDeviceResult(String deviceNo, String result);
-
     String getDeviceResult(String deviceNo);
 
     void saveUploadedUserDeviceInfo(UploadUserDeviceInfoReqDTO reqDTO);
-
     UploadUserDeviceInfoReqDTO getUploadedUserDeviceInfo();
 
+    // 存储设备信息
+    void saveDeviceCategory(List<DeviceCategory> devices);
+    List<DeviceCategory> getDeviceCategory();
 }

@@ -14,5 +14,5 @@ import lombok.Data;
 @Data
 public class QueryUserResidenceListRespDTO {
     private Integer total;
-    private List<UserResidence> userResidences;
+    private List<UserResidenceInListDTO> userResidences;
 }

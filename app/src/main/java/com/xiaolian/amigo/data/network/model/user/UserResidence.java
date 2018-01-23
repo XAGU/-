@@ -15,4 +15,6 @@ public class UserResidence {
     private String residenceName;
     // macAddress
     private String macAddress;
+
+    private Long supplierId;
 }

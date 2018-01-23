@@ -10,6 +10,7 @@ import com.xiaolian.amigo.data.network.ITimeRangeApi;
 import com.xiaolian.amigo.data.network.IUserApi;
 import com.xiaolian.amigo.data.network.IVersionApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.device.DeviceCategoryBO;
 import com.xiaolian.amigo.data.network.model.version.CheckVersionUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.order.OrderReqDTO;
@@ -25,8 +26,12 @@ import com.xiaolian.amigo.data.network.model.school.QuerySchoolBizListRespDTO;
 import com.xiaolian.amigo.data.network.model.timerange.QueryTimeValidRespDTO;
 import com.xiaolian.amigo.data.network.model.version.VersionDTO;
 import com.xiaolian.amigo.data.network.model.user.UploadUserDeviceInfoReqDTO;
+import com.xiaolian.amigo.data.vo.DeviceCategory;
 import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -209,5 +214,17 @@ public class MainDataManager implements IMainDataManager {
     @Override
     public Observable<ApiResult<VersionDTO>> getUpdateInfo() {
         return versionApi.getUpdateInfo();
+    }
+
+    @Override
+    public void saveDeviceCategory(List<DeviceCategoryBO> devices) {
+        if (devices == null) {
+            return;
+        }
+        List<DeviceCategory> deviceCategories = new ArrayList<>();
+        for (DeviceCategoryBO bo : devices) {
+            deviceCategories.add(bo.transform());
+        }
+        sharedPreferencesHelp.saveDeviceCategory(deviceCategories);
     }
 }

@@ -18,9 +18,10 @@ public interface IChooseDispenserPresenter<V extends IChooseDispenerView> extend
     void setAction(int action);
     int getAction();
     void finishView();
-    void gotoDispenser(String macAddress, boolean favor, Long residenceId, String usefor, String location);
-    void gotoDryer(String deviceNo, Boolean isFavor, Long residenceId, String location);
+    void gotoDryer(String deviceNo, Long supplierId, Boolean isFavor, Long residenceId, String location);
     void startTimer();
     void cancelTimer();
     void setDeviceType(Integer deviceType);
+    void gotoDispenser(String macAddress, Long supplierId, boolean favor,
+                       Long residenceId, String usefor, String location);
 }

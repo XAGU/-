@@ -30,10 +30,11 @@ public interface IChooseDispenerView extends IBaseView {
 
     void finishView();
 
-    void gotoDispenser(String macAddress, boolean favor, Long residenceId,
+    void gotoDispenser(String macAddress, Long supplierId,
+                       boolean favor, Long residenceId,
                        String usefor, String location);
 
     void showScanStopView();
 
-    void gotoDryer(String deviceNo, Boolean isFavor, Long residenceId, String location);
+    void gotoDryer(String deviceNo, Long supplierId, Boolean isFavor, Long residenceId, String location);
 }
