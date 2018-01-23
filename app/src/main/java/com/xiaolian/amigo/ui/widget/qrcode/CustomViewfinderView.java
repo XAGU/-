@@ -23,6 +23,8 @@ public class CustomViewfinderView extends ViewfinderView {
     public float[] position=new float[]{0f,0.5f,1f};
     public int[] colors=new int[]{0x00ffffff,0xffffffff,0x00ffffff};
     public LinearGradient linearGradient ;
+    private Rect frame;
+
     public CustomViewfinderView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
@@ -39,8 +41,16 @@ public class CustomViewfinderView extends ViewfinderView {
             return;
         }
 
-        Rect frame = framingRect;
+//        Rect frame = framingRect;
         Rect previewFrame = previewFramingRect;
+        int inset = 220;
+        if (frame == null) {
+            frame = new Rect(framingRect.left + inset,
+                    framingRect.top + inset,
+                    framingRect.right - inset,
+                    framingRect.bottom - inset);
+        }
+//        previewFrame.inset(100, 100);
 
         int width = canvas.getWidth();
         int height = canvas.getHeight();
@@ -74,7 +84,7 @@ public class CustomViewfinderView extends ViewfinderView {
             //  scannerAlpha = (scannerAlpha + 1) % SCANNER_ALPHA.length;
             int middle = frame.height() / 2 + frame.top;
             laserLinePosition=laserLinePosition+5;
-            if(laserLinePosition>frame.height())
+            if(laserLinePosition> frame.height())
             {
                 laserLinePosition=0;
             }
@@ -101,11 +111,11 @@ public class CustomViewfinderView extends ViewfinderView {
                 lastPossibleResultPoints = currentPossible;
                 paint.setAlpha(CURRENT_POINT_OPACITY);
                 paint.setColor(resultPointColor);
-                for (ResultPoint point : currentPossible) {
-                    canvas.drawCircle(frameLeft + (int) (point.getX() * scaleX),
-                            frameTop + (int) (point.getY() * scaleY),
-                            POINT_SIZE, paint);
-                }
+//                for (ResultPoint point : currentPossible) {
+//                    canvas.drawCircle(frameLeft + (int) (point.getX() * scaleX),
+//                            frameTop + (int) (point.getY() * scaleY),
+//                            POINT_SIZE, paint);
+//                }
             }
             if (currentLast != null) {
                 paint.setAlpha(CURRENT_POINT_OPACITY / 2);

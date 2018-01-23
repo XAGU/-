@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.LinearLayout;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.DecodeHintType;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.device.washer.intf.IWasherPresenter;
@@ -47,8 +49,11 @@ public class WasherActivity extends WasherBaseActivity implements IWasherView {
         integrator.setCameraId(0); //前置或者后置摄像头
         integrator.setBeepEnabled(false); //扫描成功的「哔哔」声，默认开启
         integrator.setCaptureActivity(ScanActivity.class);
+        integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
+        integrator.addExtra(DecodeHintType.CHARACTER_SET.name(), "utf-8");
+        integrator.addExtra(DecodeHintType.TRY_HARDER.name(), Boolean.TRUE);
+        integrator.addExtra(DecodeHintType.POSSIBLE_FORMATS.name(), BarcodeFormat.QR_CODE);
         integrator.initiateScan();
-
     }
 
     @Override

@@ -194,6 +194,9 @@ public class ChooseWashModeActivity extends WasherBaseActivity implements IChoos
     @Override
     public void addMore(List<ChooseWashModeAdapter.WashModeItem> items) {
         this.items.addAll(items);
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
     }
 
     @Override

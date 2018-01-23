@@ -2,18 +2,25 @@ package com.xiaolian.amigo.ui.device.washer;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.journeyapps.barcodescanner.BarcodeView;
+import com.journeyapps.barcodescanner.DecoderThread;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
+import com.journeyapps.barcodescanner.Size;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.vo.Bonus;
 import com.xiaolian.amigo.ui.device.washer.intf.IScanPresenter;
 import com.xiaolian.amigo.ui.device.washer.intf.IScanView;
 import com.xiaolian.amigo.ui.widget.qrcode.CustomCaptureManager;
+
+import java.lang.reflect.Field;
 
 import javax.inject.Inject;
 
@@ -77,6 +84,35 @@ public class ScanActivity extends WasherBaseActivity
         capture.decode();
 
         findViewById(R.id.iv_back).setOnClickListener(v -> onBackPressed());
+    }
+
+    private void setRect() {
+        Class decoderThreadClz = DecoderThread.class;
+        Class barcodeViewClz = BarcodeView.class;
+        try {
+            Field decoderThreadField = barcodeViewClz.getDeclaredField("decoderThread");
+            decoderThreadField.setAccessible(true);
+            DecoderThread decoderThread = (DecoderThread) decoderThreadField.get(barcodeScannerView.getBarcodeView());
+            if (decoderThread == null) {
+                return;
+            }
+            Field cropRectField = decoderThreadClz.getDeclaredField("cropRect");
+            cropRectField.setAccessible(true);
+            Rect rect = (Rect) cropRectField.get(decoderThread);
+            if (rect == null) {
+                rect = new Rect();
+                rect.top = 0;
+                rect.left = 0;
+                cropRectField.set(decoderThread, rect);
+            } else {
+                rect.left = 0;
+                rect.top = 0;
+            }
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -153,5 +189,6 @@ public class ScanActivity extends WasherBaseActivity
     public void resumeScan() {
         capture.onResume();
         capture.decode();
+//        setRect();
     }
 }
