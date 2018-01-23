@@ -136,9 +136,9 @@ public class NormalOrderActivity extends OrderBaseActivity implements INormalOrd
                         data.getLocation()), WithdrawRechargeDetailAdapter.TITLE_CONTENT_TYPE));
         items.add(new WithdrawRechargeDetailAdapter.Item("订单号：",
                 data.getOrderNo(), WithdrawRechargeDetailAdapter.TITLE_CONTENT_COPY_TYPE));
-        if (Device.getDevice(data.getDeviceType()) == Device.WASHER) {
+        if (Device.getDevice(data.getDeviceType()) == Device.WASHER && data.getConsume() != null) {
             items.add(new WithdrawRechargeDetailAdapter.Item("洗衣模式：",
-                    String.format("%s %s元", data.getModeDesc(), data.getMode()), WithdrawRechargeDetailAdapter.TITLE_CONTENT_TYPE));
+                    String.format("%s %s元", data.getModeDesc(), data.getConsume().replace("¥", "")), WithdrawRechargeDetailAdapter.TITLE_CONTENT_TYPE));
         }
         List<TitleContentListDelegate.ListItem> listItems = new ArrayList<>();
         if (CommonUtil.equals(data.getStatus(), 3)) {
