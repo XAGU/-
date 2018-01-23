@@ -55,7 +55,7 @@ public class LogInterceptor implements Interceptor {
     private String brand;
     private String model;
     private String uniqueId;
-    private String system = "2";
+    private final static String system = "2";
 
     private ISharedPreferencesHelp sharedPreferencesHelp;
 
