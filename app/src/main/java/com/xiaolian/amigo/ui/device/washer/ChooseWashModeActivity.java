@@ -69,14 +69,14 @@ public class ChooseWashModeActivity extends WasherBaseActivity implements IChoos
         adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-//                if (adapter.getLastChoosePosition() != -1) {
-//                    items.get(adapter.getLastChoosePosition()).setChoose(false);
-//                    items.get(position).setChoose(true);
-//                } else {
-//                    items.get(position).setChoose(true);
-//                }
-//                adapter.setLastChoosePosition(position);
-//                adapter.notifyDataSetChanged();
+                if (adapter.getLastChoosePosition() != -1) {
+                    items.get(adapter.getLastChoosePosition()).setChoose(false);
+                    items.get(position).setChoose(true);
+                } else {
+                    items.get(position).setChoose(true);
+                }
+                adapter.setLastChoosePosition(position);
+                adapter.notifyDataSetChanged();
 //                toggleSubmitButton();
                 showModeDetailDialog(items.get(position).getName(),
                         presenter.getDeviceNo(), items.get(position).getPrice(), items.get(position).getMode());
@@ -178,7 +178,7 @@ public class ChooseWashModeActivity extends WasherBaseActivity implements IChoos
             String price = items.get(adapter.getLastChoosePosition()).getPrice();
             String mode = items.get(adapter.getLastChoosePosition()).getName();
             startActivity(new Intent(this, WasherQRCodeActivity.class)
-                    .putExtra(WasherContent.KEY_MODE, mode)
+                    .putExtra(WasherContent.KEY_MODE_DESC, mode)
                     .putExtra(WasherContent.KEY_PRICE, price));
         }
     }
@@ -238,7 +238,7 @@ public class ChooseWashModeActivity extends WasherBaseActivity implements IChoos
         }
         startActivity(new Intent(this, WasherQRCodeActivity.class)
                 .putExtra(WasherContent.KEY_PRICE, String.valueOf(chosenOriginalPirce))
-                .putExtra(WasherContent.KEY_MODE, modeDesc)
+                .putExtra(WasherContent.KEY_MODE_DESC, modeDesc)
                 .putExtra(WasherContent.KEY_QR_CODE_URL, data));
     }
 }

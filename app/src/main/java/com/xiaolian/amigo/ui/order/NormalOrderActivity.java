@@ -13,7 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.data.enumeration.ComplaintType;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.network.model.order.OrderDetailRespDTO;
 import com.xiaolian.amigo.ui.base.WebActivity;
@@ -115,7 +114,7 @@ public class NormalOrderActivity extends OrderBaseActivity implements INormalOrd
     public void onRightOper() {
         startActivity(new Intent(this, WasherQRCodeActivity.class)
                 .putExtra(WasherContent.KEY_PRICE, presenter.getOrder().getConsume())
-                .putExtra(WasherContent.KEY_MODE, presenter.getOrder().getModeDesc())
+                .putExtra(WasherContent.KEY_MODE_DESC, presenter.getOrder().getModeDesc())
                 .putExtra(WasherContent.KEY_QR_CODE_URL, presenter.getOrder().getQrCode())
                 .setAction("normalOrder"));
     }
@@ -146,11 +145,11 @@ public class NormalOrderActivity extends OrderBaseActivity implements INormalOrd
             // 是否有代金券
             if (TextUtils.isEmpty(data.getBonus())) {
                 // 没有代金券
-                listItems.add(new TitleContentListDelegate.ListItem("退还金额：", data.getConsume(), "#ff5555"));
+                listItems.add(new TitleContentListDelegate.ListItem("退还金额：", data.getActualDebit(), "#ff5555"));
             } else {
                 // 有代金券
                 listItems.add(new TitleContentListDelegate.ListItem("退还代金券：", data.getBonus(), "#ff5555"));
-                listItems.add(new TitleContentListDelegate.ListItem("退还金额：", data.getConsume(), "#ff5555"));
+                listItems.add(new TitleContentListDelegate.ListItem("退还金额：", data.getActualDebit(), "#ff5555"));
             }
         } else {
             // 正常账单
@@ -160,8 +159,8 @@ public class NormalOrderActivity extends OrderBaseActivity implements INormalOrd
                 listItems.add(new TitleContentListDelegate.ListItem("实际消费：", data.getConsume(), "#ff5555"));
             } else {
                 // 有代金券
-                listItems.add(new TitleContentListDelegate.ListItem("代金券抵扣：", data.getConsume(), "#222222"));
-                listItems.add(new TitleContentListDelegate.ListItem("实际消费：", data.getConsume(), "#ff5555"));
+                listItems.add(new TitleContentListDelegate.ListItem("代金券抵扣：", "-" + data.getBonus(), "#222222"));
+                listItems.add(new TitleContentListDelegate.ListItem("实际扣款：", data.getActualDebit(), "#ff5555"));
             }
         }
         items.add(new TitleContentListDelegate.TitleContentListItem(listItems, WithdrawRechargeDetailAdapter.TITLE_CONTENT_LIST_TYPE));

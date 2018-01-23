@@ -69,6 +69,9 @@ public class NormalOrderPresenter<V extends INormalOrderView> extends BasePresen
 
     @Override
     public void checkComplaint() {
+        if (order == null) {
+            return;
+        }
         CheckComplaintReqDTO reqDTO = new CheckComplaintReqDTO();
         reqDTO.setOrderId(order.getId());
         reqDTO.setOrderType(ComplaintType.getComplaintTypeByDeviceType(

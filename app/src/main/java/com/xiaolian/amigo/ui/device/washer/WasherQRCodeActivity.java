@@ -50,7 +50,7 @@ public class WasherQRCodeActivity extends WasherBaseActivity implements IWasherQ
 
     @Override
     protected void setUp() {
-        String mode = getIntent().getStringExtra(WasherContent.KEY_MODE);
+        String mode = getIntent().getStringExtra(WasherContent.KEY_MODE_DESC);
         String price = getIntent().getStringExtra(WasherContent.KEY_PRICE);
         String url = getIntent().getStringExtra(WasherContent.KEY_QR_CODE_URL);
         action = getIntent().getAction();
