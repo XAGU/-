@@ -64,11 +64,11 @@ public class ScanActivity extends WasherBaseActivity
             if(result != null) {
                 if(result.getContents() == null) {
                     Log.d(TAG, "Cancelled");
-                    Toast.makeText(ScanActivity.this, "Cancelled", Toast.LENGTH_LONG).show();
+//                    Toast.makeText(ScanActivity.this, "Cancelled", Toast.LENGTH_LONG).show();
                 } else {
                     Log.d(TAG, "Scanned: " + result.getContents());
                     presenter.scanCheckout(result.getContents());
-                    Toast.makeText(ScanActivity.this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(ScanActivity.this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
                 }
             }
 
