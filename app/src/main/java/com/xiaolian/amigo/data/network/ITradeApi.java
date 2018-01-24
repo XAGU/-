@@ -38,7 +38,7 @@ public interface ITradeApi {
     Observable<ApiResult<PayRespDTO>> pay(@Body PayReqDTO reqDTO);
 
     // 扫描二维码结账
-    @POST("trade/qrCode/scan/checkout")
+    @POST("trade/qrCode/scan")
     Observable<ApiResult<QrCodeScanRespDTO>> scanCheckout(@Body QrCodeScanReqDTO reqDTO);
 
     // 生成支付二维码

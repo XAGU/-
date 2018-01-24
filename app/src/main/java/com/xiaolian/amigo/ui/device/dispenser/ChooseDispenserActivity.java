@@ -86,47 +86,9 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
         getActivityComponent().inject(this);
         presenter.onAttach(ChooseDispenserActivity.this);
         presenter.setDeviceType(deviceType);
-        adaptor = new ChooseDispenserAdaptor(this, R.layout.item_dispenser,
-                items, Device.getDevice(deviceType) == Device.DISPENSER);
-        adaptor.setOnItemClickListener((deviceNo, supplierId, isFavor, residenceId, usefor, location, price) -> {
-            if (orderPreInfo != null) {
-                orderPreInfo.setPrice(price);
-            }
-            if (Device.getDevice(deviceType) == Device.DISPENSER) {
-                presenter.closeBleConnection();
-                presenter.gotoDispenser(deviceNo, supplierId, isFavor, residenceId, usefor, location);
-            } else if (Device.getDevice(deviceType) == Device.DRYER) {
-                presenter.closeBleConnection();
-                presenter.gotoDryer(deviceNo, supplierId, isFavor, residenceId, location);
-            }
-        });
-        recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 14)));
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adaptor);
-        refreshLayout = findViewById(R.id.refreshLayout);
+        initRecyclerView();
 
-        refreshLayout.setOnRefreshLoadmoreListener(new OnRefreshLoadmoreListener() {
-            @Override
-            public void onRefresh(com.scwang.smartrefresh.layout.api.RefreshLayout refreshlayout) {
-                if (listStatus) {
-                    presenter.requestFavorites();
-                } else {
-                    hideScanStopView();
-                    presenter.onLoad();
-                }
-            }
-
-            @Override
-            public void onLoadmore(com.scwang.smartrefresh.layout.api.RefreshLayout refreshlayout) {
-
-            }
-        });
-        refreshLayout.setRefreshHeader(new RefreshLayoutHeader(this));
-        refreshLayout.setRefreshFooter(new RefreshLayoutFooter(this));
-        refreshLayout.setReboundDuration(200);
-        refreshLayout.setEnableLoadmore(false);
-        refreshLayout.autoRefresh(0);
+        initRefreshLayout();
 
         rl_empty = findViewById(R.id.rl_empty);
         rl_error = findViewById(R.id.rl_error);
@@ -153,6 +115,53 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
                 tv_favorite.setText(R.string.favorite_hair_dryer);
                 break;
         }
+    }
+
+    private void initRefreshLayout() {
+        refreshLayout = findViewById(R.id.refreshLayout);
+
+        refreshLayout.setOnRefreshLoadmoreListener(new OnRefreshLoadmoreListener() {
+            @Override
+            public void onRefresh(com.scwang.smartrefresh.layout.api.RefreshLayout refreshlayout) {
+                if (listStatus) {
+                    presenter.requestFavorites();
+                } else {
+                    hideScanStopView();
+                    presenter.onLoad();
+                }
+            }
+
+            @Override
+            public void onLoadmore(com.scwang.smartrefresh.layout.api.RefreshLayout refreshlayout) {
+
+            }
+        });
+        refreshLayout.setRefreshHeader(new RefreshLayoutHeader(this));
+        refreshLayout.setRefreshFooter(new RefreshLayoutFooter(this));
+        refreshLayout.setReboundDuration(200);
+        refreshLayout.setEnableLoadmore(false);
+        refreshLayout.autoRefresh(0);
+    }
+
+    private void initRecyclerView() {
+        adaptor = new ChooseDispenserAdaptor(this, R.layout.item_dispenser,
+                items, Device.getDevice(deviceType) == Device.DISPENSER);
+        adaptor.setOnItemClickListener((deviceNo, supplierId, isFavor, residenceId, usefor, location, price) -> {
+            if (orderPreInfo != null) {
+                orderPreInfo.setPrice(price);
+            }
+            if (Device.getDevice(deviceType) == Device.DISPENSER) {
+                presenter.closeBleConnection();
+                presenter.gotoDispenser(deviceNo, supplierId, isFavor, residenceId, usefor, location);
+            } else if (Device.getDevice(deviceType) == Device.DRYER) {
+                presenter.closeBleConnection();
+                presenter.gotoDryer(deviceNo, supplierId, isFavor, residenceId, location);
+            }
+        });
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 14)));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adaptor);
     }
 
     private void onReScan() {

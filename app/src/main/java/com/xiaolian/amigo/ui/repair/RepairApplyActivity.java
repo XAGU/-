@@ -45,6 +45,8 @@ import butterknife.OnTextChanged;
 public class RepairApplyActivity extends RepairBaseActivity implements IRepairApplyView {
 
     private static final int REQUEST_IMAGE = 0x3301;
+    private static final int IMAGE_MAX_COUNT = 3;
+    private static final int PROBLEM_LIST_SPAN_COUNT = 3;
     @Inject
     IRepairApplyPresenter<IRepairApplyView> presenter;
     @BindView(R.id.rv_problems)
@@ -97,7 +99,7 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
         super.onNewIntent(intent);
         if (null != intent) {
             deviceType = intent.getIntExtra(Constant.DEVICE_TYPE, Device.UNKNOWN.getType());
-            residenceId = intent.getLongExtra(Constant.LOCATION_ID, 0L);
+            residenceId = intent.getLongExtra(Constant.LOCATION_ID, Constant.INVALID_ID);
             location = intent.getStringExtra(Constant.LOCATION);
             tv_location.setText(location);
             if (Device.UNKNOWN.getType() != deviceType) {
@@ -126,8 +128,8 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
 
         adapter = new RepairProblemAdaptor(this, R.layout.item_problem, problems);
         adapter.setOnItemClickListener(this::toggleBtnStatus);
-        rv_problems.addItemDecoration(new GridSpacesItemDecoration(3, ScreenUtils.dpToPxInt(this, 10), false));
-        rv_problems.setLayoutManager(new GridLayoutManager(this, 3));
+        rv_problems.addItemDecoration(new GridSpacesItemDecoration(PROBLEM_LIST_SPAN_COUNT, ScreenUtils.dpToPxInt(this, 10), false));
+        rv_problems.setLayoutManager(new GridLayoutManager(this, PROBLEM_LIST_SPAN_COUNT));
         rv_problems.setAdapter(adapter);
         render();
         initImageAdd();
@@ -139,7 +141,7 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
         imageAddAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                if (images.isEmpty() || (images.size() < 3 && position == images.size())) {
+                if (images.isEmpty() || (images.size() < IMAGE_MAX_COUNT && position == images.size())) {
                     getImage(imageUri ->
                             presenter.onUpload(RepairApplyActivity.this, imageUri, position));
                 } else {
@@ -157,7 +159,7 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
             }
         });
         rv_image.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        rv_image.addItemDecoration(new GridSpacesItemDecoration(3, ScreenUtils.dpToPxInt(this, 10), false));
+        rv_image.addItemDecoration(new GridSpacesItemDecoration(IMAGE_MAX_COUNT, ScreenUtils.dpToPxInt(this, 10), false));
         rv_image.setAdapter(imageAddAdapter);
     }
 
@@ -303,7 +305,7 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
         for (String image : images) {
             addImages.add(new ImageAddAdapter.ImageItem(image));
         }
-        if (images.size() < 3) {
+        if (images.size() < IMAGE_MAX_COUNT) {
             addImages.add(new ImageAddAdapter.ImageItem());
         }
         imageAddAdapter.notifyDataSetChanged();

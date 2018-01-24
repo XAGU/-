@@ -124,7 +124,7 @@ public class ChooseWashModeActivity extends WasherBaseActivity implements IChoos
 
     private void onModeConfirm(String modeDesc, String deviceNo, String price, Integer mode) {
         Long bonusId;
-        if (!ObjectsCompat.equals(chosenBonusId, Constant.INVALID_ID)) {
+        if (chosenBonusId != null && !ObjectsCompat.equals(chosenBonusId, Constant.INVALID_ID)) {
             bonusId = chosenBonusId;
         } else if (!ObjectsCompat.equals(defaultBonusId, Constant.INVALID_ID)
                 && TextUtils.isEmpty(chosenBonusDescription)) {

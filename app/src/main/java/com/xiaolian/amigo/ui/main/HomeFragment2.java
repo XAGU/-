@@ -197,17 +197,17 @@ public class HomeFragment2 extends Fragment {
 
     private void resetItem() {
         items.clear();
-        if (shower.isActive()) {
-            items.add(shower);
-        }
         if (dryer.isActive()) {
             items.add(dryer);
         }
-        if (water.isActive()) {
-            items.add(water);
+        if (shower.isActive()) {
+            items.add(shower);
         }
         if (washer.isActive()) {
             items.add(washer);
+        }
+        if (water.isActive()) {
+            items.add(water);
         }
         if (lost.isActive()) {
             items.add(lost);

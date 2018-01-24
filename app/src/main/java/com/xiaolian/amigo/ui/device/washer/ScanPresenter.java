@@ -31,8 +31,8 @@ public class ScanPresenter<V extends IScanView> extends BasePresenter<V>
         QrCodeScanReqDTO reqDTO = new QrCodeScanReqDTO();
         reqDTO.setDeviceType(Device.WASHER.getType());
         reqDTO.setQrCodeData(content);
-        // mock data
-//        reqDTO.setQrCodeData("200000AABBCCDD00000000000000000000000039E40ED8CFFAEFD27CFC1C92A602AE78CA");
+        // 1-绑定 2-扫描结账
+        reqDTO.setPurpose(2);
         addObserver(washerDataManager.scanCheckout(reqDTO),
                 new NetworkObserver<ApiResult<QrCodeScanRespDTO>>() {
 

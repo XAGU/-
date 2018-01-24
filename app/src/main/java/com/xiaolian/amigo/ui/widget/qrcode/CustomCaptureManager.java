@@ -263,7 +263,6 @@ public class CustomCaptureManager {
                 // permission was granted
                 barcodeView.resume();
             } else {
-                // TODO: display better error message.
                 displayFrameworkBugMessageAndExit();
             }
         }

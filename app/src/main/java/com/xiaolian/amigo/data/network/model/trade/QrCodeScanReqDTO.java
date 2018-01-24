@@ -10,4 +10,6 @@ import lombok.Data;
 public class QrCodeScanReqDTO {
     private String qrCodeData;
     private Integer deviceType;
+    // 用途 1-绑定 2-扫描结账
+    private Integer purpose;
 }
