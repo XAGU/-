@@ -5,15 +5,12 @@ import android.content.pm.PackageManager;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.journeyapps.barcodescanner.BarcodeView;
 import com.journeyapps.barcodescanner.DecoderThread;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
-import com.journeyapps.barcodescanner.Size;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.vo.Bonus;
 import com.xiaolian.amigo.ui.device.washer.intf.IScanPresenter;
@@ -86,6 +83,7 @@ public class ScanActivity extends WasherBaseActivity
         findViewById(R.id.iv_back).setOnClickListener(v -> onBackPressed());
     }
 
+    @SuppressWarnings("unused")
     private void setRect() {
         Class decoderThreadClz = DecoderThread.class;
         Class barcodeViewClz = BarcodeView.class;
@@ -149,6 +147,7 @@ public class ScanActivity extends WasherBaseActivity
      * Check if the device's camera has a Flashlight.
      * @return true if there is Flashlight, otherwise false.
      */
+    @SuppressWarnings("unused")
     private boolean hasFlash() {
         return getApplicationContext().getPackageManager()
                 .hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
