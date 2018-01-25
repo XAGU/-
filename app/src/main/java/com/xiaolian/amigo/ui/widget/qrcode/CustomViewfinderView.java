@@ -28,7 +28,7 @@ public class CustomViewfinderView extends ViewfinderView {
 //    public int[] colors=new int[]{0x00ffffff,0xffffffff,0x00ffffff};
     public int[] colors=new int[]{0x00baacff,0xffbaacff,0x00baacff};
     public LinearGradient linearGradient ;
-    private Rect frame;
+//    private Rect frame;
     private String scannerTipText;
     private int scannerTipTextColor = 0xffffff;
     private int scannerTipTextSize = 11;
@@ -50,15 +50,15 @@ public class CustomViewfinderView extends ViewfinderView {
             return;
         }
 
-//        Rect frame = framingRect;
+        Rect frame = framingRect;
         Rect previewFrame = previewFramingRect;
-        int inset = 200;
-        if (frame == null) {
-            frame = new Rect(framingRect.left + inset,
-                    framingRect.top + inset,
-                    framingRect.right - inset,
-                    framingRect.bottom - inset);
-        }
+//        int inset = 200;
+//        if (frame == null) {
+//            frame = new Rect(framingRect.left + inset,
+//                    framingRect.top + inset,
+//                    framingRect.right - inset,
+//                    framingRect.bottom - inset);
+//        }
 //        previewFrame.inset(100, 100);
 
         int width = canvas.getWidth();

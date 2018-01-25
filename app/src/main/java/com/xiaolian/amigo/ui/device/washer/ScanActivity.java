@@ -3,6 +3,7 @@ package com.xiaolian.amigo.ui.device.washer;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Rect;
+import android.hardware.Camera;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
@@ -12,6 +13,7 @@ import com.google.zxing.integration.android.IntentResult;
 import com.journeyapps.barcodescanner.BarcodeView;
 import com.journeyapps.barcodescanner.DecoderThread;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
+import com.journeyapps.barcodescanner.camera.CameraSettings;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.vo.Bonus;
 import com.xiaolian.amigo.ui.device.washer.intf.IScanPresenter;
@@ -119,6 +121,13 @@ public class ScanActivity extends WasherBaseActivity
     protected void onResume() {
         super.onResume();
         capture.onResume();
+        barcodeScannerView.getBarcodeView().getCameraInstance().getCameraSettings().setExposureEnabled(true);
+        barcodeScannerView.getBarcodeView().getCameraInstance().getCameraSettings().setBarcodeSceneModeEnabled(true);
+        barcodeScannerView.getBarcodeView().getCameraInstance().getCameraSettings().setMeteringEnabled(true);
+        barcodeScannerView.getBarcodeView().getCameraInstance().getCameraSettings().setFocusMode(CameraSettings.FocusMode.MACRO);
+        barcodeScannerView.getBarcodeView().getCameraInstance().getCameraSettings().setScanInverted(true);
+        barcodeScannerView.getBarcodeView().getCameraInstance().configureCamera();
+//        barcodeScannerView.getBarcodeView().getCameraInstance().getCameraSettings().setContinuousFocusEnabled(true);
     }
 
     @Override
