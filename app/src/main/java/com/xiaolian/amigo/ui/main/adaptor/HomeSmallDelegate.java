@@ -46,15 +46,19 @@ public class HomeSmallDelegate implements ItemViewDelegate<HomeAdaptor.ItemWrapp
             holder.itemView.setVisibility(View.GONE);
         }
         if (position % 2 == 0) {
-            RecyclerView.LayoutParams lp = (RecyclerView.LayoutParams) holder.getView(R.id.rl_item).getLayoutParams();
-            lp.setMarginStart(41);
-            lp.setMarginEnd(0);
-            holder.getView(R.id.rl_item).setLayoutParams(lp);
+            try {
+                RecyclerView.LayoutParams lp = (RecyclerView.LayoutParams) holder.getView(R.id.rl_item).getLayoutParams();
+                lp.setMargins(41, 0, 0, 0);
+                holder.getView(R.id.rl_item).setLayoutParams(lp);
+            } catch (Exception e) {
+            }
         } else {
-            RecyclerView.LayoutParams lp = (RecyclerView.LayoutParams) holder.getView(R.id.rl_item).getLayoutParams();
-            lp.setMarginStart(0);
-            lp.setMarginEnd(41);
-            holder.getView(R.id.rl_item).setLayoutParams(lp);
+            try {
+                RecyclerView.LayoutParams lp = (RecyclerView.LayoutParams) holder.getView(R.id.rl_item).getLayoutParams();
+                lp.setMargins(0, 0, 41, 0);
+                holder.getView(R.id.rl_item).setLayoutParams(lp);
+            } catch (Exception e) {
+            }
         }
         holder.getView(R.id.rl_item).setBackgroundResource(itemWrapper.getSmallRes());
         holder.setText(R.id.tv_device_title, itemWrapper.getDeviceName());

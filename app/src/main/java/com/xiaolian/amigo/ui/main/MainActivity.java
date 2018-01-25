@@ -204,7 +204,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         mGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
             @Override
             public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-
+                if (e1 == null || e2 == null) {
+                    return super.onFling(e1, e2, velocityX, velocityY);
+                }
                 if (hasBanners && current == 0) {
                     Banner banner = (Banner) sl_main.getRootView().findViewById(R.id.banner);
                     if (banner != null) {
