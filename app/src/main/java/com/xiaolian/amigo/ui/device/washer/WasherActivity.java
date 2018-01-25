@@ -49,6 +49,7 @@ public class WasherActivity extends WasherBaseActivity implements IWasherView {
         integrator.setCameraId(0); //前置或者后置摄像头
         integrator.setBeepEnabled(false); //扫描成功的「哔哔」声，默认开启
         integrator.setCaptureActivity(ScanActivity.class);
+        integrator.setOrientationLocked(true);
         integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
         integrator.addExtra(DecodeHintType.CHARACTER_SET.name(), "utf-8");
         integrator.addExtra(DecodeHintType.TRY_HARDER.name(), Boolean.TRUE);

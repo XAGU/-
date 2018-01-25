@@ -12,6 +12,30 @@
         app:zxing_scanner_layout="@layout/qrcode_scanner"
         app:zxing_preview_scaling_strategy="fitXY" />
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="40dp"
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/zxing_status_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/zxing_transparent"
+            android:text="@string/zxing_msg_default_status"
+            android:textColor="@color/zxing_status_text"/>
+        <ImageView
+            android:id="@+id/iv_flashlight"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/ic_flashlight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="42dp">
@@ -24,8 +48,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/arrow_left_white" />
         <TextView
-            android:visibility="gone"
-            android:text="@string/washer"
+            android:text="洗衣机扫描"
             android:textSize="16sp"
             android:textStyle="bold"
             android:gravity="center"

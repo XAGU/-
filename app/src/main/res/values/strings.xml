@@ -277,4 +277,5 @@
     <string name="refund_order_tip">已退款至“我的钱包”</string>
     <string name="normal_order">消费账单</string>
     <string name="washer_order_error_tip">由于未及时使用，你本次消费已作退款处理</string>
+    <string name="zxing_scanner_tip">请将二维码放入框内，即可自动扫描</string>
 </resources>

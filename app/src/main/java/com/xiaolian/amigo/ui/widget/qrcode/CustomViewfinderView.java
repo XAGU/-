@@ -2,13 +2,17 @@ package com.xiaolian.amigo.ui.widget.qrcode;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Rect;
 import android.graphics.Shader;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 
 import com.google.zxing.ResultPoint;
 import com.journeyapps.barcodescanner.ViewfinderView;
+import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.util.DimentionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +25,14 @@ import java.util.List;
 public class CustomViewfinderView extends ViewfinderView {
     public int laserLinePosition=0;
     public float[] position=new float[]{0f,0.5f,1f};
-    public int[] colors=new int[]{0x00ffffff,0xffffffff,0x00ffffff};
+//    public int[] colors=new int[]{0x00ffffff,0xffffffff,0x00ffffff};
+    public int[] colors=new int[]{0x00baacff,0xffbaacff,0x00baacff};
     public LinearGradient linearGradient ;
     private Rect frame;
+    private String scannerTipText;
+    private int scannerTipTextColor = 0xffffff;
+    private int scannerTipTextSize = 11;
+    private int scannerTipTextMargin = 100;
 
     public CustomViewfinderView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -43,7 +52,7 @@ public class CustomViewfinderView extends ViewfinderView {
 
 //        Rect frame = framingRect;
         Rect previewFrame = previewFramingRect;
-        int inset = 220;
+        int inset = 200;
         if (frame == null) {
             frame = new Rect(framingRect.left + inset,
                     framingRect.top + inset,
@@ -74,12 +83,12 @@ public class CustomViewfinderView extends ViewfinderView {
         canvas.drawRect(0, frame.top, frame.left, frame.bottom + 1, paint);
         canvas.drawRect(frame.right + 1, frame.top, width, frame.bottom + 1, paint);
         canvas.drawRect(0, frame.bottom + 1, width, height, paint);
-
         if (resultBitmap != null) {
             // Draw the opaque result bitmap over the scanning rectangle
             paint.setAlpha(CURRENT_POINT_OPACITY);
             canvas.drawBitmap(resultBitmap, null, frame, paint);
         } else {
+            drawTipText(canvas, frame, canvas.getWidth());
             //  paint.setAlpha(SCANNER_ALPHA[scannerAlpha]);
             //  scannerAlpha = (scannerAlpha + 1) % SCANNER_ALPHA.length;
             int middle = frame.height() / 2 + frame.top;
@@ -88,8 +97,10 @@ public class CustomViewfinderView extends ViewfinderView {
             {
                 laserLinePosition=0;
             }
-            linearGradient= new LinearGradient(frame.left + 1, frame.top+laserLinePosition ,
-                    frame.right -1 , frame.top +10+laserLinePosition, colors, position, Shader.TileMode.CLAMP);
+            if (linearGradient == null) {
+                linearGradient= new LinearGradient(frame.left + 1, frame.top+laserLinePosition ,
+                        frame.right -1 , frame.top +10+laserLinePosition, colors, position, Shader.TileMode.CLAMP);
+            }
             // Draw a red "laser scanner" line through the middle to show decoding is active
 
             //  paint.setColor(laserColor);
@@ -135,5 +146,17 @@ public class CustomViewfinderView extends ViewfinderView {
             // postInvalidate();
 
         }
+    }
+    private void drawTipText(Canvas canvas, Rect frame, int width) {
+        if (TextUtils.isEmpty(scannerTipText)) {
+            scannerTipText = getResources().getString(R.string.zxing_scanner_tip);
+        }
+        paint.setColor(Color.WHITE);
+        paint.setTextSize(DimentionUtils.convertSpToPixels(12, getContext()));
+        float textWidth = paint.measureText(scannerTipText);
+        float x = (width - textWidth) / 2;
+        //根据 drawTextGravityBottom 文字在扫描框上方还是下文，默认下方
+        float y = frame.bottom + scannerTipTextMargin;
+        canvas.drawText(scannerTipText, x, y, paint);
     }
 }

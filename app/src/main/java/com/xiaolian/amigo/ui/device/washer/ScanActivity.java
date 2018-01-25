@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -46,13 +47,6 @@ public class ScanActivity extends WasherBaseActivity
 
         barcodeScannerView = findViewById(R.id.zxing_barcode_scanner);
         barcodeScannerView.setTorchListener(this);
-        barcodeScannerView.setOnClickListener(v -> {
-            if (torchOn) {
-                barcodeScannerView.setTorchOff();
-            } else {
-                barcodeScannerView.setTorchOn();
-            }
-        });
 
 //        switchFlashlightButton = (Button) findViewById(R.id.switch_flashlight);
 //
@@ -81,6 +75,14 @@ public class ScanActivity extends WasherBaseActivity
         capture.decode();
 
         findViewById(R.id.iv_back).setOnClickListener(v -> onBackPressed());
+
+        findViewById(R.id.iv_flashlight).setOnClickListener(v -> {
+            if (torchOn) {
+                barcodeScannerView.setTorchOff();
+            } else {
+                barcodeScannerView.setTorchOn();
+            }
+        });
     }
 
     @SuppressWarnings("unused")
@@ -175,12 +177,18 @@ public class ScanActivity extends WasherBaseActivity
 
     @Override
     public void gotoChooseModeView(Bonus bonus, String deviceNo) {
-        startActivity(new Intent(ScanActivity.this, ChooseWashModeActivity.class)
-                .putExtra(WasherContent.KEY_DEVICE_NO, deviceNo)
-                .putExtra(WasherContent.KEY_BONUS_ID, bonus.getId())
-                .putExtra(WasherContent.KEY_BONUS_AMOUNT, bonus.getAmount())
-                .putExtra(WasherContent.KEY_BONUS_DESC, bonus.getDescription())
-        );
+        if (bonus == null) {
+            startActivity(new Intent(ScanActivity.this, ChooseWashModeActivity.class)
+                    .putExtra(WasherContent.KEY_DEVICE_NO, deviceNo)
+            );
+        } else {
+            startActivity(new Intent(ScanActivity.this, ChooseWashModeActivity.class)
+                    .putExtra(WasherContent.KEY_DEVICE_NO, deviceNo)
+                    .putExtra(WasherContent.KEY_BONUS_ID, bonus.getId())
+                    .putExtra(WasherContent.KEY_BONUS_AMOUNT, bonus.getAmount())
+                    .putExtra(WasherContent.KEY_BONUS_DESC, bonus.getDescription())
+            );
+        }
         finish();
     }
 

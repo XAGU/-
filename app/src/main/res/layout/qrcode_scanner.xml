@@ -6,8 +6,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/zxing_barcode_surface"
-        app:zxing_framing_rect_width="1050px"
-        app:zxing_framing_rect_height="1050px">
+        app:zxing_framing_rect_width="1000px"
+        app:zxing_framing_rect_height="1000px">
     </com.journeyapps.barcodescanner.BarcodeView>
 
     <com.xiaolian.amigo.ui.widget.qrcode.CustomViewfinderView
@@ -20,6 +20,7 @@
         app:zxing_viewfinder_mask="@color/zxing_custom_viewfinder_mask"/>
 
     <TextView
+        android:visibility="gone"
         android:id="@+id/zxing_status_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
