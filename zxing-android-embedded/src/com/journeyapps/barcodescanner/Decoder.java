@@ -7,7 +7,7 @@ import com.google.zxing.Reader;
 import com.google.zxing.Result;
 import com.google.zxing.ResultPoint;
 import com.google.zxing.ResultPointCallback;
-import com.google.zxing.common.HybridBinarizer;
+import com.google.zxing.common.GlobalHistogramBinarizer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,8 +57,11 @@ public class Decoder implements ResultPointCallback {
      * @param source the image source
      * @return a BinaryBitmap
      */
+//    protected BinaryBitmap toBitmap(LuminanceSource source) {
+//        return new BinaryBitmap(new HybridBinarizer(source));
+//    }
     protected BinaryBitmap toBitmap(LuminanceSource source) {
-        return new BinaryBitmap(new HybridBinarizer(source));
+        return new BinaryBitmap(new GlobalHistogramBinarizer(source));
     }
 
     /**

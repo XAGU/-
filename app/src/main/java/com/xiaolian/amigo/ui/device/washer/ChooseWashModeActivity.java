@@ -95,10 +95,10 @@ public class ChooseWashModeActivity extends WasherBaseActivity implements IChoos
         }
         dialog.setConfirmClickListener(() -> onModeConfirm(modeDesc,
                 deviceNo, dialog.getPrice(), mode));
+        chosenOriginalPirce = Double.valueOf(price);
         if (!ObjectsCompat.equals(defaultBonusId, Constant.INVALID_ID) && !TextUtils.isEmpty(defaultBonusDescription)) {
             dialog.setBonus(defaultBonusDescription);
             dialog.setBonusClickListener(this::chooseBonus);
-            chosenOriginalPirce = Double.valueOf(price);
             if (chosenOriginalPirce - defaultBonusAmount <= 0) {
                 dialog.setSubmit("0");
             } else {

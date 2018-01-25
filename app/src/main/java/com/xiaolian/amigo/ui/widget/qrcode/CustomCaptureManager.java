@@ -82,9 +82,16 @@ public class CustomCaptureManager {
 
         @Override
         public void possibleResultPoints(List<ResultPoint> resultPoints) {
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    returnPossibleResult(resultPoints);
+                }
+            });
 
         }
     };
+
 
     private final CameraPreview.StateListener stateListener = new CameraPreview.StateListener() {
         @Override
@@ -385,6 +392,12 @@ public class CustomCaptureManager {
         closeAndFinish();
     }
 
+    private void returnPossibleResult(List<ResultPoint> resultPoints) {
+        if (resultCallback != null) {
+            resultCallback.possibleCallback(resultPoints);
+        }
+    }
+
     protected void returnResult(BarcodeResult rawResult) {
         Intent intent = resultIntent(rawResult, getBarcodeImagePath(rawResult));
         activity.setResult(Activity.RESULT_OK, intent);
@@ -404,6 +417,7 @@ public class CustomCaptureManager {
 
     public interface ResultCallback {
         void callback(int requestCode, int resultCode, Intent intent);
+        void possibleCallback(List<ResultPoint> resultPoint);
     }
 
     private ResultCallback resultCallback;

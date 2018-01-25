@@ -10,9 +10,11 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 
+import com.google.zxing.ResultPoint;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.journeyapps.barcodescanner.BarcodeView;
+import com.journeyapps.barcodescanner.CameraPreview;
 import com.journeyapps.barcodescanner.DecoderThread;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 import com.journeyapps.barcodescanner.camera.CameraSettings;
@@ -65,22 +67,32 @@ public class ScanActivity extends WasherBaseActivity
 //        }
 
         capture = new CustomCaptureManager(this, barcodeScannerView);
-        capture.setResultCallback((requestCode, resultCode, intent) -> {
-            IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-            if(result != null) {
-                if(result.getContents() == null) {
-                    Log.d(TAG, "Cancelled");
+        capture.setResultCallback(new CustomCaptureManager.ResultCallback() {
+            @Override
+            public void callback(int requestCode, int resultCode, Intent intent) {
+                IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+                if(result != null) {
+                    if(result.getContents() == null) {
+                        Log.d(TAG, "Cancelled");
 //                    Toast.makeText(ScanActivity.this, "Cancelled", Toast.LENGTH_LONG).show();
-                } else {
-                    Log.d(TAG, "Scanned: " + result.getContents());
-                    presenter.scanCheckout(result.getContents());
+                    } else {
+                        Log.d(TAG, "Scanned: " + result.getContents());
+                        presenter.scanCheckout(result.getContents());
 //                    Toast.makeText(ScanActivity.this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
+                    }
                 }
             }
 
+            @Override
+            public void possibleCallback(List<ResultPoint> resultPoint) {
+                int distance = getMaxDistanceOfPoints(resultPoint);
+                if (distance != 0 && distance < barcodeScannerView.getBarcodeView().getFramingRectSize().width / 4) {
+                    Log.d("Point", "should zoom" + "distance: " + distance);
+                    zoomCamera();
+                }
+            }
         });
         capture.initializeFromIntent(getIntent(), savedInstanceState);
-        capture.decode();
 
         findViewById(R.id.iv_back).setOnClickListener(v -> onBackPressed());
 
@@ -91,6 +103,76 @@ public class ScanActivity extends WasherBaseActivity
                 barcodeScannerView.setTorchOn();
             }
         });
+        barcodeScannerView.getBarcodeView().addStateListener(new CameraPreview.StateListener() {
+            @Override
+            public void previewSized() {
+
+            }
+
+            @Override
+            public void previewStarted() {
+                configCamera();
+            }
+
+            @Override
+            public void previewStopped() {
+
+            }
+
+            @Override
+            public void cameraError(Exception error) {
+
+            }
+
+            @Override
+            public void cameraClosed() {
+
+            }
+        });
+    }
+
+    private void zoomCamera() {
+        if (barcodeScannerView.getBarcodeView().getCameraInstance() == null) {
+            return;
+        }
+        CameraThread cameraThread = barcodeScannerView.getBarcodeView().getCameraInstance().getCameraThread();
+        cameraThread.enqueue(() -> {
+            Camera camera = barcodeScannerView.getBarcodeView().getCameraInstance().getCameraManager().getCamera();
+            Camera.Parameters parameters = camera.getParameters();
+            final int maxZoom = parameters.getMaxZoom();
+            Log.d("Point", "maxZoom: " + maxZoom);
+            int zoom = parameters.getZoom();
+            if (parameters.isZoomSupported()) {
+                if (zoom == 0) {
+                    zoom = maxZoom / 3;
+                } else {
+//                    zoom = zoom + 5;
+                    zoom = zoom + maxZoom / 27;
+                }
+                if (zoom > maxZoom) {
+                    zoom = maxZoom;
+                }
+                parameters.setZoom(zoom);
+                camera.setParameters(parameters);
+            }
+
+        });
+    }
+
+    private int getMaxDistanceOfPoints(List<ResultPoint> resultPoint) {
+        if (resultPoint == null) {
+            return 0;
+        }
+        int max = 0;
+        for (int i = 0; i < resultPoint.size() - 1; i ++) {
+            for (int j = i + 1; j < resultPoint.size(); j ++) {
+                int distance = (int) Math.hypot(resultPoint.get(i).getX() - resultPoint.get(j).getX(), resultPoint.get(i).getY() - resultPoint.get(j).getY());
+                if (distance > max) {
+                    max = distance;
+                }
+            }
+        }
+        return max;
     }
 
     @SuppressWarnings("unused")
@@ -127,6 +209,7 @@ public class ScanActivity extends WasherBaseActivity
     protected void onResume() {
         super.onResume();
         capture.onResume();
+        capture.decode();
 //        barcodeScannerView.getBarcodeView().getCameraInstance().getCameraSettings().setExposureEnabled(true);
 //        barcodeScannerView.getBarcodeView().getCameraInstance().getCameraSettings().setBarcodeSceneModeEnabled(true);
 //        barcodeScannerView.getBarcodeView().getCameraInstance().getCameraSettings().setMeteringEnabled(true);
@@ -134,14 +217,19 @@ public class ScanActivity extends WasherBaseActivity
 //        barcodeScannerView.getBarcodeView().getCameraInstance().getCameraSettings().setScanInverted(true);
 //        barcodeScannerView.getBarcodeView().getCameraInstance().configureCamera();
 //        barcodeScannerView.getBarcodeView().getCameraInstance().getCameraSettings().setContinuousFocusEnabled(true);
-        barcodeScannerView.post(this::configCamera);
+//        barcodeScannerView.post(this::configCamera);
     }
 
     private void configCamera() {
+        if (barcodeScannerView.getBarcodeView().getCameraInstance() == null) {
+            return;
+        }
         int screenWidth = ScreenUtils.getScreenWidth(this);
         int screenHeight = ScreenUtils.getScreenHeight(this);
         int viewWidth = barcodeScannerView.getWidth();
         int viewHeight = barcodeScannerView.getHeight();
+//        int viewWidth = barcodeScannerView.getBarcodeView().getFramingRectSize().width;
+//        int viewHeight = barcodeScannerView.getBarcodeView().getFramingRectSize().height;
         Rect focusRect = calculateTapArea(screenWidth/2, screenHeight/2, 1f, viewWidth, viewHeight);
         Rect meteringRect = calculateTapArea(screenWidth/2, screenHeight/2, 1.5f, viewWidth, viewHeight);
 
@@ -151,47 +239,70 @@ public class ScanActivity extends WasherBaseActivity
             if (camera == null) {
                 return;
             }
-            camera.cancelAutoFocus();
+//            camera.cancelAutoFocus();
             Camera.Parameters params = camera.getParameters();
 
-            if (params.getMaxNumMeteringAreas() > 0) {
-                List<Camera.Area> meteringAreas = new ArrayList<>();
-                meteringAreas.add(new Camera.Area(meteringRect, 800));
-                params.setMeteringAreas(meteringAreas);
-            } else {
-                Log.i(TAG, "metering areas not supported");
-            }
+//            if (params.getMaxNumMeteringAreas() > 0) {
+//                List<Camera.Area> meteringAreas = new ArrayList<>();
+//                meteringAreas.add(new Camera.Area(meteringRect, 800));
+//                params.setMeteringAreas(meteringAreas);
+//            } else {
+//                Log.i(TAG, "metering areas not supported");
+//            }
 
             if (params.getMaxNumFocusAreas() > 0) {
                 List<Camera.Area> focusAreas = new ArrayList<>();
-                focusAreas.add(new Camera.Area(focusRect, 800));
+                Rect areaRect1 = new Rect(-150, -150, 150, 150); // 在图像的中心指定一个区域
+                focusAreas.add(new Camera.Area(areaRect1, 800));
                 params.setFocusAreas(focusAreas);
             } else {
                 Log.i(TAG, "focus areas not supported");
             }
+
             final String currentFocusMode = params.getFocusMode();
-            params.setFocusMode(Camera.Parameters.FOCUS_MODE_MACRO);
+//            params.setFocusMode(Camera.Parameters.FOCUS_MODE_MACRO);
+
+//            int minExposure = params.getMinExposureCompensation();
+//            params.setExposureCompensation(minExposure);
+
+
+            if(params.getMaxNumMeteringAreas() > 0) { // 检查是否支持测光区域
+                List<Camera.Area> meteringAreas = new ArrayList<Camera.Area>();
+                Rect areaRect1 = new Rect(-150, -150, 150, 150); // 在图像的中心指定一个区域
+                meteringAreas.add(new Camera.Area(areaRect1, 800)); // 设置宽度待60%
+//                Rect areaRect2 = new Rect(800, -1000, 1000, -800); // 在图像的右上角指定一个区域
+//                meteringAreas.add(new Camera.Area(areaRect2, 400)); // 设置宽度为40%
+                params.setMeteringAreas(meteringAreas);
+            }
+//            params.setSceneMode(Camera.Parameters.SCENE_MODE_BARCODE);
+
             camera.setParameters(params);
 
-            camera.autoFocus(new Camera.AutoFocusCallback() {
-                @Override
-                public void onAutoFocus(boolean success, Camera camera) {
-                    Camera.Parameters params = camera.getParameters();
-                    params.setFocusMode(currentFocusMode);
-                    camera.setParameters(params);
-                }
-            });
+//            camera.autoFocus(new Camera.AutoFocusCallback() {
+//                @Override
+//                public void onAutoFocus(boolean success, Camera camera) {
+//                    Camera.Parameters params = camera.getParameters();
+//                    params.setFocusMode(currentFocusMode);
+//                    camera.setParameters(params);
+//                }
+//            });
         });
     }
 
+
     private void handleFocus(MotionEvent event) {
+        if (barcodeScannerView.getBarcodeView().getCameraInstance() == null) {
+            return;
+        }
+
+        Camera camera = barcodeScannerView.getBarcodeView().getCameraInstance().getCameraManager().getCamera();
+        CameraThread cameraThread = barcodeScannerView.getBarcodeView().getCameraInstance().getCameraThread();
+
         int viewWidth = barcodeScannerView.getWidth();
         int viewHeight = barcodeScannerView.getHeight();
         Rect focusRect = calculateTapArea(event.getX(), event.getY(), 1f, viewWidth, viewHeight);
         Rect meteringRect = calculateTapArea(event.getX(), event.getY(), 1.5f, viewWidth, viewHeight);
 
-        Camera camera = barcodeScannerView.getBarcodeView().getCameraInstance().getCameraManager().getCamera();
-        CameraThread cameraThread = barcodeScannerView.getBarcodeView().getCameraInstance().getCameraThread();
         cameraThread.enqueue(() -> {
             if (camera == null) {
                 return;
@@ -231,7 +342,7 @@ public class ScanActivity extends WasherBaseActivity
 
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getPointerCount() == 1) {
-//            handleFocus(event);
+            handleFocus(event);
         }
         return true;
     }
@@ -335,6 +446,7 @@ public class ScanActivity extends WasherBaseActivity
     public void resumeScan() {
         capture.onResume();
         capture.decode();
+//        barcodeScannerView.post(this::configCamera);
 //        setRect();
     }
 }

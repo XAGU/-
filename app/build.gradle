@@ -152,6 +152,7 @@ dependencies {
     implementation deps.zxing
     //    implementation deps.zxingEmbed
     implementation project(':zxing-android-embedded')
+//    implementation 'cn.bingoogolapple:bga-qrcode-zbar:1.2.1'
 }
 
 configurations.all {

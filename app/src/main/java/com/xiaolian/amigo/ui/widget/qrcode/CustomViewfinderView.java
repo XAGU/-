@@ -13,6 +13,7 @@ import com.google.zxing.ResultPoint;
 import com.journeyapps.barcodescanner.ViewfinderView;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.util.DimentionUtils;
+import com.xiaolian.amigo.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -122,11 +123,12 @@ public class CustomViewfinderView extends ViewfinderView {
                 lastPossibleResultPoints = currentPossible;
                 paint.setAlpha(CURRENT_POINT_OPACITY);
                 paint.setColor(resultPointColor);
-//                for (ResultPoint point : currentPossible) {
-//                    canvas.drawCircle(frameLeft + (int) (point.getX() * scaleX),
-//                            frameTop + (int) (point.getY() * scaleY),
-//                            POINT_SIZE, paint);
-//                }
+                for (ResultPoint point : currentPossible) {
+                    Log.d("Point", "x: " + point.getX() + "y: " + point.getY());
+                    canvas.drawCircle(frameLeft + (int) (point.getX() * scaleX),
+                            frameTop + (int) (point.getY() * scaleY),
+                            POINT_SIZE, paint);
+                }
             }
             if (currentLast != null) {
                 paint.setAlpha(CURRENT_POINT_OPACITY / 2);
