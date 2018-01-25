@@ -150,7 +150,8 @@ dependencies {
     implementation deps.oss
     //    implementation deps.acra
     implementation deps.zxing
-    implementation deps.zxingEmbed
+    //    implementation deps.zxingEmbed
+    implementation project(':zxing-android-embedded')
 }
 
 configurations.all {
