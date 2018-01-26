@@ -121,7 +121,6 @@ public class CustomViewfinderView extends ViewfinderView {
                 paint.setAlpha(CURRENT_POINT_OPACITY);
                 paint.setColor(resultPointColor);
                 for (ResultPoint point : currentPossible) {
-                    Log.d("Point", "x: " + point.getX() + "y: " + point.getY());
                     canvas.drawCircle(frameLeft + (int) (point.getX() * scaleX),
                             frameTop + (int) (point.getY() * scaleY),
                             POINT_SIZE, paint);
@@ -146,6 +145,7 @@ public class CustomViewfinderView extends ViewfinderView {
 
         }
     }
+
     private void drawTipText(Canvas canvas, Rect frame, int width) {
         if (TextUtils.isEmpty(scannerTipText)) {
             scannerTipText = getResources().getString(R.string.zxing_scanner_tip);

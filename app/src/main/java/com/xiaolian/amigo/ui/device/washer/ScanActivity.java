@@ -82,10 +82,14 @@ public class ScanActivity extends WasherBaseActivity
 
             @Override
             public void possibleCallback(List<ResultPoint> resultPoint) {
-                int distance = getMaxDistanceOfPoints(resultPoint);
-                if (distance != 0 && distance < barcodeScannerView.getBarcodeView().getFramingRectSize().width / 4) {
-                    Log.d("Point", "should zoom" + "distance: " + distance);
-                    zoomCamera();
+                try {
+                    int distance = getMaxDistanceOfPoints(resultPoint);
+                    if (distance != 0 && distance < barcodeScannerView.getBarcodeView().getFramingRectSize().width / 4) {
+                        Log.d("Point", "should zoom" + "distance: " + distance);
+                        zoomCamera();
+                    }
+                } catch (Exception e) {
+                    Log.wtf(TAG, e);
                 }
             }
         });
@@ -108,7 +112,11 @@ public class ScanActivity extends WasherBaseActivity
 
             @Override
             public void previewStarted() {
-                configCamera();
+                try {
+                    configCamera();
+                } catch (Exception e) {
+                    Log.wtf(TAG, e);
+                }
             }
 
             @Override
@@ -207,14 +215,6 @@ public class ScanActivity extends WasherBaseActivity
         super.onResume();
         capture.onResume();
         capture.decode();
-//        barcodeScannerView.getBarcodeView().getCameraInstance().getCameraSettings().setExposureEnabled(true);
-//        barcodeScannerView.getBarcodeView().getCameraInstance().getCameraSettings().setBarcodeSceneModeEnabled(true);
-//        barcodeScannerView.getBarcodeView().getCameraInstance().getCameraSettings().setMeteringEnabled(true);
-//        barcodeScannerView.getBarcodeView().getCameraInstance().getCameraSettings().setFocusMode(CameraSettings.FocusMode.MACRO);
-//        barcodeScannerView.getBarcodeView().getCameraInstance().getCameraSettings().setScanInverted(true);
-//        barcodeScannerView.getBarcodeView().getCameraInstance().configureCamera();
-//        barcodeScannerView.getBarcodeView().getCameraInstance().getCameraSettings().setContinuousFocusEnabled(true);
-//        barcodeScannerView.post(this::configCamera);
     }
 
     private void configCamera() {
