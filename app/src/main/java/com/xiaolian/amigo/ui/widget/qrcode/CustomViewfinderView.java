@@ -31,9 +31,6 @@ public class CustomViewfinderView extends ViewfinderView {
     public LinearGradient linearGradient ;
 //    private Rect frame;
     private String scannerTipText;
-    private int scannerTipTextColor = 0xffffff;
-    private int scannerTipTextSize = 11;
-    private int scannerTipTextMargin = 100;
 
     public CustomViewfinderView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -158,7 +155,7 @@ public class CustomViewfinderView extends ViewfinderView {
         float textWidth = paint.measureText(scannerTipText);
         float x = (width - textWidth) / 2;
         //根据 drawTextGravityBottom 文字在扫描框上方还是下文，默认下方
-        float y = frame.bottom + scannerTipTextMargin;
+        float y = frame.bottom + 100;
         canvas.drawText(scannerTipText, x, y, paint);
     }
 }

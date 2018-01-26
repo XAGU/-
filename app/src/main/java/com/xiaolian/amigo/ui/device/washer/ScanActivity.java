@@ -8,7 +8,6 @@ import android.hardware.Camera;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.widget.ImageView;
 
 import com.google.zxing.ResultPoint;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -17,14 +16,12 @@ import com.journeyapps.barcodescanner.BarcodeView;
 import com.journeyapps.barcodescanner.CameraPreview;
 import com.journeyapps.barcodescanner.DecoderThread;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
-import com.journeyapps.barcodescanner.camera.CameraSettings;
 import com.journeyapps.barcodescanner.camera.CameraThread;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.vo.Bonus;
 import com.xiaolian.amigo.ui.device.washer.intf.IScanPresenter;
 import com.xiaolian.amigo.ui.device.washer.intf.IScanView;
 import com.xiaolian.amigo.ui.widget.qrcode.CustomCaptureManager;
-import com.xiaolian.amigo.util.ScreenUtils;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -224,14 +221,14 @@ public class ScanActivity extends WasherBaseActivity
         if (barcodeScannerView.getBarcodeView().getCameraInstance() == null) {
             return;
         }
-        int screenWidth = ScreenUtils.getScreenWidth(this);
-        int screenHeight = ScreenUtils.getScreenHeight(this);
-        int viewWidth = barcodeScannerView.getWidth();
-        int viewHeight = barcodeScannerView.getHeight();
+//        int screenWidth = ScreenUtils.getScreenWidth(this);
+//        int screenHeight = ScreenUtils.getScreenHeight(this);
+//        int viewWidth = barcodeScannerView.getWidth();
+//        int viewHeight = barcodeScannerView.getHeight();
 //        int viewWidth = barcodeScannerView.getBarcodeView().getFramingRectSize().width;
 //        int viewHeight = barcodeScannerView.getBarcodeView().getFramingRectSize().height;
-        Rect focusRect = calculateTapArea(screenWidth/2, screenHeight/2, 1f, viewWidth, viewHeight);
-        Rect meteringRect = calculateTapArea(screenWidth/2, screenHeight/2, 1.5f, viewWidth, viewHeight);
+//        Rect focusRect = calculateTapArea(screenWidth/2, screenHeight/2, 1f, viewWidth, viewHeight);
+//        Rect meteringRect = calculateTapArea(screenWidth/2, screenHeight/2, 1.5f, viewWidth, viewHeight);
 
         Camera camera = barcodeScannerView.getBarcodeView().getCameraInstance().getCameraManager().getCamera();
         CameraThread cameraThread = barcodeScannerView.getBarcodeView().getCameraInstance().getCameraThread();
@@ -259,7 +256,7 @@ public class ScanActivity extends WasherBaseActivity
                 Log.i(TAG, "focus areas not supported");
             }
 
-            final String currentFocusMode = params.getFocusMode();
+//            final String currentFocusMode = params.getFocusMode();
 //            params.setFocusMode(Camera.Parameters.FOCUS_MODE_MACRO);
 
 //            int minExposure = params.getMinExposureCompensation();
@@ -267,7 +264,7 @@ public class ScanActivity extends WasherBaseActivity
 
 
             if(params.getMaxNumMeteringAreas() > 0) { // 检查是否支持测光区域
-                List<Camera.Area> meteringAreas = new ArrayList<Camera.Area>();
+                List<Camera.Area> meteringAreas = new ArrayList<>();
                 Rect areaRect1 = new Rect(-150, -150, 150, 150); // 在图像的中心指定一个区域
                 meteringAreas.add(new Camera.Area(areaRect1, 800)); // 设置宽度待60%
 //                Rect areaRect2 = new Rect(800, -1000, 1000, -800); // 在图像的右上角指定一个区域
@@ -329,13 +326,10 @@ public class ScanActivity extends WasherBaseActivity
             params.setFocusMode(Camera.Parameters.FOCUS_MODE_MACRO);
             camera.setParameters(params);
 
-            camera.autoFocus(new Camera.AutoFocusCallback() {
-                @Override
-                public void onAutoFocus(boolean success, Camera camera) {
-                    Camera.Parameters params = camera.getParameters();
-                    params.setFocusMode(currentFocusMode);
-                    camera.setParameters(params);
-                }
+            camera.autoFocus((success, camera1) -> {
+                Camera.Parameters params1 = camera1.getParameters();
+                params1.setFocusMode(currentFocusMode);
+                camera1.setParameters(params1);
             });
         });
     }
