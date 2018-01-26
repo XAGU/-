@@ -15,6 +15,7 @@ import com.xiaolian.amigo.ui.bonus.BonusActivity;
 import com.xiaolian.amigo.ui.bonus.adaptor.BonusAdaptor;
 import com.xiaolian.amigo.ui.device.washer.intf.IChooseWashModePresenter;
 import com.xiaolian.amigo.ui.device.washer.intf.IChooseWashModeView;
+import com.xiaolian.amigo.ui.wallet.RechargeActivity;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.ui.widget.dialog.WasherModeDialog;
 import com.xiaolian.amigo.util.Constant;
@@ -36,7 +37,8 @@ public class ChooseWashModeActivity extends WasherBaseActivity implements IChoos
     @Inject
     IChooseWashModePresenter<IChooseWashModeView> presenter;
 
-    private static final int CHOOSE_BONUS_CODE = 0x0010;
+    private static final int CHOOSE_BONUS_CODE = 0x0110;
+    private static final int REQUEST_CODE_RECHARGE = 0x0111;
 
     private List<ChooseWashModeAdapter.WashModeItem> items = new ArrayList<>();
     private RecyclerView recyclerView;
@@ -46,10 +48,15 @@ public class ChooseWashModeActivity extends WasherBaseActivity implements IChoos
     private Long defaultBonusId;
     private String defaultBonusDescription;
     private Double defaultBonusAmount;
+    // 为null表示未选择，为－1表示不使用红包
     private Long chosenBonusId;
     private String chosenBonusDescription;
     private Double chosenBonusAmount;
     private Double chosenOriginalPirce;
+    private String chosenModeDesc;
+    private Integer chosenMode;
+    private Double balance;
+    private boolean needRecharge;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -78,8 +85,7 @@ public class ChooseWashModeActivity extends WasherBaseActivity implements IChoos
                 adapter.setLastChoosePosition(position);
                 adapter.notifyDataSetChanged();
 //                toggleSubmitButton();
-                showModeDetailDialog(items.get(position).getName(),
-                        presenter.getDeviceNo(), items.get(position).getPrice(), items.get(position).getMode());
+                showModeDetailDialog(items.get(position).getName(), items.get(position).getPrice(), items.get(position).getMode());
             }
 
             @Override
@@ -89,30 +95,75 @@ public class ChooseWashModeActivity extends WasherBaseActivity implements IChoos
         });
     }
 
-    private void showModeDetailDialog(String modeDesc, String deviceNo, String price, Integer mode) {
+    private void showModeDetailDialog(String modeDesc, String price, Integer mode) {
+        this.chosenModeDesc = modeDesc;
+        this.chosenMode = mode;
+        this.chosenOriginalPirce = Double.valueOf(price);
         if (dialog == null) {
             dialog = new WasherModeDialog(this);
         }
-        dialog.setConfirmClickListener(() -> onModeConfirm(modeDesc,
-                deviceNo, dialog.getPrice(), mode));
-        chosenOriginalPirce = Double.valueOf(price);
-        if (!ObjectsCompat.equals(defaultBonusId, Constant.INVALID_ID) && !TextUtils.isEmpty(defaultBonusDescription)) {
-            dialog.setBonus(defaultBonusDescription);
-            dialog.setBonusClickListener(this::chooseBonus);
-            if (chosenOriginalPirce - defaultBonusAmount <= 0) {
-                dialog.setSubmit("0");
-            } else {
-                dialog.setSubmit(String.valueOf(chosenOriginalPirce - defaultBonusAmount));
-            }
-        } else {
-            dialog.setSubmit(price);
-        }
+        setDialogLayout();
         dialog.setMode(modeDesc, price);
         dialog.show();
         dialog.setOnDismissListener(dialog1 -> {
-            chosenBonusId = Constant.INVALID_ID;
+            chosenBonusId = null;
             chosenBonusDescription = null;
+
+            clearChooseStatus();
         });
+    }
+
+    private void setDialogLayout() {
+        needRecharge = false;
+        if (chosenBonusId == null) {
+            chosenBonusId = defaultBonusId;
+            chosenBonusAmount = defaultBonusAmount;
+            chosenBonusDescription = defaultBonusDescription;
+        }
+        if (!ObjectsCompat.equals(chosenBonusId, Constant.INVALID_ID) && !TextUtils.isEmpty(chosenBonusDescription)) {
+            // 有红包
+            dialog.setBonus(chosenBonusDescription);
+            dialog.setBonusClickListener(this::chooseBonus);
+            if (chosenOriginalPirce - chosenBonusAmount <= 0) {
+                // 红包金额大于价格
+                dialog.setSubmit(0.0);
+            } else {
+                // 红包金额小于价格
+                if (chosenOriginalPirce - chosenBonusAmount > balance) {
+                    // 红包金额加上余额小于价格
+                    dialog.setSubmit("前往充值");
+                    needRecharge = true;
+                } else {
+                    dialog.setSubmit(chosenOriginalPirce - chosenBonusAmount);
+                }
+            }
+        } else {
+            // 没有红包
+            if (chosenOriginalPirce > balance) {
+                dialog.setSubmit("前往充值");
+                needRecharge = true;
+            } else {
+                dialog.setSubmit(chosenOriginalPirce);
+            }
+        }
+        if (needRecharge) {
+            dialog.setConfirmClickListener(this::gotoRecharge);
+        } else {
+            dialog.setConfirmClickListener(() -> onModeConfirm(chosenModeDesc, dialog.getPrice(), chosenMode));
+        }
+    }
+
+    private void gotoRecharge() {
+        startActivityForResult(new Intent(this, RechargeActivity.class),
+                REQUEST_CODE_RECHARGE);
+    }
+
+    private void clearChooseStatus() {
+        if (adapter.getLastChoosePosition() != -1) {
+            items.get(adapter.getLastChoosePosition()).setChoose(false);
+            adapter.setLastChoosePosition(-1);
+            adapter.notifyDataSetChanged();
+        }
     }
 
     private void chooseBonus() {
@@ -122,17 +173,17 @@ public class ChooseWashModeActivity extends WasherBaseActivity implements IChoos
         startActivityForResult(intent, CHOOSE_BONUS_CODE);
     }
 
-    private void onModeConfirm(String modeDesc, String deviceNo, String price, Integer mode) {
-        Long bonusId;
-        if (chosenBonusId != null && !ObjectsCompat.equals(chosenBonusId, Constant.INVALID_ID)) {
-            bonusId = chosenBonusId;
-        } else if (!ObjectsCompat.equals(defaultBonusId, Constant.INVALID_ID)
-                && TextUtils.isEmpty(chosenBonusDescription)) {
-            bonusId = defaultBonusId;
-        } else {
-            bonusId = null;
+    private void onModeConfirm(String modeDesc, Double price, Integer mode) {
+        if (price == null || mode == null) {
+            return;
         }
-        presenter.payAndGenerate(bonusId, modeDesc, deviceNo, price, mode);
+        Long bonusId;
+        if (ObjectsCompat.equals(chosenBonusId, Constant.INVALID_ID)) {
+            bonusId = null;
+        } else {
+            bonusId = chosenBonusId;
+        }
+        presenter.payAndGenerate(bonusId, modeDesc, price, mode);
     }
 
     private void toggleSubmitButton() {
@@ -185,10 +236,16 @@ public class ChooseWashModeActivity extends WasherBaseActivity implements IChoos
 
     @Override
     protected void setUp() {
-        presenter.setDeviceNo(getIntent().getStringExtra(WasherContent.KEY_DEVICE_NO));
-        defaultBonusId = getIntent().getLongExtra(WasherContent.KEY_BONUS_ID, Constant.INVALID_ID);
-        defaultBonusAmount = getIntent().getDoubleExtra(WasherContent.KEY_BONUS_AMOUNT, 0.0);
-        defaultBonusDescription = getIntent().getStringExtra(WasherContent.KEY_BONUS_DESC);
+        if (getIntent() != null) {
+            presenter.setDeviceNo(getIntent().getStringExtra(WasherContent.KEY_DEVICE_NO));
+            defaultBonusId = getIntent().getLongExtra(WasherContent.KEY_BONUS_ID, Constant.INVALID_ID);
+            defaultBonusAmount = getIntent().getDoubleExtra(WasherContent.KEY_BONUS_AMOUNT, 0.0);
+            defaultBonusDescription = getIntent().getStringExtra(WasherContent.KEY_BONUS_DESC);
+            balance = getIntent().getDoubleExtra(WasherContent.KEY_BALANCE, -1.0);
+        }
+        if (balance == null || balance < 0) {
+            balance = presenter.getLocalBalance();
+        }
     }
 
     @Override
@@ -217,22 +274,25 @@ public class ChooseWashModeActivity extends WasherBaseActivity implements IChoos
                     refreshBonusDialog();
                 }
             }
+        } else if (requestCode == REQUEST_CODE_RECHARGE) {
+            presenter.getBalance();
         }
     }
 
     private void refreshBonusDialog() {
         if (dialog != null && dialog.isShowing()) {
             dialog.setBonus(chosenBonusDescription);
-            if (chosenOriginalPirce - chosenBonusAmount <= 0) {
-                dialog.setSubmit("0");
-            } else {
-                dialog.setSubmit(String.valueOf(chosenOriginalPirce - chosenBonusAmount));
-            }
+            setDialogLayout();
+//            if (chosenOriginalPirce - chosenBonusAmount <= 0) {
+//                dialog.setSubmit(0.0);
+//            } else {
+//                dialog.setSubmit(chosenOriginalPirce - chosenBonusAmount);
+//            }
         }
     }
 
     @Override
-    public void gotoShowQRCodeView(String data, String price, String modeDesc) {
+    public void gotoShowQRCodeView(String data, String modeDesc) {
         if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
         }
@@ -240,5 +300,13 @@ public class ChooseWashModeActivity extends WasherBaseActivity implements IChoos
                 .putExtra(WasherContent.KEY_PRICE, String.valueOf(chosenOriginalPirce))
                 .putExtra(WasherContent.KEY_MODE_DESC, modeDesc)
                 .putExtra(WasherContent.KEY_QR_CODE_URL, data));
+    }
+
+    @Override
+    public void refreshBalance(Double balance) {
+        this.balance = balance;
+        if (dialog != null && dialog.isShowing()) {
+            setDialogLayout();
+        }
     }
 }

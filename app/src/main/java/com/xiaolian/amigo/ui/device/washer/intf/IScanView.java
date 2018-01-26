@@ -10,7 +10,7 @@ import com.xiaolian.amigo.ui.base.intf.IBaseView;
  */
 
 public interface IScanView extends IBaseView {
-    void gotoChooseModeView(Bonus bonus, String deviceNo);
+    void gotoChooseModeView(Bonus bonus, Double balance, String deviceNo);
 
     void resumeScan();
 }

@@ -420,10 +420,11 @@ public class ScanActivity extends WasherBaseActivity
     }
 
     @Override
-    public void gotoChooseModeView(Bonus bonus, String deviceNo) {
+    public void gotoChooseModeView(Bonus bonus, Double balance, String deviceNo) {
         if (bonus == null) {
             startActivity(new Intent(ScanActivity.this, ChooseWashModeActivity.class)
                     .putExtra(WasherContent.KEY_DEVICE_NO, deviceNo)
+                    .putExtra(WasherContent.KEY_BALANCE, balance)
             );
         } else {
             startActivity(new Intent(ScanActivity.this, ChooseWashModeActivity.class)
@@ -431,6 +432,7 @@ public class ScanActivity extends WasherBaseActivity
                     .putExtra(WasherContent.KEY_BONUS_ID, bonus.getId())
                     .putExtra(WasherContent.KEY_BONUS_AMOUNT, bonus.getAmount())
                     .putExtra(WasherContent.KEY_BONUS_DESC, bonus.getDescription())
+                    .putExtra(WasherContent.KEY_BALANCE, balance)
             );
         }
         finish();

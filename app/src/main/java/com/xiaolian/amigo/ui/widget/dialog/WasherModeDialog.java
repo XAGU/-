@@ -16,6 +16,10 @@ import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.util.DimentionUtils;
+import com.xiaolian.amigo.util.Log;
+
+import java.text.DecimalFormat;
+import java.util.Locale;
 
 /**
  * 洗衣机模式选择dialog
@@ -37,7 +41,8 @@ public class WasherModeDialog extends Dialog {
     private LinearLayout ll_bonus;
     private TextView tv_bonus;
     private View v_bonus;
-    private String price;
+    private Double price;
+    private DecimalFormat df = new DecimalFormat("#.##");
 
     public void setConfirmClickListener(OnConfirmClickListener listener) {
         this.confirmClickListener = listener;
@@ -78,15 +83,15 @@ public class WasherModeDialog extends Dialog {
         tv_bonus.setText(bonus);
     }
 
-    public String getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setSubmit(String price) {
+    public void setSubmit(Double price) {
         this.price = price;
         SpannableStringBuilder builder = new SpannableStringBuilder();
         builder.append("支付");
-        String priceText = String.format("%s元", price);
+        String priceText = df.format(price) + "元";
         SpannableString buttonSpan = new SpannableString(priceText);
         buttonSpan.setSpan(new AbsoluteSizeSpan(
                         DimentionUtils.convertSpToPixels(18, getContext())), 0, priceText.length(),
@@ -94,7 +99,11 @@ public class WasherModeDialog extends Dialog {
         builder.append(buttonSpan);
         builder.append("，开始使用");
         tv_confirm.setText(builder);
+    }
 
+    public void setSubmit(String str) {
+        this.price = null;
+        tv_confirm.setText(str);
     }
 
     private void bindView() {

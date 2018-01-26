@@ -14,5 +14,7 @@ import java.util.List;
 public interface IChooseWashModeView extends IBaseView {
     void addMore(List<ChooseWashModeAdapter.WashModeItem> items);
 
-    void gotoShowQRCodeView(String data, String price, String modeDesc);
+    void gotoShowQRCodeView(String data, String modeDesc);
+
+    void refreshBalance(Double balance);
 }

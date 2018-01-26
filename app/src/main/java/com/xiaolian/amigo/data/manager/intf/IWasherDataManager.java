@@ -6,9 +6,9 @@ import com.xiaolian.amigo.data.network.model.trade.QrCodeGenerateRespDTO;
 import com.xiaolian.amigo.data.network.model.trade.QrCodeScanReqDTO;
 import com.xiaolian.amigo.data.network.model.trade.QrCodeScanRespDTO;
 import com.xiaolian.amigo.data.network.model.trade.WashingModeRespDTO;
+import com.xiaolian.amigo.data.network.model.user.PersonalExtraInfoDTO;
 
 import retrofit2.http.Body;
-import retrofit2.http.POST;
 import rx.Observable;
 
 /**
@@ -29,4 +29,10 @@ public interface IWasherDataManager {
 
     // 存储deviceToken
     void setDeviceToken(String deviceNo, String deviceToken);
+
+    // 用户个人中心额外信息：包括我的钱包余额、我的代金券数量、是否用设备报修中、目前在进行中的订单
+    Observable<ApiResult<PersonalExtraInfoDTO>> getExtraInfo();
+
+    // 获取本地缓存的余额
+    Double getLocalBalance();
 }

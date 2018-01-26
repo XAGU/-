@@ -16,5 +16,9 @@ public interface IChooseWashModePresenter<V extends IChooseWashModeView> extends
 
     void getWasherMode();
 
-    void payAndGenerate(Long bonusId, String modeDesc, String deviceNo, String price, Integer mode);
+    void payAndGenerate(Long bonusId, String modeDesc, Double price, Integer mode);
+
+    void getBalance();
+
+    Double getLocalBalance();
 }

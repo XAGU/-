@@ -13,5 +13,8 @@ import lombok.Data;
 public class QrCodeScanRespDTO {
     private String deviceToken;
     private String macAddress;
+    // 红包
     private Bonus bonus;
+    // 余额
+    private Double balance;
 }

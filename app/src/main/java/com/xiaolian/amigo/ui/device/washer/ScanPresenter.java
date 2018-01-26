@@ -41,6 +41,7 @@ public class ScanPresenter<V extends IScanView> extends BasePresenter<V>
                         if (null == result.getError()) {
                             washerDataManager.setDeviceToken(result.getData().getMacAddress(), result.getData().getDeviceToken());
                             getMvpView().gotoChooseModeView(result.getData().getBonus(),
+                                    result.getData().getBalance(),
                                     result.getData().getMacAddress());
                         } else {
                             getMvpView().onError(result.getError().getDisplayMessage());

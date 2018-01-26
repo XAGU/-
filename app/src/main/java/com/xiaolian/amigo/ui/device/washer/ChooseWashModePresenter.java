@@ -6,13 +6,13 @@ import com.xiaolian.amigo.data.network.model.trade.Mode;
 import com.xiaolian.amigo.data.network.model.trade.PayReqDTO;
 import com.xiaolian.amigo.data.network.model.trade.QrCodeGenerateRespDTO;
 import com.xiaolian.amigo.data.network.model.trade.WashingModeRespDTO;
+import com.xiaolian.amigo.data.network.model.user.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.device.washer.intf.IChooseWashModePresenter;
 import com.xiaolian.amigo.ui.device.washer.intf.IChooseWashModeView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import javax.inject.Inject;
 
@@ -66,27 +66,48 @@ public class ChooseWashModePresenter<V extends IChooseWashModeView> extends Base
     }
 
     @Override
-    public void payAndGenerate(Long bonusId, String modeDesc, String deviceNo, String price, Integer mode) {
+    public void payAndGenerate(Long bonusId, String modeDesc, Double price, Integer mode) {
         PayReqDTO reqDTO = new PayReqDTO();
         reqDTO.setBonusId(bonusId);
         reqDTO.setMacAddress(deviceNo);
-        reqDTO.setPrepay(Double.valueOf(price));
+        reqDTO.setPrepay(price);
         reqDTO.setMode(mode);
-        // mock data
-//        reqDTO.setMacAddress("AABBCCDD");
-//        reqDTO.setMode(1);
-//        reqDTO.setPrepay(3.14);
         addObserver(washerDataManager.generateQRCode(reqDTO),
                 new NetworkObserver<ApiResult<QrCodeGenerateRespDTO>>() {
 
                     @Override
                     public void onReady(ApiResult<QrCodeGenerateRespDTO> result) {
                         if (result.getError() == null) {
-                            getMvpView().gotoShowQRCodeView(result.getData().getQrCodeData(), price, modeDesc);
+                            getMvpView().gotoShowQRCodeView(result.getData().getQrCodeData(), modeDesc);
                         } else {
                             getMvpView().onError(result.getError().getDisplayMessage());
                         }
                     }
                 });
+    }
+
+    @Override
+    public void getBalance() {
+        addObserver(washerDataManager.getExtraInfo(), new NetworkObserver<ApiResult<PersonalExtraInfoDTO>>(false) {
+
+            @Override
+            public void onReady(ApiResult<PersonalExtraInfoDTO> result) {
+                if (null == result.getError()) {
+                    if (result.getData().getBalance() != null) {
+                        getMvpView().refreshBalance(result.getData().getBalance());
+                    }
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+            }
+        });
+    }
+
+    @Override
+    public Double getLocalBalance() {
+        return washerDataManager.getLocalBalance();
     }
 }
