@@ -35,6 +35,12 @@ public class OrderDetailRespDTO {
     // 使用时长
     private String useTime;
 
+    // 设备工作模式
+    private Integer mode;
+    // 工作模式描述
+    private String modeDesc;
+    // 二维码信息
+    private String qrCode;
 
     private Boolean favor;
     private String macAddress;

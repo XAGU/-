@@ -29,4 +29,9 @@ public class MoreDataManager implements IMoreDataManager {
     public String getToken() {
         return sharedPreferencesHelp.getToken();
     }
+
+    @Override
+    public boolean getTransfer() {
+        return sharedPreferencesHelp.getTransfer();
+    }
 }

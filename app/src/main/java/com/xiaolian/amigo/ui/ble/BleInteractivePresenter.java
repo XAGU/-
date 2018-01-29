@@ -4,6 +4,8 @@ import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
+
+import com.xiaolian.amigo.data.manager.BleDataManager;
 import com.xiaolian.amigo.util.Log;
 
 import com.polidea.rxandroidble.RxBleConnection;
@@ -157,7 +159,7 @@ public class BleInteractivePresenter<V extends IBleInteractiveView> extends Base
         }
 
         byte[] commandBytes = HexBytesUtils.hexStr2Bytes(command);
-        addObserver(manager.write(connectionObservable, commandBytes),
+        addObserver(manager.write(connectionObservable, commandBytes, BleDataManager.WRITE_CHARACTERISTIC_UUID),
                 new BleObserver<byte[]>() {
                     @Override
                     public void onConnectError() {

@@ -23,5 +23,6 @@ public class PersonalExtraInfoDTO {
     private Long lastRepairTime;
     private Notify urgentNotify;
     private String preFileUrl;
+    private Boolean showTransfer;
     private boolean isNeedShowDot = false;
 }

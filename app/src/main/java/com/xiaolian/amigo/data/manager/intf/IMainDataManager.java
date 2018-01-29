@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.data.manager.intf;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.device.DeviceCategoryBO;
 import com.xiaolian.amigo.data.network.model.version.CheckVersionUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.timerange.QueryTimeValidReqDTO;
@@ -17,6 +18,8 @@ import com.xiaolian.amigo.data.network.model.timerange.QueryTimeValidRespDTO;
 import com.xiaolian.amigo.data.network.model.user.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.data.network.model.user.UploadUserDeviceInfoReqDTO;
 import com.xiaolian.amigo.data.vo.User;
+
+import java.util.List;
 
 import retrofit2.http.Body;
 import rx.Observable;
@@ -96,4 +99,10 @@ public interface IMainDataManager {
 
     // 获取更新信息
     Observable<ApiResult<VersionDTO>> getUpdateInfo();
+
+    void saveDeviceCategory(List<DeviceCategoryBO> devices);
+
+    // 是否需要账户迁移
+    void setNeedTransfer();
+    void setNotNeedTransfer();
 }

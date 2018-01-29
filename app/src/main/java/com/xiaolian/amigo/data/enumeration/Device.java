@@ -4,6 +4,7 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.device.dispenser.DispenserActivity;
 import com.xiaolian.amigo.ui.device.dryer.DryerActivity;
 import com.xiaolian.amigo.ui.device.heater.HeaterActivity;
+import com.xiaolian.amigo.ui.device.washer.WasherActivity;
 
 /**
  * 设备类型
@@ -72,6 +73,21 @@ public enum Device {
         @Override
         public Class getClz() {
             return DryerActivity.class;
+        }
+    }, WASHER(4, "洗衣机") {
+        @Override
+        public int getColorRes() {
+            return R.color.device_washer;
+        }
+
+        @Override
+        public int getDrawableRes() {
+            return R.drawable.washer;
+        }
+
+        @Override
+        public Class getClz() {
+            return WasherActivity.class;
         }
     };
 

@@ -60,8 +60,10 @@ public class ChooseDormitoryActivity extends UserBaseListActivity implements ICh
         adaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-//                presenter.getHeaterDeviceMacAddress(items.get(position).getResidenceId());
-                backToDevice(items.get(position).getResidenceId(), items.get(position).getMacAddress(), items.get(position).getResidenceName());
+                backToDevice(items.get(position).getResidenceId(),
+                        items.get(position).getMacAddress(),
+                        items.get(position).getSupplierId(),
+                        items.get(position).getResidenceName());
             }
 
             @Override
@@ -116,9 +118,10 @@ public class ChooseDormitoryActivity extends UserBaseListActivity implements ICh
     }
 
     @Override
-    public void backToDevice(Long residenceId, String macAddress, String location) {
+    public void backToDevice(Long residenceId, String macAddress, Long supplierId, String location) {
         Intent intent = new Intent();
         intent.putExtra(MainActivity.INTENT_KEY_MAC_ADDRESS, macAddress);
+        intent.putExtra(MainActivity.INTENT_KEY_SUPPLIER_ID, supplierId);
         intent.putExtra(MainActivity.INTENT_KEY_LOCATION, location);
         intent.putExtra(MainActivity.INTENT_KEY_RESIDENCE_ID, residenceId);
         setResult(RESULT_OK, intent);

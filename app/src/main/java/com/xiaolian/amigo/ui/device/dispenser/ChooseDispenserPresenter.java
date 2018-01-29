@@ -5,7 +5,6 @@ import android.os.ParcelUuid;
 import android.text.TextUtils;
 
 import com.polidea.rxandroidble.scan.ScanResult;
-import com.xiaolian.amigo.data.manager.BleDataManager;
 import com.xiaolian.amigo.data.manager.intf.IBleDataManager;
 import com.xiaolian.amigo.data.manager.intf.IDeviceDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
@@ -14,6 +13,8 @@ import com.xiaolian.amigo.data.network.model.device.FavorDeviceDTO;
 import com.xiaolian.amigo.data.network.model.device.QueryDeviceListReqDTO;
 import com.xiaolian.amigo.data.network.model.device.QueryDeviceListRespDTO;
 import com.xiaolian.amigo.data.network.model.device.QueryFavorDeviceRespDTO;
+import com.xiaolian.amigo.data.network.model.device.Supplier;
+import com.xiaolian.amigo.data.vo.DeviceCategory;
 import com.xiaolian.amigo.data.vo.ScanDeviceGroup;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IChooseDispenerView;
@@ -41,6 +42,7 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
     private static final String TAG = ChooseDispenserPresenter.class.getSimpleName();
     private IBleDataManager bleDataManager;
     private IDeviceDataManager deviceDataManager;
+    private List<DeviceCategory> deviceCategories;
     private int action;
     private CountDownTimer timer;
     private Integer deviceType;
@@ -56,6 +58,7 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
         super();
         this.bleDataManager = bleDataManager;
         this.deviceDataManager = deviceDataManager;
+        this.deviceCategories = deviceDataManager.getDeviceCategory();
     }
 
     @Override
@@ -125,8 +128,18 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
                 boolean validDevice = false;
                 if (null != result.getScanRecord() && null != result.getScanRecord().getServiceUuids()) {
                     for (ParcelUuid parcelUuid : result.getScanRecord().getServiceUuids()) {
-                        if (parcelUuid.toString().equalsIgnoreCase(BleDataManager.SERVICE_UUID)) {
-                            validDevice = true;
+                        for (DeviceCategory deviceCategory : deviceCategories) {
+                            for (Supplier s : deviceCategory.getSuppliers()) {
+                                if (parcelUuid.toString().equalsIgnoreCase(s.getServiceUuid())) {
+                                    validDevice = true;
+                                    break;
+                                }
+                            }
+                            if (validDevice) {
+                                break;
+                            }
+                        }
+                        if (validDevice) {
                             break;
                         }
                     }
@@ -202,14 +215,15 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
     }
 
     @Override
-    public void gotoDispenser(String macAddress, boolean favor, Long residenceId,
+    public void gotoDispenser(String macAddress, Long supplierId,
+                              boolean favor, Long residenceId,
                               String usefor, String location) {
-        getMvpView().gotoDispenser(macAddress, favor, residenceId, usefor, location);
+        getMvpView().gotoDispenser(macAddress, supplierId, favor, residenceId, usefor, location);
     }
 
     @Override
-    public void gotoDryer(String deviceNo, Boolean isFavor, Long residenceId, String location) {
-        getMvpView().gotoDryer(deviceNo, isFavor, residenceId, location);
+    public void gotoDryer(String deviceNo, Long supplierId, Boolean isFavor, Long residenceId, String location) {
+        getMvpView().gotoDryer(deviceNo, supplierId, isFavor, residenceId, location);
     }
 
     @Override

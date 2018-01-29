@@ -11,7 +11,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.net.ConnectException;
 import java.util.Calendar;
 
 import okhttp3.Interceptor;
@@ -37,6 +36,8 @@ public class LogInterceptor implements Interceptor {
     private final static String GET = "GET";
     private final static String POST = "POST";
     private final static String TRADE_PREFIX = BuildConfig.TRADE_PREFIX;
+    // 该链接不上传deviceToken
+    private final static String ANTI_TRADE_PREFIX = "trade/qrCode/scan";
     private long lastTime = 0;
     private Request lastRequest;
     private final static long NETWORK_INTERVAL = 500;
@@ -53,7 +54,7 @@ public class LogInterceptor implements Interceptor {
     private String brand;
     private String model;
     private String uniqueId;
-    private String system = "2";
+    private final static String system = "2";
 
     private ISharedPreferencesHelp sharedPreferencesHelp;
 
@@ -70,7 +71,8 @@ public class LogInterceptor implements Interceptor {
             token = "";
         }
 
-        if (request.url().url().getPath().startsWith(TRADE_PREFIX)) {
+        if (request.url().url().getPath().startsWith(TRADE_PREFIX)
+                && !request.url().url().getPath().contains(ANTI_TRADE_PREFIX)) {
             String deviceToken = sharedPreferencesHelp.getCurrentDeviceToken();
             if (deviceToken == null) {
                 deviceToken = "";

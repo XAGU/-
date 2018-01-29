@@ -34,10 +34,12 @@ import com.xiaolian.amigo.data.network.model.device.DeviceCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.order.OrderPreInfoDTO;
 import com.xiaolian.amigo.data.network.model.user.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
+import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.ui.device.DeviceConstant;
 import com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity;
 import com.xiaolian.amigo.ui.device.dispenser.ChooseDispenserActivity;
 import com.xiaolian.amigo.ui.device.dispenser.DispenserActivity;
+import com.xiaolian.amigo.ui.device.washer.WasherActivity;
 import com.xiaolian.amigo.ui.login.LoginActivity;
 import com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity;
 import com.xiaolian.amigo.ui.main.intf.IMainPresenter;
@@ -93,6 +95,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     private static final String TAG = MainActivity.class.getSimpleName();
     public static final String INTENT_KEY_MAC_ADDRESS = "intent_key_mac_address";
     public static final String INTENT_KEY_LOCATION = "intent_key_location";
+    public static final String INTENT_KEY_SUPPLIER_ID = "intent_key_supplier_id";
     public static final String INTENT_KEY_DEVICE_TYPE = "intent_key_device_type";
     public static final String INTENT_KEY_RESIDENCE_ID = "intent_key_residence_id";
     public static final String INTENT_KEY_RECOVERY = "intent_key_recovery";
@@ -114,32 +117,28 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @BindView(R.id.tv_schoolName)
     TextView tv_schoolName;
 
-    /**
-     * 头像
-     */
+    // 头像
     @BindView(R.id.iv_avatar)
     ImageView iv_avatar;
 
-    /**
-     * 通知数量上标
-     */
+    // 通知数量上标
     @BindView(R.id.tv_notice_count)
     TextView tv_notice_count;
 
-    /**
-     * MainActivity根View
-     */
+    // MainActivity根View
     @BindView(R.id.rl_main)
     RelativeLayout rl_main;
 
-    /**
-     * 通知
-     */
+    // 通知
     @BindView(R.id.rl_notice)
     RelativeLayout rl_notice;
 
     @BindView(R.id.sv_main)
     ScrollView sl_main;
+
+    // 校ok迁移
+    @BindView(R.id.iv_xok_migrate)
+    ImageView iv_xok_migrate;
 
     private GestureDetector mGestureDetector;
 
@@ -205,7 +204,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         mGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
             @Override
             public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-
+                if (e1 == null || e2 == null) {
+                    return super.onFling(e1, e2, velocityX, velocityY);
+                }
                 if (hasBanners && current == 0) {
                     Banner banner = (Banner) sl_main.getRootView().findViewById(R.id.banner);
                     if (banner != null) {
@@ -623,7 +624,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         availabilityDialog.setTip(data.getRemark());
         availabilityDialog.setOnOkClickListener(dialog1 -> {
             if (deviceType == Device.HEATER.getType()) {
-                presenter.gotoHeaterDevice(data.getDefaultMacAddress(), data.getLocation(),
+                presenter.gotoHeaterDevice(data.getDefaultMacAddress(),
+                        data.getDefaultSupplierId(), data.getLocation(),
                         data.getResidenceId());
             } else if (deviceType == Device.DISPENSER.getType()){
                 gotoChooseDispenser();
@@ -652,13 +654,15 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
 
     @Override
-    public void gotoDevice(Device device, String macAddress, String location, Long residenceId, boolean recovery) {
-        Log.d(TAG, "gotoDevice: " + device.getDesc() + "->" + macAddress + "->" + location + "->" + residenceId);
+    public void gotoDevice(Device device, String macAddress, Long supplierId,
+                           String location, Long residenceId, boolean recovery) {
+        Log.d(TAG, "gotoDevice: " + device.getDesc() + "->" + macAddress + "->" + supplierId + "->" + location + "->" + residenceId);
         if (TextUtils.isEmpty(macAddress)) {
             onError("设备macAddress不合法");
         } else {
             Intent intent = new Intent(this, device.getClz());
             intent.putExtra(INTENT_KEY_LOCATION, location);
+            intent.putExtra(INTENT_KEY_SUPPLIER_ID, supplierId);
             intent.putExtra(INTENT_KEY_MAC_ADDRESS, macAddress);
             intent.putExtra(INTENT_KEY_DEVICE_TYPE, device.getType());
             intent.putExtra(INTENT_KEY_RESIDENCE_ID, residenceId);
@@ -668,7 +672,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         }
     }
 
-    public void gotoDispenser(String macAddress, String location, Long residenceId,
+    public void gotoDispenser(String macAddress, Long supplierId, String location, Long residenceId,
                               boolean favor, int usefor,
                               boolean recovery) {
         if (TextUtils.isEmpty(macAddress)) {
@@ -676,6 +680,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         } else {
             Intent intent = new Intent(this, DispenserActivity.class);
             intent.putExtra(INTENT_KEY_LOCATION, location);
+            intent.putExtra(INTENT_KEY_SUPPLIER_ID, supplierId);
             intent.putExtra(INTENT_KEY_MAC_ADDRESS, macAddress);
             intent.putExtra(INTENT_KEY_DEVICE_TYPE, Device.DISPENSER.getType());
             intent.putExtra(DispenserActivity.INTENT_KEY_ID, residenceId);
@@ -774,14 +779,16 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             // 1 表示热水澡 2 表示饮水机
             if (type == Device.HEATER.getType()) {
                 // 直接前往热水澡处理找零
-                gotoDevice(HEATER, data.getUnsettledMacAddress(), data.getLocation(),
+                gotoDevice(HEATER, data.getUnsettledMacAddress(),
+                        data.getUnsettledSupplierId(), data.getLocation(),
                         data.getResidenceId(), true);
             } else if (type == Device.DISPENSER.getType()){
-                gotoDispenser(data.getUnsettledMacAddress(), data.getLocation(), data.getResidenceId(),
+                gotoDispenser(data.getUnsettledMacAddress(), data.getUnsettledSupplierId(),
+                        data.getLocation(), data.getResidenceId(),
                         data.getFavor(), data.getUsefor(),true);
             } else if (type == Device.DRYER.getType()) {
-                gotoDevice(DRYER, data.getUnsettledMacAddress(), data.getLocation(),
-                        data.getResidenceId(), true);
+                gotoDevice(DRYER, data.getUnsettledMacAddress(), data.getUnsettledSupplierId(),
+                        data.getLocation(), data.getResidenceId(), true);
             }
         } else {
             if (type == Device.HEATER.getType() && heaterOrderSize > 0) {
@@ -801,7 +808,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 } else {
                     if (type == Device.HEATER.getType()) {
                         // 前往默认宿舍的热水澡
-                        presenter.gotoHeaterDevice(data.getDefaultMacAddress(), data.getLocation(),
+                        presenter.gotoHeaterDevice(data.getDefaultMacAddress(),
+                                data.getDefaultSupplierId(), data.getLocation(),
                                 data.getResidenceId());
                     } else if (type == Device.DISPENSER.getType()) {
                         // 进入饮水机选择页面
@@ -922,6 +930,16 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         return AppUtils.getVersionName(this);
     }
 
+    @Override
+    public void showXOkMigrate() {
+        iv_xok_migrate.setVisibility(View.VISIBLE);
+        iv_xok_migrate.setOnClickListener(v -> {
+            startActivity(new Intent(MainActivity.this, WebActivity.class)
+                    .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_MIGRATE
+                            + "?token=" + presenter.getToken()));
+        });
+    }
+
     public void refreshProfile() {
         PersonalExtraInfoDTO data = new PersonalExtraInfoDTO();
         data.setBalance(Double.valueOf(presenter.getBalance()));
@@ -943,7 +961,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             if (data.getTimeValid()) {
                 // 1 表示热水澡 2 表示饮水机
                 if (type == Device.HEATER.getType()) {
-                    presenter.gotoHeaterDevice(data.getDefaultMacAddress(), data.getLocation(),
+                    presenter.gotoHeaterDevice(data.getDefaultMacAddress(),
+                            data.getDefaultSupplierId(), data.getLocation(),
                             data.getResidenceId());
                 } else if (type == Device.DISPENSER.getType()){
                     gotoChooseDispenser();
@@ -1079,6 +1098,11 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                     gotoDryer();
                 }
                 break;
+            case GOTO_WASHER:
+                if (checkLogin()) {
+                    gotoWasher();
+                }
+                break;
             case GOTO_LOST_AND_FOUND:
                 if (checkLogin()) {
                     gotoLostAndFound();
@@ -1094,6 +1118,10 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 refreshProfile();
                 break;
         }
+    }
+
+    private void gotoWasher() {
+        startActivity(new Intent(this, WasherActivity.class));
     }
 
     @Data
@@ -1115,6 +1143,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             GOTO_DRYER(),
             GOTO_DISPENSER(),
             GOTO_LOST_AND_FOUND(),
+            GOTO_WASHER(),
             START_ACTIVITY(),
             REFRESH_NOTICE(),
             LOGOUT()

@@ -18,7 +18,7 @@ public class TitleContentDelegate implements ItemViewDelegate<WithdrawRechargeDe
 
     @Override
     public boolean isForViewType(WithdrawRechargeDetailAdapter.Item item, int position) {
-        return item.getType() == 1;
+        return item.getType() == WithdrawRechargeDetailAdapter.TITLE_CONTENT_TYPE;
     }
 
     @Override

@@ -13,7 +13,8 @@ public enum  ComplaintType {
     DISPENSER(2, "饮水机"),
     RECHARGE(3, "充值"),
     WITHDRAW(4, "提现"),
-    DRYER(5, "吹风机")
+    DRYER(5, "吹风机"),
+    WASHER(6, "洗衣机")
     ;
     int type;
     String desc;
@@ -39,6 +40,8 @@ public enum  ComplaintType {
                 return DISPENSER;
             case DRYER:
                 return DRYER;
+            case WASHER:
+                return WASHER;
         }
         return UNKNOWN;
     }

@@ -17,7 +17,6 @@ public abstract class OrderBaseActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setUp();
         mActivityComponent = DaggerOrderActivityComponent.builder()
                 .orderActivityModule(new OrderActivityModule(this))
                 .applicationComponent(((MvpApp) getApplication()).getComponent())

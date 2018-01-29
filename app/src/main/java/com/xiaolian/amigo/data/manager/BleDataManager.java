@@ -26,8 +26,10 @@ import rx.subjects.PublishSubject;
  */
 public class BleDataManager implements IBleDataManager {
     private static final String TAG = BleDataManager.class.getSimpleName();
+    // 好年化uuid
     public static final String SERVICE_UUID = "0000fee9-0000-1000-8000-00805f9b34fb";
-    private static final String WRITE_CHARACTERISTIC_UUID = "d44bc439-abfd-45a2-b575-925416129600";
+    public static final String WRITE_CHARACTERISTIC_UUID = "d44bc439-abfd-45a2-b575-925416129600";
+    public static final String NOTIFY_DESCRIPTOR_UUID = "00002902-0000-1000-8000-00805f9b34fb";
     private RxBleClient client;
 
     @Inject
@@ -81,6 +83,12 @@ public class BleDataManager implements IBleDataManager {
     }
 
     @Override
+    public Observable<Observable<byte[]>>  connect2(Observable<RxBleConnection> connectionObservable, String notifyCharacteristicUuid) {
+        return connectionObservable
+                .flatMap(rxBleConnection -> rxBleConnection.setupNotification(UUID.fromString(notifyCharacteristicUuid)));
+    }
+
+    @Override
     public Observable<Observable<byte[]>> setupNotification(Observable<RxBleConnection> connectionObservable, BluetoothGattCharacteristic characteristic) {
         return connectionObservable.flatMap(rxBleConnection -> rxBleConnection.setupNotification(characteristic));
     }
@@ -93,9 +101,9 @@ public class BleDataManager implements IBleDataManager {
     }
 
     @Override
-    public Observable<byte[]> write(@NonNull Observable<RxBleConnection> connectionObservable, @NonNull byte[] inputBytes) {
+    public Observable<byte[]> write(@NonNull Observable<RxBleConnection> connectionObservable, @NonNull byte[] inputBytes, String writeCharacteristicUuid) {
         return connectionObservable
-                .flatMap(rxBleConnection -> rxBleConnection.writeCharacteristic(UUID.fromString(WRITE_CHARACTERISTIC_UUID), inputBytes));
+                .flatMap(rxBleConnection -> rxBleConnection.writeCharacteristic(UUID.fromString(writeCharacteristicUuid), inputBytes));
     }
 
     @Override

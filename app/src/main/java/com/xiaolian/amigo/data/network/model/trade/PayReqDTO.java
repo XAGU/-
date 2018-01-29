@@ -23,4 +23,6 @@ public class PayReqDTO {
     // 代金券id
     private Long bonusId;
 
+    private Integer mode;
+
 }

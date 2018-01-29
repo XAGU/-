@@ -73,7 +73,6 @@ public class DryerActivity extends WaterDeviceBaseActivity<IDryerPresenter> impl
     @Override
     protected View.OnClickListener setTopRightIconClickListener() {
         return v -> {
-            // TODO 设置饮水机事件
             if (isFavor) {
                 presenter.unFavorite(id);
             } else {

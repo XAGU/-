@@ -10,4 +10,6 @@ public interface IMoreDataManager {
     void logout();
 
     String getToken();
+
+    boolean getTransfer();
 }

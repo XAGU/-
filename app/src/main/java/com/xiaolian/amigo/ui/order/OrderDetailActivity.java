@@ -103,6 +103,7 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
 
+        setUp();
         presenter.onAttach(this);
         presenter.getOrder(orderId);
     }

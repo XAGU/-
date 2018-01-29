@@ -77,7 +77,6 @@ public class DispenserActivity extends WaterDeviceBaseActivity<IDispenserPresent
     @Override
     protected View.OnClickListener setTopRightIconClickListener() {
         return v -> {
-            // TODO 设置饮水机事件
             if (isFavor) {
                 presenter.unFavorite(id);
             } else {

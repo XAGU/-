@@ -22,6 +22,9 @@ import com.xiaolian.amigo.data.network.model.trade.ConnectCommandReqDTO;
 import com.xiaolian.amigo.data.network.model.trade.ConnectCommandRespDTO;
 import com.xiaolian.amigo.data.network.model.trade.PayReqDTO;
 import com.xiaolian.amigo.data.network.model.trade.PayRespDTO;
+import com.xiaolian.amigo.data.vo.DeviceCategory;
+
+import java.util.List;
 
 import retrofit2.http.Body;
 import rx.Observable;
@@ -94,4 +97,5 @@ public interface IDeviceDataManager {
     Observable<ApiResult<SimpleRespDTO>> unFavorite(@Body FavorDeviceReqDTO reqDTO);
     // 获取个人收藏的设备列表
     Observable<ApiResult<QueryFavorDeviceRespDTO>> getFavorites(@Body QueryDeviceListReqDTO reqDTO);
+    List<DeviceCategory> getDeviceCategory();
 }

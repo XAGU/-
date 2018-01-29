@@ -56,10 +56,13 @@ public class PrepayAdaptor extends CommonAdapter<PrepayAdaptor.OrderWrapper> {
         // 设备地址
         private String location;
         private Long residenceId;
+        // 供应商id
+        private Long supplierId;
 
         public OrderWrapper(Order order) {
             this.order = order;
             this.type = order.getDeviceType();
+            this.supplierId = order.getSupplierId();
             if (Device.getDevice(order.getDeviceType()) != null) {
                 this.device = Device.getDevice(order.getDeviceType()).getDesc() + "：" + order.getLocation();
                 this.macAddress = order.getMacAddress();
