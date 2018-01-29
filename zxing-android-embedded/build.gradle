@@ -7,11 +7,6 @@ Properties properties = new Properties()
 InputStream inputStream = project.rootProject.file('local.properties').newDataInputStream() ;
 properties.load( inputStream )
 
-
-ext.groupId = "com.journeyapp"
-ext.artifactId = "zxing-android-embedded"
-ext.version = "3.5.0"
-
 dependencies {
     compile deps.zxing
 
@@ -66,7 +61,7 @@ publishing {
             maven(MavenPublication) {
                 artifact bundleRelease
 //            artifactId project.artifactId
-                groupId "com.journeyapp"
+                groupId "com.xiaolian"
                 artifactId "zxing-android-embedded"
                 version "3.5.0"
 

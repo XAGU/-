@@ -23,6 +23,7 @@ import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
 import java.util.EnumMap;
 import java.util.Hashtable;
@@ -54,7 +55,9 @@ public final class QRCodeEncoder {
 //            hints = new EnumMap<>(EncodeHintType.class);
             hints.put(EncodeHintType.CHARACTER_SET, encoding);
         }
+
         hints.put(EncodeHintType.MARGIN, 0);
+        hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
         BitMatrix result;
         try {
             result = new MultiFormatWriter().encode(contentsToEncode, BarcodeFormat.QR_CODE, dimension, dimension, hints);
