@@ -213,7 +213,7 @@ public class RechargeDetailActivity extends WalletBaseActivity implements IRecha
                         + "?token=" + presenter.getToken()
                         + "&orderId=" + id
                         + "&orderNo=" + orderNo
-                        + "&orderType=" + ComplaintType.WITHDRAW.getType()));
+                        + "&orderType=" + ComplaintType.RECHARGE.getType()));
     }
 
     @OnClick(R.id.left_oper)
