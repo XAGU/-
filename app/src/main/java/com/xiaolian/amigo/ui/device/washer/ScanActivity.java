@@ -6,8 +6,10 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.hardware.Camera;
 import android.os.Bundle;
+import android.support.v4.math.MathUtils;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
 
 import com.google.zxing.ResultPoint;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -55,14 +57,6 @@ public class ScanActivity extends WasherBaseActivity
         barcodeScannerView = findViewById(R.id.zxing_barcode_scanner);
         barcodeScannerView.setTorchListener(this);
 
-//        switchFlashlightButton = (Button) findViewById(R.id.switch_flashlight);
-//
-//        // if the device does not have flashlight in its camera,
-//        // then remove the switch flashlight button...
-//        if (!hasFlash()) {
-//            switchFlashlightButton.setVisibility(View.GONE);
-//        }
-
         capture = new CustomCaptureManager(this, barcodeScannerView);
         capture.setResultCallback(new CustomCaptureManager.ResultCallback() {
             @Override
@@ -97,19 +91,12 @@ public class ScanActivity extends WasherBaseActivity
 
         findViewById(R.id.iv_back).setOnClickListener(v -> onBackPressed());
 
-        findViewById(R.id.iv_flashlight).setOnClickListener(v -> {
-            if (torchOn) {
-                barcodeScannerView.setTorchOff();
-            } else {
-                barcodeScannerView.setTorchOn();
-            }
-        });
+        setFlashlight();
+
         barcodeScannerView.getBarcodeView().addStateListener(new CameraPreview.StateListener() {
             @Override
             public void previewSized() {
-
             }
-
             @Override
             public void previewStarted() {
                 try {
@@ -118,22 +105,31 @@ public class ScanActivity extends WasherBaseActivity
                     Log.wtf(TAG, e);
                 }
             }
-
             @Override
             public void previewStopped() {
-
             }
-
             @Override
             public void cameraError(Exception error) {
-
             }
-
             @Override
             public void cameraClosed() {
-
             }
         });
+    }
+
+    private void setFlashlight() {
+        findViewById(R.id.iv_flashlight).setOnClickListener(v -> {
+            if (torchOn) {
+                barcodeScannerView.setTorchOff();
+            } else {
+                barcodeScannerView.setTorchOn();
+            }
+        });
+//        // if the device does not have flashlight in its camera,
+//        // then remove the switch flashlight button...
+        if (!hasFlash()) {
+            findViewById(R.id.iv_flashlight).setVisibility(View.GONE);
+        }
     }
 
     private void zoomCamera() {
@@ -286,7 +282,6 @@ public class ScanActivity extends WasherBaseActivity
         });
     }
 
-
     private void handleFocus(MotionEvent event) {
         if (barcodeScannerView.getBarcodeView().getCameraInstance() == null) {
             return;
@@ -348,21 +343,11 @@ public class ScanActivity extends WasherBaseActivity
         int centerY = (int) (y / height * 2000 - 1000);
 
         int halfAreaSize = areaSize / 2;
-        RectF rectF = new RectF(clamp(centerX - halfAreaSize, -1000, 1000)
-                , clamp(centerY - halfAreaSize, -1000, 1000)
-                , clamp(centerX + halfAreaSize, -1000, 1000)
-                , clamp(centerY + halfAreaSize, -1000, 1000));
+        RectF rectF = new RectF(MathUtils.clamp(centerX - halfAreaSize, -1000, 1000)
+                , MathUtils.clamp(centerY - halfAreaSize, -1000, 1000)
+                , MathUtils.clamp(centerX + halfAreaSize, -1000, 1000)
+                , MathUtils.clamp(centerY + halfAreaSize, -1000, 1000));
         return new Rect(Math.round(rectF.left), Math.round(rectF.top), Math.round(rectF.right), Math.round(rectF.bottom));
-    }
-
-    private static int clamp(int x, int min, int max) {
-        if (x > max) {
-            return max;
-        }
-        if (x < min) {
-            return min;
-        }
-        return x;
     }
 
     @Override
@@ -399,24 +384,14 @@ public class ScanActivity extends WasherBaseActivity
                 .hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
     }
 
-//    public void switchFlashlight(View view) {
-//        if (getString(R.string.turn_on_flashlight).equals(switchFlashlightButton.getText())) {
-//            barcodeScannerView.setTorchOn();
-//        } else {
-//            barcodeScannerView.setTorchOff();
-//        }
-//    }
-
     @Override
     public void onTorchOn() {
         torchOn = true;
-//        switchFlashlightButton.setText(R.string.turn_off_flashlight);
     }
 
     @Override
     public void onTorchOff() {
         torchOn = false;
-//        switchFlashlightButton.setText(R.string.turn_on_flashlight);
     }
 
     @Override
@@ -442,7 +417,5 @@ public class ScanActivity extends WasherBaseActivity
     public void resumeScan() {
         capture.onResume();
         capture.decode();
-//        barcodeScannerView.post(this::configCamera);
-//        setRect();
     }
 }

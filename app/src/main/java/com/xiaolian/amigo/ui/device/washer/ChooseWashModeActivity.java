@@ -131,7 +131,7 @@ public class ChooseWashModeActivity extends WasherBaseActivity implements IChoos
                 // 红包金额小于价格
                 if (chosenOriginalPirce - chosenBonusAmount > balance) {
                     // 红包金额加上余额小于价格
-                    dialog.setSubmit("前往充值");
+                    dialog.setSubmit(getString(R.string.to_recharge));
                     needRecharge = true;
                 } else {
                     dialog.setSubmit(chosenOriginalPirce - chosenBonusAmount);
@@ -140,7 +140,7 @@ public class ChooseWashModeActivity extends WasherBaseActivity implements IChoos
         } else {
             // 没有红包
             if (chosenOriginalPirce > balance) {
-                dialog.setSubmit("前往充值");
+                dialog.setSubmit(getString(R.string.to_recharge));
                 needRecharge = true;
             } else {
                 dialog.setSubmit(chosenOriginalPirce);
