@@ -4,10 +4,14 @@ import com.xiaolian.amigo.ui.base.intf.IBaseView;
 
 /**
  * 找回密码2
- * <p>
- * Created by zcd on 9/20/17.
+ *
+ * @author zcd
+ * @date 17/9/20
  */
 
 public interface IPasswordRetrievalStep2View extends IBaseView {
+    /**
+     * 跳转到登录页
+     */
     void gotoLoginView();
 }

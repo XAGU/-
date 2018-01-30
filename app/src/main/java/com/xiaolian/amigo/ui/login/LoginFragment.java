@@ -25,17 +25,21 @@ import butterknife.OnClick;
 
 /**
  * 登录Fragment
- * <p>
- * Created by zcd on 9/19/17.
+ *
+ * @author zcd
+ * @date 17/9/19
  */
 
 public class LoginFragment extends Fragment {
 
+    private static final int MOBILE_LENGTH = 11;
+    private static final int PASSWORD_MIN_LENGTH = 6;
+
     @BindView(R.id.et_mobile)
-    EditText et_mobile;
+    EditText etMobile;
 
     @BindView(R.id.et_userpwd)
-    PasswordEditText et_userpwd;
+    PasswordEditText etUserpwd;
 
     @OnClick(R.id.tv_password_retrieval_link)
     void gotoPasswordRetrievalSetp1() {
@@ -44,12 +48,12 @@ public class LoginFragment extends Fragment {
     }
 
     @BindView(R.id.bt_submit)
-    Button bt_submit;
+    Button btSubmit;
 
     @OnClick(R.id.bt_submit)
     void login() {
         if (getActivity() instanceof LoginActivity) {
-            ((LoginActivity)getActivity()).login(et_mobile.getText().toString(), et_userpwd.getText().toString());
+            ((LoginActivity) getActivity()).login(etMobile.getText().toString(), etUserpwd.getText().toString());
         }
     }
 
@@ -65,15 +69,15 @@ public class LoginFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ViewUtil.setEditHintAndSize(getString(R.string.mobile_hint), 14, et_mobile);
-        ViewUtil.setEditHintAndSize(getString(R.string.password_hint), 14, et_userpwd);
+        ViewUtil.setEditHintAndSize(getString(R.string.mobile_hint), 14, etMobile);
+        ViewUtil.setEditHintAndSize(getString(R.string.password_hint), 14, etUserpwd);
         TextChange textChange = new TextChange();
-        et_mobile.addTextChangedListener(textChange);
-        et_userpwd.addTextChangedListener(textChange);
+        etMobile.addTextChangedListener(textChange);
+        etUserpwd.addTextChangedListener(textChange);
         if (getActivity() instanceof LoginActivity) {
-            String mobile = ((LoginActivity)getActivity()).getMobile();
+            String mobile = ((LoginActivity) getActivity()).getMobile();
             if (!TextUtils.isEmpty(mobile)) {
-                et_mobile.setText(mobile);
+                etMobile.setText(mobile);
             }
         }
     }
@@ -91,10 +95,10 @@ public class LoginFragment extends Fragment {
 
         @Override
         public void afterTextChanged(Editable s) {
-            if (et_mobile.length() == 11 && et_userpwd.length() >= 6) {
-                bt_submit.setEnabled(true);
+            if (etMobile.length() == MOBILE_LENGTH && etUserpwd.length() >= PASSWORD_MIN_LENGTH) {
+                btSubmit.setEnabled(true);
             } else {
-                bt_submit.setEnabled(false);
+                btSubmit.setEnabled(false);
             }
         }
     }
@@ -102,18 +106,18 @@ public class LoginFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (et_mobile != null && et_userpwd != null) {
-            if (!TextUtils.isEmpty(et_mobile.getText())) {
-                et_userpwd.requestFocus();
+        if (etMobile != null && etUserpwd != null) {
+            if (!TextUtils.isEmpty(etMobile.getText())) {
+                etUserpwd.requestFocus();
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 if (imm != null) {
-                    imm.showSoftInput(et_userpwd, InputMethodManager.SHOW_IMPLICIT);
+                    imm.showSoftInput(etUserpwd, InputMethodManager.SHOW_IMPLICIT);
                 }
             } else {
-                et_mobile.requestFocus();
+                etMobile.requestFocus();
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 if (imm != null) {
-                    imm.showSoftInput(et_mobile, InputMethodManager.SHOW_IMPLICIT);
+                    imm.showSoftInput(etMobile, InputMethodManager.SHOW_IMPLICIT);
                 }
             }
         }

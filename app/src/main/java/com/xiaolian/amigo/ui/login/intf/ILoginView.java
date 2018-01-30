@@ -18,14 +18,31 @@ package com.xiaolian.amigo.ui.login.intf;
 
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 
+/**
+ * 登录页面
+ * @author caidong
+ * @date 17/9/14
+ */
 public interface ILoginView extends IBaseView {
 
+    /**
+     * 跳转到登录页面
+     */
     void gotoLoginView();
 
+    /**
+     * 跳转到注册第二步页面
+     */
     void gotoRegisterStep2View();
 
+    /**
+     * 启动计时器
+     */
     void startTimer();
 
+    /**
+     * 跳转到主页
+     */
     void gotoMainView();
 
 }

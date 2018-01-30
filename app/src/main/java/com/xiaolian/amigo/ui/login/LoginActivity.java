@@ -25,7 +25,9 @@ import static com.xiaolian.amigo.util.Log.getContext;
 
 /**
  * 登录页
- * Created by caidong on 2017/9/14.
+ *
+ * @author caidong
+ * @date 17/9/14
  */
 
 public class LoginActivity extends LoginBaseActivity implements ILoginView {
@@ -35,16 +37,16 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
 
     @Inject
     ILoginPresenter<ILoginView> presenter;
-//    @BindView(R.id.et_mobile)
-//    TextView et_mobile;
-//    @BindView(R.id.et_userpwd)
-//    TextView et_userpwd;
+//    @BindView(R.id.etMobile)
+//    TextView etMobile;
+//    @BindView(R.id.etUserpwd)
+//    TextView etUserpwd;
 
     @BindView(R.id.tv_login)
-    TextView tv_login;
+    TextView tvLogin;
 
     @BindView(R.id.tv_registry)
-    TextView tv_registry;
+    TextView tvRegistry;
 
     LoginFragment loginFragment;
     RegisterStep1Fragment registerStep1Fragment;
@@ -115,8 +117,8 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
             transaction.show(registerStep1Fragment).commit();
         }
 
-        tv_login.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorTextGray));
-        tv_registry.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorDark2));
+        tvLogin.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorTextGray));
+        tvRegistry.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorDark2));
 
     }
 
@@ -138,8 +140,8 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
         } else {
             transaction.show(loginFragment).commit();
         }
-        tv_login.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorDark2));
-        tv_registry.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorTextGray));
+        tvLogin.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorDark2));
+        tvRegistry.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorTextGray));
     }
 
     public void gotoRegisterStep2() {

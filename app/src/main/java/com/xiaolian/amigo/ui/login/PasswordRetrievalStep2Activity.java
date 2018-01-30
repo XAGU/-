@@ -22,7 +22,9 @@ import butterknife.OnTextChanged;
 
 /**
  * 找回密码步骤2
- * Created by caidong on 2017/9/1.
+ *
+ * @author caidong
+ * @date 17/9/1
  */
 
 public class PasswordRetrievalStep2Activity extends LoginBaseActivity implements IPasswordRetrievalStep2View {
@@ -32,17 +34,17 @@ public class PasswordRetrievalStep2Activity extends LoginBaseActivity implements
     IPasswordRetrievalStep2Presenter<IPasswordRetrievalStep2View> presenter;
 
     @BindView(R.id.et_userpwd)
-    TextView et_userpwd;
+    TextView etUserpwd;
     @BindView(R.id.et_confirm_userpwd)
-    TextView et_confirm_userpwd;
+    TextView etConfirmUserpwd;
     @BindView(R.id.bt_submit)
-    Button bt_submit;
+    Button btSubmit;
     private String mobile;
     private String code;
 
     @OnClick(R.id.bt_submit)
     void resetPassword() {
-        presenter.resetPassword(code, mobile, et_userpwd.getText().toString());
+        presenter.resetPassword(code, mobile, etUserpwd.getText().toString());
     }
 
 
@@ -57,11 +59,11 @@ public class PasswordRetrievalStep2Activity extends LoginBaseActivity implements
 
         presenter.onAttach(PasswordRetrievalStep2Activity.this);
         // 提交按钮初始化时禁用
-        bt_submit.getBackground().setAlpha(100);
-        bt_submit.setEnabled(false);
+        btSubmit.getBackground().setAlpha(100);
+        btSubmit.setEnabled(false);
 
-        ViewUtil.setEditHintAndSize(getString(R.string.password_hint), 14, et_userpwd);
-        ViewUtil.setEditHintAndSize(getString(R.string.password_hint), 14, et_confirm_userpwd);
+        ViewUtil.setEditHintAndSize(getString(R.string.password_hint), 14, etUserpwd);
+        ViewUtil.setEditHintAndSize(getString(R.string.password_hint), 14, etConfirmUserpwd);
 
         if (getIntent() != null) {
             code = getIntent().getStringExtra(INTENT_KEY_PASSWORD_RETRIEVAL_CODE);
@@ -89,10 +91,10 @@ public class PasswordRetrievalStep2Activity extends LoginBaseActivity implements
      */
     void toggleLoginBtnStatus() {
         // 两次密码输入一致时才会触发状态变更
-        boolean condition = et_userpwd.length() >= 6 && !TextUtils.isEmpty(et_userpwd.getText()) && !TextUtils.isEmpty(et_confirm_userpwd.getText())
-                && et_userpwd.getText().toString().equals(et_confirm_userpwd.getText().toString());
-        bt_submit.setEnabled(condition);
-        bt_submit.getBackground().setAlpha(condition ? 255 : 100);
+        boolean condition = etUserpwd.length() >= 6 && !TextUtils.isEmpty(etUserpwd.getText()) && !TextUtils.isEmpty(etConfirmUserpwd.getText())
+                && etUserpwd.getText().toString().equals(etConfirmUserpwd.getText().toString());
+        btSubmit.setEnabled(condition);
+        btSubmit.getBackground().setAlpha(condition ? 255 : 100);
     }
 
     @OnClick(R.id.iv_back)
@@ -109,11 +111,11 @@ public class PasswordRetrievalStep2Activity extends LoginBaseActivity implements
     @Override
     public void onResume() {
         super.onResume();
-        if (et_userpwd != null) {
-            et_userpwd.requestFocus();
+        if (etUserpwd != null) {
+            etUserpwd.requestFocus();
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             if (imm != null) {
-                imm.showSoftInput(et_userpwd, InputMethodManager.SHOW_IMPLICIT);
+                imm.showSoftInput(etUserpwd, InputMethodManager.SHOW_IMPLICIT);
             }
         }
     }
