@@ -26,7 +26,9 @@ import butterknife.ButterKnife;
 
 /**
  * 我收藏的设备
- * Created by caidong on 2017/9/18.
+ *
+ * @author caidong
+ * @date 17/9/18
  */
 
 public class FavoriteActivity extends FavoriteBaseActivity implements IFavoriteView {
@@ -38,7 +40,9 @@ public class FavoriteActivity extends FavoriteBaseActivity implements IFavoriteV
 
     List<FavoriteAdaptor.FavoriteWrapper> favorites = new ArrayList<>();
 
-    // 收藏设备recycleView适配器
+    /**
+     * 收藏设备recycleView适配器
+     */
     FavoriteAdaptor adaptor;
     private IntentAction action;
 

@@ -34,6 +34,12 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+/**
+ * favorite presenter
+ *
+ * @author caidong
+ * @date 17/9/18
+ */
 public class FavoritePresenter<V extends IFavoriteView> extends BasePresenter<V>
         implements IFavoritePresenter<V> {
     @SuppressWarnings("unused")
@@ -41,7 +47,7 @@ public class FavoritePresenter<V extends IFavoriteView> extends BasePresenter<V>
     private IFavoriteManager favoriteManager;
 
     @Inject
-    public FavoritePresenter(IFavoriteManager favoriteManager) {
+    FavoritePresenter(IFavoriteManager favoriteManager) {
         super();
         this.favoriteManager = favoriteManager;
     }

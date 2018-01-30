@@ -19,13 +19,29 @@ package com.xiaolian.amigo.ui.favorite.intf;
 import com.xiaolian.amigo.di.FavoriteActivityContext;
 import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 
+/**
+ * 收藏页面presenter
+ *
+ * @author caidong
+ * @date 17/9/18
+ */
 @FavoriteActivityContext
 public interface IFavoritePresenter<V extends IFavoriteView> extends IBasePresenter<V> {
 
-    // 刷新个人收藏设备列表
+    /**
+     * 刷新个人收藏设备列表
+     *
+     * @param page 页数
+     */
     void requestFavorites(int page);
 
-    // 删除某一收藏设备
+    /**
+     * 删除某一收藏设备
+     *
+     * @param deviceId 设备id
+     * @param index    待删除的设备在设备列表中的编号
+     * @param type     类型
+     */
     void onDelete(Long deviceId, int index, int type);
 
 }

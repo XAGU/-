@@ -21,6 +21,12 @@ import com.xiaolian.amigo.ui.favorite.adaptor.FavoriteAdaptor;
 
 import java.util.List;
 
+/**
+ * 收藏页面
+ *
+ * @author caidong
+ * @date 17/9/18
+ */
 public interface IFavoriteView extends IBaseListView {
 
     /**

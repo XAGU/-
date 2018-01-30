@@ -7,6 +7,12 @@ import com.xiaolian.amigo.di.module.FavoriteActivityModule;
 import com.xiaolian.amigo.ui.base.BaseToolBarListActivity;
 
 
+/**
+ * favorite base activity
+ *
+ * @author caidong
+ * @date 17/9/18
+ */
 public abstract class FavoriteBaseActivity extends BaseToolBarListActivity {
 
     private FavoriteActivityComponent mActivityComponent;
