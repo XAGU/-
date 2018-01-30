@@ -11,17 +11,20 @@ import com.xiaolian.amigo.ui.more.intf.IAboutUsView;
 import javax.inject.Inject;
 
 /**
- * <p>
- * Created by zcd on 17/11/9.
+ * 关于我们presenter
+ *
+ * @author zcd
+ * @date 17/11/9
  */
 
 public class AboutUsPresenter<V extends IAboutUsView> extends BasePresenter<V>
         implements IAboutUsPresenter<V> {
+    @SuppressWarnings("unused")
     private static final String TAG = AboutUsPresenter.class.getSimpleName();
     private IMainDataManager mainDataManager;
 
     @Inject
-    public AboutUsPresenter(IMainDataManager manager) {
+    AboutUsPresenter(IMainDataManager manager) {
         this.mainDataManager = manager;
     }
 
