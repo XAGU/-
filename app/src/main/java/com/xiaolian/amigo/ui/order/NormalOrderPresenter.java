@@ -1,7 +1,5 @@
 package com.xiaolian.amigo.ui.order;
 
-import android.text.TextUtils;
-
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.ComplaintType;
 import com.xiaolian.amigo.data.enumeration.Device;
@@ -19,8 +17,10 @@ import com.xiaolian.amigo.util.Constant;
 import javax.inject.Inject;
 
 /**
- * <p>
- * Created by zcd on 18/1/18.
+ * 订单presenter
+ *
+ * @author zcd
+ * @date 18/1/18
  */
 
 public class NormalOrderPresenter<V extends INormalOrderView> extends BasePresenter<V>
@@ -30,7 +30,7 @@ public class NormalOrderPresenter<V extends INormalOrderView> extends BasePresen
     private OrderDetailRespDTO order;
 
     @Inject
-    public NormalOrderPresenter(IOrderDataManager orderDataManager) {
+    NormalOrderPresenter(IOrderDataManager orderDataManager) {
         this.orderDataManager = orderDataManager;
     }
 
@@ -53,11 +53,11 @@ public class NormalOrderPresenter<V extends INormalOrderView> extends BasePresen
             @Override
             public void onReady(ApiResult<OrderDetailRespDTO> result) {
                 if (null == result.getError()) {
-                    if (result.getData().getLowest() != null
-                            && result.getData().getLowest()
-                            && TextUtils.isEmpty(result.getData().getBonus())) {
+//                    if (result.getData().getLowest() != null
+//                            && result.getData().getLowest()
+//                            && TextUtils.isEmpty(result.getData().getBonus())) {
 //                        getMvpView().showNoUseTip();
-                    }
+//                    }
                     order = result.getData();
                     getMvpView().renderView(result.getData());
                 } else {
