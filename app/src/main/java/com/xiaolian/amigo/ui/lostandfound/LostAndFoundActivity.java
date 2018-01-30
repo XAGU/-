@@ -28,13 +28,16 @@ import butterknife.ButterKnife;
 
 /**
  * 失物招领
- * <p>
- * Created by caidong on 2017/9/13.
+ *
+ * @author caidong
+ * @date 17/9/13
  */
 public class LostAndFoundActivity extends LostAndFoundBaseListActivity implements ILostAndFoundView {
     private static final int REQUEST_CODE_PUBLISH = 0x0101;
     private static final String TAG = LostAndFoundActivity.class.getSimpleName();
-    // 失物招领列表
+    /**
+     * 失物招领列表
+     */
     List<LostAndFoundAdaptor.LostAndFoundWapper> lostAndFounds = new ArrayList<>();
     List<LostAndFoundAdaptor.LostAndFoundWapper> losts = new ArrayList<>();
     List<LostAndFoundAdaptor.LostAndFoundWapper> founds = new ArrayList<>();
@@ -46,9 +49,9 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
     @Inject
     ILostAndFoundPresenter<ILostAndFoundView> presenter;
 
-    TextView tv_lost;
+    TextView tvLost;
 
-    TextView tv_found;
+    TextView tvFound;
 
     /**
      * 列表显示的是失物列表还是招领列表
@@ -70,7 +73,7 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
     /**
      * 发布招领
      */
-    TextView tv_publish_found;
+    TextView tvPublishFound;
     private SearchDialog searchDialog;
     private RecyclerView searchRecyclerView;
 
@@ -84,7 +87,7 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
     /**
      * 发布失物
      */
-    TextView tv_publish_lost;
+    TextView tvPublishLost;
 
     /**
      * 打开发布招领页面
@@ -96,7 +99,7 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
     /**
      * 我的发布
      */
-    TextView tv_my_publish;
+    TextView tvMyPublish;
 
     /**
      * 打开发布招领页面
@@ -133,7 +136,9 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
         foundPage = Constant.PAGE_START_NUM;
     }
 
-    //  点击搜索
+    /**
+     * 点击搜索
+     */
     void search() {
         if (searchDialog == null) {
             searchDialog = new SearchDialog(this);
@@ -185,7 +190,6 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
         adaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-//                CommonUtil.crash();
                 try {
                     Intent intent = new Intent(LostAndFoundActivity.this, LostAndFoundDetailActivity.class);
                     intent.putExtra(LostAndFoundDetailActivity.INTENT_KEY_LOST_AND_FOUND_DETAIL_ID,
@@ -223,12 +227,12 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
 
     @Override
     protected void setFooter() {
-        tv_my_publish = getFooter().findViewById(R.id.tv_my_publish);
-        tv_my_publish.setOnClickListener(v -> gotoMyPublish());
-        tv_publish_found = getFooter().findViewById(R.id.tv_publish_found);
-        tv_publish_found.setOnClickListener(v -> gotoPublishFound());
-        tv_publish_lost = getFooter().findViewById(R.id.tv_publish_lost);
-        tv_publish_lost.setOnClickListener(v -> gotoPublishLost());
+        tvMyPublish = getFooter().findViewById(R.id.tv_my_publish);
+        tvMyPublish.setOnClickListener(v -> gotoMyPublish());
+        tvPublishFound = getFooter().findViewById(R.id.tv_publish_found);
+        tvPublishFound.setOnClickListener(v -> gotoPublishFound());
+        tvPublishLost = getFooter().findViewById(R.id.tv_publish_lost);
+        tvPublishLost.setOnClickListener(v -> gotoPublishLost());
     }
 
     @Override
@@ -256,10 +260,10 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
         presenter.onAttach(LostAndFoundActivity.this);
-        tv_lost = getToolBarTitle();
-        tv_lost.setOnClickListener(v -> onLostClick());
-        tv_found = getToolBarTitle2();
-        tv_found.setOnClickListener(v -> onFoundClick());
+        tvLost = getToolBarTitle();
+        tvLost.setOnClickListener(v -> onLostClick());
+        tvFound = getToolBarTitle2();
+        tvFound.setOnClickListener(v -> onFoundClick());
     }
 
     @Override
@@ -393,12 +397,12 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
     private void switchListStatus() {
         if (listStatus) {
             listStatus = false;
-            tv_lost.setTextColor(ContextCompat.getColor(this, R.color.colorDark2));
-            tv_found.setTextColor(ContextCompat.getColor(this, R.color.colorDarkB));
+            tvLost.setTextColor(ContextCompat.getColor(this, R.color.colorDark2));
+            tvFound.setTextColor(ContextCompat.getColor(this, R.color.colorDarkB));
         } else {
             listStatus = true;
-            tv_lost.setTextColor(ContextCompat.getColor(this, R.color.colorDarkB));
-            tv_found.setTextColor(ContextCompat.getColor(this, R.color.colorDark2));
+            tvLost.setTextColor(ContextCompat.getColor(this, R.color.colorDarkB));
+            tvFound.setTextColor(ContextCompat.getColor(this, R.color.colorDark2));
         }
     }
 

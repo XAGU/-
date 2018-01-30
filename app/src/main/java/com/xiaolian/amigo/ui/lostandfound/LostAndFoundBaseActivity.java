@@ -11,8 +11,9 @@ import com.xiaolian.amigo.ui.base.BaseActivity;
 
 /**
  * 失物招领
- * <p>
- * Created by zcd on 9/18/17.
+ *
+ * @author zcd
+ * @date 17/9/18
  */
 public abstract class LostAndFoundBaseActivity extends BaseActivity {
     private LostAndFoundActivityComponent mActivityComponent;

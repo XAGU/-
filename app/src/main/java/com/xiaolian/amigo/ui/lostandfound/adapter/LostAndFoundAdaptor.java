@@ -18,13 +18,16 @@ import java.util.List;
 import lombok.Data;
 
 /**
- * <p>
- * Created by zcd on 9/18/17.
+ * 失物招领列表adaptor
+ *
+ * @author zcd
+ * @date 17/9/18
  */
 
-public class LostAndFoundAdaptor extends CommonAdapter<LostAndFoundAdaptor.LostAndFoundWapper>{
+public class LostAndFoundAdaptor extends CommonAdapter<LostAndFoundAdaptor.LostAndFoundWapper> {
     private Context context;
     private boolean isShowIcon;
+
     public LostAndFoundAdaptor(Context context, int layoutId, List<LostAndFoundWapper> datas) {
         super(context, layoutId, datas);
         this.context = context;
@@ -64,9 +67,9 @@ public class LostAndFoundAdaptor extends CommonAdapter<LostAndFoundAdaptor.LostA
             holder.getView(R.id.iv_icon).setVisibility(View.VISIBLE);
             if (CommonUtil.equals(lostAndFoundWapper.getType(), 1)) {
                 // 失物
-                ((ImageView)holder.getView(R.id.iv_icon)).setImageResource(R.drawable.ic_lost);
+                ((ImageView) holder.getView(R.id.iv_icon)).setImageResource(R.drawable.ic_lost);
             } else {
-                ((ImageView)holder.getView(R.id.iv_icon)).setImageResource(R.drawable.ic_found);
+                ((ImageView) holder.getView(R.id.iv_icon)).setImageResource(R.drawable.ic_found);
             }
         } else {
             holder.getView(R.id.iv_icon).setVisibility(View.GONE);
@@ -92,20 +95,34 @@ public class LostAndFoundAdaptor extends CommonAdapter<LostAndFoundAdaptor.LostA
             this.type = lostAndFound.getType();
         }
 
-        // 标题
+        /**
+         * 标题
+         */
         String title;
-        // 内容
+        /**
+         * 内容
+         */
         String content;
-        // 物品
+        /**
+         * 物品
+         */
         String good;
-        // 地点
+        /**
+         * 地点
+         */
         String location;
-        // 时间
+        /**
+         * 时间
+         */
         Long time;
-        // 是否包含图片
+        /**
+         * 是否包含图片
+         */
         boolean hasImage;
         Long id;
-        // 1失物或者2招领
+        /**
+         * 1失物或者2招领
+         */
         Integer type;
     }
 }

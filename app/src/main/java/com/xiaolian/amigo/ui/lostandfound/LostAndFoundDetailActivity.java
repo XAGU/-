@@ -28,8 +28,9 @@ import butterknife.OnClick;
 
 /**
  * 失物招领详情
- * <p>
- * Created by zcd on 9/21/17.
+ *
+ * @author zcd
+ * @date 17/9/21
  */
 
 public class LostAndFoundDetailActivity extends LostAndFoundBaseActivity implements ILostAndFoundDetailView {
@@ -38,10 +39,14 @@ public class LostAndFoundDetailActivity extends LostAndFoundBaseActivity impleme
     public static final String INTENT_KEY_LOST_AND_FOUND_DETAIL_TYPE = "intent_key_lost_and_found_detail_type";
     public static final int TYPE_LOST = 1;
     public static final int TYPE_FOUND = 2;
+    private static final int FIRST_IMAGE_INDEX = 0;
+    private static final int SECOND_IMAGE_INDEX = 1;
+    private static final int THIRD_IMAGE_INDEX = 2;
 
     @Inject
     ILostAndFoundDetailPresenter<ILostAndFoundDetailView> presenter;
 
+    @SuppressWarnings("FieldCanBeLocal")
     private Long id;
 
     private ArrayList<String> images = new ArrayList<>();
@@ -50,64 +55,64 @@ public class LostAndFoundDetailActivity extends LostAndFoundBaseActivity impleme
      * 标题
      */
     @BindView(R.id.tv_title)
-    TextView tv_title;
+    TextView tvTitle;
 
     /**
      * 内容标题
      */
     @BindView(R.id.tv_content_title)
-    TextView tv_content_title;
+    TextView tvContentTitle;
 
     /**
      * 内容描述
      */
     @BindView(R.id.tv_content_desc)
-    TextView tv_content_desc;
+    TextView tvContentDesc;
 
     /**
      * 物品名称
      */
     @BindView(R.id.tv_itemName)
-    TextView tv_itemName;
+    TextView tvItemName;
 
     /**
      * 位置
      */
     @BindView(R.id.tv_location)
-    TextView tv_location;
+    TextView tvLocation;
 
     /**
      * 时间
      */
     @BindView(R.id.tv_lostTime)
-    TextView tv_lostTime;
+    TextView tvLostTime;
 
     /**
      * 联系方式
      */
     @BindView(R.id.tv_mobile)
-    TextView tv_mobile;
+    TextView tvMobile;
 
     /**
      * 发布时间
      */
     @BindView(R.id.tv_createTime)
-    TextView tv_createTime;
+    TextView tvCreateTime;
 
     /**
      * 图片布局
      */
     @BindView(R.id.ll_images)
-    LinearLayout ll_images;
+    LinearLayout llImages;
 
     @BindView(R.id.iv_first)
-    ImageView iv_first;
+    ImageView ivFirst;
 
     @BindView(R.id.iv_second)
-    ImageView iv_second;
+    ImageView ivSecond;
 
     @BindView(R.id.iv_third)
-    ImageView iv_third;
+    ImageView ivThird;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,9 +127,9 @@ public class LostAndFoundDetailActivity extends LostAndFoundBaseActivity impleme
 
         if (getIntent() != null) {
             if (getIntent().getIntExtra(INTENT_KEY_LOST_AND_FOUND_DETAIL_TYPE, TYPE_FOUND) == TYPE_LOST) {
-                tv_title.setText("失物详情");
+                tvTitle.setText("失物详情");
             } else {
-                tv_title.setText("招领详情");
+                tvTitle.setText("招领详情");
             }
             id = getIntent().getLongExtra(INTENT_KEY_LOST_AND_FOUND_DETAIL_ID, Constant.INVALID_ID);
             presenter.getLostAndFoundDetail(id);
@@ -138,15 +143,15 @@ public class LostAndFoundDetailActivity extends LostAndFoundBaseActivity impleme
 
     @Override
     public void render(LostAndFound lostAndFound) {
-        tv_content_title.setText(lostAndFound.getTitle());
-        tv_content_desc.setText(lostAndFound.getDescription());
-        tv_itemName.setText(lostAndFound.getItemName());
-        tv_location.setText(lostAndFound.getLocation());
-        tv_mobile.setText(lostAndFound.getMobile());
-        tv_lostTime.setText(getString(R.string.time_format,
+        tvContentTitle.setText(lostAndFound.getTitle());
+        tvContentDesc.setText(lostAndFound.getDescription());
+        tvItemName.setText(lostAndFound.getItemName());
+        tvLocation.setText(lostAndFound.getLocation());
+        tvMobile.setText(lostAndFound.getMobile());
+        tvLostTime.setText(getString(R.string.time_format,
                 TimeUtils.convertTimestampToFormat(lostAndFound.getLostTime()),
                 TimeUtils.millis2String(lostAndFound.getLostTime(), TimeUtils.MY_TIME_FORMAT)));
-        tv_createTime.setText(getString(R.string.publish_time,
+        tvCreateTime.setText(getString(R.string.publish_time,
                 TimeUtils.convertTimestampToFormat(lostAndFound.getCreateTime()),
                 TimeUtils.millis2String(lostAndFound.getCreateTime(), TimeUtils.MY_TIME_FORMAT)));
         List<String> images = lostAndFound.getImages();
@@ -157,20 +162,20 @@ public class LostAndFoundDetailActivity extends LostAndFoundBaseActivity impleme
             int num = images.size();
             RequestManager manager = Glide.with(this);
             // 渲染第一张图
-            if (num > 0) {
-                ll_images.setVisibility(View.VISIBLE);
-                iv_first.setVisibility(View.VISIBLE);
-                manager.load(Constant.IMAGE_PREFIX + images.get(0)).into(iv_first);
+            if (num > FIRST_IMAGE_INDEX) {
+                llImages.setVisibility(View.VISIBLE);
+                ivFirst.setVisibility(View.VISIBLE);
+                manager.load(Constant.IMAGE_PREFIX + images.get(0)).into(ivFirst);
             }
             // 渲染第二张图
-            if (num > 1) {
-                iv_second.setVisibility(View.VISIBLE);
-                manager.load(Constant.IMAGE_PREFIX + images.get(1)).into(iv_second);
+            if (num > SECOND_IMAGE_INDEX) {
+                ivSecond.setVisibility(View.VISIBLE);
+                manager.load(Constant.IMAGE_PREFIX + images.get(1)).into(ivSecond);
             }
             // 渲染第三张图
-            if (num > 2) {
-                iv_third.setVisibility(View.VISIBLE);
-                manager.load(Constant.IMAGE_PREFIX + images.get(2)).into(iv_third);
+            if (num > THIRD_IMAGE_INDEX) {
+                ivThird.setVisibility(View.VISIBLE);
+                manager.load(Constant.IMAGE_PREFIX + images.get(2)).into(ivThird);
             }
         }
     }

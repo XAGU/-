@@ -15,25 +15,44 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
 import java.util.List;
 
 /**
- * <p>
- * Created by zcd on 9/18/17.
+ * 我的发布列表adapter
+ *
+ * @author zcd
+ * @date 17/9/18
  */
 
-public class MyPublishAdaptor extends CommonAdapter<LostAndFoundAdaptor.LostAndFoundWapper>{
+public class MyPublishAdaptor extends CommonAdapter<LostAndFoundAdaptor.LostAndFoundWapper> {
     public interface MyPublishClickListener {
+        /**
+         * 我的发布列表点击事件
+         *
+         * @param position 列表位置
+         */
         void onMyPublishClick(int position);
     }
+
     public interface MyPublishLongClickListener {
+        /**
+         * 我的发布列表长按事件
+         */
         void onMyPublishLongClick();
     }
+
     public interface MyPublishDeleteListener {
+        /**
+         * 我的发布列表删除事件
+         *
+         * @param position 列表位置
+         */
         void onMyPublishDelete(int position);
     }
+
     private MyPublishClickListener clickListener;
     private MyPublishLongClickListener longClickListener;
     private MyPublishDeleteListener deleteListener;
     private Context context;
     private boolean isShowIcon;
+
     public MyPublishAdaptor(Context context, int layoutId, List<LostAndFoundAdaptor.LostAndFoundWapper> datas) {
         super(context, layoutId, datas);
         this.context = context;
@@ -94,9 +113,9 @@ public class MyPublishAdaptor extends CommonAdapter<LostAndFoundAdaptor.LostAndF
             holder.getView(R.id.iv_icon).setVisibility(View.VISIBLE);
             if (CommonUtil.equals(lostAndFoundWapper.getType(), 1)) {
                 // 失物
-                ((ImageView)holder.getView(R.id.iv_icon)).setImageResource(R.drawable.ic_lost);
+                ((ImageView) holder.getView(R.id.iv_icon)).setImageResource(R.drawable.ic_lost);
             } else {
-                ((ImageView)holder.getView(R.id.iv_icon)).setImageResource(R.drawable.ic_found);
+                ((ImageView) holder.getView(R.id.iv_icon)).setImageResource(R.drawable.ic_found);
             }
         } else {
             holder.getView(R.id.iv_icon).setVisibility(View.GONE);

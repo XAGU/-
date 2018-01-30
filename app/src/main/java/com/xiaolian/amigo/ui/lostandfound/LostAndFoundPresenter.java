@@ -3,10 +3,10 @@ package com.xiaolian.amigo.ui.lostandfound;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.manager.intf.ILostAndFoundDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
+import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.LostAndFoundDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.QueryLostAndFoundListReqDTO;
-import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
-import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.QueryLostAndFoundListRespDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundAdaptor;
@@ -20,8 +20,9 @@ import javax.inject.Inject;
 
 /**
  * 失物招领
- * <p>
- * Created by zcd on 9/18/17.
+ *
+ * @author zcd
+ * @date 17/9/18
  */
 
 public class LostAndFoundPresenter<V extends ILostAndFoundView> extends BasePresenter<V>
