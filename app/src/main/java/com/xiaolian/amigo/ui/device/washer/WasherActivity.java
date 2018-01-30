@@ -16,11 +16,13 @@ import javax.inject.Inject;
 
 /**
  * 洗衣机首页
- * <p>
- * Created by zcd on 18/1/12.
+ *
+ * @author zcd
+ * @date 18/1/12
  */
 
 public class WasherActivity extends WasherBaseActivity implements IWasherView {
+    @SuppressWarnings("unused")
     private static final String TAG = WasherActivity.class.getSimpleName();
     @Inject
     IWasherPresenter<IWasherView> presenter;
@@ -33,8 +35,8 @@ public class WasherActivity extends WasherBaseActivity implements IWasherView {
     }
 
     private void bindView() {
-        LinearLayout ll_start_wash = findViewById(R.id.ll_start_wash);
-        ll_start_wash.setOnClickListener(v ->
+        LinearLayout llStartWash = findViewById(R.id.ll_start_wash);
+        llStartWash.setOnClickListener(v ->
                 scanQRCode());
         findViewById(R.id.iv_back).setOnClickListener(v -> {
             hideLoading();
@@ -45,9 +47,12 @@ public class WasherActivity extends WasherBaseActivity implements IWasherView {
     private void scanQRCode() {
 //        startActivity(new Intent(this, CaptureActivity.class));
         IntentIntegrator integrator = new IntentIntegrator(this);
-        integrator.setPrompt(""); //底部的提示文字，设为""可以置空
-        integrator.setCameraId(0); //前置或者后置摄像头
-        integrator.setBeepEnabled(false); //扫描成功的「哔哔」声，默认开启
+        //底部的提示文字，设为""可以置空
+        integrator.setPrompt("");
+        //前置或者后置摄像头
+        integrator.setCameraId(0);
+        //扫描成功的「哔哔」声，默认开启
+        integrator.setBeepEnabled(false);
         integrator.setCaptureActivity(ScanActivity.class);
         integrator.setOrientationLocked(true);
         integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);

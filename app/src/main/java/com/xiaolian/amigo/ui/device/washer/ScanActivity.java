@@ -32,13 +32,16 @@ import java.util.List;
 import javax.inject.Inject;
 
 /**
- * <p>
- * Created by zcd on 18/1/15.
+ * 二维码扫描页面
+ *
+ * @author zcd
+ * @date 18/1/15
  */
 
 public class ScanActivity extends WasherBaseActivity
-    implements DecoratedBarcodeView.TorchListener, IScanView {
+        implements DecoratedBarcodeView.TorchListener, IScanView {
     private static final String TAG = ScanActivity.class.getSimpleName();
+    private static final int FRAMING_SIZE_DIVISOR = 4;
 
     @Inject
     IScanPresenter<IScanView> presenter;
@@ -62,14 +65,12 @@ public class ScanActivity extends WasherBaseActivity
             @Override
             public void callback(int requestCode, int resultCode, Intent intent) {
                 IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-                if(result != null) {
-                    if(result.getContents() == null) {
+                if (result != null) {
+                    if (result.getContents() == null) {
                         Log.d(TAG, "Cancelled");
-//                    Toast.makeText(ScanActivity.this, "Cancelled", Toast.LENGTH_LONG).show();
                     } else {
                         Log.d(TAG, "Scanned: " + result.getContents());
                         presenter.scanCheckout(result.getContents());
-//                    Toast.makeText(ScanActivity.this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
                     }
                 }
             }
@@ -78,7 +79,7 @@ public class ScanActivity extends WasherBaseActivity
             public void possibleCallback(List<ResultPoint> resultPoint) {
                 try {
                     int distance = getMaxDistanceOfPoints(resultPoint);
-                    if (distance != 0 && distance < barcodeScannerView.getBarcodeView().getFramingRectSize().width / 4) {
+                    if (distance != 0 && distance < barcodeScannerView.getBarcodeView().getFramingRectSize().width / FRAMING_SIZE_DIVISOR) {
                         Log.d("Point", "should zoom" + "distance: " + distance);
                         zoomCamera();
                     }
@@ -97,6 +98,7 @@ public class ScanActivity extends WasherBaseActivity
             @Override
             public void previewSized() {
             }
+
             @Override
             public void previewStarted() {
                 try {
@@ -105,12 +107,15 @@ public class ScanActivity extends WasherBaseActivity
                     Log.wtf(TAG, e);
                 }
             }
+
             @Override
             public void previewStopped() {
             }
+
             @Override
             public void cameraError(Exception error) {
             }
+
             @Override
             public void cameraClosed() {
             }
@@ -132,6 +137,7 @@ public class ScanActivity extends WasherBaseActivity
         }
     }
 
+    @SuppressWarnings("deprecation")
     private void zoomCamera() {
         if (barcodeScannerView.getBarcodeView().getCameraInstance() == null) {
             return;
@@ -165,8 +171,8 @@ public class ScanActivity extends WasherBaseActivity
             return 0;
         }
         int max = 0;
-        for (int i = 0; i < resultPoint.size() - 1; i ++) {
-            for (int j = i + 1; j < resultPoint.size(); j ++) {
+        for (int i = 0; i < resultPoint.size() - 1; i++) {
+            for (int j = i + 1; j < resultPoint.size(); j++) {
                 int distance = (int) Math.hypot(resultPoint.get(i).getX() - resultPoint.get(j).getX(), resultPoint.get(i).getY() - resultPoint.get(j).getY());
                 if (distance > max) {
                     max = distance;
@@ -213,18 +219,11 @@ public class ScanActivity extends WasherBaseActivity
         capture.decode();
     }
 
+    @SuppressWarnings("deprecation")
     private void configCamera() {
         if (barcodeScannerView.getBarcodeView().getCameraInstance() == null) {
             return;
         }
-//        int screenWidth = ScreenUtils.getScreenWidth(this);
-//        int screenHeight = ScreenUtils.getScreenHeight(this);
-//        int viewWidth = barcodeScannerView.getWidth();
-//        int viewHeight = barcodeScannerView.getHeight();
-//        int viewWidth = barcodeScannerView.getBarcodeView().getFramingRectSize().width;
-//        int viewHeight = barcodeScannerView.getBarcodeView().getFramingRectSize().height;
-//        Rect focusRect = calculateTapArea(screenWidth/2, screenHeight/2, 1f, viewWidth, viewHeight);
-//        Rect meteringRect = calculateTapArea(screenWidth/2, screenHeight/2, 1.5f, viewWidth, viewHeight);
 
         Camera camera = barcodeScannerView.getBarcodeView().getCameraInstance().getCameraManager().getCamera();
         CameraThread cameraThread = barcodeScannerView.getBarcodeView().getCameraInstance().getCameraThread();
@@ -232,56 +231,32 @@ public class ScanActivity extends WasherBaseActivity
             if (camera == null) {
                 return;
             }
-//            camera.cancelAutoFocus();
             Camera.Parameters params = camera.getParameters();
-
-//            if (params.getMaxNumMeteringAreas() > 0) {
-//                List<Camera.Area> meteringAreas = new ArrayList<>();
-//                meteringAreas.add(new Camera.Area(meteringRect, 800));
-//                params.setMeteringAreas(meteringAreas);
-//            } else {
-//                Log.i(TAG, "metering areas not supported");
-//            }
 
             if (params.getMaxNumFocusAreas() > 0) {
                 List<Camera.Area> focusAreas = new ArrayList<>();
-                Rect areaRect1 = new Rect(-150, -150, 150, 150); // 在图像的中心指定一个区域
+                // 在图像的中心指定一个区域
+                Rect areaRect1 = new Rect(-150, -150, 150, 150);
                 focusAreas.add(new Camera.Area(areaRect1, 800));
                 params.setFocusAreas(focusAreas);
             } else {
                 Log.i(TAG, "focus areas not supported");
             }
 
-//            final String currentFocusMode = params.getFocusMode();
-//            params.setFocusMode(Camera.Parameters.FOCUS_MODE_MACRO);
-
-//            int minExposure = params.getMinExposureCompensation();
-//            params.setExposureCompensation(minExposure);
-
-
-            if(params.getMaxNumMeteringAreas() > 0) { // 检查是否支持测光区域
+            // 检查是否支持测光区域
+            if (params.getMaxNumMeteringAreas() > 0) {
                 List<Camera.Area> meteringAreas = new ArrayList<>();
-                Rect areaRect1 = new Rect(-150, -150, 150, 150); // 在图像的中心指定一个区域
-                meteringAreas.add(new Camera.Area(areaRect1, 800)); // 设置宽度待60%
-//                Rect areaRect2 = new Rect(800, -1000, 1000, -800); // 在图像的右上角指定一个区域
-//                meteringAreas.add(new Camera.Area(areaRect2, 400)); // 设置宽度为40%
+                // 在图像的中心指定一个区域
+                Rect areaRect1 = new Rect(-150, -150, 150, 150);
+                meteringAreas.add(new Camera.Area(areaRect1, 800));
                 params.setMeteringAreas(meteringAreas);
             }
-//            params.setSceneMode(Camera.Parameters.SCENE_MODE_BARCODE);
 
             camera.setParameters(params);
-
-//            camera.autoFocus(new Camera.AutoFocusCallback() {
-//                @Override
-//                public void onAutoFocus(boolean success, Camera camera) {
-//                    Camera.Parameters params = camera.getParameters();
-//                    params.setFocusMode(currentFocusMode);
-//                    camera.setParameters(params);
-//                }
-//            });
         });
     }
 
+    @SuppressWarnings("deprecation")
     private void handleFocus(MotionEvent event) {
         if (barcodeScannerView.getBarcodeView().getCameraInstance() == null) {
             return;
@@ -329,6 +304,7 @@ public class ScanActivity extends WasherBaseActivity
         });
     }
 
+    @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getPointerCount() == 1) {
             handleFocus(event);
@@ -376,6 +352,7 @@ public class ScanActivity extends WasherBaseActivity
 
     /**
      * Check if the device's camera has a Flashlight.
+     *
      * @return true if there is Flashlight, otherwise false.
      */
     @SuppressWarnings("unused")

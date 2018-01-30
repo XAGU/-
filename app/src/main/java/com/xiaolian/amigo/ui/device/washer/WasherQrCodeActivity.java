@@ -10,23 +10,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.ui.device.washer.intf.IWasherQRCodePresenter;
-import com.xiaolian.amigo.ui.device.washer.intf.IWasherQRCodeView;
+import com.xiaolian.amigo.ui.device.washer.intf.IWasherQrCodePresenter;
+import com.xiaolian.amigo.ui.device.washer.intf.IWasherQrCodeView;
 import com.xiaolian.amigo.ui.main.MainActivity;
 
 import javax.inject.Inject;
 
 /**
  * 展示二维码页面
- * <p>
+ *
  * @author zcd
- * created on 18/1/12.
+ * @date 18/1/12
  */
 
-public class WasherQRCodeActivity extends WasherBaseActivity implements IWasherQRCodeView {
+public class WasherQrCodeActivity extends WasherBaseActivity implements IWasherQrCodeView {
 
     @Inject
-    IWasherQRCodePresenter<IWasherQRCodeView> presenter;
+    IWasherQrCodePresenter<IWasherQrCodeView> presenter;
     private TextView tvTopBar;
     private ImageView ivQrCode;
     private String action;
@@ -36,7 +36,7 @@ public class WasherQRCodeActivity extends WasherBaseActivity implements IWasherQ
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_washer_qrcode);
         getActivityComponent().inject(this);
-        presenter.onAttach(WasherQRCodeActivity.this);
+        presenter.onAttach(WasherQrCodeActivity.this);
         bindView();
         setUp();
     }

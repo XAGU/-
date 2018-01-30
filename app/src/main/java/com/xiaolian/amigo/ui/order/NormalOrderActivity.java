@@ -17,7 +17,7 @@ import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.network.model.order.OrderDetailRespDTO;
 import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.ui.device.washer.WasherContent;
-import com.xiaolian.amigo.ui.device.washer.WasherQRCodeActivity;
+import com.xiaolian.amigo.ui.device.washer.WasherQrCodeActivity;
 import com.xiaolian.amigo.ui.order.intf.INormalOrderPresenter;
 import com.xiaolian.amigo.ui.order.intf.INormalOrderView;
 import com.xiaolian.amigo.ui.wallet.adaptor.TitleContentCopyDelegate;
@@ -112,7 +112,7 @@ public class NormalOrderActivity extends OrderBaseActivity implements INormalOrd
     }
 
     public void onRightOper() {
-        startActivity(new Intent(this, WasherQRCodeActivity.class)
+        startActivity(new Intent(this, WasherQrCodeActivity.class)
                 .putExtra(WasherContent.KEY_PRICE, presenter.getOrder().getConsume())
                 .putExtra(WasherContent.KEY_MODE_DESC, presenter.getOrder().getModeDesc())
                 .putExtra(WasherContent.KEY_QR_CODE_URL, presenter.getOrder().getQrCode())

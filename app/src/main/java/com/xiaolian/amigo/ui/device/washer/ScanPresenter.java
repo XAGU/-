@@ -6,23 +6,24 @@ import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.trade.QrCodeScanReqDTO;
 import com.xiaolian.amigo.data.network.model.trade.QrCodeScanRespDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
-import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 import com.xiaolian.amigo.ui.device.washer.intf.IScanPresenter;
 import com.xiaolian.amigo.ui.device.washer.intf.IScanView;
 
 import javax.inject.Inject;
 
 /**
- * <p>
- * Created by zcd on 18/1/17.
+ * 二维码扫描
+ *
+ * @author zcd
+ * @date 18/1/17
  */
 
 public class ScanPresenter<V extends IScanView> extends BasePresenter<V>
-    implements IScanPresenter<V> {
+        implements IScanPresenter<V> {
     private IWasherDataManager washerDataManager;
 
     @Inject
-    public ScanPresenter(IWasherDataManager washerDataManager) {
+    ScanPresenter(IWasherDataManager washerDataManager) {
         this.washerDataManager = washerDataManager;
     }
 

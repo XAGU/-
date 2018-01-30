@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.xiaolian.amigo.MvpApp;
-import com.xiaolian.amigo.di.componet.DaggerWalletActivityComponent;
 import com.xiaolian.amigo.di.componet.DaggerWasherActivityComponent;
 import com.xiaolian.amigo.di.componet.WasherActivityComponent;
 import com.xiaolian.amigo.di.module.WasherActivityModule;
@@ -12,9 +11,11 @@ import com.xiaolian.amigo.ui.base.BaseActivity;
 
 /**
  * 洗衣机模块base activity
- * <p>
- * Created by zcd on 1/12/18.
+ *
+ * @author zcd
+ * @date 1/12/18
  */
+
 public abstract class WasherBaseActivity extends BaseActivity {
 
     private WasherActivityComponent mActivityComponent;

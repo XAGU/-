@@ -12,8 +12,9 @@ import lombok.Data;
 
 /**
  * 选择洗衣机模式适配器
- * <p>
- * Created by zcd on 18/1/12.
+ *
+ * @author zcd
+ * @date 18/1/12
  */
 
 public class ChooseWashModeAdapter extends CommonAdapter<ChooseWashModeAdapter.WashModeItem> {
@@ -23,11 +24,11 @@ public class ChooseWashModeAdapter extends CommonAdapter<ChooseWashModeAdapter.W
         super(context, layoutId, datas);
     }
 
-    public int getLastChoosePosition() {
+    int getLastChoosePosition() {
         return lastChoosePosition;
     }
 
-    public void setLastChoosePosition(int lastChoosePosition) {
+    void setLastChoosePosition(int lastChoosePosition) {
         this.lastChoosePosition = lastChoosePosition;
     }
 
