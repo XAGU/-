@@ -10,8 +10,9 @@ import lombok.Data;
 
 /**
  * 充值提现详情
- * <p>
- * Created by zcd on 10/27/17.
+ *
+ * @author zcd
+ * @date 17/10/27
  */
 
 public class WithdrawRechargeDetailAdapter extends MultiItemTypeAdapter<WithdrawRechargeDetailAdapter.Item> {
@@ -22,16 +23,6 @@ public class WithdrawRechargeDetailAdapter extends MultiItemTypeAdapter<Withdraw
     public WithdrawRechargeDetailAdapter(Context context, List<Item> datas) {
         super(context, datas);
     }
-
-//    public WithdrawRechargeDetailAdapter(Context context, int layoutId, List<Item> datas) {
-//        super(context, layoutId, datas);
-//    }
-
-//    @Override
-//    protected void convert(ViewHolder holder, Item item, int position) {
-//        holder.setText(R.id.tv_title, item.getTitle());
-//        holder.setText(R.id.tv_content, item.getContent());
-//    }
 
     @Data
     public static class Item {

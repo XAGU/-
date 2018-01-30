@@ -28,8 +28,9 @@ import javax.inject.Inject;
 
 /**
  * 充值
- * <p>
- * Created by zcd on 9/20/17.
+ *
+ * @author zcd
+ * @date 17/9/20
  */
 
 public class RechargePresenter<V extends IRechargeView> extends BasePresenter<V>
@@ -39,7 +40,7 @@ public class RechargePresenter<V extends IRechargeView> extends BasePresenter<V>
     private Long fundsId;
 
     @Inject
-    public RechargePresenter(IWalletDataManager manager) {
+    RechargePresenter(IWalletDataManager manager) {
         super();
         this.manager = manager;
     }
@@ -78,11 +79,10 @@ public class RechargePresenter<V extends IRechargeView> extends BasePresenter<V>
 
     @Override
     public void recharge(Double amount, int type) {
-        String _amount = String.format(Locale.getDefault(),"%.2f", amount);
-        manager.setLastRechargeAmount(_amount);
-        Log.i(TAG, "储存充值amount: " + _amount);
+        String amountStr = String.format(Locale.getDefault(), "%.2f", amount);
+        manager.setLastRechargeAmount(amountStr);
+        Log.i(TAG, "储存充值amount: " + amountStr);
         RechargeReqDTO reqDTO = new RechargeReqDTO();
-//        reqDTO.setDenominationId(id);
         reqDTO.setAmount(amount);
         reqDTO.setThirdAccountType(type);
         addObserver(manager.recharge(reqDTO), new NetworkObserver<ApiResult<SimpleRespDTO>>() {
@@ -91,8 +91,6 @@ public class RechargePresenter<V extends IRechargeView> extends BasePresenter<V>
             public void onReady(ApiResult<SimpleRespDTO> result) {
                 if (null == result.getError()) {
                     requestAlipayArgs(result.getData().getId());
-//                    getMvpView().onSuccess("充值成功");
-//                    getMvpView().back();
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }
@@ -104,7 +102,7 @@ public class RechargePresenter<V extends IRechargeView> extends BasePresenter<V>
         this.fundsId = fundsId;
         AlipayTradeAppPayArgsReqDTO reqDTO = new AlipayTradeAppPayArgsReqDTO();
         reqDTO.setFundsId(fundsId);
-        addObserver(manager.requestAlipayArgs(reqDTO), new NetworkObserver<ApiResult<AlipayTradeAppPayArgsRespDTO>>(){
+        addObserver(manager.requestAlipayArgs(reqDTO), new NetworkObserver<ApiResult<AlipayTradeAppPayArgsRespDTO>>() {
 
             @Override
             public void onReady(ApiResult<AlipayTradeAppPayArgsRespDTO> result) {
@@ -135,6 +133,7 @@ public class RechargePresenter<V extends IRechargeView> extends BasePresenter<V>
                         getMvpView().onSuccess("充值成功");
                         getMvpView().gotoDetail(fundsId);
                     } else if (apiResult.getData().getCode() == AlipayPayOrderCheckResult.CANCEL.getType()) {
+                        // TODO fix warning
                         // ignore cancel
                     } else {
                         getMvpView().onError(apiResult.getData().getMsg());

@@ -39,8 +39,9 @@ import lombok.Data;
 
 /**
  * 我的钱包
- * <p>
- * Created by caidong on 2017/9/7.
+ *
+ * @author caidong
+ * @date 17/9/7
  */
 public class RechargeActivity extends WalletBaseActivity implements IRechargeView {
 
@@ -54,12 +55,16 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
     RecyclerView recyclerView1;
 
     @BindView(R.id.bt_submit)
-    Button bt_submit;
+    Button btSubmit;
 
-    // 充值金额列表
+    /**
+     * 充值金额列表
+     */
     List<RechargeAdaptor.RechargeWrapper> recharges = new ArrayList<>();
 
-    // 充值方式列表
+    /**
+     * 充值方式列表
+     */
     List<RechargeTypeAdaptor.RechargeWrapper> rechargeTypes = new ArrayList<RechargeTypeAdaptor.RechargeWrapper>() {
         {
             add(new RechargeTypeAdaptor.RechargeWrapper(PayWay.ALIAPY.getType(), R.drawable.ic_alipay, "支付宝", true));
@@ -127,7 +132,7 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
 
     @Override
     public void addMore(List<RechargeAdaptor.RechargeWrapper> rechargeWrappers) {
-        for (int i = 0; i < rechargeWrappers.size(); i ++) {
+        for (int i = 0; i < rechargeWrappers.size(); i++) {
             if (rechargeWrappers.get(i).isSelected()) {
                 rechargeSelectedPosition = i;
             }
@@ -144,7 +149,7 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
 
     private void toggleSubmitButton() {
         if (rechargeSelectedPosition != -1 && rechargeTypeSelectedPosition != -1) {
-            bt_submit.setEnabled(true);
+            btSubmit.setEnabled(true);
         }
     }
 
@@ -168,7 +173,7 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
 
     @Override
     public void enableRecharge() {
-        bt_submit.setEnabled(true);
+        btSubmit.setEnabled(true);
     }
 
     @Override
@@ -197,6 +202,8 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
                         event.getAlipayResult().get("memo"));
                 break;
             case WECHAT:
+                break;
+            default:
                 break;
         }
     }

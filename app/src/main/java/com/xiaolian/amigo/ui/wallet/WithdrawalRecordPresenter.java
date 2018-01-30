@@ -19,20 +19,23 @@ import javax.inject.Inject;
 
 /**
  * 充值提现记录
- * <p>
- * Created by zcd on 10/17/17.
+ *
+ * @author zcd
+ * @date 17/10/17
  */
 
 public class WithdrawalRecordPresenter<V extends IWithdrawalRecordView> extends BasePresenter<V>
         implements IWithdrawRecordPresenter<V> {
+    @SuppressWarnings("unused")
     private static final String TAG = WithdrawalRecordPresenter.class.getSimpleName();
     private IWalletDataManager manager;
 
     @Inject
-    public WithdrawalRecordPresenter(IWalletDataManager manager) {
+    WithdrawalRecordPresenter(IWalletDataManager manager) {
         super();
         this.manager = manager;
     }
+
     @Override
     public void requestWithdrawalRecord(int page) {
         QueryPersonalFundsListReqDTO reqDTO = new QueryPersonalFundsListReqDTO();

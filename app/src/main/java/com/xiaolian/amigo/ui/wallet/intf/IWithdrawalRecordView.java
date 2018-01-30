@@ -7,10 +7,16 @@ import java.util.List;
 
 /**
  * 充值提现记录
- * <p>
- * Created by zcd on 10/17/17.
+ *
+ * @author zcd
+ * @date 17/10/17
  */
 
 public interface IWithdrawalRecordView extends IBaseListView {
+    /**
+     * 加载提现记录列表
+     *
+     * @param wrappers 提现记录
+     */
     void addMore(List<WithdrawalAdaptor.WithdrawalWrapper> wrappers);
 }

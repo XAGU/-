@@ -16,8 +16,9 @@ import javax.inject.Inject;
 
 /**
  * 提现
- * <p>
- * Created by zcd on 10/14/17.
+ *
+ * @author zcd
+ * @date 17/10/14
  */
 
 public class WithdrawalPresenter<V extends IWithdrawalView> extends BasePresenter<V>
@@ -25,7 +26,7 @@ public class WithdrawalPresenter<V extends IWithdrawalView> extends BasePresente
     private IWalletDataManager walletDataManager;
 
     @Inject
-    public WithdrawalPresenter(IWalletDataManager manager) {
+    WithdrawalPresenter(IWalletDataManager manager) {
         this.walletDataManager = manager;
     }
 
@@ -39,7 +40,6 @@ public class WithdrawalPresenter<V extends IWithdrawalView> extends BasePresente
             @Override
             public void onReady(ApiResult<SimpleRespDTO> result) {
                 if (null == result.getError()) {
-//                    getMvpView().onSuccess("提现成功");
                     getMvpView().gotoWithdrawDetail(result.getData().getId());
                     walletDataManager.setLastWithdrawId(withdrawId);
                     walletDataManager.setLastWithdrawName(withdrawName);

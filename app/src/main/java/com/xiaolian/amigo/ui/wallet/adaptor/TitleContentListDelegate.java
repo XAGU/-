@@ -19,12 +19,15 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * <p>
- * Created by zcd on 18/1/19.
+ * 标题内容列表
+ *
+ * @author zcd
+ * @date 18/1/19
  */
 
 public class TitleContentListDelegate implements ItemViewDelegate<WithdrawRechargeDetailAdapter.Item> {
     private Context context;
+
     public TitleContentListDelegate(Context context) {
         this.context = context;
     }
@@ -53,6 +56,7 @@ public class TitleContentListDelegate implements ItemViewDelegate<WithdrawRechar
     @EqualsAndHashCode(callSuper = false)
     public static class TitleContentListItem extends WithdrawRechargeDetailAdapter.Item {
         private List<ListItem> items;
+
         public TitleContentListItem(List<ListItem> items, int type) {
             super(type);
             this.items = items;

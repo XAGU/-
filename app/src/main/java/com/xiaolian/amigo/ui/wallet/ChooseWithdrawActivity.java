@@ -24,8 +24,9 @@ import butterknife.OnClick;
 
 /**
  * 选择提现账户
- * <p>
- * Created by zcd on 10/27/17.
+ *
+ * @author zcd
+ * @date 17/10/27
  */
 
 public class ChooseWithdrawActivity extends WalletBaseActivity implements IChooseWithdrawView {

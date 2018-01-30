@@ -7,11 +7,13 @@ import com.xiaolian.amigo.di.module.WalletActivityModule;
 import com.xiaolian.amigo.ui.base.BaseToolBarListActivity;
 
 /**
- * <p>
- * Created by zcd on 9/24/17.
+ * wallet模块base list activity
+ *
+ * @author zcd
+ * @date 17/9/24
  */
 
-public abstract class WalletBaseListActivity extends BaseToolBarListActivity{
+public abstract class WalletBaseListActivity extends BaseToolBarListActivity {
     private WalletActivityComponent mActivityComponent;
 
     @Override

@@ -17,18 +17,20 @@ import javax.inject.Inject;
 
 /**
  * 充值详情
- * <p>
- * Created by zcd on 10/23/17.
+ *
+ * @author zcd
+ * @date 17/10/23
  */
 
 public class RechargeDetailPresenter<V extends IRechargeDetailView> extends BasePresenter<V>
-    implements IRechargeDetailPresenter<V> {
+        implements IRechargeDetailPresenter<V> {
+    @SuppressWarnings("unused")
     private static final String TAG = RechargeDetailPresenter.class.getSimpleName();
     private IWalletDataManager walletDataManager;
     private ISharedPreferencesHelp sharedPreferencesHelp;
 
     @Inject
-    public RechargeDetailPresenter(IWalletDataManager walletDataManager, ISharedPreferencesHelp sharedPreferencesHelp) {
+    RechargeDetailPresenter(IWalletDataManager walletDataManager, ISharedPreferencesHelp sharedPreferencesHelp) {
         this.walletDataManager = walletDataManager;
         this.sharedPreferencesHelp = sharedPreferencesHelp;
     }

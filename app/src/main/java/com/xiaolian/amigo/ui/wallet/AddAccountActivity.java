@@ -18,8 +18,9 @@ import butterknife.OnClick;
 
 /**
  * 添加账户
- * <p>
- * Created by zcd on 10/27/17.
+ *
+ * @author zcd
+ * @date 17/10/27
  */
 
 public class AddAccountActivity extends WalletBaseActivity implements IAddAccountView {
@@ -27,11 +28,11 @@ public class AddAccountActivity extends WalletBaseActivity implements IAddAccoun
     IAddAccountPresenter<IAddAccountView> presenter;
 
     @BindView(R.id.et_account)
-    ClearableEditText et_account;
+    ClearableEditText etAccount;
     @BindView(R.id.et_real_name)
-    ClearableEditText et_real_name;
+    ClearableEditText etRealName;
     @BindView(R.id.bt_submit)
-    Button bt_submit;
+    Button btSubmit;
 
     @Override
     protected void initView() {
@@ -39,21 +40,21 @@ public class AddAccountActivity extends WalletBaseActivity implements IAddAccoun
         getActivityComponent().inject(this);
         presenter.onAttach(AddAccountActivity.this);
 
-        CommonUtil.showSoftInput(this, et_account);
+        CommonUtil.showSoftInput(this, etAccount);
     }
 
     @OnClick(R.id.bt_submit)
     public void add() {
-        if (TextUtils.isEmpty(et_account.getText())) {
-            onError(et_account.getHint().toString());
+        if (TextUtils.isEmpty(etAccount.getText())) {
+            onError(etAccount.getHint().toString());
             return;
         }
-        if (TextUtils.isEmpty(et_real_name.getText())) {
-            onError(et_real_name.getHint().toString());
+        if (TextUtils.isEmpty(etRealName.getText())) {
+            onError(etRealName.getHint().toString());
             return;
         }
-        presenter.addAccount(et_account.getText().toString(),
-                et_real_name.getText().toString(), PayWay.ALIAPY.getType());
+        presenter.addAccount(etAccount.getText().toString(),
+                etRealName.getText().toString(), PayWay.ALIAPY.getType());
     }
 
     @Override

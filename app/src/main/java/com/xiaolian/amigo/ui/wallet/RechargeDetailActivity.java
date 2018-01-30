@@ -2,6 +2,7 @@ package com.xiaolian.amigo.ui.wallet;
 
 import android.content.Intent;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.util.ObjectsCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -36,8 +37,9 @@ import butterknife.OnClick;
 
 /**
  * 充值详情
- * <p>
- * Created by zcd on 10/23/17.
+ *
+ * @author zcd
+ * @date 17/10/23
  */
 
 public class RechargeDetailActivity extends WalletBaseActivity implements IRechargeDetailView {
@@ -49,31 +51,33 @@ public class RechargeDetailActivity extends WalletBaseActivity implements IRecha
     private WithdrawRechargeDetailAdapter adapter;
 
     @BindView(R.id.left_oper)
-    TextView left_oper;
+    TextView leftOper;
     @BindView(R.id.right_oper)
-    TextView right_oper;
+    TextView rightOper;
 
     @BindView(R.id.tv_amount)
-    TextView tv_amount;
+    TextView tvAmount;
     @BindView(R.id.tv_status)
-    TextView tv_status;
+    TextView tvStatus;
 
     @BindView(R.id.ll_reason)
-    LinearLayout ll_reason;
+    LinearLayout llReason;
 
     @BindView(R.id.tv_reason)
-    TextView tv_reason;
+    TextView tvReason;
 
     @BindView(R.id.tv_reason_content)
-    TextView tv_reason_content;
+    TextView tvReasonContent;
 
     @BindView(R.id.tv_reason_top)
-    TextView tv_reason_top;
+    TextView tvReasonTop;
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
 
-    // orderId
+    /**
+     * orderId
+     */
     private Long id;
     private String orderNo;
 
@@ -95,7 +99,7 @@ public class RechargeDetailActivity extends WalletBaseActivity implements IRecha
         recyclerView.addItemDecoration(new RecycleViewDivider(this, RecycleViewDivider.VERTICAL_LIST));
         recyclerView.setAdapter(adapter);
 
-        if (id == null || id == Constant.INVALID_ID) {
+        if (id == null || ObjectsCompat.equals(id, Constant.INVALID_ID)) {
             onError("状态错误");
         }
         presenter.requestData(id);
@@ -122,19 +126,19 @@ public class RechargeDetailActivity extends WalletBaseActivity implements IRecha
     @Override
     public void render(FundsDTO data) {
         orderNo = data.getOrderNo();
-        tv_amount.setText(getString(R.string.money_format, data.getAmount()));
+        tvAmount.setText(getString(R.string.money_format, data.getAmount()));
         if (data.getInstead() != null && data.getInstead()) {
-            tv_status.setText(RechargeStatus.BEHALF_OF_RECHARGE.getDesc());
-            tv_status.setTextColor(
-                    ContextCompat.getColor(this,RechargeStatus.BEHALF_OF_RECHARGE.getColorRes()));
-            tv_reason_top.setVisibility(View.VISIBLE);
-            tv_reason_top.setText("笑联工作人员代充值");
-            left_oper.setText(RechargeStatus.BEHALF_OF_RECHARGE.getNextOperations()[0]);
-            right_oper.setText(RechargeStatus.BEHALF_OF_RECHARGE.getNextOperations()[1]);
-            left_oper.setOnClickListener(v ->
+            tvStatus.setText(RechargeStatus.BEHALF_OF_RECHARGE.getDesc());
+            tvStatus.setTextColor(
+                    ContextCompat.getColor(this, RechargeStatus.BEHALF_OF_RECHARGE.getColorRes()));
+            tvReasonTop.setVisibility(View.VISIBLE);
+            tvReasonTop.setText("笑联工作人员代充值");
+            leftOper.setText(RechargeStatus.BEHALF_OF_RECHARGE.getNextOperations()[0]);
+            rightOper.setText(RechargeStatus.BEHALF_OF_RECHARGE.getNextOperations()[1]);
+            leftOper.setOnClickListener(v ->
                     startActivity(new Intent(this, WebActivity.class)
-                        .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_HELP)));
-            right_oper.setOnClickListener(v ->
+                            .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_HELP)));
+            rightOper.setOnClickListener(v ->
                     presenter.complaint(id, ComplaintType.RECHARGE.getType()));
             items.add(new WithdrawRechargeDetailAdapter.Item("被充值手机号：",
                     presenter.getMobile(), 1));
@@ -146,25 +150,25 @@ public class RechargeDetailActivity extends WalletBaseActivity implements IRecha
             adapter.notifyDataSetChanged();
             return;
         }
-        tv_status.setText(RechargeStatus.getRechargeStatus(data.getStatus()).getDesc());
-        tv_status.setTextColor(
-                ContextCompat.getColor(this,RechargeStatus.getRechargeStatus(data.getStatus()).getColorRes()));
+        tvStatus.setText(RechargeStatus.getRechargeStatus(data.getStatus()).getDesc());
+        tvStatus.setTextColor(
+                ContextCompat.getColor(this, RechargeStatus.getRechargeStatus(data.getStatus()).getColorRes()));
         if (CommonUtil.equals(data.getStatus(), RechargeStatus.AUDIT_FAIL.getType())
                 && !TextUtils.isEmpty(data.getReason())) {
-            ll_reason.setVisibility(View.VISIBLE);
-            tv_reason_content.setText(data.getReason());
-            tv_reason.setText(getString(R.string.unpass_reason));
+            llReason.setVisibility(View.VISIBLE);
+            tvReasonContent.setText(data.getReason());
+            tvReason.setText(getString(R.string.unpass_reason));
         }
 
         if (RechargeStatus.getRechargeStatus(data.getStatus())
                 == RechargeStatus.RECHARGE_FAIL && !TextUtils.isEmpty(data.getReason())) {
-            tv_reason_top.setVisibility(View.VISIBLE);
-            tv_reason_top.setText(data.getReason());
+            tvReasonTop.setVisibility(View.VISIBLE);
+            tvReasonTop.setText(data.getReason());
         }
 
-        left_oper.setText(RechargeStatus.getRechargeStatus(data.getStatus()).getNextOperations()[0]);
-        right_oper.setText(RechargeStatus.getRechargeStatus(data.getStatus()).getNextOperations()[1]);
-        left_oper.setOnClickListener((v) -> {
+        leftOper.setText(RechargeStatus.getRechargeStatus(data.getStatus()).getNextOperations()[0]);
+        rightOper.setText(RechargeStatus.getRechargeStatus(data.getStatus()).getNextOperations()[1]);
+        leftOper.setOnClickListener((v) -> {
             switch (RechargeStatus.getRechargeStatus(data.getStatus())) {
                 case AUDIT_PENDING:
                     // 提现客服尽快处理
@@ -176,7 +180,7 @@ public class RechargeDetailActivity extends WalletBaseActivity implements IRecha
                     break;
             }
         });
-        right_oper.setOnClickListener((v) -> {
+        rightOper.setOnClickListener((v) -> {
             switch (RechargeStatus.getRechargeStatus(data.getStatus())) {
                 case AUDIT_PENDING:
                     startActivity(new Intent(this, WebActivity.class)

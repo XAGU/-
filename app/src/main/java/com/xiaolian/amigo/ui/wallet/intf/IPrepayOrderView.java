@@ -4,8 +4,9 @@ import com.xiaolian.amigo.ui.base.intf.IBaseView;
 
 /**
  * 待找零账单
- * <p>
- * Created by zcd on 10/12/17.
+ *
+ * @author zcd
+ * @date 17/10/12
  */
 
 public interface IPrepayOrderView extends IBaseView {

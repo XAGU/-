@@ -5,12 +5,21 @@ import com.xiaolian.amigo.ui.base.intf.IBaseView;
 
 /**
  * 充值详情
- * <p>
- * Created by zcd on 10/23/17.
+ *
+ * @author zcd
+ * @date 17/10/23
  */
 
 public interface IRechargeDetailView extends IBaseView {
+    /**
+     * 显示账单详情
+     *
+     * @param data 充值账单
+     */
     void render(FundsDTO data);
 
+    /**
+     * 投诉
+     */
     void toComplaint();
 }

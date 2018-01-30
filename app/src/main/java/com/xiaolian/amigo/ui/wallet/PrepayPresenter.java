@@ -18,8 +18,10 @@ import java.util.List;
 import javax.inject.Inject;
 
 /**
- * <p>
- * Created by zcd on 10/10/17.
+ * 预付列表
+ *
+ * @author zcd
+ * @date 17/10/10
  */
 
 public class PrepayPresenter<V extends IPrepayView> extends BasePresenter<V>
@@ -29,7 +31,7 @@ public class PrepayPresenter<V extends IPrepayView> extends BasePresenter<V>
     private IOrderDataManager orderDataManager;
 
     @Inject
-    public PrepayPresenter(IOrderDataManager manager) {
+    PrepayPresenter(IOrderDataManager manager) {
         super();
         this.orderDataManager = manager;
     }

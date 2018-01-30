@@ -5,14 +5,24 @@ import com.xiaolian.amigo.ui.base.intf.IBaseView;
 
 /**
  * 提现详情
- * <p>
- * Created by zcd on 10/23/17.
+ *
+ * @author zcd
+ * @date 17/10/13
  */
 
 public interface IWithdrawalDetailView extends IBaseView {
+    /**
+     * 显示提现详情
+     */
     void render(FundsDTO data);
 
+    /**
+     * 返回
+     */
     void gotoBack();
 
+    /**
+     * 投诉
+     */
     void toComplaint();
 }

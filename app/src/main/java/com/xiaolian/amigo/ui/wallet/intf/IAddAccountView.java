@@ -4,9 +4,13 @@ import com.xiaolian.amigo.ui.base.intf.IBaseView;
 
 /**
  * 添加账户
- * <p>
- * Created by zcd on 10/27/17.
+ *
+ * @author zcd
+ * @date 17/10/27
  */
 public interface IAddAccountView extends IBaseView {
+    /**
+     * 返回
+     */
     void back();
 }
