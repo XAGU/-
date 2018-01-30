@@ -22,7 +22,7 @@ import com.xiaolian.amigo.ui.user.intf.ICheckPasswordView;
 import com.xiaolian.amigo.ui.user.intf.IChooseDormitoryPresenter;
 import com.xiaolian.amigo.ui.user.intf.IChooseDormitoryView;
 import com.xiaolian.amigo.ui.user.intf.IEditAvatarPresenter;
-import com.xiaolian.amigo.ui.user.intf.IEditAvatarVIew;
+import com.xiaolian.amigo.ui.user.intf.IEditAvatarView;
 import com.xiaolian.amigo.ui.user.intf.IEditDormitoryPresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditDormitoryView;
 import com.xiaolian.amigo.ui.user.intf.IEditMobilePresenter;
@@ -90,8 +90,8 @@ public class UserActivityModule {
 
     @Provides
     @UserActivityContext
-    IEditAvatarPresenter<IEditAvatarVIew> provideEditAvatarPresenter(
-            EditAvatarPresenter<IEditAvatarVIew> presenter) {
+    IEditAvatarPresenter<IEditAvatarView> provideEditAvatarPresenter(
+            EditAvatarPresenter<IEditAvatarView> presenter) {
         return presenter;
     }
 

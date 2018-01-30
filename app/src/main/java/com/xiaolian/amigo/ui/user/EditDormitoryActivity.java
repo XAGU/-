@@ -3,7 +3,6 @@ package com.xiaolian.amigo.ui.user;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
@@ -25,11 +24,12 @@ import butterknife.ButterKnife;
 
 /**
  * 编辑宿舍
- * <p>
- * Created by zcd on 9/19/17.
+ *
+ * @author zcd
+ * @date 17/9/19
  */
 
-public class EditDormitoryActivity extends UserBaseListActivity implements IEditDormitoryView{
+public class EditDormitoryActivity extends UserBaseListActivity implements IEditDormitoryView {
 
     @Inject
     IEditDormitoryPresenter<IEditDormitoryView> presenter;
@@ -38,7 +38,7 @@ public class EditDormitoryActivity extends UserBaseListActivity implements IEdit
 
     EditDormitoryAdaptor adaptor;
 
-    TextView tv_add_dormitory;
+    TextView tvAddDormitory;
     private boolean needRefresh;
 
     void onAddDormitoryClick() {
@@ -135,8 +135,8 @@ public class EditDormitoryActivity extends UserBaseListActivity implements IEdit
 
     @Override
     protected int setSubTitle() {
-        tv_add_dormitory = getSubTitle();
-        tv_add_dormitory.setOnClickListener(v -> onAddDormitoryClick());
+        tvAddDormitory = getSubTitle();
+        tvAddDormitory.setOnClickListener(v -> onAddDormitoryClick());
         return R.string.add_dormitory;
     }
 

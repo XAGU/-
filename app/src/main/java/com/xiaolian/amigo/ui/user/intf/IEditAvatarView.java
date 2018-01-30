@@ -7,14 +7,28 @@ import java.util.List;
 
 /**
  * 更换头像
- * <p>
- * Created by zcd on 9/27/17.
+ *
+ * @author zcd
+ * @date 17/9/27
  */
 
-public interface IEditAvatarVIew extends IBaseView {
+public interface IEditAvatarView extends IBaseView {
+    /**
+     * 添加头像
+     *
+     * @param avatar 头像
+     */
     void addAvatar(List<EditAvatarAdaptor.AvatarWrapper> avatar);
 
+    /**
+     * 设置头像
+     *
+     * @param pictureUrl 图片url
+     */
     void setAvatar(String pictureUrl);
 
+    /**
+     * 结束页面
+     */
     void finishView();
 }

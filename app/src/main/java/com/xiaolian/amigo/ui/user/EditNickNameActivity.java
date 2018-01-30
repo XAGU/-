@@ -1,7 +1,9 @@
 package com.xiaolian.amigo.ui.user;
 
 import android.text.TextUtils;
+
 import com.xiaolian.amigo.util.Log;
+
 import android.view.View;
 import android.widget.Button;
 
@@ -22,7 +24,9 @@ import lombok.Data;
 
 /**
  * 编辑昵称页面
+ *
  * @author zcd
+ * @date 17/9/15
  */
 public class EditNickNameActivity extends UserBaseActivity implements IEditNickNameView {
     private static final String TAG = EditNickNameActivity.class.getSimpleName();
@@ -30,12 +34,11 @@ public class EditNickNameActivity extends UserBaseActivity implements IEditNickN
     @Inject
     IEditNickNamePresenter<IEditNickNameView> presenter;
 
-
     @BindView(R.id.edit_nickname)
-    ClearableEditText edit_nickname;
+    ClearableEditText editNickname;
 
     @BindView(R.id.bt_submit)
-    Button bt_submit;
+    Button btSubmit;
     private Model model;
 
     @Override
@@ -49,11 +52,11 @@ public class EditNickNameActivity extends UserBaseActivity implements IEditNickN
         getActivityComponent().inject(this);
         presenter.onAttach(EditNickNameActivity.this);
         if (model != null && !TextUtils.isEmpty(model.getNickname())) {
-            edit_nickname.setText(model.getNickname());
-            edit_nickname.setSelection(edit_nickname.getText().length());
-            bt_submit.setEnabled(true);
+            editNickname.setText(model.getNickname());
+            editNickname.setSelection(editNickname.getText().length());
+            btSubmit.setEnabled(true);
         }
-        CommonUtil.showSoftInput(this, edit_nickname);
+        CommonUtil.showSoftInput(this, editNickname);
     }
 
     @Override
@@ -74,7 +77,7 @@ public class EditNickNameActivity extends UserBaseActivity implements IEditNickN
 
     @Override
     public void clearEditText() {
-        edit_nickname.setText("");
+        editNickname.setText("");
     }
 
     @Override
@@ -86,8 +89,10 @@ public class EditNickNameActivity extends UserBaseActivity implements IEditNickN
     public void onclick(View v) {
         switch (v.getId()) {
             case R.id.bt_submit:
-                Log.d(TAG, edit_nickname.getText().toString());
-                presenter.updateNickName(edit_nickname.getText().toString().trim());
+                Log.d(TAG, editNickname.getText().toString());
+                presenter.updateNickName(editNickname.getText().toString().trim());
+                break;
+            default:
                 break;
         }
     }

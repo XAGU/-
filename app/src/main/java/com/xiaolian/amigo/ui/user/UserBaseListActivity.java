@@ -7,8 +7,10 @@ import com.xiaolian.amigo.di.module.UserActivityModule;
 import com.xiaolian.amigo.ui.base.BaseToolBarListActivity;
 
 /**
- * <p>
- * Created by zcd on 9/25/17.
+ * 编辑个人信息BaseListActivity
+ *
+ * @author zcd
+ * @date 17/9/25
  */
 
 public abstract class UserBaseListActivity extends BaseToolBarListActivity {
@@ -20,7 +22,8 @@ public abstract class UserBaseListActivity extends BaseToolBarListActivity {
 
     }
 
-    protected  void initInject() {
+    @Override
+    protected void initInject() {
         mActivityComponent = DaggerUserActivityComponent.builder()
                 .userActivityModule(new UserActivityModule(this))
                 .applicationComponent(((MvpApp) getApplication()).getComponent())

@@ -15,8 +15,10 @@ import java.util.List;
 import lombok.Data;
 
 /**
- * <p>
- * Created by zcd on 9/27/17.
+ * 编辑头像
+ *
+ * @author zcd
+ * @date 17/9/27
  */
 
 public class EditAvatarAdaptor extends CommonAdapter<EditAvatarAdaptor.AvatarWrapper> {

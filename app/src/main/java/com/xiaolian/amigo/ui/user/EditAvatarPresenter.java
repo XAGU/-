@@ -24,7 +24,7 @@ import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.user.adaptor.EditAvatarAdaptor;
 import com.xiaolian.amigo.ui.user.intf.IEditAvatarPresenter;
-import com.xiaolian.amigo.ui.user.intf.IEditAvatarVIew;
+import com.xiaolian.amigo.ui.user.intf.IEditAvatarView;
 import com.xiaolian.amigo.util.Log;
 
 import java.util.ArrayList;
@@ -40,11 +40,13 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
- * <p>
- * Created by zcd on 9/27/17.
+ * 编辑头像
+ *
+ * @author zcd
+ * @date 17/9/27
  */
 
-public class EditAvatarPresenter<V extends IEditAvatarVIew> extends BasePresenter<V>
+public class EditAvatarPresenter<V extends IEditAvatarView> extends BasePresenter<V>
         implements IEditAvatarPresenter<V> {
     @SuppressWarnings("unused")
     private static final String TAG = EditAvatarPresenter.class.getSimpleName();
@@ -52,7 +54,7 @@ public class EditAvatarPresenter<V extends IEditAvatarVIew> extends BasePresente
     private Random random = new Random();
 
     @Inject
-    public EditAvatarPresenter(IUserDataManager userDataManager, IOssDataManager ossDataManager) {
+    EditAvatarPresenter(IUserDataManager userDataManager, IOssDataManager ossDataManager) {
         super();
         this.userDataManager = userDataManager;
     }

@@ -17,11 +17,12 @@ import butterknife.OnClick;
 
 /**
  * 校验密码
- * <p>
- * Created by zcd on 9/27/17.
+ *
+ * @author zcd
+ * @date 17/9/27
  */
 
-public class CheckPasswordActivity extends UserBaseActivity implements ICheckPasswordView{
+public class CheckPasswordActivity extends UserBaseActivity implements ICheckPasswordView {
 
     private static final int REQUEST_CODE_EDIT_MOBILE = 0x0110;
 
@@ -29,7 +30,7 @@ public class CheckPasswordActivity extends UserBaseActivity implements ICheckPas
     ICheckPasswordPresenter<ICheckPasswordView> presenter;
 
     @BindView(R.id.et_password)
-    EditText et_password;
+    EditText etPassword;
 
     @Override
     protected void initView() {
@@ -37,7 +38,7 @@ public class CheckPasswordActivity extends UserBaseActivity implements ICheckPas
         getActivityComponent().inject(this);
         presenter.onAttach(CheckPasswordActivity.this);
 
-        CommonUtil.showSoftInput(this, et_password);
+        CommonUtil.showSoftInput(this, etPassword);
     }
 
     @Override
@@ -53,10 +54,10 @@ public class CheckPasswordActivity extends UserBaseActivity implements ICheckPas
 
     @OnClick(R.id.bt_submit)
     void checkPassword() {
-        if (TextUtils.isEmpty(et_password.getText())) {
+        if (TextUtils.isEmpty(etPassword.getText())) {
             onError("请输入");
         } else {
-            presenter.checkPassword(et_password.getText().toString());
+            presenter.checkPassword(etPassword.getText().toString());
         }
     }
 

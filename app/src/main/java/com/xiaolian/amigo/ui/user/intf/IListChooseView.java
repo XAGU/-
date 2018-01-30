@@ -7,28 +7,65 @@ import java.util.List;
 
 /**
  * 列表选择页
- * <p>
- * Created by zcd on 9/19/17.
+ *
+ * @author zcd
+ * @date 17/9/19
  */
 
 public interface IListChooseView extends IBaseView {
+    /**
+     * 结束页面
+     */
     void finishView();
 
+    /**
+     * 返回到宿舍列表
+     */
     void backToDormitory();
 
+    /**
+     * 返回到报修申请页面
+     *
+     * @param location 位置
+     */
     void backToRepairApply(String location);
 
+    /**
+     * 加载列表
+     *
+     * @param item 列表元素
+     */
     void addMore(List<ListChooseAdaptor.Item> item);
 
+    /**
+     * 返回到主页
+     *
+     * @param activitySrc 来源activity
+     */
     void backToMain(String activitySrc);
 
+    /**
+     * 返回到主页
+     */
     void backToMain();
 
+    /**
+     * 返回到编辑个人信息
+     */
     void backToEditProfile();
 
+    /**
+     * 返回到编辑宿舍
+     */
     void backToEditDormitory();
 
+    /**
+     * 显示空列表
+     */
     void showEmptyView();
 
+    /**
+     * 隐藏空列表
+     */
     void hideEmptyView();
 }

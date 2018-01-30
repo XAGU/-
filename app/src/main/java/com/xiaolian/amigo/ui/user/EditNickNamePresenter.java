@@ -13,7 +13,9 @@ import javax.inject.Inject;
 
 /**
  * 编辑昵称Presenter
+ *
  * @author zcd
+ * @date 17/9/15
  */
 public class EditNickNamePresenter<V extends IEditNickNameView> extends BasePresenter<V>
         implements IEditNickNamePresenter<V> {
@@ -21,7 +23,7 @@ public class EditNickNamePresenter<V extends IEditNickNameView> extends BasePres
     private IUserDataManager userDataManager;
 
     @Inject
-    public EditNickNamePresenter(IUserDataManager userDataManager) {
+    EditNickNamePresenter(IUserDataManager userDataManager) {
         super();
         this.userDataManager = userDataManager;
     }

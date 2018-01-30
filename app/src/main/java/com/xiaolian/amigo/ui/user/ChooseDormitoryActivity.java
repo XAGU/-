@@ -24,13 +24,15 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 
 /**
- * <p>
- * Created by zcd on 10/11/17.
+ * 选择宿舍
+ *
+ * @author zcd
+ * @date 17/10/11
  */
 
 public class ChooseDormitoryActivity extends UserBaseListActivity implements IChooseDormitoryView {
 
-    private static final int REQUEST_CODE_EDIT_DORMITOTY = 0x1020;
+    private static final int REQUEST_CODE_EDIT_DORMITORY = 0x1020;
     public static final String INTENT_KEY_LAST_DORMITORY = "intent_key_last_dormitory";
     @Inject
     IChooseDormitoryPresenter<IChooseDormitoryView> presenter;
@@ -90,7 +92,7 @@ public class ChooseDormitoryActivity extends UserBaseListActivity implements ICh
             @Override
             public void onClick(View v) {
                 startActivityForResult(new Intent(ChooseDormitoryActivity.this,
-                        EditDormitoryActivity.class), REQUEST_CODE_EDIT_DORMITOTY);
+                        EditDormitoryActivity.class), REQUEST_CODE_EDIT_DORMITORY);
             }
         });
         return R.string.manage_dormitory;
@@ -137,7 +139,7 @@ public class ChooseDormitoryActivity extends UserBaseListActivity implements ICh
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_EDIT_DORMITOTY) {
+        if (requestCode == REQUEST_CODE_EDIT_DORMITORY) {
             onRefresh();
         }
     }
