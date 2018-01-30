@@ -13,8 +13,9 @@ import javax.inject.Inject;
 
 /**
  * 兑换代金券
- * <p>
- * Created by zcd on 9/18/17.
+ *
+ * @author zcd
+ * @date 17/9/18
  */
 
 public class BonusExchangePresenter<V extends IBonusExchangeView> extends BasePresenter<V>
@@ -24,7 +25,7 @@ public class BonusExchangePresenter<V extends IBonusExchangeView> extends BasePr
     private IBonusDataManager bonusDataManager;
 
     @Inject
-    public BonusExchangePresenter(IBonusDataManager bonusDataManager) {
+    BonusExchangePresenter(IBonusDataManager bonusDataManager) {
         super();
         this.bonusDataManager = bonusDataManager;
     }

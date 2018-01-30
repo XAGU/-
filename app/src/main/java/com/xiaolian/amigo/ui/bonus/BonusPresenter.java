@@ -2,9 +2,9 @@ package com.xiaolian.amigo.ui.bonus;
 
 import com.xiaolian.amigo.data.manager.intf.IBonusDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.bonus.UserBonusDTO;
-import com.xiaolian.amigo.data.network.model.bonus.QueryUserBonusReqDTO;
 import com.xiaolian.amigo.data.network.model.bonus.QueryUserBonusListRespDTO;
+import com.xiaolian.amigo.data.network.model.bonus.QueryUserBonusReqDTO;
+import com.xiaolian.amigo.data.network.model.bonus.UserBonusDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.bonus.adaptor.BonusAdaptor;
 import com.xiaolian.amigo.ui.bonus.intf.IBonusPresenter;
@@ -18,7 +18,9 @@ import javax.inject.Inject;
 
 /**
  * 代金券Presenter实现类
+ *
  * @author zcd
+ * @date 17/9/18
  */
 public class BonusPresenter<V extends IBonusView> extends BasePresenter<V>
         implements IBonusPresenter<V> {
@@ -27,7 +29,7 @@ public class BonusPresenter<V extends IBonusView> extends BasePresenter<V>
     private IBonusDataManager bonusDataManager;
 
     @Inject
-    public BonusPresenter(IBonusDataManager bonusDataManager) {
+    BonusPresenter(IBonusDataManager bonusDataManager) {
         super();
         this.bonusDataManager = bonusDataManager;
     }

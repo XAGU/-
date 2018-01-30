@@ -7,7 +7,9 @@ import java.util.List;
 
 /**
  * 代金券View接口
+ *
  * @author zcd
+ * @date 17/9/18
  */
 public interface IBonusView extends IBaseListView {
 

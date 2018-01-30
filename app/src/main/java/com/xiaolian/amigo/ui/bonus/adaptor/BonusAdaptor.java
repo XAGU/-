@@ -18,9 +18,11 @@ import lombok.Data;
  * BonusAdaptor
  *
  * @author zcd
+ * @date 17/9/18
  */
 public class BonusAdaptor extends CommonAdapter<BonusAdaptor.BonusWrapper> {
 
+    private static final int MAX_TIME_LIFT = 3;
 
     public BonusAdaptor(Context context, int layout, List<BonusWrapper> bonuses) {
         super(context, layout, bonuses);
@@ -33,10 +35,10 @@ public class BonusAdaptor extends CommonAdapter<BonusAdaptor.BonusWrapper> {
         if (bonusWrapper.getStartTime() != null && bonusWrapper.getTimeEnd() != null) {
             holder.setText(R.id.tv_time_end, "有效期" + TimeUtils.millis2String(bonusWrapper.getStartTime(),
                     TimeUtils.MY_DATE_FORMAT2) + "至" + TimeUtils.millis2String(bonusWrapper.getTimeEnd(),
-                    TimeUtils.MY_DATE_FORMAT2) );
+                    TimeUtils.MY_DATE_FORMAT2));
         }
         holder.setText(R.id.tv_desc, bonusWrapper.desc);
-        if (bonusWrapper.timeLeft != null && bonusWrapper.timeLeft <= 3) {
+        if (bonusWrapper.timeLeft != null && bonusWrapper.timeLeft <= MAX_TIME_LIFT) {
             if (bonusWrapper.timeLeft == 0) {
                 holder.setText(R.id.tv_time_left, "今日截止");
             } else {
@@ -49,23 +51,41 @@ public class BonusAdaptor extends CommonAdapter<BonusAdaptor.BonusWrapper> {
 
     @Data
     public static class BonusWrapper implements Serializable {
-        // 代金券类型
+        /**
+         * 代金券类型
+         */
         Integer type;
-        // 代金券金额
+        /**
+         * 代金券金额
+         */
         Double amount;
-        // 到期时间
+        /**
+         * 到期时间
+         */
         Long timeEnd;
-        // 开始时间
+        /**
+         * 开始时间
+         */
         Long startTime;
-        // 描述信息
+        /**
+         * 描述信息
+         */
         String desc;
-        // 剩余时间
+        /**
+         * 剩余时间
+         */
         Long timeLeft;
-        // 名称
+        /**
+         * 名称
+         */
         String name;
-        // 代金券id
+        /**
+         * 代金券id
+         */
         Long id;
-        // 备注
+        /**
+         * 备注
+         */
         String remark;
         String description;
 

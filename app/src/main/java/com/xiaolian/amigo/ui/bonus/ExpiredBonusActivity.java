@@ -19,8 +19,9 @@ import butterknife.ButterKnife;
 
 /**
  * 过期代金券
- * <p>
- * Created by caidong on 2017/9/8.
+ *
+ * @author caidong
+ * @date 17/9/8
  */
 public class ExpiredBonusActivity extends BonusBaseListActivity implements IBonusView {
 
@@ -28,7 +29,9 @@ public class ExpiredBonusActivity extends BonusBaseListActivity implements IBonu
     @Inject
     IBonusPresenter<IBonusView> presenter;
 
-    // 订单列表
+    /**
+     * 订单列表
+     */
     List<BonusAdaptor.BonusWrapper> bonuses = new ArrayList<>();
 
     ExpiredBonusAdaptor adaptor;
@@ -56,7 +59,7 @@ public class ExpiredBonusActivity extends BonusBaseListActivity implements IBonu
     @Override
     protected int setTitle() {
         return R.string.expried_bonus;
- }
+    }
 
     @Override
     protected void initView() {

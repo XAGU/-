@@ -8,7 +8,9 @@ import com.xiaolian.amigo.ui.base.BaseToolBarActivity;
 
 /**
  * BonusBaseActivity
- * Created by zcd on 9/18/17.
+ *
+ * @author zcd
+ * @date 17/9/18
  */
 
 public abstract class BonusBaseActivity extends BaseToolBarActivity {
