@@ -56,7 +56,7 @@ public final class QRCodeEncoder {
             hints.put(EncodeHintType.CHARACTER_SET, encoding);
         }
 
-        hints.put(EncodeHintType.MARGIN, 0);
+        hints.put(EncodeHintType.MARGIN, 1);
         hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
         BitMatrix result;
         try {
