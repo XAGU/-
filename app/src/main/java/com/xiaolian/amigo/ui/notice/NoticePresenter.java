@@ -21,8 +21,9 @@ import javax.inject.Inject;
 
 /**
  * 通知中心
- * <p>
- * Created by zcd on 9/22/17.
+ *
+ * @author zcd
+ * @date 17/9/22
  */
 
 public class NoticePresenter<V extends INoticeView> extends BasePresenter<V>
@@ -32,7 +33,7 @@ public class NoticePresenter<V extends INoticeView> extends BasePresenter<V>
     private INoticeDataManager noticeDataManager;
 
     @Inject
-    public NoticePresenter(INoticeDataManager noticeDataManager) {
+    NoticePresenter(INoticeDataManager noticeDataManager) {
         super();
         this.noticeDataManager = noticeDataManager;
     }

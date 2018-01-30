@@ -7,12 +7,23 @@ import java.util.List;
 
 /**
  * 通知中心
- * <p>
- * Created by zcd on 9/22/17.
+ *
+ * @author zcd
+ * @date 17/9/22
  */
 
 public interface INoticeView extends IBaseListView {
+    /**
+     * 加载通知列表
+     *
+     * @param wapper 通知列表
+     */
     void addMore(List<NoticeAdaptor.NoticeWapper> wapper);
 
+    /**
+     * 已读通知
+     *
+     * @param id 通知id
+     */
     void readNotify(Long id);
 }

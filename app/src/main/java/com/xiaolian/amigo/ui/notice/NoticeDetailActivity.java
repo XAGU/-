@@ -13,17 +13,19 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * <p>
- * Created by zcd on 10/12/17.
+ * 通知详情
+ *
+ * @author zcd
+ * @date 17/10/12
  */
 
 public class NoticeDetailActivity extends BaseToolBarActivity {
     NoticeAdaptor.NoticeWapper noticeWapper;
     @BindView(R.id.tv_content)
-    TextView tv_content;
+    TextView tvContent;
 
     @BindView(R.id.tv_time)
-    TextView tv_time;
+    TextView tvTime;
 
     @Override
     protected void initInject() {
@@ -36,8 +38,8 @@ public class NoticeDetailActivity extends BaseToolBarActivity {
         if (noticeWapper != null) {
             Notice notice = Notice.getNotice(noticeWapper.getType());
             setToolBarTitle(notice.getDesc());
-            tv_content.setText(noticeWapper.getContent());
-            tv_time.setText(getString(R.string.time_format,
+            tvContent.setText(noticeWapper.getContent());
+            tvTime.setText(getString(R.string.time_format,
                     TimeUtils.convertTimestampToFormat(noticeWapper.getCreateTime()),
                     TimeUtils.millis2String(noticeWapper.getCreateTime(), TimeUtils.MY_TIME_FORMAT)));
         }

@@ -28,8 +28,9 @@ import butterknife.ButterKnife;
 
 /**
  * 通知中心
- * <p>
- * Created by zcd on 9/22/17.
+ *
+ * @author zcd
+ * @date 17/9/22
  */
 
 public class NoticeListActivity extends NoticeBaseListActivity implements INoticeView {
@@ -64,18 +65,13 @@ public class NoticeListActivity extends NoticeBaseListActivity implements INotic
         adaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-//                // 1 表示紧急通知
-//                if (notices.get(position).getType() == 1 && notices.get(position).getReadStatus() == 1) {
-//                    showUrgentNotify(notices.get(position).getContent(),
-//                            notices.get(position).getId());
-//                }
                 notices.get(position).setReadStatus(NoticeReadStatus.READ.getType());
                 if (notices.get(position).getType() != Notice.EMERGENCY.getType()) {
                     presenter.readUrgentNotify(notices.get(position).getId());
                     adaptor.notifyDataSetChanged();
                 }
                 startActivity(new Intent(getApplicationContext(), NoticeDetailActivity.class)
-                                .putExtra(Constant.EXTRA_KEY, notices.get(position)));
+                        .putExtra(Constant.EXTRA_KEY, notices.get(position)));
             }
 
             @Override

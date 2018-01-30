@@ -24,12 +24,13 @@ import lombok.Data;
 
 /**
  * 通知列表Adaptor
- * <p>
- * Created by zcd on 9/22/17.
+ *
+ * @author zcd
+ * @date 17/9/22
  */
 
 public class NoticeAdaptor extends CommonAdapter<NoticeAdaptor.NoticeWapper> {
-
+    private static final String DIVIDER_TAG = "divider";
     private Drawable dot;
 
     public NoticeAdaptor(Context context, int layoutId, List<NoticeWapper> datas) {
@@ -41,25 +42,25 @@ public class NoticeAdaptor extends CommonAdapter<NoticeAdaptor.NoticeWapper> {
     @Override
     protected void convert(ViewHolder holder, NoticeWapper noticeWapper, int position) {
         if (position == 0) {
-            LinearLayout ll_item = holder.getView(R.id.ll_item_notice);
-            if (!TextUtils.equals((CharSequence) ll_item.getChildAt(0).getTag(), "divider")) {
-                View view = new View(ll_item.getContext());
-                view.setTag("divider");
+            LinearLayout llItem = holder.getView(R.id.ll_item_notice);
+            if (!TextUtils.equals((CharSequence) llItem.getChildAt(0).getTag(), DIVIDER_TAG)) {
+                View view = new View(llItem.getContext());
+                view.setTag(DIVIDER_TAG);
                 view.setBackgroundResource(R.drawable.divider);
-                ll_item.addView(view, 0);
+                llItem.addView(view, 0);
             }
         }
 
-        TextView tv_type = holder.getView(R.id.tv_type);
+        TextView tvType = holder.getView(R.id.tv_type);
         if (CommonUtil.equals(noticeWapper.getReadStatus(), NoticeReadStatus.UNREAD.getType())
                 && noticeWapper.getType() != Notice.EMERGENCY.getType()) {
             // 未读 且不为紧急通知
-            tv_type.setCompoundDrawables(tv_type.getCompoundDrawables()[0],
-                    tv_type.getCompoundDrawables()[1], dot, tv_type.getCompoundDrawables()[3]);
+            tvType.setCompoundDrawables(tvType.getCompoundDrawables()[0],
+                    tvType.getCompoundDrawables()[1], dot, tvType.getCompoundDrawables()[3]);
         } else if (CommonUtil.equals(noticeWapper.getReadStatus(), NoticeReadStatus.READ.getType())
                 || noticeWapper.getType() == Notice.EMERGENCY.getType()) {
-            tv_type.setCompoundDrawables(tv_type.getCompoundDrawables()[0],
-                    tv_type.getCompoundDrawables()[1], null, tv_type.getCompoundDrawables()[3]);
+            tvType.setCompoundDrawables(tvType.getCompoundDrawables()[0],
+                    tvType.getCompoundDrawables()[1], null, tvType.getCompoundDrawables()[3]);
         }
         if (noticeWapper.getType() != null) {
             Notice notice = Notice.getNotice(noticeWapper.getType());
