@@ -21,11 +21,6 @@ import com.xiaolian.amigo.util.AppUtils;
 
 import java.io.File;
 
-/**
- * 下载
- * Created by adamzfc on 2017/3/29.
- */
-
 public class DownLoadDialog extends DialogFragment implements View.OnClickListener {
     private static final String TAG = "DownLoadDialog";
     private static final String TITLE_FORMAT = "正在下载（%s/%s）";
@@ -40,7 +35,7 @@ public class DownLoadDialog extends DialogFragment implements View.OnClickListen
 
         Bundle args = new Bundle();
         args.putString(IntentKey.URL, downLoadUrl);
-        args.putInt(IntentKey.NOTIFICATION_ICON,notificationIcon);
+        args.putInt(IntentKey.NOTIFICATION_ICON, notificationIcon);
         args.putSerializable(IntentKey.MODEL, model);
         DownLoadDialog fragment = new DownLoadDialog();
         fragment.setArguments(args);
@@ -69,7 +64,7 @@ public class DownLoadDialog extends DialogFragment implements View.OnClickListen
         mTvOk.setEnabled(false);
 
         Intent intent = new Intent(getActivity(), DownLoadService.class);
-        getActivity().bindService(intent, mConnection , Context.BIND_AUTO_CREATE);
+        getActivity().bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
     }
 
     protected void setContent(View view, int contentId) {
@@ -144,7 +139,7 @@ public class DownLoadDialog extends DialogFragment implements View.OnClickListen
 //        }
         if (view.getId() == R.id.tv_ok) {
             getActivity().startActivity(AppUtils.openApkFile(getActivity(),
-                    new File(AppUtils.getApkFilePath(getActivity(),mDownloadUrl))));
+                    new File(AppUtils.getApkFilePath(getActivity(), mDownloadUrl))));
         }
     }
 
@@ -186,7 +181,7 @@ public class DownLoadDialog extends DialogFragment implements View.OnClickListen
                     mTvOk.setText("立即安装");
                     mTvOk.setEnabled(true);
                     getActivity().startActivity(AppUtils.openApkFile(getActivity(),
-                            new File(AppUtils.getApkFilePath(getActivity(),mDownloadUrl))));
+                            new File(AppUtils.getApkFilePath(getActivity(), mDownloadUrl))));
 //                    getActivity().finish();
                     Toast.makeText(getActivity(), "下载完成", Toast.LENGTH_SHORT).show();
                     break;

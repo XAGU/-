@@ -41,10 +41,13 @@ import lombok.Data;
 
 /**
  * 主页
- * Created by yik on 2017/9/5.
+ *
+ * @author yik
+ * @date 17/9/5
  */
 
 public class HomeFragment2 extends Fragment {
+    private static final int SMALL_LIST_FORMAT_MIN_SIZE = 3;
 
     private static final String TAG = HomeFragment2.class.getSimpleName();
     HomeAdaptor.ItemWrapper shower = new HomeAdaptor.ItemWrapper(HomeAdaptor.SMALL_TYPE,
@@ -75,11 +78,17 @@ public class HomeFragment2 extends Fragment {
     RecyclerView recyclerView;
 
     HomeAdaptor adaptor;
-    // 未找零账单个数
+    /**
+     * 未找零账单个数
+     */
     private int prepayOrderSize = 0;
-    // 学校业务个数
+    /**
+     * 学校业务个数
+     */
     private int businessSize = 0;
-    // 正在使用的设备个数
+    /**
+     * 正在使用的设备个数
+     */
     private int usingAmount = 0;
     private View disabledView;
     private HomeAdaptor.ItemWrapper banner;
@@ -99,11 +108,9 @@ public class HomeFragment2 extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         gridLayoutManager = new GridLayoutManager(getActivity(), 2);
         adaptor = new HomeAdaptor(getActivity(), items, gridLayoutManager);
-//        recyclerView.scheduleLayoutAnimation();
         adaptor.addItemViewDelegate(new HomeNormalDelegate(getActivity()));
         adaptor.addItemViewDelegate(new HomeSmallDelegate(getActivity()));
         adaptor.addItemViewDelegate(new HomeBannerDelegate(getActivity()));
-//        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setLayoutManager(gridLayoutManager);
         ((DefaultItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
         LayoutAnimationController animation = AnimationUtils
@@ -263,7 +270,7 @@ public class HomeFragment2 extends Fragment {
         }
         if (currentBusinessSize != businessSize) {
             businessSize = currentBusinessSize;
-            if (businessSize >= 3) {
+            if (businessSize >= SMALL_LIST_FORMAT_MIN_SIZE) {
                 switchSmallLayout();
             } else {
                 switchLargeLayout();
@@ -328,9 +335,6 @@ public class HomeFragment2 extends Fragment {
             case SCHOOL_BIZ:
                 onSchoolBizEvent((List<BriefSchoolBusiness>) event.getObject());
                 break;
-//            case PREPAY_ORDER:
-//                onPrepayOrderEvent((HomeAdaptor.ItemWrapper) event.getObject());
-//                break;
             case ENABLE_VIEW:
                 Log.d(TAG, "enable View");
                 if (!disabledView.isEnabled()) {
@@ -343,6 +347,8 @@ public class HomeFragment2 extends Fragment {
                 break;
             case INIT_BIZ:
                 notifyAdaptor();
+                break;
+            default:
                 break;
         }
     }
@@ -384,10 +390,25 @@ public class HomeFragment2 extends Fragment {
         }
 
         public enum EventType {
+            /**
+             * banner
+             */
             BANNER(1),
+            /**
+             * 学校业务
+             */
             SCHOOL_BIZ(2),
+            /**
+             * enable view
+             */
             ENABLE_VIEW(3),
+            /**
+             * 改变动画
+             */
             CHANGE_ANIMATION(4),
+            /**
+             * 初始化学校业务
+             */
             INIT_BIZ(5);
 
             EventType(int type) {

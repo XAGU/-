@@ -14,13 +14,17 @@ import com.zhy.adapter.recyclerview.base.ItemViewDelegate;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 /**
- * <p>
- * Created by zcd on 10/11/17.
+ * 主页小图标列表
+ *
+ * @author zcd
+ * @date 17/10/11
  */
 
 public class HomeSmallDelegate implements ItemViewDelegate<HomeAdaptor.ItemWrapper> {
     private static final String TAG = HomeSmallDelegate.class.getSimpleName();
-    // Allows to remember the last item shown on screen
+    /**
+     * Allows to remember the last item shown on screen
+     */
     private int lastPosition = -1;
     private Context context;
 
@@ -74,22 +78,20 @@ public class HomeSmallDelegate implements ItemViewDelegate<HomeAdaptor.ItemWrapp
         if (itemWrapper.isUsing()) {
             holder.setText(R.id.tv_device_title, "正在使用");
             holder.getView(R.id.dfv_dot).setVisibility(View.VISIBLE);
-            ((DotFlashView)holder.getView(R.id.dfv_dot)).startAnimation();
+            ((DotFlashView) holder.getView(R.id.dfv_dot)).startAnimation();
         } else {
             holder.setText(R.id.tv_device_title, itemWrapper.getDeviceName());
             holder.getView(R.id.dfv_dot).setVisibility(View.GONE);
-            ((DotFlashView)holder.getView(R.id.dfv_dot)).endAnimation();
+            ((DotFlashView) holder.getView(R.id.dfv_dot)).endAnimation();
         }
     }
 
     /**
      * Here is the key method to apply the animation
      */
-    private void setAnimation(View viewToAnimate, int position)
-    {
+    private void setAnimation(View viewToAnimate, int position) {
         // If the bound view wasn't previously displayed on screen, it's animated
-        if (position > lastPosition)
-        {
+        if (position > lastPosition) {
             Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left);
             viewToAnimate.startAnimation(animation);
             lastPosition = position;

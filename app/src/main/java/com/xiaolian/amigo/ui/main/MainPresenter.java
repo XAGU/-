@@ -29,19 +29,22 @@ import javax.inject.Inject;
 
 /**
  * 主页
- * <p>
- * Created by zcd on 9/20/17.
+ *
+ * @author zcd
+ * @date 17/9/20
  */
 
 public class MainPresenter<V extends IMainView> extends BasePresenter<V>
         implements IMainPresenter<V> {
+    private static final int UPDATE_REMIND_INTERVAL = 6 * 1000 * 60 * 60;
+    private static final int GUIDE_REMIND_MAX_TIME = 3;
     private static final String TAG = MainPresenter.class.getSimpleName();
     private IMainDataManager mainDataManager;
     private Integer guideTime;
     private LogInterceptor interceptor;
 
     @Inject
-    public MainPresenter(IMainDataManager mainDataManager, LogInterceptor interceptor) {
+    MainPresenter(IMainDataManager mainDataManager, LogInterceptor interceptor) {
         this.mainDataManager = mainDataManager;
         this.interceptor = interceptor;
     }
@@ -113,7 +116,7 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
                         mainDataManager.setBonusAmount(result.getData().getBonusAmount());
                     }
                     PersonalExtraInfoDTO dto = result.getData();
-                    if (dto.getLastRepairTime() != null && mainDataManager.getLastRepairTime()  < dto.getLastRepairTime()) {
+                    if (dto.getLastRepairTime() != null && mainDataManager.getLastRepairTime() < dto.getLastRepairTime()) {
                         dto.setNeedShowDot(true);
                     } else {
                         dto.setNeedShowDot(false);
@@ -267,31 +270,31 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
         addObserver(mainDataManager.checkUpdate(reqDTO),
                 new NetworkObserver<ApiResult<CheckVersionUpdateRespDTO>>(false) {
 
-            @Override
-            public void onReady(ApiResult<CheckVersionUpdateRespDTO> result) {
-                if (null == result.getError()) {
-                    if (result.getData().getResult()) {
-                        if (result.getData().getVersion().isMustUpdate()) {
-                            getMvpView().showUpdateDialog(result.getData().getVersion());
-                        } else {
-                            // 小于6小时不再提醒
-                            if (System.currentTimeMillis() - mainDataManager.getLastUpdateRemindTime() >= 6 * 1000 * 60 * 60) {
-                                getMvpView().showUpdateDialog(result.getData().getVersion());
+                    @Override
+                    public void onReady(ApiResult<CheckVersionUpdateRespDTO> result) {
+                        if (null == result.getError()) {
+                            if (result.getData().getResult()) {
+                                if (result.getData().getVersion().isMustUpdate()) {
+                                    getMvpView().showUpdateDialog(result.getData().getVersion());
+                                } else {
+                                    // 小于6小时不再提醒
+                                    if (System.currentTimeMillis() - mainDataManager.getLastUpdateRemindTime() >= UPDATE_REMIND_INTERVAL) {
+                                        getMvpView().showUpdateDialog(result.getData().getVersion());
+                                    }
+                                }
+                                mainDataManager.setLastUpdateRemindTime();
                             }
                         }
-                        mainDataManager.setLastUpdateRemindTime();
                     }
-                }
-            }
-        });
+                });
     }
 
     @Override
     public boolean isMainGuideDone() {
         if (guideTime == null) {
             guideTime = mainDataManager.getMainGuide();
-            if (guideTime < 3) {
-                guideTime ++;
+            if (guideTime < GUIDE_REMIND_MAX_TIME) {
+                guideTime++;
                 mainDataManager.setMainGuide(guideTime);
                 return false;
             } else {

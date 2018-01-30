@@ -13,8 +13,10 @@ import java.util.List;
 import lombok.Data;
 
 /**
- * <p>
- * Created by zcd on 10/10/17.
+ * 个人中心列表
+ *
+ * @author zcd
+ * @date 17/10/10
  */
 
 public class ProfileAdaptor extends CommonAdapter<ProfileAdaptor.Item> {

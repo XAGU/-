@@ -15,8 +15,9 @@ import javax.inject.Inject;
 
 /**
  * 闪屏页
- * <p>
- * Created by zcd on 17/11/13.
+ *
+ * @author zcd
+ * @date 17/11/13
  */
 
 public class SplashPresenter<V extends ISplashView> extends BasePresenter<V>
@@ -25,7 +26,7 @@ public class SplashPresenter<V extends ISplashView> extends BasePresenter<V>
     private IMainDataManager mainDataManager;
 
     @Inject
-    public SplashPresenter(IMainDataManager mainDataManager) {
+    SplashPresenter(IMainDataManager mainDataManager) {
         this.mainDataManager = mainDataManager;
     }
 

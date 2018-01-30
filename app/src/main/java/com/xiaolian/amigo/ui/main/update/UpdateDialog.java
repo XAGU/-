@@ -13,10 +13,6 @@ import android.widget.Toast;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.util.AppUtils;
 
-/**
- * Created by adamzfc on 2017/3/29.
- */
-
 public class UpdateDialog extends DialogFragment {
     private UpdateActivity mActivity;
     protected IVersionModel mModel;

@@ -9,8 +9,9 @@ import com.xiaolian.amigo.ui.widget.swipebutton.SlideUnlockView;
 
 /**
  * 测试Activity
- * <p>
- * Created by zcd on 17/11/6.
+ *
+ * @author zcd
+ * @date 17/11/6
  */
 
 public class TestActivity extends BaseActivity {

@@ -22,8 +22,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * <p>
- * Created by zcd on 10/11/17.
+ * 主页banner
+ *
+ * @author zcd
+ * @date 17/10/11
  */
 
 public class HomeBannerDelegate implements ItemViewDelegate<HomeAdaptor.ItemWrapper> {
@@ -70,7 +72,7 @@ public class HomeBannerDelegate implements ItemViewDelegate<HomeAdaptor.ItemWrap
         @Override
         public void displayImage(Context context, Object path, ImageView imageView) {
             if (path != null && path instanceof String) {
-                Glide.with(context).load((String)path)
+                Glide.with(context).load((String) path)
                         .asBitmap()
                         .placeholder(R.drawable.ic_picture_error)
                         .error(R.drawable.ic_picture_error)

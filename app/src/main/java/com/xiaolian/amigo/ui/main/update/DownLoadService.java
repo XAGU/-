@@ -13,11 +13,6 @@ import com.xiaolian.amigo.util.AppUtils;
 
 import java.io.File;
 
-/**
- * 下载service
- * Created by adamzfc on 2017/3/29.
- */
-
 public class DownLoadService extends Service {
     private static final int NOTIFICATION_ID = 0;
     private int notificationIcon;
@@ -35,7 +30,7 @@ public class DownLoadService extends Service {
     }
 
     public void startDownLoad(String url) {
-        filePath = AppUtils.getApkFilePath(getApplicationContext(),url);
+        filePath = AppUtils.getApkFilePath(getApplicationContext(), url);
         mDownLoadTask = new DownLoadTask(filePath, url, new DownLoadTask.ProgressListener() {
             @Override
             public void update(long bytesRead, long contentLength, boolean done) {
@@ -45,7 +40,7 @@ public class DownLoadService extends Service {
                 }
                 if (isBackground) {
                     if (done) {
-                        startActivity(AppUtils.openApkFile(getApplicationContext(),new File(filePath)));
+                        startActivity(AppUtils.openApkFile(getApplicationContext(), new File(filePath)));
                     } else {
                         int currentProgress = (int) (bytesRead * 100 / contentLength);
                         if (currentProgress < 1) {

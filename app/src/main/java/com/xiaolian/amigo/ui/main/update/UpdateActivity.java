@@ -7,10 +7,6 @@ import android.view.ViewGroup;
 
 import com.xiaolian.amigo.R;
 
-/**
- * Created by adamzfc on 2017/3/29.
- */
-
 public class UpdateActivity extends AppCompatActivity {
     private int notificationIcon;
     protected IVersionModel mModel;

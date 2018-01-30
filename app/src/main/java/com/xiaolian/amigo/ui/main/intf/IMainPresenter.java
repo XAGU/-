@@ -5,50 +5,159 @@ import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 
 /**
  * 主页
- * <p>
- * Created by zcd on 9/20/17.
+ *
+ * @author zcd
+ * @date 17/9/20
  */
 
 public interface IMainPresenter<V extends IMainView> extends IBasePresenter<V> {
+    /**
+     * 是否登录
+     *
+     * @return 是否登录
+     */
     boolean isLogin();
 
+    /**
+     * 退出登录
+     */
     void logout();
 
+    /**
+     * 获取用户信息
+     *
+     * @return 用户信息
+     */
     User getUserInfo();
 
+    /**
+     * 获取token
+     *
+     * @return token
+     */
     String getToken();
 
+    /**
+     * 获取通知个数
+     */
     void getNoticeAmount();
 
+    /**
+     * 设置余额
+     *
+     * @param balance 余额
+     */
     void setBalance(String balance);
 
+    /**
+     * 获取余额
+     *
+     * @return 余额
+     */
     String getBalance();
 
+    /**
+     * 设置红包个数
+     *
+     * @param bonusAmount 红包个数
+     */
     void setBonusAmount(int bonusAmount);
 
+    /**
+     * 获取红包个数
+     *
+     * @return 红包个数
+     */
     int getBonusAmount();
 
+    /**
+     * 已读紧急通知
+     *
+     * @param id 通知id
+     */
     void readUrgentNotify(Long id);
 
+    /**
+     * 是否显示紧急通知
+     *
+     * @return 是否显示紧急通知
+     */
     boolean isShowUrgencyNotify();
 
+    /**
+     * 设置是否显示紧急通知
+     *
+     * @param isShow 是否显示紧急通知
+     */
     void setShowUrgencyNotify(boolean isShow);
 
+    /**
+     * 跳转到热水澡
+     *
+     * @param defaultMacAddress 默认mac地址
+     * @param defaultSupplierId 默认供应商id
+     * @param location          位置
+     * @param residenceId       宿舍id
+     */
     void gotoHeaterDevice(String defaultMacAddress, Long defaultSupplierId,
                           String location, Long residenceId);
 
+    /**
+     * 检查默认宿舍是否存在
+     *
+     * @return 是否存在
+     */
     boolean checkDefaultDormitoryExist();
 
+    /**
+     * 获取学校业务
+     */
     void getSchoolBusiness();
 
+    /**
+     * 设备使用前校验
+     *
+     * @param type 设备类型
+     */
     void checkDeviceUsage(int type);
 
+    /**
+     * 检查更新
+     *
+     * @param code      versionCode
+     * @param versionNo versionName
+     */
     void checkUpdate(Integer code, String versionNo);
 
+    /**
+     * 主页引导是否完成
+     *
+     * @return 是否完成
+     */
     boolean isMainGuideDone();
 
+    /**
+     * 设置上次报修更改时间
+     *
+     * @param time 时间
+     */
     void setLastRepairTime(Long time);
+
+    /**
+     * 获取上次报修更改时间
+     *
+     * @return 时间
+     */
     Long getLastRepairTime();
 
+    /**
+     * 上传设备信息
+     *
+     * @param appVersion    app版本
+     * @param brand         手机品牌
+     * @param model         手机型号
+     * @param systemVersion 系统版本
+     * @param androidId     androidId
+     */
     void uploadDeviceInfo(String appVersion, String brand, String model, int systemVersion, String androidId);
 }
