@@ -44,7 +44,9 @@ import butterknife.ButterKnife;
  * 附近饮水机页面
  *
  * @author zcd
+ * @date 17/9/20
  */
+
 public class ChooseDispenserActivity extends DeviceBaseActivity implements IChooseDispenerView {
 
     private static final String TAG = ChooseDispenserActivity.class.getSimpleName();
@@ -62,20 +64,20 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
     List<ChooseDispenserAdaptor.DispenserWrapper> nearbyItems = new ArrayList<>();
     List<ChooseDispenserAdaptor.DispenserWrapper> favoriteItems = new ArrayList<>();
 
-    private TextView tv_nearby;
-    private TextView tv_favorite;
+    private TextView tvNearby;
+    private TextView tvFavorite;
 
-    private LinearLayout ll_footer;
+    private LinearLayout llFooter;
 
     private RecyclerView recyclerView;
     private SmartRefreshLayout refreshLayout;
 
     int action = DeviceConstant.ACTION_CHOOSE_DISPENSER;
-    private RelativeLayout rl_empty;
-    private RelativeLayout rl_error;
+    private RelativeLayout rlEmpty;
+    private RelativeLayout rlError;
     private OrderPreInfoDTO orderPreInfo;
-    private TextView tv_rescan;
-    private TextView tv_empty_tip;
+    private TextView tvRescan;
+    private TextView tvEmptyTip;
     private int deviceType;
 
     @Override
@@ -90,20 +92,20 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
 
         initRefreshLayout();
 
-        rl_empty = findViewById(R.id.rl_empty);
-        rl_error = findViewById(R.id.rl_error);
+        rlEmpty = findViewById(R.id.rl_empty);
+        rlError = findViewById(R.id.rl_error);
 
-        tv_empty_tip = findViewById(R.id.tv_empty_tip);
+        tvEmptyTip = findViewById(R.id.tv_empty_tip);
 
-        tv_rescan = findViewById(R.id.tv_rescan);
-        tv_rescan.setOnClickListener(v -> onReScan());
+        tvRescan = findViewById(R.id.tv_rescan);
+        tvRescan.setOnClickListener(v -> onReScan());
 
-        ll_footer = findViewById(R.id.ll_footer);
+        llFooter = findViewById(R.id.ll_footer);
 
-        tv_nearby = findViewById(R.id.tv_toolbar_title);
-        tv_nearby.setOnClickListener(v -> onNearbyClick());
-        tv_favorite = findViewById(R.id.tv_toolbar_title2);
-        tv_favorite.setOnClickListener(v -> onFavoriteClick());
+        tvNearby = findViewById(R.id.tv_toolbar_title);
+        tvNearby.setOnClickListener(v -> onNearbyClick());
+        tvFavorite = findViewById(R.id.tv_toolbar_title2);
+        tvFavorite.setOnClickListener(v -> onFavoriteClick());
 
         switch (action) {
             case DeviceConstant.ACTION_CHOOSE_DISPENSER:
@@ -111,8 +113,10 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
                 break;
             case DeviceConstant.ACTION_CHOOSE_DRYER:
             case DeviceConstant.ACTION_CHANGE_DRYER:
-                tv_nearby.setText(R.string.nearby_hair_dryer);
-                tv_favorite.setText(R.string.favorite_hair_dryer);
+                tvNearby.setText(R.string.nearby_hair_dryer);
+                tvFavorite.setText(R.string.favorite_hair_dryer);
+                break;
+            default:
                 break;
         }
     }
@@ -166,14 +170,14 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
 
     private void onReScan() {
         presenter.startTimer();
-        tv_rescan.setVisibility(View.GONE);
+        tvRescan.setVisibility(View.GONE);
         refreshLayout.autoRefresh(100);
         hideScanStopView();
     }
 
     private void hideScanStopView() {
         hideEmptyView();
-        ll_footer.setVisibility(View.VISIBLE);
+        llFooter.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -200,7 +204,6 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
             hideEmptyView();
             hideErrorView();
             if (nearbyItems.isEmpty()) {
-//                presenter.onLoad();
                 refreshLayout.autoRefresh(0);
                 adaptor.notifyDataSetChanged();
             } else {
@@ -213,7 +216,7 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
     private void onFavoriteClick() {
         if (!listStatus) {
             presenter.cancelTimer();
-            tv_rescan.setVisibility(View.GONE);
+            tvRescan.setVisibility(View.GONE);
             switchListStatus();
             presenter.setListStatus(true);
             this.items.clear();
@@ -233,15 +236,15 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
 
     private void switchListStatus() {
         if (listStatus) {
-            ll_footer.setVisibility(View.VISIBLE);
+            llFooter.setVisibility(View.VISIBLE);
             listStatus = false;
-            tv_nearby.setTextColor(ContextCompat.getColor(this, R.color.colorDark2));
-            tv_favorite.setTextColor(ContextCompat.getColor(this, R.color.colorDarkB));
+            tvNearby.setTextColor(ContextCompat.getColor(this, R.color.colorDark2));
+            tvFavorite.setTextColor(ContextCompat.getColor(this, R.color.colorDarkB));
         } else {
-            ll_footer.setVisibility(View.GONE);
+            llFooter.setVisibility(View.GONE);
             listStatus = true;
-            tv_nearby.setTextColor(ContextCompat.getColor(this, R.color.colorDarkB));
-            tv_favorite.setTextColor(ContextCompat.getColor(this, R.color.colorDark2));
+            tvNearby.setTextColor(ContextCompat.getColor(this, R.color.colorDarkB));
+            tvFavorite.setTextColor(ContextCompat.getColor(this, R.color.colorDark2));
         }
     }
 
@@ -265,31 +268,27 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
 
     @Override
     public void showEmptyView() {
-//        recyclerView.setVisibility(View.GONE);
         items.clear();
         adaptor.notifyDataSetChanged();
-        rl_empty.setVisibility(View.VISIBLE);
+        rlEmpty.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideEmptyView() {
-//        recyclerView.setVisibility(View.VISIBLE);
-        tv_empty_tip.setText(R.string.empty_tip);
-        rl_empty.setVisibility(View.GONE);
+        tvEmptyTip.setText(R.string.empty_tip);
+        rlEmpty.setVisibility(View.GONE);
     }
 
     @Override
     public void showErrorView() {
-//        recyclerView.setVisibility(View.GONE);
         items.clear();
         adaptor.notifyDataSetChanged();
-        rl_error.setVisibility(View.VISIBLE);
+        rlError.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideErrorView() {
-//        recyclerView.setVisibility(View.VISIBLE);
-        rl_error.setVisibility(View.GONE);
+        rlError.setVisibility(View.GONE);
     }
 
     @Override
@@ -342,10 +341,10 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
             return;
         }
         refreshLayout.finishRefresh(10);
-        ll_footer.setVisibility(View.GONE);
+        llFooter.setVisibility(View.GONE);
         showEmptyView();
-        tv_rescan.setVisibility(View.VISIBLE);
-        tv_empty_tip.setText("未扫描出附近的饮水机");
+        tvRescan.setVisibility(View.VISIBLE);
+        tvEmptyTip.setText("未扫描出附近的饮水机");
     }
 
 

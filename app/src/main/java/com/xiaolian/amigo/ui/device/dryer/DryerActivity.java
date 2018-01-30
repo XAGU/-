@@ -12,8 +12,9 @@ import javax.inject.Inject;
 
 /**
  * 吹风机页面
- * <p>
- * Created by zcd on 18/1/2.
+ *
+ * @author zcd
+ * @date 18/1/2
  */
 
 public class DryerActivity extends WaterDeviceBaseActivity<IDryerPresenter> implements IDryerView {

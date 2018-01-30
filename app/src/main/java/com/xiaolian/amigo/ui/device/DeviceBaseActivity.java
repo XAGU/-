@@ -3,7 +3,6 @@ package com.xiaolian.amigo.ui.device;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import com.xiaolian.amigo.util.Log;
 
 import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.data.enumeration.TradeStep;
@@ -13,13 +12,22 @@ import com.xiaolian.amigo.di.module.DeviceActivityModule;
 import com.xiaolian.amigo.ui.base.BaseActivity;
 import com.xiaolian.amigo.ui.device.intf.IDeviceView;
 import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.util.Log;
 
 
+/**
+ * 设备baseActivity
+ *
+ * @author caidong
+ * @date 17/9/28
+ */
 public abstract class DeviceBaseActivity extends BaseActivity implements IDeviceView {
 
     private static final String TAG = DeviceBaseActivity.class.getSimpleName();
     private DeviceActivityComponent mActivityComponent;
-    // 设备mac地址
+    /**
+     * 设备mac地址
+     */
     protected String macAddress;
 
     @Override
@@ -54,7 +62,7 @@ public abstract class DeviceBaseActivity extends BaseActivity implements IDevice
 
     @Override
     protected void setUp() {
-        Intent intent  = getIntent();
+        Intent intent = getIntent();
         macAddress = intent.getStringExtra(Constant.MAC);
     }
 

@@ -32,72 +32,101 @@ import butterknife.OnClick;
 
 /**
  * 设备账单
- * <p>
- * Created by zcd on 10/9/17.
+ *
+ * @author zcd
+ * @date 17/10/9
  */
 
 public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOrderView {
 
     private static final String TAG = DeviceOrderActivity.class.getSimpleName();
-    // 账单标题
+    private static final int ERROR_ORDER_STATUS = 3;
+    /**
+     * 账单标题
+     */
     @BindView(R.id.tv_order_title)
-    TextView tv_order_title;
+    TextView tvOrderTitle;
     /************** 正常账单内容 ****************/
     @BindView(R.id.ll_order_normal)
-    LinearLayout ll_order_normal;
+    LinearLayout llOrderNormal;
     @BindView(R.id.rl_use_bonus)
-    RelativeLayout rl_use_bonus;
-    // 代金券抵扣
+    RelativeLayout rlUseBonus;
+    /**
+     * 代金券抵扣
+     */
     @BindView(R.id.tv_bonus_remark)
-    TextView tv_bonus_remark;
-    // 预付金额
+    TextView tvBonusRemark;
+    /**
+     * 预付金额
+     */
     @BindView(R.id.tv_prepay)
-    TextView tv_prepay;
-    // 实际扣款
+    TextView tvPrepay;
+    /**
+     * 实际扣款
+     */
     @BindView(R.id.tv_actual_debit)
-    TextView tv_actual_debit;
+    TextView tvActualDebit;
     @BindView(R.id.rl_actual_debit)
-    RelativeLayout rl_actual_debit;
-    // 实际消费
+    RelativeLayout rlActualDebit;
+    /**
+     * 实际消费
+     */
     @BindView(R.id.tv_consume)
-    TextView tv_consume;
-    // 找零金额
+    TextView tvConsume;
+    /**
+     * 找零金额
+     */
     @BindView(R.id.tv_odd)
-    TextView tv_odd;
+    TextView tvOdd;
 
 
     /************** 异常账单内容 ****************/
     @BindView(R.id.tv_order_error_tip)
-    TextView tv_order_error_tip;
+    TextView tvOrderErrorTip;
     @BindView(R.id.ll_order_error)
-    LinearLayout ll_order_error;
+    LinearLayout llOrderError;
     @BindView(R.id.rl_back_bonus)
-    RelativeLayout rl_back_bonus;
-    // 退还代金券
+    RelativeLayout rlBackBonus;
+    /**
+     * 退还代金券
+     */
     @BindView(R.id.tv_back_bonus)
-    TextView tv_back_bonus;
-    // 退还金额
+    TextView tvBackBonus;
+    /**
+     * 退还金额
+     */
     @BindView(R.id.tv_back_amount)
-    TextView tv_back_amount;
+    TextView tvBackAmount;
 
     /************** 基础信息 *****************/
-    // 使用时间
+
+    /**
+     * 使用时间
+     */
     @BindView(R.id.tv_time)
-    TextView tv_time;
-    // 使用时长
+    TextView tvTime;
+    /**
+     * 使用时长
+     */
     @BindView(R.id.tv_used_time)
-    TextView tv_used_time;
+    TextView tvUsedTime;
     @BindView(R.id.rl_used_time)
-    RelativeLayout rl_used_time;
-    // 设备位置
+    RelativeLayout rlUsedTime;
+    /**
+     * 设备位置
+     */
     @BindView(R.id.tv_device_location)
-    TextView tv_device_location;
-    // 订单号
+    TextView tvDeviceLocation;
+    /**
+     * 订单号
+     */
     @BindView(R.id.tv_order_no)
-    TextView tv_order_no;
-    // 是否用水提示
+    TextView tvOrderNo;
+    /**
+     * 是否用水提示
+     */
     @BindView(R.id.tv_order_no_use_tip)
-    TextView tv_order_no_use_tip;
+    TextView tvOrderNoUseTip;
 
     @Inject
     IDeviceOrderPresenter<IDeviceOrderView> presenter;
@@ -126,63 +155,62 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
         // 设置基础信息
         orderType = ComplaintType.getComplaintTypeByDeviceType(
                 Device.getDevice(respDTO.getDeviceType())).getType();
-        tv_time.setText(CommonUtil.stampToDate(respDTO.getCreateTime()));
+        tvTime.setText(CommonUtil.stampToDate(respDTO.getCreateTime()));
         if (Device.getDevice(respDTO.getDeviceType()) == Device.DRYER) {
-            rl_used_time.setVisibility(View.VISIBLE);
-            tv_used_time.setText(respDTO.getUseTime());
+            rlUsedTime.setVisibility(View.VISIBLE);
+            tvUsedTime.setText(respDTO.getUseTime());
         }
         Device device = Device.getDevice(respDTO.getDeviceType());
         if (device != null) {
-            tv_device_location.setText(String.format("%s %s", device.getDesc(), respDTO.getLocation()));
+            tvDeviceLocation.setText(String.format("%s %s", device.getDesc(), respDTO.getLocation()));
         } else {
-            tv_device_location.setText(String.format("未知设备 %s", respDTO.getLocation()));
+            tvDeviceLocation.setText(String.format("未知设备 %s", respDTO.getLocation()));
         }
         orderNo = respDTO.getOrderNo();
-        tv_order_no.setText(orderNo);
-        if (CommonUtil.equals(respDTO.getStatus(), 3)) {
+        tvOrderNo.setText(orderNo);
+        if (CommonUtil.equals(respDTO.getStatus(), ERROR_ORDER_STATUS)) {
             // 异常账单
-//            tv_order_title.setText(getString(R.string.error_order_title));
-            tv_order_error_tip.setVisibility(View.VISIBLE);
-            ll_order_normal.setVisibility(View.GONE);
-            ll_order_error.setVisibility(View.VISIBLE);
+            tvOrderErrorTip.setVisibility(View.VISIBLE);
+            llOrderNormal.setVisibility(View.GONE);
+            llOrderError.setVisibility(View.VISIBLE);
             // 是否有代金券
             if (TextUtils.isEmpty(respDTO.getBonus())) {
                 // 没有代金券
-                rl_back_bonus.setVisibility(View.GONE);
-                tv_consume.setTextColor(ContextCompat.getColor(this, R.color.colorFullRed));
-                tv_actual_debit.setTextColor(ContextCompat.getColor(this, R.color.colorDark6));
-                rl_actual_debit.setVisibility(View.GONE);
+                rlBackBonus.setVisibility(View.GONE);
+                tvConsume.setTextColor(ContextCompat.getColor(this, R.color.colorFullRed));
+                tvActualDebit.setTextColor(ContextCompat.getColor(this, R.color.colorDark6));
+                rlActualDebit.setVisibility(View.GONE);
             } else {
                 // 有代金券
-                rl_back_bonus.setVisibility(View.VISIBLE);
-                tv_back_bonus.setText(respDTO.getBonus());
-                tv_consume.setTextColor(ContextCompat.getColor(this, R.color.colorDark6));
-                tv_actual_debit.setTextColor(ContextCompat.getColor(this, R.color.colorFullRed));
+                rlBackBonus.setVisibility(View.VISIBLE);
+                tvBackBonus.setText(respDTO.getBonus());
+                tvConsume.setTextColor(ContextCompat.getColor(this, R.color.colorDark6));
+                tvActualDebit.setTextColor(ContextCompat.getColor(this, R.color.colorFullRed));
             }
-            tv_back_amount.setText(respDTO.getPrepay());
+            tvBackAmount.setText(respDTO.getPrepay());
         } else {
             // 正常账单
-            tv_order_error_tip.setVisibility(View.GONE);
-            ll_order_normal.setVisibility(View.VISIBLE);
-            ll_order_error.setVisibility(View.GONE);
+            tvOrderErrorTip.setVisibility(View.GONE);
+            llOrderNormal.setVisibility(View.VISIBLE);
+            llOrderError.setVisibility(View.GONE);
             // 是否有代金券
             if (TextUtils.isEmpty(respDTO.getBonus())) {
                 // 没有代金券
-                rl_use_bonus.setVisibility(View.GONE);
-                tv_consume.setTextColor(ContextCompat.getColor(this, R.color.colorFullRed));
-                tv_actual_debit.setTextColor(ContextCompat.getColor(this, R.color.colorDark6));
-                rl_actual_debit.setVisibility(View.GONE);
+                rlUseBonus.setVisibility(View.GONE);
+                tvConsume.setTextColor(ContextCompat.getColor(this, R.color.colorFullRed));
+                tvActualDebit.setTextColor(ContextCompat.getColor(this, R.color.colorDark6));
+                rlActualDebit.setVisibility(View.GONE);
             } else {
                 // 有代金券
-                rl_use_bonus.setVisibility(View.VISIBLE);
-                tv_bonus_remark.setText(getString(R.string.minus, respDTO.getBonus()));
-                tv_consume.setTextColor(ContextCompat.getColor(this, R.color.colorDark6));
-                tv_actual_debit.setTextColor(ContextCompat.getColor(this, R.color.colorFullRed));
+                rlUseBonus.setVisibility(View.VISIBLE);
+                tvBonusRemark.setText(getString(R.string.minus, respDTO.getBonus()));
+                tvConsume.setTextColor(ContextCompat.getColor(this, R.color.colorDark6));
+                tvActualDebit.setTextColor(ContextCompat.getColor(this, R.color.colorFullRed));
             }
-            tv_consume.setText(respDTO.getConsume());
-            tv_prepay.setText(respDTO.getPrepay());
-            tv_odd.setText(respDTO.getOdd());
-            tv_actual_debit.setText(getString(R.string.minus, respDTO.getActualDebit()));
+            tvConsume.setText(respDTO.getConsume());
+            tvPrepay.setText(respDTO.getPrepay());
+            tvOdd.setText(respDTO.getOdd());
+            tvActualDebit.setText(getString(R.string.minus, respDTO.getActualDebit()));
         }
     }
 
@@ -199,7 +227,7 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
 
     @Override
     public void showNoUseTip() {
-        tv_order_no_use_tip.setVisibility(View.VISIBLE);
+        tvOrderNoUseTip.setVisibility(View.VISIBLE);
     }
 
     @OnClick(R.id.tv_order_no_use_tip)
@@ -240,13 +268,12 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
      */
     @OnClick(R.id.tv_copy)
     public void copy() {
-        CommonUtil.copy(tv_order_no.getText().toString(), getApplicationContext());
+        CommonUtil.copy(tvOrderNo.getText().toString(), getApplicationContext());
         onSuccess(R.string.copy_success);
     }
 
     @Override
     public void onBackPressed() {
-//        super.onBackPressed();
         backToMain();
     }
 

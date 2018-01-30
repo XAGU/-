@@ -63,7 +63,9 @@ import static com.trello.rxlifecycle.android.ActivityEvent.PAUSE;
 
 /**
  * 设备BasePresenter
- * Created by caidong on 2017/9/22.
+ *
+ * @author caidong
+ * @date 17/9/22
  */
 public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePresenter<V>
         implements IDevicePresenter<V> {

@@ -15,16 +15,17 @@ import javax.inject.Inject;
 
 /**
  * 吹风机
- * <p>
- * Created by zcd on 18/1/2.
+ *
+ * @author zcd
+ * @date 18/1/2
  */
 
-public class DryerPresenter <V extends IDryerView> extends WaterDeviceBasePresenter<V>
-    implements IDryerPresenter<V> {
+public class DryerPresenter<V extends IDryerView> extends WaterDeviceBasePresenter<V>
+        implements IDryerPresenter<V> {
     private IDeviceDataManager deviceDataManager;
 
     @Inject
-    public DryerPresenter(IBleDataManager bleDataManager, IDeviceDataManager deviceDataManager) {
+    DryerPresenter(IBleDataManager bleDataManager, IDeviceDataManager deviceDataManager) {
         super(bleDataManager, deviceDataManager);
         this.deviceDataManager = deviceDataManager;
     }

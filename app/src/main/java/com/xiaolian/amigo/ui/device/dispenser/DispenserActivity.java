@@ -14,7 +14,9 @@ import javax.inject.Inject;
 
 /**
  * 饮水机页面
+ *
  * @author zcd
+ * @date 17/9/20
  */
 public class DispenserActivity extends WaterDeviceBaseActivity<IDispenserPresenter> implements IDispenserView {
 
@@ -128,10 +130,6 @@ public class DispenserActivity extends WaterDeviceBaseActivity<IDispenserPresent
 
     @Override
     public void showGuide() {
-        // 显示引导页
-//        GuideDialog guideDialog = new GuideDialog(this, GuideDialog.TYPE_DISPENER);
-//        guideDialog.setLocation(getLocation());
-//        guideDialog.show();
         showAlertNotice((dialog, isNotRemind) -> {
             dialog.dismiss();
             if (isNotRemind) {

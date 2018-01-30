@@ -5,25 +5,31 @@ import android.text.TextUtils;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.complaint.CheckComplaintReqDTO;
 import com.xiaolian.amigo.data.network.model.order.OrderDetailReqDTO;
-import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.order.OrderDetailRespDTO;
-import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.device.intf.IDeviceOrderPresenter;
 import com.xiaolian.amigo.ui.device.intf.IDeviceOrderView;
 
 import javax.inject.Inject;
 
+/**
+ * 设备账单
+ *
+ * @author caidong
+ * @date 17/10/11
+ */
 public class DeviceOrderPresenter<V extends IDeviceOrderView> extends BasePresenter<V>
         implements IDeviceOrderPresenter<V> {
 
+    @SuppressWarnings("unused")
     private static final String TAG = DeviceOrderPresenter.class.getSimpleName();
     private IOrderDataManager orderDataManager;
 
     @Inject
-    public DeviceOrderPresenter(IOrderDataManager orderDataManager) {
+    DeviceOrderPresenter(IOrderDataManager orderDataManager) {
         super();
         this.orderDataManager = orderDataManager;
     }

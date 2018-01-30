@@ -1,8 +1,10 @@
 package com.xiaolian.amigo.ui.device;
 
 /**
- * <p>
- * Created by zcd on 18/1/3.
+ * 设备模块常量
+ *
+ * @author zcd
+ * @date 18/1/3
  */
 
 public class DeviceConstant {
