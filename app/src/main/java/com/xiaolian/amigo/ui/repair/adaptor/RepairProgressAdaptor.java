@@ -19,10 +19,15 @@ import butterknife.ButterKnife;
 
 /**
  * 报修进度
- * Created by caidong on 2017/9/12.
+ *
+ * @author caidong
+ * @date 17/9/12
  */
 public class RepairProgressAdaptor extends RecyclerView.Adapter<RepairProgressAdaptor.ViewHolder> {
     public interface OnCancelRepairListener {
+        /**
+         * 取消报修点击事件
+         */
         void onCacelRepair();
     }
 
@@ -44,35 +49,35 @@ public class RepairProgressAdaptor extends RecyclerView.Adapter<RepairProgressAd
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         ProgressWrapper progress = progresses.get(position);
-        holder.tv_desc.setText(progress.desc);
-        holder.tv_time.setText(progress.time);
+        holder.tvDesc.setText(progress.desc);
+        holder.tvTime.setText(progress.time);
 
         RepairStatus status = RepairStatus.getStatus(progress.status);
 
-        holder.tv_status.setText(status.getDesc());
+        holder.tvStatus.setText(status.getDesc());
         // 第一条为报修最新进度，需要用颜色标识
         int colorGreyRes = context.getResources().getColor(R.color.colorTextGrayHeavy);
         if (position == 0) {
-            holder.tv_status.setTextColor(context.getResources().getColor(status.getTextCorlorRes()));
-            holder.v_dot.setBackgroundResource(status.getDotColorDrawableRes());
+            holder.tvStatus.setTextColor(context.getResources().getColor(status.getTextCorlorRes()));
+            holder.vDot.setBackgroundResource(status.getDotColorDrawableRes());
         } else {
-            holder.tv_status.setTextColor(colorGreyRes);
-            holder.tv_time.setTextColor(colorGreyRes);
-            holder.tv_desc.setTextColor(colorGreyRes);
-            holder.v_dot.setBackgroundResource(R.drawable.dot_circle_grey);
+            holder.tvStatus.setTextColor(colorGreyRes);
+            holder.tvTime.setTextColor(colorGreyRes);
+            holder.tvDesc.setTextColor(colorGreyRes);
+            holder.vDot.setBackgroundResource(R.drawable.dot_circle_grey);
         }
         if (status == RepairStatus.AUDIT_PENDING
                 && RepairStatus.getStatus(progresses.get(0).status) == RepairStatus.AUDIT_PENDING) {
-            holder.tv_cancel_repair.setVisibility(View.VISIBLE);
-            holder.tv_cancel_repair.setEnabled(true);
-            holder.tv_cancel_repair.setOnClickListener(v -> {
+            holder.tvCancelRepair.setVisibility(View.VISIBLE);
+            holder.tvCancelRepair.setEnabled(true);
+            holder.tvCancelRepair.setOnClickListener(v -> {
                 if (listener != null) {
                     listener.onCacelRepair();
                 }
             });
         } else {
-            holder.tv_cancel_repair.setEnabled(false);
-            holder.tv_cancel_repair.setVisibility(View.GONE);
+            holder.tvCancelRepair.setEnabled(false);
+            holder.tvCancelRepair.setVisibility(View.GONE);
         }
     }
 
@@ -87,15 +92,15 @@ public class RepairProgressAdaptor extends RecyclerView.Adapter<RepairProgressAd
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.v_dot)
-        View v_dot;
+        View vDot;
         @BindView(R.id.tv_status)
-        TextView tv_status;
+        TextView tvStatus;
         @BindView(R.id.tv_time)
-        TextView tv_time;
+        TextView tvTime;
         @BindView(R.id.tv_desc)
-        TextView tv_desc;
+        TextView tvDesc;
         @BindView(R.id.tv_cancel_repair)
-        TextView tv_cancel_repair;
+        TextView tvCancelRepair;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -104,11 +109,17 @@ public class RepairProgressAdaptor extends RecyclerView.Adapter<RepairProgressAd
     }
 
     public static class ProgressWrapper {
-        // 进度描述
+        /**
+         * 进度描述
+         */
         String desc;
-        // 时间
+        /**
+         * 时间
+         */
         String time;
-        // 进度状态
+        /**
+         * 进度状态
+         */
         Integer status;
 
         public ProgressWrapper(RepairStep step) {

@@ -8,13 +8,13 @@ import com.xiaolian.amigo.ui.base.BaseToolBarListActivity;
 
 /**
  * 报修模块BaseListActivity
- * <p>
- * Created by zcd on 9/25/17.
+ *
+ * @author zcd
+ * @date 17/9/25
  */
 
 public abstract class RepairBaseListActivity extends BaseToolBarListActivity {
     private RepairActivityComponent mActivityComponent;
-
 
     @Override
     protected void initInject() {

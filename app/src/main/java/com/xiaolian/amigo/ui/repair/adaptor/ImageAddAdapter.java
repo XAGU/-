@@ -18,14 +18,17 @@ import java.util.Locale;
 import lombok.Data;
 
 /**
- * <p>
- * Created by zcd on 17/11/15.
+ * 添加图片
+ *
+ * @author zcd
+ * @date 17/11/15
  */
 
 public class ImageAddAdapter extends CommonAdapter<ImageAddAdapter.ImageItem> {
-    private static final int defaultRes = R.drawable.device_picture_add;
+    private static final int DEFAULT_RES = R.drawable.device_picture_add;
     private Context context;
     private int imageSize;
+
     public ImageAddAdapter(Context context, int layoutId, List<ImageItem> datas) {
         super(context, layoutId, datas);
         this.context = context;
@@ -43,9 +46,9 @@ public class ImageAddAdapter extends CommonAdapter<ImageAddAdapter.ImageItem> {
 ////                .diskCacheStrategy(DiskCacheStrategy.NONE)
 //                    .into((ImageView)holder.getView(R.id.iv_image));
 
-            ((ImageView)holder.getView(R.id.iv_image)).setImageDrawable(null);
-            ((ImageView)holder.getView(R.id.iv_image)).setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-            holder.setImageResource(R.id.iv_image, defaultRes);
+            ((ImageView) holder.getView(R.id.iv_image)).setImageDrawable(null);
+            ((ImageView) holder.getView(R.id.iv_image)).setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+            holder.setImageResource(R.id.iv_image, DEFAULT_RES);
         } else {
             Glide.with(context).load(Constant.IMAGE_PREFIX + imageItem.getImageUrl()
                     + String.format(Locale.getDefault(), Constant.OSS_IMAGE_RESIZE,
@@ -55,8 +58,8 @@ public class ImageAddAdapter extends CommonAdapter<ImageAddAdapter.ImageItem> {
                     .error(R.drawable.ic_picture_error)
 //                .skipMemoryCache(true)
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                    .into((ImageView)holder.getView(R.id.iv_image));
-            ((ImageView)holder.getView(R.id.iv_image)).setScaleType(ImageView.ScaleType.FIT_XY);
+                    .into((ImageView) holder.getView(R.id.iv_image));
+            ((ImageView) holder.getView(R.id.iv_image)).setScaleType(ImageView.ScaleType.FIT_XY);
         }
     }
 

@@ -6,7 +6,10 @@ import com.xiaolian.amigo.ui.repair.adaptor.RepairAdaptor;
 import java.util.List;
 
 /**
- * Created by caidong on 2017/9/18.
+ * 报修记录
+ *
+ * @author caidong
+ * @date 17/9/18
  */
 public interface IRepairView extends IBaseListView {
 

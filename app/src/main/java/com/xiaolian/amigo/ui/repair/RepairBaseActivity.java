@@ -7,6 +7,12 @@ import com.xiaolian.amigo.di.module.RepairActivityModule;
 import com.xiaolian.amigo.ui.base.BaseToolBarActivity;
 
 
+/**
+ * 报修模块base activity
+ *
+ * @author caidong
+ * @date 17/9/18
+ */
 public abstract class RepairBaseActivity extends BaseToolBarActivity {
 
     private RepairActivityComponent mActivityComponent;

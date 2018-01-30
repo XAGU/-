@@ -27,7 +27,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by caidong on 2017/9/12.
+ * 报修列表adpter
+ *
+ * @author caidong
+ * @date 17/9/12
  */
 public class RepairAdaptor extends RecyclerView.Adapter<RepairAdaptor.ViewHolder> {
 
@@ -58,10 +61,10 @@ public class RepairAdaptor extends RecyclerView.Adapter<RepairAdaptor.ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         RepairWrapper wrapper = repairs.get(position);
-        holder.tv_device.setText(wrapper.device);
-        holder.tv_time.setText(wrapper.time);
-        holder.tv_status.setText(RepairStatus.getStatus(wrapper.status).getDesc());
-        holder.tv_status.setTextColor(context.getResources().getColor(RepairStatus.getStatus(wrapper.status).getTextCorlorRes()));
+        holder.tvDevice.setText(wrapper.device);
+        holder.tvTime.setText(wrapper.time);
+        holder.tvStatus.setText(RepairStatus.getStatus(wrapper.status).getDesc());
+        holder.tvStatus.setTextColor(context.getResources().getColor(RepairStatus.getStatus(wrapper.status).getTextCorlorRes()));
 
         if (RepairStatus.getStatus(wrapper.status) == RepairStatus.REPAIR_DONE) {
             // 状态为维修完成成需要呈现评价按钮
@@ -72,19 +75,19 @@ public class RepairAdaptor extends RecyclerView.Adapter<RepairAdaptor.ViewHolder
                 evaluate = EvaluateStatus.EVALUATE_PENDING;
             }
             if (evaluate == null) {
-                holder.bt_evaluate.setVisibility(View.GONE);
+                holder.btEvaluate.setVisibility(View.GONE);
                 return;
             }
             if (evaluate == EvaluateStatus.EVALUATE_DONE) {
-                holder.bt_evaluate.setEnabled(false);
+                holder.btEvaluate.setEnabled(false);
             } else {
-                holder.bt_evaluate.setEnabled(true);
+                holder.btEvaluate.setEnabled(true);
             }
-            holder.bt_evaluate.setText(evaluate.getDesc());
-            holder.bt_evaluate.setBackgroundResource(evaluate.getBackGroundRes());
-            holder.bt_evaluate.setTextColor(ContextCompat.getColor(context, evaluate.getTextColor()));
-            holder.bt_evaluate.setVisibility(View.VISIBLE);
-            holder.bt_evaluate.setOnClickListener(v -> {
+            holder.btEvaluate.setText(evaluate.getDesc());
+            holder.btEvaluate.setBackgroundResource(evaluate.getBackGroundRes());
+            holder.btEvaluate.setTextColor(ContextCompat.getColor(context, evaluate.getTextColor()));
+            holder.btEvaluate.setVisibility(View.VISIBLE);
+            holder.btEvaluate.setOnClickListener(v -> {
                 Intent intent = new Intent(context, RepairEvaluationActivity.class);
                 intent.putExtra(RepairEvaluationActivity.INTENT_KEY_REPAIR_EVALUATION_ID, wrapper.id);
                 intent.putExtra(RepairEvaluationActivity.INTENT_KEY_REPAIR_EVALUATION_REPAIR_MAN_NAME, wrapper.repairmanName);
@@ -94,7 +97,7 @@ public class RepairAdaptor extends RecyclerView.Adapter<RepairAdaptor.ViewHolder
                 context.startActivity(intent);
             });
         } else {
-            holder.bt_evaluate.setVisibility(View.GONE);
+            holder.btEvaluate.setVisibility(View.GONE);
         }
 
 
@@ -108,16 +111,18 @@ public class RepairAdaptor extends RecyclerView.Adapter<RepairAdaptor.ViewHolder
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @BindView(R.id.tv_device)
-        TextView tv_device;
+        TextView tvDevice;
         @BindView(R.id.tv_time)
-        TextView tv_time;
+        TextView tvTime;
         @BindView(R.id.tv_status)
-        TextView tv_status;
+        TextView tvStatus;
         @BindView(R.id.bt_evaluate)
-        Button bt_evaluate;
+        Button btEvaluate;
 
         Context context;
-        // 报修单id
+        /**
+         * 报修单id
+         */
         Long detailId;
 
         public ViewHolder(View itemView) {
@@ -138,24 +143,42 @@ public class RepairAdaptor extends RecyclerView.Adapter<RepairAdaptor.ViewHolder
     }
 
     public static class RepairWrapper {
-        // 设备
+        /**
+         * 设备
+         */
         String device;
-        // 时间
+        /**
+         * 时间
+         */
         String time;
-        // 维修状态
+        /**
+         * 维修状态
+         */
         Integer status;
-        // 评价状态
-//        Integer evaluateStatus;
+        /**
+         * 评价状态
+         */
         Integer rated;
-        // 维修人员名称
+        //
+        /**
+         * 维修人员名称
+         */
         String repairmanName;
-        // 维修人员Id
+        /**
+         * 维修人员Id
+         */
         Long repairmanId;
-        // 报修单id
+        /**
+         * 报修单id
+         */
         Long id;
-        // 设备类型
+        /**
+         * 设备类型
+         */
         Integer deviceType;
-        // 设备位置
+        /**
+         * 设备位置
+         */
         String location;
 
         public RepairWrapper(Repair repair) {

@@ -34,8 +34,9 @@ import butterknife.OnTextChanged;
 
 /**
  * 设备报修评价
- * <p>
- * Created by zcd on 9/21/17.
+ *
+ * @author zcd
+ * @date 17/9/21
  */
 
 public class RepairEvaluationActivity extends RepairBaseActivity implements IRepairEvaluationView {
@@ -64,28 +65,28 @@ public class RepairEvaluationActivity extends RepairBaseActivity implements IRep
     IRepairEvaluationPresenter<IRepairEvaluationView> presenter;
 
     @BindView(R.id.rv_evaluations)
-    RecyclerView rv_evaluations;
+    RecyclerView rvEvaluations;
 
     @BindView(R.id.rv_stars)
-    RecyclerView rv_stars;
+    RecyclerView rvStars;
 
     @BindView(R.id.tv_repair_man)
-    TextView tv_repair_man;
+    TextView tvRepairMan;
 
     @BindView(R.id.bt_submit)
-    Button bt_submit;
+    Button btSubmit;
 
     @BindView(R.id.et_content)
-    EditText et_content;
+    EditText etContent;
 
     @BindView(R.id.tv_location)
-    TextView tv_location;
+    TextView tvLocation;
 
     @BindView(R.id.tv_device_type)
-    TextView tv_device_type;
+    TextView tvDeviceType;
 
     @BindView(R.id.tv_time)
-    TextView tv_time;
+    TextView tvTime;
 
     private Long repairId;
     private Integer rating;
@@ -121,27 +122,27 @@ public class RepairEvaluationActivity extends RepairBaseActivity implements IRep
             repairId = getIntent().getLongExtra(INTENT_KEY_REPAIR_EVALUATION_ID, -1);
             String name = getIntent().getStringExtra(INTENT_KEY_REPAIR_EVALUATION_REPAIR_MAN_NAME);
             if (name != null) {
-                tv_repair_man.setText(name);
+                tvRepairMan.setText(name);
             }
             String location = getIntent().getStringExtra(INTENT_KEY_REPAIR_EVALUATION_DEVICE_LOCATION);
             if (location != null) {
-                tv_location.setText(location);
+                tvLocation.setText(location);
             }
             Device device = Device.getDevice(getIntent().getIntExtra(INTENT_KEY_REPAIR_EVALUATION_DEVICE_TYPE, -1));
             if (device != null) {
-                tv_device_type.setText(String.format("%s%s", device.getDesc(), Constant.CHINEASE_COLON));
+                tvDeviceType.setText(String.format("%s%s", device.getDesc(), Constant.CHINEASE_COLON));
             }
             String time = getIntent().getStringExtra(INTENT_KEY_REPAIR_EVALUATION_TIME);
             if (time != null) {
-                tv_time.setText(time);
+                tvTime.setText(time);
             }
 
         }
 
         labelAdaptor = new RepairEvaluationLabelAdaptor(this, R.layout.item_evaluation_label, labels);
-        rv_evaluations.setLayoutManager(new GridLayoutManager(this, 3));
-        rv_evaluations.addItemDecoration(new GridSpacesItemDecoration(3, ScreenUtils.dpToPxInt(this, 10), false));
-        rv_evaluations.setAdapter(labelAdaptor);
+        rvEvaluations.setLayoutManager(new GridLayoutManager(this, 3));
+        rvEvaluations.addItemDecoration(new GridSpacesItemDecoration(3, ScreenUtils.dpToPxInt(this, 10), false));
+        rvEvaluations.setAdapter(labelAdaptor);
 
         labelAdaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
@@ -161,9 +162,9 @@ public class RepairEvaluationActivity extends RepairBaseActivity implements IRep
         });
 
         starAdaptor = new RepairEvaluationStarAdaptor(this, R.layout.item_evaluation_star, stars);
-        rv_stars.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        rv_stars.addItemDecoration(new GridSpacesItemDecoration(5, ScreenUtils.dpToPxInt(this, 10), false));
-        rv_stars.setAdapter(starAdaptor);
+        rvStars.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        rvStars.addItemDecoration(new GridSpacesItemDecoration(5, ScreenUtils.dpToPxInt(this, 10), false));
+        rvStars.setAdapter(starAdaptor);
 
         starAdaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
@@ -203,16 +204,16 @@ public class RepairEvaluationActivity extends RepairBaseActivity implements IRep
     @OnClick(R.id.bt_submit)
     void evaluation() {
         ratingOptions.clear();
-        for (int i = 0; i < labels.size(); i ++) {
+        for (int i = 0; i < labels.size(); i++) {
             if (labels.get(i).isChecked()) {
                 ratingOptions.add(i + 1);
             }
         }
-        presenter.rateRepair(et_content.getText().toString(), rating, ratingOptions, repairId);
+        presenter.rateRepair(etContent.getText().toString(), rating, ratingOptions, repairId);
     }
 
     public void toggleBtnStatus() {
-        bt_submit.setEnabled(!TextUtils.isEmpty(et_content.getText())
+        btSubmit.setEnabled(!TextUtils.isEmpty(etContent.getText())
                 && rating != null);
     }
 

@@ -4,10 +4,14 @@ import com.xiaolian.amigo.ui.base.intf.IBaseView;
 
 /**
  * 设备报修评价
- * <p>
- * Created by zcd on 9/21/17.
+ *
+ * @author zcd
+ * @date 17/9/21
  */
 
 public interface IRepairEvaluationView extends IBaseView {
+    /**
+     * 结束页面
+     */
     void finishView();
 }

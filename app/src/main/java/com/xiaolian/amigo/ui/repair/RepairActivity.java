@@ -24,8 +24,9 @@ import butterknife.ButterKnife;
 
 /**
  * 报修记录
- * <p>
- * Created by caidong on 2017/9/18.
+ *
+ * @author caidong
+ * @date 17/9/18
  */
 public class RepairActivity extends RepairBaseListActivity implements IRepairView {
     public static final String INTENT_KEY_LAST_REPAIR_TIME = "intent_last_repair_time";
@@ -104,6 +105,8 @@ public class RepairActivity extends RepairBaseListActivity implements IRepairVie
         switch (event) {
             case REFRESH_REPAIR_LIST:
                 onRefresh();
+                break;
+            default:
                 break;
         }
     }

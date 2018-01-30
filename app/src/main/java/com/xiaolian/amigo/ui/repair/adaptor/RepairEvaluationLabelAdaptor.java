@@ -13,12 +13,15 @@ import java.util.List;
 import lombok.Data;
 
 /**
- * <p>
- * Created by zcd on 9/21/17.
+ * 报修评价标签
+ *
+ * @author zcd
+ * @date 17/9/21
  */
 
-public class RepairEvaluationLabelAdaptor extends CommonAdapter<RepairEvaluationLabelAdaptor.Label>{
+public class RepairEvaluationLabelAdaptor extends CommonAdapter<RepairEvaluationLabelAdaptor.Label> {
     private Context context;
+
     public RepairEvaluationLabelAdaptor(Context context, int layoutId, List<Label> datas) {
         super(context, layoutId, datas);
         this.context = context;
@@ -28,12 +31,12 @@ public class RepairEvaluationLabelAdaptor extends CommonAdapter<RepairEvaluation
     protected void convert(ViewHolder holder, Label label, int position) {
         if (label.isChecked()) {
             holder.getView(R.id.tv_label).setBackgroundResource(R.drawable.bg_rect_blue_stroke);
-            ((TextView)holder.getView(R.id.tv_label)).setTextColor(ContextCompat.getColor(context, R.color.colorBlue));
+            ((TextView) holder.getView(R.id.tv_label)).setTextColor(ContextCompat.getColor(context, R.color.colorBlue));
         } else {
             holder.getView(R.id.tv_label).setBackgroundResource(R.drawable.bg_rect_gray_stroke);
-            ((TextView)holder.getView(R.id.tv_label)).setTextColor(ContextCompat.getColor(context, R.color.colorTextGray));
+            ((TextView) holder.getView(R.id.tv_label)).setTextColor(ContextCompat.getColor(context, R.color.colorTextGray));
         }
-        ((TextView)holder.getView(R.id.tv_label)).setText(label.getContent());
+        ((TextView) holder.getView(R.id.tv_label)).setText(label.getContent());
     }
 
     @Data
