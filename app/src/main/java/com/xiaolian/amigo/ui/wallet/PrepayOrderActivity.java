@@ -27,32 +27,42 @@ import butterknife.OnClick;
 
 /**
  * 待找零账单
- * <p>
- * Created by zcd on 10/12/17.
+ *
+ * @author zcd
+ * @date 17/10/12
  */
 public class PrepayOrderActivity extends WalletBaseActivity implements IPrepayOrderView {
     @Inject
     IPrepayOrderPresenter<IPrepayOrderView> presenter;
 
-    // 预付金额
+    /**
+     * 预付金额
+     */
     @BindView(R.id.tv_prepay)
-    TextView tv_prepay;
-    // 找零金额
+    TextView tvPrepay;
+    /**
+     * 找零金额
+     */
     @BindView(R.id.tv_odd)
-    TextView tv_odd;
-
-    // 使用时间
+    TextView tvOdd;
+    /**
+     * 使用时间
+     */
     @BindView(R.id.tv_time)
-    TextView tv_time;
-    // 设备位置
+    TextView tvTime;
+    /**
+     * 设备位置
+     */
     @BindView(R.id.tv_device_location)
-    TextView tv_device_location;
-    // 订单号
+    TextView tvDeviceLocation;
+    /**
+     * 订单号
+     */
     @BindView(R.id.tv_order_no)
-    TextView tv_order_no;
+    TextView tvOrderNo;
 
     @BindView(R.id.tv_prepay_order_tip)
-    TextView tv_prepay_order_tip;
+    TextView tvPrepayOrderTip;
 
     private PrepayAdaptor.OrderWrapper orderWrapper;
 
@@ -70,16 +80,16 @@ public class PrepayOrderActivity extends WalletBaseActivity implements IPrepayOr
     private void render(PrepayAdaptor.OrderWrapper orderWrapper) {
         Order order = orderWrapper.getOrder();
         // 设置基础信息
-        tv_time.setText(CommonUtil.stampToDate(order.getCreateTime()));
+        tvTime.setText(CommonUtil.stampToDate(order.getCreateTime()));
         Device device = Device.getDevice(order.getDeviceType());
         if (device != null) {
-            tv_device_location.setText(String.format("%s %s", device.getDesc(), order.getLocation()));
+            tvDeviceLocation.setText(String.format("%s %s", device.getDesc(), order.getLocation()));
         } else {
-            tv_device_location.setText(String.format("未知设备 %s", order.getLocation()));
+            tvDeviceLocation.setText(String.format("未知设备 %s", order.getLocation()));
         }
-        tv_order_no.setText(order.getOrderNo());
-        tv_prepay.setText(order.getPrepay());
-        tv_odd.setText(getString(R.string.wait_to_change));
+        tvOrderNo.setText(order.getOrderNo());
+        tvPrepay.setText(order.getPrepay());
+        tvOdd.setText(getString(R.string.wait_to_change));
     }
 
     @Override
@@ -90,7 +100,7 @@ public class PrepayOrderActivity extends WalletBaseActivity implements IPrepayOr
 
     @OnClick(R.id.tv_copy)
     public void copy() {
-        CommonUtil.copy(tv_order_no.getText().toString(), getApplicationContext());
+        CommonUtil.copy(tvOrderNo.getText().toString(), getApplicationContext());
         onSuccess(R.string.copy_success);
     }
 
@@ -110,16 +120,18 @@ public class PrepayOrderActivity extends WalletBaseActivity implements IPrepayOr
                 .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_PREPAY_HELP));
     }
 
-    // 前往结算订单
+    /**
+     * 前往结算订单
+     */
     @OnClick(R.id.bt_ok)
     public void settleOrder() {
         String macAddress = orderWrapper.getMacAddress();
         String location = orderWrapper.getLocation();
         Intent intent = null;
-        if(Device.getDevice(orderWrapper.getType()) == Device.HEATER) {
+        if (Device.getDevice(orderWrapper.getType()) == Device.HEATER) {
             intent = new Intent(this, HeaterActivity.class);
             intent.putExtra(MainActivity.INTENT_KEY_DEVICE_TYPE, Device.HEATER.getType());
-        } else if (Device.getDevice(orderWrapper.getType()) == Device.DISPENSER){
+        } else if (Device.getDevice(orderWrapper.getType()) == Device.DISPENSER) {
             intent = new Intent(this, DispenserActivity.class);
             intent.putExtra(MainActivity.INTENT_KEY_DEVICE_TYPE, Device.DISPENSER.getType());
         } else if (Device.getDevice(orderWrapper.getType()) == Device.DRYER) {

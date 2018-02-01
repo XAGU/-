@@ -8,8 +8,9 @@ import com.xiaolian.amigo.ui.base.BaseToolBarListActivity;
 
 /**
  * 失物招领
- * <p>
- * Created by zcd on 9/18/17.
+ *
+ * @author zcd
+ * @date 17/9/18
  */
 
 public abstract class LostAndFoundBaseListActivity extends BaseToolBarListActivity {
@@ -20,7 +21,8 @@ public abstract class LostAndFoundBaseListActivity extends BaseToolBarListActivi
 
     private LostAndFoundActivityComponent mActivityComponent;
 
-    protected  void initInject() {
+    @Override
+    protected void initInject() {
         mActivityComponent = DaggerLostAndFoundActivityComponent.builder()
                 .lostAndFoundActivityModule(new LostAndFoundActivityModule(this))
                 .applicationComponent(((MvpApp) getApplication()).getComponent())

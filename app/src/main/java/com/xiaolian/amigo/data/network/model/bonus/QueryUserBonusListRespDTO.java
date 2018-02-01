@@ -1,15 +1,14 @@
 package com.xiaolian.amigo.data.network.model.bonus;
 
-import com.xiaolian.amigo.data.network.model.bonus.UserBonusDTO;
-import com.xiaolian.amigo.data.vo.Bonus;
-
 import java.util.List;
 
 import lombok.Data;
 
 /**
  * 代金券列表DTO
+ *
  * @author zcd
+ * @date 17/12/14
  */
 @Data
 public class QueryUserBonusListRespDTO {

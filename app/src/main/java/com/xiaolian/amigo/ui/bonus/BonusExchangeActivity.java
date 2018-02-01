@@ -18,14 +18,16 @@ import butterknife.OnClick;
 
 /**
  * 兑换代金券
+ *
  * @author zcd
+ * @date 17/9/18
  */
 
 public class BonusExchangeActivity extends BonusBaseActivity implements IBonusExchangeView {
 
 
     @BindView(R.id.et_change_code)
-    EditText et_changeCode;
+    EditText etChangeCode;
 
     @BindView(R.id.bt_submit)
     Button button;
@@ -40,7 +42,7 @@ public class BonusExchangeActivity extends BonusBaseActivity implements IBonusEx
 
         presenter.onAttach(BonusExchangeActivity.this);
 
-        CommonUtil.showSoftInput(this, et_changeCode);
+        CommonUtil.showSoftInput(this, etChangeCode);
     }
 
     @Override
@@ -55,11 +57,11 @@ public class BonusExchangeActivity extends BonusBaseActivity implements IBonusEx
 
     @OnClick(R.id.bt_submit)
     public void exchange() {
-        if (TextUtils.isEmpty(et_changeCode.getText())) {
+        if (TextUtils.isEmpty(etChangeCode.getText())) {
             onError(getString(R.string.please_enter_exchange_code));
             return;
         }
-        presenter.exchangeBonus(et_changeCode.getText().toString());
+        presenter.exchangeBonus(etChangeCode.getText().toString());
     }
 
     @Override

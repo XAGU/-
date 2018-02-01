@@ -22,8 +22,9 @@ import butterknife.OnClick;
 
 /**
  * 我的钱包
- * <p>
- * Created by zcd on 2017/9/18.
+ *
+ * @author zcd
+ * @date 17/9/18
  */
 public class WalletActivity extends WalletBaseActivity implements IWalletView {
 
@@ -34,13 +35,13 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
      * 余额
      */
     @BindView(R.id.tv_balance)
-    TextView tv_balance;
+    TextView tvBalance;
 
     /**
      * 预付金额
      */
     @BindView(R.id.tv_prepay)
-    TextView tv_prepay;
+    TextView tvPrepay;
 
     private DecimalFormat df = new DecimalFormat("###.##");
 
@@ -68,25 +69,33 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
         return R.layout.activity_wallet;
     }
 
-    // 充值
+    /**
+     * 充值
+     */
     @OnClick({R.id.iv_recharge, R.id.rl_recharge})
     void recharge() {
         startActivity(this, RechargeActivity.class);
     }
 
-    // 查看预付金额列表
+    /**
+     * 查看预付金额列表
+     */
     @OnClick(R.id.rl_prepay)
     void prepay() {
         startActivity(this, PrepayActivity.class);
     }
 
-    // 提现
+    /**
+     * 提现
+     */
     @OnClick(R.id.rl_withdrawal)
     void withdrawal() {
         presenter.queryWithdrawTimeValid();
     }
 
-    // 充值提现记录
+    /**
+     * 充值提现记录
+     */
     @OnClick(R.id.rl_withdrawal_record)
     void withdrawalRecord() {
         startActivity(new Intent(this, WithdrawalRecordActivity.class));
@@ -94,18 +103,18 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
 
     @Override
     public void setBalanceText(Double balance) {
-        tv_balance.setText(String.format(Locale.getDefault(), "¥%s", df.format(balance)));
+        tvBalance.setText(String.format(Locale.getDefault(), "¥%s", df.format(balance)));
     }
 
     @Override
     public void setPrepayText(Double prepay) {
-        tv_prepay.setText(String.format(Locale.getDefault(), "¥%s", df.format(prepay)));
+        tvPrepay.setText(String.format(Locale.getDefault(), "¥%s", df.format(prepay)));
     }
 
     @Override
     public void gotoWithDraw() {
         startActivity(new Intent(this, WithdrawalActivity.class)
-                .putExtra(Constant.EXTRA_KEY, tv_balance.getText().toString().replace("¥", "")));
+                .putExtra(Constant.EXTRA_KEY, tvBalance.getText().toString().replace("¥", "")));
     }
 
     @Override
@@ -122,7 +131,7 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
         dialog.setOkText(getString(R.string.i_know));
         dialog.setOnOkClickListener(Dialog::dismiss
 //                startActivity(new Intent(this, WithdrawalActivity.class)
-//                        .putExtra(Constant.EXTRA_KEY, tv_balance.getText().toString().replace("¥", "")))
+//                        .putExtra(Constant.EXTRA_KEY, tvBalance.getText().toString().replace("¥", "")))
         );
         dialog.show();
     }

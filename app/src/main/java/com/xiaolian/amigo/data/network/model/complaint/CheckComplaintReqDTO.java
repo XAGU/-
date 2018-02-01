@@ -4,8 +4,9 @@ import lombok.Data;
 
 /**
  * 投诉查重
- * <p>
- * Created by zcd on 17/11/10.
+ *
+ * @author zcd
+ * @date 17/11/10
  */
 @Data
 public class CheckComplaintReqDTO {

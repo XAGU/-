@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.xiaolian.amigo">
 
+    <!--权限声明-->
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -399,11 +400,12 @@
             android:theme="@style/AppTheme.NoActionBar"/>
 
         <!--洗衣机展示二维码页面-->
-        <activity android:name=".ui.device.washer.WasherQRCodeActivity"
+        <activity android:name=".ui.device.washer.WasherQrCodeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             />
 
+        <!--二维码扫描-->
         <activity android:name=".ui.device.washer.ScanActivity"
             android:screenOrientation="portrait"
             android:stateNotNeeded="true"

@@ -22,8 +22,9 @@ import butterknife.ButterKnife;
 
 /**
  * 充值提现记录
- * <p>
- * Created by zcd on 10/17/17.
+ *
+ * @author zcd
+ * @date 17/10/17
  */
 
 public class WithdrawalRecordActivity extends WalletBaseListActivity implements IWithdrawalRecordView {
@@ -53,9 +54,9 @@ public class WithdrawalRecordActivity extends WalletBaseListActivity implements 
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 startActivityForResult(new Intent(WithdrawalRecordActivity.this,
-                        WithdrawOperationType.getOperationType(items.get(position).getType())
-                            .getClz())
-                    .putExtra(Constant.EXTRA_KEY, items.get(position).getId()),
+                                WithdrawOperationType.getOperationType(items.get(position).getType())
+                                        .getClz())
+                                .putExtra(Constant.EXTRA_KEY, items.get(position).getId()),
                         REQUEST_CODE_DETAIL);
             }
 

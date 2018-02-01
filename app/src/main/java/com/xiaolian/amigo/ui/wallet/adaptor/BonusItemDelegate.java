@@ -6,8 +6,9 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 /**
  * 代金券
- * <p>
- * Created by zcd on 9/20/17.
+ *
+ * @author zcd
+ * @date 17/9/20
  */
 
 public class BonusItemDelegate implements ItemViewDelegate<RechargeAdaptor.RechargeWrapper> {

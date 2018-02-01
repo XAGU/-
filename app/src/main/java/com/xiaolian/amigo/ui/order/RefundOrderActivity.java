@@ -12,16 +12,17 @@ import javax.inject.Inject;
 
 /**
  * 退款账单
- * <p>
- * Created by zcd on 10/23/17.
+ *
+ * @author zcd
+ * @date 17/10/23
  */
 
 public class RefundOrderActivity extends OrderBaseActivity implements IRefundOrderView {
     @Inject
     IRefundOrderPresenter<IRefundOrderView> presenter;
 
-    private TextView tv_amount;
-    private TextView tv_reason_content;
+    private TextView tvAmount;
+    private TextView tvReasonContent;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,8 +39,8 @@ public class RefundOrderActivity extends OrderBaseActivity implements IRefundOrd
         findViewById(R.id.right_oper).setOnClickListener(v -> gotoScanQRCode());
         findViewById(R.id.iv_back).setOnClickListener(v -> onBackPressed());
 
-        tv_amount = findViewById(R.id.tv_amount);
-        tv_reason_content = findViewById(R.id.tv_reason_content);
+        tvAmount = findViewById(R.id.tv_amount);
+        tvReasonContent = findViewById(R.id.tv_reason_content);
     }
 
     private void gotoScanQRCode() {
@@ -54,6 +55,7 @@ public class RefundOrderActivity extends OrderBaseActivity implements IRefundOrd
     protected void setUp() {
     }
 
+    @Override
     protected void onDestroy() {
         presenter.onDetach();
         super.onDestroy();

@@ -19,8 +19,10 @@ import butterknife.ButterKnife;
 import lombok.Data;
 
 /**
+ * 收藏列表 adapter
  *
- * Created by caidong on 2017/9/12.
+ * @author caidong
+ * @date 17/9/12
  */
 public class FavoriteAdaptor extends RecyclerView.Adapter<FavoriteAdaptor.ViewHolder> {
     private List<FavoriteWrapper> favorites;
@@ -44,10 +46,10 @@ public class FavoriteAdaptor extends RecyclerView.Adapter<FavoriteAdaptor.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
         FavoriteWrapper wrapper = favorites.get(position);
         if (null != wrapper) {
-            holder.tv_device.setText(Device.getDevice(wrapper.getType()).getDesc());
-            holder.tv_device.setTextColor(ContextCompat.getColor(context,
+            holder.tvDevice.setText(Device.getDevice(wrapper.getType()).getDesc());
+            holder.tvDevice.setTextColor(ContextCompat.getColor(context,
                     Device.getDevice(wrapper.getType()).getColorRes()));
-            holder.tv_location.setText(wrapper.getLocation());
+            holder.tvLocation.setText(wrapper.getLocation());
             holder.deviceId = wrapper.getId();
             holder.index = holder.getAdapterPosition();
         }
@@ -60,7 +62,7 @@ public class FavoriteAdaptor extends RecyclerView.Adapter<FavoriteAdaptor.ViewHo
                 clickListener.onItemClick(holder.getAdapterPosition());
             }
         });
-        holder.tv_delete.setOnClickListener(v -> {
+        holder.tvDelete.setOnClickListener(v -> {
             if (deleteListener != null) {
                 deleteListener.onDelete(holder.getAdapterPosition());
             }
@@ -74,15 +76,19 @@ public class FavoriteAdaptor extends RecyclerView.Adapter<FavoriteAdaptor.ViewHo
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.tv_device)
-        TextView tv_device;
+        TextView tvDevice;
         @BindView(R.id.tv_location)
-        TextView tv_location;
+        TextView tvLocation;
         @BindView(R.id.tv_delete)
-        TextView tv_delete;
+        TextView tvDelete;
 
-        // 设备id
+        /**
+         * 设备id
+         */
         Long deviceId;
-        // 设备在设备列表中的索引位置
+        /**
+         * 设备在设备列表中的索引位置
+         */
         Integer index;
 
         public ViewHolder(View itemView) {
@@ -104,26 +110,46 @@ public class FavoriteAdaptor extends RecyclerView.Adapter<FavoriteAdaptor.ViewHo
     }
 
     public interface OnItemLongClickListener {
+        /**
+         * 收藏列表长按事件
+         */
         void onItemLongClick();
     }
+
     public interface OnItemClickListener {
+        /**
+         * 收藏列表点击事件
+         * @param position 列表位置
+         */
         void onItemClick(int position);
     }
 
     public interface OnDeleteListener {
+        /**
+         * 收藏列表删除事件
+         * @param position 列表位置
+         */
         void onDelete(int position);
     }
 
 
     @Data
     public static class FavoriteWrapper {
-        // 设备id
+        /**
+         * 设备id
+         */
         Long id;
-        // residenceId
+        /**
+         * residenceId
+         */
         Long residenceId;
-        // 设备类型
+        /**
+         * 设备类型
+         */
         Integer type;
-        // 设备
+        /**
+         * 设备位置
+         */
         String location;
 
         public FavoriteWrapper(ScanDeviceGroup device) {

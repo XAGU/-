@@ -28,6 +28,7 @@ import lombok.Data;
  * 编辑个人信息Activity
  *
  * @author zcd
+ * @date 17/9/15
  */
 
 public class EditProfileActivity extends UserBaseActivity implements IEditProfileView {
@@ -45,34 +46,34 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
      * 宿舍
      */
     @BindView(R.id.tv_residence)
-    TextView tv_residence;
+    TextView tvResidence;
 
     /**
      * 学校
      */
     @BindView(R.id.tv_school)
-    TextView tv_school;
+    TextView tvSchool;
 
     /**
      * 手机
      */
     @BindView(R.id.tv_mobile)
-    TextView tv_mobile;
+    TextView tvMobile;
 
     /**
      * 性别
      */
     @BindView(R.id.tv_sex)
-    TextView tv_sex;
+    TextView tvSex;
 
     /**
      * 昵称
      */
     @BindView(R.id.tv_nickname)
-    TextView tv_nickname;
+    TextView tvNickname;
 
     @BindView(R.id.iv_avatar)
-    CircleImageView iv_avatar;
+    CircleImageView ivAvatar;
 
     private String avatarUrl;
 
@@ -120,14 +121,14 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
                 break;
             case R.id.rel_edit_nickname:
                 intent = new Intent(this, EditNickNameActivity.class);
-                intent.putExtra(Constant.EXTRA_KEY, new EditNickNameActivity.Model(tv_nickname.getText().toString().trim()));
+                intent.putExtra(Constant.EXTRA_KEY, new EditNickNameActivity.Model(tvNickname.getText().toString().trim()));
                 startActivityForResult(intent, REQUEST_CODE_EDIT_NICKNAME);
                 break;
             case R.id.rel_edit_sex:
                 intent = new Intent(this, ListChooseActivity.class);
-                if (!TextUtils.isEmpty(tv_sex.getText())) {
+                if (!TextUtils.isEmpty(tvSex.getText())) {
                     intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_SEX_TYPE,
-                            TextUtils.equals(tv_sex.getText(), "男") ? 1 : 2);
+                            TextUtils.equals(tvSex.getText(), "男") ? 1 : 2);
                 }
                 intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION,
                         ListChooseActivity.ACTION_LIST_SEX);
@@ -152,7 +153,7 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
                 break;
             case R.id.rel_edit_room:
                 isNeedRefresh = true;
-                if (TextUtils.isEmpty(tv_residence.getText())) {
+                if (TextUtils.isEmpty(tvResidence.getText())) {
                     intent = new Intent(this, EditDormitoryActivity.class);
                     intent.putExtra(Constant.EXTRA_KEY, false);
                     startActivityForResult(intent, REQUEST_CODE_EDIT_DORMITORY);
@@ -167,6 +168,8 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
                     intent = new Intent(this, EditDormitoryActivity.class);
                     startActivityForResult(intent, REQUEST_CODE_EDIT_DORMITORY);
                 }
+                break;
+            default:
                 break;
         }
     }
@@ -216,35 +219,35 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
                     .asBitmap()
                     .placeholder(R.drawable.ic_picture_error)
                     .error(R.drawable.ic_picture_error)
-                    .into(iv_avatar);
+                    .into(ivAvatar);
         } else {
-            iv_avatar.setImageResource(R.drawable.ic_picture_error);
+            ivAvatar.setImageResource(R.drawable.ic_picture_error);
         }
     }
 
     @Override
     public void setNickName(String nickName) {
-        tv_nickname.setText(nickName);
+        tvNickname.setText(nickName);
     }
 
     @Override
     public void setSex(int sex) {
-        tv_sex.setText(sex == 1 ? "男" : "女");
+        tvSex.setText(sex == 1 ? "男" : "女");
     }
 
     @Override
     public void setMobile(String mobile) {
-        tv_mobile.setText(mobile);
+        tvMobile.setText(mobile);
     }
 
     @Override
     public void setSchoolName(String schoolName) {
-        tv_school.setText(schoolName);
+        tvSchool.setText(schoolName);
     }
 
     @Override
     public void setResidenceName(String residenceName) {
-        tv_residence.setText(residenceName);
+        tvResidence.setText(residenceName);
     }
 
     @Override
@@ -273,6 +276,8 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
             case REFRESH:
                 isNeedRefresh = true;
                 break;
+            default:
+                break;
         }
     }
 
@@ -285,6 +290,9 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
         }
 
         public enum EventType {
+            /**
+             * 刷新
+             */
             REFRESH(1);
             int type;
 

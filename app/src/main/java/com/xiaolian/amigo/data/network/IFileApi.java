@@ -10,12 +10,15 @@ import rx.Observable;
 
 /**
  * 文件接口
- * <p>
- * Created by zcd on 9/19/17.
+ *
+ * @author zcd
+ * @date 17/9/19
  */
 
 public interface IFileApi {
-    // 上传文件
+    /**
+     * 上传文件
+     */
 //    @Headers("Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW")
     @Multipart
     @POST("file/upload")

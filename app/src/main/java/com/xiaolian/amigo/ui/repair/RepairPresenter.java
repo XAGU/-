@@ -19,9 +19,9 @@ package com.xiaolian.amigo.ui.repair;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.manager.intf.IRepairDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.repair.Repair;
 import com.xiaolian.amigo.data.network.model.repair.RepairReqDTO;
 import com.xiaolian.amigo.data.network.model.repair.RepairRespDTO;
-import com.xiaolian.amigo.data.network.model.repair.Repair;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.repair.adaptor.RepairAdaptor;
 import com.xiaolian.amigo.ui.repair.intf.IRepairPresenter;
@@ -33,6 +33,12 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+/**
+ * 报修记录
+ *
+ * @author caidong
+ * @date 17/9/18
+ */
 public class RepairPresenter<V extends IRepairView> extends BasePresenter<V>
         implements IRepairPresenter<V> {
     @SuppressWarnings("unused")
@@ -40,7 +46,7 @@ public class RepairPresenter<V extends IRepairView> extends BasePresenter<V>
     private IRepairDataManager repairDataManager;
 
     @Inject
-    public RepairPresenter(IRepairDataManager repairDataManager) {
+    RepairPresenter(IRepairDataManager repairDataManager) {
         super();
         this.repairDataManager = repairDataManager;
     }

@@ -4,8 +4,9 @@ import lombok.Data;
 
 /**
  * 收藏
- * <p>
- * Created by zcd on 18/1/3.
+ *
+ * @author zcd
+ * @date 18/1/3
  */
 @Data
 public class FavorDeviceReqDTO {

@@ -7,8 +7,9 @@ import lombok.Data;
 
 /**
  * 代金券
- * <p>
- * Created by zcd on 17/12/14.
+ *
+ * @author zcd
+ * @date 17/12/14
  */
 @Data
 public class UserBonusDTO implements Mapper<Bonus> {
@@ -24,7 +25,9 @@ public class UserBonusDTO implements Mapper<Bonus> {
     private String updateTime;
     private Integer useStatus;
     private Integer validStatus;
-    // 生效时间
+    /**
+     * 生效时间
+     */
     private Long startTime;
 
     @Override

@@ -21,7 +21,9 @@ import butterknife.OnClick;
 
 /**
  * 修改手机号
+ *
  * @author zcd
+ * @date 17/9/15
  */
 
 public class EditMobileActivity extends UserBaseActivity implements IEditMobileView {
@@ -30,27 +32,27 @@ public class EditMobileActivity extends UserBaseActivity implements IEditMobileV
     IEditMobilePresenter<IEditMobileView> presenter;
 
     @BindView(R.id.bt_verify_code)
-    Button bt_verify_code;
+    Button btVerifyCode;
 
     @BindView(R.id.et_mobile)
-    ClearableEditText et_mobile;
+    ClearableEditText etMobile;
 
     @BindView(R.id.et_verify_code)
-    ClearableEditText et_verify_code;
+    ClearableEditText etVerifyCode;
 
     @BindView(R.id.bt_submit)
-    Button bt_submit;
+    Button btSubmit;
 
     @OnClick(R.id.bt_verify_code)
     void onVerifyCodeButtonClick() {
-        if (verify(et_mobile.getText().toString())) {
-            presenter.getVerifyCode(et_mobile.getText().toString());
+        if (verify(etMobile.getText().toString())) {
+            presenter.getVerifyCode(etMobile.getText().toString());
         }
     }
 
     @OnClick(R.id.bt_submit)
     void onSubmitButtonClick() {
-        presenter.updateMobile(et_mobile.getText().toString().trim(), et_verify_code.getText().toString());
+        presenter.updateMobile(etMobile.getText().toString().trim(), etVerifyCode.getText().toString());
     }
 
     private boolean verify(String s) {
@@ -66,26 +68,26 @@ public class EditMobileActivity extends UserBaseActivity implements IEditMobileV
         getActivityComponent().inject(this);
         presenter.onAttach(EditMobileActivity.this);
 
-        cdb = new CountDownButtonHelper(bt_verify_code, "获取验证码", 60, 1);
+        cdb = new CountDownButtonHelper(btVerifyCode, "获取验证码", 60, 1);
         cdb.setOnFinishListener(() -> {
-            bt_verify_code.setEnabled(true);
-            bt_verify_code.setText("获取验证码");
+            btVerifyCode.setEnabled(true);
+            btVerifyCode.setText("获取验证码");
             int color = ContextCompat.getColor(getApplicationContext(), R.color.colorFullRed);
-            bt_verify_code.setTextColor(color);
-            bt_verify_code.setBackgroundResource(R.drawable.bg_rect_red_stroke);
+            btVerifyCode.setTextColor(color);
+            btVerifyCode.setBackgroundResource(R.drawable.bg_rect_red_stroke);
         });
-        et_mobile.addTextChangedListener(new TextWatcher() {
+        etMobile.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!TextUtils.isEmpty(et_mobile.getText())
-                        && !TextUtils.isEmpty(et_verify_code.getText())) {
-                    bt_submit.setEnabled(true);
+                if (!TextUtils.isEmpty(etMobile.getText())
+                        && !TextUtils.isEmpty(etVerifyCode.getText())) {
+                    btSubmit.setEnabled(true);
                 } else {
-                    bt_submit.setEnabled(false);
+                    btSubmit.setEnabled(false);
                 }
             }
 
@@ -94,7 +96,7 @@ public class EditMobileActivity extends UserBaseActivity implements IEditMobileV
             }
         });
 
-        CommonUtil.showSoftInput(this, et_mobile);
+        CommonUtil.showSoftInput(this, etMobile);
     }
 
     @Override
@@ -127,8 +129,8 @@ public class EditMobileActivity extends UserBaseActivity implements IEditMobileV
     @Override
     public void startTimer() {
         int color = ContextCompat.getColor(getApplicationContext(), R.color.colorDarkB);
-        bt_verify_code.setTextColor(color);
-        bt_verify_code.setBackgroundResource(R.drawable.bg_rect_gray_stroke);
+        btVerifyCode.setTextColor(color);
+        btVerifyCode.setBackgroundResource(R.drawable.bg_rect_gray_stroke);
         cdb.start();
     }
 

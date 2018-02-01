@@ -4,8 +4,9 @@ import lombok.Data;
 
 /**
  * 解析app支付结果
- * <p>
- * Created by zcd on 10/25/17.
+ *
+ * @author zcd
+ * @date 17/10/25
  */
 @Data
 public class AlipayTradeAppPayResultParseRespDTO {

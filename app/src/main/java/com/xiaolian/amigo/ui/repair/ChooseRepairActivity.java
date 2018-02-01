@@ -21,36 +21,38 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * <p>
- * Created by zcd on 17/11/10.
+ * 选择报修
+ *
+ * @author zcd
+ * @date 17/11/10
  */
 
 public class ChooseRepairActivity extends RepairBaseActivity {
     @BindView(R.id.tv_heater)
-    TextView tv_heater;
+    TextView tvHeater;
     @BindView(R.id.tv_dispenser)
-    TextView tv_dispenser;
+    TextView tvDispenser;
     @BindView(R.id.tv_dryer)
-    TextView tv_dryer;
+    TextView tvDryer;
     @BindView(R.id.tv_washer)
-    TextView tv_washer;
+    TextView tvWasher;
     @BindView(R.id.tv_default_dormitory)
-    TextView tv_default_dormitory;
+    TextView tvDefaultDormitory;
     @BindView(R.id.tv_favorite)
-    TextView tv_favorite;
+    TextView tvFavorite;
 
     @BindView(R.id.iv_heater_tick)
-    ImageView iv_heater_tick;
+    ImageView ivHeaterTick;
     @BindView(R.id.iv_dispenser_tick)
-    ImageView iv_dispenser_tick;
+    ImageView ivDispenserTick;
     @BindView(R.id.iv_dryer_tick)
-    ImageView iv_dryer_tick;
+    ImageView ivDryerTick;
     @BindView(R.id.iv_washer_tick)
-    ImageView iv_washer_tick;
+    ImageView ivWasherTick;
     @BindView(R.id.iv_default_tick)
-    ImageView iv_default_tick;
+    ImageView ivDefaultTick;
     @BindView(R.id.iv_favorite_tick)
-    ImageView iv_favorite_tick;
+    ImageView ivFavoriteTick;
 
     @Inject
     ISharedPreferencesHelp sharedPreferencesHelp;
@@ -76,7 +78,7 @@ public class ChooseRepairActivity extends RepairBaseActivity {
     @OnClick(R.id.rl_heater)
     void onHeaterClick() {
         clearTick();
-        iv_heater_tick.setVisibility(View.VISIBLE);
+        ivHeaterTick.setVisibility(View.VISIBLE);
         Intent intent = new Intent(this, ListChooseActivity.class);
         intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION, ListChooseActivity.ACTION_LIST_BUILDING);
         intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_DEVICE_TYPE, Device.HEATER.getType());
@@ -87,7 +89,7 @@ public class ChooseRepairActivity extends RepairBaseActivity {
     @OnClick(R.id.rl_dispenser)
     void onDispenserClick() {
         clearTick();
-        iv_dispenser_tick.setVisibility(View.VISIBLE);
+        ivDispenserTick.setVisibility(View.VISIBLE);
         Intent intent = new Intent(this, ListChooseActivity.class);
         intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION, ListChooseActivity.ACTION_LIST_BUILDING);
         intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_DEVICE_TYPE, Device.DISPENSER.getType());
@@ -98,7 +100,7 @@ public class ChooseRepairActivity extends RepairBaseActivity {
     @OnClick(R.id.rl_dryer)
     void onDryerClick() {
         clearTick();
-        iv_dryer_tick.setVisibility(View.VISIBLE);
+        ivDryerTick.setVisibility(View.VISIBLE);
         Intent intent = new Intent(this, ListChooseActivity.class);
         intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION, ListChooseActivity.ACTION_LIST_BUILDING);
         intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_DEVICE_TYPE, Device.DRYER.getType());
@@ -109,7 +111,7 @@ public class ChooseRepairActivity extends RepairBaseActivity {
     @OnClick(R.id.rl_washer)
     void onWasherClick() {
         clearTick();
-        iv_washer_tick.setVisibility(View.VISIBLE);
+        ivWasherTick.setVisibility(View.VISIBLE);
         Intent intent = new Intent(this, ListChooseActivity.class);
         intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION, ListChooseActivity.ACTION_LIST_BUILDING);
         intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_DEVICE_TYPE, Device.WASHER.getType());
@@ -120,7 +122,7 @@ public class ChooseRepairActivity extends RepairBaseActivity {
     @OnClick(R.id.rl_default_dormitory)
     void onDefaultDormitoryClick() {
         clearTick();
-        iv_default_tick.setVisibility(View.VISIBLE);
+        ivDefaultTick.setVisibility(View.VISIBLE);
         if (TextUtils.isEmpty(sharedPreferencesHelp.getUserInfo().getResidenceName())) {
             onError(getString(R.string.dormitory_empty_tip));
             return;
@@ -140,7 +142,7 @@ public class ChooseRepairActivity extends RepairBaseActivity {
     @OnClick(R.id.rl_favorite)
     void onFavoriteClick() {
         clearTick();
-        iv_favorite_tick.setVisibility(View.VISIBLE);
+        ivFavoriteTick.setVisibility(View.VISIBLE);
         Intent intent = new Intent(this, FavoriteActivity.class);
         intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION, ListChooseActivity.ACTION_LIST_BUILDING);
         intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_DEVICE_TYPE, Device.DISPENSER.getType());
@@ -150,11 +152,11 @@ public class ChooseRepairActivity extends RepairBaseActivity {
     }
 
     private void clearTick() {
-        iv_default_tick.setVisibility(View.GONE);
-        iv_dispenser_tick.setVisibility(View.GONE);
-        iv_dryer_tick.setVisibility(View.GONE);
-        iv_washer_tick.setVisibility(View.GONE);
-        iv_heater_tick.setVisibility(View.GONE);
-        iv_favorite_tick.setVisibility(View.GONE);
+        ivDefaultTick.setVisibility(View.GONE);
+        ivDispenserTick.setVisibility(View.GONE);
+        ivDryerTick.setVisibility(View.GONE);
+        ivWasherTick.setVisibility(View.GONE);
+        ivHeaterTick.setVisibility(View.GONE);
+        ivFavoriteTick.setVisibility(View.GONE);
     }
 }

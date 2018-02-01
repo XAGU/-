@@ -10,13 +10,16 @@ import rx.Observable;
 
 /**
  * 建筑相关api
- * <p>
- * Created by zcd on 17/12/14.
+ *
+ * @author zcd
+ * @date 17/12/14
  */
 
 public interface IResidenceApi {
-    // 获取建筑列表
-    // residenceLevel 1幢 2楼层 3宿舍 具体位置 buildingType 1宿舍楼 parentId上一层事物Id
+    /**
+     * 获取建筑列表
+     * residenceLevel 1幢 2楼层 3宿舍 具体位置 buildingType 1宿舍楼 parentId上一层事物Id
+     */
     @POST("residence/list")
     Observable<ApiResult<ResidenceListRespDTO>> queryResidenceList(@Body QueryResidenceListReqDTO body);
 }

@@ -12,24 +12,25 @@ import javax.inject.Inject;
 
 /**
  * 我的钱包
- * <p>
- * Created by zcd on 9/18/17.
+ *
+ * @author zcd
+ * @date 17/9/18
  */
 
 public class WalletPresenter<V extends IWalletView> extends BasePresenter<V>
         implements IWalletPresenter<V> {
-
+    @SuppressWarnings("unused")
     private static final String TAG = WalletPresenter.class.getSimpleName();
     private IWalletDataManager manager;
 
     @Inject
-    public WalletPresenter(IWalletDataManager manager) {
+    WalletPresenter(IWalletDataManager manager) {
         super();
         this.manager = manager;
     }
+
     @Override
     public void requestNetWork() {
-
         addObserver(manager.queryWallet(), new NetworkObserver<ApiResult<PersonalWalletDTO>>() {
             @Override
             public void onReady(ApiResult<PersonalWalletDTO> result) {
@@ -43,6 +44,7 @@ public class WalletPresenter<V extends IWalletView> extends BasePresenter<V>
         });
     }
 
+    @Override
     public void queryWithdrawTimeValid() {
         addObserver(manager.queryWithDrawTimeValid(), new NetworkObserver<ApiResult<QueryTimeValidRespDTO>>() {
 

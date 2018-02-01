@@ -36,6 +36,12 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+/**
+ * 报修详情
+ *
+ * @author zcd
+ * @date 17/9/19
+ */
 public class RepairDetailPresenter<V extends IRepairDetailView> extends BasePresenter<V>
         implements IRepairDetailPresenter<V> {
     @SuppressWarnings("unused")
@@ -45,7 +51,7 @@ public class RepairDetailPresenter<V extends IRepairDetailView> extends BasePres
     private Long id;
 
     @Inject
-    public RepairDetailPresenter(IRepairDataManager repairDataManager) {
+    RepairDetailPresenter(IRepairDataManager repairDataManager) {
         super();
         this.repairDataManager = repairDataManager;
     }

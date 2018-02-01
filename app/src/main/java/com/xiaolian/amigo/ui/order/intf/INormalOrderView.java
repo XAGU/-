@@ -4,12 +4,22 @@ import com.xiaolian.amigo.data.network.model.order.OrderDetailRespDTO;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 
 /**
- * <p>
- * Created by zcd on 18/1/17.
+ * 账单详情
+ *
+ * @author zcd
+ * @date 18/1/17
  */
 
 public interface INormalOrderView extends IBaseView {
+    /**
+     * 显示账单
+     *
+     * @param data 账单详情
+     */
     void renderView(OrderDetailRespDTO data);
 
+    /**
+     * 投诉
+     */
     void toComplaint();
 }

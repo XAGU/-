@@ -24,6 +24,12 @@ import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 
 import java.util.List;
 
+/**
+ * 报修申请
+ *
+ * @author caidong
+ * @date 17/9/20
+ */
 @RepairActivityContext
 public interface IRepairApplyPresenter<V extends IRepairApplyView> extends IBasePresenter<V> {
 
@@ -49,7 +55,17 @@ public interface IRepairApplyPresenter<V extends IRepairApplyView> extends IBase
      */
     void requestRepairProblems(int deviceType);
 
+    /**
+     * 设置上传报修时间
+     *
+     * @param l 时间
+     */
     void setLastRepairTime(long l);
 
+    /**
+     * 获取手机号
+     *
+     * @return 手机号
+     */
     String getMobile();
 }

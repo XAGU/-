@@ -17,7 +17,7 @@ import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.network.model.order.OrderDetailRespDTO;
 import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.ui.device.washer.WasherContent;
-import com.xiaolian.amigo.ui.device.washer.WasherQRCodeActivity;
+import com.xiaolian.amigo.ui.device.washer.WasherQrCodeActivity;
 import com.xiaolian.amigo.ui.order.intf.INormalOrderPresenter;
 import com.xiaolian.amigo.ui.order.intf.INormalOrderView;
 import com.xiaolian.amigo.ui.wallet.adaptor.TitleContentCopyDelegate;
@@ -36,11 +36,13 @@ import javax.inject.Inject;
 
 /**
  * 消费账单
- * <p>
- * Created by zcd on 10/23/17.
+ *
+ * @author zcd
+ * @date 17/10/23
  */
 
 public class NormalOrderActivity extends OrderBaseActivity implements INormalOrderView {
+    private static final int ORDER_ERROR_STATUS = 3;
     @Inject
     INormalOrderPresenter<INormalOrderView> presenter;
 
@@ -49,8 +51,8 @@ public class NormalOrderActivity extends OrderBaseActivity implements INormalOrd
     private WithdrawRechargeDetailAdapter adapter;
 
     private RecyclerView recyclerView;
-    private LinearLayout ll_bottom;
-    private TextView tv_bottom_tip;
+    private LinearLayout llBottom;
+    private TextView tvBottomTip;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,8 +71,8 @@ public class NormalOrderActivity extends OrderBaseActivity implements INormalOrd
         findViewById(R.id.tv_complaint).setOnClickListener(v -> complaint());
         findViewById(R.id.iv_back).setOnClickListener(v -> onBackPressed());
         recyclerView = findViewById(R.id.recyclerView);
-        ll_bottom = findViewById(R.id.ll_bottom);
-        tv_bottom_tip = findViewById(R.id.tv_bottom_tip);
+        llBottom = findViewById(R.id.ll_bottom);
+        tvBottomTip = findViewById(R.id.tv_bottom_tip);
     }
 
     private void complaint() {
@@ -112,7 +114,7 @@ public class NormalOrderActivity extends OrderBaseActivity implements INormalOrd
     }
 
     public void onRightOper() {
-        startActivity(new Intent(this, WasherQRCodeActivity.class)
+        startActivity(new Intent(this, WasherQrCodeActivity.class)
                 .putExtra(WasherContent.KEY_PRICE, presenter.getOrder().getConsume())
                 .putExtra(WasherContent.KEY_MODE_DESC, presenter.getOrder().getModeDesc())
                 .putExtra(WasherContent.KEY_QR_CODE_URL, presenter.getOrder().getQrCode())
@@ -140,7 +142,7 @@ public class NormalOrderActivity extends OrderBaseActivity implements INormalOrd
                     String.format("%s %s元", data.getModeDesc(), data.getConsume().replace("¥", "")), WithdrawRechargeDetailAdapter.TITLE_CONTENT_TYPE));
         }
         List<TitleContentListDelegate.ListItem> listItems = new ArrayList<>();
-        if (CommonUtil.equals(data.getStatus(), 3)) {
+        if (CommonUtil.equals(data.getStatus(), ORDER_ERROR_STATUS)) {
             // 异常账单
             // 是否有代金券
             if (TextUtils.isEmpty(data.getBonus())) {
@@ -171,29 +173,29 @@ public class NormalOrderActivity extends OrderBaseActivity implements INormalOrd
     private void setBottomLayout(OrderDetailRespDTO data) {
         // 洗衣机
         if (Device.getDevice(data.getDeviceType()) == Device.WASHER) {
-            if (CommonUtil.equals(data.getStatus(), 3)) {
+            if (CommonUtil.equals(data.getStatus(), ORDER_ERROR_STATUS)) {
                 // 异常订单
-                tv_bottom_tip.setVisibility(View.VISIBLE);
-                tv_bottom_tip.setText(getString(R.string.washer_order_error_tip));
-                tv_bottom_tip.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-                tv_bottom_tip.setTextColor(ContextCompat.getColor(this, R.color.colorFullRed));
+                tvBottomTip.setVisibility(View.VISIBLE);
+                tvBottomTip.setText(getString(R.string.washer_order_error_tip));
+                tvBottomTip.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+                tvBottomTip.setTextColor(ContextCompat.getColor(this, R.color.colorFullRed));
             } else {
-                ll_bottom.setVisibility(View.VISIBLE);
+                llBottom.setVisibility(View.VISIBLE);
             }
         } else {
-            if (CommonUtil.equals(data.getStatus(), 3)) {
+            if (CommonUtil.equals(data.getStatus(), ORDER_ERROR_STATUS)) {
                 // 异常订单
-                tv_bottom_tip.setVisibility(View.VISIBLE);
-                tv_bottom_tip.setText(getString(R.string.order_error_tip));
-                tv_bottom_tip.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-                tv_bottom_tip.setTextColor(ContextCompat.getColor(this, R.color.colorFullRed));
+                tvBottomTip.setVisibility(View.VISIBLE);
+                tvBottomTip.setText(getString(R.string.order_error_tip));
+                tvBottomTip.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+                tvBottomTip.setTextColor(ContextCompat.getColor(this, R.color.colorFullRed));
             } else {
                 // 正常订单
                 if (TextUtils.isEmpty(data.getBonus()) && data.getLowest() != null && data.getLowest()) {
-                    tv_bottom_tip.setVisibility(View.VISIBLE);
-                    tv_bottom_tip.setText(getString(R.string.order_no_use_tip));
-                    tv_bottom_tip.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-                    tv_bottom_tip.setTextColor(ContextCompat.getColor(this, R.color.colorDark9));
+                    tvBottomTip.setVisibility(View.VISIBLE);
+                    tvBottomTip.setText(getString(R.string.order_no_use_tip));
+                    tvBottomTip.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+                    tvBottomTip.setTextColor(ContextCompat.getColor(this, R.color.colorDark9));
                 }
             }
         }

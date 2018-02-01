@@ -9,12 +9,12 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.util.Constant;
-import com.xiaolian.amigo.util.ScreenUtils;
 import com.xiaolian.amigo.ui.user.adaptor.EditAvatarAdaptor;
 import com.xiaolian.amigo.ui.user.intf.IEditAvatarPresenter;
-import com.xiaolian.amigo.ui.user.intf.IEditAvatarVIew;
+import com.xiaolian.amigo.ui.user.intf.IEditAvatarView;
 import com.xiaolian.amigo.ui.widget.GridSpacesItemDecoration;
+import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.util.ScreenUtils;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import java.util.ArrayList;
@@ -29,15 +29,16 @@ import butterknife.OnClick;
 
 /**
  * 更换头像
- * <p>
- * Created by zcd on 9/27/17.
+ *
+ * @author zcd
+ * @date 17/9/27
  */
 
-public class EditAvatarActivity extends UserBaseActivity implements IEditAvatarVIew {
+public class EditAvatarActivity extends UserBaseActivity implements IEditAvatarView {
     public static final String INTENT_KEY_CURRENT_AVATAR = "intent_key_current_avatar";
 
     @Inject
-    IEditAvatarPresenter<IEditAvatarVIew> presenter;
+    IEditAvatarPresenter<IEditAvatarView> presenter;
 
     List<EditAvatarAdaptor.AvatarWrapper> avatars = new ArrayList<>();
 
@@ -45,10 +46,10 @@ public class EditAvatarActivity extends UserBaseActivity implements IEditAvatarV
     RecyclerView recyclerView;
 
     @BindView(R.id.iv_current_avatar)
-    ImageView iv_current_avatar;
+    ImageView ivCurrentAvatar;
 
     @BindView(R.id.bt_submit)
-    Button bt_submit;
+    Button btSubmit;
 
     EditAvatarAdaptor adaptor;
     private String avatarUrl;
@@ -68,9 +69,9 @@ public class EditAvatarActivity extends UserBaseActivity implements IEditAvatarV
                         .asBitmap()
                         .placeholder(R.drawable.ic_picture_error)
                         .error(R.drawable.ic_picture_error)
-                        .into(iv_current_avatar);
+                        .into(ivCurrentAvatar);
             } else {
-                iv_current_avatar.setImageResource(R.drawable.ic_picture_error);
+                ivCurrentAvatar.setImageResource(R.drawable.ic_picture_error);
             }
         }
 
@@ -91,7 +92,7 @@ public class EditAvatarActivity extends UserBaseActivity implements IEditAvatarV
                             .asBitmap()
                             .placeholder(R.drawable.ic_picture_error)
                             .error(R.drawable.ic_picture_error)
-                            .into(iv_current_avatar);
+                            .into(ivCurrentAvatar);
                 }
                 toggleSubmitBtnStatus();
                 adaptor.notifyDataSetChanged();
@@ -141,9 +142,9 @@ public class EditAvatarActivity extends UserBaseActivity implements IEditAvatarV
             Glide.with(this)
                     .load(Constant.IMAGE_PREFIX + pictureUrl
                             + String.format(Locale.getDefault(), Constant.OSS_IMAGE_RESIZE,
-                                    imageSize))
+                            imageSize))
 //                    .asBitmap()
-                    .into(iv_current_avatar);
+                    .into(ivCurrentAvatar);
         }
         toggleSubmitBtnStatus();
     }
@@ -182,8 +183,8 @@ public class EditAvatarActivity extends UserBaseActivity implements IEditAvatarV
      */
     public void toggleSubmitBtnStatus() {
         boolean condition = !TextUtils.isEmpty(avatarUrl);
-        bt_submit.setEnabled(condition);
-        bt_submit.getBackground().setAlpha(condition ? 255 : 100);
+        btSubmit.setEnabled(condition);
+        btSubmit.getBackground().setAlpha(condition ? 255 : 100);
     }
 
     @Override

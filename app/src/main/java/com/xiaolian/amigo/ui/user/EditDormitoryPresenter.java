@@ -26,8 +26,9 @@ import javax.inject.Inject;
 
 /**
  * 编辑宿舍
- * <p>
- * Created by zcd on 9/19/17.
+ *
+ * @author zcd
+ * @date 17/9/19
  */
 
 public class EditDormitoryPresenter<V extends IEditDormitoryView> extends BasePresenter<V>
@@ -35,7 +36,7 @@ public class EditDormitoryPresenter<V extends IEditDormitoryView> extends BasePr
     private IUserDataManager userDataManager;
 
     @Inject
-    public EditDormitoryPresenter(IUserDataManager manager) {
+    EditDormitoryPresenter(IUserDataManager manager) {
         super();
         this.userDataManager = manager;
     }
@@ -45,7 +46,7 @@ public class EditDormitoryPresenter<V extends IEditDormitoryView> extends BasePr
         SimpleQueryReqDTO dto = new SimpleQueryReqDTO();
         dto.setPage(page);
         dto.setSize(size);
-        addObserver(userDataManager.queryUserResidenceList(dto), new NetworkObserver<ApiResult<QueryUserResidenceListRespDTO>>(false, true){
+        addObserver(userDataManager.queryUserResidenceList(dto), new NetworkObserver<ApiResult<QueryUserResidenceListRespDTO>>(false, true) {
 
             @Override
             public void onReady(ApiResult<QueryUserResidenceListRespDTO> result) {

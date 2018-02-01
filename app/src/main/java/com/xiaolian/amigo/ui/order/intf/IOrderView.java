@@ -21,6 +21,12 @@ import com.xiaolian.amigo.ui.order.adaptor.OrderAdaptor;
 
 import java.util.List;
 
+/**
+ * 账单
+ *
+ * @author caidong
+ * @date 17/9/15
+ */
 public interface IOrderView extends IBaseListView {
 
     /**

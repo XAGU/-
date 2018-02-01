@@ -24,19 +24,20 @@ import butterknife.OnClick;
 
 /**
  * 关于我们
- * <p>
- * Created by zcd on 10/13/17.
+ *
+ * @author zcd
+ * @date 17/10/13
  */
 
 public class AboutUsActivity extends MoreBaseActivity implements IAboutUsView {
     @Inject
     IAboutUsPresenter<IAboutUsView> presenter;
     @BindView(R.id.tv_version)
-    TextView tv_version;
+    TextView tvVersion;
     @BindView(R.id.rl_update)
-    RelativeLayout rl_update;
+    RelativeLayout rlUpdate;
     @BindView(R.id.tv_new_version)
-    TextView tv_new_version;
+    TextView tvNewVersion;
     private RxPermissions rxPermissions;
     private String versionName;
     private Integer versionCode;
@@ -50,7 +51,7 @@ public class AboutUsActivity extends MoreBaseActivity implements IAboutUsView {
         presenter.onAttach(AboutUsActivity.this);
         versionName = AppUtils.getVersionName(getApplicationContext());
         versionCode = AppUtils.getAppVersionCode(getApplicationContext());
-        tv_version.setText(getString(R.string.app_name) + " " + versionName);
+        tvVersion.setText(getString(R.string.app_name) + " " + versionName);
         presenter.checkUpdate(versionCode, versionName, false);
     }
 
@@ -89,13 +90,12 @@ public class AboutUsActivity extends MoreBaseActivity implements IAboutUsView {
             return;
         }
         model = version;
-        rl_update.setVisibility(View.VISIBLE);
-        tv_new_version.setText("V" + version.getVersionName());
+        rlUpdate.setVisibility(View.VISIBLE);
+        tvNewVersion.setText("V" + version.getVersionName());
     }
 
     @OnClick(R.id.rl_update)
     void onUpdateClick() {
-//        presenter.checkUpdate(versionCode, versionName, true);
         showUpdateDialog(model);
     }
 

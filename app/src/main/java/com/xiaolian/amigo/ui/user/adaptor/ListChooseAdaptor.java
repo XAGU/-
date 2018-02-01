@@ -25,6 +25,7 @@ import lombok.Data;
  * ListChooseAdapter
  *
  * @author zcd
+ * @date 17/9/15
  */
 public class ListChooseAdaptor extends RecyclerView.Adapter<ListChooseAdaptor.ViewHolder> {
 
@@ -38,6 +39,12 @@ public class ListChooseAdaptor extends RecyclerView.Adapter<ListChooseAdaptor.Vi
     private boolean checkDeviceExist = false;
 
     public interface OnItemClickListener {
+        /**
+         * 列表点击事件
+         *
+         * @param view     view
+         * @param position 位置
+         */
         void onItemClick(View view, int position);
     }
 
@@ -75,18 +82,18 @@ public class ListChooseAdaptor extends RecyclerView.Adapter<ListChooseAdaptor.Vi
                 Log.w(TAG, e);
             }
         });
-        holder.tv_content.setText(datas.get(holder.getAdapterPosition()).content);
+        holder.tvContent.setText(datas.get(holder.getAdapterPosition()).content);
         if (datas.get(holder.getAdapterPosition()).tick) {
-            holder.iv_tick.setVisibility(View.VISIBLE);
+            holder.ivTick.setVisibility(View.VISIBLE);
             lastTickPostion = holder.getAdapterPosition();
         } else {
-            holder.iv_tick.setVisibility(View.GONE);
+            holder.ivTick.setVisibility(View.GONE);
         }
         if (checkDeviceExist) {
             if (datas.get(holder.getAdapterPosition()).isDeviceExist()) {
-                holder.tv_device_exist.setVisibility(View.GONE);
+                holder.tvDeviceExist.setVisibility(View.GONE);
             } else {
-                holder.tv_device_exist.setVisibility(View.VISIBLE);
+                holder.tvDeviceExist.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -98,11 +105,11 @@ public class ListChooseAdaptor extends RecyclerView.Adapter<ListChooseAdaptor.Vi
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.tv_content)
-        TextView tv_content;
+        TextView tvContent;
         @BindView(R.id.iv_tick)
-        ImageView iv_tick;
+        ImageView ivTick;
         @BindView(R.id.tv_device_exist)
-        TextView tv_device_exist;
+        TextView tvDeviceExist;
 
         public ViewHolder(View itemView) {
             super(itemView);

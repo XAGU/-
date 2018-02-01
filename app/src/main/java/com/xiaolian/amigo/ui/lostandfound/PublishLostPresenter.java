@@ -39,12 +39,14 @@ import rx.schedulers.Schedulers;
 
 /**
  * 失物发布
- * <p>
- * Created by zcd on 9/21/17.
+ *
+ * @author zcd
+ * @date 17/9/21
  */
 
 public class PublishLostPresenter<V extends IPublishLostView> extends BasePresenter<V>
         implements IPublishLostPresenter<V> {
+    @SuppressWarnings("unused")
     private static final String TAG = PublishLostPresenter.class.getSimpleName();
     private ILostAndFoundDataManager lostAndFoundManager;
     private IUserDataManager userDataManager;
@@ -120,6 +122,7 @@ public class PublishLostPresenter<V extends IPublishLostView> extends BasePresen
                 });
     }
 
+    @SuppressWarnings("unused")
     private void uploadImage(OSSClient client, OssModel model, String filePath) {
         getMvpView().post(() -> getMvpView().showLoading());
         PutObjectRequest put = new PutObjectRequest(model.getBucket(),

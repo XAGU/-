@@ -4,8 +4,9 @@ import lombok.Data;
 
 /**
  * 获取支付宝app支付订单请求参数
- * <p>
- * Created by zcd on 10/25/17.
+ *
+ * @author zcd
+ * @date 17/10/25
  */
 @Data
 public class AlipayTradeAppPayArgsRespDTO {

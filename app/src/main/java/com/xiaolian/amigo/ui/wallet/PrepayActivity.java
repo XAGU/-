@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.ui.main.MainActivity;
 import com.xiaolian.amigo.ui.wallet.adaptor.PrepayAdaptor;
 import com.xiaolian.amigo.ui.wallet.intf.IPrepayPresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IPrepayView;
@@ -24,8 +23,9 @@ import butterknife.ButterKnife;
 
 /**
  * 预付金额
- * <p>
- * Created by zcd on 10/10/17.
+ *
+ * @author zcd
+ * @date 17/10/10
  */
 public class PrepayActivity extends WalletBaseListActivity implements IPrepayView {
 
@@ -53,7 +53,7 @@ public class PrepayActivity extends WalletBaseListActivity implements IPrepayVie
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 startActivity(new Intent(PrepayActivity.this, PrepayOrderActivity.class)
-                                .putExtra(Constant.EXTRA_KEY, orders.get(position)));
+                        .putExtra(Constant.EXTRA_KEY, orders.get(position)));
             }
 
             @Override

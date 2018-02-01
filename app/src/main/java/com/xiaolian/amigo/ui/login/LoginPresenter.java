@@ -32,13 +32,19 @@ import com.xiaolian.amigo.ui.login.intf.ILoginView;
 
 import javax.inject.Inject;
 
+/**
+ * 登录页presenter
+ *
+ * @author caidong
+ * @date 17/9/14
+ */
 public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
         implements ILoginPresenter<V> {
 
     private ILoginDataManager loginDataManager;
 
     @Inject
-    public LoginPresenter(ILoginDataManager loginDataManager) {
+    LoginPresenter(ILoginDataManager loginDataManager) {
         super();
         this.loginDataManager = loginDataManager;
     }
@@ -101,7 +107,6 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
                     getMvpView().onSuccess(R.string.register_success);
                     loginDataManager.setRememberMobile(mobile);
                     getMvpView().gotoMainView();
-//                    getMvpView().gotoLoginView();
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }

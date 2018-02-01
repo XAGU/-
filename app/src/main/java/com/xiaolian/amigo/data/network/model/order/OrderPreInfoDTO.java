@@ -9,22 +9,35 @@ import lombok.Data;
 
 /**
  * 订单预备信息
- * <p>
- * Created by zcd on 10/13/17.
+ *
+ * @author zcd
+ * @date 17/10/13
  */
 @Data
 public class OrderPreInfoDTO implements Parcelable {
-    // 代金券
+    /**
+     * 代金券
+     */
     private Bonus bonus;
-    // 预付金额
+    /**
+     * 预付金额
+     */
     private Double prepay;
-    // 最小预付金额
+    /**
+     * 最小预付金额
+     */
     private Double minPrepay;
-    // 余额
+    /**
+     * 余额
+     */
     private Double balance;
-    // 客服电话
+    /**
+     * 客服电话
+     */
     private String csMobile;
-    // 最低费率
+    /**
+     * 最低费率
+     */
     private Integer price;
 
     public OrderPreInfoDTO() {

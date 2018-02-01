@@ -20,17 +20,38 @@ import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.di.RepairActivityContext;
 import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 
+/**
+ * 报修详情
+ *
+ * @author caidong
+ * @date 17/9/19
+ */
 @RepairActivityContext
 public interface IRepairDetailPresenter<V extends IRepairDetailView> extends IBasePresenter<V> {
 
-    // 查询报修单详情
+    /**
+     * 查询报修单详情
+     *
+     * @param id 报修id
+     */
     void requestRepailDetail(Long id);
 
-    // 提醒客服
+    /**
+     * 提醒客服
+     *
+     * @param sourceId 来源id
+     */
     void remind(Long sourceId);
 
+    /**
+     * 获取deivce
+     *
+     * @return device
+     */
     Device getDevice();
 
-    // 取消报修
+    /**
+     * 取消报修
+     */
     void cancelRepair();
 }

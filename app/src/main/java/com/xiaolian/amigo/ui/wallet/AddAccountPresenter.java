@@ -12,17 +12,19 @@ import javax.inject.Inject;
 
 /**
  * 添加账户
- * <p>
- * Created by zcd on 10/27/17.
+ *
+ * @author zcd
+ * @date 17/10/27
  */
 
 public class AddAccountPresenter<V extends IAddAccountView> extends BasePresenter<V>
         implements IAddAccountPresenter<V> {
+    @SuppressWarnings("unused")
     private static final String TAG = AddAccountPresenter.class.getSimpleName();
     private IWalletDataManager walletDataManager;
 
     @Inject
-    public AddAccountPresenter(IWalletDataManager walletDataManager) {
+    AddAccountPresenter(IWalletDataManager walletDataManager) {
         this.walletDataManager = walletDataManager;
     }
 

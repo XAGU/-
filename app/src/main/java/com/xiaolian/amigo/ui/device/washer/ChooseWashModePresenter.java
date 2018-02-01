@@ -18,8 +18,9 @@ import javax.inject.Inject;
 
 /**
  * 选择洗衣机模式
- * <p>
- * Created by zcd on 18/1/12.
+ *
+ * @author zcd
+ * @date 18/1/12
  */
 
 public class ChooseWashModePresenter<V extends IChooseWashModeView> extends BasePresenter<V>
@@ -28,7 +29,7 @@ public class ChooseWashModePresenter<V extends IChooseWashModeView> extends Base
     private String deviceNo;
 
     @Inject
-    public ChooseWashModePresenter(IWasherDataManager washerDataManager) {
+    ChooseWashModePresenter(IWasherDataManager washerDataManager) {
         this.washerDataManager = washerDataManager;
     }
 

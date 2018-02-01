@@ -2,8 +2,8 @@ package com.xiaolian.amigo.ui.login;
 
 import com.xiaolian.amigo.data.manager.intf.ILoginDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.login.PasswordResetReqDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
+import com.xiaolian.amigo.data.network.model.login.PasswordResetReqDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.login.intf.IPasswordRetrievalStep2Presenter;
 import com.xiaolian.amigo.ui.login.intf.IPasswordRetrievalStep2View;
@@ -12,8 +12,9 @@ import javax.inject.Inject;
 
 /**
  * 找回密码2
- * <p>
- * Created by zcd on 9/20/17.
+ *
+ * @author zcd
+ * @date 17/9/20
  */
 
 public class PasswordRetrievalStep2Presenter<V extends IPasswordRetrievalStep2View> extends BasePresenter<V>
@@ -22,7 +23,7 @@ public class PasswordRetrievalStep2Presenter<V extends IPasswordRetrievalStep2Vi
     private ILoginDataManager loginDataManager;
 
     @Inject
-    public PasswordRetrievalStep2Presenter(ILoginDataManager loginDataManager) {
+    PasswordRetrievalStep2Presenter(ILoginDataManager loginDataManager) {
         super();
         this.loginDataManager = loginDataManager;
     }

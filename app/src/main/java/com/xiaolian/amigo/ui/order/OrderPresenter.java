@@ -33,6 +33,12 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+/**
+ * 订单列表
+ *
+ * @author caidong
+ * @date 17/9/15
+ */
 public class OrderPresenter<V extends IOrderView> extends BasePresenter<V>
         implements IOrderPresenter<V> {
     @SuppressWarnings("unused")
@@ -40,7 +46,7 @@ public class OrderPresenter<V extends IOrderView> extends BasePresenter<V>
     private IOrderDataManager orderDataManager;
 
     @Inject
-    public OrderPresenter(IOrderDataManager orderDataManager) {
+    OrderPresenter(IOrderDataManager orderDataManager) {
         super();
         this.orderDataManager = orderDataManager;
     }

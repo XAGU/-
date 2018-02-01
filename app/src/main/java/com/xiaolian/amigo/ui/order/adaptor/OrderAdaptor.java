@@ -19,12 +19,23 @@ import butterknife.ButterKnife;
 import lombok.Data;
 
 /**
- * Created by caidong on 2017/9/12.
+ * 账单列表adapter
+ *
+ * @author caidong
+ * @date 17/9/12
  */
 public class OrderAdaptor extends RecyclerView.Adapter<OrderAdaptor.ViewHolder> {
+    private static final int ORDER_ERROR_STATUS = 3;
+
     public interface OrderDetailClickListener {
+        /**
+         * 账单列表点击事件
+         *
+         * @param order 被点击账单
+         */
         void orderDetailClick(Order order);
     }
+
     private OrderDetailClickListener listener;
     private List<OrderWrapper> orders;
     private Context context;
@@ -52,24 +63,23 @@ public class OrderAdaptor extends RecyclerView.Adapter<OrderAdaptor.ViewHolder> 
                 listener.orderDetailClick(holder.order));
         if (null != wrapper) {
             // status为3表示异常订单
-            if (CommonUtil.equals(wrapper.getOrder().getStatus(), 3)) {
-//                holder.v_type.setBackgroundResource(errorOrderColorRes);
-                holder.v_type.setBackgroundResource(Device.getDevice(wrapper.getType()).getColorRes());
-                holder.tv_device.setText(wrapper.getDevice());
-                holder.tv_time.setText(wrapper.getTime());
+            if (CommonUtil.equals(wrapper.getOrder().getStatus(), ORDER_ERROR_STATUS)) {
+                holder.vType.setBackgroundResource(Device.getDevice(wrapper.getType()).getColorRes());
+                holder.tvDevice.setText(wrapper.getDevice());
+                holder.tvTime.setText(wrapper.getTime());
                 if (Device.getDevice(wrapper.getOrder().getDeviceType()) == Device.WASHER) {
-                    holder.tv_amount.setText("-¥0");
+                    holder.tvAmount.setText("-¥0");
                 } else {
-                    holder.tv_amount.setText("免费");
+                    holder.tvAmount.setText("免费");
                 }
-                holder.tv_minus.setVisibility(View.GONE);
+                holder.tvMinus.setVisibility(View.GONE);
                 holder.order = wrapper.getOrder();
             } else {
-                holder.tv_minus.setVisibility(View.VISIBLE);
-                holder.v_type.setBackgroundResource(Device.getDevice(wrapper.getType()).getColorRes());
-                holder.tv_device.setText(wrapper.getDevice());
-                holder.tv_time.setText(wrapper.getTime());
-                holder.tv_amount.setText(String.valueOf(wrapper.getAmount()));
+                holder.tvMinus.setVisibility(View.VISIBLE);
+                holder.vType.setBackgroundResource(Device.getDevice(wrapper.getType()).getColorRes());
+                holder.tvDevice.setText(wrapper.getDevice());
+                holder.tvTime.setText(wrapper.getTime());
+                holder.tvAmount.setText(String.valueOf(wrapper.getAmount()));
                 holder.order = wrapper.getOrder();
             }
         }
@@ -82,15 +92,15 @@ public class OrderAdaptor extends RecyclerView.Adapter<OrderAdaptor.ViewHolder> 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.v_type)
-        View v_type;
+        View vType;
         @BindView(R.id.tv_device)
-        TextView tv_device;
+        TextView tvDevice;
         @BindView(R.id.tv_time)
-        TextView tv_time;
+        TextView tvTime;
         @BindView(R.id.tv_amount)
-        TextView tv_amount;
+        TextView tvAmount;
         @BindView(R.id.tv_minus)
-        TextView tv_minus;
+        TextView tvMinus;
 
         Context context;
         Order order;
@@ -104,15 +114,25 @@ public class OrderAdaptor extends RecyclerView.Adapter<OrderAdaptor.ViewHolder> 
 
     @Data
     public static class OrderWrapper {
-        // 订单类型
+        /**
+         * 订单类型
+         */
         Integer type;
-        // 设备
+        /**
+         * 设备
+         */
         String device;
-        // 时间
+        /**
+         * 时间
+         */
         String time;
-        // 金额
+        /**
+         * 金额
+         */
         String amount;
-        // 原始订单内容，供查询订单详情时使用
+        /**
+         * 原始订单内容，供查询订单详情时使用
+         */
         Order order;
 
         public OrderWrapper(Order order) {

@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.enumeration.DispenserWater;
-import com.xiaolian.amigo.data.network.model.device.WaterInListDTO;
 import com.xiaolian.amigo.data.vo.ScanDeviceGroup;
 
 import java.util.List;
@@ -24,13 +23,27 @@ import lombok.Data;
 
 /**
  * 饮水机适配器
+ *
  * @author zcd
+ * @date 17/10/13
  */
 
 public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenserAdaptor.ViewHolder> {
     public interface OnItemClickListener {
+        /**
+         * 选择饮水机列表点击事件
+         *
+         * @param deviceNo    设备编号
+         * @param supplierId  供应商id
+         * @param isFavor     是否已收藏
+         * @param residenceId 建筑id
+         * @param usefor      水温
+         * @param location    设备位置
+         * @param price       价格
+         */
         void onItemClick(String deviceNo, Long supplierId, Boolean isFavor, Long residenceId, String usefor, String location, Integer price);
     }
+
     private OnItemClickListener itemClickListener;
     private int lastExpandPosition = -1;
     private List<ChooseDispenserAdaptor.DispenserWrapper> mData;
@@ -38,9 +51,9 @@ public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenser
     private Context context;
     private boolean expandAble = true;
 
-    public ChooseDispenserAdaptor(Context context, int layoutId,
-                                  List<DispenserWrapper> datas ,
-                                  boolean expandable) {
+    ChooseDispenserAdaptor(Context context, int layoutId,
+                           List<DispenserWrapper> datas,
+                           boolean expandable) {
         this.mData = datas;
         this.context = context;
         this.layoutId = layoutId;
@@ -57,14 +70,14 @@ public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenser
     public void onBindViewHolder(ViewHolder holder, int position) {
         ChooseDispenserAdaptor.DispenserWrapper dispenserWrapper =
                 mData.get(holder.getAdapterPosition());
-        holder.tv_location.setText(dispenserWrapper.getLocation());
+        holder.tvLocation.setText(dispenserWrapper.getLocation());
         if (!expandAble) {
-            holder.iv_arrow.setVisibility(View.GONE);
+            holder.ivArrow.setVisibility(View.GONE);
         }
-        holder.tv_title.setText(Device.getDevice(dispenserWrapper.getDeviceGroup().getType()).getDesc());
-        holder.tv_title.setTextColor(ContextCompat.getColor(context,
+        holder.tvTitle.setText(Device.getDevice(dispenserWrapper.getDeviceGroup().getType()).getDesc());
+        holder.tvTitle.setTextColor(ContextCompat.getColor(context,
                 Device.getDevice(dispenserWrapper.getDeviceGroup().getType()).getColorRes()));
-        holder.rl_top.setOnClickListener(v -> {
+        holder.rlTop.setOnClickListener(v -> {
             if (!expandAble && itemClickListener != null) {
                 itemClickListener.onItemClick(dispenserWrapper.getDeviceGroup().getWater().get(0).getMacAddress(),
                         dispenserWrapper.getDeviceGroup().getWater().get(0).getSupplierId(),
@@ -89,44 +102,44 @@ public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenser
                 lastExpandPosition = holder.getAdapterPosition();
             }
             ObjectAnimator anim =
-                    ObjectAnimator.ofFloat(holder.iv_arrow,
+                    ObjectAnimator.ofFloat(holder.ivArrow,
                             "rotation", expand ? 0f : -180f, expand ? 180f : 0f);
             anim.setDuration(200);
             anim.start();
             notifyDataSetChanged();
         });
         if (dispenserWrapper.isExpanded()) {
-            holder.v_divide.setVisibility(View.VISIBLE);
-            holder.rl_bottom.setVisibility(View.VISIBLE);
+            holder.vDivide.setVisibility(View.VISIBLE);
+            holder.rlBottom.setVisibility(View.VISIBLE);
             lastExpandPosition = holder.getAdapterPosition();
         } else {
-            if (holder.rl_bottom.getVisibility() == View.VISIBLE) {
+            if (holder.rlBottom.getVisibility() == View.VISIBLE) {
                 ObjectAnimator anim =
-                        ObjectAnimator.ofFloat(holder.iv_arrow,
+                        ObjectAnimator.ofFloat(holder.ivArrow,
                                 "rotation", -180f, 0f);
                 anim.setDuration(200);
                 anim.start();
             }
-            holder.v_divide.setVisibility(View.GONE);
-            holder.rl_bottom.setVisibility(View.GONE);
+            holder.vDivide.setVisibility(View.GONE);
+            holder.rlBottom.setVisibility(View.GONE);
         }
-        for (TextView textView : holder.tv_water) {
+        for (TextView textView : holder.tvWater) {
             textView.setVisibility(View.GONE);
         }
-        for (int i = 0; i < dispenserWrapper.getDeviceGroup().getWater().size(); i ++) {
+        for (int i = 0; i < dispenserWrapper.getDeviceGroup().getWater().size(); i++) {
             final int waterPosition = i;
             String tempName = dispenserWrapper.getDeviceGroup().getWater().get(i).getName();
             if (TextUtils.isEmpty(tempName)) {
-                holder.tv_water[i].setText(
+                holder.tvWater[i].setText(
                         DispenserWater.getTemperature(dispenserWrapper.getDeviceGroup().getWater()
                                 .get(i).getUsefor()).getDesc());
             } else {
-                holder.tv_water[i].setText(tempName);
+                holder.tvWater[i].setText(tempName);
             }
-            holder.tv_water[i].setVisibility(View.VISIBLE);
-            holder.tv_water[i].setBackgroundResource(DispenserWater.getTemperature(dispenserWrapper.getDeviceGroup().getWater()
+            holder.tvWater[i].setVisibility(View.VISIBLE);
+            holder.tvWater[i].setBackgroundResource(DispenserWater.getTemperature(dispenserWrapper.getDeviceGroup().getWater()
                     .get(i).getUsefor()).getBackgroundDrawable());
-            holder.tv_water[i].setOnClickListener(v -> {
+            holder.tvWater[i].setOnClickListener(v -> {
                 if (itemClickListener != null) {
                     itemClickListener.onItemClick(dispenserWrapper.getDeviceGroup().getWater().get(waterPosition).getMacAddress(),
                             dispenserWrapper.getDeviceGroup().getWater().get(waterPosition).getSupplierId(),
@@ -150,32 +163,35 @@ public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenser
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tv_location;
-        TextView tv_title;
-        RelativeLayout rl_top;
-        View v_divide;
-        RelativeLayout rl_bottom;
-        TextView[] tv_water;
-        ImageView iv_arrow;
+        TextView tvLocation;
+        TextView tvTitle;
+        RelativeLayout rlTop;
+        View vDivide;
+        RelativeLayout rlBottom;
+        TextView[] tvWater;
+        ImageView ivArrow;
+
         public ViewHolder(View itemView) {
             super(itemView);
-            tv_title = itemView.findViewById(R.id.tv_title);
-            tv_water = new TextView[] {
+            tvTitle = itemView.findViewById(R.id.tv_title);
+            tvWater = new TextView[]{
                     itemView.findViewById(R.id.tv_cold_water),
                     itemView.findViewById(R.id.tv_ice_water),
                     itemView.findViewById(R.id.tv_hot_water)
             };
-            iv_arrow = itemView.findViewById(R.id.iv_arrow);
-            tv_location = itemView.findViewById(R.id.tv_location);
-            rl_top = itemView.findViewById(R.id.rl_top);
-            v_divide = itemView.findViewById(R.id.v_divide);
-            rl_bottom = itemView.findViewById(R.id.rl_bottom);
+            ivArrow = itemView.findViewById(R.id.iv_arrow);
+            tvLocation = itemView.findViewById(R.id.tv_location);
+            rlTop = itemView.findViewById(R.id.rl_top);
+            vDivide = itemView.findViewById(R.id.v_divide);
+            rlBottom = itemView.findViewById(R.id.rl_bottom);
         }
     }
 
     @Data
     public static class DispenserWrapper {
-        // 设备位置
+        /**
+         * 设备位置
+         **/
         String location;
         ScanDeviceGroup deviceGroup;
         boolean expanded = false;

@@ -87,7 +87,9 @@ import static com.xiaolian.amigo.util.Log.getContext;
 
 /**
  * 首页
- * Created by yik on 2017/9/5.
+ *
+ * @author yik
+ * @date 17/9/5
  */
 
 public class MainActivity extends MainBaseActivity implements IMainView {
@@ -104,6 +106,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     public static final String INTENT_KEY_BANNERS = "intent_key_banners";
     private static final String FRAGMENT_TAG_HOME = "home";
     private static final String FRAGMENT_TAG_PROFILE = "profile";
+    private static final int GESTURE_DETECTOR_MIN_LENGHT = 200;
 
     @Inject
     IMainPresenter<IMainView> presenter;
@@ -112,33 +115,43 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     ImageView btSwitch;
 
     @BindView(R.id.tv_nickName)
-    TextView tv_nickName;
+    TextView tvNickName;
 
     @BindView(R.id.tv_schoolName)
-    TextView tv_schoolName;
+    TextView tvSchoolName;
 
-    // 头像
+    /**
+     * 头像
+     */
     @BindView(R.id.iv_avatar)
-    ImageView iv_avatar;
+    ImageView ivAvatar;
 
-    // 通知数量上标
+    /**
+     * 通知数量上标
+     */
     @BindView(R.id.tv_notice_count)
-    TextView tv_notice_count;
+    TextView tvNoticeCount;
 
-    // MainActivity根View
+    /**
+     * MainActivity根View
+     */
     @BindView(R.id.rl_main)
-    RelativeLayout rl_main;
+    RelativeLayout rlMain;
 
-    // 通知
+    /**
+     * 通知
+     */
     @BindView(R.id.rl_notice)
-    RelativeLayout rl_notice;
+    RelativeLayout rlNotice;
 
     @BindView(R.id.sv_main)
-    ScrollView sl_main;
+    ScrollView slMain;
 
-    // 校ok迁移
+    /**
+     * 校ok迁移
+     */
     @BindView(R.id.iv_xok_migrate)
-    ImageView iv_xok_migrate;
+    ImageView ivXokMigrate;
 
     private GestureDetector mGestureDetector;
 
@@ -208,7 +221,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                     return super.onFling(e1, e2, velocityX, velocityY);
                 }
                 if (hasBanners && current == 0) {
-                    Banner banner = (Banner) sl_main.getRootView().findViewById(R.id.banner);
+                    Banner banner = (Banner) slMain.getRootView().findViewById(R.id.banner);
                     if (banner != null) {
                         RectF rectF = CommonUtil.calcViewScreenLocation(banner);
                         if (rectF.contains(e1.getRawX(), e1.getRawY())) {
@@ -216,14 +229,15 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                         }
                     }
                 }
-                if ((e1.getRawX() - e2.getRawX()) > 200) {
+                if ((e1.getRawX() - e2.getRawX()) > GESTURE_DETECTOR_MIN_LENGHT) {
                     onSwitch(Orientation.RIGHT_TO_LEFT);
                     return true;
                 }
 
-                if ((e2.getRawX() - e1.getRawX()) > 200) {
+                if ((e2.getRawX() - e1.getRawX()) > GESTURE_DETECTOR_MIN_LENGHT) {
                     onSwitch(Orientation.LEFT_TO_RIGHT);
-                    return true;//消费掉当前事件  不让当前事件继续向下传递
+                    //消费掉当前事件  不让当前事件继续向下传递
+                    return true;
                 }
                 return super.onFling(e1, e2, velocityX, velocityY);
             }
@@ -259,13 +273,12 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-//        Log.d(TAG, "dispatchTouchEvent");
         if (mGestureDetector.onTouchEvent(ev)) {
             Log.d(TAG, "mGestureDetector onTouchEvent");
             return true;
         }
         if (hasBanners && current == 0) {
-            Banner banner = (Banner) sl_main.getRootView().findViewById(R.id.banner);
+            Banner banner = (Banner) slMain.getRootView().findViewById(R.id.banner);
             if (banner != null) {
                 RectF rectF = CommonUtil.calcViewScreenLocation(banner);
                 if (rectF.contains(ev.getRawX(), ev.getRawY())) {
@@ -285,15 +298,15 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 //        try {
 //            // 检测MainActivity的RootView是否为空，为空表示出现白屏的情况，要重新把rl_main添加到RootView里
 //            FrameLayout contentView = (FrameLayout) getWindow().getDecorView().findViewById(android.R.id.content);
-//            if (rl_main.getParent() == null) {
+//            if (rlMain.getParent() == null) {
 //                Log.wtf(TAG, "rl_main的parent为null");
 //                contentView.removeAllViews();
-//                contentView.addView(rl_main);
-//            } else if (rl_main.getParent() != contentView) {
+//                contentView.addView(rlMain);
+//            } else if (rlMain.getParent() != contentView) {
 //                Log.wtf(TAG, "rl_main的parent和RootView不一致");
 //                contentView.removeAllViews();
-//                ((FrameLayout) rl_main.getParent()).removeView(rl_main);
-//                contentView.addView(rl_main);
+//                ((FrameLayout) rlMain.getParent()).removeView(rlMain);
+//                contentView.addView(rlMain);
 //            }
 //        } catch (Exception e) {
 //            Log.wtf(TAG, e);
@@ -310,9 +323,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             showNoticeAmount(0);
             initSchoolBiz();
             Log.d(TAG, "onResume: not login");
-            tv_nickName.setText("登录／注册");
-            tv_schoolName.setText("登录以后才能使用哦");
-            iv_avatar.setImageResource(R.drawable.ic_picture_error);
+            tvNickName.setText("登录／注册");
+            tvSchoolName.setText("登录以后才能使用哦");
+            ivAvatar.setImageResource(R.drawable.ic_picture_error);
         } else {
             if (isServerError) {
                 showNoticeAmount(0);
@@ -324,18 +337,18 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             presenter.getSchoolBusiness();
             Log.d(TAG, "onResume: login");
             // 设置昵称
-            tv_nickName.setText(presenter.getUserInfo().getNickName());
+            tvNickName.setText(presenter.getUserInfo().getNickName());
             // 设置学校
-            tv_schoolName.setText(presenter.getUserInfo().getSchoolName());
+            tvSchoolName.setText(presenter.getUserInfo().getSchoolName());
             // 设置头像
             if (presenter.getUserInfo().getPictureUrl() != null) {
                 Glide.with(this).load(Constant.IMAGE_PREFIX + presenter.getUserInfo().getPictureUrl())
                         .asBitmap()
                         .placeholder(R.drawable.ic_picture_error)
                         .error(R.drawable.ic_picture_error)
-                        .into(iv_avatar);
+                        .into(ivAvatar);
             } else {
-                iv_avatar.setImageResource(R.drawable.ic_picture_error);
+                ivAvatar.setImageResource(R.drawable.ic_picture_error);
             }
         }
     }
@@ -352,7 +365,10 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 systemVersion, androidId);
     }
 
-    // orientation 1 表示左->右 右->左
+    /**
+     * orientation 1 表示左->右 右->左
+     * @param orientation 方向
+     */
     void onSwitch(Orientation orientation) {
         // 未登录跳转到登录页
         if (!presenter.isLogin()) {
@@ -389,6 +405,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                                     R.anim.layout_animation_home_slide_right_to_left));
                     imageViewAnimatedChange(this, btSwitch, R.drawable.profile, orientation);
                 }
+                break;
+            default:
                 break;
         }
         onSwitch();
@@ -544,6 +562,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 });
                 imageView.startAnimation(anim_out_left);
                 break;
+            default:
+                break;
         }
     }
 
@@ -598,10 +618,10 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     public void showNoticeAmount(Integer amount) {
         Log.d(TAG, "showNoticeAmount: " + amount);
         if (amount != null && amount != 0) {
-            tv_notice_count.setVisibility(View.VISIBLE);
-            tv_notice_count.setText(String.valueOf(amount));
+            tvNoticeCount.setVisibility(View.VISIBLE);
+            tvNoticeCount.setText(String.valueOf(amount));
         } else {
-            tv_notice_count.setVisibility(View.GONE);
+            tvNoticeCount.setVisibility(View.GONE);
         }
     }
 
@@ -627,7 +647,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 presenter.gotoHeaterDevice(data.getDefaultMacAddress(),
                         data.getDefaultSupplierId(), data.getLocation(),
                         data.getResidenceId());
-            } else if (deviceType == Device.DISPENSER.getType()){
+            } else if (deviceType == Device.DISPENSER.getType()) {
                 gotoChooseDispenser();
             } else if (deviceType == Device.DRYER.getType()) {
                 gotoChooseDryer();
@@ -782,10 +802,10 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 gotoDevice(HEATER, data.getUnsettledMacAddress(),
                         data.getUnsettledSupplierId(), data.getLocation(),
                         data.getResidenceId(), true);
-            } else if (type == Device.DISPENSER.getType()){
+            } else if (type == Device.DISPENSER.getType()) {
                 gotoDispenser(data.getUnsettledMacAddress(), data.getUnsettledSupplierId(),
                         data.getLocation(), data.getResidenceId(),
-                        data.getFavor(), data.getUsefor(),true);
+                        data.getFavor(), data.getUsefor(), true);
             } else if (type == Device.DRYER.getType()) {
                 gotoDevice(DRYER, data.getUnsettledMacAddress(), data.getUnsettledSupplierId(),
                         data.getLocation(), data.getResidenceId(), true);
@@ -932,8 +952,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public void showXOkMigrate() {
-        iv_xok_migrate.setVisibility(View.VISIBLE);
-        iv_xok_migrate.setOnClickListener(v -> {
+        ivXokMigrate.setVisibility(View.VISIBLE);
+        ivXokMigrate.setOnClickListener(v -> {
             startActivity(new Intent(MainActivity.this, WebActivity.class)
                     .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_MIGRATE
                             + "?token=" + presenter.getToken()));
@@ -964,7 +984,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                     presenter.gotoHeaterDevice(data.getDefaultMacAddress(),
                             data.getDefaultSupplierId(), data.getLocation(),
                             data.getResidenceId());
-                } else if (type == Device.DISPENSER.getType()){
+                } else if (type == Device.DISPENSER.getType()) {
                     gotoChooseDispenser();
                 } else if (type == Device.DRYER.getType()) {
                     gotoChooseDryer();
@@ -978,7 +998,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public void startActivity(AppCompatActivity activity, Class<?> clazz) {
-        Map<String, Long> extraMap = new HashMap<String, Long>() {
+        Map<String, Long> extraMap = new HashMap<String, Long>(1) {
             {
                 put(RepairActivity.INTENT_KEY_LAST_REPAIR_TIME, lastRepairTime);
             }
@@ -986,7 +1006,10 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         super.startActivity(activity, clazz, extraMap);
     }
 
-    // 设备用水检查
+    /**
+     * 设备用水检查
+     * @param device 设备类型
+     */
     public void checkDeviceUsage(Device device) {
         Log.d(TAG, "checkDeviceUsage");
         presenter.checkDeviceUsage(device.getType());
@@ -1018,7 +1041,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         getBlePermission();
     }
 
-    // 点击进入吹风机页面
+    /**
+     * 点击进入吹风机页面
+     */
     private void gotoDryer() {
         Log.d(TAG, "gotoDryer");
         setBleCallback(() -> checkDeviceUsage(DRYER));
@@ -1117,6 +1142,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             case REFRESH_NOTICE:
                 refreshProfile();
                 break;
+            default:
+                break;
         }
     }
 
@@ -1139,13 +1166,37 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         }
 
         public enum EventType {
+            /**
+             * 跳转到热水澡
+             */
             GOTO_HEATER(),
+            /**
+             * 跳转到吹风机
+             */
             GOTO_DRYER(),
+            /**
+             * 跳转到饮水机
+             */
             GOTO_DISPENSER(),
+            /**
+             * 跳转到失物招领
+             */
             GOTO_LOST_AND_FOUND(),
+            /**
+             * 跳转到洗衣机
+             */
             GOTO_WASHER(),
+            /**
+             * 跳转页面
+             */
             START_ACTIVITY(),
+            /**
+             * 刷新通知
+             */
             REFRESH_NOTICE(),
+            /**
+             * 退出登录
+             */
             LOGOUT()
         }
     }

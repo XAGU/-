@@ -13,7 +13,9 @@ import javax.inject.Inject;
 
 /**
  * EditProfilePresenter实现类
+ *
  * @author zcd
+ * @date 17/9/15
  */
 
 public class EditProfilePresenter<V extends IEditProfileView> extends BasePresenter<V>
@@ -23,7 +25,7 @@ public class EditProfilePresenter<V extends IEditProfileView> extends BasePresen
     private IUserDataManager userDataManager;
 
     @Inject
-    public EditProfilePresenter(IUserDataManager userDataManager) {
+    EditProfilePresenter(IUserDataManager userDataManager) {
         super();
         this.userDataManager = userDataManager;
     }

@@ -20,8 +20,9 @@ import lombok.Data;
 
 /**
  * 编辑宿舍
- * <p>
- * Created by zcd on 9/19/17.
+ *
+ * @author zcd
+ * @date 17/9/19
  */
 
 public class EditDormitoryAdaptor extends CommonAdapter<EditDormitoryAdaptor.UserResidenceWrapper> {
@@ -55,12 +56,12 @@ public class EditDormitoryAdaptor extends CommonAdapter<EditDormitoryAdaptor.Use
         // 只有一个宿舍时，显示为默认宿舍
         if (userResidenceWrapper.isDefault() || getDatas().size() == 1) {
             presenter.saveDefaultResidenceId(userResidenceWrapper.getResidenceId());
-            ((ImageView)holder.getView(R.id.iv_choose)).setImageResource(R.drawable.dot_red);
-            ((TextView)holder.getView(R.id.tv_choose)).setText("默认宿舍");
+            ((ImageView) holder.getView(R.id.iv_choose)).setImageResource(R.drawable.dot_red);
+            ((TextView) holder.getView(R.id.tv_choose)).setText("默认宿舍");
             ((TextView) holder.getView(R.id.tv_choose)).setTextColor(ContextCompat.getColor(context, R.color.colorFullRed));
         } else {
-            ((ImageView)holder.getView(R.id.iv_choose)).setImageResource(R.drawable.dot_gray);
-            ((TextView)holder.getView(R.id.tv_choose)).setText("设为默认");
+            ((ImageView) holder.getView(R.id.iv_choose)).setImageResource(R.drawable.dot_gray);
+            ((TextView) holder.getView(R.id.tv_choose)).setText("设为默认");
             ((TextView) holder.getView(R.id.tv_choose)).setTextColor(ContextCompat.getColor(context, R.color.colorDark9));
         }
         holder.getView(R.id.tv_delete).setOnClickListener(v -> presenter.deleteDormitory(userResidenceWrapper.getId()));
@@ -83,14 +84,26 @@ public class EditDormitoryAdaptor extends CommonAdapter<EditDormitoryAdaptor.Use
     }
 
     public interface OnItemClickListener {
+        /**
+         * 列表点击事件
+         * @param userResidenceWrapper 宿舍
+         * @param position 位置
+         */
         void onItemClick(UserResidenceWrapper userResidenceWrapper, int position);
     }
 
     public interface OnItemLongClickListener {
+        /**
+         * 列表长按事件
+         */
         void onItemLongClick();
     }
 
     public interface OnItemEditListener {
+        /**
+         * 列表编辑事件
+         * @param position 位置
+         */
         void onItemEdit(int position);
     }
 

@@ -12,42 +12,120 @@ import java.util.List;
 
 /**
  * 主页
- * <p>
- * Created by zcd on 9/20/17.
+ *
+ * @author zcd
+ * @date 17/9/20
  */
 
 public interface IMainView extends IBaseView {
+    /**
+     * 显示通知个数
+     *
+     * @param amount 通知个数
+     */
     void showNoticeAmount(Integer amount);
 
+    /**
+     * 显示是否是有效时间对话框
+     *
+     * @param deviceType 设备类型
+     * @param data       设备校验结果
+     */
     void showTimeValidDialog(int deviceType, DeviceCheckRespDTO data);
 
+    /**
+     * 跳转到设备页面
+     *
+     * @param device      设备类型
+     * @param macAddress  mac地址
+     * @param supplierId  供应商id
+     * @param location    位置
+     * @param residenceId 位置id
+     * @param recovery    是否显示正在恢复
+     */
     void gotoDevice(Device device, String macAddress, Long supplierId,
                     String location, Long residenceId, boolean recovery);
 
+    /**
+     * 显示紧急通知
+     *
+     * @param content 内容
+     * @param id      通知id
+     */
     void showUrgentNotify(String content, Long id);
 
+    /**
+     * 刷新通知个数
+     */
     void refreshNoticeAmount();
 
+    /**
+     * 显示banner
+     *
+     * @param banners banner
+     */
     void showBanners(List<BannerDTO> banners);
 
+    /**
+     * 显示学校业务
+     *
+     * @param businesses 学校业务
+     */
     void showSchoolBiz(List<BriefSchoolBusiness> businesses);
 
+    /**
+     * 显示设备使用状态对话框
+     *
+     * @param type 设备类型
+     * @param data 设备校验结果
+     */
     void showDeviceUsageDialog(int type, DeviceCheckRespDTO data);
 
+    /**
+     * 显示绑定宿舍对话框
+     */
     void showBindDormitoryDialog();
 
-    // 打开定位服务
+    /**
+     * 打开定位服务
+     */
     void showOpenLocationDialog();
 
+    /**
+     * 显示没有设备对话框
+     */
     void showNoDeviceDialog();
 
+    /**
+     * 刷新个人信息
+     *
+     * @param data 个人额外信息
+     */
     void refreshProfile(PersonalExtraInfoDTO data);
 
+    /**
+     * 显示更新对话框
+     *
+     * @param version 版本数据
+     */
     void showUpdateDialog(IVersionModel version);
 
+    /**
+     * 获取androidId
+     *
+     * @return androidId
+     */
     String getAndroidId();
 
+    /**
+     * 获取app版本
+     *
+     * @return app版本
+     */
     String getAppVersion();
 
+    /**
+     * 显示校Ok账号迁移
+     */
     void showXOkMigrate();
 }

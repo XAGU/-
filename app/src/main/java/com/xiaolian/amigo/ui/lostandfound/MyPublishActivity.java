@@ -23,11 +23,15 @@ import butterknife.ButterKnife;
 
 /**
  * 我的发布页面
+ *
  * @author zcd
+ * @date 17/9/18
  */
 
 public class MyPublishActivity extends LostAndFoundBaseListActivity implements ILostAndFoundView {
-    // 失物招领列表
+    /**
+     * 失物招领列表
+     */
     List<LostAndFoundAdaptor.LostAndFoundWapper> lostAndFounds = new ArrayList<>();
 
     MyPublishAdaptor adaptor;

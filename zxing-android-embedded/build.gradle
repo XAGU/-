@@ -3,8 +3,9 @@ apply plugin: 'maven-publish'
 apply from: '../buildsystem/dependencies.gradle'
 //apply plugin: 'com.jfrog.bintray'
 
-
-ext.artifactId = 'zxing-android-embedded'
+Properties properties = new Properties()
+InputStream inputStream = project.rootProject.file('local.properties').newDataInputStream() ;
+properties.load( inputStream )
 
 dependencies {
     compile deps.zxing
@@ -56,10 +57,13 @@ task sourceJar(type: Jar) {
 publishing {
     publications {
         // We need this check to cover Android Studio gradle sync
-        if(project.tasks.findByPath('bundleRelease') != null) {
+        if (project.tasks.findByPath('bundleRelease') != null) {
             maven(MavenPublication) {
                 artifact bundleRelease
-                artifactId project.artifactId
+//            artifactId project.artifactId
+                groupId "com.xiaolian"
+                artifactId "zxing-android-embedded"
+                version "3.5.0"
 
                 artifact sourceJar
 
@@ -80,6 +84,20 @@ publishing {
                 }
 
             }
+        }
+
+    }
+}
+
+publishing {
+    repositories {
+        maven {
+            url "http://116.62.236.67:5088/repository/android-lib-repo/"
+            credentials {
+                username = properties.getProperty('nexusUserName')
+                password = properties.getProperty('nexusPassword')
+            }
+
         }
     }
 }

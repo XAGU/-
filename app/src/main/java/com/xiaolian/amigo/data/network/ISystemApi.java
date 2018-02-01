@@ -11,16 +11,21 @@ import rx.Observable;
 
 /**
  * 系统信息
- * <p>
- * Created by zcd on 17/11/24.
+ *
+ * @author zcd
+ * @date 17/11/24
  */
 
 public interface ISystemApi {
-    // 基础信息
+    /**
+     * 基础信息
+     */
     @POST("system/baseinfo")
     Observable<ApiResult<BaseInfoDTO>> getSystemBaseInfo();
 
-    // 版本更新查询
+    /**
+     * 版本更新查询
+     */
     @POST("system/version/check/update")
     Observable<ApiResult<CheckVersionUpdateRespDTO>> checkUpdate(@Body CheckVersionUpdateReqDTO reqDTO);
 

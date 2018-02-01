@@ -11,8 +11,10 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
 import java.util.List;
 
 /**
- * <p>
- * Created by zcd on 10/11/17.
+ * 选择宿舍
+ *
+ * @author zcd
+ * @date 17/10/11
  */
 
 public class ChooseDormitoryAdaptor extends CommonAdapter<EditDormitoryAdaptor.UserResidenceWrapper> {

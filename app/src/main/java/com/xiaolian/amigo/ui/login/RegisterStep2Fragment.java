@@ -28,8 +28,9 @@ import static android.app.Activity.RESULT_OK;
 
 /**
  * 账户注册第二步
- * <p>
- * Created by zcd on 9/19/17.
+ *
+ * @author zcd
+ * @date 17/9/19
  */
 
 public class RegisterStep2Fragment extends Fragment {
@@ -37,18 +38,18 @@ public class RegisterStep2Fragment extends Fragment {
     private static final int REQUEST_CODE_CHOOSE_SCHOOL = 0x1101;
 
     @BindView(R.id.et_userpwd)
-    EditText et_userpwd;
+    EditText etUserpwd;
 
     @BindView(R.id.tv_school)
-    TextView tv_school;
+    TextView tvSchool;
 
     @BindView(R.id.bt_submit)
-    Button bt_submit;
+    Button btSubmit;
 
     @OnClick(R.id.bt_submit)
     void register() {
         if (getActivity() instanceof LoginActivity) {
-            ((LoginActivity) getActivity()).register(et_userpwd.getText().toString(),
+            ((LoginActivity) getActivity()).register(etUserpwd.getText().toString(),
                     schoolId);
         }
     }
@@ -74,8 +75,8 @@ public class RegisterStep2Fragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ViewUtil.setEditHintAndSize(getString(R.string.please_enter_least_six_password), 14, et_userpwd);
-        ViewUtil.setEditHintAndSize(getString(R.string.school_hint), 14, tv_school);
+        ViewUtil.setEditHintAndSize(getString(R.string.please_enter_least_six_password), 14, etUserpwd);
+        ViewUtil.setEditHintAndSize(getString(R.string.school_hint), 14, tvSchool);
     }
 
     @Override
@@ -86,7 +87,7 @@ public class RegisterStep2Fragment extends Fragment {
                 if (data.getExtras() != null) {
                     ListChooseAdaptor.Item item = data.getExtras().getParcelable(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ITEM_RESULT);
                     if (item != null) {
-                        tv_school.setText(item.getContent());
+                        tvSchool.setText(item.getContent());
                         schoolId = item.getId();
                     }
                 }
@@ -101,19 +102,19 @@ public class RegisterStep2Fragment extends Fragment {
     }
 
     private void toggleButton() {
-        boolean valid = !TextUtils.isEmpty(tv_school.getText())
-                            && !TextUtils.isEmpty(et_userpwd.getText())
-                            && et_userpwd.getText().length() >= 6;
-        bt_submit.setEnabled(valid);
+        boolean valid = !TextUtils.isEmpty(tvSchool.getText())
+                && !TextUtils.isEmpty(etUserpwd.getText())
+                && etUserpwd.getText().length() >= 6;
+        btSubmit.setEnabled(valid);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (et_userpwd != null) {
-            et_userpwd.requestFocus();
+        if (etUserpwd != null) {
+            etUserpwd.requestFocus();
             InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(et_userpwd, InputMethodManager.SHOW_IMPLICIT);
+            imm.showSoftInput(etUserpwd, InputMethodManager.SHOW_IMPLICIT);
         }
     }
 }

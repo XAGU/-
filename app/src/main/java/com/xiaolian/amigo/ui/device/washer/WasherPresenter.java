@@ -8,12 +8,14 @@ import javax.inject.Inject;
 
 /**
  * 洗衣机首页
- * <p>
- * Created by zcd on 18/1/12.
+ *
+ * @author zcd
+ * @date 18/1/12
  */
+
 public class WasherPresenter<V extends IWasherView> extends BasePresenter<V>
         implements IWasherPresenter<V> {
     @Inject
-    public WasherPresenter() {
+    WasherPresenter() {
     }
 }

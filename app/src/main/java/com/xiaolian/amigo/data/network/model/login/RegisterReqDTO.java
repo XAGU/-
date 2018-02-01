@@ -6,6 +6,7 @@ import lombok.Data;
  * 注册接口请求DTO
  *
  * @author zcd
+ * @date 17/9/15
  */
 @Data
 public class RegisterReqDTO {

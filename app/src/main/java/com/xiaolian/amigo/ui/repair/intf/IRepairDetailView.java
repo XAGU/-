@@ -8,7 +8,9 @@ import java.util.List;
 
 /**
  * 报修详情
- * Created by caidong on 2017/9/18.
+ *
+ * @author caidong
+ * @date 17/9/18
  */
 public interface IRepairDetailView extends IBaseView {
 
@@ -26,6 +28,8 @@ public interface IRepairDetailView extends IBaseView {
      */
     void render(RepairDetailRespDTO detail);
 
-    // 返回列表页
+    /**
+     * 返回列表页
+     */
     void backToList();
 }

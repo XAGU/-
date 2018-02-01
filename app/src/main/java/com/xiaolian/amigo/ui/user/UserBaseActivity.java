@@ -8,7 +8,9 @@ import com.xiaolian.amigo.ui.base.BaseToolBarActivity;
 
 /**
  * 编辑个人信息BaseActivity
+ *
  * @author zcd
+ * @date 17/9/15
  */
 
 public abstract class UserBaseActivity extends BaseToolBarActivity {

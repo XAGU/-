@@ -5,8 +5,8 @@ import java.util.List;
 import lombok.Data;
 
 /**
- * <p>
- * Created by zcd on 18/1/3.
+ * @author zcd
+ * @date 18/1/3
  */
 @Data
 public class QueryFavorDeviceRespDTO {

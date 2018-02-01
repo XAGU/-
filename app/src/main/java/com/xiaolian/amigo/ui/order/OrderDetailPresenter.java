@@ -7,8 +7,8 @@ import com.xiaolian.amigo.data.enumeration.ComplaintType;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.complaint.CheckComplaintReqDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
+import com.xiaolian.amigo.data.network.model.complaint.CheckComplaintReqDTO;
 import com.xiaolian.amigo.data.network.model.order.OrderDetailReqDTO;
 import com.xiaolian.amigo.data.network.model.order.OrderDetailRespDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
@@ -18,17 +18,19 @@ import com.xiaolian.amigo.ui.order.intf.IOrderDetailView;
 import javax.inject.Inject;
 
 /**
- * <p>
- * Created by zcd on 17/11/10.
+ * 订单详情
+ *
+ * @author zcd
+ * @date 17/11/10
  */
 
 public class OrderDetailPresenter<V extends IOrderDetailView> extends BasePresenter<V>
-    implements IOrderDetailPresenter<V> {
+        implements IOrderDetailPresenter<V> {
     private IOrderDataManager orderDataManager;
     private OrderDetailRespDTO order;
 
     @Inject
-    public OrderDetailPresenter(IOrderDataManager orderDataManager) {
+    OrderDetailPresenter(IOrderDataManager orderDataManager) {
         this.orderDataManager = orderDataManager;
     }
 

@@ -53,6 +53,12 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+/**
+ * 报修申请
+ *
+ * @author caidong
+ * @date 17/9/20
+ */
 public class RepairApplyPresenter<V extends IRepairApplyView> extends BasePresenter<V>
         implements IRepairApplyPresenter<V> {
 
@@ -62,7 +68,7 @@ public class RepairApplyPresenter<V extends IRepairApplyView> extends BasePresen
     private int currentPosition;
 
     @Inject
-    public RepairApplyPresenter(IRepairDataManager repairmanager) {
+    RepairApplyPresenter(IRepairDataManager repairmanager) {
         super();
         this.repairManager = repairmanager;
     }

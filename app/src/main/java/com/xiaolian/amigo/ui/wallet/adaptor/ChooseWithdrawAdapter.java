@@ -14,8 +14,9 @@ import lombok.Data;
 
 /**
  * 选择提现
- * <p>
- * Created by zcd on 10/27/17.
+ *
+ * @author zcd
+ * @date 17/10/27
  */
 
 public class ChooseWithdrawAdapter extends CommonAdapter<ChooseWithdrawAdapter.Item> {
@@ -50,14 +51,27 @@ public class ChooseWithdrawAdapter extends CommonAdapter<ChooseWithdrawAdapter.I
     }
 
     public interface OnItemClickListener {
+        /**
+         * 列表点击事件
+         *
+         * @param position 位置
+         */
         void onItemClick(int position);
     }
 
     public interface OnItemLongClickListener {
+        /**
+         * 列表长按事件
+         */
         void onItemLongClick();
     }
 
     public interface OnDeleteListener {
+        /**
+         * 删除事件
+         *
+         * @param position 位置
+         */
         void onDelete(int position);
     }
 

@@ -4,7 +4,9 @@ import lombok.Data;
 
 /**
  * SimpleQueryReqDTO
+ *
  * @author zcd
+ * @date 17/9/15
  */
 @Data
 public class SimpleQueryReqDTO {

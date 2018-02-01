@@ -43,6 +43,7 @@ import butterknife.ButterKnife;
  * 列表选择页面
  *
  * @author zcd
+ * @date 17/9/15
  */
 
 public class ListChooseActivity extends BaseActivity implements IListChooseView {
@@ -63,7 +64,9 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
     public static final int ACTION_LIST_BUILDING = 4;
     public static final int ACTION_LIST_SEX = 5;
     public static final int ACTION_LIST_SCHOOL_RESULT = 6;
-    // 选择设备，热水澡 or 饮水机
+    /**
+     * 选择设备，热水澡 or 饮水机
+     */
     public static final int ACTION_LIST_DEVICE = 7;
     public static final int ACTION_LIST_WITHDRAW_WAY = 8;
     private static final String TAG = ListChooseActivity.class.getSimpleName();
@@ -73,10 +76,14 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
 
     private List<ListChooseAdaptor.Item> items = new ArrayList<>();
 
-    // 宿舍是否编辑
+    /**
+     * 宿舍是否编辑
+     */
     private boolean isEditDormitory;
 
-    // 宿舍编辑时需要的ID
+    /**
+     * 宿舍编辑时需要的ID
+     */
     private Long residenceBindId;
 
     private int deviceType;
@@ -94,19 +101,19 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
     RecyclerView recyclerView;
 
     @BindView(R.id.tv_title)
-    TextView tv_title;
+    TextView tvTitle;
 
     @BindView(R.id.v_divide)
-    View v_divide;
+    View vDivide;
 
     @BindView(R.id.v_divide_top)
-    View v_divide_top;
+    View vDivideTop;
 
     @BindView(R.id.rl_empty)
-    RelativeLayout rl_empty;
+    RelativeLayout rlEmpty;
 
     @BindView(R.id.rl_error)
-    RelativeLayout rl_error;
+    RelativeLayout rlError;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -133,7 +140,7 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
         if (getIntent() != null) {
             switch (getIntent().getExtras().getInt(INTENT_KEY_LIST_CHOOSE_ACTION)) {
                 case ACTION_LIST_SCHOOL:
-                    tv_title.setText("选择学校");
+                    tvTitle.setText("选择学校");
                     // page size 为null 加载全部
                     presenter.getSchoolList(null, null);
                     adapter.setOnItemClickListener((view, position) -> {
@@ -147,7 +154,7 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                     });
                     break;
                 case ACTION_LIST_SEX:
-                    tv_title.setText("选择性别");
+                    tvTitle.setText("选择性别");
                     adapter.setOnItemClickListener((view, position) -> {
                         try {
                             presenter.updateSex(
@@ -171,11 +178,11 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                             this.items.add(new ListChooseAdaptor.Item("女", false));
                         }
                     }
-                    v_divide.setVisibility(View.VISIBLE);
+                    vDivide.setVisibility(View.VISIBLE);
                     adapter.notifyDataSetChanged();
                     break;
                 case ACTION_LIST_BUILDING:
-                    tv_title.setText("选择楼栋");
+                    tvTitle.setText("选择楼栋");
                     if (getIntent() != null) {
                         isEditDormitory = getIntent().getBooleanExtra(INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
                         residenceBindId = getIntent().getLongExtra(INTENT_KEY_LIST_CHOOSE_RESIDENCE_BIND_ID, -1);
@@ -204,7 +211,7 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                     });
                     break;
                 case ACTION_LIST_FLOOR:
-                    tv_title.setText("选择楼层");
+                    tvTitle.setText("选择楼层");
                     if (getIntent() != null) {
                         isEditDormitory = getIntent().getBooleanExtra(INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
                         residenceBindId = getIntent().getLongExtra(INTENT_KEY_LIST_CHOOSE_RESIDENCE_BIND_ID, -1);
@@ -243,9 +250,9 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                         activitySrc = getIntent().getStringExtra(INTENT_KEY_LIST_SRC_ACTIVITY);
                         residenceDetail = (UserResidenceDTO) getIntent().getSerializableExtra(INTENT_KEY_LIST_RESIDENCE_DETAIL);
                         if (deviceType == Device.HEATER.getType()) {
-                            tv_title.setText("选择宿舍");
+                            tvTitle.setText("选择宿舍");
                         } else {
-                            tv_title.setText("选择位置");
+                            tvTitle.setText("选择位置");
                         }
                         adapter = new ListChooseAdaptor(items, true);
                         recyclerView.setAdapter(adapter);
@@ -288,7 +295,7 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                     });
                     break;
                 case ACTION_LIST_SCHOOL_RESULT:
-                    tv_title.setText("选择学校");
+                    tvTitle.setText("选择学校");
                     presenter.getSchoolList(null, null);
                     adapter.setOnItemClickListener((view, position) -> {
                         try {
@@ -304,7 +311,7 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                     });
                     break;
                 case ACTION_LIST_DEVICE:
-                    tv_title.setText("设备类型");
+                    tvTitle.setText("设备类型");
                     this.items.add(new ListChooseAdaptor.Item(Device.HEATER.getDesc(), Device.HEATER.getType()));
                     this.items.add(new ListChooseAdaptor.Item(Device.DISPENSER.getDesc(), Device.DISPENSER.getType()));
                     adapter.notifyDataSetChanged();
@@ -322,10 +329,10 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                             Log.wtf(TAG, e);
                         }
                     });
-                    v_divide.setVisibility(View.VISIBLE);
+                    vDivide.setVisibility(View.VISIBLE);
                     break;
                 case ACTION_LIST_WITHDRAW_WAY:
-                    tv_title.setText("选择提现方式");
+                    tvTitle.setText("选择提现方式");
                     for (WithdrawWay way : WithdrawWay.values()) {
                         this.items.add(new ListChooseAdaptor.Item(way.getDesc(), way.getType()));
                     }
@@ -343,7 +350,9 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                             Log.wtf(TAG, e);
                         }
                     });
-                    v_divide.setVisibility(View.VISIBLE);
+                    vDivide.setVisibility(View.VISIBLE);
+                    break;
+                default:
                     break;
             }
         }
@@ -392,7 +401,7 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                 }
             }
         }
-        v_divide.setVisibility(View.VISIBLE);
+        vDivide.setVisibility(View.VISIBLE);
         this.items.addAll(items);
         adapter.notifyDataSetChanged();
     }
@@ -434,15 +443,15 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
     @Override
     public void showEmptyView() {
         items.clear();
-        v_divide_top.setVisibility(View.GONE);
-        rl_empty.setVisibility(View.VISIBLE);
+        vDivideTop.setVisibility(View.GONE);
+        rlEmpty.setVisibility(View.VISIBLE);
         adapter.notifyDataSetChanged();
     }
 
     @Override
     public void hideEmptyView() {
-        rl_empty.setVisibility(View.GONE);
-        v_divide_top.setVisibility(View.VISIBLE);
+        rlEmpty.setVisibility(View.GONE);
+        vDivideTop.setVisibility(View.VISIBLE);
     }
 
     @Override

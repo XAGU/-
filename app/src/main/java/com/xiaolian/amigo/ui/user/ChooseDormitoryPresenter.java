@@ -19,17 +19,18 @@ import javax.inject.Inject;
 
 /**
  * 宿舍列表
- * <p>
- * Created by zcd on 10/11/17.
+ *
+ * @author zcd
+ * @date 17/10/11
  */
 
 public class ChooseDormitoryPresenter<V extends IChooseDormitoryView> extends BasePresenter<V>
-    implements IChooseDormitoryPresenter<V> {
+        implements IChooseDormitoryPresenter<V> {
 
     private IUserDataManager userDataManager;
 
     @Inject
-    public ChooseDormitoryPresenter(IUserDataManager userDataManager) {
+    ChooseDormitoryPresenter(IUserDataManager userDataManager) {
         super();
         this.userDataManager = userDataManager;
     }
@@ -39,7 +40,7 @@ public class ChooseDormitoryPresenter<V extends IChooseDormitoryView> extends Ba
         SimpleQueryReqDTO dto = new SimpleQueryReqDTO();
         dto.setPage(page);
         dto.setSize(size);
-        addObserver(userDataManager.queryUserResidenceList(dto), new NetworkObserver<ApiResult<QueryUserResidenceListRespDTO>>(false, true){
+        addObserver(userDataManager.queryUserResidenceList(dto), new NetworkObserver<ApiResult<QueryUserResidenceListRespDTO>>(false, true) {
 
             @Override
             public void onReady(ApiResult<QueryUserResidenceListRespDTO> result) {

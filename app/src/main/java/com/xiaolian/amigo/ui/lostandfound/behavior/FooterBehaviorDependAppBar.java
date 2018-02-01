@@ -7,7 +7,8 @@ import android.util.AttributeSet;
 import android.view.View;
 
 /**
- * Created by caidong on 2017/9/13.
+ * @author caidong
+ * @date 17/9/13
  */
 
 public class FooterBehaviorDependAppBar extends CoordinatorLayout.Behavior<View> {

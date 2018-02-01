@@ -11,9 +11,10 @@ import java.util.List;
 import lombok.Data;
 
 /**
- * 充值fAdaptor
- * <p>
- * Created by zcd on 9/20/17.
+ * 充值Adaptor
+ *
+ * @author zcd
+ * @date 17/9/20
  */
 
 public class RechargeTypeAdaptor extends CommonAdapter<RechargeTypeAdaptor.RechargeWrapper> {

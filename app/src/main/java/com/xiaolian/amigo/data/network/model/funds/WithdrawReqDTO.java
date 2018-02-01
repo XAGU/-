@@ -4,8 +4,9 @@ import lombok.Data;
 
 /**
  * 提现reqDTO
- * <p>
- * Created by zcd on 10/14/17.
+ *
+ * @author zcd
+ * @date 17/10/14
  */
 @Data
 public class WithdrawReqDTO {

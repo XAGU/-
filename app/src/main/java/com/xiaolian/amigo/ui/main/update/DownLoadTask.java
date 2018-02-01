@@ -19,11 +19,6 @@ import okio.ForwardingSource;
 import okio.Okio;
 import okio.Source;
 
-/**
- * 下载线程
- * Created by adamzfc on 2017/3/29.
- */
-
 public class DownLoadTask extends Thread {
     private String mFilePath;
     private String mDownLoadUrl;
@@ -87,13 +82,13 @@ public class DownLoadTask extends Thread {
 
     public void cancel() {
 
-        for(Call call : mClient.dispatcher().queuedCalls()) {
-            if(call.request().tag().equals("sss"))
+        for (Call call : mClient.dispatcher().queuedCalls()) {
+            if (call.request().tag().equals("sss"))
                 call.cancel();
         }
 
         for (Call call : mClient.dispatcher().runningCalls()) {
-            if (call.request().tag().equals("download")){
+            if (call.request().tag().equals("download")) {
                 call.cancel();
             }
         }

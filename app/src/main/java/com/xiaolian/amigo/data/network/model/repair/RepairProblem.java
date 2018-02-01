@@ -4,8 +4,9 @@ import lombok.Data;
 
 /**
  * 维修问题
- * <p>
- * Created by caidong on 2017/9/20.
+ *
+ * @author caidong
+ * @date 17/9/20
  */
 @Data
 public class RepairProblem {

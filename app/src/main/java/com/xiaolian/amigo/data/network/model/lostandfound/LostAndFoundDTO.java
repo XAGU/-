@@ -9,8 +9,9 @@ import lombok.Data;
 
 /**
  * 失物招领
- * <p>
- * Created by zcd on 17/12/14.
+ *
+ * @author zcd
+ * @date 17/12/14
  */
 @Data
 public class LostAndFoundDTO implements Mapper<LostAndFound> {

@@ -32,14 +32,19 @@ import rx.schedulers.Schedulers;
 
 /**
  * 选择饮水机
- * <p>
- * Created by zcd on 10/13/17.
+ *
+ * @author zcd
+ * @date 10/13/17
  */
 
 public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends BasePresenter<V>
         implements IChooseDispenserPresenter<V> {
 
     private static final String TAG = ChooseDispenserPresenter.class.getSimpleName();
+    /**
+     * 扫描列表数目到达10条上传
+     */
+    private static final int MAX_SCAN_SIZE = 10;
     private IBleDataManager bleDataManager;
     private IDeviceDataManager deviceDataManager;
     private List<DeviceCategory> deviceCategories;
@@ -155,21 +160,26 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
                     deviceDataManager.setDeviceNoAndMacAddress(deviceNo, macAddress);
                 }
 
+                // 如果已经在上报的集合中，忽略
                 if (!existDevices.contains(deviceNo)
-                        && !scanDevices.contains(deviceNo)) { // 如果已经在上报的集合中，忽略
+                        && !scanDevices.contains(deviceNo)) {
                     scanDevices.add(deviceNo);
                 }
 
                 long now = System.currentTimeMillis();
-                if (scanDevices.size() >= 10 || now - begin > delay) { // 列表数目到达10条或者时间超过2s都去服务端请求一次接口
+                // 列表数目到达10条或者时间超过2s都去服务端请求一次接口
+                if (scanDevices.size() >= MAX_SCAN_SIZE || now - begin > delay) {
                     if (scanDevices.size() > 0) {
                         if (delay < maxDelay) {
                             delay++;
                         }
                         existDevices.addAll(scanDevices);
-                        handleScanDevices(new ArrayList<>(scanDevices)); // 请求服务器处理扫描到的设备
-                        scanDevices.clear(); // 重置扫描到的设备集合
-                        begin = now; // 重置计时器
+                        // 请求服务器处理扫描到的设备
+                        handleScanDevices(new ArrayList<>(scanDevices));
+                        // 重置扫描到的设备集合
+                        scanDevices.clear();
+                        // 重置计时器
+                        begin = now;
                     }
                 }
             }
@@ -263,7 +273,11 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
         return listStatus;
     }
 
-    // 网络请求蓝牙扫描到的结果
+    /**
+     * 网络请求蓝牙扫描到的结果
+     *
+     * @param macAddresses 扫描到设备mac地址
+     */
     private void handleScanDevices(List<String> macAddresses) {
         QueryDeviceListReqDTO reqDTO = new QueryDeviceListReqDTO();
         reqDTO.setType(deviceType);

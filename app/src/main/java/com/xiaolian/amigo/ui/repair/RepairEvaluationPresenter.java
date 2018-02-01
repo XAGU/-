@@ -2,8 +2,8 @@ package com.xiaolian.amigo.ui.repair;
 
 import com.xiaolian.amigo.data.manager.intf.IRepairDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.repair.RatingRepairReqDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
+import com.xiaolian.amigo.data.network.model.repair.RatingRepairReqDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.repair.intf.IRepairEvaluationPresenter;
 import com.xiaolian.amigo.ui.repair.intf.IRepairEvaluationView;
@@ -13,8 +13,10 @@ import java.util.List;
 import javax.inject.Inject;
 
 /**
- * <p>
- * Created by zcd on 9/21/17.
+ * 设备报修评价
+ *
+ * @author zcd
+ * @date 17/9/21
  */
 
 public class RepairEvaluationPresenter<V extends IRepairEvaluationView> extends BasePresenter<V>
@@ -24,7 +26,7 @@ public class RepairEvaluationPresenter<V extends IRepairEvaluationView> extends 
     private IRepairDataManager repairDataManager;
 
     @Inject
-    public RepairEvaluationPresenter(IRepairDataManager repairDataManager) {
+    RepairEvaluationPresenter(IRepairDataManager repairDataManager) {
         super();
         this.repairDataManager = repairDataManager;
     }

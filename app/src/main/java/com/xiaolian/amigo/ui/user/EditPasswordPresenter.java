@@ -13,7 +13,9 @@ import javax.inject.Inject;
 
 /**
  * 修改密码Presenter实现类
+ *
  * @author zcd
+ * @date 17/9/15
  */
 public class EditPasswordPresenter<V extends IEditPasswordView> extends BasePresenter<V>
         implements IEditPasswordPresenter<V> {
@@ -21,7 +23,7 @@ public class EditPasswordPresenter<V extends IEditPasswordView> extends BasePres
     private IUserDataManager userDataManager;
 
     @Inject
-    public EditPasswordPresenter(IUserDataManager userDataManager) {
+    EditPasswordPresenter(IUserDataManager userDataManager) {
         super();
         this.userDataManager = userDataManager;
     }

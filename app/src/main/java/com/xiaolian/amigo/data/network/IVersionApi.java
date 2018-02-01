@@ -8,12 +8,15 @@ import rx.Observable;
 
 /**
  * 版本更新相关api
- * <p>
- * Created by zcd on 17/12/14.
+ *
+ * @author zcd
+ * @date 17/12/14
  */
 
 public interface IVersionApi {
-    // 获取更新信息
+    /**
+     * 获取更新信息
+     */
     @POST("version/one")
     Observable<ApiResult<VersionDTO>> getUpdateInfo();
 }

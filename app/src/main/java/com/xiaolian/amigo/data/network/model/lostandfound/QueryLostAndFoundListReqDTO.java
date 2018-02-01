@@ -4,8 +4,9 @@ import lombok.Data;
 
 /**
  * 失物招领列表请求DTO
- * <p>
- * Created by zcd on 9/18/17.
+ *
+ * @author zcd
+ * @date 17/9/18
  */
 @Data
 public class QueryLostAndFoundListReqDTO {
@@ -13,6 +14,8 @@ public class QueryLostAndFoundListReqDTO {
     private Integer size;
     private Long schoolId;
     private String selectKey;
-    // 1 表示失物 2 表示招领
+    /**
+     * 1 表示失物 2 表示招领
+     */
     private Integer type;
 }

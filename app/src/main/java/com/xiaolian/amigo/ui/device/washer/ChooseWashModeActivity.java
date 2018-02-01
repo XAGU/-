@@ -28,8 +28,9 @@ import javax.inject.Inject;
 
 /**
  * 选择洗衣机模式
- * <p>
- * Created by zcd on 18/1/12.
+ *
+ * @author zcd
+ * @date 18/1/12
  */
 
 public class ChooseWashModeActivity extends WasherBaseActivity implements IChooseWashModeView {
@@ -48,7 +49,9 @@ public class ChooseWashModeActivity extends WasherBaseActivity implements IChoos
     private Long defaultBonusId;
     private String defaultBonusDescription;
     private Double defaultBonusAmount;
-    // 为null表示未选择，为－1表示不使用红包
+    /**
+     * 为null表示未选择，为－1表示不使用红包
+     **/
     private Long chosenBonusId;
     private String chosenBonusDescription;
     private Double chosenBonusAmount;
@@ -56,7 +59,6 @@ public class ChooseWashModeActivity extends WasherBaseActivity implements IChoos
     private String chosenModeDesc;
     private Integer chosenMode;
     private Double balance;
-    private boolean needRecharge;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -114,7 +116,7 @@ public class ChooseWashModeActivity extends WasherBaseActivity implements IChoos
     }
 
     private void setDialogLayout() {
-        needRecharge = false;
+        boolean needRecharge = false;
         if (chosenBonusId == null) {
             chosenBonusId = defaultBonusId;
             chosenBonusAmount = defaultBonusAmount;
@@ -186,6 +188,7 @@ public class ChooseWashModeActivity extends WasherBaseActivity implements IChoos
         presenter.payAndGenerate(bonusId, modeDesc, price, mode);
     }
 
+    @SuppressWarnings("unused")
     private void toggleSubmitButton() {
 //        if (adapter.getLastChoosePosition() == -1) {
 //            return;
@@ -216,19 +219,18 @@ public class ChooseWashModeActivity extends WasherBaseActivity implements IChoos
 
     private void bindView() {
         recyclerView = findViewById(R.id.recyclerView);
-//        bt_submit = findViewById(R.id.bt_submit);
-//        bt_submit.setOnClickListener(v -> submit());
         findViewById(R.id.iv_back).setOnClickListener(v -> {
             hideLoading();
             onBackPressed();
         });
     }
 
+    @SuppressWarnings("unused")
     private void submit() {
         if (adapter.getLastChoosePosition() != -1) {
             String price = items.get(adapter.getLastChoosePosition()).getPrice();
             String mode = items.get(adapter.getLastChoosePosition()).getName();
-            startActivity(new Intent(this, WasherQRCodeActivity.class)
+            startActivity(new Intent(this, WasherQrCodeActivity.class)
                     .putExtra(WasherContent.KEY_MODE_DESC, mode)
                     .putExtra(WasherContent.KEY_PRICE, price));
         }
@@ -296,7 +298,7 @@ public class ChooseWashModeActivity extends WasherBaseActivity implements IChoos
         if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
         }
-        startActivity(new Intent(this, WasherQRCodeActivity.class)
+        startActivity(new Intent(this, WasherQrCodeActivity.class)
                 .putExtra(WasherContent.KEY_PRICE, String.valueOf(chosenOriginalPirce))
                 .putExtra(WasherContent.KEY_MODE_DESC, modeDesc)
                 .putExtra(WasherContent.KEY_QR_CODE_URL, data));

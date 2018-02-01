@@ -37,8 +37,9 @@ import butterknife.OnClick;
 
 /**
  * 提现详情
- * <p>
- * Created by zcd on 10/23/17.
+ *
+ * @author zcd
+ * @date 17/10/23
  */
 
 public class WithdrawalDetailActivity extends WalletBaseActivity implements IWithdrawalDetailView {
@@ -51,37 +52,38 @@ public class WithdrawalDetailActivity extends WalletBaseActivity implements IWit
     private WithdrawRechargeDetailAdapter adapter;
 
     @BindView(R.id.left_oper)
-    TextView left_oper;
+    TextView leftOper;
     @BindView(R.id.right_oper)
-    TextView right_oper;
+    TextView rightOper;
     @BindView(R.id.ll_bottom)
-    LinearLayout ll_bottom;
+    LinearLayout llBottom;
 
     @BindView(R.id.tv_amount)
-    TextView tv_amount;
+    TextView tvAmount;
     @BindView(R.id.tv_status)
-    TextView tv_status;
+    TextView tvStatus;
 
     @BindView(R.id.ll_reason)
-    LinearLayout ll_reason;
+    LinearLayout llReason;
 
     @BindView(R.id.tv_reason)
-    TextView tv_reason;
+    TextView tvReason;
 
     @BindView(R.id.tv_reason_content)
-    TextView tv_reason_content;
+    TextView tvReasonContent;
 
     @BindView(R.id.tv_cancel_withdraw)
-    TextView tv_cancel_withdraw;
+    TextView tvCancelWithdraw;
 
     @BindView(R.id.tv_reason_top)
-    TextView tv_reason_top;
+    TextView tvReasonTop;
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
 
     private Long id;
     private String orderNo;
+
     @Override
     protected void initView() {
         setUnBinder(ButterKnife.bind(this));
@@ -128,34 +130,34 @@ public class WithdrawalDetailActivity extends WalletBaseActivity implements IWit
     @Override
     public void render(FundsDTO data) {
         orderNo = data.getOrderNo();
-        tv_amount.setText(getString(R.string.money_format, data.getAmount()));
-        tv_status.setText(WithdrawalStatus.getWithdrawalStatus(data.getStatus()).getDesc());
-        tv_status.setTextColor(
-                ContextCompat.getColor(this,WithdrawalStatus.getWithdrawalStatus(data.getStatus()).getColorRes()));
+        tvAmount.setText(getString(R.string.money_format, data.getAmount()));
+        tvStatus.setText(WithdrawalStatus.getWithdrawalStatus(data.getStatus()).getDesc());
+        tvStatus.setTextColor(
+                ContextCompat.getColor(this, WithdrawalStatus.getWithdrawalStatus(data.getStatus()).getColorRes()));
         if (WithdrawalStatus.getWithdrawalStatus(data.getStatus())
                 == WithdrawalStatus.AUDIT_PENDING) {
-            tv_cancel_withdraw.setVisibility(View.VISIBLE);
+            tvCancelWithdraw.setVisibility(View.VISIBLE);
         } else {
-            tv_cancel_withdraw.setVisibility(View.GONE);
+            tvCancelWithdraw.setVisibility(View.GONE);
         }
         if (CommonUtil.equals(data.getStatus(), WithdrawalStatus.AUDIT_FAIL.getType())
                 && !TextUtils.isEmpty(data.getReason())) {
-            ll_reason.setVisibility(View.VISIBLE);
-            tv_reason_content.setText(data.getReason());
-            tv_reason.setText(getString(R.string.unpass_reason));
+            llReason.setVisibility(View.VISIBLE);
+            tvReasonContent.setText(data.getReason());
+            tvReason.setText(getString(R.string.unpass_reason));
         }
         if (WithdrawalStatus.getWithdrawalStatus(data.getStatus())
                 == WithdrawalStatus.WITHDRAWAL_FAIL && !TextUtils.isEmpty(data.getReason())) {
-            tv_reason_top.setVisibility(View.VISIBLE);
-            tv_reason_top.setText(data.getReason());
+            tvReasonTop.setVisibility(View.VISIBLE);
+            tvReasonTop.setText(data.getReason());
         }
         if (WithdrawalStatus.getWithdrawalStatus(data.getStatus()) == WithdrawalStatus.WITHDRAWAL_CANCEL) {
-            ll_bottom.setVisibility(View.GONE);
+            llBottom.setVisibility(View.GONE);
         } else {
-            ll_bottom.setVisibility(View.VISIBLE);
-            left_oper.setText(WithdrawalStatus.getWithdrawalStatus(data.getStatus()).getNextOperations()[0]);
-            right_oper.setText(WithdrawalStatus.getWithdrawalStatus(data.getStatus()).getNextOperations()[1]);
-            left_oper.setOnClickListener((v) -> {
+            llBottom.setVisibility(View.VISIBLE);
+            leftOper.setText(WithdrawalStatus.getWithdrawalStatus(data.getStatus()).getNextOperations()[0]);
+            rightOper.setText(WithdrawalStatus.getWithdrawalStatus(data.getStatus()).getNextOperations()[1]);
+            leftOper.setOnClickListener((v) -> {
                 switch (WithdrawalStatus.getWithdrawalStatus(data.getStatus())) {
                     case AUDIT_PENDING:
                         // 提现客服尽快处理
@@ -167,7 +169,7 @@ public class WithdrawalDetailActivity extends WalletBaseActivity implements IWit
                         break;
                 }
             });
-            right_oper.setOnClickListener((v) -> {
+            rightOper.setOnClickListener((v) -> {
                 switch (WithdrawalStatus.getWithdrawalStatus(data.getStatus())) {
                     case AUDIT_PENDING:
                         startActivity(new Intent(this, WebActivity.class)

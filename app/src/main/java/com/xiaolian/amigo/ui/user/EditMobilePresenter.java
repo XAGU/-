@@ -15,7 +15,9 @@ import javax.inject.Inject;
 
 /**
  * 修改手机号Presenter实现类
+ *
  * @author zcd
+ * @date 17/9/15
  */
 public class EditMobilePresenter<V extends IEditMobileView> extends BasePresenter<V>
         implements IEditMobilePresenter<V> {
@@ -23,7 +25,7 @@ public class EditMobilePresenter<V extends IEditMobileView> extends BasePresente
     private IUserDataManager userDataManager;
 
     @Inject
-    public EditMobilePresenter(IUserDataManager userDataManager) {
+    EditMobilePresenter(IUserDataManager userDataManager) {
         super();
         this.userDataManager = userDataManager;
     }

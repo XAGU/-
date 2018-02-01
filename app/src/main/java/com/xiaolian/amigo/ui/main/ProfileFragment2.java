@@ -38,8 +38,10 @@ import butterknife.ButterKnife;
 import lombok.Data;
 
 /**
- * <p>
- * Created by zcd on 10/10/17.
+ * 个人中心
+ *
+ * @author zcd
+ * @date 17/10/10
  */
 
 public class ProfileFragment2 extends Fragment {
@@ -134,6 +136,8 @@ public class ProfileFragment2 extends Fragment {
                 int animationRes = (int) event.getObject();
                 changeAnimation(animationRes);
                 break;
+            default:
+                break;
         }
     }
 
@@ -166,8 +170,10 @@ public class ProfileFragment2 extends Fragment {
         }
 
         public enum EventType {
-            CHANGE_ANIMATION(1)
-            ;
+            /**
+             * 改变动画
+             */
+            CHANGE_ANIMATION(1);
 
             EventType(int type) {
                 this.type = type;

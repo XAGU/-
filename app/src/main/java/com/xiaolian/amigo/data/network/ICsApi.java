@@ -11,16 +11,21 @@ import rx.Observable;
 
 /**
  * 客服相关api
- * <p>
- * Created by zcd on 17/12/14.
+ *
+ * @author zcd
+ * @date 17/12/14
  */
 
 public interface ICsApi {
-    // 提醒客服
+    /**
+     * 提醒客服
+     */
     @POST("cs/remind")
     Observable<ApiResult<BooleanRespDTO>> remind(@Body RemindReqDTO reqDTO);
 
-    // 获取客服人员电话
+    /**
+     * 获取客服人员电话
+     */
     @POST("cs/mobile/one")
     Observable<ApiResult<CsMobileRespDTO>> queryCsInfo();
 }

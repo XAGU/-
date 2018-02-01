@@ -18,7 +18,9 @@ import butterknife.OnClick;
 
 /**
  * 修改密码页面
+ *
  * @author zcd
+ * @date 17/9/15
  */
 
 public class EditPasswordActivity extends UserBaseActivity implements IEditPasswordView {
@@ -27,22 +29,22 @@ public class EditPasswordActivity extends UserBaseActivity implements IEditPassw
     IEditPasswordPresenter<IEditPasswordView> presenter;
 
     @BindView(R.id.bt_submit)
-    Button bt_submit;
+    Button btSubmit;
 
     @BindView(R.id.et_new_password)
-    ClearableEditText et_new_password;
+    ClearableEditText etNewPassword;
 
     @BindView(R.id.et_old_password)
-    ClearableEditText et_old_password;
+    ClearableEditText etOldPassword;
 
     @BindView(R.id.et_new_password_again)
-    ClearableEditText et_new_password_again;
+    ClearableEditText etNewPasswordAgain;
 
     @OnClick(R.id.bt_submit)
     void onSubmitClick() {
-        if (TextUtils.equals(et_new_password.getText(), et_new_password_again.getText())) {
-            presenter.updatePassword(et_new_password.getText().toString().trim(),
-                    et_old_password.getText().toString().trim());
+        if (TextUtils.equals(etNewPassword.getText(), etNewPasswordAgain.getText())) {
+            presenter.updatePassword(etNewPassword.getText().toString().trim(),
+                    etOldPassword.getText().toString().trim());
         } else {
             showMessage("两次输入的密码不一致");
         }
@@ -58,12 +60,12 @@ public class EditPasswordActivity extends UserBaseActivity implements IEditPassw
         presenter.onAttach(EditPasswordActivity.this);
 
         ViewUtil.setEditHintAndSize(getString(R.string.please_enter_old_password),
-                14, et_old_password);
+                14, etOldPassword);
         ViewUtil.setEditHintAndSize(getString(R.string.please_enter_new_password),
-                14, et_new_password);
+                14, etNewPassword);
         ViewUtil.setEditHintAndSize(getString(R.string.please_enter_new_password_again),
-                14, et_new_password_again);
-        CommonUtil.showSoftInput(this, et_old_password);
+                14, etNewPasswordAgain);
+        CommonUtil.showSoftInput(this, etOldPassword);
     }
 
     @Override
@@ -81,6 +83,7 @@ public class EditPasswordActivity extends UserBaseActivity implements IEditPassw
         presenter.onDetach();
         super.onDestroy();
     }
+
     @Override
     protected void setUp() {
 

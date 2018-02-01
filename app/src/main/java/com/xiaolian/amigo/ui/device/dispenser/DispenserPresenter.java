@@ -15,8 +15,9 @@ import javax.inject.Inject;
 
 /**
  * 饮水机
- * <p>
- * Created by zcd on 10/13/17.
+ *
+ * @author zcd
+ * @date 10/13/17
  */
 
 public class DispenserPresenter<V extends IDispenserView> extends WaterDeviceBasePresenter<V>
@@ -24,8 +25,8 @@ public class DispenserPresenter<V extends IDispenserView> extends WaterDeviceBas
     private IDeviceDataManager deviceDataManager;
 
     @Inject
-    public DispenserPresenter(IBleDataManager bleDataManager,
-                              IDeviceDataManager deviceDataManager) {
+    DispenserPresenter(IBleDataManager bleDataManager,
+                       IDeviceDataManager deviceDataManager) {
         super(bleDataManager, deviceDataManager);
         this.deviceDataManager = deviceDataManager;
     }

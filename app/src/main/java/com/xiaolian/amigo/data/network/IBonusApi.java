@@ -16,11 +16,15 @@ import rx.Observable;
  * @author zcd
  */
 public interface IBonusApi {
-    // 获取代金券列表
+    /**
+     * 获取代金券列表
+     */
     @POST("bonus/personal/list")
     Observable<ApiResult<QueryUserBonusListRespDTO>> queryOrders(@Body QueryUserBonusReqDTO reqDTO);
 
-    // 兑换代金券
+    /**
+     * 兑换代金券
+     */
     @POST("bonus/redeem")
     Observable<ApiResult<BooleanRespDTO>> redeem(@Body RedeemBonusReqDTO reqDTO);
 }

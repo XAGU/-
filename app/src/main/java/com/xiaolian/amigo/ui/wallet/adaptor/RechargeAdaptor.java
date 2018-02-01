@@ -13,8 +13,9 @@ import lombok.Data;
 
 /**
  * 充值Adaptor
- * <p>
- * Created by zcd on 9/20/17.
+ *
+ * @author zcd
+ * @date 17/9/20
  */
 
 public class RechargeAdaptor extends MultiItemTypeAdapter<RechargeAdaptor.RechargeWrapper> {
@@ -26,12 +27,18 @@ public class RechargeAdaptor extends MultiItemTypeAdapter<RechargeAdaptor.Rechar
     @Data
     public static class RechargeWrapper {
         Long id;
-        // 充值类型
+        /**
+         * 充值类型
+         */
         int type;
         Double amount;
-        // 主信息
+        /**
+         * 主信息
+         */
         String main;
-        // 附信息
+        /**
+         * 附信息
+         */
         String sub;
         boolean isSelected = false;
         private DecimalFormat df = new DecimalFormat("###.##");

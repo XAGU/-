@@ -12,8 +12,9 @@ import javax.inject.Inject;
 
 /**
  * 校验密码
- * <p>
- * Created by zcd on 9/27/17.
+ *
+ * @author zcd
+ * @date 17/9/27
  */
 
 public class CheckPasswordPresenter<V extends ICheckPasswordView> extends BasePresenter<V>
@@ -22,7 +23,7 @@ public class CheckPasswordPresenter<V extends ICheckPasswordView> extends BasePr
     private IUserDataManager userDataManager;
 
     @Inject
-    public CheckPasswordPresenter(IUserDataManager userDataManager) {
+    CheckPasswordPresenter(IUserDataManager userDataManager) {
         super();
         this.userDataManager = userDataManager;
     }

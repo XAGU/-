@@ -7,7 +7,9 @@ import lombok.Data;
 
 /**
  * UserDTO
+ *
  * @author zcd
+ * @date 17/9/15
  */
 @Data
 public class EntireUserDTO implements Mapper<User> {

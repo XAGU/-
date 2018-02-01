@@ -11,7 +11,9 @@ import javax.inject.Inject;
 
 /**
  * 热水澡
- * Created by caidong on 2017/9/22.
+ *
+ * @author caidong
+ * @date 2017/9/22
  */
 public class HeaterPresenter<V extends IHeaterView> extends WaterDeviceBasePresenter<V>
         implements IHeaterPresenter<V> {

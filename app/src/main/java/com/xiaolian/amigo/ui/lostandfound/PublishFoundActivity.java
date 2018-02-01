@@ -38,11 +38,14 @@ import butterknife.OnTextChanged;
 
 /**
  * 招领发布
+ *
  * @author zcd
+ * @date 17/9/21
  */
 
 public class PublishFoundActivity extends LostAndFoundBaseActivity implements IPublishLostView {
     private static final int REQUEST_IMAGE = 0x3302;
+    private static final int IMAGE_COUNT = 3;
     @Inject
     IPublishLostPresenter<IPublishLostView> presenter;
 
@@ -50,53 +53,53 @@ public class PublishFoundActivity extends LostAndFoundBaseActivity implements IP
      * 提交
      */
     @BindView(R.id.bt_submit)
-    Button bt_submit;
+    Button btSubmit;
 
     /**
      * 标题
      */
     @BindView(R.id.et_title)
-    EditText et_title;
+    EditText etTitle;
 
     /**
      * 物品名称
      */
     @BindView(R.id.et_itemName)
-    EditText et_itemName;
+    EditText etItemName;
 
     /**
      * 地址
      */
     @BindView(R.id.et_location)
-    EditText et_location;
+    EditText etLocation;
 
     /**
      * 时间
      */
     @BindView(R.id.tv_lostTime)
-    TextView tv_lostTime;
+    TextView tvLostTime;
 
     /**
      * 联系方式
      */
     @BindView(R.id.et_mobile)
-    EditText et_mobile;
+    EditText etMobile;
 
     /**
      * 描述
      */
     @BindView(R.id.et_desc)
-    EditText et_desc;
+    EditText etDesc;
 
     @BindView(R.id.iv_first)
-    ImageView iv_first;
+    ImageView ivFirst;
     @BindView(R.id.iv_second)
-    ImageView iv_second;
+    ImageView ivSecond;
     @BindView(R.id.iv_third)
-    ImageView iv_third;
+    ImageView ivThird;
 
     @BindView(R.id.rv_image)
-    RecyclerView rv_image;
+    RecyclerView rvImage;
     private ImageAddAdapter imageAddAdapter;
     List<ImageAddAdapter.ImageItem> addImages = new ArrayList<>();
 
@@ -115,18 +118,18 @@ public class PublishFoundActivity extends LostAndFoundBaseActivity implements IP
 
         presenter.onAttach(PublishFoundActivity.this);
 
-        viewList = new ArrayList<TextView>(){
+        viewList = new ArrayList<TextView>() {
             {
-                add(et_title);
-                add(et_itemName);
-                add(et_location);
-                add(tv_lostTime);
-                add(et_mobile);
-                add(et_desc);
+                add(etTitle);
+                add(etItemName);
+                add(etLocation);
+                add(tvLostTime);
+                add(etMobile);
+                add(etDesc);
             }
         };
 
-        CommonUtil.showSoftInput(this, et_title);
+        CommonUtil.showSoftInput(this, etTitle);
         initImageAdd();
     }
 
@@ -136,10 +139,10 @@ public class PublishFoundActivity extends LostAndFoundBaseActivity implements IP
         imageAddAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                if (images.isEmpty() || (images.size() < 3 && position == images.size())) {
+                if (images.isEmpty() || (images.size() < IMAGE_COUNT && position == images.size())) {
                     getImage(imageUri ->
                             presenter.uploadImage(PublishFoundActivity.this,
-                            imageUri, position, OssFileType.FOUND));
+                                    imageUri, position, OssFileType.FOUND));
                 } else {
                     Intent intent = new Intent(PublishFoundActivity.this, AlbumItemActivity.class);
                     intent.putExtra(AlbumItemActivity.INTENT_POSITION, position);
@@ -154,9 +157,9 @@ public class PublishFoundActivity extends LostAndFoundBaseActivity implements IP
                 return false;
             }
         });
-        rv_image.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        rv_image.addItemDecoration(new GridSpacesItemDecoration(3, ScreenUtils.dpToPxInt(this, 10), false));
-        rv_image.setAdapter(imageAddAdapter);
+        rvImage.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        rvImage.addItemDecoration(new GridSpacesItemDecoration(3, ScreenUtils.dpToPxInt(this, 10), false));
+        rvImage.setAdapter(imageAddAdapter);
     }
 
     @Override
@@ -179,13 +182,13 @@ public class PublishFoundActivity extends LostAndFoundBaseActivity implements IP
 
     @Override
     public void toggleBtnStatus() {
-        allValidated = !TextUtils.isEmpty(et_title.getText())
-                && !TextUtils.isEmpty(et_itemName.getText())
-                && !TextUtils.isEmpty(et_location.getText())
-                && !TextUtils.isEmpty(tv_lostTime.getText())
-                && !TextUtils.isEmpty(et_mobile.getText())
-                && !TextUtils.isEmpty(et_desc.getText());
-        bt_submit.setBackgroundResource(allValidated ?
+        allValidated = !TextUtils.isEmpty(etTitle.getText())
+                && !TextUtils.isEmpty(etItemName.getText())
+                && !TextUtils.isEmpty(etLocation.getText())
+                && !TextUtils.isEmpty(tvLostTime.getText())
+                && !TextUtils.isEmpty(etMobile.getText())
+                && !TextUtils.isEmpty(etDesc.getText());
+        btSubmit.setBackgroundResource(allValidated ?
                 R.drawable.button_enable : R.drawable.button_disable);
     }
 
@@ -199,10 +202,10 @@ public class PublishFoundActivity extends LostAndFoundBaseActivity implements IP
                 }
             }
         }
-        presenter.publishLostAndFound(et_desc.getText().toString(),
-                images, et_itemName.getText().toString(),et_location.getText().toString(),
-                (Long) tv_lostTime.getTag(R.id.timestamp), et_mobile.getText().toString(),
-                et_title.getText().toString(), 2);
+        presenter.publishLostAndFound(etDesc.getText().toString(),
+                images, etItemName.getText().toString(), etLocation.getText().toString(),
+                (Long) tvLostTime.getTag(R.id.timestamp), etMobile.getText().toString(),
+                etTitle.getText().toString(), 2);
     }
 
     @Override
@@ -221,7 +224,7 @@ public class PublishFoundActivity extends LostAndFoundBaseActivity implements IP
         for (String image : images) {
             addImages.add(new ImageAddAdapter.ImageItem(image));
         }
-        if (images.size() < 3) {
+        if (images.size() < IMAGE_COUNT) {
             addImages.add(new ImageAddAdapter.ImageItem());
         }
         imageAddAdapter.notifyDataSetChanged();
@@ -231,8 +234,8 @@ public class PublishFoundActivity extends LostAndFoundBaseActivity implements IP
     void onTimeChoose() {
         DatePickerDialog datePickerDialog = new DatePickerDialog(this);
         datePickerDialog.setOnItemSelectedListener((picker, date) -> {
-            tv_lostTime.setTag(R.id.timestamp, TimeUtils.date2Millis(date));
-            tv_lostTime.setText(TimeUtils.date2String(date, TimeUtils.MY_DATE_TIME_FORMAT));
+            tvLostTime.setTag(R.id.timestamp, TimeUtils.date2Millis(date));
+            tvLostTime.setText(TimeUtils.date2String(date, TimeUtils.MY_DATE_TIME_FORMAT));
         });
         datePickerDialog.show();
     }
@@ -249,9 +252,9 @@ public class PublishFoundActivity extends LostAndFoundBaseActivity implements IP
                             .error(R.drawable.ic_picture_error)
                             .skipMemoryCache(true)
                             .diskCacheStrategy(DiskCacheStrategy.NONE)
-                            .into(iv_first);
-                    iv_first.setScaleType(ImageView.ScaleType.FIT_XY);
-                    iv_second.setVisibility(View.VISIBLE);
+                            .into(ivFirst);
+                    ivFirst.setScaleType(ImageView.ScaleType.FIT_XY);
+                    ivSecond.setVisibility(View.VISIBLE);
                     presenter.uploadImage(PublishFoundActivity.this,
                             imageUri, 0, OssFileType.FOUND);
                 });
@@ -265,9 +268,9 @@ public class PublishFoundActivity extends LostAndFoundBaseActivity implements IP
                             .error(R.drawable.ic_picture_error)
                             .skipMemoryCache(true)
                             .diskCacheStrategy(DiskCacheStrategy.NONE)
-                            .into(iv_second);
-                    iv_second.setScaleType(ImageView.ScaleType.FIT_XY);
-                    iv_third.setVisibility(View.VISIBLE);
+                            .into(ivSecond);
+                    ivSecond.setScaleType(ImageView.ScaleType.FIT_XY);
+                    ivThird.setVisibility(View.VISIBLE);
                     presenter.uploadImage(PublishFoundActivity.this,
                             imageUri, 1, OssFileType.FOUND);
                 });
@@ -281,13 +284,15 @@ public class PublishFoundActivity extends LostAndFoundBaseActivity implements IP
                             .error(R.drawable.ic_picture_error)
                             .skipMemoryCache(true)
                             .diskCacheStrategy(DiskCacheStrategy.NONE)
-                            .into(iv_third);
-                    iv_third.setScaleType(ImageView.ScaleType.FIT_XY);
+                            .into(ivThird);
+                    ivThird.setScaleType(ImageView.ScaleType.FIT_XY);
                     presenter.uploadImage(PublishFoundActivity.this,
                             imageUri, 2, OssFileType.FOUND);
                 });
                 break;
             }
+            default:
+                break;
         }
     }
 

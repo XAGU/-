@@ -18,12 +18,14 @@ import lombok.Data;
 
 /**
  * 充值提现记录
- * <p>
- * Created by zcd on 10/18/17.
+ *
+ * @author zcd
+ * @date 17/10/18
  */
 
 public class WithdrawalAdaptor extends CommonAdapter<WithdrawalAdaptor.WithdrawalWrapper> {
     private Context context;
+
     public WithdrawalAdaptor(Context context, int layoutId, List<WithdrawalWrapper> datas) {
         super(context, layoutId, datas);
         this.context = context;
@@ -62,7 +64,9 @@ public class WithdrawalAdaptor extends CommonAdapter<WithdrawalAdaptor.Withdrawa
         private Integer type;
         private int status;
         private Long id;
-        // 是否是代充值
+        /**
+         * 是否是代充值
+         */
         private Boolean instead;
 
         public WithdrawalWrapper(FundsInListDTO dto) {
@@ -70,7 +74,7 @@ public class WithdrawalAdaptor extends CommonAdapter<WithdrawalAdaptor.Withdrawa
             this.time = dto.getCreateTime();
             this.type = dto.getOperationType();
             this.title = WithdrawOperationType.getOperationType(dto.getOperationType()).getDesc()
-                            + "：¥" + dto.getAmount();
+                    + "：¥" + dto.getAmount();
             this.status = dto.getStatus();
             this.instead = dto.getInstead();
         }

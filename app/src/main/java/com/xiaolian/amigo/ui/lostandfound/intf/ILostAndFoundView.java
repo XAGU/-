@@ -7,8 +7,9 @@ import java.util.List;
 
 /**
  * 失物招领
- * <p>
- * Created by zcd on 9/18/17.
+ *
+ * @author zcd
+ * @date 17/9/18
  */
 
 public interface ILostAndFoundView extends IBaseListView {
@@ -26,11 +27,29 @@ public interface ILostAndFoundView extends IBaseListView {
      */
     void addMoreFound(List<LostAndFoundAdaptor.LostAndFoundWapper> found);
 
+    /**
+     * 加载失物招领
+     *
+     * @param lostAndFoundWappers 失物招领
+     */
     void addMore(List<LostAndFoundAdaptor.LostAndFoundWapper> lostAndFoundWappers);
 
+    /**
+     * 显示未找到搜索结果
+     *
+     * @param selectKey 搜索关键词
+     */
     void showNoSearchResult(String selectKey);
 
+    /**
+     * 显示搜索结果
+     *
+     * @param wappers 搜索结果
+     */
     void showSearchResult(List<LostAndFoundAdaptor.LostAndFoundWapper> wappers);
 
+    /**
+     * 刷新
+     */
     void refresh();
 }

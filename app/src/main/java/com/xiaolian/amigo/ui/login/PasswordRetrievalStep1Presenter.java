@@ -2,9 +2,9 @@ package com.xiaolian.amigo.ui.login;
 
 import com.xiaolian.amigo.data.manager.intf.ILoginDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.login.VerificationCodeCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.login.VerificationCodeGetReqDTO;
-import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.login.intf.IPasswordRetrievalStep1Presenter;
 import com.xiaolian.amigo.ui.login.intf.IPasswordRetrievalStep1View;
@@ -13,8 +13,9 @@ import javax.inject.Inject;
 
 /**
  * 找回密码
- * <p>
- * Created by zcd on 9/20/17.
+ *
+ * @author zcd
+ * @date 17/9/20
  */
 
 public class PasswordRetrievalStep1Presenter<V extends IPasswordRetrievalStep1View> extends BasePresenter<V>
@@ -22,7 +23,7 @@ public class PasswordRetrievalStep1Presenter<V extends IPasswordRetrievalStep1Vi
     private ILoginDataManager loginDataManager;
 
     @Inject
-    public PasswordRetrievalStep1Presenter(ILoginDataManager loginDataManager) {
+    PasswordRetrievalStep1Presenter(ILoginDataManager loginDataManager) {
         super();
         this.loginDataManager = loginDataManager;
     }
@@ -31,7 +32,7 @@ public class PasswordRetrievalStep1Presenter<V extends IPasswordRetrievalStep1Vi
     public void getVerification(String mobile) {
         VerificationCodeGetReqDTO dto = new VerificationCodeGetReqDTO();
         dto.setMobile(mobile);
-        addObserver(loginDataManager.getVerification(dto), new NetworkObserver<ApiResult<BooleanRespDTO>>(){
+        addObserver(loginDataManager.getVerification(dto), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
 
             @Override
             public void onReady(ApiResult<BooleanRespDTO> result) {

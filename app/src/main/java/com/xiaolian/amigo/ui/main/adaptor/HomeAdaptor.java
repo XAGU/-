@@ -11,8 +11,10 @@ import java.util.List;
 import lombok.Data;
 
 /**
- * <p>
- * Created by zcd on 10/10/17.
+ * 首页adapter
+ *
+ * @author zcd
+ * @date 17/10/10
  */
 
 public class HomeAdaptor extends MultiItemTypeAdapter<HomeAdaptor.ItemWrapper> {

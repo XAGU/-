@@ -23,7 +23,9 @@ import butterknife.ButterKnife;
 
 /**
  * 代金券Activity
+ *
  * @author zcd
+ * @date 17/9/17
  */
 public class BonusActivity extends BonusBaseListActivity implements IBonusView {
     public static final String INTENT_KEY_BONUS_ACTION = "intent_key_bonus_action";
@@ -34,14 +36,18 @@ public class BonusActivity extends BonusBaseListActivity implements IBonusView {
     @Inject
     IBonusPresenter<IBonusView> presenter;
 
-    // 订单列表
+    /**
+     * 订单列表
+     */
     List<BonusAdaptor.BonusWrapper> bonuses = new ArrayList<>();
 
     BonusAdaptor adaptor;
 
     private int titleRes = R.string.my_bonus;
     private int subTitleRes = R.string.exchange_bonus;
-    // 从我的代金券进入为普通模式 从热水澡页面的选择代金券进入为选择模式
+    /**
+     * 从我的代金券进入为普通模式 从热水澡页面的选择代金券进入为选择模式
+     */
     private int action = ACTION_NORMAL;
     private Integer deviceType = null;
 
@@ -49,12 +55,12 @@ public class BonusActivity extends BonusBaseListActivity implements IBonusView {
     protected void onRefresh() {
         page = Constant.PAGE_START_NUM;
         bonuses.clear();
-        presenter.requestBonusList(page, deviceType ==  -1 ? null : deviceType, deviceType != -1);
+        presenter.requestBonusList(page, deviceType == -1 ? null : deviceType, deviceType != -1);
     }
 
     @Override
     public void onLoadMore() {
-        presenter.requestBonusList(page, deviceType ==  -1 ? null : deviceType, deviceType != -1);
+        presenter.requestBonusList(page, deviceType == -1 ? null : deviceType, deviceType != -1);
     }
 
     @Override

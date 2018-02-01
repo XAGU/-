@@ -31,18 +31,21 @@ import java.util.ArrayList;
 import javax.inject.Inject;
 
 /**
- * <p>
- * Created by zcd on 9/19/17.
+ * 列表选择
+ *
+ * @author zcd
+ * @date 17/9/15
  */
 
 public class ListChoosePresenter<V extends IListChooseView> extends BasePresenter<V>
         implements IListChoosePresenter<V> {
 
+    @SuppressWarnings("unused")
     private static final String TAG = ListChoosePresenter.class.getSimpleName();
     private IUserDataManager userDataManager;
 
     @Inject
-    public ListChoosePresenter(IUserDataManager userDataManager) {
+    ListChoosePresenter(IUserDataManager userDataManager) {
         super();
         this.userDataManager = userDataManager;
     }
@@ -213,7 +216,6 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
             }
         });
     }
-
 
 
     @Override

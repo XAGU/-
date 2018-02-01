@@ -6,8 +6,9 @@ import lombok.Data;
 
 /**
  * 维修评价
- * <p>
- * Created by zcd on 9/21/17.
+ *
+ * @author zcd
+ * @date 17/9/21
  */
 @Data
 public class RatingRepairReqDTO {

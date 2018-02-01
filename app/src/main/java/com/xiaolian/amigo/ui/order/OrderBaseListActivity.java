@@ -7,11 +7,13 @@ import com.xiaolian.amigo.di.module.OrderActivityModule;
 import com.xiaolian.amigo.ui.base.BaseToolBarListActivity;
 
 /**
- * <p>
- * Created by zcd on 9/24/17.
+ * 订单模块列表base activity
+ *
+ * @author zcd
+ * @date 17/9/24
  */
 
-public abstract class OrderBaseListActivity extends BaseToolBarListActivity{
+public abstract class OrderBaseListActivity extends BaseToolBarListActivity {
     private OrderActivityComponent mActivityComponent;
 
     @Override

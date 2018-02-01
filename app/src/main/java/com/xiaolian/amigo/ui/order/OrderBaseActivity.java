@@ -10,6 +10,12 @@ import com.xiaolian.amigo.di.module.OrderActivityModule;
 import com.xiaolian.amigo.ui.base.BaseActivity;
 
 
+/**
+ * 订单模块baseActivity
+ *
+ * @author caidong
+ * @date 17/9/15
+ */
 public abstract class OrderBaseActivity extends BaseActivity {
 
     private OrderActivityComponent mActivityComponent;

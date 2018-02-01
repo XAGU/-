@@ -8,14 +8,17 @@ import com.xiaolian.amigo.ui.base.BaseToolBarListActivity;
 
 /**
  * BonusBaseListActivity
+ *
  * @author zcd
+ * @date 17/9/18
  */
 
 public abstract class BonusBaseListActivity extends BaseToolBarListActivity {
 
     private BonusActivityComponent mActivityComponent;
 
-    protected  void initInject() {
+    @Override
+    protected void initInject() {
         mActivityComponent = DaggerBonusActivityComponent.builder()
                 .bonusActivityModule(new BonusActivityModule(this))
                 .applicationComponent(((MvpApp) getApplication()).getComponent())

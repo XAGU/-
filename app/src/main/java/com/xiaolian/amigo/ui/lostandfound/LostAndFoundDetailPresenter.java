@@ -12,8 +12,9 @@ import javax.inject.Inject;
 
 /**
  * 失物招领详情
- * <p>
- * Created by zcd on 9/21/17.
+ *
+ * @author zcd
+ * @date 17/9/21
  */
 
 public class LostAndFoundDetailPresenter<V extends ILostAndFoundDetailView> extends BasePresenter<V>

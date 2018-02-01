@@ -22,16 +22,21 @@ import butterknife.ButterKnife;
 
 /**
  * 订单列表
- * <p>
- * Created by caidong on 2017/9/14.
+ *
+ * @author caidong
+ * @date 17/9/14
  */
 public class OrderActivity extends OrderBaseListActivity implements IOrderView {
 
     @Inject
     IOrderPresenter<IOrderView> presenter;
-    // 订单列表
+    /**
+     * 订单列表
+     */
     List<OrderAdaptor.OrderWrapper> orders = new ArrayList<>();
-    // 订单列表recycleView适配器
+    /**
+     * 订单列表recycleView适配器
+     */
     OrderAdaptor adaptor;
 
 

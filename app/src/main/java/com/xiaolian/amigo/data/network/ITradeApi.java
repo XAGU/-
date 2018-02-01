@@ -20,32 +20,45 @@ import rx.Observable;
 
 /**
  * 用水交易相关接口
- * <p>
- * Created by caidong on 2017/9/15.
+ *
+ * @author caidong
+ * @date 17/9/15
  */
 public interface ITradeApi {
 
-    // 请求连接设备指令
+    /**
+     * 请求连接设备指令
+     */
     @POST("trade/device/connect")
     Observable<ApiResult<ConnectCommandRespDTO>> getConnectCommand(@Body ConnectCommandReqDTO reqDTO);
 
-    // 请求处理设备指令响应结果
+    /**
+     * 请求处理设备指令响应结果
+     */
     @POST("trade/device/command-result/process")
     Observable<ApiResult<CmdResultRespDTO>> processCmdResult(@Body CmdResultReqDTO reqDTO);
 
-    // 网络支付，创建用水订单
+    /**
+     * 网络支付，创建用水订单
+     */
     @POST("trade/pay")
     Observable<ApiResult<PayRespDTO>> pay(@Body PayReqDTO reqDTO);
 
-    // 扫描二维码结账
+    /**
+     * 扫描二维码结账
+     */
     @POST("trade/qrCode/scan")
     Observable<ApiResult<QrCodeScanRespDTO>> scanCheckout(@Body QrCodeScanReqDTO reqDTO);
 
-    // 生成支付二维码
+    /**
+     * 生成支付二维码
+     */
     @POST("trade/pay/qrCode/generate")
     Observable<ApiResult<QrCodeGenerateRespDTO>> generateQRCode(@Body PayReqDTO reqDTO);
 
-    // 请求洗衣机模式
+    /**
+     * 请求洗衣机模式
+     */
     @POST("trade/device/washing/mode")
     Observable<ApiResult<WashingModeRespDTO>> getWasherMode();
 }

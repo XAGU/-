@@ -17,6 +17,7 @@ import javax.inject.Inject;
  * 热水澡设备页
  *
  * @author zcd
+ * @date 17/9/20
  */
 
 public class HeaterActivity extends WaterDeviceBaseActivity<IHeaterPresenter> implements IHeaterView {
@@ -87,11 +88,6 @@ public class HeaterActivity extends WaterDeviceBaseActivity<IHeaterPresenter> im
 
     @Override
     public void showGuide() {
-        // 不显示引导页
-        // 显示引导页
-//        GuideDialog guideDialog = new GuideDialog(this, GuideDialog.TYPE_HEATER);
-//        guideDialog.setLocation(getLocation());
-//        guideDialog.show();
         showAlertNotice((dialog, isNotRemind) -> {
             dialog.dismiss();
             if (isNotRemind) {

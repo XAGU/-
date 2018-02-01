@@ -31,8 +31,9 @@ import butterknife.OnTextChanged;
 
 /**
  * 提现
- * <p>
- * Created by zcd on 10/10/17.
+ *
+ * @author zcd
+ * @date 17/10/10
  */
 
 public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawalView {
@@ -42,26 +43,30 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
     IWithdrawalPresenter<IWithdrawalView> presenter;
 
     @BindView(R.id.et_amount)
-    EditText et_amount;
+    EditText etAmount;
 
     @BindView(R.id.bt_submit)
-    Button bt_submit;
+    Button btSubmit;
 
     @BindView(R.id.rl_choose_withdraw_way)
-    RelativeLayout rl_choose_withdraw_way;
-    // 提现至支付宝
+    RelativeLayout rlChooseWithdrawWay;
+    /**
+     * 提现至支付宝
+     */
     @BindView(R.id.rl_choose_withdraw_way2)
-    RelativeLayout rl_choose_withdraw_way2;
+    RelativeLayout rlChooseWithdrawWay2;
 
     @BindView(R.id.tv_withdraw_way)
-    TextView tv_withdraw_way;
+    TextView tvWithdrawWay;
     @BindView(R.id.tv_withdraw_way2)
-    TextView tv_withdraw_way2;
+    TextView tvWithdrawWay2;
     @BindView(R.id.tv_withdraw_all)
-    TextView tv_withdraw_all;
-    // 可提现金额
+    TextView tvWithdrawAll;
+    /**
+     * 可提现金额
+     */
     @BindView(R.id.tv_withdraw_available)
-    TextView tv_withdraw_available;
+    TextView tvWithdrawAvailable;
 
     private Long withdrawId;
     private String balance;
@@ -72,10 +77,10 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
         getActivityComponent().inject(this);
         setUpEditText();
         presenter.onAttach(WithdrawalActivity.this);
-        tv_withdraw_available.setText(getString(R.string.withdraw_available, balance));
+        tvWithdrawAvailable.setText(getString(R.string.withdraw_available, balance));
         presenter.requestAccounts(PayWay.ALIAPY.getType());
 
-        CommonUtil.showSoftInput(this, et_amount);
+        CommonUtil.showSoftInput(this, etAmount);
     }
 
     @Override
@@ -96,9 +101,11 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
         return R.layout.activity_wallet_withdrawal;
     }
 
-    // 设置输入框只能输入2位小数
+    /**
+     * 设置输入框只能输入2位小数
+     */
     private void setUpEditText() {
-        et_amount.addTextChangedListener(new TextWatcher() {
+        etAmount.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -113,9 +120,10 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
             public void afterTextChanged(Editable s) {
                 String temp = s.toString();
                 int posDot = temp.indexOf(".");
-                if (posDot <= 0) return;
-                if (temp.length() - posDot - 1 > 2)
-                {
+                if (posDot <= 0) {
+                    return;
+                }
+                if (temp.length() - posDot - 1 > 2) {
                     s.delete(posDot + 3, posDot + 4);
                 }
             }
@@ -123,11 +131,11 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
     }
 
     private void toggleButton() {
-        if (TextUtils.isEmpty(et_amount.getText())
+        if (TextUtils.isEmpty(etAmount.getText())
                 || withdrawId == null) {
-            bt_submit.setEnabled(false);
+            btSubmit.setEnabled(false);
         } else {
-            bt_submit.setEnabled(true);
+            btSubmit.setEnabled(true);
         }
     }
 
@@ -138,7 +146,7 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
 
     @OnClick(R.id.bt_submit)
     void onSubmit() {
-        if (TextUtils.isEmpty(et_amount.getText())) {
+        if (TextUtils.isEmpty(etAmount.getText())) {
             onError("请输入提现金额");
             return;
         }
@@ -149,7 +157,7 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
         double withdrawAmount;
         double balanceAmount;
         try {
-            withdrawAmount = Double.valueOf(et_amount.getText().toString());
+            withdrawAmount = Double.valueOf(etAmount.getText().toString());
             balanceAmount = Double.valueOf(balance);
         } catch (NumberFormatException e) {
             withdrawAmount = 0.0;
@@ -179,23 +187,24 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
                 return;
             }
         }
-        presenter.withdraw(et_amount.getText().toString().trim(), tv_withdraw_way2.getText().toString().trim(),
+        presenter.withdraw(etAmount.getText().toString().trim(), tvWithdrawWay2.getText().toString().trim(),
                 withdrawId);
     }
 
     @OnClick(R.id.tv_withdraw_all)
     void withdrawAll() {
-        et_amount.setText(balance);
-        et_amount.setSelection(balance.length());
+        etAmount.setText(balance);
+        etAmount.setSelection(balance.length());
     }
 
     @OnClick(R.id.rl_choose_withdraw_way)
     void chooseWithdrawWay() {
         startActivityForResult(new Intent(this, ListChooseActivity.class).
                         putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION,
-                        ListChooseActivity.ACTION_LIST_WITHDRAW_WAY),
+                                ListChooseActivity.ACTION_LIST_WITHDRAW_WAY),
                 REQUEST_CODE_CHOOSE_WITHDRAW_WAY);
     }
+
     @OnClick(R.id.rl_choose_withdraw_way2)
     void chooseWithdrawWay2() {
         startActivityForResult(new Intent(this, ChooseWithdrawActivity.class),
@@ -217,7 +226,7 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
     @Override
     public void showWithdrawAccount(String accountName, Long id) {
         withdrawId = id;
-        tv_withdraw_way2.setText(accountName);
+        tvWithdrawWay2.setText(accountName);
     }
 
     @Override
@@ -227,16 +236,18 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
             switch (requestCode) {
                 case REQUEST_CODE_CHOOSE_WITHDRAW_WAY:
                     if (data != null) {
-                        tv_withdraw_way.setText(data.getStringExtra(
+                        tvWithdrawWay.setText(data.getStringExtra(
                                 ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ITEM_RESULT));
                     }
                     break;
                 case REQUEST_CODE_CHOOSE_WITHDRAW_WAY2:
                     if (data != null) {
                         ChooseWithdrawAdapter.Item item = (ChooseWithdrawAdapter.Item) data.getSerializableExtra(Constant.EXTRA_KEY);
-                        tv_withdraw_way2.setText(item.getContent());
+                        tvWithdrawWay2.setText(item.getContent());
                         withdrawId = item.getId();
                     }
+                    break;
+                default:
                     break;
             }
         }
@@ -248,9 +259,11 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
             case DELETE_ACCOUNT:
                 if (CommonUtil.equals(event.getObject(), this.withdrawId)) {
                     this.withdrawId = null;
-                    tv_withdraw_way2.setText("");
+                    tvWithdrawWay2.setText("");
                     presenter.clearAccount();
                 }
+                break;
+            default:
                 break;
         }
     }

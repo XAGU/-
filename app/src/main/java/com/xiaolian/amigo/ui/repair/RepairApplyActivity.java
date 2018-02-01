@@ -39,8 +39,9 @@ import butterknife.OnTextChanged;
 
 /**
  * 报修申请
- * <p>
- * Created by caidong on 2017/9/12.
+ *
+ * @author caidong
+ * @date 17/9/12
  */
 public class RepairApplyActivity extends RepairBaseActivity implements IRepairApplyView {
 
@@ -50,34 +51,34 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
     @Inject
     IRepairApplyPresenter<IRepairApplyView> presenter;
     @BindView(R.id.rv_problems)
-    RecyclerView rv_problems;
+    RecyclerView rvProblems;
     @BindView(R.id.tv_location)
-    TextView tv_location;
+    TextView tvLocation;
     @BindView(R.id.iv_first)
-    ImageView iv_first;
+    ImageView ivFirst;
     @BindView(R.id.iv_second)
-    ImageView iv_second;
+    ImageView ivSecond;
     @BindView(R.id.iv_third)
-    ImageView iv_third;
+    ImageView ivThird;
     @BindView(R.id.et_tel)
-    TextView et_tel;
+    TextView etTel;
     @BindView(R.id.et_content)
-    TextView et_content;
+    TextView etContent;
     @BindView(R.id.bt_submit)
-    Button bt_submit;
+    Button btSubmit;
 
     @BindView(R.id.ll_content)
-    LinearLayout ll_content;
+    LinearLayout llContent;
     @BindView(R.id.rl_main)
-    RelativeLayout rl_main;
+    RelativeLayout rlMain;
 
     @BindView(R.id.ll_problems)
-    LinearLayout ll_problems;
+    LinearLayout llProblems;
     @BindView(R.id.v_divide)
-    View v_divide;
+    View vDivide;
 
     @BindView(R.id.rv_image)
-    RecyclerView rv_image;
+    RecyclerView rvImage;
     private ImageAddAdapter imageAddAdapter;
     List<ImageAddAdapter.ImageItem> addImages = new ArrayList<>();
 
@@ -101,7 +102,7 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
             deviceType = intent.getIntExtra(Constant.DEVICE_TYPE, Device.UNKNOWN.getType());
             residenceId = intent.getLongExtra(Constant.LOCATION_ID, Constant.INVALID_ID);
             location = intent.getStringExtra(Constant.LOCATION);
-            tv_location.setText(location);
+            tvLocation.setText(location);
             if (Device.UNKNOWN.getType() != deviceType) {
                 // 获取报修问题列表
                 presenter.requestRepairProblems(deviceType);
@@ -117,20 +118,20 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
 
         presenter.onAttach(this);
 
-        tv_location.requestFocus();
+        tvLocation.requestFocus();
 
-        viewList = new ArrayList<TextView>(){
+        viewList = new ArrayList<TextView>() {
             {
-                add(et_tel);
-                add(et_content);
+                add(etTel);
+                add(etContent);
             }
         };
 
         adapter = new RepairProblemAdaptor(this, R.layout.item_problem, problems);
         adapter.setOnItemClickListener(this::toggleBtnStatus);
-        rv_problems.addItemDecoration(new GridSpacesItemDecoration(PROBLEM_LIST_SPAN_COUNT, ScreenUtils.dpToPxInt(this, 10), false));
-        rv_problems.setLayoutManager(new GridLayoutManager(this, PROBLEM_LIST_SPAN_COUNT));
-        rv_problems.setAdapter(adapter);
+        rvProblems.addItemDecoration(new GridSpacesItemDecoration(PROBLEM_LIST_SPAN_COUNT, ScreenUtils.dpToPxInt(this, 10), false));
+        rvProblems.setLayoutManager(new GridLayoutManager(this, PROBLEM_LIST_SPAN_COUNT));
+        rvProblems.setAdapter(adapter);
         render();
         initImageAdd();
     }
@@ -158,9 +159,9 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
                 return false;
             }
         });
-        rv_image.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        rv_image.addItemDecoration(new GridSpacesItemDecoration(IMAGE_MAX_COUNT, ScreenUtils.dpToPxInt(this, 10), false));
-        rv_image.setAdapter(imageAddAdapter);
+        rvImage.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        rvImage.addItemDecoration(new GridSpacesItemDecoration(IMAGE_MAX_COUNT, ScreenUtils.dpToPxInt(this, 10), false));
+        rvImage.setAdapter(imageAddAdapter);
     }
 
     @Override
@@ -187,11 +188,11 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
     public void render() {
         // 填充设备位置
         if (null != location) {
-            tv_location.setText(location);
+            tvLocation.setText(location);
             toggleBtnStatus();
         }
         if (!TextUtils.isEmpty(presenter.getMobile())) {
-            et_tel.setText(presenter.getMobile());
+            etTel.setText(presenter.getMobile());
         }
         if (Device.UNKNOWN.getType() != deviceType) {
             // 获取报修问题列表
@@ -221,9 +222,9 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
                             .error(R.drawable.ic_picture_error)
                             .skipMemoryCache(true)
                             .diskCacheStrategy(DiskCacheStrategy.NONE)
-                            .into(iv_first);
-                    iv_first.setScaleType(ImageView.ScaleType.FIT_XY);
-                    iv_second.setVisibility(View.VISIBLE);
+                            .into(ivFirst);
+                    ivFirst.setScaleType(ImageView.ScaleType.FIT_XY);
+                    ivSecond.setVisibility(View.VISIBLE);
                     presenter.onUpload(RepairApplyActivity.this, imageUri, 0);
                 });
                 break;
@@ -236,9 +237,9 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
                             .error(R.drawable.ic_picture_error)
                             .skipMemoryCache(true)
                             .diskCacheStrategy(DiskCacheStrategy.NONE)
-                            .into(iv_second);
-                    iv_second.setScaleType(ImageView.ScaleType.FIT_XY);
-                    iv_third.setVisibility(View.VISIBLE);
+                            .into(ivSecond);
+                    ivSecond.setScaleType(ImageView.ScaleType.FIT_XY);
+                    ivThird.setVisibility(View.VISIBLE);
                     presenter.onUpload(RepairApplyActivity.this, imageUri, 1);
                 });
                 break;
@@ -251,16 +252,20 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
                             .error(R.drawable.ic_picture_error)
                             .skipMemoryCache(true)
                             .diskCacheStrategy(DiskCacheStrategy.NONE)
-                            .into(iv_third);
-                    iv_third.setScaleType(ImageView.ScaleType.FIT_XY);
+                            .into(ivThird);
+                    ivThird.setScaleType(ImageView.ScaleType.FIT_XY);
                     presenter.onUpload(RepairApplyActivity.this, imageUri, 2);
                 });
                 break;
             }
+            default:
+                break;
         }
     }
 
-    // 用户键入内容，如联系电话和报修内容
+    /**
+     * 用户键入内容，如联系电话和报修内容
+     */
     @OnTextChanged({R.id.et_tel, R.id.et_content})
     void input() {
         toggleBtnStatus();
@@ -277,9 +282,9 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
 
         allValidated = !TextUtils.isEmpty(location)
 //                && selectedProblem > 0 // 不校验常见问题
-                && !TextUtils.isEmpty(et_tel.getText())
-                && !TextUtils.isEmpty(et_content.getText());
-        bt_submit.setBackgroundResource(allValidated ?
+                && !TextUtils.isEmpty(etTel.getText())
+                && !TextUtils.isEmpty(etContent.getText());
+        btSubmit.setBackgroundResource(allValidated ?
                 R.drawable.button_enable : R.drawable.button_disable);
     }
 
@@ -335,7 +340,7 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
                 problemIds.add(wrapper.getId());
             }
         }
-        presenter.onSubmit(problemIds, images, et_content.getText().toString(), et_tel.getText().toString(), deviceType, residenceId);
+        presenter.onSubmit(problemIds, images, etContent.getText().toString(), etTel.getText().toString(), deviceType, residenceId);
     }
 
     @Override
@@ -354,8 +359,8 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
     }
 
     private void renderProblems() {
-        v_divide.setVisibility(View.VISIBLE);
-        ll_problems.setVisibility(View.VISIBLE);
+        vDivide.setVisibility(View.VISIBLE);
+        llProblems.setVisibility(View.VISIBLE);
     }
 
     @Override

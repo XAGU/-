@@ -6,8 +6,9 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 /**
  * 标题＋内容
- * <p>
- * Created by zcd on 17/11/13.
+ *
+ * @author zcd
+ * @date 17/11/13
  */
 
 public class TitleContentDelegate implements ItemViewDelegate<WithdrawRechargeDetailAdapter.Item> {

@@ -43,43 +43,47 @@ import butterknife.OnClick;
 
 /**
  * 报修详情
- * <p>
- * Created by caidong on 2017/9/18.
+ *
+ * @author caidong
+ * @date 17/9/18
  */
 public class RepairDetailActivity extends RepairBaseActivity implements IRepairDetailView {
+    private static final int FIRST_IMAGE_INDEX = 0;
+    private static final int SECOND_IMAGE_INDEX = 1;
+    private static final int THIRD_IMAGE_INDEX = 2;
 
     @Inject
     IRepairDetailPresenter<IRepairDetailView> presenter;
     @BindView(R.id.rv_repair_progresses)
-    RecyclerView rv_repair_progresses;
+    RecyclerView rvRepairProgresses;
     @BindView(R.id.tv_type)
-    TextView tv_type;
+    TextView tvType;
     @BindView(R.id.tv_location)
-    TextView tv_location;
+    TextView tvLocation;
     @BindView(R.id.tv_content)
-    TextView tv_content;
+    TextView tvContent;
     @BindView(R.id.ll_images)
-    LinearLayout ll_images;
+    LinearLayout llImages;
     @BindView(R.id.iv_first)
-    ImageView iv_first;
+    ImageView ivFirst;
     @BindView(R.id.iv_second)
-    ImageView iv_second;
+    ImageView ivSecond;
     @BindView(R.id.iv_third)
-    ImageView iv_third;
+    ImageView ivThird;
     @BindView(R.id.left_oper)
-    TextView left_oper;
+    TextView leftOper;
     @BindView(R.id.right_oper)
-    TextView right_oper;
+    TextView rightOper;
     @BindView(R.id.ll_extra)
-    LinearLayout ll_extra;
+    LinearLayout llExtra;
     @BindView(R.id.tv_extra_title)
-    TextView tv_extra_title;
+    TextView tvExtraTitle;
     @BindView(R.id.tv_extra_content1)
-    TextView tv_extra_content1;
+    TextView tvExtraContent1;
     @BindView(R.id.tv_extra_content2)
-    TextView tv_extra_content2;
+    TextView tvExtraContent2;
     @BindView(R.id.ll_bottom)
-    LinearLayout ll_bottom;
+    LinearLayout llBottom;
 
     List<RepairProgressAdaptor.ProgressWrapper> progresses = new ArrayList<>();
     Long detailId;
@@ -103,10 +107,10 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
                     .setPositiveButton("确认", v -> presenter.cancelRepair())
                     .setNegativeClickListener("取消", IOSAlertDialog::dismiss).show();
         });
-        rv_repair_progresses.addItemDecoration(new RecycleViewDivider(this, RecycleViewDivider.VERTICAL_LIST, "deductLast"));
+        rvRepairProgresses.addItemDecoration(new RecycleViewDivider(this, RecycleViewDivider.VERTICAL_LIST, "deductLast"));
         manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        rv_repair_progresses.setLayoutManager(manager);
-        rv_repair_progresses.setAdapter(adapter);
+        rvRepairProgresses.setLayoutManager(manager);
+        rvRepairProgresses.setAdapter(adapter);
 
     }
 
@@ -137,64 +141,64 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
     @Override
     public void render(RepairDetailRespDTO detail) {
         images.clear();
-        tv_type.setText(Device.getDevice(detail.getDeviceType()).getDesc());
-        tv_location.setText(detail.getLocation());
-        tv_content.setText(detail.getContent());
+        tvType.setText(Device.getDevice(detail.getDeviceType()).getDesc());
+        tvLocation.setText(detail.getLocation());
+        tvContent.setText(detail.getContent());
         int imageSize = ScreenUtils.dpToPxInt(this, 57);
 
         List<String> images = detail.getImages();
-        if(null != images){
+        if (null != images) {
             this.images.addAll(images);
             // 获取图片数量
             int num = images.size();
             RequestManager manager = Glide.with(this);
             // 渲染第一张图
-            if (num > 0) {
-                ll_images.setVisibility(View.VISIBLE);
-                iv_first.setVisibility(View.VISIBLE);
+            if (num > FIRST_IMAGE_INDEX) {
+                llImages.setVisibility(View.VISIBLE);
+                ivFirst.setVisibility(View.VISIBLE);
                 manager.load(Constant.IMAGE_PREFIX + images.get(0)
                         + String.format(Locale.getDefault(), Constant.OSS_IMAGE_RESIZE,
                         imageSize))
                         .asBitmap()
                         .placeholder(R.drawable.ic_picture_error)
                         .error(R.drawable.ic_picture_error)
-                        .into(iv_first);
+                        .into(ivFirst);
             }
             // 渲染第二张图
-            if (num > 1) {
-                iv_second.setVisibility(View.VISIBLE);
+            if (num > SECOND_IMAGE_INDEX) {
+                ivSecond.setVisibility(View.VISIBLE);
                 manager.load(Constant.IMAGE_PREFIX + images.get(1)
                         + String.format(Locale.getDefault(), Constant.OSS_IMAGE_RESIZE,
                         imageSize))
                         .asBitmap()
                         .placeholder(R.drawable.ic_picture_error)
                         .error(R.drawable.ic_picture_error)
-                        .into(iv_second);
+                        .into(ivSecond);
             }
             // 渲染第三张图
-            if (num > 2) {
-                iv_third.setVisibility(View.VISIBLE);
+            if (num > THIRD_IMAGE_INDEX) {
+                ivThird.setVisibility(View.VISIBLE);
                 manager.load(Constant.IMAGE_PREFIX + images.get(2)
                         + String.format(Locale.getDefault(), Constant.OSS_IMAGE_RESIZE,
                         imageSize))
                         .asBitmap()
                         .placeholder(R.drawable.ic_picture_error)
                         .error(R.drawable.ic_picture_error)
-                        .into(iv_third);
+                        .into(ivThird);
             }
         }
 
         // 设置操作按钮中的显示文案
-        RepairStatus status = RepairStatus.getStatus(detail.getSteps().get(detail.getSteps().size()-1).getStatus());
+        RepairStatus status = RepairStatus.getStatus(detail.getSteps().get(detail.getSteps().size() - 1).getStatus());
         if (status == RepairStatus.REPAIR_CANCEL) {
-            ll_bottom.setVisibility(View.GONE);
+            llBottom.setVisibility(View.GONE);
         } else {
-            ll_bottom.setVisibility(View.VISIBLE);
+            llBottom.setVisibility(View.VISIBLE);
         }
         String[] opers = status.getNextOperations();
-        left_oper.setText(opers[0]);
-        right_oper.setText(opers[1]);
-        left_oper.setOnClickListener(v -> {
+        leftOper.setText(opers[0]);
+        rightOper.setText(opers[1]);
+        leftOper.setOnClickListener(v -> {
             switch (status) {
                 case REPAIR_DONE:
                     Intent intent = new Intent(RepairDetailActivity.this, RepairEvaluationActivity.class);
@@ -218,7 +222,7 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
                     break;
             }
         });
-        right_oper.setOnClickListener(v -> {
+        rightOper.setOnClickListener(v -> {
             switch (status) {
                 case REPAIR_DONE:
                 case REPAIR_PENDING:
@@ -230,21 +234,23 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
                 case AUDIT_FAIL:
                     CommonUtil.call(RepairDetailActivity.this, detail.getCsMobile());
                     break;
+                default:
+                    break;
             }
         });
         if (EvaluateStatus.getStatus(detail.getRated()) == EvaluateStatus.EVALUATE_DONE) {
-            left_oper.setEnabled(false);
-            left_oper.setTextColor(ContextCompat.getColor(this, R.color.colorDark9));
-            ll_extra.setVisibility(View.VISIBLE);
-            tv_extra_title.setText(getString(R.string.evaluation_info));
-            tv_extra_content1.setVisibility(View.VISIBLE);
-            tv_extra_content1.setText(getString(R.string.score, detail.getScore()));
-            tv_extra_content2.setText(detail.getComment());
+            leftOper.setEnabled(false);
+            leftOper.setTextColor(ContextCompat.getColor(this, R.color.colorDark9));
+            llExtra.setVisibility(View.VISIBLE);
+            tvExtraTitle.setText(getString(R.string.evaluation_info));
+            tvExtraContent1.setVisibility(View.VISIBLE);
+            tvExtraContent1.setText(getString(R.string.score, detail.getScore()));
+            tvExtraContent2.setText(detail.getComment());
         }
         if (status == RepairStatus.AUDIT_FAIL) {
-            ll_extra.setVisibility(View.VISIBLE);
-            tv_extra_title.setText(getString(R.string.customer_response));
-            tv_extra_content2.setText(detail.getReply());
+            llExtra.setVisibility(View.VISIBLE);
+            tvExtraTitle.setText(getString(R.string.customer_response));
+            tvExtraContent2.setText(detail.getReply());
         }
     }
 

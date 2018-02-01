@@ -15,8 +15,10 @@ import java.util.List;
 import lombok.Data;
 
 /**
- * <p>
- * Created by zcd on 10/10/17.
+ * 预付列表adapter
+ *
+ * @author zcd
+ * @date 17/10/10
  */
 
 public class PrepayAdaptor extends CommonAdapter<PrepayAdaptor.OrderWrapper> {
@@ -39,24 +41,42 @@ public class PrepayAdaptor extends CommonAdapter<PrepayAdaptor.OrderWrapper> {
 
     @Data
     public static class OrderWrapper implements Serializable {
-        // 设备类型
+        /**
+         * 设备类型
+         */
         private Integer type;
-        // 设备
+        /**
+         * 设备
+         */
         private String device;
-        // 时间
+        /**
+         * 时间
+         */
         private Long time;
-        // 预付金额
+        /**
+         * 预付金额
+         */
         private String prepay;
-        // 状态
+        /**
+         * 状态
+         */
         private Integer status;
-        // 原始订单内容，供查询订单详情时使用
+        /**
+         * 原始订单内容，供查询订单详情时使用
+         */
         private Order order;
-        // 设备mac地址
+        /**
+         * 设备mac地址
+         */
         private String macAddress;
-        // 设备地址
+        /**
+         * 设备地址
+         */
         private String location;
         private Long residenceId;
-        // 供应商id
+        /**
+         * 供应商id
+         */
         private Long supplierId;
 
         public OrderWrapper(Order order) {

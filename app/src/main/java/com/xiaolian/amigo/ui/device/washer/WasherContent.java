@@ -2,8 +2,9 @@ package com.xiaolian.amigo.ui.device.washer;
 
 /**
  * 洗衣机模块相关常量
- * <p>
- * Created by zcd on 18/1/15.
+ *
+ * @author zcd
+ * @date 18/1/15
  */
 
 public class WasherContent {

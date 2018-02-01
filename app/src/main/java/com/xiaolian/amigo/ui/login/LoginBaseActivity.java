@@ -10,6 +10,12 @@ import com.xiaolian.amigo.di.module.LoginActivityModule;
 import com.xiaolian.amigo.ui.base.BaseActivity;
 
 
+/**
+ * 登录模块baseActivity
+ *
+ * @author caidong
+ * @date 17/9/14
+ */
 abstract public class LoginBaseActivity extends BaseActivity {
 
     private LoginActivityComponent mActivityComponent;

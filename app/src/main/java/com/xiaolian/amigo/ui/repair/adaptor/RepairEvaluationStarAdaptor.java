@@ -11,11 +11,13 @@ import java.util.List;
 import lombok.Data;
 
 /**
- * <p>
- * Created by zcd on 9/21/17.
+ * 报修评价星星
+ *
+ * @author zcd
+ * @date 17/9/21
  */
 
-public class RepairEvaluationStarAdaptor extends CommonAdapter<RepairEvaluationStarAdaptor.Star>{
+public class RepairEvaluationStarAdaptor extends CommonAdapter<RepairEvaluationStarAdaptor.Star> {
     public RepairEvaluationStarAdaptor(Context context, int layoutId, List<Star> datas) {
         super(context, layoutId, datas);
     }

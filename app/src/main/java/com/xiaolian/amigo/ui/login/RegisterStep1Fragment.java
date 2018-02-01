@@ -29,39 +29,41 @@ import butterknife.OnTextChanged;
 
 /**
  * 注册第一步
- * <p>
- * Created by zcd on 9/19/17.
+ *
+ * @author zcd
+ * @date 17/9/19
  */
 
 public class RegisterStep1Fragment extends Fragment {
-    private static final String GET_VERIVICATION_CODE = "获取验证码";
+    private static final String GET_VERIFICATION_CODE = "获取验证码";
+    private static final int MOBILE_LENGTH = 11;
 
     @BindView(R.id.bt_submit)
-    Button bt_submit;
+    Button btSubmit;
 
     @OnClick(R.id.bt_submit)
     void checkVerification() {
         if (getActivity() instanceof LoginActivity) {
-            ((LoginActivity)getActivity()).setMobileAndCode(et_mobile.getText().toString(),
-                    et_verification_code.getText().toString());
-            ((LoginActivity)getActivity()).checkVerificationCode(et_mobile.getText().toString(),
-                    et_verification_code.getText().toString());
+            ((LoginActivity) getActivity()).setMobileAndCode(etMobile.getText().toString(),
+                    etVerificationCode.getText().toString());
+            ((LoginActivity) getActivity()).checkVerificationCode(etMobile.getText().toString(),
+                    etVerificationCode.getText().toString());
         }
     }
 
 
     @BindView(R.id.et_mobile)
-    EditText et_mobile;
+    EditText etMobile;
 
     @BindView(R.id.bt_send_verification_code)
-    Button bt_send_verification_code;
+    Button btSendVerificationCode;
 
     @OnClick(R.id.bt_send_verification_code)
     void sendVerificationCode() {
         if (getActivity() instanceof LoginActivity) {
-            ((LoginActivity) getActivity()).sendVerificationCode(et_mobile.getText().toString());
+            ((LoginActivity) getActivity()).sendVerificationCode(etMobile.getText().toString());
         }
-        et_verification_code.requestFocus();
+        etVerificationCode.requestFocus();
     }
 
     @OnClick(R.id.tv_agreement)
@@ -71,7 +73,7 @@ public class RegisterStep1Fragment extends Fragment {
     }
 
     @BindView(R.id.et_verification_code)
-    EditText et_verification_code;
+    EditText etVerificationCode;
 
     CountDownButtonHelper cdb;
 
@@ -87,26 +89,26 @@ public class RegisterStep1Fragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ViewUtil.setEditHintAndSize(getString(R.string.mobile_hint), 14, et_mobile);
-        ViewUtil.setEditHintAndSize(getString(R.string.verification_code_hint), 14, et_verification_code);
+        ViewUtil.setEditHintAndSize(getString(R.string.mobile_hint), 14, etMobile);
+        ViewUtil.setEditHintAndSize(getString(R.string.verification_code_hint), 14, etVerificationCode);
 
-        cdb = new CountDownButtonHelper(bt_send_verification_code, GET_VERIVICATION_CODE,
+        cdb = new CountDownButtonHelper(btSendVerificationCode, GET_VERIFICATION_CODE,
                 Constant.VERIFY_CODE_TIME, 1);
         cdb.setOnFinishListener(() -> {
             if (getContext() != null) {
-                bt_send_verification_code.setEnabled(true);
-                bt_send_verification_code.setText(GET_VERIVICATION_CODE);
+                btSendVerificationCode.setEnabled(true);
+                btSendVerificationCode.setText(GET_VERIFICATION_CODE);
                 int color = ContextCompat.getColor(getContext(), R.color.colorFullRed);
-                bt_send_verification_code.setTextColor(color);
-                bt_send_verification_code.setBackgroundResource(R.drawable.bg_rect_red_stroke);
+                btSendVerificationCode.setTextColor(color);
+                btSendVerificationCode.setBackgroundResource(R.drawable.bg_rect_red_stroke);
             }
         });
 
         int color = ContextCompat.getColor(getContext(), R.color.colorDarkB);
-        bt_send_verification_code.setTextColor(color);
-        bt_send_verification_code.setBackgroundResource(R.drawable.bg_rect_gray_stroke);
-        bt_send_verification_code.setEnabled(false);
-        et_mobile.addTextChangedListener(new TextWatcher() {
+        btSendVerificationCode.setTextColor(color);
+        btSendVerificationCode.setBackgroundResource(R.drawable.bg_rect_gray_stroke);
+        btSendVerificationCode.setEnabled(false);
+        etMobile.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -115,18 +117,18 @@ public class RegisterStep1Fragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 toggleButton();
-                if (et_mobile.length() == 11) {
-                    bt_send_verification_code.setEnabled(true);
-                    bt_send_verification_code.setText(GET_VERIVICATION_CODE);
+                if (etMobile.length() == MOBILE_LENGTH) {
+                    btSendVerificationCode.setEnabled(true);
+                    btSendVerificationCode.setText(GET_VERIFICATION_CODE);
                     int color = ContextCompat.getColor(getContext(), R.color.colorFullRed);
-                    bt_send_verification_code.setTextColor(color);
-                    bt_send_verification_code.setBackgroundResource(R.drawable.bg_rect_red_stroke);
+                    btSendVerificationCode.setTextColor(color);
+                    btSendVerificationCode.setBackgroundResource(R.drawable.bg_rect_red_stroke);
                 } else {
-                    bt_send_verification_code.setText(GET_VERIVICATION_CODE);
+                    btSendVerificationCode.setText(GET_VERIFICATION_CODE);
                     int color = ContextCompat.getColor(getContext(), R.color.colorDarkB);
-                    bt_send_verification_code.setTextColor(color);
-                    bt_send_verification_code.setBackgroundResource(R.drawable.bg_rect_gray_stroke);
-                    bt_send_verification_code.setEnabled(false);
+                    btSendVerificationCode.setTextColor(color);
+                    btSendVerificationCode.setBackgroundResource(R.drawable.bg_rect_gray_stroke);
+                    btSendVerificationCode.setEnabled(false);
                 }
             }
 
@@ -141,8 +143,8 @@ public class RegisterStep1Fragment extends Fragment {
 
     public void startTimer() {
         int color = ContextCompat.getColor(getContext(), R.color.colorDarkB);
-        bt_send_verification_code.setTextColor(color);
-        bt_send_verification_code.setBackgroundResource(R.drawable.bg_rect_gray_stroke);
+        btSendVerificationCode.setTextColor(color);
+        btSendVerificationCode.setBackgroundResource(R.drawable.bg_rect_gray_stroke);
         cdb.start();
     }
 
@@ -160,20 +162,20 @@ public class RegisterStep1Fragment extends Fragment {
     }
 
     private void toggleButton() {
-        boolean valid = !TextUtils.isEmpty(et_verification_code.getText())
-                && !TextUtils.isEmpty(et_mobile.getText())
-                && et_mobile.getText().length() == 11;
-        bt_submit.setEnabled(valid);
+        boolean valid = !TextUtils.isEmpty(etVerificationCode.getText())
+                && !TextUtils.isEmpty(etMobile.getText())
+                && etMobile.getText().length() == 11;
+        btSubmit.setEnabled(valid);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (et_mobile != null) {
-            et_mobile.requestFocus();
+        if (etMobile != null) {
+            etMobile.requestFocus();
             InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             if (imm != null) {
-                imm.showSoftInput(et_mobile, InputMethodManager.SHOW_IMPLICIT);
+                imm.showSoftInput(etMobile, InputMethodManager.SHOW_IMPLICIT);
             }
         }
     }

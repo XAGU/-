@@ -20,8 +20,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * <p>
- * Created by zcd on 10/15/17.
+ * 闪屏页
+ *
+ * @author zcd
+ * @date 17/10/15
  */
 
 public class SplashActivity extends MainBaseActivity implements ISplashView {
@@ -29,9 +31,11 @@ public class SplashActivity extends MainBaseActivity implements ISplashView {
     @Inject
     ISplashPresenter<ISplashView> presenter;
     @BindView(R.id.iv_logo)
-    ImageView iv_logo;
+    ImageView ivLogo;
 
-    // 计时器
+    /**
+     * 计时器
+     */
     private CountDownTimer timer;
 
     @Override
@@ -71,9 +75,9 @@ public class SplashActivity extends MainBaseActivity implements ISplashView {
         cancelTimer();
         Log.i(TAG, "clearObserver");
         presenter.clearObservers();
-        iv_logo.postDelayed(() -> {
+        ivLogo.postDelayed(() -> {
             startActivity(new Intent(this, MainActivity.class)
-                .putExtra(MainActivity.INTENT_KEY_BANNERS, banners));
+                    .putExtra(MainActivity.INTENT_KEY_BANNERS, banners));
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             finish();
         }, 200);

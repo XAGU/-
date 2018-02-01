@@ -4,8 +4,9 @@ import lombok.Data;
 
 /**
  * 兑换代金券reqDTO
- * <p>
- * Created by zcd on 10/12/17.
+ *
+ * @author zcd
+ * @date 17/10/12
  */
 @Data
 public class RedeemBonusReqDTO {

@@ -16,11 +16,14 @@ import java.util.List;
 import lombok.Data;
 
 /**
- * <p>
- * Created by zcd on 10/13/17.
+ * 更多页面列表adapter
+ *
+ * @author zcd
+ * @date 17/10/13
  */
 
 public class MoreAdapter extends CommonAdapter<MoreAdapter.MoreModel> {
+    private static final String DIVIDER_TAG = "divider";
     public MoreAdapter(Context context, int layoutId, List<MoreModel> datas) {
         super(context, layoutId, datas);
     }
@@ -28,17 +31,17 @@ public class MoreAdapter extends CommonAdapter<MoreAdapter.MoreModel> {
     @Override
     protected void convert(ViewHolder holder, MoreModel moreModel, int position) {
         if (position == getDatas().size() - 1) {
-            LinearLayout ll_item = holder.getView(R.id.ll_item_more);
-            if (!TextUtils.equals((CharSequence) ll_item.getChildAt(ll_item.getChildCount() - 1).getTag(), "divider")) {
-                View view = new View(ll_item.getContext());
-                view.setTag("divider");
+            LinearLayout llItem = holder.getView(R.id.ll_item_more);
+            if (!TextUtils.equals((CharSequence) llItem.getChildAt(llItem.getChildCount() - 1).getTag(), DIVIDER_TAG)) {
+                View view = new View(llItem.getContext());
+                view.setTag(DIVIDER_TAG);
                 view.setBackgroundResource(R.drawable.divider);
                 ViewGroup.LayoutParams params = view.getLayoutParams();
                 if (params == null) {
                     params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 }
-                params.height = ScreenUtils.dpToPxInt(ll_item.getContext(), 1);
-                ll_item.addView(view, -1);
+                params.height = ScreenUtils.dpToPxInt(llItem.getContext(), 1);
+                llItem.addView(view, -1);
             }
         }
         holder.setText(R.id.tv_content, moreModel.getContent());

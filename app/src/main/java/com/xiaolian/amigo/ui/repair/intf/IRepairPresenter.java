@@ -19,11 +19,26 @@ package com.xiaolian.amigo.ui.repair.intf;
 import com.xiaolian.amigo.di.RepairActivityContext;
 import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 
+/**
+ * 报修列表
+ *
+ * @author caidong
+ * @date 17/9/18
+ */
 @RepairActivityContext
 public interface IRepairPresenter<V extends IRepairView> extends IBasePresenter<V> {
 
-    // 刷新报修记录
+    /**
+     * 刷新报修记录
+     *
+     * @param page 页数
+     */
     void requestRepairs(int page);
 
+    /**
+     * 设置上次报修时间
+     *
+     * @param time 时间
+     */
     void setLastRepairTime(Long time);
 }

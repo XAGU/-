@@ -16,21 +16,22 @@ import butterknife.OnClick;
 /**
  * 设备报修导航页
  *
- * Created by caidong on 2017/9/12.
+ * @author caidong
+ * @date 17/9/22
  */
 public class RepairNavActivity extends RepairBaseActivity {
 
     private Long lastRepairTime;
 
     @BindView(R.id.v_dot)
-    View v_dot;
+    View vDot;
 
     @Override
     protected void initView() {
         setMainBackground(R.color.white);
         ButterKnife.bind(this);
         if (lastRepairTime != null && !CommonUtil.equals(lastRepairTime, Constant.INVALID_ID)) {
-            v_dot.setVisibility(View.VISIBLE);
+            vDot.setVisibility(View.VISIBLE);
         }
     }
 
@@ -54,19 +55,23 @@ public class RepairNavActivity extends RepairBaseActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        v_dot.setVisibility(View.GONE);
+        vDot.setVisibility(View.GONE);
     }
 
-    // 申请报修
+    /**
+     * 申请报修
+     */
     @OnClick(R.id.rl_repair_apply_entry)
     void applyRepair() {
         startActivity(this, RepairApplyActivity.class);
     }
 
-    // 报修记录
+    /**
+     * 报修记录
+     */
     @OnClick(R.id.rl_repair_record_entry)
     void queryRepairs() {
-        Map<String, Long> extraMap = new HashMap<String, Long>() {
+        Map<String, Long> extraMap = new HashMap<String, Long>(1) {
             {
                 put(RepairActivity.INTENT_KEY_LAST_REPAIR_TIME, lastRepairTime);
             }

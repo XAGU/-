@@ -8,15 +8,22 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 /**
  * 标题＋内容＋复制
- * <p>
- * Created by zcd on 17/11/13.
+ *
+ * @author zcd
+ * @date 17/11/13
  */
 
-public class TitleContentCopyDelegate implements ItemViewDelegate<WithdrawRechargeDetailAdapter.Item>  {
+public class TitleContentCopyDelegate implements ItemViewDelegate<WithdrawRechargeDetailAdapter.Item> {
     public interface OnCopyListener {
+        /**
+         * 复制
+         * @param string 复制内容
+         */
         void onCopy(String string);
     }
+
     private OnCopyListener listener;
+
     @Override
     public int getItemViewLayoutId() {
         return R.layout.item_title_content_copy;
@@ -33,7 +40,7 @@ public class TitleContentCopyDelegate implements ItemViewDelegate<WithdrawRechar
         holder.setText(R.id.tv_content, item.getContent());
         holder.getView(R.id.tv_copy).setOnClickListener((v) -> {
             if (listener != null) {
-                listener.onCopy(((TextView)holder.getView(R.id.tv_content)).getText().toString());
+                listener.onCopy(((TextView) holder.getView(R.id.tv_content)).getText().toString());
             }
         });
     }

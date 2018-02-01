@@ -4,8 +4,9 @@ import lombok.Data;
 
 /**
  * wallet模块事件
- * <p>
- * Created by zcd on 17/11/27.
+ *
+ * @author zcd
+ * @date 17/11/27
  */
 @Data
 public class WalletEvent {
@@ -18,6 +19,9 @@ public class WalletEvent {
     }
 
     public enum EventType {
+        /**
+         * 删除账户
+         */
         DELETE_ACCOUNT;
     }
 }

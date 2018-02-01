@@ -7,8 +7,9 @@ import lombok.Data;
 
 /**
  * 通知
- * <p>
- * Created by zcd on 17/12/14.
+ *
+ * @author zcd
+ * @date 17/12/14
  */
 @Data
 public class NotifyDTO implements Mapper<Notify> {

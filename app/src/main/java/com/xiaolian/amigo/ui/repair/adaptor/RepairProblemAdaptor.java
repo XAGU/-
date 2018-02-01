@@ -2,7 +2,6 @@ package com.xiaolian.amigo.ui.repair.adaptor;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
-import android.view.View;
 import android.widget.Button;
 
 import com.xiaolian.amigo.R;
@@ -15,11 +14,13 @@ import java.util.List;
 import lombok.Data;
 
 /**
- * Created by caidong on 2017/9/12.
+ * 报修问题
+ *
+ * @author caidong
+ * @date 17/9/12
  */
 public class RepairProblemAdaptor extends CommonAdapter<RepairProblemAdaptor.ProblemWrapper> {
 
-//    private int lastChoosePosition = -1;
     private Context context;
 
     public RepairProblemAdaptor(Context context, int layoutId, List<ProblemWrapper> datas) {
@@ -31,12 +32,8 @@ public class RepairProblemAdaptor extends CommonAdapter<RepairProblemAdaptor.Pro
     protected void convert(ViewHolder holder, ProblemWrapper problemWrapper, int position) {
         holder.setText(R.id.bt_problem, problemWrapper.getDesc());
         holder.getView(R.id.bt_problem).setOnClickListener(v -> {
-//                if (lastChoosePosition != -1) {
-//                    getDatas().get(lastChoosePosition).setChoose(false);
-//                }
             boolean lastChooseStatus = getDatas().get(holder.getAdapterPosition()).isChoose();
             getDatas().get(holder.getAdapterPosition()).setChoose(!lastChooseStatus);
-//                lastChoosePosition = position;
             notifyDataSetChanged();
             listener.onItemClick();
         });
@@ -55,11 +52,17 @@ public class RepairProblemAdaptor extends CommonAdapter<RepairProblemAdaptor.Pro
 
     @Data
     public static class ProblemWrapper {
-        // 问题描述
+        /**
+         * 问题描述
+         */
         String desc;
-        // 问题id
+        /**
+         * 问题id
+         */
         Long id;
-        // 是否被选择
+        /**
+         * 是否被选择
+         */
         boolean isChoose = false;
 
         public ProblemWrapper(RepairProblem problem) {
@@ -76,6 +79,9 @@ public class RepairProblemAdaptor extends CommonAdapter<RepairProblemAdaptor.Pro
     }
 
     public interface OnItemClickListener {
+        /**
+         * 列表点击事件
+         */
         void onItemClick();
     }
 

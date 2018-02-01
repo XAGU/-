@@ -26,8 +26,9 @@ import butterknife.OnClick;
 
 /**
  * 更多页面
- * <p>
- * Created by zcd on 10/13/17.
+ *
+ * @author zcd
+ * @date 17/10/13
  */
 public class MoreActivity extends MoreBaseActivity implements IMoreView {
 
@@ -63,7 +64,7 @@ public class MoreActivity extends MoreBaseActivity implements IMoreView {
                 if (clz != null) {
                     startActivity(new Intent(MoreActivity.this, clz)
                             .putExtra(WebActivity.INTENT_KEY_URL, items.get(position).getExtra()
-                                        + "?token=" + presenter.getToken()));
+                                    + "?token=" + presenter.getToken()));
                 }
             }
 
