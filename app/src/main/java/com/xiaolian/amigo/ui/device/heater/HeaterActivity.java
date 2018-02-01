@@ -95,10 +95,4 @@ public class HeaterActivity extends WaterDeviceBaseActivity<IHeaterPresenter> im
             }
         });
     }
-
-    @Override
-    protected void onDestroy() {
-        presenter.onDetach();
-        super.onDestroy();
-    }
 }
