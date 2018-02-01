@@ -2,8 +2,9 @@ package com.xiaolian.amigo.data.enumeration;
 
 /**
  * oss type
- * <p>
- * Created by zcd on 17/11/13.
+ *
+ * @author zcd
+ * @date 17/11/13
  */
 
 public enum OssFileType {

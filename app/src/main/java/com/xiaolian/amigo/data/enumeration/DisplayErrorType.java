@@ -2,11 +2,12 @@ package com.xiaolian.amigo.data.enumeration;
 
 /**
  * 连接显示错误
- * <p>
- * Created by zcd on 18/1/17.
+ *
+ * @author zcd
+ * @date 18/1/17
  */
 
-public enum  DisplayErrorType {
+public enum DisplayErrorType {
     CONNECT_ERROR(1, "页面显示连接失败"),
     DEVICE_ERROR(2, "设备故障"),
     SYSTEM_ERROR(3, "系统错误");

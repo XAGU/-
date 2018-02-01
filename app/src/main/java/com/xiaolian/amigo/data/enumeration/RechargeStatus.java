@@ -4,19 +4,21 @@ import com.xiaolian.amigo.R;
 
 /**
  * 提现状态
- * <p>
- * Created by zcd on 10/27/17.
+ *
+ * @author zcd
+ * @date 17/10/27
  */
 
-public enum  RechargeStatus {
+public enum RechargeStatus {
     KNOWN(0, "未知状态") {
         @Override
         public int getColorRes() {
             return R.color.colorFullRed;
         }
+
         @Override
         public String[] getNextOperations() {
-            return new String[] {COMMON_PROBLEM, TO_COMPLAIN};
+            return new String[]{COMMON_PROBLEM, TO_COMPLAIN};
         }
     },
     AUDIT_PENDING(1, "等待审核") {
@@ -24,9 +26,10 @@ public enum  RechargeStatus {
         public int getColorRes() {
             return R.color.colorFullRed;
         }
+
         @Override
         public String[] getNextOperations() {
-            return new String[] {"提醒客服尽快处理", COMMON_PROBLEM};
+            return new String[]{"提醒客服尽快处理", COMMON_PROBLEM};
         }
     },
     AUDIT_FAIL(2, "审核未通过") {
@@ -34,9 +37,10 @@ public enum  RechargeStatus {
         public int getColorRes() {
             return R.color.colorFullRed;
         }
+
         @Override
         public String[] getNextOperations() {
-            return new String[] {COMMON_PROBLEM, CONTACT_CUSTOMER_SERVICE};
+            return new String[]{COMMON_PROBLEM, CONTACT_CUSTOMER_SERVICE};
         }
     },
     THIRD_PENDING(3, "等待支付确认") {
@@ -44,9 +48,10 @@ public enum  RechargeStatus {
         public int getColorRes() {
             return R.color.colorFullRed;
         }
+
         @Override
         public String[] getNextOperations() {
-            return new String[] {COMMON_PROBLEM, TO_COMPLAIN};
+            return new String[]{COMMON_PROBLEM, TO_COMPLAIN};
         }
     },
     RECHARGE_SUCCESS(4, "充值成功") {
@@ -54,9 +59,10 @@ public enum  RechargeStatus {
         public int getColorRes() {
             return R.color.device_dispenser;
         }
+
         @Override
         public String[] getNextOperations() {
-            return new String[] {COMMON_PROBLEM, TO_COMPLAIN};
+            return new String[]{COMMON_PROBLEM, TO_COMPLAIN};
         }
     },
     RECHARGE_FAIL(5, "充值失败") {
@@ -67,7 +73,7 @@ public enum  RechargeStatus {
 
         @Override
         public String[] getNextOperations() {
-            return new String[] {COMMON_PROBLEM, CONTACT_CUSTOMER_SERVICE};
+            return new String[]{COMMON_PROBLEM, CONTACT_CUSTOMER_SERVICE};
         }
     },
     BEHALF_OF_RECHARGE(-1, "代充值成功") {
@@ -78,7 +84,7 @@ public enum  RechargeStatus {
 
         @Override
         public String[] getNextOperations() {
-            return new String[] {COMMON_PROBLEM, TO_COMPLAIN};
+            return new String[]{COMMON_PROBLEM, TO_COMPLAIN};
         }
     };
     private static final String COMMON_PROBLEM = "常见问题";

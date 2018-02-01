@@ -17,12 +17,18 @@ import rx.Observable;
  * @date 17/9/18
  */
 public interface IFavoriteManager {
-    // 查询收藏设备列表
+    /**
+     * 查询收藏设备列表
+     */
     Observable<ApiResult<QueryFavorDeviceRespDTO>> getFavorites(QueryDeviceListReqDTO reqDTO);
 
-    // 收藏饮水机
+    /**
+     * 收藏饮水机
+     */
     Observable<ApiResult<SimpleRespDTO>> favorite(@Body FavorDeviceReqDTO reqDTO);
 
-    // 取消收藏饮水机
+    /**
+     * 取消收藏饮水机
+     */
     Observable<ApiResult<SimpleRespDTO>> unFavorite(@Body FavorDeviceReqDTO reqDTO);
 }

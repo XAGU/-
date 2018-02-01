@@ -2,7 +2,9 @@ package com.xiaolian.amigo.data.enumeration;
 
 /**
  * error tag
- * Created by caidong on 2017/10/13.
+ *
+ * @author caidong
+ * @date 17/10/13
  */
 public enum ErrorTag {
     // FIXME 增加设备时需要更改此处

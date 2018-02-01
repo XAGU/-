@@ -8,8 +8,9 @@ import com.xiaolian.amigo.ui.device.washer.WasherActivity;
 
 /**
  * 设备类型
- * <p>
- * Created by caidong on 2017/9/15.
+ *
+ * @author caidong
+ * @date 17/9/15
  */
 
 public enum Device {

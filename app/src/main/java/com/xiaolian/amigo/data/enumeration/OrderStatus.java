@@ -3,7 +3,8 @@ package com.xiaolian.amigo.data.enumeration;
 /**
  * 订单状态
  *
- * Created by caidong on 2017/10/12.
+ * @author caidong
+ * @date 17/10/12
  */
 public enum OrderStatus {
     UNKNOWN(0), USING(1), FINISHED(2);

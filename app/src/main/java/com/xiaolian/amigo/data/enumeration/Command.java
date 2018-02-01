@@ -2,8 +2,9 @@ package com.xiaolian.amigo.data.enumeration;
 
 /**
  * 蓝牙操作指令
- * <p>
- * Created by caidong on 2017/10/9.
+ *
+ * @author caidong
+ * @date 17/10/9
  */
 public enum Command {
 

@@ -4,8 +4,9 @@ import com.xiaolian.amigo.R;
 
 /**
  * 维修状态
- * <p>
- * Created by caidong on 2017/9/18.
+ *
+ * @author zcd
+ * @date 17/9/18
  */
 public enum RepairStatus {
 

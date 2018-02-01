@@ -2,11 +2,12 @@ package com.xiaolian.amigo.data.enumeration;
 
 /**
  * 业务异常
- * <p>
- * Created by zcd on 17/11/19.
+ *
+ * @author zcd
+ * @date 17/11/19
  */
 
-public enum  BizError {
+public enum BizError {
     INVALID_MOBILE(30001, "手机号不合法"),
     ACCOUNT_EXIST(30002, "该手机号已注册"),
     INVALID_SMS_CODE(30003, "短信验证码错误"),

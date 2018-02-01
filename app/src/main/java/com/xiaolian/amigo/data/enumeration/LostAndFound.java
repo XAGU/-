@@ -2,14 +2,14 @@ package com.xiaolian.amigo.data.enumeration;
 
 /**
  * 失物招领
- * <p>
- * Created by zcd on 10/17/17.
+ *
+ * @author zcd
+ * @date 17/10/17
  */
 
 public enum LostAndFound {
     LOST(1, "失物"),
-    FOUND(2, "招领")
-    ;
+    FOUND(2, "招领");
 
     LostAndFound(int type, String desc) {
         this.type = type;

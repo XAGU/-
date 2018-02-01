@@ -6,11 +6,12 @@ import com.xiaolian.amigo.R;
 
 /**
  * 饮水机水温
- * <p>
- * Created by zcd on 10/16/17.
+ *
+ * @author zcd
+ * @date 17/10/16
  */
 
-public enum  DispenserWater {
+public enum DispenserWater {
     HOT("1", "热水") {
         @Override
         public int getBackgroundDrawable() {

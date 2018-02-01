@@ -2,8 +2,9 @@ package com.xiaolian.amigo.data.enumeration;
 
 /**
  * 连接错误
- * <p>
- * Created by zcd on 18/1/17.
+ *
+ * @author zcd
+ * @date 18/1/17
  */
 
 public enum ConnectErrorType {

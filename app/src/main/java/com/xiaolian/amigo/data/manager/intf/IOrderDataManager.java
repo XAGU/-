@@ -24,25 +24,39 @@ import rx.Observable;
  * @date 17/9/15
  */
 public interface IOrderDataManager {
-    // 查询个人订单列表
+    /**
+     * 查询个人订单列表
+     */
     Observable<ApiResult<OrderRespDTO>> queryOrders(@Body OrderReqDTO reqDTO);
 
-    // 查询订单详情
+    /**
+     * 查询订单详情
+     */
     Observable<ApiResult<OrderDetailRespDTO>> queryOrderDetail(@Body OrderDetailReqDTO reqDTO);
 
-    // 校验订单状态
+    /**
+     * 校验订单状态
+     */
     Observable<ApiResult<UnsettledOrderStatusCheckRespDTO>> checkOrderStatus(@Body UnsettledOrderStatusCheckReqDTO reqDTO);
 
-    // 校验订单状态
+    /**
+     * 校验订单状态
+     */
     Observable<ApiResult<LatestOrderRespDTO>> queryLatestOrder(@Body LatestOrderReqDTO reqDTO);
 
-    // 订单预备信息：options是预付金额选项，bonus是可用代金券数量
+    /**
+     * 订单预备信息：options是预付金额选项，bonus是可用代金券数量
+     */
     Observable<ApiResult<OrderPreInfoDTO>> queryPrepayOption(@Body QueryPrepayOptionReqDTO reqDTO);
 
-    // 查看预付订单
+    /**
+     * 查看预付订单
+     */
     Observable<ApiResult<OrderRespDTO>> queryPrepay(@Body OrderReqDTO reqDTO);
 
-    // 投诉查重
+    /**
+     * 投诉查重
+     */
     Observable<ApiResult<BooleanRespDTO>> checkComplaint(@Body CheckComplaintReqDTO reqDTO);
 
     String getToken();

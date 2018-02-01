@@ -2,7 +2,9 @@ package com.xiaolian.amigo.data.enumeration;
 
 /**
  * trade step
- * Created by caidong on 2017/10/12.
+ *
+ * @author caidong
+ * @date 17/10/12
  */
 public enum TradeStep {
 

@@ -18,10 +18,14 @@ import rx.subjects.PublishSubject;
  */
 public interface IBleDataManager {
 
-    // 扫描设备
+    /**
+     * 扫描设备
+     */
     Observable<ScanResult> scan();
 
-    //扫描指定名称的设备
+    /**
+     * 扫描指定名称的设备
+     */
     Observable<ScanResult> scan(String deviceName);
 
     /**
@@ -33,13 +37,19 @@ public interface IBleDataManager {
      */
     Observable<RxBleConnection> prepareConnectionObservable(@NonNull String macAddress, boolean autoConnect, @NonNull PublishSubject<Void> disconnectTriggerSubject);
 
-    // 好年华连接蓝牙
+    /**
+     * 好年华连接蓝牙
+     */
     Observable<BluetoothGattCharacteristic> connect(Observable<RxBleConnection> connectionObservable);
 
-    // 辛纳连接蓝牙
+    /**
+     * 辛纳连接蓝牙
+     */
     Observable<Observable<byte[]>> connect2(Observable<RxBleConnection> connectionObservable, String notifyCharacteristicUuid);
 
-    // 设置notify通道模式为enable
+    /**
+     * 设置notify通道模式为enable
+     */
     Observable<Observable<byte[]>> setupNotification(Observable<RxBleConnection> connectionObservable, BluetoothGattCharacteristic characteristic);
 
     /**
