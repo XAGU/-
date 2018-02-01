@@ -36,7 +36,9 @@ public class LogInterceptor implements Interceptor {
     private final static String GET = "GET";
     private final static String POST = "POST";
     private final static String TRADE_PREFIX = BuildConfig.TRADE_PREFIX;
-    // 该链接不上传deviceToken
+    /**
+     * 该链接不上传deviceToken
+     */
     private final static String ANTI_TRADE_PREFIX = "trade/qrCode/scan";
     private long lastTime = 0;
     private Request lastRequest;

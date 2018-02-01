@@ -7,11 +7,14 @@ import retrofit2.http.POST;
 import rx.Observable;
 
 /**
- * Created by caidong on 2017/11/2.
+ * @author caidong
+ * @date 17/11/2
  */
 public interface IClientServiceApi {
 
-    // 获取客服人员电话
+    /**
+     * 获取客服人员电话
+     */
     @POST("cs/mobile/one")
     Observable<ApiResult<CsMobileRespDTO>> queryCsInfo();
 

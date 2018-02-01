@@ -13,20 +13,27 @@ import rx.Observable;
 
 /**
  * 第三方账号相关api
- * <p>
- * Created by zcd on 17/12/14.
+ *
+ * @author zcd
+ * @date 17/12/14
  */
 
 public interface IUserThirdAccountApi {
-    // 第三方账号列表
+    /**
+     * 第三方账号列表
+     */
     @POST("user/third/account/list")
     Observable<ApiResult<QueryUserThirdAccountRespDTO>> requestThirdAccounts(@Body QueryUserThirdAccountReqDTO reqDTO);
 
-    // 新增第三方账号
+    /**
+     * 新增第三方账号
+     */
     @POST("user/third/account/add")
     Observable<ApiResult<BooleanRespDTO>> addAccount(@Body AddThirdAccountReqDTO reqDTO);
 
-    // 删除第三方账户
+    /**
+     * 删除第三方账户
+     */
     @POST("user/third/account/delete")
     Observable<ApiResult<BooleanRespDTO>> deleteAccount(@Body SimpleReqDTO reqDTO);
 }

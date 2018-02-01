@@ -10,12 +10,15 @@ import rx.Observable;
 
 /**
  * 投诉api
- * <p>
- * Created by zcd on 17/12/14.
+ *
+ * @author zcd
+ * @date 17/12/14
  */
 
 public interface IComplaintApi {
-    // 投诉查重
+    /**
+     * 投诉查重
+     */
     @POST("complaint/check")
     Observable<ApiResult<BooleanRespDTO>> checkComplaint(@Body CheckComplaintReqDTO reqDTO);
 }

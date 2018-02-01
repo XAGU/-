@@ -11,16 +11,21 @@ import rx.Observable;
 
 /**
  * 学校相关api
- * <p>
- * Created by zcd on 17/12/14.
+ *
+ * @author zcd
+ * @date 17/12/14
  */
 
 public interface ISchoolApi {
-    // 获取学校列表
+    /**
+     * 获取学校列表
+     */
     @POST("school/brief/list")
     Observable<ApiResult<QueryBriefSchoolListRespDTO>> getSchoolList(@Body SimpleQueryReqDTO body);
 
-    // 获取学校业务列表
+    /**
+     * 获取学校业务列表
+     */
     @POST("school/business/list")
     Observable<ApiResult<QuerySchoolBizListRespDTO>> getSchoolBizList();
 }

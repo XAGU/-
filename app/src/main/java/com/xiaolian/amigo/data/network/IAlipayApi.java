@@ -12,16 +12,21 @@ import rx.Observable;
 
 /**
  * alipay api
- * <p>
- * Created by zcd on 17/12/14.
+ *
+ * @author zcd
+ * @date 17/12/14
  */
 
 public interface IAlipayApi {
-    // 获取支付宝app支付订单请求参数
+    /**
+     * 获取支付宝app支付订单请求参数
+     */
     @POST("alipay/trade/app/pay/req/args")
     Observable<ApiResult<AlipayTradeAppPayArgsRespDTO>> requestAlipayArgs(@Body AlipayTradeAppPayArgsReqDTO reqDTO);
 
-    // 解析app支付j结果
+    /**
+     * 解析app支付结果
+     */
     @POST("alipay/trade/app/pay/resp/result/parse")
     Observable<ApiResult<AlipayTradeAppPayResultParseRespDTO>> parseAlipayResule(@Body AlipayTradeAppPayResultParseReqDTO reqDTO);
 }

@@ -10,16 +10,21 @@ import rx.Observable;
 
 /**
  * 时间段相关api
- * <p>
- * Created by zcd on 17/12/14.
+ *
+ * @author zcd
+ * @date 17/12/14
  */
 
 public interface ITimeRangeApi {
-    // 查询提现时间段
+    /**
+     * 查询提现时间段
+     */
     @POST("time/range/withdraw")
     Observable<ApiResult<QueryTimeValidRespDTO>> queryWithDrawTimeValid();
 
-    // 查询热水澡热水供应时间段
+    /**
+     * 查询热水澡热水供应时间段
+     */
     @POST("time/range/water")
     Observable<ApiResult<QueryTimeValidRespDTO>> queryWaterTimeValid(@Body QueryTimeValidReqDTO reqDTO);
 }

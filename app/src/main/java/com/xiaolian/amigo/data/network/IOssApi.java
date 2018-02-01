@@ -8,13 +8,16 @@ import rx.Observable;
 
 /**
  * oss Api
- * <p>
- * Created by zcd on 17/11/13.
+ *
+ * @author zcd
+ * @date 17/11/13
  */
 
 public interface IOssApi {
 
-    // oss
+    /**
+     * oss token
+     */
     @POST("oss/credential/one")
     Observable<ApiResult<OssModel>> getOssModel();
 }

@@ -25,57 +25,86 @@ import rx.Observable;
 
 /**
  * 个人信息模块Api接口
+ *
  * @author zcd
+ * @date 17/9/15
  */
 public interface IUserApi {
-    // 用户默认头像列表
+    /**
+     * 用户默认头像列表
+     */
     @POST("user/avatar/list")
     Observable<ApiResult<QueryAvatarDTO>> getAvatarList();
-    // 获取用户个人信息
+
+    /**
+     * 获取用户个人信息
+     */
     @POST("user/one")
     Observable<ApiResult<EntireUserDTO>> getUserInfo();
 
-    // 用户个人中心额外信息
+    /**
+     * 用户个人中心额外信息
+     */
     @POST("user/extraInfo/one")
     Observable<ApiResult<PersonalExtraInfoDTO>> getUserExtraInfo();
 
-    // 更新用户个人信息
+    /**
+     * 更新用户个人信息
+     */
     @POST("user/update")
     Observable<ApiResult<EntireUserDTO>> updateUserInfo(@Body PersonalUpdateReqDTO body);
 
-    // 更新用户手机号
+    /**
+     * 更新用户手机号
+     */
     @POST("user/mobile/update")
     Observable<ApiResult<EntireUserDTO>> updateMobile(@Body MobileUpdateReqDTO body);
 
-    // 更新用户密码
+    /**
+     * 更新用户密码
+     */
     @POST("user/password/update")
     Observable<ApiResult<SimpleRespDTO>> updatePassword(@Body PasswordUpdateReqDTO body);
 
-    // 用户绑定的寝室列表
+    /**
+     * 用户绑定的寝室列表
+     */
     @POST("user/residence/list")
     Observable<ApiResult<QueryUserResidenceListRespDTO>> queryUserResidenceList(@Body SimpleQueryReqDTO body);
 
-    // 用户删除绑定寝室
+    /**
+     * 用户删除绑定寝室
+     */
     @POST("user/residence/delete")
     Observable<ApiResult<DeleteResidenceRespDTO>> deleteResidence(@Body SimpleReqDTO body);
 
-    // 用户绑定编辑寝室
+    /**
+     * 用户绑定编辑寝室
+     */
     @POST("user/residence/bind")
     Observable<ApiResult<UserResidenceInListDTO>> bindResidence(@Body BindResidenceReq body);
 
-    // 用户密码校验
+    /**
+     * 用户密码校验
+     */
     @POST("user/password/check")
     Observable<ApiResult<BooleanRespDTO>> checkPasswordValid(@Body PasswordCheckReqDTO reqDTO);
 
-    // 用户密码校验
+    /**
+     * 用户密码校验
+     */
     @POST("user/changeSchool/check")
     Observable<ApiResult<BooleanRespDTO>> changeSchoolCheck();
 
-    // 用户绑定宿舍详情
+    /**
+     * 用户绑定宿舍详情
+     */
     @POST("user/residence/one")
     Observable<ApiResult<UserResidenceDTO>> queryResidenceDetail(@Body SimpleReqDTO reqDTO);
 
-    // 提交设备信息
+    /**
+     * 提交设备信息
+     */
     @POST("user/deviceInfo/upload")
     Observable<ApiResult<BooleanRespDTO>> uploadDeviceInfo(@Body UploadUserDeviceInfoReqDTO reqDTO);
 }
