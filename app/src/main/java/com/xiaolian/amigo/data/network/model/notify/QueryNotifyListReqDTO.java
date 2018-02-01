@@ -4,8 +4,9 @@ import lombok.Data;
 
 /**
  * 获取通知列表DTO
- * <p>
- * Created by zcd on 9/22/17.
+ *
+ * @author zcd
+ * @date 17/9/22
  */
 @Data
 public class QueryNotifyListReqDTO {

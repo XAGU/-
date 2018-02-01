@@ -9,8 +9,9 @@ import lombok.Data;
 
 /**
  * 设备供应商
- * <p>
- * Created by zcd on 17/12/18.
+ *
+ * @author zcd
+ * @date 17/12/18
  */
 @Data
 public class DeviceCategoryBO implements Mapper<DeviceCategory> {

@@ -1,11 +1,10 @@
 package com.xiaolian.amigo.data.network.model.login;
 
-import com.xiaolian.amigo.data.vo.User;
-
 import lombok.Data;
 
 /**
  * @author zcd
+ * @date 17/12/14
  */
 @Data
 public class LoginRespDTO {

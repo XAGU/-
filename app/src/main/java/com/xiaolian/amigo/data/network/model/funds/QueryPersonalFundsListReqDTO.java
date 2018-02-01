@@ -4,8 +4,9 @@ import lombok.Data;
 
 /**
  * 请求充值提现列表
- * <p>
- * Created by zcd on 10/18/17.
+ *
+ * @author zcd
+ * @date 17/10/18
  */
 @Data
 public class QueryPersonalFundsListReqDTO {

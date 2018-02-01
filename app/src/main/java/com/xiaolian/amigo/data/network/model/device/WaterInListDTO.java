@@ -11,8 +11,9 @@ import lombok.Data;
 
 /**
  * 饮水机
- * <p>
- * Created by zcd on 17/12/14.
+ *
+ * @author zcd
+ * @date 17/12/14
  */
 @Data
 public class WaterInListDTO implements Mapper<ScanDeviceGroup> {

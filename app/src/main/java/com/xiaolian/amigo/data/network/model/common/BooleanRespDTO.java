@@ -3,8 +3,8 @@ package com.xiaolian.amigo.data.network.model.common;
 import lombok.Data;
 
 /**
- * <p>
- * Created by zcd on 9/18/17.
+ * @author zcd
+ * @date 17/9/18
  */
 @Data
 public class BooleanRespDTO {

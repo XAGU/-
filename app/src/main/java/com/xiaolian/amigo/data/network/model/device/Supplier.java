@@ -4,8 +4,9 @@ import lombok.Data;
 
 /**
  * 供应商
- * <p>
- * Created by zcd on 17/12/18.
+ *
+ * @author zcd
+ * @date 17/12/18
  */
 @Data
 public class Supplier {

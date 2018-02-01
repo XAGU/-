@@ -4,8 +4,9 @@ import lombok.Data;
 
 /**
  * 紧急通知已读
- * <p>
- * Created by zcd on 9/27/17.
+ *
+ * @author zcd
+ * @date 17/9/27
  */
 @Data
 public class ReadNotifyReqDTO {

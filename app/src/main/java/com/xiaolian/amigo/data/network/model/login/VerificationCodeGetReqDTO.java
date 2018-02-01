@@ -4,8 +4,9 @@ import lombok.Data;
 
 /**
  * 验证码
- * <p>
- * Created by zcd on 9/18/17.
+ *
+ * @author zcd
+ * @date 17/9/18
  */
 
 @Data

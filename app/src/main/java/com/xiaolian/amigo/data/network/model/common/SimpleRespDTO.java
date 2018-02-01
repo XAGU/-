@@ -4,7 +4,9 @@ import lombok.Data;
 
 /**
  * SimpleRespDTO
+ *
  * @author zcd
+ * @date 17/9/15
  */
 @Data
 public class SimpleRespDTO {

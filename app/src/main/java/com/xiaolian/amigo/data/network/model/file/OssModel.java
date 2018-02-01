@@ -4,8 +4,9 @@ import lombok.Data;
 
 /**
  * oss模型
- * <p>
- * Created by zcd on 17/11/13.
+ *
+ * @author zcd
+ * @date 17/11/13
  */
 @Data
 public class OssModel {
