@@ -4,8 +4,9 @@ import lombok.Data;
 
 /**
  * 充值金额
- * <p>
- * Created by zcd on 9/20/17.
+ *
+ * @author zcd
+ * @date 17/9/20
  */
 @Data
 public class RechargeDenominations {

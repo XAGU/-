@@ -3,7 +3,8 @@ package com.xiaolian.amigo.data.network.model.trade;
 import lombok.Data;
 
 /**
- * Created by caidong on 2017/10/9.
+ * @author caidong
+ * @date 17/10/9
  */
 @Data
 public class CmdResultRespDTO {
@@ -17,10 +18,14 @@ public class CmdResultRespDTO {
      */
     String nextCommand;
 
-    // 下一步指令类型
+    /**
+     * 下一步指令类型
+     */
     Integer nextCommandType;
 
-    // 原指令类型
+    /**
+     * 原指令类型
+     */
     Integer srcCommandType;
 
     String macAddress;

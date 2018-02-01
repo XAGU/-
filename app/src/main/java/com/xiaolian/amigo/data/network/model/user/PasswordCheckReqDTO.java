@@ -4,8 +4,9 @@ import lombok.Data;
 
 /**
  * 校验密码
- * <p>
- * Created by zcd on 9/25/17.
+ *
+ * @author zcd
+ * @date 17/9/25
  */
 @Data
 public class PasswordCheckReqDTO {

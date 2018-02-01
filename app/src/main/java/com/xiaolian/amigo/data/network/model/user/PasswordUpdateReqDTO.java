@@ -4,7 +4,9 @@ import lombok.Data;
 
 /**
  * 更新用户密码DTO
+ *
  * @author zcd
+ * @date 17/9/15
  */
 @Data
 public class PasswordUpdateReqDTO {

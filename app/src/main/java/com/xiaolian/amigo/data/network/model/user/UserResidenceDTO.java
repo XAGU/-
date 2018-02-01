@@ -6,8 +6,9 @@ import lombok.Data;
 
 /**
  * 宿舍详情
- * <p>
- * Created by zcd on 17/11/14.
+ *
+ * @author zcd
+ * @date 17/11/14
  */
 @Data
 public class UserResidenceDTO implements Serializable {

@@ -4,8 +4,9 @@ import lombok.Data;
 
 /**
  * 新增第三方账号
- * <p>
- * Created by zcd on 10/27/17.
+ *
+ * @author zcd
+ * @date 17/10/27
  */
 @Data
 public class AddThirdAccountReqDTO {

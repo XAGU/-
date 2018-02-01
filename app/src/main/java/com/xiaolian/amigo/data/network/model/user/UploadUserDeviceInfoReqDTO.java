@@ -4,8 +4,9 @@ import lombok.Data;
 
 /**
  * 上传用户设备信息
- * <p>
- * Created by zcd on 17/12/12.
+ *
+ * @author zcd
+ * @date 17/12/12
  */
 @Data
 public class UploadUserDeviceInfoReqDTO {

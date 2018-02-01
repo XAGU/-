@@ -7,8 +7,9 @@ import lombok.Data;
 
 /**
  * banner
- * <p>
- * Created by zcd on 17/11/6.
+ *
+ * @author zcd
+ * @date 17/11/6
  */
 @Data
 public class BannerDTO implements Parcelable {

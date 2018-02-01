@@ -2,7 +2,9 @@ package com.xiaolian.amigo.data.network.model;
 
 /**
  * 请求错误
- * Created by adamzfc on 9/14/17.
+ *
+ * @author zcd
+ * @date 17/9/14
  */
 
 public class Error {

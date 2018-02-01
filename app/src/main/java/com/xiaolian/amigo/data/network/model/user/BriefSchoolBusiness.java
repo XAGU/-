@@ -4,8 +4,9 @@ import lombok.Data;
 
 /**
  * 学校业务
- * <p>
- * Created by zcd on 10/11/17.
+ *
+ * @author zcd
+ * @date 17/10/11
  */
 @Data
 public class BriefSchoolBusiness {

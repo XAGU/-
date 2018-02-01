@@ -4,8 +4,9 @@ import lombok.Data;
 
 /**
  * 建筑物模型
- * <p>
- * Created by zcd on 9/19/17.
+ *
+ * @author zcd
+ * @date 17/9/19
  */
 @Data
 public class Residence {

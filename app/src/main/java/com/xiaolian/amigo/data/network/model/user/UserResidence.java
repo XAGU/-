@@ -4,16 +4,18 @@ import lombok.Data;
 
 /**
  * 宿舍模型
- * <p>
- * Created by zcd on 9/19/17.
+ *
+ * @author zcd
+ * @date 17/9/19
  */
 @Data
 public class UserResidence {
     private Long id;
     private Long residenceId;
-    // 宿舍名称
+    /**
+     * 宿舍名称
+     */
     private String residenceName;
-    // macAddress
     private String macAddress;
 
     private Long supplierId;
