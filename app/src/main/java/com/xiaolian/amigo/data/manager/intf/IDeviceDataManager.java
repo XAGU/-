@@ -29,8 +29,9 @@ import rx.Observable;
 
 /**
  * 设备数据管理
- * <p>
- * Created by zcd on 9/29/17.
+ *
+ * @author zcd
+ * @date 17/9/29
  */
 
 public interface IDeviceDataManager {
@@ -78,13 +79,21 @@ public interface IDeviceDataManager {
 
     // 设置温馨提示次数
     boolean isHeaterGuideDone();
+
     void doneHeaterGuide();
+
     void setHeaterGuide(Integer guideTime);
+
     boolean isDispenserGuideDone();
+
     void doneDispenserGuide();
+
     void setDispenserGuide(Integer guideTime);
+
     boolean isDryerGuideDone();
+
     void doneDryerGuide();
+
     void setDryerGuide(Integer guideTime);
 
 
@@ -93,8 +102,10 @@ public interface IDeviceDataManager {
 
     // 取消收藏饮水机
     Observable<ApiResult<SimpleRespDTO>> unFavorite(@Body FavorDeviceReqDTO reqDTO);
+
     // 获取个人收藏的设备列表
     Observable<ApiResult<QueryFavorDeviceRespDTO>> getFavorites(@Body QueryDeviceListReqDTO reqDTO);
+
     List<DeviceCategory> getDeviceCategory();
 
     Observable<ApiResult<BooleanRespDTO>> reportDeviceConnectError(@Body DeviceConnectErrorReqDTO reqDTO);

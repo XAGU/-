@@ -21,7 +21,9 @@ import retrofit2.http.Body;
 
 /**
  * LoginDataManager实现类
+ *
  * @author zcd
+ * @date 17/9/14
  */
 
 public class LoginDataManager implements ILoginDataManager {

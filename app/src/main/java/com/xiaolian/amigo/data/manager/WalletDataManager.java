@@ -39,8 +39,9 @@ import rx.Observable;
 
 /**
  * 我的钱包
- * <p>
- * Created by zcd on 9/18/17.
+ *
+ * @author zcd
+ * @date 17/9/18
  */
 
 public class WalletDataManager implements IWalletDataManager {

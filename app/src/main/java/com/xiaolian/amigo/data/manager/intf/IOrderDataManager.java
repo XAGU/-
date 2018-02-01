@@ -1,6 +1,5 @@
 package com.xiaolian.amigo.data.manager.intf;
 
-import com.xiaolian.amigo.data.network.IOrderApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.complaint.CheckComplaintReqDTO;
@@ -18,6 +17,12 @@ import com.xiaolian.amigo.data.network.model.order.UnsettledOrderStatusCheckResp
 import retrofit2.http.Body;
 import rx.Observable;
 
+/**
+ * 订单
+ *
+ * @author caidong
+ * @date 17/9/15
+ */
 public interface IOrderDataManager {
     // 查询个人订单列表
     Observable<ApiResult<OrderRespDTO>> queryOrders(@Body OrderReqDTO reqDTO);

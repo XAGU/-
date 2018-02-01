@@ -20,8 +20,9 @@ import rx.Observable;
 
 /**
  * 洗衣机模块
- * <p>
- * Created by zcd on 18/1/12.
+ *
+ * @author zcd
+ * @date 18/1/12
  */
 
 public class WasherDataManager implements IWasherDataManager {
@@ -29,6 +30,7 @@ public class WasherDataManager implements IWasherDataManager {
     private ITradeApi tradeApi;
     private IUserApi userApi;
     private ISharedPreferencesHelp sharedPreferencesHelp;
+
     @Inject
     public WasherDataManager(Retrofit retrofit, ISharedPreferencesHelp sharedPreferencesHelp) {
         this.sharedPreferencesHelp = sharedPreferencesHelp;

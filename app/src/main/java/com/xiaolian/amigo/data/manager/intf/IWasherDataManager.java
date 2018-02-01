@@ -13,8 +13,9 @@ import rx.Observable;
 
 /**
  * 洗衣机模块
- * <p>
- * Created by zcd on 18/1/12.
+ *
+ * @author zcd
+ * @date 18/1/12
  */
 
 public interface IWasherDataManager {

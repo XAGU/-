@@ -16,7 +16,9 @@ import retrofit2.http.Body;
 
 /**
  * 代金券DataManager实现类
+ *
  * @author zcd
+ * @date 17/9/18
  */
 
 public class BonusDataManager implements IBonusDataManager {
@@ -25,6 +27,7 @@ public class BonusDataManager implements IBonusDataManager {
     private static final String TAG = BonusDataManager.class.getSimpleName();
 
     private IBonusApi bonusApi;
+
     @Inject
     public BonusDataManager(Retrofit retrofit) {
         bonusApi = retrofit.create(IBonusApi.class);

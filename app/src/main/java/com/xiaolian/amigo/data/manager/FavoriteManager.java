@@ -18,7 +18,9 @@ import rx.Observable;
 
 /**
  * favorite manager
- * Created by caidong on 2017/9/18.
+ *
+ * @author caidong
+ * @date 17/9/18
  */
 public class FavoriteManager implements IFavoriteManager {
 

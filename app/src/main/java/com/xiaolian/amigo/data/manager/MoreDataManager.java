@@ -7,8 +7,9 @@ import javax.inject.Inject;
 
 /**
  * 更多
- * <p>
- * Created by zcd on 10/13/17.
+ *
+ * @author zcd
+ * @date 17/10/13
  */
 
 public class MoreDataManager implements IMoreDataManager {

@@ -4,8 +4,9 @@ import com.xiaolian.amigo.data.network.IOssApi;
 
 /**
  * oss data manager
- * <p>
- * Created by zcd on 17/11/13.
+ *
+ * @author zcd
+ * @date 17/11/13
  */
 
 public interface IOssDataManager extends IOssApi {

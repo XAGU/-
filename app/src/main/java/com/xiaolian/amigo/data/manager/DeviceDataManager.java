@@ -42,8 +42,9 @@ import rx.Observable;
 
 /**
  * 设备数据管理
- * <p>
- * Created by zcd on 9/29/17.
+ *
+ * @author zcd
+ * @date 17/9/29
  */
 
 public class DeviceDataManager implements IDeviceDataManager {
@@ -59,7 +60,7 @@ public class DeviceDataManager implements IDeviceDataManager {
 
     @Inject
     public DeviceDataManager(Retrofit retrofit, ISharedPreferencesHelp sharedPreferencesHelp) {
-        this.sharedPreferencesHelp  = sharedPreferencesHelp;
+        this.sharedPreferencesHelp = sharedPreferencesHelp;
         tradeApi = retrofit.create(ITradeApi.class);
         orderApi = retrofit.create(IOrderApi.class);
         fundsApi = retrofit.create(IFundsApi.class);
@@ -67,6 +68,7 @@ public class DeviceDataManager implements IDeviceDataManager {
         deviceApi = retrofit.create(IDeviceApi.class);
         connectErrorApi = retrofit.create(IDeviceConnectErrorApi.class);
     }
+
     @Override
     public void setBonusAmount(int amount) {
         sharedPreferencesHelp.setBonusAmount(amount);

@@ -20,7 +20,8 @@ import retrofit2.http.Body;
 import rx.Observable;
 
 /**
- * Created by caidong on 2017/9/18.
+ * @author caidong
+ * @date 17/9/18
  */
 public interface IRepairDataManager {
     // 查询个人报修列表

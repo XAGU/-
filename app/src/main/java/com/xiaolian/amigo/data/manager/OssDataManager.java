@@ -12,8 +12,9 @@ import rx.Observable;
 
 /**
  * oss data manager
- * <p>
- * Created by zcd on 17/11/13.
+ *
+ * @author zcd
+ * @date 17/11/13
  */
 
 public class OssDataManager implements IOssDataManager {

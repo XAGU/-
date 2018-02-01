@@ -15,7 +15,9 @@ import rx.Observable;
 
 /**
  * LoginDataManager接口
+ *
  * @author zcd
+ * @date 17/9/14
  */
 public interface ILoginDataManager {
     String getToken();

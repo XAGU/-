@@ -26,8 +26,9 @@ import rx.Observable;
 
 /**
  * 主页
- * <p>
- * Created by zcd on 9/20/17.
+ *
+ * @author zcd
+ * @date 17/9/20
  */
 
 public interface IMainDataManager {
@@ -104,5 +105,6 @@ public interface IMainDataManager {
 
     // 是否需要账户迁移
     void setNeedTransfer();
+
     void setNotNeedTransfer();
 }

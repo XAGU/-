@@ -12,8 +12,9 @@ import rx.subjects.PublishSubject;
 
 /**
  * 蓝牙相关操作
- * <p>
- * Created by caidong on 2017/9/22.
+ *
+ * @author caidong
+ * @date 17/9/22
  */
 public interface IBleDataManager {
 
@@ -25,8 +26,9 @@ public interface IBleDataManager {
 
     /**
      * 提供连接蓝牙设备的Observable，附带连接共享适配器供后续蓝牙操作使用
-     *  @param macAddress  蓝牙设备mac地址
-     * @param autoConnect 是否自动连接
+     *
+     * @param macAddress               蓝牙设备mac地址
+     * @param autoConnect              是否自动连接
      * @param disconnectTriggerSubject 断连触发器
      */
     Observable<RxBleConnection> prepareConnectionObservable(@NonNull String macAddress, boolean autoConnect, @NonNull PublishSubject<Void> disconnectTriggerSubject);
