@@ -17,15 +17,16 @@ import com.xiaolian.amigo.util.ViewUtil;
 
 /**
  * 修改密码提示dialog
- * <p>
- * Created by zcd on 9/25/17.
+ *
+ * @author zcd
+ * @date 17/9/25
  */
 
 public class ChangeMobileDialog extends Dialog {
 
-    private TextView tv_ok;
-    private TextView tv_cancel;
-    private EditText et_password;
+    private TextView tvOk;
+    private TextView tvCancel;
+    private EditText etPassword;
     private OnOkClickListener listener;
 
     public ChangeMobileDialog(@NonNull Context context) {
@@ -43,29 +44,29 @@ public class ChangeMobileDialog extends Dialog {
 
     private void initView(Context context) {
         setContentView(R.layout.dialog_changepassword);
-        tv_ok = (TextView) findViewById(R.id.tv_ok);
-        tv_ok.setOnClickListener(v -> {
-            if (TextUtils.isEmpty(et_password.getText())) {
+        tvOk = (TextView) findViewById(R.id.tv_ok);
+        tvOk.setOnClickListener(v -> {
+            if (TextUtils.isEmpty(etPassword.getText())) {
                 Toast.makeText(context, context.getString(R.string.password_hint), Toast.LENGTH_SHORT).show();
                 return;
             }
             if (listener != null) {
-                listener.onOkClick(this, et_password.getText().toString());
+                listener.onOkClick(this, etPassword.getText().toString());
             }
             dismiss();
         });
-        tv_cancel = (TextView) findViewById(R.id.tv_cancel);
-        tv_cancel.setOnClickListener(v -> dismiss());
-        et_password = (EditText) findViewById(R.id.et_password);
-        et_password.setTypeface(null, Typeface.NORMAL);
-        ViewUtil.setEditHintAndSize(context.getString(R.string.password_hint), 14, et_password);
+        tvCancel = (TextView) findViewById(R.id.tv_cancel);
+        tvCancel.setOnClickListener(v -> dismiss());
+        etPassword = (EditText) findViewById(R.id.et_password);
+        etPassword.setTypeface(null, Typeface.NORMAL);
+        ViewUtil.setEditHintAndSize(context.getString(R.string.password_hint), 14, etPassword);
     }
 
     public void setOnOkClickListener(OnOkClickListener listener) {
         this.listener = listener;
     }
 
-    public interface OnOkClickListener{
+    public interface OnOkClickListener {
         void onOkClick(Dialog dialog, String password);
     }
 }

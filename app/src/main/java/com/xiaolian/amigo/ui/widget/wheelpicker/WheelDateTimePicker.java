@@ -25,8 +25,8 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * <p>
- * Created by zcd on 9/28/17.
+ * @author zcd
+ * @date 17/9/28
  */
 
 public class WheelDateTimePicker extends LinearLayout implements WheelPicker.OnItemSelectedListener,

@@ -29,8 +29,8 @@ import com.xiaolian.amigo.util.TouchUtils;
 
 
 /**
- * <p>
- * Created by zcd on 17/11/6.
+ * @author zcd
+ * @date 17/11/6
  */
 
 public class SwipeButton extends RelativeLayout {

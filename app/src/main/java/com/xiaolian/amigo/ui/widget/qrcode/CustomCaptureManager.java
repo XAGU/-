@@ -41,8 +41,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * <p>
- * Created by zcd on 18/1/15.
+ * @author zcd
+ * @date 18/1/15
  */
 
 public class CustomCaptureManager {
@@ -116,7 +116,7 @@ public class CustomCaptureManager {
 
         @Override
         public void cameraClosed() {
-            if(finishWhenClosed) {
+            if (finishWhenClosed) {
                 Log.d(TAG, "Camera closed; finishing activity");
                 finish();
             }
@@ -144,7 +144,7 @@ public class CustomCaptureManager {
     /**
      * Perform initialization, according to preferences set in the intent.
      *
-     * @param intent the intent containing the scanning preferences
+     * @param intent             the intent containing the scanning preferences
      * @param savedInstanceState saved state, containing orientation lock
      */
     public void initializeFromIntent(Intent intent, Bundle savedInstanceState) {
@@ -158,7 +158,7 @@ public class CustomCaptureManager {
             this.orientationLock = savedInstanceState.getInt(SAVED_ORIENTATION_LOCK, ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         }
 
-        if(intent != null) {
+        if (intent != null) {
             // Only lock the orientation if it's not locked to something else yet
             boolean orientationLocked = intent.getBooleanExtra(Intents.Scan.ORIENTATION_LOCKED, true);
             if (orientationLocked) {
@@ -231,7 +231,7 @@ public class CustomCaptureManager {
      * Call from Activity#onResume().
      */
     public void onResume() {
-        if(Build.VERSION.SDK_INT >= 23) {
+        if (Build.VERSION.SDK_INT >= 23) {
             openCameraWithPermission();
         } else {
             barcodeView.resume();
@@ -246,7 +246,7 @@ public class CustomCaptureManager {
         if (ContextCompat.checkSelfPermission(this.activity, Manifest.permission.CAMERA)
                 == PackageManager.PERMISSION_GRANTED) {
             barcodeView.resume();
-        } else if(!askedPermission) {
+        } else if (!askedPermission) {
             ActivityCompat.requestPermissions(this.activity,
                     new String[]{Manifest.permission.CAMERA},
                     cameraPermissionReqCode);
@@ -258,14 +258,15 @@ public class CustomCaptureManager {
 
     /**
      * Call from Activity#onRequestPermissionsResult
-     * @param requestCode The request code passed in {@link android.support.v4.app.ActivityCompat#requestPermissions(Activity, String[], int)}.
-     * @param permissions The requested permissions.
+     *
+     * @param requestCode  The request code passed in {@link android.support.v4.app.ActivityCompat#requestPermissions(Activity, String[], int)}.
+     * @param permissions  The requested permissions.
      * @param grantResults The grant results for the corresponding permissions
-     *     which is either {@link android.content.pm.PackageManager#PERMISSION_GRANTED}
-     *     or {@link android.content.pm.PackageManager#PERMISSION_DENIED}. Never null.
+     *                     which is either {@link android.content.pm.PackageManager#PERMISSION_GRANTED}
+     *                     or {@link android.content.pm.PackageManager#PERMISSION_DENIED}. Never null.
      */
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        if(requestCode == cameraPermissionReqCode) {
+        if (requestCode == cameraPermissionReqCode) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // permission was granted
                 barcodeView.resume();
@@ -303,7 +304,7 @@ public class CustomCaptureManager {
     /**
      * Create a intent to return as the Activity result.
      *
-     * @param rawResult the BarcodeResult, must not be null.
+     * @param rawResult        the BarcodeResult, must not be null.
      * @param barcodeImagePath a path to an exported file of the Barcode Image, can be null.
      * @return the Intent
      */
@@ -375,7 +376,7 @@ public class CustomCaptureManager {
     }
 
     protected void closeAndFinish() {
-        if(barcodeView.getBarcodeView().isCameraClosed()) {
+        if (barcodeView.getBarcodeView().isCameraClosed()) {
             finish();
         } else {
             finishWhenClosed = true;
@@ -402,7 +403,7 @@ public class CustomCaptureManager {
         Intent intent = resultIntent(rawResult, getBarcodeImagePath(rawResult));
         activity.setResult(Activity.RESULT_OK, intent);
 //        closeAndFinish();
-        if(barcodeView.getBarcodeView().isCameraClosed()) {
+        if (barcodeView.getBarcodeView().isCameraClosed()) {
 //            finish();
             if (null != resultCallback) {
                 resultCallback.callback(IntentIntegrator.REQUEST_CODE,
@@ -417,6 +418,7 @@ public class CustomCaptureManager {
 
     public interface ResultCallback {
         void callback(int requestCode, int resultCode, Intent intent);
+
         void possibleCallback(List<ResultPoint> resultPoint);
     }
 

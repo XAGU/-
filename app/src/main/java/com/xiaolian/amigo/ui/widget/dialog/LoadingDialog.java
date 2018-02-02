@@ -11,12 +11,14 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.widget.indicator.ProgressDrawable;
 
 /**
- * <p>
- * Created by zcd on 10/9/17.
+ * 加载框
+ *
+ * @author zcd
+ * @date 17/10/9
  */
 
 public class LoadingDialog extends Dialog {
-    private ImageView iv_loding;
+    private ImageView ivLoding;
     private ProgressDrawable mProgressDrawable;//刷新动画
 
     public LoadingDialog(@NonNull Context context) {
@@ -30,8 +32,8 @@ public class LoadingDialog extends Dialog {
 //        setCancelable(false);
         setCanceledOnTouchOutside(false);
         mProgressDrawable = new ProgressDrawable();
-        iv_loding = (ImageView) findViewById(R.id.iv_loding);
-        iv_loding.setImageDrawable(mProgressDrawable);
+        ivLoding = (ImageView) findViewById(R.id.iv_loding);
+        ivLoding.setImageDrawable(mProgressDrawable);
         setOnShowListener(new OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {

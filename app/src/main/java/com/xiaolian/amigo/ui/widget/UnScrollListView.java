@@ -7,8 +7,9 @@ import android.widget.ListView;
 
 /**
  * 非滚动展开式listview
- * <p>
- * Created by caidong on 2017/9/6.
+ *
+ * @author caidong
+ * @date 17/9/6
  */
 public class UnScrollListView extends ListView {
 

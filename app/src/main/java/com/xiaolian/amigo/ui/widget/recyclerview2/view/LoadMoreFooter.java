@@ -12,17 +12,17 @@ import android.widget.LinearLayout;
 import com.xiaolian.amigo.R;
 
 /**
- * <p>
- * Created by zcd on 9/26/17.
+ * @author zcd
+ * @date 17/9/26
  */
 
-public class LoadMoreFooter extends LinearLayout{
+public class LoadMoreFooter extends LinearLayout {
     public final static int STATE_LOADING = 0; //加载中
     public final static int STATE_COMPLETE = 1; //加载完成
     public final static int STATE_NOMORE = 2;  //没有更多数据
 
     private LinearLayout mContainer; //loadmore布局
-//    private TextView mLoadMoreText;
+    //    private TextView mLoadMoreText;
     private SimpleView mProgressBar;
     PullToRefreshIndicator mIndicator;  // progressBar的动画
 
@@ -40,12 +40,12 @@ public class LoadMoreFooter extends LinearLayout{
     private void initView() {
         // 将loadmore布局加载到这个View中
         mContainer = (LinearLayout) LayoutInflater.from(getContext())
-                .inflate(R.layout.load_more_footer,null);
-        LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT);
-        lp.setMargins(0,0,0,0);
+                .inflate(R.layout.load_more_footer, null);
+        LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+        lp.setMargins(0, 0, 0, 0);
         setLayoutParams(lp);
-        setPadding(0,0,0,0);
-        this.addView(mContainer,new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT));
+        setPadding(0, 0, 0, 0);
+        this.addView(mContainer, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
         setGravity(Gravity.BOTTOM);
         // 初始化progressBar
 //        mLoadMoreText = (TextView) findViewById(R.id.loadmore_status_textview);
@@ -59,7 +59,7 @@ public class LoadMoreFooter extends LinearLayout{
     }
 
     public void changeState(int state) {
-        switch(state) {
+        switch (state) {
             case STATE_LOADING:
                 mProgressBar.setVisibility(View.VISIBLE);
 //                mLoadMoreText.setText(getContext().getText(R.string.listview_loading));

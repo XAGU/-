@@ -12,7 +12,9 @@ import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+
 import com.xiaolian.amigo.util.Log;
+
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -21,8 +23,9 @@ import com.xiaolian.amigo.util.DimentionUtils;
 
 /**
  * 滑动解锁
- * <p>
- * Created by zcd on 17/11/4.
+ *
+ * @author zcd
+ * @date 17/11/4
  */
 
 public class SlideUnlockView extends View {

@@ -10,8 +10,8 @@ import java.util.Calendar;
 import java.util.List;
 
 /**
- * <p>
- * Created by zcd on 9/28/17.
+ * @author zcd
+ * @date 17/9/28
  */
 
 public class WheelHourPicker extends WheelPicker implements IWheelHourPicker {

@@ -10,22 +10,22 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.util.DimentionUtils;
 
 /**
  * 供水时段、提现时段提示
- * <p>
- * Created by zcd on 9/25/17.
+ *
+ * @author zcd
+ * @date 17/9/25
  */
 
 public class AvailabilityDialog extends Dialog {
 
-    private TextView tv_title;
-    private TextView tv_tip;
-    private TextView tv_sub_tip;
-    private TextView tv_cancel;
-    private TextView tv_ok;
-    private View v_divide;
+    private TextView tvTitle;
+    private TextView tvTip;
+    private TextView tvSubTip;
+    private TextView tvCancel;
+    private TextView tvOk;
+    private View vDivide;
     private Type type;
     private OnOkClickListener listener;
     private Context context;
@@ -46,14 +46,14 @@ public class AvailabilityDialog extends Dialog {
 
     private void initView() {
         setContentView(R.layout.dialog_avaliability);
-        v_divide = findViewById(R.id.v_divide);
-        tv_title = findViewById(R.id.tv_title);
-        tv_tip = findViewById(R.id.tv_tip);
-        tv_sub_tip = findViewById(R.id.tv_sub_tip);
-        tv_cancel = findViewById(R.id.tv_cancel);
-        tv_cancel.setOnClickListener(v -> dismiss());
-        tv_ok = findViewById(R.id.tv_ok);
-        tv_ok.setOnClickListener(v -> {
+        vDivide = findViewById(R.id.v_divide);
+        tvTitle = findViewById(R.id.tv_title);
+        tvTip = findViewById(R.id.tv_tip);
+        tvSubTip = findViewById(R.id.tv_sub_tip);
+        tvCancel = findViewById(R.id.tv_cancel);
+        tvCancel.setOnClickListener(v -> dismiss());
+        tvOk = findViewById(R.id.tv_ok);
+        tvOk.setOnClickListener(v -> {
             dismiss();
             if (listener != null) {
                 listener.onOkClick(this);
@@ -67,14 +67,14 @@ public class AvailabilityDialog extends Dialog {
             case TIME_VALID:
             case BIND_DORMITORY:
             case WITHDRAW_VALID:
-                tv_title.setVisibility(View.VISIBLE);
-                tv_tip.setGravity(Gravity.START);
-                tv_tip.setTextSize(12);
+                tvTitle.setVisibility(View.VISIBLE);
+                tvTip.setGravity(Gravity.START);
+                tvTip.setTextSize(12);
                 break;
             case OPEN_LOCAION_SERVICE:
-                tv_title.setVisibility(View.GONE);
-                tv_tip.setGravity(Gravity.CENTER);
-                tv_tip.setTextSize(17);
+                tvTitle.setVisibility(View.GONE);
+                tvTip.setGravity(Gravity.CENTER);
+                tvTip.setTextSize(17);
                 break;
         }
         this.type = type;
@@ -85,24 +85,24 @@ public class AvailabilityDialog extends Dialog {
     }
 
     public void setTitle(String title) {
-        tv_title.setVisibility(View.VISIBLE);
-        tv_title.setText(title);
+        tvTitle.setVisibility(View.VISIBLE);
+        tvTitle.setText(title);
     }
 
     public void setTip(String tip) {
-        tv_tip.setText(tip);
+        tvTip.setText(tip);
     }
 
     public void setSubTipVisible(boolean visible) {
-        tv_sub_tip.setVisibility(visible ? View.VISIBLE : View.GONE);
+        tvSubTip.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
     public void setSubTip(String subTip) {
-        tv_sub_tip.setText(subTip);
+        tvSubTip.setText(subTip);
     }
 
     public void setOkText(String ok) {
-        tv_ok.setText(ok);
+        tvOk.setText(ok);
     }
 
     public void setOnOkClickListener(OnOkClickListener listener) {
@@ -110,11 +110,11 @@ public class AvailabilityDialog extends Dialog {
     }
 
     public void setCancelVisible(boolean visible) {
-        tv_cancel.setVisibility(visible ? View.VISIBLE : View.GONE);
-        v_divide.setVisibility(visible ? View.VISIBLE : View.GONE);
+        tvCancel.setVisibility(visible ? View.VISIBLE : View.GONE);
+        vDivide.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
-    public interface OnOkClickListener{
+    public interface OnOkClickListener {
         void onOkClick(Dialog dialog);
     }
 
@@ -123,8 +123,7 @@ public class AvailabilityDialog extends Dialog {
         TIME_VALID("当前时间没有热水供应", "时间段错误"),
         BIND_DORMITORY("你还没有绑定宿舍信息哦！", "绑定宿舍"),
         OPEN_LOCAION_SERVICE("", "打开位置服务"),
-        WITHDRAW_VALID("当前时间无法提现", "提现时间段错误")
-        ;
+        WITHDRAW_VALID("当前时间无法提现", "提现时间段错误");
         private String title;
         private String desc;
 

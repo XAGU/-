@@ -9,8 +9,9 @@ import android.view.View;
 /**
  * recycler item click listener
  * 解决首页recyclerview的点击事件无法响应的问题
- * <p>
- * Created by zcd on 10/15/17.
+ *
+ * @author zcd
+ * @date 17/10/15
  */
 
 public class RecyclerItemClickListener implements RecyclerView.OnItemTouchListener {
@@ -42,7 +43,8 @@ public class RecyclerItemClickListener implements RecyclerView.OnItemTouchListen
         });
     }
 
-    @Override public boolean onInterceptTouchEvent(RecyclerView view, MotionEvent e) {
+    @Override
+    public boolean onInterceptTouchEvent(RecyclerView view, MotionEvent e) {
         View childView = view.findChildViewUnder(e.getX(), e.getY());
         if (childView != null && mListener != null && mGestureDetector.onTouchEvent(e)) {
             mListener.onItemClick(childView, view.getChildAdapterPosition(childView), e);
@@ -51,8 +53,11 @@ public class RecyclerItemClickListener implements RecyclerView.OnItemTouchListen
         return false;
     }
 
-    @Override public void onTouchEvent(RecyclerView view, MotionEvent motionEvent) { }
+    @Override
+    public void onTouchEvent(RecyclerView view, MotionEvent motionEvent) {
+    }
 
     @Override
-    public void onRequestDisallowInterceptTouchEvent (boolean disallowIntercept){}
+    public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+    }
 }

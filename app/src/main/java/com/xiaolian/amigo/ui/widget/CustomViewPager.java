@@ -7,8 +7,8 @@ import android.view.MotionEvent;
 import android.view.View;
 
 /**
- * <p>
- * Created by zcd on 11/6/17.
+ * @author zcd
+ * @date 17/11/6
  */
 
 public class CustomViewPager extends ViewPager {

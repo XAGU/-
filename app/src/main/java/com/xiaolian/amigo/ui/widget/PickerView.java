@@ -20,6 +20,9 @@ import java.util.TimerTask;
 
 /**
  * 滚动选择器
+ *
+ * @author caidong
+ * @date 17/9/1
  */
 public class PickerView extends View {
 

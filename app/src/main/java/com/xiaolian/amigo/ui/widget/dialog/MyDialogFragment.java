@@ -10,8 +10,8 @@ import android.view.Window;
 import com.xiaolian.amigo.R;
 
 /**
- * <p>
- * Created by zcd on 10/9/17.
+ * @author zcd
+ * @date 17/10/9
  */
 
 public class MyDialogFragment extends DialogFragment {

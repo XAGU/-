@@ -6,8 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * <p>
- * Created by zcd on 9/26/17.
+ * @author zcd
+ * @date 17/9/26
  */
 
 public class SimpleView extends ViewGroup {
@@ -26,6 +26,7 @@ public class SimpleView extends ViewGroup {
 
     /**
      * 找到出最大的子view
+     *
      * @param widthMeasureSpec
      * @param heightMeasureSpec
      */

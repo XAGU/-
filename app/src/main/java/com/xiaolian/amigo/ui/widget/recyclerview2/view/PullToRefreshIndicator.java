@@ -15,22 +15,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * <p>
- * Created by zcd on 9/26/17.
+ * @author zcd
+ * @date 17/9/26
  */
 
 public class PullToRefreshIndicator extends View {
     int mIndicatorColor; //颜色
     Paint mPaint;
     //Sizes (with defaults in DP)
-    public static final int DEFAULT_SIZE=30;
+    public static final int DEFAULT_SIZE = 30;
     private boolean mHasAnimation;
 
     public static final float SCALE = 1.0f;
 
     public static final int ALPHA = 255;
 
-    /** 缩放比例 **/
+    /**
+     * 缩放比例
+     **/
     float[] scaleFloats = new float[]{SCALE,
             SCALE,
             SCALE,
@@ -40,7 +42,9 @@ public class PullToRefreshIndicator extends View {
             SCALE,
             SCALE};
 
-    /** 色值,颜色变化 **/
+    /**
+     * 色值,颜色变化
+     **/
     int[] alphas = new int[]{ALPHA,
             ALPHA,
             ALPHA,
@@ -89,12 +93,12 @@ public class PullToRefreshIndicator extends View {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int width  = measureDimension(dp2px(DEFAULT_SIZE), widthMeasureSpec);
+        int width = measureDimension(dp2px(DEFAULT_SIZE), widthMeasureSpec);
         int height = measureDimension(dp2px(DEFAULT_SIZE), heightMeasureSpec);
         setMeasuredDimension(width, height);
     }
 
-    private int measureDimension(int defaultSize,int measureSpec){
+    private int measureDimension(int defaultSize, int measureSpec) {
         int result = defaultSize;
         int specMode = MeasureSpec.getMode(measureSpec);
         int specSize = MeasureSpec.getSize(measureSpec);
@@ -111,32 +115,33 @@ public class PullToRefreshIndicator extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        draw(canvas,mPaint);
+        draw(canvas, mPaint);
     }
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
-        if (!mHasAnimation){
-            mHasAnimation=true;
+        if (!mHasAnimation) {
+            mHasAnimation = true;
             initAnimation();
         }
     }
 
     /**
      * 画指示器
+     *
      * @param canvas
      * @param paint
      */
     public void draw(Canvas canvas, Paint paint) {
-        float radius=getWidth()/10;
+        float radius = getWidth() / 10;
         for (int i = 0; i < 8; i++) {
             canvas.save();
-            Point point=circleAt(getWidth(),getHeight(),getWidth()/2-radius,i*(Math.PI/4));
-            canvas.translate(point.x,point.y);
-            canvas.scale(scaleFloats[i],scaleFloats[i]);
+            Point point = circleAt(getWidth(), getHeight(), getWidth() / 2 - radius, i * (Math.PI / 4));
+            canvas.translate(point.x, point.y);
+            canvas.scale(scaleFloats[i], scaleFloats[i]);
             paint.setAlpha(alphas[i]);
-            canvas.drawCircle(0,0,radius,paint);
+            canvas.drawCircle(0, 0, radius, paint);
             canvas.restore();
         }
     }
@@ -144,7 +149,7 @@ public class PullToRefreshIndicator extends View {
     /**
      * 初始化动画
      */
-    public void initAnimation(){
+    public void initAnimation() {
         mAnimators = createAnimation();
     }
 
@@ -165,11 +170,11 @@ public class PullToRefreshIndicator extends View {
     }
 
     public List<Animator> createAnimation() {
-        List<Animator> animators=new ArrayList<>();
-        int[] delays= {0, 120, 240, 360, 480, 600, 720, 780, 840};
+        List<Animator> animators = new ArrayList<>();
+        int[] delays = {0, 120, 240, 360, 480, 600, 720, 780, 840};
         for (int i = 0; i < 8; i++) {
-            final int index=i;
-            ValueAnimator scaleAnim=ValueAnimator.ofFloat(1,0.4f,1);
+            final int index = i;
+            ValueAnimator scaleAnim = ValueAnimator.ofFloat(1, 0.4f, 1);
             scaleAnim.setDuration(1000);
             scaleAnim.setRepeatCount(-1);
             scaleAnim.setStartDelay(delays[i]);
@@ -182,7 +187,7 @@ public class PullToRefreshIndicator extends View {
             });
             scaleAnim.start();
 
-            ValueAnimator alphaAnim=ValueAnimator.ofInt(255, 77, 255);
+            ValueAnimator alphaAnim = ValueAnimator.ofInt(255, 77, 255);
             alphaAnim.setDuration(1000);
             alphaAnim.setRepeatCount(-1);
             alphaAnim.setStartDelay(delays[i]);
@@ -229,29 +234,30 @@ public class PullToRefreshIndicator extends View {
      * view was be Visible or Gone or Invisible.
      * make animation to cancel when target view
      * be onDetachedFromWindow.
+     *
      * @param animStatus
      */
-    public void setAnimationStatus(AnimStatus animStatus){
-        if (mAnimators==null){
+    public void setAnimationStatus(AnimStatus animStatus) {
+        if (mAnimators == null) {
             return;
         }
-        int count=mAnimators.size();
+        int count = mAnimators.size();
         for (int i = 0; i < count; i++) {
-            Animator animator=mAnimators.get(i);
-            boolean isRunning=animator.isRunning();
-            switch (animStatus){
+            Animator animator = mAnimators.get(i);
+            boolean isRunning = animator.isRunning();
+            switch (animStatus) {
                 case START:
-                    if (!isRunning){
+                    if (!isRunning) {
                         animator.start();
                     }
                     break;
                 case END:
-                    if (isRunning){
+                    if (isRunning) {
                         animator.end();
                     }
                     break;
                 case CANCEL:
-                    if (isRunning){
+                    if (isRunning) {
                         animator.cancel();
                     }
                     break;
@@ -260,8 +266,8 @@ public class PullToRefreshIndicator extends View {
     }
 
 
-    public enum AnimStatus{
-        START,END,CANCEL
+    public enum AnimStatus {
+        START, END, CANCEL
     }
 
     private int dp2px(int dpValue) {

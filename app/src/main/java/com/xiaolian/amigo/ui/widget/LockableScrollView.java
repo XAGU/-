@@ -6,8 +6,8 @@ import android.view.MotionEvent;
 import android.widget.ScrollView;
 
 /**
- * <p>
- * Created by zcd on 10/11/17.
+ * @author zcd
+ * @date 17/10/11
  */
 
 public class LockableScrollView extends ScrollView {
@@ -54,7 +54,6 @@ public class LockableScrollView extends ScrollView {
         // we are not scrollable
         if (!mScrollable) {
             return false;
-        }
-        else return super.onInterceptTouchEvent(ev);
+        } else return super.onInterceptTouchEvent(ev);
     }
 }

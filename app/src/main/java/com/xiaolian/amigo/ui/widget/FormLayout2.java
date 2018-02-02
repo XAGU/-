@@ -22,7 +22,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by guoyi on 2017/9/7.
+ * @author guoyi
+ * @date 17/9/7
  */
 
 public class FormLayout2 extends LinearLayout {

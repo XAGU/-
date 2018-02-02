@@ -23,17 +23,20 @@ import java.util.Locale;
 
 /**
  * 洗衣机模式选择dialog
- * <p>
- * Created by zcd on 18/1/15.
+ *
+ * @author zcd
+ * @date 18/1/15
  */
 
 public class WasherModeDialog extends Dialog {
     public interface OnConfirmClickListener {
         void onConfirmClick();
     }
+
     public interface OnBonusClickListener {
         void onBonusClick();
     }
+
     private OnConfirmClickListener confirmClickListener;
     private OnBonusClickListener bonusClickListener;
     private TextView tv_confirm;

@@ -12,8 +12,10 @@ import android.widget.TextView;
 import com.xiaolian.amigo.R;
 
 /**
- * <p>
- * Created by zcd on 17/11/6.
+ * 引导对话框
+ *
+ * @author zcd
+ * @date 17/11/6
  */
 
 public class GuideDialog extends Dialog {
@@ -21,8 +23,8 @@ public class GuideDialog extends Dialog {
     public static final int TYPE_HEATER = 2;
     public static final int TYPE_DISPENER = 3;
 
-    private ImageView iv_button;
-    private TextView tv_location;
+    private ImageView ivButton;
+    private TextView tvLocation;
 
     public GuideDialog(@NonNull Context context, int type) {
         super(context, R.style.AlertDialogStyle);
@@ -45,22 +47,22 @@ public class GuideDialog extends Dialog {
                 break;
             case TYPE_HEATER:
                 setContentView(R.layout.dialog_guide_heater);
-                tv_location = findViewById(R.id.tv_device_title);
+                tvLocation = findViewById(R.id.tv_device_title);
                 break;
             case TYPE_DISPENER:
                 setContentView(R.layout.dialog_guide_dispenser);
-                tv_location = findViewById(R.id.tv_device_title);
+                tvLocation = findViewById(R.id.tv_device_title);
                 break;
         }
-        iv_button = findViewById(R.id.iv_button);
-        iv_button.setOnClickListener((v -> {
+        ivButton = findViewById(R.id.iv_button);
+        ivButton.setOnClickListener((v -> {
             dismiss();
         }));
     }
 
     public void setLocation(String location) {
-        if (tv_location != null) {
-            tv_location.setText(location);
+        if (tvLocation != null) {
+            tvLocation.setText(location);
         }
     }
 }

@@ -2,8 +2,9 @@ package com.xiaolian.amigo.ui.widget.wheelpicker;
 
 /**
  * 分钟选择器接口
- * <p>
- * Created by zcd on 9/28/17.
+ *
+ * @author zcd
+ * @date 17/9/28
  */
 
 public interface IWheelMinutePicker {

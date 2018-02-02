@@ -5,8 +5,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 /**
- * <p>
- * Created by zcd on 9/20/17.
+ * @author zcd
+ * @date 17/9/20
  */
 
 public class GridSpacesItemDecoration extends RecyclerView.ItemDecoration {

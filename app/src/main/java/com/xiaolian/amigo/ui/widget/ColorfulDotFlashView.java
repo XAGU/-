@@ -15,11 +15,12 @@ import com.xiaolian.amigo.util.ScreenUtils;
 
 /**
  * 下拉刷新动画
- * <p>
- * Created by zcd on 9/26/17.
+ *
+ * @author zcd
+ * @date 17/9/26
  */
 
-public class ColorfulDotFlashView extends View{
+public class ColorfulDotFlashView extends View {
     private int firstColor, secondColor;
     private int mWidth, mHeight;
     private Paint mPaint;
@@ -102,7 +103,7 @@ public class ColorfulDotFlashView extends View{
         }
     }
 
-    public void startAnimation(){
+    public void startAnimation() {
 
 
         if (valueAnimator == null) {
