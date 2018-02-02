@@ -12,6 +12,7 @@ import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.util.PayUtil;
 
 /**
  * @author zcd
@@ -48,6 +49,16 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
         Log.d(TAG, "onPayFinish, errCode = " + resp.errCode);
 
         if (resp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
+            switch (resp.errCode) {
+                case PayUtil.SUCCESS:
+                    break;
+                case PayUtil.DENIED:
+                    break;
+                case PayUtil.CANCEL:
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }
