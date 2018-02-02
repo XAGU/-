@@ -247,4 +247,15 @@ public static java.lang.String TABLENAME;
 -keep class com.xiaolian.amigo.util.crash.acra.** { *; }
 -dontwarn android.support.v4.app.NotificationCompat*
 
+# 微信
+-keep class com.tencent.mm.opensdk.** {
+*;
+}
+-keep class com.tencent.wxop.** {
+*;
+}
+-keep class com.tencent.mm.sdk.** {
+*;
+}
+
 #-------------------------------------------------------------------------
