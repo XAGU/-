@@ -10,6 +10,7 @@ import dagger.Component;
 
 /**
  * BonusActivityComponent
+ *
  * @author zcd
  */
 @BonusActivityContext

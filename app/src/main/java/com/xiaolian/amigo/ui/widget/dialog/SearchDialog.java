@@ -58,7 +58,7 @@ public class SearchDialog extends Dialog implements TextWatcher {
 
         Window window = this.getWindow();
         window.requestFeature(Window.FEATURE_NO_TITLE);
-        window.setGravity(Gravity.TOP);  //此处可以设置dialog显示的位置
+        window.setGravity(Gravity.TOP);
         window.getDecorView().setPadding(0, 0, 0, 0);
         WindowManager.LayoutParams lp = window.getAttributes();
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
@@ -103,8 +103,9 @@ public class SearchDialog extends Dialog implements TextWatcher {
         return false;
     }
 
-
-    // 点击清除图标
+    /**
+     * 点击清除图标
+     */
     @OnClick({R.id.iv_clear, R.id.v_clear_holder})
     void clear() {
         etSearchContent.setText("");

@@ -20,6 +20,7 @@ import dagger.Provides;
 
 /**
  * MoreActivityModule
+ *
  * @author zcd
  */
 @Module

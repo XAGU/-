@@ -6,7 +6,9 @@ import android.view.WindowManager;
 
 /**
  * 屏幕相关工具类
+ *
  * @author zcd
+ * @author 17/9/13
  */
 
 public class ScreenUtils {
@@ -29,49 +31,48 @@ public class ScreenUtils {
     }
 
     public static int dpToPxInt(Context context, float dp) {
-        return (int)(dpToPx(context, dp) + 0.5f);
+        return (int) (dpToPx(context, dp) + 0.5f);
     }
 
     public static int pxToDpCeilInt(Context context, float px) {
-        return (int)(pxToDp(context, px) + 0.5f);
+        return (int) (pxToDp(context, px) + 0.5f);
     }
 
-    public static int getScreenWidth(Context context){
-        return getScreenWidth(context,false);
+    public static int getScreenWidth(Context context) {
+        return getScreenWidth(context, false);
     }
 
-    public static int getScreenHeight(Context context){
-        return getScreenHeight(context,false);
+    public static int getScreenHeight(Context context) {
+        return getScreenHeight(context, false);
     }
 
     /**
-     *
-     * @param context context
+     * @param context    context
      * @param isPortrait 是否
      * @return 屏幕宽度
      */
-    public static int getScreenWidth(Context context, boolean isPortrait){
+    public static int getScreenWidth(Context context, boolean isPortrait) {
         DisplayMetrics dm = new DisplayMetrics();
-        WindowManager wm = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         wm.getDefaultDisplay().getMetrics(dm);
-        int w=dm.widthPixels;
-        int h=dm.heightPixels;
+        int w = dm.widthPixels;
+        int h = dm.heightPixels;
         if (isPortrait) {
-            return w<h?w:h;
-        }else{
+            return w < h ? w : h;
+        } else {
             return w;
         }
     }
 
-    public static int getScreenHeight(Context context, boolean isPortrait){
+    public static int getScreenHeight(Context context, boolean isPortrait) {
         DisplayMetrics dm = new DisplayMetrics();
-        WindowManager wm = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         wm.getDefaultDisplay().getMetrics(dm);
-        int w=dm.widthPixels;
-        int h=dm.heightPixels;
+        int w = dm.widthPixels;
+        int h = dm.heightPixels;
         if (isPortrait) {
-            return h>w&&isPortrait?h:w;
-        }else{
+            return h > w && isPortrait ? h : w;
+        } else {
             return h;
         }
     }

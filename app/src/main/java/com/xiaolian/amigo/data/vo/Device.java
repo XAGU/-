@@ -4,8 +4,9 @@ import lombok.Data;
 
 /**
  * 设备信息
- * <p>
- * Created by caidong on 2017/9/18.
+ *
+ * @author caidong
+ * @date 17/9/18
  */
 @Data
 public class Device {

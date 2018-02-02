@@ -7,7 +7,9 @@ import rx.subjects.Subject;
 
 /**
  * RxBus
- * Created by caidong on 2017/9/30.
+ *
+ * @author caidong
+ * @date 17/9/30
  */
 public class RxBus {
 

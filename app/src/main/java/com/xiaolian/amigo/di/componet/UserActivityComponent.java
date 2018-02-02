@@ -16,6 +16,7 @@ import dagger.Component;
 
 /**
  * User模块Component
+ *
  * @author zcd
  */
 @UserActivityContext

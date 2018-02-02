@@ -4,8 +4,8 @@ import android.view.MotionEvent;
 import android.view.View;
 
 /**
- * <p>
- * Created by zcd on 17/11/6.
+ * @author zcd
+ * @date 17/11/6
  */
 
 public class TouchUtils {

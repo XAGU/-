@@ -14,21 +14,23 @@ import java.io.IOException;
 
 /**
  * sd卡相关
- * <p>
- * Created by zcd on 10/19/17.
+ *
+ * @author zcd
+ * @date 17/10/19
  */
 
 public class SDCardUtils {
     /**
      * 判断ＳＤ卡是否挂载
      */
-    public static boolean isSDCardMounted(){
+    public static boolean isSDCardMounted() {
         String state = Environment.getExternalStorageState();
         return state.equals(Environment.MEDIA_MOUNTED);
     }
 
     /**
      * 返回ＳＤ卡根目录
+     *
      * @return 根目录
      */
     public static String getSDCardRootDir() {
@@ -38,8 +40,8 @@ public class SDCardUtils {
     /**
      * 获取ＳＤ卡总容量
      */
-    public static long getSDCardTotalSize(){
-        if(isSDCardMounted()){
+    public static long getSDCardTotalSize() {
+        if (isSDCardMounted()) {
             //StatFs Statistic File System  簇
             StatFs sf = new StatFs(getSDCardRootDir());
             int blockSize = sf.getBlockSize();
@@ -52,10 +54,11 @@ public class SDCardUtils {
 
     /**
      * 获取ＳＤ卡可用容量
+     *
      * @return 容量
      */
-    public static long getSDCardAvailableSize(){
-        if(isSDCardMounted()){
+    public static long getSDCardAvailableSize() {
+        if (isSDCardMounted()) {
             StatFs sf = new StatFs(getSDCardRootDir());
             int availableBlockCount = sf.getAvailableBlocks();
             int blockSize = sf.getBlockSize();
@@ -67,19 +70,20 @@ public class SDCardUtils {
 
     /**
      * 向ＳＤ卡９大共有目录保存数据
-     * @param data 需要保存的数据
-     * @param type　区分９大共有目录的type
+     *
+     * @param data     需要保存的数据
+     * @param type     　区分９大共有目录的type
      * @param fileName 另存为的文件名称
      * @return 是否成功
      */
     public static boolean saveFileToPublicDirectory(byte[] data,
-                                                    String type, String fileName){
-        if(isSDCardMounted()){
+                                                    String type, String fileName) {
+        if (isSDCardMounted()) {
             BufferedOutputStream bos = null;
             File fileDir =
                     Environment.getExternalStoragePublicDirectory(type);
             File file = new File(fileDir, fileName);
-            if(!file.exists()){
+            if (!file.exists()) {
                 try {
                     file.createNewFile();
                 } catch (IOException e) {
@@ -94,7 +98,7 @@ public class SDCardUtils {
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
-                if(bos != null) {
+                if (bos != null) {
                     try {
                         bos.close();
                     } catch (IOException e) {
@@ -108,19 +112,20 @@ public class SDCardUtils {
 
     /**
      * 向ＳＤ卡私有File目录写入数据
-     * @param context 上下文，用来找到storage/sdcard0/Android/data/packageName/files
-     * @param data 需要保存的数据
-     * @param type 文件加类型
+     *
+     * @param context  上下文，用来找到storage/sdcard0/Android/data/packageName/files
+     * @param data     需要保存的数据
+     * @param type     文件加类型
      * @param fileName 另存为的文件名名称
      * @return 是否成功
      */
     public static boolean saveFileToExternalFileDir(Context context, byte[] data,
-                                                    String type, String fileName){
-        if(isSDCardMounted()){
+                                                    String type, String fileName) {
+        if (isSDCardMounted()) {
             BufferedOutputStream bos = null;
             File fileDir = context.getExternalFilesDir(null);
             File file = new File(fileDir, fileName);
-            if(!file.exists()) {
+            if (!file.exists()) {
                 try {
                     file.createNewFile();
                 } catch (IOException e) {
@@ -135,7 +140,7 @@ public class SDCardUtils {
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
-                if(bos != null) {
+                if (bos != null) {
                     try {
                         bos.close();
                     } catch (IOException e) {
@@ -149,18 +154,19 @@ public class SDCardUtils {
 
     /**
      * 向ＳＤ卡私有Cache目录写入数据
-     * @param context 上下文，用来找到storage/sdcard0/Android/data/packageName/cache
-     * @param data 需要保存的数据
+     *
+     * @param context  上下文，用来找到storage/sdcard0/Android/data/packageName/cache
+     * @param data     需要保存的数据
      * @param fileName 另存为的文件名名称
      * @return 是否成功
      */
     public static boolean saveFileToExternalCacheDir(Context context, byte[] data,
-                                                     String fileName){
-        if(isSDCardMounted()){
+                                                     String fileName) {
+        if (isSDCardMounted()) {
             BufferedOutputStream bos = null;
             File fileDir = context.getExternalCacheDir();
             File file = new File(fileDir, fileName);
-            if(!file.exists()){
+            if (!file.exists()) {
                 try {
                     file.createNewFile();
                 } catch (IOException e) {
@@ -175,7 +181,7 @@ public class SDCardUtils {
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
-                if(bos != null) {
+                if (bos != null) {
                     try {
                         bos.close();
                     } catch (IOException e) {
@@ -189,11 +195,12 @@ public class SDCardUtils {
 
     /**
      * 从ＳＤ卡中读取数据
+     *
      * @param fileAbsolutePath 读取文件的绝对路径
      * @return 字节数字
      */
-    public static byte[] loadDataFromSDCard(String fileAbsolutePath){
-        if(isSDCardMounted()) {
+    public static byte[] loadDataFromSDCard(String fileAbsolutePath) {
+        if (isSDCardMounted()) {
             BufferedInputStream bis = null;
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
@@ -202,7 +209,7 @@ public class SDCardUtils {
                         new FileInputStream(fileAbsolutePath));
                 byte[] buffer = new byte[1024 * 8];
                 int len = 0;
-                while((len = bis.read(buffer)) != -1){
+                while ((len = bis.read(buffer)) != -1) {
                     baos.write(buffer, 0, len);
                     baos.flush();
                 }
@@ -214,7 +221,7 @@ public class SDCardUtils {
                     if (bis != null) {
                         bis.close();
                     }
-                    if(baos != null) {
+                    if (baos != null) {
                         baos.close();
                     }
                 } catch (IOException e) {
@@ -225,7 +232,7 @@ public class SDCardUtils {
         return null;
     }
 
-    public static String getSDCardCacheDir(Context context){
+    public static String getSDCardCacheDir(Context context) {
         return context.getExternalCacheDir().getPath();
     }
 }

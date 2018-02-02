@@ -43,7 +43,7 @@ public class DatePickerDialog extends Dialog {
 
         Window window = this.getWindow();
         window.requestFeature(Window.FEATURE_NO_TITLE);
-        window.setGravity(Gravity.BOTTOM);  //此处可以设置dialog显示的位置
+        window.setGravity(Gravity.BOTTOM);
         window.getDecorView().setPadding(0, 0, 0, 0);
 
         WindowManager.LayoutParams lp = window.getAttributes();

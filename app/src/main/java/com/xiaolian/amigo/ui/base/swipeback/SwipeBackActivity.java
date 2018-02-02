@@ -6,8 +6,8 @@ import android.view.MotionEvent;
 
 
 /**
- * <p>
- * Created by zcd on 17/11/18.
+ * @author zcd
+ * @date 17/11/18
  */
 
 public class SwipeBackActivity extends AppCompatActivity implements SwipeBackHelper.SlideBackManager {
@@ -18,7 +18,7 @@ public class SwipeBackActivity extends AppCompatActivity implements SwipeBackHel
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        if(mSwipeBackHelper == null) {
+        if (mSwipeBackHelper == null) {
             mSwipeBackHelper = new SwipeBackHelper(this);
         }
         return mSwipeBackHelper.processTouchEvent(ev) || super.dispatchTouchEvent(ev);
@@ -41,7 +41,7 @@ public class SwipeBackActivity extends AppCompatActivity implements SwipeBackHel
 
     @Override
     public void finish() {
-        if(mSwipeBackHelper != null) {
+        if (mSwipeBackHelper != null) {
             mSwipeBackHelper.finishSwipeImmediately();
             mSwipeBackHelper = null;
         }

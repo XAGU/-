@@ -22,8 +22,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 
 /**
- * <p>
- * Created by zcd on 17/11/18.
+ * @author zcd
+ * @date 17/11/18
  */
 
 public class SwipeBackHelper extends Handler {
@@ -49,7 +49,7 @@ public class SwipeBackHelper extends Handler {
     private float mDistanceX;  //px 当前滑动距离 （正数或0）
     private float mLastPointX;  //记录手势在屏幕上的X轴坐标
 
-//    private boolean mIsSupportSlideBack; //
+    //    private boolean mIsSupportSlideBack; //
     private SlideBackManager mSlideBackManager;
     private int mTouchSlop;
     private boolean mIsInThresholdArea;
@@ -60,11 +60,10 @@ public class SwipeBackHelper extends Handler {
     private AnimatorSet mAnimatorSet;
 
     /**
-     *
      * @param slideBackManager
      */
     public SwipeBackHelper(SlideBackManager slideBackManager) {
-        if(slideBackManager == null || slideBackManager.getSlideActivity() == null) {
+        if (slideBackManager == null || slideBackManager.getSlideActivity() == null) {
             throw new RuntimeException("Neither SlideBackManager nor the method 'getSlideActivity()' can be null!");
         }
 
@@ -81,21 +80,21 @@ public class SwipeBackHelper extends Handler {
     }
 
     public boolean processTouchEvent(MotionEvent ev) {
-        if(!mSlideBackManager.supportSlideBack()) { //不支持滑动返回，则手势事件交给View处理
+        if (!mSlideBackManager.supportSlideBack()) { //不支持滑动返回，则手势事件交给View处理
             return false;
         }
 
-        if(mIsSlideAnimPlaying) {  //正在滑动动画播放中，直接消费手势事件
+        if (mIsSlideAnimPlaying) {  //正在滑动动画播放中，直接消费手势事件
             return true;
         }
 
         final int action = ev.getAction() & MotionEvent.ACTION_MASK;
-        if(action == MotionEvent.ACTION_DOWN) {
+        if (action == MotionEvent.ACTION_DOWN) {
             mLastPointX = ev.getRawX();
             mIsInThresholdArea = mLastPointX >= 0 && mLastPointX <= mEdgeSize;
         }
 
-        if(!mIsInThresholdArea) {  //不满足滑动区域，不做处理
+        if (!mIsInThresholdArea) {  //不满足滑动区域，不做处理
             return false;
         }
 
@@ -106,22 +105,22 @@ public class SwipeBackHelper extends Handler {
                 break;
 
             case MotionEvent.ACTION_POINTER_DOWN:
-                if(mIsSliding) {  //有第二个手势事件加入，而且正在滑动事件中，则直接消费事件
+                if (mIsSliding) {  //有第二个手势事件加入，而且正在滑动事件中，则直接消费事件
                     return true;
                 }
                 break;
 
             case MotionEvent.ACTION_MOVE:
                 //一旦触发滑动机制，拦截所有其他手指的滑动事件
-                if(actionIndex != 0) {
+                if (actionIndex != 0) {
                     return mIsSliding;
                 }
 
                 final float curPointX = ev.getRawX();
 
                 boolean isSliding = mIsSliding;
-                if(!isSliding) {
-                    if(Math.abs(curPointX - mLastPointX) < mTouchSlop) { //判断是否满足滑动
+                if (!isSliding) {
+                    if (Math.abs(curPointX - mLastPointX) < mTouchSlop) { //判断是否满足滑动
                         return false;
                     } else {
                         mIsSliding = true;
@@ -135,7 +134,7 @@ public class SwipeBackHelper extends Handler {
                 message.setData(bundle);
                 sendMessage(message);
 
-                if(isSliding == mIsSliding) {
+                if (isSliding == mIsSliding) {
                     return true;
                 } else {
                     MotionEvent cancelEvent = MotionEvent.obtain(ev); //首次判定为滑动需要修正事件：手动修改事件为 ACTION_CANCEL，并通知底层View
@@ -148,7 +147,7 @@ public class SwipeBackHelper extends Handler {
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_POINTER_UP:
             case MotionEvent.ACTION_OUTSIDE:
-                if(mDistanceX == 0) { //没有进行滑动
+                if (mDistanceX == 0) { //没有进行滑动
                     mIsSliding = false;
                     sendEmptyMessage(MSG_ACTION_UP);
                     return false;
@@ -170,12 +169,12 @@ public class SwipeBackHelper extends Handler {
     }
 
     public void finishSwipeImmediately() {
-        if(mIsSliding) {
+        if (mIsSliding) {
             mViewManager.addCacheView();
             mViewManager.resetPreviousView();
         }
 
-        if(mAnimatorSet != null) {
+        if (mAnimatorSet != null) {
             mAnimatorSet.cancel();
         }
 
@@ -202,7 +201,7 @@ public class SwipeBackHelper extends Handler {
                     inputMethod.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 }
 
-                if(!mViewManager.addViewFromPreviousActivity()) {
+                if (!mViewManager.addViewFromPreviousActivity()) {
                     return;
                 }
 
@@ -226,7 +225,7 @@ public class SwipeBackHelper extends Handler {
             case MSG_ACTION_UP:
                 final int width = mActivity.getResources().getDisplayMetrics().widthPixels;
                 if (mDistanceX == 0) {
-                    if(mCurrentContentView.getChildCount() >= 3) {
+                    if (mCurrentContentView.getChildCount() >= 3) {
                         mViewManager.removeShadowView();
                         mViewManager.resetPreviousView();
                     }
@@ -289,7 +288,7 @@ public class SwipeBackHelper extends Handler {
         View shadowView = mViewManager.mShadowView;
         View currentActivityContentView = mViewManager.getDisplayView();
 
-        if (previewActivityContentView == null || currentActivityContentView == null || shadowView == null){
+        if (previewActivityContentView == null || currentActivityContentView == null || shadowView == null) {
             sendEmptyMessage(MSG_SLIDE_CANCELED);
             return;
         }
@@ -328,7 +327,7 @@ public class SwipeBackHelper extends Handler {
         previewViewAnim.setInterpolator(interpolator);
         previewViewAnim.setProperty(View.TRANSLATION_X);
         float preViewStart = mDistanceX / 3 - width / 3;
-        float preViewStop = slideCanceled ? - width / 3 : 0;
+        float preViewStop = slideCanceled ? -width / 3 : 0;
         previewViewAnim.setFloatValues(preViewStart, preViewStop);
         previewViewAnim.setTarget(previewView);
 
@@ -385,32 +384,33 @@ public class SwipeBackHelper extends Handler {
 
         /**
          * Remove view from previous Activity and add into current Activity
+         *
          * @return Is view added successfully
          */
         private boolean addViewFromPreviousActivity() {
-            if(mCurrentContentView.getChildCount() == 0) {
+            if (mCurrentContentView.getChildCount() == 0) {
                 mPreviousActivity = null;
                 mPreviousContentView = null;
                 return false;
             }
 
             mPreviousActivity = ActivityLifecycleHelper.getPreviousActivity();
-            if(mPreviousActivity == null) {
+            if (mPreviousActivity == null) {
                 mPreviousActivity = null;
                 mPreviousContentView = null;
                 return false;
             }
 
             //Previous activity not support to be swipeBack...
-            if(mPreviousActivity instanceof SlideBackManager &&
-                    !((SlideBackManager)mPreviousActivity).canBeSlideBack()) {
+            if (mPreviousActivity instanceof SlideBackManager &&
+                    !((SlideBackManager) mPreviousActivity).canBeSlideBack()) {
                 mPreviousActivity = null;
                 mPreviousContentView = null;
                 return false;
             }
 
             ViewGroup previousActivityContainer = getContentView(mPreviousActivity);
-            if(previousActivityContainer == null || previousActivityContainer.getChildCount() == 0) {
+            if (previousActivityContainer == null || previousActivityContainer.getChildCount() == 0) {
                 mPreviousActivity = null;
                 mPreviousContentView = null;
                 return false;
@@ -426,7 +426,7 @@ public class SwipeBackHelper extends Handler {
          * Remove the PreviousContentView at current Activity and put it into previous Activity.
          */
         private void resetPreviousView() {
-            if(mPreviousContentView == null) {
+            if (mPreviousContentView == null) {
                 return;
             }
 
@@ -436,7 +436,7 @@ public class SwipeBackHelper extends Handler {
             contentView.removeView(view);
             mPreviousContentView = null;
 
-            if(mPreviousActivity == null || mPreviousActivity.isFinishing()) {
+            if (mPreviousActivity == null || mPreviousActivity.isFinishing()) {
                 return;
             }
             Activity preActivity = mPreviousActivity;
@@ -449,7 +449,7 @@ public class SwipeBackHelper extends Handler {
          * add shadow view on the left of content view
          */
         private synchronized void addShadowView() {
-            if(mShadowView == null) {
+            if (mShadowView == null) {
                 mShadowView = new ShadowView(mActivity);
                 mShadowView.setX(-SHADOW_WIDTH);
             }
@@ -457,7 +457,7 @@ public class SwipeBackHelper extends Handler {
                     SHADOW_WIDTH, FrameLayout.LayoutParams.MATCH_PARENT);
             final FrameLayout contentView = mCurrentContentView;
 
-            if(this.mShadowView.getParent() == null) {
+            if (this.mShadowView.getParent() == null) {
                 contentView.addView(this.mShadowView, 1, layoutParams);
             } else {
                 this.removeShadowView();
@@ -466,7 +466,7 @@ public class SwipeBackHelper extends Handler {
         }
 
         private synchronized void removeShadowView() {
-            if(mShadowView == null) {
+            if (mShadowView == null) {
                 return;
             }
             final FrameLayout contentView = getContentView(mActivity);
@@ -484,11 +484,11 @@ public class SwipeBackHelper extends Handler {
 
         private View getDisplayView() {
             int index = 0;
-            if(mViewManager.mPreviousContentView != null) {
+            if (mViewManager.mPreviousContentView != null) {
                 index = index + 1;
             }
 
-            if(mViewManager.mShadowView != null) {
+            if (mViewManager.mShadowView != null) {
                 index = index + 1;
             }
             return mCurrentContentView.getChildAt(index);
@@ -508,6 +508,7 @@ public class SwipeBackHelper extends Handler {
 
         /**
          * 能否滑动返回至当前Activity
+         *
          * @return
          */
         boolean canBeSlideBack();

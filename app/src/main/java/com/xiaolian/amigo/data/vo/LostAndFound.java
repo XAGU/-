@@ -5,8 +5,10 @@ import java.util.List;
 import lombok.Data;
 
 /**
- * <p>
- * Created by zcd on 9/18/17.
+ * 失物招领
+ *
+ * @author zcd
+ * @date 17/9/18
  */
 @Data
 public class LostAndFound {

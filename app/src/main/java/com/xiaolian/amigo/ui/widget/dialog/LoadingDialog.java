@@ -19,7 +19,10 @@ import com.xiaolian.amigo.ui.widget.indicator.ProgressDrawable;
 
 public class LoadingDialog extends Dialog {
     private ImageView ivLoding;
-    private ProgressDrawable mProgressDrawable;//刷新动画
+    /**
+     * 刷新动画
+     */
+    private ProgressDrawable mProgressDrawable;
 
     public LoadingDialog(@NonNull Context context) {
         super(context, android.R.style.Theme_Translucent);
@@ -32,7 +35,7 @@ public class LoadingDialog extends Dialog {
 //        setCancelable(false);
         setCanceledOnTouchOutside(false);
         mProgressDrawable = new ProgressDrawable();
-        ivLoding = (ImageView) findViewById(R.id.iv_loding);
+        ivLoding = findViewById(R.id.iv_loding);
         ivLoding.setImageDrawable(mProgressDrawable);
         setOnShowListener(new OnShowListener() {
             @Override

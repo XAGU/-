@@ -7,8 +7,9 @@ import android.widget.TextView;
 
 /**
  * View相关util
- * <p>
- * Created by zcd on 9/25/17.
+ *
+ * @author zcd
+ * @date 17/9/25
  */
 
 public final class ViewUtil {

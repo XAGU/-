@@ -9,8 +9,9 @@ import com.bumptech.glide.module.GlideModule;
 
 /**
  * 更改glide压缩格式
- * <p>
- * Created by zcd on 17/11/6.
+ *
+ * @author zcd
+ * @date 17/11/6
  */
 
 public class GlideConfiguration implements GlideModule {

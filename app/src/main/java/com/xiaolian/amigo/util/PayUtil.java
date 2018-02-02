@@ -17,6 +17,8 @@ import lombok.Data;
 
 
 /**
+ * 支付相关工具类
+ *
  * @author zcd
  * @date 17/10/25
  */
@@ -48,7 +50,7 @@ public class PayUtil {
      * 微信支付
      *
      * @param iwxapi 微信api
-     * @param req 微信请求数据
+     * @param req    微信请求数据
      */
     public static void weChatPay(IWXAPI iwxapi, IWeChatPayReq req) {
         PayReq request = new PayReq();
@@ -67,11 +69,17 @@ public class PayUtil {
      */
     public interface IWeChatPayReq {
         String getAppId();
+
         String getPartnerId();
+
         String getPrepayId();
+
         String getPackageValue();
+
         String getNonceStr();
+
         String getTimeStamp();
+
         String getSign();
     }
 

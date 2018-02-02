@@ -23,36 +23,53 @@ import rx.Observable;
 import rx.Scheduler;
 
 /**
- * Created by caidong on 2017/9/15.
+ * @author caidong
+ * @date 17/9/15
  */
 public interface IBasePresenter<V extends IBaseView> {
 
-    // 绑定视图
+    /**
+     * 绑定视图
+     */
     void onAttach(V mvpView);
 
-    // 解绑视图
+    /**
+     * 解绑视图
+     */
     void onDetach();
 
-    // 处理http远程调用异常
+    /**
+     * 处理http远程调用异常
+     */
     void onRemoteInvocationError(Throwable e);
 
-    // 处理业务层面异常
+    /**
+     * 处理业务层面异常
+     */
     void onBizCodeError(Error error);
 
-    // 添加蓝牙请求观察者
+    /**
+     * 添加蓝牙请求观察者
+     */
     <P> void addObserver(Observable<P> observable, BasePresenter.BleObserver observer);
 
-    // 添加蓝牙请求观察者，指定订阅线程
+    /**
+     * 添加蓝牙请求观察者，指定订阅线程
+     */
     <P> void addObserver(Observable<P> observable, BasePresenter.BleObserver observer, Scheduler scheduler);
 
-    // 添加网络请求观察者
+    /**
+     * 添加网络请求观察者
+     */
     <P> void addObserver(Observable<P> observable, BasePresenter.NetworkObserver observer);
 
-    // 添加网络请求观察者，指定订阅线程
+    /**
+     * 添加网络请求观察者，指定订阅线程
+     */
     <P> void addObserver(Observable<P> observable, BasePresenter.NetworkObserver observer, Scheduler scheduler);
 
-    // 清空观察者列表
+    /**
+     * 清空观察者列表
+     */
     void clearObservers();
-
-
 }

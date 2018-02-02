@@ -17,8 +17,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- *
- * Created by caidong on 2017/9/23.
+ * @author caidong
+ * @date 17/9/23
  */
 public class BleInteractiveActivity extends BleBaseActivity implements IBleInteractiveView {
 
@@ -44,7 +44,7 @@ public class BleInteractiveActivity extends BleBaseActivity implements IBleInter
 
     @Override
     protected void setUp() {
-        Intent intent  = getIntent();
+        Intent intent = getIntent();
         mac = intent.getStringExtra(Constant.MAC);
     }
 

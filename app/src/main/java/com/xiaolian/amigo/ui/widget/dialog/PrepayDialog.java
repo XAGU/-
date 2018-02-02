@@ -31,7 +31,8 @@ public class PrepayDialog extends Dialog {
         super(context, R.style.AlertDialogStyle);
         Window window = this.getWindow();
         window.requestFeature(Window.FEATURE_NO_TITLE);
-        window.setGravity(Gravity.CENTER);  //此处可以设置dialog显示的位置
+        //此处可以设置dialog显示的位置
+        window.setGravity(Gravity.CENTER);
         window.getDecorView().setPadding(0, 0, 0, 0);
         WindowManager.LayoutParams lp = window.getAttributes();
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;

@@ -24,20 +24,20 @@ import com.xiaolian.amigo.util.Constant;
 
 /**
  * 统一添加toolbar的ListActivity
- * 未完成
- * <p>
- * Created by zcd on 9/25/17.
+ *
+ * @author zcd
+ * @date 17/9/25
  */
 
 public abstract class BaseToolBarListActivity extends BaseActivity implements IBaseListView {
 
     private RecyclerView recyclerView;
-    private LinearLayout ll_footer;
-    private LinearLayout ll_header;
-    private RelativeLayout rl_empty;
-    private TextView tv_empty_tip;
-    private RelativeLayout rl_error;
-    private CoordinatorLayout cl_main;
+    private LinearLayout llFooter;
+    private LinearLayout llHeader;
+    private RelativeLayout rlEmpty;
+    private TextView tvEmptyTip;
+    private RelativeLayout rlError;
+    private CoordinatorLayout clMain;
     private TextView tv_toolbar_title;
     private TextView tv_toolbar_title2;
     private View v_divide;
@@ -51,12 +51,12 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base_toolbar_list);
-        refreshLayout = (SmartRefreshLayout) findViewById(R.id.refreshLayout);
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        cl_main = (CoordinatorLayout) findViewById(R.id.cl_main);
-        rl_empty = (RelativeLayout) findViewById(R.id.rl_empty);
-        tv_empty_tip = (TextView) findViewById(R.id.tv_empty_tip);
-        rl_error = (RelativeLayout) findViewById(R.id.rl_error);
+        refreshLayout = findViewById(R.id.refreshLayout);
+        recyclerView = findViewById(R.id.recyclerView);
+        clMain = findViewById(R.id.cl_main);
+        rlEmpty = findViewById(R.id.rl_empty);
+        tvEmptyTip = findViewById(R.id.tv_empty_tip);
+        rlError = findViewById(R.id.rl_error);
         setUp();
         initToolBar();
         initFooter();
@@ -103,11 +103,11 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
     protected abstract void onLoadMore();
 
     private void initFooter() {
-        ll_footer = (LinearLayout) findViewById(R.id.ll_footer);
+        llFooter = (LinearLayout) findViewById(R.id.ll_footer);
         if (setFooterLayout() > 0) {
             View layout = LayoutInflater.from(this).inflate(setFooterLayout(), null, true);
-            ll_footer.addView(layout);
-            ll_footer.setVisibility(View.VISIBLE);
+            llFooter.addView(layout);
+            llFooter.setVisibility(View.VISIBLE);
         }
         setFooter();
     }
@@ -117,18 +117,19 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
     }
 
     protected LinearLayout getFooter() {
-        return ll_footer;
+        return llFooter;
     }
 
-    protected @LayoutRes int setFooterLayout() {
+    protected @LayoutRes
+    int setFooterLayout() {
         return 0;
     }
 
     private void initToolBar() {
-        ll_header = (LinearLayout) findViewById(R.id.ll_header);
-        tv_toolbar_title = (TextView) findViewById(R.id.tv_toolbar_title);
-        tv_toolbar_title2 = (TextView) findViewById(R.id.tv_toolbar_title2);
-        tv_toolbar_sub_title = (TextView) findViewById(R.id.tv_toolbar_sub_title);
+        llHeader = findViewById(R.id.ll_header);
+        tv_toolbar_title = findViewById(R.id.tv_toolbar_title);
+        tv_toolbar_title2 = findViewById(R.id.tv_toolbar_title2);
+        tv_toolbar_sub_title = findViewById(R.id.tv_toolbar_sub_title);
         v_divide = findViewById(R.id.v_divide);
         setToolBarTitle(setTitle());
         if (setSubTitle() > 0) {
@@ -157,6 +158,7 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
     protected TextView getToolBarTitle2() {
         return tv_toolbar_title2;
     }
+
     protected int setSubTitle() {
         return 0;
     }
@@ -174,7 +176,7 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
     }
 
     protected void setHeaderBackground(@ColorRes int color) {
-        ll_header.setBackgroundResource(color);
+        llHeader.setBackgroundResource(color);
     }
 
     protected void setRefreshLayoutMargin(int left, int top, int right, int bottom) {
@@ -192,7 +194,7 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
     }
 
     protected void setMainBackground(@ColorRes int color) {
-        cl_main.setBackgroundResource(color);
+        clMain.setBackgroundResource(color);
     }
 
     protected void setToolBarSubTitle(String subTitle) {
@@ -209,7 +211,7 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
 
     @Override
     public void addPage() {
-        page ++;
+        page++;
     }
 
     @Override
@@ -245,15 +247,15 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
     @Override
     public void showEmptyView(String tip, int colorRes) {
         if (page == Constant.PAGE_START_NUM) {
-            rl_empty.setVisibility(View.VISIBLE);
-            rl_empty.setBackgroundResource(colorRes);
-            tv_empty_tip.setText(tip);
+            rlEmpty.setVisibility(View.VISIBLE);
+            rlEmpty.setBackgroundResource(colorRes);
+            tvEmptyTip.setText(tip);
         }
     }
 
     @Override
     public void hideEmptyView() {
-        rl_empty.setVisibility(View.GONE);
+        rlEmpty.setVisibility(View.GONE);
     }
 
     @Override
@@ -263,12 +265,12 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
 
     @Override
     public void showErrorView(int colorRes) {
-        rl_error.setVisibility(View.VISIBLE);
-        rl_error.setBackgroundResource(colorRes);
+        rlError.setVisibility(View.VISIBLE);
+        rlError.setBackgroundResource(colorRes);
     }
 
     @Override
     public void hideErrorView() {
-        rl_error.setVisibility(View.GONE);
+        rlError.setVisibility(View.GONE);
     }
 }
