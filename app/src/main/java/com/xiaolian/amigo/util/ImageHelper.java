@@ -8,6 +8,7 @@ import com.xiaolian.amigo.R;
 
 /**
  * ImageHelper
+ *
  * @author zcd
  * @date 17/9/22
  */
@@ -21,9 +22,9 @@ public class ImageHelper {
     /**
      * 相册大图
      *
-     * @param context context
+     * @param context   context
      * @param imageView imageView
-     * @param path path
+     * @param path      path
      */
     public static void loadAlbum(Context context, ImageView imageView, String path) {
         if (context == null) {

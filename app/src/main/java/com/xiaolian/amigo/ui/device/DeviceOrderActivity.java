@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.util.ObjectsCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -168,7 +169,7 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
         }
         orderNo = respDTO.getOrderNo();
         tvOrderNo.setText(orderNo);
-        if (CommonUtil.equals(respDTO.getStatus(), ERROR_ORDER_STATUS)) {
+        if (ObjectsCompat.equals(respDTO.getStatus(), ERROR_ORDER_STATUS)) {
             // 异常账单
             tvOrderErrorTip.setVisibility(View.VISIBLE);
             llOrderNormal.setVisibility(View.GONE);

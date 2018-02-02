@@ -2,7 +2,15 @@ package com.xiaolian.amigo.util;
 
 import com.xiaolian.amigo.BuildConfig;
 
+/**
+ * app 常量
+ *
+ * @author caidong
+ * @date 17/9/15
+ */
 public final class Constant {
+    private Constant() {
+    }
 
     private static final String TAG = "Constant";
     /**
@@ -25,9 +33,6 @@ public final class Constant {
      * 微信app id
      */
     public static final String WECHAT_APP_ID = "";
-
-    private Constant() {
-    }
 
     /**
      * 页内内容条数
@@ -102,6 +107,9 @@ public final class Constant {
      */
     public static final String BUNDLE_ID = "id";
 
+    /**
+     * 非法id
+     */
     public static final Long INVALID_ID = -1L;
 
     /**
@@ -177,6 +185,7 @@ public final class Constant {
     public static final int DEFAULT_BANNER_TYPE = 3;
     public static final String DEFAULT_BANNER_IMAGE = "system/123.jpg";
     public static final String DEFAULT_BANNER_LINK = "https://c.h5.xiaolian365.com/manual";
+
     /**
      * 分割符
      */

@@ -153,7 +153,7 @@ public class RechargeDetailActivity extends WalletBaseActivity implements IRecha
         tvStatus.setText(RechargeStatus.getRechargeStatus(data.getStatus()).getDesc());
         tvStatus.setTextColor(
                 ContextCompat.getColor(this, RechargeStatus.getRechargeStatus(data.getStatus()).getColorRes()));
-        if (CommonUtil.equals(data.getStatus(), RechargeStatus.AUDIT_FAIL.getType())
+        if (ObjectsCompat.equals(data.getStatus(), RechargeStatus.AUDIT_FAIL.getType())
                 && !TextUtils.isEmpty(data.getReason())) {
             llReason.setVisibility(View.VISIBLE);
             tvReasonContent.setText(data.getReason());

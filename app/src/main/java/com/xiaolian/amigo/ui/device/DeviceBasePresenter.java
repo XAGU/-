@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.ParcelUuid;
 import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
+import android.support.v4.util.ObjectsCompat;
 import android.text.TextUtils;
 
 import com.polidea.rxandroidble.RxBleConnection;
@@ -44,10 +45,8 @@ import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.base.RxBus;
 import com.xiaolian.amigo.ui.device.intf.IDevicePresenter;
 import com.xiaolian.amigo.ui.device.intf.IDeviceView;
-import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
-import com.xiaolian.amigo.util.Objects;
 import com.xiaolian.amigo.util.ble.Agreement;
 import com.xiaolian.amigo.util.ble.HexBytesUtils;
 
@@ -151,7 +150,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         List<DeviceCategory> deviceCategories = deviceDataManager.getDeviceCategory();
         for (DeviceCategory deviceCategory : deviceCategories) {
             for (Supplier s : deviceCategory.getSuppliers()) {
-                if (Objects.equals(s.getId(), supplierId)) {
+                if (ObjectsCompat.equals(s.getId(), supplierId)) {
                     this.supplier = s;
                 }
             }
@@ -1178,7 +1177,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             String[] temp = deviceResultTemp.split(Constant.DIVIDER);
             savedOrderId = Long.valueOf(temp[0]);
             savedDeviceResult = temp[1];
-            if (CommonUtil.equals(savedOrderId, orderId) && !TextUtils.isEmpty(savedDeviceResult)) {
+            if (ObjectsCompat.equals(savedOrderId, orderId) && !TextUtils.isEmpty(savedDeviceResult)) {
                 return savedDeviceResult;
             }
         } catch (Exception e) {
@@ -1203,7 +1202,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             String[] temp = closeCmdTemp.split(Constant.DIVIDER);
             savedOrderId = Long.valueOf(temp[0]);
             savedCloseCmd = temp[1];
-            if (CommonUtil.equals(savedOrderId, orderId) && !TextUtils.isEmpty(savedCloseCmd)) {
+            if (ObjectsCompat.equals(savedOrderId, orderId) && !TextUtils.isEmpty(savedCloseCmd)) {
                 return savedCloseCmd;
             }
         } catch (Exception e) {

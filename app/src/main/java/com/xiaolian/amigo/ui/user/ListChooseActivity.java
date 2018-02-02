@@ -3,6 +3,7 @@ package com.xiaolian.amigo.ui.user;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.util.ObjectsCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -27,7 +28,6 @@ import com.xiaolian.amigo.ui.user.intf.IListChoosePresenter;
 import com.xiaolian.amigo.ui.user.intf.IListChooseView;
 import com.xiaolian.amigo.ui.wallet.WithdrawalActivity;
 import com.xiaolian.amigo.ui.widget.RecycleViewDivider;
-import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
 
@@ -390,13 +390,13 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
     public void addMore(List<ListChooseAdaptor.Item> items) {
         if (residenceDetail != null) {
             for (ListChooseAdaptor.Item item : items) {
-                if (CommonUtil.equals(item.getId(), residenceDetail.getBuildingId())) {
+                if (ObjectsCompat.equals(item.getId(), residenceDetail.getBuildingId())) {
                     item.setTick(true);
                 }
-                if (CommonUtil.equals(item.getId(), residenceDetail.getFloorId())) {
+                if (ObjectsCompat.equals(item.getId(), residenceDetail.getFloorId())) {
                     item.setTick(true);
                 }
-                if (CommonUtil.equals(item.getId(), residenceDetail.getResidenceId())) {
+                if (ObjectsCompat.equals(item.getId(), residenceDetail.getResidenceId())) {
                     item.setTick(true);
                 }
             }

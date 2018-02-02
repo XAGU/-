@@ -126,10 +126,6 @@ public final class CommonUtil {
         return res;
     }
 
-    public static boolean equals(Object a, Object b) {
-        return (a == b) || (a != null && a.equals(b));
-    }
-
     /**
      * 计算指定的 View 在屏幕中的坐标。
      */

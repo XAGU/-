@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.user;
 
+import android.support.v4.util.ObjectsCompat;
 import android.text.TextUtils;
 
 import com.xiaolian.amigo.R;
@@ -23,7 +24,6 @@ import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.user.adaptor.ListChooseAdaptor;
 import com.xiaolian.amigo.ui.user.intf.IListChoosePresenter;
 import com.xiaolian.amigo.ui.user.intf.IListChooseView;
-import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 
 import java.util.ArrayList;
@@ -66,7 +66,7 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
                         ArrayList<ListChooseAdaptor.Item> schoolWapper = new ArrayList<>();
                         for (School school : result.getData().getSchools()) {
                             schoolWapper.add(new ListChooseAdaptor.Item(school,
-                                    CommonUtil.equals(school.getId(), userDataManager.getUser().getSchoolId())));
+                                    ObjectsCompat.equals(school.getId(), userDataManager.getUser().getSchoolId())));
                         }
                         getMvpView().addMore(schoolWapper);
                     } else {

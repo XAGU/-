@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.order.adaptor;
 
 import android.content.Context;
+import android.support.v4.util.ObjectsCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,7 +64,7 @@ public class OrderAdaptor extends RecyclerView.Adapter<OrderAdaptor.ViewHolder> 
                 listener.orderDetailClick(holder.order));
         if (null != wrapper) {
             // status为3表示异常订单
-            if (CommonUtil.equals(wrapper.getOrder().getStatus(), ORDER_ERROR_STATUS)) {
+            if (ObjectsCompat.equals(wrapper.getOrder().getStatus(), ORDER_ERROR_STATUS)) {
                 holder.vType.setBackgroundResource(Device.getDevice(wrapper.getType()).getColorRes());
                 holder.tvDevice.setText(wrapper.getDevice());
                 holder.tvTime.setText(wrapper.getTime());

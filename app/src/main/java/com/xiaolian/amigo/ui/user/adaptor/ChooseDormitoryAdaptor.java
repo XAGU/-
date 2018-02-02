@@ -1,10 +1,10 @@
 package com.xiaolian.amigo.ui.user.adaptor;
 
 import android.content.Context;
+import android.support.v4.util.ObjectsCompat;
 import android.view.View;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.util.CommonUtil;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -30,7 +30,7 @@ public class ChooseDormitoryAdaptor extends CommonAdapter<EditDormitoryAdaptor.U
 
     @Override
     protected void convert(ViewHolder holder, EditDormitoryAdaptor.UserResidenceWrapper userResidenceWrapper, int position) {
-        if (CommonUtil.equals(residenceId, userResidenceWrapper.getResidenceId())) {
+        if (ObjectsCompat.equals(residenceId, userResidenceWrapper.getResidenceId())) {
             holder.getView(R.id.iv_tick).setVisibility(View.VISIBLE);
         } else {
             holder.getView(R.id.iv_tick).setVisibility(View.GONE);
