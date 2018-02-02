@@ -4,8 +4,8 @@ import android.content.Context;
 import android.util.TypedValue;
 
 /**
- * <p>
- * Created by zcd on 17/11/6.
+ * @author zcd
+ * @date 17/11/6
  */
 
 public class DimentionUtils {

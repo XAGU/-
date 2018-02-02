@@ -8,8 +8,8 @@ import com.xiaolian.amigo.R;
 
 /**
  * ImageHelper
- * <p>
- * Created by zcd on 9/22/17.
+ * @author zcd
+ * @date 17/9/22
  */
 
 public class ImageHelper {

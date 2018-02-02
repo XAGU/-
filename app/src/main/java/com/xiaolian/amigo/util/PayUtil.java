@@ -3,6 +3,7 @@ package com.xiaolian.amigo.util;
 import android.app.Activity;
 import android.os.Handler;
 import android.os.Message;
+
 import com.xiaolian.amigo.util.Log;
 
 import com.alipay.sdk.app.PayTask;
@@ -15,7 +16,8 @@ import java.util.Map;
 
 
 /**
- * Created by zcd on 2016/9/7.
+ * @author zcd
+ * @date 17/10/25
  */
 
 public class PayUtil {
@@ -57,7 +59,7 @@ public class PayUtil {
     /**
      * 支付宝支付
      *
-     * @param activity activity
+     * @param activity  activity
      * @param orderInfo 签名信息
      */
     public static void alpay(final Activity activity, final String orderInfo) {

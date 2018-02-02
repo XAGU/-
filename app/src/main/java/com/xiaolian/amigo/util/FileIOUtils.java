@@ -21,8 +21,9 @@ import java.util.List;
 
 /**
  * 文件读写工具类
- * <p>
- * Created by zcd on 9/19/17.
+ *
+ * @author zcd
+ * @date 17/9/19
  */
 
 public final class FileIOUtils {

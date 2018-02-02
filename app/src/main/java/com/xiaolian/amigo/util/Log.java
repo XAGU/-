@@ -6,8 +6,8 @@ import android.content.Context;
 import com.umeng.analytics.MobclickAgent;
 
 /**
- * <p>
- * Created by zcd on 17/11/10.
+ * @author zcd
+ * @date 17/11/10
  */
 
 public class Log {
