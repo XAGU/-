@@ -4,6 +4,7 @@ import android.view.View;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity;
+import com.xiaolian.amigo.ui.device.dispenser.DispenserActivity;
 import com.xiaolian.amigo.ui.device.intf.dryer.IDryerPresenter;
 import com.xiaolian.amigo.ui.device.intf.dryer.IDryerView;
 
@@ -18,8 +19,6 @@ import javax.inject.Inject;
  */
 
 public class DryerActivity extends WaterDeviceBaseActivity<IDryerPresenter> implements IDryerView {
-    public static final String INTENT_KEY_FAVOR = "intent_key_favor";
-    public static final String INTENT_KEY_ID = "intent_key_id";
     private boolean isFavor;
     private Long id;
 
@@ -30,8 +29,8 @@ public class DryerActivity extends WaterDeviceBaseActivity<IDryerPresenter> impl
     protected void setUp() {
         super.setUp();
         if (getIntent() != null) {
-            isFavor = getIntent().getBooleanExtra(INTENT_KEY_FAVOR, false);
-            id = getIntent().getLongExtra(INTENT_KEY_ID, -1);
+            isFavor = getIntent().getBooleanExtra(DispenserActivity.INTENT_KEY_FAVOR, false);
+            id = getIntent().getLongExtra(DispenserActivity.INTENT_KEY_ID, -1);
         }
     }
 
