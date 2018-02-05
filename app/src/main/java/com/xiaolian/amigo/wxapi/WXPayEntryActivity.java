@@ -15,6 +15,8 @@ import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.PayUtil;
 
 /**
+ * 微信支付入口
+ *
  * @author zcd
  * @date 18/2/2
  */

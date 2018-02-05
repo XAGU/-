@@ -15,6 +15,8 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.xiaolian.amigo.util.Constant;
 
 /**
+ * 微信入口
+ *
  * @author zcd
  * @date 18/2/2
  */
