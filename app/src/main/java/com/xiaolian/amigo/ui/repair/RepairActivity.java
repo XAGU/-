@@ -61,6 +61,11 @@ public class RepairActivity extends RepairBaseListActivity implements IRepairVie
         adapter.notifyDataSetChanged();
     }
 
+    @Override
+    public int getPage() {
+        return page;
+    }
+
 
     @Override
     protected void onRefresh() {

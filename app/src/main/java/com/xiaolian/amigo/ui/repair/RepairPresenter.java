@@ -74,6 +74,9 @@ public class RepairPresenter<V extends IRepairView> extends BasePresenter<V>
                         getMvpView().addMore(wrappers);
                         getMvpView().addPage();
                     } else {
+                        if (getMvpView().getPage() == Constant.PAGE_START_NUM) {
+                            getMvpView().addMore(new ArrayList<>());
+                        }
                         getMvpView().showEmptyView(R.string.empty_tip_1);
                     }
                 } else {

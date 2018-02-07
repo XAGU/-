@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackgroundGray"
-    >
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/colorBackgroundGray">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -85,7 +85,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="男寝1楼102"
+                        tools:text="男寝1楼102"
                         android:lines="1"
                         android:ellipsize="end"
                         android:textColor="#222"
@@ -110,7 +110,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="21dp"
-                        android:text="这里是用户输入的内容"
+                        tools:text="这里是用户输入的内容"
                         android:textColor="#222"
                         android:textSize="12sp" />
                 </LinearLayout>
@@ -196,6 +196,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@id/ll_extra"

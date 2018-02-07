@@ -18,8 +18,8 @@ import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
 import com.xiaolian.amigo.util.DensityUtil;
 
 /**
- * <p>
- * Created by zcd on 10/9/17.
+ * @author zcd
+ * @date 17/10/9
  */
 
 public class RefreshLayoutFooter extends LinearLayout implements RefreshFooter {
@@ -42,6 +42,7 @@ public class RefreshLayoutFooter extends LinearLayout implements RefreshFooter {
         super(context, attrs, defStyleAttr);
         initView(context);
     }
+
     private void initView(Context context) {
         setGravity(Gravity.CENTER);
         mProgressDrawable = new ProgressDrawable();

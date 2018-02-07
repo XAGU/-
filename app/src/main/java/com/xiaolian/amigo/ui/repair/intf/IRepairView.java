@@ -19,4 +19,11 @@ public interface IRepairView extends IBaseListView {
      * @param repairs 待添加的报修记录
      */
     void addMore(List<RepairAdaptor.RepairWrapper> repairs);
+
+    /**
+     * 获取当前页码
+     *
+     * @return 当前页码
+     */
+    int getPage();
 }
