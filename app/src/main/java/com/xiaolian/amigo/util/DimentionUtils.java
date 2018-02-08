@@ -4,6 +4,8 @@ import android.content.Context;
 import android.util.TypedValue;
 
 /**
+ * 尺寸相关工具类
+ *
  * @author zcd
  * @date 17/11/6
  */

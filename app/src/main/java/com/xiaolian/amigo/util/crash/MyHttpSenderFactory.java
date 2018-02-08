@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 错误日志内容
+ *
  * @author zcd
  * @date 17/11/21
  */

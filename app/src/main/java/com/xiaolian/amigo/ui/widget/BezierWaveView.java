@@ -22,7 +22,10 @@ import com.xiaolian.amigo.util.ScreenUtils;
  */
 
 public class BezierWaveView extends View {
-    public PaintFlagsDrawFilter mPaintFlagsDrawFilter;// 毛边过滤
+    /**
+     * 毛边过滤
+     */
+    public PaintFlagsDrawFilter mPaintFlagsDrawFilter;
     private Paint mPaint1;
     private Paint mPaint2;
     private Paint mPaint3;

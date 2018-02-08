@@ -2,6 +2,12 @@ package com.xiaolian.amigo.util;
 
 import android.content.res.Resources;
 
+/**
+ * 屏幕密度相关工具类
+ *
+ * @author zcd
+ * @date 17/10/10
+ */
 public class DensityUtil {
 
     float density;

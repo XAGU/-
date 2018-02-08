@@ -26,7 +26,7 @@ public class DotFlashView extends View {
     private int mWidth, mHeight;
     private Paint mPaint;
     private int number = 0;
-    private int DOT_NUM = 3;
+    private static final int DOT_NUM = 3;
     private int mRadius;
     private ValueAnimator valueAnimator;
 

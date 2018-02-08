@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 自定义viewfinderView
+ *
  * @author zcd
  * @date 18/1/15
  */
