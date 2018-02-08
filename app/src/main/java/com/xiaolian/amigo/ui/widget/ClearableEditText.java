@@ -24,7 +24,10 @@ public class ClearableEditText extends AppCompatEditText implements View.OnFocus
      * 右侧Drawable引入
      */
     private Drawable mDrawableRight;
-    private boolean hasFocus;// 控件是否有焦点
+    /**
+     * 控件是否有焦点
+     */
+    private boolean hasFocus;
 
     boolean validated = false;
 
@@ -45,7 +48,8 @@ public class ClearableEditText extends AppCompatEditText implements View.OnFocus
 
 
     private void initClearDrawable() {
-        mDrawableRight = getCompoundDrawables()[2];// 获取EditText的DrawableRight,假如没有设置我们就使用默认的图片
+        // 获取EditText的DrawableRight,假如没有设置我们就使用默认的图片
+        mDrawableRight = getCompoundDrawables()[2];
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mDrawableRight = getResources().getDrawable(R.drawable.clear, null);
         } else {

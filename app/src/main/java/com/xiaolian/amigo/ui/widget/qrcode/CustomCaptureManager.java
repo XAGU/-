@@ -41,6 +41,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 自定义captureManager
+ *
  * @author zcd
  * @date 18/1/15
  */
