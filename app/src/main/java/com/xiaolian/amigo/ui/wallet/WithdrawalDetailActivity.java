@@ -2,6 +2,7 @@ package com.xiaolian.amigo.ui.wallet;
 
 import android.content.Intent;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.util.ObjectsCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -140,7 +141,7 @@ public class WithdrawalDetailActivity extends WalletBaseActivity implements IWit
         } else {
             tvCancelWithdraw.setVisibility(View.GONE);
         }
-        if (CommonUtil.equals(data.getStatus(), WithdrawalStatus.AUDIT_FAIL.getType())
+        if (ObjectsCompat.equals(data.getStatus(), WithdrawalStatus.AUDIT_FAIL.getType())
                 && !TextUtils.isEmpty(data.getReason())) {
             llReason.setVisibility(View.VISIBLE);
             tvReasonContent.setText(data.getReason());

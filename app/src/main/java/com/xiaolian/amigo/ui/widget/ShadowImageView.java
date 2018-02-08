@@ -17,8 +17,8 @@ import com.xiaolian.amigo.R;
 //import android.support.v7.graphics.Palette;
 
 /**
- * <p>
- * Created by zcd on 10/10/17.
+ * @author zcd
+ * @date 17/10/10
  */
 
 public class ShadowImageView extends RelativeLayout {

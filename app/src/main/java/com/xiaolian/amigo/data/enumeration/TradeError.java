@@ -4,7 +4,9 @@ import com.xiaolian.amigo.R;
 
 /**
  * trade error
- * Created by caidong on 2017/10/13.
+ *
+ * @author caidong
+ * @date 17/10/13
  */
 public enum TradeError {
     CONNECT_ERROR_1(true, R.string.connect_error_title_1, R.string.connect_error_tip_1, R.string.connect_error_btn, ErrorTag.CONNECT_ERROR.getCode()),

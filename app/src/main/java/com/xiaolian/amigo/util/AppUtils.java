@@ -12,23 +12,27 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
+
 import com.xiaolian.amigo.util.Log;
 
 import java.io.File;
 
 /**
  * App相关工具
- * <p>
- * Created by zcd on 10/16/17.
+ *
+ * @author zcd
+ * @date 17/10/16
  */
 
 public class AppUtils {
     private static final String TAG = AppUtils.class.getSimpleName();
-    private AppUtils(){
+
+    private AppUtils() {
     }
 
     /**
      * 获取版本号
+     *
      * @param context context
      * @return 当前应用的版本号
      */
@@ -46,9 +50,10 @@ public class AppUtils {
 
     /**
      * 安装apk
-     * @param activity activity
-     * @param file file
-     * @param authority authority
+     *
+     * @param activity    activity
+     * @param file        file
+     * @param authority   authority
      * @param requestCode requestCode
      */
     public static void installApp(final Activity activity, final File file, final String authority, final int requestCode) {
@@ -94,10 +99,10 @@ public class AppUtils {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setAction(android.content.Intent.ACTION_VIEW);
         Uri uri;
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M){
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             uri = FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", outputFile);
-        }else {
+        } else {
             uri = Uri.fromFile(outputFile);
         }
 
@@ -107,6 +112,7 @@ public class AppUtils {
 
     /**
      * get application's versionCode
+     *
      * @param context context
      * @return versionCode or -1
      */
@@ -116,7 +122,8 @@ public class AppUtils {
 
     /**
      * get application's versionCode
-     * @param context context
+     *
+     * @param context     context
      * @param packageName packageName
      * @return versionCode or -1
      */

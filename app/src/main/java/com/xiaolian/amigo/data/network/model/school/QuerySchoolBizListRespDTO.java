@@ -8,7 +8,9 @@ import lombok.Data;
 
 /**
  * 学校业务列表DTO
+ *
  * @author zcd
+ * @date 17/9/15
  */
 @Data
 public class QuerySchoolBizListRespDTO {

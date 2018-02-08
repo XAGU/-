@@ -7,8 +7,10 @@ import java.util.List;
 import lombok.Data;
 
 /**
- * <p>
- * Created by zcd on 17/12/18.
+ * 供应商数据
+ *
+ * @author zcd
+ * @date 17/12/18
  */
 @Data
 public class DeviceCategory {

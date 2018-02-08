@@ -10,7 +10,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 /**
- * Created by caidong on 2017/9/12.
+ * @author caidong
+ * @date 17/9/12
  */
 
 public class RecycleViewDivider extends RecyclerView.ItemDecoration {
@@ -38,7 +39,9 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
         }
     }
 
-    //设置屏幕的方向
+    /**
+     * 设置屏幕的方向
+     */
     public void setOrientation(int orientation) {
         if (orientation != HORIZONTAL_LIST && orientation != VERTICAL_LIST) {
             throw new IllegalArgumentException("invalid orientation");
@@ -55,7 +58,9 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
         }
     }
 
-    //画横线, 这里的parent其实是显示在屏幕显示的这部分
+    /**
+     * 画横线, 这里的parent其实是显示在屏幕显示的这部分
+     */
     public void drawHorizontalLine(Canvas c, RecyclerView parent, RecyclerView.State state) {
         int left = parent.getPaddingLeft();
         int right = parent.getWidth() - parent.getPaddingRight();

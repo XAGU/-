@@ -2,8 +2,9 @@ package com.xiaolian.amigo.data.enumeration;
 
 /**
  * 协议版本
- * <p>
- * Created by zcd on 17/12/18.
+ *
+ * @author zcd
+ * @date 17/12/18
  */
 
 public enum AgreementVersion {

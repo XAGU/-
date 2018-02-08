@@ -32,6 +32,7 @@ import butterknife.ButterKnife;
  * web页面
  *
  * @author zcd
+ * @date 17/9/14
  */
 public class WebActivity extends BaseActivity {
     public static final String INTENT_KEY_URL = "intent_key_url";

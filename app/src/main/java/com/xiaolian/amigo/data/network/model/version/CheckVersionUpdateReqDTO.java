@@ -4,8 +4,9 @@ import lombok.Data;
 
 /**
  * 检查更新DTO
- * <p>
- * Created by zcd on 17/10/31.
+ *
+ * @author zcd
+ * @date 17/10/31
  */
 @Data
 public class CheckVersionUpdateReqDTO {

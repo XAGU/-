@@ -9,8 +9,8 @@ import com.aigestudio.wheelpicker.widgets.WheelYearPicker;
 import java.util.Date;
 
 /**
- * <p>
- * Created by zcd on 9/28/17.
+ * @author zcd
+ * @date 17/9/28
  */
 
 public interface IWheelDateTimePicker {

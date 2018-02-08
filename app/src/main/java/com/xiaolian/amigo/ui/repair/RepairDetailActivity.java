@@ -101,12 +101,11 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
         presenter.onAttach(this);
 
         adapter = new RepairProgressAdaptor(progresses);
-        adapter.setOnCancelRepairListener(() -> {
-            new IOSAlertDialog(this).builder()
-                    .setMsg("确认取消报修？")
-                    .setPositiveButton("确认", v -> presenter.cancelRepair())
-                    .setNegativeClickListener("取消", IOSAlertDialog::dismiss).show();
-        });
+        adapter.setOnCancelRepairListener(() ->
+                new IOSAlertDialog(this).builder()
+                .setMsg("确认取消报修？")
+                .setPositiveButton("确认", v -> presenter.cancelRepair())
+                .setNegativeClickListener("取消", IOSAlertDialog::dismiss).show());
         rvRepairProgresses.addItemDecoration(new RecycleViewDivider(this, RecycleViewDivider.VERTICAL_LIST, "deductLast"));
         manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rvRepairProgresses.setLayoutManager(manager);
@@ -140,6 +139,7 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
 
     @Override
     public void render(RepairDetailRespDTO detail) {
+        llBottom.setVisibility(View.VISIBLE);
         images.clear();
         tvType.setText(Device.getDevice(detail.getDeviceType()).getDesc());
         tvLocation.setText(detail.getLocation());

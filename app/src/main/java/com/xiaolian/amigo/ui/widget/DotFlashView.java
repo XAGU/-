@@ -16,7 +16,9 @@ import com.xiaolian.amigo.util.ScreenUtils;
 
 /**
  * 设备重连加载View
+ *
  * @author zcd
+ * @date 17/9/13
  */
 
 public class DotFlashView extends View {
@@ -24,7 +26,7 @@ public class DotFlashView extends View {
     private int mWidth, mHeight;
     private Paint mPaint;
     private int number = 0;
-    private int DOT_NUM = 3;
+    private static final int DOT_NUM = 3;
     private int mRadius;
     private ValueAnimator valueAnimator;
 
@@ -105,7 +107,7 @@ public class DotFlashView extends View {
         }
     }
 
-    public void startAnimation(){
+    public void startAnimation() {
         if (valueAnimator == null) {
             valueAnimator = ValueAnimator.ofInt(mHeight / 2, mHeight / 8, mHeight / 2);
             valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {

@@ -2,7 +2,9 @@ package com.xiaolian.amigo.data.network.model;
 
 /**
  * ApiResult
- * Created by zcd on 9/14/17.
+ *
+ * @author zcd
+ * @date 17/9/14
  */
 
 public class ApiResult<T> {

@@ -2,11 +2,12 @@ package com.xiaolian.amigo.data.enumeration;
 
 /**
  * 提现方式
- * <p>
- * Created by zcd on 10/26/17.
+ *
+ * @author zcd
+ * @date 17/10/26
  */
 
-public enum  WithdrawWay {
+public enum WithdrawWay {
     ALIPAY(1, "支付宝");
     private int type;
     private String desc;

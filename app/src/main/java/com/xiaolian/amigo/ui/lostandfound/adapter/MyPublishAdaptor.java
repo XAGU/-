@@ -1,12 +1,12 @@
 package com.xiaolian.amigo.ui.lostandfound.adapter;
 
 import android.content.Context;
+import android.support.v4.util.ObjectsCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.ScreenUtils;
 import com.xiaolian.amigo.util.TimeUtils;
 import com.zhy.adapter.recyclerview.CommonAdapter;
@@ -111,7 +111,7 @@ public class MyPublishAdaptor extends CommonAdapter<LostAndFoundAdaptor.LostAndF
 
         if (isShowIcon) {
             holder.getView(R.id.iv_icon).setVisibility(View.VISIBLE);
-            if (CommonUtil.equals(lostAndFoundWapper.getType(), 1)) {
+            if (ObjectsCompat.equals(lostAndFoundWapper.getType(), 1)) {
                 // 失物
                 ((ImageView) holder.getView(R.id.iv_icon)).setImageResource(R.drawable.ic_lost);
             } else {

@@ -6,11 +6,12 @@ import com.xiaolian.amigo.R;
 
 /**
  * 通知类型
- * <p>
- * Created by zcd on 9/22/17.
+ *
+ * @author zcd
+ * @date 17/9/22
  */
 
-public enum  Notice {
+public enum Notice {
     UNKNOWN(0, "通知") {
         @Override
         public int getDrawableRes() {
@@ -60,7 +61,8 @@ public enum  Notice {
     }
 
 
-    public abstract @DrawableRes int getDrawableRes();
+    public abstract @DrawableRes
+    int getDrawableRes();
 
     public static Notice getNotice(int type) {
         for (Notice notice : Notice.values()) {

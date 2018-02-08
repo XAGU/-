@@ -3,9 +3,9 @@ package com.xiaolian.amigo.ui.main;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.util.ObjectsCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
-import android.widget.LinearLayout;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.system.BannerDTO;
@@ -25,7 +24,6 @@ import com.xiaolian.amigo.ui.main.adaptor.HomeBannerDelegate;
 import com.xiaolian.amigo.ui.main.adaptor.HomeNormalDelegate;
 import com.xiaolian.amigo.ui.main.adaptor.HomeSmallDelegate;
 import com.xiaolian.amigo.ui.widget.RecyclerItemClickListener;
-import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Log;
 
 import org.greenrobot.eventbus.EventBus;
@@ -312,8 +310,8 @@ public class HomeFragment2 extends Fragment {
     private void onPrepayOrderEvent(HomeAdaptor.ItemWrapper itemWrapper) {
         boolean needNotify = false;
         for (HomeAdaptor.ItemWrapper item : items) {
-            if (CommonUtil.equals(itemWrapper.getRes(), item.getRes())) {
-                if (!CommonUtil.equals(item.getPrepaySize(), itemWrapper.getPrepaySize())) {
+            if (ObjectsCompat.equals(itemWrapper.getRes(), item.getRes())) {
+                if (!ObjectsCompat.equals(item.getPrepaySize(), itemWrapper.getPrepaySize())) {
                     needNotify = true;
                     item.setPrepaySize(itemWrapper.getPrepaySize());
                 }

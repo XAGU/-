@@ -8,8 +8,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * <p>
- * Created by zcd on 17/11/18.
+ * @author zcd
+ * @date 17/11/18
  */
 
 public class ActivityLifecycleHelper implements Application.ActivityLifecycleCallbacks {
@@ -77,6 +77,7 @@ public class ActivityLifecycleHelper implements Application.ActivityLifecycleCal
 
     /**
      * 获取集合中当前Activity
+     *
      * @return
      */
     public static Activity getLatestActivity() {
@@ -90,9 +91,10 @@ public class ActivityLifecycleHelper implements Application.ActivityLifecycleCal
 
     /**
      * 获取集合中上一个Activity
+     *
      * @return
      */
-    public static Activity getPreviousActivity(){
+    public static Activity getPreviousActivity() {
         ActivityLifecycleHelper adapter = build();
         int count = adapter.activities.size();
         if (count < 2) {
@@ -102,11 +104,11 @@ public class ActivityLifecycleHelper implements Application.ActivityLifecycleCal
     }
 
     public void finishActivity(Activity activity) {
-        if(activities.contains(activity)) {
+        if (activities.contains(activity)) {
             activities.remove(activity);
         }
 
-        if(activities.size() == 0) {
+        if (activities.size() == 0) {
             activities = null;
         }
     }

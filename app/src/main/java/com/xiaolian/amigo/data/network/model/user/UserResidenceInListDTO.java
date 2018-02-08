@@ -6,8 +6,9 @@ import lombok.Data;
 
 /**
  * 宿舍绑定
- * <p>
- * Created by zcd on 9/20/17.
+ *
+ * @author zcd
+ * @date 17/9/20
  */
 @Data
 public class UserResidenceInListDTO implements Mapper<UserResidence> {

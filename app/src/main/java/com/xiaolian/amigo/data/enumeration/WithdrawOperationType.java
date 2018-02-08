@@ -5,11 +5,12 @@ import com.xiaolian.amigo.ui.wallet.WithdrawalDetailActivity;
 
 /**
  * 充值提现类型
- * <p>
- * Created by zcd on 10/19/17.
+ *
+ * @author zcd
+ * @date 17/10/19
  */
 
-public enum  WithdrawOperationType {
+public enum WithdrawOperationType {
     UNKNOWN(-1, "未知操作") {
         @Override
         public Class getClz() {

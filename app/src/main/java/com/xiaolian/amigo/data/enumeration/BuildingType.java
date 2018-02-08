@@ -2,14 +2,14 @@ package com.xiaolian.amigo.data.enumeration;
 
 /**
  * 建筑类别
- * <p>
- * Created by zcd on 10/19/17.
+ *
+ * @author zcd
+ * @date 17/10/19
  */
 
-public enum  BuildingType {
+public enum BuildingType {
     DORMITORY(1, "宿舍"),
-    OTHER(2, "其他")
-    ;
+    OTHER(2, "其他");
     private int type;
     private String desc;
 

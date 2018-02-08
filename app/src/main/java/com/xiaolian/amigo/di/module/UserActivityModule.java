@@ -41,6 +41,7 @@ import dagger.Provides;
 
 /**
  * User模块ActivityModule
+ *
  * @author zcd
  */
 @Module
@@ -48,8 +49,7 @@ public class UserActivityModule {
 
     private AppCompatActivity mActivity;
 
-    public UserActivityModule(AppCompatActivity activity)
-    {
+    public UserActivityModule(AppCompatActivity activity) {
         this.mActivity = activity;
     }
 

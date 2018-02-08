@@ -4,7 +4,9 @@ import lombok.Data;
 
 /**
  * 更新用户个人信息DTO
+ *
  * @author zcd
+ * @date 17/9/15
  */
 @Data
 public class PersonalUpdateReqDTO {

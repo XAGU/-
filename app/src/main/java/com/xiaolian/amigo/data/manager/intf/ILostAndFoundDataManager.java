@@ -15,30 +15,43 @@ import rx.Observable;
 
 /**
  * 失物招领
- * <p>
- * Created by zcd on 9/18/17.
+ *
+ * @author zcd
+ * @date 17/9/18
  */
 
 public interface ILostAndFoundDataManager {
 
     User getUserInfo();
 
-    // 获取失物招领列表
+    /**
+     * 获取失物招领列表
+     */
     Observable<ApiResult<QueryLostAndFoundListRespDTO>> queryLostAndFounds(@Body QueryLostAndFoundListReqDTO reqDTO);
 
-    // 保存失物招领
+    /**
+     * 保存失物招领
+     */
     Observable<ApiResult<SimpleRespDTO>> saveLostAndFounds(@Body SaveLostAndFoundDTO reqDTO);
 
-    // 获取失物招领详情
+    /**
+     * 获取失物招领详情
+     */
     Observable<ApiResult<LostAndFoundDTO>> getLostAndFound(@Body SimpleReqDTO reqDTO);
 
-    // 我的失物招领
+    /**
+     * 我的失物招领
+     */
     Observable<ApiResult<QueryLostAndFoundListRespDTO>> getMyLostAndFounds();
 
-    // 更新失物招领
+    /**
+     * 更新失物招领
+     */
     Observable<ApiResult<SimpleRespDTO>> updateLostAndFounds(@Body SaveLostAndFoundDTO reqDTO);
 
-    // 删除失物招领
+    /**
+     * 删除失物招领
+     */
     Observable<ApiResult<BooleanRespDTO>> deleteLostAndFounds(@Body SimpleReqDTO reqDTO);
 
 }

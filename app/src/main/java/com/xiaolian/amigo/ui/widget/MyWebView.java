@@ -6,8 +6,8 @@ import android.view.MotionEvent;
 import android.webkit.WebView;
 
 /**
- * <p>
- * Created by zcd on 10/24/17.
+ * @author zcd
+ * @date 17/10/24
  */
 
 public class MyWebView extends WebView {

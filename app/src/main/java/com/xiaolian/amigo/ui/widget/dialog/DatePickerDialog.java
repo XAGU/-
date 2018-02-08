@@ -22,14 +22,15 @@ import butterknife.ButterKnife;
 
 /**
  * 时间选择
- * <p>
- * Created by zcd on 9/21/17.
+ *
+ * @author zcd
+ * @date 178/9/21
  */
 
 public class DatePickerDialog extends Dialog {
 
     @BindView(R.id.wp_date)
-    WheelDateTimePicker wp_date;
+    WheelDateTimePicker wpDate;
 
     public DatePickerDialog(@NonNull Context context) {
 //        super(context);
@@ -42,7 +43,7 @@ public class DatePickerDialog extends Dialog {
 
         Window window = this.getWindow();
         window.requestFeature(Window.FEATURE_NO_TITLE);
-        window.setGravity(Gravity.BOTTOM);  //此处可以设置dialog显示的位置
+        window.setGravity(Gravity.BOTTOM);
         window.getDecorView().setPadding(0, 0, 0, 0);
 
         WindowManager.LayoutParams lp = window.getAttributes();
@@ -55,14 +56,14 @@ public class DatePickerDialog extends Dialog {
         setContentView(R.layout.dialog_datepicker);
         ButterKnife.bind(this);
 
-        wp_date.setCyclic(true);
-        wp_date.setCurtainColor(Color.GRAY);
-        wp_date.setSelectedItemTextColor(Color.BLACK);
-        wp_date.setItemTextColor(Color.GRAY);
-        wp_date.setItemTextSize(ScreenUtils.dpToPxInt(context, 16));
-        wp_date.setVisibleItemCount(5);
-        wp_date.setCurtainColor(Color.BLACK);
-        wp_date.setOnDateTimeSelectedListener((picker, date) -> {
+        wpDate.setCyclic(true);
+        wpDate.setCurtainColor(Color.GRAY);
+        wpDate.setSelectedItemTextColor(Color.BLACK);
+        wpDate.setItemTextColor(Color.GRAY);
+        wpDate.setItemTextSize(ScreenUtils.dpToPxInt(context, 16));
+        wpDate.setVisibleItemCount(5);
+        wpDate.setCurtainColor(Color.BLACK);
+        wpDate.setOnDateTimeSelectedListener((picker, date) -> {
             if (listener != null) {
                 listener.onItemSelected(picker, date);
             }

@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+
 import com.xiaolian.amigo.util.Log;
+
 import android.view.View;
 
 import com.polidea.rxandroidble.scan.ScanResult;
@@ -29,8 +31,9 @@ import butterknife.OnClick;
 
 /**
  * 测试BLE
- * <p>
- * Created by caidong on 2017/9/21.
+ *
+ * @author caidong
+ * @date 17/9/21
  */
 @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
 public class BleActivity extends BleBaseActivity implements IBleView {

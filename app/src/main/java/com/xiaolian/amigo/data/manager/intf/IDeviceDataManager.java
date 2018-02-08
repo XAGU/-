@@ -1,16 +1,14 @@
 package com.xiaolian.amigo.data.manager.intf;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
+import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
+import com.xiaolian.amigo.data.network.model.connecterror.DeviceConnectErrorReqDTO;
+import com.xiaolian.amigo.data.network.model.cs.CsMobileRespDTO;
 import com.xiaolian.amigo.data.network.model.device.FavorDeviceReqDTO;
 import com.xiaolian.amigo.data.network.model.device.QueryDeviceListReqDTO;
 import com.xiaolian.amigo.data.network.model.device.QueryDeviceListRespDTO;
 import com.xiaolian.amigo.data.network.model.device.QueryFavorDeviceRespDTO;
-import com.xiaolian.amigo.data.network.model.device.QueryWaterListReqDTO;
-import com.xiaolian.amigo.data.network.model.device.QueryWaterListRespDTO;
-import com.xiaolian.amigo.data.network.model.common.SimpleQueryReqDTO;
-import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
-import com.xiaolian.amigo.data.network.model.cs.CsMobileRespDTO;
-import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
 import com.xiaolian.amigo.data.network.model.funds.PersonalWalletDTO;
 import com.xiaolian.amigo.data.network.model.order.OrderPreInfoDTO;
 import com.xiaolian.amigo.data.network.model.order.QueryPrepayOptionReqDTO;
@@ -31,8 +29,9 @@ import rx.Observable;
 
 /**
  * 设备数据管理
- * <p>
- * Created by zcd on 9/29/17.
+ *
+ * @author zcd
+ * @date 17/9/29
  */
 
 public interface IDeviceDataManager {
@@ -46,19 +45,29 @@ public interface IDeviceDataManager {
 
     void setDeviceToken(String deviceNo, String deviceToken);
 
-    // 请求连接设备指令
+    /**
+     * 请求连接设备指令
+     */
     Observable<ApiResult<ConnectCommandRespDTO>> getConnectCommand(@Body ConnectCommandReqDTO reqDTO);
 
-    // 请求处理设备指令响应结果
+    /**
+     * 请求处理设备指令响应结果
+     */
     Observable<ApiResult<CmdResultRespDTO>> processCmdResult(@Body CmdResultReqDTO reqDTO);
 
-    // 网络支付，创建用水订单
+    /**
+     * 网络支付，创建用水订单
+     */
     Observable<ApiResult<PayRespDTO>> pay(@Body PayReqDTO reqDTO);
 
-    // 处理扫描结果
+    /**
+     * 处理扫描结果
+     */
     Observable<ApiResult<QueryDeviceListRespDTO>> handleScanDevices(QueryDeviceListReqDTO reqDTO);
 
-    // 校验订单状态
+    /**
+     * 校验订单状态
+     */
     Observable<ApiResult<UnsettledOrderStatusCheckRespDTO>> checkOrderStatus(@Body UnsettledOrderStatusCheckReqDTO reqDTO);
 
     void setDeviceResult(String deviceNo, String deviceResult);
@@ -69,33 +78,59 @@ public interface IDeviceDataManager {
 
     String getCloseCmd(String deviceNo);
 
-    // 获取余额
+    /**
+     * 获取余额
+     */
     Observable<ApiResult<PersonalWalletDTO>> queryWallet();
 
-    // 订单预备信息：options是预付金额选项，bonus是可用代金券数量
+    /**
+     * 订单预备信息：options是预付金额选项，bonus是可用代金券数量
+     */
     Observable<ApiResult<OrderPreInfoDTO>> queryPrepayOption(@Body QueryPrepayOptionReqDTO reqDTO);
 
-    // 获取客服人员电话
+    /**
+     * 获取客服人员电话
+     */
     Observable<ApiResult<CsMobileRespDTO>> queryCsInfo();
 
-    // 设置温馨提示次数
+    /**
+     * 设置温馨提示次数
+     */
     boolean isHeaterGuideDone();
+
     void doneHeaterGuide();
+
     void setHeaterGuide(Integer guideTime);
+
     boolean isDispenserGuideDone();
+
     void doneDispenserGuide();
+
     void setDispenserGuide(Integer guideTime);
+
     boolean isDryerGuideDone();
+
     void doneDryerGuide();
+
     void setDryerGuide(Integer guideTime);
 
 
-    // 收藏饮水机
+    /**
+     * 收藏饮水机
+     */
     Observable<ApiResult<SimpleRespDTO>> favorite(@Body FavorDeviceReqDTO reqDTO);
 
-    // 取消收藏饮水机
+    /**
+     * 取消收藏饮水机
+     */
     Observable<ApiResult<SimpleRespDTO>> unFavorite(@Body FavorDeviceReqDTO reqDTO);
-    // 获取个人收藏的设备列表
+
+    /**
+     * 获取个人收藏的设备列表
+     */
     Observable<ApiResult<QueryFavorDeviceRespDTO>> getFavorites(@Body QueryDeviceListReqDTO reqDTO);
+
     List<DeviceCategory> getDeviceCategory();
+
+    Observable<ApiResult<BooleanRespDTO>> reportDeviceConnectError(@Body DeviceConnectErrorReqDTO reqDTO);
 }

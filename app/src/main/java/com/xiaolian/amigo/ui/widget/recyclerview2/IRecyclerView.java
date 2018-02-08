@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * <p>
- * Created by zcd on 9/26/17.
+ * @author zcd
+ * @date 17/9/26
  */
 
 public class IRecyclerView extends RecyclerView {
@@ -36,7 +36,9 @@ public class IRecyclerView extends RecyclerView {
     private static final float DRAG_RATE = 3;
     private LoadingListener mLoadingListener; // 回调刷新监听
     private ArrayList<View> mHeaderViews = new ArrayList<>(); // 所有的头布局
-    /** 头尾布局的保留字 **/
+    /**
+     * 头尾布局的保留字
+     **/
     private static final int TYPE_REFRESH_HEADER = 10000;//设置一个很大的数字,尽可能避免和用户的adapter冲突
     private static final int TYPE_FOOTER = 10001;
     private static final int HEADER_INIT_INDEX = 10002; //一般的header索引起始目录
@@ -50,11 +52,11 @@ public class IRecyclerView extends RecyclerView {
 
 
     public IRecyclerView(Context context) {
-        this(context,null);
+        this(context, null);
     }
 
     public IRecyclerView(Context context, @Nullable AttributeSet attrs) {
-        this(context, attrs,0);
+        this(context, attrs, 0);
     }
 
     public IRecyclerView(Context context, @Nullable AttributeSet attrs, int defStyle) {
@@ -65,8 +67,8 @@ public class IRecyclerView extends RecyclerView {
     /**
      * 初始化刷新布局
      */
-    public void init(){
-        if(PullToRefreshEnabled){
+    public void init() {
+        if (PullToRefreshEnabled) {
             mRefreshHeader = new RefreshHeader(getContext());
         }
         mFooter = new LoadMoreFooter(getContext());
@@ -88,15 +90,15 @@ public class IRecyclerView extends RecyclerView {
         }
     }
 
-    public void setPullToRefreshEnabled(boolean enabled){
+    public void setPullToRefreshEnabled(boolean enabled) {
         PullToRefreshEnabled = enabled;
     }
 
-    public void setNoMore(boolean noMore){
+    public void setNoMore(boolean noMore) {
         isLoadingData = false;
         isNoMore = noMore;
         if (mFooter instanceof LoadMoreFooter) {
-            mFooter.changeState(isNoMore ? LoadMoreFooter.STATE_NOMORE:LoadMoreFooter.STATE_COMPLETE);
+            mFooter.changeState(isNoMore ? LoadMoreFooter.STATE_NOMORE : LoadMoreFooter.STATE_COMPLETE);
         } else {
             mFooter.setVisibility(View.GONE);
         }
@@ -113,6 +115,7 @@ public class IRecyclerView extends RecyclerView {
 
     /**
      * 设置无数据界面
+     *
      * @param emptyView
      */
     public void setEmptyView(View emptyView) {
@@ -123,8 +126,10 @@ public class IRecyclerView extends RecyclerView {
     public View getEmptyView() {
         return mEmptyView;
     }
+
     /**
      * 上拉动作触发加载布局
+     *
      * @param state
      */
     @Override
@@ -178,7 +183,7 @@ public class IRecyclerView extends RecyclerView {
     //避免用户自己调用getAdapter() 引起的ClassCastException
     @Override
     public Adapter getAdapter() {
-        if(mAdapter != null)
+        if (mAdapter != null)
             return mAdapter.getOriginalAdapter();
         else
             return null;
@@ -187,7 +192,7 @@ public class IRecyclerView extends RecyclerView {
     @Override
     public void setLayoutManager(LayoutManager layout) {
         super.setLayoutManager(layout);
-        if(mAdapter != null){
+        if (mAdapter != null) {
             if (layout instanceof GridLayoutManager) {
                 final GridLayoutManager gridManager = ((GridLayoutManager) layout);
                 gridManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -204,16 +209,16 @@ public class IRecyclerView extends RecyclerView {
 
     @Override
     public boolean onTouchEvent(MotionEvent e) {
-        if(mLastY == -1)
+        if (mLastY == -1)
             mLastY = e.getRawY();
-        switch (e.getAction()){
+        switch (e.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 mLastY = e.getRawY();
                 break;
             case MotionEvent.ACTION_MOVE:
                 float deltaY = e.getRawY() - mLastY;
                 mLastY = e.getRawY();
-                if(PullToRefreshEnabled && appbarState == AppBarStateChangeListener.State.EXPANDED && isOnTop()){
+                if (PullToRefreshEnabled && appbarState == AppBarStateChangeListener.State.EXPANDED && isOnTop()) {
                     mRefreshHeader.onMove(deltaY / DRAG_RATE); //这里 除DRAG_RATE 是为了增大拉出刷新头需要走的Y值，以保证不至于拉出过多空白.
                     if (mRefreshHeader.getVisibleHeight() > 0 && mRefreshHeader.getState() < RefreshHeader.STATE_REFRESHING) {
                         return false;
@@ -261,17 +266,17 @@ public class IRecyclerView extends RecyclerView {
             }
             p = p.getParent();
         }
-        if(p instanceof CoordinatorLayout) {
-            CoordinatorLayout coordinatorLayout = (CoordinatorLayout)p;
+        if (p instanceof CoordinatorLayout) {
+            CoordinatorLayout coordinatorLayout = (CoordinatorLayout) p;
             final int childCount = coordinatorLayout.getChildCount();
             for (int i = childCount - 1; i >= 0; i--) {
                 final View child = coordinatorLayout.getChildAt(i);
-                if(child instanceof AppBarLayout) {
-                    appBarLayout = (AppBarLayout)child;
+                if (child instanceof AppBarLayout) {
+                    appBarLayout = (AppBarLayout) child;
                     break;
                 }
             }
-            if(appBarLayout != null) {
+            if (appBarLayout != null) {
                 appBarLayout.addOnOffsetChangedListener(new AppBarStateChangeListener() {
                     @Override
                     public void onStateChanged(AppBarLayout appBarLayout, State state) {
@@ -282,41 +287,46 @@ public class IRecyclerView extends RecyclerView {
         }
     }
 
-    private boolean isHeaderType(int type){
+    private boolean isHeaderType(int type) {
         return mHeaderViews.size() > 0 && sHeaderTypes.contains(type);
     }
 
-    private View getHeaderViewByType(int itemType){
-        if(!isHeaderType(itemType))
+    private View getHeaderViewByType(int itemType) {
+        if (!isHeaderType(itemType))
             return null;
         return mHeaderViews.get(itemType - HEADER_INIT_INDEX);
     }
 
     /**
      * 判断是否是保留字段 10000，10001，10002
+     *
      * @param itemType
      * @return
      */
-    private boolean isReservedItemViewType(int itemType){
+    private boolean isReservedItemViewType(int itemType) {
         return itemType == TYPE_REFRESH_HEADER || itemType == TYPE_FOOTER || sHeaderTypes.contains(itemType);
     }
 
-    /** adapter  */
-    class MRecyclerAdapter extends  RecyclerView.Adapter<ViewHolder>{
+    /**
+     * adapter
+     */
+    class MRecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
         RecyclerView.Adapter mAdapter;
 
-        public MRecyclerAdapter(RecyclerView.Adapter adapter){
+        public MRecyclerAdapter(RecyclerView.Adapter adapter) {
             this.mAdapter = adapter;
             isFirstAttachAdapter = true;
 
         }
-        public RecyclerView.Adapter getOriginalAdapter(){
+
+        public RecyclerView.Adapter getOriginalAdapter() {
             return this.mAdapter;
         }
 
 
         /**
          * 判断当前item是否是header
+         *
          * @param position
          * @return
          */
@@ -325,9 +335,9 @@ public class IRecyclerView extends RecyclerView {
         }
 
         public boolean isFooter(int position) {
-            if(LoadMoreEnabled) {
+            if (LoadMoreEnabled) {
                 return position == getItemCount() - 1;
-            }else {
+            } else {
                 return false;
             }
         }
@@ -370,7 +380,7 @@ public class IRecyclerView extends RecyclerView {
 
         // some times we need to override this
         @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position,List<Object> payloads) {
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position, List<Object> payloads) {
             if (isHeader(position) || isRefreshHeader(position)) {
                 return;
             }
@@ -379,11 +389,10 @@ public class IRecyclerView extends RecyclerView {
             if (mAdapter != null) {
                 adapterCount = mAdapter.getItemCount();
                 if (adjPosition < adapterCount) {
-                    if(payloads.isEmpty()){
+                    if (payloads.isEmpty()) {
                         mAdapter.onBindViewHolder(holder, adjPosition);
-                    }
-                    else{
-                        mAdapter.onBindViewHolder(holder, adjPosition,payloads);
+                    } else {
+                        mAdapter.onBindViewHolder(holder, adjPosition, payloads);
                     }
                 }
             }
@@ -392,13 +401,13 @@ public class IRecyclerView extends RecyclerView {
 
         @Override
         public int getItemCount() {
-            if(LoadMoreEnabled) {
+            if (LoadMoreEnabled) {
                 if (mAdapter != null) {
                     return getHeadersCount() + mAdapter.getItemCount() + 2;
                 } else {
                     return getHeadersCount() + 2;
                 }
-            }else {
+            } else {
                 if (mAdapter != null) {
                     return getHeadersCount() + mAdapter.getItemCount() + 1;
                 } else {
@@ -424,9 +433,9 @@ public class IRecyclerView extends RecyclerView {
             if (mAdapter != null) {
                 adapterCount = mAdapter.getItemCount();
                 if (adjPosition < adapterCount) {
-                    int type =  mAdapter.getItemViewType(adjPosition);
-                    if(isReservedItemViewType(type)) {
-                        throw new IllegalStateException("IRecyclerView require itemViewType in adapter should be less than 10000 " );
+                    int type = mAdapter.getItemViewType(adjPosition);
+                    if (isReservedItemViewType(type)) {
+                        throw new IllegalStateException("IRecyclerView require itemViewType in adapter should be less than 10000 ");
                     }
                     return type;
                 }
@@ -473,7 +482,7 @@ public class IRecyclerView extends RecyclerView {
             ViewGroup.LayoutParams lp = holder.itemView.getLayoutParams();
             if (lp != null
                     && lp instanceof StaggeredGridLayoutManager.LayoutParams
-                    && (isHeader(holder.getLayoutPosition()) ||isRefreshHeader(holder.getLayoutPosition()) || isFooter(holder.getLayoutPosition()))) {
+                    && (isHeader(holder.getLayoutPosition()) || isRefreshHeader(holder.getLayoutPosition()) || isFooter(holder.getLayoutPosition()))) {
                 StaggeredGridLayoutManager.LayoutParams p = (StaggeredGridLayoutManager.LayoutParams) lp;
                 p.setFullSpan(true);
             }
@@ -506,7 +515,7 @@ public class IRecyclerView extends RecyclerView {
         }
 
         /**
-         *  viewholder
+         * viewholder
          */
         private class SimpleViewHolder extends RecyclerView.ViewHolder {
             public SimpleViewHolder(View itemView) {

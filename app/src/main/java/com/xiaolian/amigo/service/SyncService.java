@@ -1,7 +1,8 @@
 package com.xiaolian.amigo.service;
 
 /**
- * Created by caidong on 2017/9/14.
+ * @author caidong
+ * @date 17/9/14
  */
 
 public class SyncService {

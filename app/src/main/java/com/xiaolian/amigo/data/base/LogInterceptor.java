@@ -26,6 +26,7 @@ import okio.Buffer;
  * Log拦截器
  *
  * @author zcd
+ * @date 17/9/14
  */
 
 public class LogInterceptor implements Interceptor {
@@ -56,7 +57,7 @@ public class LogInterceptor implements Interceptor {
     private String brand;
     private String model;
     private String uniqueId;
-    private final static String system = "2";
+    private static final String system = "2";
 
     private ISharedPreferencesHelp sharedPreferencesHelp;
 

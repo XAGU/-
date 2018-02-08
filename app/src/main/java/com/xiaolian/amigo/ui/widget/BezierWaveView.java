@@ -16,11 +16,16 @@ import com.xiaolian.amigo.util.ScreenUtils;
 
 /**
  * 波浪view
+ *
  * @author zcd
+ * @date 17/9/13
  */
 
 public class BezierWaveView extends View {
-    public PaintFlagsDrawFilter mPaintFlagsDrawFilter;// 毛边过滤
+    /**
+     * 毛边过滤
+     */
+    public PaintFlagsDrawFilter mPaintFlagsDrawFilter;
     private Paint mPaint1;
     private Paint mPaint2;
     private Paint mPaint3;
@@ -72,18 +77,18 @@ public class BezierWaveView extends View {
 
 
         for (int i = -mItemWaveWidth1; i <= getWidth() + mItemWaveWidth1; i += mItemWaveWidth1) {
-            mPath1.rQuadTo(mItemWaveWidth1/4, -mWaveHeight, mItemWaveWidth1 / 2, 5);
-            mPath1.rQuadTo(mItemWaveWidth1/4, mWaveHeight, mItemWaveWidth1 / 2, -5);
+            mPath1.rQuadTo(mItemWaveWidth1 / 4, -mWaveHeight, mItemWaveWidth1 / 2, 5);
+            mPath1.rQuadTo(mItemWaveWidth1 / 4, mWaveHeight, mItemWaveWidth1 / 2, -5);
         }
 
         for (int i = -mItemWaveWidth2; i <= getWidth() + mItemWaveWidth2; i += mItemWaveWidth2) {
-            mPath2.rQuadTo(mItemWaveWidth2/4, mWaveHeight, mItemWaveWidth2 / 2, 10);
-            mPath2.rQuadTo(mItemWaveWidth2/4, -mWaveHeight, mItemWaveWidth2 / 2, -10);
+            mPath2.rQuadTo(mItemWaveWidth2 / 4, mWaveHeight, mItemWaveWidth2 / 2, 10);
+            mPath2.rQuadTo(mItemWaveWidth2 / 4, -mWaveHeight, mItemWaveWidth2 / 2, -10);
         }
 
         for (int i = -mItemWaveWidth3; i <= getWidth() + mItemWaveWidth3; i += mItemWaveWidth3) {
-            mPath3.rQuadTo(mItemWaveWidth3/4, mWaveHeight, mItemWaveWidth3 / 2, 0);
-            mPath3.rQuadTo(mItemWaveWidth3/4, -mWaveHeight, mItemWaveWidth3 / 2, 0);
+            mPath3.rQuadTo(mItemWaveWidth3 / 4, mWaveHeight, mItemWaveWidth3 / 2, 0);
+            mPath3.rQuadTo(mItemWaveWidth3 / 4, -mWaveHeight, mItemWaveWidth3 / 2, 0);
         }
 
         mPath1.lineTo(getWidth(), getHeight());
@@ -155,7 +160,7 @@ public class BezierWaveView extends View {
             }
         });
 
-        mAnimator3 = ValueAnimator.ofInt(-mItemWaveWidth3/4, mItemWaveWidth3*3/4);
+        mAnimator3 = ValueAnimator.ofInt(-mItemWaveWidth3 / 4, mItemWaveWidth3 * 3 / 4);
         mAnimator3.setDuration(6500);
         mAnimator3.setRepeatCount(ValueAnimator.INFINITE);
         mAnimator3.setInterpolator(new LinearInterpolator());

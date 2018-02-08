@@ -2,15 +2,15 @@ package com.xiaolian.amigo.data.enumeration;
 
 /**
  * intent action
- * <p>
- * Created by zcd on 17/11/10.
+ *
+ * @author zcd
+ * @date 17/11/10
  */
 
-public enum  IntentAction {
+public enum IntentAction {
     UNKNOWN(0),
     ACTION_CHOOSE_FAVORITE_FOR_REPAIR(1),
-    ACTION_GOTO_HEATER(2)
-    ;
+    ACTION_GOTO_HEATER(2);
     private int type;
 
     IntentAction(int type) {

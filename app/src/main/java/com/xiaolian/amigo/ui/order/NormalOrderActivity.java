@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.util.ObjectsCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -142,7 +143,7 @@ public class NormalOrderActivity extends OrderBaseActivity implements INormalOrd
                     String.format("%s %s元", data.getModeDesc(), data.getConsume().replace("¥", "")), WithdrawRechargeDetailAdapter.TITLE_CONTENT_TYPE));
         }
         List<TitleContentListDelegate.ListItem> listItems = new ArrayList<>();
-        if (CommonUtil.equals(data.getStatus(), ORDER_ERROR_STATUS)) {
+        if (ObjectsCompat.equals(data.getStatus(), ORDER_ERROR_STATUS)) {
             // 异常账单
             // 是否有代金券
             if (TextUtils.isEmpty(data.getBonus())) {
@@ -173,7 +174,7 @@ public class NormalOrderActivity extends OrderBaseActivity implements INormalOrd
     private void setBottomLayout(OrderDetailRespDTO data) {
         // 洗衣机
         if (Device.getDevice(data.getDeviceType()) == Device.WASHER) {
-            if (CommonUtil.equals(data.getStatus(), ORDER_ERROR_STATUS)) {
+            if (ObjectsCompat.equals(data.getStatus(), ORDER_ERROR_STATUS)) {
                 // 异常订单
                 tvBottomTip.setVisibility(View.VISIBLE);
                 tvBottomTip.setText(getString(R.string.washer_order_error_tip));
@@ -183,7 +184,7 @@ public class NormalOrderActivity extends OrderBaseActivity implements INormalOrd
                 llBottom.setVisibility(View.VISIBLE);
             }
         } else {
-            if (CommonUtil.equals(data.getStatus(), ORDER_ERROR_STATUS)) {
+            if (ObjectsCompat.equals(data.getStatus(), ORDER_ERROR_STATUS)) {
                 // 异常订单
                 tvBottomTip.setVisibility(View.VISIBLE);
                 tvBottomTip.setText(getString(R.string.order_error_tip));

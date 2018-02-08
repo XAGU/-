@@ -2,6 +2,7 @@ package com.xiaolian.amigo.ui.main.adaptor;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.util.ObjectsCompat;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
@@ -10,7 +11,6 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.BannerType;
 import com.xiaolian.amigo.data.network.model.system.BannerDTO;
 import com.xiaolian.amigo.ui.base.WebActivity;
-import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
 import com.youth.banner.Banner;
@@ -60,7 +60,7 @@ public class HomeBannerDelegate implements ItemViewDelegate<HomeAdaptor.ItemWrap
             if (TextUtils.isEmpty(itemWrapper.getBanners().get(position1).getLink())) {
                 return;
             }
-            if (CommonUtil.equals(itemWrapper.getBanners().get(position1).getType(), BannerType.OUTSIDE.getType())) {
+            if (ObjectsCompat.equals(itemWrapper.getBanners().get(position1).getType(), BannerType.OUTSIDE.getType())) {
                 context.startActivity(new Intent(context, WebActivity.class)
                         .putExtra(WebActivity.INTENT_KEY_URL, itemWrapper.getBanners().get(position1).getLink()));
             }

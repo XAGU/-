@@ -2,16 +2,16 @@ package com.xiaolian.amigo.data.enumeration;
 
 /**
  * 住所类别
- * <p>
- * Created by zcd on 10/19/17.
+ *
+ * @author zcd
+ * @date 17/10/19
  */
 
-public enum  ResidenceLevel {
+public enum ResidenceLevel {
     UNKNOWN(-1, "未知"),
     BUILDING(1, "楼栋"),
     FLOOR(2, "楼层"),
-    ROOM(3, "房间")
-    ;
+    ROOM(3, "房间");
     private int type;
     private String desc;
 

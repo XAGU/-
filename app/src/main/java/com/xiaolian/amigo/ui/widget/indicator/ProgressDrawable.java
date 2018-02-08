@@ -13,8 +13,8 @@ import android.support.annotation.NonNull;
 import android.view.animation.LinearInterpolator;
 
 /**
- * <p>
- * Created by zcd on 10/9/17.
+ * @author zcd
+ * @date 17/10/9
  */
 
 public class ProgressDrawable extends Drawable implements Animatable {
@@ -49,7 +49,7 @@ public class ProgressDrawable extends Drawable implements Animatable {
             mPath.addCircle(width - r, height / 2, r, Path.Direction.CW);
             mPath.addRect(width - 5 * r, height / 2 - r, width - r, height / 2 + r, Path.Direction.CW);
             mPath.addCircle(width - 5 * r, height / 2, r, Path.Direction.CW);
-            mPaint.setAlpha((i+5) * 0x11);
+            mPaint.setAlpha((i + 5) * 0x11);
             canvas.rotate(30, (width) / 2, (height) / 2);
             canvas.drawPath(mPath, mPaint);
         }

@@ -1,9 +1,9 @@
 package com.xiaolian.amigo.util;
 
 import android.app.Activity;
-import android.os.Handler;
-import android.os.Message;
-import com.xiaolian.amigo.util.Log;
+
+import com.tencent.mm.opensdk.modelpay.PayReq;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
 
 import com.alipay.sdk.app.PayTask;
 import com.xiaolian.amigo.data.enumeration.PayWay;
@@ -13,9 +13,14 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.Map;
 
+import lombok.Data;
+
 
 /**
- * Created by zcd on 2016/9/7.
+ * 支付相关工具类
+ *
+ * @author zcd
+ * @date 17/10/25
  */
 
 public class PayUtil {
@@ -41,23 +46,47 @@ public class PayUtil {
      */
     public static final int WECHAT_PAY = 100;
 
-    // 微信支付
-//    public static void wechatPay(IWXAPI iwxapi, WeChatPayapplyBean.DataBean dataBean) {
-//        PayReq request = new PayReq();
-//        request.appId = dataBean.getApp_id();
-//        request.partnerId = dataBean.getMch_id();
-//        request.prepayId = dataBean.getPrepay_id();
-//        request.packageValue = dataBean.getPackageX();
-//        request.nonceStr = dataBean.getNonce_str();
-//        request.timeStamp = dataBean.getTime_stamp() + "";
-//        request.sign = dataBean.getSign();
-//        iwxapi.sendReq(request);
-//    }
+    /**
+     * 微信支付
+     *
+     * @param iwxapi 微信api
+     * @param req    微信请求数据
+     */
+    public static void weChatPay(IWXAPI iwxapi, IWeChatPayReq req) {
+        PayReq request = new PayReq();
+        request.appId = req.getAppId();
+        request.partnerId = req.getPartnerId();
+        request.prepayId = req.getPrepayId();
+        request.packageValue = req.getPackageValue();
+        request.nonceStr = req.getNonceStr();
+        request.timeStamp = req.getTimeStamp();
+        request.sign = req.getSign();
+        iwxapi.sendReq(request);
+    }
+
+    /**
+     * 微信请求数据接口
+     */
+    public interface IWeChatPayReq {
+        String getAppId();
+
+        String getPartnerId();
+
+        String getPrepayId();
+
+        String getPackageValue();
+
+        String getNonceStr();
+
+        String getTimeStamp();
+
+        String getSign();
+    }
 
     /**
      * 支付宝支付
      *
-     * @param activity activity
+     * @param activity  activity
      * @param orderInfo 签名信息
      */
     public static void alpay(final Activity activity, final String orderInfo) {

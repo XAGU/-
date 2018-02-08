@@ -17,25 +17,26 @@ import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
 /**
  * 统一添加toolbar
- * <p>
- * Created by zcd on 9/25/17.
+ *
+ * @author zcd
+ * @date 17/9/25
  */
 
 public abstract class BaseToolBarActivity extends BaseActivity {
 
-    private TextView tv_toolbar_title;
-    private LinearLayout ll_main_content;
-    private ScrollView sv_main_container;
+    private TextView tvToolbarTitle;
+    private LinearLayout llMainContent;
+    private ScrollView svMainContainer;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base_toolbar);
-        ll_main_content = findViewById(R.id.ll_main_content);
+        llMainContent = findViewById(R.id.ll_main_content);
         View layout = LayoutInflater.from(this).inflate(setLayout(), null, true);
-        ll_main_content.addView(layout);
-        sv_main_container = findViewById(R.id.sv_main_container);
-        OverScrollDecoratorHelper.setUpOverScroll(sv_main_container);
+        llMainContent.addView(layout);
+        svMainContainer = findViewById(R.id.sv_main_container);
+        OverScrollDecoratorHelper.setUpOverScroll(svMainContainer);
         setUp();
         initToolBar();
         initInject();
@@ -43,11 +44,11 @@ public abstract class BaseToolBarActivity extends BaseActivity {
     }
 
     protected View getMainLayout() {
-        return ll_main_content;
+        return llMainContent;
     }
 
     protected ScrollView getScrollView() {
-        return sv_main_container;
+        return svMainContainer;
     }
 
     protected abstract void initInject();
@@ -55,27 +56,29 @@ public abstract class BaseToolBarActivity extends BaseActivity {
     protected abstract void initView();
 
     protected void initToolBar() {
-        tv_toolbar_title = (TextView) findViewById(R.id.tv_toolbar_title);
+        tvToolbarTitle = (TextView) findViewById(R.id.tv_toolbar_title);
         if (setTitle() != 0) {
             setToolBarTitle(setTitle());
         }
     }
 
-    protected abstract @StringRes int setTitle();
+    protected abstract @StringRes
+    int setTitle();
 
     protected void setMainBackground(@ColorRes int color) {
-        sv_main_container.setBackgroundResource(color);
+        svMainContainer.setBackgroundResource(color);
     }
 
     protected void setToolBarTitle(String title) {
-        tv_toolbar_title.setText(title);
+        tvToolbarTitle.setText(title);
     }
 
     protected void setToolBarTitle(@StringRes int res) {
-        tv_toolbar_title.setText(res);
+        tvToolbarTitle.setText(res);
     }
 
-    protected abstract @LayoutRes int setLayout();
+    protected abstract @LayoutRes
+    int setLayout();
 
     @Override
     protected void setUp() {

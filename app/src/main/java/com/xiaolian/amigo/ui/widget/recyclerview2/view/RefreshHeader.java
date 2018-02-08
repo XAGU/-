@@ -17,8 +17,8 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.widget.ColorfulDotFlashView;
 
 /**
- * <p>
- * Created by zcd on 9/26/17.
+ * @author zcd
+ * @date 17/9/26
  */
 public class RefreshHeader extends LinearLayout {
     // 刷新状态,正常-准备刷新-刷新-完成
@@ -85,26 +85,27 @@ public class RefreshHeader extends LinearLayout {
 
     /**
      * 滑动过程中改变当前头部的状态
+     *
      * @param state
      */
-    public void changeState(int state){
+    public void changeState(int state) {
         //状态和上一次相同，不用改变.
-        if(state == mState)
-            return ;
-        if(state == STATE_NORMAL){
+        if (state == mState)
+            return;
+        if (state == STATE_NORMAL) {
             dotFlashView.setVisibility(INVISIBLE);
-        }else if(state == STATE_REFRESHING){
+        } else if (state == STATE_REFRESHING) {
             dotFlashView.setVisibility(VISIBLE);
             smoothScrollTo(mMeasuredHeight);
-        }else if(state == STATE_RELEASE_TO_REFRESH){
+        } else if (state == STATE_RELEASE_TO_REFRESH) {
             dotFlashView.setVisibility(VISIBLE);
-        }else if(state == STATE_DONE){
+        } else if (state == STATE_DONE) {
             dotFlashView.endAnimation();
             dotFlashView.setVisibility(INVISIBLE);
         }
 
 
-        switch(state){
+        switch (state) {
             case STATE_NORMAL:
                 if (mState == STATE_RELEASE_TO_REFRESH) {
                     dotFlashView.startAnimation();
@@ -146,15 +147,17 @@ public class RefreshHeader extends LinearLayout {
 
     /**
      * 获取当前刷新头部的可见高度
+     *
      * @return
      */
-    public int getVisibleHeight(){
+    public int getVisibleHeight() {
         LayoutParams lp = (LayoutParams) mContainer.getLayoutParams();
         return lp.height;
     }
 
     /**
      * 头部滑动到指定位置的效果
+     *
      * @param destHeight getRawY()值，需要移动的高度
      */
     private void smoothScrollTo(int destHeight) {
@@ -162,8 +165,7 @@ public class RefreshHeader extends LinearLayout {
         animator.setDuration(300).start();
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
-            public void onAnimationUpdate(ValueAnimator animation)
-            {
+            public void onAnimationUpdate(ValueAnimator animation) {
                 setVisibleHeight((int) animation.getAnimatedValue());
             }
         });
@@ -172,15 +174,16 @@ public class RefreshHeader extends LinearLayout {
 
     /**
      * 滑动过程中的状态变化
+     *
      * @param delta 相对滑动距离
      */
-    public void onMove(float delta){
-        if(getVisibleHeight() > 0 || delta > 0) {
+    public void onMove(float delta) {
+        if (getVisibleHeight() > 0 || delta > 0) {
             setVisibleHeight((int) delta + getVisibleHeight());
             if (mState <= STATE_RELEASE_TO_REFRESH) {
                 if (getVisibleHeight() > mMeasuredHeight) { //滑动高度大于固定高度，准备刷新
                     changeState(STATE_RELEASE_TO_REFRESH);
-                }else {
+                } else {
                     changeState(STATE_NORMAL);
                 }
             }
@@ -190,9 +193,9 @@ public class RefreshHeader extends LinearLayout {
     /**
      * 刷新完成的状态改变
      */
-    public void refreshComplete(){
+    public void refreshComplete() {
         changeState(STATE_DONE);
-        new Handler().postDelayed(new Runnable(){
+        new Handler().postDelayed(new Runnable() {
             public void run() {
                 reset();
             }
@@ -211,6 +214,7 @@ public class RefreshHeader extends LinearLayout {
 
     /**
      * 判断当前是否是刷新态
+     *
      * @return
      */
     public boolean releaseType() {
@@ -219,13 +223,13 @@ public class RefreshHeader extends LinearLayout {
         if (height == 0) // 刷新头不可见
             isOnRefresh = false;
 
-        if(height > mMeasuredHeight &&  mState < STATE_REFRESHING){
+        if (height > mMeasuredHeight && mState < STATE_REFRESHING) {
             changeState(STATE_REFRESHING);
             isOnRefresh = true;
         }
         // refreshing and header isn't shown fully. do nothing.
         // 可能在刷新过程中再次触发下滑刷新操作.
-        if (mState == STATE_REFRESHING && height <=  mMeasuredHeight) {
+        if (mState == STATE_REFRESHING && height <= mMeasuredHeight) {
             //return;
         }
         if (mState != STATE_REFRESHING) {

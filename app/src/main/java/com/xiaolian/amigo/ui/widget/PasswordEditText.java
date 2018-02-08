@@ -14,7 +14,8 @@ import com.xiaolian.amigo.R;
 /**
  * 自定义密码输入框，支持显示、隐藏密码
  *
- * Created by caidong on 2017/8/31.
+ * @author caidong
+ * @date 17/8/31
  */
 public class PasswordEditText extends AppCompatEditText {
     /**

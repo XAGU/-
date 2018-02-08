@@ -3,6 +3,7 @@ package com.xiaolian.amigo.ui.notice.adaptor;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.util.ObjectsCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -12,7 +13,6 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Notice;
 import com.xiaolian.amigo.data.enumeration.NoticeReadStatus;
 import com.xiaolian.amigo.data.vo.Notify;
-import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.TimeUtils;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -52,12 +52,12 @@ public class NoticeAdaptor extends CommonAdapter<NoticeAdaptor.NoticeWapper> {
         }
 
         TextView tvType = holder.getView(R.id.tv_type);
-        if (CommonUtil.equals(noticeWapper.getReadStatus(), NoticeReadStatus.UNREAD.getType())
+        if (ObjectsCompat.equals(noticeWapper.getReadStatus(), NoticeReadStatus.UNREAD.getType())
                 && noticeWapper.getType() != Notice.EMERGENCY.getType()) {
             // 未读 且不为紧急通知
             tvType.setCompoundDrawables(tvType.getCompoundDrawables()[0],
                     tvType.getCompoundDrawables()[1], dot, tvType.getCompoundDrawables()[3]);
-        } else if (CommonUtil.equals(noticeWapper.getReadStatus(), NoticeReadStatus.READ.getType())
+        } else if (ObjectsCompat.equals(noticeWapper.getReadStatus(), NoticeReadStatus.READ.getType())
                 || noticeWapper.getType() == Notice.EMERGENCY.getType()) {
             tvType.setCompoundDrawables(tvType.getCompoundDrawables()[0],
                     tvType.getCompoundDrawables()[1], null, tvType.getCompoundDrawables()[3]);

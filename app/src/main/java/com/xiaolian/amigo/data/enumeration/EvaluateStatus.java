@@ -4,8 +4,9 @@ import com.xiaolian.amigo.R;
 
 /**
  * 评价状态
- * <p>
- * Created by caidong on 2017/9/18.
+ *
+ * @author caidong
+ * @date 17/9/18
  */
 public enum EvaluateStatus {
 

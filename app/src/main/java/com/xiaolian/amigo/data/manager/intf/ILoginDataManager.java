@@ -15,11 +15,21 @@ import rx.Observable;
 
 /**
  * LoginDataManager接口
+ *
  * @author zcd
+ * @date 17/9/14
  */
 public interface ILoginDataManager {
+    /**
+     * 获取token
+     */
     String getToken();
 
+    /**
+     * 设置token
+     *
+     * @param token token
+     */
     void setToken(String token);
 
     User getUserInfo();
@@ -32,21 +42,33 @@ public interface ILoginDataManager {
 
     void setRememberMobile(String mobile);
 
-    // 注册
+    /**
+     * 注册
+     */
     Observable<ApiResult<LoginRespDTO>> register(@Body RegisterReqDTO body);
 
-    // 登录
+    /**
+     * 登录
+     */
     Observable<ApiResult<LoginRespDTO>> login(@Body LoginReqDTO body);
 
-    // 密码重置
+    /**
+     * 密码重置
+     */
     Observable<ApiResult<BooleanRespDTO>> passwordReset(@Body PasswordResetReqDTO body);
 
-    // 校验注册验证码
+    /**
+     * 校验注册验证码
+     */
     Observable<ApiResult<BooleanRespDTO>> verificationCheck(@Body VerificationCodeCheckReqDTO body);
 
-    // 获取验证码
+    /**
+     * 获取验证码
+     */
     Observable<ApiResult<BooleanRespDTO>> getVerification(@Body VerificationCodeGetReqDTO body);
 
-    // 校验重置密码验证码
+    /**
+     * 校验重置密码验证码
+     */
     Observable<ApiResult<BooleanRespDTO>> verificationResetCheck(@Body VerificationCodeCheckReqDTO body);
 }

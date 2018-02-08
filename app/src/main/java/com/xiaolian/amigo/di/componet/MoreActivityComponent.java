@@ -9,6 +9,7 @@ import dagger.Component;
 
 /**
  * MoreActivityComponent
+ *
  * @author zcd
  */
 @MoreActivityContext

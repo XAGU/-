@@ -15,15 +15,19 @@ import com.xiaolian.amigo.R;
 
 /**
  * 自定义密码输入框，支持显示、隐藏密码
- * <p>
- * Created by caidong on 2017/8/31.
+ *
+ * @author caidong
+ * @date 17/8/31
  */
 public class ClearableEditText extends AppCompatEditText implements View.OnFocusChangeListener, TextWatcher {
     /**
      * 右侧Drawable引入
      */
     private Drawable mDrawableRight;
-    private boolean hasFocus;// 控件是否有焦点
+    /**
+     * 控件是否有焦点
+     */
+    private boolean hasFocus;
 
     boolean validated = false;
 
@@ -44,7 +48,8 @@ public class ClearableEditText extends AppCompatEditText implements View.OnFocus
 
 
     private void initClearDrawable() {
-        mDrawableRight = getCompoundDrawables()[2];// 获取EditText的DrawableRight,假如没有设置我们就使用默认的图片
+        // 获取EditText的DrawableRight,假如没有设置我们就使用默认的图片
+        mDrawableRight = getCompoundDrawables()[2];
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mDrawableRight = getResources().getDrawable(R.drawable.clear, null);
         } else {

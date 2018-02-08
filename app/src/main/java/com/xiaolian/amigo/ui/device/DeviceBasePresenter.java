@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.ParcelUuid;
 import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
+import android.support.v4.util.ObjectsCompat;
 import android.text.TextUtils;
 
 import com.polidea.rxandroidble.RxBleConnection;
@@ -19,6 +20,8 @@ import com.xiaolian.amigo.data.enumeration.AgreementVersion;
 import com.xiaolian.amigo.data.enumeration.BizError;
 import com.xiaolian.amigo.data.enumeration.BleErrorType;
 import com.xiaolian.amigo.data.enumeration.Command;
+import com.xiaolian.amigo.data.enumeration.ConnectErrorType;
+import com.xiaolian.amigo.data.enumeration.DisplayErrorType;
 import com.xiaolian.amigo.data.enumeration.OrderStatus;
 import com.xiaolian.amigo.data.enumeration.TradeError;
 import com.xiaolian.amigo.data.enumeration.TradeStep;
@@ -26,6 +29,8 @@ import com.xiaolian.amigo.data.manager.BleDataManager;
 import com.xiaolian.amigo.data.manager.intf.IBleDataManager;
 import com.xiaolian.amigo.data.manager.intf.IDeviceDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
+import com.xiaolian.amigo.data.network.model.connecterror.DeviceConnectErrorReqDTO;
 import com.xiaolian.amigo.data.network.model.device.Supplier;
 import com.xiaolian.amigo.data.network.model.order.UnsettledOrderStatusCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.order.UnsettledOrderStatusCheckRespDTO;
@@ -40,10 +45,8 @@ import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.base.RxBus;
 import com.xiaolian.amigo.ui.device.intf.IDevicePresenter;
 import com.xiaolian.amigo.ui.device.intf.IDeviceView;
-import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
-import com.xiaolian.amigo.util.Objects;
 import com.xiaolian.amigo.util.ble.Agreement;
 import com.xiaolian.amigo.util.ble.HexBytesUtils;
 
@@ -132,6 +135,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     private volatile boolean brokenFlag = false;
     // 供应商
     private Supplier supplier;
+    // 页面关闭触发器
+    private PublishSubject<Void> closeTriggerSubject = PublishSubject.create();
 
     DeviceBasePresenter(IBleDataManager bleDataManager, IDeviceDataManager deviceDataManager) {
         super();
@@ -145,7 +150,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         List<DeviceCategory> deviceCategories = deviceDataManager.getDeviceCategory();
         for (DeviceCategory deviceCategory : deviceCategories) {
             for (Supplier s : deviceCategory.getSuppliers()) {
-                if (Objects.equals(s.getId(), supplierId)) {
+                if (ObjectsCompat.equals(s.getId(), supplierId)) {
                     this.supplier = s;
                 }
             }
@@ -171,7 +176,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             @Override
             public void onExecuteError(Throwable e) {
                 Log.wtf(TAG, "发送指令失败！command:" + getCommand(), e);
-                handleWriteError(getCommand());
+                handleWriteError(getCommand(), e);
             }
 
             @Override
@@ -221,6 +226,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 getMvpView().post(() -> getMvpView().hideLoading());
             }
             Log.wtf(TAG, "macAddress为空!");
+            reportError(getStep().getStep(), ConnectErrorType.BLE_CONNECT_ERROR.getType(),
+                    DisplayErrorType.CONNECT_ERROR.getType(), "macAddress为空!", "");
             return;
         }
 
@@ -264,7 +271,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             @Override
             public void onFinish() {
                 Log.i(TAG, "设备连接超时。");
-
+                reportError(getStep().getStep(), ConnectErrorType.BLE_CONNECT_ERROR.getType(),
+                        DisplayErrorType.CONNECT_ERROR.getType(), "设备连接超时。", "");
                 // 关闭蓝牙连接
                 closeBleConnecttion();
 
@@ -322,6 +330,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             @Override
             public void onConnectError() {
                 Log.wtf(TAG, "扫描失败 onConnectError");
+                reportError(getStep().getStep(), ConnectErrorType.BLE_CONNECT_ERROR.getType(),
+                        DisplayErrorType.CONNECT_ERROR.getType(), "扫描失败 onConnectError", "");
                 if (getMvpView() != null) {
                     getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
                 }
@@ -330,6 +340,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             @Override
             public void onExecuteError(Throwable e) {
                 Log.wtf(TAG, "扫描失败 onExecuteError", e);
+                reportError(getStep().getStep(), ConnectErrorType.BLE_CONNECT_ERROR.getType(),
+                        DisplayErrorType.CONNECT_ERROR.getType(), "扫描失败 onExecuteError",
+                        e == null ? "" : e.getMessage());
                 if (getMvpView() != null) {
                     getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
                 }
@@ -498,6 +511,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     @Override
                     public void onExecuteError(Throwable e) {
                         Log.wtf(TAG, "获取特征值失败！", e);
+                        reportError(getStep().getStep(), ConnectErrorType.BLE_CONNECT_ERROR.getType(),
+                                DisplayErrorType.CONNECT_ERROR.getType(), "获取特征值失败！",
+                                e == null ? "" : e.getMessage());
                         if (getMvpView() != null) {
                             getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
                         }
@@ -537,6 +553,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             @Override
             public void onExecuteError(Throwable e) {
                 Log.wtf(TAG, "开启notify通道失败！", e);
+                reportError(getStep().getStep(), ConnectErrorType.BLE_CONNECT_ERROR.getType(),
+                        DisplayErrorType.CONNECT_ERROR.getType(), "开启notify通道失败！",
+                        e == null ? "" : e.getMessage());
                 if (getMvpView() != null) {
                     getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
                 }
@@ -567,6 +586,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     @Override
                     public void onExecuteError(Throwable e) {
                         Log.wtf(TAG, "写notify特征值描述失败！", e);
+                        reportError(getStep().getStep(), ConnectErrorType.BLE_CONNECT_ERROR.getType(),
+                                DisplayErrorType.CONNECT_ERROR.getType(), "写notify特征值描述失败！",
+                                e == null ? "" : e.getMessage());
                         if (getMvpView() != null) {
                             getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
                         }
@@ -599,6 +621,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     @Override
     public void onWrite(@NonNull String command) {
         if (bleDataManager.getStatus(currentMacAddress) != RxBleConnection.RxBleConnectionState.CONNECTED) {
+            reportError(getStep().getStep(), ConnectErrorType.BLE_CONNECT_ERROR.getType(),
+                    DisplayErrorType.CONNECT_ERROR.getType(), "发送指令时设备未连接，command:" + command,
+                    "");
             if (getMvpView() != null) {
                 getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
             }
@@ -606,6 +631,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         }
 
         if (TextUtils.isEmpty(command)) {
+            reportError(getStep().getStep(), ConnectErrorType.BLE_CONNECT_ERROR.getType(),
+                    DisplayErrorType.CONNECT_ERROR.getType(), "发送指令时指令丢失",
+                    "");
             Log.wtf(TAG, "指令丢失");
             if (getMvpView() != null) {
                 getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_4));
@@ -617,7 +645,10 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         addObserver(bleDataManager.write(connectionObservable, commandBytes, supplier.getWriteUuid()), writeObserver, Schedulers.io());
     }
 
-    private void handleWriteError(String command) {
+    private void handleWriteError(String command, Throwable e) {
+        reportError(getStep().getStep(), ConnectErrorType.BLE_CONNECT_ERROR.getType(),
+                DisplayErrorType.CONNECT_ERROR.getType(), "发送指令失败！command:" + command,
+                e == null ? "" : e.getMessage());
         // 结算找零时写入设备失败
         if (TextUtils.equals(command, checkoutCmd)) {
             if (getMvpView() != null) {
@@ -648,6 +679,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     @Override
                     public void onExecuteError(Throwable e) {
                         Log.wtf(TAG, "接收数据失败！", e);
+                        reportError(getStep().getStep(), ConnectErrorType.BLE_CONNECT_ERROR.getType(),
+                                DisplayErrorType.DEVICE_ERROR.getType(), "接收数据失败！",
+                                e == null ? "" : e.getMessage());
                         if (getMvpView() != null) {
                             getMvpView().post(() -> getMvpView().onError(TradeError.DEVICE_BROKEN_1));
                         }
@@ -701,6 +735,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     // 统一处理设备连接异常
     private void handleDisConnectError() {
         Log.wtf(TAG, "蓝牙连接已断开！");
+        reportError(getStep().getStep(), ConnectErrorType.BLE_CONNECT_ERROR.getType(),
+                DisplayErrorType.CONNECT_ERROR.getType(), "蓝牙连接已断开！",
+                "handleDisConnectError()");
 
         // 跳转至连接失败页面
         if (getMvpView() != null) {
@@ -755,11 +792,17 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     }
                 } else {
                     if (result.getError().getCode() == BizError.DEVICE_BREAKDOWN.getCode()) {
+                        reportError(getStep().getStep(), ConnectErrorType.SERVER_ERROR.getType(),
+                                DisplayErrorType.DEVICE_ERROR.getType(), "服务器返回该设备为故障设备",
+                                "");
                         if (getMvpView() != null) {
                             getMvpView().post(() -> getMvpView().onError(TradeError.DEVICE_BROKEN_3));
                         }
                     } else {
                         Log.wtf(TAG, "服务器返回,获取开阀指令失败");
+                        reportError(getStep().getStep(), ConnectErrorType.SERVER_ERROR.getType(),
+                                DisplayErrorType.SYSTEM_ERROR.getType(), "获取开阀指令失败(服务器响应)",
+                                "");
                         if (getMvpView() != null) {
                             getMvpView().post(() -> getMvpView().onError(TradeError.SYSTEM_ERROR));
                         }
@@ -770,6 +813,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             @Override
             public void onError(Throwable e) {
                 super.onError(e);
+                reportError(getStep().getStep(), ConnectErrorType.SERVER_ERROR.getType(),
+                        DisplayErrorType.CONNECT_ERROR.getType(), "获取开阀指令失败(服务器未响应)",
+                        "");
                 Log.wtf(TAG, "服务器未返回,获取开阀指令失败");
                 if (getMvpView() != null) {
                     getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_3));
@@ -795,6 +841,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         orderStatusLock.notifyAll();
                     }
                 } else {
+                    reportError(getStep().getStep(), ConnectErrorType.SERVER_ERROR.getType(),
+                            DisplayErrorType.SYSTEM_ERROR.getType(), "获取订单状态失败(服务器响应)",
+                            "");
                     Log.wtf(TAG, "服务器返回,获取订单状态失败");
                     if (getMvpView() != null) {
                         getMvpView().post(() -> getMvpView().onError(TradeError.SYSTEM_ERROR));
@@ -810,6 +859,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             public void onError(Throwable e) {
                 super.onError(e);
                 Log.wtf(TAG, "服务器未返回,获取订单状态失败");
+                reportError(getStep().getStep(), ConnectErrorType.SERVER_ERROR.getType(),
+                        DisplayErrorType.CONNECT_ERROR.getType(), "获取订单状态失败(服务器未响应)",
+                        "");
                 if (getMvpView() != null) {
                     getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_3));
                 }
@@ -833,6 +885,12 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             }
         } catch (Exception e) {
             Log.wtf(TAG, "获取设备响应结果前缀失败");
+            reportError(getStep().getStep(), ConnectErrorType.RESULT_INVALID.getType(),
+                    DisplayErrorType.CONNECT_ERROR.getType(), "获取设备响应结果前缀失败,result:" + result,
+                    e == null ? "" : e.getMessage());
+            if (getMvpView() != null) {
+                getMvpView().onError(TradeError.CONNECT_ERROR_4);
+            }
         }
         CmdResultReqDTO reqDTO = new CmdResultReqDTO();
         reqDTO.setData(result);
@@ -856,6 +914,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 if (getStep() == TradeStep.CLOSE_VALVE) {
                     setStep(TradeStep.SETTLE);
                 }
+                reportError(getStep().getStep(), ConnectErrorType.SERVER_ERROR.getType(),
+                        DisplayErrorType.CONNECT_ERROR.getType(), "发送设备响应到服务器失败,result:" + result,
+                        e == null ? "" : e.getMessage());
                 if (getMvpView() != null) {
                     getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_3));
                 }
@@ -871,6 +932,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             String nextCommand = result.getData().getNextCommand();
             if (result.getData().getSrcCommandType() == null) {
                 Log.wtf(TAG, "服务器未返回ScrCommandType");
+                reportError(getStep().getStep(), ConnectErrorType.SERVER_ERROR.getType(),
+                        DisplayErrorType.SYSTEM_ERROR.getType(), "服务器未返回ScrCommandType",
+                        "");
                 closeBleConnecttion();
                 if (getMvpView() != null) {
                     getMvpView().onError(TradeError.SYSTEM_ERROR);
@@ -1018,12 +1082,18 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     }
                 }
             } else if (result.getError().getCode() == BleErrorType.BLE_UNKNOWN_ERROR.getCode()) {
+                reportError(getStep().getStep(), ConnectErrorType.SERVER_ERROR.getType(),
+                        DisplayErrorType.DEVICE_ERROR.getType(), "服务器返回未知错误,code:" + result.getError().getCode(),
+                        "");
                 closeBleConnecttion();
                 if (getMvpView() != null) {
                     getMvpView().onError(TradeError.DEVICE_BROKEN_2);
                 }
             } else if (result.getError().getCode() == BleErrorType.BLE_CMD_RESULT_ERROR.getCode()) {
                 Log.i(TAG, "设备未完全开启");
+                reportError(getStep().getStep(), ConnectErrorType.RESULT_INVALID.getType(),
+                        DisplayErrorType.CONNECT_ERROR.getType(), "服务器返回指令返回结果不合法,设备未完全开启,code:" + result.getError().getCode(),
+                        "");
                 if (getMvpView() != null) {
                     getMvpView().onError(TradeError.CONNECT_ERROR_1);
                 }
@@ -1033,12 +1103,18 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 // 确认支付时异常
                 if (Command.OPEN_VALVE == Command.getCommand(cmdType)) {
                     Log.wtf(TAG, "设备开阀异常");
+                    reportError(getStep().getStep(), ConnectErrorType.SERVER_ERROR.getType(),
+                            DisplayErrorType.DEVICE_ERROR.getType(), "设备开阀异常,code:" + result.getError().getCode(),
+                            "");
                     closeBleConnecttion();
                     if (getMvpView() != null) {
                         getMvpView().onError(TradeError.DEVICE_BROKEN_2);
                     }
                 } else if (Command.CLOSE_VALVE == Command.getCommand(cmdType) || Command.PRE_CHECK == Command.getCommand(cmdType) || Command.CHECK_OUT == Command.getCommand(cmdType)) {
                     Log.wtf(TAG, "订单结算异常");
+                    reportError(getStep().getStep(), ConnectErrorType.SERVER_ERROR.getType(),
+                            DisplayErrorType.DEVICE_ERROR.getType(), "订单结算异常,code:" + result.getError().getCode(),
+                            "");
                     closeBleConnecttion();
                     // 结算时异常
                     if (getMvpView() != null) {
@@ -1048,6 +1124,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             } else {
                 // 系统异常
                 Log.wtf(TAG, String.format("服务器后台出错, errorCode:%s, errorMsg:%s", result.getError().getCode(), result.getError().getDisplayMessage()));
+                reportError(getStep().getStep(), ConnectErrorType.SERVER_ERROR.getType(),
+                        DisplayErrorType.SYSTEM_ERROR.getType(), "服务器后台出错,code:" + result.getError().getCode(),
+                        "");
                 closeBleConnecttion();
                 if (getMvpView() != null) {
                     getMvpView().onError(TradeError.SYSTEM_ERROR);
@@ -1098,7 +1177,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             String[] temp = deviceResultTemp.split(Constant.DIVIDER);
             savedOrderId = Long.valueOf(temp[0]);
             savedDeviceResult = temp[1];
-            if (CommonUtil.equals(savedOrderId, orderId) && !TextUtils.isEmpty(savedDeviceResult)) {
+            if (ObjectsCompat.equals(savedOrderId, orderId) && !TextUtils.isEmpty(savedDeviceResult)) {
                 return savedDeviceResult;
             }
         } catch (Exception e) {
@@ -1123,7 +1202,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             String[] temp = closeCmdTemp.split(Constant.DIVIDER);
             savedOrderId = Long.valueOf(temp[0]);
             savedCloseCmd = temp[1];
-            if (CommonUtil.equals(savedOrderId, orderId) && !TextUtils.isEmpty(savedCloseCmd)) {
+            if (ObjectsCompat.equals(savedOrderId, orderId) && !TextUtils.isEmpty(savedCloseCmd)) {
                 return savedCloseCmd;
             }
         } catch (Exception e) {
@@ -1189,6 +1268,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         // 校验网络
         if (getMvpView() != null && !getMvpView().isNetworkAvailable()) {
             Log.wtf(TAG, "网络不可用");
+            reportError(getStep().getStep(), ConnectErrorType.BLE_CONNECT_ERROR.getType(),
+                    DisplayErrorType.CONNECT_ERROR.getType(), "关阀时网络不可用",
+                    "");
             getMvpView().onError(TradeError.CONNECT_ERROR_3);
             return;
         }
@@ -1208,8 +1290,11 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         // 获取缓存中的设备响应，去重新获取关阀指令
                         String saveDeviceResult = getDeviceResult(orderId);
                         if (TextUtils.isEmpty(saveDeviceResult)) {
-                            closeBleConnecttion();
                             Log.wtf(TAG, "从缓存中获取上一次的设备响应失败");
+                            reportError(getStep().getStep(), ConnectErrorType.BLE_CONNECT_ERROR.getType(),
+                                    DisplayErrorType.CONNECT_ERROR.getType(), "关阀时关阀指令丢失且上一次设备响应也丢失",
+                                    "");
+                            closeBleConnecttion();
                             if (getMvpView() != null) {
                                 getMvpView().onError(TradeError.CONNECT_ERROR_2);
                             }
@@ -1250,6 +1335,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
     @Override
     public TradeStep getStep() {
+        if (step == null) {
+            return TradeStep.PAY;
+        }
         return step;
     }
 
@@ -1260,6 +1348,45 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
     public void setConnecting(boolean connecting) {
         this.connecting = connecting;
+    }
+
+    private void reportError(int step, int connnectErrorType, int displayErrorType,
+                             String reason, String extra) {
+        DeviceConnectErrorReqDTO reqDTO = new DeviceConnectErrorReqDTO();
+        reqDTO.setConnnectErrorType(connnectErrorType);
+        reqDTO.setDisplayErrorType(displayErrorType);
+        reqDTO.setReason(reason);
+        reqDTO.setExtra(extra);
+        reqDTO.setMacAddress(deviceNo);
+        if (step == 3) {
+            step = 2;
+        }
+        reqDTO.setStep(step);
+        deviceDataManager.reportDeviceConnectError(reqDTO)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .takeUntil(closeTriggerSubject)
+                .subscribe(new NetworkObserver<ApiResult<BooleanRespDTO>>(false) {
+
+                    @Override
+                    public void onReady(ApiResult<BooleanRespDTO> booleanRespDTOApiResult) {
+                        // do nothing
+                    }
+                });
+//        addObserver(deviceDataManager.reportDeviceConnectError(reqDTO),
+//                new NetworkObserver<ApiResult<BooleanRespDTO>>(false) {
+//
+//                    @Override
+//                    public void onReady(ApiResult<BooleanRespDTO> booleanRespDTOApiResult) {
+//                        // do nothing
+//                    }
+//                });
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        closeTriggerSubject.onNext(null);
     }
 
     /*************************** 以下为测试用 *****************************/

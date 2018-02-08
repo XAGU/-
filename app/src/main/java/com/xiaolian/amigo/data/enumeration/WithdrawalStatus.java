@@ -4,8 +4,9 @@ import com.xiaolian.amigo.R;
 
 /**
  * 充值提现状态
- * <p>
- * Created by zcd on 10/24/17.
+ *
+ * @author zcd
+ * @date 17/10/24
  */
 
 public enum WithdrawalStatus {
@@ -17,7 +18,7 @@ public enum WithdrawalStatus {
 
         @Override
         public String[] getNextOperations() {
-            return new String[] {COMMON_PROBLEM, TO_COMPLAIN};
+            return new String[]{COMMON_PROBLEM, TO_COMPLAIN};
         }
     },
     AUDIT_PENDING(1, "正在处理") {
@@ -28,7 +29,7 @@ public enum WithdrawalStatus {
 
         @Override
         public String[] getNextOperations() {
-            return new String[] {"提醒客服尽快处理", COMMON_PROBLEM};
+            return new String[]{"提醒客服尽快处理", COMMON_PROBLEM};
         }
     },
     AUDIT_FAIL(2, "审核未通过") {
@@ -39,7 +40,7 @@ public enum WithdrawalStatus {
 
         @Override
         public String[] getNextOperations() {
-            return new String[] {COMMON_PROBLEM, CONTACT_CUSTOMER_SERVICE};
+            return new String[]{COMMON_PROBLEM, CONTACT_CUSTOMER_SERVICE};
         }
     },
     THIRD_PENDING(3, "等待支付确认") {
@@ -50,7 +51,7 @@ public enum WithdrawalStatus {
 
         @Override
         public String[] getNextOperations() {
-            return new String[] {COMMON_PROBLEM, TO_COMPLAIN};
+            return new String[]{COMMON_PROBLEM, TO_COMPLAIN};
         }
     },
     WITHDRAWAL_SUCCESS(4, "提现成功") {
@@ -61,7 +62,7 @@ public enum WithdrawalStatus {
 
         @Override
         public String[] getNextOperations() {
-            return new String[] {COMMON_PROBLEM, TO_COMPLAIN};
+            return new String[]{COMMON_PROBLEM, TO_COMPLAIN};
         }
     },
     WITHDRAWAL_FAIL(5, "提现失败") {
@@ -72,7 +73,7 @@ public enum WithdrawalStatus {
 
         @Override
         public String[] getNextOperations() {
-            return new String[] {COMMON_PROBLEM, CONTACT_CUSTOMER_SERVICE};
+            return new String[]{COMMON_PROBLEM, CONTACT_CUSTOMER_SERVICE};
         }
     },
     WITHDRAWAL_CANCEL(6, "取消提现") {
@@ -83,7 +84,7 @@ public enum WithdrawalStatus {
 
         @Override
         public String[] getNextOperations() {
-            return new String[] {COMMON_PROBLEM, CONTACT_CUSTOMER_SERVICE};
+            return new String[]{COMMON_PROBLEM, CONTACT_CUSTOMER_SERVICE};
         }
     };
     private static final String COMMON_PROBLEM = "常见问题";

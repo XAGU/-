@@ -26,24 +26,26 @@ import butterknife.OnClick;
 import butterknife.OnEditorAction;
 
 /**
+ * 搜索框
  *
- * Created by caidong on 2017/9/13.
+ * @author caidong
+ * @date 17/9/13
  */
 
 public class SearchDialog extends Dialog implements TextWatcher {
 
     @BindView(R.id.et_search_content)
-    EditText et_search_content;
+    EditText etSearchContent;
     @BindView(R.id.tv_cancel)
-    TextView tv_cancel;
+    TextView tvCancel;
     @BindView(R.id.iv_clear)
-    ImageView iv_clear;
+    ImageView ivClear;
     @BindView(R.id.rl_result)
-    RelativeLayout rl_result;
+    RelativeLayout rlResult;
     @BindView(R.id.fl_result_contain)
-    FrameLayout fl_result_contain;
+    FrameLayout flResultContain;
     @BindView(R.id.tv_no_result_tip)
-    TextView tv_no_result_tip;
+    TextView tvNoResultTip;
 
     private OnSearchListener listener;
 
@@ -56,7 +58,7 @@ public class SearchDialog extends Dialog implements TextWatcher {
 
         Window window = this.getWindow();
         window.requestFeature(Window.FEATURE_NO_TITLE);
-        window.setGravity(Gravity.TOP);  //此处可以设置dialog显示的位置
+        window.setGravity(Gravity.TOP);
         window.getDecorView().setPadding(0, 0, 0, 0);
         WindowManager.LayoutParams lp = window.getAttributes();
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
@@ -66,7 +68,7 @@ public class SearchDialog extends Dialog implements TextWatcher {
         setContentView(R.layout.dialog_lost_and_found_search);
         ButterKnife.bind(this);
 
-        et_search_content.addTextChangedListener(this);
+        etSearchContent.addTextChangedListener(this);
 
     }
 
@@ -82,8 +84,8 @@ public class SearchDialog extends Dialog implements TextWatcher {
 
     @Override
     public void afterTextChanged(Editable s) {
-        String input = et_search_content.getText().toString().trim();
-        iv_clear.setVisibility(input.isEmpty() ? View.GONE : View.VISIBLE);
+        String input = etSearchContent.getText().toString().trim();
+        ivClear.setVisibility(input.isEmpty() ? View.GONE : View.VISIBLE);
     }
 
     @OnEditorAction(R.id.et_search_content)
@@ -94,20 +96,20 @@ public class SearchDialog extends Dialog implements TextWatcher {
             InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
             if (listener != null) {
-                listener.onSearch(et_search_content.getText().toString());
+                listener.onSearch(etSearchContent.getText().toString());
             }
             return true;
         }
         return false;
     }
 
-
-
-    // 点击清除图标
+    /**
+     * 点击清除图标
+     */
     @OnClick({R.id.iv_clear, R.id.v_clear_holder})
     void clear() {
-        et_search_content.setText("");
-        iv_clear.setVisibility(View.GONE);
+        etSearchContent.setText("");
+        ivClear.setVisibility(View.GONE);
     }
 
     @OnClick(R.id.iv_back)
@@ -121,15 +123,15 @@ public class SearchDialog extends Dialog implements TextWatcher {
     }
 
     public void showNoResult(String selectKey) {
-        rl_result.setVisibility(View.VISIBLE);
+        rlResult.setVisibility(View.VISIBLE);
     }
 
     public void showResult(View view) {
-        rl_result.setVisibility(View.GONE);
-        if (fl_result_contain.getChildCount() > 0) {
-            fl_result_contain.removeAllViews();
+        rlResult.setVisibility(View.GONE);
+        if (flResultContain.getChildCount() > 0) {
+            flResultContain.removeAllViews();
         }
-        fl_result_contain.addView(view);
+        flResultContain.addView(view);
     }
 
     public void setSearchListener(OnSearchListener listener) {

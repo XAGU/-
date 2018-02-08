@@ -16,13 +16,13 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.util.ScreenUtils;
 
 /**
- * <p>
- * Created by zcd on 10/9/17.
+ * @author zcd
+ * @date 17/10/9
  */
 
 public class LoadingIndicatorView extends View {
 
-    private static final Indicator DEFAULT_INDICATOR=new BallSpinFadeLoaderIndicator();
+    private static final Indicator DEFAULT_INDICATOR = new BallSpinFadeLoaderIndicator();
 
     private static final int MIN_SHOW_TIME = 500; // ms
     private static final int MIN_DELAY = 500; // ms
@@ -69,26 +69,26 @@ public class LoadingIndicatorView extends View {
 
     public LoadingIndicatorView(Context context) {
         super(context);
-        init(context, null,0);
+        init(context, null, 0);
     }
 
     public LoadingIndicatorView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(context, attrs,0);
+        init(context, attrs, 0);
     }
 
     public LoadingIndicatorView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context, attrs,defStyleAttr);
+        init(context, attrs, defStyleAttr);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public LoadingIndicatorView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        init(context,attrs,defStyleAttr);
+        init(context, attrs, defStyleAttr);
     }
 
-    private void init(Context context,AttributeSet attrs,int defStyleAttr) {
+    private void init(Context context, AttributeSet attrs, int defStyleAttr) {
         mMinWidth = ScreenUtils.dpToPxInt(context, 24);
         mMaxWidth = ScreenUtils.dpToPxInt(context, 48);
         mMinHeight = ScreenUtils.dpToPxInt(context, 24);
@@ -130,22 +130,22 @@ public class LoadingIndicatorView extends View {
      * setIndicatorColor(0xFF00FF00)
      * or
      * setIndicatorColor(getResources().getColor(android.R.color.black))
+     *
      * @param color
      */
-    public void setIndicatorColor(int color){
-        this.mIndicatorColor=color;
+    public void setIndicatorColor(int color) {
+        this.mIndicatorColor = color;
         mIndicator.setColor(color);
     }
 
 
-
-    public void smoothToShow(){
-        startAnimation(AnimationUtils.loadAnimation(getContext(),android.R.anim.fade_in));
+    public void smoothToShow() {
+        startAnimation(AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_in));
         setVisibility(VISIBLE);
     }
 
-    public void smoothToHide(){
-        startAnimation(AnimationUtils.loadAnimation(getContext(),android.R.anim.fade_out));
+    public void smoothToHide() {
+        startAnimation(AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_out));
         setVisibility(GONE);
     }
 

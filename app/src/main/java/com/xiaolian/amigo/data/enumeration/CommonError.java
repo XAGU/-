@@ -2,8 +2,9 @@ package com.xiaolian.amigo.data.enumeration;
 
 /**
  * 通用异常
- * <p>
- * Created by zcd on 17/11/19.
+ *
+ * @author zcd
+ * @date 17/11/19
  */
 
 public enum CommonError {

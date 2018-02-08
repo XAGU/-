@@ -12,7 +12,9 @@ import rx.Observable;
 
 /**
  * client service
- * Created by caidong on 2017/11/2.
+ *
+ * @author caidong
+ * @date 17/11/2
  */
 public class ClientServiceDataManager implements IClientServiceDataManager {
 

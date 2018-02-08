@@ -3,13 +3,16 @@ package com.xiaolian.amigo.data.manager;
 import com.xiaolian.amigo.data.manager.intf.IDeviceDataManager;
 import com.xiaolian.amigo.data.network.ICsApi;
 import com.xiaolian.amigo.data.network.IDeviceApi;
+import com.xiaolian.amigo.data.network.IDeviceConnectErrorApi;
 import com.xiaolian.amigo.data.network.IFundsApi;
 import com.xiaolian.amigo.data.network.IOrderApi;
 import com.xiaolian.amigo.data.network.ITradeApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleQueryReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
+import com.xiaolian.amigo.data.network.model.connecterror.DeviceConnectErrorReqDTO;
 import com.xiaolian.amigo.data.network.model.cs.CsMobileRespDTO;
 import com.xiaolian.amigo.data.network.model.device.FavorDeviceReqDTO;
 import com.xiaolian.amigo.data.network.model.device.QueryDeviceListReqDTO;
@@ -39,8 +42,9 @@ import rx.Observable;
 
 /**
  * 设备数据管理
- * <p>
- * Created by zcd on 9/29/17.
+ *
+ * @author zcd
+ * @date 17/9/29
  */
 
 public class DeviceDataManager implements IDeviceDataManager {
@@ -52,16 +56,19 @@ public class DeviceDataManager implements IDeviceDataManager {
     private IFundsApi fundsApi;
     private ICsApi csApi;
     private IDeviceApi deviceApi;
+    private IDeviceConnectErrorApi connectErrorApi;
 
     @Inject
     public DeviceDataManager(Retrofit retrofit, ISharedPreferencesHelp sharedPreferencesHelp) {
-        this.sharedPreferencesHelp  = sharedPreferencesHelp;
+        this.sharedPreferencesHelp = sharedPreferencesHelp;
         tradeApi = retrofit.create(ITradeApi.class);
         orderApi = retrofit.create(IOrderApi.class);
         fundsApi = retrofit.create(IFundsApi.class);
         csApi = retrofit.create(ICsApi.class);
         deviceApi = retrofit.create(IDeviceApi.class);
+        connectErrorApi = retrofit.create(IDeviceConnectErrorApi.class);
     }
+
     @Override
     public void setBonusAmount(int amount) {
         sharedPreferencesHelp.setBonusAmount(amount);
@@ -216,5 +223,10 @@ public class DeviceDataManager implements IDeviceDataManager {
     @Override
     public List<DeviceCategory> getDeviceCategory() {
         return sharedPreferencesHelp.getDeviceCategory();
+    }
+
+    @Override
+    public Observable<ApiResult<BooleanRespDTO>> reportDeviceConnectError(DeviceConnectErrorReqDTO reqDTO) {
+        return connectErrorApi.reportDeviceConnectError(reqDTO);
     }
 }

@@ -20,31 +20,50 @@ import retrofit2.http.Body;
 import rx.Observable;
 
 /**
- * Created by caidong on 2017/9/18.
+ * 报修
+ *
+ * @author caidong
+ * @date 17/9/18
  */
 public interface IRepairDataManager {
-    // 查询个人报修列表
+    /**
+     * 查询个人报修列表
+     */
     Observable<ApiResult<RepairRespDTO>> queryRepairs(@Body RepairReqDTO reqDTO);
 
-    // 查询报修单详情
+    /**
+     * 查询报修单详情
+     */
     Observable<ApiResult<RepairDetailRespDTO>> queryRepairDetail(@Body RepairDetailReqDTO reqDTO);
 
-    // 申请报修
+    /**
+     * 申请报修
+     */
     Observable<ApiResult<RepairApplyRespDTO>> applyRepair(@Body RepairApplyReqDTO reqDTO);
 
-    // 获取报修问题列表
+    /**
+     * 获取报修问题列表
+     */
     Observable<ApiResult<RepairProblemRespDTO>> queryRepairProblems(@Body RepairProblemReqDTO reqDTO);
 
-    // 维修评价
+    /**
+     * 维修评价
+     */
     Observable<ApiResult<BooleanRespDTO>> rateRapair(@Body RatingRepairReqDTO reqDTO);
 
-    // 取消报修
+    /**
+     * 取消报修
+     */
     Observable<ApiResult<BooleanRespDTO>> cancelRepair(@Body SimpleReqDTO reqDTO);
 
-    // 提醒客服
+    /**
+     * 提醒客服
+     */
     Observable<ApiResult<BooleanRespDTO>> remind(@Body RemindReqDTO reqDTO);
 
-    // oss
+    /**
+     * oss
+     */
     Observable<ApiResult<OssModel>> getOssModel();
 
     User getUser();

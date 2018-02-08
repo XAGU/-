@@ -12,7 +12,9 @@ import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+
 import com.xiaolian.amigo.util.Log;
+
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -21,8 +23,9 @@ import com.xiaolian.amigo.util.DimentionUtils;
 
 /**
  * 滑动解锁
- * <p>
- * Created by zcd on 17/11/4.
+ *
+ * @author zcd
+ * @date 17/11/4
  */
 
 public class SlideUnlockView extends View {
@@ -33,38 +36,64 @@ public class SlideUnlockView extends View {
         void setUnLocked(boolean lock);
     }
 
-    // 滑块当前的状态
+    /**
+     * 滑块当前的状态
+     */
     public int currentState;
-    // 未解锁
+    /**
+     * 未解锁
+     */
     public static final int STATE_LOCK = 1;
-    // 解锁
+    /**
+     * 解锁
+     */
     public static final int STATE_UNLOCK = 2;
-    // 正在解锁中
+    /**
+     * 正在解锁中
+     */
     public static final int STATE_MOVING = 3;
-    // 滑动解锁的背景图片
+    /**
+     * 滑动解锁的背景图片
+     */
     private Drawable slideUnlockBackground;
-    // 滑块的图片
+    /**
+     * 滑块的图片
+     */
     private Bitmap slideUnlockBlock;
-    // 解锁后的滑块的图片
+    /**
+     * 解锁后的滑块的图片
+     */
     private Bitmap slideEnabledUnlockBlock;
-    // 未解锁时的图片
+    /**
+     * 未解锁时的图片
+     */
     private Bitmap slideDisableUnlockBlock;
-    // 提示文字
+    /**
+     * 提示文字
+     */
     private Rect mTipsTextRect = new Rect();
     private String disableStr;
     private String enableStr;
 
     //    // 滑动解锁背景的宽度
 //    private int blockBackgoundWidth;
-    // 滑块宽度
+    /**
+     * 滑块宽度
+     */
     private int blockWidth;
-    // 滑块高度
+    /**
+     * 滑块高度
+     */
     private int blockHeight;
     private Paint mPaint;
-    // 滑动坐标
+    /**
+     * 滑动坐标
+     */
     private float x;
     private float y;
-    // 是否按在滑块上
+    /**
+     * 是否按在滑块上
+     */
     private boolean downOnBlock;
     // 通过handler来控制滑块在未解锁的时候，平缓的滑动到左端
     Handler handler = new Handler() {
@@ -87,7 +116,9 @@ public class SlideUnlockView extends View {
 
     };
 
-    // 解锁的监听
+    /**
+     * 解锁的监听
+     */
     private OnUnLockListener onUnLockListener;
 
     public SlideUnlockView(Context context) {
@@ -328,7 +359,9 @@ public class SlideUnlockView extends View {
         postInvalidate();
     }
 
-    //判断手指是否在滑块的背景区域移动
+    /**
+     * 判断手指是否在滑块的背景区域移动
+     */
     public boolean isOnBackground(int x, int y) {
         return x <= getMeasuredWidth() && y <= getMeasuredHeight();
     }

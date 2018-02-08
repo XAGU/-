@@ -26,8 +26,9 @@ import rx.Observable;
 
 /**
  * 主页
- * <p>
- * Created by zcd on 9/20/17.
+ *
+ * @author zcd
+ * @date 17/9/20
  */
 
 public interface IMainDataManager {
@@ -54,13 +55,19 @@ public interface IMainDataManager {
 
     String getBalance();
 
-    // 获取个人订单
+    /**
+     * 获取个人订单
+     */
     Observable<ApiResult<OrderRespDTO>> queryOrders(@Body OrderReqDTO reqDTO);
 
-    // 基础信息
+    /**
+     * 基础信息
+     */
     Observable<ApiResult<BaseInfoDTO>> getSystemBaseInfo();
 
-    // 版本更新查询
+    /**
+     * 版本更新查询
+     */
     Observable<ApiResult<CheckVersionUpdateRespDTO>> checkUpdate(@Body CheckVersionUpdateReqDTO reqDTO);
 
     void setLastUpdateRemindTime();
@@ -75,34 +82,51 @@ public interface IMainDataManager {
 
     Long getLastRepairTime();
 
-    // 提交设备信息
+    /**
+     * 提交设备信息
+     */
     Observable<ApiResult<BooleanRespDTO>> uploadDeviceInfo(@Body UploadUserDeviceInfoReqDTO reqDTO);
 
     void saveUploadedUserDeviceInfo(UploadUserDeviceInfoReqDTO reqDTO);
 
     UploadUserDeviceInfoReqDTO getUploadedUserDeviceInfo();
 
-    // 用户个人中心额外信息：包括我的钱包余额、我的代金券数量、是否用设备报修中、目前在进行中的订单
+    /**
+     * 用户个人中心额外信息：包括我的钱包余额、我的代金券数量、是否用设备报修中、目前在进行中的订单
+     */
     Observable<ApiResult<PersonalExtraInfoDTO>> getExtraInfo();
 
-    // 查询热水澡热水供应时间段
+    /**
+     * 查询热水澡热水供应时间段
+     */
     Observable<ApiResult<QueryTimeValidRespDTO>> queryWaterTimeValid(@Body QueryTimeValidReqDTO reqDTO);
 
-    // 首页设备用水校验
+    /**
+     * 首页设备用水校验
+     */
     Observable<ApiResult<DeviceCheckRespDTO>> checkDeviceUseage(@Body DeviceCheckReqDTO reqDTO);
 
-    // 告诉服务端通知已读（紧急公告）
+    /**
+     * 告诉服务端通知已读（紧急公告）
+     */
     Observable<ApiResult<BooleanRespDTO>> readUrgentNotify(@Body ReadNotifyReqDTO reqDTO);
 
-    // 获取学校业务列表
+    /**
+     * 获取学校业务列表
+     */
     Observable<ApiResult<QuerySchoolBizListRespDTO>> getSchoolBizList();
 
-    // 获取更新信息
+    /**
+     * 获取更新信息
+     */
     Observable<ApiResult<VersionDTO>> getUpdateInfo();
 
     void saveDeviceCategory(List<DeviceCategoryBO> devices);
 
-    // 是否需要账户迁移
+    /**
+     * 是否需要账户迁移
+     */
     void setNeedTransfer();
+
     void setNotNeedTransfer();
 }

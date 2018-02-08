@@ -12,32 +12,44 @@ import rx.subjects.PublishSubject;
 
 /**
  * 蓝牙相关操作
- * <p>
- * Created by caidong on 2017/9/22.
+ *
+ * @author caidong
+ * @date 17/9/22
  */
 public interface IBleDataManager {
 
-    // 扫描设备
+    /**
+     * 扫描设备
+     */
     Observable<ScanResult> scan();
 
-    //扫描指定名称的设备
+    /**
+     * 扫描指定名称的设备
+     */
     Observable<ScanResult> scan(String deviceName);
 
     /**
      * 提供连接蓝牙设备的Observable，附带连接共享适配器供后续蓝牙操作使用
-     *  @param macAddress  蓝牙设备mac地址
-     * @param autoConnect 是否自动连接
+     *
+     * @param macAddress               蓝牙设备mac地址
+     * @param autoConnect              是否自动连接
      * @param disconnectTriggerSubject 断连触发器
      */
     Observable<RxBleConnection> prepareConnectionObservable(@NonNull String macAddress, boolean autoConnect, @NonNull PublishSubject<Void> disconnectTriggerSubject);
 
-    // 好年华连接蓝牙
+    /**
+     * 好年华连接蓝牙
+     */
     Observable<BluetoothGattCharacteristic> connect(Observable<RxBleConnection> connectionObservable);
 
-    // 辛纳连接蓝牙
+    /**
+     * 辛纳连接蓝牙
+     */
     Observable<Observable<byte[]>> connect2(Observable<RxBleConnection> connectionObservable, String notifyCharacteristicUuid);
 
-    // 设置notify通道模式为enable
+    /**
+     * 设置notify通道模式为enable
+     */
     Observable<Observable<byte[]>> setupNotification(Observable<RxBleConnection> connectionObservable, BluetoothGattCharacteristic characteristic);
 
     /**

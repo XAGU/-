@@ -5,8 +5,8 @@ import android.graphics.Canvas;
 import android.view.View;
 
 /**
- * <p>
- * Created by zcd on 17/11/18.
+ * @author zcd
+ * @date 17/11/18
  */
 
 class PreviousPageView extends View {

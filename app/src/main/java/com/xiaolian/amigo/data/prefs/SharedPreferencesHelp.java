@@ -20,6 +20,7 @@ import javax.inject.Inject;
  * SharedPreferencesHelp实现类
  *
  * @author zcd
+ * @date 17/9/15
  */
 public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     private static final String PREF_FILE_NAME = "amigo";
@@ -379,6 +380,7 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
         }
         return Collections.emptyList();
     }
+
     public void setTransfer(boolean b) {
         transfer = b;
     }

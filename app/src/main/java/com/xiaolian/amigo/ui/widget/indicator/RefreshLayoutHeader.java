@@ -19,8 +19,8 @@ import com.xiaolian.amigo.ui.widget.ColorfulDotFlashView;
 import com.xiaolian.amigo.util.DensityUtil;
 
 /**
- * <p>
- * Created by zcd on 10/9/17.
+ * @author zcd
+ * @date 17/10/9
  */
 
 public class RefreshLayoutHeader extends LinearLayout implements RefreshHeader {

@@ -7,7 +7,9 @@ import lombok.Data;
 
 /**
  * 代金券
+ *
  * @author zcd
+ * @date 17/9/18
  */
 @Data
 public class Bonus implements Parcelable {

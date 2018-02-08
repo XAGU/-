@@ -6,8 +6,10 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * <p>
- * Created by zcd on 9/27/17.
+ * 日期时间相关工具类
+ *
+ * @author zcd
+ * @date 17/9/27
  */
 
 public class TimeUtils {

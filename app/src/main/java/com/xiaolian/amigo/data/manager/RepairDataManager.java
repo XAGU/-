@@ -29,10 +29,11 @@ import retrofit2.http.Body;
 
 /**
  * 报修管理
- * <p>
- * Created by caidong on 2017/9/18.
+ *
+ * @author caidong
+ * @date 17/9/18
  */
-public class RepairDataManager implements IRepairDataManager{
+public class RepairDataManager implements IRepairDataManager {
 
     private static final String TAG = RepairDataManager.class.getSimpleName();
 

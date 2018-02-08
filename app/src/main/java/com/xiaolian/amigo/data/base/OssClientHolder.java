@@ -13,8 +13,8 @@ import com.alibaba.sdk.android.oss.common.auth.OSSStsTokenCredentialProvider;
 import com.xiaolian.amigo.data.network.model.file.OssModel;
 
 /**
- * <p>
- * Created by zcd on 17/11/13.
+ * @author zcd
+ * @date 17/11/13
  */
 
 public class OssClientHolder {

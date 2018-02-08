@@ -2,8 +2,9 @@ package com.xiaolian.amigo.data.enumeration;
 
 /**
  * 通知未读已读状态
- * <p>
- * Created by zcd on 10/19/17.
+ *
+ * @author zcd
+ * @date 17/10/19
  */
 
 public enum NoticeReadStatus {

@@ -21,12 +21,14 @@ import rx.Observable;
 import rx.subjects.PublishSubject;
 
 /**
- *
- * Created by caidong on 2017/9/22.
+ * @author caidong
+ * @date 17/9/22
  */
 public class BleDataManager implements IBleDataManager {
     private static final String TAG = BleDataManager.class.getSimpleName();
-    // 好年化uuid
+    /**
+     * 好年华uuid
+     */
     public static final String SERVICE_UUID = "0000fee9-0000-1000-8000-00805f9b34fb";
     public static final String WRITE_CHARACTERISTIC_UUID = "d44bc439-abfd-45a2-b575-925416129600";
     public static final String NOTIFY_DESCRIPTOR_UUID = "00002902-0000-1000-8000-00805f9b34fb";
@@ -40,7 +42,7 @@ public class BleDataManager implements IBleDataManager {
     @Override
     public Observable<ScanResult> scan() {
         return client.scanBleDevices(new ScanSettings.Builder()
-                         .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
+                        .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
 //                        .setCallbackType(ScanSettings.CALLBACK_TYPE_FIRST_MATCH)
                         .build(),
                 new ScanFilter.Builder()
@@ -83,7 +85,7 @@ public class BleDataManager implements IBleDataManager {
     }
 
     @Override
-    public Observable<Observable<byte[]>>  connect2(Observable<RxBleConnection> connectionObservable, String notifyCharacteristicUuid) {
+    public Observable<Observable<byte[]>> connect2(Observable<RxBleConnection> connectionObservable, String notifyCharacteristicUuid) {
         return connectionObservable
                 .flatMap(rxBleConnection -> rxBleConnection.setupNotification(UUID.fromString(notifyCharacteristicUuid)));
     }

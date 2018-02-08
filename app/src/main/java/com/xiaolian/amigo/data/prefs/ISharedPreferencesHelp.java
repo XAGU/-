@@ -1,6 +1,5 @@
 package com.xiaolian.amigo.data.prefs;
 
-import com.xiaolian.amigo.data.network.model.device.DeviceCategoryBO;
 import com.xiaolian.amigo.data.network.model.user.UploadUserDeviceInfoReqDTO;
 import com.xiaolian.amigo.data.vo.DeviceCategory;
 import com.xiaolian.amigo.data.vo.User;
@@ -9,7 +8,9 @@ import java.util.List;
 
 /**
  * SharedPreference帮助接口
+ *
  * @author zcd
+ * @date 17/9/15
  */
 
 public interface ISharedPreferencesHelp {
@@ -71,46 +72,64 @@ public interface ISharedPreferencesHelp {
 
     // 更新提示
     Long getLastUpdateRemindTime();
+
     void setLastUpdateRemindTime();
 
     // 上次选择的充值id
     void setLastWithdrawId(Long id);
+
     Long getLastWithdrawId();
 
     // 上次选择的提现账户
     void setLastWithdrawName(String name);
+
     String getLastWithdrawName();
+
     // 上次选择的提现金额
     String getLastRechargeAmount();
+
     void setLastRechargeAmount(String amount);
 
     // 引导页相关
     void setMainGuide(Integer guideTime);
+
     Integer getMainGuide();
+
     // 显示温馨提示
     void setHeaterGuide(Integer guideTime);
+
     Integer getHeaterGuide();
+
     void setDispenserGuide(Integer guideTime);
+
     Integer getDispenserGuide();
+
     Integer getDryerGuide();
+
     void setDryerGuide(Integer guideTime);
 
     void setLastRepairTime(Long time);
+
     Long getLastRepairTime();
 
     void setRememberMobile(String mobile);
+
     String getRememberMobile();
 
     void setDeviceResult(String deviceNo, String result);
+
     String getDeviceResult(String deviceNo);
 
     void saveUploadedUserDeviceInfo(UploadUserDeviceInfoReqDTO reqDTO);
+
     UploadUserDeviceInfoReqDTO getUploadedUserDeviceInfo();
 
     // 存储设备信息
     void saveDeviceCategory(List<DeviceCategory> devices);
+
     List<DeviceCategory> getDeviceCategory();
 
     void setTransfer(boolean b);
+
     boolean getTransfer();
 }

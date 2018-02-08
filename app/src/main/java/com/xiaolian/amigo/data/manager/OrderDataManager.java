@@ -27,8 +27,9 @@ import retrofit2.Retrofit;
 
 /**
  * 订单管理
- * <p>
- * Created by caidong on 2017/9/15.
+ *
+ * @author caidong
+ * @date 17/9/15
  */
 public class OrderDataManager implements IOrderDataManager {
 

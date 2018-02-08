@@ -16,31 +16,32 @@ import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.util.DimentionUtils;
-import com.xiaolian.amigo.util.Log;
 
 import java.text.DecimalFormat;
-import java.util.Locale;
 
 /**
  * 洗衣机模式选择dialog
- * <p>
- * Created by zcd on 18/1/15.
+ *
+ * @author zcd
+ * @date 18/1/15
  */
 
 public class WasherModeDialog extends Dialog {
     public interface OnConfirmClickListener {
         void onConfirmClick();
     }
+
     public interface OnBonusClickListener {
         void onBonusClick();
     }
+
     private OnConfirmClickListener confirmClickListener;
     private OnBonusClickListener bonusClickListener;
-    private TextView tv_confirm;
-    private TextView tv_mode;
-    private LinearLayout ll_bonus;
-    private TextView tv_bonus;
-    private View v_bonus;
+    private TextView tvConfirm;
+    private TextView tvMode;
+    private LinearLayout llBonus;
+    private TextView tvBonus;
+    private View vBonus;
     private Double price;
     private DecimalFormat df = new DecimalFormat("#.##");
 
@@ -70,17 +71,17 @@ public class WasherModeDialog extends Dialog {
     }
 
     public void setMode(String name, String price) {
-        tv_mode.setText(String.format("%s（%s元）", name, price));
+        tvMode.setText(String.format("%s（%s元）", name, price));
     }
 
     public void showBonus() {
-        ll_bonus.setVisibility(View.VISIBLE);
-        v_bonus.setVisibility(View.VISIBLE);
+        llBonus.setVisibility(View.VISIBLE);
+        vBonus.setVisibility(View.VISIBLE);
     }
 
     public void setBonus(String bonus) {
         showBonus();
-        tv_bonus.setText(bonus);
+        tvBonus.setText(bonus);
     }
 
     public Double getPrice() {
@@ -98,29 +99,29 @@ public class WasherModeDialog extends Dialog {
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         builder.append(buttonSpan);
         builder.append("，开始使用");
-        tv_confirm.setText(builder);
+        tvConfirm.setText(builder);
     }
 
     public void setSubmit(String str) {
         this.price = null;
-        tv_confirm.setText(str);
+        tvConfirm.setText(str);
     }
 
     private void bindView() {
-        tv_confirm = findViewById(R.id.tv_confirm);
-        tv_confirm.setOnClickListener(v -> {
+        tvConfirm = findViewById(R.id.tv_confirm);
+        tvConfirm.setOnClickListener(v -> {
             if (confirmClickListener != null) {
                 confirmClickListener.onConfirmClick();
             }
         });
-        tv_mode = findViewById(R.id.tv_mode);
-        tv_bonus = findViewById(R.id.tv_bonus);
-        ll_bonus = findViewById(R.id.ll_bonus);
-        ll_bonus.setOnClickListener(v -> {
+        tvMode = findViewById(R.id.tv_mode);
+        tvBonus = findViewById(R.id.tv_bonus);
+        llBonus = findViewById(R.id.ll_bonus);
+        llBonus.setOnClickListener(v -> {
             if (bonusClickListener != null) {
                 bonusClickListener.onBonusClick();
             }
         });
-        v_bonus = findViewById(R.id.v_bonus);
+        vBonus = findViewById(R.id.v_bonus);
     }
 }

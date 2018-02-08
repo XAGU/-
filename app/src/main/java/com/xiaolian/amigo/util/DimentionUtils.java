@@ -4,8 +4,10 @@ import android.content.Context;
 import android.util.TypedValue;
 
 /**
- * <p>
- * Created by zcd on 17/11/6.
+ * 尺寸相关工具类
+ *
+ * @author zcd
+ * @date 17/11/6
  */
 
 public class DimentionUtils {

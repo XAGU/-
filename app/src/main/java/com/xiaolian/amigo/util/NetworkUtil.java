@@ -7,7 +7,10 @@ import android.net.NetworkInfo;
 import android.telephony.TelephonyManager;
 
 /**
- * Created by adamzfc on 9/14/17.
+ * 网络相关工具类
+ *
+ * @author zcd
+ * @date 17/9/14
  */
 
 public final class NetworkUtil {

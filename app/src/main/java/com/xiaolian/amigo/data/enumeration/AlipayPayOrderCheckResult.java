@@ -2,8 +2,9 @@ package com.xiaolian.amigo.data.enumeration;
 
 /**
  * 支付宝支付结果
- * <p>
- * Created by zcd on 10/25/17.
+ *
+ * @author zcd
+ * @date 17/10/25
  */
 
 public enum AlipayPayOrderCheckResult {

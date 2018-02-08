@@ -11,7 +11,8 @@ import com.xiaolian.amigo.ui.ble.intf.IBleView;
 import javax.inject.Inject;
 
 /**
- * Created by caidong on 2017/9/22.
+ * @author caidong
+ * @date 17/9/22
  */
 public class BlePresenter<V extends IBleView> extends BasePresenter<V>
         implements IBlePresenter<V> {

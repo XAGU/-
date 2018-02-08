@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.wallet;
 
 import android.content.Intent;
+import android.support.v4.util.ObjectsCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -257,7 +258,7 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
     public void onEvent(WalletEvent event) {
         switch (event.getEventType()) {
             case DELETE_ACCOUNT:
-                if (CommonUtil.equals(event.getObject(), this.withdrawId)) {
+                if (ObjectsCompat.equals(event.getObject(), this.withdrawId)) {
                     this.withdrawId = null;
                     tvWithdrawWay2.setText("");
                     presenter.clearAccount();

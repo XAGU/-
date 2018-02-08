@@ -4,8 +4,9 @@ import com.xiaolian.amigo.R;
 
 /**
  * 支付方式
- * <p>
- * Created by zcd on 10/25/17.
+ *
+ * @author zcd
+ * @date 17/10/25
  */
 
 public enum PayWay {
@@ -43,6 +44,7 @@ public enum PayWay {
 
     private int type;
     private String desc;
+
     public abstract int getDrawableRes();
 
     public static PayWay getPayWay(int type) {

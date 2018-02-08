@@ -10,8 +10,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * <p>
- * Created by zcd on 17/11/16.
+ * @author zcd
+ * @date 17/11/16
  */
 
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)

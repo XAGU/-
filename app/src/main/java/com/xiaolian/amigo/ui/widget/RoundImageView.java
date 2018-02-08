@@ -12,8 +12,8 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 
 /**
- * <p>
- * Created by zcd on 10/10/17.
+ * @author zcd
+ * @date 17/10/10
  */
 
 public class RoundImageView extends android.support.v7.widget.AppCompatImageView {
@@ -47,11 +47,11 @@ public class RoundImageView extends android.support.v7.widget.AppCompatImageView
     }
 
     public void setRound(int round) {
-        if(round > getWidth()/2 || round > getHeight()/2){
-            if(getWidth() > getHeight()){
-                round = getHeight()/2;
-            }else{
-                round = getWidth()/2;
+        if (round > getWidth() / 2 || round > getHeight() / 2) {
+            if (getWidth() > getHeight()) {
+                round = getHeight() / 2;
+            } else {
+                round = getWidth() / 2;
             }
         }
         this.roundHeight = round;

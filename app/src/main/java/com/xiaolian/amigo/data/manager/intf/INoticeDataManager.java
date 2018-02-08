@@ -11,15 +11,20 @@ import rx.Observable;
 
 /**
  * 通知中心
- * <p>
- * Created by zcd on 9/22/17.
+ *
+ * @author zcd
+ * @date 17/9/22
  */
 
 public interface INoticeDataManager {
 
-    // 通知公告列表
+    /**
+     * 通知公告列表
+     */
     Observable<ApiResult<QueryNotifyListRespDTO>> queryNotifyList(@Body QueryNotifyListReqDTO dto);
 
-    // 告诉服务端通知已读（紧急公告）
+    /**
+     * 告诉服务端通知已读（紧急公告）
+     */
     Observable<ApiResult<BooleanRespDTO>> readUrgentNotify(@Body ReadNotifyReqDTO reqDTO);
 }

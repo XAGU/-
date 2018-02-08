@@ -6,8 +6,9 @@ import lombok.Data;
 
 /**
  * 请求洗衣机模式
- * <p>
- * Created by zcd on 18/1/17.
+ *
+ * @author zcd
+ * @date 18/1/17
  */
 @Data
 public class WashingModeRespDTO {

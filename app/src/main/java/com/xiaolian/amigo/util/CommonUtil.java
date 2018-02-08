@@ -43,6 +43,10 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * @author caidong
+ * @date 17/9/14
+ */
 public final class CommonUtil {
 
     private static final String TAG = "CommonUtil";
@@ -116,14 +120,10 @@ public final class CommonUtil {
         }
         String res;
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",
-                                                                    Locale.getDefault());
+                Locale.getDefault());
         Date date = new Date(s);
         res = simpleDateFormat.format(date);
         return res;
-    }
-
-    public static boolean equals(Object a, Object b) {
-        return (a == b) || (a != null && a.equals(b));
     }
 
     /**
@@ -139,6 +139,7 @@ public final class CommonUtil {
 
     /**
      * 文本复制
+     *
      * @param content 内容
      * @param context 上下文
      */
@@ -151,17 +152,19 @@ public final class CommonUtil {
 
     /**
      * 调用拨号界面
+     *
      * @param phone 电话号码
      */
     public static void call(Context context, String phone) {
-        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+phone));
+        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phone));
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
 
     /**
      * 弹出软键盘
-     * @param context 上下文
+     *
+     * @param context  上下文
      * @param editText 输入框
      */
     public static void showSoftInput(Context context, EditText editText) {

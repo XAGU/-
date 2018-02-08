@@ -2,7 +2,9 @@ package com.xiaolian.amigo.data.base;
 
 /**
  * time holder
- * Created by caidong on 2017/10/15.
+ *
+ * @author caidong
+ * @date 17/10/15
  */
 public class TimeHolder {
 

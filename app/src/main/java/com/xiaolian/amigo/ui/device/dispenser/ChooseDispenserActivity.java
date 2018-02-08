@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.util.ObjectsCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -29,7 +30,6 @@ import com.xiaolian.amigo.ui.main.MainActivity;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutFooter;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutHeader;
-import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Log;
 import com.xiaolian.amigo.util.ScreenUtils;
 
@@ -372,7 +372,7 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
             for (ScanDeviceGroup scanDeviceGroup : devices) {
                 boolean isContained = false;
                 for (ChooseDispenserAdaptor.DispenserWrapper wrapper : nearbyItems) {
-                    if (CommonUtil.equals(scanDeviceGroup.getResidenceId(),
+                    if (ObjectsCompat.equals(scanDeviceGroup.getResidenceId(),
                             wrapper.getResidenceId())) {
                         isContained = true;
                         for (ScanDevice device : scanDeviceGroup.getWater()) {
@@ -410,7 +410,7 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
 
     private boolean isContainDevice(ScanDevice device, ScanDeviceGroup deviceGroup) {
         for (ScanDevice contained : deviceGroup.getWater()) {
-            if (CommonUtil.equals(contained.getId(), device.getId())) {
+            if (ObjectsCompat.equals(contained.getId(), device.getId())) {
                 return true;
             }
         }

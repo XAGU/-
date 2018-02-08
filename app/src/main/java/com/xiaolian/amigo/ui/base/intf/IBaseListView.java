@@ -2,7 +2,9 @@ package com.xiaolian.amigo.ui.base.intf;
 
 /**
  * BaseListView接口
+ *
  * @author zcd
+ * @date 17/9/18
  */
 
 public interface IBaseListView extends IBaseView {

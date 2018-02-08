@@ -2,6 +2,7 @@ package com.xiaolian.amigo.ui.notice;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.support.v4.util.ObjectsCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -14,7 +15,6 @@ import com.xiaolian.amigo.ui.notice.intf.INoticePresenter;
 import com.xiaolian.amigo.ui.notice.intf.INoticeView;
 import com.xiaolian.amigo.ui.widget.RecycleViewDivider;
 import com.xiaolian.amigo.ui.widget.dialog.NoticeAlertDialog;
-import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
@@ -127,7 +127,7 @@ public class NoticeListActivity extends NoticeBaseListActivity implements INotic
     @Override
     public void readNotify(Long id) {
         for (NoticeAdaptor.NoticeWapper notice : notices) {
-            if (CommonUtil.equals(notice.getId(), id)) {
+            if (ObjectsCompat.equals(notice.getId(), id)) {
                 // 2 表示已读
                 notice.setReadStatus(NoticeReadStatus.READ.getType());
             }

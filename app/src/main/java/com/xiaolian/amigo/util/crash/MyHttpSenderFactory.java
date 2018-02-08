@@ -14,8 +14,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * <p>
- * Created by zcd on 17/11/21.
+ * 错误日志内容
+ *
+ * @author zcd
+ * @date 17/11/21
  */
 
 public class MyHttpSenderFactory implements ReportSenderFactory {

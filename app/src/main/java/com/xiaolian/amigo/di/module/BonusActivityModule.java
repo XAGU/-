@@ -18,6 +18,7 @@ import dagger.Provides;
 
 /**
  * BonusActivityModule
+ *
  * @author zcd
  */
 @Module

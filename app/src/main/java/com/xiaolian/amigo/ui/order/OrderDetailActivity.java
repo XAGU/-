@@ -3,6 +3,7 @@ package com.xiaolian.amigo.ui.order;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.util.ObjectsCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -195,7 +196,7 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
             tvUsedTime.setText(order.getUseTime());
         }
         tvOrderNo.setText(order.getOrderNo());
-        if (CommonUtil.equals(order.getStatus(), ORDER_ERROR_STATUS)) {
+        if (ObjectsCompat.equals(order.getStatus(), ORDER_ERROR_STATUS)) {
             // 异常账单
             tvOrderErrorTip.setVisibility(View.VISIBLE);
             llOrderNormal.setVisibility(View.GONE);

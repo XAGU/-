@@ -19,8 +19,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- *
- * Created by caidong on 2017/9/23.
+ * @author caidong
+ * @date 17/9/23
  */
 public class BleAdaptor extends RecyclerView.Adapter<BleAdaptor.ViewHolder> {
 

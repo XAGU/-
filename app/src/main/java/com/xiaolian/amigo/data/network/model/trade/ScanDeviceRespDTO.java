@@ -7,7 +7,8 @@ import java.util.List;
 import lombok.Data;
 
 /**
- * Created by caidong on 2017/10/16.
+ * @author caidong
+ * @date 17/10/16
  */
 @Data
 public class ScanDeviceRespDTO {

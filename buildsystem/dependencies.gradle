@@ -105,5 +105,7 @@ ext.deps = [
         'magicIndicator'         : 'com.github.hackware1993:MagicIndicator:1.5.0',
         'acra'                   : 'ch.acra:acra:4.9.2',
         'zxing'                  : 'com.google.zxing:core:3.3.1',
-        'zxingEmbed'            : 'com.journeyapps:zxing-android-embedded:3.5.0',
+        'zxingEmbed'             : 'com.journeyapps:zxing-android-embedded:3.5.0',
+        'wechatSDKWithMta'       : 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:5.1.0',
+        'wechatSDKWithoutMta'    : 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:5.1.0',
 ]

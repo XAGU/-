@@ -10,6 +10,12 @@ import android.widget.LinearLayout;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.util.CountDownButtonHelper;
 
+/**
+ * 校验验证码
+ *
+ * @author zcd
+ * @date 17/9/18
+ */
 public class VerifyCodeEditText extends LinearLayout {
 
     CountDownButtonHelper cdb;

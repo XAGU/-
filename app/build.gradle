@@ -4,8 +4,8 @@ apply from: '../buildsystem/dependencies.gradle'
 
 // 加载 local.properties 资源
 Properties properties = new Properties()
-InputStream inputStream = project.rootProject.file('local.properties').newDataInputStream() ;
-properties.load( inputStream )
+InputStream inputStream = project.rootProject.file('local.properties').newDataInputStream();
+properties.load(inputStream)
 
 static def releaseTime() {
     return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
@@ -18,8 +18,8 @@ android {
         applicationId "com.xiaolian.amigo"
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
-        versionCode 7
-        versionName "1.0.71"
+        versionCode 8
+        versionName "1.0.72"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
@@ -69,7 +69,7 @@ android {
             buildConfigField "String", "FILE_PREFIX", "\"https://s.xiaolian365.com/\""
             buildConfigField "String", "TRADE_PREFIX", "\"/trade\""
             // 修改 AndroidManifest.xml 里渠道变量
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "dev",
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE      : "dev",
                                     FILE_PROVIDER_AUTHORITIES: applicationId + ".fileprovider"]
         }
         prod {
@@ -87,7 +87,7 @@ android {
             buildConfigField "String", "FILE_PREFIX", "\"https://s.xiaolian365.com/\""
             buildConfigField "String", "TRADE_PREFIX", "\"/c/trade\""
 
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "prod",
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE      : "prod",
                                     FILE_PROVIDER_AUTHORITIES: applicationId + ".fileprovider"]
         }
     }
@@ -148,11 +148,9 @@ dependencies {
     testImplementation deps.junit
     implementation deps.umeng
     implementation deps.oss
-    //    implementation deps.acra
     implementation deps.zxing
-    //    implementation deps.zxingEmbed
     implementation project(':zxing-android-embedded')
-//    implementation 'cn.bingoogolapple:bga-qrcode-zbar:1.2.1'
+    implementation deps.wechatSDKWithMta
 }
 
 configurations.all {
