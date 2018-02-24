@@ -415,6 +415,12 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
 
+        <!--我的积分-->
+        <activity android:name=".ui.point.PointActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+
 
         <!--更新窗口-->
         <activity

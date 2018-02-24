@@ -19,6 +19,7 @@ import com.xiaolian.amigo.ui.favorite.FavoriteActivity;
 import com.xiaolian.amigo.ui.main.adaptor.ProfileAdaptor;
 import com.xiaolian.amigo.ui.more.MoreActivity;
 import com.xiaolian.amigo.ui.order.OrderActivity;
+import com.xiaolian.amigo.ui.point.PointActivity;
 import com.xiaolian.amigo.ui.repair.RepairNavActivity;
 import com.xiaolian.amigo.ui.user.EditProfileActivity;
 import com.xiaolian.amigo.ui.wallet.WalletActivity;
@@ -47,6 +48,7 @@ import lombok.Data;
 public class ProfileFragment2 extends Fragment {
     private static final String TAG = ProfileFragment2.class.getSimpleName();
     ProfileAdaptor.Item wallet = new ProfileAdaptor.Item(R.drawable.profile_wallet, "我的钱包", WalletActivity.class);
+    ProfileAdaptor.Item point = new ProfileAdaptor.Item(R.drawable.profile_point, "积分兑换", PointActivity.class);
     ProfileAdaptor.Item bonus = new ProfileAdaptor.Item(R.drawable.profile_luck, "我的代金券", BonusActivity.class);
     ProfileAdaptor.Item repair = new ProfileAdaptor.Item(R.drawable.profile_repair, "设备报修", RepairNavActivity.class);
 
@@ -55,6 +57,7 @@ public class ProfileFragment2 extends Fragment {
             add(new ProfileAdaptor.Item(R.drawable.profile_edit, "编辑个人信息", EditProfileActivity.class));
             add(wallet);
             add(new ProfileAdaptor.Item(R.drawable.profile_order, "消费记录", OrderActivity.class));
+            add(point);
             add(bonus);
             add(new ProfileAdaptor.Item(R.drawable.profile_favorite, "我收藏的设备", FavoriteActivity.class));
             add(repair);
