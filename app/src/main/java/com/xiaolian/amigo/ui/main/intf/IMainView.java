@@ -128,4 +128,9 @@ public interface IMainView extends IBaseView {
      * 显示校Ok账号迁移
      */
     void showXOkMigrate();
+
+    /**
+     * 隐藏校Ok帐号迁移
+     */
+    void hideXOkMigrate();
 }

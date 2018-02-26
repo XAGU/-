@@ -982,6 +982,11 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         });
     }
 
+    @Override
+    public void hideXOkMigrate() {
+        ivXokMigrate.setVisibility(View.GONE);
+    }
+
     public void refreshProfile() {
         PersonalExtraInfoDTO data = new PersonalExtraInfoDTO();
         data.setBalance(Double.valueOf(presenter.getBalance()));

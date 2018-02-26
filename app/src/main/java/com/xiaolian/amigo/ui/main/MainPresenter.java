@@ -127,6 +127,7 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
                         getMvpView().showXOkMigrate();
                     } else {
                         mainDataManager.setNotNeedTransfer();
+                        getMvpView().hideXOkMigrate();
                     }
                     getMvpView().refreshProfile(dto);
                     getMvpView().showNoticeAmount(result.getData().getNotifyAmount());
