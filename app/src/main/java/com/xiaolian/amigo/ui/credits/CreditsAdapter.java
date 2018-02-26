@@ -1,4 +1,4 @@
-package com.xiaolian.amigo.ui.point;
+package com.xiaolian.amigo.ui.credits;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
@@ -18,11 +18,11 @@ import lombok.Data;
  * @date 18/2/23
  */
 
-public class PointAdapter extends CommonAdapter<PointAdapter.PointItem> {
+public class CreditsAdapter extends CommonAdapter<CreditsAdapter.PointItem> {
     interface OnExchangeClickListener {
-        void onExchangeClick(int deviceType, String bonusAmount, int pointAmount);
+        void onExchangeClick(Long bonusId, int deviceType, String bonusAmount, int pointAmount);
     }
-    PointAdapter(Context context, int layoutId, List<PointItem> datas) {
+    CreditsAdapter(Context context, int layoutId, List<PointItem> datas) {
         super(context, layoutId, datas);
     }
 
@@ -43,20 +43,23 @@ public class PointAdapter extends CommonAdapter<PointAdapter.PointItem> {
                 "%d积分兑换", pointItem.getPointAmount()));
         holder.getView(R.id.tv_point_desc).setOnClickListener(v -> {
             if (exchangeClickListener != null) {
-                exchangeClickListener.onExchangeClick(pointItem.getDeviceType(),
+                exchangeClickListener.onExchangeClick(pointItem.getBonusId(),
+                        pointItem.getDeviceType(),
                         pointItem.getBonusAmount(), pointItem.getPointAmount());
             }
         });
     }
 
     @Data
-    static class PointItem {
-        PointItem(int deviceType, String bonusAmount, int pointAmount) {
+    public static class PointItem {
+        PointItem(Long bonusId, int deviceType, String bonusAmount, int pointAmount) {
+            this.bonusId = bonusId;
             this.deviceType = deviceType;
             this.bonusAmount = bonusAmount;
             this.pointAmount = pointAmount;
         }
 
+        private Long bonusId;
         private int deviceType;
         private String bonusAmount;
         private int pointAmount;

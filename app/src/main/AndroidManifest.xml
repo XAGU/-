@@ -416,7 +416,7 @@
             android:windowSoftInputMode="stateAlwaysHidden" />
 
         <!--我的积分-->
-        <activity android:name=".ui.point.PointActivity"
+        <activity android:name=".ui.credits.CreditsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             />

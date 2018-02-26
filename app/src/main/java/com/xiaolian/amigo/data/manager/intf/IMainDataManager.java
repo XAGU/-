@@ -129,4 +129,16 @@ public interface IMainDataManager {
     void setNeedTransfer();
 
     void setNotNeedTransfer();
+
+    /**
+     * 缓存积分
+     * @param credits 积分
+     */
+    void setCredits(Integer credits);
+
+    /**
+     * 获取缓存中的积分
+     * @return 积分
+     */
+    Integer getCredits();
 }

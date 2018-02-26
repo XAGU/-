@@ -22,6 +22,6 @@ import javax.inject.Scope;
 
 @Scope
 @Retention(RetentionPolicy.RUNTIME)
-public @interface PointActivityContext {
+public @interface CreditsActivityContext {
 }
 

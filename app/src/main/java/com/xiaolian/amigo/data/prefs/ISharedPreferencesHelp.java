@@ -132,4 +132,11 @@ public interface ISharedPreferencesHelp {
     void setTransfer(boolean b);
 
     boolean getTransfer();
+
+    /**
+     * 缓存积分
+     * @param credits 积分
+     */
+    void setCredits(Integer credits);
+    Integer getCredits();
 }

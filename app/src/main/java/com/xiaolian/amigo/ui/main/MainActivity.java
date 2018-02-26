@@ -938,6 +938,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         lastRepairTime = data.getLastRepairTime();
         presenter.setBalance(df.format(data.getBalance()));
         presenter.setBonusAmount(data.getBonusAmount());
+        presenter.setCredits(data.getCredits());
         EventBus.getDefault().post(data);
     }
 
@@ -985,6 +986,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         PersonalExtraInfoDTO data = new PersonalExtraInfoDTO();
         data.setBalance(Double.valueOf(presenter.getBalance()));
         data.setBonusAmount(presenter.getBonusAmount());
+        data.setCredits(presenter.getCredits());
         EventBus.getDefault().post(data);
     }
 

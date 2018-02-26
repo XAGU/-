@@ -18,11 +18,17 @@ package com.xiaolian.amigo.di.module;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
+import com.xiaolian.amigo.data.manager.CreditsDataManager;
 import com.xiaolian.amigo.data.manager.OrderDataManager;
 import com.xiaolian.amigo.data.manager.WalletDataManager;
+import com.xiaolian.amigo.data.manager.intf.ICreditsDataManager;
 import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
 import com.xiaolian.amigo.data.manager.intf.IWalletDataManager;
+import com.xiaolian.amigo.di.CreditsActivityContext;
 import com.xiaolian.amigo.di.WalletActivityContext;
+import com.xiaolian.amigo.ui.credits.CreditsPresenter;
+import com.xiaolian.amigo.ui.credits.intf.ICreditsPresenter;
+import com.xiaolian.amigo.ui.credits.intf.ICreditsView;
 import com.xiaolian.amigo.ui.wallet.AddAccountPresenter;
 import com.xiaolian.amigo.ui.wallet.ChooseWithdrawPresenter;
 import com.xiaolian.amigo.ui.wallet.PrepayOrderPresenter;
@@ -58,11 +64,11 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class PointActivityModule {
+public class CreditsActivityModule {
 
     private AppCompatActivity mActivity;
 
-    public PointActivityModule(AppCompatActivity activity) {
+    public CreditsActivityModule(AppCompatActivity activity) {
         this.mActivity = activity;
     }
 
@@ -74,5 +80,16 @@ public class PointActivityModule {
     @Provides
     AppCompatActivity provideActivity() {
         return mActivity;
+    }
+
+    @Provides
+    @CreditsActivityContext
+    ICreditsPresenter<ICreditsView> provideCreditsPresenter(CreditsPresenter<ICreditsView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    ICreditsDataManager provideCreditsDataManager(CreditsDataManager manager) {
+        return manager;
     }
 }

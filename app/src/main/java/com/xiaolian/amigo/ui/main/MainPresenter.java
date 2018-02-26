@@ -340,6 +340,25 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
         });
     }
 
+    @Override
+    public void setCredits(Integer credits) {
+        if (credits == null) {
+            mainDataManager.setCredits(-1);
+        } else {
+            mainDataManager.setCredits(credits);
+        }
+    }
+
+    @Override
+    public Integer getCredits() {
+        Integer credits = mainDataManager.getCredits();
+        if (credits == null) {
+            return -1;
+        } else {
+            return credits;
+        }
+    }
+
     private boolean isDeviceInfoUploaded(UploadUserDeviceInfoReqDTO newReq,
                                          UploadUserDeviceInfoReqDTO oldReq) {
         if (oldReq == null) {
