@@ -24,6 +24,16 @@ public class PersonalExtraInfoDTO {
     private Long lastRepairTime;
     private Notify urgentNotify;
     private String preFileUrl;
+    /**
+     * 是否需要账户迁移
+     */
     private Boolean showTransfer;
+    /**
+     * 是否需要显示红点
+     */
     private boolean isNeedShowDot = false;
+    /**
+     * 积分
+     */
+    private Integer credits;
 }
