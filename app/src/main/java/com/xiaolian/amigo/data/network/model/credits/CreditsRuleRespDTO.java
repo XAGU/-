@@ -11,5 +11,8 @@ import lombok.Data;
  */
 @Data
 public class CreditsRuleRespDTO {
+    /**
+     * 积分兑换规则
+     */
     private List<CreditsRuleItemsDTO> items;
 }

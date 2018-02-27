@@ -35,7 +35,7 @@ public class CreditsActivity extends CreditsBaseActivity implements ICreditsView
     @Inject
     ICreditsPresenter<ICreditsView> presenter;
 
-    private List<CreditsAdapter.PointItem> items = new ArrayList<>();
+    private List<CreditsAdapter.CreditsItem> items = new ArrayList<>();
     private CreditsAdapter adapter;
     private TextView tvCredits;
     private RecyclerView recyclerView;
@@ -44,7 +44,7 @@ public class CreditsActivity extends CreditsBaseActivity implements ICreditsView
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_point);
+        setContentView(R.layout.activity_credits);
         bindView();
         initRecyclerView();
         presenter.getCredits();
@@ -53,9 +53,8 @@ public class CreditsActivity extends CreditsBaseActivity implements ICreditsView
 
     private void initRecyclerView() {
         adapter = new CreditsAdapter(this, R.layout.item_point, items);
-        adapter.setExchangeClickListener((bonusId, deviceType, bonusAmount, pointAmount) -> {
-            presenter.checkForExchange(bonusId, deviceType, bonusAmount, pointAmount);
-        });
+        adapter.setExchangeClickListener((bonusId, deviceType, bonusAmount, pointAmount) ->
+                presenter.checkForExchange(bonusId, deviceType, bonusAmount, pointAmount));
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         recyclerView.addItemDecoration(new GridSpacesItemDecoration(2,
                 ScreenUtils.dpToPxInt(this, 10), false));
@@ -89,7 +88,7 @@ public class CreditsActivity extends CreditsBaseActivity implements ICreditsView
     }
 
     @Override
-    public void renderRules(List<CreditsAdapter.PointItem> items) {
+    public void renderRules(List<CreditsAdapter.CreditsItem> items) {
         this.items.addAll(items);
         this.adapter.notifyDataSetChanged();
     }
@@ -97,7 +96,7 @@ public class CreditsActivity extends CreditsBaseActivity implements ICreditsView
     @Override
     public void renderCredits(int credits) {
         SpannableStringBuilder builder = new SpannableStringBuilder();
-        String creditsTip = "当前积分：";
+        String creditsTip = getString(R.string.current_credits_colon);
         builder.append(creditsTip);
         String creditsStr = String.valueOf(credits);
         SpannableString creditsSpan = new SpannableString(creditsStr);

@@ -11,10 +11,10 @@ import rx.Observable;
 
 /**
  * 积分模块
+ *
  * @author zcd
  * @date 18/2/26
  */
-
 public interface ICreditsApi {
     /**
      * 获取积分兑换规则

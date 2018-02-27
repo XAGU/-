@@ -10,6 +10,9 @@ import lombok.Data;
 @Data
 public class CreditsExchangeReqDTO {
     private Long bonusId;
+    /**
+     * 积分
+     */
     private Integer credits;
     private Integer deviceType;
 }

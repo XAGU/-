@@ -1,7 +1,5 @@
 package com.xiaolian.amigo.data.manager;
 
-import android.content.SharedPreferences;
-
 import com.xiaolian.amigo.data.manager.intf.ICreditsDataManager;
 import com.xiaolian.amigo.data.network.ICreditsApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
@@ -17,6 +15,7 @@ import rx.Observable;
 
 /**
  * 积分模块
+ *
  * @author zcd
  * @date 18/2/26
  */

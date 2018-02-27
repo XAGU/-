@@ -4,11 +4,15 @@ import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 
 /**
  * 我的积分
+ *
  * @author zcd
  * @date 18/2/23
  */
 
 public interface ICreditsPresenter<V extends ICreditsView> extends IBasePresenter<V> {
+    /**
+     * 获取积分兑换规则
+     */
     void getRules();
 
     /**
