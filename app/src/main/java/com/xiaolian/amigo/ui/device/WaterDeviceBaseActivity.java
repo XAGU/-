@@ -367,6 +367,8 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     private void initPresenter() {
         presenter = setPresenter();
         presenter.setSupplierId(supplierId);
+        // 显示温馨提示 需要获取供应商信息 所以要在设置完供应商后执行
+        presenter.showGuide();
     }
 
     private void initView() {
