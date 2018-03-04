@@ -53,6 +53,10 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     private static final String PREF_LAST_RECHARGE_AMOUNT = "PREF_LAST_RECHARGE_AMOUNT";
     private static final String PREF_UPLOADED_USER_DEVICE_INFO = "PREF_UPLOADED_USER_DEVICE_INFO";
     private static final String PREF_KEY_DEVICE_CATEGORY = "PREF_KEY_DEVICE_CATEGORY";
+    /**
+     * 积分
+     */
+    private static final String PREF_KEY_CREDITS = "PREF_KEY_CREDITS";
     /************* 引导页相关 *******************/
     private static final String PREF_GUIDE_NAME = "PREF_GUIDE_NAME";
     private static final String PREF_GUIDE_MAIN = "PREF_GUIDE_MAIN";
@@ -388,6 +392,19 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     @Override
     public boolean getTransfer() {
         return transfer;
+    }
+
+    @Override
+    public void setCredits(Integer credits) {
+        mSharedPreferences
+                .edit()
+                .putInt(PREF_KEY_CREDITS, credits)
+                .commit();
+    }
+
+    @Override
+    public Integer getCredits() {
+        return mSharedPreferences.getInt(PREF_KEY_CREDITS, -1);
     }
 
     @Override

@@ -238,4 +238,14 @@ public class MainDataManager implements IMainDataManager {
     public void setNotNeedTransfer() {
         sharedPreferencesHelp.setTransfer(false);
     }
+
+    @Override
+    public void setCredits(Integer credits) {
+        sharedPreferencesHelp.setCredits(credits);
+    }
+
+    @Override
+    public Integer getCredits() {
+        return sharedPreferencesHelp.getCredits();
+    }
 }

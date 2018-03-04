@@ -15,6 +15,7 @@ import com.umeng.analytics.MobclickAgent;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.user.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.ui.bonus.BonusActivity;
+import com.xiaolian.amigo.ui.credits.CreditsActivity;
 import com.xiaolian.amigo.ui.favorite.FavoriteActivity;
 import com.xiaolian.amigo.ui.main.adaptor.ProfileAdaptor;
 import com.xiaolian.amigo.ui.more.MoreActivity;
@@ -47,6 +48,7 @@ import lombok.Data;
 public class ProfileFragment2 extends Fragment {
     private static final String TAG = ProfileFragment2.class.getSimpleName();
     ProfileAdaptor.Item wallet = new ProfileAdaptor.Item(R.drawable.profile_wallet, "我的钱包", WalletActivity.class);
+    ProfileAdaptor.Item credits = new ProfileAdaptor.Item(R.drawable.profile_credits, "积分兑换", CreditsActivity.class);
     ProfileAdaptor.Item bonus = new ProfileAdaptor.Item(R.drawable.profile_luck, "我的代金券", BonusActivity.class);
     ProfileAdaptor.Item repair = new ProfileAdaptor.Item(R.drawable.profile_repair, "设备报修", RepairNavActivity.class);
 
@@ -111,15 +113,32 @@ public class ProfileFragment2 extends Fragment {
         try {
             wallet.setBalance(df.format(data.getBalance()));
             bonus.setBonusAmount(data.getBonusAmount());
+            if (data.getCredits() == null) {
+                credits.setBonusAmount(-1);
+            } else {
+                credits.setBonusAmount(data.getCredits());
+            }
         } catch (Exception e) {
             MobclickAgent.reportError(getContext(), "customReport tag: " + TAG + e.getMessage());
             wallet.setBalance(String.valueOf(data.getBalance()));
             bonus.setBonusAmount(data.getBonusAmount());
+            if (data.getCredits() == null) {
+                credits.setBonusAmount(-1);
+            } else {
+                credits.setBonusAmount(data.getCredits());
+            }
         }
         if (data.isNeedShowDot()) {
             repair.setShowDot(true);
         } else {
             repair.setShowDot(false);
+        }
+        if (credits.getBonusAmount() != -1
+                && !items.contains(credits)) {
+            items.add(3, credits);
+        }
+        if (credits.getBonusAmount() == -1) {
+            items.remove(credits);
         }
         if (recyclerView.getAdapter() == null) {
             recyclerView.setAdapter(adaptor);

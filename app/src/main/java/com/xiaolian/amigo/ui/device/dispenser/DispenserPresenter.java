@@ -32,15 +32,6 @@ public class DispenserPresenter<V extends IDispenserView> extends WaterDeviceBas
     }
 
     @Override
-    public void onAttach(V view) {
-        super.onAttach(view);
-        if (!deviceDataManager.isDispenserGuideDone()) {
-            deviceDataManager.doneDispenserGuide();
-            getMvpView().showGuide();
-        }
-    }
-
-    @Override
     public void favorite(Long id) {
         FavorDeviceReqDTO reqDTO = new FavorDeviceReqDTO();
         reqDTO.setType(Device.DISPENSER.getType());
@@ -80,5 +71,14 @@ public class DispenserPresenter<V extends IDispenserView> extends WaterDeviceBas
     @Override
     public void notShowRemindAlert() {
         deviceDataManager.setDispenserGuide(Constant.REMIND_ALERT_COUNT);
+    }
+
+    @Override
+    public void showGuide() {
+        if (!deviceDataManager.isDispenserGuideDone()
+                && needShowGuide()) {
+            deviceDataManager.doneDispenserGuide();
+            getMvpView().showGuide();
+        }
     }
 }

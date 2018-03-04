@@ -345,6 +345,7 @@ public class RepairApplyActivity extends RepairBaseActivity implements IRepairAp
 
     @Override
     public void refreshProblems(List<RepairProblem> repairProblems) {
+        // TODO 但repairProblems为空时应该隐藏llProblems和vDivide,清空problems
         if (repairProblems == null || repairProblems.isEmpty()) {
             return;
         }

@@ -160,4 +160,16 @@ public interface IMainPresenter<V extends IMainView> extends IBasePresenter<V> {
      * @param androidId     androidId
      */
     void uploadDeviceInfo(String appVersion, String brand, String model, int systemVersion, String androidId);
+
+    /**
+     * 缓存积分
+     * @param credits 积分
+     */
+    void setCredits(Integer credits);
+
+    /**
+     * 获取缓存中的积分
+     * @return 积分
+     */
+    Integer getCredits();
 }

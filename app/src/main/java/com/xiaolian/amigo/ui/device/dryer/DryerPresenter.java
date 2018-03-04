@@ -31,15 +31,6 @@ public class DryerPresenter<V extends IDryerView> extends WaterDeviceBasePresent
     }
 
     @Override
-    public void onAttach(V view) {
-        super.onAttach(view);
-        if (!deviceDataManager.isDryerGuideDone()) {
-            deviceDataManager.doneDryerGuide();
-            getMvpView().showGuide();
-        }
-    }
-
-    @Override
     public void favorite(Long id) {
         FavorDeviceReqDTO reqDTO = new FavorDeviceReqDTO();
         reqDTO.setType(Device.DRYER.getType());
@@ -79,5 +70,14 @@ public class DryerPresenter<V extends IDryerView> extends WaterDeviceBasePresent
     @Override
     public void notShowRemindAlert() {
         deviceDataManager.setDryerGuide(Constant.REMIND_ALERT_COUNT);
+    }
+
+    @Override
+    public void showGuide() {
+        if (!deviceDataManager.isDryerGuideDone()
+                && needShowGuide()) {
+            deviceDataManager.doneDryerGuide();
+            getMvpView().showGuide();
+        }
     }
 }

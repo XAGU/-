@@ -39,6 +39,7 @@ import com.xiaolian.amigo.ui.device.DeviceConstant;
 import com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity;
 import com.xiaolian.amigo.ui.device.dispenser.ChooseDispenserActivity;
 import com.xiaolian.amigo.ui.device.dispenser.DispenserActivity;
+import com.xiaolian.amigo.ui.device.dryer.DryerActivity;
 import com.xiaolian.amigo.ui.device.washer.WasherActivity;
 import com.xiaolian.amigo.ui.login.LoginActivity;
 import com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity;
@@ -692,6 +693,25 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         }
     }
 
+    public void gotoDryer(String macAddress, Long supplierId, String location, Long residenceId,
+                          boolean favor, boolean recovery) {
+        if (TextUtils.isEmpty(macAddress)) {
+            onError("设备macAddress不合法");
+        } else {
+            Intent intent = new Intent(this, DryerActivity.class);
+            intent.putExtra(INTENT_KEY_LOCATION, location);
+            intent.putExtra(INTENT_KEY_SUPPLIER_ID, supplierId);
+            intent.putExtra(INTENT_KEY_MAC_ADDRESS, macAddress);
+            intent.putExtra(INTENT_KEY_DEVICE_TYPE, Device.DRYER.getType());
+            intent.putExtra(DispenserActivity.INTENT_KEY_ID, residenceId);
+            intent.putExtra(MainActivity.INTENT_KEY_RESIDENCE_ID, residenceId);
+            intent.putExtra(MainActivity.INTENT_KEY_RECOVERY, recovery);
+            intent.putExtra(DispenserActivity.INTENT_KEY_FAVOR, favor);
+            intent.putExtra(WaterDeviceBaseActivity.INTENT_PREPAY_INFO, orderPreInfo);
+            startActivity(intent);
+        }
+    }
+
     public void gotoDispenser(String macAddress, Long supplierId, String location, Long residenceId,
                               boolean favor, int usefor,
                               boolean recovery) {
@@ -807,8 +827,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                         data.getLocation(), data.getResidenceId(),
                         data.getFavor(), data.getUsefor(), true);
             } else if (type == Device.DRYER.getType()) {
-                gotoDevice(DRYER, data.getUnsettledMacAddress(), data.getUnsettledSupplierId(),
-                        data.getLocation(), data.getResidenceId(), true);
+                gotoDryer(data.getUnsettledMacAddress(), data.getUnsettledSupplierId(),
+                        data.getLocation(), data.getResidenceId(),
+                        data.getFavor(), true);
             }
         } else {
             if (type == Device.HEATER.getType() && heaterOrderSize > 0) {
@@ -917,6 +938,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         lastRepairTime = data.getLastRepairTime();
         presenter.setBalance(df.format(data.getBalance()));
         presenter.setBonusAmount(data.getBonusAmount());
+        presenter.setCredits(data.getCredits());
         EventBus.getDefault().post(data);
     }
 
@@ -960,10 +982,16 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         });
     }
 
+    @Override
+    public void hideXOkMigrate() {
+        ivXokMigrate.setVisibility(View.GONE);
+    }
+
     public void refreshProfile() {
         PersonalExtraInfoDTO data = new PersonalExtraInfoDTO();
         data.setBalance(Double.valueOf(presenter.getBalance()));
         data.setBonusAmount(presenter.getBonusAmount());
+        data.setCredits(presenter.getCredits());
         EventBus.getDefault().post(data);
     }
 

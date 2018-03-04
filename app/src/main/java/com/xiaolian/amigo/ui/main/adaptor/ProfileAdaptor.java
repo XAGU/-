@@ -35,6 +35,14 @@ public class ProfileAdaptor extends CommonAdapter<ProfileAdaptor.Item> {
         } else if (item.getLeftImageId() == R.drawable.profile_luck) {
             holder.getView(R.id.tv_amount).setVisibility(View.VISIBLE);
             holder.setText(R.id.tv_amount, String.valueOf(item.getBonusAmount()));
+        }
+        else if (item.getLeftImageId() == R.drawable.profile_credits) {
+            if (item.getBonusAmount() == -1) {
+                holder.getView(R.id.tv_amount).setVisibility(View.GONE);
+            } else {
+                holder.getView(R.id.tv_amount).setVisibility(View.VISIBLE);
+                holder.setText(R.id.tv_amount, String.valueOf(item.getBonusAmount()));
+            }
         } else {
             holder.getView(R.id.tv_amount).setVisibility(View.GONE);
         }

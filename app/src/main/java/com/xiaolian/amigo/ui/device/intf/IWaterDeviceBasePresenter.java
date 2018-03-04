@@ -47,4 +47,9 @@ public interface IWaterDeviceBasePresenter<V extends IWaterDeviceBaseView> exten
      * @param connecting 连接状态
      */
     void setConnecting(boolean connecting);
+
+    /**
+     * 显示温馨提示
+     */
+    void showGuide();
 }

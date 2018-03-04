@@ -76,6 +76,11 @@ public class AvailabilityDialog extends Dialog {
                 tvTip.setGravity(Gravity.CENTER);
                 tvTip.setTextSize(17);
                 break;
+            default:
+                tvTitle.setVisibility(View.VISIBLE);
+                tvTip.setGravity(Gravity.START);
+                tvTip.setTextSize(12);
+                break;
         }
         this.type = type;
     }
@@ -123,7 +128,8 @@ public class AvailabilityDialog extends Dialog {
         TIME_VALID("当前时间没有热水供应", "时间段错误"),
         BIND_DORMITORY("你还没有绑定宿舍信息哦！", "绑定宿舍"),
         OPEN_LOCAION_SERVICE("", "打开位置服务"),
-        WITHDRAW_VALID("当前时间无法提现", "提现时间段错误");
+        WITHDRAW_VALID("当前时间无法提现","提现时间段错误");
+
         private String title;
         private String desc;
 
@@ -139,5 +145,5 @@ public class AvailabilityDialog extends Dialog {
         public String getDesc() {
             return desc;
         }
-    }
+        }
 }

@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.device;
 
+import com.xiaolian.amigo.data.enumeration.AgreementVersion;
 import com.xiaolian.amigo.data.manager.intf.IBleDataManager;
 import com.xiaolian.amigo.data.manager.intf.IDeviceDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
@@ -18,6 +19,7 @@ import com.xiaolian.amigo.ui.device.intf.IWaterDeviceBaseView;
 public abstract class WaterDeviceBasePresenter<V extends IWaterDeviceBaseView> extends DeviceBasePresenter<V>
         implements IWaterDeviceBasePresenter<V> {
     private IDeviceDataManager deviceDataManager;
+
     public WaterDeviceBasePresenter(IBleDataManager bleDataManager,
                                     IDeviceDataManager deviceDataManager) {
         super(bleDataManager, deviceDataManager);
@@ -73,6 +75,24 @@ public abstract class WaterDeviceBasePresenter<V extends IWaterDeviceBaseView> e
                 super.onError(e);
             }
         });
+    }
+
+    /**
+     * 是否需要显示温馨提示
+     */
+    protected boolean needShowGuide() {
+        if (getSupplier() == null || getSupplier().getAgreement() == null) {
+            return false;
+        }
+        switch (AgreementVersion.getAgreement(getSupplier().getAgreement())) {
+            case HAONIANHUA:
+                return true;
+            // 辛纳设备不显示温馨提示
+            case XINNA:
+                return false;
+            default:
+                return false;
+        }
     }
 
     @Override

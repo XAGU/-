@@ -18,8 +18,8 @@ android {
         applicationId "com.xiaolian.amigo"
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
-        versionCode 8
-        versionName "1.0.72"
+        versionCode 9
+        versionName "1.0.80"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
@@ -64,7 +64,7 @@ android {
             // 动态修改 常量 字段
             buildConfigField "String", "ENVIRONMENT", '"dev"'
             buildConfigField "String", "SERVER", "\"http://116.62.236.67:5081/\""
-//            buildConfigField "String", "SERVER", "\"http://10.0.0.4:5081/\""
+//            buildConfigField "String", "SERVER", "\"http://10.0.0.9:5081/\""
             buildConfigField "String", "H5_SERVER", "\"http://116.62.236.67:5097/c\""
             buildConfigField "String", "FILE_PREFIX", "\"https://s.xiaolian365.com/\""
             buildConfigField "String", "TRADE_PREFIX", "\"/trade\""
