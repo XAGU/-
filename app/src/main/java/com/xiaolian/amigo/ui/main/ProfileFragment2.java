@@ -48,7 +48,7 @@ import lombok.Data;
 public class ProfileFragment2 extends Fragment {
     private static final String TAG = ProfileFragment2.class.getSimpleName();
     ProfileAdaptor.Item wallet = new ProfileAdaptor.Item(R.drawable.profile_wallet, "我的钱包", WalletActivity.class);
-    ProfileAdaptor.Item credits = new ProfileAdaptor.Item(R.drawable.profile_point, "积分兑换", CreditsActivity.class);
+    ProfileAdaptor.Item credits = new ProfileAdaptor.Item(R.drawable.profile_credits, "积分兑换", CreditsActivity.class);
     ProfileAdaptor.Item bonus = new ProfileAdaptor.Item(R.drawable.profile_luck, "我的代金券", BonusActivity.class);
     ProfileAdaptor.Item repair = new ProfileAdaptor.Item(R.drawable.profile_repair, "设备报修", RepairNavActivity.class);
 

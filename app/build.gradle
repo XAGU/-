@@ -18,8 +18,8 @@ android {
         applicationId "com.xiaolian.amigo"
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
-        versionCode 8
-        versionName "1.0.72"
+        versionCode 9
+        versionName "1.0.80"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true

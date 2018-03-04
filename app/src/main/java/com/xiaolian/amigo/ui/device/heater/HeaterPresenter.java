@@ -28,16 +28,16 @@ public class HeaterPresenter<V extends IHeaterView> extends WaterDeviceBasePrese
     }
 
     @Override
-    public void onAttach(V view) {
-        super.onAttach(view);
-        if (!deviceDataManager.isHeaterGuideDone()) {
-            deviceDataManager.doneHeaterGuide();
-            getMvpView().showGuide();
-        }
+    public void notShowRemindAlert() {
+        deviceDataManager.setHeaterGuide(Constant.REMIND_ALERT_COUNT);
     }
 
     @Override
-    public void notShowRemindAlert() {
-        deviceDataManager.setHeaterGuide(Constant.REMIND_ALERT_COUNT);
+    public void showGuide() {
+        if (!deviceDataManager.isHeaterGuideDone()
+                && needShowGuide()) {
+            deviceDataManager.doneHeaterGuide();
+            getMvpView().showGuide();
+        }
     }
 }

@@ -15,8 +15,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import retrofit2.http.POST;
-
 /**
  * 积分兑换
  * @author zcd
@@ -42,9 +40,9 @@ public class CreditsPresenter<V extends ICreditsView> extends BasePresenter<V>
                 if (null == result.getError()) {
                     if (result.getData().getItems() != null
                             && !result.getData().getItems().isEmpty()) {
-                        List<CreditsAdapter.PointItem> items = new ArrayList<>();
+                        List<CreditsAdapter.CreditsItem> items = new ArrayList<>();
                         for (CreditsRuleItemsDTO creditsRuleItemsDTO : result.getData().getItems()) {
-                            items.add(new CreditsAdapter.PointItem(creditsRuleItemsDTO.getBonusId(),
+                            items.add(new CreditsAdapter.CreditsItem(creditsRuleItemsDTO.getBonusId(),
                                     creditsRuleItemsDTO.getDeviceType(), creditsRuleItemsDTO.getBonusAmount(),
                                     creditsRuleItemsDTO.getCredits()));
                         }

@@ -165,6 +165,13 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         }
     }
 
+    /**
+     * 用于子类获取供应商来判断是否需要显示温馨提示guideDialog
+     */
+    protected Supplier getSupplier() {
+        return supplier;
+    }
+
     private void initWriteObserver() {
         writeObserver = new BleObserver<byte[]>() {
             @Override
