@@ -9,6 +9,7 @@ import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Locale;
 
@@ -24,13 +25,16 @@ public class BonusAdaptor extends CommonAdapter<BonusAdaptor.BonusWrapper> {
 
     private static final int MAX_TIME_LIFT = 3;
 
+    private DecimalFormat df = new DecimalFormat("###.##");
+
     public BonusAdaptor(Context context, int layout, List<BonusWrapper> bonuses) {
         super(context, layout, bonuses);
     }
 
     @Override
     protected void convert(ViewHolder holder, BonusWrapper bonusWrapper, int position) {
-        holder.setText(R.id.tv_amount, String.format(Locale.getDefault(), "¥%.0f", bonusWrapper.amount));
+        holder.setText(R.id.tv_amount, "¥" + df.format(bonusWrapper.getAmount()));
+//        holder.setText(R.id.tv_amount, String.format(Locale.getDefault(), "¥%.0f", bonusWrapper.amount));
         holder.setText(R.id.tv_type, bonusWrapper.getName());
         if (bonusWrapper.getStartTime() != null && bonusWrapper.getTimeEnd() != null) {
             holder.setText(R.id.tv_time_end, "有效期" + TimeUtils.millis2String(bonusWrapper.getStartTime(),

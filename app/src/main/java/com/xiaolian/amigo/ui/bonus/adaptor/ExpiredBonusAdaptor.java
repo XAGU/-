@@ -7,6 +7,7 @@ import com.xiaolian.amigo.util.TimeUtils;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Locale;
 
@@ -18,6 +19,9 @@ import java.util.Locale;
  */
 
 public class ExpiredBonusAdaptor extends CommonAdapter<BonusAdaptor.BonusWrapper> {
+
+    private DecimalFormat df = new DecimalFormat("###.##");
+
     public ExpiredBonusAdaptor(Context context, int layoutId, List<BonusAdaptor.BonusWrapper> datas) {
         super(context, layoutId, datas);
     }
@@ -25,7 +29,8 @@ public class ExpiredBonusAdaptor extends CommonAdapter<BonusAdaptor.BonusWrapper
     @Override
     protected void convert(ViewHolder holder, BonusAdaptor.BonusWrapper bonusWrapper, int position) {
         if (bonusWrapper.amount != null) {
-            holder.setText(R.id.tv_amount, String.format(Locale.getDefault(), "¥%.0f", bonusWrapper.amount));
+//            holder.setText(R.id.tv_amount, String.format(Locale.getDefault(), "¥%.0f", bonusWrapper.amount));
+            holder.setText(R.id.tv_amount, "¥" + df.format(bonusWrapper.getAmount()));
         }
         if (bonusWrapper.name != null) {
             holder.setText(R.id.tv_type, bonusWrapper.getName());
