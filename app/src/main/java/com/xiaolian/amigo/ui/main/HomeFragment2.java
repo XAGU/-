@@ -60,6 +60,9 @@ public class HomeFragment2 extends Fragment {
     HomeAdaptor.ItemWrapper water = new HomeAdaptor.ItemWrapper(HomeAdaptor.SMALL_TYPE,
             null, "饮水机", "DRINK A WATER",
             R.drawable.water, R.drawable.small_water);
+    HomeAdaptor.ItemWrapper gate = new HomeAdaptor.ItemWrapper(HomeAdaptor.SMALL_TYPE,
+            null, "门禁卡", "ACCESS CONTROL",
+            R.drawable.gate, R.drawable.small_gate);
     HomeAdaptor.ItemWrapper lost = new HomeAdaptor.ItemWrapper(HomeAdaptor.SMALL_TYPE,
             null, "失物招领", "LOST AND FOUND",
             R.drawable.lost, R.drawable.small_lost);
@@ -139,6 +142,8 @@ public class HomeFragment2 extends Fragment {
                                     EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_DRYER));
                                 } else if (items.get(position).getRes() == R.drawable.washer) {
                                     EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_WASHER));
+                                } else if (items.get(position).getRes() == R.drawable.gate) {
+                                    EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_GATE));
                                 }
                             }
                         } catch (ArrayIndexOutOfBoundsException ex) {
@@ -214,6 +219,9 @@ public class HomeFragment2 extends Fragment {
         if (water.isActive()) {
             items.add(water);
         }
+        if (gate.isActive()) {
+            items.add(gate);
+        }
         if (lost.isActive()) {
             items.add(lost);
         }
@@ -231,6 +239,7 @@ public class HomeFragment2 extends Fragment {
         dryer.setActive(false);
         water.setActive(false);
         washer.setActive(false);
+        gate.setActive(false);
         /// business为空则不显示shower和water
         if (businesses == null || businesses.isEmpty()) {
             notifyAdaptor();
@@ -264,6 +273,12 @@ public class HomeFragment2 extends Fragment {
                 washer.setUsing(business.getUsing());
                 currentPrepayOrderSize += business.getPrepayOrder();
                 currentBusinessSize += 1;
+            } else if (business.getBusinessId() == 11) {
+                gate.setActive(true);
+//                gate.setPrepaySize(business.getPrepayOrder());
+//                gate.setUsing(business.getUsing());
+//                currentPrepayOrderSize += business.getPrepayOrder();
+                currentBusinessSize += 1;
             }
         }
         if (currentBusinessSize != businessSize) {
@@ -295,6 +310,7 @@ public class HomeFragment2 extends Fragment {
         dryer.setType(HomeAdaptor.NORMAL_TYPE);
         water.setType(HomeAdaptor.NORMAL_TYPE);
         washer.setType(HomeAdaptor.NORMAL_TYPE);
+        gate.setType(HomeAdaptor.NORMAL_TYPE);
         lost.setType(HomeAdaptor.NORMAL_TYPE);
     }
 
@@ -304,6 +320,7 @@ public class HomeFragment2 extends Fragment {
         dryer.setType(HomeAdaptor.SMALL_TYPE);
         water.setType(HomeAdaptor.SMALL_TYPE);
         washer.setType(HomeAdaptor.SMALL_TYPE);
+        gate.setType(HomeAdaptor.SMALL_TYPE);
         lost.setType(HomeAdaptor.SMALL_TYPE);
     }
 

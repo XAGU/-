@@ -1156,6 +1156,11 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                     gotoWasher();
                 }
                 break;
+            case GOTO_GATE:
+                if (checkLogin()) {
+                    gotoGate();
+                }
+                break;
             case GOTO_LOST_AND_FOUND:
                 if (checkLogin()) {
                     gotoLostAndFound();
@@ -1173,6 +1178,12 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             default:
                 break;
         }
+    }
+
+    private void gotoGate() {
+        startActivity(new Intent(this, WebActivity.class)
+                .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_GATE
+                        + "?token=" + presenter.getToken()));
     }
 
     private void gotoWasher() {
@@ -1214,6 +1225,10 @@ public class MainActivity extends MainBaseActivity implements IMainView {
              * 跳转到洗衣机
              */
             GOTO_WASHER(),
+            /**
+             * 跳转到门禁卡
+             */
+            GOTO_GATE(),
             /**
              * 跳转页面
              */
