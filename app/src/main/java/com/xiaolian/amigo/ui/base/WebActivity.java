@@ -134,6 +134,7 @@ public class WebActivity extends BaseActivity {
             }
 
         });
+//        WebView.setWebContentsDebuggingEnabled(true);
         webView.setWebChromeClient(new MyWebChromeClient());
         webView.addJavascriptInterface(new WebAppInterface(), "WebViewInterface");
         webSettings.setJavaScriptEnabled(true);

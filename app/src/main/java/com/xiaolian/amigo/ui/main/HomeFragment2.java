@@ -273,7 +273,7 @@ public class HomeFragment2 extends Fragment {
                 washer.setUsing(business.getUsing());
                 currentPrepayOrderSize += business.getPrepayOrder();
                 currentBusinessSize += 1;
-            } else if (business.getBusinessId() == 11) {
+            } else if (business.getBusinessId() == 101) {
                 gate.setActive(true);
 //                gate.setPrepaySize(business.getPrepayOrder());
 //                gate.setUsing(business.getUsing());

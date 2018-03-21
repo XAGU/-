@@ -10,7 +10,7 @@ public enum IndexEntry {
     WATER(2, "饮水机"),
     DRYER(3, "吹风机"),
     WASHER(4, "洗衣机"),
-    GATE(11, "门禁卡"),;
+    GATE(101, "门禁卡"),;
     private Integer code;
     private String desc;
 

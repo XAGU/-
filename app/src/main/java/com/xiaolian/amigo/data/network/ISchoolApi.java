@@ -1,9 +1,9 @@
 package com.xiaolian.amigo.data.network;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.common.SimpleQueryReqDTO;
 import com.xiaolian.amigo.data.network.model.school.QueryBriefSchoolListRespDTO;
 import com.xiaolian.amigo.data.network.model.school.QuerySchoolBizListRespDTO;
+import com.xiaolian.amigo.data.network.model.school.QuerySchoolListReqDTO;
 
 import retrofit2.http.Body;
 import retrofit2.http.POST;
@@ -21,7 +21,7 @@ public interface ISchoolApi {
      * 获取学校列表
      */
     @POST("school/brief/list")
-    Observable<ApiResult<QueryBriefSchoolListRespDTO>> getSchoolList(@Body SimpleQueryReqDTO body);
+    Observable<ApiResult<QueryBriefSchoolListRespDTO>> getSchoolList(@Body QuerySchoolListReqDTO body);
 
     /**
      * 获取学校业务列表

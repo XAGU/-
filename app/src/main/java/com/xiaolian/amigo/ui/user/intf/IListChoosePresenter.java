@@ -17,7 +17,7 @@ public interface IListChoosePresenter<V extends IListChooseView> extends IBasePr
      * @param page 页数
      * @param size 每页个数
      */
-    void getSchoolList(Integer page, Integer size);
+    void getSchoolList(Integer page, Integer size, Boolean online);
 
     /**
      * 获取建筑物列表

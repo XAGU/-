@@ -58,29 +58,30 @@ android {
     productFlavors {
         dev {
             // 测试
-//            applicationId "com.xiaolian.amigo_dev"
-//            resValue "string", "app_name", "笑联测试版"
-//            buildConfigField "String", "ENVIRONMENT", '"dev"'
-//            buildConfigField "String", "SERVER", "\"http://116.62.236.67:5081/\""
-////            buildConfigField "String", "SERVER", "\"http://10.0.0.100:5081/\""
-//            buildConfigField "String", "H5_SERVER", "\"http://120.79.161.9:5097/c\""
-//            buildConfigField "String", "FILE_PREFIX", "\"https://s.xiaolian365.com/\""
-//            buildConfigField "String", "TRADE_PREFIX", "\"/trade\""
-//            // 修改 AndroidManifest.xml 里渠道变量
-//            manifestPlaceholders = [UMENG_CHANNEL_VALUE      : "dev",
-//                                    FILE_PROVIDER_AUTHORITIES: applicationId + ".fileprovider"]
-
-            // 预发
-            applicationId "com.xiaolian.amigo_pre"
-            resValue "string", "app_name", "笑联预发版"
+            applicationId "com.xiaolian.amigo_dev"
+            resValue "string", "app_name", "笑联测试版"
             buildConfigField "String", "ENVIRONMENT", '"dev"'
-            buildConfigField "String", "SERVER", "\"http://47.106.62.186/c/\""
-            buildConfigField "String", "H5_SERVER", "\"http://47.106.62.186/c\""
+            buildConfigField "String", "SERVER", "\"http://116.62.236.67:5081/\""
+//            buildConfigField "String", "SERVER", "\"http://10.0.0.4:5081/\""
+            buildConfigField "String", "H5_SERVER", "\"http://116.62.236.67:5097/c\""
+//            buildConfigField "String", "H5_SERVER", "\"http://10.0.0.5:5000/c\""
             buildConfigField "String", "FILE_PREFIX", "\"https://s.xiaolian365.com/\""
-            buildConfigField "String", "TRADE_PREFIX", "\"/c/trade\""
+            buildConfigField "String", "TRADE_PREFIX", "\"/trade\""
             // 修改 AndroidManifest.xml 里渠道变量
             manifestPlaceholders = [UMENG_CHANNEL_VALUE      : "dev",
                                     FILE_PROVIDER_AUTHORITIES: applicationId + ".fileprovider"]
+
+            // 预发
+//            applicationId "com.xiaolian.amigo_pre"
+//            resValue "string", "app_name", "笑联预发版"
+//            buildConfigField "String", "ENVIRONMENT", '"dev"'
+//            buildConfigField "String", "SERVER", "\"http://47.106.62.186/c/\""
+//            buildConfigField "String", "H5_SERVER", "\"http://47.106.62.186/c\""
+//            buildConfigField "String", "FILE_PREFIX", "\"https://s.xiaolian365.com/\""
+//            buildConfigField "String", "TRADE_PREFIX", "\"/c/trade\""
+//            // 修改 AndroidManifest.xml 里渠道变量
+//            manifestPlaceholders = [UMENG_CHANNEL_VALUE      : "dev",
+//                                    FILE_PROVIDER_AUTHORITIES: applicationId + ".fileprovider"]
         }
         prod {
             applicationId defaultConfig.applicationId

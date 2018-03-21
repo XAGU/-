@@ -2,11 +2,13 @@ package com.xiaolian.amigo.ui.user;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.util.ObjectsCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -115,6 +117,8 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
     @BindView(R.id.rl_error)
     RelativeLayout rlError;
 
+    private int action;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -138,11 +142,12 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
         if (getIntent() != null) {
-            switch (getIntent().getExtras().getInt(INTENT_KEY_LIST_CHOOSE_ACTION)) {
+            action = getIntent().getIntExtra(INTENT_KEY_LIST_CHOOSE_ACTION, ACTION_LIST_SCHOOL);
+            switch (action) {
                 case ACTION_LIST_SCHOOL:
                     tvTitle.setText("选择学校");
                     // page size 为null 加载全部
-                    presenter.getSchoolList(null, null);
+                    presenter.getSchoolList(null, null, true);
                     adapter.setOnItemClickListener((view, position) -> {
                         try {
                             presenter.updateSchool(items.get(position).getId());
@@ -296,7 +301,7 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                     break;
                 case ACTION_LIST_SCHOOL_RESULT:
                     tvTitle.setText("选择学校");
-                    presenter.getSchoolList(null, null);
+                    presenter.getSchoolList(null, null, true);
                     adapter.setOnItemClickListener((view, position) -> {
                         try {
                             Intent intent = new Intent();
@@ -458,5 +463,42 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
     protected void onDestroy() {
         presenter.onDetach();
         super.onDestroy();
+    }
+    private int mTouchRepeat = 0;
+    private boolean mPoint2Down = false;
+    private boolean mThreePointDown = false;
+    long[] mHits = new long[4];
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (action == ACTION_LIST_SCHOOL || action == ACTION_LIST_SCHOOL_RESULT) {
+            switch (ev.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    mPoint2Down = false;
+                    mThreePointDown = false;
+                    mTouchRepeat = 0;
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    mTouchRepeat++;
+                    break;
+                case MotionEvent.ACTION_POINTER_2_DOWN:
+                    mPoint2Down = true;
+                    break;
+                case MotionEvent.ACTION_POINTER_3_DOWN:
+                    mThreePointDown = true;
+                    break;
+                case MotionEvent.ACTION_POINTER_UP:
+                    if (mPoint2Down && mTouchRepeat < 10 && !mThreePointDown) {
+                        System.arraycopy(mHits, 1, mHits, 0, mHits.length-1);
+                        mHits[mHits.length-1] = SystemClock.uptimeMillis();
+                        if (mHits[0] >= (SystemClock.uptimeMillis()-2000)) {
+                            items.clear();
+                            presenter.getSchoolList(null, null, false);
+                        }
+                    }
+                    break;
+            }
+        }
+        return super.dispatchTouchEvent(ev);
     }
 }
