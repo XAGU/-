@@ -49,7 +49,7 @@ public class HomeFragment2 extends Fragment {
 
     private static final String TAG = HomeFragment2.class.getSimpleName();
     HomeAdaptor.ItemWrapper shower = new HomeAdaptor.ItemWrapper(HomeAdaptor.SMALL_TYPE,
-            null, "热水澡", "TAKE A SHOW",
+            null, "热水澡", "TAKE A SHOWER",
             R.drawable.shower, R.drawable.small_shower);
     HomeAdaptor.ItemWrapper dryer = new HomeAdaptor.ItemWrapper(HomeAdaptor.SMALL_TYPE,
             null, "吹风机", "HAIR DRIER",
