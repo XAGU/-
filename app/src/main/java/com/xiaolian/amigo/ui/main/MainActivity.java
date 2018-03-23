@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -62,6 +63,7 @@ import com.xiaolian.amigo.util.AppUtils;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
+import com.xiaolian.amigo.util.ScreenUtils;
 import com.youth.banner.Banner;
 
 import org.greenrobot.eventbus.EventBus;
@@ -147,6 +149,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @BindView(R.id.sv_main)
     ScrollView slMain;
+
+    @BindView(R.id.fm_container)
+    LinearLayout llContainer;
 
     /**
      * 校ok迁移
@@ -974,6 +979,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public void showXOkMigrate() {
+        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) llContainer.getLayoutParams();
+        lp.topMargin = -ScreenUtils.dpToPxInt(this.getApplicationContext(), 11);
+        llContainer.setLayoutParams(lp);
         ivXokMigrate.setVisibility(View.VISIBLE);
         ivXokMigrate.setOnClickListener(v -> {
             startActivity(new Intent(MainActivity.this, WebActivity.class)
@@ -984,6 +992,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public void hideXOkMigrate() {
+        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) llContainer.getLayoutParams();
+        lp.topMargin = ScreenUtils.dpToPxInt(this.getApplicationContext(), 0);
+        llContainer.setLayoutParams(lp);
         ivXokMigrate.setVisibility(View.GONE);
     }
 

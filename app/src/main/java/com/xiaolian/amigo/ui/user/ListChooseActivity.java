@@ -34,6 +34,7 @@ import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -468,6 +469,7 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
     private boolean mPoint2Down = false;
     private boolean mThreePointDown = false;
     long[] mHits = new long[4];
+    private boolean online = true;
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
@@ -491,9 +493,11 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                     if (mPoint2Down && mTouchRepeat < 10 && !mThreePointDown) {
                         System.arraycopy(mHits, 1, mHits, 0, mHits.length-1);
                         mHits[mHits.length-1] = SystemClock.uptimeMillis();
-                        if (mHits[0] >= (SystemClock.uptimeMillis()-2000)) {
+                        if (mHits[0] >= (SystemClock.uptimeMillis()-3000)) {
                             items.clear();
-                            presenter.getSchoolList(null, null, false);
+                            online = !online;
+                            Arrays.fill(mHits, 0);
+                            presenter.getSchoolList(null, null, online);
                         }
                     }
                     break;

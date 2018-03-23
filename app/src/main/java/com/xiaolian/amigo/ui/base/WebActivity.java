@@ -18,6 +18,7 @@ import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -41,6 +42,9 @@ public class WebActivity extends BaseActivity {
 
     @BindView(R.id.webview)
     WebView webView;
+
+    @BindView(R.id.fl_root)
+    FrameLayout flRoot;
 
     ValueCallback<Uri> mUploadMessage;
     ValueCallback<Uri[]> mFilePathCallback;
@@ -235,6 +239,13 @@ public class WebActivity extends BaseActivity {
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        flRoot.removeView(webView);
+        webView.destroy();
+        super.onDestroy();
     }
 
     @Override
