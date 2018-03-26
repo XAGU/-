@@ -11,6 +11,7 @@ import com.xiaolian.amigo.data.network.IUserApi;
 import com.xiaolian.amigo.data.network.IVersionApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.device.DeviceCategoryBO;
+import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
 import com.xiaolian.amigo.data.network.model.version.CheckVersionUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.order.OrderReqDTO;
@@ -247,5 +248,15 @@ public class MainDataManager implements IMainDataManager {
     @Override
     public Integer getCredits() {
         return sharedPreferencesHelp.getCredits();
+    }
+
+    @Override
+    public void setSchoolBiz(List<BriefSchoolBusiness> businesses) {
+        sharedPreferencesHelp.setSchoolBiz(businesses);
+    }
+
+    @Override
+    public List<BriefSchoolBusiness> getSchoolBiz() {
+        return sharedPreferencesHelp.getSchoolBiz();
     }
 }

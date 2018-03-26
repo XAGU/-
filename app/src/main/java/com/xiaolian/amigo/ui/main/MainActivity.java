@@ -320,9 +320,18 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         Log.d(TAG, "onResume");
         showBanners(null);
         if (!isNetworkAvailable()) {
-            showNoticeAmount(0);
-            initSchoolBiz();
             onError(R.string.network_available_error_tip);
+            showNoticeAmount(0);
+            if (presenter.isLogin()) {
+                // 设置昵称
+                tvNickName.setText(presenter.getUserInfo().getNickName());
+                // 设置学校
+                tvSchoolName.setText(presenter.getUserInfo().getSchoolName());
+                // 设置学校业务
+                presenter.getSchoolBusiness();
+                return;
+            }
+            initSchoolBiz();
             return;
         }
         if (!presenter.isLogin()) {

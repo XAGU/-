@@ -13,6 +13,7 @@ import com.xiaolian.amigo.data.network.model.device.DeviceCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.notify.ReadNotifyReqDTO;
 import com.xiaolian.amigo.data.network.model.school.QuerySchoolBizListRespDTO;
 import com.xiaolian.amigo.data.network.model.system.BannerDTO;
+import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
 import com.xiaolian.amigo.data.network.model.user.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.data.network.model.user.UploadUserDeviceInfoReqDTO;
 import com.xiaolian.amigo.data.network.model.version.CheckVersionUpdateReqDTO;
@@ -24,6 +25,8 @@ import com.xiaolian.amigo.ui.main.intf.IMainView;
 import com.xiaolian.amigo.util.Constant;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -218,24 +221,34 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
 
     @Override
     public void getSchoolBusiness() {
-        addObserver(mainDataManager.getSchoolBizList(), new NetworkObserver<ApiResult<QuerySchoolBizListRespDTO>>(false) {
+        if (!getMvpView().isNetworkAvailable()) {
+            List<BriefSchoolBusiness> businesses = mainDataManager.getSchoolBiz();
+            if (businesses != null && businesses.isEmpty()) {
+                getMvpView().showSchoolBiz(null);
+            } else {
+                getMvpView().showSchoolBiz(businesses);
+            }
+        } else {
+            addObserver(mainDataManager.getSchoolBizList(), new NetworkObserver<ApiResult<QuerySchoolBizListRespDTO>>(false) {
 
-            @Override
-            public void onReady(ApiResult<QuerySchoolBizListRespDTO> result) {
-                if (null == result.getError()) {
-                    getMvpView().showSchoolBiz(result.getData().getBusinesses());
-                } else {
-                    getMvpView().onError(result.getError().getDisplayMessage());
+                @Override
+                public void onReady(ApiResult<QuerySchoolBizListRespDTO> result) {
+                    if (null == result.getError()) {
+                        mainDataManager.setSchoolBiz(result.getData().getBusinesses());
+                        getMvpView().showSchoolBiz(result.getData().getBusinesses());
+                    } else {
+                        getMvpView().onError(result.getError().getDisplayMessage());
+                        getMvpView().showSchoolBiz(null);
+                    }
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    super.onError(e);
                     getMvpView().showSchoolBiz(null);
                 }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                super.onError(e);
-                getMvpView().showSchoolBiz(null);
-            }
-        });
+            });
+        }
     }
 
     @Override

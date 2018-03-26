@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.data.prefs;
 
+import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
 import com.xiaolian.amigo.data.network.model.user.UploadUserDeviceInfoReqDTO;
 import com.xiaolian.amigo.data.vo.DeviceCategory;
 import com.xiaolian.amigo.data.vo.User;
@@ -139,4 +140,9 @@ public interface ISharedPreferencesHelp {
      */
     void setCredits(Integer credits);
     Integer getCredits();
+
+    // 缓存学校业务
+    void setSchoolBiz(List<BriefSchoolBusiness> businesses);
+
+    List<BriefSchoolBusiness> getSchoolBiz();
 }

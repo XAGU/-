@@ -6,6 +6,7 @@ import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
 import com.xiaolian.amigo.data.network.model.user.UploadUserDeviceInfoReqDTO;
 import com.xiaolian.amigo.data.vo.DeviceCategory;
 import com.xiaolian.amigo.data.vo.User;
@@ -53,6 +54,7 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     private static final String PREF_LAST_RECHARGE_AMOUNT = "PREF_LAST_RECHARGE_AMOUNT";
     private static final String PREF_UPLOADED_USER_DEVICE_INFO = "PREF_UPLOADED_USER_DEVICE_INFO";
     private static final String PREF_KEY_DEVICE_CATEGORY = "PREF_KEY_DEVICE_CATEGORY";
+    private static final String PREF_KEY_SCHOOL_BIZ = "PREF_KEY_SCHOOL_BIZ";
     /**
      * 积分
      */
@@ -405,6 +407,26 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     @Override
     public Integer getCredits() {
         return mSharedPreferences.getInt(PREF_KEY_CREDITS, -1);
+    }
+
+    @Override
+    public void setSchoolBiz(List<BriefSchoolBusiness> businesses) {
+        String schoolBizStr = mGson.toJson(businesses);
+        mSharedPreferences
+                .edit()
+                .putString(PREF_KEY_SCHOOL_BIZ, schoolBizStr)
+                .apply();
+    }
+
+    @Override
+    public List<BriefSchoolBusiness> getSchoolBiz() {
+        String schoolBizStr = mSharedPreferences.getString(PREF_KEY_SCHOOL_BIZ, null);
+        if (null != schoolBizStr) {
+            return mGson.fromJson(schoolBizStr,
+                    new TypeToken<List<BriefSchoolBusiness>>() {
+                    }.getType());
+        }
+        return null;
     }
 
     @Override
