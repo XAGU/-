@@ -2,6 +2,7 @@ package com.xiaolian.amigo.data.manager.intf;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.device.DeviceCategoryBO;
+import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
 import com.xiaolian.amigo.data.network.model.version.CheckVersionUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.timerange.QueryTimeValidReqDTO;
@@ -141,4 +142,7 @@ public interface IMainDataManager {
      * @return 积分
      */
     Integer getCredits();
+
+    void setSchoolBiz(List<BriefSchoolBusiness> businesses);
+    List<BriefSchoolBusiness> getSchoolBiz();
 }
