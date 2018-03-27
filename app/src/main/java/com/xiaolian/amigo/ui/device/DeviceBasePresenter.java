@@ -1,7 +1,9 @@
 package com.xiaolian.amigo.ui.device;
 
+import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
+import android.bluetooth.le.BluetoothLeScanner;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.ParcelUuid;
