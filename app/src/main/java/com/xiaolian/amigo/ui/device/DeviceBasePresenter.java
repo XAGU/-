@@ -51,6 +51,10 @@ import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
 import com.xiaolian.amigo.util.ble.Agreement;
 import com.xiaolian.amigo.util.ble.HexBytesUtils;
+import com.xiaolian.blelib.BluetoothConstants;
+import com.xiaolian.blelib.ScanRecord;
+import com.xiaolian.blelib.scan.BluetoothScanResponse;
+import com.xiaolian.blelib.scan.BluetoothScanResult;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -304,15 +308,18 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
         // 扫描macAddress
         Log.i(TAG, "开始扫描macAddress");
-        Observable<ScanResult> scanObservable = bleDataManager.scan(macAddress);
-        addObserver(scanObservable, new BleObserver<ScanResult>() {
+        bleDataManager.scan(BluetoothConstants.SCAN_TYPE_BLE, new BluetoothScanResponse() {
+            @Override
+            public void onScanStarted() {
+                Log.d(TAG, "onScanStarted");
+            }
 
             @Override
-            public void onNext(ScanResult result) {
-
+            public void onDeviceFounded(BluetoothScanResult result) {
                 boolean validDevice = false;
-                if (null != result.getScanRecord() && null != result.getScanRecord().getServiceUuids()) {
-                    for (ParcelUuid parcelUuid : result.getScanRecord().getServiceUuids()) {
+                ScanRecord scanRecord = ScanRecord.parseFromBytes(result.getScanRecord());
+                if (null != scanRecord && null != scanRecord.getServiceUuids()) {
+                    for (ParcelUuid parcelUuid : scanRecord.getServiceUuids()) {
                         if (parcelUuid.toString().equalsIgnoreCase(supplier.getServiceUuid())) {
                             validDevice = true;
                             break;
@@ -323,40 +330,29 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     return;
                 }
 
-                if (currentMacAddress != null && currentMacAddress.equalsIgnoreCase(result.getBleDevice().getMacAddress())) {
+                if (currentMacAddress != null && currentMacAddress.equalsIgnoreCase(result.getAddress())) {
                     Log.i(TAG, "扫描获取macAddress在当前上下文已经存在，无需重复计算。macAddress:" + currentMacAddress);
-                    this.unsubscribe();
+                    bleDataManager.stopScan();
                     return;
                 }
 
-                currentMacAddress = result.getBleDevice().getMacAddress();
+                currentMacAddress = result.getAddress();
                 Log.i(TAG, "扫描获取macAddress成功。macAddress:" + currentMacAddress);
                 deviceDataManager.setDeviceNoAndMacAddress(macAddress, currentMacAddress);
                 realConnect(macAddress);
-                this.unsubscribe();
+                bleDataManager.stopScan();
             }
 
             @Override
-            public void onConnectError() {
-                Log.wtf(TAG, "扫描失败 onConnectError");
-                reportError(getStep().getStep(), ConnectErrorType.BLE_CONNECT_ERROR.getType(),
-                        DisplayErrorType.CONNECT_ERROR.getType(), "扫描失败 onConnectError", "");
-                if (getMvpView() != null) {
-                    getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
-                }
+            public void onScanStopped() {
+                Log.d(TAG, "onScanStopped");
             }
 
             @Override
-            public void onExecuteError(Throwable e) {
-                Log.wtf(TAG, "扫描失败 onExecuteError", e);
-                reportError(getStep().getStep(), ConnectErrorType.BLE_CONNECT_ERROR.getType(),
-                        DisplayErrorType.CONNECT_ERROR.getType(), "扫描失败 onExecuteError",
-                        e == null ? "" : e.getMessage());
-                if (getMvpView() != null) {
-                    getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
-                }
+            public void onScanCanceled() {
+                Log.d(TAG, "onScanCanceled");
             }
-        }, Schedulers.io());
+        });
     }
 
     private void realConnect(String macAddress) {
@@ -1331,6 +1327,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
         // 清空连接观察者
         clearObservers();
+        bleDataManager.stopScan();
     }
 
     @Override

@@ -5,7 +5,7 @@ package com.xiaolian.blelib;
  * @date 18/3/27
  */
 
-public class Constants {
+public class BluetoothConstants {
     /**
      * 扫描模式:经典模式
      */

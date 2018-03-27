@@ -25,6 +25,7 @@ import com.xiaolian.amigo.data.base.LogInterceptor;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.di.ApplicationContext;
 import com.xiaolian.amigo.di.module.ApplicationModule;
+import com.xiaolian.blelib.IBluetoothClient;
 
 import javax.inject.Singleton;
 
@@ -42,6 +43,8 @@ public interface ApplicationComponent {
     Application application();
 
     Retrofit retrofit();
+
+    IBluetoothClient bluetoothClient();
 
     Gson gson();
 

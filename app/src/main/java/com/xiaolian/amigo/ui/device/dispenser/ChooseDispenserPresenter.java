@@ -21,6 +21,10 @@ import com.xiaolian.amigo.ui.device.intf.dispenser.IChooseDispenerView;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IChooseDispenserPresenter;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
+import com.xiaolian.blelib.BluetoothConstants;
+import com.xiaolian.blelib.ScanRecord;
+import com.xiaolian.blelib.scan.BluetoothScanResponse;
+import com.xiaolian.blelib.scan.BluetoothScanResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -111,7 +115,7 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
         startTimer();
         closeBleConnection();
         resetSubscriptions();
-        addObserver(bleDataManager.scan(), new BleObserver<ScanResult>() {
+        bleDataManager.scan(BluetoothConstants.SCAN_TYPE_BLE, new BluetoothScanResponse() {
             // 已经上报的mac地址的集合
             List<String> existDevices = new ArrayList<>();
             // 新扫描到的mac地址的集合
@@ -121,9 +125,13 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
             // 延时1s
             int delay = 1000;
             int maxDelay = 1000;
+            @Override
+            public void onScanStarted() {
+                Log.d(TAG, "onScanStarted");
+            }
 
             @Override
-            public void onNext(ScanResult result) {
+            public void onDeviceFounded(BluetoothScanResult result) {
                 if (null == begin) {
                     // 起始时间设置为当前时间
                     begin = System.currentTimeMillis();
@@ -131,8 +139,9 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
 
                 // 根据SERVICE_UUID筛选出可用设备
                 boolean validDevice = false;
-                if (null != result.getScanRecord() && null != result.getScanRecord().getServiceUuids()) {
-                    for (ParcelUuid parcelUuid : result.getScanRecord().getServiceUuids()) {
+                ScanRecord scanRecord = ScanRecord.parseFromBytes(result.getScanRecord());
+                if (null != scanRecord && null != scanRecord.getServiceUuids()) {
+                    for (ParcelUuid parcelUuid : scanRecord.getServiceUuids()) {
                         for (DeviceCategory deviceCategory : deviceCategories) {
                             for (Supplier s : deviceCategory.getSuppliers()) {
                                 if (parcelUuid.toString().equalsIgnoreCase(s.getServiceUuid())) {
@@ -154,8 +163,8 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
                     return;
                 }
 
-                String macAddress = result.getBleDevice().getMacAddress();
-                String deviceNo = result.getBleDevice().getName();
+                String macAddress = result.getAddress();
+                String deviceNo = result.getName();
                 if (TextUtils.isEmpty(deviceDataManager.getMacAddressByDeviceNo(deviceNo))) {
                     deviceDataManager.setDeviceNoAndMacAddress(deviceNo, macAddress);
                 }
@@ -182,22 +191,24 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
                         begin = now;
                     }
                 }
+
             }
 
             @Override
-            public void onConnectError() {
-                Log.e(TAG, "扫描设备失败");
+            public void onScanStopped() {
+                Log.d(TAG, "onScanStopped");
             }
 
             @Override
-            public void onExecuteError(Throwable e) {
-                Log.wtf(TAG, "扫描设备失败", e);
+            public void onScanCanceled() {
+                Log.d(TAG, "onScanCanceled");
             }
-        }, Schedulers.io());
+        });
     }
 
     @Override
     public void closeBleConnection() {
+        bleDataManager.stopScan();
         if (null != subscriptions && !subscriptions.isUnsubscribed()) {
             subscriptions.unsubscribe();
             subscriptions.clear();

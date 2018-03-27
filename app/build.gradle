@@ -162,6 +162,7 @@ dependencies {
     implementation deps.zxing
     implementation project(':zxing-android-embedded')
     implementation deps.wechatSDKWithMta
+    implementation project(':blelib')
 }
 
 configurations.all {

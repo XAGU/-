@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 
 import com.polidea.rxandroidble.RxBleConnection;
 import com.polidea.rxandroidble.scan.ScanResult;
+import com.xiaolian.blelib.scan.BluetoothScanResponse;
 
 import rx.Observable;
 import rx.subjects.PublishSubject;
@@ -27,6 +28,10 @@ public interface IBleDataManager {
      * 扫描指定名称的设备
      */
     Observable<ScanResult> scan(String deviceName);
+
+    void scan(int scanType, BluetoothScanResponse response);
+
+    void stopScan();
 
     /**
      * 提供连接蓝牙设备的Observable，附带连接共享适配器供后续蓝牙操作使用

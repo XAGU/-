@@ -26,6 +26,8 @@ import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.data.prefs.SharedPreferencesHelp;
 import com.xiaolian.amigo.di.ApplicationContext;
 import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.blelib.BluetoothClient;
+import com.xiaolian.blelib.IBluetoothClient;
 
 import java.util.concurrent.TimeUnit;
 
@@ -74,6 +76,12 @@ public class ApplicationModule {
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .client(client)
                 .build();
+    }
+
+    @Singleton
+    @Provides
+    IBluetoothClient provideBluetoothClient() {
+        return new BluetoothClient(mApplication);
     }
 
     @Singleton

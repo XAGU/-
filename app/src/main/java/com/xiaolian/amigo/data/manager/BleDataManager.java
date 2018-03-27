@@ -12,6 +12,9 @@ import com.polidea.rxandroidble.scan.ScanResult;
 import com.polidea.rxandroidble.scan.ScanSettings;
 import com.polidea.rxandroidble.utils.ConnectionSharingAdapter;
 import com.xiaolian.amigo.data.manager.intf.IBleDataManager;
+import com.xiaolian.blelib.BluetoothClient;
+import com.xiaolian.blelib.IBluetoothClient;
+import com.xiaolian.blelib.scan.BluetoothScanResponse;
 
 import java.util.UUID;
 
@@ -33,10 +36,12 @@ public class BleDataManager implements IBleDataManager {
     public static final String WRITE_CHARACTERISTIC_UUID = "d44bc439-abfd-45a2-b575-925416129600";
     public static final String NOTIFY_DESCRIPTOR_UUID = "00002902-0000-1000-8000-00805f9b34fb";
     private RxBleClient client;
+    private IBluetoothClient bluetoothClient;
 
     @Inject
-    public BleDataManager(RxBleClient client) {
+    public BleDataManager(RxBleClient client, IBluetoothClient bluetoothClient) {
         this.client = client;
+        this.bluetoothClient = bluetoothClient;
     }
 
     @Override
@@ -61,6 +66,16 @@ public class BleDataManager implements IBleDataManager {
                 new ScanFilter.Builder()
                         .setDeviceName(deviceName)
                         .build());
+    }
+
+    @Override
+    public void scan(int scanType, BluetoothScanResponse response) {
+        bluetoothClient.scan(scanType, response);
+    }
+
+    @Override
+    public void stopScan() {
+        bluetoothClient.stopScan();
     }
 
     @Override

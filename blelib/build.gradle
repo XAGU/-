@@ -1,7 +1,9 @@
 apply plugin: 'com.android.library'
+apply from: '../buildsystem/dependencies.gradle'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion versions.compileSdk
+    buildToolsVersion versions.buildTools
 
 
 
