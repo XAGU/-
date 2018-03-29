@@ -1,34 +1,35 @@
 package com.xiaolian.amigo.data.manager.intf;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
+import com.xiaolian.amigo.data.network.model.common.SimpleQueryReqDTO;
+import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
+import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
 import com.xiaolian.amigo.data.network.model.file.OssModel;
+import com.xiaolian.amigo.data.network.model.login.EntireUserDTO;
+import com.xiaolian.amigo.data.network.model.login.VerificationCodeGetReqDTO;
+import com.xiaolian.amigo.data.network.model.residence.QueryResidenceListReqDTO;
+import com.xiaolian.amigo.data.network.model.residence.ResidenceListRespDTO;
+import com.xiaolian.amigo.data.network.model.school.QueryBriefSchoolListRespDTO;
+import com.xiaolian.amigo.data.network.model.school.QuerySchoolBizListRespDTO;
+import com.xiaolian.amigo.data.network.model.school.QuerySchoolListReqDTO;
 import com.xiaolian.amigo.data.network.model.user.BindResidenceReq;
+import com.xiaolian.amigo.data.network.model.user.DeleteResidenceRespDTO;
 import com.xiaolian.amigo.data.network.model.user.MobileUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.user.PasswordCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.user.PasswordUpdateReqDTO;
-import com.xiaolian.amigo.data.network.model.user.PersonalUpdateReqDTO;
-import com.xiaolian.amigo.data.network.model.residence.QueryResidenceListReqDTO;
-import com.xiaolian.amigo.data.network.model.common.SimpleQueryReqDTO;
-import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
-import com.xiaolian.amigo.data.network.model.login.VerificationCodeGetReqDTO;
-import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
-import com.xiaolian.amigo.data.network.model.user.DeleteResidenceRespDTO;
-import com.xiaolian.amigo.data.network.model.login.EntireUserDTO;
 import com.xiaolian.amigo.data.network.model.user.PersonalExtraInfoDTO;
+import com.xiaolian.amigo.data.network.model.user.PersonalUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.user.QueryAvatarDTO;
-import com.xiaolian.amigo.data.network.model.school.QueryBriefSchoolListRespDTO;
-import com.xiaolian.amigo.data.network.model.school.QuerySchoolBizListRespDTO;
 import com.xiaolian.amigo.data.network.model.user.QueryUserResidenceListRespDTO;
-import com.xiaolian.amigo.data.network.model.residence.ResidenceListRespDTO;
-import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
 import com.xiaolian.amigo.data.network.model.user.UserResidenceDTO;
 import com.xiaolian.amigo.data.network.model.user.UserResidenceInListDTO;
 import com.xiaolian.amigo.data.vo.User;
 
-import retrofit2.http.Body;
-import rx.Observable;
 import okhttp3.RequestBody;
+import retrofit2.http.Body;
 import retrofit2.http.Part;
+import rx.Observable;
 
 /**
  * 个人信息模块DataManager
@@ -79,7 +80,7 @@ public interface IUserDataManager {
     /**
      * 获取学校列表
      */
-    Observable<ApiResult<QueryBriefSchoolListRespDTO>> getSchoolList(@Body SimpleQueryReqDTO body);
+    Observable<ApiResult<QueryBriefSchoolListRespDTO>> getSchoolList(@Body QuerySchoolListReqDTO body);
 
     /**
      * 获取学校业务列表

@@ -185,7 +185,12 @@ public class RepairAdaptor extends RecyclerView.Adapter<RepairAdaptor.ViewHolder
             String location = repair.getLocation() == null ? "未知位置" : repair.getLocation();
             this.device = Device.getDevice(repair.getDeviceType()).getDesc() + Constant.CHINEASE_COLON + location;
             this.time = CommonUtil.stampToDate(repair.getCreateTime());
-            this.status = repair.getStatus();
+            // 防止status为null 造成app崩溃
+            if (repair.getStatus() == null) {
+                this.status = RepairStatus.UNKNOWN.getType();
+            } else {
+                this.status = repair.getStatus();
+            }
             this.rated = repair.getRated();
             this.repairmanId = repair.getRepairmanId();
             this.repairmanName = repair.getRepairmanName();

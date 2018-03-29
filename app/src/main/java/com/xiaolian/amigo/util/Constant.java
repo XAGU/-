@@ -78,6 +78,10 @@ public final class Constant {
      */
     public static final String H5_HELP = H5_SERVER + "/help/list";
     /**
+     * H5门禁
+     */
+    public static final String H5_GATE = H5_SERVER + "/entrance";
+    /**
      * 设备未找零
      */
     public static final String H5_PREPAY_HELP = H5_SERVER + "/help?first=1&last=1";

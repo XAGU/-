@@ -14,6 +14,7 @@ import com.xiaolian.amigo.data.network.model.login.EntireUserDTO;
 import com.xiaolian.amigo.data.network.model.residence.QueryResidenceListReqDTO;
 import com.xiaolian.amigo.data.network.model.residence.ResidenceListRespDTO;
 import com.xiaolian.amigo.data.network.model.school.QueryBriefSchoolListRespDTO;
+import com.xiaolian.amigo.data.network.model.school.QuerySchoolListReqDTO;
 import com.xiaolian.amigo.data.network.model.user.BindResidenceReq;
 import com.xiaolian.amigo.data.network.model.user.PersonalUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.user.Residence;
@@ -52,10 +53,11 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
 
 
     @Override
-    public void getSchoolList(Integer page, Integer size) {
-        SimpleQueryReqDTO dto = new SimpleQueryReqDTO();
+    public void getSchoolList(Integer page, Integer size, Boolean online) {
+        QuerySchoolListReqDTO dto = new QuerySchoolListReqDTO();
         dto.setPage(page);
         dto.setSize(size);
+        dto.setOnline(online);
         addObserver(userDataManager.getSchoolList(dto), new NetworkObserver<ApiResult<QueryBriefSchoolListRespDTO>>() {
 
             @Override
