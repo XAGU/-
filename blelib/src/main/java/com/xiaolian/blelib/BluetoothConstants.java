@@ -15,9 +15,37 @@ public class BluetoothConstants {
      */
     public static final int SCAN_TYPE_BLE = 2;
 
-    public static final int CONNECT_IDLE = 0x0010;
-    public static final int CONNECT_CONNECTING = 0x0011;
-    public static final int CONNECT_FAILURE = 0x0012;
-    public static final int CONNECT_CONNECTED = 0x0013;
-    public static final int CONNECT_DISCONNECT = 0x0014;
+    public static final int CONN_STATE_IDLE = 0;
+    public static final int CONN_STATE_CONNECTING = 1;
+    public static final int CONN_STATE_CONNECTED = 2;
+    public static final int CONN_STATE_DISCONNECTING = 3;
+    public static final int CONN_STATE_CLOSED = 4;
+
+    public static final int CONN_RESPONSE_SUCCESS = 0x0111;
+    public static final int CONN_RESPONSE_FAIL = 0x0112;
+
+    /** A GATT operation completed successfully */
+    public static final int GATT_SUCCESS = 0;
+    /** GATT read operation is not permitted */
+    public static final int GATT_READ_NOT_PERMITTED = 0x2;
+    /** GATT write operation is not permitted */
+    public static final int GATT_WRITE_NOT_PERMITTED = 0x3;
+    /** Insufficient authentication for a given operation */
+    public static final int GATT_INSUFFICIENT_AUTHENTICATION = 0x5;
+    /** The given request is not supported */
+    public static final int GATT_REQUEST_NOT_SUPPORTED = 0x6;
+    /** Insufficient encryption for a given operation */
+    public static final int GATT_INSUFFICIENT_ENCRYPTION = 0xf;
+    /** A read or write operation was requested with an invalid offset */
+    public static final int GATT_INVALID_OFFSET = 0x7;
+    /** A write operation exceeds the maximum length of the attribute */
+    public static final int GATT_INVALID_ATTRIBUTE_LENGTH = 0xd;
+    /** A remote device connection is congested. */
+    public static final int GATT_CONNECTION_CONGESTED = 0x8f;
+    /** A GATT operation failed, errors other than the above */
+    public static final int GATT_FAILURE = 0x101;
+    /**
+     * 其他错误
+     */
+    public static final int GATT_OTHER_FAILURE = 0x111;
 }

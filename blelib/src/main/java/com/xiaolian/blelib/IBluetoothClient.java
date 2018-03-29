@@ -28,7 +28,7 @@ public interface IBluetoothClient {
 
     void write(String mac, UUID service, UUID character, byte[] value, BluetoothWriteCharacteristicCallback response);
 
-    void writeNoRsp(String mac, UUID service, UUID character, byte[] value);
+    void writeNoRsp(String mac, UUID service, UUID character, byte[] value, BluetoothWriteCharacteristicCallback response);
 
     void readDescriptor(String mac, UUID service, UUID character, UUID descriptor, BluetoothReadDescriptorCallback response);
 
@@ -37,4 +37,6 @@ public interface IBluetoothClient {
     void notify(String mac, UUID service, UUID character, BluetoothCharacteristicNotifyCallback response);
 
     boolean setNotify(String mac, UUID service, UUID character, boolean enable);
+
+    int getConnectStatus(String mac);
 }

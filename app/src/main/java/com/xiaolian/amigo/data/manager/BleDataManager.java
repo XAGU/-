@@ -12,11 +12,11 @@ import com.polidea.rxandroidble.scan.ScanResult;
 import com.polidea.rxandroidble.scan.ScanSettings;
 import com.polidea.rxandroidble.utils.ConnectionSharingAdapter;
 import com.xiaolian.amigo.data.manager.intf.IBleDataManager;
-import com.xiaolian.blelib.BluetoothClient;
 import com.xiaolian.blelib.IBluetoothClient;
 import com.xiaolian.blelib.connect.BluetoothCharacteristicNotifyCallback;
 import com.xiaolian.blelib.connect.BluetoothConnectCallback;
 import com.xiaolian.blelib.connect.BluetoothConnectStatusListener;
+import com.xiaolian.blelib.connect.BluetoothWriteCharacteristicCallback;
 import com.xiaolian.blelib.connect.BluetoothWriteDescriptorCallback;
 import com.xiaolian.blelib.scan.BluetoothScanResponse;
 
@@ -103,8 +103,8 @@ public class BleDataManager implements IBleDataManager {
     }
 
     @Override
-    public void writeNoRsp(String mac, UUID service, UUID character, byte[] value) {
-        bluetoothClient.writeNoRsp(mac, service, character, value);
+    public void writeNoRsp(String mac, UUID service, UUID character, byte[] value, BluetoothWriteCharacteristicCallback response) {
+        bluetoothClient.writeNoRsp(mac, service, character, value, response);
     }
 
     @Override
@@ -120,6 +120,11 @@ public class BleDataManager implements IBleDataManager {
     @Override
     public void notify(String mac, UUID service, UUID character, BluetoothCharacteristicNotifyCallback response) {
         bluetoothClient.notify(mac, service, character, response);
+    }
+
+    @Override
+    public int getConnectStatus(String mac) {
+        return bluetoothClient.getConnectStatus(mac);
     }
 
     @Override

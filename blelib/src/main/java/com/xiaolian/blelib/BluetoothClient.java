@@ -52,7 +52,7 @@ public class BluetoothClient implements IBluetoothClient {
     @Override
     public void connect(final String macAddress, BluetoothConnectCallback response) {
         if (bluetoothConnectWorker != null) {
-            if (bluetoothConnectWorker.getCurrentStatus() == BluetoothConstants.CONNECT_CONNECTED) {
+            if (bluetoothConnectWorker.getCurrentStatus() == BluetoothConstants.CONN_STATE_CONNECTED) {
                 bluetoothConnectWorker.closeGatt();
                 handler.postDelayed(new Runnable() {
                     @Override
@@ -61,14 +61,19 @@ public class BluetoothClient implements IBluetoothClient {
                     }
                 }, 1000);
             } else {
-                bluetoothConnectWorker = new BluetoothConnectWorker(macAddress);
-                bluetoothConnectWorker.addBluetoothConnectCallback(response);
-                bluetoothConnectWorker.openGatt();
+                openGatt(macAddress, response);
             }
         } else {
-            bluetoothConnectWorker = new BluetoothConnectWorker(macAddress);
-            bluetoothConnectWorker.addBluetoothConnectCallback(response);
-            bluetoothConnectWorker.openGatt();
+            openGatt(macAddress, response);
+        }
+    }
+
+    private void openGatt(final String macAddress, BluetoothConnectCallback response) {
+        bluetoothConnectWorker = new BluetoothConnectWorker(macAddress);
+        bluetoothConnectWorker.addBluetoothConnectCallback(response);
+        if (!bluetoothConnectWorker.openGatt()) {
+            response.onResponse(BluetoothConstants.CONN_RESPONSE_FAIL, null);
+            bluetoothConnectWorker.addBluetoothConnectCallback(null);
         }
     }
 
@@ -100,20 +105,30 @@ public class BluetoothClient implements IBluetoothClient {
     public void read(String mac, UUID service, UUID character, BluetoothReadDescriptorCallback response) {
         checkMacAddress(mac);
         bluetoothConnectWorker.addBluetoothReadDescriptorCallback(response);
-        bluetoothConnectWorker.readCharacteristic(service, character);
+        if (!bluetoothConnectWorker.readCharacteristic(service, character)) {
+            response.onResponse(BluetoothConstants.GATT_OTHER_FAILURE, null);
+            bluetoothConnectWorker.addBluetoothReadDescriptorCallback(null);
+        }
     }
 
     @Override
     public void write(String mac, UUID service, UUID character, byte[] value, BluetoothWriteCharacteristicCallback response) {
         checkMacAddress(mac);
         bluetoothConnectWorker.addBluetoothWriteCharacteristicCallback(response);
-        bluetoothConnectWorker.writeCharacteristic(service, character, value);
+        if (!bluetoothConnectWorker.writeCharacteristic(service, character, value)) {
+            response.onResponse(BluetoothConstants.GATT_OTHER_FAILURE);
+            bluetoothConnectWorker.addBluetoothWriteCharacteristicCallback(null);
+        }
     }
 
     @Override
-    public void writeNoRsp(String mac, UUID service, UUID character, byte[] value) {
+    public void writeNoRsp(String mac, UUID service, UUID character, byte[] value, BluetoothWriteCharacteristicCallback response) {
         checkMacAddress(mac);
-        bluetoothConnectWorker.writeCharacteristicNoRsp(service, character, value);
+        if (!bluetoothConnectWorker.writeCharacteristicNoRsp(service, character, value)) {
+            response.onResponse(BluetoothConstants.GATT_OTHER_FAILURE);
+        } else {
+            response.onResponse(BluetoothConstants.GATT_SUCCESS);
+        }
     }
 
     private void checkMacAddress(String mac) {
@@ -129,14 +144,20 @@ public class BluetoothClient implements IBluetoothClient {
     public void readDescriptor(String mac, UUID service, UUID character, UUID descriptor, BluetoothReadDescriptorCallback response) {
         checkMacAddress(mac);
         bluetoothConnectWorker.addBluetoothReadDescriptorCallback(response);
-        bluetoothConnectWorker.readDescriptor(service, character, descriptor);
+        if (!bluetoothConnectWorker.readDescriptor(service, character, descriptor)) {
+            response.onResponse(BluetoothConstants.GATT_OTHER_FAILURE, null);
+            bluetoothConnectWorker.addBluetoothReadDescriptorCallback(null);
+        }
     }
 
     @Override
     public void writeDescriptor(String mac, UUID service, UUID character, UUID descriptor, byte[] value, BluetoothWriteDescriptorCallback response) {
         checkMacAddress(mac);
         bluetoothConnectWorker.addBluetoothWriteDescriptorCallback(response);
-        bluetoothConnectWorker.writeDescriptor(service, character, descriptor, value);
+        if (!bluetoothConnectWorker.writeDescriptor(service, character, descriptor, value)) {
+            response.onResponse(BluetoothConstants.GATT_OTHER_FAILURE);
+            bluetoothConnectWorker.addBluetoothWriteDescriptorCallback(null);
+        }
 
     }
 
@@ -150,6 +171,12 @@ public class BluetoothClient implements IBluetoothClient {
     public boolean setNotify(String mac, UUID service, UUID character, boolean enable) {
         checkMacAddress(mac);
         return bluetoothConnectWorker.setNotify(service, character, enable);
+    }
+
+    @Override
+    public int getConnectStatus(String mac) {
+        checkMacAddress(mac);
+        return bluetoothConnectWorker.getCurrentStatus();
     }
 
 }
