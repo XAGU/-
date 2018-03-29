@@ -14,6 +14,10 @@ import com.polidea.rxandroidble.utils.ConnectionSharingAdapter;
 import com.xiaolian.amigo.data.manager.intf.IBleDataManager;
 import com.xiaolian.blelib.BluetoothClient;
 import com.xiaolian.blelib.IBluetoothClient;
+import com.xiaolian.blelib.connect.BluetoothCharacteristicNotifyCallback;
+import com.xiaolian.blelib.connect.BluetoothConnectCallback;
+import com.xiaolian.blelib.connect.BluetoothConnectStatusListener;
+import com.xiaolian.blelib.connect.BluetoothWriteDescriptorCallback;
 import com.xiaolian.blelib.scan.BluetoothScanResponse;
 
 import java.util.UUID;
@@ -76,6 +80,46 @@ public class BleDataManager implements IBleDataManager {
     @Override
     public void stopScan() {
         bluetoothClient.stopScan();
+    }
+
+    @Override
+    public void registerConnectStatusListener(String mac, BluetoothConnectStatusListener listener) {
+        bluetoothClient.registerConnectStatusListener(mac, listener);
+    }
+
+    @Override
+    public void connect(String macAddress, BluetoothConnectCallback response) {
+        bluetoothClient.connect(macAddress, response);
+    }
+
+    @Override
+    public void disconnect(String mac) {
+        bluetoothClient.disconnect(mac);
+    }
+
+    @Override
+    public void unregisterConnectStatusListener(String mac) {
+        bluetoothClient.unregisterConnectStatusListener(mac);
+    }
+
+    @Override
+    public void writeNoRsp(String mac, UUID service, UUID character, byte[] value) {
+        bluetoothClient.writeNoRsp(mac, service, character, value);
+    }
+
+    @Override
+    public boolean setNotify(String mac, UUID service, UUID character, boolean enable) {
+        return bluetoothClient.setNotify(mac, service, character, enable);
+    }
+
+    @Override
+    public void writeDescriptor(String mac, UUID service, UUID character, UUID descriptor, byte[] value, BluetoothWriteDescriptorCallback response) {
+        bluetoothClient.writeDescriptor(mac, service, character, descriptor, value, response);
+    }
+
+    @Override
+    public void notify(String mac, UUID service, UUID character, BluetoothCharacteristicNotifyCallback response) {
+        bluetoothClient.notify(mac, service, character, response);
     }
 
     @Override

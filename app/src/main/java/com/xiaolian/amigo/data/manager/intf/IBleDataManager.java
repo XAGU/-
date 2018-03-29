@@ -6,7 +6,13 @@ import android.support.annotation.NonNull;
 
 import com.polidea.rxandroidble.RxBleConnection;
 import com.polidea.rxandroidble.scan.ScanResult;
+import com.xiaolian.blelib.connect.BluetoothCharacteristicNotifyCallback;
+import com.xiaolian.blelib.connect.BluetoothConnectCallback;
+import com.xiaolian.blelib.connect.BluetoothConnectStatusListener;
+import com.xiaolian.blelib.connect.BluetoothWriteDescriptorCallback;
 import com.xiaolian.blelib.scan.BluetoothScanResponse;
+
+import java.util.UUID;
 
 import rx.Observable;
 import rx.subjects.PublishSubject;
@@ -32,6 +38,23 @@ public interface IBleDataManager {
     void scan(int scanType, BluetoothScanResponse response);
 
     void stopScan();
+
+    void registerConnectStatusListener(String mac, BluetoothConnectStatusListener listener);
+
+    void connect(final String macAddress, BluetoothConnectCallback response);
+
+    void disconnect(String mac);
+
+    void unregisterConnectStatusListener(String mac);
+
+    void writeNoRsp(String mac, UUID service, UUID character, byte[] value);
+
+    boolean setNotify(String mac, UUID service, UUID character, boolean enable);
+
+    void writeDescriptor(String mac, UUID service, UUID character, UUID descriptor, byte[] value,
+                         BluetoothWriteDescriptorCallback response);
+
+    void notify(String mac, UUID service, UUID character, BluetoothCharacteristicNotifyCallback response);
 
     /**
      * 提供连接蓝牙设备的Observable，附带连接共享适配器供后续蓝牙操作使用
