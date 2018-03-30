@@ -1,5 +1,7 @@
 package com.xiaolian.blelib.internal.connect;
 
+import android.support.annotation.RestrictTo;
+
 import com.xiaolian.blelib.connect.BluetoothCharacteristicNotifyCallback;
 import com.xiaolian.blelib.connect.BluetoothConnectCallback;
 import com.xiaolian.blelib.connect.BluetoothConnectStatusListener;
@@ -13,7 +15,7 @@ import java.util.UUID;
  * @author zcd
  * @date 18/3/28
  */
-
+@RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
 public interface IBluetoothConnectWorker {
 
     String getMacAddress();

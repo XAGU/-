@@ -67,28 +67,9 @@ public interface IDevicePresenter<V extends IBaseView> extends IBasePresenter<V>
     void onClose();
 
     /**
-     * 接收设备通知（读数据）
-     */
-    void registerNotify();
-
-    /**
      * 断开连接
      */
     void onDisConnect();
-
-    /**
-     * 处理蓝牙响应结果
-     *
-     * @param data 蓝牙设备响应
-     */
-    void handleResult(String data);
-
-    /**
-     * 处理网络请求响应结果
-     *
-     * @param result 服务响应
-     */
-    void handleResult(ApiResult<CmdResultRespDTO> result);
 
     /**
      * 设置当前页面操作步骤
