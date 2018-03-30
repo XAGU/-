@@ -93,7 +93,7 @@ public interface IDevicePresenter<V extends IBaseView> extends IBasePresenter<V>
     /**
      * 关闭蓝牙连接
      */
-    void closeBleConnecttion();
+    void closeBleConnection();
 
     /**
      * 重置连接观察者管理器

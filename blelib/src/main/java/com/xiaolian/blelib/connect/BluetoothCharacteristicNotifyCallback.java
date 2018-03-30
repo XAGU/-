@@ -8,7 +8,5 @@ import java.util.UUID;
  */
 
 public interface BluetoothCharacteristicNotifyCallback {
-    void onResponse(int code);
-
     void onNotify(byte[] value);
 }

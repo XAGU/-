@@ -19,7 +19,6 @@ import android.app.Application;
 import android.content.Context;
 
 import com.google.gson.Gson;
-import com.polidea.rxandroidble.RxBleClient;
 import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.data.base.LogInterceptor;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
@@ -47,8 +46,6 @@ public interface ApplicationComponent {
     IBluetoothClient bluetoothClient();
 
     Gson gson();
-
-    RxBleClient rxBleClient();
 
     ISharedPreferencesHelp sharedPreferencesHelp();
 

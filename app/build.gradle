@@ -149,7 +149,6 @@ dependencies {
     androidTestAnnotationProcessor deps.dagger2.compiler
     implementation deps.rx.core
     implementation deps.rx.android
-    implementation deps.rx.rxandroidble
     implementation deps.rx.rxlifecycle
     implementation deps.rx.rxlifecycleComponents
     implementation deps.butterKnife.runtime

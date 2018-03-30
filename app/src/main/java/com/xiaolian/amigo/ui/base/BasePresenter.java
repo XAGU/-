@@ -19,7 +19,6 @@ package com.xiaolian.amigo.ui.base;
 import android.os.Handler;
 import android.os.HandlerThread;
 
-import com.polidea.rxandroidble.exceptions.BleDisconnectedException;
 import com.xiaolian.amigo.BuildConfig;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.BizError;
@@ -250,27 +249,6 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
         }
     }
 
-    @Override
-    public <P> void addObserver(Observable<P> observable, BleObserver observer) {
-        if (null != subscriptions) {
-            this.subscriptions.add(
-                    observable
-                            .compose(this.applySchedulers())
-                            .subscribe(observer));
-        }
-    }
-
-    @Override
-    public <P> void addObserver(Observable<P> observable, BleObserver observer, Scheduler scheduler) {
-        if (null != subscriptions) {
-            this.subscriptions.add(
-                    observable
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(scheduler)
-                            .subscribe(observer));
-        }
-    }
-
     private <T> Observable.Transformer<T, T> applySchedulers() {
         return new Observable.Transformer<T, T>() {
             @Override
@@ -300,43 +278,6 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
 
     public V getMvpView() {
         return view;
-    }
-
-    public abstract class BleObserver<T> extends Subscriber<T> {
-
-        private String command;
-
-        @Override
-        public void onError(Throwable e) {
-            if (e instanceof BleDisconnectedException) {
-                onConnectError();
-            } else {
-                onExecuteError(e);
-            }
-        }
-
-        // 蓝牙设备连接异常
-        public abstract void onConnectError();
-
-        // 执行操作出错
-        public abstract void onExecuteError(Throwable e);
-
-        @Override
-        public void onStart() {
-            super.onStart();
-        }
-
-        @Override
-        public void onCompleted() {
-        }
-
-        public void setCommand(String command) {
-            this.command = command;
-        }
-
-        public String getCommand() {
-            return command;
-        }
     }
 
     public abstract class NetworkObserver<T extends ApiResult> extends Subscriber<T> {

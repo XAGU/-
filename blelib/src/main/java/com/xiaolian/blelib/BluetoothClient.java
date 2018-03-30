@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.xiaolian.blelib.connect.BluetoothCharacteristicNotifyCallback;
 import com.xiaolian.blelib.connect.BluetoothConnectCallback;
@@ -24,6 +25,7 @@ import java.util.UUID;
  */
 
 public class BluetoothClient implements IBluetoothClient {
+    private static final String TAG = BluetoothClient.class.getSimpleName();
     private BluetoothScanner bluetoothScanner;
     private IBluetoothConnectWorker bluetoothConnectWorker;
     private Handler handler;
@@ -52,13 +54,11 @@ public class BluetoothClient implements IBluetoothClient {
     @Override
     public void connect(final String macAddress, BluetoothConnectCallback response) {
         if (bluetoothConnectWorker != null) {
-            if (bluetoothConnectWorker.getCurrentStatus() == BluetoothConstants.CONN_STATE_CONNECTED) {
+            if (bluetoothConnectWorker.getCurrentStatus() == BluetoothConstants.STATE_CONNECTED) {
                 bluetoothConnectWorker.closeGatt();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        bluetoothConnectWorker = new BluetoothConnectWorker(macAddress);
-                    }
+                handler.postDelayed(() -> {
+                    bluetoothConnectWorker = new BluetoothConnectWorker(macAddress);
+                    openGatt(macAddress, response);
                 }, 1000);
             } else {
                 openGatt(macAddress, response);
@@ -69,7 +69,6 @@ public class BluetoothClient implements IBluetoothClient {
     }
 
     private void openGatt(final String macAddress, BluetoothConnectCallback response) {
-        bluetoothConnectWorker = new BluetoothConnectWorker(macAddress);
         bluetoothConnectWorker.addBluetoothConnectCallback(response);
         if (!bluetoothConnectWorker.openGatt()) {
             response.onResponse(BluetoothConstants.CONN_RESPONSE_FAIL, null);
@@ -92,13 +91,17 @@ public class BluetoothClient implements IBluetoothClient {
             bluetoothConnectWorker = new BluetoothConnectWorker(mac);
         }
         checkMacAddress(mac);
+        Log.d(TAG, "注册连接状态监听 " + bluetoothConnectWorker.toString());
         bluetoothConnectWorker.addBluetoothConnectStatusListener(listener);
     }
 
     @Override
     public void unregisterConnectStatusListener(String mac) {
         checkMacAddress(mac);
-        bluetoothConnectWorker.addBluetoothConnectStatusListener(null);
+        if (bluetoothConnectWorker != null) {
+            Log.d(TAG, "取消连接状态监听 " + bluetoothConnectWorker.toString());
+            bluetoothConnectWorker.addBluetoothConnectStatusListener(null);
+        }
     }
 
     @Override

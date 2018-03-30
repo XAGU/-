@@ -4,7 +4,6 @@ import android.os.CountDownTimer;
 import android.os.ParcelUuid;
 import android.text.TextUtils;
 
-import com.polidea.rxandroidble.scan.ScanResult;
 import com.xiaolian.amigo.data.manager.intf.IBleDataManager;
 import com.xiaolian.amigo.data.manager.intf.IDeviceDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;

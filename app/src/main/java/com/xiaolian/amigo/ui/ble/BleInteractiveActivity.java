@@ -39,7 +39,7 @@ public class BleInteractiveActivity extends BleBaseActivity implements IBleInter
         getActivityComponent().inject(this);
 
         presenter.onAttach(this);
-        presenter.onConnect(mac);
+//        presenter.onConnect(mac);
     }
 
     @Override

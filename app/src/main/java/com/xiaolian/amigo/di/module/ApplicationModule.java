@@ -19,8 +19,6 @@ import android.app.Application;
 import android.content.Context;
 
 import com.google.gson.Gson;
-import com.polidea.rxandroidble.RxBleClient;
-import com.polidea.rxandroidble.internal.RxBleLog;
 import com.xiaolian.amigo.data.base.LogInterceptor;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.data.prefs.SharedPreferencesHelp;
@@ -94,14 +92,6 @@ public class ApplicationModule {
     @Provides
     Gson providerGson() {
         return new Gson();
-    }
-
-    @Singleton
-    @Provides
-    RxBleClient provideRxBleClient() {
-        RxBleClient rxBleClient = RxBleClient.create(mApplication.getApplicationContext());
-        RxBleClient.setLogLevel(RxBleLog.DEBUG);
-        return rxBleClient;
     }
 
     @Singleton

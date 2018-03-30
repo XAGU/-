@@ -15,11 +15,14 @@ public class BluetoothConstants {
      */
     public static final int SCAN_TYPE_BLE = 2;
 
-    public static final int CONN_STATE_IDLE = 0;
-    public static final int CONN_STATE_CONNECTING = 1;
-    public static final int CONN_STATE_CONNECTED = 2;
-    public static final int CONN_STATE_DISCONNECTING = 3;
-    public static final int CONN_STATE_CLOSED = 4;
+    /** The profile is in disconnected state */
+    public static final int STATE_DISCONNECTED  = 0;
+    /** The profile is in connecting state */
+    public static final int STATE_CONNECTING    = 1;
+    /** The profile is in connected state */
+    public static final int STATE_CONNECTED     = 2;
+    /** The profile is in disconnecting state */
+    public static final int STATE_DISCONNECTING = 3;
 
     public static final int CONN_RESPONSE_SUCCESS = 0x0111;
     public static final int CONN_RESPONSE_FAIL = 0x0112;

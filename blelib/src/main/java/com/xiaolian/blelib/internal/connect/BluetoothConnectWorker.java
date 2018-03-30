@@ -18,6 +18,7 @@ import com.xiaolian.blelib.BluetoothHelp;
 import com.xiaolian.blelib.connect.BluetoothConnectCallback;
 import com.xiaolian.blelib.connect.BluetoothConnectStatusListener;
 import com.xiaolian.blelib.connect.BluetoothCharacteristicNotifyCallback;
+import com.xiaolian.blelib.connect.BluetoothReadCharacteristicResponse;
 import com.xiaolian.blelib.connect.BluetoothReadDescriptorCallback;
 import com.xiaolian.blelib.connect.BluetoothWriteCharacteristicCallback;
 import com.xiaolian.blelib.connect.BluetoothWriteDescriptorCallback;
@@ -40,7 +41,7 @@ public class BluetoothConnectWorker implements IBluetoothConnectWorker {
     private BluetoothWriteCharacteristicCallback bluetoothWriteCharacteristicCallback;
     private BluetoothReadDescriptorCallback bluetoothReadDescriptorCallback;
     private BluetoothWriteDescriptorCallback bluetoothWriteDescriptorCallback;
-    private int connectState = BluetoothConstants.CONN_STATE_IDLE;
+    private int connectState = BluetoothConstants.STATE_DISCONNECTED;
     private Handler handler;
     private BluetoothGattCallback coreGattCallback = new BluetoothGattCallback() {
         @Override
@@ -51,23 +52,35 @@ public class BluetoothConnectWorker implements IBluetoothConnectWorker {
                     + '\n' + "newState: " + newState
                     + '\n' + "currentThread: " + Thread.currentThread().getId()
                     + "name:" + Thread.currentThread().getName());
+            if (bluetoothConnectStatusListener != null) {
+                handler.post(() -> bluetoothConnectStatusListener.onConnectStatusChanged(newState));
+            }
+            bluetoothGatt = gatt;
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 if (newState == BluetoothGatt.STATE_CONNECTED) {
                     gatt.discoverServices();
-                    connectState = BluetoothConstants.CONN_STATE_CONNECTING;
+                    connectState = BluetoothConstants.STATE_CONNECTING;
                 } else if (newState == BluetoothGatt.STATE_DISCONNECTED) {
+                    connectState = BluetoothConstants.STATE_DISCONNECTING;
                     closeGatt();
-                    connectState = BluetoothConstants.CONN_STATE_CLOSED;
-                    if (bluetoothConnectCallback != null) {
-                        handler.post(() -> bluetoothConnectCallback.onResponse(BluetoothConstants.CONN_RESPONSE_FAIL, gatt));
-                    }
+                    handler.post(() -> {
+                        if (bluetoothConnectCallback != null) {
+                            bluetoothConnectCallback.onResponse(BluetoothConstants.CONN_RESPONSE_FAIL, gatt);
+                            // 蓝牙连接回调只回调一遍
+                            removeBluetoothConnectCallback();
+                        }
+                    });
                 }
             } else {
+                connectState = BluetoothConstants.STATE_DISCONNECTING;
                 closeGatt();
-                connectState = BluetoothConstants.CONN_STATE_CLOSED;
-                if (bluetoothConnectCallback != null) {
-                    handler.post(() -> bluetoothConnectCallback.onResponse(BluetoothConstants.CONN_RESPONSE_FAIL, gatt));
-                }
+                handler.post(() -> {
+                    if (bluetoothConnectCallback != null) {
+                        bluetoothConnectCallback.onResponse(BluetoothConstants.CONN_RESPONSE_FAIL, gatt);
+                        // 蓝牙连接回调只回调一遍
+                        removeBluetoothConnectCallback();
+                    }
+                });
             }
         }
 
@@ -80,17 +93,25 @@ public class BluetoothConnectWorker implements IBluetoothConnectWorker {
                     + "name:" + Thread.currentThread().getName());
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 bluetoothGatt = gatt;
-                connectState = BluetoothConstants.CONN_STATE_CONNECTED;
-                if (bluetoothConnectCallback != null) {
-                    handler.post(() -> bluetoothConnectCallback.onResponse(BluetoothConstants.CONN_RESPONSE_SUCCESS,
-                            gatt));
-                }
+                connectState = BluetoothConstants.STATE_CONNECTED;
+                handler.post(() -> {
+                    if (bluetoothConnectCallback != null) {
+                        bluetoothConnectCallback.onResponse(BluetoothConstants.CONN_RESPONSE_SUCCESS,
+                                gatt);
+                        // 蓝牙连接回调只回调一遍
+                        removeBluetoothConnectCallback();
+                    }
+                });
             } else {
                 closeGatt();
-                connectState = BluetoothConstants.CONN_STATE_CLOSED;
-                if (bluetoothConnectCallback != null) {
-                    handler.post(() -> bluetoothConnectCallback.onResponse(BluetoothConstants.CONN_RESPONSE_FAIL, gatt));
-                }
+                connectState = BluetoothConstants.STATE_DISCONNECTED;
+                handler.post(() -> {
+                    if (bluetoothConnectCallback != null) {
+                        bluetoothConnectCallback.onResponse(BluetoothConstants.CONN_RESPONSE_FAIL, gatt);
+                        // 蓝牙连接回调只回调一遍
+                        removeBluetoothConnectCallback();
+                    }
+                });
             }
         }
 
@@ -101,9 +122,11 @@ public class BluetoothConnectWorker implements IBluetoothConnectWorker {
                     + '\n' + "status: " + status
                     + '\n' + "currentThread: " + Thread.currentThread().getId()
                     + "name:" + Thread.currentThread().getName());
-            if (bluetoothReadDescriptorCallback != null) {
-                handler.post(() -> bluetoothReadDescriptorCallback.onResponse(status, characteristic.getValue()));
-            }
+            handler.post(() -> {
+                if (bluetoothReadDescriptorCallback != null) {
+                    bluetoothReadDescriptorCallback.onResponse(status, characteristic.getValue());
+                }
+            });
         }
 
         @Override
@@ -113,9 +136,11 @@ public class BluetoothConnectWorker implements IBluetoothConnectWorker {
                     + '\n' + "status: " + status
                     + '\n' + "currentThread: " + Thread.currentThread().getId()
                     + "name:" + Thread.currentThread().getName());
-            if (bluetoothWriteCharacteristicCallback != null) {
-                handler.post(() -> bluetoothWriteCharacteristicCallback.onResponse(status));
-            }
+            handler.post(() -> {
+                if (bluetoothWriteCharacteristicCallback != null) {
+                    bluetoothWriteCharacteristicCallback.onResponse(status);
+                }
+            });
         }
 
         @Override
@@ -124,9 +149,11 @@ public class BluetoothConnectWorker implements IBluetoothConnectWorker {
             Log.d(TAG, "BluetoothGattCallback：onCharacteristicChanged "
                     + '\n' + "currentThread: " + Thread.currentThread().getId()
                     + "name:" + Thread.currentThread().getName());
-            if (bluetoothCharacteristicNotifyCallback != null) {
-                handler.post(() -> bluetoothCharacteristicNotifyCallback.onNotify(characteristic.getValue()));
-            }
+            handler.post(() -> {
+                if (bluetoothCharacteristicNotifyCallback != null) {
+                    bluetoothCharacteristicNotifyCallback.onNotify(characteristic.getValue());
+                }
+            });
         }
 
         @Override
@@ -136,9 +163,11 @@ public class BluetoothConnectWorker implements IBluetoothConnectWorker {
                     + '\n' + "status: " + status
                     + '\n' + "currentThread: " + Thread.currentThread().getId()
                     + "name:" + Thread.currentThread().getName());
-            if (bluetoothReadDescriptorCallback != null) {
-                handler.post(() -> bluetoothReadDescriptorCallback.onResponse(status, descriptor.getValue()));
-            }
+            handler.post(() -> {
+                if (bluetoothReadDescriptorCallback != null) {
+                    bluetoothReadDescriptorCallback.onResponse(status, descriptor.getValue());
+                }
+            });
         }
 
         @Override
@@ -148,12 +177,17 @@ public class BluetoothConnectWorker implements IBluetoothConnectWorker {
                     + '\n' + "status: " + status
                     + '\n' + "currentThread: " + Thread.currentThread().getId()
                     + "name:" + Thread.currentThread().getName());
-            if (bluetoothWriteDescriptorCallback != null) {
-                handler.post(() -> bluetoothWriteDescriptorCallback.onResponse(status))
-                ;
-            }
+            handler.post(() -> {
+                if (bluetoothWriteDescriptorCallback != null) {
+                    bluetoothWriteDescriptorCallback.onResponse(status);
+                }
+            });
         }
     };
+
+    private void removeBluetoothConnectCallback() {
+        bluetoothConnectCallback = null;
+    }
 
 
     public BluetoothConnectWorker(String macAddress) {
@@ -227,10 +261,13 @@ public class BluetoothConnectWorker implements IBluetoothConnectWorker {
             bluetoothGatt.close();
             bluetoothGatt = null;
         }
+        connectState = BluetoothConstants.STATE_DISCONNECTED;
 
-        if (bluetoothConnectStatusListener != null) {
-            handler.post(() -> bluetoothConnectStatusListener.onConnectStatusChanged(BluetoothConstants.CONN_STATE_CLOSED));
-        }
+        handler.post(() -> {
+            if (bluetoothConnectStatusListener != null) {
+                bluetoothConnectStatusListener.onConnectStatusChanged(BluetoothConstants.STATE_CONNECTED);
+            }
+        });
     }
 
     @Override
