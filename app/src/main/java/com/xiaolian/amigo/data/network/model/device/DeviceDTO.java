@@ -15,6 +15,10 @@ import lombok.Data;
  */
 @Data
 public class DeviceDTO implements Mapper<ScanDeviceGroup> {
+    /**
+     * 1、普通饮水机 2、三合一饮水机
+     **/
+    private Integer category;
     private List<DeviceInListDTO> devices;
     private Boolean favor;
     private String location;
@@ -24,6 +28,7 @@ public class DeviceDTO implements Mapper<ScanDeviceGroup> {
     @Override
     public ScanDeviceGroup transform() {
         ScanDeviceGroup scanDeviceGroup = new ScanDeviceGroup();
+        scanDeviceGroup.setCategory(category);
         scanDeviceGroup.setResidenceId(residenceId);
         scanDeviceGroup.setLocation(location);
         scanDeviceGroup.setFavor(favor);
