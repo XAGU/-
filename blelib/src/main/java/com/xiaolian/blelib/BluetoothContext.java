@@ -11,7 +11,7 @@ public class BluetoothContext {
     private static Context mContext;
 
     public static void set(Context context) {
-        mContext = mContext;
+        mContext = context;
     }
 
     public static Context get() {

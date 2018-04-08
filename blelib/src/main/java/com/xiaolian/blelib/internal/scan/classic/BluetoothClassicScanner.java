@@ -64,7 +64,7 @@ public class BluetoothClassicScanner extends BluetoothScanner {
     }
 
     private void registerReceiver() {
-        if (receiver != null) {
+        if (receiver == null) {
             receiver = new BluetoothScanReceiver();
             BluetoothHelp.registerReceiver(receiver,
                     new IntentFilter(BluetoothDevice.ACTION_FOUND));

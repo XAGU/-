@@ -60,6 +60,7 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
      * true 表示收藏列表
      */
     private boolean listStatus = false;
+    private int scanType = BluetoothConstants.SCAN_TYPE_CLASSIC;
 
     @Inject
     ChooseDispenserPresenter(IBleDataManager bleDataManager, IDeviceDataManager deviceDataManager) {
@@ -136,29 +137,7 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
                     begin = System.currentTimeMillis();
                 }
 
-                // 根据SERVICE_UUID筛选出可用设备
-                boolean validDevice = false;
-                ScanRecord scanRecord = ScanRecord.parseFromBytes(result.getScanRecord());
-                if (null != scanRecord && null != scanRecord.getServiceUuids()) {
-                    for (ParcelUuid parcelUuid : scanRecord.getServiceUuids()) {
-                        for (DeviceCategory deviceCategory : deviceCategories) {
-                            for (Supplier s : deviceCategory.getSuppliers()) {
-                                if (parcelUuid.toString().equalsIgnoreCase(s.getServiceUuid())) {
-                                    validDevice = true;
-                                    break;
-                                }
-                            }
-                            if (validDevice) {
-                                break;
-                            }
-                        }
-                        if (validDevice) {
-                            break;
-                        }
-                    }
-                }
-
-                if (!validDevice) {
+                if (!checkDeviceValid(result)) {
                     return;
                 }
 
@@ -203,6 +182,31 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
                 Log.d(TAG, "onScanCanceled");
             }
         });
+    }
+
+    private boolean checkDeviceValid(BluetoothScanResult result) {
+        // 根据SERVICE_UUID筛选出可用设备
+        boolean validDevice = false;
+        ScanRecord scanRecord = ScanRecord.parseFromBytes(result.getScanRecord());
+        if (null != scanRecord && null != scanRecord.getServiceUuids()) {
+            for (ParcelUuid parcelUuid : scanRecord.getServiceUuids()) {
+                for (DeviceCategory deviceCategory : deviceCategories) {
+                    for (Supplier s : deviceCategory.getSuppliers()) {
+                        if (parcelUuid.toString().equalsIgnoreCase(s.getServiceUuid())) {
+                            validDevice = true;
+                            break;
+                        }
+                    }
+                    if (validDevice) {
+                        break;
+                    }
+                }
+                if (validDevice) {
+                    break;
+                }
+            }
+        }
+        return validDevice;
     }
 
     @Override
