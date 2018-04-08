@@ -917,7 +917,8 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                 setBleCallback(() -> {
                     // 显示正在连接画面
                     showConnecting();
-
+                    // 重连切换扫描方式
+                    presenter.toggleScanType();
                     presenter.onReconnect(macAddress);
                 });
                 getBlePermission();

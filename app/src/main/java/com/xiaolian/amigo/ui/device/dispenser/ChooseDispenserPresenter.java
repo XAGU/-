@@ -60,7 +60,7 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
      * true 表示收藏列表
      */
     private boolean listStatus = false;
-    private int scanType = BluetoothConstants.SCAN_TYPE_CLASSIC;
+    private int scanType = BluetoothConstants.SCAN_TYPE_BLE;
 
     @Inject
     ChooseDispenserPresenter(IBleDataManager bleDataManager, IDeviceDataManager deviceDataManager) {
@@ -68,6 +68,7 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
         this.bleDataManager = bleDataManager;
         this.deviceDataManager = deviceDataManager;
         this.deviceCategories = deviceDataManager.getDeviceCategory();
+        this.scanType = deviceDataManager.getScanType();
     }
 
     @Override
@@ -115,7 +116,7 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
         startTimer();
         closeBleConnection();
         resetSubscriptions();
-        bleDataManager.scan(BluetoothConstants.SCAN_TYPE_BLE, new BluetoothScanResponse() {
+        bleDataManager.scan(scanType, new BluetoothScanResponse() {
             // 已经上报的mac地址的集合
             List<String> existDevices = new ArrayList<>();
             // 新扫描到的mac地址的集合
@@ -135,7 +136,11 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
                 if (null == begin) {
                     // 起始时间设置为当前时间
                     begin = System.currentTimeMillis();
+                    Log.d(TAG, "可以扫描到设备，缓存当前的扫描方式" + scanType);
+                    // 可以扫描到设备，缓存当前的扫描方式
+                    deviceDataManager.saveScanType(scanType);
                 }
+
 
                 if (!checkDeviceValid(result)) {
                     return;
@@ -185,6 +190,9 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
     }
 
     private boolean checkDeviceValid(BluetoothScanResult result) {
+        if (scanType == BluetoothConstants.SCAN_TYPE_CLASSIC) {
+            return true;
+        }
         // 根据SERVICE_UUID筛选出可用设备
         boolean validDevice = false;
         ScanRecord scanRecord = ScanRecord.parseFromBytes(result.getScanRecord());
@@ -243,6 +251,17 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
                               boolean favor, Long residenceId,
                               String usefor, String location) {
         getMvpView().gotoDispenser(macAddress, supplierId, favor, residenceId, usefor, location);
+    }
+
+    @Override
+    public void toggleScanType() {
+        if (scanType == BluetoothConstants.SCAN_TYPE_CLASSIC) {
+            scanType = BluetoothConstants.SCAN_TYPE_BLE;
+        } else if (scanType == BluetoothConstants.SCAN_TYPE_BLE) {
+            scanType = BluetoothConstants.SCAN_TYPE_CLASSIC;
+        } else {
+            scanType = BluetoothConstants.SCAN_TYPE_BLE;
+        }
     }
 
     @Override

@@ -145,4 +145,8 @@ public interface ISharedPreferencesHelp {
     void setSchoolBiz(List<BriefSchoolBusiness> businesses);
 
     List<BriefSchoolBusiness> getSchoolBiz();
+
+    void saveScanType(int scanType);
+
+    int getScanType();
 }

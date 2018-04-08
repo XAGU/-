@@ -43,14 +43,12 @@ import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.base.RxBus;
 import com.xiaolian.amigo.ui.device.intf.IDevicePresenter;
 import com.xiaolian.amigo.ui.device.intf.IDeviceView;
-import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
 import com.xiaolian.amigo.util.ble.Agreement;
 import com.xiaolian.amigo.util.ble.HexBytesUtils;
 import com.xiaolian.blelib.BluetoothConstants;
 import com.xiaolian.blelib.ScanRecord;
-import com.xiaolian.blelib.connect.BluetoothConnectStatusListener;
 import com.xiaolian.blelib.scan.BluetoothScanResponse;
 import com.xiaolian.blelib.scan.BluetoothScanResult;
 
@@ -134,11 +132,14 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     private Supplier supplier;
     // 页面关闭触发器
     private PublishSubject<Void> closeTriggerSubject = PublishSubject.create();
+    // 扫描方式
+    private int scanType = BluetoothConstants.SCAN_TYPE_BLE;
 
     DeviceBasePresenter(IBleDataManager bleDataManager, IDeviceDataManager deviceDataManager) {
         super();
         this.bleDataManager = bleDataManager;
         this.deviceDataManager = deviceDataManager;
+        this.scanType = deviceDataManager.getScanType();
     }
 
     @Override
@@ -279,6 +280,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         // 扫描macAddress
         Log.i(TAG, "开始扫描macAddress");
         bleDataManager.scan(BluetoothConstants.SCAN_TYPE_BLE, new BluetoothScanResponse() {
+            boolean savedScanType = false;
             @Override
             public void onScanStarted() {
                 Log.d(TAG, "onScanStarted thread" + Thread.currentThread().getName());
@@ -286,17 +288,13 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
             @Override
             public void onDeviceFounded(BluetoothScanResult result) {
-                Log.d(TAG, "onDeviceFounded thread" + Thread.currentThread().getName());
-                boolean validDevice = false;
-                ScanRecord scanRecord = ScanRecord.parseFromBytes(result.getScanRecord());
-                if (null != scanRecord && null != scanRecord.getServiceUuids()) {
-                    for (ParcelUuid parcelUuid : scanRecord.getServiceUuids()) {
-                        if (parcelUuid.toString().equalsIgnoreCase(supplier.getServiceUuid())) {
-                            validDevice = true;
-                            break;
-                        }
-                    }
+                if (!savedScanType) {
+                    Log.d(TAG, "扫描到设备，缓存当前扫描方式" + scanType);
+                    savedScanType = true;
+                    deviceDataManager.saveScanType(scanType);
                 }
+                Log.d(TAG, "onDeviceFounded thread" + Thread.currentThread().getName());
+                boolean validDevice = isValidDevice(result, macAddress);
                 if (!validDevice) {
                     return;
                 }
@@ -324,6 +322,37 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 Log.d(TAG, "onScanCanceled thread" + Thread.currentThread().getName());
             }
         });
+    }
+
+    private boolean isValidDevice(BluetoothScanResult result, String deviceNo) {
+        if (!TextUtils.equals(deviceNo, result.getName())) {
+            return false;
+        }
+        if (scanType == BluetoothConstants.SCAN_TYPE_CLASSIC) {
+            return true;
+        }
+        boolean validDevice = false;
+        ScanRecord scanRecord = ScanRecord.parseFromBytes(result.getScanRecord());
+        if (null != scanRecord && null != scanRecord.getServiceUuids()) {
+            for (ParcelUuid parcelUuid : scanRecord.getServiceUuids()) {
+                if (parcelUuid.toString().equalsIgnoreCase(supplier.getServiceUuid())) {
+                    validDevice = true;
+                    break;
+                }
+            }
+        }
+        return validDevice;
+    }
+
+    @Override
+    public void toggleScanType() {
+        if (scanType == BluetoothConstants.SCAN_TYPE_CLASSIC) {
+            scanType = BluetoothConstants.SCAN_TYPE_BLE;
+        } else if (scanType == BluetoothConstants.SCAN_TYPE_BLE) {
+            scanType = BluetoothConstants.SCAN_TYPE_CLASSIC;
+        } else {
+            scanType = BluetoothConstants.SCAN_TYPE_BLE;
+        }
     }
 
     private void realConnect(String macAddress) {

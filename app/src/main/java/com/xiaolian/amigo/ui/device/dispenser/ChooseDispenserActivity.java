@@ -170,6 +170,7 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
 
     private void onReScan() {
         presenter.startTimer();
+        presenter.toggleScanType();
         tvRescan.setVisibility(View.GONE);
         refreshLayout.autoRefresh(100);
         hideScanStopView();
