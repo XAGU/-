@@ -1,11 +1,14 @@
 package com.xiaolian.amigo.ui.wallet;
 
 import android.content.Intent;
+import android.support.v4.util.ObjectsCompat;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.base.TimeHolder;
 import com.xiaolian.amigo.data.enumeration.Device;
+import com.xiaolian.amigo.data.enumeration.DispenserCategory;
+import com.xiaolian.amigo.data.enumeration.DispenserWater;
 import com.xiaolian.amigo.data.network.model.order.Order;
 import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity;
@@ -149,6 +152,12 @@ public class PrepayOrderActivity extends WalletBaseActivity implements IPrepayOr
         intent.putExtra(WaterDeviceBaseActivity.INTENT_HOME_PAGE_JUMP, false);
         intent.putExtra(DispenserActivity.INTENT_KEY_ID, orderWrapper.getResidenceId());
         intent.putExtra(MainActivity.INTENT_KEY_RESIDENCE_ID, orderWrapper.getResidenceId());
+        if (orderWrapper.getCategory() != null
+                && ObjectsCompat.equals(orderWrapper.getCategory(), DispenserCategory.MULTI.getType())) {
+            intent.putExtra(DispenserActivity.INTENT_KEY_TEMPERATURE, DispenserWater.ALL.getType());
+        } else {
+            intent.putExtra(DispenserActivity.INTENT_KEY_TEMPERATURE, orderWrapper.getUsefor());
+        }
         TimeHolder.get().setLastConnectTime(System.currentTimeMillis());
         startActivity(intent);
     }
