@@ -12,6 +12,7 @@ import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundAdaptor;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundView;
+import com.xiaolian.amigo.util.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +66,7 @@ public class LostAndFoundPresenter<V extends ILostAndFoundView> extends BasePres
                                 getMvpView().showSearchResult(wrappers);
                             }
                         } else {
-                            if (wrappers.isEmpty()) {
+                            if (wrappers.isEmpty() && page == Constant.PAGE_START_NUM) {
                                 getMvpView().showEmptyView(R.string.empty_tip_1);
                                 return;
                             }

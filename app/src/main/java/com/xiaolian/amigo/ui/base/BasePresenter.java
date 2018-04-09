@@ -30,6 +30,7 @@ import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 import com.xiaolian.amigo.util.Log;
 
+import java.io.IOException;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 
@@ -100,8 +101,9 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
                         getMvpView().onError(R.string.server_available_error_tip);
                         break;
                 }
-            }
-            else {
+            } else if (e instanceof IOException) {
+                getMvpView().onError(R.string.network_available_error_tip);
+            } else {
                 Log.wtf(TAG, "sorry，程序上出现错误", e);
                 if (e instanceof NullPointerException
                         && "prod".equals(BuildConfig.ENVIRONMENT)

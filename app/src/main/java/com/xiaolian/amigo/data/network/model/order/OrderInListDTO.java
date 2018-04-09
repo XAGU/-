@@ -94,6 +94,8 @@ public class OrderInListDTO implements Mapper<Order> {
      * 供应商id
      */
     private Long supplierId;
+    private String usefor;
+    private Integer category;
 
     @Override
     public Order transform() {
@@ -120,6 +122,8 @@ public class OrderInListDTO implements Mapper<Order> {
         order.setLowest(lowest);
         order.setResidenceId(residenceId);
         order.setSupplierId(supplierId);
+        order.setUsefor(usefor);
+        order.setCategory(category);
         return order;
     }
 }

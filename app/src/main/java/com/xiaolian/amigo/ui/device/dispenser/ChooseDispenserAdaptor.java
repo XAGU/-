@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
+import com.xiaolian.amigo.data.enumeration.DispenserCategory;
 import com.xiaolian.amigo.data.enumeration.DispenserWater;
 import com.xiaolian.amigo.data.vo.ScanDeviceGroup;
 
@@ -70,6 +71,7 @@ public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenser
     public void onBindViewHolder(ViewHolder holder, int position) {
         ChooseDispenserAdaptor.DispenserWrapper dispenserWrapper =
                 mData.get(holder.getAdapterPosition());
+        expandAble = dispenserWrapper.getDeviceGroup().getCategory() != DispenserCategory.MULTI.getType();
         holder.tvLocation.setText(dispenserWrapper.getLocation());
         if (!expandAble) {
             holder.ivArrow.setVisibility(View.GONE);
@@ -78,12 +80,13 @@ public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenser
         holder.tvTitle.setTextColor(ContextCompat.getColor(context,
                 Device.getDevice(dispenserWrapper.getDeviceGroup().getType()).getColorRes()));
         holder.rlTop.setOnClickListener(v -> {
+            expandAble = mData.get(holder.getAdapterPosition()).getDeviceGroup().getCategory() != DispenserCategory.MULTI.getType();
             if (!expandAble && itemClickListener != null) {
                 itemClickListener.onItemClick(dispenserWrapper.getDeviceGroup().getWater().get(0).getMacAddress(),
                         dispenserWrapper.getDeviceGroup().getWater().get(0).getSupplierId(),
                         dispenserWrapper.isFavor(),
                         dispenserWrapper.getResidenceId(),
-                        null,
+                        DispenserWater.ALL.getType(),
                         dispenserWrapper.getLocation(),
                         dispenserWrapper.getDeviceGroup().getWater().get(0).getPrice());
                 return;

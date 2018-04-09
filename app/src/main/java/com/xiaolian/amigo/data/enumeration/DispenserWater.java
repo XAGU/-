@@ -29,6 +29,12 @@ public enum DispenserWater {
         public int getBackgroundDrawable() {
             return R.drawable.bg_dispenser_ice;
         }
+    },
+    ALL("4", "均可使用") {
+        @Override
+        public int getBackgroundDrawable() {
+            return 0;
+        }
     };
 
     String type;

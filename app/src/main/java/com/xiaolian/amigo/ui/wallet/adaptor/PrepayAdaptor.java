@@ -78,8 +78,12 @@ public class PrepayAdaptor extends CommonAdapter<PrepayAdaptor.OrderWrapper> {
          * 供应商id
          */
         private Long supplierId;
+        private String usefor;
+        private Integer category;
 
         public OrderWrapper(Order order) {
+            this.usefor = order.getUsefor();
+            this.category = order.getCategory();
             this.order = order;
             this.type = order.getDeviceType();
             this.supplierId = order.getSupplierId();

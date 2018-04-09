@@ -11,6 +11,10 @@ import lombok.Data;
 @Data
 public class ScanDeviceGroup {
     /**
+     * 1、普通饮水机 2、三合一饮水机
+     **/
+    private Integer category;
+    /**
      * 是否已收藏
      */
     private Boolean favor;
