@@ -77,4 +77,8 @@ public class OrderDetailRespDTO {
     private String macAddress;
     private Long residenceId;
     private Integer usefor;
+    /**
+     * 消费为零时的提示
+     */
+    private String zeroConsumeCopy;
 }
