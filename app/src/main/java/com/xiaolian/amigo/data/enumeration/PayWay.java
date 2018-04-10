@@ -25,7 +25,7 @@ public enum PayWay {
     WECHAT(2, "微信") {
         @Override
         public int getDrawableRes() {
-            return 0;
+            return R.drawable.ic_wxpay;
         }
     };
 

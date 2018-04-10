@@ -24,7 +24,11 @@ public class RechargeTypeAdaptor extends CommonAdapter<RechargeTypeAdaptor.Recha
 
     @Override
     protected void convert(ViewHolder holder, RechargeWrapper rechargeWrapper, int position) {
-        holder.setBackgroundRes(R.id.ll_item, R.drawable.content_border_selected);
+        if (rechargeWrapper.isSelected()) {
+            holder.setBackgroundRes(R.id.ll_item, R.drawable.content_border_selected);
+        } else {
+            holder.setBackgroundRes(R.id.ll_item, R.drawable.content_border);
+        }
         holder.setImageResource(R.id.iv_pay_way, rechargeWrapper.getImageRes());
         holder.setText(R.id.tv_pay_way, rechargeWrapper.getContent());
     }
