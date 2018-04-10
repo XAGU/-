@@ -67,7 +67,8 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
      */
     List<RechargeTypeAdaptor.RechargeWrapper> rechargeTypes = new ArrayList<RechargeTypeAdaptor.RechargeWrapper>() {
         {
-            add(new RechargeTypeAdaptor.RechargeWrapper(PayWay.ALIAPY.getType(), R.drawable.ic_alipay, "支付宝", true));
+            add(new RechargeTypeAdaptor.RechargeWrapper(PayWay.ALIAPY.getType(), PayWay.ALIAPY.getDrawableRes(), "支付宝", true));
+            add(new RechargeTypeAdaptor.RechargeWrapper(PayWay.WECHAT.getType(), PayWay.WECHAT.getDrawableRes(), "微信", false));
         }
     };
 
@@ -113,6 +114,25 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
         typeAdaptor = new RechargeTypeAdaptor(this, R.layout.item_recharge_type, rechargeTypes);
         recyclerView1.setLayoutManager(new GridLayoutManager(this, 2, LinearLayoutManager.VERTICAL, false));
         recyclerView1.addItemDecoration(new GridSpacesItemDecoration(2, ScreenUtils.dpToPxInt(this, 10), false));
+        typeAdaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                if (rechargeTypeSelectedPosition != -1) {
+                    rechargeTypes.get(rechargeTypeSelectedPosition).setSelected(false);
+                    rechargeTypes.get(position).setSelected(true);
+                } else {
+                    rechargeTypes.get(position).setSelected(true);
+                }
+                rechargeTypeSelectedPosition = position;
+                typeAdaptor.notifyDataSetChanged();
+                toggleSubmitButton();
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
         recyclerView1.setAdapter(typeAdaptor);
 
         presenter.onAttach(RechargeActivity.this);
@@ -143,6 +163,14 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
 
     @OnClick(R.id.bt_submit)
     public void recharge() {
+        if (!(rechargeSelectedPosition >= 0 && rechargeSelectedPosition < recharges.size())) {
+            onError("请选择充值金额");
+            return;
+        }
+        if (!(rechargeTypeSelectedPosition >= 0 && rechargeTypeSelectedPosition < rechargeTypes.size())) {
+            onError("请选择充值方式");
+            return;
+        }
         presenter.recharge(recharges.get(rechargeSelectedPosition).getAmount(),
                 rechargeTypes.get(rechargeTypeSelectedPosition).getType());
     }

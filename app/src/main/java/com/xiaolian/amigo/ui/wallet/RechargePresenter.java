@@ -3,6 +3,7 @@ package com.xiaolian.amigo.ui.wallet;
 import android.text.TextUtils;
 
 import com.xiaolian.amigo.data.enumeration.AlipayPayOrderCheckResult;
+import com.xiaolian.amigo.data.enumeration.PayWay;
 import com.xiaolian.amigo.data.manager.intf.IWalletDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.alipay.AlipayTradeAppPayArgsReqDTO;
@@ -90,7 +91,11 @@ public class RechargePresenter<V extends IRechargeView> extends BasePresenter<V>
             @Override
             public void onReady(ApiResult<SimpleRespDTO> result) {
                 if (null == result.getError()) {
-                    requestAlipayArgs(result.getData().getId());
+                    if (PayWay.getPayWay(type) == PayWay.ALIAPY) {
+                        requestAlipayArgs(result.getData().getId());
+                    } else if (PayWay.getPayWay(type) == PayWay.WECHAT) {
+                        getMvpView().onError("暂不支持微信支付");
+                    }
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }
