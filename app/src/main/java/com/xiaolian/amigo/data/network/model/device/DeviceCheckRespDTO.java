@@ -48,6 +48,10 @@ public class DeviceCheckRespDTO {
      */
     private Integer usefor;
     /**
+     * 饮水机类型 普通 三合一
+     */
+    private Integer category;
+    /**
      * 代金券
      */
     private Bonus bonus;

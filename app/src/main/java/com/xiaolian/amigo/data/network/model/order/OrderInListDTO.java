@@ -97,6 +97,15 @@ public class OrderInListDTO implements Mapper<Order> {
     private String usefor;
     private Integer category;
 
+    /**
+     * 异常订单文案
+     */
+    private String exceptionOrderCopy;
+    /**
+     * 零元消费额文案
+     */
+    private String zeroConsumeCopy;
+
     @Override
     public Order transform() {
         Order order = new Order();
@@ -124,6 +133,8 @@ public class OrderInListDTO implements Mapper<Order> {
         order.setSupplierId(supplierId);
         order.setUsefor(usefor);
         order.setCategory(category);
+        order.setZeroConsumeCopy(zeroConsumeCopy);
+        order.setExceptionOrderCopy(exceptionOrderCopy);
         return order;
     }
 }

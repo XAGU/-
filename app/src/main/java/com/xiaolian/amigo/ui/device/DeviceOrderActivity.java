@@ -63,6 +63,11 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
     @BindView(R.id.tv_prepay)
     TextView tvPrepay;
     /**
+     * 代金券标题
+     */
+    @BindView(R.id.tv_bonus_title)
+    TextView tvBonusTitle;
+    /**
      * 实际扣款
      */
     @BindView(R.id.tv_actual_debit)
@@ -204,9 +209,17 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
             } else {
                 // 有代金券
                 rlUseBonus.setVisibility(View.VISIBLE);
-                tvBonusRemark.setText(getString(R.string.minus, respDTO.getBonus()));
                 tvConsume.setTextColor(ContextCompat.getColor(this, R.color.colorDark6));
                 tvActualDebit.setTextColor(ContextCompat.getColor(this, R.color.colorFullRed));
+                // 实际消费为0
+                if (TextUtils.equals(respDTO.getConsume(), "¥0")) {
+                    rlActualDebit.setVisibility(View.GONE);
+                    tvBonusTitle.setText("退还代金券：");
+                    tvBonusRemark.setText(respDTO.getBonus());
+                    tvConsume.setTextColor(ContextCompat.getColor(this, R.color.colorFullRed));
+                } else {
+                    tvBonusRemark.setText(getString(R.string.minus, respDTO.getBonus()));
+                }
             }
             tvConsume.setText(respDTO.getConsume());
             tvPrepay.setText(respDTO.getPrepay());

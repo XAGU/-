@@ -78,7 +78,7 @@ public class OrderDetailRespDTO {
     private Long residenceId;
     private Integer usefor;
     /**
-     * 消费为零时的提示
+     * 零元消费额文案
      */
     private String zeroConsumeCopy;
 }
