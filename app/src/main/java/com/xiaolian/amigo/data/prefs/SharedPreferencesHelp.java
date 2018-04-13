@@ -11,6 +11,7 @@ import com.xiaolian.amigo.data.network.model.user.UploadUserDeviceInfoReqDTO;
 import com.xiaolian.amigo.data.vo.DeviceCategory;
 import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.di.ApplicationContext;
+import com.xiaolian.blelib.BluetoothConstants;
 
 import java.util.Collections;
 import java.util.List;
@@ -67,6 +68,10 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     private static final String PREF_ALERT_DRYER = "PREF_ALERT_DRYER";
     /************* 记住手机号 ******************/
     private static final String PREF_REMEMBER_MOBILE = "PREF_REMEMBER_MOBILE";
+    /**
+     * 扫描方式
+     */
+    private static final String PREF_KEY_SCAN_TYPE = "PREF_KEY_SCAN_TYPE";
 
     private String tokenHolder;
     private String deviceTokenHolder;
@@ -427,6 +432,19 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
                     }.getType());
         }
         return null;
+    }
+
+    @Override
+    public void saveScanType(int scanType) {
+        mSharedPreferences
+                .edit()
+                .putInt(PREF_KEY_SCAN_TYPE, scanType)
+                .apply();
+    }
+
+    @Override
+    public int getScanType() {
+        return mSharedPreferences.getInt(PREF_KEY_SCAN_TYPE, BluetoothConstants.SCAN_TYPE_BLE);
     }
 
     @Override

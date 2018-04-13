@@ -94,6 +94,17 @@ public class OrderInListDTO implements Mapper<Order> {
      * 供应商id
      */
     private Long supplierId;
+    private String usefor;
+    private Integer category;
+
+    /**
+     * 异常订单文案
+     */
+    private String exceptionOrderCopy;
+    /**
+     * 零元消费额文案
+     */
+    private String zeroConsumeCopy;
 
     @Override
     public Order transform() {
@@ -120,6 +131,10 @@ public class OrderInListDTO implements Mapper<Order> {
         order.setLowest(lowest);
         order.setResidenceId(residenceId);
         order.setSupplierId(supplierId);
+        order.setUsefor(usefor);
+        order.setCategory(category);
+        order.setZeroConsumeCopy(zeroConsumeCopy);
+        order.setExceptionOrderCopy(exceptionOrderCopy);
         return order;
     }
 }

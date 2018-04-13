@@ -10,8 +10,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.util.ObjectsCompat;
 import android.text.TextUtils;
 
-import com.polidea.rxandroidble.RxBleConnection;
-import com.polidea.rxandroidble.scan.ScanResult;
 import com.trello.rxlifecycle.LifecycleTransformer;
 import com.trello.rxlifecycle.RxLifecycle;
 import com.trello.rxlifecycle.android.ActivityEvent;
@@ -49,20 +47,21 @@ import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
 import com.xiaolian.amigo.util.ble.Agreement;
 import com.xiaolian.amigo.util.ble.HexBytesUtils;
+import com.xiaolian.blelib.BluetoothConstants;
+import com.xiaolian.blelib.ScanRecord;
+import com.xiaolian.blelib.scan.BluetoothScanResponse;
+import com.xiaolian.blelib.scan.BluetoothScanResult;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subjects.BehaviorSubject;
 import rx.subjects.PublishSubject;
-
-import static com.trello.rxlifecycle.android.ActivityEvent.PAUSE;
 
 /**
  * 设备BasePresenter
@@ -76,10 +75,6 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     private static final String TAG = DeviceBasePresenter.class.getSimpleName();
     private IBleDataManager bleDataManager;
     private IDeviceDataManager deviceDataManager;
-    // 共享连接
-    private Observable<RxBleConnection> connectionObservable;
-    private Observable<Observable<byte[]>> setupNotificationObservable;
-    private BleObserver<byte[]> writeObserver;
     private BehaviorSubject<ActivityEvent> lifeCycleSubject = BehaviorSubject.create();
     // 断连触发器
     private PublishSubject<Void> disconnectTriggerSubject = PublishSubject.create();
@@ -87,8 +82,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     private String currentMacAddress;
     // 设备编号 macAddress后六位 用于和服务器交互
     private String deviceNo;
-    // 表示是否正在处理蓝牙被主动关闭
-    private AtomicBoolean handleBleAdaptorClose = new AtomicBoolean(false);
+    // 表示蓝牙是否连接 在连接上后设置为true 只有在handleDisConnectError 里才能设置为false
+    private AtomicBoolean handleBleClose = new AtomicBoolean(false);
     // 订阅设备返回的消息
     private Subscription busSubscriber;
     // 标志是否重连
@@ -137,11 +132,14 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     private Supplier supplier;
     // 页面关闭触发器
     private PublishSubject<Void> closeTriggerSubject = PublishSubject.create();
+    // 扫描方式
+    private int scanType = BluetoothConstants.SCAN_TYPE_BLE;
 
     DeviceBasePresenter(IBleDataManager bleDataManager, IDeviceDataManager deviceDataManager) {
         super();
         this.bleDataManager = bleDataManager;
         this.deviceDataManager = deviceDataManager;
+        this.scanType = deviceDataManager.getScanType();
     }
 
     @Override
@@ -170,27 +168,6 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
      */
     protected Supplier getSupplier() {
         return supplier;
-    }
-
-    private void initWriteObserver() {
-        writeObserver = new BleObserver<byte[]>() {
-            @Override
-            public void onConnectError() {
-                // 注释掉防止Rx多次报连接错误
-                // handleDisConnectError();
-            }
-
-            @Override
-            public void onExecuteError(Throwable e) {
-                Log.wtf(TAG, "发送指令失败！command:" + getCommand(), e);
-                handleWriteError(getCommand(), e);
-            }
-
-            @Override
-            public void onNext(byte[] data) {
-                Log.i(TAG, "发送指令成功！command:" + HexBytesUtils.bytesToHexString(data));
-            }
-        };
     }
 
     @Override
@@ -281,7 +258,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 reportError(getStep().getStep(), ConnectErrorType.BLE_CONNECT_ERROR.getType(),
                         DisplayErrorType.CONNECT_ERROR.getType(), "设备连接超时。", "");
                 // 关闭蓝牙连接
-                closeBleConnecttion();
+                closeBleConnection();
 
                 if (getMvpView() != null) {
                     getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_5));
@@ -302,59 +279,80 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
         // 扫描macAddress
         Log.i(TAG, "开始扫描macAddress");
-        Observable<ScanResult> scanObservable = bleDataManager.scan(macAddress);
-        addObserver(scanObservable, new BleObserver<ScanResult>() {
+        bleDataManager.scan(BluetoothConstants.SCAN_TYPE_BLE, new BluetoothScanResponse() {
+            boolean savedScanType = false;
+            @Override
+            public void onScanStarted() {
+                Log.d(TAG, "onScanStarted thread" + Thread.currentThread().getName());
+            }
 
             @Override
-            public void onNext(ScanResult result) {
-
-                boolean validDevice = false;
-                if (null != result.getScanRecord() && null != result.getScanRecord().getServiceUuids()) {
-                    for (ParcelUuid parcelUuid : result.getScanRecord().getServiceUuids()) {
-                        if (parcelUuid.toString().equalsIgnoreCase(supplier.getServiceUuid())) {
-                            validDevice = true;
-                            break;
-                        }
-                    }
+            public void onDeviceFounded(BluetoothScanResult result) {
+                if (!savedScanType) {
+                    Log.d(TAG, "扫描到设备，缓存当前扫描方式" + scanType);
+                    savedScanType = true;
+                    deviceDataManager.saveScanType(scanType);
                 }
+                Log.d(TAG, "onDeviceFounded thread" + Thread.currentThread().getName());
+                boolean validDevice = isValidDevice(result, macAddress);
                 if (!validDevice) {
                     return;
                 }
 
-                if (currentMacAddress != null && currentMacAddress.equalsIgnoreCase(result.getBleDevice().getMacAddress())) {
+                if (currentMacAddress != null && currentMacAddress.equalsIgnoreCase(result.getAddress())) {
                     Log.i(TAG, "扫描获取macAddress在当前上下文已经存在，无需重复计算。macAddress:" + currentMacAddress);
-                    this.unsubscribe();
+                    bleDataManager.stopScan();
                     return;
                 }
 
-                currentMacAddress = result.getBleDevice().getMacAddress();
+                currentMacAddress = result.getAddress();
                 Log.i(TAG, "扫描获取macAddress成功。macAddress:" + currentMacAddress);
                 deviceDataManager.setDeviceNoAndMacAddress(macAddress, currentMacAddress);
                 realConnect(macAddress);
-                this.unsubscribe();
+                bleDataManager.stopScan();
             }
 
             @Override
-            public void onConnectError() {
-                Log.wtf(TAG, "扫描失败 onConnectError");
-                reportError(getStep().getStep(), ConnectErrorType.BLE_CONNECT_ERROR.getType(),
-                        DisplayErrorType.CONNECT_ERROR.getType(), "扫描失败 onConnectError", "");
-                if (getMvpView() != null) {
-                    getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
-                }
+            public void onScanStopped() {
+                Log.d(TAG, "onScanStopped thread" + Thread.currentThread().getName());
             }
 
             @Override
-            public void onExecuteError(Throwable e) {
-                Log.wtf(TAG, "扫描失败 onExecuteError", e);
-                reportError(getStep().getStep(), ConnectErrorType.BLE_CONNECT_ERROR.getType(),
-                        DisplayErrorType.CONNECT_ERROR.getType(), "扫描失败 onExecuteError",
-                        e == null ? "" : e.getMessage());
-                if (getMvpView() != null) {
-                    getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
+            public void onScanCanceled() {
+                Log.d(TAG, "onScanCanceled thread" + Thread.currentThread().getName());
+            }
+        });
+    }
+
+    private boolean isValidDevice(BluetoothScanResult result, String deviceNo) {
+        if (!TextUtils.equals(deviceNo, result.getName())) {
+            return false;
+        }
+        if (scanType == BluetoothConstants.SCAN_TYPE_CLASSIC) {
+            return true;
+        }
+        boolean validDevice = false;
+        ScanRecord scanRecord = ScanRecord.parseFromBytes(result.getScanRecord());
+        if (null != scanRecord && null != scanRecord.getServiceUuids()) {
+            for (ParcelUuid parcelUuid : scanRecord.getServiceUuids()) {
+                if (parcelUuid.toString().equalsIgnoreCase(supplier.getServiceUuid())) {
+                    validDevice = true;
+                    break;
                 }
             }
-        }, Schedulers.io());
+        }
+        return validDevice;
+    }
+
+    @Override
+    public void toggleScanType() {
+        if (scanType == BluetoothConstants.SCAN_TYPE_CLASSIC) {
+            scanType = BluetoothConstants.SCAN_TYPE_BLE;
+        } else if (scanType == BluetoothConstants.SCAN_TYPE_BLE) {
+            scanType = BluetoothConstants.SCAN_TYPE_CLASSIC;
+        } else {
+            scanType = BluetoothConstants.SCAN_TYPE_BLE;
+        }
     }
 
     private void realConnect(String macAddress) {
@@ -371,18 +369,33 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             busSubscriber = RxBus.getDefault()
                     .toObservable(ApiResult.class)
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(this::handleResult, throwable -> Log.wtf(TAG, "接收设备返回的数据失败", throwable));
+                    .subscribe(this::handleResult, throwable ->
+                            Log.wtf(TAG, "接收设备返回的数据失败 thread" + Thread.currentThread().getName(), throwable));
         }
 
         // 3、创建共享连接q
-        connectionObservable = bleDataManager
-                .prepareConnectionObservable(currentMacAddress, false, disconnectTriggerSubject)
-                .compose(bindUntilEvent(PAUSE));
+        bleDataManager.registerConnectStatusListener(currentMacAddress, status -> {
+            // 处理蓝牙连接状态
+            switch (status) {
+                case BluetoothConstants.STATE_CONNECTED:
+                    Log.d(TAG, "蓝牙已连接");
+                    break;
+                case BluetoothConstants.STATE_CONNECTING:
+                    Log.d(TAG, "蓝牙正在连接");
+                    break;
+                case BluetoothConstants.STATE_DISCONNECTED:
+                    handleDisConnectError("蓝牙已经断开连接");
+                    break;
+                case BluetoothConstants.STATE_DISCONNECTING:
+                    Log.d(TAG, "蓝牙正在断开连接");
+                    break;
+            }
 
-        initWriteObserver();
+        });
 
         // 4、连接设备
-        Log.d(TAG, "开始连接设备");
+        safeWait(300);
+        Log.d(TAG, "开始连接设备 thread " + Thread.currentThread().getName());
         switch (AgreementVersion.getAgreement(supplier.getAgreement())) {
             case HAONIANHUA:
                 connectHaoNianHaoDevice();
@@ -394,31 +407,28 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     }
 
     private void connectXinNaDevice() {
-        Log.i(TAG, "连接辛纳设备");
-        addObserver(bleDataManager.connect2(connectionObservable, supplier.getNotifyUuid())
-                        .doOnNext(notificationObservable -> afterBleConnected())
-                        .flatMap(notificationObservable -> notificationObservable),
-                new BleObserver<byte[]>() {
-                    @Override
-                    public void onNext(byte[] data) {
-                        if (null != data) {
-                            String result = HexBytesUtils.bytesToHexString(data);
-                            Log.i(TAG, "接收到设备数据" + result);
-                            processCommandResult(result);
-                        }
-                    }
-
-                    @Override
-                    public void onConnectError() {
-                        Log.i(TAG, "设备连接失败！");
-                        handleDisConnectError();
-                    }
-
-                    @Override
-                    public void onExecuteError(Throwable e) {
-                        Log.wtf(TAG, "onExecuteError失败！", e);
-                    }
-                }, Schedulers.io());
+        Log.i(TAG, "连接辛纳设备 thread " + Thread.currentThread().getName());
+        bleDataManager.connect(currentMacAddress, (code, gatt) -> {
+            if (code != BluetoothConstants.CONN_RESPONSE_SUCCESS) {
+                handleDisConnectError("辛纳设备连接失败 code: " + code);
+                return;
+            }
+            if (bleDataManager.setNotify(currentMacAddress, UUID.fromString(supplier.getServiceUuid()),
+                    UUID.fromString(supplier.getNotifyUuid()), true)) {
+                Log.i(TAG, "辛纳设备设置notify成功 " + Thread.currentThread().getName());
+                afterBleConnected();
+                bleDataManager.notify(currentMacAddress, UUID.fromString(supplier.getServiceUuid()),
+                        UUID.fromString(supplier.getWriteUuid()), data -> {
+                            if (null != data) {
+                                String result = HexBytesUtils.bytesToHexString(data);
+                                Log.i(TAG, "接收到设备数据" + result + " thread" + Thread.currentThread().getName());
+                                processCommandResult(result);
+                            }
+                        });
+            } else {
+                handleDisConnectError("辛纳设备设置notify失败");
+            }
+        });
     }
 
     private void afterBleConnected() {
@@ -506,109 +516,51 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     }
 
     private void connectHaoNianHaoDevice() {
-        Log.i(TAG, "连接好年华设备");
-        addObserver(bleDataManager.connect(connectionObservable),
-                new BleObserver<BluetoothGattCharacteristic>() {
-                    @Override
-                    public void onConnectError() {
-                        // 只在连接设备的onConnectError进行处理，防止Rx多次报连接错误
-                        handleDisConnectError();
-                    }
-
-                    @Override
-                    public void onExecuteError(Throwable e) {
-                        Log.wtf(TAG, "获取特征值失败！", e);
-                        reportError(getStep().getStep(), ConnectErrorType.BLE_CONNECT_ERROR.getType(),
-                                DisplayErrorType.CONNECT_ERROR.getType(), "获取特征值失败！",
-                                e == null ? "" : e.getMessage());
-                        if (getMvpView() != null) {
-                            getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
-                        }
-                    }
-
-                    @Override
-                    public void onNext(BluetoothGattCharacteristic characteristic) {
-                        Log.i(TAG, "设备连接成功！");
-
-                        // 蓝牙已启用
-                        handleBleAdaptorClose.set(false);
-
-                        // 6、开启notify，向蓝牙设备写notify特征值描述，为后续接受蓝牙设备notify通知做铺垫
-                        if (bleDataManager.getStatus(currentMacAddress) == RxBleConnection.RxBleConnectionState.CONNECTED) {
-                            Log.i(TAG, "准备开启notify通道");
-                            enableNotify(characteristic);
-                        } else {
-                            if (getMvpView() != null) {
-                                getMvpView().onStatusError();
-                            }
-                        }
-
-                    }
-                }, Schedulers.io());
-    }
-
-    // 开启notify通道
-    private void enableNotify(BluetoothGattCharacteristic notifyCharacteristic) {
-        setupNotificationObservable = bleDataManager.setupNotification(connectionObservable, notifyCharacteristic);
-        addObserver(setupNotificationObservable, new BleObserver<Observable<byte[]>>() {
-            @Override
-            public void onConnectError() {
-                // 注释掉防止Rx多次报连接错误
-                // handleDisConnectError();
+        Log.i(TAG, "连接好年华设备 thread " + Thread.currentThread().getName());
+        bleDataManager.connect(currentMacAddress, (code, gatt) -> {
+            Log.d(TAG, "connect code:" + code + " thread " + Thread.currentThread().getName());
+            Log.d(TAG, "ServiceUuid" + supplier.getServiceUuid() + "notifyUuid" + supplier.getNotifyUuid()
+                    + "writeUuid" + supplier.getWriteUuid());
+            if (code != BluetoothConstants.CONN_RESPONSE_SUCCESS) {
+                handleDisConnectError("连接好年华设备失败 code:" + code);
+                return;
             }
+            if (gatt == null || gatt.getService(UUID.fromString(supplier.getServiceUuid())) == null) {
+                handleDisConnectError("连接好年华设备失败 code:" + code + "获取不到service uuid:" + supplier.getServiceUuid());
+                return;
+            }
+            for (BluetoothGattCharacteristic characteristic : gatt.getService(UUID.fromString(supplier.getServiceUuid())).getCharacteristics()) {
+                if (characteristic.getProperties() == BluetoothGattCharacteristic.PROPERTY_NOTIFY) {
+                    if (bleDataManager.setNotify(currentMacAddress, UUID.fromString(supplier.getServiceUuid()),
+                            characteristic.getUuid(), true)) {
+                        Log.d(TAG, "设置notify成功 thread " + Thread.currentThread().getName());
+                        bleDataManager.writeDescriptor(currentMacAddress, UUID.fromString(supplier.getServiceUuid()),
+                                characteristic.getUuid(), UUID.fromString(supplier.getNotifyUuid()),
+                                BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE, code1 -> {
+                                    Log.d(TAG, "写入ENABLE_NOTIFICATION_VALUE code" + code1 + " thread " + Thread.currentThread().getName());
+                                    if (code1 != BluetoothConstants.GATT_SUCCESS) {
+                                        handleDisConnectError("好年华设备写入ENABLE_NOTIFICATION_VALUE失败 code:" + code1);
+                                        return;
+                                    }
+                                    bleDataManager.notify(currentMacAddress, UUID.fromString(supplier.getServiceUuid()),
+                                            characteristic.getUuid(), data -> {
+                                                if (null != data) {
+                                                    String result = HexBytesUtils.bytesToHexString(data);
+                                                    Log.i(TAG, "接收到设备数据" + result + " thread " + Thread.currentThread().getName());
+                                                    processCommandResult(result);
+                                                }
 
-            @Override
-            public void onExecuteError(Throwable e) {
-                Log.wtf(TAG, "开启notify通道失败！", e);
-                reportError(getStep().getStep(), ConnectErrorType.BLE_CONNECT_ERROR.getType(),
-                        DisplayErrorType.CONNECT_ERROR.getType(), "开启notify通道失败！",
-                        e == null ? "" : e.getMessage());
-                if (getMvpView() != null) {
-                    getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
+                                            });
+                                    afterBleConnected();
+                                });
+                    } else {
+                        Log.d(TAG, "设置notify失败 thread " + Thread.currentThread().getName());
+                        handleDisConnectError("设置notify失败");
+                    }
+                    return;
                 }
             }
-
-            @Override
-            public void onNext(Observable<byte[]> observable) {
-                Log.i(TAG, "开启notify通道成功！");
-                Log.i(TAG, "准备开始写notify特征值描述");
-                writeNotifyCharacteristicDesc(notifyCharacteristic);
-            }
-        }, Schedulers.io());
-    }
-
-    // 写notify特征值描述
-    private void writeNotifyCharacteristicDesc(BluetoothGattCharacteristic notifyCharacteristic) {
-        BluetoothGattDescriptor descriptor = notifyCharacteristic.getDescriptor(UUID.fromString(supplier.getNotifyUuid()));
-        descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
-
-        addObserver(bleDataManager.writeDescriptor(connectionObservable, descriptor),
-                new BleObserver<byte[]>() {
-                    @Override
-                    public void onConnectError() {
-                        // 注释掉防止Rx多次报连接错误
-                        // handleDisConnectError();
-                    }
-
-                    @Override
-                    public void onExecuteError(Throwable e) {
-                        Log.wtf(TAG, "写notify特征值描述失败！", e);
-                        reportError(getStep().getStep(), ConnectErrorType.BLE_CONNECT_ERROR.getType(),
-                                DisplayErrorType.CONNECT_ERROR.getType(), "写notify特征值描述失败！",
-                                e == null ? "" : e.getMessage());
-                        if (getMvpView() != null) {
-                            getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
-                        }
-                    }
-
-                    @Override
-                    public void onNext(byte[] descriptor) {
-                        Log.i(TAG, "写notify特征值描述成功！");
-
-                        // 注册notify通道接收数据
-                        registerNotify();
-                    }
-                }, Schedulers.io());
+        });
     }
 
     @Override
@@ -619,6 +571,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         // 设置重连标识
         reconnect = true;
 
+        // 等待1s
         safeWait(1000);
 
         // 触发重连机制
@@ -627,10 +580,10 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
     @Override
     public void onWrite(@NonNull String command) {
-        if (bleDataManager.getStatus(currentMacAddress) != RxBleConnection.RxBleConnectionState.CONNECTED) {
+        if (bleDataManager.getConnectStatus(currentMacAddress) != BluetoothConstants.STATE_CONNECTED) {
             reportError(getStep().getStep(), ConnectErrorType.BLE_CONNECT_ERROR.getType(),
                     DisplayErrorType.CONNECT_ERROR.getType(), "发送指令时设备未连接，command:" + command,
-                    "");
+                    "connectStatus: " + bleDataManager.getConnectStatus(currentMacAddress));
             if (getMvpView() != null) {
                 getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
             }
@@ -641,21 +594,25 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             reportError(getStep().getStep(), ConnectErrorType.BLE_CONNECT_ERROR.getType(),
                     DisplayErrorType.CONNECT_ERROR.getType(), "发送指令时指令丢失",
                     "");
-            Log.wtf(TAG, "指令丢失");
             if (getMvpView() != null) {
                 getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_4));
             }
             return;
         }
         byte[] commandBytes = HexBytesUtils.hexStr2Bytes(command);
-        writeObserver.setCommand(command);
-        addObserver(bleDataManager.write(connectionObservable, commandBytes, supplier.getWriteUuid()), writeObserver, Schedulers.io());
+        bleDataManager.writeNoRsp(currentMacAddress, UUID.fromString(supplier.getServiceUuid()),
+                UUID.fromString(supplier.getWriteUuid()), commandBytes, code -> {
+                    if (code == BluetoothConstants.GATT_OTHER_FAILURE) {
+                        handleWriteError(command);
+                    } else if (code == BluetoothConstants.GATT_SUCCESS) {
+                        Log.d(TAG, "发送指令成功 command: " + command + " thread " + Thread.currentThread().getName());
+                    }
+                });
     }
 
-    private void handleWriteError(String command, Throwable e) {
+    private void handleWriteError(String command) {
         reportError(getStep().getStep(), ConnectErrorType.BLE_CONNECT_ERROR.getType(),
-                DisplayErrorType.CONNECT_ERROR.getType(), "发送指令失败！command:" + command,
-                e == null ? "" : e.getMessage());
+                DisplayErrorType.CONNECT_ERROR.getType(), "发送指令失败！command:" + command, "");
         // 结算找零时写入设备失败
         if (TextUtils.equals(command, checkoutCmd)) {
             if (getMvpView() != null) {
@@ -666,44 +623,6 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_4));
             }
         }
-    }
-
-    @Override
-    public void registerNotify() {
-        if (bleDataManager.getStatus(currentMacAddress) != RxBleConnection.RxBleConnectionState.CONNECTED) {
-            getMvpView().onError(TradeError.CONNECT_ERROR_1);
-            return;
-        }
-
-        addObserver(setupNotificationObservable.flatMap(notificationObservable -> notificationObservable),
-                new BleObserver<byte[]>() {
-                    @Override
-                    public void onConnectError() {
-                        // 注释掉防止Rx多次报连接错误
-                        // handleDisConnectError();
-                    }
-
-                    @Override
-                    public void onExecuteError(Throwable e) {
-                        Log.wtf(TAG, "接收数据失败！", e);
-                        reportError(getStep().getStep(), ConnectErrorType.BLE_CONNECT_ERROR.getType(),
-                                DisplayErrorType.DEVICE_ERROR.getType(), "接收数据失败！",
-                                e == null ? "" : e.getMessage());
-                        if (getMvpView() != null) {
-                            getMvpView().post(() -> getMvpView().onError(TradeError.DEVICE_BROKEN_1));
-                        }
-                    }
-
-                    @Override
-                    public void onNext(byte[] data) {
-                        if (null != data) {
-                            String result = HexBytesUtils.bytesToHexString(data);
-                            Log.i(TAG, "接收数据成功！data:" + result);
-                            processCommandResult(result);
-                        }
-                    }
-                }, Schedulers.io());
-        afterBleConnected();
     }
 
     // 等待握手指令到达
@@ -739,28 +658,36 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         }
     }
 
+    private void handleDisConnectError(String disconnectReason) {
+        if (handleBleClose.compareAndSet(false, true)) {
+            Log.d(TAG, disconnectReason + " thread " + Thread.currentThread().getName());
+            reportError(getStep().getStep(), ConnectErrorType.BLE_CONNECT_ERROR.getType(),
+                    DisplayErrorType.CONNECT_ERROR.getType(), disconnectReason,
+                    "handleDisConnectError() thread " + Thread.currentThread().getName());
+
+            // 跳转至连接失败页面
+            if (getMvpView() != null) {
+                getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
+            }
+            handleBleClose.set(false);
+        }
+    }
+
     // 统一处理设备连接异常
     private void handleDisConnectError() {
-        Log.wtf(TAG, "蓝牙连接已断开！");
-        reportError(getStep().getStep(), ConnectErrorType.BLE_CONNECT_ERROR.getType(),
-                DisplayErrorType.CONNECT_ERROR.getType(), "蓝牙连接已断开！",
-                "handleDisConnectError()");
-
-        // 跳转至连接失败页面
-        if (getMvpView() != null) {
-            getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
-        }
+        handleDisConnectError("蓝牙连接已断开！");
     }
 
     @Override
     public void onDisConnect() {
+        Log.d(TAG, "onDisConnect");
         if (null != busSubscriber) {
             busSubscriber.unsubscribe();
         }
         if (null != timer) {
             timer.cancel();
         }
-        closeBleConnecttion();
+        closeBleConnection();
     }
 
     @NonNull
@@ -770,6 +697,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     }
 
     // 安全等待时长间隔
+    @SuppressWarnings("all")
     private void safeWait(long mills) {
         try {
             Thread.sleep(mills);
@@ -894,7 +822,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             Log.wtf(TAG, "获取设备响应结果前缀失败");
             reportError(getStep().getStep(), ConnectErrorType.RESULT_INVALID.getType(),
                     DisplayErrorType.CONNECT_ERROR.getType(), "获取设备响应结果前缀失败,result:" + result,
-                    e == null ? "" : e.getMessage());
+                    e.getMessage());
             if (getMvpView() != null) {
                 getMvpView().onError(TradeError.CONNECT_ERROR_4);
             }
@@ -931,8 +859,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         }, Schedulers.io());
     }
 
-    @Override
-    public void handleResult(ApiResult<CmdResultRespDTO> result) {
+    private void handleResult(ApiResult<CmdResultRespDTO> result) {
         Log.i(TAG, "主线程开始处理指令响应结果");
         if (null == result.getError()) {
             // 下一步执行指令
@@ -942,7 +869,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 reportError(getStep().getStep(), ConnectErrorType.SERVER_ERROR.getType(),
                         DisplayErrorType.SYSTEM_ERROR.getType(), "服务器未返回ScrCommandType",
                         "");
-                closeBleConnecttion();
+                closeBleConnection();
                 if (getMvpView() != null) {
                     getMvpView().onError(TradeError.SYSTEM_ERROR);
                 }
@@ -1082,7 +1009,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         // }
                     } else {
                         // 提示用户设备已被其它用户使用
-                        closeBleConnecttion();
+                        closeBleConnection();
                         if (getMvpView() != null) {
                             getMvpView().onError(TradeError.DEVICE_BUSY);
                         }
@@ -1092,7 +1019,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 reportError(getStep().getStep(), ConnectErrorType.SERVER_ERROR.getType(),
                         DisplayErrorType.DEVICE_ERROR.getType(), "服务器返回未知错误,code:" + result.getError().getCode(),
                         "");
-                closeBleConnecttion();
+                closeBleConnection();
                 if (getMvpView() != null) {
                     getMvpView().onError(TradeError.DEVICE_BROKEN_2);
                 }
@@ -1113,7 +1040,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     reportError(getStep().getStep(), ConnectErrorType.SERVER_ERROR.getType(),
                             DisplayErrorType.DEVICE_ERROR.getType(), "设备开阀异常,code:" + result.getError().getCode(),
                             "");
-                    closeBleConnecttion();
+                    closeBleConnection();
                     if (getMvpView() != null) {
                         getMvpView().onError(TradeError.DEVICE_BROKEN_2);
                     }
@@ -1122,7 +1049,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     reportError(getStep().getStep(), ConnectErrorType.SERVER_ERROR.getType(),
                             DisplayErrorType.DEVICE_ERROR.getType(), "订单结算异常,code:" + result.getError().getCode(),
                             "");
-                    closeBleConnecttion();
+                    closeBleConnection();
                     // 结算时异常
                     if (getMvpView() != null) {
                         getMvpView().onError(TradeError.DEVICE_BROKEN_1);
@@ -1134,7 +1061,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 reportError(getStep().getStep(), ConnectErrorType.SERVER_ERROR.getType(),
                         DisplayErrorType.SYSTEM_ERROR.getType(), "服务器后台出错,code:" + result.getError().getCode(),
                         "");
-                closeBleConnecttion();
+                closeBleConnection();
                 if (getMvpView() != null) {
                     getMvpView().onError(TradeError.SYSTEM_ERROR);
                 }
@@ -1301,7 +1228,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                             reportError(getStep().getStep(), ConnectErrorType.BLE_CONNECT_ERROR.getType(),
                                     DisplayErrorType.CONNECT_ERROR.getType(), "关阀时关阀指令丢失且上一次设备响应也丢失",
                                     "");
-                            closeBleConnecttion();
+                            closeBleConnection();
                             if (getMvpView() != null) {
                                 getMvpView().onError(TradeError.CONNECT_ERROR_2);
                             }
@@ -1323,12 +1250,16 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     }
 
     @Override
-    public void closeBleConnecttion() {
+    public void closeBleConnection() {
         // 不再接收数据
         disconnectTriggerSubject.onNext(null);
-
         // 清空连接观察者
         clearObservers();
+        bleDataManager.unregisterConnectStatusListener(currentMacAddress);
+        Log.d(TAG, "关闭蓝牙连接");
+        bleDataManager.disconnect(currentMacAddress);
+        Log.d(TAG, "停止蓝牙扫描");
+        bleDataManager.stopScan();
     }
 
     @Override
@@ -1359,6 +1290,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
     private void reportError(int step, int connnectErrorType, int displayErrorType,
                              String reason, String extra) {
+        Log.d(TAG, "reason: " + reason + "extra: " + extra + " thread " + Thread.currentThread().getName());
         DeviceConnectErrorReqDTO reqDTO = new DeviceConnectErrorReqDTO();
         reqDTO.setConnnectErrorType(connnectErrorType);
         reqDTO.setDisplayErrorType(displayErrorType);
@@ -1380,14 +1312,6 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         // do nothing
                     }
                 });
-//        addObserver(deviceDataManager.reportDeviceConnectError(reqDTO),
-//                new NetworkObserver<ApiResult<BooleanRespDTO>>(false) {
-//
-//                    @Override
-//                    public void onReady(ApiResult<BooleanRespDTO> booleanRespDTOApiResult) {
-//                        // do nothing
-//                    }
-//                });
     }
 
     @Override
@@ -1397,8 +1321,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     }
 
     /*************************** 以下为测试用 *****************************/
-    @Override
-    public void handleResult(String data) {
+    @SuppressWarnings("unused")
+    private void handleResult(String data) {
         String prefix = data.substring(0, 4);
         switch (prefix) {
             case "a801":

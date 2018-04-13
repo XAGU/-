@@ -49,16 +49,6 @@ public interface IBasePresenter<V extends IBaseView> {
     void onBizCodeError(Error error);
 
     /**
-     * 添加蓝牙请求观察者
-     */
-    <P> void addObserver(Observable<P> observable, BasePresenter.BleObserver observer);
-
-    /**
-     * 添加蓝牙请求观察者，指定订阅线程
-     */
-    <P> void addObserver(Observable<P> observable, BasePresenter.BleObserver observer, Scheduler scheduler);
-
-    /**
      * 添加网络请求观察者
      */
     <P> void addObserver(Observable<P> observable, BasePresenter.NetworkObserver observer);

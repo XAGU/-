@@ -67,28 +67,9 @@ public interface IDevicePresenter<V extends IBaseView> extends IBasePresenter<V>
     void onClose();
 
     /**
-     * 接收设备通知（读数据）
-     */
-    void registerNotify();
-
-    /**
      * 断开连接
      */
     void onDisConnect();
-
-    /**
-     * 处理蓝牙响应结果
-     *
-     * @param data 蓝牙设备响应
-     */
-    void handleResult(String data);
-
-    /**
-     * 处理网络请求响应结果
-     *
-     * @param result 服务响应
-     */
-    void handleResult(ApiResult<CmdResultRespDTO> result);
 
     /**
      * 设置当前页面操作步骤
@@ -112,7 +93,7 @@ public interface IDevicePresenter<V extends IBaseView> extends IBasePresenter<V>
     /**
      * 关闭蓝牙连接
      */
-    void closeBleConnecttion();
+    void closeBleConnection();
 
     /**
      * 重置连接观察者管理器
@@ -142,4 +123,6 @@ public interface IDevicePresenter<V extends IBaseView> extends IBasePresenter<V>
      * @param supplierId 供应商id
      */
     void setSupplierId(Long supplierId);
+
+    void toggleScanType();
 }

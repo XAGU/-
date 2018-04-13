@@ -1,24 +1,20 @@
 package com.xiaolian.amigo.ui.ble;
 
 
-import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-
-import com.xiaolian.amigo.util.Log;
-
 import android.view.View;
 
-import com.polidea.rxandroidble.scan.ScanResult;
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
-import com.xiaolian.amigo.util.ScreenUtils;
 import com.xiaolian.amigo.ui.ble.adaptor.BleAdaptor;
 import com.xiaolian.amigo.ui.ble.intf.IBlePresenter;
 import com.xiaolian.amigo.ui.ble.intf.IBleView;
+import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
+import com.xiaolian.amigo.util.Log;
+import com.xiaolian.amigo.util.ScreenUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,15 +70,15 @@ public class BleActivity extends BleBaseActivity implements IBleView {
 
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    @Override
-    public void addDevice(ScanResult result) {
-        BleAdaptor.Device device = new BleAdaptor.Device(result);
-        if (!this.devices.contains(device)) {
-            this.devices.add(device);
-        }
-        adaptor.notifyDataSetChanged();
-    }
+//    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+//    @Override
+//    public void addDevice(ScanResult result) {
+//        BleAdaptor.Device device = new BleAdaptor.Device(result);
+//        if (!this.devices.contains(device)) {
+//            this.devices.add(device);
+//        }
+//        adaptor.notifyDataSetChanged();
+//    }
 
     @Override
     public void onScanError() {

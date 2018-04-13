@@ -28,6 +28,8 @@ import com.bumptech.glide.Glide;
 import com.umeng.analytics.MobclickAgent;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
+import com.xiaolian.amigo.data.enumeration.DispenserCategory;
+import com.xiaolian.amigo.data.enumeration.DispenserWater;
 import com.xiaolian.amigo.data.enumeration.IntentAction;
 import com.xiaolian.amigo.data.enumeration.Orientation;
 import com.xiaolian.amigo.data.network.model.system.BannerDTO;
@@ -839,7 +841,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             } else if (type == Device.DISPENSER.getType()) {
                 gotoDispenser(data.getUnsettledMacAddress(), data.getUnsettledSupplierId(),
                         data.getLocation(), data.getResidenceId(),
-                        data.getFavor(), data.getUsefor(), true);
+                        data.getFavor(), (data.getCategory() != null
+                                && DispenserCategory.MULTI.getType() == data.getCategory())
+                                ? Integer.valueOf(DispenserWater.ALL.getType()) : data.getUsefor(), true);
             } else if (type == Device.DRYER.getType()) {
                 gotoDryer(data.getUnsettledMacAddress(), data.getUnsettledSupplierId(),
                         data.getLocation(), data.getResidenceId(),

@@ -103,4 +103,19 @@ public class Order implements Serializable {
      * 工作模式描述
      */
     private String modeDesc;
+    /**
+     * 水温
+     */
+    private String usefor;
+
+    private Integer category;
+
+    /**
+     * 异常订单文案
+     */
+    private String exceptionOrderCopy;
+    /**
+     * 零元消费额文案
+     */
+    private String zeroConsumeCopy;
 }

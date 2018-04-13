@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.polidea.rxandroidble.scan.ScanResult;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.ble.BleInteractiveActivity;
 import com.xiaolian.amigo.util.Constant;
@@ -85,34 +84,34 @@ public class BleAdaptor extends RecyclerView.Adapter<BleAdaptor.ViewHolder> {
         String mac;
         Integer rssi;
 
-        public Device(ScanResult result) {
-            this.name = result.getBleDevice().getName();
-            this.mac = result.getBleDevice().getMacAddress();
-            this.rssi = result.getRssi();
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) {
-                return true;
-            }
-            if (o == null || getClass() != o.getClass()) {
-                return false;
-            }
-
-            Device device = (Device) o;
-
-            return mac != null ? mac.equals(device.mac) : device.mac == null;
-
-        }
-
-        public String getMac() {
-            return mac;
-        }
-
-        @Override
-        public int hashCode() {
-            return mac != null ? mac.hashCode() : 0;
-        }
+//        public Device(ScanResult result) {
+//            this.name = result.getBleDevice().getName();
+//            this.mac = result.getBleDevice().getMacAddress();
+//            this.rssi = result.getRssi();
+//        }
+//
+//        @Override
+//        public boolean equals(Object o) {
+//            if (this == o) {
+//                return true;
+//            }
+//            if (o == null || getClass() != o.getClass()) {
+//                return false;
+//            }
+//
+//            Device device = (Device) o;
+//
+//            return mac != null ? mac.equals(device.mac) : device.mac == null;
+//
+//        }
+//
+//        public String getMac() {
+//            return mac;
+//        }
+//
+//        @Override
+//        public int hashCode() {
+//            return mac != null ? mac.hashCode() : 0;
+//        }
     }
 }
