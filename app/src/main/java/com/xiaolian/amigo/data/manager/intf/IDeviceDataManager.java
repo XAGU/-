@@ -114,6 +114,10 @@ public interface IDeviceDataManager {
 
     void setDryerGuide(Integer guideTime);
 
+    void saveScanType(int scanType);
+
+    int getScanType();
+
 
     /**
      * 收藏饮水机
@@ -133,4 +137,5 @@ public interface IDeviceDataManager {
     List<DeviceCategory> getDeviceCategory();
 
     Observable<ApiResult<BooleanRespDTO>> reportDeviceConnectError(@Body DeviceConnectErrorReqDTO reqDTO);
+
 }

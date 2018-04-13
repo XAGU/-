@@ -1,8 +1,5 @@
 package com.xiaolian.amigo.ui.ble;
 
-import com.xiaolian.amigo.util.Log;
-
-import com.polidea.rxandroidble.scan.ScanResult;
 import com.xiaolian.amigo.data.manager.intf.IBleDataManager;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.ble.intf.IBlePresenter;
@@ -28,28 +25,28 @@ public class BlePresenter<V extends IBleView> extends BasePresenter<V>
 
     @Override
     public void onScan() {
-        addObserver(manager.scan(), new BleObserver<ScanResult>() {
-            @Override
-            public void onError(Throwable e) {
-                Log.wtf(TAG, "扫描设备失败！", e);
-                getMvpView().onScanError();
-            }
-
-            @Override
-            public void onConnectError() {
-                // ignore 不会执行到此
-            }
-
-            @Override
-            public void onExecuteError(Throwable e) {
-                // ignore 不会执行到此
-            }
-
-            @Override
-            public void onNext(ScanResult result) {
-                getMvpView().addDevice(result);
-            }
-        });
+//        addObserver(manager.scan(), new BleObserver<ScanResult>() {
+//            @Override
+//            public void onError(Throwable e) {
+//                Log.wtf(TAG, "扫描设备失败！", e);
+//                getMvpView().onScanError();
+//            }
+//
+//            @Override
+//            public void onConnectError() {
+//                // ignore 不会执行到此
+//            }
+//
+//            @Override
+//            public void onExecuteError(Throwable e) {
+//                // ignore 不会执行到此
+//            }
+//
+//            @Override
+//            public void onNext(ScanResult result) {
+//                getMvpView().addDevice(result);
+//            }
+//        });
     }
 
 }

@@ -205,4 +205,10 @@ public final class CommonUtil {
             return "";
         }
     }
+
+    public static String getCaller() {
+        StackTraceElement stack[] = new Throwable().getStackTrace();
+        return stack[0].getMethodName();
+    }
+
 }

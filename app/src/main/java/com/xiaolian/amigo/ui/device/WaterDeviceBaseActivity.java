@@ -780,7 +780,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                 Log.i(TAG, "设备连接到达30s用户仍然未支付进入用水环节。");
 
                 // 关闭蓝牙连接
-                presenter.closeBleConnecttion();
+                presenter.closeBleConnection();
 
                 onError(TradeError.CONNECT_ERROR_1);
             }
@@ -917,7 +917,8 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                 setBleCallback(() -> {
                     // 显示正在连接画面
                     showConnecting();
-
+                    // 重连切换扫描方式
+                    presenter.toggleScanType();
                     presenter.onReconnect(macAddress);
                 });
                 getBlePermission();
@@ -952,6 +953,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
     @Override
     public void onFinish(long orderId) {
+        Log.d(TAG, "onFinish");
         if (orderId == 0L) {
             Log.wtf(TAG, "订单id不能为0");
             return;
@@ -1064,6 +1066,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
     @Override
     protected void onDestroy() {
+        Log.d(TAG, "onDestroy");
         presenter.onDisConnect();
         presenter.onDetach();
         super.onDestroy();
@@ -1119,7 +1122,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         // 结账中不关闭观察者
         if (presenter.getStep() != TradeStep.CLOSE_VALVE) {
             // 异常发生时关闭蓝牙连接
-            presenter.closeBleConnecttion();
+            presenter.closeBleConnection();
         }
 
         // 显示错误页面，必须加这行判断，否则在activity销毁时会报空指针错误

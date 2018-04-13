@@ -206,6 +206,16 @@ public class DeviceDataManager implements IDeviceDataManager {
     }
 
     @Override
+    public void saveScanType(int scanType) {
+        sharedPreferencesHelp.saveScanType(scanType);
+    }
+
+    @Override
+    public int getScanType() {
+        return sharedPreferencesHelp.getScanType();
+    }
+
+    @Override
     public Observable<ApiResult<SimpleRespDTO>> favorite(FavorDeviceReqDTO reqDTO) {
         return deviceApi.favorite(reqDTO);
     }
