@@ -103,7 +103,7 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
     protected abstract void onLoadMore();
 
     private void initFooter() {
-        llFooter = (LinearLayout) findViewById(R.id.ll_footer);
+        llFooter = findViewById(R.id.ll_footer);
         if (setFooterLayout() > 0) {
             View layout = LayoutInflater.from(this).inflate(setFooterLayout(), null, true);
             llFooter.addView(layout);

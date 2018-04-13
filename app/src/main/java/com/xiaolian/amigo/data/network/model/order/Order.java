@@ -109,4 +109,13 @@ public class Order implements Serializable {
     private String usefor;
 
     private Integer category;
+
+    /**
+     * 异常订单文案
+     */
+    private String exceptionOrderCopy;
+    /**
+     * 零元消费额文案
+     */
+    private String zeroConsumeCopy;
 }

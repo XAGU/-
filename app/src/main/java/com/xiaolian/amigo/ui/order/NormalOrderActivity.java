@@ -177,7 +177,12 @@ public class NormalOrderActivity extends OrderBaseActivity implements INormalOrd
             if (ObjectsCompat.equals(data.getStatus(), ORDER_ERROR_STATUS)) {
                 // 异常订单
                 tvBottomTip.setVisibility(View.VISIBLE);
-                tvBottomTip.setText(getString(R.string.washer_order_error_tip));
+                // 设置服务器返回的文案
+                if (!TextUtils.isEmpty(data.getZeroConsumeCopy())) {
+                    tvBottomTip.setText(data.getZeroConsumeCopy());
+                } else {
+                    tvBottomTip.setText(getString(R.string.washer_order_error_tip));
+                }
                 tvBottomTip.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
                 tvBottomTip.setTextColor(ContextCompat.getColor(this, R.color.colorFullRed));
             } else {
@@ -187,7 +192,12 @@ public class NormalOrderActivity extends OrderBaseActivity implements INormalOrd
             if (ObjectsCompat.equals(data.getStatus(), ORDER_ERROR_STATUS)) {
                 // 异常订单
                 tvBottomTip.setVisibility(View.VISIBLE);
-                tvBottomTip.setText(getString(R.string.order_error_tip));
+                // 设置服务器返回的文案
+                if (!TextUtils.isEmpty(data.getZeroConsumeCopy())) {
+                    tvBottomTip.setText(data.getZeroConsumeCopy());
+                } else {
+                    tvBottomTip.setText(getString(R.string.order_error_tip));
+                }
                 tvBottomTip.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
                 tvBottomTip.setTextColor(ContextCompat.getColor(this, R.color.colorFullRed));
             } else {

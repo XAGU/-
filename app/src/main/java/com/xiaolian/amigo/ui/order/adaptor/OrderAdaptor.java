@@ -3,6 +3,7 @@ package com.xiaolian.amigo.ui.order.adaptor;
 import android.content.Context;
 import android.support.v4.util.ObjectsCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,10 +69,16 @@ public class OrderAdaptor extends RecyclerView.Adapter<OrderAdaptor.ViewHolder> 
                 holder.vType.setBackgroundResource(Device.getDevice(wrapper.getType()).getColorRes());
                 holder.tvDevice.setText(wrapper.getDevice());
                 holder.tvTime.setText(wrapper.getTime());
-                if (Device.getDevice(wrapper.getOrder().getDeviceType()) == Device.WASHER) {
-                    holder.tvAmount.setText("-¥0");
+                if (!TextUtils.isEmpty(wrapper.getOrder().getExceptionOrderCopy())) {
+                    holder.tvAmount.setText(wrapper.getOrder().getExceptionOrderCopy());
                 } else {
-                    holder.tvAmount.setText("免费");
+                    if (Device.getDevice(wrapper.getOrder().getDeviceType()) == Device.WASHER) {
+                        // 洗衣机自动退单 触发条件：当用户扫码支付后，未及时使用二维码反扫设备，被他人先行使用
+                        // 此时系统自动退单 列表中金额处显示"已退款¥2"
+                        holder.tvAmount.setText(String.format("已退款%s", wrapper.getOrder().getActualDebit()));
+                    } else {
+                        holder.tvAmount.setText("免费");
+                    }
                 }
                 holder.tvMinus.setVisibility(View.GONE);
                 holder.order = wrapper.getOrder();
