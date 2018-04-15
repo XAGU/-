@@ -11,6 +11,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.RestrictTo;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.xiaolian.blelib.BluetoothConstants;
@@ -53,9 +54,11 @@ public class BluetoothConnectWorker implements IBluetoothConnectWorker {
                     + '\n' + "currentThread: " + Thread.currentThread().getId()
                     + "name:" + Thread.currentThread().getName());
 
-            if (bluetoothConnectStatusListener != null) {
-                handler.post(() -> bluetoothConnectStatusListener.onConnectStatusChanged(newState));
-            }
+            handler.post(() -> {
+                if (bluetoothConnectStatusListener != null) {
+                    bluetoothConnectStatusListener.onConnectStatusChanged(newState);
+                }
+            });
             bluetoothGatt = gatt;
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 if (newState == BluetoothGatt.STATE_CONNECTED) {
@@ -208,6 +211,20 @@ public class BluetoothConnectWorker implements IBluetoothConnectWorker {
             return bluetoothDevice.getAddress();
         }
         return null;
+    }
+
+    @Override
+    public void setMacAddress(String macAddress) {
+        if (bluetoothDevice != null
+                && TextUtils.equals(bluetoothDevice.getAddress(), macAddress)) {
+            return;
+        }
+        BluetoothAdapter adapter = BluetoothHelp.getBluetoothAdapter();
+        if (adapter != null) {
+            bluetoothDevice = adapter.getRemoteDevice(macAddress);
+        } else {
+            throw new IllegalStateException("ble adapter null");
+        }
     }
 
     @Override

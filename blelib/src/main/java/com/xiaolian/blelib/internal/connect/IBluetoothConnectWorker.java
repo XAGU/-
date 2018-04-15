@@ -20,6 +20,8 @@ public interface IBluetoothConnectWorker {
 
     String getMacAddress();
 
+    void setMacAddress(String macAddress);
+
     void addBluetoothConnectCallback(BluetoothConnectCallback bluetoothConnectCallback);
 
     void addBluetoothConnectStatusListener(BluetoothConnectStatusListener bluetoothConnectStatusListener);
