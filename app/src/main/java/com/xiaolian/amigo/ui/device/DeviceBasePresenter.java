@@ -374,20 +374,21 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         }
 
         // 3、创建共享连接q
+        Log.d(TAG, "注册连接监听");
         bleDataManager.registerConnectStatusListener(currentMacAddress, status -> {
             // 处理蓝牙连接状态
             switch (status) {
                 case BluetoothConstants.STATE_CONNECTED:
-                    Log.d(TAG, "蓝牙已连接");
+                    Log.d(TAG, "[ConnectStatusListener]蓝牙已连接");
                     break;
                 case BluetoothConstants.STATE_CONNECTING:
-                    Log.d(TAG, "蓝牙正在连接");
+                    Log.d(TAG, "[ConnectStatusListener]蓝牙正在连接");
                     break;
                 case BluetoothConstants.STATE_DISCONNECTED:
-                    handleDisConnectError("蓝牙已经断开连接");
+                    handleDisConnectError("[ConnectStatusListener]蓝牙已经断开连接");
                     break;
                 case BluetoothConstants.STATE_DISCONNECTING:
-                    Log.d(TAG, "蓝牙正在断开连接");
+                    Log.d(TAG, "[ConnectStatusListener]蓝牙正在断开连接");
                     break;
             }
 

@@ -24,8 +24,8 @@ public class BluetoothConstants {
     /** The profile is in disconnecting state */
     public static final int STATE_DISCONNECTING = 3;
 
-    public static final int CONN_RESPONSE_SUCCESS = 0x0111;
-    public static final int CONN_RESPONSE_FAIL = 0x0112;
+    public static final int CONN_RESPONSE_SUCCESS = 0x011;
+    public static final int CONN_RESPONSE_FAIL = 0x012;
 
     /** A GATT operation completed successfully */
     public static final int GATT_SUCCESS = 0;

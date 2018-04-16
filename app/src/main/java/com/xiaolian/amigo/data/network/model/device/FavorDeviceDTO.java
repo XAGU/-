@@ -19,6 +19,7 @@ public class FavorDeviceDTO implements Mapper<ScanDeviceGroup> {
     private String location;
     private Long residenceId;
     private Integer type;
+    private Integer category;
     private List<DeviceInListDTO> devices;
 
     @Override
@@ -28,6 +29,7 @@ public class FavorDeviceDTO implements Mapper<ScanDeviceGroup> {
         scanDeviceGroup.setLocation(location);
         scanDeviceGroup.setFavor(true);
         scanDeviceGroup.setType(type);
+        scanDeviceGroup.setCategory(category);
         List<ScanDevice> water = new ArrayList<>();
         if (!devices.isEmpty()) {
             for (DeviceInListDTO deviceInListDTO : devices) {
