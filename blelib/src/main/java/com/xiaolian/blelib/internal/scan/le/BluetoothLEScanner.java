@@ -3,6 +3,7 @@ package com.xiaolian.blelib.internal.scan.le;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.support.annotation.RestrictTo;
+import android.util.Log;
 
 import com.xiaolian.blelib.BluetoothHelp;
 import com.xiaolian.blelib.scan.BluetoothScanResponse;
