@@ -71,16 +71,20 @@ public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenser
     public void onBindViewHolder(ViewHolder holder, int position) {
         ChooseDispenserAdaptor.DispenserWrapper dispenserWrapper =
                 mData.get(holder.getAdapterPosition());
-        expandAble = dispenserWrapper.getDeviceGroup().getCategory() != DispenserCategory.MULTI.getType();
+        expandAble = DispenserCategory.getCategoryByType(dispenserWrapper.getDeviceGroup().getCategory())
+                != DispenserCategory.MULTI;
         holder.tvLocation.setText(dispenserWrapper.getLocation());
         if (!expandAble) {
             holder.ivArrow.setVisibility(View.GONE);
+        } else {
+            holder.ivArrow.setVisibility(View.VISIBLE);
         }
         holder.tvTitle.setText(Device.getDevice(dispenserWrapper.getDeviceGroup().getType()).getDesc());
         holder.tvTitle.setTextColor(ContextCompat.getColor(context,
                 Device.getDevice(dispenserWrapper.getDeviceGroup().getType()).getColorRes()));
         holder.rlTop.setOnClickListener(v -> {
-            expandAble = mData.get(holder.getAdapterPosition()).getDeviceGroup().getCategory() != DispenserCategory.MULTI.getType();
+            expandAble = DispenserCategory.getCategoryByType(mData.get(holder.getAdapterPosition()).getDeviceGroup().getCategory())
+                    != DispenserCategory.MULTI;
             if (!expandAble && itemClickListener != null) {
                 itemClickListener.onItemClick(dispenserWrapper.getDeviceGroup().getWater().get(0).getMacAddress(),
                         dispenserWrapper.getDeviceGroup().getWater().get(0).getSupplierId(),
