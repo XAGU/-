@@ -58,10 +58,10 @@ public class BluetoothClient implements IBluetoothClient {
                 Log.d(TAG, "[connect]bluetoothConnectWorker不为空，且STATE_CONNECTED, 关闭GATT");
                 bluetoothConnectWorker.closeGatt();
                 handler.postDelayed(() -> {
-                    Log.d(TAG, "[connect]600毫秒延时后重新开启GATT");
+                    Log.d(TAG, "[connect]500毫秒延时后重新开启GATT");
                     bluetoothConnectWorker = new BluetoothConnectWorker(macAddress);
                     openGatt(macAddress, response);
-                }, 600);
+                }, 500);
             } else {
                 Log.d(TAG, "[connect]bluetoothConnectWorker不为空，且不是连接状态, 开启GATT");
                 openGatt(macAddress, response);
@@ -82,8 +82,10 @@ public class BluetoothClient implements IBluetoothClient {
         bluetoothConnectWorker.addBluetoothConnectCallback(response);
         if (!bluetoothConnectWorker.openGatt()) {
             Log.d(TAG, "[openGatt]openGatt失败");
+            if (bluetoothConnectWorker != null) {
+                bluetoothConnectWorker.addBluetoothConnectCallback(null);
+            }
             response.onResponse(BluetoothConstants.CONN_RESPONSE_FAIL, null);
-            bluetoothConnectWorker.addBluetoothConnectCallback(null);
         }
     }
 
@@ -129,8 +131,10 @@ public class BluetoothClient implements IBluetoothClient {
         }
         bluetoothConnectWorker.addBluetoothReadDescriptorCallback(response);
         if (!bluetoothConnectWorker.readCharacteristic(service, character)) {
+            if (bluetoothConnectWorker != null) {
+                bluetoothConnectWorker.addBluetoothReadDescriptorCallback(null);
+            }
             response.onResponse(BluetoothConstants.GATT_OTHER_FAILURE, null);
-            bluetoothConnectWorker.addBluetoothReadDescriptorCallback(null);
         }
     }
 
@@ -144,8 +148,10 @@ public class BluetoothClient implements IBluetoothClient {
         }
         bluetoothConnectWorker.addBluetoothWriteCharacteristicCallback(response);
         if (!bluetoothConnectWorker.writeCharacteristic(service, character, value)) {
+            if (bluetoothConnectWorker != null) {
+                bluetoothConnectWorker.addBluetoothWriteCharacteristicCallback(null);
+            }
             response.onResponse(BluetoothConstants.GATT_OTHER_FAILURE);
-            bluetoothConnectWorker.addBluetoothWriteCharacteristicCallback(null);
         }
     }
 
@@ -179,8 +185,10 @@ public class BluetoothClient implements IBluetoothClient {
         }
         bluetoothConnectWorker.addBluetoothReadDescriptorCallback(response);
         if (!bluetoothConnectWorker.readDescriptor(service, character, descriptor)) {
+            if (bluetoothConnectWorker != null) {
+                bluetoothConnectWorker.addBluetoothReadDescriptorCallback(null);
+            }
             response.onResponse(BluetoothConstants.GATT_OTHER_FAILURE, null);
-            bluetoothConnectWorker.addBluetoothReadDescriptorCallback(null);
         }
     }
 
@@ -194,8 +202,10 @@ public class BluetoothClient implements IBluetoothClient {
         }
         bluetoothConnectWorker.addBluetoothWriteDescriptorCallback(response);
         if (!bluetoothConnectWorker.writeDescriptor(service, character, descriptor, value)) {
+            if (bluetoothConnectWorker != null) {
+                bluetoothConnectWorker.addBluetoothWriteDescriptorCallback(null);
+            }
             response.onResponse(BluetoothConstants.GATT_OTHER_FAILURE);
-            bluetoothConnectWorker.addBluetoothWriteDescriptorCallback(null);
         }
 
     }
@@ -207,7 +217,9 @@ public class BluetoothClient implements IBluetoothClient {
                     ? "worker为null" : bluetoothConnectWorker.getMacAddress());
             return;
         }
-        bluetoothConnectWorker.addBluetoothCharacteristicNotifyCallback(response);
+        if (bluetoothConnectWorker != null) {
+            bluetoothConnectWorker.addBluetoothCharacteristicNotifyCallback(response);
+        }
     }
 
     @Override
@@ -217,7 +229,8 @@ public class BluetoothClient implements IBluetoothClient {
                     ? "worker为null" : bluetoothConnectWorker.getMacAddress());
             return false;
         }
-        return bluetoothConnectWorker.setNotify(service, character, enable);
+        return bluetoothConnectWorker != null
+            && bluetoothConnectWorker.setNotify(service, character, enable);
     }
 
     @Override

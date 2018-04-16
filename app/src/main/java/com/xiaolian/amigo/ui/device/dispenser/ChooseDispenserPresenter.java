@@ -116,6 +116,7 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
         startTimer();
         closeBleConnection();
         resetSubscriptions();
+        Log.d(TAG, "开始扫描设备");
         bleDataManager.scan(scanType, new BluetoothScanResponse() {
             // 已经上报的mac地址的集合
             List<String> existDevices = new ArrayList<>();

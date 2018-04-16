@@ -76,6 +76,8 @@ public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenser
         holder.tvLocation.setText(dispenserWrapper.getLocation());
         if (!expandAble) {
             holder.ivArrow.setVisibility(View.GONE);
+        } else {
+            holder.ivArrow.setVisibility(View.VISIBLE);
         }
         holder.tvTitle.setText(Device.getDevice(dispenserWrapper.getDeviceGroup().getType()).getDesc());
         holder.tvTitle.setTextColor(ContextCompat.getColor(context,
