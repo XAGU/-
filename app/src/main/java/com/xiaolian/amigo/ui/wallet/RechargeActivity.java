@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.wallet;
 
+import android.Manifest;
 import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -7,6 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.PayWay;
 import com.xiaolian.amigo.ui.wallet.adaptor.RechargeTypeAdaptor;
@@ -189,6 +192,26 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
     @Override
     public void alipay(String reqArgs) {
         PayUtil.alpay(this, reqArgs);
+    }
+
+    @Override
+    public void wxpay(PayUtil.IWeChatPayReq req) {
+        rxPermissions.request(Manifest.permission.READ_EXTERNAL_STORAGE)
+                .subscribe(granted -> {
+                    if (granted) {
+                        IWXAPI msgApi = WXAPIFactory.createWXAPI(this, null);
+                        // 检测是否安装微信
+                        if (!msgApi.isWXAppInstalled()) {
+                            onError("未安装微信");
+                            return;
+                        }
+                        // 将该app注册到微信
+                        msgApi.registerApp(req.getAppId());
+                        PayUtil.weChatPay(msgApi, req);
+                    } else {
+                        onError("没有sd卡权限");
+                    }
+                });
     }
 
     @Override
