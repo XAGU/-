@@ -253,6 +253,7 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
                         event.getAlipayResult().get("memo"));
                 break;
             case WECHAT:
+//                presenter.
                 break;
             default:
                 break;
@@ -263,10 +264,16 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
     public static class PayEvent {
         private PayWay type;
         private Map<String, String> alipayResult;
+        private Integer wxResult;
 
         public PayEvent(PayWay type, Map<String, String> alipayResult) {
             this.type = type;
             this.alipayResult = alipayResult;
+        }
+
+        public PayEvent(PayWay type, Integer wxResult) {
+            this.type = type;
+            this.wxResult = wxResult;
         }
     }
 

@@ -15,6 +15,8 @@ import com.xiaolian.amigo.data.network.model.alipay.AlipayTradeAppPayResultParse
 import com.xiaolian.amigo.data.network.model.funds.QueryRechargeAmountsRespDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
 import com.xiaolian.amigo.data.network.model.wallet.RechargeDenominations;
+import com.xiaolian.amigo.data.network.model.wxpay.WxpayTradeAppPayArgsReqDTO;
+import com.xiaolian.amigo.data.network.model.wxpay.WxpayTradeAppPayArgsRespDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.wallet.adaptor.RechargeAdaptor;
 import com.xiaolian.amigo.ui.wallet.intf.IRechargePresenter;
@@ -94,13 +96,31 @@ public class RechargePresenter<V extends IRechargeView> extends BasePresenter<V>
                     if (PayWay.getPayWay(type) == PayWay.ALIAPY) {
                         requestAlipayArgs(result.getData().getId());
                     } else if (PayWay.getPayWay(type) == PayWay.WECHAT) {
-                        getMvpView().onError("暂不支持微信支付");
+//                        getMvpView().onError("暂不支持微信支付");
+                        requestWxpayArgs(result.getData().getId());
                     }
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }
             }
         });
+    }
+
+    private void requestWxpayArgs(Long fundsId) {
+        this.fundsId = fundsId;
+        WxpayTradeAppPayArgsReqDTO reqDTO = new WxpayTradeAppPayArgsReqDTO();
+        reqDTO.setFundsId(fundsId);
+        addObserver(manager.requestWxpayArgs(reqDTO), new NetworkObserver<ApiResult<WxpayTradeAppPayArgsRespDTO>>() {
+            @Override
+            public void onReady(ApiResult<WxpayTradeAppPayArgsRespDTO> result) {
+                if (null == result.getError()) {
+                    getMvpView().wxpay(result.getData());
+                } else {
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+        });
+
     }
 
     private void requestAlipayArgs(Long fundsId) {

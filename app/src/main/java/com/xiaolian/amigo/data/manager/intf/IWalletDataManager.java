@@ -22,6 +22,8 @@ import com.xiaolian.amigo.data.network.model.funds.QueryRechargeAmountsRespDTO;
 import com.xiaolian.amigo.data.network.model.timerange.QueryTimeValidRespDTO;
 import com.xiaolian.amigo.data.network.model.userthirdaccount.QueryUserThirdAccountRespDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
+import com.xiaolian.amigo.data.network.model.wxpay.WxpayTradeAppPayArgsReqDTO;
+import com.xiaolian.amigo.data.network.model.wxpay.WxpayTradeAppPayArgsRespDTO;
 
 import retrofit2.http.Body;
 import rx.Observable;
@@ -57,7 +59,12 @@ public interface IWalletDataManager {
     Observable<ApiResult<AlipayTradeAppPayArgsRespDTO>> requestAlipayArgs(@Body AlipayTradeAppPayArgsReqDTO reqDTO);
 
     /**
-     * 解析app支付结果
+     * 获取微信支付订单请求参数
+     */
+    Observable<ApiResult<WxpayTradeAppPayArgsRespDTO>> requestWxpayArgs(@Body WxpayTradeAppPayArgsReqDTO reqDTO);
+
+    /**
+     * 解析支付包app支付结果
      */
     Observable<ApiResult<AlipayTradeAppPayResultParseRespDTO>> parseAlipayResule(@Body AlipayTradeAppPayResultParseReqDTO reqDTO);
 
