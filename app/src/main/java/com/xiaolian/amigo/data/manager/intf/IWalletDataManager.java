@@ -3,6 +3,7 @@ package com.xiaolian.amigo.data.manager.intf;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.complaint.CheckComplaintReqDTO;
+import com.xiaolian.amigo.data.network.model.funds.QueryRechargeTypesRespDTO;
 import com.xiaolian.amigo.data.network.model.userthirdaccount.AddThirdAccountReqDTO;
 import com.xiaolian.amigo.data.network.model.alipay.AlipayTradeAppPayArgsReqDTO;
 import com.xiaolian.amigo.data.network.model.alipay.AlipayTradeAppPayResultParseReqDTO;
@@ -24,6 +25,8 @@ import com.xiaolian.amigo.data.network.model.userthirdaccount.QueryUserThirdAcco
 import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
 import com.xiaolian.amigo.data.network.model.wxpay.WxpayTradeAppPayArgsReqDTO;
 import com.xiaolian.amigo.data.network.model.wxpay.WxpayTradeAppPayArgsRespDTO;
+import com.xiaolian.amigo.data.network.model.wxpay.WxpayTradeAppPayResultParseReqDTO;
+import com.xiaolian.amigo.data.network.model.wxpay.WxpayTradeAppPayResultParseRespDTO;
 
 import retrofit2.http.Body;
 import rx.Observable;
@@ -69,6 +72,11 @@ public interface IWalletDataManager {
     Observable<ApiResult<AlipayTradeAppPayResultParseRespDTO>> parseAlipayResule(@Body AlipayTradeAppPayResultParseReqDTO reqDTO);
 
     /**
+     * 解析app支付结果
+     */
+    Observable<ApiResult<WxpayTradeAppPayResultParseRespDTO>> parseWxpayResule(@Body WxpayTradeAppPayResultParseReqDTO reqDTO);
+
+    /**
      * 第三方账号列表
      */
     Observable<ApiResult<QueryUserThirdAccountRespDTO>> requestThirdAccounts(@Body QueryUserThirdAccountReqDTO reqDTO);
@@ -97,6 +105,11 @@ public interface IWalletDataManager {
      * 获取金额列表
      */
     Observable<ApiResult<QueryRechargeAmountsRespDTO>> queryRechargeAmountList(@Body SimpleQueryReqDTO body);
+
+    /**
+     * 获取充值账号类型列表
+     */
+    Observable<ApiResult<QueryRechargeTypesRespDTO>> queryRechargeTypes();
 
     /**
      * 提现

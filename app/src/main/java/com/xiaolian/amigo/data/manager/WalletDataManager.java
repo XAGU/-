@@ -11,6 +11,7 @@ import com.xiaolian.amigo.data.network.IWxpayApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.complaint.CheckComplaintReqDTO;
+import com.xiaolian.amigo.data.network.model.funds.QueryRechargeTypesRespDTO;
 import com.xiaolian.amigo.data.network.model.userthirdaccount.AddThirdAccountReqDTO;
 import com.xiaolian.amigo.data.network.model.alipay.AlipayTradeAppPayArgsReqDTO;
 import com.xiaolian.amigo.data.network.model.alipay.AlipayTradeAppPayResultParseReqDTO;
@@ -32,6 +33,8 @@ import com.xiaolian.amigo.data.network.model.userthirdaccount.QueryUserThirdAcco
 import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
 import com.xiaolian.amigo.data.network.model.wxpay.WxpayTradeAppPayArgsReqDTO;
 import com.xiaolian.amigo.data.network.model.wxpay.WxpayTradeAppPayArgsRespDTO;
+import com.xiaolian.amigo.data.network.model.wxpay.WxpayTradeAppPayResultParseReqDTO;
+import com.xiaolian.amigo.data.network.model.wxpay.WxpayTradeAppPayResultParseRespDTO;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 
 import javax.inject.Inject;
@@ -83,6 +86,11 @@ public class WalletDataManager implements IWalletDataManager {
     }
 
     @Override
+    public Observable<ApiResult<QueryRechargeTypesRespDTO>> queryRechargeTypes() {
+        return fundsApi.queryRechargeTypes();
+    }
+
+    @Override
     public Observable<ApiResult<QueryTimeValidRespDTO>> queryWithDrawTimeValid() {
         return timeRangeApi.queryWithDrawTimeValid();
     }
@@ -115,6 +123,11 @@ public class WalletDataManager implements IWalletDataManager {
     @Override
     public Observable<ApiResult<AlipayTradeAppPayResultParseRespDTO>> parseAlipayResule(@Body AlipayTradeAppPayResultParseReqDTO reqDTO) {
         return alipayApi.parseAlipayResule(reqDTO);
+    }
+
+    @Override
+    public Observable<ApiResult<WxpayTradeAppPayResultParseRespDTO>> parseWxpayResule(WxpayTradeAppPayResultParseReqDTO reqDTO) {
+        return wxpayApi.parseWxpayResule(reqDTO);
     }
 
     @Override

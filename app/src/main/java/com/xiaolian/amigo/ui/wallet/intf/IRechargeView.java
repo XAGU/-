@@ -2,6 +2,7 @@ package com.xiaolian.amigo.ui.wallet.intf;
 
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 import com.xiaolian.amigo.ui.wallet.adaptor.RechargeAdaptor;
+import com.xiaolian.amigo.ui.wallet.adaptor.RechargeTypeAdaptor;
 import com.xiaolian.amigo.util.PayUtil;
 
 import java.util.List;
@@ -20,6 +21,8 @@ public interface IRechargeView extends IBaseView {
      * @param rechargeWrappers 支付信息
      */
     void addMore(List<RechargeAdaptor.RechargeWrapper> rechargeWrappers);
+
+    void setRechargeType(List<RechargeTypeAdaptor.RechargeWrapper> rechargeTypes);
 
     /**
      * 返回

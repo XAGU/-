@@ -2,6 +2,7 @@ package com.xiaolian.amigo.ui.wallet;
 
 import android.Manifest;
 import android.content.Intent;
+import android.support.v4.util.ObjectsCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -71,7 +72,6 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
     List<RechargeTypeAdaptor.RechargeWrapper> rechargeTypes = new ArrayList<RechargeTypeAdaptor.RechargeWrapper>() {
         {
             add(new RechargeTypeAdaptor.RechargeWrapper(PayWay.ALIAPY.getType(), PayWay.ALIAPY.getDrawableRes(), "支付宝", true));
-            add(new RechargeTypeAdaptor.RechargeWrapper(PayWay.WECHAT.getType(), PayWay.WECHAT.getDrawableRes(), "微信", false));
         }
     };
 
@@ -140,7 +140,7 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
 
         presenter.onAttach(RechargeActivity.this);
         presenter.getRechargeList();
-
+        presenter.getRechargeTypeList();
     }
 
     @Override
@@ -162,6 +162,13 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
         }
         recharges.addAll(rechargeWrappers);
         adaptor.notifyDataSetChanged();
+    }
+
+    @Override
+    public void setRechargeType(List<RechargeTypeAdaptor.RechargeWrapper> rechargeTypes) {
+        this.rechargeTypes.clear();
+        this.rechargeTypes.addAll(rechargeTypes);
+        typeAdaptor.notifyDataSetChanged();
     }
 
     @OnClick(R.id.bt_submit)
@@ -205,6 +212,7 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
                             onError("未安装微信");
                             return;
                         }
+                        showLoading();
                         // 将该app注册到微信
                         msgApi.registerApp(req.getAppId());
                         PayUtil.weChatPay(msgApi, req);
@@ -253,7 +261,9 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
                         event.getAlipayResult().get("memo"));
                 break;
             case WECHAT:
-//                presenter.
+                if (ObjectsCompat.equals(event.getWxResult(), PayUtil.SUCCESS)) {
+                    presenter.parseWxpayResult(event.getWxResult());
+                }
                 break;
             default:
                 break;
