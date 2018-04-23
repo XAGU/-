@@ -3,8 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackgroundWhite"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
     <View
         android:layout_width="match_parent"
@@ -41,6 +40,32 @@
         android:layout_width="match_parent"
         android:layout_height="1dip"
         android:layout_marginTop="21dp"
+        android:background="#eee" />
+
+    <RelativeLayout
+        android:layout_marginTop="21dp"
+        android:layout_marginBottom="21dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_balance_present"
+            android:text="赠送的余额: ¥111"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:id="@+id/tv_withdraw_available"
+            android:layout_below="@id/tv_balance_present"
+            android:text="可提现的余额: ¥111"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
         android:background="#eee" />
 
     <RelativeLayout
