@@ -75,4 +75,11 @@ public class DeviceCheckRespDTO {
      * 供应商相关模型
      */
     private List<DeviceCategoryBO> devices;
+
+    public Boolean getFavor() {
+        if (favor == null) {
+            return false;
+        }
+        return favor;
+    }
 }
