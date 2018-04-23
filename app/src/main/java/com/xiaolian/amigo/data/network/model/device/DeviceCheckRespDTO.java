@@ -75,4 +75,14 @@ public class DeviceCheckRespDTO {
      * 供应商相关模型
      */
     private List<DeviceCategoryBO> devices;
+
+    /**
+     * 如果favor为null，则默认返回false
+     */
+    public Boolean getFavor() {
+        if (favor == null) {
+            return false;
+        }
+        return favor;
+    }
 }
