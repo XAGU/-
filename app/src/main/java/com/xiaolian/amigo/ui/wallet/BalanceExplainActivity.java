@@ -159,5 +159,4 @@ public class BalanceExplainActivity extends WalletBaseActivity implements IBalan
         String tip = getString(R.string.withdraw_available_colon);
         setTextView(tvWithdrawAvailableTip, tip, value, R.color.colorDark2);
     }
-
 }
