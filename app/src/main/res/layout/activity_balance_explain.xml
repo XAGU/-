@@ -10,68 +10,84 @@
         android:background="#eee" />
 
     <TextView
-        android:layout_marginTop="21dp"
+        android:layout_marginTop="13dp"
         tools:text="可用余额："
+        android:textSize="12sp"
+        android:textColor="#999"
         android:id="@+id/tv_balance_available"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <TextView
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="13dp"
+        android:textSize="12sp"
+        android:textColor="#999"
         tools:text="可提现余额："
         android:id="@+id/tv_withdraw_available"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <View
-        android:layout_marginTop="21dp"
+        android:layout_marginTop="13dp"
         android:layout_width="match_parent"
         android:layout_height="1dip"
         android:background="#eee" />
 
     <TextView
-        android:layout_marginTop="21dp"
+        android:layout_marginTop="13dp"
+        android:textSize="12sp"
+        android:textColor="#999"
         tools:text="增送的余额："
         android:id="@+id/tv_balance_present"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <TextView
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="13dp"
+        android:textSize="12sp"
+        android:textColor="#999"
         tools:text="增送规则："
         android:id="@+id/tv_present_rule"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <TextView
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="13dp"
+        android:textSize="12sp"
+        android:textColor="#999"
         tools:text="使用期限："
         android:id="@+id/tv_use_period"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <View
-        android:layout_marginTop="21dp"
+        android:layout_marginTop="13dp"
         android:layout_width="match_parent"
         android:layout_height="1dip"
         android:background="#eee" />
 
     <TextView
-        android:layout_marginTop="21dp"
+        android:layout_marginTop="19dp"
+        android:textSize="12sp"
+        android:textColor="#999"
         tools:text="可用余额："
         android:id="@+id/tv_balance_available_tip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <TextView
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="19dp"
+        android:textSize="12sp"
+        android:textColor="#999"
         tools:text="增送的余额："
         android:id="@+id/tv_balance_present_tip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <TextView
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="19dp"
+        android:textSize="12sp"
+        android:textColor="#999"
         tools:text="可提现余额："
         android:id="@+id/tv_withdraw_available_tip"
         android:layout_width="wrap_content"

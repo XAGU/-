@@ -2,7 +2,13 @@ package com.xiaolian.amigo.ui.wallet;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.support.v4.content.ContextCompat;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
+import android.view.View;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
@@ -43,6 +49,18 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
     @BindView(R.id.tv_prepay)
     TextView tvPrepay;
 
+    /**
+     * 增送的余额
+     */
+    @BindView(R.id.tv_balance_present)
+    TextView tvBalancePresent;
+
+    /**
+     * 可提现余额
+     */
+    @BindView(R.id.tv_withdraw_available)
+    TextView tvWithdrawAvailable;
+
     private DecimalFormat df = new DecimalFormat("###.##");
 
     @Override
@@ -51,6 +69,8 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
         presenter.onAttach(WalletActivity.this);
+        setBalancePresent("¥12.00");
+        setWithdrawAvailable("¥108.00");
     }
 
     @Override
@@ -94,6 +114,14 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
     }
 
     /**
+     * 余额说明
+     */
+    @OnClick(R.id.v_question)
+    void gotoBalanceExplain() {
+        startActivity(new Intent(this, BalanceExplainActivity.class));
+    }
+
+    /**
      * 充值提现记录
      */
     @OnClick(R.id.rl_withdrawal_record)
@@ -134,6 +162,34 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
 //                        .putExtra(Constant.EXTRA_KEY, tvBalance.getText().toString().replace("¥", "")))
         );
         dialog.show();
+    }
+
+    /**
+     * 设置增送的余额
+     */
+    private void setBalancePresent(String value) {
+        SpannableStringBuilder builder = new SpannableStringBuilder();
+        String tip = getString(R.string.present_balance_colon);
+        SpannableString valueSpan = new SpannableString(value);
+        valueSpan.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorFullRed)),
+                0, value.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        builder.append(tip);
+        builder.append(valueSpan);
+        tvBalancePresent.setText(builder);
+    }
+
+    /**
+     * 可提现余额
+     */
+    private void setWithdrawAvailable(String value) {
+        SpannableStringBuilder builder = new SpannableStringBuilder();
+        String tip = getString(R.string.withdraw_available_colon);
+        SpannableString valueSpan = new SpannableString(value);
+        valueSpan.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorFullRed)),
+                0, value.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        builder.append(tip);
+        builder.append(valueSpan);
+        tvWithdrawAvailable.setText(builder);
     }
 
     @Override

@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/colorBackgroundWhite"
     android:orientation="vertical">
 
@@ -43,24 +44,40 @@
         android:background="#eee" />
 
     <RelativeLayout
-        android:layout_marginTop="21dp"
-        android:layout_marginBottom="21dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/tv_balance_present"
-            android:text="赠送的余额: ¥111"
+        android:layout_height="84dp">
+        <LinearLayout
+            android:layout_centerVertical="true"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tv_balance_present"
+                android:textSize="14sp"
+                android:textColor="#999"
+                tools:text="赠送的余额: ¥111"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_marginTop="14dp"
+                android:textSize="14sp"
+                android:textColor="#999"
+                android:id="@+id/tv_withdraw_available"
+                tools:text="可提现的余额: ¥111"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <View
+            android:id="@+id/v_question"
+            android:layout_alignParentEnd="true"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"/>
+        <ImageView
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_question_gray"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-
-        <TextView
-            android:layout_marginTop="10dp"
-            android:id="@+id/tv_withdraw_available"
-            android:layout_below="@id/tv_balance_present"
-            android:text="可提现的余额: ¥111"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
     </RelativeLayout>
 
     <View
