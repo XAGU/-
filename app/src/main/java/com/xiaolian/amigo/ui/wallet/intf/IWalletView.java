@@ -36,4 +36,24 @@ public interface IWalletView extends IBaseView {
      * @param remark 备注
      */
     void showTimeValidDialog(String title, String remark);
+
+    /**
+     * 设置赠送金额
+     */
+    void setBalancePresentText(Double givingBalance);
+
+    /**
+     * 设置可提现余额
+     */
+    void setWithdrawAvailableText(Double chargeBalance);
+
+    /**
+     * 隐藏问号
+     */
+    void hideBalanceExplain();
+
+    /**
+     * 显示问号
+     */
+    void showBalanceExplain();
 }

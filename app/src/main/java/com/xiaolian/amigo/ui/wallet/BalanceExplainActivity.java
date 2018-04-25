@@ -10,6 +10,10 @@ import android.widget.TextView;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.wallet.intf.IBalanceExplainView;
 
+import java.text.DecimalFormat;
+import java.util.Locale;
+import java.util.function.Supplier;
+
 /**
  * 余额
  *
@@ -51,18 +55,36 @@ public class BalanceExplainActivity extends WalletBaseActivity implements IBalan
      */
     private TextView tvWithdrawAvailableTip;
 
+    private DecimalFormat df = new DecimalFormat("###.##");
+
     @Override
     protected void initView() {
         setMainBackground(R.color.white);
         bindView();
-        setBalanceAvailable("¥120.00");
-        setWithdrawAvailable("¥108.00");
-        setBalancePresent("¥12");
-        setPresentRule("每月第1天00:00增送¥200元");
-        setUsePeriod("每月最后一天23:59清零");
+        Double allBalance = 0.0;
+        Double giveBalance = 0.0;
+        Double chargeBalance = 0.0;
+        String useLimit = "";
+        String giveRule = "";
+        if (getIntent() != null) {
+            allBalance = getIntent().getDoubleExtra(WalletConstant.KEY_ALL_BALANCE, 0);
+            giveBalance = getIntent().getDoubleExtra(WalletConstant.KEY_GIVING_BALANCE, 0);
+            chargeBalance = getIntent().getDoubleExtra(WalletConstant.KEY_CHARGE_BALANCE, 0);
+            useLimit = getIntent().getStringExtra(WalletConstant.KEY_USE_LIMIT);
+            giveRule = getIntent().getStringExtra(WalletConstant.KEY_GIVE_RULE);
+        }
+        setBalanceAvailable(formatDouble(allBalance));
+        setWithdrawAvailable(formatDouble(chargeBalance));
+        setBalancePresent(formatDouble(giveBalance));
+        setPresentRule(giveRule);
+        setUsePeriod(useLimit);
         setBalanceAvailableTip("可用余额＝赠送的余额＋可提现余额，均可以用了消费。系统优先扣除可用余额。");
         setBalancePresentTip("赠送的余额具有有效器，过期自动清零，且只能用于消费，不可提现。");
         setWithdrawAvailableTip("指可用余额中可以用于提现或消费的金额，该金额可提现至支付宝账户。");
+    }
+
+    private String formatDouble(Double value) {
+        return String.format(Locale.getDefault(), "¥%s", df.format(value));
     }
 
     private void bindView() {
@@ -117,7 +139,7 @@ public class BalanceExplainActivity extends WalletBaseActivity implements IBalan
      */
     private void setBalancePresent(String value) {
         String tip = getString(R.string.balance_present_colon);
-        setTextView(tvBalancePresent, tip, value, R.color.colorDark2);
+        setTextView(tvBalancePresent, tip, value, R.color.colorFullRed);
     }
 
     /**

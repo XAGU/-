@@ -9,6 +9,7 @@ import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
@@ -61,6 +62,18 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
     @BindView(R.id.tv_withdraw_available)
     TextView tvWithdrawAvailable;
 
+    /**
+     * 问号
+     */
+    @BindView(R.id.iv_question)
+    ImageView ivQuestion;
+
+    /**
+     * 问号点击区域
+     */
+    @BindView(R.id.v_question)
+    View vQuestion;
+
     private DecimalFormat df = new DecimalFormat("###.##");
 
     @Override
@@ -69,8 +82,6 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
         presenter.onAttach(WalletActivity.this);
-        setBalancePresent("¥12.00");
-        setWithdrawAvailable("¥108.00");
     }
 
     @Override
@@ -118,7 +129,12 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
      */
     @OnClick(R.id.v_question)
     void gotoBalanceExplain() {
-        startActivity(new Intent(this, BalanceExplainActivity.class));
+        startActivity(new Intent(this, BalanceExplainActivity.class)
+            .putExtra(WalletConstant.KEY_GIVE_RULE, presenter.getGivingRule())
+            .putExtra(WalletConstant.KEY_USE_LIMIT, presenter.getUseLimit())
+            .putExtra(WalletConstant.KEY_ALL_BALANCE, presenter.getAllBalance())
+            .putExtra(WalletConstant.KEY_CHARGE_BALANCE, presenter.getChargeBalance())
+            .putExtra(WalletConstant.KEY_GIVING_BALANCE, presenter.getGivingBalance()));
     }
 
     /**
@@ -162,6 +178,28 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
 //                        .putExtra(Constant.EXTRA_KEY, tvBalance.getText().toString().replace("¥", "")))
         );
         dialog.show();
+    }
+
+    @Override
+    public void setBalancePresentText(Double givingBalance) {
+        setBalancePresent(String.format(Locale.getDefault(), "¥%s", df.format(givingBalance)));
+    }
+
+    @Override
+    public void setWithdrawAvailableText(Double chargeBalance) {
+        setWithdrawAvailable(String.format(Locale.getDefault(), "¥%s", df.format(chargeBalance)));
+    }
+
+    @Override
+    public void hideBalanceExplain() {
+        vQuestion.setVisibility(View.GONE);
+        ivQuestion.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showBalanceExplain() {
+        vQuestion.setVisibility(View.VISIBLE);
+        ivQuestion.setVisibility(View.VISIBLE);
     }
 
     /**
