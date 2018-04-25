@@ -96,6 +96,7 @@ public class BalanceExplainActivity extends WalletBaseActivity implements IBalan
         tvBalanceAvailableTip = findViewById(R.id.tv_balance_available_tip);
         tvBalancePresentTip = findViewById(R.id.tv_balance_present_tip);
         tvWithdrawAvailableTip = findViewById(R.id.tv_withdraw_available_tip);
+        findViewById(R.id.iv_back).setOnClickListener(v -> onBackPressed());
     }
 
     @Override
