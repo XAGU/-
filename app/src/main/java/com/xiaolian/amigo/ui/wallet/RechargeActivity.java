@@ -69,11 +69,7 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
     /**
      * 充值方式列表
      */
-    List<RechargeTypeAdaptor.RechargeWrapper> rechargeTypes = new ArrayList<RechargeTypeAdaptor.RechargeWrapper>() {
-        {
-            add(new RechargeTypeAdaptor.RechargeWrapper(PayWay.ALIAPY.getType(), PayWay.ALIAPY.getDrawableRes(), "支付宝", true));
-        }
-    };
+    List<RechargeTypeAdaptor.RechargeWrapper> rechargeTypes = new ArrayList<>();
 
     RechargeAdaptor adaptor;
     RechargeTypeAdaptor typeAdaptor;

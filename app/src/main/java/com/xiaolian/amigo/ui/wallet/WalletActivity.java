@@ -3,6 +3,8 @@ package com.xiaolian.amigo.ui.wallet;
 import android.app.Dialog;
 import android.content.Intent;
 import android.text.TextUtils;
+import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
@@ -42,6 +44,12 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
      */
     @BindView(R.id.tv_prepay)
     TextView tvPrepay;
+
+    /**
+     * 提现入口
+     */
+    @BindView(R.id.rl_withdrawal)
+    RelativeLayout rlWithdrawal;
 
     private DecimalFormat df = new DecimalFormat("###.##");
 
@@ -134,6 +142,16 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
 //                        .putExtra(Constant.EXTRA_KEY, tvBalance.getText().toString().replace("¥", "")))
         );
         dialog.show();
+    }
+
+    @Override
+    public void showWithDraw() {
+        rlWithdrawal.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideWithDraw() {
+        rlWithdrawal.setVisibility(View.GONE);
     }
 
     @Override

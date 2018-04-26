@@ -37,6 +37,11 @@ public class WalletPresenter<V extends IWalletView> extends BasePresenter<V>
                 if (null == result.getError()) {
                     getMvpView().setBalanceText(result.getData().getBalance());
                     getMvpView().setPrepayText(result.getData().getPrepay());
+                    if (result.getData().isShowWithdraw()) {
+                        getMvpView().showWithDraw();
+                    } else {
+                        getMvpView().hideWithDraw();
+                    }
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }

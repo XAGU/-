@@ -36,4 +36,8 @@ public interface IWalletView extends IBaseView {
      * @param remark 备注
      */
     void showTimeValidDialog(String title, String remark);
+
+    void showWithDraw();
+
+    void hideWithDraw();
 }

@@ -12,4 +12,8 @@ import lombok.Data;
 public class PersonalWalletDTO {
     private Double balance;
     private Double prepay;
+    /**
+     * 是否显示
+     */
+    private boolean showWithdraw;
 }
