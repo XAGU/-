@@ -244,6 +244,11 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
     protected int setSubTitle() {
         getSubTitle().setTextColor(ContextCompat.getColor(this, R.color.colorBlue));
         getSubTitle().setOnClickListener(v -> search());
+
+        //toolbar
+        tvTitleThird.setTextColor(ContextCompat.getColor(this, R.color.colorBlue));
+        tvTitleThird.setOnClickListener(v -> search());
+
         return R.string.search;
     }
 
@@ -264,6 +269,9 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
         tvLost.setOnClickListener(v -> onLostClick());
         tvFound = getToolBarTitle2();
         tvFound.setOnClickListener(v -> onFoundClick());
+        //toolbar
+        tvTitle.setOnClickListener(v -> onLostClick());
+        tvTitleSecond.setOnClickListener(v -> onFoundClick());
     }
 
     @Override
@@ -399,10 +407,16 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
             listStatus = false;
             tvLost.setTextColor(ContextCompat.getColor(this, R.color.colorDark2));
             tvFound.setTextColor(ContextCompat.getColor(this, R.color.colorDarkB));
+            //toolbar
+            tvTitle.setTextColor(ContextCompat.getColor(this, R.color.colorDark2));
+            tvTitleSecond.setTextColor(ContextCompat.getColor(this, R.color.colorDarkB));
         } else {
             listStatus = true;
             tvLost.setTextColor(ContextCompat.getColor(this, R.color.colorDarkB));
             tvFound.setTextColor(ContextCompat.getColor(this, R.color.colorDark2));
+            //toolbar
+            tvTitle.setTextColor(ContextCompat.getColor(this, R.color.colorDarkB));
+            tvTitleSecond.setTextColor(ContextCompat.getColor(this, R.color.colorDark2));
         }
     }
 

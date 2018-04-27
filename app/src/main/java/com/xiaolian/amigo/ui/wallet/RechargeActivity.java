@@ -81,6 +81,7 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
     protected void initView() {
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
+        setMainBackground(R.color.colorBackgroundGray);
 
         adaptor = new RechargeAdaptor(this, recharges);
         adaptor.addItemViewDelegate(new NormalItemDelegate());

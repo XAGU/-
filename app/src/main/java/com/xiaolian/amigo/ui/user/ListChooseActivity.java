@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.util.ObjectsCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -117,6 +118,15 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
 
     @BindView(R.id.rl_error)
     RelativeLayout rlError;
+
+    @BindView(R.id.app_bar_layout)
+    AppBarLayout appBarLayout;
+
+    @BindView(R.id.tv_toolbar_title)
+    TextView tvToolBarTitle;
+
+    @BindView(R.id.view_line)
+    View viewLine;
 
     private int action;
 
@@ -362,6 +372,19 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                     break;
             }
         }
+
+        initToolBar();
+    }
+
+    private void initToolBar() {
+        tvToolBarTitle.setVisibility(View.GONE);
+        viewLine.setVisibility(View.GONE);
+        tvToolBarTitle.setText(tvTitle.getText().toString());
+
+        appBarLayout.addOnOffsetChangedListener((AppBarLayout appBarLayout, int verticalOffset) -> {
+            if (verticalOffset < - (tvToolBarTitle.getHeight() + tvToolBarTitle.getPaddingTop())) {
+            }
+        });
     }
 
     public UserActivityComponent getActivityComponent() {

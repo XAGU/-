@@ -9,78 +9,151 @@
 
     <android.support.design.widget.AppBarLayout
         android:fitsSystemWindows="true"
-        android:id="@+id/abl_actionbar"
+        android:id="@+id/app_bar_layout"
         app:elevation="0dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
 
-        <LinearLayout
-            app:layout_scrollFlags="scroll|enterAlways"
-            android:background="@color/colorBackgroundGray"
-            android:id="@+id/ll_header"
+        <android.support.design.widget.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-            <ImageView
-                android:id="@+id/iv_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingRight="@dimen/toolBarMarginLeft"
-                android:paddingLeft="@dimen/toolBarMarginLeft"
-                android:paddingTop="@dimen/toolBarMarginTop"
-                android:paddingBottom="@dimen/toolBarMarginBottom"
-                android:src="@drawable/back" />
-
-            <RelativeLayout
+            <LinearLayout
+                android:visibility="visible"
+                android:background="@color/colorBackgroundGray"
+                android:id="@+id/ll_header"
+                android:paddingTop="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/mainMarginLeftRight"
-                android:layout_marginRight="@dimen/mainMarginLeftRight"
-                android:layout_marginBottom="@dimen/toolBarMarginBottom"
-                >
+                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tv_toolbar_title"
-                    style="@style/ToolBarTextView"
+               <!-- <ImageView
+                    android:id="@+id/iv_back"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    tool:text="宿舍列表" />
+                    android:paddingRight="@dimen/toolBarMarginLeft"
+                    android:paddingLeft="@dimen/toolBarMarginLeft"
+                    android:paddingTop="@dimen/toolBarMarginTop"
+                    android:paddingBottom="@dimen/toolBarMarginBottom"
+                    android:src="@drawable/back" />-->
 
-                <View
-                    android:visibility="gone"
-                    android:id="@+id/v_divide"
-                    android:layout_width="1dp"
-                    android:layout_height="14dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="14dp"
-                    android:layout_toRightOf="@id/tv_toolbar_title"
-                    android:background="#eee" />
-
-                <TextView
-                    android:id="@+id/tv_toolbar_title2"
-                    style="@style/ToolBarTextView"
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="14dp"
-                    android:layout_toRightOf="@id/v_divide"
-                    tool:text="招领"
-                    android:textColor="#bbb" />
+                    android:layout_marginTop="42dp"
+                    android:layout_marginLeft="@dimen/mainMarginLeftRight"
+                    android:layout_marginRight="@dimen/mainMarginLeftRight"
+                    android:layout_marginBottom="@dimen/toolBarMarginBottom">
 
-                <TextView
-                    android:visibility="gone"
-                    android:id="@+id/tv_toolbar_sub_title"
-                    style="@style/ContentText_main"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    tool:text="添加宿舍" />
+                    <TextView
+                        android:id="@+id/tv_toolbar_title"
+                        style="@style/ToolBarTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        tool:text="宿舍列表" />
 
-            </RelativeLayout>
-        </LinearLayout>
+                    <View
+                        android:visibility="gone"
+                        android:id="@+id/v_divide"
+                        android:layout_width="1dp"
+                        android:layout_height="14dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="14dp"
+                        android:layout_toRightOf="@id/tv_toolbar_title"
+                        android:background="#eee" />
+
+                    <TextView
+                        android:id="@+id/tv_toolbar_title2"
+                        style="@style/ToolBarTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="14dp"
+                        android:layout_toRightOf="@id/v_divide"
+                        tool:text="招领"
+                        android:textColor="#bbb" />
+
+                    <TextView
+                        android:visibility="gone"
+                        android:id="@+id/tv_toolbar_sub_title"
+                        style="@style/ContentText_main"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        tool:text="添加宿舍" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/tool_bar"
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                android:background="@color/colorBackgroundGray"
+                app:layout_collapseMode="pin">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/iv_back"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp"
+                        android:src="@drawable/back" />
+
+                    <TextView
+                        android:id="@+id/tv_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:textSize="@dimen/sp15"
+                        android:textStyle="bold"
+                        android:textColor="#222"
+                        tool:text="@string/repair_detail" />
+
+                    <TextView
+                        android:id="@+id/tv_title_second"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="14dp"
+                        android:layout_toRightOf="@id/tv_title"
+                        tool:text="招领"
+                        android:textColor="#bbb"
+                        android:textSize="@dimen/sp15"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/tv_title_third"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/mainMarginLeftRight"
+                        android:textSize="@dimen/sp12"
+                        android:textColor="#222"
+                        tool:text="@string/repair_detail" />
+                    <View
+                        android:id="@+id/view_line"
+                        android:visibility="gone"
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:layout_alignParentBottom="true"
+                        android:background="#d6d6d6"/>
+                </RelativeLayout>
+
+            </android.support.v7.widget.Toolbar>
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
     </android.support.design.widget.AppBarLayout>
 
 

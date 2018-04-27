@@ -1,6 +1,12 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <style name="DeviceTheme" parent="AppTheme.NoActionBar">
         <item name="android:windowTranslucentStatus">true</item>
         <item name="colorControlNormal">#fff</item>
+        <item name="toolbarStyle" tools:ignore="NewApi">@style/MyToolBar</item>
+    </style>
+
+    <style name="MyToolBar" parent="Widget.AppCompat.Toolbar">
+        <!--左边边距-->
+        <item name="contentInsetStart">0dp</item>
     </style>
 </resources>
