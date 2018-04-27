@@ -44,8 +44,9 @@
         android:background="#eee" />
 
     <RelativeLayout
+        android:id="@+id/rl_giving_balance"
         android:layout_width="match_parent"
-        android:layout_height="84dp">
+        android:layout_height="85dp">
         <LinearLayout
             android:layout_centerVertical="true"
             android:orientation="vertical"
@@ -79,12 +80,14 @@
             android:src="@drawable/ic_question_gray"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
+        <View
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:background="#eee" />
     </RelativeLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dip"
-        android:background="#eee" />
 
     <RelativeLayout
         android:id="@+id/rl_prepay"
