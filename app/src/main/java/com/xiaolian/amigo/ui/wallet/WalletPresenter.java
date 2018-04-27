@@ -65,7 +65,8 @@ public class WalletPresenter<V extends IWalletView> extends BasePresenter<V>
                     chargeBalance = result.getData().getChargeBalance();
                     givingRule = result.getData().getGivingRule();
                     useLimit = result.getData().getUseLimit();
-                    if (!result.getData().getExistGiving()) {
+                    if (!result.getData().getExistGiving()
+                            || result.getData().getGivingBalance() <= 0) {
                         getMvpView().hideGivingBalance();
                     } else {
                         getMvpView().showGivingBalance();

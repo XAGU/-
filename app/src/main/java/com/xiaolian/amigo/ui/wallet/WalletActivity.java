@@ -171,7 +171,7 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
     @Override
     public void gotoWithDraw() {
         startActivity(new Intent(this, WithdrawalActivity.class)
-                .putExtra(Constant.EXTRA_KEY, tvBalance.getText().toString().replace("¥", "")));
+                .putExtra(Constant.EXTRA_KEY, df.format(presenter.getChargeBalance())));
     }
 
     @Override

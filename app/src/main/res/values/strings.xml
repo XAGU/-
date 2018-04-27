@@ -282,7 +282,7 @@
     <string name="current_credits_colon">当前积分：</string>
     <string name="credits_tip">消费额每满0.1元即获得1积分</string>
     <string name="balance_explain">余额说明</string>
-    <string name="present_balance_colon">增送的余额：</string>
+    <string name="present_balance_colon">赠送的余额：</string>
     <string name="withdraw_available_colon">可提现余额：</string>
     <string name="balance_available_colon">可用余额：</string>
     <string name="balance_present_colon">赠送的余额：</string>
