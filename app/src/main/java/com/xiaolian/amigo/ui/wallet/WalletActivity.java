@@ -10,7 +10,6 @@ import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.ImageView;
-import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -81,6 +80,12 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
      */
     @BindView(R.id.rl_withdrawal)
     RelativeLayout rlWithdrawal;
+
+    /**
+     * 增送金额趋势
+     */
+    @BindView(R.id.rl_giving_balance)
+    RelativeLayout rlGivingBalance;
 
     private DecimalFormat df = new DecimalFormat("###.##");
 
@@ -199,15 +204,17 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
     }
 
     @Override
-    public void hideBalanceExplain() {
-        vQuestion.setVisibility(View.GONE);
-        ivQuestion.setVisibility(View.GONE);
+    public void hideGivingBalance() {
+//        vQuestion.setVisibility(View.GONE);
+//        ivQuestion.setVisibility(View.GONE);
+        rlGivingBalance.setVisibility(View.GONE);
     }
 
     @Override
-    public void showBalanceExplain() {
-        vQuestion.setVisibility(View.VISIBLE);
-        ivQuestion.setVisibility(View.VISIBLE);
+    public void showGivingBalance() {
+//        vQuestion.setVisibility(View.VISIBLE);
+//        ivQuestion.setVisibility(View.VISIBLE);
+        rlGivingBalance.setVisibility(View.VISIBLE);
     }
 
     /**
