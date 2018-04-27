@@ -70,6 +70,11 @@ public class WalletPresenter<V extends IWalletView> extends BasePresenter<V>
                     } else {
                         getMvpView().showBalanceExplain();
                     }
+                    if (result.getData().isShowWithdraw()) {
+                        getMvpView().showWithDraw();
+                    } else {
+                        getMvpView().hideWithDraw();
+                    }
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }

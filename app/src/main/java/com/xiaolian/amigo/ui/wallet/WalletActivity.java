@@ -10,6 +10,8 @@ import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.ImageView;
+import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
@@ -51,6 +53,7 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
     TextView tvPrepay;
 
     /**
+<<<<<<< HEAD
      * 增送的余额
      */
     @BindView(R.id.tv_balance_present)
@@ -73,6 +76,11 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
      */
     @BindView(R.id.v_question)
     View vQuestion;
+    /**
+     * 提现入口
+     */
+    @BindView(R.id.rl_withdrawal)
+    RelativeLayout rlWithdrawal;
 
     private DecimalFormat df = new DecimalFormat("###.##");
 
@@ -228,6 +236,15 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
         builder.append(tip);
         builder.append(valueSpan);
         tvWithdrawAvailable.setText(builder);
+    }
+
+    public void showWithDraw() {
+        rlWithdrawal.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideWithDraw() {
+        rlWithdrawal.setVisibility(View.GONE);
     }
 
     @Override

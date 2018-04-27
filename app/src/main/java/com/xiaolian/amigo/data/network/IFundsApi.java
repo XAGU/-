@@ -3,6 +3,7 @@ package com.xiaolian.amigo.data.network;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.funds.QueryPersonalFundsListReqDTO;
+import com.xiaolian.amigo.data.network.model.funds.QueryRechargeTypesRespDTO;
 import com.xiaolian.amigo.data.network.model.funds.RechargeReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleQueryReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
@@ -36,6 +37,13 @@ public interface IFundsApi {
      */
     @POST("funds/recharge/amount/list")
     Observable<ApiResult<QueryRechargeAmountsRespDTO>> queryRechargeAmountList(@Body SimpleQueryReqDTO body);
+
+    /**
+     * 获取充值账号类型列表
+     */
+    @POST("funds/recharge/type/list")
+    Observable<ApiResult<QueryRechargeTypesRespDTO>> queryRechargeTypes();
+
 
     /**
      * 提现

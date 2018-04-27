@@ -45,4 +45,8 @@ public class PersonalWalletDTO {
         }
         return givingBalance;
     }
+    /**
+     * 是否显示提现入口
+     */
+    private boolean showWithdraw;
 }

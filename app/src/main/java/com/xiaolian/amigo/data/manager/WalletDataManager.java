@@ -7,9 +7,11 @@ import com.xiaolian.amigo.data.network.ICsApi;
 import com.xiaolian.amigo.data.network.IFundsApi;
 import com.xiaolian.amigo.data.network.ITimeRangeApi;
 import com.xiaolian.amigo.data.network.IUserThirdAccountApi;
+import com.xiaolian.amigo.data.network.IWxpayApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.complaint.CheckComplaintReqDTO;
+import com.xiaolian.amigo.data.network.model.funds.QueryRechargeTypesRespDTO;
 import com.xiaolian.amigo.data.network.model.userthirdaccount.AddThirdAccountReqDTO;
 import com.xiaolian.amigo.data.network.model.alipay.AlipayTradeAppPayArgsReqDTO;
 import com.xiaolian.amigo.data.network.model.alipay.AlipayTradeAppPayResultParseReqDTO;
@@ -29,6 +31,10 @@ import com.xiaolian.amigo.data.network.model.funds.QueryRechargeAmountsRespDTO;
 import com.xiaolian.amigo.data.network.model.timerange.QueryTimeValidRespDTO;
 import com.xiaolian.amigo.data.network.model.userthirdaccount.QueryUserThirdAccountRespDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
+import com.xiaolian.amigo.data.network.model.wxpay.WxpayTradeAppPayArgsReqDTO;
+import com.xiaolian.amigo.data.network.model.wxpay.WxpayTradeAppPayArgsRespDTO;
+import com.xiaolian.amigo.data.network.model.wxpay.WxpayTradeAppPayResultParseReqDTO;
+import com.xiaolian.amigo.data.network.model.wxpay.WxpayTradeAppPayResultParseRespDTO;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 
 import javax.inject.Inject;
@@ -50,6 +56,7 @@ public class WalletDataManager implements IWalletDataManager {
 
     private ISharedPreferencesHelp sharedPreferencesHelp;
     private IAlipayApi alipayApi;
+    private IWxpayApi wxpayApi;
     private ICsApi csApi;
     private IFundsApi fundsApi;
     private ITimeRangeApi timeRangeApi;
@@ -59,6 +66,7 @@ public class WalletDataManager implements IWalletDataManager {
     @Inject
     public WalletDataManager(Retrofit retrofit, ISharedPreferencesHelp sharedPreferencesHelp) {
         alipayApi = retrofit.create(IAlipayApi.class);
+        wxpayApi = retrofit.create(IWxpayApi.class);
         csApi = retrofit.create(ICsApi.class);
         fundsApi = retrofit.create(IFundsApi.class);
         timeRangeApi = retrofit.create(ITimeRangeApi.class);
@@ -75,6 +83,11 @@ public class WalletDataManager implements IWalletDataManager {
     @Override
     public Observable<ApiResult<QueryRechargeAmountsRespDTO>> queryRechargeAmountList(@Body SimpleQueryReqDTO body) {
         return fundsApi.queryRechargeAmountList(body);
+    }
+
+    @Override
+    public Observable<ApiResult<QueryRechargeTypesRespDTO>> queryRechargeTypes() {
+        return fundsApi.queryRechargeTypes();
     }
 
     @Override
@@ -103,8 +116,18 @@ public class WalletDataManager implements IWalletDataManager {
     }
 
     @Override
+    public Observable<ApiResult<WxpayTradeAppPayArgsRespDTO>> requestWxpayArgs(WxpayTradeAppPayArgsReqDTO reqDTO) {
+        return wxpayApi.requestWxpayArgs(reqDTO);
+    }
+
+    @Override
     public Observable<ApiResult<AlipayTradeAppPayResultParseRespDTO>> parseAlipayResule(@Body AlipayTradeAppPayResultParseReqDTO reqDTO) {
         return alipayApi.parseAlipayResule(reqDTO);
+    }
+
+    @Override
+    public Observable<ApiResult<WxpayTradeAppPayResultParseRespDTO>> parseWxpayResule(WxpayTradeAppPayResultParseReqDTO reqDTO) {
+        return wxpayApi.parseWxpayResule(reqDTO);
     }
 
     @Override

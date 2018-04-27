@@ -56,4 +56,8 @@ public interface IWalletView extends IBaseView {
      * 显示问号
      */
     void showBalanceExplain();
+
+    void showWithDraw();
+
+    void hideWithDraw();
 }

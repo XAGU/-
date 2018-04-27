@@ -56,4 +56,8 @@ public class PersonalExtraInfoDTO {
      * 积分
      */
     private Integer credits;
+    /**
+     * 是否显示提现入口
+     */
+    private Boolean showWithdraw;
 }
