@@ -288,4 +288,5 @@
     <string name="balance_present_colon">赠送的余额：</string>
     <string name="present_rule_colon">赠送规则：</string>
     <string name="use_period_colon">使用期限：</string>
+    <string name="washer_tip">1.请触摸设备上的开关，将屏幕切换为拍摄模式\n2.然后将二维码对准设备上的二维码扫描区</string>
 </resources>
