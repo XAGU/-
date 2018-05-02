@@ -383,6 +383,11 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
 
         appBarLayout.addOnOffsetChangedListener((AppBarLayout appBarLayout, int verticalOffset) -> {
             if (verticalOffset < - (tvToolBarTitle.getHeight() + tvToolBarTitle.getPaddingTop())) {
+                tvToolBarTitle.setVisibility(View.VISIBLE);
+                viewLine.setVisibility(View.VISIBLE);
+            } else {
+                tvToolBarTitle.setVisibility(View.GONE);
+                viewLine.setVisibility(View.GONE);
             }
         });
     }
