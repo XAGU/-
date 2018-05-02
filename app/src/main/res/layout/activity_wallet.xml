@@ -45,6 +45,7 @@
 
     <RelativeLayout
         android:id="@+id/rl_giving_balance"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="85dp">
         <LinearLayout
