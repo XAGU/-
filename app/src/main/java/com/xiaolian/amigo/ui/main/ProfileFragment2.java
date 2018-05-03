@@ -111,7 +111,7 @@ public class ProfileFragment2 extends Fragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(PersonalExtraInfoDTO data) {
         try {
-            wallet.setBalance(df.format(data.getBalance()));
+            wallet.setBalance(df.format(data.getAllBalance()));
             bonus.setBonusAmount(data.getBonusAmount());
             if (data.getCredits() == null) {
                 credits.setBonusAmount(-1);
@@ -120,7 +120,7 @@ public class ProfileFragment2 extends Fragment {
             }
         } catch (Exception e) {
             MobclickAgent.reportError(getContext(), "customReport tag: " + TAG + e.getMessage());
-            wallet.setBalance(String.valueOf(data.getBalance()));
+            wallet.setBalance(String.valueOf(data.getAllBalance()));
             bonus.setBonusAmount(data.getBonusAmount());
             if (data.getCredits() == null) {
                 credits.setBonusAmount(-1);

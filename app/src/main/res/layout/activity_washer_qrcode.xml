@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:background="@drawable/bg_rect_pink"
+    android:background="@color/white"
     android:layout_height="match_parent">
     <FrameLayout
         android:layout_width="match_parent"
@@ -17,19 +17,35 @@
             android:paddingRight="@dimen/toolBarMarginLeft"
             android:paddingTop="@dimen/toolBarMarginTop"
             android:layout_height="wrap_content"
-            android:src="@drawable/arrow_left_white" />
+            android:src="@drawable/back" />
         <TextView
             android:text="@string/washer"
-            android:textSize="16sp"
+            android:textSize="15sp"
             android:textStyle="bold"
             android:gravity="center"
-            android:textColor="@color/white"
+            android:textColor="@color/colorDark2"
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </FrameLayout>
 
+    <ImageView
+        android:id="@+id/iv_qr_code"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_width="210dp"
+        android:layout_height="210dp" />
+
+    <View
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="21dp"
+        android:layout_marginEnd="21dp"
+        android:background="@color/colorBackgroundGray"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
     <TextView
+        android:layout_marginTop="25dp"
         android:id="@+id/tv_top_bar"
         android:layout_marginStart="@dimen/mainMarginLeftRight"
         android:layout_marginEnd="@dimen/mainMarginLeftRight"
@@ -46,39 +62,22 @@
         android:src="@drawable/ic_washer_qrcode_top_bar_arrow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-    <ImageView
-        android:layout_marginTop="10dp"
+
+    <TextView
+        android:layout_marginTop="23dp"
+        android:gravity="center"
+        android:text="温馨提示"
+        android:textColor="@color/colorDark2"
+        android:textSize="14sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
         android:layout_gravity="center_horizontal"
-        android:src="@drawable/img_washer_qrcode_top_tip"
+        android:gravity="start"
+        android:layout_marginTop="15dp"
+        android:textSize="12sp"
+        android:textColor="@color/colorDark2"
+        android:text="@string/washer_tip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-    <View
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="@dimen/mainMarginLeftRight"
-        android:layout_marginEnd="@dimen/mainMarginLeftRight"
-        android:background="#32ffffff"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"/>
-
-    <LinearLayout
-        android:layout_marginTop="42dp"
-        android:paddingTop="18dp"
-        android:paddingBottom="18dp"
-        android:paddingStart="17dp"
-        android:paddingEnd="17dp"
-        android:background="@drawable/bg_washer_qr_code"
-        android:orientation="vertical"
-        android:layout_gravity="center_horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:src="@drawable/img_washer_qr_code_middle_tip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <ImageView
-            android:id="@+id/iv_qr_code"
-            android:layout_marginTop="14dp"
-            android:layout_width="183dp"
-            android:layout_height="183dp" />
-    </LinearLayout>
 </LinearLayout>

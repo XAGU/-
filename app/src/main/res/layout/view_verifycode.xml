@@ -11,7 +11,7 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="48dp"
-        android:inputType="number"
+        android:inputType="text"
         android:maxLength="@integer/phone_max_length"
         android:drawableEnd="@drawable/clear"
         android:drawableRight="@drawable/clear"

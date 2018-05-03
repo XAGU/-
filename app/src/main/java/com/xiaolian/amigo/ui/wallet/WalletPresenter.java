@@ -23,6 +23,27 @@ public class WalletPresenter<V extends IWalletView> extends BasePresenter<V>
     private static final String TAG = WalletPresenter.class.getSimpleName();
     private IWalletDataManager manager;
 
+    /**
+     * 可用余额
+     */
+    private Double allBalance;
+    /**
+     * 可提现余额
+     */
+    private Double chargeBalance;
+    /**
+     * 赠送的余额
+     */
+    private Double givingBalance;
+    /**
+     * 赠送规则
+     */
+    private String givingRule;
+    /**
+     * 使用期限
+     */
+    private String useLimit;
+
     @Inject
     WalletPresenter(IWalletDataManager manager) {
         super();
@@ -35,8 +56,26 @@ public class WalletPresenter<V extends IWalletView> extends BasePresenter<V>
             @Override
             public void onReady(ApiResult<PersonalWalletDTO> result) {
                 if (null == result.getError()) {
-                    getMvpView().setBalanceText(result.getData().getBalance());
+                    getMvpView().setBalanceText(result.getData().getAllBalance());
+                    allBalance = result.getData().getAllBalance();
                     getMvpView().setPrepayText(result.getData().getPrepay());
+                    getMvpView().setBalancePresentText(result.getData().getGivingBalance());
+                    givingBalance = result.getData().getGivingBalance();
+                    getMvpView().setWithdrawAvailableText(result.getData().getChargeBalance());
+                    chargeBalance = result.getData().getChargeBalance();
+                    givingRule = result.getData().getGivingRule();
+                    useLimit = result.getData().getUseLimit();
+                    if (!result.getData().getExistGiving()
+                            || result.getData().getGivingBalance() <= 0) {
+                        getMvpView().hideGivingBalance();
+                    } else {
+                        getMvpView().showGivingBalance();
+                    }
+                    if (result.getData().isShowWithdraw()) {
+                        getMvpView().showWithDraw();
+                    } else {
+                        getMvpView().hideWithDraw();
+                    }
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }
@@ -61,5 +100,30 @@ public class WalletPresenter<V extends IWalletView> extends BasePresenter<V>
                 }
             }
         });
+    }
+
+    @Override
+    public String getGivingRule() {
+        return givingRule;
+    }
+
+    @Override
+    public String getUseLimit() {
+        return useLimit;
+    }
+
+    @Override
+    public Double getAllBalance() {
+        return allBalance;
+    }
+
+    @Override
+    public Double getChargeBalance() {
+        return chargeBalance;
+    }
+
+    @Override
+    public Double getGivingBalance() {
+        return givingBalance;
     }
 }

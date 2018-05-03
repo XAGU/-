@@ -3,10 +3,13 @@ package com.xiaolian.amigo.ui.wallet;
 import android.text.TextUtils;
 
 import com.xiaolian.amigo.data.enumeration.AlipayPayOrderCheckResult;
+import com.xiaolian.amigo.data.enumeration.PayWay;
+import com.xiaolian.amigo.data.enumeration.WxpayPayOrderCheckResult;
 import com.xiaolian.amigo.data.manager.intf.IWalletDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.alipay.AlipayTradeAppPayArgsReqDTO;
 import com.xiaolian.amigo.data.network.model.alipay.AlipayTradeAppPayResultParseReqDTO;
+import com.xiaolian.amigo.data.network.model.funds.QueryRechargeTypesRespDTO;
 import com.xiaolian.amigo.data.network.model.funds.RechargeReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleQueryReqDTO;
 import com.xiaolian.amigo.data.network.model.alipay.AlipayTradeAppPayArgsRespDTO;
@@ -14,8 +17,13 @@ import com.xiaolian.amigo.data.network.model.alipay.AlipayTradeAppPayResultParse
 import com.xiaolian.amigo.data.network.model.funds.QueryRechargeAmountsRespDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
 import com.xiaolian.amigo.data.network.model.wallet.RechargeDenominations;
+import com.xiaolian.amigo.data.network.model.wxpay.WxpayTradeAppPayArgsReqDTO;
+import com.xiaolian.amigo.data.network.model.wxpay.WxpayTradeAppPayArgsRespDTO;
+import com.xiaolian.amigo.data.network.model.wxpay.WxpayTradeAppPayResultParseReqDTO;
+import com.xiaolian.amigo.data.network.model.wxpay.WxpayTradeAppPayResultParseRespDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.wallet.adaptor.RechargeAdaptor;
+import com.xiaolian.amigo.ui.wallet.adaptor.RechargeTypeAdaptor;
 import com.xiaolian.amigo.ui.wallet.intf.IRechargePresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IRechargeView;
 import com.xiaolian.amigo.util.Log;
@@ -90,12 +98,34 @@ public class RechargePresenter<V extends IRechargeView> extends BasePresenter<V>
             @Override
             public void onReady(ApiResult<SimpleRespDTO> result) {
                 if (null == result.getError()) {
-                    requestAlipayArgs(result.getData().getId());
+                    if (PayWay.getPayWay(type) == PayWay.ALIAPY) {
+                        requestAlipayArgs(result.getData().getId());
+                    } else if (PayWay.getPayWay(type) == PayWay.WECHAT) {
+//                        getMvpView().onError("暂不支持微信支付");
+                        requestWxpayArgs(result.getData().getId());
+                    }
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }
             }
         });
+    }
+
+    private void requestWxpayArgs(Long fundsId) {
+        this.fundsId = fundsId;
+        WxpayTradeAppPayArgsReqDTO reqDTO = new WxpayTradeAppPayArgsReqDTO();
+        reqDTO.setFundsId(fundsId);
+        addObserver(manager.requestWxpayArgs(reqDTO), new NetworkObserver<ApiResult<WxpayTradeAppPayArgsRespDTO>>() {
+            @Override
+            public void onReady(ApiResult<WxpayTradeAppPayArgsRespDTO> result) {
+                if (null == result.getError()) {
+                    getMvpView().wxpay(result.getData());
+                } else {
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+        });
+
     }
 
     private void requestAlipayArgs(Long fundsId) {
@@ -141,6 +171,63 @@ public class RechargePresenter<V extends IRechargeView> extends BasePresenter<V>
                 } else {
                     getMvpView().onError(apiResult.getError().getDisplayMessage());
                 }
+            }
+        });
+    }
+
+    @Override
+    public void getRechargeTypeList() {
+        addObserver(manager.queryRechargeTypes(), new NetworkObserver<ApiResult<QueryRechargeTypesRespDTO>>() {
+
+            @Override
+            public void onReady(ApiResult<QueryRechargeTypesRespDTO> result) {
+                if (null == result.getError()) {
+                    if (result.getData().getRechargeTypes() != null
+                            && result.getData().getRechargeTypes().size() > 0) {
+                        List<RechargeTypeAdaptor.RechargeWrapper> rechargeTypes = new ArrayList<>();
+                        if (result.getData().getRechargeTypes().contains(PayWay.ALIAPY.getType())) {
+                            rechargeTypes.add(new RechargeTypeAdaptor.RechargeWrapper(PayWay.ALIAPY.getType(), PayWay.ALIAPY.getDrawableRes(), "支付宝", true));
+                        }
+                        if (result.getData().getRechargeTypes().contains(PayWay.WECHAT.getType())) {
+                            rechargeTypes.add(new RechargeTypeAdaptor.RechargeWrapper(PayWay.WECHAT.getType(), PayWay.WECHAT.getDrawableRes(), "微信", false));
+                        }
+                        getMvpView().setRechargeType(rechargeTypes);
+                    }
+                } else {
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+        });
+    }
+
+    @Override
+    public void parseWxpayResult(Integer wxResult) {
+        WxpayTradeAppPayResultParseReqDTO reqDTO = new WxpayTradeAppPayResultParseReqDTO();
+        reqDTO.setResult(wxResult);
+        reqDTO.setFundsId(fundsId);
+        addObserver(manager.parseWxpayResule(reqDTO), new NetworkObserver<ApiResult<WxpayTradeAppPayResultParseRespDTO>>() {
+
+            @Override
+            public void onReady(ApiResult<WxpayTradeAppPayResultParseRespDTO> apiResult) {
+                getMvpView().hideLoading();
+                if (apiResult.getError() == null) {
+                    if (apiResult.getData().getCode() == WxpayPayOrderCheckResult.SUCCESS.getType()) {
+                        getMvpView().onSuccess("充值成功");
+                        getMvpView().gotoDetail(fundsId);
+                    } else if (apiResult.getData().getCode() == WxpayPayOrderCheckResult.CANCEL.getType()) {
+                        // ignore cancel
+                    } else {
+                        getMvpView().onError(apiResult.getData().getMsg());
+                    }
+                } else {
+                    getMvpView().onError(apiResult.getError().getDisplayMessage());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                getMvpView().hideLoading();
             }
         });
     }

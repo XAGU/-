@@ -2,6 +2,8 @@ package com.xiaolian.amigo.ui.wallet.intf;
 
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 import com.xiaolian.amigo.ui.wallet.adaptor.RechargeAdaptor;
+import com.xiaolian.amigo.ui.wallet.adaptor.RechargeTypeAdaptor;
+import com.xiaolian.amigo.util.PayUtil;
 
 import java.util.List;
 
@@ -20,6 +22,8 @@ public interface IRechargeView extends IBaseView {
      */
     void addMore(List<RechargeAdaptor.RechargeWrapper> rechargeWrappers);
 
+    void setRechargeType(List<RechargeTypeAdaptor.RechargeWrapper> rechargeTypes);
+
     /**
      * 返回
      */
@@ -31,6 +35,8 @@ public interface IRechargeView extends IBaseView {
      * @param reqArgs 请求参数
      */
     void alipay(String reqArgs);
+
+    void wxpay(PayUtil.IWeChatPayReq req);
 
     /**
      * 跳转到充值详情页面

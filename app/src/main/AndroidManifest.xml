@@ -99,7 +99,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-
         <!--web页面-->
         <activity
             android:name=".ui.base.WebActivity"
@@ -161,6 +160,13 @@
             android:name=".ui.wallet.WalletActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <!--余额说明-->
+        <activity
+            android:name=".ui.wallet.BalanceExplainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
 
         <!--失物招领-->
         <activity
@@ -421,7 +427,6 @@
             android:theme="@style/AppTheme.NoActionBar"
             />
 
-
         <!--更新窗口-->
         <activity
             android:name=".ui.main.update.UpdateActivity"
@@ -447,13 +452,14 @@
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme.NoActionBar" />
-
+            android:theme="@android:style/Theme.Translucent"
+            />
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:exported="true"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@android:style/Theme.Translucent"
+            />
 
         <!--闪屏页-->
         <activity

@@ -31,4 +31,11 @@ public interface IRechargePresenter<V extends IRechargeView> extends IBasePresen
      * @param memo         支付记录
      */
     void parseAlipayResult(String resultStatus, String result, String memo);
+
+    /**
+     * 获取充值类型列表
+     */
+    void getRechargeTypeList();
+
+    void parseWxpayResult(Integer wxResult);
 }

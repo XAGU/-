@@ -94,8 +94,8 @@ public class ChooseWashModePresenter<V extends IChooseWashModeView> extends Base
             @Override
             public void onReady(ApiResult<PersonalExtraInfoDTO> result) {
                 if (null == result.getError()) {
-                    if (result.getData().getBalance() != null) {
-                        getMvpView().refreshBalance(result.getData().getBalance());
+                    if (result.getData().getAllBalance() != null) {
+                        getMvpView().refreshBalance(result.getData().getAllBalance());
                     }
                 }
             }
