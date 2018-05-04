@@ -115,52 +115,6 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
         Intent intent;
         switch (v.getId()) {
             case R.id.rel_edit_avatar:
-//                rxPermissions.request(Manifest.permission.READ_EXTERNAL_STORAGE)
-//                        .subscribe(granted -> {
-//                            if (granted) {
-//                                IWXAPI msgApi = WXAPIFactory.createWXAPI(this, null);
-//                                // 将该app注册到微信
-//                                msgApi.registerApp("wxd930ea5d5a258f4f");
-//                                PayUtil.weChatPay(msgApi, new PayUtil.IWeChatPayReq() {
-//                                    @Override
-//                                    public String getAppId() {
-//                                        return "wxd930ea5d5a258f4f";
-//                                    }
-//
-//                                    @Override
-//                                    public String getPartnerId() {
-//                                        return "wxd930ea5d5a258f4f";
-//                                    }
-//
-//                                    @Override
-//                                    public String getPrepayId() {
-//                                        return "wxd930ea5d5a258f4f";
-//                                    }
-//
-//                                    @Override
-//                                    public String getPackageValue() {
-//                                        return "wxd930ea5d5a258f4f";
-//                                    }
-//
-//                                    @Override
-//                                    public String getNonceStr() {
-//                                        return "wxd930ea5d5a258f4f";
-//                                    }
-//
-//                                    @Override
-//                                    public String getTimeStamp() {
-//                                        return "1222222222334";
-//                                    }
-//
-//                                    @Override
-//                                    public String getSign() {
-//                                        return "wxd930ea5d5a258f4f";
-//                                    }
-//                                });
-//                            } else {
-//                                onError("没有sd卡权限");
-//                            }
-//                        });
                 intent = new Intent(this, EditAvatarActivity.class);
                 intent.putExtra(EditAvatarActivity.INTENT_KEY_CURRENT_AVATAR, avatarUrl);
                 startActivityForResult(intent, REQUEST_CODE_EDIT_AVATAR);

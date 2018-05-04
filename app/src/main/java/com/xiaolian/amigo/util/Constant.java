@@ -32,7 +32,7 @@ public final class Constant {
     /**
      * 微信app id
      */
-    public static final String WECHAT_APP_ID = "";
+//    public static final String WECHAT_APP_ID = "";
 
     /**
      * 页内内容条数

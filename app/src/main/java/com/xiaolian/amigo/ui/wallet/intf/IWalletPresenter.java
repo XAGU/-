@@ -20,4 +20,14 @@ public interface IWalletPresenter<V extends IWalletView> extends IBasePresenter<
      * 查询提现时间段
      */
     void queryWithdrawTimeValid();
+
+    String getGivingRule();
+
+    String getUseLimit();
+
+    Double getAllBalance();
+
+    Double getChargeBalance();
+
+    Double getGivingBalance();
 }

@@ -43,7 +43,7 @@ public abstract class WaterDeviceBasePresenter<V extends IWaterDeviceBaseView> e
             @Override
             public void onReady(ApiResult<PersonalWalletDTO> result) {
                 if (null == result.getError()) {
-                    if (result.getData().getBalance() >= amount) {
+                    if (result.getData().getAllBalance() >= amount) {
                         getMvpView().startUse();
                     } else {
                         getMvpView().showRechargeDialog(amount);

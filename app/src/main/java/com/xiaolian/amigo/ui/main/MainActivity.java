@@ -954,7 +954,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @Override
     public void refreshProfile(PersonalExtraInfoDTO data) {
         lastRepairTime = data.getLastRepairTime();
-        presenter.setBalance(df.format(data.getBalance()));
+        presenter.setBalance(df.format(data.getAllBalance()));
         presenter.setBonusAmount(data.getBonusAmount());
         presenter.setCredits(data.getCredits());
         EventBus.getDefault().post(data);
@@ -1013,7 +1013,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     public void refreshProfile() {
         PersonalExtraInfoDTO data = new PersonalExtraInfoDTO();
-        data.setBalance(Double.valueOf(presenter.getBalance()));
+        data.setAllBalance(Double.valueOf(presenter.getBalance()));
         data.setBonusAmount(presenter.getBonusAmount());
         data.setCredits(presenter.getCredits());
         EventBus.getDefault().post(data);

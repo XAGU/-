@@ -22,7 +22,7 @@
             android:textCursorDrawable="@drawable/cursor_small"
             android:maxLines="1"
             android:maxLength="@integer/phone_max_length"
-            android:inputType="number"
+            android:inputType="text"
             android:paddingLeft="14dp"
             android:paddingRight="14dp"
             android:layout_weight="1"

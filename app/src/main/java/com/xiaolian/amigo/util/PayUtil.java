@@ -26,15 +26,17 @@ import lombok.Data;
 public class PayUtil {
     private static final String TAG = PayUtil.class.getSimpleName();
     /**
-     * 成功
+     * 微信支付 成功
      */
-    public static final int SUCCESS = 1;
+    public static final int SUCCESS = 0;
     /**
-     * 失败
+     * 微信支付 失败
+     * 可能的原因：签名错误、未注册APPID、项目设置APPID不正确、注册的APPID与设置的不匹配、其他异常等。
      */
     public static final int DENIED = -1;
     /**
-     * 取消
+     * 微信支付 取消
+     * 无需处理。发生场景：用户不支付了，点击取消，返回APP。
      */
     public static final int CANCEL = -2;
     /**

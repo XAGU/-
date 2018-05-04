@@ -36,7 +36,7 @@ import butterknife.OnTextChanged;
 
 public class RegisterStep1Fragment extends Fragment {
     private static final String GET_VERIFICATION_CODE = "获取验证码";
-    private static final int MOBILE_LENGTH = 11;
+    private static final int MOBILE_LENGTH = 1;
 
     @BindView(R.id.bt_submit)
     Button btSubmit;
@@ -117,7 +117,7 @@ public class RegisterStep1Fragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 toggleButton();
-                if (etMobile.length() == MOBILE_LENGTH) {
+                if (etMobile.length() >= MOBILE_LENGTH) {
                     btSendVerificationCode.setEnabled(true);
                     btSendVerificationCode.setText(GET_VERIFICATION_CODE);
                     int color = ContextCompat.getColor(getContext(), R.color.colorFullRed);
@@ -164,7 +164,7 @@ public class RegisterStep1Fragment extends Fragment {
     private void toggleButton() {
         boolean valid = !TextUtils.isEmpty(etVerificationCode.getText())
                 && !TextUtils.isEmpty(etMobile.getText())
-                && etMobile.getText().length() == 11;
+                && etMobile.getText().length() >= MOBILE_LENGTH;
         btSubmit.setEnabled(valid);
     }
 

@@ -15,7 +15,27 @@ import lombok.Data;
  */
 @Data
 public class PersonalExtraInfoDTO {
-    private Double balance;
+    private Double allBalance;
+    /**
+     * 充值的余额 可提现
+     */
+    private Double chargeBalance;
+    /**
+     * 赠送的余额
+     */
+    private Double givingBalance;
+    /**
+     * 增送规则
+     */
+    private String givingRule;
+    /**
+     * 使用期限
+     */
+    private String useLimit;
+    /**
+     * 是否存在赠送金额
+     */
+    private Boolean existGiving;
     private List<BannerDTO> banners;
     private Integer bonusAmount;
     private Integer notifyAmount;
@@ -36,4 +56,8 @@ public class PersonalExtraInfoDTO {
      * 积分
      */
     private Integer credits;
+    /**
+     * 是否显示提现入口
+     */
+    private Boolean showWithdraw;
 }
