@@ -51,14 +51,15 @@ public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenser
     private int layoutId;
     private Context context;
     private boolean expandAble = true;
+    private Device deviceType;
 
     ChooseDispenserAdaptor(Context context, int layoutId,
                            List<DispenserWrapper> datas,
-                           boolean expandable) {
+                           Device deviceType) {
         this.mData = datas;
         this.context = context;
         this.layoutId = layoutId;
-        this.expandAble = expandable;
+        this.deviceType = deviceType;
     }
 
     @Override
@@ -73,6 +74,9 @@ public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenser
                 mData.get(holder.getAdapterPosition());
         expandAble = DispenserCategory.getCategoryByType(dispenserWrapper.getDeviceGroup().getCategory())
                 != DispenserCategory.MULTI;
+        if (deviceType == Device.DRYER) {
+            expandAble = false;
+        }
         holder.tvLocation.setText(dispenserWrapper.getLocation());
         if (!expandAble) {
             holder.ivArrow.setVisibility(View.GONE);
@@ -85,6 +89,9 @@ public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenser
         holder.rlTop.setOnClickListener(v -> {
             expandAble = DispenserCategory.getCategoryByType(mData.get(holder.getAdapterPosition()).getDeviceGroup().getCategory())
                     != DispenserCategory.MULTI;
+            if (deviceType == Device.DRYER) {
+                expandAble = false;
+            }
             if (!expandAble && itemClickListener != null) {
                 itemClickListener.onItemClick(dispenserWrapper.getDeviceGroup().getWater().get(0).getMacAddress(),
                         dispenserWrapper.getDeviceGroup().getWater().get(0).getSupplierId(),
