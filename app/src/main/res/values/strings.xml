@@ -281,4 +281,5 @@
     <string name="my_credits">我的积分</string>
     <string name="current_credits_colon">当前积分：</string>
     <string name="credits_tip">消费额每满0.1元即获得1积分</string>
+    <string name="lost_and_found">失物招领</string>
 </resources>

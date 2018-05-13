@@ -168,6 +168,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <!--失物招领2-->
+        <activity android:name=".ui.lostandfound.LostAndFoundActivity2"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+
         <!--剪裁页面-->
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"

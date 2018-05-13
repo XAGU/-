@@ -46,6 +46,7 @@ import com.xiaolian.amigo.ui.device.dryer.DryerActivity;
 import com.xiaolian.amigo.ui.device.washer.WasherActivity;
 import com.xiaolian.amigo.ui.login.LoginActivity;
 import com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity;
+import com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity2;
 import com.xiaolian.amigo.ui.main.intf.IMainPresenter;
 import com.xiaolian.amigo.ui.main.intf.IMainView;
 import com.xiaolian.amigo.ui.main.update.IVersionModel;
@@ -1108,7 +1109,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
      */
     public void gotoLostAndFound() {
         Log.d(TAG, "gotoLostAndFound");
-        startActivity(this, LostAndFoundActivity.class);
+        startActivity(this, LostAndFoundActivity2.class);
     }
 
     public void logout() {
