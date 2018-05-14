@@ -75,7 +75,7 @@ public class LostAndFoundAdaptor2 extends CommonAdapter<LostAndFoundAdaptor2.Los
     }
 
     @Data
-    public static class LostAndFoundWrapper {
+    public static final class LostAndFoundWrapper {
         /**
          * 失物招领id
          */

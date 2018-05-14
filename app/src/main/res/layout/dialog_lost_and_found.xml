@@ -13,6 +13,7 @@
         android:layout_width="106dp"
         android:layout_height="wrap_content">
         <TextView
+            android:id="@+id/tv_publish_lost"
             android:gravity="center"
             android:textColor="@color/white"
             android:textSize="14sp"
@@ -25,6 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="1px"/>
         <TextView
+            android:id="@+id/tv_publish_found"
             android:gravity="center"
             android:textColor="@color/white"
             android:textSize="14sp"
@@ -37,6 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="1px"/>
         <TextView
+            android:id="@+id/tv_my_publish"
             android:gravity="center"
             android:textColor="@color/white"
             android:textSize="14sp"

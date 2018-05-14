@@ -1,8 +1,10 @@
 package com.xiaolian.amigo.ui.lostandfound;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -10,6 +12,7 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.enumeration.annotation.LostAndFound;
 import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundAdaptor2;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundPresenter2;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundView2;
@@ -35,6 +38,7 @@ import butterknife.OnClick;
  * @date 18/5/12
  */
 public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements ILostAndFoundView2 {
+    private static final String TAG = LostAndFoundActivity2.class.getSimpleName();
 
     @Inject
     ILostAndFoundPresenter2<ILostAndFoundView2> presenter;
@@ -82,12 +86,6 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lost_and_found2);
 
-        setUnBinder(ButterKnife.bind(this));
-
-        getActivityComponent().inject(this);
-
-        presenter.onAttach(LostAndFoundActivity2.this);
-
         initRecyclerView();
     }
 
@@ -95,6 +93,24 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
         if (addDialog == null) {
             addDialog = new LostAndFoundPopupDialog(this);
         }
+        addDialog.setLostAndFoundListener(new LostAndFoundPopupDialog.OnLostAndFoundClickListener() {
+            @Override
+            public void onPublishLostClick() {
+                startActivity(new Intent(LostAndFoundActivity2.this, PublishLostAndFoundActivity.class)
+                        .putExtra(PublishLostAndFoundActivity.KEY_TYPE, LostAndFound.LOST));
+            }
+
+            @Override
+            public void onPublishFoundClick() {
+                startActivity(new Intent(LostAndFoundActivity2.this, PublishLostAndFoundActivity.class)
+                        .putExtra(PublishLostAndFoundActivity.KEY_TYPE, LostAndFound.FOUND));
+            }
+
+            @Override
+            public void onMyPublishClick() {
+
+            }
+        });
         addDialog.show();
     }
 
@@ -109,25 +125,18 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
         adaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-//                try {
-//                    Intent intent = new Intent(LostAndFoundActivity.this, LostAndFoundDetailActivity.class);
+                try {
+                    Intent intent = new Intent(LostAndFoundActivity2.this, LostAndFoundReplyDetailActivity.class);
 //                    intent.putExtra(LostAndFoundDetailActivity.INTENT_KEY_LOST_AND_FOUND_DETAIL_ID,
 //                            lostAndFounds.get(position).getId());
-//                    // listStatus false表示失物 true表示招领
-//                    if (listStatus) {
-//                        intent.putExtra(LostAndFoundDetailActivity.INTENT_KEY_LOST_AND_FOUND_DETAIL_TYPE,
-//                                LostAndFoundDetailActivity.TYPE_FOUND);
-//                    } else {
-//                        intent.putExtra(LostAndFoundDetailActivity.INTENT_KEY_LOST_AND_FOUND_DETAIL_TYPE,
-//                                LostAndFoundDetailActivity.TYPE_LOST);
-//                    }
-//                    startActivity(intent);
-//
-//                } catch (ArrayIndexOutOfBoundsException e) {
-//                    Log.wtf(TAG, "数组越界", e);
-//                } catch (Exception e) {
-//                    Log.wtf(TAG, e);
-//                }
+                    // listStatus false表示失物 true表示招领
+                    startActivity(intent);
+
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    Log.wtf(TAG, "数组越界", e);
+                } catch (Exception e) {
+                    Log.wtf(TAG, e);
+                }
             }
 
             @Override
@@ -218,6 +227,13 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
 
     @Override
     protected void setUp() {
+    }
 
+    @Override
+    protected void initInject() {
+        super.initInject();
+        setUnBinder(ButterKnife.bind(this));
+        getActivityComponent().inject(this);
+        presenter.onAttach(LostAndFoundActivity2.this);
     }
 }
