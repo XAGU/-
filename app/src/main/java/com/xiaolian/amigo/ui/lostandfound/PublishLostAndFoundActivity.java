@@ -16,6 +16,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.OssFileType;
 import com.xiaolian.amigo.data.enumeration.annotation.LostAndFound;
+import com.xiaolian.amigo.ui.lostandfound.intf.IPublishLostAndFoundPresenter;
+import com.xiaolian.amigo.ui.lostandfound.intf.IPublishLostAndFoundView;
 import com.xiaolian.amigo.ui.lostandfound.intf.IPublishLostPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.IPublishLostView;
 import com.xiaolian.amigo.ui.repair.adaptor.ImageAddAdapter;
@@ -42,12 +44,12 @@ import butterknife.OnTextChanged;
  * @date 17/9/21
  */
 
-public class PublishLostAndFoundActivity extends LostAndFoundBaseActivity implements IPublishLostView {
+public class PublishLostAndFoundActivity extends LostAndFoundBaseActivity implements IPublishLostAndFoundView {
     private static final int REQUEST_IMAGE = 0x3302;
     private static final int IMAGE_COUNT = 3;
     public static final String KEY_TYPE = "publish_lost_and_found_key_type";
     @Inject
-    IPublishLostPresenter<IPublishLostView> presenter;
+    IPublishLostAndFoundPresenter<IPublishLostAndFoundView> presenter;
 
     /**
      * 提交
@@ -86,6 +88,7 @@ public class PublishLostAndFoundActivity extends LostAndFoundBaseActivity implem
 
     private boolean allValidated = false;
     private List<TextView> viewList;
+    private int type = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,10 +119,12 @@ public class PublishLostAndFoundActivity extends LostAndFoundBaseActivity implem
     }
 
     private void showPublishFound() {
+        type = LostAndFound.FOUND;
         tvPageName.setText("发布招领");
     }
 
     private void showPublishLost() {
+        type = LostAndFound.LOST;
         tvPageName.setText("发布失物");
     }
 
@@ -170,7 +175,6 @@ public class PublishLostAndFoundActivity extends LostAndFoundBaseActivity implem
         toggleBtnStatus();
     }
 
-    @Override
     public void toggleBtnStatus() {
         allValidated = !TextUtils.isEmpty(etTitle.getText())
                 && !TextUtils.isEmpty(etDesc.getText());
@@ -179,7 +183,7 @@ public class PublishLostAndFoundActivity extends LostAndFoundBaseActivity implem
     }
 
     @OnClick(R.id.bt_submit)
-    void publishFound() {
+    void publishLostAndFound() {
         if (!allValidated) {
             for (TextView view : viewList) {
                 if (TextUtils.isEmpty(view.getText())) {
@@ -188,10 +192,8 @@ public class PublishLostAndFoundActivity extends LostAndFoundBaseActivity implem
                 }
             }
         }
-//        presenter.publishLostAndFound(etDesc.getText().toString(),
-//                images, etItemName.getText().toString(), etLocation.getText().toString(),
-//                (Long) tvLostTime.getTag(R.id.timestamp), etMobile.getText().toString(),
-//                etTitle.getText().toString(), 2);
+        presenter.publishLostAndFound(etDesc.getText().toString(),
+                images, etTitle.getText().toString(), type);
     }
 
     @Override

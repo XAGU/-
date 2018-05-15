@@ -27,7 +27,7 @@ import butterknife.ButterKnife;
  * @author zcd
  * @date 17/9/18
  */
-
+@Deprecated
 public class MyPublishActivity extends LostAndFoundBaseListActivity implements ILostAndFoundView {
     /**
      * 失物招领列表

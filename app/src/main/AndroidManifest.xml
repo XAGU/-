@@ -262,6 +262,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <!--我的发布2-->
+        <activity android:name=".ui.lostandfound.MyPublishActivity2"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+
         <!--失物发布-->
         <activity
             android:name=".ui.lostandfound.PublishLostActivity"

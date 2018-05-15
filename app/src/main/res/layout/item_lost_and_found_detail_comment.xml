@@ -12,7 +12,7 @@
         <de.hdodenhof.circleimageview.CircleImageView
             tools:src="@drawable/default_avatar"
             android:layout_gravity="center_horizontal"
-            android:id="@+id/iv_current_avatar"
+            android:id="@+id/iv_avatar"
             android:layout_width="43dp"
             android:layout_height="43dp" />
         <RelativeLayout
@@ -28,11 +28,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
+                android:id="@+id/tv_time"
                 android:layout_below="@id/tv_comment_author"
                 tools:text="今天13:19"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
+                android:visibility="gone"
                 android:layout_marginStart="5dp"
                 android:layout_toEndOf="@id/tv_comment_author"
                 android:background="@drawable/bg_lost_and_found_stroke_gray"
@@ -44,6 +46,7 @@
                 android:layout_height="14dp" />
         </RelativeLayout>
         <TextView
+            android:id="@+id/tv_replay"
             android:background="@drawable/bg_lost_and_found_reply"
             android:text="回复评论"
             android:textSize="12dp"
@@ -54,6 +57,7 @@
             android:layout_height="21dp" />
     </LinearLayout>
     <TextView
+        android:id="@+id/tv_comment_content"
         android:layout_marginTop="4dp"
         tools:text="这里是用户回复的内容，根据内容的多少自动换行，没有则不显示"
         android:layout_marginStart="50dp"
@@ -63,11 +67,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <android.support.v7.widget.RecyclerView
+        android:paddingTop="9dp"
+        android:paddingBottom="10dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="14dp"
+        android:id="@+id/recyclerView"
         android:layout_marginTop="6dp"
         android:background="#f5f5f5"
         android:layout_marginStart="50dp"
         android:layout_width="match_parent"
-        android:layout_height="50dp">
-
-    </android.support.v7.widget.RecyclerView>
+        android:layout_height="wrap_content"/>
 </LinearLayout>

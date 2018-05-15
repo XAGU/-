@@ -15,10 +15,16 @@ import lombok.Data;
  */
 @Data
 public class LostAndFoundDTO implements Mapper<LostAndFound> {
+    private String itemName;
+
+    private Integer commentsCount;
+    private Integer reportCount;
+    private Integer viewCount;
+
     private Long createTime;
     private String description;
+    private List<String> images;
     private Long id;
-    private String itemName;
     private String location;
     private Long lostTime;
     private String mobile;
@@ -28,7 +34,6 @@ public class LostAndFoundDTO implements Mapper<LostAndFound> {
     private Integer type;
     private String user;
     private Long userId;
-    private List<String> images;
 
     @Override
     public LostAndFound transform() {
@@ -47,6 +52,9 @@ public class LostAndFoundDTO implements Mapper<LostAndFound> {
         lostAndFound.setUser(user);
         lostAndFound.setUserId(userId);
         lostAndFound.setImages(images);
+        lostAndFound.setViewCount(viewCount);
+        lostAndFound.setCommentsCount(commentsCount);
+        lostAndFound.setReportCount(reportCount);
         return lostAndFound;
     }
 }

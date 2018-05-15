@@ -32,6 +32,7 @@ import butterknife.ButterKnife;
  * @author caidong
  * @date 17/9/13
  */
+@Deprecated
 public class LostAndFoundActivity extends LostAndFoundBaseListActivity implements ILostAndFoundView {
     private static final int REQUEST_CODE_PUBLISH = 0x0101;
     private static final String TAG = LostAndFoundActivity.class.getSimpleName();

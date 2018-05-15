@@ -2,6 +2,8 @@ package com.xiaolian.amigo.ui.lostandfound.adapter;
 
 import android.content.Context;
 import android.support.v4.util.ObjectsCompat;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -15,6 +17,7 @@ import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.List;
+import java.util.Locale;
 
 import lombok.Data;
 
@@ -67,6 +70,12 @@ public class LostAndFoundAdaptor2 extends CommonAdapter<LostAndFoundAdaptor2.Los
             ((TextView) holder.getView(R.id.tv_title))
                     .setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
         }
+        // 设置查看评论数
+        setStat(holder.getView(R.id.tv_stat), lostAndFoundWrapper.getViewCount(), lostAndFoundWrapper.getCommentCount());
+    }
+
+    private void setStat(TextView textView, Integer viewCount, Integer commentCount) {
+        textView.setText(String.format(Locale.getDefault(), "%d查看·%d回复", viewCount, commentCount));
     }
 
     public void replaceData(List<LostAndFoundWrapper> wapper) {
@@ -74,36 +83,43 @@ public class LostAndFoundAdaptor2 extends CommonAdapter<LostAndFoundAdaptor2.Los
         notifyDataSetChanged();
     }
 
-    @Data
     public static final class LostAndFoundWrapper {
-        /**
-         * 失物招领id
-         */
-        Long id;
-        /**
-         * 标题
-         */
-        String title;
-        /**
-         * 内容
-         */
-        String content;
-        /**
-         * 时间
-         */
-        Long time;
-        /**
-         * 1失物或者2招领
-         * @see LostAndFound
-         */
-        Integer type;
+        private com.xiaolian.amigo.data.vo.LostAndFound lostAndFound;
 
-        public LostAndFoundWrapper(Long id, String title, String content, Long time, Integer type) {
-            this.id = id;
-            this.title = title;
-            this.content = content;
-            this.time = time;
-            this.type = type;
+        public LostAndFoundWrapper(com.xiaolian.amigo.data.vo.LostAndFound lostAndFound) {
+            this.lostAndFound = lostAndFound;
+        }
+
+        public com.xiaolian.amigo.data.vo.LostAndFound getLostAndFound() {
+            return lostAndFound;
+        }
+
+        public Long getId() {
+            return lostAndFound.getId();
+        }
+
+        public Integer getViewCount() {
+            return lostAndFound.getViewCount() == null ? 0 : lostAndFound.getViewCount();
+        }
+
+        public Integer getCommentCount() {
+            return lostAndFound.getCommentsCount() == null ? 0 : lostAndFound.getCommentsCount();
+        }
+
+        public String getTitle() {
+            return lostAndFound.getTitle();
+        }
+
+        public String getContent() {
+            return lostAndFound.getDescription();
+        }
+
+        public Long getTime() {
+            return lostAndFound.getCreateTime();
+        }
+
+        public Integer getType() {
+            return lostAndFound.getType();
         }
     }
 }

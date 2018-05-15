@@ -24,6 +24,7 @@ import com.xiaolian.amigo.ui.lostandfound.LostAndFoundDetailActivity;
 import com.xiaolian.amigo.ui.lostandfound.LostAndFoundDetailActivity2;
 import com.xiaolian.amigo.ui.lostandfound.LostAndFoundReplyDetailActivity;
 import com.xiaolian.amigo.ui.lostandfound.MyPublishActivity;
+import com.xiaolian.amigo.ui.lostandfound.MyPublishActivity2;
 import com.xiaolian.amigo.ui.lostandfound.PublishFoundActivity;
 import com.xiaolian.amigo.ui.lostandfound.PublishLostActivity;
 import com.xiaolian.amigo.ui.lostandfound.PublishLostAndFoundActivity;
@@ -52,4 +53,6 @@ public interface LostAndFoundActivityComponent {
     void inject(LostAndFoundDetailActivity2 activity);
 
     void inject(LostAndFoundReplyDetailActivity activity);
+
+    void inject(MyPublishActivity2 activity);
 }

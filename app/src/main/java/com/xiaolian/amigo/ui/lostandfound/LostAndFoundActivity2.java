@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -39,6 +40,7 @@ import butterknife.OnClick;
  */
 public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements ILostAndFoundView2 {
     private static final String TAG = LostAndFoundActivity2.class.getSimpleName();
+    private static final int REQUEST_CODE_PUBLISH = 0x0101;
 
     @Inject
     ILostAndFoundPresenter2<ILostAndFoundView2> presenter;
@@ -52,6 +54,12 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
     @BindView(R.id.iv_add)
     ImageView ivAdd;
 
+    @BindView(R.id.rl_empty)
+    RelativeLayout rlEmpty;
+
+    @BindView(R.id.rl_error)
+    RelativeLayout rlError;
+
     private LostAndFoundAdaptor2 adaptor;
 
     private LostAndFoundPopupDialog addDialog;
@@ -60,24 +68,7 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
     private RecyclerView searchRecyclerView;
     private LostAndFoundAdaptor2 searchAdaptor;
 
-    List<LostAndFoundAdaptor2.LostAndFoundWrapper> lostAndFounds = new ArrayList<LostAndFoundAdaptor2.LostAndFoundWrapper>(){
-        {
-            add(new LostAndFoundAdaptor2.LostAndFoundWrapper(1L, "测试标题1",
-                    "测试内容1", 12213213L, 1));
-            add(new LostAndFoundAdaptor2.LostAndFoundWrapper(1L, "测试标题1",
-                    "测试内容2", 12213213L, 1));
-            add(new LostAndFoundAdaptor2.LostAndFoundWrapper(1L, "测试标题1",
-                    "测试内容3", 12213213L, 2));
-            add(new LostAndFoundAdaptor2.LostAndFoundWrapper(1L, "测试标题1",
-                    "测试内容4", 12213213L, 1));
-            add(new LostAndFoundAdaptor2.LostAndFoundWrapper(1L, "测试标题1",
-                    "测试内容4", 12213213L, 1));
-            add(new LostAndFoundAdaptor2.LostAndFoundWrapper(1L, "测试标题1",
-                    "测试内容4", 12213213L, 1));
-            add(new LostAndFoundAdaptor2.LostAndFoundWrapper(1L, "测试标题1",
-                    "测试内容4", 12213213L, 1));
-        }
-    };
+    List<LostAndFoundAdaptor2.LostAndFoundWrapper> lostAndFounds = new ArrayList<>();
 
     List<LostAndFoundAdaptor2.LostAndFoundWrapper> searchResult = new ArrayList<>();
 
@@ -85,6 +76,7 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lost_and_found2);
+        setUnBinder(ButterKnife.bind(this));
 
         initRecyclerView();
     }
@@ -96,19 +88,20 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
         addDialog.setLostAndFoundListener(new LostAndFoundPopupDialog.OnLostAndFoundClickListener() {
             @Override
             public void onPublishLostClick() {
-                startActivity(new Intent(LostAndFoundActivity2.this, PublishLostAndFoundActivity.class)
-                        .putExtra(PublishLostAndFoundActivity.KEY_TYPE, LostAndFound.LOST));
+                startActivityForResult(new Intent(LostAndFoundActivity2.this, PublishLostAndFoundActivity.class)
+                        .putExtra(PublishLostAndFoundActivity.KEY_TYPE, LostAndFound.LOST), REQUEST_CODE_PUBLISH);
             }
 
             @Override
             public void onPublishFoundClick() {
-                startActivity(new Intent(LostAndFoundActivity2.this, PublishLostAndFoundActivity.class)
-                        .putExtra(PublishLostAndFoundActivity.KEY_TYPE, LostAndFound.FOUND));
+                startActivityForResult(new Intent(LostAndFoundActivity2.this, PublishLostAndFoundActivity.class)
+                        .putExtra(PublishLostAndFoundActivity.KEY_TYPE, LostAndFound.FOUND), REQUEST_CODE_PUBLISH);
             }
 
             @Override
             public void onMyPublishClick() {
-
+                startActivityForResult(
+                        new Intent(LostAndFoundActivity2.this, MyPublishActivity2.class), REQUEST_CODE_PUBLISH);
             }
         });
         addDialog.show();
@@ -126,10 +119,10 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 try {
-                    Intent intent = new Intent(LostAndFoundActivity2.this, LostAndFoundReplyDetailActivity.class);
-//                    intent.putExtra(LostAndFoundDetailActivity.INTENT_KEY_LOST_AND_FOUND_DETAIL_ID,
-//                            lostAndFounds.get(position).getId());
-                    // listStatus false表示失物 true表示招领
+                    Intent intent = new Intent(LostAndFoundActivity2.this, LostAndFoundDetailActivity2.class);
+                    intent.putExtra(LostAndFoundDetailActivity2.KEY_TYPE,
+                            lostAndFounds.get(position).getType());
+                    intent.putExtra(LostAndFoundDetailActivity2.KEY_ID, lostAndFounds.get(position).getId());
                     startActivity(intent);
 
                 } catch (ArrayIndexOutOfBoundsException e) {
@@ -160,7 +153,7 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
         refreshLayout.setRefreshHeader(new RefreshLayoutHeader(this));
         refreshLayout.setRefreshFooter(new RefreshLayoutFooter(this));
         refreshLayout.setReboundDuration(200);
-//        refreshLayout.autoRefresh(20);
+        refreshLayout.autoRefresh(20);
     }
 
     void search() {
@@ -218,11 +211,13 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
     }
 
     private void onLoadMore() {
-
+        presenter.getList(false);
     }
 
     private void onRefresh() {
-
+        presenter.resetPage();
+        lostAndFounds.clear();
+        presenter.getList(false);
     }
 
     @Override
@@ -232,8 +227,54 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
     @Override
     protected void initInject() {
         super.initInject();
-        setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
         presenter.onAttach(LostAndFoundActivity2.this);
+    }
+
+    @Override
+    public void setRefreshComplete() {
+        refreshLayout.finishRefresh(300);
+    }
+
+    @Override
+    public void setLoadMoreComplete() {
+        refreshLayout.finishLoadmore();
+    }
+
+    @Override
+    public void showErrorView() {
+        rlError.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideEmptyView() {
+        rlEmpty.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void hideErrorView() {
+        rlError.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showEmptyView() {
+        rlEmpty.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void addMore(List<LostAndFoundAdaptor2.LostAndFoundWrapper> wrappers) {
+        lostAndFounds.addAll(wrappers);
+        adaptor.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_CODE_PUBLISH) {
+//                refreshLostAndFound();
+                onRefresh();
+            }
+        }
     }
 }

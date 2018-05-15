@@ -1,10 +1,18 @@
 package com.xiaolian.amigo.ui.lostandfound;
 
 import com.xiaolian.amigo.data.manager.intf.ILostAndFoundDataManager;
+import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.lostandfound.LostAndFoundDTO;
+import com.xiaolian.amigo.data.network.model.lostandfound.QueryLostAndFoundListReqDTO;
+import com.xiaolian.amigo.data.network.model.lostandfound.QueryLostAndFoundListRespDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
+import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundAdaptor2;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundPresenter2;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundView2;
 import com.xiaolian.amigo.util.Constant;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -16,7 +24,7 @@ public class LostAndFoundPresenter2<V extends ILostAndFoundView2> extends BasePr
     implements ILostAndFoundPresenter2<V> {
     private ILostAndFoundDataManager lostAndFoundDataManager;
     private int page = Constant.PAGE_START_NUM;
-    private int size = Constant.PAGE_SIZE;
+    private static final int size = Constant.PAGE_SIZE;
 
     @Inject
     public LostAndFoundPresenter2(ILostAndFoundDataManager lostAndFoundDataManager) {
@@ -24,7 +32,100 @@ public class LostAndFoundPresenter2<V extends ILostAndFoundView2> extends BasePr
     }
 
     @Override
-    public void getList() {
+    public void getList(boolean isSearch) {
+        QueryLostAndFoundListReqDTO reqDTO = new QueryLostAndFoundListReqDTO();
+        reqDTO.setPage(page);
+        reqDTO.setSize(size);
+        reqDTO.setSchoolId(lostAndFoundDataManager.getUserInfo().getSchoolId());
+        addObserver(lostAndFoundDataManager.queryLostAndFounds(reqDTO),
+                new NetworkObserver<ApiResult<QueryLostAndFoundListRespDTO>>() {
 
+                    @Override
+                    public void onReady(ApiResult<QueryLostAndFoundListRespDTO> result) {
+                        getMvpView().setRefreshComplete();
+                        getMvpView().setLoadMoreComplete();
+                        getMvpView().hideEmptyView();
+                        getMvpView().hideErrorView();
+                        if (null == result.getError()) {
+                            if (null != result.getData().getLostAndFounds()) {
+                                List<LostAndFoundAdaptor2.LostAndFoundWrapper> wrappers = new ArrayList<>();
+                                for (LostAndFoundDTO lost : result.getData().getLostAndFounds()) {
+                                    wrappers.add(new LostAndFoundAdaptor2.LostAndFoundWrapper(lost.transform()));
+                                }
+                                if (isSearch) {
+//                                    if (wrappers.isEmpty()) {
+//                                        getMvpView().showNoSearchResult(selectKey);
+//                                    } else {
+//                                        getMvpView().showSearchResult(wrappers);
+//                                    }
+                                } else {
+                                    if (wrappers.isEmpty() && page == Constant.PAGE_START_NUM) {
+                                        getMvpView().showEmptyView();
+                                        return;
+                                    }
+                                    getMvpView().hideEmptyView();
+                                    page ++;
+                                    getMvpView().addMore(wrappers);
+                                }
+                            }
+                        } else {
+                            getMvpView().onError(result.getError().getDisplayMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        getMvpView().setRefreshComplete();
+                        getMvpView().setLoadMoreComplete();
+                        getMvpView().showErrorView();
+                    }
+                });
+    }
+
+    @Override
+    public void resetPage() {
+        page = Constant.PAGE_START_NUM;
+    }
+
+    @Override
+    public void getMyList() {
+        addObserver(lostAndFoundDataManager.getMyLostAndFounds(),
+                new NetworkObserver<ApiResult<QueryLostAndFoundListRespDTO>>() {
+
+                    @Override
+                    public void onReady(ApiResult<QueryLostAndFoundListRespDTO> result) {
+                        getMvpView().setRefreshComplete();
+                        getMvpView().setLoadMoreComplete();
+                        getMvpView().hideEmptyView();
+                        getMvpView().hideErrorView();
+                        if (null == result.getError()) {
+                            if (null != result.getData().getLostAndFounds()) {
+                                List<LostAndFoundAdaptor2.LostAndFoundWrapper> wrappers = new ArrayList<>();
+                                for (LostAndFoundDTO lost : result.getData().getLostAndFounds()) {
+                                    wrappers.add(new LostAndFoundAdaptor2.LostAndFoundWrapper(lost.transform()));
+                                }
+                                if (wrappers.isEmpty() && page == Constant.PAGE_START_NUM) {
+                                    getMvpView().showEmptyView();
+                                    return;
+                                }
+                                getMvpView().hideEmptyView();
+                                page ++;
+                                getMvpView().addMore(wrappers);
+                            }
+
+                        } else {
+                            getMvpView().onError(result.getError().getDisplayMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        getMvpView().setRefreshComplete();
+                        getMvpView().setLoadMoreComplete();
+                        getMvpView().showErrorView();
+                    }
+                });
     }
 }

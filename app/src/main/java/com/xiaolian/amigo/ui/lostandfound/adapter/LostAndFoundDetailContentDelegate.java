@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v4.util.ObjectsCompat;
 import android.text.TextUtils;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.xiaolian.amigo.R;
@@ -21,6 +22,7 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * 失物招领详情内容
@@ -29,7 +31,8 @@ import java.util.List;
  * @date 18/5/14
  */
 
-public class LostAndFoundDetailContentDelegate implements ItemViewDelegate<HomeAdaptor.ItemWrapper> {
+public class LostAndFoundDetailContentDelegate
+        implements ItemViewDelegate<LostAndFoundDetailAdapter.LostAndFoundDetailWrapper> {
     private static final String TAG = LostAndFoundDetailContentDelegate.class.getSimpleName();
     private Context context;
 
@@ -39,34 +42,27 @@ public class LostAndFoundDetailContentDelegate implements ItemViewDelegate<HomeA
 
     @Override
     public int getItemViewLayoutId() {
-        return R.layout.item_banner;
+        return R.layout.item_lost_and_found_detail_top;
     }
 
     @Override
-    public boolean isForViewType(HomeAdaptor.ItemWrapper item, int position) {
-        return item.getType() == 2;
-    }
-
-    @Override
-    public void convert(ViewHolder holder, HomeAdaptor.ItemWrapper itemWrapper, int position) {
-        Banner banner = holder.getView(R.id.banner);
-        banner.setImageLoader(new GlideImageLoader());
-        List<String> images = new ArrayList<>();
-        for (BannerDTO dto : itemWrapper.getBanners()) {
-            images.add(Constant.IMAGE_PREFIX + dto.getImage());
+    public boolean isForViewType(LostAndFoundDetailAdapter.LostAndFoundDetailWrapper item, int position) {
+        if (item == null) {
+            return false;
         }
-        banner.setImages(images);
-        banner.setOnBannerListener(position1 -> {
-            Log.d(TAG, "onBannerClick");
-            if (TextUtils.isEmpty(itemWrapper.getBanners().get(position1).getLink())) {
-                return;
-            }
-            if (ObjectsCompat.equals(itemWrapper.getBanners().get(position1).getType(), BannerType.OUTSIDE.getType())) {
-                context.startActivity(new Intent(context, WebActivity.class)
-                        .putExtra(WebActivity.INTENT_KEY_URL, itemWrapper.getBanners().get(position1).getLink()));
-            }
-        });
-        banner.start();
+        return ObjectsCompat.equals(item.getItemType(),
+                LostAndFoundDetailAdapter.LostAndFoundDetailItemType.CONTENT);
+    }
+
+    @Override
+    public void convert(ViewHolder holder, LostAndFoundDetailAdapter.LostAndFoundDetailWrapper lostAndFoundDetailWrapper, int position) {
+        holder.setText(R.id.tv_content_title, lostAndFoundDetailWrapper.getContentTitle());
+        holder.setText(R.id.tv_content_desc, lostAndFoundDetailWrapper.getContent());
+        setStat(holder.getView(R.id.tv_stat), lostAndFoundDetailWrapper.getViewCount(), lostAndFoundDetailWrapper.getCommentCount());
+    }
+
+    private void setStat(TextView textView, Integer viewCount, Integer commentCount) {
+        textView.setText(String.format(Locale.getDefault(), "%d查看·%d回复", viewCount, commentCount));
     }
 
     public class GlideImageLoader extends ImageLoader {
