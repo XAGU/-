@@ -6,12 +6,17 @@ import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
+import com.xiaolian.amigo.data.network.model.lostandfound.DeleteLostFoundItemReqDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.LostAndFoundDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.LostFoundCommentsListDTO;
+import com.xiaolian.amigo.data.network.model.lostandfound.LostFoundRepliesListDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.QueryLostAndFoundListReqDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.QueryLostAndFoundListRespDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.QueryLostFoundCommentsReqDTO;
+import com.xiaolian.amigo.data.network.model.lostandfound.QueryLostFoundDetailReqDTO;
+import com.xiaolian.amigo.data.network.model.lostandfound.QueryLostFoundRepliesReqDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.SaveLostAndFoundDTO;
+import com.xiaolian.amigo.data.network.model.lostandfound.SaveLostAndFoundReportDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.SaveLostFoundCommentsRepliesDTO;
 import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
@@ -51,7 +56,7 @@ public class LostAndFoundDataManager implements ILostAndFoundDataManager {
     }
 
     @Override
-    public Observable<ApiResult<LostAndFoundDTO>> getLostAndFound(@Body SimpleReqDTO reqDTO) {
+    public Observable<ApiResult<LostAndFoundDTO>> getLostAndFound(@Body QueryLostFoundDetailReqDTO reqDTO) {
         return lostAndFoundApi.getLostAndFound(reqDTO);
     }
 
@@ -78,6 +83,21 @@ public class LostAndFoundDataManager implements ILostAndFoundDataManager {
     @Override
     public Observable<ApiResult<SimpleRespDTO>> publishCommentOrReply(SaveLostFoundCommentsRepliesDTO reqDTO) {
         return lostAndFoundApi.publishCommentOrReply(reqDTO);
+    }
+
+    @Override
+    public Observable<ApiResult<LostFoundRepliesListDTO>> getReplies(QueryLostFoundRepliesReqDTO reqDTO) {
+        return lostAndFoundApi.getReplies(reqDTO);
+    }
+
+    @Override
+    public Observable<ApiResult<SimpleRespDTO>> report(SaveLostAndFoundReportDTO reqDTO) {
+        return lostAndFoundApi.report(reqDTO);
+    }
+
+    @Override
+    public Observable<ApiResult<BooleanRespDTO>> delete(DeleteLostFoundItemReqDTO reqDTO) {
+        return lostAndFoundApi.delete(reqDTO);
     }
 
     @Override

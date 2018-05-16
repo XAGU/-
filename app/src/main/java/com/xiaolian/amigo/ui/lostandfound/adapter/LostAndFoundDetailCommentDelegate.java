@@ -87,6 +87,11 @@ public class LostAndFoundDetailCommentDelegate
                         lostAndFoundDetailWrapper.getCommentAuthor());
             }
         });
+
+        holder.getView(R.id.rl_author_info).setOnClickListener(v -> onMoreReply(lostAndFoundDetailWrapper));
+        holder.getView(R.id.tv_comment_content).setOnClickListener(v -> onMoreReply(lostAndFoundDetailWrapper));
+        holder.getView(R.id.recyclerView).setOnClickListener(v -> onMoreReply(lostAndFoundDetailWrapper));
+
         Glide.with(context).load(Constant.IMAGE_PREFIX + lostAndFoundDetailWrapper.getAvatar())
                 .asBitmap()
                 .placeholder(R.drawable.ic_picture_error)
@@ -114,16 +119,25 @@ public class LostAndFoundDetailCommentDelegate
                             R.layout.item_lost_and_found_detail_comment_reply,
                             replies, lostAndFoundDetailWrapper.getType(),
                             lostAndFoundDetailWrapper.getCommentAuthorId(),
-                            lostAndFoundDetailWrapper.isOwner());
+                            lostAndFoundDetailWrapper.getOwnerId());
             recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(context, 5)));
             adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                    if (replies.get(position).isFooter()) {
-                        if (moreReplyClickListener != null) {
-                            moreReplyClickListener.onMoreReplyClick(lostAndFoundDetailWrapper.getId());
-                        }
-                    }
+                    onMoreReply(lostAndFoundDetailWrapper);
+//                    if (replies.get(position).isFooter()) {
+//                        if (moreReplyClickListener != null) {
+//                            moreReplyClickListener.onMoreReplyClick(lostAndFoundDetailWrapper.getId(),
+//                                    lostAndFoundDetailWrapper.getCommentContent(),
+//                                    lostAndFoundDetailWrapper.getCommentAuthorId(),
+//                                    lostAndFoundDetailWrapper.getCommentAuthor(),
+//                                    lostAndFoundDetailWrapper.isOwner(),
+//                                    lostAndFoundDetailWrapper.getOwnerId(),
+//                                    lostAndFoundDetailWrapper.getTime(),
+//                                    lostAndFoundDetailWrapper.getAvatar(),
+//                                    lostAndFoundDetailWrapper.getId());
+//                        }
+//                    }
                 }
 
                 @Override
@@ -133,6 +147,20 @@ public class LostAndFoundDetailCommentDelegate
             });
             recyclerView.setAdapter(adapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        }
+    }
+
+    private void onMoreReply(LostAndFoundDetailAdapter.LostAndFoundDetailWrapper lostAndFoundDetailWrapper) {
+        if (moreReplyClickListener != null) {
+            moreReplyClickListener.onMoreReplyClick(lostAndFoundDetailWrapper.getId(),
+                    lostAndFoundDetailWrapper.getCommentContent(),
+                    lostAndFoundDetailWrapper.getCommentAuthorId(),
+                    lostAndFoundDetailWrapper.getCommentAuthor(),
+                    lostAndFoundDetailWrapper.isOwner(),
+                    lostAndFoundDetailWrapper.getOwnerId(),
+                    lostAndFoundDetailWrapper.getTime(),
+                    lostAndFoundDetailWrapper.getAvatar(),
+                    lostAndFoundDetailWrapper.getId());
         }
     }
 
@@ -177,7 +205,10 @@ public class LostAndFoundDetailCommentDelegate
     }
 
     public interface OnMoreReplyClickListener {
-        void onMoreReplyClick(Long commentId);
+        void onMoreReplyClick(Long commentId, String commentContent,
+                              Long commentAuthorId, String commentAuthor,
+                              boolean owner, Long ownerId, Long time,
+                              String avatar, Long lostFoundId);
     }
 
     public class GlideImageLoader extends ImageLoader {

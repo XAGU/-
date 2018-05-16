@@ -29,6 +29,7 @@
                 android:orientation="vertical">
 
                 <LinearLayout
+                    android:id="@+id/ll_search"
                     android:orientation="vertical"
                     android:background="@drawable/bg_lost_and_found_search"
                     android:gravity="center"

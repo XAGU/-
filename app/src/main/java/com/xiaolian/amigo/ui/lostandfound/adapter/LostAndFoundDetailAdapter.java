@@ -64,6 +64,7 @@ public class LostAndFoundDetailAdapter extends MultiItemTypeAdapter<LostAndFound
         private List<LostFoundReplyDTO> replies;
         private Integer replyContent;
         private boolean owner = false;
+        private Long ownerId;
 
         private LostAndFoundDetailWrapper() {
         }
@@ -79,8 +80,10 @@ public class LostAndFoundDetailAdapter extends MultiItemTypeAdapter<LostAndFound
             this.commentCount = lostAndFound.getCommentsCount();
         }
 
-        public LostAndFoundDetailWrapper(LostFoundCommentDTO comment, boolean owner) {
+        public LostAndFoundDetailWrapper(LostFoundCommentDTO comment, boolean owner, Long ownerId,
+                                         int type) {
             this.itemType = LostAndFoundDetailItemType.COMMENT;
+            this.type = type;
             this.time = comment.getCreateTime();
             this.avatar = comment.getPictureUrl();
             this.replies = comment.getReplies();
@@ -90,6 +93,7 @@ public class LostAndFoundDetailAdapter extends MultiItemTypeAdapter<LostAndFound
             this.replyContent = comment.getRepliesCount() - comment.getRepliesDelCount();
             this.id = comment.getId();
             this.owner = owner;
+            this.ownerId = ownerId;
         }
     }
 }

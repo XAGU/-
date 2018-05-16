@@ -32,15 +32,15 @@ public class LostAndFoundDetailCommentReplyAdapter
     private Context context;
     private int type;
     private Long commentUserId;
-    private boolean owner;
+    private Long ownerId;
 
     public LostAndFoundDetailCommentReplyAdapter(Context context, int layoutId, List<ReplyWrapper> datas,
-                                                 int type, Long commentUserId, boolean owner) {
+                                                 int type, Long commentUserId, Long ownerId) {
         super(context, layoutId, datas);
         this.context = context;
         this.type = type;
         this.commentUserId = commentUserId;
-        this.owner = owner;
+        this.ownerId = ownerId;
     }
 
     @Override
@@ -69,7 +69,7 @@ public class LostAndFoundDetailCommentReplyAdapter
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         builder.append(authorSpan);
 
-        if (owner) {
+        if (ObjectsCompat.equals(ownerId, replyWrapper.getUserId())) {
             builder.append(" ");
             SpannableString ownerSpan = new SpannableString(
                     ObjectsCompat.equals(type, LostAndFound.LOST) ? "失主" : "拾主");

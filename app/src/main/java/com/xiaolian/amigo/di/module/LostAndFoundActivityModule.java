@@ -29,6 +29,7 @@ import com.xiaolian.amigo.ui.lostandfound.LostAndFoundDetailPresenter;
 import com.xiaolian.amigo.ui.lostandfound.LostAndFoundDetailPresenter2;
 import com.xiaolian.amigo.ui.lostandfound.LostAndFoundPresenter;
 import com.xiaolian.amigo.ui.lostandfound.LostAndFoundPresenter2;
+import com.xiaolian.amigo.ui.lostandfound.LostAndFoundReplyDetailPresenter;
 import com.xiaolian.amigo.ui.lostandfound.PublishLostAndFoundPresenter;
 import com.xiaolian.amigo.ui.lostandfound.PublishLostPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundDetailPresenter;
@@ -37,6 +38,8 @@ import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundDetailView;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundDetailView2;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundPresenter2;
+import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundReplyDetailPresenter;
+import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundReplyDetailView;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundView;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundView2;
 import com.xiaolian.amigo.ui.lostandfound.intf.IPublishLostAndFoundPresenter;
@@ -98,6 +101,13 @@ public class LostAndFoundActivityModule {
     @LostAndFoundActivityContext
     IPublishLostAndFoundPresenter<IPublishLostAndFoundView> providePublishLostAndFoundPresenter(
             PublishLostAndFoundPresenter<IPublishLostAndFoundView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    @LostAndFoundActivityContext
+    ILostAndFoundReplyDetailPresenter<ILostAndFoundReplyDetailView> provideLostAndFoundReplyDetailPresenter(
+            LostAndFoundReplyDetailPresenter<ILostAndFoundReplyDetailView> presenter) {
         return presenter;
     }
 

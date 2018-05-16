@@ -110,13 +110,13 @@ public class MyPublishActivity2 extends LostAndFoundBaseActivity implements ILos
     }
 
     private void onLoadMore() {
-        presenter.getList(false);
+        presenter.getList(false, null);
     }
 
     private void onRefresh() {
         presenter.resetPage();
         lostAndFounds.clear();
-        presenter.getList(false);
+        presenter.getList(false, null);
     }
 
     @Override
@@ -164,5 +164,15 @@ public class MyPublishActivity2 extends LostAndFoundBaseActivity implements ILos
     public void addMore(List<LostAndFoundAdaptor2.LostAndFoundWrapper> wrappers) {
         lostAndFounds.addAll(wrappers);
         adaptor.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showNoSearchResult(String searchStr) {
+
+    }
+
+    @Override
+    public void showSearchResult(List<LostAndFoundAdaptor2.LostAndFoundWrapper> wrappers) {
+
     }
 }

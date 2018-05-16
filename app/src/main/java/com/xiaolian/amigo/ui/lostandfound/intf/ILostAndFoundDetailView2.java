@@ -25,6 +25,8 @@ public interface ILostAndFoundDetailView2 extends IBaseView {
 
     void setLoadMoreComplete();
 
+    void onRefresh();
+
     void showErrorView();
 
     void hideEmptyView();
@@ -36,4 +38,6 @@ public interface ILostAndFoundDetailView2 extends IBaseView {
     void addMore(List<LostAndFoundDetailAdapter.LostAndFoundDetailWrapper> wrappers);
 
     void closePublishDialog();
+
+    void finishView();
 }

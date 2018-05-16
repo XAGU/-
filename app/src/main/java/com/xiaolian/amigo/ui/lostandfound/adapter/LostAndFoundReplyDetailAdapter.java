@@ -2,8 +2,8 @@ package com.xiaolian.amigo.ui.lostandfound.adapter;
 
 import android.content.Context;
 import android.support.annotation.IntDef;
-import android.support.annotation.NonNull;
 
+import com.xiaolian.amigo.data.network.model.lostandfound.LostFoundReplyDTO;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import java.util.List;
@@ -35,22 +35,39 @@ public class LostAndFoundReplyDetailAdapter extends MultiItemTypeAdapter<LostAnd
          * @see LostAndFoundReplyDetailItemType
          */
         private int type;
-        private String commentContent;
-        private String commentAuthor;
+        private String content;
+        private Long authorId;
+        private String author;
+        private Long id;
         private Long time;
         private String image;
-        private boolean publisher;
+        private boolean owner;
+
+        private Long replyToUserId;
+        private String replyToUserNickName;
 
         public LostAndFoundReplyDetailWrapper(@LostAndFoundReplyDetailItemType int type,
-                                              boolean publisher, String commentContent,
+                                              boolean owner, String commentContent,
                                               String commentAuthor, Long time, String image) {
             this.type = type;
-            this.publisher = publisher;
-            this.commentContent = commentContent;
-            this.commentAuthor = commentAuthor;
+            this.owner = owner;
+            this.content = commentContent;
+            this.author = commentAuthor;
             this.time = time;
             this.image = image;
         }
 
+        public LostAndFoundReplyDetailWrapper(LostFoundReplyDTO replyDTO, boolean owner) {
+            this.type = LostAndFoundReplyDetailAdapter.LostAndFoundReplyDetailItemType.FOLLOW;
+            this.content = replyDTO.getContent();
+            this.author = replyDTO.getUserNickname();
+            this.time = replyDTO.getCreateTime();
+            this.image = replyDTO.getPictureUrl();
+            this.owner = owner;
+            this.replyToUserId = replyDTO.getReplyToUserId();
+            this.replyToUserNickName = replyDTO.getReplyToUserNickname();
+            this.authorId = replyDTO.getUserId();
+            this.id = replyDTO.getId();
+        }
     }
 }

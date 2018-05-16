@@ -32,10 +32,16 @@ public class LostAndFoundPresenter2<V extends ILostAndFoundView2> extends BasePr
     }
 
     @Override
-    public void getList(boolean isSearch) {
+    public void getList(boolean isSearch, String searchStr) {
         QueryLostAndFoundListReqDTO reqDTO = new QueryLostAndFoundListReqDTO();
-        reqDTO.setPage(page);
-        reqDTO.setSize(size);
+        if (isSearch) {
+            reqDTO.setSelectKey(searchStr);
+            reqDTO.setPage(Constant.PAGE_START_NUM);
+            reqDTO.setSize(100);
+        } else {
+            reqDTO.setPage(page);
+            reqDTO.setSize(size);
+        }
         reqDTO.setSchoolId(lostAndFoundDataManager.getUserInfo().getSchoolId());
         addObserver(lostAndFoundDataManager.queryLostAndFounds(reqDTO),
                 new NetworkObserver<ApiResult<QueryLostAndFoundListRespDTO>>() {
@@ -53,11 +59,11 @@ public class LostAndFoundPresenter2<V extends ILostAndFoundView2> extends BasePr
                                     wrappers.add(new LostAndFoundAdaptor2.LostAndFoundWrapper(lost.transform()));
                                 }
                                 if (isSearch) {
-//                                    if (wrappers.isEmpty()) {
-//                                        getMvpView().showNoSearchResult(selectKey);
-//                                    } else {
-//                                        getMvpView().showSearchResult(wrappers);
-//                                    }
+                                    if (wrappers.isEmpty()) {
+                                        getMvpView().showNoSearchResult(searchStr);
+                                    } else {
+                                        getMvpView().showSearchResult(wrappers);
+                                    }
                                 } else {
                                     if (wrappers.isEmpty() && page == Constant.PAGE_START_NUM) {
                                         getMvpView().showEmptyView();

@@ -54,6 +54,7 @@ import butterknife.OnClick;
 public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implements ILostAndFoundDetailView2 {
     public static final String KEY_TYPE = "LostAndFoundDetailType";
     public static final String KEY_ID = "LostAndFoundDetailId";
+    private static final int REQUEST_CODE_REPLY_DETAIL = 0x0119;
     private LostAndFoundDetailAdapter adapter;
     private List<LostAndFoundDetailAdapter.LostAndFoundDetailWrapper> items = new Vector<>();
     private LostAndFoundDetailAdapter.LostAndFoundDetailWrapper content;
@@ -173,14 +174,30 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
         refreshLayout.setRefreshHeader(new RefreshLayoutHeader(this));
         refreshLayout.setRefreshFooter(new RefreshLayoutFooter(this));
         refreshLayout.setReboundDuration(200);
-        refreshLayout.autoRefresh(20);
+//        refreshLayout.autoRefresh(20);
     }
 
-    private void moreReply(Long commentId) {
-        startActivity(new Intent(this, LostAndFoundReplyDetailActivity.class));
+    private void moreReply(Long commentId, String commentContent,
+                           Long commentAuthorId, String commentAuthor,
+                           boolean owner, Long ownerId, Long time,
+                           String avatar,
+                           Long lostFoundId) {
+        startActivityForResult(new Intent(this, LostAndFoundReplyDetailActivity.class)
+                .putExtra(LostAndFoundReplyDetailActivity.KEY_COMMENT_ID, commentId)
+                .putExtra(LostAndFoundReplyDetailActivity.KEY_COMMENT_CONTENT, commentContent)
+                .putExtra(LostAndFoundReplyDetailActivity.KEY_COMMENT_AUTHOR_ID, commentAuthorId)
+                .putExtra(LostAndFoundReplyDetailActivity.KEY_COMMENT_AUTHOR, commentAuthor)
+                .putExtra(LostAndFoundReplyDetailActivity.KEY_OWNER, owner)
+                .putExtra(LostAndFoundReplyDetailActivity.KEY_OWNER_ID, ownerId)
+                .putExtra(LostAndFoundReplyDetailActivity.KEY_TIME, time)
+                .putExtra(LostAndFoundReplyDetailActivity.KEY_AVATAR, avatar)
+                .putExtra(LostAndFoundReplyDetailActivity.KEY_LOST_FOUND_ID, lostFoundId)
+                .putExtra(LostAndFoundReplyDetailActivity.KEY_LOST_FOUND_TYPE, presenter.getLostAndFound().getType()),
+                REQUEST_CODE_REPLY_DETAIL);
     }
 
-    private void onRefresh() {
+    @Override
+    public void onRefresh() {
         presenter.resetPage();
         items.clear();
         items.add(content);
@@ -208,8 +225,12 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
 
     @Override
     public void render(LostAndFound lostAndFound) {
+        presenter.getComments();
         content = new LostAndFoundDetailAdapter.LostAndFoundDetailWrapper(lostAndFound);
         if (!items.isEmpty()) {
+            if (items.get(0) == null) {
+                return;
+            }
             if (items.get(0).getItemType() == LostAndFoundDetailAdapter.LostAndFoundDetailItemType.CONTENT) {
                 items.remove(0);
                 items.add(0, content);
@@ -230,7 +251,7 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
             actionSheetDialog = new ActionSheetDialog(this)
                     .builder()
                     .setTitle("选择")
-                    .addSheetItem(chooseOne, ActionSheetDialog.SheetItemColor.Orange, which -> onSuccess(chooseOne));
+                    .addSheetItem(chooseOne, ActionSheetDialog.SheetItemColor.Orange, which -> presenter.reportOrDelete());
         }
         actionSheetDialog.setOnCancalListener(dialog -> {
         });
@@ -272,22 +293,22 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
 
     @Override
     public void showErrorView() {
-        rlError.setVisibility(View.VISIBLE);
+//        rlError.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideEmptyView() {
-        rlEmpty.setVisibility(View.GONE);
+//        rlEmpty.setVisibility(View.GONE);
     }
 
     @Override
     public void hideErrorView() {
-        rlError.setVisibility(View.GONE);
+//        rlError.setVisibility(View.GONE);
     }
 
     @Override
     public void showEmptyView() {
-        rlEmpty.setVisibility(View.VISIBLE);
+//        rlEmpty.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -308,6 +329,23 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
             replyDialog.clearInput();
             replyDialog.dismiss();
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_CODE_REPLY_DETAIL) {
+//                refreshLostAndFound();
+                onRefresh();
+            }
+        }
+    }
+
+    @Override
+    public void finishView() {
+        setResult(RESULT_OK);
+        finish();
     }
 
     @Override

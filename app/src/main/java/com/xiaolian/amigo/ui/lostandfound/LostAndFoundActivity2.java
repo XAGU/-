@@ -123,7 +123,7 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
                     intent.putExtra(LostAndFoundDetailActivity2.KEY_TYPE,
                             lostAndFounds.get(position).getType());
                     intent.putExtra(LostAndFoundDetailActivity2.KEY_ID, lostAndFounds.get(position).getId());
-                    startActivity(intent);
+                    startActivityForResult(intent, REQUEST_CODE_PUBLISH);
 
                 } catch (ArrayIndexOutOfBoundsException e) {
                     Log.wtf(TAG, "数组越界", e);
@@ -156,11 +156,17 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
         refreshLayout.autoRefresh(20);
     }
 
+    @OnClick(R.id.ll_search)
+    void onSearchClick() {
+        search();
+    }
+
     void search() {
         if (searchDialog == null) {
             searchDialog = new SearchDialog(this);
             searchDialog.setSearchListener(searchStr -> {
                 // TODO search
+                presenter.getList(true, searchStr);
             });
             searchDialog.setCanceledOnTouchOutside(true);
             searchDialog.setCancelable(true);
@@ -169,10 +175,12 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
         searchDialog.show();
     }
 
+    @Override
     public void showNoSearchResult(String selectKey) {
         searchDialog.showNoResult(selectKey);
     }
 
+    @Override
     public void showSearchResult(List<LostAndFoundAdaptor2.LostAndFoundWrapper> wappers) {
         if (searchRecyclerView == null) {
             searchRecyclerView = new RecyclerView(this);
@@ -192,6 +200,18 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
 //                                LostAndFoundDetailActivity.TYPE_LOST);
 //                    }
 //                    startActivity(intent);
+                    try {
+                        Intent intent = new Intent(LostAndFoundActivity2.this, LostAndFoundDetailActivity2.class);
+                        intent.putExtra(LostAndFoundDetailActivity2.KEY_TYPE,
+                                wappers.get(position).getType());
+                        intent.putExtra(LostAndFoundDetailActivity2.KEY_ID, wappers.get(position).getId());
+                        startActivityForResult(intent, REQUEST_CODE_PUBLISH);
+
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        Log.wtf(TAG, "数组越界", e);
+                    } catch (Exception e) {
+                        Log.wtf(TAG, e);
+                    }
 
                 }
 
@@ -211,13 +231,13 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
     }
 
     private void onLoadMore() {
-        presenter.getList(false);
+        presenter.getList(false, null);
     }
 
     private void onRefresh() {
         presenter.resetPage();
         lostAndFounds.clear();
-        presenter.getList(false);
+        presenter.getList(false, null);
     }
 
     @Override
