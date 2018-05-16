@@ -27,7 +27,9 @@ public class BorderedSpan extends ReplacementSpan {
         this.bottom = bottom;
         mPaintBorder = new Paint();
         mPaintBorder.setStyle(Paint.Style.STROKE);
-        mPaintBorder.setAntiAlias(true);
+//        mPaintBorder.setAntiAlias(true);
+        mPaintBorder.setStrokeWidth(1);
+
 
         mPaintBackground = new Paint();
         mPaintBackground.setStyle(Paint.Style.FILL);
@@ -50,7 +52,7 @@ public class BorderedSpan extends ReplacementSpan {
     public void draw(@NonNull Canvas canvas, CharSequence text, int start, int end, float x, int top, int y, int bottom, @NonNull Paint paint) {
 //        canvas.drawRect(x, top, x + mWidth, bottom, mPaintBackground);
         Rect bound = new Rect();
-        canvas.drawRect(x, top + this.top, x + 75, bottom-this.bottom, mPaintBorder);
+        canvas.drawRect(x, top + this.top, x + 74, bottom-this.bottom, mPaintBorder);
         paint.setColor(mTextColor); //use the default text paint to preserve font size/style
         int padding = (int) ((75 - paint.getTextSize() * 2)/2);
         canvas.drawText(text, start, end, x + padding, y, paint);

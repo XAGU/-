@@ -47,15 +47,15 @@ public class LostAndFoundAdaptor2 extends CommonAdapter<LostAndFoundAdaptor2.Los
         holder.setText(R.id.tv_title, lostAndFoundWrapper.getTitle());
         holder.setText(R.id.tv_content, lostAndFoundWrapper.getContent());
 //        holder.setText(R.id.)
-        holder.setText(R.id.tv_time, TimeUtils.convertTimestampToFormat(lostAndFoundWrapper.getTime())
-                + "/" + TimeUtils.millis2String(lostAndFoundWrapper.getTime(), TimeUtils.MY_TIME_FORMAT));
+        holder.setText(R.id.tv_time, TimeUtils.lostAndFoundTimestampFormat(lostAndFoundWrapper.getTime()));
 //        if (position == 0) {
 //            ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams) holder.itemView.getLayoutParams();
-//            marginLayoutParams.setMargins(0, ScreenUtils.dpToPxInt(this.context, 10), 0, 0);
+//            marginLayoutParams.setMargins(0, 0, 0, 0);
 //            holder.itemView.setLayoutParams(marginLayoutParams);
 //        } else {
 //            ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams) holder.itemView.getLayoutParams();
-//            marginLayoutParams.setMargins(0, 0, 0, 0);
+////            marginLayoutParams.setMargins(0, ScreenUtils.dpToPxInt(this.context, 10), 0, 0);
+//            marginLayoutParams.setMargins(0, 0, 0, ScreenUtils.dpToPxInt(this.context, 10));
 //            holder.itemView.setLayoutParams(marginLayoutParams);
 //        }
         if (ObjectsCompat.equals(lostAndFoundWrapper.getType(), LostAndFound.LOST)) {

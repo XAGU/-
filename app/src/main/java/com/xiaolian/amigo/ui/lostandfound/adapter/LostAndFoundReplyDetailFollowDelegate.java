@@ -18,6 +18,7 @@ import com.xiaolian.amigo.data.enumeration.annotation.LostAndFound;
 import com.xiaolian.amigo.ui.widget.BorderedSpan;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.DimentionUtils;
+import com.xiaolian.amigo.util.TimeUtils;
 import com.zhy.adapter.recyclerview.base.ItemViewDelegate;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -117,7 +118,7 @@ public class LostAndFoundReplyDetailFollowDelegate
 
         builder.append(" ");
 
-        SpannableString timeSpan = new SpannableString("4小时前");
+        SpannableString timeSpan = new SpannableString(TimeUtils.lostAndFoundTimestampFormat(replyWrapper.getTime()));
         timeSpan.setSpan(new AbsoluteSizeSpan(
                         DimentionUtils.convertSpToPixels(10, context)), 0, timeSpan.length(),
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);

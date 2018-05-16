@@ -90,6 +90,22 @@ public class TimeUtils {
         }
     }
 
+    public static String lostAndFoundTimestampFormat(long timeStamp) {
+        String result = "";
+        long curTime = System.currentTimeMillis() / (long) 1000;
+        long time = curTime - timeStamp / 1000;
+        if (time >= 0 && time < 3600 * 24) {
+            result += "今天";
+        } else if (time >= 3600 * 24 && time < 3600 * 24 * 2) {
+            result += "昨天";
+        } else if (time >= 3600 * 24 * 2 && time < 3600 * 24 * 365) {
+            result += millis2String(timeStamp * 1000, MY_DATE_FORMAT) + " ";
+        } else {
+            result += millis2String(timeStamp * 1000, MY_DATE_FORMAT2) + " ";
+        }
+        return result + millis2String(timeStamp * 1000, MY_TIME_FORMAT);
+    }
+
     public static String convertTimestampToFormat(long timeStamp) {
         long curTime = System.currentTimeMillis() / (long) 1000;
         long time = curTime - timeStamp;

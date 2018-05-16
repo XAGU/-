@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.vo.LostAndFound;
 import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundDetailAdapter;
@@ -160,9 +160,9 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
         });
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        refreshLayout.setOnRefreshLoadmoreListener(new OnRefreshLoadmoreListener() {
+        refreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
-            public void onLoadmore(RefreshLayout refreshlayout) {
+            public void onLoadMore(RefreshLayout refreshLayout) {
                 LostAndFoundDetailActivity2.this.onLoadMore();
             }
 
@@ -171,6 +171,7 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
                 LostAndFoundDetailActivity2.this.onRefresh();
             }
         });
+        refreshLayout.setEnableRefresh(true);
         refreshLayout.setRefreshHeader(new RefreshLayoutHeader(this));
         refreshLayout.setRefreshFooter(new RefreshLayoutFooter(this));
         refreshLayout.setReboundDuration(200);
@@ -192,7 +193,8 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
                 .putExtra(LostAndFoundReplyDetailActivity.KEY_TIME, time)
                 .putExtra(LostAndFoundReplyDetailActivity.KEY_AVATAR, avatar)
                 .putExtra(LostAndFoundReplyDetailActivity.KEY_LOST_FOUND_ID, lostFoundId)
-                .putExtra(LostAndFoundReplyDetailActivity.KEY_LOST_FOUND_TYPE, presenter.getLostAndFound().getType()),
+                .putExtra(LostAndFoundReplyDetailActivity.KEY_LOST_FOUND_TYPE,
+                        presenter.getLostAndFound().getType()),
                 REQUEST_CODE_REPLY_DETAIL);
     }
 
@@ -288,7 +290,7 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
 
     @Override
     public void setLoadMoreComplete() {
-        refreshLayout.finishLoadmore();
+        refreshLayout.finishLoadMore(300);
     }
 
     @Override

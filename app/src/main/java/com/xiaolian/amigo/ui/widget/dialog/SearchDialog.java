@@ -38,8 +38,8 @@ public class SearchDialog extends Dialog implements TextWatcher {
     EditText etSearchContent;
     @BindView(R.id.tv_cancel)
     TextView tvCancel;
-    @BindView(R.id.iv_clear)
-    ImageView ivClear;
+//    @BindView(R.id.iv_clear)
+//    ImageView ivClear;
     @BindView(R.id.rl_result)
     RelativeLayout rlResult;
     @BindView(R.id.fl_result_contain)
@@ -85,7 +85,7 @@ public class SearchDialog extends Dialog implements TextWatcher {
     @Override
     public void afterTextChanged(Editable s) {
         String input = etSearchContent.getText().toString().trim();
-        ivClear.setVisibility(input.isEmpty() ? View.GONE : View.VISIBLE);
+//        ivClear.setVisibility(input.isEmpty() ? View.GONE : View.VISIBLE);
     }
 
     @OnEditorAction(R.id.et_search_content)
@@ -106,16 +106,16 @@ public class SearchDialog extends Dialog implements TextWatcher {
     /**
      * 点击清除图标
      */
-    @OnClick({R.id.iv_clear, R.id.v_clear_holder})
-    void clear() {
-        etSearchContent.setText("");
-        ivClear.setVisibility(View.GONE);
-    }
+//    @OnClick({R.id.iv_clear, R.id.v_clear_holder})
+//    void clear() {
+//        etSearchContent.setText("");
+//        ivClear.setVisibility(View.GONE);
+//    }
 
-    @OnClick(R.id.iv_back)
-    void back() {
-        this.dismiss();
-    }
+//    @OnClick(R.id.iv_back)
+//    void back() {
+//        this.dismiss();
+//    }
 
     @OnClick(R.id.tv_cancel)
     void cancelSearch() {

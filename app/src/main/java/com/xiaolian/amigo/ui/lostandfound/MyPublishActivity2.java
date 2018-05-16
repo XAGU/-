@@ -10,7 +10,7 @@ import android.widget.RelativeLayout;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundAdaptor2;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundPresenter2;
@@ -67,7 +67,7 @@ public class MyPublishActivity2 extends LostAndFoundBaseActivity implements ILos
 
     private void initRecyclerView() {
         adaptor = new LostAndFoundAdaptor2(this, R.layout.item_lost_and_found2, lostAndFounds);
-        recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 10)));
+//        recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 10)));
         adaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
@@ -92,13 +92,11 @@ public class MyPublishActivity2 extends LostAndFoundBaseActivity implements ILos
         });
         recyclerView.setAdapter(adaptor);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        refreshLayout.setOnRefreshLoadmoreListener(new OnRefreshLoadmoreListener() {
+        refreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
-            public void onLoadmore(RefreshLayout refreshlayout) {
+            public void onLoadMore(RefreshLayout refreshLayout) {
                 MyPublishActivity2.this.onLoadMore();
             }
-
-            @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 MyPublishActivity2.this.onRefresh();
             }
@@ -110,13 +108,13 @@ public class MyPublishActivity2 extends LostAndFoundBaseActivity implements ILos
     }
 
     private void onLoadMore() {
-        presenter.getList(false, null);
+        presenter.getMyList();
     }
 
     private void onRefresh() {
         presenter.resetPage();
         lostAndFounds.clear();
-        presenter.getList(false, null);
+        presenter.getMyList();
     }
 
     @Override
@@ -137,7 +135,7 @@ public class MyPublishActivity2 extends LostAndFoundBaseActivity implements ILos
 
     @Override
     public void setLoadMoreComplete() {
-        refreshLayout.finishLoadmore();
+        refreshLayout.finishLoadMore(300);
     }
 
     @Override

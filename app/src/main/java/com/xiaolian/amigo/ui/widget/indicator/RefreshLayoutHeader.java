@@ -55,12 +55,7 @@ public class RefreshLayoutHeader extends LinearLayout implements RefreshHeader {
     }
 
     @Override
-    public void onPullingDown(float percent, int offset, int headerHeight, int extendHeight) {
-
-    }
-
-    @Override
-    public void onReleasing(float percent, int offset, int headerHeight, int extendHeight) {
+    public void onReleased(RefreshLayout refreshLayout, int height, int extendHeight) {
 
     }
 
@@ -82,6 +77,16 @@ public class RefreshLayoutHeader extends LinearLayout implements RefreshHeader {
 
     @Override
     public void onInitialized(RefreshKernel kernel, int height, int extendHeight) {
+
+    }
+
+    @Override
+    public void onPulling(float percent, int offset, int height, int extendHeight) {
+
+    }
+
+    @Override
+    public void onReleasing(float percent, int offset, int height, int extendHeight) {
 
     }
 

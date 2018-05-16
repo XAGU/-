@@ -19,6 +19,7 @@ import com.xiaolian.amigo.ui.main.adaptor.HomeAdaptor;
 import com.xiaolian.amigo.ui.widget.photoview.AlbumItemActivity;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
+import com.xiaolian.amigo.util.TimeUtils;
 import com.youth.banner.Banner;
 import com.youth.banner.loader.ImageLoader;
 import com.zhy.adapter.recyclerview.base.ItemViewDelegate;
@@ -64,10 +65,14 @@ public class LostAndFoundDetailContentDelegate
     }
 
     @Override
-    public void convert(ViewHolder holder, LostAndFoundDetailAdapter.LostAndFoundDetailWrapper lostAndFoundDetailWrapper, int position) {
+    public void convert(ViewHolder holder,
+                        LostAndFoundDetailAdapter.LostAndFoundDetailWrapper lostAndFoundDetailWrapper, int position) {
         holder.setText(R.id.tv_content_title, lostAndFoundDetailWrapper.getContentTitle());
         holder.setText(R.id.tv_content_desc, lostAndFoundDetailWrapper.getContent());
-        setStat(holder.getView(R.id.tv_stat), lostAndFoundDetailWrapper.getViewCount(), lostAndFoundDetailWrapper.getCommentCount());
+        holder.setText(R.id.tv_time,
+                TimeUtils.lostAndFoundTimestampFormat(lostAndFoundDetailWrapper.getTime()));
+        setStat(holder.getView(R.id.tv_stat), lostAndFoundDetailWrapper.getViewCount(),
+                lostAndFoundDetailWrapper.getCommentCount());
         LinearLayout llImages = holder.getView(R.id.ll_images);
         ImageView ivFirst = holder.getView(R.id.iv_first);
         ImageView ivSecond = holder.getView(R.id.iv_second);

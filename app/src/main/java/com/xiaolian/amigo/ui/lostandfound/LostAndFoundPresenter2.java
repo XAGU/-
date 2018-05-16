@@ -44,7 +44,7 @@ public class LostAndFoundPresenter2<V extends ILostAndFoundView2> extends BasePr
         }
         reqDTO.setSchoolId(lostAndFoundDataManager.getUserInfo().getSchoolId());
         addObserver(lostAndFoundDataManager.queryLostAndFounds(reqDTO),
-                new NetworkObserver<ApiResult<QueryLostAndFoundListRespDTO>>() {
+                new NetworkObserver<ApiResult<QueryLostAndFoundListRespDTO>>(false, true) {
 
                     @Override
                     public void onReady(ApiResult<QueryLostAndFoundListRespDTO> result) {
@@ -97,7 +97,7 @@ public class LostAndFoundPresenter2<V extends ILostAndFoundView2> extends BasePr
     @Override
     public void getMyList() {
         addObserver(lostAndFoundDataManager.getMyLostAndFounds(),
-                new NetworkObserver<ApiResult<QueryLostAndFoundListRespDTO>>() {
+                new NetworkObserver<ApiResult<QueryLostAndFoundListRespDTO>>(false, true) {
 
                     @Override
                     public void onReady(ApiResult<QueryLostAndFoundListRespDTO> result) {

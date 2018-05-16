@@ -12,6 +12,7 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundAdaptor;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundView;
+import com.xiaolian.amigo.ui.widget.SpaceBottomItemDecoration;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.ui.widget.dialog.SearchDialog;
 import com.xiaolian.amigo.util.Constant;
@@ -187,7 +188,7 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
     @Override
     protected void setRecyclerView(RecyclerView recyclerView) {
         adaptor = new LostAndFoundAdaptor(this, R.layout.item_lost_and_found, lostAndFounds);
-        recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 10)));
+        recyclerView.addItemDecoration(new SpaceBottomItemDecoration(ScreenUtils.dpToPxInt(this, 10)));
         adaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {

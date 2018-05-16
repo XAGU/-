@@ -7,6 +7,7 @@ import android.support.annotation.StringRes;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +17,7 @@ import android.widget.TextView;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.base.intf.IBaseListView;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutFooter;
@@ -45,6 +46,7 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
     private TextView tv_toolbar_title2;
     private View v_divide;
     private TextView tv_toolbar_sub_title;
+    private Toolbar toolBar;
     //toolbar
     protected TextView tvTitle,tvTitleSecond,tvTitleThird;
     private View viewLine;
@@ -65,6 +67,7 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
         rlEmpty = findViewById(R.id.rl_empty);
         tvEmptyTip = findViewById(R.id.tv_empty_tip);
         rlError = findViewById(R.id.rl_error);
+        toolBar = findViewById(R.id.tool_bar);
         setUp();
         initToolBar();
         initFooter();
@@ -91,9 +94,9 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
 
     private void initRecyclerView() {
         setRecyclerView(recyclerView);
-        refreshLayout.setOnRefreshLoadmoreListener(new OnRefreshLoadmoreListener() {
+        refreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
-            public void onLoadmore(RefreshLayout refreshlayout) {
+            public void onLoadMore(RefreshLayout refreshLayout) {
                 BaseToolBarListActivity.this.onLoadMore();
             }
 
@@ -174,6 +177,10 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
             //tvTitleSecond.setVisibility(View.VISIBLE);
             tvTitleSecond.setText(setTitle2());
         }
+    }
+
+    protected void setToolbarBackgroundColor(@ColorRes int res) {
+        toolBar.setBackgroundResource(res);
     }
 
     protected int setTitle2() {

@@ -11,7 +11,7 @@ import android.widget.RelativeLayout;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.annotation.LostAndFound;
 import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundAdaptor2;
@@ -114,7 +114,7 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
 
     private void initRecyclerView() {
         adaptor = new LostAndFoundAdaptor2(this, R.layout.item_lost_and_found2, lostAndFounds);
-        recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 10)));
+//        recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 10)));
         adaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
@@ -139,9 +139,9 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
         });
         recyclerView.setAdapter(adaptor);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        refreshLayout.setOnRefreshLoadmoreListener(new OnRefreshLoadmoreListener() {
+        refreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
-            public void onLoadmore(RefreshLayout refreshlayout) {
+            public void onLoadMore(RefreshLayout refreshLayout) {
                 LostAndFoundActivity2.this.onLoadMore();
             }
 
@@ -150,6 +150,7 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
                 LostAndFoundActivity2.this.onRefresh();
             }
         });
+        refreshLayout.setEnableRefresh(true);
         refreshLayout.setRefreshHeader(new RefreshLayoutHeader(this));
         refreshLayout.setRefreshFooter(new RefreshLayoutFooter(this));
         refreshLayout.setReboundDuration(200);
@@ -165,7 +166,6 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
         if (searchDialog == null) {
             searchDialog = new SearchDialog(this);
             searchDialog.setSearchListener(searchStr -> {
-                // TODO search
                 presenter.getList(true, searchStr);
             });
             searchDialog.setCanceledOnTouchOutside(true);
@@ -258,7 +258,7 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
 
     @Override
     public void setLoadMoreComplete() {
-        refreshLayout.finishLoadmore();
+        refreshLayout.finishLoadMore(300);
     }
 
     @Override

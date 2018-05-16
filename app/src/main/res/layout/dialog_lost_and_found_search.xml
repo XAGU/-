@@ -7,78 +7,47 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@color/colorBackgroundWhite"
+        android:orientation="horizontal"
+        android:background="@color/colorBackgroundGray"
         >
-
-        <ImageView
-            android:paddingTop="14dp"
-            android:paddingLeft="@dimen/mainMarginLeftRight"
-            android:paddingRight="@dimen/mainMarginLeftRight"
-            android:id="@+id/iv_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingBottom="21dp"
-            android:src="@drawable/back" />
-
-        <RelativeLayout
-            android:paddingLeft="@dimen/mainMarginLeftRight"
-            android:paddingRight="@dimen/mainMarginLeftRight"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="21dp"
-            >
-
+        <LinearLayout
+            android:id="@+id/ll_search"
+            android:orientation="vertical"
+            android:background="@drawable/bg_lost_and_found_search"
+            android:gravity="center"
+            android:layout_marginTop="7dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginStart="7dp"
+            android:layout_marginEnd="0dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="29dp">
             <EditText
-                android:id="@+id/et_search_content"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:background="@null"
-                android:hint="关键字搜索"
                 android:textColor="#222"
+                android:textSize="12sp"
+                android:hint="搜索"
+                android:id="@+id/et_search_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:textCursorDrawable="@drawable/cursor"
+                android:background="@color/white"
                 android:textColorHint="#bbb"
                 android:imeOptions="actionSearch"
                 android:inputType="text"
-                android:textCursorDrawable="@drawable/cursor"
-                android:textSize="19sp" />
+                android:drawablePadding="5dp"
+                android:drawableStart="@drawable/ic_lost_and_found_search"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
 
-            <TextView
-                android:id="@+id/tv_cancel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:text="取消"
-                android:textColor="#222"
-                android:textSize="14sp" />
-
-            <View
-                android:id="@+id/v_divide"
-                android:layout_width="1dp"
-                android:layout_height="14dp"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="14dp"
-                android:layout_toLeftOf="@id/tv_cancel"
-                android:background="#ccc" />
-
-            <View
-                android:id="@+id/v_clear_holder"
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@id/v_divide"
-                android:layout_width="30dp"
-                android:layout_height="24dp"/>
-
-            <ImageView
-                android:id="@+id/iv_clear"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
-                android:layout_toLeftOf="@id/v_divide"
-                android:src="@drawable/clear"
-                android:visibility="invisible"/>
-        </RelativeLayout>
+        <TextView
+            android:id="@+id/tv_cancel"
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="取消"
+            android:textColor="#222"
+            android:textSize="12sp" />
     </LinearLayout>
 
     <RelativeLayout
@@ -108,7 +77,6 @@
     </RelativeLayout>
 
     <FrameLayout
-        android:background="@color/colorBackgroundGray"
         android:id="@+id/fl_result_contain"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

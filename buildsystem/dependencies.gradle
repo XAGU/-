@@ -88,7 +88,7 @@ ext.deps = [
         'truth'                  : 'com.google.truth:truth:0.34',
         'errorProneAnnotations'  : "com.google.errorprone:error_prone_annotations:${versions.errorProne}",
         'baseRvadapter'          : 'com.zhy:base-rvadapter:3.0.3',
-        'smartrefresh'           : 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.3',
+        'smartrefresh'           : 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.5',
         'banner'                 : 'com.youth.banner:banner:1.4.10',
         'swipelayout'            : 'com.daimajia.swipelayout:library:1.2.0',
         'glide'                  : "com.github.bumptech.glide:glide:${versions.glide}",

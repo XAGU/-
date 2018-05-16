@@ -13,14 +13,11 @@ import android.widget.TextView;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.data.vo.LostAndFound;
 import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundReplyDetailAdapter;
 import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundReplyDetailFollowDelegate;
 import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundReplyDetailMainDelegate;
-import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundDetailPresenter;
-import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundDetailView;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundReplyDetailPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundReplyDetailView;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
@@ -158,29 +155,33 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
     private void initRecyclerView() {
         followRelays.add(0, mainReply);
         adapter = new LostAndFoundReplyDetailAdapter(this, followRelays);
-        adapter.addItemViewDelegate(new LostAndFoundReplyDetailMainDelegate(this));
+        adapter.addItemViewDelegate(new LostAndFoundReplyDetailMainDelegate(this, lostFoundType));
         adapter.addItemViewDelegate(new LostAndFoundReplyDetailFollowDelegate(this, lostFoundType));
         recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 21)));
         adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                if (followRelays.get(position).getType() == LostAndFoundReplyDetailAdapter.LostAndFoundReplyDetailItemType.FOLLOW) {
-                    if (ObjectsCompat.equals(followRelays.get(position).getAuthorId(), presenter.getUserId())) {
-                        if (actionSheetDialog == null) {
-                            String chooseOne = "删除";
-                            actionSheetDialog = new ActionSheetDialog(LostAndFoundReplyDetailActivity.this)
-                                    .builder()
-                                    .setTitle("选择")
-                                    .addSheetItem(chooseOne, ActionSheetDialog.SheetItemColor.Orange,
-                                            which -> presenter.deleteReply(followRelays.get(position).getId()));
+                try {
+                    if (followRelays.get(position).getType() == LostAndFoundReplyDetailAdapter.LostAndFoundReplyDetailItemType.FOLLOW) {
+                        if (ObjectsCompat.equals(followRelays.get(position).getAuthorId(), presenter.getUserId())) {
+                            if (actionSheetDialog == null) {
+                                String chooseOne = "删除";
+                                actionSheetDialog = new ActionSheetDialog(LostAndFoundReplyDetailActivity.this)
+                                        .builder()
+                                        .setTitle("选择")
+                                        .addSheetItem(chooseOne, ActionSheetDialog.SheetItemColor.Orange,
+                                                which -> presenter.deleteReply(followRelays.get(position).getId()));
+                            }
+                            actionSheetDialog.setOnCancalListener(dialog -> {
+                            });
+                            actionSheetDialog.show();
+                        } else {
+                            publishReply(commentId, followRelays.get(position).getAuthorId(),
+                                    followRelays.get(position).getAuthor());
                         }
-                        actionSheetDialog.setOnCancalListener(dialog -> {
-                        });
-                        actionSheetDialog.show();
-                    } else {
-                        publishReply(commentId, followRelays.get(position).getAuthorId(),
-                                followRelays.get(position).getAuthor());
                     }
+                } catch (Exception e) {
+                    // do nothing
                 }
             }
 
@@ -191,9 +192,9 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
         });
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        refreshLayout.setOnRefreshLoadmoreListener(new OnRefreshLoadmoreListener() {
+        refreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
-            public void onLoadmore(RefreshLayout refreshlayout) {
+            public void onLoadMore(RefreshLayout refreshLayout) {
                 LostAndFoundReplyDetailActivity.this.onLoadMore();
             }
 
@@ -202,6 +203,7 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
                 LostAndFoundReplyDetailActivity.this.onRefresh();
             }
         });
+        refreshLayout.setEnableRefresh(true);
         refreshLayout.setRefreshHeader(new RefreshLayoutHeader(this));
         refreshLayout.setRefreshFooter(new RefreshLayoutFooter(this));
         refreshLayout.setReboundDuration(200);
@@ -248,7 +250,7 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
     }
 
     private void onLoadMore() {
-
+        presenter.getReplies();
     }
 
     @Override
@@ -258,7 +260,7 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
 
     @Override
     public void setLoadMoreComplete() {
-        refreshLayout.finishLoadmore();
+        refreshLayout.finishLoadMore(300);
     }
 
     @Override

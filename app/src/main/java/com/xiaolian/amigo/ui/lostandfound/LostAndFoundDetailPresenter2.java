@@ -61,7 +61,7 @@ public class LostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView2>
         reqDTO.setId(id);
         reqDTO.setCountView(true);
         addObserver(lostAndFoundDataManager.getLostAndFound(reqDTO),
-                new NetworkObserver<ApiResult<LostAndFoundDTO>>() {
+                new NetworkObserver<ApiResult<LostAndFoundDTO>>(false, true) {
 
                     @Override
                     public void onReady(ApiResult<LostAndFoundDTO> result) {
@@ -108,7 +108,7 @@ public class LostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView2>
         reqDTO.setFrom((page-1)*size);
         reqDTO.setId(id);
         addObserver(lostAndFoundDataManager.getCommentList(reqDTO),
-                new NetworkObserver<ApiResult<LostFoundCommentsListDTO>>() {
+                new NetworkObserver<ApiResult<LostFoundCommentsListDTO>>(false, true) {
 
                     @Override
                     public void onReady(ApiResult<LostFoundCommentsListDTO> result) {

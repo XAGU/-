@@ -53,7 +53,7 @@ public class LostAndFoundReplyDetailPresenter<V extends ILostAndFoundReplyDetail
         reqDTO.setId(commentId);
         reqDTO.setSize(size);
         addObserver(lostAndFoundManager.getReplies(reqDTO),
-                new NetworkObserver<ApiResult<LostFoundRepliesListDTO>>() {
+                new NetworkObserver<ApiResult<LostFoundRepliesListDTO>>(false, true) {
 
                     @Override
                     public void onReady(ApiResult<LostFoundRepliesListDTO> result) {
@@ -117,7 +117,7 @@ public class LostAndFoundReplyDetailPresenter<V extends ILostAndFoundReplyDetail
          */
         reqDTO.setType(2);
         addObserver(lostAndFoundManager.publishCommentOrReply(reqDTO),
-                new NetworkObserver<ApiResult<SimpleRespDTO>>() {
+                new NetworkObserver<ApiResult<SimpleRespDTO>>(false, true) {
 
                     @Override
                     public void onReady(ApiResult<SimpleRespDTO> result) {

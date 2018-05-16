@@ -76,7 +76,7 @@ public class LostAndFoundDetailCommentReplyAdapter
             ownerSpan.setSpan(new AbsoluteSizeSpan(
                             DimentionUtils.convertSpToPixels(9, context)), 0, ownerSpan.length(),
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            ownerSpan.setSpan(new BorderedSpan(context, 20, 12), 0, ownerSpan.length(),
+            ownerSpan.setSpan(new BorderedSpan(context, 20, 7), 0, ownerSpan.length(),
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             builder.append(ownerSpan);
             builder.append(" ");
