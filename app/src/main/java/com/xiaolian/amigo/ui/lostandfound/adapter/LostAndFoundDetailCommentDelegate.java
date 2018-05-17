@@ -48,6 +48,7 @@ public class LostAndFoundDetailCommentDelegate
     private Context context;
     private OnReplyCommentListener replyCommentListener;
     private OnMoreReplyClickListener moreReplyClickListener;
+    private SpaceItemDecoration itemDecoration;
 
     public LostAndFoundDetailCommentDelegate(Context context,
                                              OnReplyCommentListener replyCommentListener,
@@ -79,14 +80,14 @@ public class LostAndFoundDetailCommentDelegate
         setCommentAuthor(holder.getView(R.id.tv_comment_author), lostAndFoundDetailWrapper.isOwner(),
                 lostAndFoundDetailWrapper.getType(),
                 lostAndFoundDetailWrapper.getCommentAuthor());
-        holder.getView(R.id.tv_owner)
+        holder.getView(R.id.iv_owner)
                 .setVisibility(lostAndFoundDetailWrapper.isOwner() ? View.VISIBLE : View.GONE);
-        holder.setText(R.id.tv_owner,
-                ObjectsCompat.equals(lostAndFoundDetailWrapper.getType(), LostAndFound.LOST) ? "失主" : "拾主");
+        holder.setImageResource(R.id.iv_owner,
+                ObjectsCompat.equals(lostAndFoundDetailWrapper.getType(), LostAndFound.LOST) ?
+                        R.drawable.ic_lost_owner : R.drawable.ic_found_owner);
         holder.setText(R.id.tv_comment_content, lostAndFoundDetailWrapper.getCommentContent());
         holder.setText(R.id.tv_time,
                 TimeUtils.lostAndFoundTimestampFormat(lostAndFoundDetailWrapper.getTime()));
-        holder.getView(R.id.tv_owner).setVisibility(lostAndFoundDetailWrapper.isOwner() ? View.VISIBLE : View.GONE);
         holder.getView(R.id.tv_replay).setOnClickListener(v -> {
             if (replyCommentListener != null) {
                 replyCommentListener.onReplyComment(lostAndFoundDetailWrapper.getId(),
@@ -127,7 +128,10 @@ public class LostAndFoundDetailCommentDelegate
                             replies, lostAndFoundDetailWrapper.getType(),
                             lostAndFoundDetailWrapper.getCommentAuthorId(),
                             lostAndFoundDetailWrapper.getOwnerId());
-            recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(context, 5)));
+            if (itemDecoration == null) {
+                itemDecoration = new SpaceItemDecoration(ScreenUtils.dpToPxInt(context, 5));
+                recyclerView.addItemDecoration(itemDecoration);
+            }
             adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {

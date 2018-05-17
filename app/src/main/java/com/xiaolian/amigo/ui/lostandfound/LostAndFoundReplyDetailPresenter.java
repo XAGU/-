@@ -143,6 +143,11 @@ public class LostAndFoundReplyDetailPresenter<V extends ILostAndFoundReplyDetail
     }
 
     @Override
+    public Long getOwnerId() {
+        return ownerId;
+    }
+
+    @Override
     public void reportOrDelete() {
         if (isOwner()) {
             DeleteLostFoundItemReqDTO reqDTO = new DeleteLostFoundItemReqDTO();

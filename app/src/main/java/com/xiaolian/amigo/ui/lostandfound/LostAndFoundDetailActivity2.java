@@ -200,6 +200,7 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
 
     @Override
     public void onRefresh() {
+        presenter.getDetail();
         presenter.resetPage();
         items.clear();
         items.add(content);
@@ -227,22 +228,28 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
 
     @Override
     public void render(LostAndFound lostAndFound) {
-        presenter.getComments();
-        content = new LostAndFoundDetailAdapter.LostAndFoundDetailWrapper(lostAndFound);
-        if (!items.isEmpty()) {
-            if (items.get(0) == null) {
-                return;
-            }
-            if (items.get(0).getItemType() == LostAndFoundDetailAdapter.LostAndFoundDetailItemType.CONTENT) {
-                items.remove(0);
-                items.add(0, content);
-            } else {
-                items.add(0, content);
+        if (content == null) {
+            presenter.getComments();
+            content = new LostAndFoundDetailAdapter.LostAndFoundDetailWrapper(lostAndFound);
+            try {
+                if (!items.isEmpty()) {
+                    if (items.get(0).getItemType() == LostAndFoundDetailAdapter.LostAndFoundDetailItemType.CONTENT) {
+                        items.remove(0);
+                        items.add(0, content);
+                    } else {
+                        items.add(0, content);
+                    }
+                } else {
+                    items.add(content);
+                }
+                adapter.notifyDataSetChanged();
+            } catch (Exception e) {
+                // do nothing
             }
         } else {
-            items.add(content);
+            content.setCommentCount(lostAndFound.getCommentsCount());
+            content.setViewCount(lostAndFound.getViewCount());
         }
-        adapter.notifyDataSetChanged();
     }
 
     @OnClick({R.id.iv_three_dot, R.id.v_more_hold,

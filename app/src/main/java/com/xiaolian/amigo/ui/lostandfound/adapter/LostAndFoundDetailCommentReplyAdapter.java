@@ -1,13 +1,18 @@
 package com.xiaolian.amigo.ui.lostandfound.adapter;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.support.v4.util.ObjectsCompat;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.ImageSpan;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
@@ -73,15 +78,27 @@ public class LostAndFoundDetailCommentReplyAdapter
             builder.append(" ");
             SpannableString ownerSpan = new SpannableString(
                     ObjectsCompat.equals(type, LostAndFound.LOST) ? "失主" : "拾主");
-            ownerSpan.setSpan(new AbsoluteSizeSpan(
-                            DimentionUtils.convertSpToPixels(9, context)), 0, ownerSpan.length(),
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            ownerSpan.setSpan(new BorderedSpan(context, 20, 7), 0, ownerSpan.length(),
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ImageSpan imageSpan = new ImageSpan(context,
+                    ObjectsCompat.equals(type, LostAndFound.LOST) ?
+                    R.drawable.ic_lost_owner : R.drawable.ic_found_owner) {
+                @Override
+                public void draw(Canvas canvas, CharSequence text, int start, int end, float x, int top, int y, int bottom, Paint paint) {
+                    Drawable b = getDrawable();
+                    canvas.save();
+                    int extra = textView.getLineCount() > 1 ? (int) textView.getLineSpacingExtra() : 0;
+                    int transY = bottom - b.getBounds().bottom - extra;
+                    transY -= paint.getFontMetricsInt().descent / 2;
+                    canvas.translate(x, transY);
+                    b.draw(canvas);
+                    canvas.restore();
+                }
+            };
+            ownerSpan.setSpan(imageSpan, 0, ownerSpan.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             builder.append(ownerSpan);
             builder.append(" ");
         }
-        if (ObjectsCompat.equals(replyWrapper.getReplyToUserId(), commentUserId)) {
+        if (replyWrapper.getReplyToUserId() != null &&
+                !TextUtils.isEmpty(replyWrapper.getReplyToUserNickName())) {
             SpannableString replyConstantSpan = new SpannableString("回复");
             replyConstantSpan.setSpan(new AbsoluteSizeSpan(
                             DimentionUtils.convertSpToPixels(12, context)), 0, replyConstantSpan.length(),
@@ -99,6 +116,30 @@ public class LostAndFoundDetailCommentReplyAdapter
                     0, commentUserSpan.length(),
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             builder.append(commentUserSpan);
+
+            if (ObjectsCompat.equals(ownerId, replyWrapper.getReplyToUserId())) {
+                builder.append(" ");
+                SpannableString ownerSpan = new SpannableString(
+                        ObjectsCompat.equals(type, LostAndFound.LOST) ? "失主" : "拾主");
+                ImageSpan imageSpan = new ImageSpan(context,
+                        ObjectsCompat.equals(type, LostAndFound.LOST) ?
+                        R.drawable.ic_lost_owner : R.drawable.ic_found_owner) {
+                    @Override
+                    public void draw(Canvas canvas, CharSequence text, int start, int end, float x, int top, int y, int bottom, Paint paint) {
+                        Drawable b = getDrawable();
+                        canvas.save();
+                        int extra = textView.getLineCount() > 1 ? (int) textView.getLineSpacingExtra() : 0;
+                        int transY = bottom - b.getBounds().bottom - extra;
+                        transY -= paint.getFontMetricsInt().descent / 2;
+                        canvas.translate(x, transY);
+                        b.draw(canvas);
+                        canvas.restore();
+                    }
+                };
+                ownerSpan.setSpan(imageSpan, 0, ownerSpan.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                builder.append(ownerSpan);
+                builder.append(" ");
+            }
         }
 
         SpannableString colonSpan = new SpannableString(": ");

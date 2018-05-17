@@ -76,6 +76,11 @@ public class LostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView2>
     }
 
     @Override
+    public void getDetail() {
+        getDetail(id);
+    }
+
+    @Override
     public void refreshDetail() {
         QueryLostFoundDetailReqDTO reqDTO = new QueryLostFoundDetailReqDTO();
         reqDTO.setId(id);

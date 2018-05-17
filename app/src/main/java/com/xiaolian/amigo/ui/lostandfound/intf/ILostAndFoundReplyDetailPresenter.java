@@ -23,6 +23,8 @@ public interface ILostAndFoundReplyDetailPresenter<V extends ILostAndFoundReplyD
 
     void setOwnerId(Long ownerId);
 
+    Long getOwnerId();
+
     void reportOrDelete();
 
     Long getUserId();

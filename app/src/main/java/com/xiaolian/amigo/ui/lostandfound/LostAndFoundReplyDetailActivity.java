@@ -156,7 +156,7 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
         followRelays.add(0, mainReply);
         adapter = new LostAndFoundReplyDetailAdapter(this, followRelays);
         adapter.addItemViewDelegate(new LostAndFoundReplyDetailMainDelegate(this, lostFoundType));
-        adapter.addItemViewDelegate(new LostAndFoundReplyDetailFollowDelegate(this, lostFoundType));
+        adapter.addItemViewDelegate(new LostAndFoundReplyDetailFollowDelegate(this, lostFoundType, presenter.getOwnerId()));
         recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 21)));
         adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override

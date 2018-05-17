@@ -41,9 +41,10 @@ public class LostAndFoundReplyDetailMainDelegate
     public void convert(ViewHolder holder, LostAndFoundReplyDetailAdapter.LostAndFoundReplyDetailWrapper lostAndFoundReplyDetailWrapper, int position) {
         holder.setText(R.id.tv_comment_author, lostAndFoundReplyDetailWrapper.getAuthor());
         holder.setText(R.id.tv_content, lostAndFoundReplyDetailWrapper.getContent());
-        holder.getView(R.id.tv_owner).setVisibility(lostAndFoundReplyDetailWrapper.isOwner() ? View.VISIBLE : View.GONE);
-        holder.setText(R.id.tv_owner,
-                ObjectsCompat.equals(lostFoundType, LostAndFound.LOST) ? "失主" : "拾主");
+        holder.getView(R.id.iv_owner).setVisibility(lostAndFoundReplyDetailWrapper.isOwner() ? View.VISIBLE : View.GONE);
+        holder.setImageResource(R.id.iv_owner,
+                ObjectsCompat.equals(lostFoundType, LostAndFound.LOST) ?
+                        R.drawable.ic_lost_owner : R.drawable.ic_found_owner);
         Glide.with(context).load(Constant.IMAGE_PREFIX + lostAndFoundReplyDetailWrapper.getImage())
                 .asBitmap()
                 .placeholder(R.drawable.ic_picture_error)

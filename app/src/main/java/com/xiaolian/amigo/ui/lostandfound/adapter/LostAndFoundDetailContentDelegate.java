@@ -101,31 +101,34 @@ public class LostAndFoundDetailContentDelegate
                 ivThird.setVisibility(View.VISIBLE);
                 manager.load(Constant.IMAGE_PREFIX + images.get(2)).into(ivThird);
             }
+
+            holder.getView(R.id.iv_first).setOnClickListener(v -> {
+                if (images != null) {
+                    Intent intent = new Intent(context, AlbumItemActivity.class);
+                    intent.putExtra(AlbumItemActivity.EXTRA_CURRENT, 0);
+                    intent.putStringArrayListExtra(AlbumItemActivity.EXTRA_TYPE_LIST, images);
+                    context.startActivity(intent);
+                }
+            });
+            holder.getView(R.id.iv_second).setOnClickListener(v -> {
+                if (images != null) {
+                    Intent intent = new Intent(context, AlbumItemActivity.class);
+                    intent.putExtra(AlbumItemActivity.EXTRA_CURRENT, 1);
+                    intent.putStringArrayListExtra(AlbumItemActivity.EXTRA_TYPE_LIST, images);
+                    context.startActivity(intent);
+                }
+            });
+            holder.getView(R.id.iv_third).setOnClickListener(v -> {
+                if (images != null) {
+                    Intent intent = new Intent(context, AlbumItemActivity.class);
+                    intent.putExtra(AlbumItemActivity.EXTRA_CURRENT, 2);
+                    intent.putStringArrayListExtra(AlbumItemActivity.EXTRA_TYPE_LIST, images);
+                    context.startActivity(intent);
+                }
+            });
+        } else {
+            llImages.setVisibility(View.GONE);
         }
-        holder.getView(R.id.iv_first).setOnClickListener(v -> {
-            if (images != null) {
-                Intent intent = new Intent(context, AlbumItemActivity.class);
-                intent.putExtra(AlbumItemActivity.EXTRA_CURRENT, 0);
-                intent.putStringArrayListExtra(AlbumItemActivity.EXTRA_TYPE_LIST, images);
-                context.startActivity(intent);
-            }
-        });
-        holder.getView(R.id.iv_second).setOnClickListener(v -> {
-            if (images != null) {
-                Intent intent = new Intent(context, AlbumItemActivity.class);
-                intent.putExtra(AlbumItemActivity.EXTRA_CURRENT, 1);
-                intent.putStringArrayListExtra(AlbumItemActivity.EXTRA_TYPE_LIST, images);
-                context.startActivity(intent);
-            }
-        });
-        holder.getView(R.id.iv_third).setOnClickListener(v -> {
-            if (images != null) {
-                Intent intent = new Intent(context, AlbumItemActivity.class);
-                intent.putExtra(AlbumItemActivity.EXTRA_CURRENT, 2);
-                intent.putStringArrayListExtra(AlbumItemActivity.EXTRA_TYPE_LIST, images);
-                context.startActivity(intent);
-            }
-        });
     }
 
     private void setStat(TextView textView, Integer viewCount, Integer commentCount) {
