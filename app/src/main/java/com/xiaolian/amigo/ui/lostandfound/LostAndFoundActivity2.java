@@ -2,6 +2,8 @@ package com.xiaolian.amigo.ui.lostandfound;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -59,6 +61,12 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
 
     @BindView(R.id.rl_error)
     RelativeLayout rlError;
+
+    @BindView(R.id.collapsingToolbarLayout)
+    CollapsingToolbarLayout collapsingToolbarLayout;
+
+    @BindView(R.id.abl_actionbar)
+    AppBarLayout ablActionbar;
 
     private LostAndFoundAdaptor2 adaptor;
 
@@ -170,8 +178,12 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
             });
             searchDialog.setCanceledOnTouchOutside(true);
             searchDialog.setCancelable(true);
-            searchDialog.setOnDismissListener(dialog -> searchResult.clear());
+            searchDialog.setOnDismissListener(dialog -> {
+                searchResult.clear();
+                ablActionbar.setExpanded(true);
+            });
         }
+        ablActionbar.setExpanded(false);
         searchDialog.show();
     }
 

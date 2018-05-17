@@ -15,6 +15,7 @@
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsingToolbarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
@@ -41,6 +42,7 @@
                     android:layout_height="29dp">
                     <TextView
                         android:text="搜索"
+                        android:textSize="12sp"
                         android:textColor="@color/colorDarkB"
                         android:drawablePadding="5dp"
                         android:drawableStart="@drawable/ic_lost_and_found_search"
@@ -48,74 +50,6 @@
                         android:layout_height="wrap_content" />
                 </LinearLayout>
             </LinearLayout>
-
-            <!--<LinearLayout-->
-            <!--android:visibility="visible"-->
-            <!--android:background="@color/colorBackgroundGray"-->
-            <!--android:id="@+id/ll_header"-->
-            <!--android:paddingTop="8dp"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:orientation="vertical">-->
-
-            <!--&lt;!&ndash; <ImageView-->
-            <!--android:id="@+id/iv_back"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:paddingRight="@dimen/toolBarMarginLeft"-->
-            <!--android:paddingLeft="@dimen/toolBarMarginLeft"-->
-            <!--android:paddingTop="@dimen/toolBarMarginTop"-->
-            <!--android:paddingBottom="@dimen/toolBarMarginBottom"-->
-            <!--android:src="@drawable/back" />&ndash;&gt;-->
-
-            <!--<RelativeLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginTop="42dp"-->
-            <!--android:layout_marginLeft="@dimen/mainMarginLeftRight"-->
-            <!--android:layout_marginRight="@dimen/mainMarginLeftRight"-->
-            <!--android:layout_marginBottom="@dimen/toolBarMarginBottom">-->
-
-            <!--<TextView-->
-            <!--android:id="@+id/tv_toolbar_title"-->
-            <!--style="@style/ToolBarTextView"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_alignParentLeft="true"-->
-            <!--tool:text="宿舍列表" />-->
-
-            <!--<View-->
-            <!--android:visibility="gone"-->
-            <!--android:id="@+id/v_divide"-->
-            <!--android:layout_width="1dp"-->
-            <!--android:layout_height="14dp"-->
-            <!--android:layout_centerVertical="true"-->
-            <!--android:layout_marginLeft="14dp"-->
-            <!--android:layout_toRightOf="@id/tv_toolbar_title"-->
-            <!--android:background="#eee" />-->
-
-            <!--<TextView-->
-            <!--android:id="@+id/tv_toolbar_title2"-->
-            <!--style="@style/ToolBarTextView"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginLeft="14dp"-->
-            <!--android:layout_toRightOf="@id/v_divide"-->
-            <!--tool:text="招领"-->
-            <!--android:textColor="#bbb" />-->
-
-            <!--<TextView-->
-            <!--android:visibility="gone"-->
-            <!--android:id="@+id/tv_toolbar_sub_title"-->
-            <!--style="@style/ContentText_main"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_alignParentRight="true"-->
-            <!--android:layout_centerVertical="true"-->
-            <!--tool:text="添加宿舍" />-->
-
-            <!--</RelativeLayout>-->
-            <!--</LinearLayout>-->
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/tool_bar"

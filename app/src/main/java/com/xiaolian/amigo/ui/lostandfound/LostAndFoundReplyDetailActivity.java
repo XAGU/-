@@ -1,10 +1,12 @@
 package com.xiaolian.amigo.ui.lostandfound;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.util.ObjectsCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -22,6 +24,7 @@ import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundReplyDetailPresenter
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundReplyDetailView;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.ui.widget.dialog.ActionSheetDialog;
+import com.xiaolian.amigo.ui.widget.dialog.LostAndFoundBottomDialog;
 import com.xiaolian.amigo.ui.widget.dialog.LostAndFoundReplyDialog;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutFooter;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutHeader;
@@ -90,7 +93,7 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
     @BindView(R.id.rl_error)
     RelativeLayout rlError;
 
-    private ActionSheetDialog actionSheetDialog;
+    private LostAndFoundBottomDialog bottomDialog;
     private LostAndFoundReplyDialog replyDialog;
 
     @Inject
@@ -121,6 +124,7 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
             commentId = getIntent().getLongExtra(KEY_COMMENT_ID, -1);
             commentAuthor = getIntent().getStringExtra(KEY_COMMENT_AUTHOR);
             commentAuthorId = getIntent().getLongExtra(KEY_COMMENT_AUTHOR_ID, -1);
+            presenter.setCommentAuthorId(commentAuthorId);
             lostFoundType = getIntent().getIntExtra(KEY_LOST_FOUND_TYPE, com.xiaolian.amigo.data.enumeration.annotation.LostAndFound.LOST);
             presenter.setLostFoundId(getIntent().getLongExtra(KEY_LOST_FOUND_ID, -1));
             presenter.setCommentId(commentId);
@@ -164,17 +168,13 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
                 try {
                     if (followRelays.get(position).getType() == LostAndFoundReplyDetailAdapter.LostAndFoundReplyDetailItemType.FOLLOW) {
                         if (ObjectsCompat.equals(followRelays.get(position).getAuthorId(), presenter.getUserId())) {
-                            if (actionSheetDialog == null) {
-                                String chooseOne = "删除";
-                                actionSheetDialog = new ActionSheetDialog(LostAndFoundReplyDetailActivity.this)
-                                        .builder()
-                                        .setTitle("选择")
-                                        .addSheetItem(chooseOne, ActionSheetDialog.SheetItemColor.Orange,
-                                                which -> presenter.deleteReply(followRelays.get(position).getId()));
+                            if (bottomDialog == null) {
+                                bottomDialog = new LostAndFoundBottomDialog(LostAndFoundReplyDetailActivity.this);
                             }
-                            actionSheetDialog.setOnCancalListener(dialog -> {
-                            });
-                            actionSheetDialog.show();
+                            bottomDialog.setOkText("删除");
+                            bottomDialog.setOnOkClickListener(dialog ->
+                                    presenter.deleteReply(followRelays.get(position).getId()));
+                            bottomDialog.show();
                         } else {
                             publishReply(commentId, followRelays.get(position).getAuthorId(),
                                     followRelays.get(position).getAuthor());
@@ -213,16 +213,12 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
     @OnClick({R.id.iv_three_dot, R.id.v_more_hold,
             R.id.iv_three_dot2, R.id.v_more_hold_1})
     public void onMoreClick() {
-        if (actionSheetDialog == null) {
-            String chooseOne = presenter.isOwner() ? "删除" : "举报";
-            actionSheetDialog = new ActionSheetDialog(this)
-                    .builder()
-                    .setTitle("选择")
-                    .addSheetItem(chooseOne, ActionSheetDialog.SheetItemColor.Orange, which -> presenter.reportOrDelete());
+        if (bottomDialog == null) {
+            bottomDialog = new LostAndFoundBottomDialog(this);
         }
-        actionSheetDialog.setOnCancalListener(dialog -> {
-        });
-        actionSheetDialog.show();
+        bottomDialog.setOkText(presenter.isPublisher() ? "删除" : "举报");
+        bottomDialog.setOnOkClickListener(dialog -> presenter.reportOrDelete());
+        bottomDialog.show();
     }
 
     @OnClick(R.id.ll_footer)
@@ -236,6 +232,10 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
         }
         replyDialog.setReplyUser(replyToUserName);
         replyDialog.setPublishClickListener((dialog, reply) -> {
+            if (TextUtils.isEmpty(reply)) {
+                onError("内容为空");
+                return;
+            }
             presenter.publishReply(replyToId, replyToUserId, reply);
         });
         replyDialog.show();
@@ -280,6 +280,7 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
 
     @Override
     public void showEmptyView() {
+        adapter.notifyDataSetChanged();
 //        rlEmpty.setVisibility(View.VISIBLE);
     }
 

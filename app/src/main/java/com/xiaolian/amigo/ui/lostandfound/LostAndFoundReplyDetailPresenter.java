@@ -34,6 +34,7 @@ public class LostAndFoundReplyDetailPresenter<V extends ILostAndFoundReplyDetail
     private Integer page = Constant.PAGE_START_NUM;
     private static final int size = 20;
     private Long ownerId;
+    private Long commentAuthorId;
     private Long lostFoundId;
 
     @Inject
@@ -106,6 +107,16 @@ public class LostAndFoundReplyDetailPresenter<V extends ILostAndFoundReplyDetail
     }
 
     @Override
+    public boolean isPublisher() {
+        return ObjectsCompat.equals(commentAuthorId, lostAndFoundManager.getUserInfo().getId());
+    }
+
+    @Override
+    public void setCommentAuthorId(Long commentAuthorId) {
+        this.commentAuthorId = commentAuthorId;
+    }
+
+    @Override
     public void publishReply(Long replyToId, Long replyToUserId, String reply) {
         SaveLostFoundCommentsRepliesDTO reqDTO = new SaveLostFoundCommentsRepliesDTO();
         reqDTO.setContent(reply);
@@ -149,7 +160,7 @@ public class LostAndFoundReplyDetailPresenter<V extends ILostAndFoundReplyDetail
 
     @Override
     public void reportOrDelete() {
-        if (isOwner()) {
+        if (isPublisher()) {
             DeleteLostFoundItemReqDTO reqDTO = new DeleteLostFoundItemReqDTO();
             reqDTO.setId(commentId);
             reqDTO.setType(3);

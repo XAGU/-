@@ -2,6 +2,8 @@ package com.xiaolian.amigo.ui.widget.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.support.transition.ChangeBounds;
+import android.support.transition.TransitionManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,6 +17,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -46,6 +49,8 @@ public class SearchDialog extends Dialog implements TextWatcher {
     FrameLayout flResultContain;
     @BindView(R.id.tv_no_result_tip)
     TextView tvNoResultTip;
+    @BindView(R.id.ll_container)
+    LinearLayout llContainer;
 
     private OnSearchListener listener;
 
@@ -64,8 +69,9 @@ public class SearchDialog extends Dialog implements TextWatcher {
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
         lp.height = WindowManager.LayoutParams.MATCH_PARENT;
         window.setAttributes(lp);
+        setCancelable(true);
 
-        setContentView(R.layout.dialog_lost_and_found_search);
+        setContentView(R.layout.dialog_lost_and_found_search2);
         ButterKnife.bind(this);
 
         etSearchContent.addTextChangedListener(this);
@@ -101,6 +107,31 @@ public class SearchDialog extends Dialog implements TextWatcher {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void show() {
+        super.show();
+    }
+
+    @Override
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        TransitionManager.beginDelayedTransition(llContainer, new ChangeBounds().setDuration(1000));
+        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) etSearchContent.getLayoutParams();
+        lp.width = LinearLayout.LayoutParams.MATCH_PARENT;
+        etSearchContent.setLayoutParams(lp);
+        tvCancel.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void dismiss() {
+        TransitionManager.beginDelayedTransition(llContainer);
+        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) etSearchContent.getLayoutParams();
+        lp.width = LinearLayout.LayoutParams.WRAP_CONTENT;
+        etSearchContent.setLayoutParams(lp);
+        tvCancel.setVisibility(View.GONE);
+        super.dismiss();
     }
 
     /**

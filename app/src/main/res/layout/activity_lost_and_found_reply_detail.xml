@@ -1,209 +1,217 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    android:id="@+id/cl_main"
-    xmlns:tools="http://schemas.android.com/tools">
-
-    <android.support.design.widget.AppBarLayout
-        android:fitsSystemWindows="true"
-        android:id="@+id/app_bar_layout"
-        app:elevation="0dp"
+    android:layout_height="match_parent">
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/white"
+        android:id="@+id/cl_main"
+        xmlns:tools="http://schemas.android.com/tools">
 
-        <android.support.design.widget.CollapsingToolbarLayout
+        <android.support.design.widget.AppBarLayout
+            android:fitsSystemWindows="true"
+            android:id="@+id/app_bar_layout"
+            app:elevation="0dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            android:theme="@style/AppTheme.AppBarOverlay">
 
-            <LinearLayout
-                android:visibility="visible"
-                android:background="@color/white"
-                android:id="@+id/ll_header"
-                android:paddingTop="8dp"
+            <android.support.design.widget.CollapsingToolbarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-                <RelativeLayout
+                <LinearLayout
+                    android:visibility="visible"
+                    android:background="@color/white"
+                    android:id="@+id/ll_header"
+                    android:paddingTop="8dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="42dp"
-                    android:layout_marginLeft="@dimen/mainMarginLeftRight"
-                    android:layout_marginRight="@dimen/mainMarginLeftRight"
-                    android:layout_marginBottom="@dimen/toolBarMarginBottom">
+                    android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/tv_toolbar_title"
-                        style="@style/ToolBarTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:text="回复详情" />
-
-                    <View
-                        android:id="@+id/v_more_hold_1"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_width="50dp"
-                        android:layout_height="20dp"/>
-
-                    <ImageView
-                        android:id="@+id/iv_three_dot2"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:src="@drawable/ic_three_dot"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </RelativeLayout>
-            </LinearLayout>
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/tool_bar"
-                android:layout_width="match_parent"
-                android:layout_height="42dp"
-                android:background="@color/white"
-                app:layout_collapseMode="pin">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:id="@+id/iv_back"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="10dp"
-                        android:paddingStart="20dp"
-                        android:paddingEnd="20dp"
-                        android:src="@drawable/back" />
-
-                    <TextView
-                        android:id="@+id/tv_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:textSize="@dimen/sp15"
-                        android:textStyle="bold"
-                        android:textColor="#222"
-                        android:text="回复详情" />
-
-                    <View
-                        android:id="@+id/v_more_hold"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_width="50dp"
-                        android:layout_height="match_parent"/>
-
-                    <ImageView
-                        android:id="@+id/iv_three_dot"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="@dimen/mainMarginLeftRight"
-                        android:layout_centerVertical="true"
-                        android:src="@drawable/ic_three_dot"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <View
-                        android:id="@+id/view_line"
-                        android:visibility="gone"
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="1px"
-                        android:layout_alignParentBottom="true"
-                        android:background="#d6d6d6"/>
-                </RelativeLayout>
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="42dp"
+                        android:layout_marginLeft="@dimen/mainMarginLeftRight"
+                        android:layout_marginRight="@dimen/mainMarginLeftRight"
+                        android:layout_marginBottom="@dimen/toolBarMarginBottom">
 
-            </android.support.v7.widget.Toolbar>
+                        <TextView
+                            android:id="@+id/tv_toolbar_title"
+                            style="@style/ToolBarTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:text="回复详情" />
 
-        </android.support.design.widget.CollapsingToolbarLayout>
+                        <View
+                            android:id="@+id/v_more_hold_1"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_width="50dp"
+                            android:layout_height="20dp"/>
 
-    </android.support.design.widget.AppBarLayout>
+                        <ImageView
+                            android:id="@+id/iv_three_dot2"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/ic_three_dot"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/tool_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:background="@color/white"
+                    app:layout_collapseMode="pin">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/iv_back"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="20dp"
+                            android:src="@drawable/back" />
+
+                        <TextView
+                            android:id="@+id/tv_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:textSize="@dimen/sp15"
+                            android:textStyle="bold"
+                            android:textColor="#222"
+                            android:text="回复详情" />
+
+                        <View
+                            android:id="@+id/v_more_hold"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_width="50dp"
+                            android:layout_height="match_parent"/>
+
+                        <ImageView
+                            android:id="@+id/iv_three_dot"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="@dimen/mainMarginLeftRight"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/ic_three_dot"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <View
+                            android:id="@+id/view_line"
+                            android:visibility="gone"
+                            android:layout_width="match_parent"
+                            android:layout_height="1px"
+                            android:layout_alignParentBottom="true"
+                            android:background="#d6d6d6"/>
+                    </RelativeLayout>
+
+                </android.support.v7.widget.Toolbar>
+
+            </android.support.design.widget.CollapsingToolbarLayout>
+
+        </android.support.design.widget.AppBarLayout>
 
 
-    <com.scwang.smartrefresh.layout.SmartRefreshLayout
-        android:id="@+id/refreshLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:srlHeaderHeight="40dp"
-        app:srlFooterHeight="60dp"
-        android:layout_marginLeft="@dimen/mainMarginLeftRight"
-        android:layout_marginRight="@dimen/mainMarginLeftRight"
-        >
-        <FrameLayout
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
+            android:id="@+id/refreshLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <RelativeLayout
-                android:id="@+id/rl_empty"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:srlHeaderHeight="40dp"
+            app:srlFooterHeight="60dp"
+            android:layout_marginLeft="@dimen/mainMarginLeftRight"
+            android:layout_marginRight="@dimen/mainMarginLeftRight"
+            >
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:visibility="gone"
-                android:background="@color/white"
                 android:layout_height="match_parent">
-                <TextView
-                    android:id="@+id/tv_empty_tip"
-                    android:textSize="14sp"
-                    android:text="@string/empty_tip"
-                    android:textColor="@color/colorDark2"
-                    android:layout_centerInParent="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                <ImageView
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="14dp"
-                    android:layout_above="@id/tv_empty_tip"
-                    android:src="@drawable/ic_empty_box"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </RelativeLayout>
-            <RelativeLayout
-                android:id="@+id/rl_error"
-                android:layout_width="match_parent"
-                android:visibility="gone"
-                android:background="@color/white"
-                android:layout_height="match_parent">
-                <TextView
-                    android:id="@+id/tv_error_tip"
-                    android:textSize="14sp"
-                    android:text="@string/network_available_error_tip"
-                    android:textColor="@color/colorDark2"
-                    android:layout_centerInParent="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                <ImageView
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="14dp"
-                    android:layout_above="@id/tv_error_tip"
-                    android:src="@drawable/ic_error_ballon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </RelativeLayout>
-            <android.support.v7.widget.RecyclerView
-                android:layout_marginBottom="@dimen/listBottomMargin"
-                android:overScrollMode="never"
-                android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                />
-        </FrameLayout>
-    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+                <RelativeLayout
+                    android:id="@+id/rl_empty"
+                    android:layout_width="match_parent"
+                    android:visibility="gone"
+                    android:background="@color/white"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:id="@+id/tv_empty_tip"
+                        android:textSize="14sp"
+                        android:text="@string/empty_tip"
+                        android:textColor="@color/colorDark2"
+                        android:layout_centerInParent="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <ImageView
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="14dp"
+                        android:layout_above="@id/tv_empty_tip"
+                        android:src="@drawable/ic_empty_box"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/rl_error"
+                    android:layout_width="match_parent"
+                    android:visibility="gone"
+                    android:background="@color/white"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:id="@+id/tv_error_tip"
+                        android:textSize="14sp"
+                        android:text="@string/network_available_error_tip"
+                        android:textColor="@color/colorDark2"
+                        android:layout_centerInParent="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <ImageView
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="14dp"
+                        android:layout_above="@id/tv_error_tip"
+                        android:src="@drawable/ic_error_ballon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
+                <android.support.v7.widget.RecyclerView
+                    android:layout_marginBottom="@dimen/listBottomMargin"
+                    android:overScrollMode="never"
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    />
+            </FrameLayout>
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
+    </android.support.design.widget.CoordinatorLayout>
     <LinearLayout
-        android:layout_marginStart="21dp"
-        android:layout_marginEnd="21dp"
         android:id="@+id/ll_footer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:layout_gravity="bottom|center_horizontal"
         android:gravity="center"
         android:orientation="vertical"
         android:visibility="visible"
-        app:layout_behavior="com.xiaolian.amigo.ui.lostandfound.behavior.FooterBehavior" >
+        >
         <TextView
+            android:layout_marginStart="21dp"
+            android:layout_marginEnd="21dp"
             android:text="回复评论"
             android:gravity="center"
             android:background="@color/lost_and_found_blue"
@@ -217,4 +225,5 @@
             android:layout_width="match_parent"
             android:layout_height="21dp"/>
     </LinearLayout>
-</android.support.design.widget.CoordinatorLayout>
+
+</LinearLayout>

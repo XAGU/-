@@ -17,6 +17,10 @@ public interface ILostAndFoundReplyDetailPresenter<V extends ILostAndFoundReplyD
 
     boolean isOwner();
 
+    boolean isPublisher();
+
+    void setCommentAuthorId(Long commentAuthorId);
+
     void publishReply(Long replyToId, Long replyToUserId, String reply);
 
     void setLostFoundId(Long  lostFoundId);

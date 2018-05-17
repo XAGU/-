@@ -7,9 +7,9 @@
 
     <LinearLayout
         android:id="@+id/ll_images"
+        android:layout_marginBottom="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
         android:orientation="horizontal"
         tools:visibility="visible"
         android:visibility="gone">
@@ -51,7 +51,6 @@
         tools:text="我丢失了一把雨伞"
         android:textSize="14sp"
         android:textStyle="bold"
-        android:layout_marginTop="20dp"
         android:textColor="@color/colorDark2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
@@ -60,18 +59,18 @@
         android:id="@+id/tv_content_desc"
         tools:text="我丢失了一把雨伞我丢失了一把雨伞我丢失了一把雨伞我丢失了一把雨伞我丢失了一把雨伞我丢失了一把雨伞我丢失了一把雨伞我丢失了一把雨伞我丢失了一把雨伞我丢失了一把雨伞我丢失了一把雨伞"
         android:textSize="14sp"
-        android:lineSpacingExtra="6dp"
+        android:lineSpacingExtra="4dp"
         android:layout_marginTop="20dp"
         android:textColor="@color/colorDark2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <LinearLayout
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="16dp"
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:layout_width="match_parent"
-        android:layout_height="38dp">
+        android:layout_height="wrap_content">
         <TextView
             android:id="@+id/tv_stat"
             tools:text="4912查看·103回复"
