@@ -25,6 +25,7 @@ import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundDetailContentDeleg
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundDetailPresenter2;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundDetailView;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundDetailView2;
+import com.xiaolian.amigo.ui.widget.CustomLinearLayoutManager;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.ui.widget.dialog.ActionSheetDialog;
 import com.xiaolian.amigo.ui.widget.dialog.LostAndFoundBottomDialog;
@@ -101,6 +102,7 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
     private LostAndFoundCommentDialog commentDialog;
     private LostAndFoundReplyDialog replyDialog;
     private LostAndFoundBottomDialog bottomDialog;
+    private volatile boolean refreshFlag = false;
 
     @Inject
     ILostAndFoundDetailPresenter2<ILostAndFoundDetailView2> presenter;
@@ -141,7 +143,7 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
                 presenter.setType(com.xiaolian.amigo.data.enumeration.annotation.LostAndFound.FOUND);
                 showFoundDetail();
             }
-            presenter.getDetail(getIntent().getLongExtra(KEY_ID, -1));
+//            presenter.getDetail(getIntent().getLongExtra(KEY_ID, -1));
         }
     }
 
@@ -162,7 +164,7 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
             }
         });
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new CustomLinearLayoutManager(this));
         refreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(RefreshLayout refreshLayout) {
@@ -178,7 +180,7 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
         refreshLayout.setRefreshHeader(new RefreshLayoutHeader(this));
         refreshLayout.setRefreshFooter(new RefreshLayoutFooter(this));
         refreshLayout.setReboundDuration(200);
-//        refreshLayout.autoRefresh(20);
+        refreshLayout.autoRefresh(20);
     }
 
     private void moreReply(Long commentId, String commentContent,
@@ -203,11 +205,13 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
 
     @Override
     public void onRefresh() {
-        presenter.getDetail();
+        if (content == null) {
+            presenter.getDetail(getIntent().getLongExtra(KEY_ID, -1));
+        } else {
+            presenter.refreshDetail();
+        }
         presenter.resetPage();
-        items.clear();
-        items.add(content);
-        presenter.getComments();
+        refreshFlag = true;
     }
 
     private void onLoadMore() {
@@ -226,13 +230,11 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
 
     @Override
     protected void setUp() {
-
     }
 
     @Override
     public void render(LostAndFound lostAndFound) {
         if (content == null) {
-            presenter.getComments();
             content = new LostAndFoundDetailAdapter.LostAndFoundDetailWrapper(lostAndFound);
             try {
                 if (!items.isEmpty()) {
@@ -245,7 +247,6 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
                 } else {
                     items.add(content);
                 }
-                adapter.notifyDataSetChanged();
             } catch (Exception e) {
                 // do nothing
             }
@@ -253,6 +254,7 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
             content.setCommentCount(lostAndFound.getCommentsCount());
             content.setViewCount(lostAndFound.getViewCount());
         }
+        presenter.getComments();
     }
 
     @OnClick({R.id.iv_three_dot, R.id.v_more_hold,
@@ -330,6 +332,11 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
 
     @Override
     public void addMore(List<LostAndFoundDetailAdapter.LostAndFoundDetailWrapper> wrappers) {
+        if (refreshFlag) {
+            refreshFlag = false;
+            items.clear();
+            items.add(content);
+        }
         items.addAll(wrappers);
         adapter.notifyDataSetChanged();
     }
@@ -363,6 +370,15 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
     public void finishView() {
         setResult(RESULT_OK);
         finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (presenter.needRefresh()) {
+            finishView();
+        } else {
+            super.onBackPressed();
+        }
     }
 
     @Override

@@ -30,6 +30,7 @@ import lombok.Data;
 
 public class LostAndFoundAdaptor2 extends CommonAdapter<LostAndFoundAdaptor2.LostAndFoundWrapper> {
     private Context context;
+    private boolean marginTop = false;
 
     public LostAndFoundAdaptor2(Context context, int layoutId, List<LostAndFoundWrapper> datas) {
         super(context, layoutId, datas);
@@ -37,9 +38,10 @@ public class LostAndFoundAdaptor2 extends CommonAdapter<LostAndFoundAdaptor2.Los
     }
 
     public LostAndFoundAdaptor2(Context context, int layoutId, List<LostAndFoundWrapper> datas,
-                                boolean isShowIcon) {
+                                boolean marginTop) {
         super(context, layoutId, datas);
         this.context = context;
+        this.marginTop = marginTop;
     }
 
     @Override
@@ -48,16 +50,16 @@ public class LostAndFoundAdaptor2 extends CommonAdapter<LostAndFoundAdaptor2.Los
         holder.setText(R.id.tv_content, lostAndFoundWrapper.getContent());
 //        holder.setText(R.id.)
         holder.setText(R.id.tv_time, TimeUtils.lostAndFoundTimestampFormat(lostAndFoundWrapper.getTime()));
-//        if (position == 0) {
-//            ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams) holder.itemView.getLayoutParams();
-//            marginLayoutParams.setMargins(0, 0, 0, 0);
-//            holder.itemView.setLayoutParams(marginLayoutParams);
-//        } else {
-//            ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams) holder.itemView.getLayoutParams();
-////            marginLayoutParams.setMargins(0, ScreenUtils.dpToPxInt(this.context, 10), 0, 0);
-//            marginLayoutParams.setMargins(0, 0, 0, ScreenUtils.dpToPxInt(this.context, 10));
-//            holder.itemView.setLayoutParams(marginLayoutParams);
-//        }
+        if (position == 0 && marginTop) {
+            ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams) holder.itemView.getLayoutParams();
+            marginLayoutParams.setMargins(0, ScreenUtils.dpToPxInt(this.context, 10), 0, 0);
+            holder.itemView.setLayoutParams(marginLayoutParams);
+        } else {
+            ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams) holder.itemView.getLayoutParams();
+//            marginLayoutParams.setMargins(0, ScreenUtils.dpToPxInt(this.context, 10), 0, 0);
+            marginLayoutParams.setMargins(0, 0, 0, 0);
+            holder.itemView.setLayoutParams(marginLayoutParams);
+        }
         if (ObjectsCompat.equals(lostAndFoundWrapper.getType(), LostAndFound.LOST)) {
             // 失物
             ((TextView) holder.getView(R.id.tv_title))
@@ -100,6 +102,10 @@ public class LostAndFoundAdaptor2 extends CommonAdapter<LostAndFoundAdaptor2.Los
 
         public Integer getViewCount() {
             return lostAndFound.getViewCount() == null ? 0 : lostAndFound.getViewCount();
+        }
+
+        public void addViewCount() {
+            lostAndFound.setViewCount(lostAndFound.getViewCount() + 1);
         }
 
         public Integer getCommentCount() {

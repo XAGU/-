@@ -91,6 +91,7 @@ public class FavoriteActivity extends FavoriteBaseActivity implements IFavoriteV
         presenter.onAttach(this);
         setMainBackground(R.color.white);
         setHeaderBackground(R.color.white);
+        setToolbarBackgroundColor(R.color.white);
     }
 
     @Override

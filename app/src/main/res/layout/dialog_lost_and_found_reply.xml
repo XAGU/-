@@ -38,6 +38,7 @@
             android:inputType="text"
             android:layout_height="33dp" />
         <TextView
+            android:enabled="false"
             android:id="@+id/tv_send"
             android:text="发送"
             android:gravity="center"

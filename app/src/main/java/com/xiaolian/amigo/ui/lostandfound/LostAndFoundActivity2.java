@@ -76,6 +76,8 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
     private RecyclerView searchRecyclerView;
     private LostAndFoundAdaptor2 searchAdaptor;
 
+    private volatile boolean refreshFlag = false;
+
     List<LostAndFoundAdaptor2.LostAndFoundWrapper> lostAndFounds = new ArrayList<>();
 
     List<LostAndFoundAdaptor2.LostAndFoundWrapper> searchResult = new ArrayList<>();
@@ -132,7 +134,8 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
                             lostAndFounds.get(position).getType());
                     intent.putExtra(LostAndFoundDetailActivity2.KEY_ID, lostAndFounds.get(position).getId());
                     startActivityForResult(intent, REQUEST_CODE_PUBLISH);
-
+                    lostAndFounds.get(position).addViewCount();
+//                    adaptor.notifyDataSetChanged();
                 } catch (ArrayIndexOutOfBoundsException e) {
                     Log.wtf(TAG, "数组越界", e);
                 } catch (Exception e) {
@@ -197,7 +200,7 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
         if (searchRecyclerView == null) {
             searchRecyclerView = new RecyclerView(this);
             searchAdaptor = new LostAndFoundAdaptor2(this, R.layout.item_lost_and_found2, searchResult, true);
-            searchRecyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 10)));
+//            searchRecyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 10)));
             searchAdaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
@@ -248,7 +251,7 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
 
     private void onRefresh() {
         presenter.resetPage();
-        lostAndFounds.clear();
+        refreshFlag = true;
         presenter.getList(false, null);
     }
 
@@ -295,6 +298,10 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
 
     @Override
     public void addMore(List<LostAndFoundAdaptor2.LostAndFoundWrapper> wrappers) {
+        if (refreshFlag) {
+            refreshFlag = false;
+            lostAndFounds.clear();
+        }
         lostAndFounds.addAll(wrappers);
         adaptor.notifyDataSetChanged();
     }
@@ -307,6 +314,8 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
 //                refreshLostAndFound();
                 onRefresh();
             }
+        } else {
+            adaptor.notifyDataSetChanged();
         }
     }
 }

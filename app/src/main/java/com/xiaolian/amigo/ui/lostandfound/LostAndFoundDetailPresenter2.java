@@ -43,6 +43,11 @@ public class LostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView2>
     private Integer page = Constant.PAGE_START_NUM;
     private Integer size = 10;
     private Integer replySize = 2;
+    /**
+     * 原始数量
+     */
+    private Integer preViewCount;
+    private Integer preReplyCount;
 
     @Inject
     public LostAndFoundDetailPresenter2(ILostAndFoundDataManager lostAndFoundDataManager) {
@@ -67,17 +72,23 @@ public class LostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView2>
                     public void onReady(ApiResult<LostAndFoundDTO> result) {
                         if (null == result.getError()) {
                             lostAndFound = result.getData().transform();
-                            getMvpView().render(result.getData().transform());
+                            preViewCount = lostAndFound.getViewCount();
+                            preReplyCount = lostAndFound.getCommentsCount();
+                            getMvpView().post(() ->
+                                    getMvpView().render(result.getData().transform()));
                         } else {
                             getMvpView().onError(result.getError().getDisplayMessage());
                         }
                     }
-                });
-    }
 
-    @Override
-    public void getDetail() {
-        getDetail(id);
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        getMvpView().setRefreshComplete();
+                        getMvpView().setLoadMoreComplete();
+                        getMvpView().showErrorView();
+                    }
+                });
     }
 
     @Override
@@ -86,13 +97,15 @@ public class LostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView2>
         reqDTO.setId(id);
         reqDTO.setCountView(false);
         addObserver(lostAndFoundDataManager.getLostAndFound(reqDTO),
-                new NetworkObserver<ApiResult<LostAndFoundDTO>>() {
+                new NetworkObserver<ApiResult<LostAndFoundDTO>>(false, true) {
 
                     @Override
                     public void onReady(ApiResult<LostAndFoundDTO> result) {
                         if (null == result.getError()) {
                             lostAndFound = result.getData().transform();
-                            getMvpView().render(result.getData().transform());
+                            getMvpView().post(() ->
+                                    getMvpView().render(result.getData().transform())
+                            );
                         } else {
                             getMvpView().onError(result.getError().getDisplayMessage());
                         }
@@ -135,7 +148,8 @@ public class LostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView2>
                                 }
                                 getMvpView().hideEmptyView();
                                 page ++;
-                                getMvpView().addMore(wrappers);
+                                getMvpView().post(() ->
+                                        getMvpView().addMore(wrappers));
                             }
                         } else {
                             getMvpView().onError(result.getError().getDisplayMessage());
@@ -256,6 +270,12 @@ public class LostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView2>
                         }
                     });
         }
+    }
+
+    @Override
+    public boolean needRefresh() {
+        return !ObjectsCompat.equals(preReplyCount, lostAndFound.getCommentsCount())
+                || !ObjectsCompat.equals(preViewCount, lostAndFound.getViewCount());
     }
 
     private void fetchComment(Long id) {

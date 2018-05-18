@@ -56,6 +56,8 @@ public class MyPublishActivity2 extends LostAndFoundBaseActivity implements ILos
 
     List<LostAndFoundAdaptor2.LostAndFoundWrapper> lostAndFounds = new ArrayList<>();
 
+    private volatile boolean refreshFlag;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +68,7 @@ public class MyPublishActivity2 extends LostAndFoundBaseActivity implements ILos
     }
 
     private void initRecyclerView() {
-        adaptor = new LostAndFoundAdaptor2(this, R.layout.item_lost_and_found2, lostAndFounds);
+        adaptor = new LostAndFoundAdaptor2(this, R.layout.item_lost_and_found2, lostAndFounds, true);
 //        recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 10)));
         adaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
@@ -113,7 +115,7 @@ public class MyPublishActivity2 extends LostAndFoundBaseActivity implements ILos
 
     private void onRefresh() {
         presenter.resetPage();
-        lostAndFounds.clear();
+        refreshFlag = true;
         presenter.getMyList();
     }
 
@@ -160,6 +162,10 @@ public class MyPublishActivity2 extends LostAndFoundBaseActivity implements ILos
 
     @Override
     public void addMore(List<LostAndFoundAdaptor2.LostAndFoundWrapper> wrappers) {
+        if (refreshFlag) {
+            refreshFlag = false;
+            lostAndFounds.clear();
+        }
         lostAndFounds.addAll(wrappers);
         adaptor.notifyDataSetChanged();
     }

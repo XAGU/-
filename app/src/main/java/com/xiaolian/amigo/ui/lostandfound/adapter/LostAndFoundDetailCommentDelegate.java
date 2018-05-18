@@ -21,6 +21,7 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.annotation.LostAndFound;
 import com.xiaolian.amigo.data.network.model.lostandfound.LostFoundReplyDTO;
 import com.xiaolian.amigo.ui.widget.BorderedSpan;
+import com.xiaolian.amigo.ui.widget.CustomLinearLayoutManager;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.DimentionUtils;
@@ -161,7 +162,7 @@ public class LostAndFoundDetailCommentDelegate
                 }
             });
             recyclerView.setAdapter(adapter);
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            recyclerView.setLayoutManager(new CustomLinearLayoutManager(context));
         }
     }
 

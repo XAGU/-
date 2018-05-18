@@ -109,6 +109,8 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
     private Long commentId;
     private Integer lostFoundType;
 
+    private volatile boolean refreshFlag;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -244,8 +246,7 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
     @Override
     public void onRefresh() {
         presenter.resetPage();
-        followRelays.clear();
-        followRelays.add(mainReply);
+        refreshFlag = true;
         presenter.getReplies();
     }
 
@@ -286,6 +287,11 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
 
     @Override
     public void addMore(List<LostAndFoundReplyDetailAdapter.LostAndFoundReplyDetailWrapper> wrappers) {
+        if (refreshFlag) {
+            refreshFlag = false;
+            followRelays.clear();
+            followRelays.add(mainReply);
+        }
         followRelays.addAll(wrappers);
         adapter.notifyDataSetChanged();
     }

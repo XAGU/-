@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.annotation.LostAndFound;
 import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.util.TimeUtils;
 import com.zhy.adapter.recyclerview.base.ItemViewDelegate;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -42,6 +43,7 @@ public class LostAndFoundReplyDetailMainDelegate
         holder.setText(R.id.tv_comment_author, lostAndFoundReplyDetailWrapper.getAuthor());
         holder.setText(R.id.tv_content, lostAndFoundReplyDetailWrapper.getContent());
         holder.getView(R.id.iv_owner).setVisibility(lostAndFoundReplyDetailWrapper.isOwner() ? View.VISIBLE : View.GONE);
+        holder.setText(R.id.tv_time, TimeUtils.lostAndFoundTimestampFormat(lostAndFoundReplyDetailWrapper.getTime()));
         holder.setImageResource(R.id.iv_owner,
                 ObjectsCompat.equals(lostFoundType, LostAndFound.LOST) ?
                         R.drawable.ic_lost_owner : R.drawable.ic_found_owner);

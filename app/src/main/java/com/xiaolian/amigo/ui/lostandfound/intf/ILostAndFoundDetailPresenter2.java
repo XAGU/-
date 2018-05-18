@@ -13,8 +13,6 @@ public interface ILostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView
 
     void getDetail(long id);
 
-    void getDetail();
-
     void refreshDetail();
 
     LostAndFound getLostAndFound();
@@ -30,4 +28,6 @@ public interface ILostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView
     boolean isOwner();
 
     void reportOrDelete();
+
+    boolean needRefresh();
 }
