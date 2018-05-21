@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.v4.util.ObjectsCompat;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
@@ -86,7 +87,12 @@ public class LostAndFoundReplyDetailFollowDelegate
                 public void draw(Canvas canvas, CharSequence text, int start, int end, float x, int top, int y, int bottom, Paint paint) {
                     Drawable b = getDrawable();
                     canvas.save();
-                    int extra = textView.getLineCount() > 1 ? (int) textView.getLineSpacingExtra() : 0;
+                    int extra;
+                    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1) {
+                        extra = textView.getLineCount() > 1 ? (int) textView.getLineSpacingExtra() : 0;
+                    } else {
+                        extra = (int) textView.getLineSpacingExtra();
+                    }
                     int transY = bottom - b.getBounds().bottom - extra;
                     transY -= paint.getFontMetricsInt().descent / 2;
                     canvas.translate(x, transY);
@@ -128,7 +134,12 @@ public class LostAndFoundReplyDetailFollowDelegate
                     public void draw(Canvas canvas, CharSequence text, int start, int end, float x, int top, int y, int bottom, Paint paint) {
                         Drawable b = getDrawable();
                         canvas.save();
-                        int extra = textView.getLineCount() > 1 ? (int) textView.getLineSpacingExtra() : 0;
+                        int extra;
+                        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1) {
+                            extra = textView.getLineCount() > 1 ? (int) textView.getLineSpacingExtra() : 0;
+                        } else {
+                            extra = (int) textView.getLineSpacingExtra();
+                        }
                         int transY = bottom - b.getBounds().bottom - extra;
                         transY -= paint.getFontMetricsInt().descent / 2;
                         canvas.translate(x, transY);

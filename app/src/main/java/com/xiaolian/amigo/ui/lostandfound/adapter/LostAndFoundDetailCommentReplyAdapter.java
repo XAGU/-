@@ -86,8 +86,8 @@ public class LostAndFoundDetailCommentReplyAdapter
                 public void draw(Canvas canvas, CharSequence text, int start, int end, float x, int top, int y, int bottom, Paint paint) {
                     Drawable b = getDrawable();
                     canvas.save();
-                    int extra = 0;
-                    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+                    int extra;
+                    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1) {
                         extra = textView.getLineCount() > 1 ? (int) textView.getLineSpacingExtra() : 0;
                     } else {
                         extra = (int) textView.getLineSpacingExtra();
@@ -134,7 +134,12 @@ public class LostAndFoundDetailCommentReplyAdapter
                     public void draw(Canvas canvas, CharSequence text, int start, int end, float x, int top, int y, int bottom, Paint paint) {
                         Drawable b = getDrawable();
                         canvas.save();
-                        int extra = textView.getLineCount() > 1 ? (int) textView.getLineSpacingExtra() : 0;
+                        int extra;
+                        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1) {
+                            extra = textView.getLineCount() > 1 ? (int) textView.getLineSpacingExtra() : 0;
+                        } else {
+                            extra = (int) textView.getLineSpacingExtra();
+                        }
                         int transY = bottom - b.getBounds().bottom - extra;
                         transY -= paint.getFontMetricsInt().descent / 2;
                         canvas.translate(x, transY);
