@@ -34,6 +34,7 @@
             android:background="@drawable/bg_lost_and_found_comment_input"
             android:layout_width="0dp"
             android:hint="请输入内容..."
+            android:textColorHint="#bbb"
             android:layout_weight="1"
             android:inputType="text"
             android:layout_height="33dp" />

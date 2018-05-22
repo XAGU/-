@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.util.CommonUtil;
+import com.xiaolian.amigo.util.ViewUtil;
 
 /**
  * 供水时段、提现时段提示
@@ -74,6 +75,7 @@ public class LostAndFoundReplyDialog extends Dialog {
             public void afterTextChanged(Editable s) {
             }
         });
+        ViewUtil.setEditHintAndSize("请输入内容...", 14, etReply);
         tvReplyTip = findViewById(R.id.tv_reply_tip);
     }
 

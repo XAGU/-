@@ -18,7 +18,8 @@
         <TextView
             android:layout_marginStart="7dp"
             android:id="@+id/tv_comment_content"
-            tools:text="测试文字"
+            tools:text="测试文字\ntest"
+            android:textSize="12sp"
             android:gravity="center_vertical"
             android:lineSpacingExtra="3dp"
             android:layout_width="match_parent"

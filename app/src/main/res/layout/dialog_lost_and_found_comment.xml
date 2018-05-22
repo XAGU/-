@@ -35,6 +35,8 @@
             android:scrollbars="vertical"
             android:layout_weight="1"
             android:maxHeight="115dp"
+            android:hint="请输入内容..."
+            android:textColorHint="#bbb"
             android:minHeight="47dp"
             android:inputType="textMultiLine"
             android:layout_height="wrap_content" />
