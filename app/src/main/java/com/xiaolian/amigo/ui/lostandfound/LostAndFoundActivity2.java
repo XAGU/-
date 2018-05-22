@@ -199,7 +199,7 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
     public void showSearchResult(List<LostAndFoundAdaptor2.LostAndFoundWrapper> wappers) {
         if (searchRecyclerView == null) {
             searchRecyclerView = new RecyclerView(this);
-            searchAdaptor = new LostAndFoundAdaptor2(this, R.layout.item_lost_and_found2, searchResult, true);
+            searchAdaptor = new LostAndFoundAdaptor2(this, R.layout.item_lost_and_found2, searchResult, false);
 //            searchRecyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 10)));
             searchAdaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                 @Override

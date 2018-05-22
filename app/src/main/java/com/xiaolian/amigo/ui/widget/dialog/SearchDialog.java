@@ -122,6 +122,11 @@ public class SearchDialog extends Dialog implements TextWatcher {
         lp.width = LinearLayout.LayoutParams.MATCH_PARENT;
         etSearchContent.setLayoutParams(lp);
         tvCancel.setVisibility(View.VISIBLE);
+
+        rlResult.setVisibility(View.GONE);
+        if (flResultContain.getChildCount() > 0) {
+            flResultContain.removeAllViews();
+        }
     }
 
     @Override
@@ -162,6 +167,7 @@ public class SearchDialog extends Dialog implements TextWatcher {
         if (flResultContain.getChildCount() > 0) {
             flResultContain.removeAllViews();
         }
+        view.setBackgroundResource(R.color.colorBackgroundGray);
         flResultContain.addView(view);
     }
 

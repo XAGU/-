@@ -284,6 +284,7 @@
         <activity android:name=".ui.lostandfound.PublishLostAndFoundActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan|stateHidden"
             />
 
         <!--报修评价-->
