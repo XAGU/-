@@ -89,6 +89,9 @@ public class LostAndFoundDetailCommentDelegate
         holder.setText(R.id.tv_comment_content, lostAndFoundDetailWrapper.getCommentContent());
         holder.setText(R.id.tv_time,
                 TimeUtils.lostAndFoundTimestampFormat(lostAndFoundDetailWrapper.getTime()));
+
+        holder.getView(R.id.tv_replay).setVisibility(lostAndFoundDetailWrapper.isCommentEnable() ?
+                View.VISIBLE : View.GONE);
         holder.getView(R.id.tv_replay).setOnClickListener(v -> {
             if (replyCommentListener != null) {
                 replyCommentListener.onReplyComment(lostAndFoundDetailWrapper.getId(),
@@ -175,8 +178,7 @@ public class LostAndFoundDetailCommentDelegate
                     lostAndFoundDetailWrapper.isOwner(),
                     lostAndFoundDetailWrapper.getOwnerId(),
                     lostAndFoundDetailWrapper.getTime(),
-                    lostAndFoundDetailWrapper.getAvatar(),
-                    lostAndFoundDetailWrapper.getId());
+                    lostAndFoundDetailWrapper.getAvatar());
         }
     }
 
@@ -224,7 +226,7 @@ public class LostAndFoundDetailCommentDelegate
         void onMoreReplyClick(Long commentId, String commentContent,
                               Long commentAuthorId, String commentAuthor,
                               boolean owner, Long ownerId, Long time,
-                              String avatar, Long lostFoundId);
+                              String avatar);
     }
 
     public class GlideImageLoader extends ImageLoader {

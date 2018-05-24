@@ -19,4 +19,11 @@ public class LostFoundCommentDTO {
     private Integer repliesDelCount;
     private Long userId;
     private String userNickname;
+
+    public String getContent() {
+        if (content == null) {
+            content = "";
+        }
+        return content.replaceAll("\n+", "\n");
+    }
 }

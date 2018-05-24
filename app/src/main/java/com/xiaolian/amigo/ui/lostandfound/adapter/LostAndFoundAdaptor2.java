@@ -73,11 +73,20 @@ public class LostAndFoundAdaptor2 extends CommonAdapter<LostAndFoundAdaptor2.Los
                     .setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
         }
         // 设置查看评论数
-        setStat(holder.getView(R.id.tv_stat), lostAndFoundWrapper.getViewCount(), lostAndFoundWrapper.getCommentCount());
+        setStat(holder.getView(R.id.tv_stat),
+                lostAndFoundWrapper.getViewCount(),
+                lostAndFoundWrapper.getCommentCount(),
+                lostAndFoundWrapper.isCommentEnable() == null ? false : lostAndFoundWrapper.isCommentEnable());
     }
 
-    private void setStat(TextView textView, Integer viewCount, Integer commentCount) {
-        textView.setText(String.format(Locale.getDefault(), "%d查看·%d回复", viewCount, commentCount));
+    private void setStat(TextView textView, Integer viewCount, Integer commentCount, boolean isCommentEnable) {
+        if (isCommentEnable) {
+            textView.setText(String.format(Locale.getDefault(),
+                    "%d查看·%d回复", viewCount, commentCount));
+        } else {
+            textView.setText(String.format(Locale.getDefault(),
+                    "%d查看", viewCount));
+        }
     }
 
     public void replaceData(List<LostAndFoundWrapper> wapper) {
@@ -98,6 +107,10 @@ public class LostAndFoundAdaptor2 extends CommonAdapter<LostAndFoundAdaptor2.Los
 
         public Long getId() {
             return lostAndFound.getId();
+        }
+
+        public Boolean isCommentEnable() {
+            return lostAndFound.getCommentEnable();
         }
 
         public Integer getViewCount() {

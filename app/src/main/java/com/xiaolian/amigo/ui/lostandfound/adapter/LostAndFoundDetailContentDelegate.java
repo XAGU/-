@@ -72,7 +72,7 @@ public class LostAndFoundDetailContentDelegate
         holder.setText(R.id.tv_time,
                 TimeUtils.lostAndFoundTimestampFormat(lostAndFoundDetailWrapper.getTime()));
         setStat(holder.getView(R.id.tv_stat), lostAndFoundDetailWrapper.getViewCount(),
-                lostAndFoundDetailWrapper.getCommentCount());
+                lostAndFoundDetailWrapper.getCommentCount(), lostAndFoundDetailWrapper.isCommentEnable());
         LinearLayout llImages = holder.getView(R.id.ll_images);
         ImageView ivFirst = holder.getView(R.id.iv_first);
         ImageView ivSecond = holder.getView(R.id.iv_second);
@@ -131,8 +131,12 @@ public class LostAndFoundDetailContentDelegate
         }
     }
 
-    private void setStat(TextView textView, Integer viewCount, Integer commentCount) {
-        textView.setText(String.format(Locale.getDefault(), "%d查看·%d回复", viewCount, commentCount));
+    private void setStat(TextView textView, Integer viewCount, Integer commentCount, boolean commentEnable) {
+        if (commentEnable) {
+            textView.setText(String.format(Locale.getDefault(), "%d查看·%d回复", viewCount, commentCount));
+        } else {
+            textView.setText(String.format(Locale.getDefault(), "%d查看", viewCount));
+        }
     }
 
     public class GlideImageLoader extends ImageLoader {

@@ -219,7 +219,7 @@
         android:background="@color/white"
         android:layout_gravity="bottom|center_horizontal"
         android:orientation="vertical"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_behavior="com.xiaolian.amigo.ui.lostandfound.behavior.FooterBehavior" >
         <TextView
             android:layout_marginStart="21dp"

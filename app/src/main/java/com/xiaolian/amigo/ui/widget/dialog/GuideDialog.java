@@ -35,8 +35,10 @@ public class GuideDialog extends Dialog {
         WindowManager.LayoutParams lp = window.getAttributes();
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
         lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.alpha = 0.6f;
         window.setAttributes(lp);
-        setCanceledOnTouchOutside(false);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        setCanceledOnTouchOutside(true);
         initView(type);
     }
 

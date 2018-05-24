@@ -18,10 +18,13 @@ import com.xiaolian.amigo.R;
 
 public class LostAndFoundBottomDialog extends Dialog {
 
-    private OnOkClickListener listener;
+    private OnOkClickListener onOkClickListener;
+    private OnOtherClickListener onOtherClickListener;
     private Context context;
     private TextView tvOk;
     private TextView tvCancel;
+    private TextView tvOther;
+    private View vOther;
 
     public LostAndFoundBottomDialog(@NonNull Context context) {
         super(context, R.style.ActionSheetDialogStyle);
@@ -42,22 +45,46 @@ public class LostAndFoundBottomDialog extends Dialog {
         tvOk = findViewById(R.id.tv_ok);
         tvOk.setOnClickListener(v -> {
             dismiss();
-            if (listener != null) {
-                listener.onOkClick(this);
+            if (onOkClickListener != null) {
+                onOkClickListener.onOkClick(this);
             }
         });
         tvCancel = findViewById(R.id.tv_cancel);
         tvCancel.setOnClickListener(v -> {
             dismiss();
         });
+        tvOther = findViewById(R.id.tv_other);
+        tvOther.setOnClickListener(v -> {
+            dismiss();
+            if (onOtherClickListener != null) {
+                onOtherClickListener.onOtherClick(this);
+            }
+        });
+        vOther = findViewById(R.id.v_other);
     }
 
     public void setOkText(String ok) {
         tvOk.setText(ok);
+        tvOther.setVisibility(View.GONE);
+        vOther.setVisibility(View.GONE);
+    }
+
+    public void setOtherText(String otherText) {
+        tvOther.setText(otherText);
+        tvOther.setVisibility(View.VISIBLE);
+        vOther.setVisibility(View.VISIBLE);
     }
 
     public void setOnOkClickListener(OnOkClickListener listener) {
-        this.listener = listener;
+        this.onOkClickListener = listener;
+    }
+
+    public void setOnOtherClickListener(OnOtherClickListener listener) {
+        this.onOtherClickListener = listener;
+    }
+
+    public interface OnOtherClickListener {
+        void onOtherClick(Dialog dialog);
     }
 
     public interface OnOkClickListener {

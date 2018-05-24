@@ -34,4 +34,10 @@ public interface ILostAndFoundReplyDetailPresenter<V extends ILostAndFoundReplyD
     Long getUserId();
 
     void deleteReply(Long id);
+
+    void reportReply(Long id);
+
+    void setCommentEnable(boolean commentEnable);
+
+    boolean isCommentEnable();
 }

@@ -13,7 +13,10 @@ import lombok.Data;
  */
 @Data
 public class LostAndFound implements Serializable {
-
+    /**
+     * 是否开启评论
+     */
+    private Boolean commentEnable;
     private Long createTime;
     private String description;
     private Long id;

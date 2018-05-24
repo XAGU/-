@@ -25,6 +25,8 @@ public class LostAndFoundPresenter2<V extends ILostAndFoundView2> extends BasePr
     private ILostAndFoundDataManager lostAndFoundDataManager;
     private int page = Constant.PAGE_START_NUM;
     private static final int size = Constant.PAGE_SIZE;
+    private boolean commentEnable = false;
+
 
     @Inject
     public LostAndFoundPresenter2(ILostAndFoundDataManager lostAndFoundDataManager) {
@@ -53,6 +55,9 @@ public class LostAndFoundPresenter2<V extends ILostAndFoundView2> extends BasePr
                         getMvpView().hideEmptyView();
                         getMvpView().hideErrorView();
                         if (null == result.getError()) {
+                            if (result.getData().getCommentEnable() != null) {
+                                commentEnable = result.getData().getCommentEnable();
+                            }
                             if (null != result.getData().getLostAndFounds()) {
                                 List<LostAndFoundAdaptor2.LostAndFoundWrapper> wrappers = new ArrayList<>();
                                 for (LostAndFoundDTO lost : result.getData().getLostAndFounds()) {
@@ -106,6 +111,9 @@ public class LostAndFoundPresenter2<V extends ILostAndFoundView2> extends BasePr
                         getMvpView().hideEmptyView();
                         getMvpView().hideErrorView();
                         if (null == result.getError()) {
+                            if (result.getData().getCommentEnable() != null) {
+                                commentEnable = result.getData().getCommentEnable();
+                            }
                             if (null != result.getData().getLostAndFounds()) {
                                 List<LostAndFoundAdaptor2.LostAndFoundWrapper> wrappers = new ArrayList<>();
                                 for (LostAndFoundDTO lost : result.getData().getLostAndFounds()) {
@@ -133,5 +141,10 @@ public class LostAndFoundPresenter2<V extends ILostAndFoundView2> extends BasePr
                         getMvpView().showErrorView();
                     }
                 });
+    }
+
+    @Override
+    public boolean isCommentEnable() {
+        return commentEnable;
     }
 }

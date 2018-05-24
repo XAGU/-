@@ -186,8 +186,7 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
     private void moreReply(Long commentId, String commentContent,
                            Long commentAuthorId, String commentAuthor,
                            boolean owner, Long ownerId, Long time,
-                           String avatar,
-                           Long lostFoundId) {
+                           String avatar) {
         startActivityForResult(new Intent(this, LostAndFoundReplyDetailActivity.class)
                 .putExtra(LostAndFoundReplyDetailActivity.KEY_COMMENT_ID, commentId)
                 .putExtra(LostAndFoundReplyDetailActivity.KEY_COMMENT_CONTENT, commentContent)
@@ -197,9 +196,10 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
                 .putExtra(LostAndFoundReplyDetailActivity.KEY_OWNER_ID, ownerId)
                 .putExtra(LostAndFoundReplyDetailActivity.KEY_TIME, time)
                 .putExtra(LostAndFoundReplyDetailActivity.KEY_AVATAR, avatar)
-                .putExtra(LostAndFoundReplyDetailActivity.KEY_LOST_FOUND_ID, lostFoundId)
+                .putExtra(LostAndFoundReplyDetailActivity.KEY_LOST_FOUND_ID, presenter.getLostAndFound().getId())
                 .putExtra(LostAndFoundReplyDetailActivity.KEY_LOST_FOUND_TYPE,
-                        presenter.getLostAndFound().getType()),
+                        presenter.getLostAndFound().getType())
+                .putExtra(LostAndFoundReplyDetailActivity.KEY_COMMENT_ENABLE, presenter.isCommentEnable()),
                 REQUEST_CODE_REPLY_DETAIL);
     }
 
@@ -270,6 +270,9 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
 
     @OnClick(R.id.ll_footer)
     public void publishComment() {
+        if (!presenter.isCommentEnable()) {
+            return;
+        }
         if (commentDialog == null) {
             commentDialog = new LostAndFoundCommentDialog(this);
         }
@@ -284,6 +287,9 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
     }
 
     private void publishReply(Long replyToId, Long replyToUserId, String replyToUserName) {
+        if (!presenter.isCommentEnable()) {
+            return;
+        }
         if (replyDialog == null) {
             replyDialog = new LostAndFoundReplyDialog(this);
         }
@@ -370,6 +376,16 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
     public void finishView() {
         setResult(RESULT_OK);
         finish();
+    }
+
+    @Override
+    public void showFootView() {
+        llFooter.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideFootView() {
+        llFooter.setVisibility(View.GONE);
     }
 
     @Override

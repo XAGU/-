@@ -207,7 +207,7 @@
         android:layout_gravity="bottom|center_horizontal"
         android:gravity="center"
         android:orientation="vertical"
-        android:visibility="visible"
+        android:visibility="gone"
         >
         <TextView
             android:layout_marginStart="21dp"

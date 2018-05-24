@@ -30,4 +30,6 @@ public interface ILostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView
     void reportOrDelete();
 
     boolean needRefresh();
+
+    boolean isCommentEnable();
 }

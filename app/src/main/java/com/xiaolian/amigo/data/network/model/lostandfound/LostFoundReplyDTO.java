@@ -16,4 +16,11 @@ public class LostFoundReplyDTO {
     private String replyToUserNickname;
     private Long userId;
     private String userNickname;
+
+    public String getContent() {
+        if (content == null) {
+            content = "";
+        }
+        return content.replaceAll("\n+", "\n");
+    }
 }

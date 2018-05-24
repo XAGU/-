@@ -12,4 +12,9 @@ public interface ILostAndFoundPresenter2<V extends ILostAndFoundView2> extends I
     void resetPage();
 
     void getMyList();
+
+    /**
+     * 是否开启评论
+     */
+    boolean isCommentEnable();
 }

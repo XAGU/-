@@ -36,6 +36,7 @@ public class LostAndFoundReplyDetailPresenter<V extends ILostAndFoundReplyDetail
     private Long ownerId;
     private Long commentAuthorId;
     private Long lostFoundId;
+    private boolean commentEnable;
 
     @Inject
     public LostAndFoundReplyDetailPresenter(ILostAndFoundDataManager lostAndFoundManager) {
@@ -227,5 +228,34 @@ public class LostAndFoundReplyDetailPresenter<V extends ILostAndFoundReplyDetail
                         }
                     }
                 });
+    }
+
+    @Override
+    public void reportReply(Long id) {
+        SaveLostAndFoundReportDTO reqDTO = new SaveLostAndFoundReportDTO();
+        reqDTO.setId(id);
+        reqDTO.setType(4);
+        addObserver(lostAndFoundManager.report(reqDTO),
+                new NetworkObserver<ApiResult<SimpleRespDTO>>(){
+
+                    @Override
+                    public void onReady(ApiResult<SimpleRespDTO> result) {
+                        if (null == result.getError()) {
+                            getMvpView().onSuccess("举报成功");
+                        } else {
+                            getMvpView().onError(result.getError().getDisplayMessage());
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void setCommentEnable(boolean commentEnable) {
+        this.commentEnable = commentEnable;
+    }
+
+    @Override
+    public boolean isCommentEnable() {
+        return commentEnable;
     }
 }

@@ -15,6 +15,10 @@ import lombok.Data;
  */
 @Data
 public class LostAndFoundDTO implements Mapper<LostAndFound> {
+    /**
+     * 是否开启评论
+     */
+    private Boolean commentEnable;
     private String itemName;
 
     private Integer commentsCount;
@@ -38,8 +42,9 @@ public class LostAndFoundDTO implements Mapper<LostAndFound> {
     @Override
     public LostAndFound transform() {
         LostAndFound lostAndFound = new LostAndFound();
+        lostAndFound.setCommentEnable(commentEnable);
         lostAndFound.setCreateTime(createTime);
-        lostAndFound.setDescription(description);
+        lostAndFound.setDescription(description.replaceAll("\n+", "\n"));
         lostAndFound.setId(id);
         lostAndFound.setItemName(itemName);
         lostAndFound.setLocation(location);

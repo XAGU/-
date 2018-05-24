@@ -23,7 +23,6 @@ import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundReplyDetailMainDel
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundReplyDetailPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundReplyDetailView;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
-import com.xiaolian.amigo.ui.widget.dialog.ActionSheetDialog;
 import com.xiaolian.amigo.ui.widget.dialog.LostAndFoundBottomDialog;
 import com.xiaolian.amigo.ui.widget.dialog.LostAndFoundReplyDialog;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutFooter;
@@ -59,6 +58,7 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
     public static final String KEY_AVATAR = "LostAndFoundReplyDetailActivityAvatar";
     public static final String KEY_LOST_FOUND_ID = "LostAndFoundReplyDetailActivityLostFoundId";
     public static final String KEY_LOST_FOUND_TYPE = "LostAndFoundReplyDetailActivityType";
+    public static final String KEY_COMMENT_ENABLE = "KeyCommentEnable";
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
@@ -92,6 +92,9 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
 
     @BindView(R.id.rl_error)
     RelativeLayout rlError;
+
+    @BindView(R.id.ll_footer)
+    LinearLayout llFooter;
 
     private LostAndFoundBottomDialog bottomDialog;
     private LostAndFoundReplyDialog replyDialog;
@@ -131,6 +134,7 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
             presenter.setLostFoundId(getIntent().getLongExtra(KEY_LOST_FOUND_ID, -1));
             presenter.setCommentId(commentId);
             presenter.setOwnerId(getIntent().getLongExtra(KEY_OWNER_ID, -1));
+            presenter.setCommentEnable(getIntent().getBooleanExtra(KEY_COMMENT_ENABLE, false));
             mainReply = new LostAndFoundReplyDetailAdapter
                     .LostAndFoundReplyDetailWrapper(LostAndFoundReplyDetailAdapter.LostAndFoundReplyDetailItemType.MAIN,
                     getIntent().getBooleanExtra(KEY_OWNER, false),
@@ -139,6 +143,9 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
                     getIntent().getLongExtra(KEY_TIME, 0),
                     getIntent().getStringExtra(KEY_AVATAR));
         }
+
+        llFooter.setVisibility(presenter.isCommentEnable() ? View.VISIBLE : View.GONE);
+
         initRecyclerView();
 
         appBarLayout.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
@@ -174,12 +181,29 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
                                 bottomDialog = new LostAndFoundBottomDialog(LostAndFoundReplyDetailActivity.this);
                             }
                             bottomDialog.setOkText("删除");
+                            if (presenter.isCommentEnable()) {
+                                bottomDialog.setOtherText("回复");
+                            }
+                            bottomDialog.setOnOtherClickListener(dialog ->
+                                    publishReply(commentId, followRelays.get(position).getAuthorId(),
+                                    followRelays.get(position).getAuthor()));
                             bottomDialog.setOnOkClickListener(dialog ->
                                     presenter.deleteReply(followRelays.get(position).getId()));
                             bottomDialog.show();
                         } else {
-                            publishReply(commentId, followRelays.get(position).getAuthorId(),
-                                    followRelays.get(position).getAuthor());
+                            if (bottomDialog == null) {
+                                bottomDialog = new LostAndFoundBottomDialog(LostAndFoundReplyDetailActivity.this);
+                            }
+                            bottomDialog.setOkText("举报");
+                            if (presenter.isCommentEnable()) {
+                                bottomDialog.setOtherText("回复");
+                            }
+                            bottomDialog.setOnOtherClickListener(dialog ->
+                                    publishReply(commentId, followRelays.get(position).getAuthorId(),
+                                            followRelays.get(position).getAuthor()));
+                            bottomDialog.setOnOkClickListener(dialog ->
+                                    presenter.reportReply(followRelays.get(position).getId()));
+                            bottomDialog.show();
                         }
                     }
                 } catch (Exception e) {
@@ -225,7 +249,7 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
 
     @OnClick(R.id.ll_footer)
     public void publishReply() {
-        publishReply(commentId, commentAuthorId, commentAuthor);
+        publishReply(commentId, null, commentAuthor);
     }
 
     private void publishReply(Long replyToId, Long replyToUserId, String replyToUserName) {

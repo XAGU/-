@@ -2,11 +2,9 @@ package com.xiaolian.amigo.ui.lostandfound;
 
 import android.support.v4.util.ObjectsCompat;
 
-import com.ut.device.AidCallback;
 import com.xiaolian.amigo.data.manager.intf.ILostAndFoundDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
-import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.DeleteLostFoundItemReqDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.LostAndFoundDTO;
@@ -49,6 +47,11 @@ public class LostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView2>
     private Integer preViewCount;
     private Integer preReplyCount;
 
+    /**
+     * 是否开启评论
+     */
+    private Boolean commentEnable = false;
+
     @Inject
     public LostAndFoundDetailPresenter2(ILostAndFoundDataManager lostAndFoundDataManager) {
         this.lostAndFoundDataManager = lostAndFoundDataManager;
@@ -71,6 +74,14 @@ public class LostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView2>
                     @Override
                     public void onReady(ApiResult<LostAndFoundDTO> result) {
                         if (null == result.getError()) {
+                            if (result.getData().getCommentEnable() != null
+                                    && result.getData().getCommentEnable()) {
+                                commentEnable = true;
+                                getMvpView().showFootView();
+                            } else {
+                                commentEnable = false;
+                                getMvpView().hideFootView();
+                            }
                             lostAndFound = result.getData().transform();
                             preViewCount = lostAndFound.getViewCount();
                             preReplyCount = lostAndFound.getCommentsCount();
@@ -144,7 +155,7 @@ public class LostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView2>
                                 for (LostFoundCommentDTO comment : result.getData().getComments()) {
                                     wrappers.add(new LostAndFoundDetailAdapter.LostAndFoundDetailWrapper(comment,
                                             ObjectsCompat.equals(comment.getUserId(), lostAndFound.getUserId()),
-                                            lostAndFound.getUserId(), type));
+                                            lostAndFound.getUserId(), type, commentEnable));
                                 }
                                 getMvpView().hideEmptyView();
                                 page ++;
@@ -278,7 +289,11 @@ public class LostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView2>
                 || !ObjectsCompat.equals(preViewCount, lostAndFound.getViewCount());
     }
 
-    private void fetchComment(Long id) {
+    @Override
+    public boolean isCommentEnable() {
+        return commentEnable == null ? false : commentEnable;
+    }
 
+    private void fetchComment(Long id) {
     }
 }
