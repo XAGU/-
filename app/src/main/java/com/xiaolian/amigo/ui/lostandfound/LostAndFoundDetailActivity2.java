@@ -333,6 +333,11 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
     @Override
     public void showEmptyView() {
 //        rlEmpty.setVisibility(View.VISIBLE);
+        if (refreshFlag) {
+            refreshFlag = false;
+            items.clear();
+            items.add(content);
+        }
         adapter.notifyDataSetChanged();
     }
 

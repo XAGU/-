@@ -305,6 +305,11 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
 
     @Override
     public void showEmptyView() {
+        if (refreshFlag) {
+            refreshFlag = false;
+            followRelays.clear();
+            followRelays.add(mainReply);
+        }
         adapter.notifyDataSetChanged();
 //        rlEmpty.setVisibility(View.VISIBLE);
     }
