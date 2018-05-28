@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.data.vo;
 
+import java.io.Serializable;
 import java.util.List;
 
 import lombok.Data;
@@ -11,8 +12,11 @@ import lombok.Data;
  * @date 17/9/18
  */
 @Data
-public class LostAndFound {
-
+public class LostAndFound implements Serializable {
+    /**
+     * 是否开启评论
+     */
+    private Boolean commentEnable;
     private Long createTime;
     private String description;
     private Long id;
@@ -27,5 +31,9 @@ public class LostAndFound {
     private String user;
     private Long userId;
     private List<String> images;
+
+    private Integer commentsCount;
+    private Integer reportCount;
+    private Integer viewCount;
 
 }

@@ -87,6 +87,8 @@
 
     <color name="washer_background">#9370DB</color>
 
+    <color name="lost_and_found_blue">#499bff</color>
+
     <color name="heater_gradient_start">#ff9a64</color>
     <color name="dryer_gradient_start">#fddd5a</color>
     <color name="dispenser_gradient_start">#43eda3</color>

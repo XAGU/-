@@ -2,6 +2,8 @@ package com.xiaolian.amigo.ui.widget.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.support.transition.ChangeBounds;
+import android.support.transition.TransitionManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,6 +17,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -38,14 +41,16 @@ public class SearchDialog extends Dialog implements TextWatcher {
     EditText etSearchContent;
     @BindView(R.id.tv_cancel)
     TextView tvCancel;
-    @BindView(R.id.iv_clear)
-    ImageView ivClear;
+//    @BindView(R.id.iv_clear)
+//    ImageView ivClear;
     @BindView(R.id.rl_result)
     RelativeLayout rlResult;
     @BindView(R.id.fl_result_contain)
     FrameLayout flResultContain;
     @BindView(R.id.tv_no_result_tip)
     TextView tvNoResultTip;
+    @BindView(R.id.ll_container)
+    LinearLayout llContainer;
 
     private OnSearchListener listener;
 
@@ -64,8 +69,9 @@ public class SearchDialog extends Dialog implements TextWatcher {
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
         lp.height = WindowManager.LayoutParams.MATCH_PARENT;
         window.setAttributes(lp);
+        setCancelable(true);
 
-        setContentView(R.layout.dialog_lost_and_found_search);
+        setContentView(R.layout.dialog_lost_and_found_search2);
         ButterKnife.bind(this);
 
         etSearchContent.addTextChangedListener(this);
@@ -85,7 +91,7 @@ public class SearchDialog extends Dialog implements TextWatcher {
     @Override
     public void afterTextChanged(Editable s) {
         String input = etSearchContent.getText().toString().trim();
-        ivClear.setVisibility(input.isEmpty() ? View.GONE : View.VISIBLE);
+//        ivClear.setVisibility(input.isEmpty() ? View.GONE : View.VISIBLE);
     }
 
     @OnEditorAction(R.id.et_search_content)
@@ -103,19 +109,49 @@ public class SearchDialog extends Dialog implements TextWatcher {
         return false;
     }
 
+    @Override
+    public void show() {
+        super.show();
+    }
+
+    @Override
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        TransitionManager.beginDelayedTransition(llContainer, new ChangeBounds().setDuration(1000));
+        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) etSearchContent.getLayoutParams();
+        lp.width = LinearLayout.LayoutParams.MATCH_PARENT;
+        etSearchContent.setLayoutParams(lp);
+        tvCancel.setVisibility(View.VISIBLE);
+
+        rlResult.setVisibility(View.GONE);
+        if (flResultContain.getChildCount() > 0) {
+            flResultContain.removeAllViews();
+        }
+    }
+
+    @Override
+    public void dismiss() {
+        TransitionManager.beginDelayedTransition(llContainer);
+        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) etSearchContent.getLayoutParams();
+        lp.width = LinearLayout.LayoutParams.WRAP_CONTENT;
+        etSearchContent.setLayoutParams(lp);
+        tvCancel.setVisibility(View.GONE);
+        super.dismiss();
+    }
+
     /**
      * 点击清除图标
      */
-    @OnClick({R.id.iv_clear, R.id.v_clear_holder})
-    void clear() {
-        etSearchContent.setText("");
-        ivClear.setVisibility(View.GONE);
-    }
+//    @OnClick({R.id.iv_clear, R.id.v_clear_holder})
+//    void clear() {
+//        etSearchContent.setText("");
+//        ivClear.setVisibility(View.GONE);
+//    }
 
-    @OnClick(R.id.iv_back)
-    void back() {
-        this.dismiss();
-    }
+//    @OnClick(R.id.iv_back)
+//    void back() {
+//        this.dismiss();
+//    }
 
     @OnClick(R.id.tv_cancel)
     void cancelSearch() {
@@ -131,6 +167,7 @@ public class SearchDialog extends Dialog implements TextWatcher {
         if (flResultContain.getChildCount() > 0) {
             flResultContain.removeAllViews();
         }
+        view.setBackgroundResource(R.color.colorBackgroundGray);
         flResultContain.addView(view);
     }
 

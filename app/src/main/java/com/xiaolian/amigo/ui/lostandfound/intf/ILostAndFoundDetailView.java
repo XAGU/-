@@ -17,4 +17,5 @@ public interface ILostAndFoundDetailView extends IBaseView {
      * @param lostAndFound 失物招领
      */
     void render(LostAndFound lostAndFound);
+
 }

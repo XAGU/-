@@ -39,7 +39,7 @@ public class BonusExchangeActivity extends BonusBaseActivity implements IBonusEx
     protected void initView() {
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
-
+        setMainBackground(R.color.colorBackgroundGray);
         presenter.onAttach(BonusExchangeActivity.this);
 
         CommonUtil.showSoftInput(this, etChangeCode);

@@ -4,8 +4,10 @@ import android.os.Bundle;
 import android.support.annotation.ColorRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.StringRes;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +17,13 @@ import android.widget.TextView;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.base.intf.IBaseListView;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutFooter;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutHeader;
 import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.util.Log;
 
 /**
  * 统一添加toolbar的ListActivity
@@ -37,11 +40,17 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
     private RelativeLayout rlEmpty;
     private TextView tvEmptyTip;
     private RelativeLayout rlError;
+    private AppBarLayout appBarLayout;
     private CoordinatorLayout clMain;
     private TextView tv_toolbar_title;
     private TextView tv_toolbar_title2;
     private View v_divide;
     private TextView tv_toolbar_sub_title;
+    private Toolbar toolBar;
+    //toolbar
+    protected TextView tvTitle,tvTitleSecond,tvTitleThird;
+    private View viewLine;
+
     protected int page = Constant.PAGE_START_NUM;
     private SmartRefreshLayout refreshLayout;
     private boolean autoRefresh = true;
@@ -53,23 +62,41 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
         setContentView(R.layout.activity_base_toolbar_list);
         refreshLayout = findViewById(R.id.refreshLayout);
         recyclerView = findViewById(R.id.recyclerView);
+        appBarLayout = findViewById(R.id.app_bar_layout);
         clMain = findViewById(R.id.cl_main);
         rlEmpty = findViewById(R.id.rl_empty);
         tvEmptyTip = findViewById(R.id.tv_empty_tip);
         rlError = findViewById(R.id.rl_error);
+        toolBar = findViewById(R.id.tool_bar);
         setUp();
         initToolBar();
         initFooter();
         initRecyclerView();
         initInject();
         initView();
+
+        appBarLayout.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
+            //Log.d("STATE", appBarLayout.getTotalScrollRange() +"//"+ verticalOffset+"//"+tv_toolbar_title.getHeight());
+            if (verticalOffset < -(tv_toolbar_title.getHeight() + llHeader.getPaddingTop())) {
+                tvTitle.setVisibility(View.VISIBLE);
+                tvTitleSecond.setVisibility(View.VISIBLE);
+                tvTitleThird.setVisibility(View.VISIBLE);
+                viewLine.setVisibility(View.VISIBLE);
+            } else {
+                tvTitle.setVisibility(View.GONE);
+                tvTitleSecond.setVisibility(View.GONE);
+                tvTitleThird.setVisibility(View.GONE);
+                viewLine.setVisibility(View.GONE);
+            }
+        });
+
     }
 
     private void initRecyclerView() {
         setRecyclerView(recyclerView);
-        refreshLayout.setOnRefreshLoadmoreListener(new OnRefreshLoadmoreListener() {
+        refreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
-            public void onLoadmore(RefreshLayout refreshlayout) {
+            public void onLoadMore(RefreshLayout refreshLayout) {
                 BaseToolBarListActivity.this.onLoadMore();
             }
 
@@ -131,6 +158,12 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
         tv_toolbar_title2 = findViewById(R.id.tv_toolbar_title2);
         tv_toolbar_sub_title = findViewById(R.id.tv_toolbar_sub_title);
         v_divide = findViewById(R.id.v_divide);
+        //toolbar
+        tvTitle = findViewById(R.id.tv_title);
+        tvTitleSecond = findViewById(R.id.tv_title_second);
+        tvTitleThird = findViewById(R.id.tv_title_third);
+        viewLine = findViewById(R.id.view_line);
+
         setToolBarTitle(setTitle());
         if (setSubTitle() > 0) {
             tv_toolbar_sub_title.setVisibility(View.VISIBLE);
@@ -140,7 +173,14 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
             tv_toolbar_title2.setVisibility(View.VISIBLE);
             v_divide.setVisibility(View.VISIBLE);
             tv_toolbar_title2.setText(setTitle2());
+
+            //tvTitleSecond.setVisibility(View.VISIBLE);
+            tvTitleSecond.setText(setTitle2());
         }
+    }
+
+    protected void setToolbarBackgroundColor(@ColorRes int res) {
+        toolBar.setBackgroundResource(res);
     }
 
     protected int setTitle2() {
@@ -169,10 +209,12 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
 
     protected void setToolBarTitle(String title) {
         tv_toolbar_title.setText(title);
+        tvTitle.setText(title);
     }
 
     protected void setToolBarTitle(@StringRes int res) {
         tv_toolbar_title.setText(res);
+        tvTitle.setText(res);
     }
 
     protected void setHeaderBackground(@ColorRes int color) {
@@ -199,10 +241,12 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
 
     protected void setToolBarSubTitle(String subTitle) {
         tv_toolbar_sub_title.setText(subTitle);
+        tvTitleThird.setText(subTitle);
     }
 
     protected void setToolBarSubTitle(@StringRes int res) {
         tv_toolbar_sub_title.setText(res);
+        tvTitleThird.setText(res);
     }
 
     protected abstract void initView();
@@ -273,4 +317,5 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
     public void hideErrorView() {
         rlError.setVisibility(View.GONE);
     }
+
 }

@@ -13,7 +13,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.enumeration.TradeError;
@@ -124,7 +125,12 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
     private void initRefreshLayout() {
         refreshLayout = findViewById(R.id.refreshLayout);
 
-        refreshLayout.setOnRefreshLoadmoreListener(new OnRefreshLoadmoreListener() {
+        refreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
+            @Override
+            public void onLoadMore(RefreshLayout refreshLayout) {
+
+            }
+
             @Override
             public void onRefresh(com.scwang.smartrefresh.layout.api.RefreshLayout refreshlayout) {
                 if (listStatus) {
@@ -134,16 +140,11 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
                     presenter.onLoad();
                 }
             }
-
-            @Override
-            public void onLoadmore(com.scwang.smartrefresh.layout.api.RefreshLayout refreshlayout) {
-
-            }
         });
         refreshLayout.setRefreshHeader(new RefreshLayoutHeader(this));
         refreshLayout.setRefreshFooter(new RefreshLayoutFooter(this));
         refreshLayout.setReboundDuration(200);
-        refreshLayout.setEnableLoadmore(false);
+        refreshLayout.setEnableLoadMore(false);
         refreshLayout.autoRefresh(0);
     }
 

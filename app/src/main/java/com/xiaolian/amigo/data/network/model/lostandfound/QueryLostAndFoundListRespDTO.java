@@ -14,4 +14,8 @@ import lombok.Data;
 public class QueryLostAndFoundListRespDTO {
     private Integer total;
     private List<LostAndFoundDTO> lostAndFounds;
+    /**
+     * 是否开启评论
+     */
+    private Boolean commentEnable;
 }

@@ -52,21 +52,6 @@ public class RefreshLayoutFooter extends LinearLayout implements RefreshFooter {
         setMinimumHeight(DensityUtil.dp2px(60));
     }
 
-    @Override
-    public void onPullingUp(float percent, int offset, int footerHeight, int extendHeight) {
-
-    }
-
-    @Override
-    public void onPullReleasing(float percent, int offset, int footerHeight, int extendHeight) {
-
-    }
-
-    @Override
-    public boolean setLoadmoreFinished(boolean finished) {
-        return false;
-    }
-
     @NonNull
     @Override
     public View getView() {
@@ -85,6 +70,21 @@ public class RefreshLayoutFooter extends LinearLayout implements RefreshFooter {
 
     @Override
     public void onInitialized(RefreshKernel kernel, int height, int extendHeight) {
+
+    }
+
+    @Override
+    public void onPulling(float percent, int offset, int height, int extendHeight) {
+
+    }
+
+    @Override
+    public void onReleasing(float percent, int offset, int height, int extendHeight) {
+
+    }
+
+    @Override
+    public void onReleased(RefreshLayout refreshLayout, int height, int extendHeight) {
 
     }
 
@@ -121,5 +121,10 @@ public class RefreshLayoutFooter extends LinearLayout implements RefreshFooter {
 //                mProgressView.setVisibility(VISIBLE);//显示加载动画
 //                break;
 //        }
+    }
+
+    @Override
+    public boolean setNoMoreData(boolean noMoreData) {
+        return false;
     }
 }

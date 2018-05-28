@@ -60,6 +60,7 @@ public class EditAvatarActivity extends UserBaseActivity implements IEditAvatarV
     protected void initView() {
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
+        setMainBackground(R.color.colorBackgroundGray);
         presenter.onAttach(EditAvatarActivity.this);
 
         if (getIntent() != null) {

@@ -56,6 +56,7 @@ public class EditPasswordActivity extends UserBaseActivity implements IEditPassw
         setUnBinder(ButterKnife.bind(this));
 
         getActivityComponent().inject(this);
+        setMainBackground(R.color.colorBackgroundGray);
 
         presenter.onAttach(EditPasswordActivity.this);
 

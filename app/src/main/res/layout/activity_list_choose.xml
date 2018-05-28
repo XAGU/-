@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tool="http://schemas.android.com/tools"
     android:background="@color/colorBackgroundWhite"
     android:orientation="vertical">
 
@@ -13,41 +14,92 @@
     <!--android:scrollbars="none">-->
 
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorBackgroundWhite"
         android:fitsSystemWindows="true"
         android:focusableInTouchMode="true"
         android:orientation="vertical"
-        app:elevation="0dp">
+        app:elevation="0dp"
+        android:theme="@style/AppTheme.AppBarOverlay">
 
-
-        <LinearLayout
-            android:id="@+id/ll_header"
+        <android.support.design.widget.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_scrollFlags="scroll|enterAlways">
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-            <ImageView
-                android:id="@+id/iv_back"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/ll_header"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/toolBarInnerMargin"
-                android:paddingLeft="@dimen/toolBarMarginLeft"
-                android:paddingRight="@dimen/toolBarMarginLeft"
-                android:paddingTop="@dimen/toolBarMarginTop"
-                android:src="@drawable/back" />
+                android:layout_marginTop="42dp"
+                android:orientation="vertical"
+                app:layout_scrollFlags="scroll|enterAlways">
 
-            <TextView
-                android:id="@+id/tv_title"
-                style="@style/TitleText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/toolBarMarginBottom"
-                android:layout_marginLeft="@dimen/toolBarMarginLeft"
-                android:layout_marginRight="@dimen/toolBarMarginLeft" />
-        </LinearLayout>
+                <!--<ImageView
+                    android:id="@+id/iv_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/toolBarInnerMargin"
+                    android:paddingLeft="@dimen/toolBarMarginLeft"
+                    android:paddingRight="@dimen/toolBarMarginLeft"
+                    android:paddingTop="@dimen/toolBarMarginTop"
+                    android:src="@drawable/back" />-->
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    style="@style/TitleText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="8dp"
+                    android:layout_marginBottom="@dimen/toolBarMarginBottom"
+                    android:layout_marginLeft="@dimen/toolBarMarginLeft"
+                    android:layout_marginRight="@dimen/toolBarMarginLeft"
+                    tool:text = "宿舍"/>
+            </LinearLayout>
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/tool_bar"
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                android:background="@color/colorBackgroundWhite"
+                app:layout_collapseMode="pin">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/iv_back"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp"
+                        android:src="@drawable/back" />
+
+                    <TextView
+                        android:id="@+id/tv_toolbar_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:textSize="@dimen/sp15"
+                        android:textStyle="bold"
+                        android:textColor="#222"
+                        tool:text="@string/repair_detail" />
+
+                    <View
+                        android:id="@+id/view_line"
+                        android:visibility="gone"
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:layout_alignParentBottom="true"
+                        android:background="#d6d6d6"/>
+                </RelativeLayout>
+            </android.support.v7.widget.Toolbar>
+        </android.support.design.widget.CollapsingToolbarLayout>
+
     </android.support.design.widget.AppBarLayout>
 
 

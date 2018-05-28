@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <de.hdodenhof.circleimageview.CircleImageView
+            tools:src="@drawable/default_avatar"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/iv_avatar"
+            android:layout_width="43dp"
+            android:layout_height="43dp" />
+        <RelativeLayout
+            android:layout_marginStart="7dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:id="@+id/ll_comment_author"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tv_comment_author"
+                    android:textSize="12sp"
+                    android:textColor="@color/colorDark2"
+                    tools:text="TB009527"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <ImageView
+                    android:id="@+id/iv_owner"
+                    android:visibility="gone"
+                    android:layout_marginStart="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <TextView
+                android:layout_below="@id/ll_comment_author"
+                android:id="@+id/tv_time"
+                tools:text="今天13:19"
+                android:textSize="11sp"
+                android:textColor="#999"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_marginTop="4dp"
+        tools:text="这里是用户回复的内容，根据内容的多少自动换行，没有则不显示"
+        android:layout_marginStart="50dp"
+        android:textColor="@color/colorDark2"
+        android:lineSpacingExtra="6dp"
+        android:textSize="14sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <View
+        android:layout_marginTop="21dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorDarke" />
+</LinearLayout>

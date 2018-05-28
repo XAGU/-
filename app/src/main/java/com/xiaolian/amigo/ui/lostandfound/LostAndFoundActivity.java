@@ -12,6 +12,7 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundAdaptor;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundView;
+import com.xiaolian.amigo.ui.widget.SpaceBottomItemDecoration;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.ui.widget.dialog.SearchDialog;
 import com.xiaolian.amigo.util.Constant;
@@ -32,6 +33,7 @@ import butterknife.ButterKnife;
  * @author caidong
  * @date 17/9/13
  */
+@Deprecated
 public class LostAndFoundActivity extends LostAndFoundBaseListActivity implements ILostAndFoundView {
     private static final int REQUEST_CODE_PUBLISH = 0x0101;
     private static final String TAG = LostAndFoundActivity.class.getSimpleName();
@@ -186,7 +188,7 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
     @Override
     protected void setRecyclerView(RecyclerView recyclerView) {
         adaptor = new LostAndFoundAdaptor(this, R.layout.item_lost_and_found, lostAndFounds);
-        recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 10)));
+        recyclerView.addItemDecoration(new SpaceBottomItemDecoration(ScreenUtils.dpToPxInt(this, 10)));
         adaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
@@ -244,6 +246,11 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
     protected int setSubTitle() {
         getSubTitle().setTextColor(ContextCompat.getColor(this, R.color.colorBlue));
         getSubTitle().setOnClickListener(v -> search());
+
+        //toolbar
+        tvTitleThird.setTextColor(ContextCompat.getColor(this, R.color.colorBlue));
+        tvTitleThird.setOnClickListener(v -> search());
+
         return R.string.search;
     }
 
@@ -264,6 +271,9 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
         tvLost.setOnClickListener(v -> onLostClick());
         tvFound = getToolBarTitle2();
         tvFound.setOnClickListener(v -> onFoundClick());
+        //toolbar
+        tvTitle.setOnClickListener(v -> onLostClick());
+        tvTitleSecond.setOnClickListener(v -> onFoundClick());
     }
 
     @Override
@@ -399,10 +409,16 @@ public class LostAndFoundActivity extends LostAndFoundBaseListActivity implement
             listStatus = false;
             tvLost.setTextColor(ContextCompat.getColor(this, R.color.colorDark2));
             tvFound.setTextColor(ContextCompat.getColor(this, R.color.colorDarkB));
+            //toolbar
+            tvTitle.setTextColor(ContextCompat.getColor(this, R.color.colorDark2));
+            tvTitleSecond.setTextColor(ContextCompat.getColor(this, R.color.colorDarkB));
         } else {
             listStatus = true;
             tvLost.setTextColor(ContextCompat.getColor(this, R.color.colorDarkB));
             tvFound.setTextColor(ContextCompat.getColor(this, R.color.colorDark2));
+            //toolbar
+            tvTitle.setTextColor(ContextCompat.getColor(this, R.color.colorDarkB));
+            tvTitleSecond.setTextColor(ContextCompat.getColor(this, R.color.colorDark2));
         }
     }
 

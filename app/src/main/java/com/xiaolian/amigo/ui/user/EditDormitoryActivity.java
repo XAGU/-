@@ -137,6 +137,9 @@ public class EditDormitoryActivity extends UserBaseListActivity implements IEdit
     protected int setSubTitle() {
         tvAddDormitory = getSubTitle();
         tvAddDormitory.setOnClickListener(v -> onAddDormitoryClick());
+        //toolbar
+        tvTitleThird.setOnClickListener(v -> onAddDormitoryClick());
+
         return R.string.add_dormitory;
     }
 

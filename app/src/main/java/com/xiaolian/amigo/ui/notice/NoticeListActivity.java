@@ -95,6 +95,7 @@ public class NoticeListActivity extends NoticeBaseListActivity implements INotic
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
         presenter.onAttach(NoticeListActivity.this);
+        setToolbarBackgroundColor(R.color.white);
     }
 
     public void showUrgentNotify(String content, Long id) {

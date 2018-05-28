@@ -12,7 +12,7 @@ import com.xiaolian.amigo.ui.base.BaseToolBarListActivity;
  * @author zcd
  * @date 17/9/18
  */
-
+@Deprecated
 public abstract class LostAndFoundBaseListActivity extends BaseToolBarListActivity {
     @Override
     protected void setUp() {
