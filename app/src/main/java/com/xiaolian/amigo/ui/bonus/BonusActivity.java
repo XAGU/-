@@ -95,6 +95,14 @@ public class BonusActivity extends BonusBaseListActivity implements IBonusView {
                     setResult(RESULT_CANCELED);
                     finish();
                 });
+
+                //toolbar
+                tvTitleThird.setTextColor(ContextCompat.getColor(this, R.color.colorBlue));
+                tvTitleThird.setOnClickListener(v -> {
+                    setResult(RESULT_CANCELED);
+                    finish();
+                });
+
                 adaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
@@ -111,7 +119,13 @@ public class BonusActivity extends BonusBaseListActivity implements IBonusView {
                 });
                 break;
             case ACTION_NORMAL:
-                getSubTitle().setOnClickListener(v -> startActivity(new Intent(BonusActivity.this, BonusExchangeActivity.class)));
+                getSubTitle().setOnClickListener(v -> startActivity(new Intent(
+                        BonusActivity.this, BonusExchangeActivity.class)));
+
+                //toolbar
+                tvTitleThird.setOnClickListener(v -> startActivity(new Intent(
+                        BonusActivity.this, BonusExchangeActivity.class)));
+
                 getFooter().findViewById(R.id.tv_expired_entry).setOnClickListener(v ->
                         startActivity(new Intent(this, ExpiredBonusActivity.class)));
             default:

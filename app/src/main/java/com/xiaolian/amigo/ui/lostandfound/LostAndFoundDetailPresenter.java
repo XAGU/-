@@ -4,6 +4,7 @@ import com.xiaolian.amigo.data.manager.intf.ILostAndFoundDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.LostAndFoundDTO;
+import com.xiaolian.amigo.data.network.model.lostandfound.QueryLostFoundDetailReqDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundDetailPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundDetailView;
@@ -29,9 +30,10 @@ public class LostAndFoundDetailPresenter<V extends ILostAndFoundDetailView> exte
 
     @Override
     public void getLostAndFoundDetail(Long id) {
-        SimpleReqDTO dto = new SimpleReqDTO();
+        QueryLostFoundDetailReqDTO dto = new QueryLostFoundDetailReqDTO();
         dto.setId(id);
-        addObserver(lostAndFoundDataManager.getLostAndFound(dto), new NetworkObserver<ApiResult<LostAndFoundDTO>>() {
+        addObserver(lostAndFoundDataManager.getLostAndFound(dto),
+                new NetworkObserver<ApiResult<LostAndFoundDTO>>(false, true) {
 
             @Override
             public void onReady(ApiResult<LostAndFoundDTO> result) {

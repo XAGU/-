@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:background="@color/colorBackgroundWhite"
+    android:layout_height="match_parent"
+    >
+    <Button
+        android:layout_alignParentBottom="true"
+        android:id="@+id/bt_submit"
+        style="@style/Button"
+        android:background="@drawable/button_disable"
+        android:layout_marginStart="21dp"
+        android:layout_marginEnd="21dp"
+        android:layout_marginBottom="21dp"
+        android:text="确认发布" />
+    <!--android:enabled="false"-->
+    <ScrollView
+        android:layout_above="@id/bt_submit"
+        android:overScrollMode="never"
+        android:scrollbars="none"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/mainMarginLeftRight"
+            android:paddingLeft="@dimen/mainMarginLeftRight"
+            android:paddingRight="@dimen/mainMarginLeftRight"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <ImageView
+                    android:id="@+id/iv_back"
+                    android:layout_width="wrap_content"
+                    android:paddingTop="14dp"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="40dp"
+                    android:paddingBottom="24dp"
+                    android:src="@drawable/back" />
+
+                <TextView
+                    style="@style/TitleText"
+                    android:id="@+id/tv_page_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="21dp"
+                    android:text="失物发布" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dip"
+                    android:background="#eee" />
+
+                <LinearLayout
+                    android:id="@+id/ll_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="58dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/ContentText_main"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="标题：" />
+
+                    <EditText
+                        android:id="@+id/et_title"
+                        style="@style/EditText_No_Border_Lg"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:background="@null"
+                        android:paddingLeft="10dp"
+                        android:maxLines="1"
+                        android:maxLength="@integer/publish_title_max_length"
+                        android:imeOptions="actionNext"
+                        android:inputType="text"
+                        android:hint="请输入标题(15字以内)" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dip"
+                    android:background="#eee" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="102dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/ContentText_main"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="添加图片：" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:layout_gravity="center_vertical"
+                        android:id="@+id/rv_image"
+                        android:overScrollMode="never"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="0dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <LinearLayout
+                        android:visibility="gone"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/iv_first"
+                            android:layout_width="57dp"
+                            android:layout_height="57dp"
+                            android:background="#dddddd"
+                            android:src="@drawable/device_picture_add"
+                            android:scaleType="centerInside"
+                            android:layout_gravity="center_vertical"/>
+
+                        <ImageView
+                            android:id="@+id/iv_second"
+                            android:layout_width="57dp"
+                            android:layout_height="57dp"
+                            android:background="#dddddd"
+                            android:src="@drawable/device_picture_add"
+                            android:scaleType="centerInside"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="10dp"
+                            android:visibility="gone"/>
+
+                        <ImageView
+                            android:id="@+id/iv_third"
+                            android:layout_width="57dp"
+                            android:layout_height="57dp"
+                            android:background="#dddddd"
+                            android:src="@drawable/device_picture_add"
+                            android:scaleType="centerInside"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="10dp"
+                            android:visibility="gone"/>
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dip"
+                    android:background="#eee" />
+
+                <EditText
+                    android:id="@+id/et_desc"
+                    style="@style/EditText_No_Border_Lg"
+                    android:layout_width="match_parent"
+                    android:layout_height="211dp"
+                    android:background="#f5f5f5"
+                    android:gravity="start"
+                    android:maxLength="@integer/publish_content_max_length"
+                    android:hint="请描述丢失物品的名称、地址、时间，以及你的联系方式"
+                    android:scrollHorizontally="false"
+                    android:singleLine="false"
+                    android:inputType="textMultiLine"
+                    android:padding="14dp"
+                    android:layout_marginTop="21dp"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>
+

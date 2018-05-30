@@ -21,12 +21,16 @@ public abstract class LostAndFoundBaseActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setUp();
         mActivityComponent = DaggerLostAndFoundActivityComponent.builder()
                 .lostAndFoundActivityModule(new LostAndFoundActivityModule(this))
                 .applicationComponent(((MvpApp) getApplication()).getComponent())
                 .build();
 
+        initInject();
+        setUp();
+    }
+
+    protected void initInject() {
     }
 
     public LostAndFoundActivityComponent getActivityComponent() {

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/ll_images"
+        android:layout_marginBottom="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        tools:visibility="visible"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/iv_first"
+            android:layout_width="57dp"
+            android:layout_height="57dp"
+            android:layout_gravity="center_vertical"
+            android:background="#ddd"
+            android:scaleType="centerCrop"
+            android:visibility="visible"/>
+
+        <!--android:scaleType="fitXY"-->
+        <ImageView
+            android:id="@+id/iv_second"
+            android:layout_width="57dp"
+            android:layout_height="57dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:background="#ddd"
+            android:scaleType="centerCrop"
+            android:visibility="gone"/>
+
+        <ImageView
+            android:id="@+id/iv_third"
+            android:layout_width="57dp"
+            android:layout_height="57dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:background="#ddd"
+            android:scaleType="centerCrop"
+            android:visibility="gone"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_content_title"
+        tools:text="我丢失了一把雨伞"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorDark2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/tv_content_desc"
+        tools:text="我丢失了一把雨伞我丢失了一把雨伞我丢失了一把雨伞我丢失了一把雨伞我丢失了一把雨伞我丢失了一把雨伞我丢失了一把雨伞我丢失了一把雨伞我丢失了一把雨伞我丢失了一把雨伞我丢失了一把雨伞"
+        android:textSize="14sp"
+        android:lineSpacingExtra="4dp"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/colorDark2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_stat"
+            tools:text="4912查看·103回复"
+            android:textSize="11sp"
+            android:textColor="#aaa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tv_time"
+            android:gravity="end"
+            tools:text="今天12:30发布"
+            android:textSize="11sp"
+            android:textColor="#aaa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <View
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorDarke" />
+
+</LinearLayout>

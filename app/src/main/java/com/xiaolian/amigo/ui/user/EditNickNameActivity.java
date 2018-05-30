@@ -50,6 +50,7 @@ public class EditNickNameActivity extends UserBaseActivity implements IEditNickN
     protected void initView() {
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
+        setMainBackground(R.color.colorBackgroundGray);
         presenter.onAttach(EditNickNameActivity.this);
         if (model != null && !TextUtils.isEmpty(model.getNickname())) {
             editNickname.setText(model.getNickname());

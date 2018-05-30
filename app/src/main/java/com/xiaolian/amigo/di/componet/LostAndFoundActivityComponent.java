@@ -19,10 +19,15 @@ package com.xiaolian.amigo.di.componet;
 import com.xiaolian.amigo.di.LostAndFoundActivityContext;
 import com.xiaolian.amigo.di.module.LostAndFoundActivityModule;
 import com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity;
+import com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity2;
 import com.xiaolian.amigo.ui.lostandfound.LostAndFoundDetailActivity;
+import com.xiaolian.amigo.ui.lostandfound.LostAndFoundDetailActivity2;
+import com.xiaolian.amigo.ui.lostandfound.LostAndFoundReplyDetailActivity;
 import com.xiaolian.amigo.ui.lostandfound.MyPublishActivity;
+import com.xiaolian.amigo.ui.lostandfound.MyPublishActivity2;
 import com.xiaolian.amigo.ui.lostandfound.PublishFoundActivity;
 import com.xiaolian.amigo.ui.lostandfound.PublishLostActivity;
+import com.xiaolian.amigo.ui.lostandfound.PublishLostAndFoundActivity;
 
 import dagger.Component;
 
@@ -33,6 +38,8 @@ public interface LostAndFoundActivityComponent {
 
     void inject(LostAndFoundActivity activity);
 
+    void inject(LostAndFoundActivity2 activity);
+
     void inject(LostAndFoundDetailActivity activity);
 
     void inject(MyPublishActivity activity);
@@ -40,4 +47,12 @@ public interface LostAndFoundActivityComponent {
     void inject(PublishLostActivity activity);
 
     void inject(PublishFoundActivity activity);
+
+    void inject(PublishLostAndFoundActivity activity);
+
+    void inject(LostAndFoundDetailActivity2 activity);
+
+    void inject(LostAndFoundReplyDetailActivity activity);
+
+    void inject(MyPublishActivity2 activity);
 }

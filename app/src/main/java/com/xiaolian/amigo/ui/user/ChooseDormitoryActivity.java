@@ -95,6 +95,14 @@ public class ChooseDormitoryActivity extends UserBaseListActivity implements ICh
                         EditDormitoryActivity.class), REQUEST_CODE_EDIT_DORMITORY);
             }
         });
+        //toolbar
+        tvTitleThird.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(new Intent(ChooseDormitoryActivity.this,
+                        EditDormitoryActivity.class), REQUEST_CODE_EDIT_DORMITORY);
+            }
+        });
         return R.string.manage_dormitory;
     }
 

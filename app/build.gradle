@@ -18,8 +18,8 @@ android {
         applicationId "com.xiaolian.amigo"
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
-        versionCode 16
-        versionName "1.1.20"
+        versionCode 17
+        versionName "1.1.30"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
@@ -54,21 +54,27 @@ android {
             }
         }
     }
+    defaultConfig {
+        resConfigs "en"
+    }
     flavorDimensions "default"
     productFlavors {
         dev {
             // 测试
 //            applicationId "com.xiaolian.amigo_dev"
             // 微信支付测试
-            applicationId "com.xiaolian.amigo"
+            applicationId "com.xiaolian.amigo_dev"
             resValue "string", "app_name", "笑联测试版"
+
             buildConfigField "String", "ENVIRONMENT", '"dev"'
-            buildConfigField "String", "SERVER", "\"http://116.62.236.67:5081/\""
-//            buildConfigField "String", "SERVER", "\"http://10.0.0.4:5081/\""
-//            buildConfigField "String", "SERVER", "\"http://10.195.90.187:5081/\""
+//            buildConfigField "String", "SERVER", "\"http://116.62.236.67:5081/\""
+            buildConfigField "String", "SERVER", "\"http://39.108.97.229:5081/\""
 //            buildConfigField "String", "SERVER", "\"http://10.195.90.130:5081/\""
-//            buildConfigField "String", "SERVER", "\"http://10.0.0.14:5081/\""
-            buildConfigField "String", "H5_SERVER", "\"http://116.62.236.67:5097/c\""
+//            buildConfigField "String", "SERVER", "\"http://10.195.90.187:8081\""
+//            buildConfigField "String", "SERVER", "\"http://10.0.0.4:5081/\""
+//            buildConfigField "String", "H5_SERVER", "\"http://116.62.236.67:5097/c\""
+            buildConfigField "String", "H5_SERVER", "\"http://39.108.97.229:5097/c\""
+//            buildConfigField "String", "H5_SERVER", "\"http://10.195.90.130:5097/c\""
 //            buildConfigField "String", "H5_SERVER", "\"http://10.0.0.5:5000/c\""
             buildConfigField "String", "FILE_PREFIX", "\"https://s.xiaolian365.com/\""
             buildConfigField "String", "TRADE_PREFIX", "\"/trade\""

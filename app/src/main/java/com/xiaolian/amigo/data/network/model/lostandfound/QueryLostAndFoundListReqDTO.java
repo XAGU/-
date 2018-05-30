@@ -18,4 +18,8 @@ public class QueryLostAndFoundListReqDTO {
      * 1 表示失物 2 表示招领
      */
     private Integer type;
+    /**
+     * 必传1
+     */
+    private Integer status = 1;
 }

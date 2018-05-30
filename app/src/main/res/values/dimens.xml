@@ -30,4 +30,6 @@
     <!--wheel-->
     <dimen name="WheelMargins">8dp</dimen>
     <dimen name="listBottomMargin">10dp</dimen>
+    <dimen name="sp15">15sp</dimen>
+    <dimen name="sp12">12sp</dimen>
 </resources>

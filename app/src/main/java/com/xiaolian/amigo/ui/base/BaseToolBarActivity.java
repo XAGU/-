@@ -7,13 +7,19 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.util.DensityUtil;
+import com.xiaolian.amigo.util.Log;
 
+import me.everything.android.ui.overscroll.IOverScrollDecor;
+import me.everything.android.ui.overscroll.IOverScrollUpdateListener;
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
 /**
@@ -25,9 +31,11 @@ import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
 public abstract class BaseToolBarActivity extends BaseActivity {
 
-    private TextView tvToolbarTitle;
+    private TextView tvToolbarTitle,tvTitle;
     private LinearLayout llMainContent;
     private ScrollView svMainContainer;
+    private RelativeLayout rlToolBar;
+    private View viewLine;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,11 +45,20 @@ public abstract class BaseToolBarActivity extends BaseActivity {
         View layout = LayoutInflater.from(this).inflate(setLayout(), null, true);
         llMainContent.addView(layout);
         svMainContainer = findViewById(R.id.sv_main_container);
-        OverScrollDecoratorHelper.setUpOverScroll(svMainContainer);
+        IOverScrollDecor iOverScrollDecor = OverScrollDecoratorHelper.setUpOverScroll(svMainContainer);
+
         setUp();
         initToolBar();
         initInject();
         initView();
+
+        iOverScrollDecor.setOverScrollUpdateListener((decor, state, offset) -> {
+            if (offset < -(tvToolbarTitle.getHeight()) + tvToolbarTitle.getPaddingTop()) {
+                setTitleVisiable(View.VISIBLE);
+            } else {
+                setTitleVisiable(View.GONE);
+            }
+        });
     }
 
     protected View getMainLayout() {
@@ -58,6 +75,10 @@ public abstract class BaseToolBarActivity extends BaseActivity {
 
     protected void initToolBar() {
         tvToolbarTitle = (TextView) findViewById(R.id.tv_toolbar_title);
+        tvTitle = findViewById(R.id.tv_title);
+        rlToolBar = findViewById(R.id.rl_toolbar);
+        viewLine = findViewById(R.id.view_line);
+        setTitleVisiable(View.GONE);
         if (setTitle() != 0) {
             setToolBarTitle(setTitle());
         }
@@ -68,14 +89,22 @@ public abstract class BaseToolBarActivity extends BaseActivity {
 
     protected void setMainBackground(@ColorRes int color) {
         svMainContainer.setBackgroundResource(color);
+        rlToolBar.setBackgroundResource(color);
     }
 
     protected void setToolBarTitle(String title) {
         tvToolbarTitle.setText(title);
+        tvTitle.setText(title);
     }
 
     protected void setToolBarTitle(@StringRes int res) {
         tvToolbarTitle.setText(res);
+        tvTitle.setText(res);
+    }
+
+    private void setTitleVisiable(int visiable) {
+        tvTitle.setVisibility(visiable);
+        viewLine.setVisibility(visiable);
     }
 
     protected abstract @LayoutRes

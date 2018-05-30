@@ -52,7 +52,6 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
     TextView tvPrepay;
 
     /**
-<<<<<<< HEAD
      * 增送的余额
      */
     @BindView(R.id.tv_balance_present)
