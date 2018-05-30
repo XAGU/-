@@ -189,7 +189,11 @@ public class RechargePresenter<V extends IRechargeView> extends BasePresenter<V>
                             rechargeTypes.add(new RechargeTypeAdaptor.RechargeWrapper(PayWay.ALIAPY.getType(), PayWay.ALIAPY.getDrawableRes(), "支付宝", true));
                         }
                         if (result.getData().getRechargeTypes().contains(PayWay.WECHAT.getType())) {
-                            rechargeTypes.add(new RechargeTypeAdaptor.RechargeWrapper(PayWay.WECHAT.getType(), PayWay.WECHAT.getDrawableRes(), "微信", false));
+                            if (rechargeTypes.isEmpty()) {
+                                rechargeTypes.add(new RechargeTypeAdaptor.RechargeWrapper(PayWay.WECHAT.getType(), PayWay.WECHAT.getDrawableRes(), "微信", true));
+                            } else {
+                                rechargeTypes.add(new RechargeTypeAdaptor.RechargeWrapper(PayWay.WECHAT.getType(), PayWay.WECHAT.getDrawableRes(), "微信", false));
+                            }
                         }
                         getMvpView().setRechargeType(rechargeTypes);
                     }

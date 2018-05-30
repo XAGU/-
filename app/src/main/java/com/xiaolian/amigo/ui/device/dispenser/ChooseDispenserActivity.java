@@ -346,7 +346,7 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
         llFooter.setVisibility(View.GONE);
         showEmptyView();
         tvRescan.setVisibility(View.VISIBLE);
-        tvEmptyTip.setText("未扫描出附近的饮水机");
+        tvEmptyTip.setText(String.format("未扫描出附近的%s", Device.getDevice(deviceType).getDesc()));
     }
 
 
