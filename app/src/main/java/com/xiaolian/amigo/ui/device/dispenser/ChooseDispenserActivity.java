@@ -150,7 +150,7 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
 
     private void initRecyclerView() {
         adaptor = new ChooseDispenserAdaptor(this, R.layout.item_dispenser,
-                items, Device.getDevice(deviceType) == Device.DISPENSER);
+                items, Device.getDevice(deviceType));
         adaptor.setOnItemClickListener((deviceNo, supplierId, isFavor, residenceId, usefor, location, price) -> {
             if (orderPreInfo != null) {
                 orderPreInfo.setPrice(price);
