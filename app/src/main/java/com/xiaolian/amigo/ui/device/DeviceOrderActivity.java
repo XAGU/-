@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.device;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -21,6 +22,7 @@ import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.ui.device.intf.IDeviceOrderPresenter;
 import com.xiaolian.amigo.ui.device.intf.IDeviceOrderView;
 import com.xiaolian.amigo.ui.main.MainActivity;
+import com.xiaolian.amigo.ui.order.OrderDetailActivity;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
@@ -134,6 +136,12 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
     @BindView(R.id.tv_order_no_use_tip)
     TextView tvOrderNoUseTip;
 
+    /******************** 底部线条 **********************/
+    @BindView(R.id.v_bottom_line1)
+    View vBottomLine1;
+    @BindView(R.id.v_bottom_line2)
+    View vBottomLine2;
+
     @Inject
     IDeviceOrderPresenter<IDeviceOrderView> presenter;
     private String orderNo;
@@ -166,6 +174,12 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
             rlUsedTime.setVisibility(View.VISIBLE);
             tvUsedTime.setText(respDTO.getUseTime());
         }
+
+        vBottomLine1.setBackgroundColor(Color.parseColor(OrderDetailActivity.getLineColorByDeviceType(respDTO.getDeviceType())));
+        vBottomLine1.setVisibility(View.VISIBLE);
+        vBottomLine2.setBackgroundColor(Color.parseColor(OrderDetailActivity.getLineColorByDeviceType(respDTO.getDeviceType())));
+        vBottomLine2.setVisibility(View.VISIBLE);
+
         Device device = Device.getDevice(respDTO.getDeviceType());
         if (device != null) {
             tvDeviceLocation.setText(String.format("%s %s", device.getDesc(), respDTO.getLocation()));

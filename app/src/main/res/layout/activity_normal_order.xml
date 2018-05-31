@@ -48,16 +48,56 @@
 
         </LinearLayout>
 
+        <ImageView
+            android:src="@drawable/bg_order_detail_top"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
         <android.support.v7.widget.RecyclerView
             android:layout_marginLeft="@dimen/toolBarMarginLeft"
             android:layout_marginRight="@dimen/toolBarMarginLeft"
-            android:background="@drawable/content_border"
+            android:background="@color/white"
             android:paddingLeft="14dp"
             android:paddingRight="14dp"
             android:id="@+id/recyclerView"
             android:overScrollMode="never"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:layout_marginLeft="@dimen/toolBarMarginLeft"
+            android:layout_marginRight="@dimen/toolBarMarginLeft"
+            android:background="@color/white"
+            android:paddingBottom="14dp"
+            android:paddingLeft="14dp"
+            android:paddingRight="14dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <View
+                android:id="@+id/v_bottom_line1"
+                android:visibility="gone"
+                tools:visibility="visible"
+                android:background="#BFFF4E80"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"/>
+
+            <View
+                android:id="@+id/v_bottom_line2"
+                android:visibility="gone"
+                tools:visibility="visible"
+                android:layout_marginBottom="14dp"
+                android:layout_marginTop="5dp"
+                android:background="#BFFF4E80"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"/>
+        </LinearLayout>
+
+        <ImageView
+            android:rotation="180"
+            android:src="@drawable/bg_order_detail_top"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:layout_marginLeft="@dimen/toolBarMarginLeft"
