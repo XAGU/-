@@ -9,8 +9,8 @@
         android:paddingLeft="21dp"
         android:paddingRight="21dp"
         android:textColor="@color/white"
-        android:textStyle="bold"
-        android:textSize="13sp"
+        android:textStyle="normal"
+        android:textSize="12sp"
         android:layout_width="match_parent"
         android:layout_height="54dp" />
 
