@@ -32,10 +32,10 @@
             android:textStyle="bold"
             android:id="@+id/tv_reason_top"
             android:visibility="gone"
-            android:textSize="12sp"
+            android:textSize="10sp"
             tool:text="test"
             tool:visibility="visible"
-            android:textColor="@color/colorDarkB"
+            android:textColor="@color/colorDark9"
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

@@ -96,7 +96,7 @@
                         android:visibility="gone"
                         tools:visibility="visible"
                         android:layout_marginBottom="14dp"
-                        android:layout_marginTop="5dp"
+                        android:layout_marginTop="4dp"
                         android:background="#BFFF4E80"
                         android:layout_width="match_parent"
                         android:layout_height="2dp"/>
