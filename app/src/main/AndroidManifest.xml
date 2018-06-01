@@ -161,6 +161,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <!--月账单-->
+        <activity android:name=".ui.wallet.MonthlyBillActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+
         <!--余额说明-->
         <activity
             android:name=".ui.wallet.BalanceExplainActivity"

@@ -94,6 +94,8 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
         presenter.onAttach(WalletActivity.this);
+        setToolbarSubTitle("月账单", v ->
+                startActivity(new Intent(WalletActivity.this, MonthlyBillActivity.class)));
     }
 
     @Override

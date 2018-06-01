@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.xiaolian.amigo.ui.widget.MonthlyBillView
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/monthlyBillView"
+        android:layout_width="135dp"
+        android:layout_height="135dp"
+        />
+</LinearLayout>
