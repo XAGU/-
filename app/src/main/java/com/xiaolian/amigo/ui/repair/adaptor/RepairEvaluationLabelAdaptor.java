@@ -34,7 +34,7 @@ public class RepairEvaluationLabelAdaptor extends CommonAdapter<RepairEvaluation
             ((TextView) holder.getView(R.id.tv_label)).setTextColor(ContextCompat.getColor(context, R.color.colorBlue));
         } else {
             holder.getView(R.id.tv_label).setBackgroundResource(R.drawable.bg_rect_gray_stroke);
-            ((TextView) holder.getView(R.id.tv_label)).setTextColor(ContextCompat.getColor(context, R.color.colorTextGray));
+            ((TextView) holder.getView(R.id.tv_label)).setTextColor(ContextCompat.getColor(context, R.color.colorDark6));
         }
         ((TextView) holder.getView(R.id.tv_label)).setText(label.getContent());
     }
