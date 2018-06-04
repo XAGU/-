@@ -71,6 +71,11 @@ public class LoginDataManager implements ILoginDataManager {
     }
 
     @Override
+    public void deletePushToken() {
+        sharedPreferencesHelp.setPushToken("");
+    }
+
+    @Override
     public String getToken() {
         return sharedPreferencesHelp.getToken();
     }

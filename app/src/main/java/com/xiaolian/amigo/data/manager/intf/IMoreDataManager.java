@@ -13,4 +13,8 @@ public interface IMoreDataManager {
     String getToken();
 
     boolean getTransfer();
+
+    Long getUserId();
+
+    void deletePushToken();
 }

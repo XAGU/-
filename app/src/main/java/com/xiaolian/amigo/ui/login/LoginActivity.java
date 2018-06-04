@@ -71,6 +71,7 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
 
         presenter.onAttach(LoginActivity.this);
 
+        presenter.deletePushToken();
         presenter.logout();
 
         if (savedInstanceState == null) {

@@ -259,4 +259,19 @@ public class MainDataManager implements IMainDataManager {
     public List<BriefSchoolBusiness> getSchoolBiz() {
         return sharedPreferencesHelp.getSchoolBiz();
     }
+
+    @Override
+    public void deletePushToken() {
+        sharedPreferencesHelp.setPushToken("");
+    }
+
+    @Override
+    public String getPushToken() {
+        return sharedPreferencesHelp.getPushToken();
+    }
+
+    @Override
+    public void setPushToken(String pushToken) {
+        sharedPreferencesHelp.setPushToken(pushToken);
+    }
 }

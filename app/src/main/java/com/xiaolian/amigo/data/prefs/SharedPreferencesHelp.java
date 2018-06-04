@@ -86,6 +86,8 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     private final Gson mGson;
     // 是否需要账户迁移
     private boolean transfer;
+    // 推送token
+    private String pushToken;
 
     @Inject
     public SharedPreferencesHelp(@ApplicationContext Context context, Gson gson) {
@@ -445,6 +447,16 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     @Override
     public int getScanType() {
         return mSharedPreferences.getInt(PREF_KEY_SCAN_TYPE, BluetoothConstants.SCAN_TYPE_BLE);
+    }
+
+    @Override
+    public void setPushToken(String pushToken) {
+        this.pushToken = pushToken;
+    }
+
+    @Override
+    public String getPushToken() {
+        return this.pushToken;
     }
 
     @Override

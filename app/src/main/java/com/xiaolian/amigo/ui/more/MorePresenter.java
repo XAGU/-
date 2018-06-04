@@ -46,4 +46,14 @@ public class MorePresenter<V extends IMoreView> extends BasePresenter<V>
     public String getToken() {
         return moreDataManager.getToken();
     }
+
+    @Override
+    public Long getUserId() {
+        return moreDataManager.getUserId();
+    }
+
+    @Override
+    public void deletePushToken() {
+        moreDataManager.deletePushToken();
+    }
 }
