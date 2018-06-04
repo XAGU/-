@@ -128,6 +128,7 @@ public class MessageReceiver extends XGPushBaseReceiver {
 //                Toast.LENGTH_SHORT).show();
         // 获取自定义key-value
         String customContent = message.getCustomContent();
+        Log.d(TAG, "custom: " + message.getCustomContent());
         if (customContent != null && customContent.length() != 0) {
             try {
                 JSONObject obj = new JSONObject(customContent);
