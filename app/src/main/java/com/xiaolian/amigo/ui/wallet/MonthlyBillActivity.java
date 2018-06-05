@@ -1,5 +1,7 @@
 package com.xiaolian.amigo.ui.wallet;
 
+import android.widget.TextView;
+
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.ui.wallet.intf.IMonthlyBillPresenter;
@@ -13,6 +15,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * @author zcd
@@ -26,11 +29,15 @@ public class MonthlyBillActivity extends WalletBaseActivity implements IMonthlyB
     @BindView(R.id.monthlyBillView)
     MonthlyBillView monthlyBillView;
 
+    @BindView(R.id.tv_monthly_order)
+    TextView tvMonthlyOrder;
+
     private List<MonthlyBillView.ViewData> dataList = new ArrayList<MonthlyBillView.ViewData>(){
         {
-            add(new MonthlyBillView.ViewData(1, Device.HEATER.getColorRes(), Device.HEATER.getDesc()));
-            add(new MonthlyBillView.ViewData(1, Device.DISPENSER.getColorRes(), Device.DISPENSER.getDesc()));
-            add(new MonthlyBillView.ViewData(1, Device.DRYER.getColorRes(), Device.DRYER.getDesc()));
+            add(new MonthlyBillView.ViewData(50.2, Device.HEATER.getColorRes(), Device.HEATER.getDesc()));
+            add(new MonthlyBillView.ViewData(3, Device.WASHER.getColorRes(), Device.WASHER.getDesc()));
+            add(new MonthlyBillView.ViewData(10.01, Device.DISPENSER.getColorRes(), Device.DISPENSER.getDesc()));
+            add(new MonthlyBillView.ViewData(6.10, Device.DRYER.getColorRes(), Device.DRYER.getDesc()));
         }
     };
 
@@ -51,5 +58,9 @@ public class MonthlyBillActivity extends WalletBaseActivity implements IMonthlyB
     @Override
     protected int setLayout() {
         return R.layout.activity_monthly_bill;
+    }
+
+    @OnClick(R.id.tv_monthly_order)
+    public void gotoMonthlyOrder() {
     }
 }

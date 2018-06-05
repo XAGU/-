@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.ui.order.OrderActivity;
 import com.xiaolian.amigo.ui.wallet.intf.IWalletPresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IWalletView;
 import com.xiaolian.amigo.ui.widget.dialog.AvailabilityDialog;
@@ -149,6 +150,14 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
             .putExtra(WalletConstant.KEY_ALL_BALANCE, presenter.getAllBalance())
             .putExtra(WalletConstant.KEY_CHARGE_BALANCE, presenter.getChargeBalance())
             .putExtra(WalletConstant.KEY_GIVING_BALANCE, presenter.getGivingBalance()));
+    }
+
+    /**
+     * 消费记录
+     */
+    @OnClick(R.id.rl_order)
+    void orderRecord() {
+        startActivity(new Intent(this, OrderActivity.class));
     }
 
     /**

@@ -77,7 +77,7 @@ public class MonthlyBillView extends View {
 
         distance = ScreenUtils.dpToPxInt(context,16);
 
-        setRadius(ScreenUtils.dpToPxInt(context,80));
+        setRadius(ScreenUtils.dpToPxInt(context,68));
     }
 
     public void setRadius(float rs){
@@ -165,21 +165,22 @@ public class MonthlyBillView extends View {
 
             RectF arcRect = new RectF(barWidth/2-radius,(barHeight-lengedHeight)/2 - radius,
                     barWidth/2+radius,(barHeight-lengedHeight)/2 + radius);//圆形所在的RectF，圆心与控件中心重叠
-            float startAngle = -90,sweepAngle = 0;
+            float startAngle = -60,sweepAngle = 0;
             float perAngle = totalNum/360;//每一度的数量
             String desc;
             float lineAngle;
 
             Rect rect = new Rect();
             for(int i=0;i<datas.size();i++){
-                sweepAngle = datas.get(i).getNumber()/perAngle; //当前值的度数
+                sweepAngle = (float) (datas.get(i).getNumber()/perAngle); //当前值的度数
                 arcPaint.setColor(ContextCompat.getColor(mContext, datas.get(i).getColorRes()));
                 bitmapCanvas.drawArc(arcRect,startAngle,sweepAngle,true,arcPaint);//绘制扇形
                 angleSEs.add(new AngleSE(startAngle,sweepAngle+startAngle));
 
-                lineAngle = startAngle+ sweepAngle/2;//绘制描述文字的指示线，从扇形中间开始
-                desc = datas.get(i).getDesc()+","+datas.get(i).getNumber();
-                drwaLineAndText(sweepAngle,lineAngle,desc,rect,i);
+                lineAngle = startAngle + sweepAngle/2;//绘制描述文字的指示线，从扇形中间开始
+                desc = datas.get(i).getDesc() + "消费";
+                drwaLineAndText(sweepAngle,lineAngle, "¥" + datas.get(i).getNumber(),
+                        desc, rect,i);
 
                 startAngle += sweepAngle; //开始角度变为扇形结束的角度，下次绘制时从前一个扇形的结束区绘制*
             }
@@ -192,11 +193,17 @@ public class MonthlyBillView extends View {
 
         canvas.drawBitmap(bitmapBuffer.get(),displayRect,det,null);
         canvas.restore();
+
+        canvas.save();
+        arcPaint.setColor(Color.parseColor("#ffffff"));
+        canvas.drawCircle(barWidth/2, barHeight/2, ScreenUtils.dpToPx(mContext, 39), arcPaint);
+        canvas.restore();
+
     }
 
-    private void drwaLineAndText(float sweepAngle,float lineAngle,String desc,Rect rect,int i){
+    private void drwaLineAndText(float sweepAngle,float lineAngle,String amount, String desc,Rect rect,int i){
         float lineStartX,lineStartY ,lineEndX,lineEndY ;
-
+        linePaint.setColor(ContextCompat.getColor(mContext, datas.get(i).getColorRes()));
         lineStartX   =   barWidth/2   +   (radius- distance)   *  (float) Math.cos(lineAngle *   3.14   /180 );
         lineStartY   =   (barHeight-lengedHeight)/2   +   (radius- distance)  *   (float) Math.sin(lineAngle   *   3.14/180);
         if(Math.abs(sweepAngle) <= 30){ //当偏转角度小于30°时，增加指示线的长度，避免描述文字重叠
@@ -210,16 +217,26 @@ public class MonthlyBillView extends View {
         bitmapCanvas.drawLine(lineStartX,lineStartY,lineEndX,lineEndY,linePaint);
 
         textPaint.getTextBounds(desc,0,desc.length(),rect);
-        textPaint.setTextSize(ScreenUtils.dpToPxInt(mContext,11));
+        textPaint.setColor(Color.parseColor("#999999"));
         textPaint.setFakeBoldText(false);
         textPaint.setShadowLayer(0,0,0,Color.TRANSPARENT);
         if (lineStartX>barWidth/2) { //当指示线位于饼图右侧时，在右侧绘制第二条指示线及文字
-            bitmapCanvas.drawLine(lineEndX,lineEndY,lineEndX+distance/2,lineEndY,linePaint);
-            bitmapCanvas.drawText(desc,lineEndX+distance/2+4,lineEndY+rect.height()/2,textPaint);
+            bitmapCanvas.drawLine(lineEndX,lineEndY,barWidth,lineEndY,linePaint);
+//            bitmapCanvas.drawText(desc,lineEndX+distance/2+4,lineEndY+rect.height()/2,textPaint);
+            textPaint.setTextSize(ScreenUtils.dpToPxInt(mContext,10));
+            textPaint.getTextBounds("消", 0, 1, rect);
+            bitmapCanvas.drawText(desc,barWidth-textPaint.measureText(desc),lineEndY+rect.height()+ScreenUtils.dpToPxInt(mContext, 2),textPaint);
+            textPaint.setTextSize(ScreenUtils.dpToPxInt(mContext,12));
+            textPaint.getTextBounds("消", 0, 1, rect);
+            bitmapCanvas.drawText(amount,barWidth-textPaint.measureText(amount),lineEndY-ScreenUtils.dpToPxInt(mContext, 4),textPaint);
         }else {//当指示线位于饼图左侧时，在左侧绘制第二条指示线及文字
-
-            bitmapCanvas.drawLine(lineEndX,lineEndY,lineEndX-distance/2,lineEndY,linePaint);
-            bitmapCanvas.drawText(desc,lineEndX-distance/2-4-rect.width(),lineEndY+rect.height()/2,textPaint);
+            bitmapCanvas.drawLine(lineEndX,lineEndY,0,lineEndY,linePaint);
+            textPaint.setTextSize(ScreenUtils.dpToPxInt(mContext,10));
+            textPaint.getTextBounds("消", 0, 1, rect);
+            bitmapCanvas.drawText(desc,0,lineEndY+rect.height()+ScreenUtils.dpToPxInt(mContext, 2),textPaint);
+            textPaint.setTextSize(ScreenUtils.dpToPxInt(mContext,12));
+            textPaint.getTextBounds("消", 0, 1, rect);
+            bitmapCanvas.drawText(amount,0,lineEndY-ScreenUtils.dpToPxInt(mContext, 4),textPaint);
         }
     }
 
@@ -246,11 +263,11 @@ public class MonthlyBillView extends View {
 
     @Data
     public static class ViewData {
-        private int number;
+        private double number;
         private int colorRes;
         private String desc;
 
-        public ViewData(int number, int colorRes, String desc) {
+        public ViewData(double number, int colorRes, String desc) {
             this.number = number;
             this.colorRes = colorRes;
             this.desc = desc;
