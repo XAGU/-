@@ -72,6 +72,7 @@ import com.xiaolian.amigo.util.AppUtils;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
+import com.xiaolian.amigo.util.MD5Util;
 import com.xiaolian.amigo.util.ScreenUtils;
 import com.youth.banner.Banner;
 
@@ -327,9 +328,10 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         注册信鸽服务的接口
         如果仅仅需要发推送消息调用这段代码即可
         */
-        Log.d(TAG, "注册信鸽: " + presenter.getUserInfo().getId() + "_jtL2T8nYY5D0klEm");
+        String pushAccount = MD5Util.md5(presenter.getUserInfo().getId() + "_jtL2T8nYY5D0klEm");
+        Log.d(TAG, "注册信鸽: " + pushAccount);
         XGPushManager.bindAccount(getApplicationContext(),
-                presenter.getUserInfo().getId() + "_jtL2T8nYY5D0klEm",
+                pushAccount,
                 new XGIOperateCallback() {
                     @Override
                     public void onSuccess(Object data, int flag) {
