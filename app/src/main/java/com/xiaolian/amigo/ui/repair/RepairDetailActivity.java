@@ -124,23 +124,24 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
         if (detailId == null) {
             //this必须为点击消息要跳转到页面的上下文。
             XGPushClickedResult clickedResult = XGPushManager.onActivityStarted(this);
-            //获取消息附近参数
-            String customContent = clickedResult.getCustomContent();
-            //获取消息标题
-            String set = clickedResult.getTitle();
-            //获取消息内容
-            String s = clickedResult.getContent();
-            if (customContent != null && customContent.length() != 0) {
-                try {
-                    JSONObject obj = new JSONObject(customContent);
-                    if (!obj.isNull("targetId")) {
-                        detailId = Long.valueOf(obj.getString("targetId"));
+            if (clickedResult != null) {
+                //获取消息附近参数
+                String customContent = clickedResult.getCustomContent();
+                //获取消息标题
+                String set = clickedResult.getTitle();
+                //获取消息内容
+                String s = clickedResult.getContent();
+                if (customContent != null && customContent.length() != 0) {
+                    try {
+                        JSONObject obj = new JSONObject(customContent);
+                        if (!obj.isNull("targetId")) {
+                            detailId = Long.valueOf(obj.getString("targetId"));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
             }
-
         }
         if (presenter != null) {
             presenter.requestRepailDetail(detailId);

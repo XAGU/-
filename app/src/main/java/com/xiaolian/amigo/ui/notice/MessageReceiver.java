@@ -2,13 +2,21 @@ package com.xiaolian.amigo.ui.notice;
 
 import android.app.NotificationManager;
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.tencent.android.tpush.XGPushBaseReceiver;
 import com.tencent.android.tpush.XGPushClickedResult;
 import com.tencent.android.tpush.XGPushRegisterResult;
 import com.tencent.android.tpush.XGPushShowedResult;
 import com.tencent.android.tpush.XGPushTextMessage;
+import com.xiaolian.amigo.BuildConfig;
+import com.xiaolian.amigo.data.network.model.notify.CustomDTO;
+import com.xiaolian.amigo.ui.main.MainActivity;
+import com.xiaolian.amigo.ui.repair.RepairDetailActivity;
+import com.xiaolian.amigo.util.CommonUtil;
+import com.xiaolian.amigo.util.Constant;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,6 +27,7 @@ import org.json.JSONObject;
  */
 public class MessageReceiver extends XGPushBaseReceiver {
     private static final String TAG = MessageReceiver.class.getSimpleName();
+    private Gson mGson = new Gson();
 //    private Intent intent = new Intent("com.qq.xgdemo.activity.UPDATE_LISTVIEW");
     @Override
     public void onRegisterResult(Context context, int errorCode, XGPushRegisterResult message) {
@@ -83,23 +92,40 @@ public class MessageReceiver extends XGPushBaseReceiver {
         String text = "收到消息:" + message.toString();
         // 获取自定义key-value
         String customContent = message.getCustomContent();
-        if (customContent != null && customContent.length() != 0) {
-            try {
-                JSONObject obj = new JSONObject(customContent);
-                // key1为前台配置的key
-                if (!obj.isNull("key")) {
-                    String value = obj.getString("key");
-                    Log.d(TAG, "get custom value:" + value);
-                }
-                // ...
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
+//        if (customContent != null && customContent.length() != 0) {
+//            try {
+//                JSONObject obj = new JSONObject(customContent);
+//                // key1为前台配置的key
+//                if (!obj.isNull("key")) {
+//                    String value = obj.getString("key");
+//                    Log.d(TAG, "get custom value:" + value);
+//                }
+//                // ...
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//        }
+        CustomDTO customDTO = mGson.fromJson(customContent, CustomDTO.class);
         Log.d("LC", "++++++++++++++++透传消息");
         // APP自主处理消息的过程...
         Log.d(TAG, text);
-
+        switch (customDTO.getAction()) {
+            case 1:
+                if (BuildConfig.APPLICATION_ID.equalsIgnoreCase(CommonUtil.getRuningApp(context.getApplicationContext()))) {
+                    CommonUtil.sendNotify(context.getApplicationContext(), (int) (Math.random() * 10000), message.getTitle(),
+                            message.getTitle(), message.getContent(), null, null);
+                } else {
+                    CommonUtil.sendNotify(context.getApplicationContext(), (int) (Math.random() * 10000), message.getTitle(),
+                            message.getTitle(), message.getContent(), MainActivity.class, null);
+                }
+                break;
+            case 2:
+                Bundle bundle = new Bundle();
+                bundle.putLong(Constant.BUNDLE_ID, customDTO.getTargetId());
+                CommonUtil.sendNotify(context.getApplicationContext(), (int) (Math.random() * 10000), message.getTitle(),
+                        message.getTitle(), message.getContent(), RepairDetailActivity.class, bundle);
+                break;
+        }
     }
 
     // 通知点击回调 actionType=1为该消息被清除，actionType=0为该消息被点击。此处不能做点击消息跳转，详细方法请参照官网的Android常见问题文档
