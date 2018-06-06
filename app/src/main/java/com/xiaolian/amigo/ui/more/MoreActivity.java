@@ -5,6 +5,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.tencent.android.tpush.XGPushManager;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.ui.main.MainActivity;
@@ -14,6 +15,8 @@ import com.xiaolian.amigo.ui.more.intf.IMoreView;
 import com.xiaolian.amigo.ui.widget.RecycleViewDivider;
 import com.xiaolian.amigo.util.Constant;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,6 +84,9 @@ public class MoreActivity extends MoreBaseActivity implements IMoreView {
 
     @OnClick(R.id.bt_logout)
     public void logout() {
+        XGPushManager.delAccount(getApplicationContext(),
+                presenter.getUserId() + "_jtL2T8nYY5D0klEm");
+        presenter.deletePushToken();
         presenter.logout();
     }
 

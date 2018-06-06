@@ -21,4 +21,8 @@ public interface IMorePresenter<V extends IMoreView> extends IBasePresenter<V> {
      * @return token
      */
     String getToken();
+
+    Long getUserId();
+
+    void deletePushToken();
 }

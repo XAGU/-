@@ -97,4 +97,6 @@ public interface ILoginPresenter<V extends ILoginView> extends IBasePresenter<V>
      * @return 手机号
      */
     String getMobile();
+
+    void deletePushToken();
 }

@@ -191,4 +191,9 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
     public String getMobile() {
         return loginDataManager.getRememberMobile();
     }
+
+    @Override
+    public void deletePushToken() {
+        loginDataManager.deletePushToken();
+    }
 }

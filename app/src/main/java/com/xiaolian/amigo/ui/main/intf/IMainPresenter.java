@@ -172,4 +172,10 @@ public interface IMainPresenter<V extends IMainView> extends IBasePresenter<V> {
      * @return 积分
      */
     Integer getCredits();
+
+    void deletePushToken();
+
+    String getPushToken();
+
+    void setPushToken(String pushToken);
 }

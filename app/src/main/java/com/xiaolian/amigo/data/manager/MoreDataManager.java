@@ -35,4 +35,14 @@ public class MoreDataManager implements IMoreDataManager {
     public boolean getTransfer() {
         return sharedPreferencesHelp.getTransfer();
     }
+
+    @Override
+    public Long getUserId() {
+        return sharedPreferencesHelp.getUserInfo().getId();
+    }
+
+    @Override
+    public void deletePushToken() {
+        sharedPreferencesHelp.setPushToken("");
+    }
 }
