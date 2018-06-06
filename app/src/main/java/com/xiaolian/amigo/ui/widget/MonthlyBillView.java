@@ -47,6 +47,9 @@ public class MonthlyBillView extends View {
 
     private int lengedHeight = 0;
     private boolean isLengedVisible = false;
+    private int initAngle = -60;
+
+    private boolean hasData = true;
 
     public MonthlyBillView(Context context) {
         super(context);
@@ -103,16 +106,30 @@ public class MonthlyBillView extends View {
             float actionY = event.getY();
             double distance = Math.sqrt(Math.pow(Math.abs(actionX-barWidth/2),2)+
                     Math.pow(Math.abs(actionY-barHeight/2),2));
-            double angle = Math.atan((actionY-barHeight/2) /(actionX-barWidth/2)) /3.14 * 180 - 90;
+//            double angle = Math.atan((actionY-barHeight/2) /(actionX-barWidth/2)) /3.14 * 180 + initAngle;
+//            float X = barWidth/2,Y=(barHeight-lengedHeight)/2;
+//            if(actionX > X && actionY<Y){
+//                angle = 90-angle;
+//            } else if (actionX > X && actionY>Y) {
+//                angle = 90+angle;
+//            }else if (actionX < X && actionY>Y) {
+//                angle = 270-angle;
+//            }else if (actionX < X && actionY<Y) {
+//                angle = 270+angle;
+//            }
+
+            double angle = Math.atan((actionY-barHeight/2) /(actionX-barWidth/2)) /3.14 * 180;
             float X = barWidth/2,Y=(barHeight-lengedHeight)/2;
             if(actionX > X && actionY<Y){
-                angle = 90-angle;
+                if (angle < initAngle) {
+                    angle = angle + 360;
+                }
             } else if (actionX > X && actionY>Y) {
-                angle = 90+angle;
+                // go nothing
             }else if (actionX < X && actionY>Y) {
-                angle = 270-angle;
+                angle = 180 + angle;
             }else if (actionX < X && actionY<Y) {
-                angle = 270+angle;
+                angle = 180 + angle;
             }
 
             if(angleSEs == null || angleSEs.size() == 0 || mListener == null) return false;
@@ -120,13 +137,17 @@ public class MonthlyBillView extends View {
             for(int i=0;i<angleSEs.size();i++){
                 if(distance <= radius){
                     if(angle > angleSEs.get(i).getStartAngle() && angle<angleSEs.get(i).getSweepAngle()){
-                        mListener.onSelected(i); //当点击点在圆内且在扇形上时，触发监听事件
+                        if (hasData) {
+                            mListener.onSelected(i); //当点击点在圆内且在扇形上时，触发监听事件
+                        }
                     }
                 }
 //                else if(lengedRectes.get(i).contains(actionX,actionY)){
 //                    mListener.onSelected(i); //当点击点在描述文字上时，触发监听事件(此处是当饼图部分太小，无法点击时的补充)
 //                }
-                else if(descRectes.get(i).contains(actionX,actionY)){
+                else if(descRectes != null
+                        && descRectes.isEmpty()
+                        && descRectes.get(i).contains(actionX,actionY)){
                     mListener.onSelected(i); //当点击点在描述文字上时，触发监听事件(此处是当饼图部分太小，无法点击时的补充)
                 }
             }
@@ -208,7 +229,7 @@ public class MonthlyBillView extends View {
 
             RectF arcRect = new RectF(barWidth/2-radius,(barHeight-lengedHeight)/2 - radius,
                     barWidth/2+radius,(barHeight-lengedHeight)/2 + radius);//圆形所在的RectF，圆心与控件中心重叠
-            float startAngle = -60,sweepAngle = 0;
+            float startAngle = initAngle,sweepAngle = 0;
             float perAngle = totalNum/360;//每一度的数量
             String desc;
             float lineAngle;
@@ -224,9 +245,11 @@ public class MonthlyBillView extends View {
 
                 lineAngle = startAngle + sweepAngle/2;//绘制描述文字的指示线，从扇形中间开始
                 desc = datas.get(i).getDesc();
-                RectF rectF = drwaLineAndText(sweepAngle,lineAngle, "¥" + datas.get(i).getNumber(),
-                        desc, rect,i);
-                descRectes.add(rectF);
+                if (!hasData) {
+                    RectF rectF = drwaLineAndText(sweepAngle,lineAngle, "¥" + datas.get(i).getNumber(),
+                            desc, rect,i);
+                    descRectes.add(rectF);
+                }
 
                 startAngle += sweepAngle; //开始角度变为扇形结束的角度，下次绘制时从前一个扇形的结束区绘制*
             }
@@ -253,8 +276,9 @@ public class MonthlyBillView extends View {
         linePaint.setColor(ContextCompat.getColor(mContext, datas.get(i).getColorRes()));
         lineStartX   =   barWidth/2   +   (radius- distance)   *  (float) Math.cos(lineAngle *   3.14   /180 );
         lineStartY   =   (barHeight-lengedHeight)/2   +   (radius- distance)  *   (float) Math.sin(lineAngle   *   3.14/180);
-        if(Math.abs(sweepAngle) <= 30){ //当偏转角度小于30°时，增加指示线的长度，避免描述文字重叠
-            float num = (datas.size() - i)%3;
+        if(Math.abs(sweepAngle) <= 30){
+//            float num = (datas.size() - i)%3;
+            float num = 1;
             lineEndX   =   barWidth/2   +   (radius+ distance*num*1f)   *  (float) Math.cos(lineAngle *   3.14   /180 );
             lineEndY   =   (barHeight-lengedHeight)/2   +   (radius+ distance*num*1f)  *   (float) Math.sin(lineAngle   *   3.14   /180);
         }else {

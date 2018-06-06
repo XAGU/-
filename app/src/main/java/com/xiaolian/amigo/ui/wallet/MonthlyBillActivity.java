@@ -12,6 +12,7 @@ import com.xiaolian.amigo.ui.order.OrderActivity;
 import com.xiaolian.amigo.ui.wallet.intf.IMonthlyBillPresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IMonthlyBillView;
 import com.xiaolian.amigo.ui.widget.MonthlyBillView;
+import com.xiaolian.amigo.ui.widget.dialog.YearMonthPickerDialog;
 import com.xiaolian.amigo.util.Constant;
 
 import java.text.DecimalFormat;
@@ -56,6 +57,7 @@ public class MonthlyBillActivity extends WalletBaseActivity implements IMonthlyB
 
     private Integer currentYear;
     private Integer currentMonth;
+    YearMonthPickerDialog yearMonthPickerDialog;
 
     private DecimalFormat df = new DecimalFormat("###.##");
 
@@ -95,7 +97,7 @@ public class MonthlyBillActivity extends WalletBaseActivity implements IMonthlyB
         return R.layout.activity_monthly_bill;
     }
 
-    @OnClick(R.id.tv_monthly_order_date)
+    @OnClick(R.id.tv_total_consume)
     public void gotoMonthlyOrder() {
         Bundle bundle = new Bundle();
         bundle.putInt(WalletConstant.KEY_YEAR, currentYear);
@@ -132,12 +134,33 @@ public class MonthlyBillActivity extends WalletBaseActivity implements IMonthlyB
                     Device.getDevice(consume.getConsumeType()).getColorRes(),
                     consume.getConsumeTypeName(), consume.getConsumeType()));
         }
-        monthlyBillView.setData(dataList);
+        if (dataList.isEmpty()) {
+            dataList.add(new MonthlyBillView.ViewData(1, R.color.colorDarkB, "", 1));
+            monthlyBillView.setData(dataList);
+        } else {
+            monthlyBillView.setData(dataList);
+        }
         tvMonthlyOrderDate.setText(String.format(Locale.getDefault(), "%d年%d月", currentYear, currentMonth));
         tvTotalConsume.setText(String.format(Locale.getDefault(), "消费总额：¥%s", df.format(data.getTotalConsume())));
         tvMaxConsume.setText(String.format(Locale.getDefault(), "单笔消费最贵：¥%s", df.format(data.getMaxConsume())));
         tvTotalRecharge.setText(String.format(Locale.getDefault(), "充值总额：¥%s", df.format(data.getTotalRecharge())));
         tvTotalWithdraw.setText(String.format(Locale.getDefault(), "提现总额：¥%s", df.format(data.getTotalWithdraw())));
+    }
+
+    @OnClick(R.id.tv_monthly_order_date)
+    public void showDatePick() {
+        if (yearMonthPickerDialog == null) {
+            yearMonthPickerDialog = new YearMonthPickerDialog(this);
+        }
+        yearMonthPickerDialog.setOnItemSelectedListener((picker, date) -> {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+            currentYear = cal.get(Calendar.YEAR);
+            currentMonth = cal.get(Calendar.MONTH) + 1;
+//            tvMonthlyOrderDate.setText(String.format(Locale.getDefault(), "%d年%d月", currentYear, currentMonth));
+            presenter.getMonthlyBill(currentYear, currentMonth);
+        });
+        yearMonthPickerDialog.show();
     }
 
     @Override
