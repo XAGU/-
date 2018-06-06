@@ -8,4 +8,5 @@ import com.xiaolian.amigo.ui.base.intf.IBaseView;
  * @date 18/6/1
  */
 public interface IMonthlyBillPresenter<V extends IBaseView> extends IBasePresenter<V> {
+    void getMonthlyBill(int year, int month);
 }

@@ -10,6 +10,7 @@ import android.graphics.RectF;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.xiaolian.amigo.util.ScreenUtils;
@@ -39,6 +40,7 @@ public class MonthlyBillView extends View {
     private List<ViewData> datas;
     private List<AngleSE> angleSEs;
     private List<RectF> lengedRectes;
+    private List<RectF> descRectes;
     private OnSelectedListener mListener;
 
     private float totalNum;
@@ -62,6 +64,7 @@ public class MonthlyBillView extends View {
     }
 
     private void init(Context context) {
+        descRectes = new ArrayList<>();
         mContext = context;
 
         textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -91,6 +94,46 @@ public class MonthlyBillView extends View {
             totalNum += data.getNumber();
         }
         invalidate();
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if(event.getAction() == MotionEvent.ACTION_DOWN){
+            float actionX = event.getX(); //点击点的坐标
+            float actionY = event.getY();
+            double distance = Math.sqrt(Math.pow(Math.abs(actionX-barWidth/2),2)+
+                    Math.pow(Math.abs(actionY-barHeight/2),2));
+            double angle = Math.atan((actionY-barHeight/2) /(actionX-barWidth/2)) /3.14 * 180 - 90;
+            float X = barWidth/2,Y=(barHeight-lengedHeight)/2;
+            if(actionX > X && actionY<Y){
+                angle = 90-angle;
+            } else if (actionX > X && actionY>Y) {
+                angle = 90+angle;
+            }else if (actionX < X && actionY>Y) {
+                angle = 270-angle;
+            }else if (actionX < X && actionY<Y) {
+                angle = 270+angle;
+            }
+
+            if(angleSEs == null || angleSEs.size() == 0 || mListener == null) return false;
+
+            for(int i=0;i<angleSEs.size();i++){
+                if(distance <= radius){
+                    if(angle > angleSEs.get(i).getStartAngle() && angle<angleSEs.get(i).getSweepAngle()){
+                        mListener.onSelected(i); //当点击点在圆内且在扇形上时，触发监听事件
+                    }
+                }
+//                else if(lengedRectes.get(i).contains(actionX,actionY)){
+//                    mListener.onSelected(i); //当点击点在描述文字上时，触发监听事件(此处是当饼图部分太小，无法点击时的补充)
+//                }
+                else if(descRectes.get(i).contains(actionX,actionY)){
+                    mListener.onSelected(i); //当点击点在描述文字上时，触发监听事件(此处是当饼图部分太小，无法点击时的补充)
+                }
+            }
+            return false;
+        }
+
+        return super.onTouchEvent(event);
     }
 
     @Override
@@ -170,6 +213,8 @@ public class MonthlyBillView extends View {
             String desc;
             float lineAngle;
 
+            descRectes.clear();
+
             Rect rect = new Rect();
             for(int i=0;i<datas.size();i++){
                 sweepAngle = (float) (datas.get(i).getNumber()/perAngle); //当前值的度数
@@ -178,9 +223,10 @@ public class MonthlyBillView extends View {
                 angleSEs.add(new AngleSE(startAngle,sweepAngle+startAngle));
 
                 lineAngle = startAngle + sweepAngle/2;//绘制描述文字的指示线，从扇形中间开始
-                desc = datas.get(i).getDesc() + "消费";
-                drwaLineAndText(sweepAngle,lineAngle, "¥" + datas.get(i).getNumber(),
+                desc = datas.get(i).getDesc();
+                RectF rectF = drwaLineAndText(sweepAngle,lineAngle, "¥" + datas.get(i).getNumber(),
                         desc, rect,i);
+                descRectes.add(rectF);
 
                 startAngle += sweepAngle; //开始角度变为扇形结束的角度，下次绘制时从前一个扇形的结束区绘制*
             }
@@ -201,7 +247,8 @@ public class MonthlyBillView extends View {
 
     }
 
-    private void drwaLineAndText(float sweepAngle,float lineAngle,String amount, String desc,Rect rect,int i){
+    private RectF drwaLineAndText(float sweepAngle,float lineAngle,String amount, String desc,Rect rect,int i){
+        RectF descRectF = new RectF();
         float lineStartX,lineStartY ,lineEndX,lineEndY ;
         linePaint.setColor(ContextCompat.getColor(mContext, datas.get(i).getColorRes()));
         lineStartX   =   barWidth/2   +   (radius- distance)   *  (float) Math.cos(lineAngle *   3.14   /180 );
@@ -229,6 +276,10 @@ public class MonthlyBillView extends View {
             textPaint.setTextSize(ScreenUtils.dpToPxInt(mContext,12));
             textPaint.getTextBounds("消", 0, 1, rect);
             bitmapCanvas.drawText(amount,barWidth-textPaint.measureText(amount),lineEndY-ScreenUtils.dpToPxInt(mContext, 4),textPaint);
+            descRectF.top = lineEndY - rect.height();
+            descRectF.bottom = lineEndY + rect.height();
+            descRectF.left = barWidth - textPaint.measureText(desc);
+            descRectF.right = barWidth;
         }else {//当指示线位于饼图左侧时，在左侧绘制第二条指示线及文字
             bitmapCanvas.drawLine(lineEndX,lineEndY,0,lineEndY,linePaint);
             textPaint.setTextSize(ScreenUtils.dpToPxInt(mContext,10));
@@ -237,7 +288,16 @@ public class MonthlyBillView extends View {
             textPaint.setTextSize(ScreenUtils.dpToPxInt(mContext,12));
             textPaint.getTextBounds("消", 0, 1, rect);
             bitmapCanvas.drawText(amount,0,lineEndY-ScreenUtils.dpToPxInt(mContext, 4),textPaint);
+            descRectF.top = lineEndY - rect.height();
+            descRectF.bottom = lineEndY + rect.height();
+            descRectF.left = 0;
+            descRectF.right = textPaint.measureText(desc);
         }
+        return descRectF;
+    }
+
+    public void setOnSelectedListener(OnSelectedListener l){
+        mListener = l;
     }
 
     public interface OnSelectedListener{ //点击监听接口
@@ -266,11 +326,14 @@ public class MonthlyBillView extends View {
         private double number;
         private int colorRes;
         private String desc;
+        private Integer deviceType;
 
-        public ViewData(double number, int colorRes, String desc) {
+        public ViewData(double number, int colorRes,
+                        String desc, Integer deviceType) {
             this.number = number;
             this.colorRes = colorRes;
             this.desc = desc;
+            this.deviceType = deviceType;
         }
     }
 }

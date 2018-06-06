@@ -16,5 +16,6 @@ public interface IWithdrawRecordPresenter<V extends IWithdrawalRecordView> exten
      *
      * @param page 页数
      */
-    void requestWithdrawalRecord(int page);
+    void requestWithdrawalRecord(int page, Integer fundsType,
+                                 Integer year, Integer month);
 }

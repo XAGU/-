@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.wallet;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -29,22 +30,31 @@ import butterknife.ButterKnife;
 
 public class WithdrawalRecordActivity extends WalletBaseListActivity implements IWithdrawalRecordView {
     private static final int REQUEST_CODE_DETAIL = 0x1201;
+    static final int INVALID_INT = -1;
     @Inject
     IWithdrawRecordPresenter<IWithdrawalRecordView> presenter;
 
     private List<WithdrawalAdaptor.WithdrawalWrapper> items = new ArrayList<>();
     private WithdrawalAdaptor adaptor;
 
+    private boolean refreshFlag = false;
+
+    private Integer year;
+    private Integer month;
+    private Integer fundsType;
+
     @Override
     protected void onRefresh() {
         page = Constant.PAGE_START_NUM;
-        presenter.requestWithdrawalRecord(page);
-        items.clear();
+        presenter.requestWithdrawalRecord(page, fundsType,
+                year, month);
+//        items.clear();
     }
 
     @Override
     protected void onLoadMore() {
-        presenter.requestWithdrawalRecord(page);
+        presenter.requestWithdrawalRecord(page, fundsType,
+                year, month);
     }
 
     @Override
@@ -84,7 +94,22 @@ public class WithdrawalRecordActivity extends WalletBaseListActivity implements 
     }
 
     @Override
+    protected void setUp() {
+        super.setUp();
+        if (getIntent() != null) {
+            Bundle bundle = getIntent().getBundleExtra(Constant.DATA_BUNDLE);
+            fundsType = bundle.getInt(WalletConstant.KEY_FUNDS_TYPE, INVALID_INT);
+            year = bundle.getInt(WalletConstant.KEY_YEAR, INVALID_INT);
+            month = bundle.getInt(WalletConstant.KEY_MONTH, INVALID_INT);
+        }
+    }
+
+    @Override
     public void addMore(List<WithdrawalAdaptor.WithdrawalWrapper> wrappers) {
+        if (refreshFlag) {
+            refreshFlag = false;
+            items.clear();
+        }
         items.addAll(wrappers);
         adaptor.notifyDataSetChanged();
     }

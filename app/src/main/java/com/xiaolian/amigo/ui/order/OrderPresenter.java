@@ -53,8 +53,21 @@ public class OrderPresenter<V extends IOrderView> extends BasePresenter<V>
 
 
     @Override
-    public void requestOrders(int page) {
+    public void requestOrders(int page, Integer deviceType,
+                              Integer year, Integer month) {
         OrderReqDTO reqDTO = new OrderReqDTO();
+        if (deviceType != null
+                && deviceType != OrderActivity.INVALID_INT) {
+            reqDTO.setDeviceType(deviceType);
+        }
+        if (year != null
+                && year != OrderActivity.INVALID_INT) {
+            reqDTO.setYear(year);
+        }
+        if (month != null
+                && month != OrderActivity.INVALID_INT) {
+            reqDTO.setMonth(month);
+        }
         reqDTO.setPage(page);
         reqDTO.setSize(Constant.PAGE_SIZE);
         // 查看已结束账单

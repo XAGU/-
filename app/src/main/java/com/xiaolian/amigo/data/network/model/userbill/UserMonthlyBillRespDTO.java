@@ -2,10 +2,13 @@ package com.xiaolian.amigo.data.network.model.userbill;
 
 import java.util.List;
 
+import lombok.Data;
+
 /**
  * @author zcd
  * @date 18/6/4
  */
+@Data
 public class UserMonthlyBillRespDTO {
     /**
      * 消费类型列表

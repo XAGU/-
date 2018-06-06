@@ -27,4 +27,8 @@ public class OrderReqDTO {
      */
     private Integer paymentType;
 
+    private Integer deviceType;
+    private Integer year;
+    private Integer month;
+
 }
