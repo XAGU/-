@@ -464,7 +464,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             }
             if (!presenter.isMainGuideDone()) {
                 // 显示引导页
-                GuideDialog guideDialog = new GuideDialog(this, GuideDialog.TYPE_MAIN);
+                GuideDialog guideDialog = new GuideDialog(this, GuideDialog.TYPE_WALLET_TIP);
+                guideDialog.setAmount(getString(R.string.rmb_symbol) + presenter.getBalance());
                 guideDialog.show();
             }
             if (profileFragment == null) {

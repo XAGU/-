@@ -1,13 +1,17 @@
 package com.xiaolian.amigo.ui.credits;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.style.AbsoluteSizeSpan;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
@@ -55,9 +59,9 @@ public class CreditsActivity extends CreditsBaseActivity implements ICreditsView
         adapter = new CreditsAdapter(this, R.layout.item_point, items);
         adapter.setExchangeClickListener((bonusId, deviceType, bonusAmount, pointAmount) ->
                 presenter.checkForExchange(bonusId, deviceType, bonusAmount, pointAmount));
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        recyclerView.addItemDecoration(new GridSpacesItemDecoration(2,
-                ScreenUtils.dpToPxInt(this, 10), false));
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
+//        recyclerView.addItemDecoration(new GridSpacesItemDecoration(1,
+//                ScreenUtils.dpToPxInt(this, 10), false));
         recyclerView.setAdapter(adapter);
         recyclerView.setNestedScrollingEnabled(false);
     }
@@ -103,6 +107,12 @@ public class CreditsActivity extends CreditsBaseActivity implements ICreditsView
         creditsSpan.setSpan(new AbsoluteSizeSpan(
                         DimentionUtils.convertSpToPixels(22, this)), 0,
                 creditsStr.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        creditsSpan.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorFullRed)),
+                0, creditsStr.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        creditsSpan.setSpan(new StyleSpan(Typeface.BOLD),
+                0, creditsStr.length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         builder.append(creditsSpan);
         tvCredits.setText(builder);

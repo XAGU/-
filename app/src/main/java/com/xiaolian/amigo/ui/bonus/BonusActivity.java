@@ -50,11 +50,13 @@ public class BonusActivity extends BonusBaseListActivity implements IBonusView {
      */
     private int action = ACTION_NORMAL;
     private Integer deviceType = null;
+    private boolean refreshFlag = false;
 
     @Override
     protected void onRefresh() {
         page = Constant.PAGE_START_NUM;
-        bonuses.clear();
+        refreshFlag = true;
+//        bonuses.clear();
         presenter.requestBonusList(page, deviceType == -1 ? null : deviceType, deviceType != -1);
     }
 
@@ -152,6 +154,10 @@ public class BonusActivity extends BonusBaseListActivity implements IBonusView {
 
     @Override
     public void addMore(List<BonusAdaptor.BonusWrapper> bonuses) {
+        if (refreshFlag) {
+            refreshFlag = false;
+            this.bonuses.clear();
+        }
         this.bonuses.addAll(bonuses);
         adaptor.notifyDataSetChanged();
     }

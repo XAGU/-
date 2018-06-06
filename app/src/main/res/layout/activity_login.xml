@@ -64,8 +64,8 @@
         android:paddingTop="21dp"
         android:paddingBottom="21dp"
         android:text="@string/forget_password_tip"
-        android:textColor="#aaa"
-        android:textSize="11sp" />
+        android:textColor="@color/colorDark6"
+        android:textSize="10sp" />
 
     <Button
         android:enabled="false"

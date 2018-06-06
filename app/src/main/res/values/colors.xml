@@ -94,4 +94,9 @@
     <color name="dispenser_gradient_start">#43eda3</color>
     <color name="colorYellow">#ffc460</color>
     <color name="repair_waiting">@color/colorYellow</color>
+
+    <color name="credit_heater">#FF6A76</color>
+    <color name="credit_dispenser">#43eda3</color>
+    <color name="credit_washer">#9370DB</color>
+    <color name="credit_dryer">#ffc460</color>
 </resources>
