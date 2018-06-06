@@ -83,57 +83,63 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 
-                    <View
-                        android:id="@+id/v_bottom_line1"
-                        android:visibility="gone"
-                        tools:visibility="visible"
-                        android:background="#BFFF4E80"
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="4dp"/>
+                        android:layout_height="57dp">
 
-                    <View
-                        android:id="@+id/v_bottom_line2"
-                        android:visibility="gone"
-                        tools:visibility="visible"
-                        android:layout_marginBottom="14dp"
-                        android:layout_marginTop="4dp"
-                        android:background="#BFFF4E80"
-                        android:layout_width="match_parent"
-                        android:layout_height="2dp"/>
+                        <View
+                            android:id="@+id/v_bottom_line1"
+                            android:visibility="gone"
+                            tools:visibility="visible"
+                            android:background="#BFFF4E80"
+                            android:layout_width="match_parent"
+                            android:layout_height="4dp"/>
 
-                    <TextView
-                        android:visibility="gone"
-                        tools:visibility="visible"
-                        android:id="@+id/tv_order_error_tip"
-                        android:text="@string/order_error_tip"
-                        android:textColor="@color/colorFullRed"
-                        android:textSize="12sp"
-                        android:layout_marginTop="10dp"
-                        android:paddingBottom="14dp"
-                        android:gravity="center"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        <View
+                            android:layout_below="@id/v_bottom_line1"
+                            android:id="@+id/v_bottom_line2"
+                            android:visibility="gone"
+                            tools:visibility="visible"
+                            android:layout_marginTop="4dp"
+                            android:background="#BFFF4E80"
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"/>
 
-                    <TextView
-                        android:id="@+id/tv_order_no_use_tip"
-                        android:layout_width="wrap_content"
-                        android:visibility="gone"
-                        tools:visibility="visible"
-                        android:gravity="center"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:paddingTop="14dp"
-                        android:paddingBottom="14dp"
-                        android:layout_marginBottom="7dp"
-                        android:text="@string/order_no_use_tip"
-                        android:textColor="#999"
-                        android:textSize="12sp" />
+                        <TextView
+                            android:layout_below="@id/v_bottom_line2"
+                            android:visibility="gone"
+                            tools:visibility="visible"
+                            android:id="@+id/tv_order_error_tip"
+                            android:text="@string/order_error_tip"
+                            android:textColor="@color/colorFullRed"
+                            android:textSize="12sp"
+                            android:layout_marginTop="14dp"
+                            android:gravity="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:layout_below="@id/v_bottom_line2"
+                            android:id="@+id/tv_order_no_use_tip"
+                            android:layout_width="wrap_content"
+                            android:visibility="gone"
+                            tools:visibility="gone"
+                            android:gravity="center"
+                            android:layout_centerHorizontal="true"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:paddingTop="14dp"
+                            android:paddingBottom="14dp"
+                            android:text="@string/order_no_use_tip"
+                            android:textColor="#999"
+                            android:textSize="12sp" />
+
+                    </RelativeLayout>
 
                 </LinearLayout>
 
                 <ImageView
-                    android:rotation="180"
-                    android:src="@drawable/bg_order_detail_top"
+                    android:src="@drawable/bg_order_detail_bottom"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 

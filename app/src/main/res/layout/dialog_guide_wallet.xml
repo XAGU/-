@@ -11,8 +11,10 @@
         style="@style/ListItemRel"
         android:clickable="false"
         android:background="#ffffff"
-        android:layout_marginLeft="@dimen/mainMarginLeftRight"
-        android:layout_marginRight="@dimen/mainMarginLeftRight"
+        android:layout_marginStart="14dp"
+        android:layout_marginEnd="14dp"
+        android:paddingStart="7dp"
+        android:paddingEnd="7dp"
         android:focusable="false"
         android:focusableInTouchMode="false">
 
