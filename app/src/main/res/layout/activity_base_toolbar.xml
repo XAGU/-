@@ -18,17 +18,34 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tv_toolbar_title"
-                style="@style/ToolBarTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
                 android:paddingTop="8dp"
-                android:layout_marginBottom="@dimen/toolBarMarginBottom"
-                android:layout_marginLeft="@dimen/toolBarMarginLeft"
-                android:layout_marginRight="@dimen/toolBarMarginLeft"
-                tool:text="@string/repair_detail" />
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tv_toolbar_title"
+                    style="@style/ToolBarTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/toolBarMarginBottom"
+                    android:layout_marginLeft="@dimen/toolBarMarginLeft"
+                    android:layout_marginRight="@dimen/toolBarMarginLeft"
+                    tool:text="@string/repair_detail" />
+                <TextView
+                    android:visibility="gone"
+                    tool:visibility="visible"
+                    tool:text="月账单"
+                    android:id="@+id/tv_toolbar_sub_title"
+                    android:textColor="@color/colorDark2"
+                    android:gravity="end"
+                    android:textSize="14sp"
+                    android:paddingEnd="@dimen/toolBarMarginLeft"
+                    android:paddingStart="0dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
 
             <LinearLayout
                 android:id="@+id/ll_main_content"
@@ -66,6 +83,7 @@
             android:textStyle="bold"
             android:textColor="#222"
             tool:text="@string/repair_detail" />
+
 
         <View
             android:id="@+id/view_line"

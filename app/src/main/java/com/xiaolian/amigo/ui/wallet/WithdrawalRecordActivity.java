@@ -1,10 +1,12 @@
 package com.xiaolian.amigo.ui.wallet;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.alipay.mobile.framework.service.annotation.OperationType;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.WithdrawOperationType;
 import com.xiaolian.amigo.ui.wallet.adaptor.WithdrawalAdaptor;
@@ -29,22 +31,32 @@ import butterknife.ButterKnife;
 
 public class WithdrawalRecordActivity extends WalletBaseListActivity implements IWithdrawalRecordView {
     private static final int REQUEST_CODE_DETAIL = 0x1201;
+    static final int INVALID_INT = -1;
     @Inject
     IWithdrawRecordPresenter<IWithdrawalRecordView> presenter;
 
     private List<WithdrawalAdaptor.WithdrawalWrapper> items = new ArrayList<>();
     private WithdrawalAdaptor adaptor;
 
+    private boolean refreshFlag = false;
+
+    private Integer year;
+    private Integer month;
+    private Integer fundsType;
+
     @Override
     protected void onRefresh() {
+        refreshFlag = true;
         page = Constant.PAGE_START_NUM;
-        presenter.requestWithdrawalRecord(page);
-        items.clear();
+        presenter.requestWithdrawalRecord(page, fundsType,
+                year, month);
+//        items.clear();
     }
 
     @Override
     protected void onLoadMore() {
-        presenter.requestWithdrawalRecord(page);
+        presenter.requestWithdrawalRecord(page, fundsType,
+                year, month);
     }
 
     @Override
@@ -81,10 +93,48 @@ public class WithdrawalRecordActivity extends WalletBaseListActivity implements 
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
         presenter.onAttach(WithdrawalRecordActivity.this);
+
+        String title = "";
+        if (year != null
+                && year != INVALID_INT
+                && month != null
+                && month != INVALID_INT) {
+            title = ""
+                    .concat(String.valueOf(year))
+                    .concat("年")
+                    .concat(String.valueOf(month))
+                    .concat("月");
+        }
+
+        if (fundsType != null
+                && fundsType != INVALID_INT) {
+            title = title.concat(WithdrawOperationType.getOperationType(fundsType).getDesc());
+        } else {
+            title = title.concat("充值提现");
+        }
+        setToolBarTitle(title.concat("记录"));
+    }
+
+    @Override
+    protected void setUp() {
+        super.setUp();
+        if (getIntent() != null) {
+            Bundle bundle = getIntent().getBundleExtra(Constant.DATA_BUNDLE);
+            if (bundle == null) {
+                return;
+            }
+            fundsType = bundle.getInt(WalletConstant.KEY_FUNDS_TYPE, INVALID_INT);
+            year = bundle.getInt(WalletConstant.KEY_YEAR, INVALID_INT);
+            month = bundle.getInt(WalletConstant.KEY_MONTH, INVALID_INT);
+        }
     }
 
     @Override
     public void addMore(List<WithdrawalAdaptor.WithdrawalWrapper> wrappers) {
+        if (refreshFlag) {
+            refreshFlag = false;
+            items.clear();
+        }
         items.addAll(wrappers);
         adaptor.notifyDataSetChanged();
     }

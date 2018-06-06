@@ -3,6 +3,7 @@ package com.xiaolian.amigo.data.manager;
 import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
 import com.xiaolian.amigo.data.network.IComplaintApi;
 import com.xiaolian.amigo.data.network.IOrderApi;
+import com.xiaolian.amigo.data.network.IUserBillApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.complaint.CheckComplaintReqDTO;
 import com.xiaolian.amigo.data.network.model.order.LatestOrderReqDTO;
@@ -16,6 +17,7 @@ import com.xiaolian.amigo.data.network.model.order.OrderDetailRespDTO;
 import com.xiaolian.amigo.data.network.model.order.OrderPreInfoDTO;
 import com.xiaolian.amigo.data.network.model.order.OrderRespDTO;
 import com.xiaolian.amigo.data.network.model.order.UnsettledOrderStatusCheckRespDTO;
+import com.xiaolian.amigo.data.network.model.userbill.QueryPersonalMaxConsumeOrderListReqDTO;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 
 import javax.inject.Inject;
@@ -37,12 +39,14 @@ public class OrderDataManager implements IOrderDataManager {
 
     private IComplaintApi complaintApi;
     private IOrderApi orderApi;
+    private IUserBillApi userBillApi;
     private ISharedPreferencesHelp sharedPreferencesHelp;
 
     @Inject
     public OrderDataManager(Retrofit retrofit, ISharedPreferencesHelp sharedPreferencesHelp) {
         orderApi = retrofit.create(IOrderApi.class);
         complaintApi = retrofit.create(IComplaintApi.class);
+        userBillApi = retrofit.create(IUserBillApi.class);
         this.sharedPreferencesHelp = sharedPreferencesHelp;
     }
 
@@ -75,6 +79,11 @@ public class OrderDataManager implements IOrderDataManager {
     @Override
     public String getToken() {
         return sharedPreferencesHelp.getToken();
+    }
+
+    @Override
+    public Observable<ApiResult<OrderRespDTO>> getMonthlyMaxBill(QueryPersonalMaxConsumeOrderListReqDTO reqDTO) {
+        return userBillApi.getMonthlyMaxBill(reqDTO);
     }
 
     @Override
