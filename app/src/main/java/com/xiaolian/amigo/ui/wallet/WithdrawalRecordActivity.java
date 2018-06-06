@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.alipay.mobile.framework.service.annotation.OperationType;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.WithdrawOperationType;
 import com.xiaolian.amigo.ui.wallet.adaptor.WithdrawalAdaptor;
@@ -45,6 +46,7 @@ public class WithdrawalRecordActivity extends WalletBaseListActivity implements 
 
     @Override
     protected void onRefresh() {
+        refreshFlag = true;
         page = Constant.PAGE_START_NUM;
         presenter.requestWithdrawalRecord(page, fundsType,
                 year, month);
@@ -91,6 +93,26 @@ public class WithdrawalRecordActivity extends WalletBaseListActivity implements 
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
         presenter.onAttach(WithdrawalRecordActivity.this);
+
+        String title = "";
+        if (year != null
+                && year != INVALID_INT
+                && month != null
+                && month != INVALID_INT) {
+            title = ""
+                    .concat(String.valueOf(year))
+                    .concat("年")
+                    .concat(String.valueOf(month))
+                    .concat("月");
+        }
+
+        if (fundsType != null
+                && fundsType != INVALID_INT) {
+            title = title.concat(WithdrawOperationType.getOperationType(fundsType).getDesc());
+        } else {
+            title = title.concat("充值提现");
+        }
+        setToolBarTitle(title.concat("记录"));
     }
 
     @Override
@@ -98,6 +120,9 @@ public class WithdrawalRecordActivity extends WalletBaseListActivity implements 
         super.setUp();
         if (getIntent() != null) {
             Bundle bundle = getIntent().getBundleExtra(Constant.DATA_BUNDLE);
+            if (bundle == null) {
+                return;
+            }
             fundsType = bundle.getInt(WalletConstant.KEY_FUNDS_TYPE, INVALID_INT);
             year = bundle.getInt(WalletConstant.KEY_YEAR, INVALID_INT);
             month = bundle.getInt(WalletConstant.KEY_MONTH, INVALID_INT);

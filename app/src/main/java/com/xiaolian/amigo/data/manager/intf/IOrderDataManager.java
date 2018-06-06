@@ -13,6 +13,7 @@ import com.xiaolian.amigo.data.network.model.order.OrderRespDTO;
 import com.xiaolian.amigo.data.network.model.order.QueryPrepayOptionReqDTO;
 import com.xiaolian.amigo.data.network.model.order.UnsettledOrderStatusCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.order.UnsettledOrderStatusCheckRespDTO;
+import com.xiaolian.amigo.data.network.model.userbill.QueryPersonalMaxConsumeOrderListReqDTO;
 
 import retrofit2.http.Body;
 import rx.Observable;
@@ -60,4 +61,6 @@ public interface IOrderDataManager {
     Observable<ApiResult<BooleanRespDTO>> checkComplaint(@Body CheckComplaintReqDTO reqDTO);
 
     String getToken();
+
+    Observable<ApiResult<OrderRespDTO>> getMonthlyMaxBill(@Body QueryPersonalMaxConsumeOrderListReqDTO reqDTO);
 }

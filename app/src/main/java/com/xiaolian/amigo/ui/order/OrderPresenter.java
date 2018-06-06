@@ -16,16 +16,20 @@
 package com.xiaolian.amigo.ui.order;
 
 
+import android.support.v4.util.ObjectsCompat;
+
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.manager.intf.IOrderDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.order.OrderInListDTO;
 import com.xiaolian.amigo.data.network.model.order.OrderReqDTO;
 import com.xiaolian.amigo.data.network.model.order.OrderRespDTO;
+import com.xiaolian.amigo.data.network.model.userbill.QueryPersonalMaxConsumeOrderListReqDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.order.adaptor.OrderAdaptor;
 import com.xiaolian.amigo.ui.order.intf.IOrderPresenter;
 import com.xiaolian.amigo.ui.order.intf.IOrderView;
+import com.xiaolian.amigo.ui.wallet.WalletConstant;
 import com.xiaolian.amigo.util.Constant;
 
 import java.util.ArrayList;
@@ -54,7 +58,12 @@ public class OrderPresenter<V extends IOrderView> extends BasePresenter<V>
 
     @Override
     public void requestOrders(int page, Integer deviceType,
-                              Integer year, Integer month) {
+                              Integer year, Integer month,
+                              Integer action) {
+        if (ObjectsCompat.equals(action, WalletConstant.ACTION_MAX_ORDER)) {
+            queryMaxOrder(year, month);
+            return;
+        }
         OrderReqDTO reqDTO = new OrderReqDTO();
         if (deviceType != null
                 && deviceType != OrderActivity.INVALID_INT) {
@@ -73,6 +82,44 @@ public class OrderPresenter<V extends IOrderView> extends BasePresenter<V>
         // 查看已结束账单
         reqDTO.setOrderStatus(2);
         addObserver(orderDataManager.queryOrders(reqDTO), new NetworkObserver<ApiResult<OrderRespDTO>>(false, true) {
+            @Override
+            public void onReady(ApiResult<OrderRespDTO> result) {
+                getMvpView().setRefreshComplete();
+                getMvpView().setLoadMoreComplete();
+                getMvpView().hideEmptyView();
+                getMvpView().hideErrorView();
+                if (null == result.getError()) {
+                    if (null != result.getData().getOrders() && result.getData().getOrders().size() > 0) {
+                        List<OrderAdaptor.OrderWrapper> wrappers = new ArrayList<>();
+                        for (OrderInListDTO order : result.getData().getOrders()) {
+                            wrappers.add(new OrderAdaptor.OrderWrapper(order.transform()));
+                        }
+                        getMvpView().addMore(wrappers);
+                        getMvpView().addPage();
+                    } else {
+                        getMvpView().showEmptyView(R.string.empty_tip_1);
+                    }
+                } else {
+                    getMvpView().showErrorView();
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                getMvpView().setRefreshComplete();
+                getMvpView().setLoadMoreComplete();
+                getMvpView().showErrorView();
+            }
+        });
+    }
+
+    private void queryMaxOrder(Integer year, Integer month) {
+        QueryPersonalMaxConsumeOrderListReqDTO reqDTO = new QueryPersonalMaxConsumeOrderListReqDTO();
+        reqDTO.setMonth(month);
+        reqDTO.setYear(year);
+        addObserver(orderDataManager.getMonthlyMaxBill(reqDTO), new NetworkObserver<ApiResult<OrderRespDTO>>(false, true) {
             @Override
             public void onReady(ApiResult<OrderRespDTO> result) {
                 getMvpView().setRefreshComplete();

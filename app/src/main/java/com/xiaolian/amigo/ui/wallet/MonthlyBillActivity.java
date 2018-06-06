@@ -97,6 +97,16 @@ public class MonthlyBillActivity extends WalletBaseActivity implements IMonthlyB
         return R.layout.activity_monthly_bill;
     }
 
+    @OnClick(R.id.tv_max_consume)
+    public void gotoMonthlyMaxOrder() {
+        Bundle bundle = new Bundle();
+        bundle.putInt(WalletConstant.KEY_YEAR, currentYear);
+        bundle.putInt(WalletConstant.KEY_MONTH, currentMonth);
+        bundle.putInt(WalletConstant.KEY_MAX_ORDER, WalletConstant.ACTION_MAX_ORDER);
+        startActivity(new Intent(this, OrderActivity.class)
+                .putExtra(Constant.DATA_BUNDLE, bundle));
+    }
+
     @OnClick(R.id.tv_total_consume)
     public void gotoMonthlyOrder() {
         Bundle bundle = new Bundle();
@@ -136,8 +146,10 @@ public class MonthlyBillActivity extends WalletBaseActivity implements IMonthlyB
         }
         if (dataList.isEmpty()) {
             dataList.add(new MonthlyBillView.ViewData(1, R.color.colorDarkB, "", 1));
+            monthlyBillView.setHasData(false);
             monthlyBillView.setData(dataList);
         } else {
+            monthlyBillView.setHasData(true);
             monthlyBillView.setData(dataList);
         }
         tvMonthlyOrderDate.setText(String.format(Locale.getDefault(), "%d年%d月", currentYear, currentMonth));

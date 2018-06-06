@@ -13,7 +13,9 @@ import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.complaint.CheckComplaintReqDTO;
 import com.xiaolian.amigo.data.network.model.funds.QueryRechargeTypesRespDTO;
+import com.xiaolian.amigo.data.network.model.order.OrderRespDTO;
 import com.xiaolian.amigo.data.network.model.userbill.QueryMonthlyBillReqDTO;
+import com.xiaolian.amigo.data.network.model.userbill.QueryPersonalMaxConsumeOrderListReqDTO;
 import com.xiaolian.amigo.data.network.model.userbill.UserMonthlyBillRespDTO;
 import com.xiaolian.amigo.data.network.model.userthirdaccount.AddThirdAccountReqDTO;
 import com.xiaolian.amigo.data.network.model.alipay.AlipayTradeAppPayArgsReqDTO;
@@ -177,7 +179,12 @@ public class WalletDataManager implements IWalletDataManager {
 
     @Override
     public Observable<ApiResult<UserMonthlyBillRespDTO>> getMonthlyBill(QueryMonthlyBillReqDTO reqDTO) {
-        return userBillApi.uploadDeviceInfo(reqDTO);
+        return userBillApi.getMonthlyBill(reqDTO);
+    }
+
+    @Override
+    public Observable<ApiResult<OrderRespDTO>> getMonthlyMaxBill(QueryPersonalMaxConsumeOrderListReqDTO reqDTO) {
+        return userBillApi.getMonthlyMaxBill(reqDTO);
     }
 
     @Override

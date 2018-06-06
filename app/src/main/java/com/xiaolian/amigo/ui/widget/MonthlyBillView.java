@@ -90,6 +90,10 @@ public class MonthlyBillView extends View {
         this.radius = rs;
     }
 
+    public void setHasData(boolean hasData) {
+        this.hasData = hasData;
+    }
+
     public void setData(List<ViewData> datas) {
         this.datas = datas;
         this.totalNum = 0;
@@ -102,6 +106,9 @@ public class MonthlyBillView extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if(event.getAction() == MotionEvent.ACTION_DOWN){
+            if (!hasData) {
+                return super.onTouchEvent(event);
+            }
             float actionX = event.getX(); //点击点的坐标
             float actionY = event.getY();
             double distance = Math.sqrt(Math.pow(Math.abs(actionX-barWidth/2),2)+
@@ -137,16 +144,14 @@ public class MonthlyBillView extends View {
             for(int i=0;i<angleSEs.size();i++){
                 if(distance <= radius){
                     if(angle > angleSEs.get(i).getStartAngle() && angle<angleSEs.get(i).getSweepAngle()){
-                        if (hasData) {
-                            mListener.onSelected(i); //当点击点在圆内且在扇形上时，触发监听事件
-                        }
+                        mListener.onSelected(i); //当点击点在圆内且在扇形上时，触发监听事件
                     }
                 }
 //                else if(lengedRectes.get(i).contains(actionX,actionY)){
 //                    mListener.onSelected(i); //当点击点在描述文字上时，触发监听事件(此处是当饼图部分太小，无法点击时的补充)
 //                }
                 else if(descRectes != null
-                        && descRectes.isEmpty()
+                        && !descRectes.isEmpty()
                         && descRectes.get(i).contains(actionX,actionY)){
                     mListener.onSelected(i); //当点击点在描述文字上时，触发监听事件(此处是当饼图部分太小，无法点击时的补充)
                 }
@@ -245,7 +250,7 @@ public class MonthlyBillView extends View {
 
                 lineAngle = startAngle + sweepAngle/2;//绘制描述文字的指示线，从扇形中间开始
                 desc = datas.get(i).getDesc();
-                if (!hasData) {
+                if (hasData) {
                     RectF rectF = drwaLineAndText(sweepAngle,lineAngle, "¥" + datas.get(i).getNumber(),
                             desc, rect,i);
                     descRectes.add(rectF);

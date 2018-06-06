@@ -2,6 +2,7 @@ package com.xiaolian.amigo.ui.order;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.util.ObjectsCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -48,6 +49,7 @@ public class OrderActivity extends OrderBaseListActivity implements IOrderView {
     private Integer deviceType;
     private Integer year;
     private Integer month;
+    private Integer action;
 
 
     @Override
@@ -73,23 +75,27 @@ public class OrderActivity extends OrderBaseListActivity implements IOrderView {
         super.setUp();
         if (getIntent() != null) {
             Bundle bundle = getIntent().getBundleExtra(Constant.DATA_BUNDLE);
+            if (bundle == null) {
+                return;
+            }
             year = bundle.getInt(WalletConstant.KEY_YEAR, INVALID_INT);
             month = bundle.getInt(WalletConstant.KEY_MONTH,  INVALID_INT);
             deviceType = bundle.getInt(WalletConstant.KEY_DEVICE_TYPE, INVALID_INT);
+            action = bundle.getInt(WalletConstant.KEY_MAX_ORDER, INVALID_INT);
         }
     }
 
     @Override
     protected void onRefresh() {
         page = Constant.PAGE_START_NUM;
-        presenter.requestOrders(Constant.PAGE_START_NUM, deviceType, year, month);
+        presenter.requestOrders(Constant.PAGE_START_NUM, deviceType, year, month, action);
         refreshFlag = true;
 //        orders.clear();
     }
 
     @Override
     public void onLoadMore() {
-        presenter.requestOrders(page, deviceType, year, month);
+        presenter.requestOrders(page, deviceType, year, month, action);
     }
 
     @Override
@@ -135,6 +141,10 @@ public class OrderActivity extends OrderBaseListActivity implements IOrderView {
         if (deviceType != null
                 && deviceType != INVALID_INT) {
             title = title.concat(Device.getDevice(deviceType).getDesc());
+        }
+        if (ObjectsCompat.equals(action, WalletConstant.ACTION_MAX_ORDER)) {
+            title = title.concat("单笔最贵");
+            enableLoadMore(false);
         }
         setToolBarTitle(title.concat("消费记录"));
     }

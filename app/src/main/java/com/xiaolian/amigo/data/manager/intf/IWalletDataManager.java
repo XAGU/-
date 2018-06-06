@@ -4,7 +4,9 @@ import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.complaint.CheckComplaintReqDTO;
 import com.xiaolian.amigo.data.network.model.funds.QueryRechargeTypesRespDTO;
+import com.xiaolian.amigo.data.network.model.order.OrderRespDTO;
 import com.xiaolian.amigo.data.network.model.userbill.QueryMonthlyBillReqDTO;
+import com.xiaolian.amigo.data.network.model.userbill.QueryPersonalMaxConsumeOrderListReqDTO;
 import com.xiaolian.amigo.data.network.model.userbill.UserMonthlyBillRespDTO;
 import com.xiaolian.amigo.data.network.model.userthirdaccount.AddThirdAccountReqDTO;
 import com.xiaolian.amigo.data.network.model.alipay.AlipayTradeAppPayArgsReqDTO;
@@ -149,4 +151,9 @@ public interface IWalletDataManager {
      * 用户个人账单查询
      */
     Observable<ApiResult<UserMonthlyBillRespDTO>> getMonthlyBill(@Body QueryMonthlyBillReqDTO reqDTO);
+
+    /**
+     * 用户个人订单(最大消费)记录列表
+     */
+    Observable<ApiResult<OrderRespDTO>> getMonthlyMaxBill(@Body QueryPersonalMaxConsumeOrderListReqDTO reqDTO);
 }
