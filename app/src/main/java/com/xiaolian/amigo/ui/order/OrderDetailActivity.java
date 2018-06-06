@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.order;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.ObjectsCompat;
@@ -128,6 +129,12 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
     @BindView(R.id.tv_order_no_use_tip)
     TextView tvOrderNoUseTip;
 
+    /******************** 底部线条 **********************/
+    @BindView(R.id.v_bottom_line1)
+    View vBottomLine1;
+    @BindView(R.id.v_bottom_line2)
+    View vBottomLine2;
+
     private Long orderId;
 
     @Override
@@ -196,6 +203,11 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
         tvTime.setText(CommonUtil.stampToDate(order.getCreateTime()));
         tvDeviceLocation.setText(String.format("%s %s",
                 Device.getDevice(order.getDeviceType()).getDesc(), order.getLocation()));
+
+        vBottomLine1.setBackgroundColor(Color.parseColor(getLineColorByDeviceType(order.getDeviceType())));
+        vBottomLine1.setVisibility(View.VISIBLE);
+        vBottomLine2.setBackgroundColor(Color.parseColor(getLineColorByDeviceType(order.getDeviceType())));
+        vBottomLine2.setVisibility(View.VISIBLE);
         if (Device.getDevice(order.getDeviceType()) == Device.DRYER) {
             rlUsedTime.setVisibility(View.VISIBLE);
             tvUsedTime.setText(order.getUseTime());
@@ -264,4 +276,22 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
         presenter.onDetach();
         super.onDestroy();
     }
+
+    public static String getLineColorByDeviceType(Integer deviceType) {
+        if (deviceType == null) {
+            return "#21FF4E80";
+        }
+        switch (Device.getDevice(deviceType)) {
+            case DISPENSER:
+                return "#3322D4CB";
+            case WASHER:
+                return "#218E8EFF";
+            case HEATER:
+                return "#21FF4E80";
+            case DRYER:
+                return "#33F8B646";
+        }
+        return "#21FF4E80";
+    }
+
 }

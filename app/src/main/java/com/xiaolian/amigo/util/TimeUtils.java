@@ -17,6 +17,7 @@ public class TimeUtils {
     private static final DateFormat DEFAULT_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
     public static final DateFormat MY_DATE_FORMAT = new SimpleDateFormat("MM-dd", Locale.getDefault());
     public static final DateFormat MY_DATE_FORMAT2 = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+    public static final DateFormat MY_DATE_FORMAT3 = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
     public static final DateFormat MY_DATE_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
     public static final DateFormat MY_TIME_FORMAT = new SimpleDateFormat("HH:mm", Locale.getDefault());
 

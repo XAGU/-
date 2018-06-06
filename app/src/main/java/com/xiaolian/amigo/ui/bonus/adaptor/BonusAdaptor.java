@@ -1,8 +1,10 @@
 package com.xiaolian.amigo.ui.bonus.adaptor;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.vo.Bonus;
 import com.xiaolian.amigo.util.TimeUtils;
 import com.zhy.adapter.recyclerview.CommonAdapter;
@@ -27,19 +29,26 @@ public class BonusAdaptor extends CommonAdapter<BonusAdaptor.BonusWrapper> {
 
     private DecimalFormat df = new DecimalFormat("###.##");
 
+    private Context context;
+
     public BonusAdaptor(Context context, int layout, List<BonusWrapper> bonuses) {
         super(context, layout, bonuses);
+        this.context = context;
     }
 
     @Override
     protected void convert(ViewHolder holder, BonusWrapper bonusWrapper, int position) {
         holder.setText(R.id.tv_amount, "¥" + df.format(bonusWrapper.getAmount()));
+        holder.setBackgroundRes(R.id.tv_amount, Support.getBgByDeviceType(bonusWrapper.getType()));
+        holder.setImageResource(R.id.iv_left, Support.getLeftImageByDeviceType(bonusWrapper.getType()));
+        holder.setTextColor(R.id.tv_type,
+                ContextCompat.getColor(context, Device.getDevice(bonusWrapper.getType()).getColorRes()));
 //        holder.setText(R.id.tv_amount, String.format(Locale.getDefault(), "¥%.0f", bonusWrapper.amount));
         holder.setText(R.id.tv_type, bonusWrapper.getName());
         if (bonusWrapper.getStartTime() != null && bonusWrapper.getTimeEnd() != null) {
             holder.setText(R.id.tv_time_end, "有效期" + TimeUtils.millis2String(bonusWrapper.getStartTime(),
-                    TimeUtils.MY_DATE_FORMAT2) + "至" + TimeUtils.millis2String(bonusWrapper.getTimeEnd(),
-                    TimeUtils.MY_DATE_FORMAT2));
+                    TimeUtils.MY_DATE_FORMAT3) + "至" + TimeUtils.millis2String(bonusWrapper.getTimeEnd(),
+                    TimeUtils.MY_DATE_FORMAT3));
         }
         holder.setText(R.id.tv_desc, bonusWrapper.desc);
         if (bonusWrapper.timeLeft != null && bonusWrapper.timeLeft <= MAX_TIME_LIFT) {
@@ -104,6 +113,42 @@ public class BonusAdaptor extends CommonAdapter<BonusAdaptor.BonusWrapper> {
             this.name = bonus.getName();
             this.remark = bonus.getRemarks();
             this.description = bonus.getDescription();
+        }
+    }
+
+    private static final class Support {
+        static int getBgByDeviceType(Integer type) {
+            if (type == null) {
+                return 0;
+            }
+            switch (Device.getDevice(type)) {
+                case DRYER:
+                    return R.drawable.bg_bonus_dryer;
+                case HEATER:
+                    return R.drawable.bg_bonus_heater;
+                case WASHER:
+                    return R.drawable.bg_bonus_washer;
+                case DISPENSER:
+                    return R.drawable.bg_bonus_dispenser;
+            }
+            return 0;
+        }
+
+        static int getLeftImageByDeviceType(Integer type) {
+            if (type == null) {
+                return 0;
+            }
+            switch (Device.getDevice(type)) {
+                case DRYER:
+                    return R.drawable.bg_bonus_left_dryer;
+                case HEATER:
+                    return R.drawable.bg_bonus_left_heater;
+                case WASHER:
+                    return R.drawable.bg_bonus_left_washer;
+                case DISPENSER:
+                    return R.drawable.bg_bonus_left_dispenser;
+            }
+            return 0;
         }
     }
 }

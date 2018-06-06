@@ -18,9 +18,9 @@
         <TextView
             android:layout_marginTop="9dp"
             android:layout_marginBottom="24dp"
-            android:textSize="11sp"
+            android:textSize="10sp"
             android:layout_gravity="center_horizontal"
-            android:textColor="@color/colorDarkB"
+            android:textColor="@color/colorDark9"
             android:text="点击头像可更换相册照片"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
