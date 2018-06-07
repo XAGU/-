@@ -43,4 +43,9 @@ public class MonthlyBillPresenter<V extends IMonthlyBillView> extends BasePresen
                     }
                 });
     }
+
+    @Override
+    public Long getAccountCreateTime() {
+        return walletDataManager.getUser().getCreateTime();
+    }
 }

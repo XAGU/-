@@ -31,6 +31,7 @@ import com.xiaolian.amigo.data.network.model.wxpay.WxpayTradeAppPayArgsReqDTO;
 import com.xiaolian.amigo.data.network.model.wxpay.WxpayTradeAppPayArgsRespDTO;
 import com.xiaolian.amigo.data.network.model.wxpay.WxpayTradeAppPayResultParseReqDTO;
 import com.xiaolian.amigo.data.network.model.wxpay.WxpayTradeAppPayResultParseRespDTO;
+import com.xiaolian.amigo.data.vo.User;
 
 import retrofit2.http.Body;
 import rx.Observable;
@@ -156,4 +157,6 @@ public interface IWalletDataManager {
      * 用户个人订单(最大消费)记录列表
      */
     Observable<ApiResult<OrderRespDTO>> getMonthlyMaxBill(@Body QueryPersonalMaxConsumeOrderListReqDTO reqDTO);
+
+    User getUser();
 }

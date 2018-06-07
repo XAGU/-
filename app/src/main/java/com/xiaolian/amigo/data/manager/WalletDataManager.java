@@ -41,6 +41,7 @@ import com.xiaolian.amigo.data.network.model.wxpay.WxpayTradeAppPayArgsRespDTO;
 import com.xiaolian.amigo.data.network.model.wxpay.WxpayTradeAppPayResultParseReqDTO;
 import com.xiaolian.amigo.data.network.model.wxpay.WxpayTradeAppPayResultParseRespDTO;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
+import com.xiaolian.amigo.data.vo.User;
 
 import javax.inject.Inject;
 
@@ -185,6 +186,11 @@ public class WalletDataManager implements IWalletDataManager {
     @Override
     public Observable<ApiResult<OrderRespDTO>> getMonthlyMaxBill(QueryPersonalMaxConsumeOrderListReqDTO reqDTO) {
         return userBillApi.getMonthlyMaxBill(reqDTO);
+    }
+
+    @Override
+    public User getUser() {
+        return sharedPreferencesHelp.getUserInfo();
     }
 
     @Override

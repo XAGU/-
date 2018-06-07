@@ -18,6 +18,8 @@ import java.util.List;
  */
 public class CustomWheelMonthPicker extends WheelPicker implements IWheelMonthPicker {
     private Integer currentYear;
+    private Integer startYear;
+    private Integer startMonth;
     private int mSelectedMonth;
 
     public CustomWheelMonthPicker(Context context) {
@@ -35,15 +37,29 @@ public class CustomWheelMonthPicker extends WheelPicker implements IWheelMonthPi
         mSelectedMonth = Calendar.getInstance().get(Calendar.MONTH) + 1;
         updateSelectedYear();
         currentYear = Calendar.getInstance().get(Calendar.YEAR);
-        updateMonths();
     }
 
     private void updateMonths() {
         Calendar cal = Calendar.getInstance();
         if (ObjectsCompat.equals(cal.get(Calendar.YEAR), currentYear)) {
+            if (ObjectsCompat.equals(startYear, currentYear)) {
+                List<Integer> data = new ArrayList<>();
+                Integer currentMonth = cal.get(Calendar.MONTH) + 1;
+                for (int i = startMonth; i <= currentMonth; i++) {
+                    data.add(i);
+                }
+                super.setData(data);
+            } else {
+                List<Integer> data = new ArrayList<>();
+                Integer currentMonth = cal.get(Calendar.MONTH) + 1;
+                for (int i = 1; i <= currentMonth; i++) {
+                    data.add(i);
+                }
+                super.setData(data);
+            }
+        } else if (ObjectsCompat.equals(startYear, currentYear)) {
             List<Integer> data = new ArrayList<>();
-            Integer currentMonth = cal.get(Calendar.MONTH) + 1;
-            for (int i = 1; i <= currentMonth; i++) {
+            for (int i = startMonth; i <= 12; i++) {
                 data.add(i);
             }
             super.setData(data);
@@ -61,6 +77,11 @@ public class CustomWheelMonthPicker extends WheelPicker implements IWheelMonthPi
     public void setYear(int year) {
         currentYear = year;
         updateMonths();
+    }
+
+    public void setStartYearAndMonth(Integer year, Integer month) {
+        this.startYear = year;
+        this.startMonth = month;
     }
 
     private void updateSelectedYear() {

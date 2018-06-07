@@ -9,4 +9,6 @@ import com.xiaolian.amigo.ui.base.intf.IBaseView;
  */
 public interface IMonthlyBillPresenter<V extends IBaseView> extends IBasePresenter<V> {
     void getMonthlyBill(int year, int month);
+
+    Long getAccountCreateTime();
 }

@@ -23,10 +23,10 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"/>
 
+    <!--android:layout_marginBottom="28dp"-->
     <TextView
         android:id="@+id/tv_total_consume"
         android:layout_marginTop="20dp"
-        android:layout_marginBottom="28dp"
         android:textColor="@color/colorDark2"
         android:textSize="14sp"
         tools:text="消费总额：123"
@@ -37,11 +37,11 @@
         android:layout_gravity="center_horizontal"
         android:id="@+id/monthlyBillView"
         android:layout_width="match_parent"
-        android:layout_height="195dp"
+        android:layout_height="245dp"
         />
+    <!--android:layout_marginTop="23dp"-->
     <TextView
         android:id="@+id/tv_max_consume"
-        android:layout_marginTop="23dp"
         android:layout_marginBottom="20dp"
         android:textColor="@color/colorDark2"
         android:textSize="14sp"
