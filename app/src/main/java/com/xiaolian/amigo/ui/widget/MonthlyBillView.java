@@ -283,12 +283,39 @@ public class MonthlyBillView extends View {
         lineStartY   =   (barHeight-lengedHeight)/2   +   (radius- distance)  *   (float) Math.sin(lineAngle   *   3.14/180);
         if(Math.abs(sweepAngle) <= 30){
 //            float num = (datas.size() - i)%3;
-            float num = 1;
+            float num = 0.6f;
             lineEndX   =   barWidth/2   +   (radius+ distance*num*1f)   *  (float) Math.cos(lineAngle *   3.14   /180 );
             lineEndY   =   (barHeight-lengedHeight)/2   +   (radius+ distance*num*1f)  *   (float) Math.sin(lineAngle   *   3.14   /180);
         }else {
             lineEndX   =   barWidth/2   +   (radius+ distance)   *  (float) Math.cos(lineAngle *   3.14   /180 );
             lineEndY   =   (barHeight-lengedHeight)/2   +   (radius+ distance)  *   (float) Math.sin(lineAngle   *   3.14   /180);
+        }
+        textPaint.setTextSize(ScreenUtils.dpToPxInt(mContext,12));
+        textPaint.getTextBounds("消", 0, 1, rect);
+        if (lineEndX > barWidth / 2) {
+            descRectF.top = lineEndY - rect.height();
+            descRectF.bottom = lineEndY + rect.height();
+            descRectF.left = barWidth - textPaint.measureText(desc);
+            descRectF.right = barWidth;
+        } else {
+            descRectF.top = lineEndY - rect.height();
+            descRectF.bottom = lineEndY + rect.height();
+            descRectF.left = 0;
+            descRectF.right = textPaint.measureText(desc);
+        }
+        for (RectF rectF : descRectes) {
+            if (rectF.intersect(descRectF)) {
+                if (descRectF.top > rect.top) {
+                    float num = 1;
+                    lineEndX   =   barWidth/2   +   (radius+ distance*num*1f+descRectF.height())   *  (float) Math.cos(lineAngle *   3.14   /180 );
+                    lineEndY   =   (barHeight-lengedHeight)/2   +   (radius+ distance*num*1f+descRectF.height())  *   (float) Math.sin(lineAngle   *   3.14   /180);
+                } else {
+                    float num = 0.5f;
+                    lineEndX   =   barWidth/2   +   (radius+ distance*num*1f)   *  (float) Math.cos(lineAngle *   3.14   /180 );
+                    lineEndY   =   (barHeight-lengedHeight)/2   +   (radius+ distance*num*1f)  *   (float) Math.sin(lineAngle   *   3.14   /180);
+                }
+                break;
+            }
         }
         bitmapCanvas.drawLine(lineStartX,lineStartY,lineEndX,lineEndY,linePaint);
 
