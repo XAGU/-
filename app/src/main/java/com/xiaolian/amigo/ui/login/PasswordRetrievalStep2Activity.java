@@ -64,6 +64,7 @@ public class PasswordRetrievalStep2Activity extends LoginBaseActivity implements
 
         ViewUtil.setEditHintAndSize(getString(R.string.password_hint), 14, etUserpwd);
         ViewUtil.setEditHintAndSize(getString(R.string.password_hint), 14, etConfirmUserpwd);
+        ViewUtil.setEditPasswordInputFilter(etUserpwd);
 
         if (getIntent() != null) {
             code = getIntent().getStringExtra(INTENT_KEY_PASSWORD_RETRIEVAL_CODE);
