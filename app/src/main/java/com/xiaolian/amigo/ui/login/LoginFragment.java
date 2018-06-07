@@ -80,6 +80,7 @@ public class LoginFragment extends Fragment {
                 etMobile.setText(mobile);
             }
         }
+        ViewUtil.setEditPasswordInputFilter(etUserpwd);
     }
 
 
