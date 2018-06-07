@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <TextView
-        android:background="@color/colorDark6"
+        android:background="@color/colorBackgroundGray"
         android:id="@+id/tv_expired_entry"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

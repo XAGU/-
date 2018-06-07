@@ -159,12 +159,12 @@ public class OrderAdaptor extends RecyclerView.Adapter<OrderAdaptor.ViewHolder> 
             if (s == null) {
                 return "----";
             }
-            String res;
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss",
-                    Locale.getDefault());
-            Date date = new Date(s);
-            res = simpleDateFormat.format(date);
-            return res;
+//            String res;
+//            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss",
+//                    Locale.getDefault());
+//            Date date = new Date(s);
+//            res = simpleDateFormat.format(date);
+            return TimeUtils.lostAndFoundTimestampFormat(s);
         }
     }
 }
