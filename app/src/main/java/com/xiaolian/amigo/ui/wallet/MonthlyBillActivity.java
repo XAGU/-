@@ -162,7 +162,7 @@ public class MonthlyBillActivity extends WalletBaseActivity implements IMonthlyB
     @OnClick(R.id.tv_monthly_order_date)
     public void showDatePick() {
         if (yearMonthPickerDialog == null) {
-            yearMonthPickerDialog = new YearMonthPickerDialog(this);
+            yearMonthPickerDialog = new YearMonthPickerDialog(this, presenter.getAccountCreateTime());
         }
         yearMonthPickerDialog.setOnItemSelectedListener((picker, date) -> {
             Calendar cal = Calendar.getInstance();

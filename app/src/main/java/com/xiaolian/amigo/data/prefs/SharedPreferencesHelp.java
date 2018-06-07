@@ -56,6 +56,7 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     private static final String PREF_UPLOADED_USER_DEVICE_INFO = "PREF_UPLOADED_USER_DEVICE_INFO";
     private static final String PREF_KEY_DEVICE_CATEGORY = "PREF_KEY_DEVICE_CATEGORY";
     private static final String PREF_KEY_SCHOOL_BIZ = "PREF_KEY_SCHOOL_BIZ";
+    private static final String PREF_KEY_USER_CREATE_TIME = "PREF_KEY_USER_CREATE_TIME";
     /**
      * 积分
      */
@@ -156,6 +157,7 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
         userHolder.setNickName(mSharedPreferences.getString(PREF_KEY_NICKNAME, null));
         userHolder.setMobile(mSharedPreferences.getString(PREF_KEY_MOBILE, null));
         userHolder.setPictureUrl(mSharedPreferences.getString(PREF_KEY_PICTURE_URL, null));
+        userHolder.setCreateTime(mSharedPreferences.getLong(PREF_KEY_USER_CREATE_TIME, 0));
         return userHolder;
     }
 
@@ -192,6 +194,10 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
         }
         if (null != user.getPictureUrl()) {
             mSharedPreferences.edit().putString(PREF_KEY_PICTURE_URL, user.getPictureUrl()).apply();
+        }
+        if (null != user.getCreateTime()) {
+            mSharedPreferences.edit().putLong(PREF_KEY_USER_CREATE_TIME,
+                    user.getCreateTime()).apply();
         }
     }
 

@@ -24,7 +24,17 @@
 
         <com.aigestudio.wheelpicker.widgets.WheelYearPicker
             android:layout_weight="1"
+            android:visibility="visible"
             android:id="@+id/wheel_date_picker_year"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:visibility="gone"
+            android:text="2018"
+            android:gravity="center"
+            android:textColor="#FF888888"
+            android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent" />
 
