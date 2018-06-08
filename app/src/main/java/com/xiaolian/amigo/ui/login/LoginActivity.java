@@ -7,13 +7,17 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.util.ObjectsCompat;
 import android.widget.TextView;
 
+import com.tencent.android.tpush.XGPushManager;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.login.intf.ILoginPresenter;
 import com.xiaolian.amigo.ui.login.intf.ILoginView;
 import com.xiaolian.amigo.ui.main.MainActivity;
 import com.xiaolian.amigo.util.AppUtils;
+import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.util.MD5Util;
 
 import javax.inject.Inject;
 
@@ -71,6 +75,11 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
 
         presenter.onAttach(LoginActivity.this);
 
+        Long schoolId = presenter.getSchoolId();
+        if (!ObjectsCompat.equals(schoolId, -1)) {
+            String pushTag = MD5Util.md5(schoolId + "_MTxQd1buFokZayzT");
+            XGPushManager.deleteTag(getApplicationContext(), pushTag);
+        }
         presenter.deletePushToken();
         presenter.logout();
 

@@ -99,4 +99,6 @@ public interface ILoginPresenter<V extends ILoginView> extends IBasePresenter<V>
     String getMobile();
 
     void deletePushToken();
+
+    Long getSchoolId();
 }

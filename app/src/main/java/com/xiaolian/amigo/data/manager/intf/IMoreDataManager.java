@@ -17,4 +17,6 @@ public interface IMoreDataManager {
     Long getUserId();
 
     void deletePushToken();
+
+    Long getSchoolId();
 }
