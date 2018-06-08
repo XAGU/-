@@ -101,4 +101,8 @@ public interface ILoginPresenter<V extends ILoginView> extends IBasePresenter<V>
     void deletePushToken();
 
     Long getSchoolId();
+
+    String getPushTag();
+
+    void setPushTag(String pushTag);
 }

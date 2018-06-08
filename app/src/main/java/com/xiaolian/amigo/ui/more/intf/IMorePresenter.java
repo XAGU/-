@@ -27,4 +27,8 @@ public interface IMorePresenter<V extends IMoreView> extends IBasePresenter<V> {
     void deletePushToken();
 
     Long getSchoolId();
+
+    String getPushTag();
+
+    void setPushTag(String pushTag);
 }

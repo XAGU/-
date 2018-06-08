@@ -56,6 +56,7 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     private static final String PREF_UPLOADED_USER_DEVICE_INFO = "PREF_UPLOADED_USER_DEVICE_INFO";
     private static final String PREF_KEY_DEVICE_CATEGORY = "PREF_KEY_DEVICE_CATEGORY";
     private static final String PREF_KEY_SCHOOL_BIZ = "PREF_KEY_SCHOOL_BIZ";
+    private static final String PREF_KEY_PUSH_TAG = "PREF_KEY_PUSH_TAG";
     /**
      * 积分
      */
@@ -457,6 +458,20 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     @Override
     public String getPushToken() {
         return this.pushToken;
+    }
+
+    @Override
+    public void setPushTag(String pushTag) {
+        mSharedPreferences
+                .edit()
+                .putString(PREF_KEY_PUSH_TAG, pushTag)
+                .apply();
+
+    }
+
+    @Override
+    public String getPushTag() {
+        return mSharedPreferences.getString(PREF_KEY_PUSH_TAG, "");
     }
 
     @Override

@@ -8,6 +8,8 @@ import android.provider.Settings;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.ObjectsCompat;
+import android.text.TextUtils;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.tencent.android.tpush.XGPushManager;
@@ -35,6 +37,7 @@ import static com.xiaolian.amigo.util.Log.getContext;
  */
 
 public class LoginActivity extends LoginBaseActivity implements ILoginView {
+    private static final String TAG = LoginActivity.class.getSimpleName();
     private static final String FRAGMENT_TAG_LOGIN = "login";
     private static final String FRAGMENT_TAG_REGISTER_STEP_1 = "registerStep1";
     private static final String FRAGMENT_TAG_REGISTER_STEP_2 = "registerStep2";
@@ -80,6 +83,13 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
             String pushTag = MD5Util.md5(schoolId + "_MTxQd1buFokZayzT");
             XGPushManager.deleteTag(getApplicationContext(), pushTag);
         }
+        String pushTag = presenter.getPushTag();
+        if (!TextUtils.isEmpty(pushTag)) {
+            Log.d(TAG, "删除tag" + pushTag);
+            XGPushManager.deleteTag(getApplicationContext(), pushTag);
+            presenter.setPushTag("");
+        }
+
         presenter.deletePushToken();
         presenter.logout();
 

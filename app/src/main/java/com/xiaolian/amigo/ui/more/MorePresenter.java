@@ -1,5 +1,7 @@
 package com.xiaolian.amigo.ui.more;
 
+import android.text.TextUtils;
+
 import com.xiaolian.amigo.data.manager.intf.IMoreDataManager;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.more.intf.IMorePresenter;
@@ -60,5 +62,15 @@ public class MorePresenter<V extends IMoreView> extends BasePresenter<V>
     @Override
     public Long getSchoolId() {
         return moreDataManager.getSchoolId();
+    }
+
+    @Override
+    public String getPushTag() {
+        return moreDataManager.getPushTag();
+    }
+
+    @Override
+    public void setPushTag(String pushTag) {
+        moreDataManager.setPushTag(pushTag);
     }
 }

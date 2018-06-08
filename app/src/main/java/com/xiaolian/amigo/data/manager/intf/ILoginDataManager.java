@@ -75,4 +75,8 @@ public interface ILoginDataManager {
     void deletePushToken();
 
     Long getSchoolId();
+
+    String getPushTag();
+
+    void setPushTag(String pushTag);
 }

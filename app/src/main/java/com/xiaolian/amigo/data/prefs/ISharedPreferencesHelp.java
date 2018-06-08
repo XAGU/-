@@ -153,4 +153,8 @@ public interface ISharedPreferencesHelp {
     void setPushToken(String pushToken);
 
     String getPushToken();
+
+    void setPushTag(String pushTag);
+
+    String getPushTag();
 }
