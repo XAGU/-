@@ -45,4 +45,9 @@ public class MoreDataManager implements IMoreDataManager {
     public void deletePushToken() {
         sharedPreferencesHelp.setPushToken("");
     }
+
+    @Override
+    public Long getSchoolId() {
+        return sharedPreferencesHelp.getUserInfo().getSchoolId();
+    }
 }

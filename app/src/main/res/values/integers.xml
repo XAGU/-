@@ -2,13 +2,22 @@
 <resources>
     <integer name="password_max_length">20</integer>
     <integer name="password_min_length">6</integer>
+    <integer name="alipay_account_max_length">100</integer>
+    <integer name="alipay_name_max_length">15</integer>
+    <integer name="withdraw_max_length">15</integer>
+    <integer name="apply_repair_content_max_length">100</integer>
     <integer name="nickname_max_length">15</integer>
-    <integer name="phone_max_length">30</integer>
+    <integer name="phone_max_length">11</integer>
     <integer name="publish_title_max_length">15</integer>
     <integer name="publish_name_max_length">15</integer>
     <integer name="publish_address_max_length">15</integer>
     <integer name="publish_contact_max_length">15</integer>
     <integer name="publish_content_max_length">100</integer>
+    <integer name="lost_found_publish_title_max_length">15</integer>
+    <integer name="lost_found_publish_content_max_length">500</integer>
+    <integer name="lost_found_comment_content_max_length">200</integer>
+    <integer name="lost_found_search_content_max_length">20</integer>
+    <integer name="bonus_exchange_code_max_length">20</integer>
     <integer name="first">0</integer>
     <integer name="second">1</integer>
     <integer name="third">2</integer>

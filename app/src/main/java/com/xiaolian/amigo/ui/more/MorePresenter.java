@@ -56,4 +56,9 @@ public class MorePresenter<V extends IMoreView> extends BasePresenter<V>
     public void deletePushToken() {
         moreDataManager.deletePushToken();
     }
+
+    @Override
+    public Long getSchoolId() {
+        return moreDataManager.getSchoolId();
+    }
 }

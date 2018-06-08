@@ -76,6 +76,11 @@ public class LoginDataManager implements ILoginDataManager {
     }
 
     @Override
+    public Long getSchoolId() {
+        return sharedPreferencesHelp.getUserInfo().getSchoolId();
+    }
+
+    @Override
     public String getToken() {
         return sharedPreferencesHelp.getToken();
     }

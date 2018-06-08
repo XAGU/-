@@ -32,7 +32,7 @@ import butterknife.OnClick;
 
 public class LoginFragment extends Fragment {
 
-    private static final int MOBILE_LENGTH = 1;
+    private static final int MOBILE_LENGTH = 11;
     private static final int PASSWORD_MIN_LENGTH = 6;
 
     @BindView(R.id.et_mobile)

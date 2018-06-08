@@ -73,4 +73,6 @@ public interface ILoginDataManager {
     Observable<ApiResult<BooleanRespDTO>> verificationResetCheck(@Body VerificationCodeCheckReqDTO body);
 
     void deletePushToken();
+
+    Long getSchoolId();
 }

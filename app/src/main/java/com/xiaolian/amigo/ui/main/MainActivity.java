@@ -336,7 +336,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                     @Override
                     public void onSuccess(Object data, int flag) {
                         Log.w(Constants.LogTag, "+++ register push sucess. token:" + data + "flag" + flag);
-
+                        String pushTag = MD5Util.md5(presenter.getUserInfo().getSchoolId() + "_MTxQd1buFokZayzT");
+                        Log.d(TAG, "注册tag: " + pushTag);
+                        XGPushManager.setTag(getApplicationContext(), pushTag);
                         presenter.setPushToken((String) data);
                         m.obj = "+++ register push sucess. token:" + data;
                         m.sendToTarget();

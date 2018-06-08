@@ -14,6 +14,7 @@ import com.xiaolian.amigo.ui.more.intf.IMorePresenter;
 import com.xiaolian.amigo.ui.more.intf.IMoreView;
 import com.xiaolian.amigo.ui.widget.RecycleViewDivider;
 import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.util.MD5Util;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import org.greenrobot.eventbus.EventBus;

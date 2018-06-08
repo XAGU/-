@@ -5,7 +5,7 @@
     <com.xiaolian.amigo.ui.widget.ClearableEditText
         android:id="@+id/et_account"
         style="@style/EditText"
-        android:maxLength="100"
+        android:maxLength="@integer/alipay_account_max_length"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:drawableEnd="@drawable/clear"
@@ -18,7 +18,7 @@
         android:layout_marginTop="14dp"
         android:id="@+id/et_real_name"
         style="@style/EditText"
-        android:maxLength="100"
+        android:maxLength="@integer/alipay_name_max_length"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:drawableEnd="@drawable/clear"

@@ -196,4 +196,9 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
     public void deletePushToken() {
         loginDataManager.deletePushToken();
     }
+
+    @Override
+    public Long getSchoolId() {
+        return loginDataManager.getSchoolId();
+    }
 }

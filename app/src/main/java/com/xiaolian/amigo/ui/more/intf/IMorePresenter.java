@@ -25,4 +25,6 @@ public interface IMorePresenter<V extends IMoreView> extends IBasePresenter<V> {
     Long getUserId();
 
     void deletePushToken();
+
+    Long getSchoolId();
 }

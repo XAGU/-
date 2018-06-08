@@ -6,6 +6,10 @@ import android.text.Spanned;
 import android.text.style.AbsoluteSizeSpan;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * View相关util
  *
@@ -32,7 +36,10 @@ public final class ViewUtil {
             }
             return null;
         };
-
-        textView.setFilters(new InputFilter[] {filter});
+        List<InputFilter> filters = new ArrayList<>(Arrays.asList(textView.getFilters()));
+        filters.add(filter);
+        InputFilter[] newFilters = new InputFilter[filters.size()];
+        newFilters = filters.toArray(newFilters);
+        textView.setFilters(newFilters);
     }
 }
