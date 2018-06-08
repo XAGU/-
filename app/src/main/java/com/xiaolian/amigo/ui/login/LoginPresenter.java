@@ -201,4 +201,14 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
     public Long getSchoolId() {
         return loginDataManager.getSchoolId();
     }
+
+    @Override
+    public String getPushTag() {
+        return loginDataManager.getPushTag();
+    }
+
+    @Override
+    public void setPushTag(String pushTag) {
+        loginDataManager.setPushTag(pushTag);
+    }
 }

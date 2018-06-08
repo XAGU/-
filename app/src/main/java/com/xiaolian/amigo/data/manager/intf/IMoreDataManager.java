@@ -19,4 +19,8 @@ public interface IMoreDataManager {
     void deletePushToken();
 
     Long getSchoolId();
+
+    String getPushTag();
+
+    void setPushTag(String pushTag);
 }

@@ -50,4 +50,14 @@ public class MoreDataManager implements IMoreDataManager {
     public Long getSchoolId() {
         return sharedPreferencesHelp.getUserInfo().getSchoolId();
     }
+
+    @Override
+    public String getPushTag() {
+        return sharedPreferencesHelp.getPushTag();
+    }
+
+    @Override
+    public void setPushTag(String pushTag) {
+
+    }
 }
