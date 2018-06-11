@@ -64,8 +64,8 @@ android {
     productFlavors {
         dev {
             // 测试
-//            applicationId "com.xiaolian.amigo_dev"
-            // 微信支付测试
+            applicationId "com.xiaolian.amigo_dev"
+             微信支付测试
             applicationId "com.xiaolian.amigo_dev"
             resValue "string", "app_name", "笑联测试版"
 
@@ -98,7 +98,10 @@ android {
 //            buildConfigField "String", "TRADE_PREFIX", "\"/c/trade\""
 //            // 修改 AndroidManifest.xml 里渠道变量
 //            manifestPlaceholders = [UMENG_CHANNEL_VALUE      : "dev",
-//                                    FILE_PROVIDER_AUTHORITIES: applicationId + ".fileprovider"]
+//                                    FILE_PROVIDER_AUTHORITIES: applicationId + ".fileprovider",
+//                                    XG_ACCESS_ID : "2100293839",
+//                                    XG_ACCESS_KEY : "A684X2HPE9GZ",
+//            ]
         }
         prod {
             applicationId defaultConfig.applicationId
