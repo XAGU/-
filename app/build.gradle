@@ -65,8 +65,6 @@ android {
         dev {
             // 测试
             applicationId "com.xiaolian.amigo_dev"
-             微信支付测试
-            applicationId "com.xiaolian.amigo_dev"
             resValue "string", "app_name", "笑联测试版"
 
             buildConfigField "String", "ENVIRONMENT", '"dev"'
