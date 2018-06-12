@@ -25,6 +25,7 @@ import com.xiaolian.amigo.data.manager.intf.IWalletDataManager;
 import com.xiaolian.amigo.di.WalletActivityContext;
 import com.xiaolian.amigo.ui.wallet.AddAccountPresenter;
 import com.xiaolian.amigo.ui.wallet.ChooseWithdrawPresenter;
+import com.xiaolian.amigo.ui.wallet.MonthlyBillPresenter;
 import com.xiaolian.amigo.ui.wallet.PrepayOrderPresenter;
 import com.xiaolian.amigo.ui.wallet.PrepayPresenter;
 import com.xiaolian.amigo.ui.wallet.RechargeDetailPresenter;
@@ -37,6 +38,8 @@ import com.xiaolian.amigo.ui.wallet.intf.IAddAccountPresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IAddAccountView;
 import com.xiaolian.amigo.ui.wallet.intf.IChooseWithdrawPresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IChooseWithdrawView;
+import com.xiaolian.amigo.ui.wallet.intf.IMonthlyBillPresenter;
+import com.xiaolian.amigo.ui.wallet.intf.IMonthlyBillView;
 import com.xiaolian.amigo.ui.wallet.intf.IPrepayOrderPresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IPrepayOrderView;
 import com.xiaolian.amigo.ui.wallet.intf.IPrepayPresenter;
@@ -143,6 +146,13 @@ public class WalletActivityModule {
     @WalletActivityContext
     IWithdrawalDetailPresenter<IWithdrawalDetailView> provideWithdrawaleDetailPresenter(
             WithdrawalDetailPresenter<IWithdrawalDetailView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    @WalletActivityContext
+    IMonthlyBillPresenter<IMonthlyBillView> provideMonthlyBillPresenter(
+            MonthlyBillPresenter<IMonthlyBillView> presenter) {
         return presenter;
     }
 

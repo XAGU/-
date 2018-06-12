@@ -149,7 +149,8 @@ public class OrderAdaptor extends RecyclerView.Adapter<OrderAdaptor.ViewHolder> 
 
         public OrderWrapper(Order order) {
             this.type = order.getDeviceType();
-            this.device = Device.getDevice(order.getDeviceType()).getDesc() + "：" + order.getLocation();
+//            this.device = Device.getDevice(order.getDeviceType()).getDesc() + "：" + order.getLocation();
+            this.device = Device.getDevice(order.getDeviceType()).getDesc();
             this.time = stampToDate(order.getCreateTime());
             this.amount = order.getActualDebit();
             this.order = order;
@@ -159,12 +160,12 @@ public class OrderAdaptor extends RecyclerView.Adapter<OrderAdaptor.ViewHolder> 
             if (s == null) {
                 return "----";
             }
-            String res;
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss",
-                    Locale.getDefault());
-            Date date = new Date(s);
-            res = simpleDateFormat.format(date);
-            return res;
+//            String res;
+//            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss",
+//                    Locale.getDefault());
+//            Date date = new Date(s);
+//            res = simpleDateFormat.format(date);
+            return TimeUtils.lostAndFoundTimestampFormat(s);
         }
     }
 }

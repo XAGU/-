@@ -145,4 +145,10 @@ public interface IMainDataManager {
 
     void setSchoolBiz(List<BriefSchoolBusiness> businesses);
     List<BriefSchoolBusiness> getSchoolBiz();
+
+    void deletePushToken();
+
+    String getPushToken();
+
+    void setPushToken(String pushToken);
 }

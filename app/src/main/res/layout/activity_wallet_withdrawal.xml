@@ -131,7 +131,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
-                android:maxLength="10"
+                android:maxLength="@integer/withdraw_max_length"
                 android:background="@null"
                 android:imeOptions="actionNext"
                 android:inputType="numberDecimal"

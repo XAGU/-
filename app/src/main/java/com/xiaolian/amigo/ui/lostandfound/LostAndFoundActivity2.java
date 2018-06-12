@@ -268,7 +268,9 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
 
     @Override
     public void setRefreshComplete() {
-        refreshLayout.finishRefresh(300);
+        if (refreshLayout != null) {
+            refreshLayout.finishRefresh(300);
+        }
     }
 
     @Override
@@ -317,5 +319,11 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
         } else {
             adaptor.notifyDataSetChanged();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        presenter.onDetach();
+        super.onDestroy();
     }
 }

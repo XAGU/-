@@ -50,6 +50,11 @@ public final class Constant {
     public static final String EXTRA_KEY = "detail";
 
     /**
+     * 通过bundle传递数据时的key
+     */
+    public static final String DATA_BUNDLE = "data_bundle";
+
+    /**
      * 中文冒号分隔符
      */
     public static final String CHINEASE_COLON = "：";

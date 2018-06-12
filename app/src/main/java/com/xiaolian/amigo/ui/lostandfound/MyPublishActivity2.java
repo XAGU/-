@@ -179,4 +179,10 @@ public class MyPublishActivity2 extends LostAndFoundBaseActivity implements ILos
     public void showSearchResult(List<LostAndFoundAdaptor2.LostAndFoundWrapper> wrappers) {
 
     }
+
+    @Override
+    protected void onDestroy() {
+        presenter.onDetach();
+        super.onDestroy();
+    }
 }

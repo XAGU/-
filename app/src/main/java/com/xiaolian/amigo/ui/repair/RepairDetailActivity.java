@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -12,6 +13,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
+import com.tencent.android.tpush.XGPushClickedResult;
+import com.tencent.android.tpush.XGPushManager;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.enumeration.EvaluateStatus;
@@ -29,6 +32,8 @@ import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.ScreenUtils;
 
 import org.greenrobot.eventbus.EventBus;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -116,7 +121,31 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
     @Override
     protected void onResume() {
         super.onResume();
-        presenter.requestRepailDetail(detailId);
+        if (detailId == null) {
+            //this必须为点击消息要跳转到页面的上下文。
+            XGPushClickedResult clickedResult = XGPushManager.onActivityStarted(this);
+            if (clickedResult != null) {
+                //获取消息附近参数
+                String customContent = clickedResult.getCustomContent();
+                //获取消息标题
+                String set = clickedResult.getTitle();
+                //获取消息内容
+                String s = clickedResult.getContent();
+                if (customContent != null && customContent.length() != 0) {
+                    try {
+                        JSONObject obj = new JSONObject(customContent);
+                        if (!obj.isNull("targetId")) {
+                            detailId = Long.valueOf(obj.getString("targetId"));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        if (presenter != null) {
+            presenter.requestRepailDetail(detailId);
+        }
     }
 
     @Override
@@ -264,7 +293,9 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
     protected void setUp() {
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra(Constant.EXTRA_KEY);
-        detailId = bundle.getLong(Constant.BUNDLE_ID);
+        if (bundle != null) {
+            detailId = bundle.getLong(Constant.BUNDLE_ID);
+        }
     }
 
     @Override
