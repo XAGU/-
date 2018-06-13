@@ -83,6 +83,7 @@ public class WheelDatePicker extends LinearLayout implements WheelPicker.OnItemS
         } else if (picker.getId() == R.id.wheel_date_picker_month) {
             mMonth = (int) data;
         }
+        mMonth = mPickerMonth.getCurrentMonth();
         String date = mYear + "-" + mMonth;
         if (null != mListener) try {
 //            mListener.onDateSelected(this, SDF.parse(date));
