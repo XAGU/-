@@ -66,6 +66,10 @@ public class EditPasswordActivity extends UserBaseActivity implements IEditPassw
                 14, etNewPassword);
         ViewUtil.setEditHintAndSize(getString(R.string.please_enter_new_password_again),
                 14, etNewPasswordAgain);
+
+        ViewUtil.setEditPasswordInputFilter(etOldPassword);
+        ViewUtil.setEditPasswordInputFilter(etNewPassword);
+        ViewUtil.setEditPasswordInputFilter(etNewPasswordAgain);
         CommonUtil.showSoftInput(this, etOldPassword);
     }
 

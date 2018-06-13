@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/colorBackgroundGray"
     android:orientation="vertical"
     android:paddingLeft="@dimen/mainMarginLeftRight"
@@ -53,6 +54,11 @@
                         android:layout_height="wrap_content" />
                 </LinearLayout>
 
+                <ImageView
+                    android:src="@drawable/bg_order_detail_top"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -76,32 +82,66 @@
                         layout="@layout/layout_order_error"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="57dp">
+
+                        <View
+                            android:id="@+id/v_bottom_line1"
+                            android:visibility="gone"
+                            tools:visibility="visible"
+                            android:background="#BFFF4E80"
+                            android:layout_width="match_parent"
+                            android:layout_height="4dp"/>
+
+                        <View
+                            android:layout_below="@id/v_bottom_line1"
+                            android:id="@+id/v_bottom_line2"
+                            android:visibility="gone"
+                            tools:visibility="visible"
+                            android:layout_marginTop="4dp"
+                            android:background="#BFFF4E80"
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"/>
+
+                        <TextView
+                            android:layout_below="@id/v_bottom_line2"
+                            android:visibility="gone"
+                            tools:visibility="visible"
+                            android:id="@+id/tv_order_error_tip"
+                            android:text="@string/order_error_tip"
+                            android:textColor="@color/colorFullRed"
+                            android:textSize="12sp"
+                            android:layout_marginTop="14dp"
+                            android:gravity="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:layout_below="@id/v_bottom_line2"
+                            android:id="@+id/tv_order_no_use_tip"
+                            android:layout_width="wrap_content"
+                            android:visibility="gone"
+                            tools:visibility="gone"
+                            android:gravity="center"
+                            android:layout_centerHorizontal="true"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:paddingTop="14dp"
+                            android:paddingBottom="14dp"
+                            android:text="@string/order_no_use_tip"
+                            android:textColor="#999"
+                            android:textSize="12sp" />
+
+                    </RelativeLayout>
+
                 </LinearLayout>
 
-                <TextView
-                    android:visibility="gone"
-                    android:id="@+id/tv_order_error_tip"
-                    android:text="@string/order_error_tip"
-                    android:textColor="@color/colorFullRed"
-                    android:textSize="12sp"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center"
+                <ImageView
+                    android:src="@drawable/bg_order_detail_bottom"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
-
-                <TextView
-                    android:id="@+id/tv_order_no_use_tip"
-                    android:layout_width="wrap_content"
-                    android:visibility="gone"
-                    android:gravity="center"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:paddingTop="14dp"
-                    android:paddingBottom="14dp"
-                    android:layout_marginBottom="7dp"
-                    android:text="@string/order_no_use_tip"
-                    android:textColor="#999"
-                    android:textSize="12sp" />
 
             </LinearLayout>
 

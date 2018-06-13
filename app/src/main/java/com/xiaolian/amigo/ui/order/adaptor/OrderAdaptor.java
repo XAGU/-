@@ -13,8 +13,12 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.network.model.order.Order;
 import com.xiaolian.amigo.util.CommonUtil;
+import com.xiaolian.amigo.util.TimeUtils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -145,10 +149,23 @@ public class OrderAdaptor extends RecyclerView.Adapter<OrderAdaptor.ViewHolder> 
 
         public OrderWrapper(Order order) {
             this.type = order.getDeviceType();
-            this.device = Device.getDevice(order.getDeviceType()).getDesc() + "：" + order.getLocation();
-            this.time = CommonUtil.stampToDate(order.getCreateTime());
+//            this.device = Device.getDevice(order.getDeviceType()).getDesc() + "：" + order.getLocation();
+            this.device = Device.getDevice(order.getDeviceType()).getDesc();
+            this.time = stampToDate(order.getCreateTime());
             this.amount = order.getActualDebit();
             this.order = order;
+        }
+
+        public static String stampToDate(Long s) {
+            if (s == null) {
+                return "----";
+            }
+//            String res;
+//            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss",
+//                    Locale.getDefault());
+//            Date date = new Date(s);
+//            res = simpleDateFormat.format(date);
+            return TimeUtils.lostAndFoundTimestampFormat(s);
         }
     }
 }

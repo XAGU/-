@@ -149,4 +149,12 @@ public interface ISharedPreferencesHelp {
     void saveScanType(int scanType);
 
     int getScanType();
+
+    void setPushToken(String pushToken);
+
+    String getPushToken();
+
+    void setPushTag(String pushTag);
+
+    String getPushTag();
 }

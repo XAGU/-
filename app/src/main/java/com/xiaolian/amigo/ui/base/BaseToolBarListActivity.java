@@ -113,6 +113,10 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
         }
     }
 
+    protected void enableLoadMore(boolean enable) {
+        refreshLayout.setEnableLoadMore(enable);
+    }
+
     protected void setAutoRefresh(boolean autoRefresh) {
         this.autoRefresh = autoRefresh;
     }

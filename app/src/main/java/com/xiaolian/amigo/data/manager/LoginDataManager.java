@@ -71,6 +71,26 @@ public class LoginDataManager implements ILoginDataManager {
     }
 
     @Override
+    public void deletePushToken() {
+        sharedPreferencesHelp.setPushToken("");
+    }
+
+    @Override
+    public Long getSchoolId() {
+        return sharedPreferencesHelp.getUserInfo().getSchoolId();
+    }
+
+    @Override
+    public String getPushTag() {
+        return sharedPreferencesHelp.getPushTag();
+    }
+
+    @Override
+    public void setPushTag(String pushTag) {
+        sharedPreferencesHelp.setPushToken(pushTag);
+    }
+
+    @Override
     public String getToken() {
         return sharedPreferencesHelp.getToken();
     }

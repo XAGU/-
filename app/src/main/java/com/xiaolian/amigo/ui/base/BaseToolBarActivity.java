@@ -87,6 +87,14 @@ public abstract class BaseToolBarActivity extends BaseActivity {
     protected abstract @StringRes
     int setTitle();
 
+    protected void setToolbarSubTitle(String subTitle, View.OnClickListener listener) {
+        findViewById(R.id.tv_toolbar_sub_title).setVisibility(View.VISIBLE);
+        ((TextView)findViewById(R.id.tv_toolbar_sub_title)).setText(subTitle);
+        if (listener != null) {
+            findViewById(R.id.tv_toolbar_sub_title).setOnClickListener(listener);
+        }
+    }
+
     protected void setMainBackground(@ColorRes int color) {
         svMainContainer.setBackgroundResource(color);
         rlToolBar.setBackgroundResource(color);

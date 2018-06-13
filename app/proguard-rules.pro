@@ -258,4 +258,12 @@ public static java.lang.String TABLENAME;
 *;
 }
 
+# 信鸽
+-keep class com.tencent.android.tpush.**  { *; }
+-keep class com.tencent.mid.**  { *; }
+-keep class com.tencent.mm.sdk.modelmsg.WXMediaMessage { *; }
+-keep class com.tencent.mm.sdk.modelmsg.** implements com.tencent.mm.sdk.modelmsg.WXMediaMessage$IMediaObject { *; }
+-keep class com.qq.taf.** {*;}
+-keep public class * extends com.qq.taf.jce.JceStruct{*;}
+
 #-------------------------------------------------------------------------

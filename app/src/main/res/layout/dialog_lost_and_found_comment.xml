@@ -38,6 +38,8 @@
             android:hint="请输入内容..."
             android:textColorHint="#bbb"
             android:minHeight="47dp"
+            android:maxLines="1"
+            android:maxLength="@integer/lost_found_comment_content_max_length"
             android:inputType="textMultiLine"
             android:layout_height="wrap_content" />
         <TextView

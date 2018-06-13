@@ -62,7 +62,7 @@ public class EditDormitoryAdaptor extends CommonAdapter<EditDormitoryAdaptor.Use
         } else {
             ((ImageView) holder.getView(R.id.iv_choose)).setImageResource(R.drawable.dot_gray);
             ((TextView) holder.getView(R.id.tv_choose)).setText("设为默认");
-            ((TextView) holder.getView(R.id.tv_choose)).setTextColor(ContextCompat.getColor(context, R.color.colorDark9));
+            ((TextView) holder.getView(R.id.tv_choose)).setTextColor(ContextCompat.getColor(context, R.color.colorDark6));
         }
         holder.getView(R.id.tv_delete).setOnClickListener(v -> presenter.deleteDormitory(userResidenceWrapper.getId()));
         holder.getView(R.id.tv_edit).setOnClickListener(v -> {

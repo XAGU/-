@@ -60,7 +60,7 @@
             android:layout_height="wrap_content"
             tool:text="TAKE A SHOWER"
             android:textColor="#7fffffff"
-            android:textSize="11sp"
+            android:textSize="10sp"
             />
     </RelativeLayout>
 

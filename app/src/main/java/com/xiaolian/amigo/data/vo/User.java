@@ -25,6 +25,7 @@ public class User {
     private String schoolName;
     private Integer sex;
     private Integer type;
+    private Long createTime;
 
     public User() {
     }
@@ -45,5 +46,6 @@ public class User {
         this.sex = entireUserDTO.getSex();
         this.type = entireUserDTO.getType();
         this.macAddress = entireUserDTO.getMacAddress();
+        this.createTime = entireUserDTO.getCreateTime();
     }
 }

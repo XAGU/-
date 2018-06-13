@@ -29,6 +29,7 @@ public class EntireUserDTO implements Mapper<User> {
     private String schoolName;
     private Integer sex;
     private Integer type;
+    private Long createTime;
 
     @Override
     public User transform() {

@@ -52,7 +52,7 @@ public class BluetoothClient implements IBluetoothClient {
     }
 
     @Override
-    public void connect(final String macAddress, BluetoothConnectCallback response) {
+    public synchronized void connect(final String macAddress, BluetoothConnectCallback response) {
         if (bluetoothConnectWorker != null) {
             if (bluetoothConnectWorker.getCurrentStatus() == BluetoothConstants.STATE_CONNECTED) {
                 Log.d(TAG, "[connect]bluetoothConnectWorker不为空，且STATE_CONNECTED, 关闭GATT");
@@ -73,7 +73,7 @@ public class BluetoothClient implements IBluetoothClient {
         }
     }
 
-    private void openGatt(final String macAddress, BluetoothConnectCallback response) {
+    private synchronized void openGatt(final String macAddress, BluetoothConnectCallback response) {
         if (!TextUtils.equals(macAddress, bluetoothConnectWorker.getMacAddress())) {
             Log.d(TAG, "[openGatt]mac不相同，设置mac，原mac为" + bluetoothConnectWorker.getMacAddress()
             + "现mac为" + macAddress);
@@ -90,7 +90,7 @@ public class BluetoothClient implements IBluetoothClient {
     }
 
     @Override
-    public void disconnect(String mac) {
+    public synchronized void disconnect(String mac) {
 //        checkMacAddress(mac);
         Log.d(TAG, "[disconnect]关闭连接" + mac);
         if (bluetoothConnectWorker != null) {
@@ -100,7 +100,7 @@ public class BluetoothClient implements IBluetoothClient {
     }
 
     @Override
-    public void registerConnectStatusListener(String mac, BluetoothConnectStatusListener listener) {
+    public synchronized void registerConnectStatusListener(String mac, BluetoothConnectStatusListener listener) {
         if (bluetoothConnectWorker == null) {
             bluetoothConnectWorker = new BluetoothConnectWorker(mac);
         }
@@ -113,7 +113,7 @@ public class BluetoothClient implements IBluetoothClient {
     }
 
     @Override
-    public void unregisterConnectStatusListener(String mac) {
+    public synchronized void unregisterConnectStatusListener(String mac) {
 //        checkMacAddress(mac);
         if (bluetoothConnectWorker != null) {
             Log.d(TAG, "取消连接状态监听 " + bluetoothConnectWorker.toString());
@@ -122,7 +122,7 @@ public class BluetoothClient implements IBluetoothClient {
     }
 
     @Override
-    public void read(String mac, UUID service, UUID character, BluetoothReadDescriptorCallback response) {
+    public synchronized void read(String mac, UUID service, UUID character, BluetoothReadDescriptorCallback response) {
         if (!checkMacAddress(mac)) {
             Log.d(TAG, "[read]check mac失败" + mac + " " + bluetoothConnectWorker == null
                     ? "worker为null" : bluetoothConnectWorker.getMacAddress());
@@ -139,7 +139,7 @@ public class BluetoothClient implements IBluetoothClient {
     }
 
     @Override
-    public void write(String mac, UUID service, UUID character, byte[] value, BluetoothWriteCharacteristicCallback response) {
+    public synchronized void write(String mac, UUID service, UUID character, byte[] value, BluetoothWriteCharacteristicCallback response) {
         if (!checkMacAddress(mac)) {
             Log.d(TAG, "[write]check mac失败" + mac + " " + bluetoothConnectWorker == null
                     ? "worker为null" : bluetoothConnectWorker.getMacAddress());
@@ -156,7 +156,7 @@ public class BluetoothClient implements IBluetoothClient {
     }
 
     @Override
-    public void writeNoRsp(String mac, UUID service, UUID character, byte[] value, BluetoothWriteCharacteristicCallback response) {
+    public synchronized void writeNoRsp(String mac, UUID service, UUID character, byte[] value, BluetoothWriteCharacteristicCallback response) {
         if (!checkMacAddress(mac)) {
             Log.d(TAG, "[writeNoRsp]check mac失败" + mac + " " + bluetoothConnectWorker == null
                     ? "worker为null" : bluetoothConnectWorker.getMacAddress());
@@ -170,13 +170,13 @@ public class BluetoothClient implements IBluetoothClient {
         }
     }
 
-    private boolean checkMacAddress(String mac) {
+    private synchronized boolean checkMacAddress(String mac) {
         return bluetoothConnectWorker != null
                 && TextUtils.equals(bluetoothConnectWorker.getMacAddress(), mac);
     }
 
     @Override
-    public void readDescriptor(String mac, UUID service, UUID character, UUID descriptor, BluetoothReadDescriptorCallback response) {
+    public synchronized void readDescriptor(String mac, UUID service, UUID character, UUID descriptor, BluetoothReadDescriptorCallback response) {
         if (!checkMacAddress(mac)) {
             Log.d(TAG, "[readDescriptor]check mac失败" + mac + " " + bluetoothConnectWorker == null
                     ? "worker为null" : bluetoothConnectWorker.getMacAddress());
@@ -193,7 +193,7 @@ public class BluetoothClient implements IBluetoothClient {
     }
 
     @Override
-    public void writeDescriptor(String mac, UUID service, UUID character, UUID descriptor, byte[] value, BluetoothWriteDescriptorCallback response) {
+    public synchronized void writeDescriptor(String mac, UUID service, UUID character, UUID descriptor, byte[] value, BluetoothWriteDescriptorCallback response) {
         if (!checkMacAddress(mac)) {
             Log.d(TAG, "[writeDescriptor]check mac失败" + mac + " " + bluetoothConnectWorker == null
                     ? "worker为null" : bluetoothConnectWorker.getMacAddress());
@@ -211,7 +211,7 @@ public class BluetoothClient implements IBluetoothClient {
     }
 
     @Override
-    public void notify(String mac, UUID service, UUID character, BluetoothCharacteristicNotifyCallback response) {
+    public synchronized void notify(String mac, UUID service, UUID character, BluetoothCharacteristicNotifyCallback response) {
         if (!checkMacAddress(mac)) {
             Log.d(TAG, "[notify]check mac失败" + mac + " " + bluetoothConnectWorker == null
                     ? "worker为null" : bluetoothConnectWorker.getMacAddress());
@@ -223,7 +223,7 @@ public class BluetoothClient implements IBluetoothClient {
     }
 
     @Override
-    public boolean setNotify(String mac, UUID service, UUID character, boolean enable) {
+    public synchronized boolean setNotify(String mac, UUID service, UUID character, boolean enable) {
         if (!checkMacAddress(mac)) {
             Log.d(TAG, "[setNotify]check mac失败" + mac + " " + bluetoothConnectWorker == null
                     ? "worker为null" : bluetoothConnectWorker.getMacAddress());
@@ -234,7 +234,7 @@ public class BluetoothClient implements IBluetoothClient {
     }
 
     @Override
-    public int getConnectStatus(String mac) {
+    public synchronized int getConnectStatus(String mac) {
         if (!checkMacAddress(mac)) {
             Log.d(TAG, "[getConnectStatus]check mac失败" + mac + " " + bluetoothConnectWorker == null
                     ? "worker为null" : bluetoothConnectWorker.getMacAddress());

@@ -6,12 +6,17 @@ import com.xiaolian.amigo.data.network.IComplaintApi;
 import com.xiaolian.amigo.data.network.ICsApi;
 import com.xiaolian.amigo.data.network.IFundsApi;
 import com.xiaolian.amigo.data.network.ITimeRangeApi;
+import com.xiaolian.amigo.data.network.IUserBillApi;
 import com.xiaolian.amigo.data.network.IUserThirdAccountApi;
 import com.xiaolian.amigo.data.network.IWxpayApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.complaint.CheckComplaintReqDTO;
 import com.xiaolian.amigo.data.network.model.funds.QueryRechargeTypesRespDTO;
+import com.xiaolian.amigo.data.network.model.order.OrderRespDTO;
+import com.xiaolian.amigo.data.network.model.userbill.QueryMonthlyBillReqDTO;
+import com.xiaolian.amigo.data.network.model.userbill.QueryPersonalMaxConsumeOrderListReqDTO;
+import com.xiaolian.amigo.data.network.model.userbill.UserMonthlyBillRespDTO;
 import com.xiaolian.amigo.data.network.model.userthirdaccount.AddThirdAccountReqDTO;
 import com.xiaolian.amigo.data.network.model.alipay.AlipayTradeAppPayArgsReqDTO;
 import com.xiaolian.amigo.data.network.model.alipay.AlipayTradeAppPayResultParseReqDTO;
@@ -36,6 +41,7 @@ import com.xiaolian.amigo.data.network.model.wxpay.WxpayTradeAppPayArgsRespDTO;
 import com.xiaolian.amigo.data.network.model.wxpay.WxpayTradeAppPayResultParseReqDTO;
 import com.xiaolian.amigo.data.network.model.wxpay.WxpayTradeAppPayResultParseRespDTO;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
+import com.xiaolian.amigo.data.vo.User;
 
 import javax.inject.Inject;
 
@@ -62,6 +68,7 @@ public class WalletDataManager implements IWalletDataManager {
     private ITimeRangeApi timeRangeApi;
     private IUserThirdAccountApi userThirdAccountApi;
     private IComplaintApi complaintApi;
+    private IUserBillApi userBillApi;
 
     @Inject
     public WalletDataManager(Retrofit retrofit, ISharedPreferencesHelp sharedPreferencesHelp) {
@@ -72,6 +79,7 @@ public class WalletDataManager implements IWalletDataManager {
         timeRangeApi = retrofit.create(ITimeRangeApi.class);
         userThirdAccountApi = retrofit.create(IUserThirdAccountApi.class);
         complaintApi = retrofit.create(IComplaintApi.class);
+        userBillApi = retrofit.create(IUserBillApi.class);
         this.sharedPreferencesHelp = sharedPreferencesHelp;
     }
 
@@ -168,6 +176,21 @@ public class WalletDataManager implements IWalletDataManager {
     @Override
     public String getMobile() {
         return sharedPreferencesHelp.getUserInfo().getMobile();
+    }
+
+    @Override
+    public Observable<ApiResult<UserMonthlyBillRespDTO>> getMonthlyBill(QueryMonthlyBillReqDTO reqDTO) {
+        return userBillApi.getMonthlyBill(reqDTO);
+    }
+
+    @Override
+    public Observable<ApiResult<OrderRespDTO>> getMonthlyMaxBill(QueryPersonalMaxConsumeOrderListReqDTO reqDTO) {
+        return userBillApi.getMonthlyMaxBill(reqDTO);
+    }
+
+    @Override
+    public User getUser() {
+        return sharedPreferencesHelp.getUserInfo();
     }
 
     @Override

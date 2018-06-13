@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_marginTop="179dp"
+        android:id="@+id/rel"
+        style="@style/ListItemRel"
+        android:clickable="false"
+        android:background="#ffffff"
+        android:layout_marginStart="14dp"
+        android:layout_marginEnd="14dp"
+        android:paddingStart="7dp"
+        android:paddingEnd="7dp"
+        android:focusable="false"
+        android:focusableInTouchMode="false">
+
+        <ImageView
+            android:id="@+id/imageLeft"
+            style="@style/ListItemImage"
+            android:src="@drawable/profile_wallet"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="7dp" />
+
+        <TextView
+            android:id="@+id/textMid"
+            style="@style/ListItemMainText"
+            android:layout_toRightOf="@+id/imageLeft"
+            android:text="我的钱包" />
+
+
+        <ImageView
+            android:id="@+id/imageRight"
+            style="@style/ListItemImage"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/arrow_right" />
+
+        <TextView
+            tools:text="100"
+            android:id="@+id/tv_amount"
+            android:layout_toLeftOf="@id/imageRight"
+            style="@style/Money_Normal"
+            android:layout_marginRight="5dp"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <View
+            android:visibility="gone"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/imageRight"
+            android:layout_marginRight="5dp"
+            android:id="@+id/v_dot"
+            android:layout_width="6dp"
+            android:layout_height="6dp"
+            android:background="@drawable/dot_circle_red"
+            />
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_marginTop="5dp"
+        android:id="@+id/iv_button"
+        android:layout_below="@id/rel"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_guide_wallet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

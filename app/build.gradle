@@ -18,11 +18,17 @@ android {
         applicationId "com.xiaolian.amigo"
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
-        versionCode 17
-        versionName "1.1.30"
+        versionCode 18
+        versionName "1.1.40"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
+
+        resConfigs "en"
+
+        ndk {
+            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a'
+        }
     }
     signingConfigs {
         config {
@@ -54,15 +60,10 @@ android {
             }
         }
     }
-    defaultConfig {
-        resConfigs "en"
-    }
     flavorDimensions "default"
     productFlavors {
         dev {
             // 测试
-//            applicationId "com.xiaolian.amigo_dev"
-            // 微信支付测试
             applicationId "com.xiaolian.amigo_dev"
             resValue "string", "app_name", "笑联测试版"
 
@@ -80,7 +81,10 @@ android {
             buildConfigField "String", "TRADE_PREFIX", "\"/trade\""
             // 修改 AndroidManifest.xml 里渠道变量
             manifestPlaceholders = [UMENG_CHANNEL_VALUE      : "dev",
-                                    FILE_PROVIDER_AUTHORITIES: applicationId + ".fileprovider"]
+                                    FILE_PROVIDER_AUTHORITIES: applicationId + ".fileprovider",
+                                    XG_ACCESS_ID : "2100294839",
+                                    XG_ACCESS_KEY : "A37FU75FK6KC",
+            ]
 
             // 预发
 //            applicationId "com.xiaolian.amigo_pre"
@@ -92,7 +96,10 @@ android {
 //            buildConfigField "String", "TRADE_PREFIX", "\"/c/trade\""
 //            // 修改 AndroidManifest.xml 里渠道变量
 //            manifestPlaceholders = [UMENG_CHANNEL_VALUE      : "dev",
-//                                    FILE_PROVIDER_AUTHORITIES: applicationId + ".fileprovider"]
+//                                    FILE_PROVIDER_AUTHORITIES: applicationId + ".fileprovider",
+//                                    XG_ACCESS_ID : "2100293839",
+//                                    XG_ACCESS_KEY : "A684X2HPE9GZ",
+//            ]
         }
         prod {
             applicationId defaultConfig.applicationId
@@ -110,7 +117,10 @@ android {
             buildConfigField "String", "TRADE_PREFIX", "\"/c/trade\""
 
             manifestPlaceholders = [UMENG_CHANNEL_VALUE      : "prod",
-                                    FILE_PROVIDER_AUTHORITIES: applicationId + ".fileprovider"]
+                                    FILE_PROVIDER_AUTHORITIES: applicationId + ".fileprovider",
+                                    XG_ACCESS_ID : "2100293839",
+                                    XG_ACCESS_KEY : "A684X2HPE9GZ",
+            ]
         }
     }
 
@@ -173,6 +183,14 @@ dependencies {
     implementation project(':zxing-android-embedded')
     implementation deps.wechatSDKWithMta
     implementation project(':blelib')
+
+
+    //信鸽jar
+    compile 'com.tencent.xinge:xinge:3.2.3-release'
+    //wup包
+    compile 'com.tencent.wup:wup:1.0.0.E-release'
+    //mid包
+    compile 'com.tencent.mid:mid:4.0.6-release'
 }
 
 configurations.all {

@@ -1,5 +1,9 @@
 package com.xiaolian.amigo.ui.wallet.adaptor;
 
+import android.text.TextUtils;
+import android.util.TypedValue;
+import android.widget.TextView;
+
 import com.xiaolian.amigo.R;
 import com.zhy.adapter.recyclerview.base.ItemViewDelegate;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -24,6 +28,11 @@ public class TitleContentDelegate implements ItemViewDelegate<WithdrawRechargeDe
 
     @Override
     public void convert(ViewHolder holder, WithdrawRechargeDetailAdapter.Item item, int position) {
+        if (TextUtils.equals(item.getTitle(), "设备信息：")) {
+            ((TextView)holder.getView(R.id.tv_content)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+        } else {
+            ((TextView)holder.getView(R.id.tv_content)).setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+        }
         holder.setText(R.id.tv_title, item.getTitle());
         holder.setText(R.id.tv_content, item.getContent());
     }

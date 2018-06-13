@@ -16,32 +16,45 @@
 package com.xiaolian.amigo.util;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
 import android.app.Dialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
+import android.graphics.BitmapFactory;
 import android.graphics.RectF;
 import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.v4.app.NotificationCompat;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.ui.main.MainActivity;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static android.content.Context.ACTIVITY_SERVICE;
 
 /**
  * @author caidong
@@ -209,6 +222,81 @@ public final class CommonUtil {
     public static String getCaller() {
         StackTraceElement stack[] = new Throwable().getStackTrace();
         return stack[0].getMethodName();
+    }
+
+    public static void sendNotify(Context context, int id, String  notifyTitle, String title, String content,
+                                  Class clz, Bundle bundle){
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+        builder.setTicker(notifyTitle);
+        builder.setContentTitle(title);
+        builder.setContentText(content);
+        //ContentInfo 在通知的右侧 时间的下面 用来展示一些其他信息
+        //builder.setContentInfo("2");
+        //number设计用来显示同种通知的数量和ContentInfo的位置一样
+        //如果设置了ContentInfo则number会被隐藏
+        //builder.setNumber(2);
+        builder.setAutoCancel(true);
+        builder.setSmallIcon(R.mipmap.ic_launcher);
+        builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(),R.mipmap.ic_launcher));
+        if (clz != null) {
+            Intent intent = new Intent(context,clz);
+            intent.putExtra(Constant.EXTRA_KEY, bundle);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            PendingIntent pIntent = PendingIntent.getActivity(context,1,intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT);
+            //点击跳转的intent
+            builder.setContentIntent(pIntent);
+        } else {
+            Intent intent = new Intent();
+            PendingIntent pIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+            builder.setContentIntent(pIntent);
+        }
+        builder.setDefaults(NotificationCompat.DEFAULT_ALL);
+        Notification notification = builder.build();
+        NotificationManager manager= (NotificationManager) context.
+                getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.notify(id, notification);
+    }
+
+    public static String getRuningApp(Context context) {
+        if (Build.VERSION.SDK_INT >= 21) {
+            final int PROCESS_STATE_TOP = 2;
+            ActivityManager.RunningAppProcessInfo currentInfo = null;
+            Field field = null;
+            try {
+                field = ActivityManager.RunningAppProcessInfo.class.getDeclaredField("processState");
+            } catch (Exception ignored) {
+            }
+            ActivityManager am = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
+            List<ActivityManager.RunningAppProcessInfo> appList = am.getRunningAppProcesses();
+            for (ActivityManager.RunningAppProcessInfo app : appList) {
+                if (app.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND
+                        && app.importanceReasonCode == ActivityManager.RunningAppProcessInfo.REASON_UNKNOWN) {
+                    Integer state = null;
+                    try {
+                        state = field.getInt(app);
+                    } catch (Exception e) {
+                    }
+                    if (state != null && state == PROCESS_STATE_TOP) {
+                        currentInfo = app;
+                        break;
+                    }
+                }
+            }
+            if (currentInfo != null) {
+                System.out.println(currentInfo.processName);
+                return currentInfo.processName;
+            }
+            return null;
+        } else {
+            try {
+                ActivityManager am = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
+                ActivityManager.RunningTaskInfo foregroundTaskInfo = am.getRunningTasks(1).get(0);
+                return foregroundTaskInfo.topActivity.getPackageName();
+            } catch (Exception e) {
+                return null;
+            }
+        }
     }
 
 }

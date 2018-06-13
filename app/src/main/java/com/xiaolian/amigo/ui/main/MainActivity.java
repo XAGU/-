@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.graphics.RectF;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
@@ -25,6 +27,10 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.tencent.android.tpush.XGIOperateCallback;
+import com.tencent.android.tpush.XGPushConfig;
+import com.tencent.android.tpush.XGPushManager;
+import com.tencent.android.tpush.common.Constants;
 import com.umeng.analytics.MobclickAgent;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
@@ -66,6 +72,7 @@ import com.xiaolian.amigo.util.AppUtils;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
+import com.xiaolian.amigo.util.MD5Util;
 import com.xiaolian.amigo.util.ScreenUtils;
 import com.youth.banner.Banner;
 
@@ -73,6 +80,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.lang.ref.WeakReference;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -183,6 +191,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     private OrderPreInfoDTO orderPreInfo;
     private ArrayList<BannerDTO> defaultBanners;
 
+    private Message m;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -194,6 +204,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         // 友盟日志加密
         MobclickAgent.enableEncrypt(true);
         MobclickAgent.setCatchUncaughtExceptions(true);
+
 
         btSwitch.setBackgroundResource(R.drawable.profile);
 
@@ -301,6 +312,55 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         return super.dispatchTouchEvent(ev);
     }
 
+    private void registerXGPush() {
+        if (!presenter.isLogin()) {
+            presenter.deletePushToken();
+            return;
+        }
+        if (!TextUtils.isEmpty(presenter.getPushToken())) {
+            return;
+        }
+        // 1.获取设备Token
+        Handler handler = new HandlerExtension(MainActivity.this);
+        m = handler.obtainMessage();
+
+        /*
+        注册信鸽服务的接口
+        如果仅仅需要发推送消息调用这段代码即可
+        */
+        String pushAccount = MD5Util.md5(presenter.getUserInfo().getId() + "_jtL2T8nYY5D0klEm");
+        Log.d(TAG, "注册信鸽: " + pushAccount);
+        XGPushManager.bindAccount(getApplicationContext(),
+                pushAccount,
+                new XGIOperateCallback() {
+                    @Override
+                    public void onSuccess(Object data, int flag) {
+                        Log.w(Constants.LogTag, "+++ register push sucess. token:" + data + "flag" + flag);
+                        String pushTag = MD5Util.md5(presenter.getUserInfo().getSchoolId() + "_MTxQd1buFokZayzT");
+                        Log.d(TAG, "注册tag: " + pushTag);
+                        XGPushManager.setTag(getApplicationContext(), pushTag);
+                        presenter.setPushToken((String) data);
+                        m.obj = "+++ register push sucess. token:" + data;
+                        m.sendToTarget();
+                    }
+
+                    @Override
+                    public void onFail(Object data, int errCode, String msg) {
+                        Log.w(Constants.LogTag,
+                                "+++ register push fail. token:" + data
+                                        + ", errCode:" + errCode + ",msg:"
+                                        + msg);
+                        presenter.deletePushToken();
+                        m.obj = "+++ register push fail. token:" + data
+                                + ", errCode:" + errCode + ",msg:" + msg;
+                        m.sendToTarget();
+                    }
+                });
+
+        // 获取token
+        XGPushConfig.getToken(this);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -369,6 +429,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 ivAvatar.setImageResource(R.drawable.ic_picture_error);
             }
         }
+        // 注册信鸽推送
+        registerXGPush();
     }
 
     private void uploadDeviceInfo() {
@@ -464,7 +526,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             }
             if (!presenter.isMainGuideDone()) {
                 // 显示引导页
-                GuideDialog guideDialog = new GuideDialog(this, GuideDialog.TYPE_MAIN);
+                GuideDialog guideDialog = new GuideDialog(this, GuideDialog.TYPE_WALLET_TIP);
+                guideDialog.setAmount(getString(R.string.rmb_symbol) + presenter.getBalance());
                 guideDialog.show();
             }
             if (profileFragment == null) {
@@ -1266,6 +1329,31 @@ public class MainActivity extends MainBaseActivity implements IMainView {
              * 退出登录
              */
             LOGOUT()
+        }
+    }
+
+    private static class HandlerExtension extends Handler {
+        WeakReference<MainActivity> mActivity;
+
+        HandlerExtension(MainActivity activity) {
+            mActivity = new WeakReference<MainActivity>(activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            MainActivity theActivity = mActivity.get();
+            if (theActivity == null) {
+                theActivity = new MainActivity();
+            }
+            if (msg != null) {
+                Log.d("TPush", msg.obj.toString());
+//                TextView textView = (TextView) theActivity
+//                        .findViewById(R.id.deviceToken);
+//                textView.setText(XGPushConfig.getToken(theActivity));
+            }
+            // XGPushManager.registerCustomNotification(theActivity,
+            // "BACKSTREET", "BOYS", System.currentTimeMillis() + 5000, 0);
         }
     }
 

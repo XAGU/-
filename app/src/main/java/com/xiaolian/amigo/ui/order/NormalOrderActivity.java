@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.order;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -35,6 +36,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+
 /**
  * 消费账单
  *
@@ -55,6 +58,10 @@ public class NormalOrderActivity extends OrderBaseActivity implements INormalOrd
     private LinearLayout llBottom;
     private TextView tvBottomTip;
 
+    /******************** 底部线条 **********************/
+    View vBottomLine1;
+    View vBottomLine2;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +78,8 @@ public class NormalOrderActivity extends OrderBaseActivity implements INormalOrd
         findViewById(R.id.right_oper).setOnClickListener(v -> onRightOper());
         findViewById(R.id.tv_complaint).setOnClickListener(v -> complaint());
         findViewById(R.id.iv_back).setOnClickListener(v -> onBackPressed());
+        vBottomLine1 = findViewById(R.id.v_bottom_line1);
+        vBottomLine2 = findViewById(R.id.v_bottom_line2);
         recyclerView = findViewById(R.id.recyclerView);
         llBottom = findViewById(R.id.ll_bottom);
         tvBottomTip = findViewById(R.id.tv_bottom_tip);
@@ -172,6 +181,12 @@ public class NormalOrderActivity extends OrderBaseActivity implements INormalOrd
     }
 
     private void setBottomLayout(OrderDetailRespDTO data) {
+
+        vBottomLine1.setBackgroundColor(Color.parseColor(OrderDetailActivity.getLineColorByDeviceType(data.getDeviceType())));
+        vBottomLine1.setVisibility(View.VISIBLE);
+        vBottomLine2.setBackgroundColor(Color.parseColor(OrderDetailActivity.getLineColorByDeviceType(data.getDeviceType())));
+        vBottomLine2.setVisibility(View.VISIBLE);
+
         // 洗衣机
         if (Device.getDevice(data.getDeviceType()) == Device.WASHER) {
             if (ObjectsCompat.equals(data.getStatus(), ORDER_ERROR_STATUS)) {

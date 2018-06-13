@@ -71,4 +71,12 @@ public interface ILoginDataManager {
      * 校验重置密码验证码
      */
     Observable<ApiResult<BooleanRespDTO>> verificationResetCheck(@Body VerificationCodeCheckReqDTO body);
+
+    void deletePushToken();
+
+    Long getSchoolId();
+
+    String getPushTag();
+
+    void setPushTag(String pushTag);
 }

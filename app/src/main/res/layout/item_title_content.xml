@@ -1,21 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
     android:layout_height="58dp">
     <TextView
         android:textSize="14sp"
+        tools:text="设备信息："
         android:textColor="@color/colorDark2"
         android:id="@+id/tv_title"
         android:gravity="center_vertical"
-        android:layout_weight="1"
-        android:layout_width="0dp"
+        android:lines="1"
+        android:layout_width="wrap_content"
         android:layout_height="58dp" />
     <TextView
         android:textSize="14sp"
+        tools:text="非打开进风口大家疯狂的肌肤看见的旷"
+        android:lines="1"
+        android:layout_weight="1"
+        android:ellipsize="end"
         android:textColor="@color/colorDark6"
         android:id="@+id/tv_content"
-        android:gravity="center_vertical"
-        android:layout_width="wrap_content"
+        android:gravity="center_vertical|end"
+        android:layout_width="0dp"
         android:layout_height="58dp" />
 
 </LinearLayout>

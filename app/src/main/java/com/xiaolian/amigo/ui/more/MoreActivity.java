@@ -3,8 +3,11 @@ package com.xiaolian.amigo.ui.more;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 
+import com.tencent.android.tpush.XGPushManager;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.ui.main.MainActivity;
@@ -13,7 +16,10 @@ import com.xiaolian.amigo.ui.more.intf.IMorePresenter;
 import com.xiaolian.amigo.ui.more.intf.IMoreView;
 import com.xiaolian.amigo.ui.widget.RecycleViewDivider;
 import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.util.MD5Util;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +37,7 @@ import butterknife.OnClick;
  * @date 17/10/13
  */
 public class MoreActivity extends MoreBaseActivity implements IMoreView {
+    private static final String TAG = MoreActivity.class.getSimpleName();
 
     List<MoreAdapter.MoreModel> items = new ArrayList<MoreAdapter.MoreModel>() {
         {
@@ -81,6 +88,15 @@ public class MoreActivity extends MoreBaseActivity implements IMoreView {
 
     @OnClick(R.id.bt_logout)
     public void logout() {
+        String pushTag = presenter.getPushTag();
+        if (!TextUtils.isEmpty(pushTag)) {
+            Log.d(TAG, "删除tag" + pushTag);
+            XGPushManager.deleteTag(getApplicationContext(), pushTag);
+            presenter.setPushTag("");
+        }
+        XGPushManager.delAccount(getApplicationContext(),
+                presenter.getUserId() + "_jtL2T8nYY5D0klEm");
+        presenter.deletePushToken();
         presenter.logout();
     }
 

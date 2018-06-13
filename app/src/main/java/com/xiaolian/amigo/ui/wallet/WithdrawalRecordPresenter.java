@@ -37,8 +37,21 @@ public class WithdrawalRecordPresenter<V extends IWithdrawalRecordView> extends 
     }
 
     @Override
-    public void requestWithdrawalRecord(int page) {
+    public void requestWithdrawalRecord(int page, Integer fundsType,
+                                        Integer year, Integer month) {
         QueryPersonalFundsListReqDTO reqDTO = new QueryPersonalFundsListReqDTO();
+        if (fundsType != null
+                && fundsType != WithdrawalRecordActivity.INVALID_INT) {
+            reqDTO.setFundsType(fundsType);
+        }
+        if (year != null
+                && year != WithdrawalRecordActivity.INVALID_INT) {
+            reqDTO.setYear(year);
+        }
+        if (month != null
+                && month != WithdrawalRecordActivity.INVALID_INT) {
+            reqDTO.setMonth(month);
+        }
         reqDTO.setPage(page);
         reqDTO.setSize(Constant.PAGE_SIZE);
         addObserver(manager.queryWithdrawList(reqDTO), new NetworkObserver<ApiResult<QueryFundsListRespDTO>>(false, true) {

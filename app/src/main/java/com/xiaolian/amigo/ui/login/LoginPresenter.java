@@ -191,4 +191,24 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
     public String getMobile() {
         return loginDataManager.getRememberMobile();
     }
+
+    @Override
+    public void deletePushToken() {
+        loginDataManager.deletePushToken();
+    }
+
+    @Override
+    public Long getSchoolId() {
+        return loginDataManager.getSchoolId();
+    }
+
+    @Override
+    public String getPushTag() {
+        return loginDataManager.getPushTag();
+    }
+
+    @Override
+    public void setPushTag(String pushTag) {
+        loginDataManager.setPushTag(pushTag);
+    }
 }

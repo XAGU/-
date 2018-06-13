@@ -291,4 +291,6 @@
     <string name="use_period_colon">使用期限：</string>
     <string name="washer_tip">1.请触摸设备上的开关，将屏幕切换为拍摄模式\n2.然后将二维码对准设备上的二维码扫描区</string>
     <string name="lost_and_found">失物招领</string>
+    <string name="bill_detail">账单明细</string>
+    <string name="credit_exchange">积分兑换</string>
 </resources>

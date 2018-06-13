@@ -373,6 +373,21 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
         }
     }
 
+    @Override
+    public void deletePushToken() {
+        mainDataManager.deletePushToken();
+    }
+
+    @Override
+    public String getPushToken() {
+        return mainDataManager.getPushToken();
+    }
+
+    @Override
+    public void setPushToken(String pushToken) {
+        mainDataManager.setPushToken(pushToken);
+    }
+
     private boolean isDeviceInfoUploaded(UploadUserDeviceInfoReqDTO newReq,
                                          UploadUserDeviceInfoReqDTO oldReq) {
         if (oldReq == null) {

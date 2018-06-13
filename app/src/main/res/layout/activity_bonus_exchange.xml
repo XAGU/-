@@ -11,7 +11,7 @@
         style="@style/EditText"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:maxLength="20"
+        android:maxLength="@integer/bonus_exchange_code_max_length"
         android:drawableEnd="@drawable/clear"
         android:drawableRight="@drawable/clear"
         android:hint="请输入兑换码"

@@ -1,30 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:gravity="center_horizontal"
-    android:background="@color/white"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:gravity="center_vertical"
+    android:id="@+id/ll_credit_item"
+    android:background="@drawable/bg_credit_heater"
     android:layout_height="wrap_content">
     <TextView
         android:id="@+id/tv_bonus_name"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/border_point"
-        android:textColor="#fc557e"
+        android:textColor="@color/white"
         android:textSize="14sp"
         android:textStyle="bold"
-        android:text="Y1热水澡券"
-        android:gravity="center"
-        android:layout_width="105dp"
-        android:layout_height="47dp" />
+        android:layout_marginStart="21dp"
+        tools:text="Y1热水澡券"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content" />
     <TextView
+        android:layout_marginEnd="21dp"
         android:id="@+id/tv_point_desc"
-        android:layout_marginTop="14dp"
-        android:layout_marginBottom="24dp"
-        android:textColor="@color/white"
-        android:textSize="10sp"
+        android:textColor="@color/credit_heater"
+        android:textSize="12sp"
+        android:textStyle="bold"
         android:gravity="center"
-        android:background="@color/colorFullRed"
+        android:background="@drawable/bg_credit_exchange"
         android:text="200积分兑换"
-        android:layout_width="82dp"
-        android:layout_height="24dp" />
+        android:layout_width="105dp"
+        android:layout_height="34dp" />
 
 </LinearLayout>

@@ -19,7 +19,6 @@ import com.xiaolian.amigo.ui.credits.CreditsActivity;
 import com.xiaolian.amigo.ui.favorite.FavoriteActivity;
 import com.xiaolian.amigo.ui.main.adaptor.ProfileAdaptor;
 import com.xiaolian.amigo.ui.more.MoreActivity;
-import com.xiaolian.amigo.ui.order.OrderActivity;
 import com.xiaolian.amigo.ui.repair.RepairNavActivity;
 import com.xiaolian.amigo.ui.user.EditProfileActivity;
 import com.xiaolian.amigo.ui.wallet.WalletActivity;
@@ -56,7 +55,7 @@ public class ProfileFragment2 extends Fragment {
         {
             add(new ProfileAdaptor.Item(R.drawable.profile_edit, "编辑个人信息", EditProfileActivity.class));
             add(wallet);
-            add(new ProfileAdaptor.Item(R.drawable.profile_order, "消费记录", OrderActivity.class));
+//            add(new ProfileAdaptor.Item(R.drawable.profile_order, "消费记录", OrderActivity.class));
             add(bonus);
             add(new ProfileAdaptor.Item(R.drawable.profile_favorite, "我收藏的设备", FavoriteActivity.class));
             add(repair);
