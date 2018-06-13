@@ -181,6 +181,16 @@ public class MyPublishActivity2 extends LostAndFoundBaseActivity implements ILos
     }
 
     @Override
+    public void showFootView() {
+
+    }
+
+    @Override
+    public void hideFootView() {
+
+    }
+
+    @Override
     protected void onDestroy() {
         presenter.onDetach();
         super.onDestroy();

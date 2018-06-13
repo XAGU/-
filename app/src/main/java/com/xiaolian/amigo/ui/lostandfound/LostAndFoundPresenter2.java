@@ -55,8 +55,13 @@ public class LostAndFoundPresenter2<V extends ILostAndFoundView2> extends BasePr
                         getMvpView().hideEmptyView();
                         getMvpView().hideErrorView();
                         if (null == result.getError()) {
-                            if (result.getData().getCommentEnable() != null) {
-                                commentEnable = result.getData().getCommentEnable();
+                            if (result.getData().getCommentEnable() != null
+                                    && result.getData().getCommentEnable()) {
+                                commentEnable = true;
+                                getMvpView().showFootView();
+                            } else {
+                                commentEnable = false;
+                                getMvpView().hideFootView();
                             }
                             if (null != result.getData().getLostAndFounds()) {
                                 List<LostAndFoundAdaptor2.LostAndFoundWrapper> wrappers = new ArrayList<>();

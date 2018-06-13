@@ -27,4 +27,8 @@ public interface ILostAndFoundView2 extends IBaseView {
     void showNoSearchResult(String searchStr);
 
     void showSearchResult(List<LostAndFoundAdaptor2.LostAndFoundWrapper> wrappers);
+
+    void showFootView();
+
+    void hideFootView();
 }

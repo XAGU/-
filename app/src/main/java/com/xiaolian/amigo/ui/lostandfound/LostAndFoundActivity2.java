@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.lostandfound;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -9,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -21,6 +23,7 @@ import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundPresenter2;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundView2;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.ui.widget.dialog.LostAndFoundPopupDialog;
+import com.xiaolian.amigo.ui.widget.dialog.LostAndFoundPublishDialog;
 import com.xiaolian.amigo.ui.widget.dialog.SearchDialog;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutFooter;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutHeader;
@@ -62,6 +65,9 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
     @BindView(R.id.rl_error)
     RelativeLayout rlError;
 
+    @BindView(R.id.ll_footer)
+    LinearLayout llFooter;
+
     @BindView(R.id.collapsingToolbarLayout)
     CollapsingToolbarLayout collapsingToolbarLayout;
 
@@ -71,6 +77,8 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
     private LostAndFoundAdaptor2 adaptor;
 
     private LostAndFoundPopupDialog addDialog;
+
+    private LostAndFoundPublishDialog publishDialog;
 
     private SearchDialog searchDialog;
     private RecyclerView searchRecyclerView;
@@ -115,6 +123,31 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
             }
         });
         addDialog.show();
+    }
+
+    private void showPublishDialog() {
+        if (publishDialog == null) {
+            publishDialog = new LostAndFoundPublishDialog(this);
+        }
+        publishDialog.setOnPublishLostAndFoundListener(new LostAndFoundPublishDialog.PublishLostAndFoundListener() {
+            @Override
+            public void onPublishLost(Dialog dialog) {
+                startActivityForResult(new Intent(LostAndFoundActivity2.this, PublishLostAndFoundActivity.class)
+                        .putExtra(PublishLostAndFoundActivity.KEY_TYPE, LostAndFound.LOST), REQUEST_CODE_PUBLISH);
+            }
+
+            @Override
+            public void onPublishFound(Dialog dialog) {
+                startActivityForResult(new Intent(LostAndFoundActivity2.this, PublishLostAndFoundActivity.class)
+                        .putExtra(PublishLostAndFoundActivity.KEY_TYPE, LostAndFound.FOUND), REQUEST_CODE_PUBLISH);
+            }
+        });
+        publishDialog.show();
+    }
+
+    @OnClick(R.id.ll_footer)
+    public void onPublishClick() {
+        showPublishDialog();
     }
 
     @OnClick(R.id.iv_add)
@@ -243,6 +276,16 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
         searchResult.addAll(wappers);
         searchAdaptor.notifyDataSetChanged();
         searchDialog.showResult(searchRecyclerView);
+    }
+
+    @Override
+    public void showFootView() {
+        llFooter.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideFootView() {
+        llFooter.setVisibility(View.GONE);
     }
 
     private void onLoadMore() {
