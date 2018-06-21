@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.BannerType;
+import com.xiaolian.amigo.data.enumeration.annotation.LostAndFound;
 import com.xiaolian.amigo.data.network.model.system.BannerDTO;
 import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.ui.main.adaptor.HomeAdaptor;
@@ -67,6 +68,23 @@ public class LostAndFoundDetailContentDelegate
     @Override
     public void convert(ViewHolder holder,
                         LostAndFoundDetailAdapter.LostAndFoundDetailWrapper lostAndFoundDetailWrapper, int position) {
+
+        Glide.with(context).load(Constant.IMAGE_PREFIX + lostAndFoundDetailWrapper.getAvatar())
+                .asBitmap()
+                .placeholder(R.drawable.ic_picture_error)
+                .error(R.drawable.ic_picture_error)
+                .into((ImageView) holder.getView(R.id.iv_avatar));
+        holder.setText(R.id.tv_content_author, lostAndFoundDetailWrapper.getContentAuthor());
+
+        holder.setImageResource(R.id.iv_owner,
+                ObjectsCompat.equals(lostAndFoundDetailWrapper.getType(), LostAndFound.LOST) ?
+                        R.drawable.ic_lost_owner : R.drawable.ic_found_owner);
+
+        holder.setText(R.id.tv_like_count, String.valueOf(lostAndFoundDetailWrapper.getLikeCount()));
+        holder.setImageResource(R.id.iv_like,
+                lostAndFoundDetailWrapper.isLiked() ?
+                        R.drawable.ic_like : R.drawable.ic_unlike);
+
         holder.setText(R.id.tv_content_title, lostAndFoundDetailWrapper.getContentTitle());
         holder.setText(R.id.tv_content_desc, lostAndFoundDetailWrapper.getContent());
         holder.setText(R.id.tv_time,

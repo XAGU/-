@@ -1,11 +1,9 @@
 package com.xiaolian.amigo.ui.lostandfound;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.util.ObjectsCompat;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
@@ -22,25 +20,21 @@ import com.xiaolian.amigo.data.vo.LostAndFound;
 import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundDetailAdapter;
 import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundDetailCommentDelegate;
 import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundDetailContentDelegate;
+import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundDetailTitleDelegate;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundDetailPresenter2;
-import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundDetailView;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundDetailView2;
 import com.xiaolian.amigo.ui.widget.CustomLinearLayoutManager;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
-import com.xiaolian.amigo.ui.widget.dialog.ActionSheetDialog;
 import com.xiaolian.amigo.ui.widget.dialog.LostAndFoundBottomDialog;
 import com.xiaolian.amigo.ui.widget.dialog.LostAndFoundCommentDialog;
 import com.xiaolian.amigo.ui.widget.dialog.LostAndFoundReplyDialog;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutFooter;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutHeader;
-import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.ScreenUtils;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.inject.Inject;
 
@@ -62,6 +56,13 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
     private LostAndFoundDetailAdapter adapter;
     private List<LostAndFoundDetailAdapter.LostAndFoundDetailWrapper> items = new Vector<>();
     private LostAndFoundDetailAdapter.LostAndFoundDetailWrapper content;
+    private LostAndFoundDetailAdapter.LostAndFoundDetailWrapper hotTitle =
+            new LostAndFoundDetailAdapter.LostAndFoundDetailWrapper(LostAndFoundDetailAdapter.LostAndFoundDetailItemType.TITLE,
+                    "热门评论");
+    private LostAndFoundDetailAdapter.LostAndFoundDetailWrapper normalTitle =
+            new LostAndFoundDetailAdapter.LostAndFoundDetailWrapper(LostAndFoundDetailAdapter.LostAndFoundDetailItemType.TITLE,
+                    "全部评论");
+
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
@@ -152,7 +153,8 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
         adapter.addItemViewDelegate(new LostAndFoundDetailCommentDelegate(this,
                 this::publishReply, this::moreReply));
         adapter.addItemViewDelegate(new LostAndFoundDetailContentDelegate(this));
-        recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 21)));
+        adapter.addItemViewDelegate(new LostAndFoundDetailTitleDelegate());
+        recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 14)));
         adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
@@ -253,6 +255,7 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
         } else {
             content.setCommentCount(lostAndFound.getCommentsCount());
             content.setViewCount(lostAndFound.getViewCount());
+            content.setLikeCount(lostAndFound.getLikeCount());
         }
         presenter.getComments();
     }
@@ -342,11 +345,19 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
     }
 
     @Override
-    public void addMore(List<LostAndFoundDetailAdapter.LostAndFoundDetailWrapper> wrappers) {
+    public void addMore(List<LostAndFoundDetailAdapter.LostAndFoundDetailWrapper> wrappers,
+                        List<LostAndFoundDetailAdapter.LostAndFoundDetailWrapper> hots) {
         if (refreshFlag) {
             refreshFlag = false;
             items.clear();
             items.add(content);
+            if (!hots.isEmpty()) {
+                items.add(hotTitle);
+                items.addAll(hots);
+            }
+            if (!wrappers.isEmpty()) {
+                items.add(normalTitle);
+            }
         }
         items.addAll(wrappers);
         adapter.notifyDataSetChanged();

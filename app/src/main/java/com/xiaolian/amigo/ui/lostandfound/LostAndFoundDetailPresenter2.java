@@ -136,6 +136,7 @@ public class LostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView2>
         reqDTO.setRepliesSize(replySize);
         reqDTO.setFrom((page-1)*size);
         reqDTO.setId(id);
+        reqDTO.setHot(page == Constant.PAGE_START_NUM ? 1 : 2);
         addObserver(lostAndFoundDataManager.getCommentList(reqDTO),
                 new NetworkObserver<ApiResult<LostFoundCommentsListDTO>>(false, true) {
 
@@ -147,7 +148,10 @@ public class LostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView2>
                         getMvpView().hideErrorView();
                         if (null == result.getError()) {
                             if (null != result.getData()) {
-                                if (result.getData().getCommentsSize() <= 0 && page == Constant.PAGE_START_NUM) {
+                                if ((result.getData().getCommentsSize() <= 0
+                                        || result.getData().getHot() == null
+                                        || result.getData().getHot().isEmpty())
+                                        && page == Constant.PAGE_START_NUM) {
                                     getMvpView().showEmptyView();
                                     return;
                                 }
@@ -157,10 +161,16 @@ public class LostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView2>
                                             ObjectsCompat.equals(comment.getUserId(), lostAndFound.getUserId()),
                                             lostAndFound.getUserId(), type, commentEnable));
                                 }
+                                List<LostAndFoundDetailAdapter.LostAndFoundDetailWrapper> hots = new ArrayList<>();
+                                for (LostFoundCommentDTO comment : result.getData().getHot()) {
+                                    hots.add(new LostAndFoundDetailAdapter.LostAndFoundDetailWrapper(comment,
+                                            ObjectsCompat.equals(comment.getUserId(), lostAndFound.getUserId()),
+                                            lostAndFound.getUserId(), type, commentEnable));
+                                }
                                 getMvpView().hideEmptyView();
                                 page ++;
                                 getMvpView().post(() ->
-                                        getMvpView().addMore(wrappers));
+                                        getMvpView().addMore(wrappers, hots));
                             }
                         } else {
                             getMvpView().onError(result.getError().getDisplayMessage());

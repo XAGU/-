@@ -14,8 +14,10 @@ import com.xiaolian.amigo.ui.notice.adaptor.NoticeAdaptor;
 import com.xiaolian.amigo.ui.notice.intf.INoticePresenter;
 import com.xiaolian.amigo.ui.notice.intf.INoticeView;
 import com.xiaolian.amigo.ui.widget.RecycleViewDivider;
+import com.xiaolian.amigo.ui.widget.SpaceBottomItemDecoration;
 import com.xiaolian.amigo.ui.widget.dialog.NoticeAlertDialog;
 import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.util.ScreenUtils;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import java.util.ArrayList;
@@ -59,8 +61,8 @@ public class NoticeListActivity extends NoticeBaseListActivity implements INotic
 
     @Override
     protected void setRecyclerView(RecyclerView recyclerView) {
-        setMainBackground(R.color.white);
-        setHeaderBackground(R.color.white);
+        setMainBackground(R.color.colorBackgroundGray);
+        setHeaderBackground(R.color.colorBackgroundGray);
         adaptor = new NoticeAdaptor(this, R.layout.item_notice, notices);
         adaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
@@ -79,7 +81,7 @@ public class NoticeListActivity extends NoticeBaseListActivity implements INotic
                 return false;
             }
         });
-        recyclerView.addItemDecoration(new RecycleViewDivider(this, RecycleViewDivider.VERTICAL_LIST));
+//        recyclerView.addItemDecoration(new RecycleViewDivider(this, RecycleViewDivider.VERTICAL_LIST));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adaptor);
 
@@ -95,7 +97,7 @@ public class NoticeListActivity extends NoticeBaseListActivity implements INotic
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
         presenter.onAttach(NoticeListActivity.this);
-        setToolbarBackgroundColor(R.color.white);
+        setToolbarBackgroundColor(R.color.colorBackgroundGray);
     }
 
     public void showUrgentNotify(String content, Long id) {

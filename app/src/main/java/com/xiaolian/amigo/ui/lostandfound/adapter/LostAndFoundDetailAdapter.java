@@ -2,6 +2,7 @@ package com.xiaolian.amigo.ui.lostandfound.adapter;
 
 import android.content.Context;
 import android.support.annotation.IntDef;
+import android.support.v4.util.ObjectsCompat;
 
 import com.xiaolian.amigo.data.network.model.lostandfound.LostFoundCommentDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.LostFoundReplyDTO;
@@ -30,6 +31,7 @@ public class LostAndFoundDetailAdapter extends MultiItemTypeAdapter<LostAndFound
     public @interface LostAndFoundDetailItemType {
         int CONTENT = 1;
         int COMMENT = 2;
+        int TITLE = 3;
     }
 
     @Data
@@ -66,8 +68,27 @@ public class LostAndFoundDetailAdapter extends MultiItemTypeAdapter<LostAndFound
         private boolean owner = false;
         private Long ownerId;
         private boolean commentEnable;
+        /**
+         * 发布者昵称
+         */
+        private String contentAuthor;
+
+        /**
+         * 点赞数量
+         */
+        private Integer likeCount = 0;
+
+        /**
+         * 是否本人点赞
+         */
+        private boolean liked = false;
 
         private LostAndFoundDetailWrapper() {
+        }
+
+        public LostAndFoundDetailWrapper(int itemType, String contentTitle) {
+            this.contentTitle = contentTitle;
+            this.itemType = itemType;
         }
 
         public LostAndFoundDetailWrapper(LostAndFound lostAndFound) {
@@ -80,6 +101,10 @@ public class LostAndFoundDetailAdapter extends MultiItemTypeAdapter<LostAndFound
             this.content = lostAndFound.getDescription();
             this.viewCount = lostAndFound.getViewCount();
             this.commentCount = lostAndFound.getCommentsCount();
+            this.likeCount = lostAndFound.getLikeCount();
+            this.avatar = lostAndFound.getPictureUrl();
+            this.contentAuthor = lostAndFound.getUser();
+            this.liked = ObjectsCompat.equals(lostAndFound.getLiked(), 1);
         }
 
         public LostAndFoundDetailWrapper(LostFoundCommentDTO comment, boolean owner, Long ownerId,
@@ -97,6 +122,8 @@ public class LostAndFoundDetailAdapter extends MultiItemTypeAdapter<LostAndFound
             this.id = comment.getId();
             this.owner = owner;
             this.ownerId = ownerId;
+            this.likeCount = comment.getLikeCount();
+            this.liked = ObjectsCompat.equals(comment.getLiked(), 1);
         }
     }
 }

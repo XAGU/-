@@ -51,7 +51,30 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/iv_reply"
+            android:src="@drawable/ic_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:layout_marginStart="19dp"
+            android:src="@drawable/ic_unlike"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
         <TextView
+            android:id="@+id/tv_like_count"
+            tools:text="250"
+            android:layout_marginStart="4dp"
+            android:textSize="12sp"
+            android:textColor="@color/colorDarkB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:visibility="gone"
             android:id="@+id/tv_replay"
             android:background="@drawable/bg_lost_and_found_reply"
             android:text="回复评论"
@@ -83,4 +106,10 @@
         android:layout_marginStart="50dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+
+    <View
+        android:layout_marginTop="14dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorDarke" />
 </LinearLayout>

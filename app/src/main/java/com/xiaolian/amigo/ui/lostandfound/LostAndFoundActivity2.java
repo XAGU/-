@@ -105,13 +105,14 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
         }
         addDialog.setLostAndFoundListener(new LostAndFoundPopupDialog.OnLostAndFoundClickListener() {
             @Override
-            public void onPublishLostClick() {
-                startActivityForResult(new Intent(LostAndFoundActivity2.this, PublishLostAndFoundActivity.class)
-                        .putExtra(PublishLostAndFoundActivity.KEY_TYPE, LostAndFound.LOST), REQUEST_CODE_PUBLISH);
+            public void onMyNoticeClick() {
+//                startActivityForResult(new Intent(LostAndFoundActivity2.this, PublishLostAndFoundActivity.class)
+//                        .putExtra(PublishLostAndFoundActivity.KEY_TYPE, LostAndFound.LOST), REQUEST_CODE_PUBLISH);
+                startActivity(new Intent(LostAndFoundActivity2.this, LostAndFoundNoticeActivity.class));
             }
 
             @Override
-            public void onPublishFoundClick() {
+            public void onMyFavoriteClick() {
                 startActivityForResult(new Intent(LostAndFoundActivity2.this, PublishLostAndFoundActivity.class)
                         .putExtra(PublishLostAndFoundActivity.KEY_TYPE, LostAndFound.FOUND), REQUEST_CODE_PUBLISH);
             }

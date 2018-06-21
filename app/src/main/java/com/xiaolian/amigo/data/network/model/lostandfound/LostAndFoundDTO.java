@@ -39,6 +39,19 @@ public class LostAndFoundDTO implements Mapper<LostAndFound> {
     private String user;
     private Long userId;
 
+    /**
+     * 点赞数量
+     */
+    private Integer likeCount;
+    /**
+     * 本人是否点赞 1 本人已点赞 2 本人未点赞
+     */
+    private Integer liked;
+    /**
+     * 头像
+     */
+    private String pictureUrl;
+
     @Override
     public LostAndFound transform() {
         LostAndFound lostAndFound = new LostAndFound();
@@ -60,6 +73,9 @@ public class LostAndFoundDTO implements Mapper<LostAndFound> {
         lostAndFound.setViewCount(viewCount);
         lostAndFound.setCommentsCount(commentsCount);
         lostAndFound.setReportCount(reportCount);
+        lostAndFound.setLikeCount(likeCount);
+        lostAndFound.setLiked(liked);
+        lostAndFound.setPictureUrl(pictureUrl);
         return lostAndFound;
     }
 }

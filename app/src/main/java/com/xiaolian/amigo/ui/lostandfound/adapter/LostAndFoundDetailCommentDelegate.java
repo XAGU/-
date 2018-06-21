@@ -90,15 +90,17 @@ public class LostAndFoundDetailCommentDelegate
         holder.setText(R.id.tv_time,
                 TimeUtils.lostAndFoundTimestampFormat(lostAndFoundDetailWrapper.getTime()));
 
-        holder.getView(R.id.tv_replay).setVisibility(lostAndFoundDetailWrapper.isCommentEnable() ?
+        holder.getView(R.id.iv_reply).setVisibility(lostAndFoundDetailWrapper.isCommentEnable() ?
                 View.VISIBLE : View.GONE);
-        holder.getView(R.id.tv_replay).setOnClickListener(v -> {
+        holder.getView(R.id.iv_reply).setOnClickListener(v -> {
             if (replyCommentListener != null) {
                 replyCommentListener.onReplyComment(lostAndFoundDetailWrapper.getId(),
                         lostAndFoundDetailWrapper.getCommentAuthorId(),
                         lostAndFoundDetailWrapper.getCommentAuthor());
             }
         });
+
+        holder.setText(R.id.tv_like_count, String.valueOf(lostAndFoundDetailWrapper.getLikeCount()));
 
         holder.getView(R.id.rl_author_info).setOnClickListener(v -> onMoreReply(lostAndFoundDetailWrapper));
         holder.getView(R.id.tv_comment_content).setOnClickListener(v -> onMoreReply(lostAndFoundDetailWrapper));

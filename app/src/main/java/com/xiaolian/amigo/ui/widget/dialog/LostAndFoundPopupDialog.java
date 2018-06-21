@@ -40,15 +40,15 @@ public class LostAndFoundPopupDialog extends Dialog {
 
     private void initView() {
         setContentView(R.layout.dialog_lost_and_found);
-        TextView tvPublishLost = findViewById(R.id.tv_publish_lost);
-        TextView tvPublishFound = findViewById(R.id.tv_publish_found);
+        TextView tvMyNotice = findViewById(R.id.tv_my_notice);
+        TextView tvMyFavorite = findViewById(R.id.tv_my_favorite);
         TextView tvMyPublish = findViewById(R.id.tv_my_publish);
-        tvPublishLost.setOnClickListener(v -> {
-            listener.onPublishLostClick();
+        tvMyNotice.setOnClickListener(v -> {
+            listener.onMyNoticeClick();
             dismiss();
         });
-        tvPublishFound.setOnClickListener(v -> {
-            listener.onPublishFoundClick();
+        tvMyFavorite.setOnClickListener(v -> {
+            listener.onMyFavoriteClick();
             dismiss();
         });
         tvMyPublish.setOnClickListener(v -> {
@@ -62,9 +62,9 @@ public class LostAndFoundPopupDialog extends Dialog {
     }
 
     public interface OnLostAndFoundClickListener {
-        void onPublishLostClick();
+        void onMyNoticeClick();
 
-        void onPublishFoundClick();
+        void onMyFavoriteClick();
 
         void onMyPublishClick();
     }

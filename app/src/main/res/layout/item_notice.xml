@@ -4,10 +4,15 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/content_border"
+    android:paddingStart="14dp"
+    android:paddingEnd="14dp"
+    android:paddingTop="17dp"
+    android:paddingBottom="12dp"
+    android:layout_marginBottom="14dp"
     xmlns:tool="http://schemas.android.com/tools">
     <LinearLayout
         android:orientation="horizontal"
-        android:layout_marginTop="14dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <ImageView
@@ -17,7 +22,7 @@
             android:layout_height="20dp" />
         <TextView
             android:layout_gravity="center"
-            android:layout_marginLeft="10dp"
+            android:layout_marginEnd="10dp"
             android:layout_marginStart="10dp"
             tool:text="紧急通知"
             android:drawableRight="@drawable/dot_notice_red"
@@ -31,16 +36,16 @@
             android:layout_gravity="center"
             android:textSize="10sp"
             tool:text="今天 12：30"
-            android:textColor="@color/colorDark9"
+            android:textColor="@color/colorDarkB"
             android:id="@+id/tv_time"
             android:gravity="right"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
+
     <TextView
-        android:layout_marginBottom="14dp"
+        android:layout_marginTop="13dp"
         android:textSize="11sp"
-        android:layout_marginLeft="30dp"
         android:layout_marginStart="30dp"
         tool:text="这里是描述性文字这里是描述性文字这里是描述性文字这里是描述性文字这里是描述性文字这里是描述性文字这里是描述性文字"
         android:textColor="@color/colorDark9"
