@@ -51,7 +51,7 @@ public class LostAndFoundNoticeLikeDelegate implements ItemViewDelegate<LostAndF
                 .into((ImageView) holder.getView(R.id.iv_avatar));
 //        setUserNameAndContent(holder.getView(R.id.tv_content), noticeWrapper.getUserName(), noticeWrapper.getContent());
         holder.setText(R.id.tv_user_name, noticeWrapper.getUserName());
-        holder.setText(R.id.tv_time, TimeUtils.lostAndFoundTimestampFormat(0L));
+        holder.setText(R.id.tv_time, TimeUtils.lostAndFoundTimestampFormat(noticeWrapper.getCreateTime()));
         TextView tvContent = holder.getView(R.id.tv_content);
         tvContent.getViewTreeObserver()
                 .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {

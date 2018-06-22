@@ -28,6 +28,10 @@ public class LostAndFoundNoticeAdapter extends MultiItemTypeAdapter<LostAndFound
         private String content;
         private String title;
         private String userName;
+        private Long itemId;
+        private Long lostFoundId;
+        private Integer lostFoundType;
+        private Long userId;
 
         public NoticeWrapper(ItemType itemType, String content, String userName) {
             this.itemType = itemType;
@@ -37,6 +41,10 @@ public class LostAndFoundNoticeAdapter extends MultiItemTypeAdapter<LostAndFound
 
         public NoticeWrapper(LostFoundNoticeDTO notice, ItemType itemType) {
             this.id = notice.getId();
+            this.itemId = notice.getItemId();
+            this.lostFoundId = notice.getLostFoundId();
+            this.lostFoundType = notice.getLostFoundType();
+            this.userId = notice.getUserId();
             this.itemType = itemType;
             this.createTime = notice.getCreateTime();
             this.imageUrl = notice.getPictureUrl();

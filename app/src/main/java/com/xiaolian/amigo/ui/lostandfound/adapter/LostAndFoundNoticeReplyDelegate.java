@@ -8,6 +8,7 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,10 +25,15 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
  * @date 18/6/13
  */
 public class LostAndFoundNoticeReplyDelegate implements ItemViewDelegate<LostAndFoundNoticeAdapter.NoticeWrapper> {
+    public interface OnReplyClickListener {
+        void onReply(Long lostFoundId, Long replyToId, Long replyToUserId, String replyToUserName);
+    }
     private Context context;
+    private OnReplyClickListener replyClickListener;
 
-    public LostAndFoundNoticeReplyDelegate(Context context) {
+    public LostAndFoundNoticeReplyDelegate(Context context, OnReplyClickListener replyClickListener) {
         this.context = context;
+        this.replyClickListener = replyClickListener;
     }
 
     @Override
@@ -48,8 +54,14 @@ public class LostAndFoundNoticeReplyDelegate implements ItemViewDelegate<LostAnd
                 .error(R.drawable.ic_picture_error)
                 .into((ImageView) holder.getView(R.id.iv_avatar));
         setReplyUserAndTime(holder.getView(R.id.tv_title), noticeWrapper.getUserName(),
-                TimeUtils.lostAndFoundTimestampFormat(0L));
+                TimeUtils.lostAndFoundTimestampFormat(noticeWrapper.getCreateTime()));
         holder.setText(R.id.tv_content, noticeWrapper.getContent());
+        holder.getView(R.id.iv_reply).setOnClickListener(v -> {
+            if (replyClickListener != null) {
+                replyClickListener.onReply(noticeWrapper.getLostFoundId(),
+                        noticeWrapper.getItemId(), noticeWrapper.getUserId(), noticeWrapper.getUserName());
+            }
+        });
     }
 
     private void setReplyUserAndTime(TextView textView, String userName, String time) {

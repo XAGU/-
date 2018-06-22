@@ -14,4 +14,6 @@ public interface ILostAndFoundNoticePresenter<V extends ILostAndFoundNoticeView>
     void getList();
 
     void resetPage();
+
+    void publishReply(Long lostFoundId, Long replyToId, Long replyToUserId, String reply);
 }

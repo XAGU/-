@@ -156,7 +156,7 @@
                 android:id="@+id/rl_empty"
                 android:layout_width="match_parent"
                 android:visibility="gone"
-                android:background="@color/colorBackgroundGray"
+                android:background="@color/white"
                 android:layout_height="match_parent">
                 <TextView
                     android:id="@+id/tv_empty_tip"
@@ -178,7 +178,7 @@
                 android:id="@+id/rl_error"
                 android:layout_width="match_parent"
                 android:visibility="gone"
-                android:background="@color/colorBackgroundGray"
+                android:background="@color/white"
                 android:layout_height="match_parent">
                 <TextView
                     android:id="@+id/tv_error_tip"

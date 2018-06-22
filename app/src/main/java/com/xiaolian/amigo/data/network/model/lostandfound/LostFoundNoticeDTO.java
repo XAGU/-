@@ -42,4 +42,8 @@ public class LostFoundNoticeDTO {
      * 发起通知用户昵称
      */
     private String userNickname;
+    /**
+     * 失物招领类型（1-失主 2-拾主）
+     */
+    private Integer lostFoundType;
 }

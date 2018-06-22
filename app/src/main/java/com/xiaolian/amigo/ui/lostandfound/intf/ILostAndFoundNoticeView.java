@@ -25,4 +25,6 @@ public interface ILostAndFoundNoticeView extends IBaseView {
     void addMoreReply(List<LostAndFoundNoticeAdapter.NoticeWrapper> wrappers);
 
     void addMoreLike(List<LostAndFoundNoticeAdapter.NoticeWrapper> wrappers);
+
+    void closePublishDialog();
 }

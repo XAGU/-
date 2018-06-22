@@ -282,6 +282,9 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
     @OnClick({R.id.iv_three_dot, R.id.v_more_hold,
             R.id.iv_three_dot2, R.id.v_more_hold_1})
     public void onMoreClick() {
+        if (content == null) {
+            return;
+        }
         if (bottomDialog == null) {
             bottomDialog = new LostAndFoundBottomDialog(this);
         }

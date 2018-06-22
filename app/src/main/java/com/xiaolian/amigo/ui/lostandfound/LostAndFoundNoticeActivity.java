@@ -1,11 +1,13 @@
 package com.xiaolian.amigo.ui.lostandfound;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -20,8 +22,10 @@ import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundNoticeLikeDelegate
 import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundNoticeReplyDelegate;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundNoticePresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundNoticeView;
+import com.xiaolian.amigo.ui.widget.dialog.LostAndFoundReplyDialog;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutFooter;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutHeader;
+import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,6 +83,7 @@ public class LostAndFoundNoticeActivity extends LostAndFoundBaseActivity
         }
     };
     private List<LostAndFoundNoticeAdapter.NoticeWrapper> items = new ArrayList<>();
+    private LostAndFoundReplyDialog replyDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -118,7 +123,23 @@ public class LostAndFoundNoticeActivity extends LostAndFoundBaseActivity
         items.addAll(replies);
         adapter = new LostAndFoundNoticeAdapter(this, items);
         adapter.addItemViewDelegate(new LostAndFoundNoticeLikeDelegate(this));
-        adapter.addItemViewDelegate(new LostAndFoundNoticeReplyDelegate(this));
+        adapter.addItemViewDelegate(new LostAndFoundNoticeReplyDelegate(this,
+                this::publishReply));
+        adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                Intent intent = new Intent(LostAndFoundNoticeActivity.this, LostAndFoundDetailActivity2.class);
+                intent.putExtra(LostAndFoundDetailActivity2.KEY_TYPE,
+                        items.get(position).getLostFoundType());
+                intent.putExtra(LostAndFoundDetailActivity2.KEY_ID, items.get(position).getLostFoundId());
+                startActivity(intent);
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
     }
@@ -171,7 +192,7 @@ public class LostAndFoundNoticeActivity extends LostAndFoundBaseActivity
         items.addAll(replies);
         adapter.notifyDataSetChanged();
         if (replies.isEmpty()) {
-            onRefresh();
+            refreshLayout.autoRefresh(20);
         }
     }
 
@@ -185,8 +206,26 @@ public class LostAndFoundNoticeActivity extends LostAndFoundBaseActivity
         items.addAll(likes);
         adapter.notifyDataSetChanged();
         if (likes.isEmpty()) {
-            onRefresh();
+            refreshLayout.autoRefresh(20);
         }
+    }
+
+    private void publishReply(Long lostFoundId, Long replyToId, Long replyToUserId, String replyToUserName) {
+//        if (!presenter.isCommentEnable()) {
+//            return;
+//        }
+        if (replyDialog == null) {
+            replyDialog = new LostAndFoundReplyDialog(this);
+        }
+        replyDialog.setReplyUser(replyToUserName);
+        replyDialog.setPublishClickListener((dialog, reply) -> {
+            if (TextUtils.isEmpty(reply)) {
+                onError("内容为空");
+                return;
+            }
+            presenter.publishReply(lostFoundId, replyToId, replyToUserId, reply);
+        });
+        replyDialog.show();
     }
 
     private void onRefresh() {
@@ -255,6 +294,15 @@ public class LostAndFoundNoticeActivity extends LostAndFoundBaseActivity
         likes.addAll(wrappers);
         items.addAll(likes);
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void closePublishDialog() {
+        if (replyDialog != null
+                && replyDialog.isShowing()) {
+            replyDialog.clearInput();
+            replyDialog.dismiss();
+        }
     }
 
     @Override

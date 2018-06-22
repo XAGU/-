@@ -2,9 +2,11 @@ package com.xiaolian.amigo.ui.lostandfound;
 
 import com.xiaolian.amigo.data.manager.intf.ILostAndFoundDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.LostFoundNoticeDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.NoticeListDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.NoticeListReqDTO;
+import com.xiaolian.amigo.data.network.model.lostandfound.SaveLostFoundCommentsRepliesDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundNoticeAdapter;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundNoticePresenter;
@@ -55,7 +57,7 @@ public class LostAndFoundNoticePresenter<V extends ILostAndFoundNoticeView> exte
         // 通知内容类型 1 回复 2 点赞
         reqDTO.setType(1);
         addObserver(lostAndFoundDataManager.getNoticeList(reqDTO),
-                new NetworkObserver<ApiResult<NoticeListDTO>>() {
+                new NetworkObserver<ApiResult<NoticeListDTO>>(false) {
 
                     @Override
                     public void onReady(ApiResult<NoticeListDTO> result) {
@@ -100,7 +102,7 @@ public class LostAndFoundNoticePresenter<V extends ILostAndFoundNoticeView> exte
         // 通知内容类型 1 回复 2 点赞
         reqDTO.setType(2);
         addObserver(lostAndFoundDataManager.getNoticeList(reqDTO),
-                new NetworkObserver<ApiResult<NoticeListDTO>>() {
+                new NetworkObserver<ApiResult<NoticeListDTO>>(false) {
 
                     @Override
                     public void onReady(ApiResult<NoticeListDTO> result) {
@@ -136,6 +138,34 @@ public class LostAndFoundNoticePresenter<V extends ILostAndFoundNoticeView> exte
                         getMvpView().showErrorView();
                     }
                 });
+    }
+
+    @Override
+    public void publishReply(Long lostFoundId, Long replyToId, Long replyToUserId, String reply) {
+        SaveLostFoundCommentsRepliesDTO reqDTO = new SaveLostFoundCommentsRepliesDTO();
+        reqDTO.setContent(reply);
+        reqDTO.setReplyToId(replyToId);
+        reqDTO.setReplyToUserId(replyToUserId);
+        reqDTO.setLostFoundId(lostFoundId);
+        /**
+         * 评论1 回复2
+         */
+        reqDTO.setType(2);
+        addObserver(lostAndFoundDataManager.publishCommentOrReply(reqDTO),
+                new NetworkObserver<ApiResult<SimpleRespDTO>>() {
+
+                    @Override
+                    public void onReady(ApiResult<SimpleRespDTO> result) {
+                        if (null == result.getError()) {
+                            getMvpView().closePublishDialog();
+                            getMvpView().onSuccess("发布成功");
+//                            getMvpView().onRefresh();
+                        } else {
+                            getMvpView().onError(result.getError().getDisplayMessage());
+                        }
+                    }
+                });
+
     }
 
     @Override
