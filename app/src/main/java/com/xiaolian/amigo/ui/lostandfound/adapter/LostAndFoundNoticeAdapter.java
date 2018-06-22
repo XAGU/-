@@ -2,6 +2,7 @@ package com.xiaolian.amigo.ui.lostandfound.adapter;
 
 import android.content.Context;
 
+import com.xiaolian.amigo.data.network.model.lostandfound.LostFoundNoticeDTO;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import java.util.List;
@@ -32,6 +33,15 @@ public class LostAndFoundNoticeAdapter extends MultiItemTypeAdapter<LostAndFound
             this.itemType = itemType;
             this.content = content;
             this.userName = userName;
+        }
+
+        public NoticeWrapper(LostFoundNoticeDTO notice, ItemType itemType) {
+            this.id = notice.getId();
+            this.itemType = itemType;
+            this.createTime = notice.getCreateTime();
+            this.imageUrl = notice.getPictureUrl();
+            this.content = notice.getContent();
+            this.userName = notice.getUserNickname();
         }
     }
     public enum ItemType {

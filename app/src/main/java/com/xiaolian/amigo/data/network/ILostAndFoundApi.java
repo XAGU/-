@@ -8,9 +8,13 @@ import com.xiaolian.amigo.data.network.model.lostandfound.CollectItemReqDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.CollectListReqDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.CommonRespDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.DeleteLostFoundItemReqDTO;
+import com.xiaolian.amigo.data.network.model.lostandfound.LikeItemReqDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.LostAndFoundDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.LostFoundCommentsListDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.LostFoundRepliesListDTO;
+import com.xiaolian.amigo.data.network.model.lostandfound.NoticeCountDTO;
+import com.xiaolian.amigo.data.network.model.lostandfound.NoticeListDTO;
+import com.xiaolian.amigo.data.network.model.lostandfound.NoticeListReqDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.QueryLostAndFoundListReqDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.QueryLostAndFoundListRespDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.QueryLostFoundCommentsReqDTO;
@@ -108,4 +112,22 @@ public interface ILostAndFoundApi {
      */
     @POST("lost/collect/list")
     Observable<ApiResult<QueryLostAndFoundListRespDTO>> getCollects(@Body CollectListReqDTO reqDTO);
+
+    /**
+     * 点赞
+     */
+    @POST("lost/like")
+    Observable<ApiResult<CommonRespDTO>> like(@Body LikeItemReqDTO reqDTO);
+
+    /**
+     * 通知数量
+     */
+    @POST("lost/notice/count")
+    Observable<ApiResult<NoticeCountDTO>> noticeCount();
+
+    /**
+     * 通知内容列表
+     */
+    @POST("lost/notice/list")
+    Observable<ApiResult<NoticeListDTO>> getNoticeList(@Body NoticeListReqDTO reqDTO);
 }

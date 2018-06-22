@@ -96,6 +96,7 @@ public class LostAndFoundDetailAdapter extends MultiItemTypeAdapter<LostAndFound
         }
 
         public LostAndFoundDetailWrapper(LostAndFound lostAndFound) {
+            this.id = lostAndFound.getId();
             this.commentEnable = lostAndFound.getCommentEnable();
             this.itemType = LostAndFoundDetailItemType.CONTENT;
             this.type = lostAndFound.getType();

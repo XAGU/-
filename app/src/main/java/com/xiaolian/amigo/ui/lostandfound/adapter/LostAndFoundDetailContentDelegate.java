@@ -50,6 +50,7 @@ public class LostAndFoundDetailContentDelegate
     private ArrayList<String> images = new ArrayList<>();
     private OnLikeClickListener likeClickListener;
     private boolean animating = false;
+    private Animation animation;
 
     public LostAndFoundDetailContentDelegate(Context context, OnLikeClickListener likeClickListener) {
         this.context = context;
@@ -99,29 +100,35 @@ public class LostAndFoundDetailContentDelegate
                     lostAndFoundDetailWrapper.setLiked(false);
                     lostAndFoundDetailWrapper.setLikeCount(likeCount - 1);
                     holder.setImageResource(R.id.iv_like, R.drawable.ic_unlike);
-                    likeClickListener.onLikeClick(position, true);
+                    holder.setText(R.id.tv_like_count,
+                            String.valueOf(lostAndFoundDetailWrapper.getLikeCount()));
+                    likeClickListener.onLikeClick(position, lostAndFoundDetailWrapper.getId(), true);
                 } else {
                     lostAndFoundDetailWrapper.setLiked(true);
                     lostAndFoundDetailWrapper.setLikeCount(likeCount + 1);
                     holder.setImageResource(R.id.iv_like, R.drawable.ic_like);
-                    likeClickListener.onLikeClick(position, false);
-                    Animation animation = AnimationUtils.loadAnimation(context, R.anim.lost_found_like);
-                    animation.setAnimationListener(new Animation.AnimationListener() {
-                        @Override
-                        public void onAnimationStart(Animation animation) {
-                            animating = true;
-                        }
+                    likeClickListener.onLikeClick(position, lostAndFoundDetailWrapper.getId(), false);
+                    if (animation == null) {
+                        animation = AnimationUtils.loadAnimation(context, R.anim.lost_found_like);
+                        animation.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) {
+                                animating = true;
+                            }
 
-                        @Override
-                        public void onAnimationEnd(Animation animation) {
-                            animating = false;
-                        }
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+                                animating = false;
+                                holder.setText(R.id.tv_like_count,
+                                        String.valueOf(lostAndFoundDetailWrapper.getLikeCount()));
+                            }
 
-                        @Override
-                        public void onAnimationRepeat(Animation animation) {
+                            @Override
+                            public void onAnimationRepeat(Animation animation) {
 
-                        }
-                    });
+                            }
+                        });
+                    }
                     holder.getView(R.id.iv_like).startAnimation(animation);
                 }
             }
@@ -204,7 +211,7 @@ public class LostAndFoundDetailContentDelegate
     }
 
     public interface OnLikeClickListener {
-        void onLikeClick(int position, boolean like);
+        void onLikeClick(int position, long id, boolean like);
     }
 
     public class GlideImageLoader extends ImageLoader {

@@ -9,6 +9,7 @@ import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.CollectItemReqDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.CommonRespDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.DeleteLostFoundItemReqDTO;
+import com.xiaolian.amigo.data.network.model.lostandfound.LikeItemReqDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.LostAndFoundDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.LostFoundCommentDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.LostFoundCommentsListDTO;
@@ -314,6 +315,53 @@ public class LostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView2>
     @Override
     public void unCollect() {
         collectOrUnCollect(2);
+    }
+
+    private void likeOrUnLikeCommentOrContent(int position, long id, boolean comment, boolean like) {
+        LikeItemReqDTO reqDTO = new LikeItemReqDTO();
+        reqDTO.setItemId(id);
+        // 是否是点赞，1 点赞 2 取消点赞
+        reqDTO.setLike(like ? 1 : 2);
+        // 被点赞/取消点赞的类型，1 失物招领 2 评论
+        reqDTO.setType(comment ? 2 : 1);
+        addObserver(lostAndFoundDataManager.like(reqDTO),
+                new NetworkObserver<ApiResult<CommonRespDTO>>(false) {
+
+                    @Override
+                    public void onReady(ApiResult<CommonRespDTO> result) {
+                        if (null == result.getError()) {
+                            if (like) {
+                                getMvpView().notifyAdapter(position, true);
+                            } else {
+                                getMvpView().notifyAdapter(position, false);
+                            }
+                        } else {
+                            getMvpView().onError(result.getError().getDisplayMessage());
+                        }
+                    }
+                });
+
+    }
+
+    @Override
+    public void unLikeComment(int position, long id) {
+        likeOrUnLikeCommentOrContent(position, id, true, false);
+    }
+
+    @Override
+    public void likeComment(int position, long id) {
+        likeOrUnLikeCommentOrContent(position, id, true, true);
+    }
+
+    @Override
+    public void unLikeContent(int position, long id) {
+
+        likeOrUnLikeCommentOrContent(position, id, false, false);
+    }
+
+    @Override
+    public void likeContent(int position, long id) {
+        likeOrUnLikeCommentOrContent(position, id, false, true);
     }
 
     private void collectOrUnCollect(Integer collect) {

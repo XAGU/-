@@ -20,6 +20,7 @@ import lombok.NonNull;
 public class LostAndFoundPopupDialog extends Dialog {
     private Context context;
     private OnLostAndFoundClickListener listener;
+    private TextView tvNoticeCount;
 
     public LostAndFoundPopupDialog(@NonNull Context context) {
         super(context, R.style.LostAndFoundPopupDialogStyle);
@@ -55,10 +56,20 @@ public class LostAndFoundPopupDialog extends Dialog {
             listener.onMyPublishClick();
             dismiss();
         });
+        tvNoticeCount = findViewById(R.id.tv_notice_count);
     }
 
     public void setLostAndFoundListener(OnLostAndFoundClickListener listener) {
         this.listener = listener;
+    }
+
+    public void setNoticeCount(int count) {
+        if (count > 0) {
+            tvNoticeCount.setVisibility(View.VISIBLE);
+            tvNoticeCount.setText(String.valueOf(count));
+        } else {
+            tvNoticeCount.setVisibility(View.GONE);
+        }
     }
 
     public interface OnLostAndFoundClickListener {

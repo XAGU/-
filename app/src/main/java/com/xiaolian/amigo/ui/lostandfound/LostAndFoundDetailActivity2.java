@@ -152,11 +152,24 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
     private void initRecyclerView() {
         adapter = new LostAndFoundDetailAdapter(this, items);
         adapter.addItemViewDelegate(new LostAndFoundDetailCommentDelegate(this,
-                this::publishReply, this::moreReply));
+                this::publishReply, this::moreReply, new LostAndFoundDetailContentDelegate.OnLikeClickListener() {
+            @Override
+            public void onLikeClick(int position, long id, boolean like) {
+                if (like) {
+                    presenter.unLikeComment(position, id);
+                } else {
+                    presenter.likeComment(position, id);
+                }
+            }
+        }));
         adapter.addItemViewDelegate(new LostAndFoundDetailContentDelegate(this, new LostAndFoundDetailContentDelegate.OnLikeClickListener() {
             @Override
-            public void onLikeClick(int position, boolean like) {
-
+            public void onLikeClick(int position, long id, boolean like) {
+                if (like) {
+                    presenter.unLikeContent(position, id);
+                } else {
+                    presenter.likeContent(position, id);
+                }
             }
         }));
         adapter.addItemViewDelegate(new LostAndFoundDetailTitleDelegate());
@@ -434,6 +447,15 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
         if (content != null) {
             content.setCollected(false);
         }
+    }
+
+    @Override
+    public void notifyAdapter(int position, boolean delay) {
+//        if (delay) {
+//            recyclerView.postDelayed(() -> adapter.notifyItemChanged(position), 800);
+//        } else {
+//            adapter.notifyItemChanged(position);
+//        }
     }
 
     @Override

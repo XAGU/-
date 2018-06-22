@@ -124,6 +124,7 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
                         new Intent(LostAndFoundActivity2.this, MyPublishActivity2.class), REQUEST_CODE_PUBLISH);
             }
         });
+        addDialog.setNoticeCount(presenter.getNoticeCount());
         addDialog.show();
     }
 
@@ -298,6 +299,7 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
         presenter.resetPage();
         refreshFlag = true;
         presenter.getList(false, null);
+        presenter.fetchNoticeCount();
     }
 
     @Override

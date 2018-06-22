@@ -17,4 +17,8 @@ public interface ILostAndFoundPresenter2<V extends ILostAndFoundView2> extends I
      * 是否开启评论
      */
     boolean isCommentEnable();
+
+    int getNoticeCount();
+
+    void fetchNoticeCount();
 }

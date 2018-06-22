@@ -55,27 +55,27 @@ public class LostAndFoundNoticeActivity extends LostAndFoundBaseActivity
     private LostAndFoundNoticeAdapter adapter;
     private List<LostAndFoundNoticeAdapter.NoticeWrapper> replies = new ArrayList<LostAndFoundNoticeAdapter.NoticeWrapper>(){
         {
-            add(new LostAndFoundNoticeAdapter.NoticeWrapper(LostAndFoundNoticeAdapter.ItemType.REPLY, "reply1",
-                    "userName1"));
-            add(new LostAndFoundNoticeAdapter.NoticeWrapper(LostAndFoundNoticeAdapter.ItemType.REPLY, "reply2",
-                    "userName2"));
-            add(new LostAndFoundNoticeAdapter.NoticeWrapper(LostAndFoundNoticeAdapter.ItemType.REPLY, "reply3",
-                    "userName3"));
-            add(new LostAndFoundNoticeAdapter.NoticeWrapper(LostAndFoundNoticeAdapter.ItemType.REPLY, "reply4",
-                    "userName4"));
+//            add(new LostAndFoundNoticeAdapter.NoticeWrapper(LostAndFoundNoticeAdapter.ItemType.REPLY, "reply1",
+//                    "userName1"));
+//            add(new LostAndFoundNoticeAdapter.NoticeWrapper(LostAndFoundNoticeAdapter.ItemType.REPLY, "reply2",
+//                    "userName2"));
+//            add(new LostAndFoundNoticeAdapter.NoticeWrapper(LostAndFoundNoticeAdapter.ItemType.REPLY, "reply3",
+//                    "userName3"));
+//            add(new LostAndFoundNoticeAdapter.NoticeWrapper(LostAndFoundNoticeAdapter.ItemType.REPLY, "reply4",
+//                    "userName4"));
         }
     };
     private List<LostAndFoundNoticeAdapter.NoticeWrapper> likes = new ArrayList<LostAndFoundNoticeAdapter.NoticeWrapper>(){
         {
-            add(new LostAndFoundNoticeAdapter.NoticeWrapper(LostAndFoundNoticeAdapter.ItemType.LIKE,
-                    "like1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-                    "userName1"));
-            add(new LostAndFoundNoticeAdapter.NoticeWrapper(LostAndFoundNoticeAdapter.ItemType.LIKE, "like2",
-                    "userName2"));
-            add(new LostAndFoundNoticeAdapter.NoticeWrapper(LostAndFoundNoticeAdapter.ItemType.LIKE, "like3",
-                    "userName3"));
-            add(new LostAndFoundNoticeAdapter.NoticeWrapper(LostAndFoundNoticeAdapter.ItemType.LIKE, "like4",
-                    "userName4"));
+//            add(new LostAndFoundNoticeAdapter.NoticeWrapper(LostAndFoundNoticeAdapter.ItemType.LIKE,
+//                    "like1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+//                    "userName1"));
+//            add(new LostAndFoundNoticeAdapter.NoticeWrapper(LostAndFoundNoticeAdapter.ItemType.LIKE, "like2",
+//                    "userName2"));
+//            add(new LostAndFoundNoticeAdapter.NoticeWrapper(LostAndFoundNoticeAdapter.ItemType.LIKE, "like3",
+//                    "userName3"));
+//            add(new LostAndFoundNoticeAdapter.NoticeWrapper(LostAndFoundNoticeAdapter.ItemType.LIKE, "like4",
+//                    "userName4"));
         }
     };
     private List<LostAndFoundNoticeAdapter.NoticeWrapper> items = new ArrayList<>();
@@ -170,6 +170,9 @@ public class LostAndFoundNoticeActivity extends LostAndFoundBaseActivity
         items.clear();
         items.addAll(replies);
         adapter.notifyDataSetChanged();
+        if (replies.isEmpty()) {
+            onRefresh();
+        }
     }
 
     private void changeItemToLike() {
@@ -181,6 +184,9 @@ public class LostAndFoundNoticeActivity extends LostAndFoundBaseActivity
         items.clear();
         items.addAll(likes);
         adapter.notifyDataSetChanged();
+        if (likes.isEmpty()) {
+            onRefresh();
+        }
     }
 
     private void onRefresh() {
@@ -225,6 +231,30 @@ public class LostAndFoundNoticeActivity extends LostAndFoundBaseActivity
     @Override
     public void hideErrorView() {
         rlError.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void addMoreReply(List<LostAndFoundNoticeAdapter.NoticeWrapper> wrappers) {
+        if (refreshFlag) {
+            refreshFlag = false;
+            replies.clear();
+        }
+        items.clear();
+        replies.addAll(wrappers);
+        items.addAll(replies);
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void addMoreLike(List<LostAndFoundNoticeAdapter.NoticeWrapper> wrappers) {
+        if (refreshFlag) {
+            refreshFlag = false;
+            likes.clear();
+        }
+        items.clear();
+        likes.addAll(wrappers);
+        items.addAll(likes);
+        adapter.notifyDataSetChanged();
     }
 
     @Override

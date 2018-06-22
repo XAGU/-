@@ -3,6 +3,7 @@ package com.xiaolian.amigo.ui.lostandfound;
 import com.xiaolian.amigo.data.manager.intf.ILostAndFoundDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.lostandfound.LostAndFoundDTO;
+import com.xiaolian.amigo.data.network.model.lostandfound.NoticeCountDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.QueryLostAndFoundListReqDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.QueryLostAndFoundListRespDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
@@ -27,6 +28,7 @@ public class LostAndFoundPresenter2<V extends ILostAndFoundView2> extends BasePr
     private static final int size = Constant.PAGE_SIZE;
     private boolean commentEnable = false;
 
+    private int noticeCount = 0;
 
     @Inject
     public LostAndFoundPresenter2(ILostAndFoundDataManager lostAndFoundDataManager) {
@@ -151,5 +153,24 @@ public class LostAndFoundPresenter2<V extends ILostAndFoundView2> extends BasePr
     @Override
     public boolean isCommentEnable() {
         return commentEnable;
+    }
+
+    @Override
+    public int getNoticeCount() {
+        return noticeCount;
+    }
+
+    @Override
+    public void fetchNoticeCount() {
+        addObserver(lostAndFoundDataManager.noticeCount(),
+                new NetworkObserver<ApiResult<NoticeCountDTO>>(false) {
+
+                    @Override
+                    public void onReady(ApiResult<NoticeCountDTO> result) {
+                        if (null == result.getError()) {
+                            noticeCount = result.getData().getNoticeCount();
+                        }
+                    }
+                });
     }
 }
