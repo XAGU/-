@@ -184,6 +184,7 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
                 return false;
             }
         });
+        recyclerView.setItemAnimator(null);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new CustomLinearLayoutManager(this));
         refreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
@@ -454,10 +455,10 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
 
     @Override
     public void notifyAdapter(int position, boolean delay) {
+        adapter.notifyItemChanged(position);
 //        if (delay) {
-//            recyclerView.postDelayed(() -> adapter.notifyItemChanged(position), 800);
+//            recyclerView.postDelayed(() -> adapter.notifyItemChanged(position), 300);
 //        } else {
-//            adapter.notifyItemChanged(position);
 //        }
     }
 

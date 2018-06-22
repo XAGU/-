@@ -107,6 +107,8 @@ public class LostAndFoundDetailContentDelegate
                     lostAndFoundDetailWrapper.setLiked(true);
                     lostAndFoundDetailWrapper.setLikeCount(likeCount + 1);
                     holder.setImageResource(R.id.iv_like, R.drawable.ic_like);
+                    holder.setText(R.id.tv_like_count,
+                            String.valueOf(lostAndFoundDetailWrapper.getLikeCount()));
                     likeClickListener.onLikeClick(position, lostAndFoundDetailWrapper.getId(), false);
                     if (animation == null) {
                         animation = AnimationUtils.loadAnimation(context, R.anim.lost_found_like);
@@ -119,8 +121,6 @@ public class LostAndFoundDetailContentDelegate
                             @Override
                             public void onAnimationEnd(Animation animation) {
                                 animating = false;
-                                holder.setText(R.id.tv_like_count,
-                                        String.valueOf(lostAndFoundDetailWrapper.getLikeCount()));
                             }
 
                             @Override

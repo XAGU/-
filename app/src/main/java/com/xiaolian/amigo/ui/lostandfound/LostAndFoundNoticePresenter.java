@@ -158,7 +158,7 @@ public class LostAndFoundNoticePresenter<V extends ILostAndFoundNoticeView> exte
                     public void onReady(ApiResult<SimpleRespDTO> result) {
                         if (null == result.getError()) {
                             getMvpView().closePublishDialog();
-                            getMvpView().onSuccess("发布成功");
+                            getMvpView().onSuccess("回复成功");
 //                            getMvpView().onRefresh();
                         } else {
                             getMvpView().onError(result.getError().getDisplayMessage());
