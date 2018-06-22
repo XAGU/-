@@ -13,6 +13,8 @@ import android.text.Spanned;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -101,6 +103,11 @@ public class LostAndFoundDetailCommentDelegate
         });
 
         holder.setText(R.id.tv_like_count, String.valueOf(lostAndFoundDetailWrapper.getLikeCount()));
+
+        holder.getView(R.id.iv_like).setOnClickListener(v -> {
+            Animation animation = AnimationUtils.loadAnimation(context, R.anim.lost_found_like);
+            holder.getView(R.id.iv_like).startAnimation(animation);
+        });
 
         holder.getView(R.id.rl_author_info).setOnClickListener(v -> onMoreReply(lostAndFoundDetailWrapper));
         holder.getView(R.id.tv_comment_content).setOnClickListener(v -> onMoreReply(lostAndFoundDetailWrapper));

@@ -6,6 +6,8 @@ import com.xiaolian.amigo.data.manager.intf.ILostAndFoundDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
+import com.xiaolian.amigo.data.network.model.lostandfound.CollectItemReqDTO;
+import com.xiaolian.amigo.data.network.model.lostandfound.CommonRespDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.DeleteLostFoundItemReqDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.LostAndFoundDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.LostFoundCommentDTO;
@@ -149,8 +151,8 @@ public class LostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView2>
                         if (null == result.getError()) {
                             if (null != result.getData()) {
                                 if ((result.getData().getCommentsSize() <= 0
-                                        || result.getData().getHot() == null
-                                        || result.getData().getHot().isEmpty())
+                                        && (result.getData().getHot() == null
+                                        || result.getData().getHot().isEmpty()))
                                         && page == Constant.PAGE_START_NUM) {
                                     getMvpView().showEmptyView();
                                     return;
@@ -302,6 +304,39 @@ public class LostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView2>
     @Override
     public boolean isCommentEnable() {
         return commentEnable == null ? false : commentEnable;
+    }
+
+    @Override
+    public void collect() {
+        collectOrUnCollect(1);
+    }
+
+    @Override
+    public void unCollect() {
+        collectOrUnCollect(2);
+    }
+
+    private void collectOrUnCollect(Integer collect) {
+        CollectItemReqDTO reqDTO = new CollectItemReqDTO();
+        // 是否是收藏 1 收藏 2 取消收藏
+        reqDTO.setCollect(collect);
+        reqDTO.setLostFoundId(id);
+        addObserver(lostAndFoundDataManager.collect(reqDTO),
+                new NetworkObserver<ApiResult<CommonRespDTO>>() {
+
+                    @Override
+                    public void onReady(ApiResult<CommonRespDTO> result) {
+                        if (null == result.getError()) {
+                            if (ObjectsCompat.equals(collect, 1)) {
+                                getMvpView().collectSuccess();
+                            } else {
+                                getMvpView().unCollectSuccess();
+                            }
+                        } else {
+                            getMvpView().onError(result.getError().getDisplayMessage());
+                        }
+                    }
+                });
     }
 
     private void fetchComment(Long id) {

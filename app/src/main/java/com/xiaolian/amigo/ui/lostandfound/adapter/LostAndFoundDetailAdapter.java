@@ -82,6 +82,10 @@ public class LostAndFoundDetailAdapter extends MultiItemTypeAdapter<LostAndFound
          * 是否本人点赞
          */
         private boolean liked = false;
+        /**
+         * 是否收藏
+         */
+        private boolean collected = false;
 
         private LostAndFoundDetailWrapper() {
         }
@@ -105,6 +109,7 @@ public class LostAndFoundDetailAdapter extends MultiItemTypeAdapter<LostAndFound
             this.avatar = lostAndFound.getPictureUrl();
             this.contentAuthor = lostAndFound.getUser();
             this.liked = ObjectsCompat.equals(lostAndFound.getLiked(), 1);
+            this.collected = ObjectsCompat.equals(lostAndFound.getCollected(), 1);
         }
 
         public LostAndFoundDetailWrapper(LostFoundCommentDTO comment, boolean owner, Long ownerId,

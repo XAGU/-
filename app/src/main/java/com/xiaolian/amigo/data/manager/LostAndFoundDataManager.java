@@ -6,6 +6,9 @@ import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
+import com.xiaolian.amigo.data.network.model.lostandfound.CollectItemReqDTO;
+import com.xiaolian.amigo.data.network.model.lostandfound.CollectListReqDTO;
+import com.xiaolian.amigo.data.network.model.lostandfound.CommonRespDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.DeleteLostFoundItemReqDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.LostAndFoundDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.LostFoundCommentsListDTO;
@@ -98,6 +101,16 @@ public class LostAndFoundDataManager implements ILostAndFoundDataManager {
     @Override
     public Observable<ApiResult<BooleanRespDTO>> delete(DeleteLostFoundItemReqDTO reqDTO) {
         return lostAndFoundApi.delete(reqDTO);
+    }
+
+    @Override
+    public Observable<ApiResult<CommonRespDTO>> collect(CollectItemReqDTO reqDTO) {
+        return lostAndFoundApi.collect(reqDTO);
+    }
+
+    @Override
+    public Observable<ApiResult<QueryLostAndFoundListRespDTO>> getCollects(CollectListReqDTO reqDTO) {
+        return lostAndFoundApi.getCollects(reqDTO);
     }
 
     @Override

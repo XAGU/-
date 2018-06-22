@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:paddingStart="@dimen/mainMarginLeftRight"
+    android:paddingEnd="@dimen/mainMarginLeftRight"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -67,35 +71,38 @@
         tools:visibility="visible"
         android:visibility="gone">
 
-        <ImageView
+        <com.xiaolian.amigo.ui.widget.SquareImageView
             android:id="@+id/iv_first"
-            android:layout_width="57dp"
-            android:layout_height="57dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:background="#ddd"
             android:scaleType="centerCrop"
             android:visibility="visible"/>
 
         <!--android:scaleType="fitXY"-->
-        <ImageView
+        <com.xiaolian.amigo.ui.widget.SquareImageView
             android:id="@+id/iv_second"
-            android:layout_width="57dp"
-            android:layout_height="57dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"
             android:background="#ddd"
             android:scaleType="centerCrop"
-            android:visibility="gone"/>
+            android:visibility="invisible"/>
 
-        <ImageView
+        <com.xiaolian.amigo.ui.widget.SquareImageView
             android:id="@+id/iv_third"
-            android:layout_width="57dp"
-            android:layout_height="57dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"
             android:background="#ddd"
             android:scaleType="centerCrop"
-            android:visibility="gone"/>
+            android:visibility="invisible"/>
 
     </LinearLayout>
 

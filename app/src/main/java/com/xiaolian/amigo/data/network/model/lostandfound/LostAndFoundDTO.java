@@ -51,6 +51,10 @@ public class LostAndFoundDTO implements Mapper<LostAndFound> {
      * 头像
      */
     private String pictureUrl;
+    /**
+     * 本人是否收藏此对象 1 已收藏 2 未收藏
+     */
+    private Integer collected;
 
     @Override
     public LostAndFound transform() {
@@ -76,6 +80,7 @@ public class LostAndFoundDTO implements Mapper<LostAndFound> {
         lostAndFound.setLikeCount(likeCount);
         lostAndFound.setLiked(liked);
         lostAndFound.setPictureUrl(pictureUrl);
+        lostAndFound.setCollected(collected);
         return lostAndFound;
     }
 }

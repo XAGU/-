@@ -3,6 +3,7 @@ package com.xiaolian.amigo.ui.widget.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -67,6 +68,14 @@ public class LostAndFoundBottomDialog extends Dialog {
         tvOk.setText(ok);
         tvOther.setVisibility(View.GONE);
         vOther.setVisibility(View.GONE);
+    }
+
+    public void setOkTextColor(int colorRes) {
+        tvOk.setTextColor(ContextCompat.getColor(context, colorRes));
+    }
+
+    public void setOtherTextColor(int colorRes) {
+        tvOther.setTextColor(ContextCompat.getColor(context, colorRes));
     }
 
     public void setOtherText(String otherText) {

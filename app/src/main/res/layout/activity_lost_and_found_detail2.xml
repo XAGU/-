@@ -136,8 +136,6 @@
             android:id="@+id/refreshLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/mainMarginLeftRight"
-            android:layout_marginRight="@dimen/mainMarginLeftRight"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:srlFooterHeight="60dp"
             app:srlHeaderHeight="40dp">
@@ -147,6 +145,8 @@
                 android:layout_height="match_parent">
 
                 <RelativeLayout
+                    android:layout_marginLeft="@dimen/mainMarginLeftRight"
+                    android:layout_marginRight="@dimen/mainMarginLeftRight"
                     android:id="@+id/rl_empty"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -172,6 +172,8 @@
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:layout_marginLeft="@dimen/mainMarginLeftRight"
+                    android:layout_marginRight="@dimen/mainMarginLeftRight"
                     android:id="@+id/rl_error"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

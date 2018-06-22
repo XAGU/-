@@ -32,4 +32,8 @@ public interface ILostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView
     boolean needRefresh();
 
     boolean isCommentEnable();
+
+    void collect();
+
+    void unCollect();
 }

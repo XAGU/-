@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.lostandfound;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -152,7 +153,12 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
         adapter = new LostAndFoundDetailAdapter(this, items);
         adapter.addItemViewDelegate(new LostAndFoundDetailCommentDelegate(this,
                 this::publishReply, this::moreReply));
-        adapter.addItemViewDelegate(new LostAndFoundDetailContentDelegate(this));
+        adapter.addItemViewDelegate(new LostAndFoundDetailContentDelegate(this, new LostAndFoundDetailContentDelegate.OnLikeClickListener() {
+            @Override
+            public void onLikeClick(int position, boolean like) {
+
+            }
+        }));
         adapter.addItemViewDelegate(new LostAndFoundDetailTitleDelegate());
         recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 14)));
         adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
@@ -267,7 +273,17 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
             bottomDialog = new LostAndFoundBottomDialog(this);
         }
         bottomDialog.setOkText(presenter.isOwner() ? "删除" : "举报");
+        bottomDialog.setOkTextColor(R.color.colorDark6);
         bottomDialog.setOnOkClickListener(dialog -> presenter.reportOrDelete());
+        bottomDialog.setOtherText(content.isCollected() ? "取消收藏" : "收藏");
+        bottomDialog.setOtherTextColor(R.color.colorDark2);
+        bottomDialog.setOnOtherClickListener(dialog -> {
+            if (content.isCollected()) {
+                presenter.unCollect();
+            } else {
+                presenter.collect();
+            }
+        });
         bottomDialog.show();
     }
 
@@ -402,6 +418,22 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
     @Override
     public void hideFootView() {
         llFooter.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void collectSuccess() {
+        onSuccess("收藏成功");
+        if (content != null) {
+            content.setCollected(true);
+        }
+    }
+
+    @Override
+    public void unCollectSuccess() {
+        onSuccess("取消收藏成功");
+        if (content != null) {
+            content.setCollected(false);
+        }
     }
 
     @Override

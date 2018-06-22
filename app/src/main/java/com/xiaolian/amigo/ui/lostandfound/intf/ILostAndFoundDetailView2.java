@@ -45,4 +45,8 @@ public interface ILostAndFoundDetailView2 extends IBaseView {
     void showFootView();
 
     void hideFootView();
+
+    void collectSuccess();
+
+    void unCollectSuccess();
 }

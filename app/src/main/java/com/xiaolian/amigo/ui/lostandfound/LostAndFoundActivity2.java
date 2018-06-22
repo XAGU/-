@@ -113,8 +113,9 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
 
             @Override
             public void onMyFavoriteClick() {
-                startActivityForResult(new Intent(LostAndFoundActivity2.this, PublishLostAndFoundActivity.class)
-                        .putExtra(PublishLostAndFoundActivity.KEY_TYPE, LostAndFound.FOUND), REQUEST_CODE_PUBLISH);
+//                startActivityForResult(new Intent(LostAndFoundActivity2.this, PublishLostAndFoundActivity.class)
+//                        .putExtra(PublishLostAndFoundActivity.KEY_TYPE, LostAndFound.FOUND), REQUEST_CODE_PUBLISH);
+                startActivity(new Intent(LostAndFoundActivity2.this, MyCollectActivity.class));
             }
 
             @Override

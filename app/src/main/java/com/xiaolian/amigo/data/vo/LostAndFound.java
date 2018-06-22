@@ -48,4 +48,8 @@ public class LostAndFound implements Serializable {
      * 头像
      */
     private String pictureUrl;
+    /**
+     * 本人是否收藏此对象 1 已收藏 2 未收藏
+     */
+    private Integer collected;
 }
