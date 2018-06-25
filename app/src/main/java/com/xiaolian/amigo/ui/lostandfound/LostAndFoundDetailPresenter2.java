@@ -298,8 +298,8 @@ public class LostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView2>
 
     @Override
     public boolean needRefresh() {
-        return !ObjectsCompat.equals(preReplyCount, lostAndFound.getCommentsCount())
-                || !ObjectsCompat.equals(preViewCount, lostAndFound.getViewCount());
+        return lostAndFound != null
+                && (!ObjectsCompat.equals(preReplyCount, lostAndFound.getCommentsCount()) || !ObjectsCompat.equals(preViewCount, lostAndFound.getViewCount()));
     }
 
     @Override
