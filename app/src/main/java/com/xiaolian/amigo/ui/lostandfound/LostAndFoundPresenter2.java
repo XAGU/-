@@ -169,6 +169,11 @@ public class LostAndFoundPresenter2<V extends ILostAndFoundView2> extends BasePr
                     public void onReady(ApiResult<NoticeCountDTO> result) {
                         if (null == result.getError()) {
                             noticeCount = result.getData().getNoticeCount();
+                            if (noticeCount != 0) {
+                                getMvpView().showNoticeRemind();
+                            } else {
+                                getMvpView().hideNoticeRemind();
+                            }
                         }
                     }
                 });

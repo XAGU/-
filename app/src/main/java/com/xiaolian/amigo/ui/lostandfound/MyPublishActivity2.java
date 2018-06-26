@@ -192,6 +192,16 @@ public class MyPublishActivity2 extends LostAndFoundBaseActivity implements ILos
     }
 
     @Override
+    public void showNoticeRemind() {
+
+    }
+
+    @Override
+    public void hideNoticeRemind() {
+
+    }
+
+    @Override
     protected void onDestroy() {
         presenter.onDetach();
         super.onDestroy();

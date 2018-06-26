@@ -180,6 +180,7 @@ public class LostAndFoundNoticeActivity extends LostAndFoundBaseActivity
         tvToolbarTitle2.setOnClickListener(v -> changeItemToLike());
         tvTitle.setOnClickListener(v -> changeItemToReply());
         tvTitle2.setOnClickListener(v -> changeItemToLike());
+        findViewById(R.id.iv_back).setOnClickListener(v -> onBackPressed());
     }
 
     private void changeItemToReply() {

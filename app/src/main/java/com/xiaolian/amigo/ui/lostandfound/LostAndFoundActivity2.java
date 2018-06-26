@@ -74,6 +74,9 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
     @BindView(R.id.abl_actionbar)
     AppBarLayout ablActionbar;
 
+    @BindView(R.id.iv_notice_remind)
+    ImageView ivNoticeRemind;
+
     private LostAndFoundAdaptor2 adaptor;
 
     private LostAndFoundPopupDialog addDialog;
@@ -108,6 +111,7 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
             public void onMyNoticeClick() {
 //                startActivityForResult(new Intent(LostAndFoundActivity2.this, PublishLostAndFoundActivity.class)
 //                        .putExtra(PublishLostAndFoundActivity.KEY_TYPE, LostAndFound.LOST), REQUEST_CODE_PUBLISH);
+                hideNoticeRemind();
                 startActivity(new Intent(LostAndFoundActivity2.this, LostAndFoundNoticeActivity.class));
             }
 
@@ -292,6 +296,16 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
 //        llFooter.setVisibility(View.GONE);
     }
 
+    @Override
+    public void showNoticeRemind() {
+        ivNoticeRemind.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideNoticeRemind() {
+        ivNoticeRemind.setVisibility(View.GONE);
+    }
+
     private void onLoadMore() {
         presenter.getList(false, null);
     }
@@ -300,6 +314,11 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
         presenter.resetPage();
         refreshFlag = true;
         presenter.getList(false, null);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         presenter.fetchNoticeCount();
     }
 
