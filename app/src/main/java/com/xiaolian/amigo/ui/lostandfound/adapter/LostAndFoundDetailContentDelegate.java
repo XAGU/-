@@ -86,6 +86,10 @@ public class LostAndFoundDetailContentDelegate
                 ObjectsCompat.equals(lostAndFoundDetailWrapper.getType(), LostAndFound.LOST) ?
                         R.drawable.ic_lost_owner : R.drawable.ic_found_owner);
 
+        holder.getView(R.id.iv_like).setVisibility(lostAndFoundDetailWrapper.isCommentEnable() ?
+                View.VISIBLE : View.GONE);
+        holder.getView(R.id.tv_like_count).setVisibility(lostAndFoundDetailWrapper.isCommentEnable() ?
+                View.VISIBLE : View.GONE);
         holder.setText(R.id.tv_like_count, String.valueOf(lostAndFoundDetailWrapper.getLikeCount()));
         holder.setImageResource(R.id.iv_like,
                 lostAndFoundDetailWrapper.isLiked() ?

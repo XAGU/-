@@ -124,6 +124,7 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
                         new Intent(LostAndFoundActivity2.this, MyPublishActivity2.class), REQUEST_CODE_PUBLISH);
             }
         });
+        addDialog.setNoticeVisible(presenter.isCommentEnable());
         addDialog.setNoticeCount(presenter.getNoticeCount());
         addDialog.show();
     }
@@ -283,12 +284,12 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
 
     @Override
     public void showFootView() {
-        llFooter.setVisibility(View.VISIBLE);
+//        llFooter.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideFootView() {
-        llFooter.setVisibility(View.GONE);
+//        llFooter.setVisibility(View.GONE);
     }
 
     private void onLoadMore() {

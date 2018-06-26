@@ -6,6 +6,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
@@ -21,6 +22,10 @@ public class LostAndFoundPopupDialog extends Dialog {
     private Context context;
     private OnLostAndFoundClickListener listener;
     private TextView tvNoticeCount;
+    private RelativeLayout rlMyNotice;
+    private View vLine1;
+    private View vLine2;
+    private TextView tvMyFavorite;
 
     public LostAndFoundPopupDialog(@NonNull Context context) {
         super(context, R.style.LostAndFoundPopupDialogStyle);
@@ -42,7 +47,7 @@ public class LostAndFoundPopupDialog extends Dialog {
     private void initView() {
         setContentView(R.layout.dialog_lost_and_found);
         TextView tvMyNotice = findViewById(R.id.tv_my_notice);
-        TextView tvMyFavorite = findViewById(R.id.tv_my_favorite);
+        tvMyFavorite = findViewById(R.id.tv_my_favorite);
         TextView tvMyPublish = findViewById(R.id.tv_my_publish);
         tvMyNotice.setOnClickListener(v -> {
             listener.onMyNoticeClick();
@@ -57,10 +62,21 @@ public class LostAndFoundPopupDialog extends Dialog {
             dismiss();
         });
         tvNoticeCount = findViewById(R.id.tv_notice_count);
+
+        rlMyNotice = findViewById(R.id.rl_my_notice);
+        vLine1 = findViewById(R.id.v_line1);
+        vLine2 = findViewById(R.id.v_line2);
     }
 
     public void setLostAndFoundListener(OnLostAndFoundClickListener listener) {
         this.listener = listener;
+    }
+
+    public void setNoticeVisible(boolean visible) {
+        rlMyNotice.setVisibility(visible ? View.VISIBLE : View.GONE);
+        tvMyFavorite.setVisibility(visible ? View.VISIBLE : View.GONE);
+        vLine1.setVisibility(visible ? View.VISIBLE : View.GONE);
+        vLine2.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
     public void setNoticeCount(int count) {

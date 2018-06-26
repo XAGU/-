@@ -107,6 +107,10 @@ public class LostAndFoundDetailCommentDelegate
             }
         });
 
+        holder.getView(R.id.iv_like).setVisibility(lostAndFoundDetailWrapper.isCommentEnable() ?
+                View.VISIBLE : View.GONE);
+        holder.getView(R.id.tv_like_count).setVisibility(lostAndFoundDetailWrapper.isCommentEnable() ?
+                View.VISIBLE : View.GONE);
         holder.setText(R.id.tv_like_count, String.valueOf(lostAndFoundDetailWrapper.getLikeCount()));
         holder.setImageResource(R.id.iv_like,
                 lostAndFoundDetailWrapper.isLiked() ?
