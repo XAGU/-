@@ -46,6 +46,8 @@ import butterknife.OnClick;
 public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements ILostAndFoundView2 {
     private static final String TAG = LostAndFoundActivity2.class.getSimpleName();
     private static final int REQUEST_CODE_PUBLISH = 0x0101;
+    private static final int REQUEST_CODE_DETAIL = 0x0102;
+    public static final String KEY_VIEW_COUNT = "key_view_count";
 
     @Inject
     ILostAndFoundPresenter2<ILostAndFoundView2> presenter;
@@ -76,6 +78,8 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
 
     @BindView(R.id.iv_notice_remind)
     ImageView ivNoticeRemind;
+
+    private int currentChoosePosition = -1;
 
     private LostAndFoundAdaptor2 adaptor;
 
@@ -174,8 +178,9 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
                     intent.putExtra(LostAndFoundDetailActivity2.KEY_TYPE,
                             lostAndFounds.get(position).getType());
                     intent.putExtra(LostAndFoundDetailActivity2.KEY_ID, lostAndFounds.get(position).getId());
-                    startActivityForResult(intent, REQUEST_CODE_PUBLISH);
-                    lostAndFounds.get(position).addViewCount();
+                    currentChoosePosition = position;
+                    startActivityForResult(intent, REQUEST_CODE_DETAIL);
+//                    lostAndFounds.get(position).addViewCount();
 //                    adaptor.notifyDataSetChanged();
                 } catch (ArrayIndexOutOfBoundsException e) {
                     Log.wtf(TAG, "数组越界", e);
@@ -382,6 +387,13 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
             if (requestCode == REQUEST_CODE_PUBLISH) {
 //                refreshLostAndFound();
                 onRefresh();
+            } else if (requestCode == REQUEST_CODE_DETAIL) {
+                if (data != null && currentChoosePosition != -1) {
+                    int viewCount = data.getIntExtra(KEY_VIEW_COUNT, 0);
+                    lostAndFounds.get(currentChoosePosition).setViewCount(viewCount);
+                    currentChoosePosition = -1;
+                    adaptor.notifyDataSetChanged();
+                }
             }
         } else {
             adaptor.notifyDataSetChanged();

@@ -464,11 +464,15 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
 
     @Override
     public void onBackPressed() {
-        if (presenter.needRefresh()) {
-            finishView();
-        } else {
-            super.onBackPressed();
-        }
+//        if (presenter.needRefresh()) {
+//            finishView();
+//        } else {
+//        }
+        Intent intent = new Intent();
+        intent.putExtra(LostAndFoundActivity2.KEY_VIEW_COUNT, content == null ?
+                0: content.getViewCount() + 1);
+        setResult(RESULT_OK, intent);
+        super.onBackPressed();
     }
 
     @Override
