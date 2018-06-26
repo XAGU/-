@@ -17,4 +17,6 @@ public interface IAboutUsPresenter<V extends IAboutUsView> extends IBasePresente
      * @param click 是否是用户点击
      */
     void checkUpdate(Integer code, String versionNo, boolean click);
+
+    void changeHost(String host);
 }

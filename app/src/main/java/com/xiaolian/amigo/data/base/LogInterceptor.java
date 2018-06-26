@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.data.base;
 
 import android.support.annotation.NonNull;
+import android.support.v4.util.ObjectsCompat;
 import android.text.TextUtils;
 
 import com.xiaolian.amigo.BuildConfig;
@@ -13,6 +14,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.Calendar;
 
+import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.Protocol;
@@ -37,6 +39,7 @@ public class LogInterceptor implements Interceptor {
     private final static String GET = "GET";
     private final static String POST = "POST";
     private final static String TRADE_PREFIX = BuildConfig.TRADE_PREFIX;
+    private final static boolean isDev = !TextUtils.equals(BuildConfig.FLAVOR, "prod");
     /**
      * 该链接不上传deviceToken
      */
@@ -58,11 +61,17 @@ public class LogInterceptor implements Interceptor {
     private String model;
     private String uniqueId;
     private static final String system = "2";
+    private String host;
+    private final String oldHost = BuildConfig.SERVER;
 
     private ISharedPreferencesHelp sharedPreferencesHelp;
 
     public LogInterceptor(ISharedPreferencesHelp sharedPreferencesHelp) {
         this.sharedPreferencesHelp = sharedPreferencesHelp;
+    }
+
+    public void setHost(String host) {
+        this.host = host;
     }
 
     @Override
@@ -81,18 +90,36 @@ public class LogInterceptor implements Interceptor {
                 deviceToken = "";
             }
 
-            newRequest = request.newBuilder()
-                    // 添加token
-                    .addHeader(TOKEN, token)
-                    .addHeader(DEVICE_TOKEN, deviceToken)
-                    .build();
+            if (isDev && !TextUtils.isEmpty(host)) {
+                String newUrl = request.url().toString().replace(oldHost, host);
+                newRequest = request.newBuilder()
+                        // 添加token
+                        .url(newUrl)
+                        .addHeader(TOKEN, token)
+                        .addHeader(DEVICE_TOKEN, deviceToken)
+                        .build();
+            } else {
+                newRequest = request.newBuilder()
+                        // 添加token
+                        .addHeader(TOKEN, token)
+                        .addHeader(DEVICE_TOKEN, deviceToken)
+                        .build();
+            }
 
         } else {
-            newRequest = request.newBuilder()
-                    // 添加token
-                    .addHeader(TOKEN, token)
-                    .build();
-
+            if (isDev && !TextUtils.isEmpty(host)) {
+                String newUrl = request.url().toString().replace(oldHost, host);
+                newRequest = request.newBuilder()
+                        // 添加token
+                        .url(newUrl)
+                        .addHeader(TOKEN, token)
+                        .build();
+            } else {
+                newRequest = request.newBuilder()
+                        // 添加token
+                        .addHeader(TOKEN, token)
+                        .build();
+            }
         }
 
         if (lastTime == 0 || lastRequest == null) {
