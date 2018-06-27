@@ -61,6 +61,10 @@ public class PrepayDialog extends Dialog {
         });
     }
 
+    public void setCancelText(String text) {
+        tvCancel.setText(text);
+    }
+
     public void setDeviceTypeAndPrepaySize(int type, int size) {
         String tip1 = "你在\"";
         String tip2 = "\"中有预付金额还未找零";
