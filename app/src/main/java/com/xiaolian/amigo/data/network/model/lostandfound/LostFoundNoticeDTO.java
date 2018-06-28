@@ -13,6 +13,7 @@ public class LostFoundNoticeDTO {
      */
     private String content;
     private Long createTime;
+    private Long createUserId;
     private Long id;
     /**
      * 关联对象的id，当类型为回复时

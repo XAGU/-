@@ -50,7 +50,12 @@ public class LostAndFoundNoticeLikeDelegate implements ItemViewDelegate<LostAndF
                 .error(R.drawable.ic_picture_error)
                 .into((ImageView) holder.getView(R.id.iv_avatar));
 //        setUserNameAndContent(holder.getView(R.id.tv_content), noticeWrapper.getUserName(), noticeWrapper.getContent());
-        holder.setText(R.id.tv_user_name, noticeWrapper.getUserName());
+        if (noticeWrapper.getUserName() != null
+                && noticeWrapper.getUserName().length() > 6) {
+            holder.setText(R.id.tv_user_name, noticeWrapper.getUserName().substring(0, 5) + "...");
+        } else {
+            holder.setText(R.id.tv_user_name, noticeWrapper.getUserName());
+        }
         holder.setText(R.id.tv_time, TimeUtils.lostAndFoundTimestampFormat(noticeWrapper.getCreateTime()));
         TextView tvContent = holder.getView(R.id.tv_content);
         tvContent.getViewTreeObserver()
@@ -61,6 +66,9 @@ public class LostAndFoundNoticeLikeDelegate implements ItemViewDelegate<LostAndF
                         obs.removeOnGlobalLayoutListener(this);
                         if (tvContent.getLineCount() > 1) {
                             int lineEndIndex = tvContent.getLayout().getLineEnd(0);
+                            if (lineEndIndex < 4) {
+                                lineEndIndex = 4;
+                            }
                             String text = tvContent.getText().subSequence(0, lineEndIndex - 4) + "...”";
                             tvContent.setText(text);
                         }

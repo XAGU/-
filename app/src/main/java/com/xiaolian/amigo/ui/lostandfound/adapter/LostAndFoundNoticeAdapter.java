@@ -44,7 +44,7 @@ public class LostAndFoundNoticeAdapter extends MultiItemTypeAdapter<LostAndFound
             this.itemId = notice.getItemId();
             this.lostFoundId = notice.getLostFoundId();
             this.lostFoundType = notice.getLostFoundType();
-            this.userId = notice.getUserId();
+            this.userId = notice.getCreateUserId();
             this.itemType = itemType;
             this.createTime = notice.getCreateTime();
             this.imageUrl = notice.getPictureUrl();
