@@ -95,6 +95,9 @@ public class TimeUtils {
         String result = "";
         long curTime = System.currentTimeMillis() / (long) 1000;
         long time = curTime - timeStamp / 1000;
+        if (time > 0 && time < 60) {
+            return "刚刚发布";
+        }
         if (time >= 0 && time < 3600 * 24) {
             result += "今天";
         } else if (time >= 3600 * 24 && time < 3600 * 24 * 2) {
@@ -111,6 +114,9 @@ public class TimeUtils {
         String result = "";
         long curTime = System.currentTimeMillis() / (long) 1000;
         long time = curTime - timeStamp / 1000;
+        if (time > 0 && time < 60) {
+            return "刚刚发布";
+        }
         if (time >= 0 && time < 3600 * 24) {
             result += "今天 ";
         } else if (time >= 3600 * 24 && time < 3600 * 24 * 2) {
