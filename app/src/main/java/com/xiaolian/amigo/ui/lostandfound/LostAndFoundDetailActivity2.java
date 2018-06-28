@@ -474,7 +474,9 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
 //        }
         Intent intent = new Intent();
         intent.putExtra(LostAndFoundActivity2.KEY_VIEW_COUNT, content == null ?
-                0: content.getViewCount() + 1);
+                0 : content.getViewCount() + 1);
+        intent.putExtra(LostAndFoundActivity2.KEY_COMMENT_COUNT, content == null ?
+                0 : content.getCommentCount());
         setResult(RESULT_OK, intent);
         super.onBackPressed();
     }
