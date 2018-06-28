@@ -28,6 +28,30 @@
             android:layout_height="50dp" />
         <requestFocus/>
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_height="72dp">
+        <EditText
+            android:id="@+id/et_host2"
+            android:background="@drawable/bg_rect_gray_corner"
+            android:layout_width="match_parent"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:textCursorDrawable="@drawable/cursor_small"
+            android:cursorVisible="true"
+            android:singleLine="true"
+            android:textSize="14sp"
+            android:textColorHint="@color/colorDarkB"
+            android:textColor="@color/colorDark2"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="50dp" />
+        <requestFocus/>
+    </LinearLayout>
     <View
         android:background="@color/colorDarke"
         android:layout_width="match_parent"

@@ -56,7 +56,8 @@ public class AboutUsPresenter<V extends IAboutUsView> extends BasePresenter<V>
     }
 
     @Override
-    public void changeHost(String host) {
-        interceptor.setHost(host);
+    public void changeHost(String server, String h5Server) {
+        interceptor.setServer(server);
+        interceptor.setH5Server(h5Server);
     }
 }

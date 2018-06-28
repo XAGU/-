@@ -18,5 +18,5 @@ public interface IAboutUsPresenter<V extends IAboutUsView> extends IBasePresente
      */
     void checkUpdate(Integer code, String versionNo, boolean click);
 
-    void changeHost(String host);
+    void changeHost(String server, String h5Server);
 }

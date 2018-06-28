@@ -113,7 +113,7 @@ public class AboutUsActivity extends MoreBaseActivity implements IAboutUsView {
     boolean changeHost() {
         if (hostDialog == null) {
             hostDialog = new ChangeHostDialog(this);
-            hostDialog.setOnOkClickListener((dialog, host) -> presenter.changeHost(host));
+            hostDialog.setOnOkClickListener((dialog, host, host2) -> presenter.changeHost(host, host2));
         }
         hostDialog.show();
         return true;

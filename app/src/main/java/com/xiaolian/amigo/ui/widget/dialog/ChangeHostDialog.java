@@ -28,6 +28,7 @@ public class ChangeHostDialog extends Dialog {
     private TextView tvOk;
     private TextView tvCancel;
     private EditText etHost;
+    private EditText etHost2;
     private OnOkClickListener listener;
 
     public ChangeHostDialog(@NonNull Context context) {
@@ -52,7 +53,8 @@ public class ChangeHostDialog extends Dialog {
                 return;
             }
             if (listener != null) {
-                listener.onOkClick(this, etHost.getText().toString());
+                listener.onOkClick(this, etHost.getText().toString(),
+                        etHost2.getText().toString());
             }
             dismiss();
         });
@@ -61,7 +63,11 @@ public class ChangeHostDialog extends Dialog {
         etHost = findViewById(R.id.et_host);
         etHost.setTypeface(null, Typeface.NORMAL);
         etHost.setText(BuildConfig.SERVER);
-        ViewUtil.setEditHintAndSize("请输入host", 14, etHost);
+        etHost2 = findViewById(R.id.et_host2);
+        etHost2.setTypeface(null, Typeface.NORMAL);
+        etHost2.setText(BuildConfig.H5_SERVER);
+        ViewUtil.setEditHintAndSize("请输入server", 14, etHost);
+        ViewUtil.setEditHintAndSize("请输入h5 server", 14, etHost2);
     }
 
     public void setOnOkClickListener(OnOkClickListener listener) {
@@ -69,6 +75,6 @@ public class ChangeHostDialog extends Dialog {
     }
 
     public interface OnOkClickListener {
-        void onOkClick(Dialog dialog, String host);
+        void onOkClick(Dialog dialog, String host, String host2);
     }
 }

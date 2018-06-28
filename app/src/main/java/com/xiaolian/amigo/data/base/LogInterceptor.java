@@ -1,11 +1,11 @@
 package com.xiaolian.amigo.data.base;
 
 import android.support.annotation.NonNull;
-import android.support.v4.util.ObjectsCompat;
 import android.text.TextUtils;
 
 import com.xiaolian.amigo.BuildConfig;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
+import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
 
 import org.json.JSONException;
@@ -14,7 +14,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.Calendar;
 
-import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.Protocol;
@@ -61,8 +60,8 @@ public class LogInterceptor implements Interceptor {
     private String model;
     private String uniqueId;
     private static final String system = "2";
-    private String host;
-    private final String oldHost = BuildConfig.SERVER;
+    private String server;
+    private final String oldServer = BuildConfig.SERVER;
 
     private ISharedPreferencesHelp sharedPreferencesHelp;
 
@@ -70,8 +69,12 @@ public class LogInterceptor implements Interceptor {
         this.sharedPreferencesHelp = sharedPreferencesHelp;
     }
 
-    public void setHost(String host) {
-        this.host = host;
+    public void setServer(String server) {
+        this.server = server;
+    }
+
+    public void setH5Server(String h5Server) {
+        Constant.H5_SERVER = h5Server;
     }
 
     @Override
@@ -90,8 +93,8 @@ public class LogInterceptor implements Interceptor {
                 deviceToken = "";
             }
 
-            if (isDev && !TextUtils.isEmpty(host)) {
-                String newUrl = request.url().toString().replace(oldHost, host);
+            if (isDev && !TextUtils.isEmpty(server)) {
+                String newUrl = request.url().toString().replace(oldServer, server);
                 newRequest = request.newBuilder()
                         // 添加token
                         .url(newUrl)
@@ -107,8 +110,8 @@ public class LogInterceptor implements Interceptor {
             }
 
         } else {
-            if (isDev && !TextUtils.isEmpty(host)) {
-                String newUrl = request.url().toString().replace(oldHost, host);
+            if (isDev && !TextUtils.isEmpty(server)) {
+                String newUrl = request.url().toString().replace(oldServer, server);
                 newRequest = request.newBuilder()
                         // 添加token
                         .url(newUrl)
