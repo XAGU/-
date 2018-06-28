@@ -292,15 +292,19 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
         bottomDialog.setOkText(presenter.isOwner() ? "删除" : "举报");
         bottomDialog.setOkTextColor(R.color.colorDark6);
         bottomDialog.setOnOkClickListener(dialog -> presenter.reportOrDelete());
-        bottomDialog.setOtherText(content.isCollected() ? "取消收藏" : "收藏");
-        bottomDialog.setOtherTextColor(R.color.colorDark2);
-        bottomDialog.setOnOtherClickListener(dialog -> {
-            if (content.isCollected()) {
-                presenter.unCollect();
-            } else {
-                presenter.collect();
-            }
-        });
+        if (presenter.isCommentEnable()) {
+            bottomDialog.setOtherText(content.isCollected() ? "取消收藏" : "收藏");
+            bottomDialog.setOtherTextColor(R.color.colorDark2);
+            bottomDialog.setOnOtherClickListener(dialog -> {
+                if (content.isCollected()) {
+                    presenter.unCollect();
+                } else {
+                    presenter.collect();
+                }
+            });
+        } else {
+            bottomDialog.hideOtherText();
+        }
         bottomDialog.show();
     }
 

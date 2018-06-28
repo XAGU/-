@@ -84,6 +84,11 @@ public class LostAndFoundBottomDialog extends Dialog {
         vOther.setVisibility(View.VISIBLE);
     }
 
+    public void hideOtherText() {
+        tvOther.setVisibility(View.GONE);
+        vOther.setVisibility(View.GONE);
+    }
+
     public void setOnOkClickListener(OnOkClickListener listener) {
         this.onOkClickListener = listener;
     }
