@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.device.bathroom;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -26,6 +27,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import me.everything.android.ui.overscroll.IOverScrollDecor;
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
@@ -110,6 +112,11 @@ public class BookingActivity extends BathroomBaseActivity implements IBookingVie
         });
 
         initRecyclerView();
+    }
+
+    @OnClick({R.id.tv_toolbar_sub_title, R.id.tv_sub_title})
+    public void onSubtitleClick() {
+        startActivity(new Intent(this, BookingRecordActivity.class));
     }
 
     private void initRecyclerView() {
