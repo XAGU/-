@@ -268,6 +268,48 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <!--公共澡堂使用-->
+        <activity android:name=".ui.device.bathroom.BathroomActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+
+        <!--公共澡堂预约-->
+        <activity android:name=".ui.device.bathroom.BookingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+
+        <!--公共澡堂预约记录-->
+        <activity android:name=".ui.device.bathroom.BookingRecordActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+
+        <!--公共澡堂购买编码-->
+        <activity android:name=".ui.device.bathroom.BuyCodeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+
+        <!--公共澡堂购买记录-->
+        <activity android:name=".ui.device.bathroom.BuyRecordActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+
+        <!--公共澡堂付费使用-->
+        <activity android:name=".ui.device.bathroom.PayUseActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+
+        <!--公共澡堂选择浴室-->
+        <activity android:name=".ui.device.bathroom.ChooseBathroomActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+
         <!--充值金额页面-->
         <activity
             android:name=".ui.wallet.RechargeActivity"
