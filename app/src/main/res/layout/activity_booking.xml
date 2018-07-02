@@ -43,7 +43,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
-                        android:text="预约使用" />
+                        tool:text="预约使用" />
 
 
                     <TextView
@@ -54,7 +54,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:text="预约记录" />
+                        tool:text="预约记录" />
 
                 </RelativeLayout>
             </LinearLayout>
@@ -88,7 +88,7 @@
                         android:textColor="#222"
                         android:textSize="@dimen/sp15"
                         android:textStyle="bold"
-                        android:text="预约使用" />
+                        tool:text="预约使用" />
 
                     <TextView
                         android:id="@+id/tv_sub_title"
@@ -99,7 +99,7 @@
                         android:layout_marginRight="@dimen/mainMarginLeftRight"
                         android:textColor="#222"
                         android:textSize="@dimen/sp12"
-                        android:text="预约记录" />
+                        tool:text="预约记录" />
 
                     <View
                         android:id="@+id/view_line"
