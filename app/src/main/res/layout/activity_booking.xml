@@ -130,6 +130,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/tv_booking_tip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="每月失约3次将无法预约，已失约2次"
@@ -149,6 +150,7 @@
                 android:layout_height="wrap_content" />
 
             <RelativeLayout
+                android:id="@+id/rl_tip"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="14dp"
@@ -179,31 +181,35 @@
             </RelativeLayout>
 
             <TextView
+                android:id="@+id/tv_tip1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="9dp"
                 android:lineSpacingExtra="3dp"
-                android:text="@string/booking_use_tip1" />
+                tool:text="@string/booking_use_tip1" />
 
             <TextView
+                android:id="@+id/tv_tip2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="9dp"
                 android:lineSpacingExtra="3dp"
-                android:text="@string/booking_use_tip2" />
+                tool:text="@string/booking_use_tip2" />
 
             <TextView
+                android:id="@+id/tv_tip3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="9dp"
                 android:lineSpacingExtra="3dp"
-                android:text="@string/booking_use_tip3" />
+                tool:text="@string/booking_use_tip3" />
 
             <TextView
+                android:id="@+id/tv_tip4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="3dp"
-                android:text="@string/booking_use_tip4" />
+                tool:text="@string/booking_use_tip4" />
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 

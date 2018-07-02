@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
@@ -70,6 +71,16 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
     protected void setSubTitle(TextView textView) {
         textView.setText("预约记录");
         textView.setOnClickListener(v -> onSubtitleClick());
+    }
+
+    @Override
+    protected void setTips(TextView tip1, TextView tip2, TextView tip3, TextView tip4,
+                           TextView tip, RelativeLayout rlTip) {
+        tip1.setText(getString(R.string.booking_use_tip1));
+        tip2.setText(getString(R.string.booking_use_tip2));
+        tip3.setText(getString(R.string.booking_use_tip3));
+        tip4.setText(getString(R.string.booking_use_tip4));
+        tip.setText("预约使用说明");
     }
 
     private void onSubtitleClick() {
