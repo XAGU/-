@@ -277,6 +277,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     private boolean supportSlideBack = true;
     private DecimalFormat df = new DecimalFormat("###.##");
     private OrderPreInfoDTO orderPreInfo;
+    protected boolean bleError = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -688,6 +689,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
      * 显示设备连接中
      */
     void showConnecting() {
+        bleError = false;
         hideBottomLayout();
         llContentUnconnected.setVisibility(View.VISIBLE);
         if (dfvDot != null && !dfvDot.isRunning()) {
@@ -1106,6 +1108,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
     @Override
     public void onError(TradeError tradeError) {
+        bleError = true;
         // 如果是在结算页面，则重置slideView
         if (slideView != null) {
             slideView.reset();
@@ -1203,4 +1206,9 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 //        back2Main();
 //    }
 
+
+    @Override
+    public boolean isBleError() {
+        return bleError;
+    }
 }
