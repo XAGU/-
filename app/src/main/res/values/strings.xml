@@ -294,4 +294,15 @@
     <string name="bill_detail">账单明细</string>
     <string name="credit_exchange">积分兑换</string>
     <string name="my_collection">我的收藏</string>
+
+    <!--公共浴室相关文案-->
+    <string name="booking_use_tip1">1.预约使用时，需要先预约10元，若有红包，可选择红包进行抵扣；</string>
+    <string name="booking_use_tip2">2.预约成功后，指定浴室房间将会保留15分钟，设备上会显示你的笑联手机账号，输入对应的密码即可使用；</string>
+    <string name="booking_use_tip3">3.洗浴结束后，消费金额将以实际用水量为准，系统会自动找零；</string>
+    <string name="booking_use_tip4">4.若未在预约时间内使用，系统将会自动退回预付金额。</string>
+
+    <string name="buy_code_tip1">1.购买编码时，需要先预付10元，若有红包，可选择红包进行抵扣；</string>
+    <string name="buy_code_tip2">2.购买成功后，编码有效时间为60分钟，前往任意可以使用的空浴室房间，在设备上输入编码或者购买编码时对应的笑联手机号和登录密码即可使用；</string>
+    <string name="buy_code_tip3">3.洗浴结束后，消费金额将以实际用水量为准，系统会自动找零；</string>
+    <string name="buy_code_tip4">4.若编码在有效期内未使用，系统将会自动退回预付金额。</string>
 </resources>
