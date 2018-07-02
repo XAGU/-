@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.more;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.Intent;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -13,6 +14,7 @@ import com.xiaolian.amigo.ui.main.update.IntentKey;
 import com.xiaolian.amigo.ui.main.update.UpdateActivity;
 import com.xiaolian.amigo.ui.more.intf.IAboutUsPresenter;
 import com.xiaolian.amigo.ui.more.intf.IAboutUsView;
+import com.xiaolian.amigo.ui.widget.dialog.ChangeHostDialog;
 import com.xiaolian.amigo.util.AppUtils;
 import com.xiaolian.amigo.util.CommonUtil;
 
@@ -21,6 +23,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnLongClick;
 
 /**
  * 关于我们
@@ -42,6 +45,7 @@ public class AboutUsActivity extends MoreBaseActivity implements IAboutUsView {
     private String versionName;
     private Integer versionCode;
     private VersionDTO model;
+    private ChangeHostDialog hostDialog;
 
     @Override
     protected void initView() {
@@ -103,6 +107,16 @@ public class AboutUsActivity extends MoreBaseActivity implements IAboutUsView {
     void onAttentionClick() {
         CommonUtil.copy("笑联", this);
         onSuccess("复制成功");
+    }
+
+    @OnLongClick(R.id.iv_logo)
+    boolean changeHost() {
+        if (hostDialog == null) {
+            hostDialog = new ChangeHostDialog(this);
+            hostDialog.setOnOkClickListener((dialog, host, host2) -> presenter.changeHost(host, host2));
+        }
+        hostDialog.show();
+        return true;
     }
 
     @Override

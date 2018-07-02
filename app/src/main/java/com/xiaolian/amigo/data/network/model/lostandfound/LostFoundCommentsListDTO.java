@@ -11,5 +11,6 @@ import lombok.Data;
 @Data
 public class LostFoundCommentsListDTO {
     private List<LostFoundCommentDTO> comments;
+    private List<LostFoundCommentDTO> hot;
     private Integer commentsSize;
 }

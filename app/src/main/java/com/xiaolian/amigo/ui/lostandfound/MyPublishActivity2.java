@@ -107,6 +107,7 @@ public class MyPublishActivity2 extends LostAndFoundBaseActivity implements ILos
         refreshLayout.setRefreshFooter(new RefreshLayoutFooter(this));
         refreshLayout.setReboundDuration(200);
         refreshLayout.autoRefresh(20);
+        refreshLayout.setEnableLoadMore(false);
     }
 
     private void onLoadMore() {
@@ -177,6 +178,26 @@ public class MyPublishActivity2 extends LostAndFoundBaseActivity implements ILos
 
     @Override
     public void showSearchResult(List<LostAndFoundAdaptor2.LostAndFoundWrapper> wrappers) {
+
+    }
+
+    @Override
+    public void showFootView() {
+
+    }
+
+    @Override
+    public void hideFootView() {
+
+    }
+
+    @Override
+    public void showNoticeRemind() {
+
+    }
+
+    @Override
+    public void hideNoticeRemind() {
 
     }
 

@@ -8,7 +8,7 @@ import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
  * @date 18/5/14
  */
 public interface ILostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView2>
-    extends IBasePresenter<V> {
+        extends IBasePresenter<V> {
     void setType(int type);
 
     void getDetail(long id);
@@ -32,4 +32,16 @@ public interface ILostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView
     boolean needRefresh();
 
     boolean isCommentEnable();
+
+    void collect();
+
+    void unCollect();
+
+    void unLikeComment(int position, long id);
+
+    void likeComment(int position, long id);
+
+    void unLikeContent(int position, long id);
+
+    void likeContent(int position, long id);
 }

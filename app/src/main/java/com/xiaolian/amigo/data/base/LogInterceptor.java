@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.xiaolian.amigo.BuildConfig;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
+import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
 
 import org.json.JSONException;
@@ -37,6 +38,7 @@ public class LogInterceptor implements Interceptor {
     private final static String GET = "GET";
     private final static String POST = "POST";
     private final static String TRADE_PREFIX = BuildConfig.TRADE_PREFIX;
+    private final static boolean isDev = !TextUtils.equals(BuildConfig.FLAVOR, "prod");
     /**
      * 该链接不上传deviceToken
      */
@@ -58,11 +60,21 @@ public class LogInterceptor implements Interceptor {
     private String model;
     private String uniqueId;
     private static final String system = "2";
+    private String server;
+    private final String oldServer = BuildConfig.SERVER;
 
     private ISharedPreferencesHelp sharedPreferencesHelp;
 
     public LogInterceptor(ISharedPreferencesHelp sharedPreferencesHelp) {
         this.sharedPreferencesHelp = sharedPreferencesHelp;
+    }
+
+    public void setServer(String server) {
+        this.server = server;
+    }
+
+    public void setH5Server(String h5Server) {
+        Constant.H5_SERVER = h5Server;
     }
 
     @Override
@@ -81,18 +93,36 @@ public class LogInterceptor implements Interceptor {
                 deviceToken = "";
             }
 
-            newRequest = request.newBuilder()
-                    // 添加token
-                    .addHeader(TOKEN, token)
-                    .addHeader(DEVICE_TOKEN, deviceToken)
-                    .build();
+            if (isDev && !TextUtils.isEmpty(server)) {
+                String newUrl = request.url().toString().replace(oldServer, server);
+                newRequest = request.newBuilder()
+                        // 添加token
+                        .url(newUrl)
+                        .addHeader(TOKEN, token)
+                        .addHeader(DEVICE_TOKEN, deviceToken)
+                        .build();
+            } else {
+                newRequest = request.newBuilder()
+                        // 添加token
+                        .addHeader(TOKEN, token)
+                        .addHeader(DEVICE_TOKEN, deviceToken)
+                        .build();
+            }
 
         } else {
-            newRequest = request.newBuilder()
-                    // 添加token
-                    .addHeader(TOKEN, token)
-                    .build();
-
+            if (isDev && !TextUtils.isEmpty(server)) {
+                String newUrl = request.url().toString().replace(oldServer, server);
+                newRequest = request.newBuilder()
+                        // 添加token
+                        .url(newUrl)
+                        .addHeader(TOKEN, token)
+                        .build();
+            } else {
+                newRequest = request.newBuilder()
+                        // 添加token
+                        .addHeader(TOKEN, token)
+                        .build();
+            }
         }
 
         if (lastTime == 0 || lastRequest == null) {

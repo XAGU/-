@@ -180,6 +180,18 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <!--失物招领我的收藏-->
+        <activity android:name=".ui.lostandfound.MyCollectActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+
+        <!--失物招领通知-->
+        <activity android:name=".ui.lostandfound.LostAndFoundNoticeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+
         <!--失物招领2-->
         <activity android:name=".ui.lostandfound.LostAndFoundActivity2"
             android:screenOrientation="portrait"

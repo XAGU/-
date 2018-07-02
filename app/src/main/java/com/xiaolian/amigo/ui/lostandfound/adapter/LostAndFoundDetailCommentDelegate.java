@@ -13,6 +13,8 @@ import android.text.Spanned;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -49,14 +51,19 @@ public class LostAndFoundDetailCommentDelegate
     private Context context;
     private OnReplyCommentListener replyCommentListener;
     private OnMoreReplyClickListener moreReplyClickListener;
+    private LostAndFoundDetailContentDelegate.OnLikeClickListener likeClickListener;
     private SpaceItemDecoration itemDecoration;
+    private boolean animating = false;
+    private Animation animation;
 
     public LostAndFoundDetailCommentDelegate(Context context,
                                              OnReplyCommentListener replyCommentListener,
-                                             OnMoreReplyClickListener moreReplyClickListener) {
+                                             OnMoreReplyClickListener moreReplyClickListener,
+                                             LostAndFoundDetailContentDelegate.OnLikeClickListener likeClickListener) {
         this.context = context;
         this.replyCommentListener = replyCommentListener;
         this.moreReplyClickListener = moreReplyClickListener;
+        this.likeClickListener =likeClickListener;
     }
 
     @Override
@@ -90,13 +97,66 @@ public class LostAndFoundDetailCommentDelegate
         holder.setText(R.id.tv_time,
                 TimeUtils.lostAndFoundTimestampFormat(lostAndFoundDetailWrapper.getTime()));
 
-        holder.getView(R.id.tv_replay).setVisibility(lostAndFoundDetailWrapper.isCommentEnable() ?
+        holder.getView(R.id.iv_reply).setVisibility(lostAndFoundDetailWrapper.isCommentEnable() ?
                 View.VISIBLE : View.GONE);
-        holder.getView(R.id.tv_replay).setOnClickListener(v -> {
+        holder.getView(R.id.iv_reply).setOnClickListener(v -> {
             if (replyCommentListener != null) {
                 replyCommentListener.onReplyComment(lostAndFoundDetailWrapper.getId(),
                         lostAndFoundDetailWrapper.getCommentAuthorId(),
                         lostAndFoundDetailWrapper.getCommentAuthor());
+            }
+        });
+
+        holder.getView(R.id.iv_like).setVisibility(lostAndFoundDetailWrapper.isCommentEnable() ?
+                View.VISIBLE : View.GONE);
+        holder.getView(R.id.tv_like_count).setVisibility(lostAndFoundDetailWrapper.isCommentEnable() ?
+                View.VISIBLE : View.GONE);
+        holder.setText(R.id.tv_like_count, String.valueOf(lostAndFoundDetailWrapper.getLikeCount()));
+        holder.setImageResource(R.id.iv_like,
+                lostAndFoundDetailWrapper.isLiked() ?
+                        R.drawable.ic_like : R.drawable.ic_unlike);
+
+        holder.getView(R.id.iv_like).setOnClickListener(v -> {
+            if (animating) {
+                return;
+            }
+            if (likeClickListener != null) {
+                Integer likeCount = lostAndFoundDetailWrapper.getLikeCount();
+                if (lostAndFoundDetailWrapper.isLiked()) {
+                    lostAndFoundDetailWrapper.setLiked(false);
+                    lostAndFoundDetailWrapper.setLikeCount(likeCount - 1);
+                    holder.setImageResource(R.id.iv_like, R.drawable.ic_unlike);
+//                    holder.setText(R.id.tv_like_count,
+//                            String.valueOf(lostAndFoundDetailWrapper.getLikeCount()));
+                    likeClickListener.onLikeClick(position, lostAndFoundDetailWrapper.getId(), true);
+                } else {
+                    lostAndFoundDetailWrapper.setLiked(true);
+                    lostAndFoundDetailWrapper.setLikeCount(likeCount + 1);
+                    holder.setImageResource(R.id.iv_like, R.drawable.ic_like);
+//                    holder.setText(R.id.tv_like_count,
+//                            String.valueOf(lostAndFoundDetailWrapper.getLikeCount()));
+                    likeClickListener.onLikeClick(position, lostAndFoundDetailWrapper.getId(), false);
+                    if (animation == null) {
+                        animation = AnimationUtils.loadAnimation(context, R.anim.lost_found_like);
+                        animation.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) {
+                                animating = true;
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+                                animating = false;
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animation animation) {
+
+                            }
+                        });
+                    }
+                    holder.getView(R.id.iv_like).startAnimation(animation);
+                }
             }
         });
 

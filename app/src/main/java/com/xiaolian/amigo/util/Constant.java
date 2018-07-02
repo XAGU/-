@@ -77,7 +77,7 @@ public final class Constant {
     /**
      * H5地址
      */
-    public static final String H5_SERVER = BuildConfig.H5_SERVER;
+    public static String H5_SERVER = BuildConfig.H5_SERVER;
     /**
      * H5帮助中心
      */

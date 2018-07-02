@@ -9,7 +9,10 @@ import lombok.Data;
 @Data
 public class QueryLostFoundCommentsReqDTO {
     private Integer commentsSize;
+    private String excludeId;
     private Integer from;
+    private Integer hot;
     private Long id;
     private Integer repliesSize;
+    private Integer status;
 }

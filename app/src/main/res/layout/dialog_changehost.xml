@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@drawable/bg_rect_corner_dialog_inset"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_height="72dp">
+        <EditText
+            android:id="@+id/et_host"
+            android:background="@drawable/bg_rect_gray_corner"
+            android:layout_width="match_parent"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:textCursorDrawable="@drawable/cursor_small"
+            android:cursorVisible="true"
+            android:singleLine="true"
+            android:textSize="14sp"
+            android:textColorHint="@color/colorDarkB"
+            android:textColor="@color/colorDark2"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="50dp" />
+        <requestFocus/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_height="72dp">
+        <EditText
+            android:id="@+id/et_host2"
+            android:background="@drawable/bg_rect_gray_corner"
+            android:layout_width="match_parent"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:textCursorDrawable="@drawable/cursor_small"
+            android:cursorVisible="true"
+            android:singleLine="true"
+            android:textSize="14sp"
+            android:textColorHint="@color/colorDarkB"
+            android:textColor="@color/colorDark2"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="50dp" />
+        <requestFocus/>
+    </LinearLayout>
+    <View
+        android:background="@color/colorDarke"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="48dp">
+        <TextView
+            android:id="@+id/tv_cancel"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:gravity="center"
+            android:textSize="13sp"
+            android:textColor="@color/colorDark9"
+            android:text="@string/cancel"
+            android:layout_height="match_parent" />
+        <View
+            android:background="@color/colorDarke"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"/>
+        <TextView
+            android:id="@+id/tv_ok"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:textColor="@color/colorBlue"
+            android:textSize="13sp"
+            android:gravity="center"
+            android:text="@string/ok"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+</LinearLayout>

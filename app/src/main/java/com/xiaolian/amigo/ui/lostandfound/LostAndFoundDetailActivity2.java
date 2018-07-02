@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.util.ObjectsCompat;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
@@ -22,25 +21,21 @@ import com.xiaolian.amigo.data.vo.LostAndFound;
 import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundDetailAdapter;
 import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundDetailCommentDelegate;
 import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundDetailContentDelegate;
+import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundDetailTitleDelegate;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundDetailPresenter2;
-import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundDetailView;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundDetailView2;
 import com.xiaolian.amigo.ui.widget.CustomLinearLayoutManager;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
-import com.xiaolian.amigo.ui.widget.dialog.ActionSheetDialog;
 import com.xiaolian.amigo.ui.widget.dialog.LostAndFoundBottomDialog;
 import com.xiaolian.amigo.ui.widget.dialog.LostAndFoundCommentDialog;
 import com.xiaolian.amigo.ui.widget.dialog.LostAndFoundReplyDialog;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutFooter;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutHeader;
-import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.ScreenUtils;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.inject.Inject;
 
@@ -62,6 +57,13 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
     private LostAndFoundDetailAdapter adapter;
     private List<LostAndFoundDetailAdapter.LostAndFoundDetailWrapper> items = new Vector<>();
     private LostAndFoundDetailAdapter.LostAndFoundDetailWrapper content;
+    private LostAndFoundDetailAdapter.LostAndFoundDetailWrapper hotTitle =
+            new LostAndFoundDetailAdapter.LostAndFoundDetailWrapper(LostAndFoundDetailAdapter.LostAndFoundDetailItemType.TITLE,
+                    "热门评论");
+    private LostAndFoundDetailAdapter.LostAndFoundDetailWrapper normalTitle =
+            new LostAndFoundDetailAdapter.LostAndFoundDetailWrapper(LostAndFoundDetailAdapter.LostAndFoundDetailItemType.TITLE,
+                    "全部评论");
+
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
@@ -150,9 +152,28 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
     private void initRecyclerView() {
         adapter = new LostAndFoundDetailAdapter(this, items);
         adapter.addItemViewDelegate(new LostAndFoundDetailCommentDelegate(this,
-                this::publishReply, this::moreReply));
-        adapter.addItemViewDelegate(new LostAndFoundDetailContentDelegate(this));
-        recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 21)));
+                this::publishReply, this::moreReply, new LostAndFoundDetailContentDelegate.OnLikeClickListener() {
+            @Override
+            public void onLikeClick(int position, long id, boolean like) {
+                if (like) {
+                    presenter.unLikeComment(position, id);
+                } else {
+                    presenter.likeComment(position, id);
+                }
+            }
+        }));
+        adapter.addItemViewDelegate(new LostAndFoundDetailContentDelegate(this, new LostAndFoundDetailContentDelegate.OnLikeClickListener() {
+            @Override
+            public void onLikeClick(int position, long id, boolean like) {
+                if (like) {
+                    presenter.unLikeContent(position, id);
+                } else {
+                    presenter.likeContent(position, id);
+                }
+            }
+        }));
+        adapter.addItemViewDelegate(new LostAndFoundDetailTitleDelegate());
+        recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 14)));
         adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
@@ -163,6 +184,7 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
                 return false;
             }
         });
+        recyclerView.setItemAnimator(null);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new CustomLinearLayoutManager(this));
         refreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
@@ -253,6 +275,7 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
         } else {
             content.setCommentCount(lostAndFound.getCommentsCount());
             content.setViewCount(lostAndFound.getViewCount());
+            content.setLikeCount(lostAndFound.getLikeCount());
         }
         presenter.getComments();
     }
@@ -260,11 +283,28 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
     @OnClick({R.id.iv_three_dot, R.id.v_more_hold,
             R.id.iv_three_dot2, R.id.v_more_hold_1})
     public void onMoreClick() {
+        if (content == null) {
+            return;
+        }
         if (bottomDialog == null) {
             bottomDialog = new LostAndFoundBottomDialog(this);
         }
         bottomDialog.setOkText(presenter.isOwner() ? "删除" : "举报");
+        bottomDialog.setOkTextColor(R.color.colorDark6);
         bottomDialog.setOnOkClickListener(dialog -> presenter.reportOrDelete());
+        if (presenter.isCommentEnable()) {
+            bottomDialog.setOtherText(content.isCollected() ? "取消收藏" : "收藏");
+            bottomDialog.setOtherTextColor(R.color.colorDark2);
+            bottomDialog.setOnOtherClickListener(dialog -> {
+                if (content.isCollected()) {
+                    presenter.unCollect();
+                } else {
+                    presenter.collect();
+                }
+            });
+        } else {
+            bottomDialog.hideOtherText();
+        }
         bottomDialog.show();
     }
 
@@ -342,11 +382,19 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
     }
 
     @Override
-    public void addMore(List<LostAndFoundDetailAdapter.LostAndFoundDetailWrapper> wrappers) {
+    public void addMore(List<LostAndFoundDetailAdapter.LostAndFoundDetailWrapper> wrappers,
+                        List<LostAndFoundDetailAdapter.LostAndFoundDetailWrapper> hots) {
         if (refreshFlag) {
             refreshFlag = false;
             items.clear();
             items.add(content);
+            if (!hots.isEmpty()) {
+                items.add(hotTitle);
+                items.addAll(hots);
+            }
+            if (!wrappers.isEmpty()) {
+                items.add(normalTitle);
+            }
         }
         items.addAll(wrappers);
         adapter.notifyDataSetChanged();
@@ -394,12 +442,43 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
     }
 
     @Override
-    public void onBackPressed() {
-        if (presenter.needRefresh()) {
-            finishView();
-        } else {
-            super.onBackPressed();
+    public void collectSuccess() {
+        onSuccess("收藏成功");
+        if (content != null) {
+            content.setCollected(true);
         }
+    }
+
+    @Override
+    public void unCollectSuccess() {
+        onSuccess("取消收藏成功");
+        if (content != null) {
+            content.setCollected(false);
+        }
+    }
+
+    @Override
+    public void notifyAdapter(int position, boolean delay) {
+        adapter.notifyItemChanged(position);
+//        if (delay) {
+//            recyclerView.postDelayed(() -> adapter.notifyItemChanged(position), 300);
+//        } else {
+//        }
+    }
+
+    @Override
+    public void onBackPressed() {
+//        if (presenter.needRefresh()) {
+//            finishView();
+//        } else {
+//        }
+        Intent intent = new Intent();
+        intent.putExtra(LostAndFoundActivity2.KEY_VIEW_COUNT, content == null ?
+                0 : content.getViewCount() + 1);
+        intent.putExtra(LostAndFoundActivity2.KEY_COMMENT_COUNT, content == null ?
+                0 : content.getCommentCount());
+        setResult(RESULT_OK, intent);
+        super.onBackPressed();
     }
 
     @Override

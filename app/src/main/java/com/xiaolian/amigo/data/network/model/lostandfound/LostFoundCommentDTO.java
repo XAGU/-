@@ -19,6 +19,14 @@ public class LostFoundCommentDTO {
     private Integer repliesDelCount;
     private Long userId;
     private String userNickname;
+    /**
+     * 点赞数量
+     */
+    private Integer likeCount;
+    /**
+     * 本人是否点赞 1 本人已点赞 2 本人未点赞
+     */
+    private Integer liked;
 
     public String getContent() {
         if (content == null) {

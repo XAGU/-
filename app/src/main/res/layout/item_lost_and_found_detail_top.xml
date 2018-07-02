@@ -1,9 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:paddingStart="@dimen/mainMarginLeftRight"
+    android:paddingEnd="@dimen/mainMarginLeftRight"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_marginBottom="9dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <de.hdodenhof.circleimageview.CircleImageView
+            tools:src="@drawable/default_avatar"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/iv_avatar"
+            android:layout_width="43dp"
+            android:layout_height="43dp" />
+
+        <RelativeLayout
+            android:id="@+id/rl_author_info"
+            android:layout_marginStart="7dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:id="@+id/ll_content_author"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tv_content_author"
+                    android:textSize="12sp"
+                    android:textColor="@color/colorDark2"
+                    tools:text="TB009527"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <ImageView
+                    tools:visibility="visible"
+                    android:id="@+id/iv_owner"
+                    android:visibility="visible"
+                    android:layout_marginStart="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+            <TextView
+                android:id="@+id/tv_time"
+                android:layout_below="@id/ll_content_author"
+                tools:text="今天13:19"
+                android:textSize="11sp"
+                android:textColor="#999"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/ll_images"
@@ -14,35 +71,38 @@
         tools:visibility="visible"
         android:visibility="gone">
 
-        <ImageView
+        <com.xiaolian.amigo.ui.widget.SquareImageView
             android:id="@+id/iv_first"
-            android:layout_width="57dp"
-            android:layout_height="57dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:background="#ddd"
             android:scaleType="centerCrop"
             android:visibility="visible"/>
 
         <!--android:scaleType="fitXY"-->
-        <ImageView
+        <com.xiaolian.amigo.ui.widget.SquareImageView
             android:id="@+id/iv_second"
-            android:layout_width="57dp"
-            android:layout_height="57dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"
             android:background="#ddd"
             android:scaleType="centerCrop"
-            android:visibility="gone"/>
+            android:visibility="invisible"/>
 
-        <ImageView
+        <com.xiaolian.amigo.ui.widget.SquareImageView
             android:id="@+id/iv_third"
-            android:layout_width="57dp"
-            android:layout_height="57dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"
             android:background="#ddd"
             android:scaleType="centerCrop"
-            android:visibility="gone"/>
+            android:visibility="invisible"/>
 
     </LinearLayout>
 
@@ -66,11 +126,11 @@
         android:layout_height="wrap_content" />
 
     <LinearLayout
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="38dp">
         <TextView
             android:id="@+id/tv_stat"
             tools:text="4912查看·103回复"
@@ -78,18 +138,31 @@
             android:textColor="#aaa"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
+        <View
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:id="@+id/iv_like"
+            android:src="@drawable/ic_unlike"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
         <TextView
-            android:id="@+id/tv_time"
+            android:layout_marginStart="5dp"
+            android:id="@+id/tv_like_count"
             android:gravity="end"
-            tools:text="今天12:30发布"
+            tools:text="250"
             android:textSize="11sp"
             android:textColor="#aaa"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
 
     <View
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="14dp"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/colorDarke" />

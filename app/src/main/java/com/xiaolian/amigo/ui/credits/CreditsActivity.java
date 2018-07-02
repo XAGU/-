@@ -123,7 +123,7 @@ public class CreditsActivity extends CreditsBaseActivity implements ICreditsView
         if (dialog == null) {
             dialog = new AvailabilityDialog(CreditsActivity.this);
         }
-        dialog.setTitle(String.format("确认兑换¥%s%s代金券码？", bonusAmount,
+        dialog.setTitle(String.format("确认兑换¥%s%s代金券吗？", bonusAmount,
                 Device.getDevice(deviceType).getDesc()));
         dialog.setTip(String.format(Locale.getDefault(), "兑换成功后将会扣除%d积分", pointAmount));
         dialog.setOkText("确认");

@@ -13,6 +13,7 @@ import android.os.Message;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.util.ObjectsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.GestureDetector;
@@ -1090,6 +1091,11 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         }
         if (prepayDialog.isShowing()) {
             return;
+        }
+        if (ObjectsCompat.equals(type, Device.DRYER.getType())) {
+            prepayDialog.setCancelText("继续使用");
+        } else {
+            prepayDialog.setCancelText("继续用水");
         }
         prepayDialog.setDeviceTypeAndPrepaySize(type, prepaySize);
         prepayDialog.setOnOkClickListener(dialog -> startActivity(new Intent(MainActivity.this, PrepayActivity.class)));

@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.lostandfound;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -9,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -21,6 +23,7 @@ import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundPresenter2;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundView2;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.ui.widget.dialog.LostAndFoundPopupDialog;
+import com.xiaolian.amigo.ui.widget.dialog.LostAndFoundPublishDialog;
 import com.xiaolian.amigo.ui.widget.dialog.SearchDialog;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutFooter;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutHeader;
@@ -43,6 +46,9 @@ import butterknife.OnClick;
 public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements ILostAndFoundView2 {
     private static final String TAG = LostAndFoundActivity2.class.getSimpleName();
     private static final int REQUEST_CODE_PUBLISH = 0x0101;
+    private static final int REQUEST_CODE_DETAIL = 0x0102;
+    public static final String KEY_VIEW_COUNT = "key_view_count";
+    public static final String KEY_COMMENT_COUNT = "key_comment_count";
 
     @Inject
     ILostAndFoundPresenter2<ILostAndFoundView2> presenter;
@@ -62,15 +68,25 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
     @BindView(R.id.rl_error)
     RelativeLayout rlError;
 
+    @BindView(R.id.ll_footer)
+    LinearLayout llFooter;
+
     @BindView(R.id.collapsingToolbarLayout)
     CollapsingToolbarLayout collapsingToolbarLayout;
 
     @BindView(R.id.abl_actionbar)
     AppBarLayout ablActionbar;
 
+    @BindView(R.id.iv_notice_remind)
+    ImageView ivNoticeRemind;
+
+    private int currentChoosePosition = -1;
+
     private LostAndFoundAdaptor2 adaptor;
 
     private LostAndFoundPopupDialog addDialog;
+
+    private LostAndFoundPublishDialog publishDialog;
 
     private SearchDialog searchDialog;
     private RecyclerView searchRecyclerView;
@@ -97,15 +113,18 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
         }
         addDialog.setLostAndFoundListener(new LostAndFoundPopupDialog.OnLostAndFoundClickListener() {
             @Override
-            public void onPublishLostClick() {
-                startActivityForResult(new Intent(LostAndFoundActivity2.this, PublishLostAndFoundActivity.class)
-                        .putExtra(PublishLostAndFoundActivity.KEY_TYPE, LostAndFound.LOST), REQUEST_CODE_PUBLISH);
+            public void onMyNoticeClick() {
+//                startActivityForResult(new Intent(LostAndFoundActivity2.this, PublishLostAndFoundActivity.class)
+//                        .putExtra(PublishLostAndFoundActivity.KEY_TYPE, LostAndFound.LOST), REQUEST_CODE_PUBLISH);
+                hideNoticeRemind();
+                startActivity(new Intent(LostAndFoundActivity2.this, LostAndFoundNoticeActivity.class));
             }
 
             @Override
-            public void onPublishFoundClick() {
-                startActivityForResult(new Intent(LostAndFoundActivity2.this, PublishLostAndFoundActivity.class)
-                        .putExtra(PublishLostAndFoundActivity.KEY_TYPE, LostAndFound.FOUND), REQUEST_CODE_PUBLISH);
+            public void onMyFavoriteClick() {
+//                startActivityForResult(new Intent(LostAndFoundActivity2.this, PublishLostAndFoundActivity.class)
+//                        .putExtra(PublishLostAndFoundActivity.KEY_TYPE, LostAndFound.FOUND), REQUEST_CODE_PUBLISH);
+                startActivity(new Intent(LostAndFoundActivity2.this, MyCollectActivity.class));
             }
 
             @Override
@@ -114,7 +133,34 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
                         new Intent(LostAndFoundActivity2.this, MyPublishActivity2.class), REQUEST_CODE_PUBLISH);
             }
         });
+        addDialog.setNoticeVisible(presenter.isCommentEnable());
+        addDialog.setNoticeCount(presenter.getNoticeCount());
         addDialog.show();
+    }
+
+    private void showPublishDialog() {
+        if (publishDialog == null) {
+            publishDialog = new LostAndFoundPublishDialog(this);
+        }
+        publishDialog.setOnPublishLostAndFoundListener(new LostAndFoundPublishDialog.PublishLostAndFoundListener() {
+            @Override
+            public void onPublishLost(Dialog dialog) {
+                startActivityForResult(new Intent(LostAndFoundActivity2.this, PublishLostAndFoundActivity.class)
+                        .putExtra(PublishLostAndFoundActivity.KEY_TYPE, LostAndFound.LOST), REQUEST_CODE_PUBLISH);
+            }
+
+            @Override
+            public void onPublishFound(Dialog dialog) {
+                startActivityForResult(new Intent(LostAndFoundActivity2.this, PublishLostAndFoundActivity.class)
+                        .putExtra(PublishLostAndFoundActivity.KEY_TYPE, LostAndFound.FOUND), REQUEST_CODE_PUBLISH);
+            }
+        });
+        publishDialog.show();
+    }
+
+    @OnClick(R.id.ll_footer)
+    public void onPublishClick() {
+        showPublishDialog();
     }
 
     @OnClick(R.id.iv_add)
@@ -133,8 +179,9 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
                     intent.putExtra(LostAndFoundDetailActivity2.KEY_TYPE,
                             lostAndFounds.get(position).getType());
                     intent.putExtra(LostAndFoundDetailActivity2.KEY_ID, lostAndFounds.get(position).getId());
-                    startActivityForResult(intent, REQUEST_CODE_PUBLISH);
-                    lostAndFounds.get(position).addViewCount();
+                    currentChoosePosition = position;
+                    startActivityForResult(intent, REQUEST_CODE_DETAIL);
+//                    lostAndFounds.get(position).addViewCount();
 //                    adaptor.notifyDataSetChanged();
                 } catch (ArrayIndexOutOfBoundsException e) {
                     Log.wtf(TAG, "数组越界", e);
@@ -245,6 +292,26 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
         searchDialog.showResult(searchRecyclerView);
     }
 
+    @Override
+    public void showFootView() {
+//        llFooter.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideFootView() {
+//        llFooter.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showNoticeRemind() {
+        ivNoticeRemind.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideNoticeRemind() {
+        ivNoticeRemind.setVisibility(View.GONE);
+    }
+
     private void onLoadMore() {
         presenter.getList(false, null);
     }
@@ -253,6 +320,12 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
         presenter.resetPage();
         refreshFlag = true;
         presenter.getList(false, null);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        presenter.fetchNoticeCount();
     }
 
     @Override
@@ -315,6 +388,15 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
             if (requestCode == REQUEST_CODE_PUBLISH) {
 //                refreshLostAndFound();
                 onRefresh();
+            } else if (requestCode == REQUEST_CODE_DETAIL) {
+                if (data != null && currentChoosePosition != -1) {
+                    int viewCount = data.getIntExtra(KEY_VIEW_COUNT, 0);
+                    int commentCount = data.getIntExtra(KEY_COMMENT_COUNT, 0);
+                    lostAndFounds.get(currentChoosePosition).setViewCount(viewCount);
+                    lostAndFounds.get(currentChoosePosition).setCommentCount(commentCount);
+                    currentChoosePosition = -1;
+                    adaptor.notifyDataSetChanged();
+                }
             }
         } else {
             adaptor.notifyDataSetChanged();
