@@ -1,6 +1,8 @@
 package com.xiaolian.amigo.ui.device.bathroom;
 
 import android.content.Context;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 
 import com.xiaolian.amigo.R;
 import com.zhy.adapter.recyclerview.CommonAdapter;
@@ -25,10 +27,17 @@ public class ChooseBathroomOuterAdapter extends CommonAdapter<ChooseBathroomOute
     @Override
     protected void convert(ViewHolder holder, Item item, int position) {
         adapter = new ChooseBathroomAdapter(context, R.layout.item_choose_bathroom, item.getA());
+        RecyclerView recyclerView = holder.getView(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setAdapter(adapter);
     }
 
     @Data
     public static final class Item {
         List<ChooseBathroomAdapter.ItemWrapper> a;
+
+        public Item(List<ChooseBathroomAdapter.ItemWrapper> a) {
+            this.a = a;
+        }
     }
 }

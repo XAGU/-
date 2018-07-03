@@ -11,6 +11,7 @@ import com.xiaolian.amigo.ui.device.bathroom.BookingPresenter;
 import com.xiaolian.amigo.ui.device.bathroom.BookingRecordPresenter;
 import com.xiaolian.amigo.ui.device.bathroom.BuyCodePresenter;
 import com.xiaolian.amigo.ui.device.bathroom.BuyRecordPresenter;
+import com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomPresenter;
 import com.xiaolian.amigo.ui.device.bathroom.PayUsePresenter;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IBathroomPresenter;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IBathroomView;
@@ -22,6 +23,8 @@ import com.xiaolian.amigo.ui.device.bathroom.intf.IBuyCodePresenter;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IBuyCodeView;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IBuyRecordPresenter;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IBuyRecordView;
+import com.xiaolian.amigo.ui.device.bathroom.intf.IChooseBathroomPresenter;
+import com.xiaolian.amigo.ui.device.bathroom.intf.IChooseBathroomView;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IPayUsePresenter;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IPayUseView;
 
@@ -85,6 +88,13 @@ public class BathroomActivityModule {
     @BathroomActivityContext
     IPayUsePresenter<IPayUseView> providePayUsePresenter(
             PayUsePresenter<IPayUseView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    @BathroomActivityContext
+    IChooseBathroomPresenter<IChooseBathroomView> provideChooseBathroomPresenter(
+            ChooseBathroomPresenter<IChooseBathroomView> presenter) {
         return presenter;
     }
 
