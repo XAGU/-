@@ -1,8 +1,11 @@
 package com.xiaolian.amigo.ui.device.bathroom;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.widget.ZoomRecyclerView;
@@ -27,6 +30,8 @@ public class ChooseBathroomActivity extends AppCompatActivity {
     };
     private ZoomRecyclerView recyclerView;
     private ChooseBathroomAdapter adapter;
+    private LinearLayout llLeft;
+    private LinearLayout llRight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,11 +43,23 @@ public class ChooseBathroomActivity extends AppCompatActivity {
 
     private void bindView() {
         recyclerView = findViewById(R.id.recyclerView);
+        llLeft = findViewById(R.id.ll_left);
+        llRight = findViewById(R.id.ll_right);
+        llLeft.setOnClickListener(v -> onLeftClick());
+        llRight.setOnClickListener(v -> onRightClick());
     }
 
     private void initRecyclerView() {
         adapter = new ChooseBathroomAdapter(this, R.layout.item_bathroom_small, items);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
+    }
+
+    private void onLeftClick() {
+        startActivity(new Intent(this, BuyCodeActivity.class));
+    }
+
+    private void onRightClick() {
+        startActivity(new Intent(this, PayUseActivity.class));
     }
 }

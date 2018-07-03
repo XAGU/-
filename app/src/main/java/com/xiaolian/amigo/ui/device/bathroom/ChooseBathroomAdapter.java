@@ -23,6 +23,7 @@ public class ChooseBathroomAdapter extends CommonAdapter<ChooseBathroomAdapter.I
     @Override
     protected void convert(ViewHolder holder, ItemWrapper itemWrapper, int position) {
         holder.setText(R.id.tv_content, itemWrapper.getName());
+
     }
 
     @Data
