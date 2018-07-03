@@ -27,8 +27,6 @@ public class BuyCodeActivity extends UseWayActivity implements IBuyCodeView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bathroom_shower);
-        setUnBinder(ButterKnife.bind(this));
 
         getActivityComponent().inject(this);
         presenter.onAttach(this);

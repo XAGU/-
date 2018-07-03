@@ -49,6 +49,7 @@ import com.xiaolian.amigo.ui.device.DeviceConstant;
 import com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity;
 import com.xiaolian.amigo.ui.device.bathroom.BathroomActivity;
 import com.xiaolian.amigo.ui.device.bathroom.BookingActivity;
+import com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity;
 import com.xiaolian.amigo.ui.device.bathroom.PayUseActivity;
 import com.xiaolian.amigo.ui.device.dispenser.ChooseDispenserActivity;
 import com.xiaolian.amigo.ui.device.dispenser.DispenserActivity;
@@ -1285,7 +1286,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     private void gotoWasher() {
         // FIXME
-        startActivity(new Intent(this, PayUseActivity.class));
+        startActivity(new Intent(this, ChooseBathroomActivity.class));
 //        startActivity(new Intent(this, WasherActivity.class));
     }
 
