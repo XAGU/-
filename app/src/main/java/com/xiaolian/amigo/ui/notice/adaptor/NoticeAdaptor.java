@@ -41,15 +41,15 @@ public class NoticeAdaptor extends CommonAdapter<NoticeAdaptor.NoticeWapper> {
 
     @Override
     protected void convert(ViewHolder holder, NoticeWapper noticeWapper, int position) {
-        if (position == 0) {
-            LinearLayout llItem = holder.getView(R.id.ll_item_notice);
-            if (!TextUtils.equals((CharSequence) llItem.getChildAt(0).getTag(), DIVIDER_TAG)) {
-                View view = new View(llItem.getContext());
-                view.setTag(DIVIDER_TAG);
-                view.setBackgroundResource(R.drawable.divider);
-                llItem.addView(view, 0);
-            }
-        }
+//        if (position == 0) {
+//            LinearLayout llItem = holder.getView(R.id.ll_item_notice);
+//            if (!TextUtils.equals((CharSequence) llItem.getChildAt(0).getTag(), DIVIDER_TAG)) {
+//                View view = new View(llItem.getContext());
+//                view.setTag(DIVIDER_TAG);
+//                view.setBackgroundResource(R.drawable.divider);
+//                llItem.addView(view, 0);
+//            }
+//        }
 
         TextView tvType = holder.getView(R.id.tv_type);
         if (ObjectsCompat.equals(noticeWapper.getReadStatus(), NoticeReadStatus.UNREAD.getType())
@@ -70,8 +70,9 @@ public class NoticeAdaptor extends CommonAdapter<NoticeAdaptor.NoticeWapper> {
             }
         }
         holder.setText(R.id.tv_content, noticeWapper.getContent());
-        holder.setText(R.id.tv_time, TimeUtils.convertTimestampToFormat(noticeWapper.getCreateTime())
-                + "/" + TimeUtils.millis2String(noticeWapper.getCreateTime(), TimeUtils.MY_TIME_FORMAT));
+//        holder.setText(R.id.tv_time, TimeUtils.convertTimestampToFormat(noticeWapper.getCreateTime())
+//                + "/" + TimeUtils.millis2String(noticeWapper.getCreateTime(), TimeUtils.MY_TIME_FORMAT));
+        holder.setText(R.id.tv_time, TimeUtils.noticeTimestampFormat(noticeWapper.getCreateTime()));
     }
 
     @Data

@@ -6,6 +6,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
@@ -20,6 +21,11 @@ import lombok.NonNull;
 public class LostAndFoundPopupDialog extends Dialog {
     private Context context;
     private OnLostAndFoundClickListener listener;
+    private TextView tvNoticeCount;
+    private RelativeLayout rlMyNotice;
+    private View vLine1;
+    private View vLine2;
+    private TextView tvMyFavorite;
 
     public LostAndFoundPopupDialog(@NonNull Context context) {
         super(context, R.style.LostAndFoundPopupDialogStyle);
@@ -40,31 +46,52 @@ public class LostAndFoundPopupDialog extends Dialog {
 
     private void initView() {
         setContentView(R.layout.dialog_lost_and_found);
-        TextView tvPublishLost = findViewById(R.id.tv_publish_lost);
-        TextView tvPublishFound = findViewById(R.id.tv_publish_found);
+        TextView tvMyNotice = findViewById(R.id.tv_my_notice);
+        tvMyFavorite = findViewById(R.id.tv_my_favorite);
         TextView tvMyPublish = findViewById(R.id.tv_my_publish);
-        tvPublishLost.setOnClickListener(v -> {
-            listener.onPublishLostClick();
+        tvMyNotice.setOnClickListener(v -> {
+            listener.onMyNoticeClick();
             dismiss();
         });
-        tvPublishFound.setOnClickListener(v -> {
-            listener.onPublishFoundClick();
+        tvMyFavorite.setOnClickListener(v -> {
+            listener.onMyFavoriteClick();
             dismiss();
         });
         tvMyPublish.setOnClickListener(v -> {
             listener.onMyPublishClick();
             dismiss();
         });
+        tvNoticeCount = findViewById(R.id.tv_notice_count);
+
+        rlMyNotice = findViewById(R.id.rl_my_notice);
+        vLine1 = findViewById(R.id.v_line1);
+        vLine2 = findViewById(R.id.v_line2);
     }
 
     public void setLostAndFoundListener(OnLostAndFoundClickListener listener) {
         this.listener = listener;
     }
 
-    public interface OnLostAndFoundClickListener {
-        void onPublishLostClick();
+    public void setNoticeVisible(boolean visible) {
+        rlMyNotice.setVisibility(visible ? View.VISIBLE : View.GONE);
+        tvMyFavorite.setVisibility(visible ? View.VISIBLE : View.GONE);
+        vLine1.setVisibility(visible ? View.VISIBLE : View.GONE);
+        vLine2.setVisibility(visible ? View.VISIBLE : View.GONE);
+    }
 
-        void onPublishFoundClick();
+    public void setNoticeCount(int count) {
+        if (count > 0) {
+            tvNoticeCount.setVisibility(View.VISIBLE);
+            tvNoticeCount.setText(String.valueOf(count));
+        } else {
+            tvNoticeCount.setVisibility(View.GONE);
+        }
+    }
+
+    public interface OnLostAndFoundClickListener {
+        void onMyNoticeClick();
+
+        void onMyFavoriteClick();
 
         void onMyPublishClick();
     }

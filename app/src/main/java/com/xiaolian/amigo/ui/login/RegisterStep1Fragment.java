@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.util.ObjectsCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.base.WebActivity;
@@ -58,6 +60,10 @@ public class RegisterStep1Fragment extends Fragment {
     @BindView(R.id.bt_send_verification_code)
     Button btSendVerificationCode;
 
+    @BindView(R.id.iv_agreement_icon)
+    ImageView ivAgreementIcon;
+    private boolean agreementChecked = true;
+
     @OnClick(R.id.bt_send_verification_code)
     void sendVerificationCode() {
         if (getActivity() instanceof LoginActivity) {
@@ -70,6 +76,18 @@ public class RegisterStep1Fragment extends Fragment {
     void onAgreementClick() {
         startActivity(new Intent(getActivity(), WebActivity.class)
                 .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_AGREEMENT));
+    }
+
+    @OnClick(R.id.iv_agreement_icon)
+    void onAgreementIconClick() {
+        if (agreementChecked) {
+            agreementChecked = false;
+            ivAgreementIcon.setImageResource(R.drawable.ic_agreement_uncheck);
+        } else {
+            agreementChecked = true;
+            ivAgreementIcon.setImageResource(R.drawable.ic_agreement_check);
+        }
+        toggleButton();
     }
 
     @BindView(R.id.et_verification_code)
@@ -141,6 +159,7 @@ public class RegisterStep1Fragment extends Fragment {
     }
 
 
+
     public void startTimer() {
         int color = ContextCompat.getColor(getContext(), R.color.colorDarkB);
         btSendVerificationCode.setTextColor(color);
@@ -164,7 +183,8 @@ public class RegisterStep1Fragment extends Fragment {
     private void toggleButton() {
         boolean valid = !TextUtils.isEmpty(etVerificationCode.getText())
                 && !TextUtils.isEmpty(etMobile.getText())
-                && etMobile.getText().length() >= MOBILE_LENGTH;
+                && etMobile.getText().length() >= MOBILE_LENGTH
+                && agreementChecked;
         btSubmit.setEnabled(valid);
     }
 

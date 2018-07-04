@@ -33,6 +33,9 @@ public class DispenserPresenter<V extends IDispenserView> extends WaterDeviceBas
 
     @Override
     public void favorite(Long id) {
+        if (getMvpView().isBleError()) {
+            resetSubscriptions();
+        }
         FavorDeviceReqDTO reqDTO = new FavorDeviceReqDTO();
         reqDTO.setType(Device.DISPENSER.getType());
         reqDTO.setId(id);
@@ -52,6 +55,9 @@ public class DispenserPresenter<V extends IDispenserView> extends WaterDeviceBas
 
     @Override
     public void unFavorite(Long id) {
+        if (getMvpView().isBleError()) {
+            resetSubscriptions();
+        }
         FavorDeviceReqDTO reqDTO = new FavorDeviceReqDTO();
         reqDTO.setId(id);
         reqDTO.setType(Device.DISPENSER.getType());

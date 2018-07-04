@@ -121,6 +121,14 @@ public class LostAndFoundAdaptor2 extends CommonAdapter<LostAndFoundAdaptor2.Los
             lostAndFound.setViewCount(lostAndFound.getViewCount() + 1);
         }
 
+        public void setViewCount(int viewCount) {
+            lostAndFound.setViewCount(viewCount);
+        }
+
+        public void setCommentCount(int commentCount) {
+            lostAndFound.setCommentsCount(commentCount);
+        }
+
         public Integer getCommentCount() {
             return lostAndFound.getCommentsCount() == null ? 0 : lostAndFound.getCommentsCount();
         }

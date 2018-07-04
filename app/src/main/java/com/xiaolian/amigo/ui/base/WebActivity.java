@@ -22,8 +22,10 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.xiaolian.amigo.BuildConfig;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.util.CommonUtil;
+import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
 
 import butterknife.BindView;
@@ -142,7 +144,10 @@ public class WebActivity extends BaseActivity {
         webView.setWebChromeClient(new MyWebChromeClient());
         webView.addJavascriptInterface(new WebAppInterface(), "WebViewInterface");
         webSettings.setJavaScriptEnabled(true);
-        webView.loadUrl(url);
+        if (url != null) {
+            url = url.replace(BuildConfig.H5_SERVER, Constant.H5_SERVER);
+            webView.loadUrl(url);
+        }
         Log.i(TAG, url);
 
         initErrorView();

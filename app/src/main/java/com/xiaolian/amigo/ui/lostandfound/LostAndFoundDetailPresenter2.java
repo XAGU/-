@@ -6,7 +6,10 @@ import com.xiaolian.amigo.data.manager.intf.ILostAndFoundDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
+import com.xiaolian.amigo.data.network.model.lostandfound.CollectItemReqDTO;
+import com.xiaolian.amigo.data.network.model.lostandfound.CommonRespDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.DeleteLostFoundItemReqDTO;
+import com.xiaolian.amigo.data.network.model.lostandfound.LikeItemReqDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.LostAndFoundDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.LostFoundCommentDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.LostFoundCommentsListDTO;
@@ -136,6 +139,7 @@ public class LostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView2>
         reqDTO.setRepliesSize(replySize);
         reqDTO.setFrom((page-1)*size);
         reqDTO.setId(id);
+        reqDTO.setHot(page == Constant.PAGE_START_NUM ? 1 : 2);
         addObserver(lostAndFoundDataManager.getCommentList(reqDTO),
                 new NetworkObserver<ApiResult<LostFoundCommentsListDTO>>(false, true) {
 
@@ -147,7 +151,10 @@ public class LostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView2>
                         getMvpView().hideErrorView();
                         if (null == result.getError()) {
                             if (null != result.getData()) {
-                                if (result.getData().getCommentsSize() <= 0 && page == Constant.PAGE_START_NUM) {
+                                if ((result.getData().getCommentsSize() <= 0
+                                        && (result.getData().getHot() == null
+                                        || result.getData().getHot().isEmpty()))
+                                        && page == Constant.PAGE_START_NUM) {
                                     getMvpView().showEmptyView();
                                     return;
                                 }
@@ -157,10 +164,16 @@ public class LostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView2>
                                             ObjectsCompat.equals(comment.getUserId(), lostAndFound.getUserId()),
                                             lostAndFound.getUserId(), type, commentEnable));
                                 }
+                                List<LostAndFoundDetailAdapter.LostAndFoundDetailWrapper> hots = new ArrayList<>();
+                                for (LostFoundCommentDTO comment : result.getData().getHot()) {
+                                    hots.add(new LostAndFoundDetailAdapter.LostAndFoundDetailWrapper(comment,
+                                            ObjectsCompat.equals(comment.getUserId(), lostAndFound.getUserId()),
+                                            lostAndFound.getUserId(), type, commentEnable));
+                                }
                                 getMvpView().hideEmptyView();
                                 page ++;
                                 getMvpView().post(() ->
-                                        getMvpView().addMore(wrappers));
+                                        getMvpView().addMore(wrappers, hots));
                             }
                         } else {
                             getMvpView().onError(result.getError().getDisplayMessage());
@@ -285,13 +298,93 @@ public class LostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView2>
 
     @Override
     public boolean needRefresh() {
-        return !ObjectsCompat.equals(preReplyCount, lostAndFound.getCommentsCount())
-                || !ObjectsCompat.equals(preViewCount, lostAndFound.getViewCount());
+        return lostAndFound != null
+                && (!ObjectsCompat.equals(preReplyCount, lostAndFound.getCommentsCount()) || !ObjectsCompat.equals(preViewCount, lostAndFound.getViewCount()));
     }
 
     @Override
     public boolean isCommentEnable() {
         return commentEnable == null ? false : commentEnable;
+    }
+
+    @Override
+    public void collect() {
+        collectOrUnCollect(1);
+    }
+
+    @Override
+    public void unCollect() {
+        collectOrUnCollect(2);
+    }
+
+    private void likeOrUnLikeCommentOrContent(int position, long id, boolean comment, boolean like) {
+        LikeItemReqDTO reqDTO = new LikeItemReqDTO();
+        reqDTO.setItemId(id);
+        // 是否是点赞，1 点赞 2 取消点赞
+        reqDTO.setLike(like ? 1 : 2);
+        // 被点赞/取消点赞的类型，1 失物招领 2 评论
+        reqDTO.setType(comment ? 2 : 1);
+        addObserver(lostAndFoundDataManager.like(reqDTO),
+                new NetworkObserver<ApiResult<CommonRespDTO>>(false) {
+
+                    @Override
+                    public void onReady(ApiResult<CommonRespDTO> result) {
+                        if (null == result.getError()) {
+                            if (like) {
+                                getMvpView().notifyAdapter(position, true);
+                            } else {
+                                getMvpView().notifyAdapter(position, false);
+                            }
+                        } else {
+                            getMvpView().onError(result.getError().getDisplayMessage());
+                        }
+                    }
+                });
+
+    }
+
+    @Override
+    public void unLikeComment(int position, long id) {
+        likeOrUnLikeCommentOrContent(position, id, true, false);
+    }
+
+    @Override
+    public void likeComment(int position, long id) {
+        likeOrUnLikeCommentOrContent(position, id, true, true);
+    }
+
+    @Override
+    public void unLikeContent(int position, long id) {
+
+        likeOrUnLikeCommentOrContent(position, id, false, false);
+    }
+
+    @Override
+    public void likeContent(int position, long id) {
+        likeOrUnLikeCommentOrContent(position, id, false, true);
+    }
+
+    private void collectOrUnCollect(Integer collect) {
+        CollectItemReqDTO reqDTO = new CollectItemReqDTO();
+        // 是否是收藏 1 收藏 2 取消收藏
+        reqDTO.setCollect(collect);
+        reqDTO.setLostFoundId(id);
+        addObserver(lostAndFoundDataManager.collect(reqDTO),
+                new NetworkObserver<ApiResult<CommonRespDTO>>() {
+
+                    @Override
+                    public void onReady(ApiResult<CommonRespDTO> result) {
+                        if (null == result.getError()) {
+                            if (ObjectsCompat.equals(collect, 1)) {
+                                getMvpView().collectSuccess();
+                            } else {
+                                getMvpView().unCollectSuccess();
+                            }
+                        } else {
+                            getMvpView().onError(result.getError().getDisplayMessage());
+                        }
+                    }
+                });
     }
 
     private void fetchComment(Long id) {

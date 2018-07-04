@@ -42,4 +42,6 @@ public interface IWaterDeviceBaseView extends IDeviceView {
      * 显示引导
      */
     void showGuide();
+
+    boolean isBleError();
 }

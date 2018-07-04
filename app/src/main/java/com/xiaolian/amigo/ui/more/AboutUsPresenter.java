@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.more;
 
+import com.xiaolian.amigo.data.base.LogInterceptor;
 import com.xiaolian.amigo.data.manager.intf.IMainDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.version.CheckVersionUpdateReqDTO;
@@ -22,10 +23,12 @@ public class AboutUsPresenter<V extends IAboutUsView> extends BasePresenter<V>
     @SuppressWarnings("unused")
     private static final String TAG = AboutUsPresenter.class.getSimpleName();
     private IMainDataManager mainDataManager;
+    private LogInterceptor interceptor;
 
     @Inject
-    AboutUsPresenter(IMainDataManager manager) {
+    AboutUsPresenter(IMainDataManager manager, LogInterceptor interceptor) {
         this.mainDataManager = manager;
+        this.interceptor = interceptor;
     }
 
     @Override
@@ -50,5 +53,11 @@ public class AboutUsPresenter<V extends IAboutUsView> extends BasePresenter<V>
                         }
                     }
                 });
+    }
+
+    @Override
+    public void changeHost(String server, String h5Server) {
+        interceptor.setServer(server);
+        interceptor.setH5Server(h5Server);
     }
 }
