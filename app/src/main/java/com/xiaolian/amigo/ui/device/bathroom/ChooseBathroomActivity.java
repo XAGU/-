@@ -33,6 +33,14 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
             add(new ChooseBathroomAdapter.ItemWrapper("4"));
         }
     };
+    private List<ChooseBathroomAdapter.ItemWrapper> items1 = new ArrayList<ChooseBathroomAdapter.ItemWrapper>() {
+        {
+            add(new ChooseBathroomAdapter.ItemWrapper("11"));
+            add(new ChooseBathroomAdapter.ItemWrapper("22"));
+            add(new ChooseBathroomAdapter.ItemWrapper("33"));
+            add(new ChooseBathroomAdapter.ItemWrapper("44"));
+        }
+    };
     private List<ChooseBathroomOuterAdapter.Item> items2 = new ArrayList<>();
     @Inject
     IChooseBathroomPresenter<IChooseBathroomView> presenter;
@@ -60,7 +68,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bothroom);
+        setContentView(R.layout.activity_choose_bathroom);
         bindView();
         initRecyclerView();
     }
