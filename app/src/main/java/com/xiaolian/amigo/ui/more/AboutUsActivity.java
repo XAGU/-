@@ -3,11 +3,13 @@ package com.xiaolian.amigo.ui.more;
 import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.tbruyelle.rxpermissions.RxPermissions;
+import com.xiaolian.amigo.BuildConfig;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.version.VersionDTO;
 import com.xiaolian.amigo.ui.main.update.IntentKey;
@@ -111,6 +113,9 @@ public class AboutUsActivity extends MoreBaseActivity implements IAboutUsView {
 
     @OnLongClick(R.id.iv_logo)
     boolean changeHost() {
+        if (TextUtils.equals(BuildConfig.FLAVOR, "prod")) {
+            return true;
+        }
         if (hostDialog == null) {
             hostDialog = new ChangeHostDialog(this);
             hostDialog.setOnOkClickListener((dialog, host, host2) -> presenter.changeHost(host, host2));

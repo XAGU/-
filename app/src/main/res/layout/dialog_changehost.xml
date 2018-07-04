@@ -11,6 +11,7 @@
         android:gravity="center"
         android:layout_height="72dp">
         <EditText
+            android:visibility="gone"
             android:id="@+id/et_host"
             android:background="@drawable/bg_rect_gray_corner"
             android:layout_width="match_parent"
@@ -26,6 +27,12 @@
             android:textColor="@color/colorDark2"
             android:layout_gravity="center_horizontal"
             android:layout_height="50dp" />
+        <Spinner
+            android:spinnerMode="dropdown"
+            style="@style/Widget.AppCompat.Spinner.Underlined"
+            android:id="@+id/sp1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
         <requestFocus/>
     </LinearLayout>
 
@@ -35,6 +42,7 @@
         android:gravity="center"
         android:layout_height="72dp">
         <EditText
+            android:visibility="gone"
             android:id="@+id/et_host2"
             android:background="@drawable/bg_rect_gray_corner"
             android:layout_width="match_parent"
@@ -50,6 +58,12 @@
             android:textColor="@color/colorDark2"
             android:layout_gravity="center_horizontal"
             android:layout_height="50dp" />
+        <Spinner
+            android:spinnerMode="dropdown"
+            style="@style/Widget.AppCompat.Spinner.Underlined"
+            android:id="@+id/sp2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
         <requestFocus/>
     </LinearLayout>
     <View
