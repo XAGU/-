@@ -40,6 +40,7 @@ public class EditDormitoryActivity extends UserBaseListActivity implements IEdit
 
     TextView tvAddDormitory;
     private boolean needRefresh;
+    private volatile boolean refreshFlag = false;
 
     void onAddDormitoryClick() {
         Intent intent = new Intent(this, ListChooseActivity.class);
@@ -66,6 +67,10 @@ public class EditDormitoryActivity extends UserBaseListActivity implements IEdit
 
     @Override
     public void addMore(List<EditDormitoryAdaptor.UserResidenceWrapper> userResidenceWrappers) {
+        if (refreshFlag) {
+            refreshFlag = false;
+            items.clear();
+        }
         items.addAll(userResidenceWrappers);
         adaptor.notifyDataSetChanged();
     }
@@ -103,8 +108,9 @@ public class EditDormitoryActivity extends UserBaseListActivity implements IEdit
             needRefresh = true;
             return;
         }
+        refreshFlag = true;
         page = Constant.PAGE_START_NUM;
-        items.clear();
+//        items.clear();
         presenter.queryDormitoryList(page, Constant.PAGE_SIZE);
     }
 
