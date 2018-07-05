@@ -3,7 +3,7 @@ package com.xiaolian.amigo.ui.device.bathroom;
 import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
+import android.support.v7.widget.LinearLayoutManager;
 
 import com.xiaolian.amigo.R;
 import com.zhy.adapter.recyclerview.CommonAdapter;
