@@ -65,6 +65,6 @@ public class BuyCodeActivity extends UseWayActivity implements IBuyCodeView {
     }
 
     private void onSubtitleClick() {
-        startActivity(new Intent(this, BookingRecordActivity.class));
+        startActivity(new Intent(this, BuyRecordActivity.class));
     }
 }

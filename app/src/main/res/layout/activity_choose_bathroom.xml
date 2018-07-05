@@ -3,10 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorBackgroundGray"
     android:layout_height="match_parent">
     <android.support.v7.widget.Toolbar
         android:id="@+id/tool_bar"
         android:layout_width="match_parent"
+        android:background="@color/white"
         android:layout_height="42dp"
         app:layout_collapseMode="pin">
 
@@ -59,10 +61,11 @@
     </android.support.v7.widget.Toolbar>
 
     <LinearLayout
+        android:background="@color/white"
         android:id="@+id/ll_top"
         android:layout_below="@id/tool_bar"
-        android:layout_marginEnd="@dimen/mainMarginLeftRight"
-        android:layout_marginStart="@dimen/mainMarginLeftRight"
+        android:paddingEnd="@dimen/mainMarginLeftRight"
+        android:paddingStart="@dimen/mainMarginLeftRight"
         android:orientation="horizontal"
         android:layout_height="42dp"
         android:layout_width="match_parent"
@@ -212,13 +215,23 @@
         </LinearLayout>
     </LinearLayout>
 
-    <com.xiaolian.amigo.ui.widget.ZoomRecyclerView
-        android:overScrollMode="never"
+    <LinearLayout
+        android:gravity="center"
         android:layout_above="@id/ll_bottom"
         android:layout_below="@id/ll_top"
-        android:background="@color/colorBackgroundGray"
-        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
+
+        <com.xiaolian.amigo.ui.widget.ZoomRecyclerView
+            android:paddingStart="21dp"
+            android:paddingEnd="21dp"
+            android:layout_gravity="center"
+            android:overScrollMode="never"
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+
 
 </RelativeLayout>

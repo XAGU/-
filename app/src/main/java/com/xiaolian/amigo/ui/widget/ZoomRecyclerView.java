@@ -57,7 +57,7 @@ public class ZoomRecyclerView extends RecyclerView {
     /** 开放监听接口 */
     private OnGestureListener mOnGestureListener;
     public interface OnGestureListener{
-        boolean onScale(ScaleGestureDetector detector);
+        boolean onScale(ScaleGestureDetector detector, float scaleFactor);
         boolean onSingleTapConfirmed(MotionEvent e);
         boolean onDoubleTap(MotionEvent e);
     }
@@ -177,7 +177,7 @@ public class ZoomRecyclerView extends RecyclerView {
                 ZoomRecyclerView.this.invalidate();
 
                 if(mOnGestureListener!=null){
-                    mOnGestureListener.onScale(detector);
+                    mOnGestureListener.onScale(detector, mScaleFactor);
                 }
                 return true;
             }

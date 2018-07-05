@@ -87,8 +87,12 @@ public class ChangeHostDialog extends Dialog {
                 return;
             }
             if (listener != null) {
-                listener.onOkClick(this, userHosts.get(sp1.getSelectedItemPosition()).getAddress(),
-                        h5Hosts.get(sp2.getSelectedItemPosition()).getAddress());
+                String etText1 = etHost.getText().toString();
+                String etText2 = etHost2.getText().toString();
+                String spText1 = userHosts.get(sp1.getSelectedItemPosition()).getAddress();
+                String spText2 = h5Hosts.get(sp2.getSelectedItemPosition()).getAddress();
+                listener.onOkClick(this, TextUtils.isEmpty(etText1) ? spText1 : etText1,
+                        TextUtils.isEmpty(etText2) ? spText2 : etText2);
             }
             dismiss();
         });
@@ -96,10 +100,10 @@ public class ChangeHostDialog extends Dialog {
         tvCancel.setOnClickListener(v -> dismiss());
         etHost = findViewById(R.id.et_host);
         etHost.setTypeface(null, Typeface.NORMAL);
-        etHost.setText(BuildConfig.SERVER);
+//        etHost.setText(BuildConfig.SERVER);
         etHost2 = findViewById(R.id.et_host2);
         etHost2.setTypeface(null, Typeface.NORMAL);
-        etHost2.setText(BuildConfig.H5_SERVER);
+//        etHost2.setText(BuildConfig.H5_SERVER);
         ViewUtil.setEditHintAndSize("请输入server", 14, etHost);
         ViewUtil.setEditHintAndSize("请输入h5 server", 14, etHost2);
         sp1 = findViewById(R.id.sp1);

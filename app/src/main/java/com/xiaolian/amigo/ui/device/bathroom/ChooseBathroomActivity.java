@@ -2,7 +2,10 @@ package com.xiaolian.amigo.ui.device.bathroom;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
+import android.view.Gravity;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -25,29 +28,14 @@ import javax.inject.Inject;
  * @date 18/6/27
  */
 public class ChooseBathroomActivity extends BathroomBaseActivity implements IChooseBathroomView {
-    private List<ChooseBathroomAdapter.ItemWrapper> items = new ArrayList<ChooseBathroomAdapter.ItemWrapper>() {
-        {
-            add(new ChooseBathroomAdapter.ItemWrapper("1"));
-            add(new ChooseBathroomAdapter.ItemWrapper("2"));
-            add(new ChooseBathroomAdapter.ItemWrapper("3"));
-            add(new ChooseBathroomAdapter.ItemWrapper("4"));
-        }
-    };
-    private List<ChooseBathroomAdapter.ItemWrapper> items1 = new ArrayList<ChooseBathroomAdapter.ItemWrapper>() {
-        {
-            add(new ChooseBathroomAdapter.ItemWrapper("11"));
-            add(new ChooseBathroomAdapter.ItemWrapper("22"));
-            add(new ChooseBathroomAdapter.ItemWrapper("33"));
-            add(new ChooseBathroomAdapter.ItemWrapper("44"));
-        }
-    };
-    private List<ChooseBathroomOuterAdapter.Item> items2 = new ArrayList<>();
     @Inject
     IChooseBathroomPresenter<IChooseBathroomView> presenter;
 
+    private List<ChooseBathroomOuterAdapter.BathGroupWrapper> bathGroups = new ArrayList<>();
+
     private ZoomRecyclerView recyclerView;
-    private ChooseBathroomAdapter adapter;
-    private ChooseBathroomOuterAdapter adapter2;
+    private ChooseBathroomAdapter innerAdapter;
+    private ChooseBathroomOuterAdapter outerAdapter;
     private LinearLayout llLeft;
     private LinearLayout llRight;
     private TextView tvMissedBookingTime;
@@ -93,12 +81,41 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
     }
 
     private void initRecyclerView() {
-//        adapter = new ChooseBathroomAdapter(this, R.layout.item_choose_bathroom_outer, items);
-        ChooseBathroomOuterAdapter.Item item1 = new ChooseBathroomOuterAdapter.Item(items);
-        items2.add(item1);
-        adapter2 = new ChooseBathroomOuterAdapter(this, R.layout.item_choose_bathroom_outer, items2);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter2);
+        setMockData(bathGroups);
+        outerAdapter = new ChooseBathroomOuterAdapter(this, R.layout.item_choose_bathroom_outer, bathGroups,
+                (groupPosition, bathroomPosition) -> {
+                    onSuccess(groupPosition + " " + bathroomPosition);
+//                    isSelected = true;
+                });
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this, OrientationHelper.HORIZONTAL, false));
+        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) recyclerView.getLayoutParams();
+        lp.gravity = Gravity.CENTER;
+        recyclerView.setLayoutParams(lp);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        recyclerView.setAdapter(outerAdapter);
+        recyclerView.setOnGestureListener(new ZoomRecyclerView.OnGestureListener() {
+            @Override
+            public boolean onScale(ScaleGestureDetector detector, float scaleFactor) {
+                if (scaleFactor > 2
+                        && !outerAdapter.isScaled()) {
+                    outerAdapter.setScaled(true);
+                } else if (scaleFactor < 2
+                        && outerAdapter.isScaled()) {
+                    outerAdapter.setScaled(false);
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onSingleTapConfirmed(MotionEvent e) {
+                return false;
+            }
+
+            @Override
+            public boolean onDoubleTap(MotionEvent e) {
+                return false;
+            }
+        });
     }
 
     private void changeToBookingUse() {
@@ -137,5 +154,26 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         } else {
             startActivity(new Intent(this, PayUseActivity.class));
         }
+    }
+
+    private void setMockData(List<ChooseBathroomOuterAdapter.BathGroupWrapper> bathGroups) {
+        List<ChooseBathroomAdapter.BathroomWrapper> inner1 = new ArrayList<>();
+        inner1.add(new ChooseBathroomAdapter.BathroomWrapper("101", ChooseBathroomAdapter.BathroomStatus.NONE));
+        inner1.add(new ChooseBathroomAdapter.BathroomWrapper("102", ChooseBathroomAdapter.BathroomStatus.AVAILABLE));
+        inner1.add(new ChooseBathroomAdapter.BathroomWrapper("103", ChooseBathroomAdapter.BathroomStatus.NONE));
+        inner1.add(new ChooseBathroomAdapter.BathroomWrapper("104", ChooseBathroomAdapter.BathroomStatus.USING));
+        inner1.add(new ChooseBathroomAdapter.BathroomWrapper("105", ChooseBathroomAdapter.BathroomStatus.ERROR));
+        inner1.add(new ChooseBathroomAdapter.BathroomWrapper("105", ChooseBathroomAdapter.BathroomStatus.ERROR));
+        inner1.add(new ChooseBathroomAdapter.BathroomWrapper("105", ChooseBathroomAdapter.BathroomStatus.ERROR));
+        inner1.add(new ChooseBathroomAdapter.BathroomWrapper("105", ChooseBathroomAdapter.BathroomStatus.ERROR));
+        inner1.add(new ChooseBathroomAdapter.BathroomWrapper("105", ChooseBathroomAdapter.BathroomStatus.ERROR));
+        bathGroups.add(new ChooseBathroomOuterAdapter.BathGroupWrapper(inner1, "一层A"));
+        List<ChooseBathroomAdapter.BathroomWrapper> inner2 = new ArrayList<>();
+        inner2.add(new ChooseBathroomAdapter.BathroomWrapper("101", ChooseBathroomAdapter.BathroomStatus.NONE));
+        inner2.add(new ChooseBathroomAdapter.BathroomWrapper("102", ChooseBathroomAdapter.BathroomStatus.ERROR));
+        inner2.add(new ChooseBathroomAdapter.BathroomWrapper("103", ChooseBathroomAdapter.BathroomStatus.AVAILABLE));
+        inner2.add(new ChooseBathroomAdapter.BathroomWrapper("104", ChooseBathroomAdapter.BathroomStatus.AVAILABLE));
+        inner2.add(new ChooseBathroomAdapter.BathroomWrapper("105", ChooseBathroomAdapter.BathroomStatus.USING));
+        bathGroups.add(new ChooseBathroomOuterAdapter.BathGroupWrapper(inner2, "一层B"));
     }
 }

@@ -9,9 +9,9 @@
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:gravity="center"
-        android:layout_height="72dp">
+        android:layout_height="144dp">
         <EditText
-            android:visibility="gone"
+            android:visibility="visible"
             android:id="@+id/et_host"
             android:background="@drawable/bg_rect_gray_corner"
             android:layout_width="match_parent"
@@ -32,7 +32,7 @@
             style="@style/Widget.AppCompat.Spinner.Underlined"
             android:id="@+id/sp1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="wrap_content"/>
         <requestFocus/>
     </LinearLayout>
 
@@ -40,9 +40,9 @@
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:gravity="center"
-        android:layout_height="72dp">
+        android:layout_height="144dp">
         <EditText
-            android:visibility="gone"
+            android:visibility="visible"
             android:id="@+id/et_host2"
             android:background="@drawable/bg_rect_gray_corner"
             android:layout_width="match_parent"
@@ -63,7 +63,7 @@
             style="@style/Widget.AppCompat.Spinner.Underlined"
             android:id="@+id/sp2"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="wrap_content"/>
         <requestFocus/>
     </LinearLayout>
     <View
