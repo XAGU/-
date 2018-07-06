@@ -32,6 +32,7 @@ import com.xiaolian.amigo.data.network.model.trade.PayReqDTO;
 import com.xiaolian.amigo.data.network.model.trade.PayRespDTO;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.data.vo.DeviceCategory;
+import com.xiaolian.amigo.di.UserServer;
 
 import java.util.List;
 
@@ -59,7 +60,7 @@ public class DeviceDataManager implements IDeviceDataManager {
     private IDeviceConnectErrorApi connectErrorApi;
 
     @Inject
-    public DeviceDataManager(Retrofit retrofit, ISharedPreferencesHelp sharedPreferencesHelp) {
+    public DeviceDataManager(@UserServer Retrofit retrofit, ISharedPreferencesHelp sharedPreferencesHelp) {
         this.sharedPreferencesHelp = sharedPreferencesHelp;
         tradeApi = retrofit.create(ITradeApi.class);
         orderApi = retrofit.create(IOrderApi.class);

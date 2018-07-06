@@ -7,6 +7,7 @@ import com.xiaolian.amigo.data.network.model.notify.QueryNotifyListReqDTO;
 import com.xiaolian.amigo.data.network.model.notify.ReadNotifyReqDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.notify.QueryNotifyListRespDTO;
+import com.xiaolian.amigo.di.UserServer;
 
 import javax.inject.Inject;
 
@@ -28,7 +29,7 @@ public class NoticeDataManager implements INoticeDataManager {
     private INotifyApi notifyApi;
 
     @Inject
-    public NoticeDataManager(Retrofit retrofit) {
+    public NoticeDataManager(@UserServer Retrofit retrofit) {
         notifyApi = retrofit.create(INotifyApi.class);
     }
 

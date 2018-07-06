@@ -27,6 +27,7 @@ import com.xiaolian.amigo.data.network.model.lostandfound.SaveLostAndFoundReport
 import com.xiaolian.amigo.data.network.model.lostandfound.SaveLostFoundCommentsRepliesDTO;
 import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
+import com.xiaolian.amigo.di.UserServer;
 
 import javax.inject.Inject;
 
@@ -47,7 +48,7 @@ public class LostAndFoundDataManager implements ILostAndFoundDataManager {
     private ISharedPreferencesHelp sharedPreferencesHelp;
 
     @Inject
-    public LostAndFoundDataManager(Retrofit retrofit, ISharedPreferencesHelp sharedPreferencesHelp) {
+    public LostAndFoundDataManager(@UserServer Retrofit retrofit, ISharedPreferencesHelp sharedPreferencesHelp) {
         lostAndFoundApi = retrofit.create(ILostAndFoundApi.class);
         this.sharedPreferencesHelp = sharedPreferencesHelp;
     }

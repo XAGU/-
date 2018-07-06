@@ -11,6 +11,7 @@ import com.xiaolian.amigo.data.network.model.trade.QrCodeScanRespDTO;
 import com.xiaolian.amigo.data.network.model.trade.WashingModeRespDTO;
 import com.xiaolian.amigo.data.network.model.user.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
+import com.xiaolian.amigo.di.UserServer;
 import com.xiaolian.amigo.util.Log;
 
 import javax.inject.Inject;
@@ -32,7 +33,7 @@ public class WasherDataManager implements IWasherDataManager {
     private ISharedPreferencesHelp sharedPreferencesHelp;
 
     @Inject
-    public WasherDataManager(Retrofit retrofit, ISharedPreferencesHelp sharedPreferencesHelp) {
+    public WasherDataManager(@UserServer Retrofit retrofit, ISharedPreferencesHelp sharedPreferencesHelp) {
         this.sharedPreferencesHelp = sharedPreferencesHelp;
         tradeApi = retrofit.create(ITradeApi.class);
         userApi = retrofit.create(IUserApi.class);

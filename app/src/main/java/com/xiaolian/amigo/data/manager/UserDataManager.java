@@ -33,6 +33,7 @@ import com.xiaolian.amigo.data.network.model.user.UserResidenceDTO;
 import com.xiaolian.amigo.data.network.model.user.UserResidenceInListDTO;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.data.vo.User;
+import com.xiaolian.amigo.di.UserServer;
 
 import javax.inject.Inject;
 
@@ -62,7 +63,7 @@ public class UserDataManager implements IUserDataManager {
     private ISharedPreferencesHelp sharedPreferencesHelp;
 
     @Inject
-    public UserDataManager(Retrofit retrofit, ISharedPreferencesHelp sharedPreferencesHelp) {
+    public UserDataManager(@UserServer Retrofit retrofit, ISharedPreferencesHelp sharedPreferencesHelp) {
         residenceApi = retrofit.create(IResidenceApi.class);
         schoolApi = retrofit.create(ISchoolApi.class);
         userApi = retrofit.create(IUserApi.class);

@@ -82,10 +82,10 @@ public class ChangeHostDialog extends Dialog {
         setContentView(R.layout.dialog_changehost);
         tvOk = findViewById(R.id.tv_ok);
         tvOk.setOnClickListener(v -> {
-            if (TextUtils.isEmpty(etHost.getText())) {
-                Toast.makeText(context, "请输入host", Toast.LENGTH_SHORT).show();
-                return;
-            }
+//            if (TextUtils.isEmpty(etHost.getText())) {
+//                Toast.makeText(context, "请输入host", Toast.LENGTH_SHORT).show();
+//                return;
+//            }
             if (listener != null) {
                 String etText1 = etHost.getText().toString();
                 String etText2 = etHost2.getText().toString();

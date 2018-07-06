@@ -7,6 +7,7 @@ import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.credits.CreditsExchangeReqDTO;
 import com.xiaolian.amigo.data.network.model.credits.CreditsRuleRespDTO;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
+import com.xiaolian.amigo.di.UserServer;
 
 import javax.inject.Inject;
 
@@ -25,7 +26,7 @@ public class CreditsDataManager implements ICreditsDataManager {
     private ISharedPreferencesHelp sharedPreferencesHelp;
 
     @Inject
-    public CreditsDataManager(Retrofit retrofit, ISharedPreferencesHelp sharedPreferencesHelp) {
+    public CreditsDataManager(@UserServer Retrofit retrofit, ISharedPreferencesHelp sharedPreferencesHelp) {
         this.creditsApi = retrofit.create(ICreditsApi.class);
         this.sharedPreferencesHelp = sharedPreferencesHelp;
     }

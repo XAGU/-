@@ -10,6 +10,7 @@ import com.xiaolian.amigo.data.network.model.device.QueryWaterListRespDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleQueryReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
+import com.xiaolian.amigo.di.UserServer;
 
 import javax.inject.Inject;
 
@@ -29,7 +30,7 @@ public class FavoriteManager implements IFavoriteManager {
     private IDeviceApi deviceApi;
 
     @Inject
-    public FavoriteManager(Retrofit retrofit) {
+    public FavoriteManager(@UserServer Retrofit retrofit) {
         deviceApi = retrofit.create(IDeviceApi.class);
     }
 

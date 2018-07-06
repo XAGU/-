@@ -30,6 +30,7 @@ import com.xiaolian.amigo.data.network.model.user.UploadUserDeviceInfoReqDTO;
 import com.xiaolian.amigo.data.vo.DeviceCategory;
 import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
+import com.xiaolian.amigo.di.UserServer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +62,7 @@ public class MainDataManager implements IMainDataManager {
     private IVersionApi versionApi;
 
     @Inject
-    public MainDataManager(Retrofit retrofit, ISharedPreferencesHelp sharedPreferencesHelp) {
+    public MainDataManager(@UserServer Retrofit retrofit, ISharedPreferencesHelp sharedPreferencesHelp) {
         this.sharedPreferencesHelp = sharedPreferencesHelp;
         this.orderApi = retrofit.create(IOrderApi.class);
         this.systemApi = retrofit.create(ISystemApi.class);

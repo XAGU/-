@@ -4,6 +4,7 @@ import com.xiaolian.amigo.data.manager.intf.IClientServiceDataManager;
 import com.xiaolian.amigo.data.network.IClientServiceApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.cs.CsMobileRespDTO;
+import com.xiaolian.amigo.di.UserServer;
 
 import javax.inject.Inject;
 
@@ -21,7 +22,7 @@ public class ClientServiceDataManager implements IClientServiceDataManager {
     private IClientServiceApi clientServiceApi;
 
     @Inject
-    public ClientServiceDataManager(Retrofit retrofit) {
+    public ClientServiceDataManager(@UserServer Retrofit retrofit) {
         clientServiceApi = retrofit.create(IClientServiceApi.class);
     }
 

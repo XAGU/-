@@ -12,6 +12,7 @@ import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.login.LoginRespDTO;
 import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
+import com.xiaolian.amigo.di.UserServer;
 
 import javax.inject.Inject;
 
@@ -35,7 +36,7 @@ public class LoginDataManager implements ILoginDataManager {
     private ISharedPreferencesHelp sharedPreferencesHelp;
 
     @Inject
-    public LoginDataManager(Retrofit retrofit, ISharedPreferencesHelp sharedPreferencesHelp) {
+    public LoginDataManager(@UserServer Retrofit retrofit, ISharedPreferencesHelp sharedPreferencesHelp) {
         loginApi = retrofit.create(ILoginApi.class);
         this.sharedPreferencesHelp = sharedPreferencesHelp;
     }

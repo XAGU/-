@@ -74,17 +74,56 @@ public class BookingRecordActivity extends BathroomBaseActivity implements IBook
     }
 
     private void initView() {
-        refreshLayout.setRefreshHeader(new RefreshLayoutHeader(this));
-        refreshLayout.setRefreshFooter(new RefreshLayoutFooter(this));
 
         initRecyclerView();
+
+        appBarLayout.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
+            //Log.d("STATE", appBarLayout.getTotalScrollRange() +"//"+ verticalOffset+"//"+tv_toolbar_title.getHeight());
+            if (verticalOffset < -(tvToolbarTitle.getHeight() + llHeader.getPaddingTop())) {
+                tvTitle.setVisibility(View.VISIBLE);
+                viewLine.setVisibility(View.VISIBLE);
+            } else {
+                tvTitle.setVisibility(View.GONE);
+                viewLine.setVisibility(View.GONE);
+            }
+        });
     }
 
     private void initRecyclerView() {
+
+        refreshLayout.setRefreshHeader(new RefreshLayoutHeader(this));
+        refreshLayout.setRefreshFooter(new RefreshLayoutFooter(this));
+
         adapter = new BookingRecordAdapter(this, records);
         adapter.addItemViewDelegate(new BookingRecordItemDelegate());
         adapter.addItemViewDelegate(new BookingRecordSummaryDelegate());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mockData(records);
         recyclerView.setAdapter(adapter);
+    }
+
+    private void mockData(List<BookingRecordAdapter.BookingRecordWrapper> records) {
+
+        BookingRecordAdapter.BookingRecordWrapper wrapper3 = new BookingRecordAdapter.BookingRecordWrapper();
+        wrapper3.setBookingTime(1);
+        wrapper3.setMissedBookingTime(2);
+        records.add(wrapper3);
+
+        BookingRecordAdapter.BookingRecordWrapper wrapper1 = new BookingRecordAdapter.BookingRecordWrapper();
+        wrapper1.setAmount("1");
+        wrapper1.setCreateTime(123L);
+        wrapper1.setLeftBottomText("浴室房间 215");
+        wrapper1.setRecord(true);
+        wrapper1.setRightText("等待洗浴");
+        records.add(wrapper1);
+
+        BookingRecordAdapter.BookingRecordWrapper wrapper2 = new BookingRecordAdapter.BookingRecordWrapper();
+        wrapper2.setAmount("1");
+        wrapper2.setCreateTime(123L);
+        wrapper2.setLeftBottomText("浴室房间 215");
+        wrapper2.setRecord(true);
+        wrapper2.setRightText("等待洗浴");
+        records.add(wrapper2);
+
     }
 }

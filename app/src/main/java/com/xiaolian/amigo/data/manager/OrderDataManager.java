@@ -19,6 +19,7 @@ import com.xiaolian.amigo.data.network.model.order.OrderRespDTO;
 import com.xiaolian.amigo.data.network.model.order.UnsettledOrderStatusCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.userbill.QueryPersonalMaxConsumeOrderListReqDTO;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
+import com.xiaolian.amigo.di.UserServer;
 
 import javax.inject.Inject;
 
@@ -43,7 +44,7 @@ public class OrderDataManager implements IOrderDataManager {
     private ISharedPreferencesHelp sharedPreferencesHelp;
 
     @Inject
-    public OrderDataManager(Retrofit retrofit, ISharedPreferencesHelp sharedPreferencesHelp) {
+    public OrderDataManager(@UserServer Retrofit retrofit, ISharedPreferencesHelp sharedPreferencesHelp) {
         orderApi = retrofit.create(IOrderApi.class);
         complaintApi = retrofit.create(IComplaintApi.class);
         userBillApi = retrofit.create(IUserBillApi.class);
