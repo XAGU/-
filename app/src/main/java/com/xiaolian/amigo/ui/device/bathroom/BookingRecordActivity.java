@@ -96,7 +96,7 @@ public class BookingRecordActivity extends BathroomBaseActivity implements IBook
 
         adapter = new BookingRecordAdapter(this, records);
         adapter.addItemViewDelegate(new BookingRecordItemDelegate());
-        adapter.addItemViewDelegate(new BookingRecordSummaryDelegate());
+        adapter.addItemViewDelegate(new BookingRecordSummaryDelegate(this));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         mockData(records);
         recyclerView.setAdapter(adapter);
