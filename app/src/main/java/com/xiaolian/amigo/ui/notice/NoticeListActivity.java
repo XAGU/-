@@ -103,12 +103,9 @@ public class NoticeListActivity extends NoticeBaseListActivity implements INotic
     public void showUrgentNotify(String content, Long id) {
         NoticeAlertDialog dialog = new NoticeAlertDialog(this);
         dialog.setContent(content);
-        dialog.setOnOkClickListener(new NoticeAlertDialog.OnOkClickListener() {
-            @Override
-            public void onOkClick(Dialog dialog, boolean isNotReminder) {
-                if (isNotReminder) {
-                    presenter.readUrgentNotify(id);
-                }
+        dialog.setOnOkClickListener((dialog1, isNotReminder) -> {
+            if (isNotReminder) {
+                presenter.readUrgentNotify(id);
             }
         });
         dialog.show();

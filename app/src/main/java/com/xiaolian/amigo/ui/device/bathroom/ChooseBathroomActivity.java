@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IChooseBathroomPresenter;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IChooseBathroomView;
+import com.xiaolian.amigo.ui.widget.MetaBallView;
 import com.xiaolian.amigo.ui.widget.ZoomRecyclerView;
 
 import java.util.ArrayList;
@@ -44,6 +45,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
     private TextView tvLeft;
     private TextView tvRight;
     private ImageView ivHelp;
+    private MetaBallView metaBall;
     /**
      * 当前是否处于选中状态 选中状态显示预约使用 非选中状态显示购买编码
      */
@@ -76,8 +78,10 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         ivHelp = findViewById(R.id.iv_help);
         ivHelp.setOnClickListener(v -> {
             isSelected = !isSelected;
-            changeToBookingUse();
+//            changeToBookingUse();
+            metaBall.translation();
         });
+        metaBall = findViewById(R.id.metaBall);
     }
 
     private void initRecyclerView() {
