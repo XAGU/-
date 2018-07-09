@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/bg_bathroom_booking"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_vertical"
+    android:gravity="center"
+    android:paddingTop="21dp"
+    android:paddingBottom="21dp"
+    android:orientation="vertical">
+
+    <com.xiaolian.amigo.ui.widget.CircleProgressView
+        android:id="@+id/circleProgressView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:progress="80"
+        app:progressReachColor="#00d3c7"
+        app:progressTextSize="10sp"
+        app:progressStyle="Normal"
+        app:progressTextColor="#00d3c7"
+        app:radius="23dp" />
+
+    <TextView
+        android:layout_marginTop="21dp"
+        android:text="系统君正在预约，请稍等"
+        android:textSize="12sp"
+        android:textColor="@color/colorDark2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
