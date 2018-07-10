@@ -1,9 +1,7 @@
 package com.xiaolian.amigo.ui.widget;
 
 import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -19,7 +17,6 @@ import com.xiaolian.amigo.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * @author zcd
@@ -68,20 +65,14 @@ public class MetaBallView extends LinearLayout {
         view.post(() -> viewWidth = view.getMeasuredWidth());
         view.post(() -> llWidth = llRight.getMeasuredWidth());
         view.post(() -> llHeight = llRight.getMeasuredHeight());
-        llRight.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (listener != null) {
-                    listener.onButtonClick(false);
-                }
+        llRight.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onButtonClick(false);
             }
         });
-        llLeft.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (listener != null) {
-                    listener.onButtonClick(true);
-                }
+        llLeft.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onButtonClick(true);
             }
         });
     }
