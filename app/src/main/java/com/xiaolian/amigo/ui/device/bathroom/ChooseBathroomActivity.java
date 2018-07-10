@@ -6,10 +6,8 @@ import android.support.v7.widget.GridLayoutManager;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IChooseBathroomPresenter;
@@ -37,13 +35,6 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
     private ZoomRecyclerView recyclerView;
     private ChooseBathroomAdapter innerAdapter;
     private ChooseBathroomOuterAdapter outerAdapter;
-    private LinearLayout llLeft;
-    private LinearLayout llRight;
-    private TextView tvMissedBookingTime;
-    private ImageView ivLeft;
-    private ImageView ivRight;
-    private TextView tvLeft;
-    private TextView tvRight;
     private ImageView ivHelp;
     private MetaBallView metaBall;
     /**
@@ -66,15 +57,6 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
     private void bindView() {
         findViewById(R.id.iv_back).setOnClickListener(v -> onBackPressed());
         recyclerView = findViewById(R.id.recyclerView);
-        llLeft = findViewById(R.id.ll_left);
-        llRight = findViewById(R.id.ll_right);
-        llLeft.setOnClickListener(v -> onLeftClick());
-        llRight.setOnClickListener(v -> onRightClick());
-        tvMissedBookingTime = findViewById(R.id.tv_missed_booking_time);
-        ivLeft = findViewById(R.id.iv_left);
-        ivRight = findViewById(R.id.iv_right);
-        tvLeft = findViewById(R.id.tv_left);
-        tvRight = findViewById(R.id.tv_right);
         ivHelp = findViewById(R.id.iv_help);
         ivHelp.setOnClickListener(v -> {
             isSelected = !isSelected;
@@ -82,6 +64,13 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
             metaBall.translation();
         });
         metaBall = findViewById(R.id.metaBall);
+        metaBall.setOnButtonClickListener(left -> {
+            if (left) {
+                onLeftClick();
+            } else {
+                onRightClick();
+            }
+        });
     }
 
     private void initRecyclerView() {
@@ -122,27 +111,27 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         });
     }
 
-    private void changeToBookingUse() {
-        if (!isSelected) {
-            llRight.setVisibility(View.VISIBLE);
-            tvMissedBookingTime.setVisibility(View.INVISIBLE);
-            tvLeft.setText("购买编码");
-            ivLeft.setImageResource(R.drawable.ic_bathroom_buy_code);
-            tvRight.setText("扫一扫");
-            ivRight.setImageResource(R.drawable.ic_bathroom_scan);
-        } else {
-            tvMissedBookingTime.setVisibility(View.VISIBLE);
-            tvLeft.setText("预约使用");
-            ivLeft.setImageResource(R.drawable.ic_bathroom_booking);
-            if (isShowBuyUse) {
-                llRight.setVisibility(View.VISIBLE);
-                tvRight.setText("付费使用");
-                ivRight.setImageResource(R.drawable.ic_bathroom_pay_use);
-            } else {
-                llRight.setVisibility(View.GONE);
-            }
-        }
-    }
+//    private void changeToBookingUse() {
+//        if (!isSelected) {
+//            llRight.setVisibility(View.VISIBLE);
+//            tvMissedBookingTime.setVisibility(View.INVISIBLE);
+//            tvLeft.setText("购买编码");
+//            ivLeft.setImageResource(R.drawable.ic_bathroom_buy_code);
+//            tvRight.setText("扫一扫");
+//            ivRight.setImageResource(R.drawable.ic_bathroom_scan);
+//        } else {
+//            tvMissedBookingTime.setVisibility(View.VISIBLE);
+//            tvLeft.setText("预约使用");
+//            ivLeft.setImageResource(R.drawable.ic_bathroom_booking);
+//            if (isShowBuyUse) {
+//                llRight.setVisibility(View.VISIBLE);
+//                tvRight.setText("付费使用");
+//                ivRight.setImageResource(R.drawable.ic_bathroom_pay_use);
+//            } else {
+//                llRight.setVisibility(View.GONE);
+//            }
+//        }
+//    }
 
     private void onLeftClick() {
         if (isSelected) {

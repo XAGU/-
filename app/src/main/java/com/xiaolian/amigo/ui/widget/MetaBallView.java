@@ -19,12 +19,16 @@ import com.xiaolian.amigo.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * @author zcd
  * @date 18/7/9
  */
 public class MetaBallView extends LinearLayout {
+    public interface OnButtonClickListener {
+        void onButtonClick(boolean left);
+    }
     @BindView(R.id.ll_left)
     LinearLayout llLeft;
     @BindView(R.id.ll_right)
@@ -36,6 +40,7 @@ public class MetaBallView extends LinearLayout {
     private Path mPath;
     private Paint mPaint;
     private Context context;
+    private OnButtonClickListener listener;
 
     public MetaBallView(Context context) {
         super(context);
@@ -52,6 +57,10 @@ public class MetaBallView extends LinearLayout {
         init(context);
     }
 
+    public void setOnButtonClickListener(OnButtonClickListener listener) {
+        this.listener = listener;
+    }
+
     private void init(Context context) {
         this.context = context;
         View view = LayoutInflater.from(context).inflate(R.layout.view_meta_ball, this, true);
@@ -59,6 +68,22 @@ public class MetaBallView extends LinearLayout {
         view.post(() -> viewWidth = view.getMeasuredWidth());
         view.post(() -> llWidth = llRight.getMeasuredWidth());
         view.post(() -> llHeight = llRight.getMeasuredHeight());
+        llRight.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onButtonClick(false);
+                }
+            }
+        });
+        llLeft.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onButtonClick(true);
+                }
+            }
+        });
     }
 
     public void translation() {
