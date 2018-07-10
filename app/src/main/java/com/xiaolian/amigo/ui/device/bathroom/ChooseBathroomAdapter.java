@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.device.bathroom;
 
 import android.content.Context;
+import android.support.v4.util.ObjectsCompat;
 import android.view.View;
 
 import com.xiaolian.amigo.R;
@@ -98,11 +99,24 @@ public class ChooseBathroomAdapter extends CommonAdapter<ChooseBathroomAdapter.B
         USING(2),
         ERROR(3);
 
-        BathroomStatus(int status) {
-            this.status = status;
+        BathroomStatus(int code) {
+            this.code = code;
         }
 
-        private int status;
+        private int code;
+
+        public int getCode() {
+            return code;
+        }
+
+        public static BathroomStatus getStatus(int code) {
+            for (BathroomStatus status : BathroomStatus.values()) {
+                if (ObjectsCompat.equals(status.getCode(), code)) {
+                    return status;
+                }
+            }
+            return null;
+        }
     }
 
     public interface BathroomSelectListener {

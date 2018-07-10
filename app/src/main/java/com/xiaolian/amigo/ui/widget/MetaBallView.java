@@ -73,8 +73,8 @@ public class MetaBallView extends LinearLayout {
                 currentLeftX, viewWidth / 4);
         ObjectAnimator animatorRight = ObjectAnimator.ofFloat(llRight, "translationX",
                 currentRightX, -viewWidth / 4);
-        animatorLeft.setDuration(2000);
-        animatorRight.setDuration(2000);
+        animatorLeft.setDuration(1000);
+        animatorRight.setDuration(1000);
         animatorLeft.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -94,14 +94,7 @@ public class MetaBallView extends LinearLayout {
             public void onAnimationRepeat(Animator animation) {
             }
         });
-        animatorLeft.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                if (animation.getCurrentPlayTime() > 1000) {
-                    postInvalidate();
-                }
-            }
-        });
+        animatorLeft.addUpdateListener(animation -> postInvalidate());
         animatorLeft.start();
         animatorRight.start();
 
@@ -121,7 +114,7 @@ public class MetaBallView extends LinearLayout {
             float controlX = (startX + x) / 2;
             float controlY = (startY + y) / 2;
 
-            float mRadiusNormal = llHeight / 2 ;
+            float mRadiusNormal = llHeight / 2;
 
             float distance = (float) Math.sqrt((controlX - startX) * (controlX - startX) + (controlY - startY) * (controlY - startY));
             double a = Math.acos(mRadiusNormal / distance);

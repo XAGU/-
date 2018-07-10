@@ -47,9 +47,15 @@ public class ChooseBathroomOuterAdapter extends CommonAdapter<ChooseBathroomOute
                     });
             RecyclerView recyclerView = holder.getView(R.id.recyclerView);
 //            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setLayoutManager(new GridLayoutManager(context, 3));
+            recyclerView.setLayoutManager(new GridLayoutManager(context, bathGroupWrapper.getSpanWidth()));
             recyclerView.setAdapter(adapter);
             adapters.put(position, adapter);
+        } else {
+            ChooseBathroomAdapter adapter = adapters.get(position);
+            RecyclerView recyclerView = holder.getView(R.id.recyclerView);
+//            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            recyclerView.setLayoutManager(new GridLayoutManager(context, bathGroupWrapper.getSpanWidth()));
+            recyclerView.setAdapter(adapter);
         }
         holder.setText(R.id.tv_content, bathGroupWrapper.getName());
     }
@@ -58,6 +64,10 @@ public class ChooseBathroomOuterAdapter extends CommonAdapter<ChooseBathroomOute
     public static final class BathGroupWrapper {
         List<ChooseBathroomAdapter.BathroomWrapper> bathGroups;
         String name;
+        int spanWidth = 3;
+
+        public BathGroupWrapper() {
+        }
 
         public BathGroupWrapper(List<ChooseBathroomAdapter.BathroomWrapper> bathGroups, String name) {
             this.bathGroups = bathGroups;

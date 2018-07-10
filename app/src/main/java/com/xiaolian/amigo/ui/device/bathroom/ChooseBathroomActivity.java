@@ -95,7 +95,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) recyclerView.getLayoutParams();
         lp.gravity = Gravity.CENTER;
         recyclerView.setLayoutParams(lp);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
         recyclerView.setAdapter(outerAdapter);
         recyclerView.setOnGestureListener(new ZoomRecyclerView.OnGestureListener() {
             @Override
@@ -196,5 +196,13 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         inner4.add(new ChooseBathroomAdapter.BathroomWrapper("104", ChooseBathroomAdapter.BathroomStatus.AVAILABLE));
         inner4.add(new ChooseBathroomAdapter.BathroomWrapper("105", ChooseBathroomAdapter.BathroomStatus.USING));
         bathGroups.add(new ChooseBathroomOuterAdapter.BathGroupWrapper(inner4, "一层A"));
+    }
+
+    @Override
+    public void refreshBathroom(List<ChooseBathroomOuterAdapter.BathGroupWrapper> wrappers,
+                                List<Integer> methods, Integer missTimes) {
+        bathGroups.clear();
+        bathGroups.addAll(wrappers);
+        outerAdapter.notifyDataSetChanged();
     }
 }
