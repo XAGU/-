@@ -310,6 +310,18 @@
             android:theme="@style/AppTheme.NoActionBar"
             />
 
+        <!--洗澡地址-->
+        <activity android:name=".ui.device.bathroom.ShowerAddressActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+
+        <!--选择设置洗澡地址-->
+        <activity android:name=".ui.device.bathroom.ChooseShowerAddressActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+
         <!--充值金额页面-->
         <activity
             android:name=".ui.wallet.RechargeActivity"

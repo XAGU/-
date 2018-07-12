@@ -5,6 +5,8 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.ui.widget.GridSpacesItemDecoration;
+import com.xiaolian.amigo.util.ScreenUtils;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -46,6 +48,9 @@ public class ChooseBathroomOuterAdapter extends CommonAdapter<ChooseBathroomOute
                     });
             RecyclerView recyclerView = holder.getView(R.id.recyclerView);
 //            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            recyclerView.addItemDecoration(
+                    new GridSpacesItemDecoration(bathGroupWrapper.getSpanWidth(),
+                            ScreenUtils.dpToPxInt(context, 3), false));
             recyclerView.setLayoutManager(new GridLayoutManager(context, bathGroupWrapper.getSpanWidth()));
             recyclerView.setAdapter(adapter);
             adapters.put(position, adapter);
@@ -53,6 +58,9 @@ public class ChooseBathroomOuterAdapter extends CommonAdapter<ChooseBathroomOute
             ChooseBathroomAdapter adapter = adapters.get(position);
             RecyclerView recyclerView = holder.getView(R.id.recyclerView);
 //            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            recyclerView.addItemDecoration(
+                    new GridSpacesItemDecoration(bathGroupWrapper.getSpanWidth(),
+                            ScreenUtils.dpToPxInt(context, 3), false));
             recyclerView.setLayoutManager(new GridLayoutManager(context, bathGroupWrapper.getSpanWidth()));
             recyclerView.setAdapter(adapter);
         }

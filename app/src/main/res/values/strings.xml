@@ -305,4 +305,10 @@
     <string name="buy_code_tip2">2.购买成功后，编码有效时间为60分钟，前往任意可以使用的空浴室房间，在设备上输入编码或者购买编码时对应的笑联手机号和登录密码即可使用；</string>
     <string name="buy_code_tip3">3.洗浴结束后，消费金额将以实际用水量为准，系统会自动找零；</string>
     <string name="buy_code_tip4">4.若编码在有效期内未使用，系统将会自动退回预付金额。</string>
+
+    <string name="shower_address">洗澡地址</string>
+    <string name="new_shower_address">新的地址</string>
+    <string name="choose_building">选择楼栋</string>
+    <string name="choose_floor">选择楼层</string>
+    <string name="choose_room">选择洗澡房间</string>
 </resources>

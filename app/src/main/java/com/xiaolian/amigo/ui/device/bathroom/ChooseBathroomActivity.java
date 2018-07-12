@@ -12,8 +12,10 @@ import android.widget.LinearLayout;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IChooseBathroomPresenter;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IChooseBathroomView;
+import com.xiaolian.amigo.ui.widget.GridSpacesItemDecoration;
 import com.xiaolian.amigo.ui.widget.MetaBallView;
 import com.xiaolian.amigo.ui.widget.ZoomRecyclerView;
+import com.xiaolian.amigo.util.ScreenUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +63,9 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         ivHelp.setOnClickListener(v -> {
             isSelected = !isSelected;
 //            changeToBookingUse();
-            metaBall.translation();
+//            metaBall.translation();
+            gotoShowerAddress();
+
         });
         metaBall = findViewById(R.id.metaBall);
         metaBall.setOnButtonClickListener(left -> {
@@ -71,6 +75,10 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
                 onRightClick();
             }
         });
+    }
+
+    private void gotoShowerAddress() {
+        startActivity(new Intent(this, ShowerAddressActivity.class));
     }
 
     private void initRecyclerView() {
