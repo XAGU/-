@@ -213,8 +213,7 @@ public class BluetoothClient implements IBluetoothClient {
     @Override
     public synchronized void notify(String mac, UUID service, UUID character, BluetoothCharacteristicNotifyCallback response) {
         if (!checkMacAddress(mac)) {
-            Log.d(TAG, "[notify]check mac失败" + mac + " " + bluetoothConnectWorker == null
-                    ? "worker为null" : bluetoothConnectWorker.getMacAddress());
+            Log.d(TAG, "[notify]check mac失败" + mac);
             return;
         }
         if (bluetoothConnectWorker != null) {

@@ -243,7 +243,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         connecting = true;
 
         // 启动30s倒计时
-        timer = new CountDownTimer(30 * 1000, 1000) {
+        timer = new CountDownTimer(15 * 1000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 if (!connecting) {
@@ -417,14 +417,25 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             if (bleDataManager.setNotify(currentMacAddress, UUID.fromString(supplier.getServiceUuid()),
                     UUID.fromString(supplier.getNotifyUuid()), true)) {
                 Log.i(TAG, "辛纳设备设置notify成功 " + Thread.currentThread().getName());
-                afterBleConnected();
-                bleDataManager.notify(currentMacAddress, UUID.fromString(supplier.getServiceUuid()),
-                        UUID.fromString(supplier.getWriteUuid()), data -> {
-                            if (null != data) {
-                                String result = HexBytesUtils.bytesToHexString(data);
-                                Log.i(TAG, "接收到设备数据" + result + " thread" + Thread.currentThread().getName());
-                                processCommandResult(result);
+                bleDataManager.writeDescriptor(currentMacAddress,
+                        UUID.fromString(supplier.getServiceUuid()),
+                        UUID.fromString(supplier.getNotifyUuid()),
+                        BluetoothConstants.CLIENT_CHARACTERISTIC_CONFIG,
+                        BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE, code1 -> {
+                            Log.d(TAG, "写入ENABLE_NOTIFICATION_VALUE code" + code1 + " thread " + Thread.currentThread().getName());
+                            if (code1 != BluetoothConstants.GATT_SUCCESS) {
+                                handleDisConnectError("辛纳设备写入ENABLE_NOTIFICATION_VALUE失败 code:" + code1);
+                                return;
                             }
+                            afterBleConnected();
+                            bleDataManager.notify(currentMacAddress, UUID.fromString(supplier.getServiceUuid()),
+                                    UUID.fromString(supplier.getWriteUuid()), data -> {
+                                        if (null != data) {
+                                            String result = HexBytesUtils.bytesToHexString(data);
+                                            Log.i(TAG, "接收到设备数据" + result + " thread" + Thread.currentThread().getName());
+                                            processCommandResult(result);
+                                        }
+                                    });
                         });
             } else {
                 handleDisConnectError("辛纳设备设置notify失败");

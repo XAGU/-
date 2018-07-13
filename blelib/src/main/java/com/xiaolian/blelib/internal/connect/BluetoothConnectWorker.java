@@ -309,13 +309,22 @@ public class BluetoothConnectWorker implements IBluetoothConnectWorker {
             return false;
         }
 
-//        if (!isCharacteristicWritable(characteristic)) {
-//            BluetoothLog.e(String.format("characteristic not writable!"));
-//            return false;
-//        }
-
         return bluetoothGatt != null
                 && bluetoothGatt.setCharacteristicNotification(characteristic, enable);
+//        if (result) {
+//            byte[] value = (enable ? BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE : BluetoothGattDescriptor.DISABLE_NOTIFICATION_VALUE);
+//            BluetoothGattDescriptor descriptor = characteristic.getDescriptor(BluetoothConstants.CLIENT_CHARACTERISTIC_CONFIG);
+//            if (!descriptor.setValue(value)) {
+//                return false;
+//            }
+//
+//            if (!bluetoothGatt.writeDescriptor(descriptor)) {
+//                return false;
+//            }
+//        } else {
+//            return false;
+//        }
+//        return true;
 
     }
 
