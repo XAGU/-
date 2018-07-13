@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IChooseBathroomPresenter;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IChooseBathroomView;
+import com.xiaolian.amigo.ui.device.washer.ScanActivity;
 import com.xiaolian.amigo.ui.widget.GridSpacesItemDecoration;
 import com.xiaolian.amigo.ui.widget.MetaBallView;
 import com.xiaolian.amigo.ui.widget.ZoomRecyclerView;
@@ -35,10 +36,11 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
     private List<ChooseBathroomOuterAdapter.BathGroupWrapper> bathGroups = new ArrayList<>();
 
     private ZoomRecyclerView recyclerView;
-    private ChooseBathroomAdapter innerAdapter;
     private ChooseBathroomOuterAdapter outerAdapter;
     private ImageView ivHelp;
     private MetaBallView metaBall;
+    private int lastSelectedGroupPosition = -1;
+    private int lastSelectedRoomPosition = -1;
     /**
      * 当前是否处于选中状态 选中状态显示预约使用 非选中状态显示购买编码
      */
@@ -86,7 +88,25 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         outerAdapter = new ChooseBathroomOuterAdapter(this, R.layout.item_choose_bathroom_outer, bathGroups,
                 (groupPosition, bathroomPosition) -> {
                     onSuccess(groupPosition + " " + bathroomPosition);
-//                    isSelected = true;
+                    if (bathGroups.get(groupPosition).getBathGroups().get(bathroomPosition).getStatus()
+                            != ChooseBathroomAdapter.BathroomStatus.AVAILABLE) {
+                        if (lastSelectedGroupPosition != -1 && lastSelectedRoomPosition != -1) {
+                            bathGroups.get(lastSelectedGroupPosition).getBathGroups().get(lastSelectedRoomPosition).setSelected(false);
+                        }
+                        lastSelectedGroupPosition = -1;
+                        lastSelectedRoomPosition = -1;
+                        isSelected = false;
+                    } else {
+                        if (lastSelectedGroupPosition != -1 && lastSelectedRoomPosition != -1) {
+                            bathGroups.get(lastSelectedGroupPosition).getBathGroups().get(lastSelectedRoomPosition).setSelected(false);
+                        }
+                        bathGroups.get(groupPosition).getBathGroups().get(bathroomPosition).setSelected(true);
+                        lastSelectedGroupPosition = groupPosition;
+                        lastSelectedRoomPosition = bathroomPosition;
+                        isSelected = true;
+                    }
+                    outerAdapter.notifyDataSetChanged();
+                    changeBottomUseWay();
                 });
 //        recyclerView.setLayoutManager(new LinearLayoutManager(this, OrientationHelper.HORIZONTAL, false));
         LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) recyclerView.getLayoutParams();
@@ -117,6 +137,14 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
                 return false;
             }
         });
+    }
+
+    private void changeBottomUseWay() {
+        if (!isSelected) {
+            metaBall.changeToBuyCodeWay();
+        } else {
+            metaBall.changeToBookingWay();
+        }
     }
 
 //    private void changeToBookingUse() {
@@ -151,9 +179,9 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
 
     private void onRightClick() {
         if (isSelected) {
-
-        } else {
             startActivity(new Intent(this, PayUseActivity.class));
+        } else {
+            startActivity(new Intent(this, BathroomScanActivity.class));
         }
     }
 

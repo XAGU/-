@@ -2,6 +2,10 @@ package com.xiaolian.amigo.ui.device.bathroom;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.style.AbsoluteSizeSpan;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -9,6 +13,7 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IBookingPresenter;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IBookingView;
 import com.xiaolian.amigo.ui.widget.dialog.BathroomBookingDialog;
+import com.xiaolian.amigo.util.DimentionUtils;
 
 import javax.inject.Inject;
 
@@ -30,6 +35,21 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
         super.onCreate(savedInstanceState);
         getActivityComponent().inject(this);
         presenter.onAttach(this);
+        setButtonText();
+    }
+
+    private void setButtonText() {
+        SpannableStringBuilder builder = new SpannableStringBuilder();
+        builder.append(getString(R.string.prepay));
+        String buttonText = "10" + getString(R.string.yuan);
+        SpannableString buttonSpan = new SpannableString(buttonText);
+        buttonSpan.setSpan(new AbsoluteSizeSpan(
+                        DimentionUtils.convertSpToPixels(18, this)), 0, buttonText.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        builder.append(buttonSpan);
+        builder.append("，确认预约");
+
+        btStartToUse.setText(builder);
     }
 
     @Override

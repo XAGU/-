@@ -48,9 +48,11 @@ public class ChooseBathroomOuterAdapter extends CommonAdapter<ChooseBathroomOute
                     });
             RecyclerView recyclerView = holder.getView(R.id.recyclerView);
 //            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.addItemDecoration(
-                    new GridSpacesItemDecoration(bathGroupWrapper.getSpanWidth(),
-                            ScreenUtils.dpToPxInt(context, 3), false));
+            if (recyclerView.getItemDecorationAt(0) == null) {
+                recyclerView.addItemDecoration(
+                        new GridSpacesItemDecoration(bathGroupWrapper.getSpanWidth(),
+                                ScreenUtils.dpToPxInt(context, 3), false));
+            }
             recyclerView.setLayoutManager(new GridLayoutManager(context, bathGroupWrapper.getSpanWidth()));
             recyclerView.setAdapter(adapter);
             adapters.put(position, adapter);
@@ -58,9 +60,11 @@ public class ChooseBathroomOuterAdapter extends CommonAdapter<ChooseBathroomOute
             ChooseBathroomAdapter adapter = adapters.get(position);
             RecyclerView recyclerView = holder.getView(R.id.recyclerView);
 //            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.addItemDecoration(
-                    new GridSpacesItemDecoration(bathGroupWrapper.getSpanWidth(),
-                            ScreenUtils.dpToPxInt(context, 3), false));
+            if (recyclerView.getItemDecorationAt(0) == null) {
+                recyclerView.addItemDecoration(
+                        new GridSpacesItemDecoration(bathGroupWrapper.getSpanWidth(),
+                                ScreenUtils.dpToPxInt(context, 3), false));
+            }
             recyclerView.setLayoutManager(new GridLayoutManager(context, bathGroupWrapper.getSpanWidth()));
             recyclerView.setAdapter(adapter);
         }

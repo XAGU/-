@@ -7,6 +7,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -72,6 +73,9 @@ public abstract class UseWayActivity extends BathroomBaseActivity {
     TextView tvTip3;
     @BindView(R.id.tv_tip4)
     TextView tvTip4;
+
+    @BindView(R.id.bt_start_to_use)
+    Button btStartToUse;
 
     private List<DeviceInfoAdapter.DeviceInfoWrapper> items = new ArrayList<DeviceInfoAdapter.DeviceInfoWrapper>() {
         {

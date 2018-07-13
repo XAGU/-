@@ -6,12 +6,15 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.media.Image;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 
@@ -30,6 +33,16 @@ public class MetaBallView extends LinearLayout {
     LinearLayout llLeft;
     @BindView(R.id.ll_right)
     LinearLayout llRight;
+    @BindView(R.id.iv_left)
+    ImageView ivLeft;
+    @BindView(R.id.tv_left)
+    TextView tvLeft;
+    @BindView(R.id.iv_right)
+    ImageView ivRight;
+    @BindView(R.id.tv_right)
+    TextView tvRight;
+    @BindView(R.id.tv_missed_booking_time)
+    TextView tvMissedBookingTime;
     private float viewWidth;
     private float llWidth;
     private float llHeight;
@@ -75,6 +88,26 @@ public class MetaBallView extends LinearLayout {
                 listener.onButtonClick(true);
             }
         });
+    }
+
+    /**
+     * 显示购买编码
+     */
+    public void changeToBuyCodeWay() {
+        tvLeft.setText("购买编码");
+        ivLeft.setImageResource(R.drawable.ic_bathroom_buy_code);
+        tvRight.setText("扫一扫");
+        ivRight.setImageResource(R.drawable.ic_bathroom_scan);
+    }
+
+    /**
+     * 显示预约使用
+     */
+    public void changeToBookingWay() {
+        tvLeft.setText("预约使用");
+        ivLeft.setImageResource(R.drawable.ic_bathroom_booking);
+        tvRight.setText("付费使用");
+        ivRight.setImageResource(R.drawable.ic_bathroom_pay_use);
     }
 
     public void translation() {

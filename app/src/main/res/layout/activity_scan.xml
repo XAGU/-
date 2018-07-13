@@ -48,6 +48,7 @@
             android:layout_height="42dp"
             android:src="@drawable/arrow_left_white" />
         <TextView
+            android:id="@+id/tv_title"
             android:text="洗衣机扫描"
             android:textSize="16sp"
             android:textStyle="bold"

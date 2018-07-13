@@ -31,7 +31,7 @@ public class ChooseBathroomAdapter extends CommonAdapter<ChooseBathroomAdapter.B
         holder.getConvertView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (itemWrapper.getStatus() == BathroomStatus.AVAILABLE && listener != null) {
+                if (listener != null) {
                     listener.onBathroomSelected(position);
                 }
             }

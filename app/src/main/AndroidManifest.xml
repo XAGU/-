@@ -310,6 +310,12 @@
             android:theme="@style/AppTheme.NoActionBar"
             />
 
+        <!--公共澡堂扫一扫使用-->
+        <activity android:name=".ui.device.bathroom.BathroomScanActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+
         <!--洗澡地址-->
         <activity android:name=".ui.device.bathroom.ShowerAddressActivity"
             android:screenOrientation="portrait"

@@ -243,7 +243,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         connecting = true;
 
         // 启动30s倒计时
-        timer = new CountDownTimer(15 * 1000, 1000) {
+        timer = new CountDownTimer(30 * 1000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 if (!connecting) {
