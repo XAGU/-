@@ -181,7 +181,8 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         if (isSelected) {
             startActivity(new Intent(this, PayUseActivity.class));
         } else {
-            startActivity(new Intent(this, BathroomScanActivity.class));
+//            startActivity(new Intent(this, BathroomScanActivity.class));
+            startActivity(new Intent(this, ScanUseActivity.class));
         }
     }
 

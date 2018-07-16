@@ -311,4 +311,7 @@
     <string name="choose_building">选择楼栋</string>
     <string name="choose_floor">选择楼层</string>
     <string name="choose_room">选择洗澡房间</string>
+
+    <string name="bathroom_password_tip1">1.请设置你的6位数字浴室密码，设置完成后可前往"个人中心"——"编辑个人信息"里进行修改或找回；</string>
+    <string name="bathroom_password_tip2">2.浴室密码的作用：在浴室房间里的设备上输入手机号＋浴室密码，便可开阀洗澡。</string>
 </resources>

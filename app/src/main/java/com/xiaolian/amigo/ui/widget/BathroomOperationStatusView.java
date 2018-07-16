@@ -19,6 +19,12 @@ import butterknife.ButterKnife;
  * @date 18/6/29
  */
 public class BathroomOperationStatusView extends LinearLayout {
+    public final static int IMG_RES_STATUS_SUCCESS = R.drawable.ic_bathroom_status_success;
+    public final static int IMG_RES_STATUS_OPERATING = R.drawable.ic_bathroom_status_operating;
+    public final static int IMG_RES_STATUS_FAIL = R.drawable.ic_bathroom_status_fail;
+    public final static int IMG_RES_STATUS_CANCEL = R.drawable.ic_bathroom_status_cancel;
+
+    private int status;
 
     @BindView(R.id.tv_status)
     TextView tvStatus;
@@ -48,5 +54,17 @@ public class BathroomOperationStatusView extends LinearLayout {
         View view = LayoutInflater.from(context).inflate(R.layout.view_bathroom_operation_status,
                 this, true);
         ButterKnife.bind(this, view);
+    }
+
+    public void setLeftImageResource(int imageRes) {
+        ivStatus.setImageResource(imageRes);
+    }
+
+    public void setStatusText(String text) {
+        tvStatus.setText(text);
+    }
+
+    public void showCancelButton() {
+
     }
 }

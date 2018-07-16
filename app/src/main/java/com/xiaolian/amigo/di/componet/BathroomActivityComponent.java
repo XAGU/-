@@ -8,7 +8,9 @@ import com.xiaolian.amigo.ui.device.bathroom.BookingActivity;
 import com.xiaolian.amigo.ui.device.bathroom.BookingRecordActivity;
 import com.xiaolian.amigo.ui.device.bathroom.BuyCodeActivity;
 import com.xiaolian.amigo.ui.device.bathroom.BuyRecordActivity;
+import com.xiaolian.amigo.ui.device.bathroom.EditBathroomPasswordActivity;
 import com.xiaolian.amigo.ui.device.bathroom.PayUseActivity;
+import com.xiaolian.amigo.ui.device.bathroom.ScanUseActivity;
 
 import dagger.Component;
 
@@ -33,4 +35,8 @@ public interface BathroomActivityComponent {
     void inject(PayUseActivity activity);
 
     void inject(BathroomScanActivity activity);
+
+    void inject(ScanUseActivity activity);
+
+    void inject(EditBathroomPasswordActivity activity);
 }

@@ -110,7 +110,7 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     @Override
     public void setToken(String token) {
         tokenHolder = token;
-        mSharedPreferences.edit().putString(PREF_KEY_TOKEN, token).apply();
+        mSharedPreferences.edit().putString(PREF_KEY_TOKEN, token).commit();
     }
 
     @Override

@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
+import com.xiaolian.amigo.ui.device.bathroom.EditBathroomPasswordActivity;
 import com.xiaolian.amigo.ui.user.intf.IEditProfilePresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditProfileView;
 import com.xiaolian.amigo.ui.widget.dialog.AvailabilityDialog;
@@ -146,6 +147,10 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
             case R.id.rel_edit_password:
                 intent = new Intent(this, EditPasswordActivity.class);
                 intent.putExtra("nickName", "");
+                startActivityForResult(intent, 1);
+                break;
+            case R.id.rel_edit_bathroom_password:
+                intent = new Intent(this, EditBathroomPasswordActivity.class);
                 startActivityForResult(intent, 1);
                 break;
             case R.id.rel_edit_school:

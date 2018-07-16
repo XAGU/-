@@ -13,7 +13,9 @@ import com.xiaolian.amigo.ui.device.bathroom.BookingRecordPresenter;
 import com.xiaolian.amigo.ui.device.bathroom.BuyCodePresenter;
 import com.xiaolian.amigo.ui.device.bathroom.BuyRecordPresenter;
 import com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomPresenter;
+import com.xiaolian.amigo.ui.device.bathroom.EditBathroomPasswordPresenter;
 import com.xiaolian.amigo.ui.device.bathroom.PayUsePresenter;
+import com.xiaolian.amigo.ui.device.bathroom.ScanUsePresenter;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IBathroomPresenter;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IBathroomScanPresenter;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IBathroomScanView;
@@ -28,8 +30,12 @@ import com.xiaolian.amigo.ui.device.bathroom.intf.IBuyRecordPresenter;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IBuyRecordView;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IChooseBathroomPresenter;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IChooseBathroomView;
+import com.xiaolian.amigo.ui.device.bathroom.intf.IEditBathroomPasswordPresenter;
+import com.xiaolian.amigo.ui.device.bathroom.intf.IEditBathroomPasswordView;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IPayUsePresenter;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IPayUseView;
+import com.xiaolian.amigo.ui.device.bathroom.intf.IScanUsePresenter;
+import com.xiaolian.amigo.ui.device.bathroom.intf.IScanUseView;
 
 import dagger.Module;
 import dagger.Provides;
@@ -105,6 +111,20 @@ public class BathroomActivityModule {
     @BathroomActivityContext
     IBathroomScanPresenter<IBathroomScanView> provideBathroomScanPresenter(
             BathroomScanPresenter<IBathroomScanView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    @BathroomActivityContext
+    IScanUsePresenter<IScanUseView> provideScanUsePresenter(
+            ScanUsePresenter<IScanUseView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    @BathroomActivityContext
+    IEditBathroomPasswordPresenter<IEditBathroomPasswordView> provideEditBathroomPasswordPresenter(
+            EditBathroomPasswordPresenter<IEditBathroomPasswordView> presenter) {
         return presenter;
     }
 
