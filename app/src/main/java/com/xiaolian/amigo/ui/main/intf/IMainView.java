@@ -133,4 +133,14 @@ public interface IMainView extends IBaseView {
      * 隐藏校Ok帐号迁移
      */
     void hideXOkMigrate();
+
+    /**
+     * 路由到宿舍
+     */
+    void routeToRoomShower();
+
+    /**
+     * 路由到公共浴室
+     */
+    void routeToBathroomShower();
 }

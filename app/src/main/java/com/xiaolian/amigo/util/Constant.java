@@ -68,6 +68,7 @@ public final class Constant {
      * 当前使用的服务器
      */
     public static final String SERVER = SERVER_TEST;
+    public static final String SERVER_BATHROOM = BuildConfig.SERVER_BATHROOM;
 
     /**
      * 图片地址前缀

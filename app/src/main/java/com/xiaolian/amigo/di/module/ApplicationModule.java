@@ -90,7 +90,7 @@ public class ApplicationModule {
                 .readTimeout(Constant.DEFAULT_TIMEOUT, TimeUnit.SECONDS)
                 .build();
         return new Retrofit.Builder()
-                .baseUrl(Constant.SERVER)
+                .baseUrl(Constant.SERVER_BATHROOM)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .client(client)
