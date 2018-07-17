@@ -2,6 +2,7 @@ package com.xiaolian.amigo.di.componet;
 
 import com.xiaolian.amigo.di.UserActivityContext;
 import com.xiaolian.amigo.di.module.UserActivityModule;
+import com.xiaolian.amigo.ui.user.ChangeBathroomPasswordActivity;
 import com.xiaolian.amigo.ui.user.CheckPasswordActivity;
 import com.xiaolian.amigo.ui.user.ChooseDormitoryActivity;
 import com.xiaolian.amigo.ui.user.EditAvatarActivity;
@@ -10,6 +11,7 @@ import com.xiaolian.amigo.ui.user.EditMobileActivity;
 import com.xiaolian.amigo.ui.user.EditNickNameActivity;
 import com.xiaolian.amigo.ui.user.EditPasswordActivity;
 import com.xiaolian.amigo.ui.user.EditProfileActivity;
+import com.xiaolian.amigo.ui.user.FindBathroomPasswordActivity;
 import com.xiaolian.amigo.ui.user.ListChooseActivity;
 
 import dagger.Component;
@@ -40,4 +42,8 @@ public interface UserActivityComponent {
     void inject(CheckPasswordActivity activity);
 
     void inject(ChooseDormitoryActivity activity);
+
+    void inject(ChangeBathroomPasswordActivity activity);
+
+    void inject(FindBathroomPasswordActivity activity);
 }

@@ -24,7 +24,7 @@ public class CmdResultRespDTO {
     Integer nextCommandType;
 
     /**
-     * 原指令类型
+     * 原指令类型（服务器和设备已经完成的指令）
      */
     Integer srcCommandType;
 

@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.data.manager;
 
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
+import com.xiaolian.amigo.data.network.IBathroomApi;
 import com.xiaolian.amigo.data.network.IFileApi;
 import com.xiaolian.amigo.data.network.ILoginApi;
 import com.xiaolian.amigo.data.network.IOssApi;
@@ -33,6 +34,7 @@ import com.xiaolian.amigo.data.network.model.user.UserResidenceDTO;
 import com.xiaolian.amigo.data.network.model.user.UserResidenceInListDTO;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.data.vo.User;
+import com.xiaolian.amigo.di.BathroomServer;
 import com.xiaolian.amigo.di.UserServer;
 
 import javax.inject.Inject;
@@ -53,7 +55,6 @@ import rx.Observable;
 public class UserDataManager implements IUserDataManager {
     @SuppressWarnings("unused")
     private static final String TAG = UserDataManager.class.getSimpleName();
-
     private IUserApi userApi;
     private IResidenceApi residenceApi;
     private ISchoolApi schoolApi;
@@ -63,7 +64,7 @@ public class UserDataManager implements IUserDataManager {
     private ISharedPreferencesHelp sharedPreferencesHelp;
 
     @Inject
-    public UserDataManager(@UserServer Retrofit retrofit, ISharedPreferencesHelp sharedPreferencesHelp) {
+    public UserDataManager( @UserServer Retrofit retrofit, ISharedPreferencesHelp sharedPreferencesHelp) {
         residenceApi = retrofit.create(IResidenceApi.class);
         schoolApi = retrofit.create(ISchoolApi.class);
         userApi = retrofit.create(IUserApi.class);

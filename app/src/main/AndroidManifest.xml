@@ -437,6 +437,18 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <!--更换浴室密码-->
+        <activity android:name=".ui.user.ChangeBathroomPasswordActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <!--找回浴室密码-->
+        <activity android:name=".ui.user.FindBathroomPasswordActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden"
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <!--更换头像-->
         <activity
             android:name=".ui.user.EditAvatarActivity"
@@ -610,6 +622,7 @@
             android:launchMode="singleInstance"
             android:process=":acra"
             android:theme="@android:style/Theme.Dialog" />
+
 
         <service
             android:name=".util.crash.acra.sender.SenderService"

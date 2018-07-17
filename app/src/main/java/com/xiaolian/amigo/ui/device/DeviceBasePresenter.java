@@ -188,6 +188,10 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         step = null;
     }
 
+    /**
+     * 不同地方跳转，显示不同页面
+     * @param homePageJump 是否是从首页跳转而来
+     */
     @Override
     public void setHomePageJump(boolean homePageJump) {
         this.homePageJump = homePageJump;
@@ -200,6 +204,11 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         }
     }
 
+
+    /**
+     * 连接间隔为5s
+     * @param macAddress 设备mac地址
+     */
     @Override
     public void onPreConnect(@NonNull String macAddress) {
 
@@ -268,8 +277,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         Log.i(TAG, "启动15s定时器......");
         timer.start();
 
+        //  macAddress是服务器返回的deviceNo  ,currentMacAddress是全局变量，是正确的蓝牙设备mac地址
         // 设备连接上存储mac地址供后续读写数据使用
-        // 查询是否存在改deviceNo的macAddress
+        // 查询是否存在该deviceNo的macAddress
         if (deviceDataManager.getMacAddressByDeviceNo(macAddress) != null) {
             Log.i(TAG, "缓存中存在macAddress，不需要扫描");
             currentMacAddress = deviceDataManager.getMacAddressByDeviceNo(macAddress);
@@ -442,6 +452,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             }
         });
     }
+
 
     private void afterBleConnected() {
         if (reconnect) {
@@ -890,6 +901,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             switch (Command.getCommand(result.getData().getSrcCommandType())) {
                 case CONNECT:
                     // 如果用户本人在三小时之内再次连接该设备，需要进入第二步账单结算页面
+                    // 表明用户是正在使用状态
                     if (!reconnect && null != orderStatus && null != orderStatus.getStatus() && OrderStatus.getOrderStatus(orderStatus.getStatus()) == OrderStatus.USING) {
                         // 记录预结账指令，此时阀门已经被长按关闭，但是订单没有被其它用户带回
                         Log.i(TAG, "用户在该设备上存在未结账订单，直接跳转至结算页面，获取到预结账指令。command:" + nextCommand);
@@ -906,14 +918,16 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         }
                         return;
                     }
+                    // 存在未结账订单，直接后台预结账处理
                     // 如果存在未结账订单，需要先结算旧账单
-                    if (null != result.getData().getNextCommand()) {
+                    if (null != result.getData().getNextCommand()) {  //  != null   表明存在未结账订单
                         precheckCmd = nextCommand;
                         if (!reconnect) { // 正常流程
                             // 下发预结账指令
                             Log.i(TAG, "正常流程，设备上存在未结账订单，获取到预结账指令。command:" + nextCommand);
                             onWrite(precheckCmd);
                         } else {
+                            //  自己的未结账订单，显示未结账状态
                             Log.i(TAG, "用户在结算页面重新连接成功，设备上存在未结账订单，获取到预结账指令。command:" + nextCommand);
                             if (getMvpView() != null) {
                                 getMvpView().onReconnectSuccess(orderStatus);
@@ -1081,7 +1095,12 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         }
     }
 
-    // 检测关阀指令
+
+    /**
+     * 检测管阀指令 ， 若管阀指令为空，先在缓存中获取指令，获取到将管阀指令赋值给closeCmd ，若获取不到，再从服务器获取管阀指令，
+     * 若服务器获取不到管阀指令，则提示用户手动管阀。
+     * @return
+     */
     private boolean checkCloseCmd() {
         if (TextUtils.isEmpty(closeCmd)) {
             Log.e(TAG, "重连状态关阀指令为空, 从缓存中获取关阀指令");

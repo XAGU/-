@@ -8,6 +8,7 @@ import com.xiaolian.amigo.data.manager.UserDataManager;
 import com.xiaolian.amigo.data.manager.intf.IOssDataManager;
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.di.UserActivityContext;
+import com.xiaolian.amigo.ui.user.ChangeBathroomPasswordPresenter;
 import com.xiaolian.amigo.ui.user.CheckPasswordPresenter;
 import com.xiaolian.amigo.ui.user.ChooseDormitoryPresenter;
 import com.xiaolian.amigo.ui.user.EditAvatarPresenter;
@@ -16,7 +17,10 @@ import com.xiaolian.amigo.ui.user.EditMobilePresenter;
 import com.xiaolian.amigo.ui.user.EditNickNamePresenter;
 import com.xiaolian.amigo.ui.user.EditPasswordPresenter;
 import com.xiaolian.amigo.ui.user.EditProfilePresenter;
+import com.xiaolian.amigo.ui.user.FindBathroomPasswordPresenter;
 import com.xiaolian.amigo.ui.user.ListChoosePresenter;
+import com.xiaolian.amigo.ui.user.intf.IChangeBathroomPasswordPresenter;
+import com.xiaolian.amigo.ui.user.intf.IChangeBathroomPasswordView;
 import com.xiaolian.amigo.ui.user.intf.ICheckPasswordPresenter;
 import com.xiaolian.amigo.ui.user.intf.ICheckPasswordView;
 import com.xiaolian.amigo.ui.user.intf.IChooseDormitoryPresenter;
@@ -33,6 +37,8 @@ import com.xiaolian.amigo.ui.user.intf.IEditPasswordPresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditPasswordView;
 import com.xiaolian.amigo.ui.user.intf.IEditProfilePresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditProfileView;
+import com.xiaolian.amigo.ui.user.intf.IFindBathroomPasswordPresenter;
+import com.xiaolian.amigo.ui.user.intf.IFindBathroomPasswordView;
 import com.xiaolian.amigo.ui.user.intf.IListChoosePresenter;
 import com.xiaolian.amigo.ui.user.intf.IListChooseView;
 
@@ -135,5 +141,21 @@ public class UserActivityModule {
     IChooseDormitoryPresenter<IChooseDormitoryView> provideChooseDormitoryPresenter(
             ChooseDormitoryPresenter<IChooseDormitoryView> presenter) {
         return presenter;
+    }
+
+
+    @Provides
+    @UserActivityContext
+    IChangeBathroomPasswordPresenter<IChangeBathroomPasswordView> provideChangeBathroomPasswordPresenter(
+            ChangeBathroomPasswordPresenter<IChangeBathroomPasswordView> presenter){
+        return presenter ;
+    }
+
+
+    @Provides
+    @UserActivityContext
+    IFindBathroomPasswordPresenter<IFindBathroomPasswordView> provideFindBathroomPasswordPresenter(
+            FindBathroomPasswordPresenter<IFindBathroomPasswordView> presenter){
+        return presenter ;
     }
 }
