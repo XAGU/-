@@ -184,8 +184,6 @@ dependencies {
     implementation project(':zxing-android-embedded')
     implementation deps.wechatSDKWithMta
     implementation project(':blelib')
-
-
     //信鸽jar
     compile 'com.tencent.xinge:xinge:3.2.3-release'
     //wup包
