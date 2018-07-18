@@ -150,7 +150,7 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
                 startActivityForResult(intent, 1);
                 break;
             case R.id.rel_edit_bathroom_password:
-                intent = new Intent(this, ChangeBathroomPasswordActivity.class);
+                intent = new Intent(this, FindBathroomPasswordActivity.class);
                 startActivityForResult(intent, 1);
                 break;
             case R.id.rel_edit_school:

@@ -374,7 +374,7 @@ public class SwipeBackHelper extends Handler {
 
 
     private final FrameLayout getContentView(Activity activity) {
-        return (FrameLayout) activity.findViewById(Window.ID_ANDROID_CONTENT);
+        return (FrameLayout) activity.findViewById(Window.ID_ANDROID_CONTENT);    //  获取不包括标题栏的view
     }
 
     class ViewManager {

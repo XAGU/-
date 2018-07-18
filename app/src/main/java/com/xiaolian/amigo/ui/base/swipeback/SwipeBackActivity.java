@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 /**
  * @author zcd
  * @date 17/11/18
+ * 可侧滑的activity
  */
 
 public class SwipeBackActivity extends AppCompatActivity implements SwipeBackHelper.SlideBackManager {

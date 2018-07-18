@@ -25,12 +25,12 @@ public class LoadingDialog extends Dialog {
     private ProgressDrawable mProgressDrawable;
 
     public LoadingDialog(@NonNull Context context) {
-        super(context, android.R.style.Theme_Translucent);
+        super(context, android.R.style.Theme_Translucent);  //  半透明
         initView(context);
     }
 
     private void initView(Context context) {
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);   // notitle
         setContentView(R.layout.dialog_loding);
 //        setCancelable(false);
         setCanceledOnTouchOutside(false);

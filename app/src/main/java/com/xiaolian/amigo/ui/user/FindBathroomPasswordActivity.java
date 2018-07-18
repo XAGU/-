@@ -3,6 +3,7 @@ package com.xiaolian.amigo.ui.user;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.user.intf.IFindBathroomPasswordPresenter;
@@ -31,6 +32,13 @@ public class FindBathroomPasswordActivity  extends UserBaseActivity implements I
         showStep1Fragment();
     }
 
+    /**
+     *
+     * @param textView
+     */
+    public void initMobile(TextView textView){
+        if (presenter != null) textView.setText(presenter.getMobile());
+    }
 
     /**
      * 初始化
@@ -58,5 +66,12 @@ public class FindBathroomPasswordActivity  extends UserBaseActivity implements I
         }
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.find_bathroom_password_fragment ,findBathroomPasswordStep1Fragment).commit();
+    }
+
+    /**
+     * 确认浴室密码
+     */
+    public  void confirmPassword(){
+        if (presenter != null) presenter.confirmPassword();
     }
 }
