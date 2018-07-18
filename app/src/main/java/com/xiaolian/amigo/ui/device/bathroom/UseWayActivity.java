@@ -91,6 +91,8 @@ public abstract class UseWayActivity extends BathroomBaseActivity {
     TextView tvTip3;
     @BindView(R.id.tv_tip4)
     TextView tvTip4;
+    @BindView(R.id.tv_booking_tip)
+    TextView tvBookingTip;
 
     @BindView(R.id.bt_start_to_use)
     Button btStartToUse;
@@ -118,21 +120,21 @@ public abstract class UseWayActivity extends BathroomBaseActivity {
     /**
      * 红包
      */
-    private Long bonusId;
+    protected Long bonusId;
     private String bonusDesc;
     private Double bonusAmount;
 
     /**
      * 失约次数 只有预约才会返回
      */
-    private Integer missedTimes;
+    protected Integer missedTimes;
     /**
      * 总共可失约次数 只有预约才会返回
      */
-    private Integer maxMissAbleTimes;
+    protected Integer maxMissAbleTimes;
 
     private boolean needRecharge;
-    private Double prepayAmount;
+    protected Double prepayAmount;
     private DecimalFormat df = new DecimalFormat("###.##");
 
 

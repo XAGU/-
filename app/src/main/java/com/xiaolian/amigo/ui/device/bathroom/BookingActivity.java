@@ -3,17 +3,23 @@ package com.xiaolian.amigo.ui.device.bathroom;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
+import android.text.SpannedString;
 import android.text.style.AbsoluteSizeSpan;
+import android.text.style.ForegroundColorSpan;
+import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.network.model.bathroom.BathOrderRespDTO;
 import com.xiaolian.amigo.ui.device.bathroom.adapter.DeviceInfoAdapter;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IBookingPresenter;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IBookingView;
+import com.xiaolian.amigo.ui.widget.BathroomOperationStatusView;
 import com.xiaolian.amigo.ui.widget.dialog.BathroomBookingDialog;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.DimentionUtils;
@@ -32,6 +38,9 @@ import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_MAX_MIS
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_MIN_PREPAY;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_MISSED_TIMES;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_PREPAY;
+import static com.xiaolian.amigo.ui.widget.BathroomOperationStatusView.IMG_RES_STATUS_CANCEL;
+import static com.xiaolian.amigo.ui.widget.BathroomOperationStatusView.IMG_RES_STATUS_OPERATING;
+import static com.xiaolian.amigo.ui.widget.BathroomOperationStatusView.IMG_RES_STATUS_SUCCESS;
 
 /**
  * 预约使用
@@ -52,8 +61,43 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
         getActivityComponent().inject(this);
         presenter.onAttach(this);
         initIntent();
+        setTopTip();
         setList();
         setButtonText();
+        statusView.setLeftImageResource(IMG_RES_STATUS_OPERATING);
+        statusView.setStatusText("预约中");
+        statusView.hideCancelButton();
+        btStartToUse.setOnClickListener(v -> presenter.pay(prepayAmount, bonusId));
+    }
+
+    private void setTopTip() {
+        SpannableStringBuilder builder = new SpannableStringBuilder();
+        SpannableString tipSpan1 = new SpannableString("每月失约" + maxMissAbleTimes
+                + "次将无法预约，已失约");
+        tipSpan1.setSpan(new AbsoluteSizeSpan(
+                        DimentionUtils.convertSpToPixels(12, this)), 0, tipSpan1.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tipSpan1.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorDark6)),
+                0, tipSpan1.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        builder.append(tipSpan1);
+        SpannableString missedTimesSpan = new SpannableString(String.valueOf(missedTimes));
+        missedTimesSpan.setSpan(new AbsoluteSizeSpan(
+                        DimentionUtils.convertSpToPixels(12, this)), 0, missedTimesSpan.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        missedTimesSpan.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorFullRed)),
+                0, missedTimesSpan.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        builder.append(missedTimesSpan);
+        SpannableString tipSpan2 = new SpannableString("次");
+        tipSpan2.setSpan(new AbsoluteSizeSpan(
+                        DimentionUtils.convertSpToPixels(12, this)), 0, tipSpan2.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tipSpan2.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorDark6)),
+                0, tipSpan2.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        builder.append(tipSpan2);
+        tvBookingTip.setText(builder);
     }
 
     private void setList() {
@@ -111,5 +155,19 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
     private void onSubtitleClick() {
 //        startActivity(new Intent(this, BookingRecordActivity.class));
         showBookingDialog();
+    }
+
+    @Override
+    public void bookingSuccess(BathOrderRespDTO data) {
+        statusView.setLeftImageResource(IMG_RES_STATUS_SUCCESS);
+        statusView.setStatusText("预约成功");
+        statusView.showCancelButton(() -> presenter.cancel());
+    }
+
+    @Override
+    public void bookingCancel() {
+        statusView.setLeftImageResource(IMG_RES_STATUS_CANCEL);
+        statusView.setStatusText("预约取消预约");
+        statusView.hideCancelButton();
     }
 }

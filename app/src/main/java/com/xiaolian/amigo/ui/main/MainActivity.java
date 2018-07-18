@@ -334,7 +334,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         注册信鸽服务的接口
         如果仅仅需要发推送消息调用这段代码即可
         */
-        String pushAccount = MD5Util.md5(presenter.getUserInfo().getId() + "_jtL2T8nYY5D0klEm");
+        String pushAccount = MD5Util.md5(presenter.getUserInfo().getId() + Constant.MD5_UID_STR);
         Log.d(TAG, "注册信鸽: " + pushAccount);
         XGPushManager.bindAccount(getApplicationContext(),
                 pushAccount,
@@ -342,9 +342,14 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                     @Override
                     public void onSuccess(Object data, int flag) {
                         Log.w(Constants.LogTag, "+++ register push sucess. token:" + data + "flag" + flag);
-                        String pushTag = MD5Util.md5(presenter.getUserInfo().getSchoolId() + "_MTxQd1buFokZayzT");
-                        Log.d(TAG, "注册tag: " + pushTag);
-                        XGPushManager.setTag(getApplicationContext(), pushTag);
+                        String pushSchoolTag = MD5Util.md5(presenter.getUserInfo().getSchoolId() + Constant.MD5_SCHOOL_STR);
+                        Log.d(TAG, "注册学校tag: " + pushSchoolTag);
+                        XGPushManager.setTag(getApplicationContext(), pushSchoolTag);
+                        if (!ObjectsCompat.equals(Constant.INVALID_ID, presenter.getUserInfo().getBuildingId())) {
+                            String pushBuildingTag = MD5Util.md5(presenter.getUserInfo().getBuildingId() + Constant.MD5_BUILDING_STR);
+                            Log.d(TAG, "注册楼栋tag: " + pushBuildingTag);
+                            XGPushManager.setTag(getApplicationContext(), pushBuildingTag);
+                        }
                         presenter.setPushToken((String) data);
                         m.obj = "+++ register push sucess. token:" + data;
                         m.sendToTarget();

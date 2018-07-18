@@ -26,6 +26,7 @@ public class User {
     private Integer sex;
     private Integer type;
     private Long createTime;
+    private Long buildingId;
 
     public User() {
     }
@@ -47,5 +48,6 @@ public class User {
         this.type = entireUserDTO.getType();
         this.macAddress = entireUserDTO.getMacAddress();
         this.createTime = entireUserDTO.getCreateTime();
+        this.buildingId = entireUserDTO.getBuildingId();
     }
 }

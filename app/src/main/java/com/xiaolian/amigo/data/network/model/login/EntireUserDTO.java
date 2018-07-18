@@ -30,6 +30,7 @@ public class EntireUserDTO implements Mapper<User> {
     private Integer sex;
     private Integer type;
     private Long createTime;
+    private Long buildingId;
 
     @Override
     public User transform() {

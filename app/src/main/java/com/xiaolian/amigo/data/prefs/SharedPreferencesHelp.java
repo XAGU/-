@@ -39,6 +39,7 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     private static final String PREF_KEY_UID = "PREF_KEY_UID";
     private static final String PREF_KEY_MOBILE = "PREF_KEY_MOBILE";
     private static final String PREF_KEY_PICTURE_URL = "PREF_KEY_PICTURE_URL";
+    private static final String PREF_KEY_BUILD_ID = "PREF_KEY_BUILD_ID";
     private static final String PREF_CMD_CONNECT_PREFIX = "PREF_CMD_CONNECT_";
     private static final String PREF_CMD_CLOSE_PREFIX = "PREF_CMD_CLOSE_";
     private static final String PREF_ORDER_ID_PREFIX = "PREF_ORDER_ID_PREFIX";
@@ -161,6 +162,7 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
         userHolder.setMobile(mSharedPreferences.getString(PREF_KEY_MOBILE, null));
         userHolder.setPictureUrl(mSharedPreferences.getString(PREF_KEY_PICTURE_URL, null));
         userHolder.setCreateTime(mSharedPreferences.getLong(PREF_KEY_USER_CREATE_TIME, 0));
+        userHolder.setBuildingId(mSharedPreferences.getLong(PREF_KEY_BUILD_ID, -1));
         return userHolder;
     }
 
@@ -201,6 +203,10 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
         if (null != user.getCreateTime()) {
             mSharedPreferences.edit().putLong(PREF_KEY_USER_CREATE_TIME,
                     user.getCreateTime()).apply();
+        }
+        if (null != user.getBuildingId()) {
+            mSharedPreferences.edit().putLong(PREF_KEY_BUILD_ID,
+                    user.getBuildingId()).apply();
         }
     }
 

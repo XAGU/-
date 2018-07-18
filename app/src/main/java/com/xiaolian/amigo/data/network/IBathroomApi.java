@@ -4,9 +4,11 @@ import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.bathroom.BathBookingReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathBookingRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathBuildingRespDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.BathOrderReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathOrderRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathPreBookingRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.ShowerRoomRouterRespDTO;
+import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
 
@@ -37,13 +39,13 @@ public interface IBathroomApi {
      * 用户支付预约或者购买编码
      */
     @POST("bath/trade/pay")
-    Observable<ApiResult<BathBookingRespDTO>> pay(@Body SimpleReqDTO reqDTO);
+    Observable<ApiResult<BathOrderRespDTO>> pay(@Body BathOrderReqDTO reqDTO);
 
     /**
      * 用户取消预约或者购买的编码
      */
     @POST("bath/trade/cancel")
-    Observable<ApiResult<SimpleRespDTO>> cancel(@Body BathBookingReqDTO reqDTO);
+    Observable<ApiResult<BooleanRespDTO>> cancel(@Body SimpleReqDTO reqDTO);
 
     /**
      * 检查当前用户是否有已经预约或者购买了编码的

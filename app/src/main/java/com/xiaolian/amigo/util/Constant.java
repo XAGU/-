@@ -201,4 +201,19 @@ public final class Constant {
      */
     public static final String DIVIDER = ":";
 
+    /**
+     * 推送 building tag
+     */
+    public static final String MD5_BUILDING_STR = "_GpiGd3pl3Zr2ZXC0";
+    /**
+     * 推送 school tag
+     */
+    public static final String MD5_SCHOOL_STR = "_MTxQd1buFokZayzT";
+    /**
+     * 推送 uid account
+     */
+    public static final String MD5_UID_STR = "_jtL2T8nYY5D0klEm";
+
+
+
 }
