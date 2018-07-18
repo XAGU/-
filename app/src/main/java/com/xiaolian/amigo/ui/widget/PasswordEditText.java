@@ -41,6 +41,11 @@ public class PasswordEditText extends AppCompatEditText {
         init();
     }
 
+    public void setOpen(boolean isOpen){
+        this.isOpen = isOpen ;
+        drawableClick(isOpen);
+    }
+
     // 初始化方法
     private void init() {
         // 设置Typeface，防止inputtype为password时，光标远离hint的问题
@@ -54,6 +59,8 @@ public class PasswordEditText extends AppCompatEditText {
         }
 
     }
+
+
 
     // 初始化DrawableRight
     public void setmDrawableRight(boolean isOpen) {
@@ -92,21 +99,26 @@ public class PasswordEditText extends AppCompatEditText {
                 if (drawable != null && isTouchRight) {
                     // 记录状态
                     isOpen = !isOpen;
-                    // 刷新DrawableRight
-                    setmDrawableRight(isOpen);
-                    // 执行点击事件-隐藏或显示
-                    if (isOpen)
-                        setInputType(InputType.TYPE_CLASS_TEXT |
-                                InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                    else
-                        setInputType(
-                                InputType.TYPE_CLASS_TEXT |
-                                        InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                    // 设置光标位置
-                    setSelection(getText().length());
+                    drawableClick(isOpen);
                 }
                 break;
         }
         return super.onTouchEvent(event);
+    }
+
+
+    private void drawableClick(boolean isOpen){
+        // 刷新DrawableRight
+        setmDrawableRight(isOpen);
+        // 执行点击事件-隐藏或显示
+        if (isOpen)
+            setInputType(InputType.TYPE_CLASS_TEXT |
+                    InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+        else
+            setInputType(
+                    InputType.TYPE_CLASS_TEXT |
+                            InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        // 设置光标位置
+        setSelection(getText().length());
     }
 }

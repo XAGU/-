@@ -17,6 +17,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+@Deprecated
 public class ChangeBathroomPasswordActivity extends UserBaseActivity implements IChangeBathroomPasswordView {
 
     @Inject
@@ -54,6 +55,10 @@ public class ChangeBathroomPasswordActivity extends UserBaseActivity implements 
                 startActivity(intent);
             }
         });
+
+    }
+
+    public  void onclick(){
 
     }
 

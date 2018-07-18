@@ -396,4 +396,13 @@
         <item name="android:textSize">@dimen/login_edit_text_size</item>
     </style>
 
+
+    <!--提示内容的item样式-->
+    <style name="TextTipItem">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">9dp</item>
+        <item name="android:lineSpacingExtra">3dp</item>
+    </style>
+
 </resources>

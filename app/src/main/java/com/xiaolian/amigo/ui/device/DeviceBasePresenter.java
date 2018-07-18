@@ -108,7 +108,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     private volatile boolean precheckFlag = false;
     // 订单id
     private volatile long orderId;
-    // 订单状态
+    // 订单状态，这个订单表明是自己的订单
     private UnsettledOrderStatusCheckRespDTO orderStatus;
     // 订单状态信号量
     private final byte[] orderStatusLock = new byte[0];

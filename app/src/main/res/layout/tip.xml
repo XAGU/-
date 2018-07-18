@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/rl_tip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="14dp"
+        android:layout_marginTop="14dp">
+
+        <TextView
+            android:id="@+id/tv_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/description_bathroom_password" />
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="29dp"
+            android:layout_toStartOf="@id/tv_tip"
+            android:background="#e9e9e9" />
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="29dp"
+            android:layout_toEndOf="@id/tv_tip"
+            android:background="#e9e9e9" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_tip1"
+        style="@style/TextTipItem"
+        tool:text="@string/booking_use_tip1" />
+
+    <TextView
+        android:id="@+id/tv_tip2"
+        style="@style/TextTipItem"
+        tool:text="@string/booking_use_tip1" />
+
+</LinearLayout>

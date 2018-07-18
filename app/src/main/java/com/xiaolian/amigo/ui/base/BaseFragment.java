@@ -1,5 +1,7 @@
 package com.xiaolian.amigo.ui.base;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
@@ -14,21 +16,37 @@ import android.view.ViewGroup;
  */
 public abstract class BaseFragment extends Fragment {
 
-    protected View mRootView;
+//    protected View mRootView;
 
-    @Nullable
+    protected Activity mActivity ;
+
+
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if (mRootView == null) {
-            mRootView = inflater.inflate(setLayout(), container, false);
-            initView(mRootView);
-        }
-        return mRootView;
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.mActivity = (Activity) context;
     }
 
-    @LayoutRes
-    protected abstract int setLayout();
 
-    protected abstract void initView(View view);
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        this.mActivity = null ;
+    }
+//
+//    @Nullable
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+//        if (mRootView == null) {
+//            mRootView = inflater.inflate(setLayout(), container, false);
+//            initView(mRootView);
+//        }
+//        return mRootView;
+//    }
+//
+//    @LayoutRes
+//    protected abstract int setLayout();
+//
+//    protected abstract void initView(View view);
 
 }

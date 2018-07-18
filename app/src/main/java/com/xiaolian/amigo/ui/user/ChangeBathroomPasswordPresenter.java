@@ -7,6 +7,7 @@ import com.xiaolian.amigo.ui.user.intf.IChangeBathroomPasswordView;
 
 import javax.inject.Inject;
 
+@Deprecated
 public class ChangeBathroomPasswordPresenter<V extends IChangeBathroomPasswordView> extends BasePresenter<V>
         implements IChangeBathroomPasswordPresenter<V> {
 
