@@ -21,7 +21,11 @@ public class BathPreBookingRespDTO {
     /**
      * 预付金额
      */
-    private Double prepayAmount;
+    private Double prepay;
+    /**
+     * 最小预付金额
+     */
+    private Double minPrepay;
     /**
      * 用户余额
      */

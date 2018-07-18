@@ -65,4 +65,9 @@ public class PayUseActivity extends UseWayActivity implements IPayUseView {
         tip.setVisibility(View.GONE);
         rlTip.setVisibility(View.GONE);
     }
+
+    @Override
+    protected String getButtonText() {
+        return "，确认洗澡";
+    }
 }

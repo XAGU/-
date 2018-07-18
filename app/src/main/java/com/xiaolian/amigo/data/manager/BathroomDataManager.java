@@ -3,7 +3,9 @@ package com.xiaolian.amigo.data.manager;
 import com.xiaolian.amigo.data.manager.intf.IBathroomDataManager;
 import com.xiaolian.amigo.data.network.IBathroomApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.bathroom.BathBookingReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathBuildingRespDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.BathPreBookingRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.ShowerRoomRouterRespDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
 import com.xiaolian.amigo.di.BathroomServer;
@@ -34,5 +36,10 @@ public class BathroomDataManager implements IBathroomDataManager {
     @Override
     public Observable<ApiResult<ShowerRoomRouterRespDTO>> route() {
         return bathroomApi.route();
+    }
+
+    @Override
+    public Observable<ApiResult<BathPreBookingRespDTO>> preBooking(BathBookingReqDTO reqDTO) {
+        return bathroomApi.preBooking(reqDTO);
     }
 }

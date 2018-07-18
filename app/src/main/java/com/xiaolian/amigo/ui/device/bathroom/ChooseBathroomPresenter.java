@@ -1,10 +1,13 @@
 package com.xiaolian.amigo.ui.device.bathroom;
 
+import com.xiaolian.amigo.data.enumeration.BathTradeType;
 import com.xiaolian.amigo.data.manager.intf.IBathroomDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.bathroom.BathBookingReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathBuildingRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathFloorDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathGroupDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.BathPreBookingRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathRoomDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
@@ -46,6 +49,29 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
                         }
                     }
                 });
+    }
+
+    @Override
+    public void preBooking() {
+        BathBookingReqDTO reqDTO = new BathBookingReqDTO();
+        reqDTO.setDeviceNo("");
+        reqDTO.setType(BathTradeType.BOOKING.getCode());
+        addObserver(bathroomDataManager.preBooking(reqDTO), new NetworkObserver<ApiResult<BathPreBookingRespDTO>>() {
+
+            @Override
+            public void onReady(ApiResult<BathPreBookingRespDTO> result) {
+                if (null == result.getError()) {
+                    getMvpView().gotoBookingView(result.getData().getBalance(),
+                            result.getData().getBonus().getId(), result.getData().getBonus().getDescription(),
+                            result.getData().getBonus().getAmount(), result.getData().getExpiredTime(),
+                            result.getData().getLocation(), result.getData().getMaxMissAbleTimes(),
+                            result.getData().getMinPrepay(), result.getData().getMissedTimes(),
+                            result.getData().getPrepay());
+                } else {
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+        });
     }
 
     private List<ChooseBathroomOuterAdapter.BathGroupWrapper> convertFrom(BathBuildingRespDTO bathBuildingRespDTO) {

@@ -23,6 +23,17 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_BALANCE;
+import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_BONUS_AMOUNT;
+import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_BONUS_DESC;
+import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_BONUS_ID;
+import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_EXPIRED_TIME;
+import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_LOCATION;
+import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_MAX_MISSABLE_TIMES;
+import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_MIN_PREPAY;
+import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_MISSED_TIMES;
+import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_PREPAY;
+
 /**
  * 选择浴室
  *
@@ -171,7 +182,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
 
     private void onLeftClick() {
         if (isSelected) {
-            startActivity(new Intent(this, BookingActivity.class));
+            presenter.preBooking();
         } else {
             startActivity(new Intent(this, BuyCodeActivity.class));
         }
@@ -230,5 +241,24 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         bathGroups.clear();
         bathGroups.addAll(wrappers);
         outerAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void gotoBookingView(Double balance,
+                                Long bonusId, String bonusDesc, Double bonusAmount,
+                                Long expiredTime, String location, Integer maxMissAbleTimes,
+                                Double minPrepay, Integer missedTimes, Double prepay) {
+        startActivity(new Intent(this, BookingActivity.class)
+                .putExtra(KEY_BALANCE, balance)
+                .putExtra(KEY_BONUS_ID, bonusId)
+                .putExtra(KEY_BONUS_DESC, bonusDesc)
+                .putExtra(KEY_BONUS_AMOUNT, bonusAmount)
+                .putExtra(KEY_EXPIRED_TIME, expiredTime)
+                .putExtra(KEY_LOCATION, location)
+                .putExtra(KEY_MAX_MISSABLE_TIMES, maxMissAbleTimes)
+                .putExtra(KEY_MIN_PREPAY, minPrepay)
+                .putExtra(KEY_MISSED_TIMES, missedTimes)
+                .putExtra(KEY_PREPAY, prepay)
+        );
     }
 }
