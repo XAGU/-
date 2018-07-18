@@ -8,9 +8,12 @@ import lombok.Data;
  */
 @Data
 public class BathBookingReqDTO {
-    private Long bookingId;
     /**
-     * 1 预约 2 购买编码
+     * 设备编号
+     */
+    private String deviceNo;
+    /**
+     * 交易类型 1预约 2购买编码 3 扫一扫 4 直接使用
      */
     private Integer type;
 }

@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.data.manager;
 
 import com.xiaolian.amigo.data.manager.intf.IMainDataManager;
+import com.xiaolian.amigo.data.network.IBathroomApi;
 import com.xiaolian.amigo.data.network.IDeviceApi;
 import com.xiaolian.amigo.data.network.INotifyApi;
 import com.xiaolian.amigo.data.network.IOrderApi;
@@ -10,6 +11,7 @@ import com.xiaolian.amigo.data.network.ITimeRangeApi;
 import com.xiaolian.amigo.data.network.IUserApi;
 import com.xiaolian.amigo.data.network.IVersionApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.bathroom.ShowerRoomRouterRespDTO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCategoryBO;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
 import com.xiaolian.amigo.data.network.model.version.CheckVersionUpdateReqDTO;
@@ -30,6 +32,7 @@ import com.xiaolian.amigo.data.network.model.user.UploadUserDeviceInfoReqDTO;
 import com.xiaolian.amigo.data.vo.DeviceCategory;
 import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
+import com.xiaolian.amigo.di.BathroomServer;
 import com.xiaolian.amigo.di.UserServer;
 
 import java.util.ArrayList;
@@ -60,9 +63,12 @@ public class MainDataManager implements IMainDataManager {
     private INotifyApi notifyApi;
     private ISchoolApi schoolApi;
     private IVersionApi versionApi;
+    private IBathroomApi bathroomApi;
 
     @Inject
-    public MainDataManager(@UserServer Retrofit retrofit, ISharedPreferencesHelp sharedPreferencesHelp) {
+    public MainDataManager(@BathroomServer Retrofit bathroomRetrofit,
+                           @UserServer Retrofit retrofit,
+                           ISharedPreferencesHelp sharedPreferencesHelp) {
         this.sharedPreferencesHelp = sharedPreferencesHelp;
         this.orderApi = retrofit.create(IOrderApi.class);
         this.systemApi = retrofit.create(ISystemApi.class);
@@ -72,6 +78,7 @@ public class MainDataManager implements IMainDataManager {
         this.notifyApi = retrofit.create(INotifyApi.class);
         this.schoolApi = retrofit.create(ISchoolApi.class);
         this.versionApi = retrofit.create(IVersionApi.class);
+        this.bathroomApi = bathroomRetrofit.create(IBathroomApi.class);
     }
 
     @Override
@@ -274,5 +281,10 @@ public class MainDataManager implements IMainDataManager {
     @Override
     public void setPushToken(String pushToken) {
         sharedPreferencesHelp.setPushToken(pushToken);
+    }
+
+    @Override
+    public Observable<ApiResult<ShowerRoomRouterRespDTO>> route() {
+        return bathroomApi.route();
     }
 }

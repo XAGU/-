@@ -64,6 +64,11 @@ public class BuyCodeActivity extends UseWayActivity implements IBuyCodeView {
         tip.setText("编码使用说明");
     }
 
+    @Override
+    protected String getButtonText() {
+        return "，确认购买";
+    }
+
     private void onSubtitleClick() {
         startActivity(new Intent(this, BuyRecordActivity.class));
     }

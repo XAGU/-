@@ -6,6 +6,10 @@ import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.style.AbsoluteSizeSpan;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -16,15 +20,29 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.device.bathroom.adapter.DeviceInfoAdapter;
 import com.xiaolian.amigo.ui.widget.BathroomOperationStatusView;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
+import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.util.DimentionUtils;
 import com.xiaolian.amigo.util.ScreenUtils;
 
 import java.sql.Time;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_BALANCE;
+import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_BONUS_AMOUNT;
+import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_BONUS_DESC;
+import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_BONUS_ID;
+import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_EXPIRED_TIME;
+import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_LOCATION;
+import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_MAX_MISSABLE_TIMES;
+import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_MIN_PREPAY;
+import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_MISSED_TIMES;
+import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_PREPAY;
 
 /**
  * 使用公共澡堂基础类
@@ -77,7 +95,49 @@ public abstract class UseWayActivity extends BathroomBaseActivity {
     @BindView(R.id.bt_start_to_use)
     Button btStartToUse;
 
-    private List<DeviceInfoAdapter.DeviceInfoWrapper> items = new ArrayList<DeviceInfoAdapter.DeviceInfoWrapper>() {
+    /**
+     * 设备位置
+     */
+    protected String location;
+    /**
+     * 过期时间
+     */
+    private Long expiredTime;
+    /**
+     * 预付金额
+     */
+    private Double prepay;
+    /**
+     * 最小预付金额
+     */
+    private Double minPrepay;
+    /**
+     * 用户余额
+     */
+    private Double balance;
+    /**
+     * 红包
+     */
+    private Long bonusId;
+    private String bonusDesc;
+    private Double bonusAmount;
+
+    /**
+     * 失约次数 只有预约才会返回
+     */
+    private Integer missedTimes;
+    /**
+     * 总共可失约次数 只有预约才会返回
+     */
+    private Integer maxMissAbleTimes;
+
+    private boolean needRecharge;
+    private Double prepayAmount;
+    private DecimalFormat df = new DecimalFormat("###.##");
+
+
+
+    protected List<DeviceInfoAdapter.DeviceInfoWrapper> items = new ArrayList<DeviceInfoAdapter.DeviceInfoWrapper>() {
         {
             add(new DeviceInfoAdapter.DeviceInfoWrapper("浴室位置：",
                     "五楼215", R.color.colorDark2, 14, Typeface.NORMAL, false));
@@ -90,7 +150,7 @@ public abstract class UseWayActivity extends BathroomBaseActivity {
         }
     };
 
-    private DeviceInfoAdapter adapter;
+    protected DeviceInfoAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +159,21 @@ public abstract class UseWayActivity extends BathroomBaseActivity {
         setUnBinder(ButterKnife.bind(this));
 
         initView();
+    }
+
+    protected void initIntent() {
+        if (getIntent() != null) {
+            balance = getIntent().getDoubleExtra(KEY_BALANCE, 0);
+            bonusId = getIntent().getLongExtra(KEY_BONUS_ID, Constant.INVALID_ID);
+            bonusDesc = getIntent().getStringExtra(KEY_BONUS_DESC);
+            bonusAmount = getIntent().getDoubleExtra(KEY_BONUS_AMOUNT, 0);
+            minPrepay = getIntent().getDoubleExtra(KEY_MIN_PREPAY, 0);
+            prepay = getIntent().getDoubleExtra(KEY_PREPAY, 0);
+            location = getIntent().getStringExtra(KEY_LOCATION);
+            expiredTime = getIntent().getLongExtra(KEY_EXPIRED_TIME, 0);
+            missedTimes = getIntent().getIntExtra(KEY_MISSED_TIMES, 0);
+            maxMissAbleTimes = getIntent().getIntExtra(KEY_MAX_MISSABLE_TIMES, 0);
+        }
     }
 
     private void initView() {
@@ -139,7 +214,152 @@ public abstract class UseWayActivity extends BathroomBaseActivity {
                                     TextView tip,
                                     RelativeLayout rlTip);
 
-    
+
+    protected abstract String getButtonText();
+
+    protected void setButtonText() {
+        if (minPrepay == null || prepay == null || balance == null) {
+            adapter.notifyDataSetChanged();
+            onError("预付信息不全");
+            return;
+        }
+        // 有代金券
+        if (bonusId != null) {
+            String tip = "";
+            String buttonText;
+            // 余额为0
+            if (balance == 0) {
+                // 代金券金额大于等于最小预付金额
+                if (bonusAmount >= minPrepay) {
+                    tip = df.format(minPrepay) + getString(R.string.yuan);
+                    prepayAmount = 0.0;
+                    needRecharge = false;
+                    SpannableStringBuilder builder = new SpannableStringBuilder();
+                    builder.append(getString(R.string.prepay));
+                    buttonText = df.format(prepayAmount) + getString(R.string.yuan);
+                    SpannableString buttonSpan = new SpannableString(buttonText);
+                    buttonSpan.setSpan(new AbsoluteSizeSpan(
+                                    DimentionUtils.convertSpToPixels(18, this)), 0, buttonText.length(),
+                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    builder.append(buttonSpan);
+                    builder.append(getButtonText());
+                    btStartToUse.setText(builder);
+                }
+                // 代金券金额小于最小预付金额  需要充值
+                else {
+//                    tip = df.format(minPrepay) + getString(R.string.yuan);
+                    tip = "低于"  + df.format(minPrepay) + getString(R.string.yuan) + "，请前往充值";
+                    needRecharge = true;
+                    buttonText = getString(R.string.to_recharge);
+                    btStartToUse.setText(buttonText);
+                }
+            }
+            // 余额不为0
+            else {
+                // 余额加代金券大于等于预付金额
+                if (balance + bonusAmount >= prepay) {
+                    tip = df.format(prepay) + getString(R.string.yuan);
+                    prepayAmount = prepay - bonusAmount;
+                    if (prepayAmount < 0) {
+                        prepayAmount = 0.0;
+                    }
+                    needRecharge = false;
+                    SpannableStringBuilder builder = new SpannableStringBuilder();
+                    builder.append(getString(R.string.prepay));
+                    buttonText = df.format(prepayAmount) + getString(R.string.yuan);
+                    SpannableString buttonSpan = new SpannableString(buttonText);
+                    buttonSpan.setSpan(new AbsoluteSizeSpan(
+                                    DimentionUtils.convertSpToPixels(18, this)), 0, buttonText.length(),
+                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    builder.append(buttonSpan);
+                    builder.append(getButtonText());
+                    btStartToUse.setText(builder);
+                }
+                // 余额加代金券小于预付金额 大于等于最小预付金额
+                else if (balance + bonusAmount >= minPrepay
+                        && balance + bonusAmount < prepay) {
+                    tip = "低于" + df.format(prepay) + getString(R.string.yuan) + "需预付全部余额";
+                    prepayAmount = balance;
+                    needRecharge = false;
+                    SpannableStringBuilder builder = new SpannableStringBuilder();
+                    builder.append(getString(R.string.prepay));
+                    buttonText = df.format(prepayAmount) + getString(R.string.yuan);
+                    SpannableString buttonSpan = new SpannableString(buttonText);
+                    buttonSpan.setSpan(new AbsoluteSizeSpan(
+                                    DimentionUtils.convertSpToPixels(18, this)), 0, buttonText.length(),
+                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    builder.append(buttonSpan);
+                    builder.append(getButtonText());
+                    btStartToUse.setText(builder);
+                }
+                // 余额加代金券小于最小预付金额
+                else if (balance + bonusAmount < minPrepay) {
+                    tip = "低于" + df.format(minPrepay) + "，请前往充值";
+                    needRecharge = true;
+                    buttonText = getString(R.string.to_recharge);
+                    btStartToUse.setText(buttonText);
+                }
+            }
+            items.add(new DeviceInfoAdapter.DeviceInfoWrapper("预付金额：",
+                    tip, R.color.colorDark2, 14, Typeface.NORMAL, false));
+            items.add(new DeviceInfoAdapter.DeviceInfoWrapper("红包抵扣：",
+                    bonusDesc,
+                    R.color.colorDark2, 14, Typeface.NORMAL, true));
+            adapter.notifyDataSetChanged();
+        }
+        // 无代金券
+        else {
+            String title;
+            String tip;
+            String buttonText;
+            // 余额大于等于最小预付金额
+            if (balance >= minPrepay) {
+                // 余额大于等于预付金额
+                if (balance >= prepay) {
+                    prepayAmount = prepay;
+                    title = getString(R.string.need_prepay_amount, df.format(prepayAmount));
+                    tip = df.format(prepay) + getString(R.string.yuan);
+                    SpannableStringBuilder builder = new SpannableStringBuilder();
+                    builder.append(getString(R.string.prepay));
+                    buttonText = df.format(prepayAmount) + getString(R.string.yuan);
+                    SpannableString buttonSpan = new SpannableString(buttonText);
+                    buttonSpan.setSpan(new AbsoluteSizeSpan(
+                                    DimentionUtils.convertSpToPixels(18, this)), 0, buttonText.length(),
+                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    builder.append(buttonSpan);
+                    needRecharge = false;
+                    builder.append(getButtonText());
+                    btStartToUse.setText(builder);
+                } else {
+                    prepayAmount = balance;
+                    title = getString(R.string.need_prepay_amount, df.format(prepayAmount));
+                    tip = "低于" + df.format(prepay) + getString(R.string.yuan) + "，需预付全部余额";
+                    needRecharge = false;
+                    SpannableStringBuilder builder = new SpannableStringBuilder();
+                    builder.append(getString(R.string.prepay));
+                    buttonText = df.format(prepayAmount) + getString(R.string.yuan);
+                    SpannableString buttonSpan = new SpannableString(buttonText);
+                    buttonSpan.setSpan(new AbsoluteSizeSpan(
+                                    DimentionUtils.convertSpToPixels(18, this)), 0, buttonText.length(),
+                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    builder.append(buttonSpan);
+                    builder.append(getButtonText());
+                    btStartToUse.setText(builder);
+                }
+            }
+            // 余额不足
+            else {
+                title = getString(R.string.prepay_no_balance);
+                tip = "低于" + df.format(minPrepay) + getString(R.string.yuan) + "，请前往充值";
+                buttonText = getString(R.string.to_recharge);
+                needRecharge = true;
+                btStartToUse.setText(buttonText);
+            }
+            items.add(new DeviceInfoAdapter.DeviceInfoWrapper("预付金额：",
+                    tip, R.color.colorDark2, 14, Typeface.NORMAL, false));
+            adapter.notifyDataSetChanged();
+        }
+    }
 
 
     private void initRecyclerView() {

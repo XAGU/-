@@ -59,4 +59,9 @@ public class ScanUseActivity extends UseWayActivity implements IScanUseView {
         tip.setVisibility(View.GONE);
         rlTip.setVisibility(View.GONE);
     }
+
+    @Override
+    protected String getButtonText() {
+        return "，确认洗澡";
+    }
 }

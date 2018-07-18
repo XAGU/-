@@ -178,4 +178,6 @@ public interface IMainPresenter<V extends IMainView> extends IBasePresenter<V> {
     String getPushToken();
 
     void setPushToken(String pushToken);
+
+    void routeHeaterOrBathroom();
 }

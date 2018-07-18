@@ -39,6 +39,7 @@ import com.xiaolian.amigo.data.enumeration.DispenserCategory;
 import com.xiaolian.amigo.data.enumeration.DispenserWater;
 import com.xiaolian.amigo.data.enumeration.IntentAction;
 import com.xiaolian.amigo.data.enumeration.Orientation;
+import com.xiaolian.amigo.data.enumeration.UserResidenceType;
 import com.xiaolian.amigo.data.network.model.system.BannerDTO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.order.OrderPreInfoDTO;
@@ -1154,8 +1155,19 @@ public class MainActivity extends MainBaseActivity implements IMainView {
      */
     public void gotoHeater() {
         Log.d(TAG, "gotoHeater");
+        routeToRoomShower();
+//        presenter.routeHeaterOrBathroom();
+    }
+
+    @Override
+    public void routeToRoomShower() {
         setBleCallback(() -> checkDeviceUsage(HEATER));
         getBlePermission();
+    }
+
+    @Override
+    public void routeToBathroomShower() {
+        startActivity(new Intent(this, ChooseBathroomActivity.class));
     }
 
     /**
@@ -1285,9 +1297,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     }
 
     private void gotoWasher() {
-        // FIXME
-        startActivity(new Intent(this, ChooseBathroomActivity.class));
-//        startActivity(new Intent(this, WasherActivity.class));
+        startActivity(new Intent(this, WasherActivity.class));
     }
 
     @Data

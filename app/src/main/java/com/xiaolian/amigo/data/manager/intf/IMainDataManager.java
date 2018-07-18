@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.data.manager.intf;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.bathroom.ShowerRoomRouterRespDTO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCategoryBO;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
 import com.xiaolian.amigo.data.network.model.version.CheckVersionUpdateReqDTO;
@@ -151,4 +152,9 @@ public interface IMainDataManager {
     String getPushToken();
 
     void setPushToken(String pushToken);
+
+    /**
+     * 根据当前登录用户所在学校配置，以及用户上次洗澡的习惯，决定路由到"宿舍热水澡模块"、还是"公共浴室模块"
+     */
+    Observable<ApiResult<ShowerRoomRouterRespDTO>> route();
 }

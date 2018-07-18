@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.device.bathroom;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Spannable;
@@ -10,12 +11,27 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.ui.device.bathroom.adapter.DeviceInfoAdapter;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IBookingPresenter;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IBookingView;
 import com.xiaolian.amigo.ui.widget.dialog.BathroomBookingDialog;
+import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.DimentionUtils;
 
+import java.text.DecimalFormat;
+
 import javax.inject.Inject;
+
+import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_BALANCE;
+import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_BONUS_AMOUNT;
+import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_BONUS_DESC;
+import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_BONUS_ID;
+import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_EXPIRED_TIME;
+import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_LOCATION;
+import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_MAX_MISSABLE_TIMES;
+import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_MIN_PREPAY;
+import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_MISSED_TIMES;
+import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_PREPAY;
 
 /**
  * 预约使用
@@ -35,21 +51,17 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
         super.onCreate(savedInstanceState);
         getActivityComponent().inject(this);
         presenter.onAttach(this);
+        initIntent();
+        setList();
         setButtonText();
     }
 
-    private void setButtonText() {
-        SpannableStringBuilder builder = new SpannableStringBuilder();
-        builder.append(getString(R.string.prepay));
-        String buttonText = "10" + getString(R.string.yuan);
-        SpannableString buttonSpan = new SpannableString(buttonText);
-        buttonSpan.setSpan(new AbsoluteSizeSpan(
-                        DimentionUtils.convertSpToPixels(18, this)), 0, buttonText.length(),
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        builder.append(buttonSpan);
-        builder.append("，确认预约");
-
-        btStartToUse.setText(builder);
+    private void setList() {
+        items.clear();
+        items.add(new DeviceInfoAdapter.DeviceInfoWrapper("浴室位置：",
+                location, R.color.colorDark2, 14, Typeface.NORMAL, false));
+        items.add(new DeviceInfoAdapter.DeviceInfoWrapper("预留时间：",
+                "15分钟", R.color.colorDark2, 14, Typeface.NORMAL, false));
     }
 
     @Override
@@ -82,6 +94,11 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
         tip3.setText(getString(R.string.booking_use_tip3));
         tip4.setText(getString(R.string.booking_use_tip4));
         tip.setText("预约使用说明");
+    }
+
+    @Override
+    protected String getButtonText() {
+        return "，确认预约";
     }
 
     private void showBookingDialog() {
