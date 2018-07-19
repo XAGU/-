@@ -13,6 +13,7 @@ import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.di.ApplicationContext;
 import com.xiaolian.blelib.BluetoothConstants;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -75,6 +76,11 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
      * 扫描方式
      */
     private static final String PREF_KEY_SCAN_TYPE = "PREF_KEY_SCAN_TYPE";
+
+    /**
+     * 浴室密码说明
+     */
+    private static final String PREF_KEY_BATH_ROOM_PASSWORD_DESC = "PREF_KEY_BATH_ROOM_PASSWORD_DESC";
 
     private String tokenHolder;
     private String deviceTokenHolder;
@@ -484,6 +490,26 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     @Override
     public String getPushTag() {
         return mSharedPreferences.getString(PREF_KEY_PUSH_TAG, "");
+    }
+
+    @Override
+    public void setBathPasswordDescription(ArrayList<String> bathPasswordDescription) {
+        String schoolBizStr = mGson.toJson(bathPasswordDescription);
+        mUnclearSharedPreferences
+                .edit()
+                .putString(PREF_KEY_BATH_ROOM_PASSWORD_DESC, schoolBizStr)
+                .apply();
+    }
+
+    @Override
+    public List<String> getBathPasswordDescription() {
+        String schoolBizStr = mUnclearSharedPreferences.getString(PREF_KEY_BATH_ROOM_PASSWORD_DESC, null);
+        if (null != schoolBizStr) {
+            return mGson.fromJson(schoolBizStr,
+                    new TypeToken<List<String>>() {
+                    }.getType());
+        }
+        return null;
     }
 
     @Override

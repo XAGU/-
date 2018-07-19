@@ -278,6 +278,7 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
         refreshLayout.finishRefresh(300);
     }
 
+
     @Override
     protected void setUp() {
 

@@ -5,6 +5,7 @@ import com.xiaolian.amigo.data.network.model.user.UploadUserDeviceInfoReqDTO;
 import com.xiaolian.amigo.data.vo.DeviceCategory;
 import com.xiaolian.amigo.data.vo.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -157,4 +158,8 @@ public interface ISharedPreferencesHelp {
     void setPushTag(String pushTag);
 
     String getPushTag();
+
+    void setBathPasswordDescription(ArrayList<String> bathPasswordDescription);
+
+    List<String> getBathPasswordDescription();
 }

@@ -287,4 +287,9 @@ public class MainDataManager implements IMainDataManager {
     public Observable<ApiResult<ShowerRoomRouterRespDTO>> route() {
         return bathroomApi.route();
     }
+
+    @Override
+    public void setBathroomPasswordDesc(ArrayList<String> bathPasswordDescription) {
+        sharedPreferencesHelp.setBathPasswordDescription(bathPasswordDescription);
+    }
 }

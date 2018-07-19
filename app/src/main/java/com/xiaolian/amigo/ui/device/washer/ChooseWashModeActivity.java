@@ -236,6 +236,7 @@ public class ChooseWashModeActivity extends WasherBaseActivity implements IChoos
         }
     }
 
+
     @Override
     protected void setUp() {
         if (getIntent() != null) {

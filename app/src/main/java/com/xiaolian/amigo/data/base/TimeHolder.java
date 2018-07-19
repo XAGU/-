@@ -33,4 +33,16 @@ public class TimeHolder {
     public void setLastConnectTime(Long lastConnectTime) {
         this.lastConnectTime = lastConnectTime;
     }
+
+    public static void main(String[] args) {
+        String currentUrl = "http://123:5081/abc";
+        String oldUserServer = "http://123:5081";
+        String oldBathServer = "http://123:5082";
+        String newUserServer = "http://321:5081";
+        String newBathServer = "http://321:5082";
+        String replacedUrl = currentUrl.replace(oldBathServer, newBathServer);
+        replacedUrl = replacedUrl.replace(oldUserServer, newUserServer);
+        System.out.println(replacedUrl);
+
+    }
 }

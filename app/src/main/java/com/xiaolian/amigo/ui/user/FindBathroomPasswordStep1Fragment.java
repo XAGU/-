@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -18,11 +20,19 @@ import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.base.BaseFragment;
+import com.xiaolian.amigo.ui.user.adaptor.TipAdapter;
 import com.xiaolian.amigo.ui.widget.ClearableEditText;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.CountDownButtonHelper;
 import com.xiaolian.amigo.util.ViewUtil;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,14 +59,12 @@ public class FindBathroomPasswordStep1Fragment extends BaseFragment {
 
     Unbinder unbind;
     CountDownButtonHelper cdb;
-    @BindView(R.id.tv_tip1)
-    TextView tvTip1;
-    @BindView(R.id.tv_tip2)
-    TextView tvTip2;
+    @BindView(R.id.rv_tip)
+    RecyclerView rvTip;
+    private TipAdapter adapter;
+    private List<TipAdapter.Tip> tips = new ArrayList<>();
 
-    private FragmentManager fragmentManager;
-    private FindBathroomPasswordStep2Fragment step2Fragment;
-    private FragmentTransaction fragmentTransaction;
+
 
     @Nullable
     @Override
@@ -107,7 +115,6 @@ public class FindBathroomPasswordStep1Fragment extends BaseFragment {
             }
         });
         toggleButton();
-        fragmentManager = getFragmentManager();
         CommonUtil.showSoftInput(getContext(), etVerificationCode);
     }
 
@@ -116,16 +123,36 @@ public class FindBathroomPasswordStep1Fragment extends BaseFragment {
      */
     @OnClick(R.id.bt_send_verification_code)
     public void getVerificationCode() {
-        startTimer();
+        if (mActivity instanceof  FindBathroomPasswordActivity){
+            ((FindBathroomPasswordActivity) mActivity).presenter.getVerifyCode(etMobile.getText().toString().trim());
+        }
     }
 
 
     private void init() {
         ViewUtil.setEditHintAndSize(getString(R.string.please_enter_verify_code), 14, etVerificationCode);
-        tvTip1.setText(getString(R.string.bathroom_password_tip1));
-        tvTip2.setText(getString(R.string.bathroom_password_tip2));
+//        tvTip1.setText(getString(R.string.bathroom_password_tip1));
+//        tvTip2.setText(getString(R.string.bathroom_password_tip2));
         initMobile();
+//        EventBus.getDefault().register(this);
+        initRecyclerView();
     }
+
+    private void initRecyclerView() {
+        if (mActivity instanceof FindBathroomPasswordActivity){
+            List<String> descs = ((FindBathroomPasswordActivity) mActivity).presenter.getBathroomPasswordDesc();
+            if (descs != null) {
+                for (String desc : descs) {
+                    tips.add(new TipAdapter.Tip(desc));
+                }
+            }
+        }
+
+        adapter = new TipAdapter(getContext(), R.layout.item_tip, tips);
+        rvTip.setLayoutManager(new LinearLayoutManager(getContext()));
+        rvTip.setAdapter(adapter);
+    }
+
 
     private void initMobile() {
         if (mActivity != null) {
@@ -135,7 +162,7 @@ public class FindBathroomPasswordStep1Fragment extends BaseFragment {
         }
     }
 
-
+//    @Subscribe(threadMode = ThreadMode.MAIN)
     public void startTimer() {
         int color = ContextCompat.getColor(getContext(), R.color.colorDarkB);
         btSendVerificationCode.setTextColor(color);
@@ -178,15 +205,10 @@ public class FindBathroomPasswordStep1Fragment extends BaseFragment {
 
     @OnClick(R.id.bt_submit)
     public void onNext() {
-        if (step2Fragment == null) {
-            step2Fragment = new FindBathroomPasswordStep2Fragment();
-        }
-        if (fragmentManager == null) {
-            fragmentManager = getFragmentManager();
-        }
-        fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.find_bathroom_password_fragment, step2Fragment).commit();
-
+             if (mActivity instanceof FindBathroomPasswordActivity){
+                 ((FindBathroomPasswordActivity) mActivity).presenter.checkVerifyCode(etMobile.getText().toString().trim() ,
+                         etVerificationCode.getText().toString().trim());
+             }
     }
 
 
@@ -194,6 +216,7 @@ public class FindBathroomPasswordStep1Fragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         if (unbind != null) unbind.unbind();
+//        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -207,4 +230,6 @@ public class FindBathroomPasswordStep1Fragment extends BaseFragment {
         super.onResume();
         CommonUtil.showSoftInput(getContext(), etVerificationCode);
     }
+
+
 }

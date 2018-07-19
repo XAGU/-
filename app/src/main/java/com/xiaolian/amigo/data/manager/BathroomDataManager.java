@@ -8,9 +8,12 @@ import com.xiaolian.amigo.data.network.model.bathroom.BathBuildingRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathOrderReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathOrderRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathPreBookingRespDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.QueryBathOrderListReqDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.QueryBathOrderListRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.ShowerRoomRouterRespDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
+import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.di.BathroomServer;
 
 import javax.inject.Inject;
@@ -26,9 +29,11 @@ public class BathroomDataManager implements IBathroomDataManager {
 
     private IBathroomApi bathroomApi;
 
+    private ISharedPreferencesHelp iSharedPreferencesHelp ;
     @Inject
-    public BathroomDataManager(@BathroomServer Retrofit retrofit) {
+    public BathroomDataManager(@BathroomServer Retrofit retrofit ,ISharedPreferencesHelp iSharedPreferencesHelp) {
         this.bathroomApi = retrofit.create(IBathroomApi.class);
+        this.iSharedPreferencesHelp = iSharedPreferencesHelp ;
     }
 
     @Override
@@ -55,4 +60,16 @@ public class BathroomDataManager implements IBathroomDataManager {
     public Observable<ApiResult<BooleanRespDTO>> cancel(SimpleReqDTO reqDTO) {
         return bathroomApi.cancel(reqDTO);
     }
+
+    @Override
+    public Observable<ApiResult<QueryBathOrderListRespDTO>> getOrderRecordList(QueryBathOrderListReqDTO reqDTO) {
+        return bathroomApi.getOrderRecordList(reqDTO);
+    }
+
+    @Override
+    public Long getUserId() {
+        return iSharedPreferencesHelp.getUserInfo().getId();
+    }
+
+
 }

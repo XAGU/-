@@ -1,12 +1,14 @@
 package com.xiaolian.amigo.data.manager.intf;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.bathroom.BathPasswordUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleQueryReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
 import com.xiaolian.amigo.data.network.model.file.OssModel;
 import com.xiaolian.amigo.data.network.model.login.EntireUserDTO;
+import com.xiaolian.amigo.data.network.model.login.VerificationCodeCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.login.VerificationCodeGetReqDTO;
 import com.xiaolian.amigo.data.network.model.residence.QueryResidenceListReqDTO;
 import com.xiaolian.amigo.data.network.model.residence.ResidenceListRespDTO;
@@ -26,8 +28,12 @@ import com.xiaolian.amigo.data.network.model.user.UserResidenceDTO;
 import com.xiaolian.amigo.data.network.model.user.UserResidenceInListDTO;
 import com.xiaolian.amigo.data.vo.User;
 
+import java.util.List;
+
+import dagger.BindsOptionalOf;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
+import retrofit2.http.POST;
 import retrofit2.http.Part;
 import rx.Observable;
 
@@ -132,4 +138,30 @@ public interface IUserDataManager {
      * oss
      */
     Observable<ApiResult<OssModel>> getOssModel();
+    /**
+     * 是否存在公共浴室业务
+     */
+    boolean isExistBathroomBiz();
+    /**
+     * 获取验证码
+     */
+    Observable<ApiResult<BooleanRespDTO>> getVerification(@Body VerificationCodeGetReqDTO body);
+
+    /**
+     * 校验验证码
+     */
+    Observable<ApiResult<BooleanRespDTO>> checkVerifyCode(@Body VerificationCodeCheckReqDTO reqDTO);
+
+    /**
+     * 更新浴室密码
+     * @param reqDTO
+     * @return
+     */
+    Observable<ApiResult<SimpleRespDTO>> updateBathroomPassword(@Body BathPasswordUpdateReqDTO reqDTO);
+
+    /**
+     * 获取浴室密码说明
+     * @return
+     */
+    List<String> getBathroomPasswordDesc();
 }

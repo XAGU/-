@@ -2,6 +2,7 @@ package com.xiaolian.amigo.ui.device.bathroom.adapter;
 
 import android.content.Context;
 
+import com.xiaolian.amigo.data.network.model.bathroom.QueryBathOrderListRespDTO;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public class BookingRecordAdapter extends MultiItemTypeAdapter<BookingRecordAdap
          * 是否是预约记录
          */
         private boolean record;
+        private QueryBathOrderListRespDTO.OrdersBean order;
         /**
          * 预约记录内容
          */

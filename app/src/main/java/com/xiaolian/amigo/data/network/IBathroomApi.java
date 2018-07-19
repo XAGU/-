@@ -6,11 +6,15 @@ import com.xiaolian.amigo.data.network.model.bathroom.BathBookingRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathBuildingRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathOrderReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathOrderRespDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.BathPasswordUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathPreBookingRespDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.QueryBathOrderListReqDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.QueryBathOrderListRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.ShowerRoomRouterRespDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
+import com.xiaolian.amigo.data.network.model.login.VerificationCodeCheckReqDTO;
 
 import retrofit2.http.Body;
 import retrofit2.http.POST;
@@ -76,4 +80,29 @@ public interface IBathroomApi {
      */
     @POST("bath/trade/preBuyVoucher")
     Observable<ApiResult<BathPreBookingRespDTO>> preBuyVoucher();
+
+    /**
+     * 校验验证码
+     */
+    @POST("bath/bathPassword/update/check")
+    Observable<ApiResult<BooleanRespDTO>> checkVerifyCode(@Body VerificationCodeCheckReqDTO reqDTO);
+
+    /**
+     * 更新浴室密码
+     * @param reqDTO
+     * @return
+     */
+    @POST("bath/bathPassword/update")
+    Observable<ApiResult<SimpleRespDTO>> updateBathroomPassword(@Body BathPasswordUpdateReqDTO reqDTO);
+
+
+    /**
+     * 获取订单记录
+     * @param reqDTO
+     * @return
+     */
+    @POST("bath/order/list")
+    Observable<ApiResult<QueryBathOrderListRespDTO>> getOrderRecordList(@Body QueryBathOrderListReqDTO reqDTO);
+
+
 }

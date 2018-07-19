@@ -498,6 +498,9 @@ public abstract class BaseActivity extends SwipeBackActivity
         super.onDestroy();
     }
 
+    /**
+     * 获取startActivity中传递的值
+     */
     protected abstract void setUp();
 
     /**

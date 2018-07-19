@@ -3,6 +3,8 @@ package com.xiaolian.amigo.ui.user;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -14,9 +16,13 @@ import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.base.BaseFragment;
+import com.xiaolian.amigo.ui.user.adaptor.TipAdapter;
 import com.xiaolian.amigo.ui.widget.PasswordEditText;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.ViewUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,13 +35,12 @@ public class FindBathroomPasswordStep2Fragment extends BaseFragment {
     PasswordEditText etUserpwd;
     @BindView(R.id.bt_submit)
     Button btSubmit;
+    @BindView(R.id.rv_tip)
+    RecyclerView rvTip ;
     Unbinder unbinder;
-    @BindView(R.id.tv_tip1)
-    TextView tvTip1;
-    @BindView(R.id.tv_tip2)
-    TextView tvTip2;
 
-
+    private List<TipAdapter.Tip> tipList = new ArrayList<>();
+    private TipAdapter tipAdapter ;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -72,11 +77,23 @@ public class FindBathroomPasswordStep2Fragment extends BaseFragment {
 
     private void init() {
         ViewUtil.setEditHintAndSize(getString(R.string.please_enter_new_six_pure_number_password), 14, etUserpwd);
-        tvTip1.setText(getString(R.string.bathroom_password_tip1));
-        tvTip2.setText(getString(R.string.bathroom_password_tip2));
         if (etUserpwd != null) etUserpwd.setOpen(true);
+        initRecyclerView();
     }
 
+    private void initRecyclerView(){
+        if (mActivity instanceof  FindBathroomPasswordActivity){
+            List<String> bathroomPasswordDesc = ((FindBathroomPasswordActivity) mActivity).presenter.getBathroomPasswordDesc();
+            if (bathroomPasswordDesc != null) {
+                for (String desc : bathroomPasswordDesc) {
+                    tipList.add(new TipAdapter.Tip(desc));
+                }
+            }
+        }
+        tipAdapter = new TipAdapter(mActivity ,R.layout.item_tip ,tipList);
+        rvTip.setLayoutManager(new LinearLayoutManager(mActivity));
+        rvTip.setAdapter(tipAdapter);
+    }
 
     private void toggleButton() {
         boolean valid = !TextUtils.isEmpty(etUserpwd.getText())
@@ -98,7 +115,7 @@ public class FindBathroomPasswordStep2Fragment extends BaseFragment {
      */
     private void confirmPassword() {
         if (getContext() instanceof FindBathroomPasswordActivity) {
-            ((FindBathroomPasswordActivity) getContext()).confirmPassword();
+            ((FindBathroomPasswordActivity) getContext()).updateBathroomPassword(etUserpwd.getText().toString().trim());
         }
     }
 

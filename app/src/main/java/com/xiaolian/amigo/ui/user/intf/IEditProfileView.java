@@ -60,4 +60,9 @@ public interface IEditProfileView extends IBaseView {
      * 显示修改学校对话框
      */
     void showChangeSchoolDialog();
+
+    /**
+     * 显示浴室密码
+     */
+    void showBathroomPassword(boolean isExistBathroomBiz, boolean hadSetBathPassword);
 }

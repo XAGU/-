@@ -36,14 +36,10 @@
             android:background="#e9e9e9" />
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/tv_tip1"
-        style="@style/TextTipItem"
-        tool:text="@string/booking_use_tip1" />
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rv_tip" />
 
-    <TextView
-        android:id="@+id/tv_tip2"
-        style="@style/TextTipItem"
-        tool:text="@string/booking_use_tip1" />
 
 </LinearLayout>

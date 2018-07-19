@@ -197,7 +197,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     private OrderPreInfoDTO orderPreInfo;
     private ArrayList<BannerDTO> defaultBanners;
 
-    private Message m;
+//    private Message m;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -327,8 +327,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             return;
         }
         // 1.获取设备Token
-        Handler handler = new HandlerExtension(MainActivity.this);
-        m = handler.obtainMessage();
+//        Handler handler = new HandlerExtension(MainActivity.this);
+//        m = handler.obtainMessage();
 
         /*
         注册信鸽服务的接口
@@ -341,7 +341,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 new XGIOperateCallback() {
                     @Override
                     public void onSuccess(Object data, int flag) {
-                        Log.w(Constants.LogTag, "+++ register push sucess. token:" + data + "flag" + flag);
+//                        Log.w(Constants.LogTag, "+++ register push sucess. token:" + data + "flag" + flag);
                         String pushSchoolTag = MD5Util.md5(presenter.getUserInfo().getSchoolId() + Constant.MD5_SCHOOL_STR);
                         Log.d(TAG, "注册学校tag: " + pushSchoolTag);
                         XGPushManager.setTag(getApplicationContext(), pushSchoolTag);
@@ -351,20 +351,20 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                             XGPushManager.setTag(getApplicationContext(), pushBuildingTag);
                         }
                         presenter.setPushToken((String) data);
-                        m.obj = "+++ register push sucess. token:" + data;
-                        m.sendToTarget();
+//                        m.obj = "+++ register push sucess. token:" + data;
+//                        m.sendToTarget();
                     }
 
                     @Override
                     public void onFail(Object data, int errCode, String msg) {
-                        Log.w(Constants.LogTag,
-                                "+++ register push fail. token:" + data
-                                        + ", errCode:" + errCode + ",msg:"
-                                        + msg);
+//                        Log.w(Constants.LogTag,
+//                                "+++ register push fail. token:" + data
+//                                        + ", errCode:" + errCode + ",msg:"
+//                                        + msg);
                         presenter.deletePushToken();
-                        m.obj = "+++ register push fail. token:" + data
-                                + ", errCode:" + errCode + ",msg:" + msg;
-                        m.sendToTarget();
+//                        m.obj = "+++ register push fail. token:" + data
+//                                + ", errCode:" + errCode + ",msg:" + msg;
+//                        m.sendToTarget();
                     }
                 });
 
@@ -1160,8 +1160,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
      */
     public void gotoHeater() {
         Log.d(TAG, "gotoHeater");
-        routeToRoomShower();
-//        presenter.routeHeaterOrBathroom();
+//        routeToRoomShower();
+        presenter.routeHeaterOrBathroom();
     }
 
     @Override
@@ -1359,29 +1359,29 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         }
     }
 
-    private static class HandlerExtension extends Handler {
-        WeakReference<MainActivity> mActivity;
-
-        HandlerExtension(MainActivity activity) {
-            mActivity = new WeakReference<MainActivity>(activity);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            MainActivity theActivity = mActivity.get();
-            if (theActivity == null) {
-                theActivity = new MainActivity();
-            }
-            if (msg != null) {
-                Log.d("TPush", msg.obj.toString());
-//                TextView textView = (TextView) theActivity
-//                        .findViewById(R.id.deviceToken);
-//                textView.setText(XGPushConfig.getToken(theActivity));
-            }
-            // XGPushManager.registerCustomNotification(theActivity,
-            // "BACKSTREET", "BOYS", System.currentTimeMillis() + 5000, 0);
-        }
-    }
+//    private static class HandlerExtension extends Handler {
+//        WeakReference<MainActivity> mActivity;
+//
+//        HandlerExtension(MainActivity activity) {
+//            mActivity = new WeakReference<MainActivity>(activity);
+//        }
+//
+//        @Override
+//        public void handleMessage(Message msg) {
+//            super.handleMessage(msg);
+//            MainActivity theActivity = mActivity.get();
+//            if (theActivity == null) {
+//                theActivity = new MainActivity();
+//            }
+//            if (msg != null) {
+//                Log.d("TPush", msg.obj.toString());
+////                TextView textView = (TextView) theActivity
+////                        .findViewById(R.id.deviceToken);
+////                textView.setText(XGPushConfig.getToken(theActivity));
+//            }
+//            // XGPushManager.registerCustomNotification(theActivity,
+//            // "BACKSTREET", "BOYS", System.currentTimeMillis() + 5000, 0);
+//        }
+//    }
 
 }

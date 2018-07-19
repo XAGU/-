@@ -6,10 +6,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.network.model.bathroom.QueryBathOrderListRespDTO;
 import com.xiaolian.amigo.ui.device.bathroom.adapter.BookingRecordAdapter;
 import com.xiaolian.amigo.ui.device.bathroom.adapter.BookingRecordItemDelegate;
 import com.xiaolian.amigo.ui.device.bathroom.adapter.BookingRecordSummaryDelegate;
@@ -57,6 +59,10 @@ public class BookingRecordActivity extends BathroomBaseActivity implements IBook
 
     @BindView(R.id.view_line)
     View viewLine;
+    @BindView(R.id.rl_empty)
+    RelativeLayout rlEmpty;
+    @BindView(R.id.rl_error)
+    RelativeLayout rlError;
 
     private BookingRecordAdapter adapter;
     private List<BookingRecordAdapter.BookingRecordWrapper> records = new ArrayList<>();
@@ -125,5 +131,46 @@ public class BookingRecordActivity extends BathroomBaseActivity implements IBook
         wrapper2.setRightText("等待洗浴");
         records.add(wrapper2);
 
+    }
+
+    @Override
+    public void setRefreshComplete() {
+        refreshLayout.finishRefresh();
+    }
+
+    @Override
+    public void setLoadMoreComplete() {
+        refreshLayout.finishLoadMore();
+    }
+
+    @Override
+    public void showErrorView() {
+        rlError.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideEmptyView() {
+        rlEmpty.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void hideErrorView() {
+        rlError.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showEmptyView() {
+        rlEmpty.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void addMore(List<QueryBathOrderListRespDTO.OrdersBean> ordersBeanList) {
+        for (QueryBathOrderListRespDTO.OrdersBean bean : ordersBeanList) {
+            BookingRecordAdapter.BookingRecordWrapper wrapper = new BookingRecordAdapter.BookingRecordWrapper();
+            wrapper.setOrder(bean);
+            wrapper.setRecord(true);
+            this.records.add(wrapper);
+        }
+        adapter.notifyDataSetChanged();
     }
 }

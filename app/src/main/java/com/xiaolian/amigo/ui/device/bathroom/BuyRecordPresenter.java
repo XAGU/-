@@ -21,4 +21,9 @@ public class BuyRecordPresenter<V extends IBuyRecordView> extends BasePresenter<
     public BuyRecordPresenter(IBathroomDataManager bathroomDataManager) {
         this.bathroomDataManager = bathroomDataManager;
     }
+
+    @Override
+    public void getBuyRecordList() {
+
+    }
 }

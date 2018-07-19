@@ -193,6 +193,7 @@
 
     <RelativeLayout
         android:id="@+id/rel_edit_bathroom_password"
+        android:visibility="gone"
         android:onClick="onclick"
         style="@style/ListItemRel">
 
@@ -211,6 +212,7 @@
             android:src="@drawable/arrow_right" />
 
         <TextView
+            android:id="@+id/tv_bathroom_tip"
             style="@style/ListItemSubText"
             android:layout_toLeftOf="@id/imageView05"
             android:text="修改密码"

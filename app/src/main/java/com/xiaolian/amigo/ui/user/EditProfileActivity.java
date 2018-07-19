@@ -3,6 +3,7 @@ package com.xiaolian.amigo.ui.user;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -75,6 +76,15 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
 
     @BindView(R.id.iv_avatar)
     CircleImageView ivAvatar;
+
+    /**
+     * 浴室密码提示
+     */
+    @BindView(R.id.tv_bathroom_tip)
+    TextView tvBathroomTip;
+
+    @BindView(R.id.rel_edit_bathroom_password)
+    RelativeLayout relEditBathroomPassword;
 
     private String avatarUrl;
 
@@ -151,6 +161,7 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
                 break;
             case R.id.rel_edit_bathroom_password:
                 intent = new Intent(this, FindBathroomPasswordActivity.class);
+                intent.putExtra(Constant.EXTRA_KEY, presenter.isHadSetBathPassword());
                 startActivityForResult(intent, 1);
                 break;
             case R.id.rel_edit_school:
@@ -197,6 +208,16 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
             startActivityForResult(intent, REQUEST_CODE_EDIT_SCHOOL);
         });
         availabilityDialog.show();
+    }
+
+    @Override
+    public void showBathroomPassword(boolean isExistBathroomBiz, boolean hadSetBathPassword) {
+        if (!isExistBathroomBiz) {
+            relEditBathroomPassword.setVisibility(View.GONE);
+            return;
+        }
+        relEditBathroomPassword.setVisibility(View.VISIBLE);
+        tvBathroomTip.setText(hadSetBathPassword ? "修改密码" : "未设置");
     }
 
     @Override

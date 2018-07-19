@@ -27,6 +27,7 @@ public class User {
     private Integer type;
     private Long createTime;
     private Long buildingId;
+    private boolean hadSetBathPassword ;
 
     public User() {
     }
@@ -49,5 +50,6 @@ public class User {
         this.macAddress = entireUserDTO.getMacAddress();
         this.createTime = entireUserDTO.getCreateTime();
         this.buildingId = entireUserDTO.getBuildingId();
+        this.hadSetBathPassword = entireUserDTO.isHadSetBathPassword();
     }
 }

@@ -1,5 +1,7 @@
 package com.xiaolian.amigo.data.manager;
 
+import android.support.v4.util.ObjectsCompat;
+
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.data.network.IBathroomApi;
 import com.xiaolian.amigo.data.network.IFileApi;
@@ -9,12 +11,14 @@ import com.xiaolian.amigo.data.network.IResidenceApi;
 import com.xiaolian.amigo.data.network.ISchoolApi;
 import com.xiaolian.amigo.data.network.IUserApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.bathroom.BathPasswordUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleQueryReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
 import com.xiaolian.amigo.data.network.model.file.OssModel;
 import com.xiaolian.amigo.data.network.model.login.EntireUserDTO;
+import com.xiaolian.amigo.data.network.model.login.VerificationCodeCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.login.VerificationCodeGetReqDTO;
 import com.xiaolian.amigo.data.network.model.residence.QueryResidenceListReqDTO;
 import com.xiaolian.amigo.data.network.model.residence.ResidenceListRespDTO;
@@ -22,6 +26,7 @@ import com.xiaolian.amigo.data.network.model.school.QueryBriefSchoolListRespDTO;
 import com.xiaolian.amigo.data.network.model.school.QuerySchoolBizListRespDTO;
 import com.xiaolian.amigo.data.network.model.school.QuerySchoolListReqDTO;
 import com.xiaolian.amigo.data.network.model.user.BindResidenceReq;
+import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
 import com.xiaolian.amigo.data.network.model.user.DeleteResidenceRespDTO;
 import com.xiaolian.amigo.data.network.model.user.MobileUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.user.PasswordCheckReqDTO;
@@ -36,6 +41,8 @@ import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.di.BathroomServer;
 import com.xiaolian.amigo.di.UserServer;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -61,10 +68,11 @@ public class UserDataManager implements IUserDataManager {
     private IFileApi fileApi;
     private ILoginApi loginApi;
     private IOssApi ossApi;
+    private IBathroomApi bathroomApi;
     private ISharedPreferencesHelp sharedPreferencesHelp;
 
     @Inject
-    public UserDataManager( @UserServer Retrofit retrofit, ISharedPreferencesHelp sharedPreferencesHelp) {
+    public UserDataManager(@BathroomServer Retrofit bathroomRetrofit, @UserServer Retrofit retrofit, ISharedPreferencesHelp sharedPreferencesHelp) {
         residenceApi = retrofit.create(IResidenceApi.class);
         schoolApi = retrofit.create(ISchoolApi.class);
         userApi = retrofit.create(IUserApi.class);
@@ -72,6 +80,7 @@ public class UserDataManager implements IUserDataManager {
         loginApi = retrofit.create(ILoginApi.class);
         ossApi = retrofit.create(IOssApi.class);
         this.sharedPreferencesHelp = sharedPreferencesHelp;
+        bathroomApi = bathroomRetrofit.create(IBathroomApi.class);
     }
 
     @Override
@@ -160,10 +169,42 @@ public class UserDataManager implements IUserDataManager {
     }
 
     @Override
+    public boolean isExistBathroomBiz() {
+        for (BriefSchoolBusiness biz : sharedPreferencesHelp.getSchoolBiz()) {
+            if (ObjectsCompat.equals(biz.getBusinessId(), 5L)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public Observable<ApiResult<BooleanRespDTO>> getVerification(VerificationCodeGetReqDTO body) {
+        return loginApi.getVerification(body);
+    }
+
+    @Override
+    public Observable<ApiResult<BooleanRespDTO>> checkVerifyCode(VerificationCodeCheckReqDTO reqDTO) {
+        return bathroomApi.checkVerifyCode(reqDTO);
+    }
+
+    @Override
+    public Observable<ApiResult<SimpleRespDTO>> updateBathroomPassword(BathPasswordUpdateReqDTO reqDTO) {
+        return bathroomApi.updateBathroomPassword(reqDTO);
+    }
+
+    @Override
+    public List<String> getBathroomPasswordDesc() {
+        return sharedPreferencesHelp.getBathPasswordDescription();
+    }
+
+    @Override
     public Observable<ApiResult<String>> uploadFile(@Part("file") RequestBody images) {
 
         return fileApi.uploadFile(images);
     }
+
+
 
     @Override
     public User getUser() {

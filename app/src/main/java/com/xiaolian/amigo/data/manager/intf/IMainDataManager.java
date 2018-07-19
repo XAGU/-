@@ -21,6 +21,7 @@ import com.xiaolian.amigo.data.network.model.user.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.data.network.model.user.UploadUserDeviceInfoReqDTO;
 import com.xiaolian.amigo.data.vo.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.http.Body;
@@ -157,4 +158,6 @@ public interface IMainDataManager {
      * 根据当前登录用户所在学校配置，以及用户上次洗澡的习惯，决定路由到"宿舍热水澡模块"、还是"公共浴室模块"
      */
     Observable<ApiResult<ShowerRoomRouterRespDTO>> route();
+
+    void setBathroomPasswordDesc(ArrayList<String> bathPasswordDescription);
 }

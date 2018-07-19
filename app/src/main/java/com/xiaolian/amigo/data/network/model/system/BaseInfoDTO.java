@@ -13,4 +13,5 @@ import lombok.Data;
 @Data
 public class BaseInfoDTO {
     private ArrayList<BannerDTO> banners;
+    private ArrayList<String> bathPasswordDescription;   //公共浴室密码说明
 }

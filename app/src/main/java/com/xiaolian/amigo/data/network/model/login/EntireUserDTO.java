@@ -31,6 +31,7 @@ public class EntireUserDTO implements Mapper<User> {
     private Integer type;
     private Long createTime;
     private Long buildingId;
+    private boolean hadSetBathPassword ;   //  是否已经设置浴室密码
 
     @Override
     public User transform() {

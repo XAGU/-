@@ -14,6 +14,10 @@ public class ShowerRoomRouterRespDTO {
      */
     private Long roomId;
     /**
+     * 澡堂id
+     */
+    private Long bathId;
+    /**
      * 房间类型:1-宿舍房间，2-公共浴室房间
      */
     private Integer userResidenceType;

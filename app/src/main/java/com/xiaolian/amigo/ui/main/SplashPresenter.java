@@ -37,6 +37,7 @@ public class SplashPresenter<V extends ISplashView> extends BasePresenter<V>
             @Override
             public void onReady(ApiResult<BaseInfoDTO> result) {
                 getMvpView().startMain(result.getData().getBanners());
+                mainDataManager.setBathroomPasswordDesc(result.getData().getBathPasswordDescription());
             }
 
             @Override
