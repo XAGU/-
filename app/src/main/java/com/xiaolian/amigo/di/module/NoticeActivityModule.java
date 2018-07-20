@@ -21,7 +21,10 @@ import android.support.v7.app.AppCompatActivity;
 import com.xiaolian.amigo.data.manager.NoticeDataManager;
 import com.xiaolian.amigo.data.manager.intf.INoticeDataManager;
 import com.xiaolian.amigo.di.NoticeActivityContext;
+import com.xiaolian.amigo.ui.notice.NoticeDetailPresenter;
 import com.xiaolian.amigo.ui.notice.NoticePresenter;
+import com.xiaolian.amigo.ui.notice.intf.INoticeDetailPresenter;
+import com.xiaolian.amigo.ui.notice.intf.INoticeDetailView;
 import com.xiaolian.amigo.ui.notice.intf.INoticePresenter;
 import com.xiaolian.amigo.ui.notice.intf.INoticeView;
 
@@ -51,6 +54,13 @@ public class NoticeActivityModule {
     @NoticeActivityContext
     INoticePresenter<INoticeView> provideNoticePresenter(
             NoticePresenter<INoticeView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    @NoticeActivityContext
+    INoticeDetailPresenter<INoticeDetailView> provideNoticeDetailPresenter(
+            NoticeDetailPresenter<INoticeDetailView> presenter) {
         return presenter;
     }
 

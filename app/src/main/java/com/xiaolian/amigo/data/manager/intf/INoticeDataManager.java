@@ -2,6 +2,8 @@ package com.xiaolian.amigo.data.manager.intf;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
+import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
+import com.xiaolian.amigo.data.network.model.notify.NotifyDTO;
 import com.xiaolian.amigo.data.network.model.notify.QueryNotifyListReqDTO;
 import com.xiaolian.amigo.data.network.model.notify.ReadNotifyReqDTO;
 import com.xiaolian.amigo.data.network.model.notify.QueryNotifyListRespDTO;
@@ -27,4 +29,9 @@ public interface INoticeDataManager {
      * 告诉服务端通知已读（紧急公告）
      */
     Observable<ApiResult<BooleanRespDTO>> readUrgentNotify(@Body ReadNotifyReqDTO reqDTO);
+
+    /**
+     * 通知公共详情
+     */
+    Observable<ApiResult<NotifyDTO>> getNotice(@Body SimpleReqDTO reqDTO);
 }

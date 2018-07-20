@@ -3,6 +3,8 @@ package com.xiaolian.amigo.data.manager;
 import com.xiaolian.amigo.data.manager.intf.INoticeDataManager;
 import com.xiaolian.amigo.data.network.INotifyApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
+import com.xiaolian.amigo.data.network.model.notify.NotifyDTO;
 import com.xiaolian.amigo.data.network.model.notify.QueryNotifyListReqDTO;
 import com.xiaolian.amigo.data.network.model.notify.ReadNotifyReqDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
@@ -41,5 +43,10 @@ public class NoticeDataManager implements INoticeDataManager {
     @Override
     public Observable<ApiResult<BooleanRespDTO>> readUrgentNotify(@Body ReadNotifyReqDTO reqDTO) {
         return notifyApi.readUrgentNotify(reqDTO);
+    }
+
+    @Override
+    public Observable<ApiResult<NotifyDTO>> getNotice(SimpleReqDTO reqDTO) {
+        return notifyApi.getNotice(reqDTO);
     }
 }
