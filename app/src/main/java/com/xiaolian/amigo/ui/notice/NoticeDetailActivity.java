@@ -46,6 +46,8 @@ public class NoticeDetailActivity extends NoticeBaseActivity implements INoticeD
 
     @Override
     protected void initView() {
+        getActivityComponent().inject(this);
+        presenter.onAttach(this);
         ButterKnife.bind(this);
         setMainBackground(R.color.white);
         if (noticeWapper != null) {
@@ -56,6 +58,12 @@ public class NoticeDetailActivity extends NoticeBaseActivity implements INoticeD
                     TimeUtils.convertTimestampToFormat(noticeWapper.getCreateTime()),
                     TimeUtils.millis2String(noticeWapper.getCreateTime(), TimeUtils.MY_TIME_FORMAT)));
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.onDetach();
     }
 
     @Override

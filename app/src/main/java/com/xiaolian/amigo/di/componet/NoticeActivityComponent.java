@@ -18,6 +18,7 @@ package com.xiaolian.amigo.di.componet;
 
 import com.xiaolian.amigo.di.NoticeActivityContext;
 import com.xiaolian.amigo.di.module.NoticeActivityModule;
+import com.xiaolian.amigo.ui.notice.NoticeDetailActivity;
 import com.xiaolian.amigo.ui.notice.NoticeListActivity;
 
 import dagger.Component;
@@ -28,4 +29,6 @@ import dagger.Component;
 public interface NoticeActivityComponent {
 
     void inject(NoticeListActivity activity);
+
+    void inject(NoticeDetailActivity activity);
 }
