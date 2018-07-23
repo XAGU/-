@@ -4,8 +4,8 @@ import lombok.Data;
 
 @Data
 public class QueryBathOrderListRespDTO {
-    private int missedTimes;   //  失约次数
-    private int successTimes;   // 预约成功次数
+    private String missedTimes;   //  失约次数
+    private String successTimes;   // 预约成功次数
     private int total;         // 总共次数
     private int totalMissTimes;   // 总共可失约次数
     private java.util.List<OrdersBean> orders;

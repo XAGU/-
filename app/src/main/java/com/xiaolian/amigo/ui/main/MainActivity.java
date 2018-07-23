@@ -294,6 +294,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         if (getIntent() != null) {
             isServerError = getIntent().getBooleanExtra(INTENT_KEY_SERVER_ERROR, false);
             defaultBanners = getIntent().getParcelableArrayListExtra(INTENT_KEY_BANNERS);
+            android.util.Log.e(TAG, "setUp: "  + (defaultBanners == null));
         }
     }
 
@@ -845,6 +846,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public void showBanners(List<BannerDTO> banners) {
+        android.util.Log.e(TAG, "showBanners: " + (defaultBanners == null) );
         List<BannerDTO> settingBanners = new ArrayList<>();
         if (defaultBanners != null) {
             settingBanners.addAll(defaultBanners);
@@ -1161,8 +1163,13 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     public void gotoHeater() {
         Log.d(TAG, "gotoHeater");
 //        routeToRoomShower();
+//<<<<<<< HEAD
 //        routeToBathroomShower();
         presenter.routeHeaterOrBathroom();
+//=======
+//        routeToBathroomShower();
+//        presenter.routeHeaterOrBathroom();
+//>>>>>>> 102fc11a63b9cd8c1fd245e9d85da699b9f0ca2e
     }
 
     @Override

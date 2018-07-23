@@ -72,6 +72,8 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
         presenter.bathroomBookingCountDown();
     }
 
+
+
     private void setTopTip() {
         SpannableStringBuilder builder = new SpannableStringBuilder();
         SpannableString tipSpan1 = new SpannableString("每月失约" + maxMissAbleTimes

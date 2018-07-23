@@ -41,10 +41,6 @@ public class NoticeDetailActivity extends NoticeBaseActivity implements INoticeD
     private Long detailId = null;
 
     @Override
-    protected void initInject() {
-    }
-
-    @Override
     protected void initView() {
         getActivityComponent().inject(this);
         presenter.onAttach(this);

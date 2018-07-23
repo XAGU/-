@@ -1,9 +1,20 @@
 package com.xiaolian.amigo.ui.device.bathroom;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.style.AbsoluteSizeSpan;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -20,6 +31,7 @@ import com.xiaolian.amigo.ui.device.bathroom.intf.IBookingRecordPresenter;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IBookingRecordView;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutFooter;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutHeader;
+import com.xiaolian.amigo.util.DimentionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +48,6 @@ import static com.xiaolian.amigo.data.enumeration.BathroomOperationStatus.FINISH
 
 /**
  * 预约记录
- *
  * @author zcd
  * @date 18/6/29
  */
@@ -70,6 +81,10 @@ public class BookingRecordActivity extends BathroomBaseActivity implements IBook
     RelativeLayout rlEmpty;
     @BindView(R.id.rl_error)
     RelativeLayout rlError;
+    @BindView(R.id.tv_successful_appointments)
+    TextView tvSuccessfulAppointments;
+    @BindView(R.id.tv_missed_appointments)
+    TextView tvMissedAppointments;
 
     private BookingRecordAdapter adapter;
     private List<BookingRecordAdapter.BookingRecordWrapper> records = new ArrayList<>();
@@ -99,12 +114,11 @@ public class BookingRecordActivity extends BathroomBaseActivity implements IBook
                 viewLine.setVisibility(View.GONE);
             }
         });
-//        presenter.getBookingRecordList();
+        presenter.getBookingRecordList();
     }
 
     private void initRecyclerView() {
-        mockData(records);
-        Log.e(TAG, "initRecyclerView: " + records.get(0).getOrder().getStatus() );
+//        mockData(records);
         refreshLayout.setRefreshHeader(new RefreshLayoutHeader(this));
         refreshLayout.setRefreshFooter(new RefreshLayoutFooter(this));
         adapter = new BookingRecordAdapter(this, records);
@@ -116,7 +130,7 @@ public class BookingRecordActivity extends BathroomBaseActivity implements IBook
 
 
     private void mockData(List<BookingRecordAdapter.BookingRecordWrapper> records) {
-        QueryBathOrderListRespDTO.OrdersBean ordersBean ;
+        QueryBathOrderListRespDTO.OrdersBean ordersBean;
         BookingRecordAdapter.BookingRecordWrapper wrapper3 = new BookingRecordAdapter.BookingRecordWrapper();
         ordersBean = new QueryBathOrderListRespDTO.OrdersBean();
         wrapper3.setAmount("1");
@@ -124,7 +138,7 @@ public class BookingRecordActivity extends BathroomBaseActivity implements IBook
         wrapper3.setLeftBottomText("浴室房间 215");
         wrapper3.setRecord(true);
         ordersBean.setStatus(CANCEL.getCode());
-        wrapper3.setOrder(ordersBean );
+        wrapper3.setOrder(ordersBean);
         wrapper3.setRightText("取消预约");
         records.add(wrapper3);
 
@@ -137,7 +151,7 @@ public class BookingRecordActivity extends BathroomBaseActivity implements IBook
         wrapper1.setLeftBottomText("浴室房间 215");
         wrapper1.setRecord(true);
         ordersBean.setStatus(BOOKING_SUCCESS.getCode());
-        wrapper1.setOrder(ordersBean );
+        wrapper1.setOrder(ordersBean);
         wrapper1.setRightText("等待洗浴");
         records.add(wrapper1);
 
@@ -148,7 +162,7 @@ public class BookingRecordActivity extends BathroomBaseActivity implements IBook
         wrapper2.setLeftBottomText("浴室房间 215");
         wrapper2.setRecord(true);
         ordersBean.setStatus(FINISHED.getCode());
-        wrapper2.setOrder(ordersBean );
+        wrapper2.setOrder(ordersBean);
         wrapper2.setRightText("洗浴结束");
         records.add(wrapper2);
 
@@ -159,7 +173,7 @@ public class BookingRecordActivity extends BathroomBaseActivity implements IBook
         wrapper4.setLeftBottomText("浴室房间 215");
         wrapper4.setRecord(true);
         ordersBean.setStatus(EXPIRED.getCode());
-        wrapper4.setOrder(ordersBean );
+        wrapper4.setOrder(ordersBean);
         wrapper4.setRightText("预约超时");
         records.add(wrapper4);
     }
@@ -203,5 +217,34 @@ public class BookingRecordActivity extends BathroomBaseActivity implements IBook
             this.records.add(wrapper);
         }
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void setSuccessfulAppointments(String num) {
+        SpannableStringBuilder builder = new SpannableStringBuilder();
+        String creditsTip = getString(R.string.successful_appointments_this_month);
+        builder.append(creditsTip);
+        SpannableString creditsSpan = new SpannableString(num);
+        creditsSpan.setSpan(new AbsoluteSizeSpan(
+                        DimentionUtils.convertSpToPixels(22, this)), 0,
+                num.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        creditsSpan.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorFullRed)),
+                0, num.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        creditsSpan.setSpan(new StyleSpan(Typeface.BOLD),
+                0, num.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        builder.append(creditsSpan);
+        tvSuccessfulAppointments.setText(builder);
+    }
+
+    @Override
+    public void setMissedAppointments(String num) {
+        String tip = getString(R.string.reservation_tip , num);
+        SpannableString tipSpan = new SpannableString(tip);
+        tipSpan.setSpan( new ForegroundColorSpan(ContextCompat.getColor(this ,R.color.colorFullRed)) ,tip.length() - 2
+        ,tip.length() - 1 ,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tvMissedAppointments.setText(tipSpan);
     }
 }

@@ -322,4 +322,8 @@
     <string name="bathroom_password_tip1">1.请设置你的6位数字浴室密码，设置完成后可前往"个人中心"——"编辑个人信息"里进行修改或找回；</string>
     <string name="bathroom_password_tip2">2.浴室密码的作用：在浴室房间里的设备上输入手机号＋浴室密码，便可开阀洗澡。</string>
     <string name="set_bathroom_password">设置浴室密码</string>
+    <string name="successful_appointments_this_month">本月成功预约次数：</string>
+    <string name="reservation_tip">提示:每月失约3次将无法预约，你已失约<font color="#ff5555">%1$s</font>次</string>
+    <string name="consumer_bill">消费账单</string>
+    <string name="repurchase">重新购买</string>
 </resources>

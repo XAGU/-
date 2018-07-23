@@ -1,10 +1,8 @@
 package com.xiaolian.amigo.ui.device.bathroom;
 
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
-import android.support.v4.util.ObjectsCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
@@ -18,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.network.model.bathroom.BathOrderPreconditionRespDTO;
 import com.xiaolian.amigo.ui.device.bathroom.adapter.DeviceInfoAdapter;
 import com.xiaolian.amigo.ui.widget.BathroomOperationStatusView;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
@@ -25,14 +24,12 @@ import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.DimentionUtils;
 import com.xiaolian.amigo.util.ScreenUtils;
 
-import java.sql.Time;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_BALANCE;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_BONUS_AMOUNT;
@@ -48,7 +45,6 @@ import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_RESERVE
 
 /**
  * 使用公共澡堂基础类
- *
  * @author zcd
  * @date 18/7/2
  */
@@ -103,6 +99,12 @@ public abstract class UseWayActivity extends BathroomBaseActivity {
      * 设备位置
      */
     protected String location;
+    @BindView(R.id.left_oper)
+    TextView leftOper;
+    @BindView(R.id.right_oper)
+    TextView rightOper;
+    @BindView(R.id.ll_bottom)
+    LinearLayout llBottom;
     /**
      * 过期时间
      */
@@ -126,7 +128,7 @@ public abstract class UseWayActivity extends BathroomBaseActivity {
     /**
      * 预留时间
      */
-    protected String reservedTime ;
+    protected String reservedTime;
     private String bonusDesc;
     private Double bonusAmount;
 
@@ -141,20 +143,25 @@ public abstract class UseWayActivity extends BathroomBaseActivity {
 
     private boolean needRecharge;
     protected Double prepayAmount;
-    private DecimalFormat df = new DecimalFormat("###.##");
 
+
+    /**
+     * 已存在订单状态
+     */
+    protected BathOrderPreconditionRespDTO  bathOrderPreconditionRespDTO ;
+    private DecimalFormat df = new DecimalFormat("###.##");
 
 
     protected List<DeviceInfoAdapter.DeviceInfoWrapper> items = new ArrayList<DeviceInfoAdapter.DeviceInfoWrapper>() {
         {
-            add(new DeviceInfoAdapter.DeviceInfoWrapper("浴室位置：",
-                    "五楼215", R.color.colorDark2, 14, Typeface.NORMAL, false));
-            add(new DeviceInfoAdapter.DeviceInfoWrapper("预留时间：",
-                    "15分钟", R.color.colorDark2, 14, Typeface.NORMAL, false));
-            add(new DeviceInfoAdapter.DeviceInfoWrapper("预付金额：",
-                    "10元", R.color.colorDark2, 14, Typeface.NORMAL, false));
-            add(new DeviceInfoAdapter.DeviceInfoWrapper("红包抵扣：",
-                    "2元新人有礼", R.color.colorDark2, 14, Typeface.NORMAL, true));
+//            add(new DeviceInfoAdapter.DeviceInfoWrapper("浴室位置：",
+//                    "五楼215", R.color.colorDark2, 14, Typeface.NORMAL, false));
+//            add(new DeviceInfoAdapter.DeviceInfoWrapper("预留时间：",
+//                    "15分钟", R.color.colorDark2, 14, Typeface.NORMAL, false));
+//            add(new DeviceInfoAdapter.DeviceInfoWrapper("预付金额：",
+//                    "10元", R.color.colorDark2, 14, Typeface.NORMAL, false));
+//            add(new DeviceInfoAdapter.DeviceInfoWrapper("红包抵扣：",
+//                    "2元新人有礼", R.color.colorDark2, 14, Typeface.NORMAL, true));
         }
     };
 
@@ -185,7 +192,7 @@ public abstract class UseWayActivity extends BathroomBaseActivity {
     }
 
     private void initView() {
-
+        llBottomVisible(false);
         appBarLayout.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
             //Log.d("STATE", appBarLayout.getTotalScrollRange() +"//"+ verticalOffset+"//"+tv_toolbar_title.getHeight());
             if (verticalOffset < -(tvToolbarTitle.getHeight() + llHeader.getPaddingTop())) {
@@ -205,6 +212,15 @@ public abstract class UseWayActivity extends BathroomBaseActivity {
         setToolbarSubTitle(tvToolbarSubTitle);
         setTips(tvTip1, tvTip2, tvTip3, tvTip4, tvTip, rlTip);
         initRecyclerView();
+    }
+
+
+    protected void llBottomVisible(boolean isVisible){
+        if (isVisible){
+            llBottom.setVisibility(View.VISIBLE);
+        }else{
+            llBottom.setVisibility(View.GONE);
+        }
     }
 
     protected abstract void setToolbarTitle(TextView textView);
@@ -256,7 +272,7 @@ public abstract class UseWayActivity extends BathroomBaseActivity {
                 // 代金券金额小于最小预付金额  需要充值
                 else {
 //                    tip = df.format(minPrepay) + getString(R.string.yuan);
-                    tip = "低于"  + df.format(minPrepay) + getString(R.string.yuan) + "，请前往充值";
+                    tip = "低于" + df.format(minPrepay) + getString(R.string.yuan) + "，请前往充值";
                     needRecharge = true;
                     buttonText = getString(R.string.to_recharge);
                     btStartToUse.setText(buttonText);

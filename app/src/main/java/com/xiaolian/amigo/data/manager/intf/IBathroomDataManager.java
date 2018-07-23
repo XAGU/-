@@ -3,6 +3,7 @@ package com.xiaolian.amigo.data.manager.intf;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.bathroom.BathBookingReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathBuildingRespDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.BathOrderPreconditionRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathOrderReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathOrderRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathPreBookingRespDTO;
@@ -59,4 +60,14 @@ public interface IBathroomDataManager {
      * @return
      */
     Long getUserId();
+
+
+    /**
+     * 预约前操作，获取是否有未完成订单
+     * @return
+     */
+    Observable<ApiResult<BathOrderPreconditionRespDTO>> getOrderPrecondition() ;
+
+
+
 }

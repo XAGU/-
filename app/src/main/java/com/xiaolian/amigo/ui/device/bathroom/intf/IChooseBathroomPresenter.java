@@ -11,4 +11,6 @@ public interface IChooseBathroomPresenter<V extends IChooseBathroomView>
     void getBathroomList();
 
     void preBooking();
+
+    void precondition();
 }

@@ -36,6 +36,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -70,6 +71,7 @@ public class ApplicationModule {
                 .connectTimeout(Constant.DEFAULT_TIMEOUT, TimeUnit.SECONDS)
                 .writeTimeout(Constant.DEFAULT_TIMEOUT, TimeUnit.SECONDS)
                 .readTimeout(Constant.DEFAULT_TIMEOUT, TimeUnit.SECONDS)
+                .addNetworkInterceptor(new HttpLoggingInterceptor())
                 .build();
         return new Retrofit.Builder()
                 .baseUrl(Constant.SERVER)
@@ -88,6 +90,7 @@ public class ApplicationModule {
                 .connectTimeout(Constant.DEFAULT_TIMEOUT, TimeUnit.SECONDS)
                 .writeTimeout(Constant.DEFAULT_TIMEOUT, TimeUnit.SECONDS)
                 .readTimeout(Constant.DEFAULT_TIMEOUT, TimeUnit.SECONDS)
+                .addNetworkInterceptor(new HttpLoggingInterceptor())
                 .build();
         return new Retrofit.Builder()
                 .baseUrl(Constant.SERVER_BATHROOM)

@@ -28,4 +28,15 @@ public interface IBookingRecordView extends IBaseView {
 
     void onError(String message);
 
+    /**
+     * 设置本月预约成功次数
+     * @param num
+     */
+    void setSuccessfulAppointments(String num);
+
+    /**
+     * 设置本月失约次数
+     */
+    void setMissedAppointments(String num);
+
 }

@@ -51,10 +51,9 @@ public class SplashPresenter<V extends ISplashView> extends BasePresenter<V>
     @Override
     public ArrayList<BannerDTO> getDefaultBanners() {
         ArrayList<BannerDTO> banners = new ArrayList<>();
-        banners.add(new BannerDTO(Constant.DEFAULT_BANNER_TYPE,
-                Constant.DEFAULT_BANNER_IMAGE, Constant.DEFAULT_BANNER_LINK));
+//        banners.add(new BannerDTO(Constant.DEFAULT_BANNER_TYPE,
+//                Constant.DEFAULT_BANNER_IMAGE, Constant.DEFAULT_BANNER_LINK));
         return banners;
     }
-
 
 }

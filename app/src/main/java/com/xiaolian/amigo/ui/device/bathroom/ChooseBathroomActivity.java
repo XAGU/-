@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.network.model.bathroom.BathOrderPreconditionRespDTO;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IChooseBathroomPresenter;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IChooseBathroomView;
 import com.xiaolian.amigo.ui.device.washer.ScanActivity;
@@ -272,5 +273,10 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
                 .putExtra(KEY_PREPAY, prepay)
                 .putExtra(KEY_RESERVEDTIME ,reservedTime)
         );
+    }
+
+    @Override
+    public void startPreconditionView(BathOrderPreconditionRespDTO respDTO) {
+
     }
 }

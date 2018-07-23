@@ -56,12 +56,16 @@ public class BookingRecordPresenter<V extends IBookingRecordView> extends BasePr
                     }else{
                         if (ordersBeanList.isEmpty() && page == Constant.PAGE_START_NUM){
                             getMvpView().showEmptyView();
+                            getMvpView().setSuccessfulAppointments(result.getData().getSuccessTimes());
+                            getMvpView().setMissedAppointments(result.getData().getMissedTimes());
                             return ;
                         }
                     }
                     getMvpView().addMore(ordersBeanList);
                     page++ ;
                     getMvpView().hideEmptyView();
+                    getMvpView().setSuccessfulAppointments(result.getData().getSuccessTimes());
+                    getMvpView().setMissedAppointments(result.getData().getMissedTimes());
                 }else{
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }
@@ -77,4 +81,5 @@ public class BookingRecordPresenter<V extends IBookingRecordView> extends BasePr
         });
 
     }
+
 }

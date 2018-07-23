@@ -9,4 +9,5 @@ import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 public interface IBookingRecordPresenter<V extends IBookingRecordView> extends IBasePresenter<V> {
 
     void getBookingRecordList();
+
 }

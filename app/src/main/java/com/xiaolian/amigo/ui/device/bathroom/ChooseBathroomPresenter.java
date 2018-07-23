@@ -7,6 +7,7 @@ import com.xiaolian.amigo.data.network.model.bathroom.BathBookingReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathBuildingRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathFloorDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathGroupDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.BathOrderPreconditionRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathPreBookingRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathRoomDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
@@ -79,6 +80,21 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }
+            }
+        });
+    }
+
+    @Override
+    public void precondition() {
+        addObserver(bathroomDataManager.getOrderPrecondition(),new NetworkObserver<ApiResult<BathOrderPreconditionRespDTO>>(){
+
+            @Override
+            public void onReady(ApiResult<BathOrderPreconditionRespDTO> result) {
+                 if (result.getError() == null){
+                     if (result.getData().isExistUsingOrder()){
+                        getMvpView().startPreconditionView(result.getData());
+                     }
+                 }
             }
         });
     }

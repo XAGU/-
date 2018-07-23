@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.device.bathroom.intf;
 
+import com.xiaolian.amigo.data.network.model.bathroom.BathOrderPreconditionRespDTO;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 import com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomOuterAdapter;
 
@@ -17,4 +18,7 @@ public interface IChooseBathroomView extends IBaseView {
                          Long bonusId, String bonusDesc, Double bonusAmount,
                          Long expiredTime, String location, Integer maxMissAbleTimes,
                          Double minPrepay, Integer missedTimes, Double prepay , String reservedTime);
+
+
+    void startPreconditionView(BathOrderPreconditionRespDTO respDTO);
 }

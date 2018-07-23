@@ -13,4 +13,5 @@ public class BathRoomDTO {
     private Integer status;
     private Integer xaxis;
     private Integer yaxis;
+    private String name ;
 }

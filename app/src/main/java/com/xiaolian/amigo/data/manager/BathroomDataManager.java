@@ -5,6 +5,7 @@ import com.xiaolian.amigo.data.network.IBathroomApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.bathroom.BathBookingReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathBuildingRespDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.BathOrderPreconditionRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathOrderReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathOrderRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathPreBookingRespDTO;
@@ -69,6 +70,11 @@ public class BathroomDataManager implements IBathroomDataManager {
     @Override
     public Long getUserId() {
         return iSharedPreferencesHelp.getUserInfo().getId();
+    }
+
+    @Override
+    public Observable<ApiResult<BathOrderPreconditionRespDTO>> getOrderPrecondition() {
+        return bathroomApi.getOrderPrecondition();
     }
 
 

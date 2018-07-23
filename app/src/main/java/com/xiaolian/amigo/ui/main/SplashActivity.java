@@ -47,7 +47,6 @@ public class SplashActivity extends MainBaseActivity implements ISplashView {
         getActivityComponent().inject(this);
 
         presenter.onAttach(this);
-
         presenter.getSystemBaseInfo();
         timer = new CountDownTimer(1000, 1000) {
             @Override
