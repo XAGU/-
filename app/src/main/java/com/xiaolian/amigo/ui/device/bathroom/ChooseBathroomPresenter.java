@@ -35,7 +35,7 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
     @Override
     public void getBathroomList() {
         SimpleReqDTO reqDTO = new SimpleReqDTO();
-        reqDTO.setId(1L);
+        reqDTO.setId(2659L);
         addObserver(bathroomDataManager.list(reqDTO),
                 new NetworkObserver<ApiResult<BathBuildingRespDTO>>() {
 
@@ -54,19 +54,28 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
     @Override
     public void preBooking() {
         BathBookingReqDTO reqDTO = new BathBookingReqDTO();
-        reqDTO.setDeviceNo("");
+        reqDTO.setDeviceNo("111111");
         reqDTO.setType(BathTradeType.BOOKING.getCode());
         addObserver(bathroomDataManager.preBooking(reqDTO), new NetworkObserver<ApiResult<BathPreBookingRespDTO>>() {
 
             @Override
             public void onReady(ApiResult<BathPreBookingRespDTO> result) {
                 if (null == result.getError()) {
-                    getMvpView().gotoBookingView(result.getData().getBalance(),
-                            result.getData().getBonus().getId(), result.getData().getBonus().getDescription(),
-                            result.getData().getBonus().getAmount(), result.getData().getExpiredTime(),
-                            result.getData().getLocation(), result.getData().getMaxMissAbleTimes(),
-                            result.getData().getMinPrepay(), result.getData().getMissedTimes(),
-                            result.getData().getPrepay());
+                    if (result.getData().getBonus() != null) {
+                        getMvpView().gotoBookingView(result.getData().getBalance(),
+                                result.getData().getBonus().getId(), result.getData().getBonus().getDescription(),
+                                result.getData().getBonus().getAmount(), result.getData().getExpiredTime(),
+                                result.getData().getLocation(), result.getData().getMaxMissAbleTimes(),
+                                result.getData().getMinPrepay(), result.getData().getMissedTimes(),
+                                result.getData().getPrepay() , result.getData().getReservedTime());
+                    }else{
+                        getMvpView().gotoBookingView(result.getData().getBalance(),
+                                null, null,
+                                null, result.getData().getExpiredTime(),
+                                result.getData().getLocation(), result.getData().getMaxMissAbleTimes(),
+                                result.getData().getMinPrepay(), result.getData().getMissedTimes(),
+                                result.getData().getPrepay() ,result.getData().getReservedTime());
+                    }
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }
@@ -81,11 +90,11 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
                 int maxX = 0;
                 int maxY = 0;
                 for (BathRoomDTO room : group.getBathRooms()) {
-                    if (room.getXAxis() > maxX) {
-                        maxX = room.getXAxis();
+                    if (room.getXaxis() > maxX) {
+                        maxX = room.getXaxis();
                     }
-                    if (room.getYAxis() > maxY) {
-                        maxY = room.getYAxis();
+                    if (room.getYaxis() > maxY) {
+                        maxY = room.getYaxis();
                     }
                 }
                 ChooseBathroomOuterAdapter.BathGroupWrapper groupWrapper = new ChooseBathroomOuterAdapter.BathGroupWrapper();
@@ -96,11 +105,11 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
                 }
 
                 for (BathRoomDTO room : group.getBathRooms()) {
-                    bathroomWrappers.get(room.getYAxis() * maxX + room.getXAxis())
+                    bathroomWrappers.get(room.getYaxis() * maxX + room.getXaxis())
                             .setId(room.getId());
-                    bathroomWrappers.get(room.getYAxis() * maxX + room.getXAxis())
+                    bathroomWrappers.get(room.getYaxis() * maxX + room.getXaxis())
                             .setName(room.getDeviceNo());
-                    bathroomWrappers.get(room.getYAxis() * maxX + room.getXAxis())
+                    bathroomWrappers.get(room.getYaxis() * maxX + room.getXaxis())
                             .setStatus(ChooseBathroomAdapter.BathroomStatus.getStatus(room.getStatus()));
                 }
 

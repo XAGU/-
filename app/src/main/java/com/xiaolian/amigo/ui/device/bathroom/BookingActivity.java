@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.device.bathroom;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -68,6 +69,7 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
         statusView.setStatusText("预约中");
         statusView.hideCancelButton();
         btStartToUse.setOnClickListener(v -> presenter.pay(prepayAmount, bonusId));
+        presenter.bathroomBookingCountDown();
     }
 
     private void setTopTip() {
@@ -105,7 +107,8 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
         items.add(new DeviceInfoAdapter.DeviceInfoWrapper("浴室位置：",
                 location, R.color.colorDark2, 14, Typeface.NORMAL, false));
         items.add(new DeviceInfoAdapter.DeviceInfoWrapper("预留时间：",
-                "15分钟", R.color.colorDark2, 14, Typeface.NORMAL, false));
+                reservedTime, R.color.colorDark2, 14, Typeface.NORMAL, false));
+
     }
 
     @Override
@@ -153,8 +156,8 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
     }
 
     private void onSubtitleClick() {
-//        startActivity(new Intent(this, BookingRecordActivity.class));
-        showBookingDialog();
+        startActivity(new Intent(this, BookingRecordActivity.class));
+//        showBookingDialog();
     }
 
     @Override
@@ -169,5 +172,20 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
         statusView.setLeftImageResource(IMG_RES_STATUS_CANCEL);
         statusView.setStatusText("预约取消预约");
         statusView.hideCancelButton();
+    }
+
+    @Override
+    public void setBookingCountDownTime(String time) {
+        TextView textView = statusView.getRightText();
+        if (textView != null){
+            textView.setVisibility(View.VISIBLE);
+            textView.setTextColor(getResources().getColor(R.color.colorFullRed));
+            textView.setText(time);
+        }
+    }
+
+    @Override
+    public void finishActivity() {
+        this.finish();
     }
 }

@@ -24,7 +24,7 @@
         android:id="@+id/tv_right"
         android:text="@string/cancel"
         android:textColor="@color/colorDarkB"
-        android:textSize="12sp"
+        android:textSize="14sp"
         android:gravity="center"
         android:layout_width="42dp"
         android:layout_height="28dp" />

@@ -11,6 +11,6 @@ public class BathRoomDTO {
     private Long id;
     private String deviceNo;
     private Integer status;
-    private Integer xAxis;
-    private Integer yAxis;
+    private Integer xaxis;
+    private Integer yaxis;
 }

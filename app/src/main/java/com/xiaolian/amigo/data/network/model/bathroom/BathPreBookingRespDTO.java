@@ -42,4 +42,8 @@ public class BathPreBookingRespDTO {
      * 总共可失约次数 只有预约才会返回
      */
     private Integer maxMissAbleTimes;
+    /**
+     * 预留时间
+     */
+    private String reservedTime;
 }

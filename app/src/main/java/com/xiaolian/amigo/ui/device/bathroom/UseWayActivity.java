@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.v4.util.ObjectsCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
@@ -43,6 +44,7 @@ import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_MAX_MIS
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_MIN_PREPAY;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_MISSED_TIMES;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_PREPAY;
+import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_RESERVEDTIME;
 
 /**
  * 使用公共澡堂基础类
@@ -121,6 +123,10 @@ public abstract class UseWayActivity extends BathroomBaseActivity {
      * 红包
      */
     protected Long bonusId;
+    /**
+     * 预留时间
+     */
+    protected String reservedTime ;
     private String bonusDesc;
     private Double bonusAmount;
 
@@ -159,7 +165,6 @@ public abstract class UseWayActivity extends BathroomBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booking);
         setUnBinder(ButterKnife.bind(this));
-
         initView();
     }
 
@@ -175,6 +180,7 @@ public abstract class UseWayActivity extends BathroomBaseActivity {
             expiredTime = getIntent().getLongExtra(KEY_EXPIRED_TIME, 0);
             missedTimes = getIntent().getIntExtra(KEY_MISSED_TIMES, 0);
             maxMissAbleTimes = getIntent().getIntExtra(KEY_MAX_MISSABLE_TIMES, 0);
+            reservedTime = getIntent().getStringExtra(KEY_RESERVEDTIME);
         }
     }
 
@@ -226,7 +232,7 @@ public abstract class UseWayActivity extends BathroomBaseActivity {
             return;
         }
         // 有代金券
-        if (bonusId != null) {
+        if (bonusId != -1) {
             String tip = "";
             String buttonText;
             // 余额为0

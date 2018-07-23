@@ -16,5 +16,5 @@ public interface IChooseBathroomView extends IBaseView {
     void gotoBookingView(Double balance,
                          Long bonusId, String bonusDesc, Double bonusAmount,
                          Long expiredTime, String location, Integer maxMissAbleTimes,
-                         Double minPrepay, Integer missedTimes, Double prepay);
+                         Double minPrepay, Integer missedTimes, Double prepay , String reservedTime);
 }

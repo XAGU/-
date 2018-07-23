@@ -1,5 +1,7 @@
 package com.xiaolian.amigo.util;
 
+import android.util.Log;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -13,6 +15,7 @@ import java.util.Locale;
  */
 
 public class TimeUtils {
+    private static final String TAG = TimeUtils.class.getSimpleName();
 
     private static final DateFormat DEFAULT_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
     public static final DateFormat MY_DATE_FORMAT = new SimpleDateFormat("MM-dd", Locale.getDefault());
@@ -20,7 +23,8 @@ public class TimeUtils {
     public static final DateFormat MY_DATE_FORMAT3 = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
     public static final DateFormat MY_DATE_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
     public static final DateFormat MY_TIME_FORMAT = new SimpleDateFormat("HH:mm", Locale.getDefault());
-
+    public static final DateFormat MY_DATE_MONTH = new SimpleDateFormat("MM/dd" ,Locale.getDefault());
+    public static final int SIXTY = 60 ;
 
     /**
      * 将时间戳转为时间字符串
@@ -100,12 +104,35 @@ public class TimeUtils {
         } else if (time >= 3600 * 24 && time < 3600 * 24 * 2) {
             result += "昨天";
         } else if (time >= 3600 * 24 * 2 && time < 3600 * 24 * 365) {
-            result += millis2String(timeStamp, MY_DATE_FORMAT) + " ";
+            result += millis2String(timeStamp, MY_DATE_MONTH) + " ";
         } else {
-            result += millis2String(timeStamp, MY_DATE_FORMAT2) + " ";
+            result += millis2String(timeStamp, MY_DATE_FORMAT3) + " ";
         }
         return result + millis2String(timeStamp, MY_TIME_FORMAT);
     }
+
+
+    /**
+     * 计算剩余时间
+     * @param expiredTime
+     * @return
+     */
+    public static String orderBathroomLastTime(long expiredTime){
+        String result = "剩余时间 " ;
+        long curTime = System.currentTimeMillis() / (long)1000 ;
+        long time = expiredTime / 1000 - curTime ;
+        if (time > 0){
+            if (time >= 600){  //  向前面添加0
+                result += (time / SIXTY + " ：" + time % SIXTY);
+            }else if (time > 60){
+                result += ("0" + time / SIXTY +" ：" + time % SIXTY);
+            }else{
+                result +=("00 ：" + time % SIXTY);
+            }
+        }
+        return  result ;
+    }
+
 
     public static String lostAndFoundTimestampFormat(long timeStamp) {
         String result = "";
@@ -169,6 +196,13 @@ public class TimeUtils {
         }
         return result + millis2String(timeStamp, MY_TIME_FORMAT);
     }
+
+
+
+//    public static String longToString(long time){
+//        return time / 60 +"分钟" ;
+//    }
+
 
     /**
      * 将Date类型转为时间戳

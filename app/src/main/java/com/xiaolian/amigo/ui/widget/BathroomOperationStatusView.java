@@ -69,6 +69,9 @@ public class BathroomOperationStatusView extends LinearLayout {
         tvRight.setOnClickListener(v -> listener.onCancelClick());
     }
 
+    public TextView getRightText(){
+        return tvRight ;
+    }
     public void hideCancelButton() {
         tvRight.setVisibility(GONE);
     }

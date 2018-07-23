@@ -1160,9 +1160,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
      */
     public void gotoHeater() {
         Log.d(TAG, "gotoHeater");
-        routeToRoomShower();
+//        routeToRoomShower();
 //        routeToBathroomShower();
-//        presenter.routeHeaterOrBathroom();
+        presenter.routeHeaterOrBathroom();
     }
 
     @Override

@@ -33,6 +33,7 @@ import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_MAX_MIS
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_MIN_PREPAY;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_MISSED_TIMES;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_PREPAY;
+import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_RESERVEDTIME;
 
 /**
  * 选择浴室
@@ -65,6 +66,8 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_bathroom);
+        getActivityComponent().inject(this);
+        presenter.onAttach(this);
         bindView();
         initRecyclerView();
     }
@@ -95,7 +98,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
     }
 
     private void initRecyclerView() {
-        setMockData(bathGroups);
+//        setMockData(bathGroups);
         outerAdapter = new ChooseBathroomOuterAdapter(this, R.layout.item_choose_bathroom_outer, bathGroups,
                 (groupPosition, bathroomPosition) -> {
                     onSuccess(groupPosition + " " + bathroomPosition);
@@ -148,6 +151,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
                 return false;
             }
         });
+        presenter.getBathroomList();
     }
 
     private void changeBottomUseWay() {
@@ -158,7 +162,14 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         }
     }
 
-//    private void changeToBookingUse() {
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.onDetach();
+    }
+
+
+    //    private void changeToBookingUse() {
 //        if (!isSelected) {
 //            llRight.setVisibility(View.VISIBLE);
 //            tvMissedBookingTime.setVisibility(View.INVISIBLE);
@@ -247,7 +258,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
     public void gotoBookingView(Double balance,
                                 Long bonusId, String bonusDesc, Double bonusAmount,
                                 Long expiredTime, String location, Integer maxMissAbleTimes,
-                                Double minPrepay, Integer missedTimes, Double prepay) {
+                                Double minPrepay, Integer missedTimes, Double prepay ,String reservedTime) {
         startActivity(new Intent(this, BookingActivity.class)
                 .putExtra(KEY_BALANCE, balance)
                 .putExtra(KEY_BONUS_ID, bonusId)
@@ -259,6 +270,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
                 .putExtra(KEY_MIN_PREPAY, minPrepay)
                 .putExtra(KEY_MISSED_TIMES, missedTimes)
                 .putExtra(KEY_PREPAY, prepay)
+                .putExtra(KEY_RESERVEDTIME ,reservedTime)
         );
     }
 }

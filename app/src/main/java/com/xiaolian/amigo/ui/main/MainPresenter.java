@@ -398,7 +398,8 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
             public void onReady(ApiResult<ShowerRoomRouterRespDTO> result) {
                 if (null == result.getError()) {
                     if (UserResidenceType.ROOM == UserResidenceType.getUserResidenceType(result.getData().getUserResidenceType())) {
-                        getMvpView().routeToRoomShower();
+//                        getMvpView().routeToRoomShower();
+                        getMvpView().routeToBathroomShower();
                     } else {
                         getMvpView().routeToBathroomShower();
                     }

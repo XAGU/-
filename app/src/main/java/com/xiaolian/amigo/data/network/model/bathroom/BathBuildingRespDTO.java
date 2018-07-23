@@ -11,8 +11,8 @@ import lombok.Data;
  */
 @Data
 public class BathBuildingRespDTO {
-    private List<BathFloorDTO> floors;
-    private Integer missTimes;
+    private List<BathFloorDTO> floors;  //  楼层列表
+    private Integer missTimes;   //  失约次数
     /**
      * 该学校公共浴室支持的交易方式
      * 预约使用 1

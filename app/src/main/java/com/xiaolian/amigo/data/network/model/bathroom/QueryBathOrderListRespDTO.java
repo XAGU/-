@@ -4,10 +4,10 @@ import lombok.Data;
 
 @Data
 public class QueryBathOrderListRespDTO {
-    private int missedTimes;
-    private int successTimes;
-    private int total;
-    private int totalMissTimes;
+    private int missedTimes;   //  失约次数
+    private int successTimes;   // 预约成功次数
+    private int total;         // 总共次数
+    private int totalMissTimes;   // 总共可失约次数
     private java.util.List<OrdersBean> orders;
 
     @Data
@@ -21,11 +21,11 @@ public class QueryBathOrderListRespDTO {
          * status : 0
          */
 
-        private int bathOrderId;
-        private int consume;
-        private int createTime;
-        private int expiredTime;
-        private String location;
+        private int bathOrderId;   // 订单Id
+        private int consume;     //  消费金额
+        private long createTime;   // 创建时间
+        private long expiredTime;   // 过期时间
+        private String location;  // 设备位置
         private int status;
     }
 

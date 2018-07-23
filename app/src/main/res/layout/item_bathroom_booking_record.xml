@@ -19,6 +19,7 @@
             android:id="@+id/tv_left_top"
             android:textColor="@color/colorDark2"
             android:textSize="12sp"
+            tools:text="-￥8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <LinearLayout
@@ -45,6 +46,7 @@
                 android:id="@+id/tv_left_bottom_second"
                 android:textColor="@color/colorDark9"
                 android:textSize="10sp"
+                tools:text="剩余时间"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
@@ -53,5 +55,6 @@
     <TextView
         android:id="@+id/tv_right"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        tools:text="洗浴结束"/>
 </LinearLayout>

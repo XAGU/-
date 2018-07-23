@@ -8,15 +8,15 @@ package com.xiaolian.amigo.data.enumeration;
  */
 public enum BathroomOperationStatus {
     /**
-     * 取消
+     * 取消  ， 取消预约
      */
     CANCEL(1),
     /**
-     * 已支付
+     * 已支付 ，
      */
     PAYED(2),
     /**
-     * 预约成功（下发成功）
+     * 预约成功（下发成功）  等待洗浴
      */
     BOOKING_SUCCESS(3),
     /**
@@ -24,7 +24,7 @@ public enum BathroomOperationStatus {
      */
     BOOKING_FAIL(4),
     /**
-     * 已经过期(已经退款)
+     * 已经过期(已经退款)    预约超时
      */
     EXPIRED(5),
     /**
@@ -32,7 +32,7 @@ public enum BathroomOperationStatus {
      */
     USING(6),
     /**
-     * 已经完成
+     * 已经完成    洗浴结束
      */
     FINISHED(7);
 

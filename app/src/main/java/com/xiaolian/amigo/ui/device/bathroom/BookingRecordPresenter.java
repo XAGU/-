@@ -51,7 +51,7 @@ public class BookingRecordPresenter<V extends IBookingRecordView> extends BasePr
                 getMvpView().hideEmptyView();
                 getMvpView().hideErrorView();
                 if (null == result.getError()){
-                    if (result.getData().getOrders() != null ){
+                    if (result.getData().getOrders() != null && result.getData().getOrders().size() > 0 ){
                         ordersBeanList.addAll(result.getData().getOrders());
                     }else{
                         if (ordersBeanList.isEmpty() && page == Constant.PAGE_START_NUM){

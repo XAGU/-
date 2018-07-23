@@ -20,4 +20,5 @@ public class BathroomConstant {
     public static final String KEY_MIN_PREPAY = "key_min_prepay";
     public static final String KEY_MISSED_TIMES = "key_missed_times";
     public static final String KEY_PREPAY = "key_prepay";
+    public static final String KEY_RESERVEDTIME = "key_reservedTime";
 }

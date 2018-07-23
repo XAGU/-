@@ -11,4 +11,14 @@ public interface IBookingView extends IBaseView {
     void bookingSuccess(BathOrderRespDTO data);
 
     void bookingCancel();
+
+    /**
+     * 设置预约倒计时
+     */
+    void setBookingCountDownTime(String time);
+
+    /**
+     * 退出activity
+     */
+    void finishActivity();
 }

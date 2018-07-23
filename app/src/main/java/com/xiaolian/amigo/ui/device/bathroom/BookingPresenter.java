@@ -10,8 +10,15 @@ import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IBookingPresenter;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IBookingView;
+import com.xiaolian.amigo.util.RxHelper;
+
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.inject.Inject;
+
+import rx.Subscriber;
+import rx.functions.Action0;
 
 /**
  * 预约使用
@@ -67,4 +74,42 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
                     }
                 });
     }
+
+    @Override
+    public void bathroomBookingCountDown() {
+        this.subscriptions.add(RxHelper.countDown(120)
+                .doOnSubscribe(new Action0() {
+                    @Override
+                    public void call() {
+                        getMvpView().setBookingCountDownTime("02:00");
+                    }
+                })
+        .subscribe(new Subscriber<Integer>() {
+            @Override
+            public void onCompleted() {
+                getMvpView().setBookingCountDownTime("0:00");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(Integer integer) {
+                if (integer == 120){
+                    getMvpView().setBookingCountDownTime("02:00");
+                }
+                else if (integer >=60){
+                    getMvpView().setBookingCountDownTime("0"+integer / 60 +":" + integer % 60);
+                }else if (integer >0){
+                    getMvpView().setBookingCountDownTime("0"+":"+integer % 60);
+                }else{
+                    getMvpView().finishActivity();
+                }
+            }
+        }));
+    }
+
+
 }

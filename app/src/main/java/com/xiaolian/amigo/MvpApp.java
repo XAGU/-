@@ -88,7 +88,7 @@ public class MvpApp extends Application {
         super.onCreate();
         Log.setContext(this.getApplicationContext());
         registerActivityLifecycleCallbacks(ActivityLifecycleHelper.build());
-
+//        android.util.Log.e("test", "onCreate: " + System.currentTimeMillis() );
 //        CrashHandler.getInstance().init(this, BuildConfig.DEBUG, true, 0, SplashActivity.class);
 
         mApplicationComponent = DaggerApplicationComponent.builder()

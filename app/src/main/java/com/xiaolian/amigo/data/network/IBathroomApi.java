@@ -30,7 +30,7 @@ public interface IBathroomApi {
     /**
      * 获取当前楼栋的浴室房间信息
      */
-    @POST("bathRoom/map")
+    @POST("bath/room/tree")
     Observable<ApiResult<BathBuildingRespDTO>> list(@Body SimpleReqDTO reqDTO);
 
     /**
