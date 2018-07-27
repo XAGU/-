@@ -10,7 +10,9 @@ public interface IChooseBathroomPresenter<V extends IChooseBathroomView>
         extends IBasePresenter<V> {
     void getBathroomList();
 
-    void preBooking();
+    void preBooking(String deviceNo);
 
     void precondition();
+
+
 }

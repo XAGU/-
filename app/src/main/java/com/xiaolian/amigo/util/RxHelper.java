@@ -5,9 +5,13 @@ import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
 import rx.Observer;
+import rx.Subscriber;
+import rx.Subscription;
 import rx.android.plugins.RxAndroidSchedulersHook;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action;
 import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 /**
  * @author  wcm
@@ -30,5 +34,22 @@ public class RxHelper {
                         return countTime - aLong.intValue();
                     }
                 }).take(countTime + 1);
+    }
+
+    /**
+     * 延迟发送
+     * @param time
+     * @param observer
+     * @return
+     */
+    public static Subscription delay(int time , Subscriber<Long> observer){
+        if (time < 0) time = 0 ;
+        return Observable.interval(0 ,time ,TimeUnit.SECONDS)
+                .subscribeOn(Schedulers.io())
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe(observer);
+
+
+
     }
 }

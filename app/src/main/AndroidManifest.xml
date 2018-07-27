@@ -594,6 +594,12 @@
             android:theme="@android:style/Theme.Translucent"
             />
 
+        <!--公共浴室洗澡页面-->
+        <activity android:name=".ui.device.bathroom.BathIngActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.Translucent"/>
+
         <!--闪屏页-->
         <activity
             android:name=".ui.main.SplashActivity"

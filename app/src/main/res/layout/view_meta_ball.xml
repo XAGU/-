@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="9dp"
-            android:text="购买编码"
+            android:text="洗澡卷"
             android:textColor="@color/colorDark2"
             android:textSize="12sp" />
 

@@ -8,27 +8,39 @@ import java.io.Serializable;
 
 public class BathOrderPreconditionRespDTO implements Parcelable {
 
-        /**
-         * existUsingOrder : false
-         * expiredTime : 0
-         * id : 0
-         * location : string
-         * status : 0
-         * type : 0
-         */
+    /**
+     * bathOrderId : 0
+     * createTime : 0
+     * deviceNo : 0
+     * existUsingOrder : false
+     * expiredTime : 0
+     * location : string
+     * maxMissAbleTimes : 0
+     * missedTimes : 0
+     * status : 0
+     * type : 0
+     */
 
-        private boolean existUsingOrder;  // 是否存在历史订单
-        private long expiredTime;   // 过期时间
-        private long id;
-        private String location;  // 浴室位置
-        private int status;   // 订单状态
-        private int type;    //  预约订单类型
+    private long bathOrderId;   //id
+    private long createTime;   //  创建时间
+    private long deviceNo;    // deviceNO
+    private boolean existUsingOrder;
+    private long expiredTime;   //  过期时间
+    private String location;
+    private int maxMissAbleTimes;   // 总共预约次数
+    private int missedTimes;   // 失约次数
+    private int status;
+    private int type;  //  预约类型
 
     protected BathOrderPreconditionRespDTO(Parcel in) {
+        bathOrderId = in.readLong();
+        createTime = in.readLong();
+        deviceNo = in.readLong();
         existUsingOrder = in.readByte() != 0;
         expiredTime = in.readLong();
-        id = in.readLong();
         location = in.readString();
+        maxMissAbleTimes = in.readInt();
+        missedTimes = in.readInt();
         status = in.readInt();
         type = in.readInt();
     }
@@ -45,53 +57,85 @@ public class BathOrderPreconditionRespDTO implements Parcelable {
         }
     };
 
+    public long getBathOrderId() {
+        return bathOrderId;
+    }
+
+    public void setBathOrderId(int bathOrderId) {
+        this.bathOrderId = bathOrderId;
+    }
+
+    public long getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(int createTime) {
+        this.createTime = createTime;
+    }
+
+    public long getDeviceNo() {
+        return deviceNo;
+    }
+
+    public void setDeviceNo(int deviceNo) {
+        this.deviceNo = deviceNo;
+    }
+
     public boolean isExistUsingOrder() {
-            return existUsingOrder;
-        }
+        return existUsingOrder;
+    }
 
-        public void setExistUsingOrder(boolean existUsingOrder) {
-            this.existUsingOrder = existUsingOrder;
-        }
+    public void setExistUsingOrder(boolean existUsingOrder) {
+        this.existUsingOrder = existUsingOrder;
+    }
 
-        public long getExpiredTime() {
-            return expiredTime;
-        }
+    public long getExpiredTime() {
+        return expiredTime;
+    }
 
-        public void setExpiredTime(long expiredTime) {
-            this.expiredTime = expiredTime;
-        }
+    public void setExpiredTime(int expiredTime) {
+        this.expiredTime = expiredTime;
+    }
 
-        public long getId() {
-            return id;
-        }
+    public String getLocation() {
+        return location;
+    }
 
-        public void setId(long id) {
-            this.id = id;
-        }
+    public void setLocation(String location) {
+        this.location = location;
+    }
 
-        public String getLocation() {
-            return location;
-        }
+    public int getMaxMissAbleTimes() {
+        return maxMissAbleTimes;
+    }
 
-        public void setLocation(String location) {
-            this.location = location;
-        }
+    public void setMaxMissAbleTimes(int maxMissAbleTimes) {
+        this.maxMissAbleTimes = maxMissAbleTimes;
+    }
 
-        public int getStatus() {
-            return status;
-        }
+    public int getMissedTimes() {
+        return missedTimes;
+    }
 
-        public void setStatus(int status) {
-            this.status = status;
-        }
+    public void setMissedTimes(int missedTimes) {
+        this.missedTimes = missedTimes;
+    }
 
-        public int getType() {
-            return type;
-        }
+    public int getStatus() {
+        return status;
+    }
 
-        public void setType(int type) {
-            this.type = type;
-        }
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
 
     @Override
     public int describeContents() {
@@ -100,10 +144,14 @@ public class BathOrderPreconditionRespDTO implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(bathOrderId);
+        dest.writeLong(createTime);
+        dest.writeLong(deviceNo);
         dest.writeByte((byte) (existUsingOrder ? 1 : 0));
         dest.writeLong(expiredTime);
-        dest.writeLong(id);
         dest.writeString(location);
+        dest.writeInt(maxMissAbleTimes);
+        dest.writeInt(missedTimes);
         dest.writeInt(status);
         dest.writeInt(type);
     }

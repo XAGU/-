@@ -3,13 +3,16 @@ package com.xiaolian.amigo.ui.device.bathroom;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.enumeration.BathroomMethodStatus;
 import com.xiaolian.amigo.data.network.model.bathroom.BathOrderPreconditionRespDTO;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IChooseBathroomPresenter;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IChooseBathroomView;
@@ -17,6 +20,7 @@ import com.xiaolian.amigo.ui.device.washer.ScanActivity;
 import com.xiaolian.amigo.ui.widget.GridSpacesItemDecoration;
 import com.xiaolian.amigo.ui.widget.MetaBallView;
 import com.xiaolian.amigo.ui.widget.ZoomRecyclerView;
+import com.xiaolian.amigo.ui.widget.dialog.BathroomBookingDialog;
 import com.xiaolian.amigo.util.ScreenUtils;
 
 import java.util.ArrayList;
@@ -24,15 +28,20 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import static com.xiaolian.amigo.data.enumeration.BathroomMethodStatus.BOOKING;
+import static com.xiaolian.amigo.data.enumeration.BathroomMethodStatus.BUY_CODE;
+import static com.xiaolian.amigo.data.enumeration.BathroomMethodStatus.USING;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_BALANCE;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_BONUS_AMOUNT;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_BONUS_DESC;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_BONUS_ID;
+import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_DEVICE_NO;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_EXPIRED_TIME;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_LOCATION;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_MAX_MISSABLE_TIMES;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_MIN_PREPAY;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_MISSED_TIMES;
+import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_ORDER_PRECONDITION;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_PREPAY;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_RESERVEDTIME;
 
@@ -43,6 +52,10 @@ import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_RESERVE
  * @date 18/6/27
  */
 public class ChooseBathroomActivity extends BathroomBaseActivity implements IChooseBathroomView {
+
+    private static final String TAG = ChooseBathroomActivity.class.getSimpleName();
+    private BathroomBookingDialog bathroomBookingDialog ;
+
     @Inject
     IChooseBathroomPresenter<IChooseBathroomView> presenter;
 
@@ -54,6 +67,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
     private MetaBallView metaBall;
     private int lastSelectedGroupPosition = -1;
     private int lastSelectedRoomPosition = -1;
+    private String deviceNo ;
     /**
      * 当前是否处于选中状态 选中状态显示预约使用 非选中状态显示购买编码
      */
@@ -99,7 +113,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
     }
 
     private void initRecyclerView() {
-//        setMockData(bathGroups);
+        setMockData(bathGroups);
         outerAdapter = new ChooseBathroomOuterAdapter(this, R.layout.item_choose_bathroom_outer, bathGroups,
                 (groupPosition, bathroomPosition) -> {
                     onSuccess(groupPosition + " " + bathroomPosition);
@@ -115,6 +129,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
                         if (lastSelectedGroupPosition != -1 && lastSelectedRoomPosition != -1) {
                             bathGroups.get(lastSelectedGroupPosition).getBathGroups().get(lastSelectedRoomPosition).setSelected(false);
                         }
+                        deviceNo =bathGroups.get(groupPosition).getBathGroups().get(bathroomPosition).getDeviceNo();
                         bathGroups.get(groupPosition).getBathGroups().get(bathroomPosition).setSelected(true);
                         lastSelectedGroupPosition = groupPosition;
                         lastSelectedRoomPosition = bathroomPosition;
@@ -134,6 +149,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
             public boolean onScale(ScaleGestureDetector detector, float scaleFactor) {
                 if (scaleFactor > 2
                         && !outerAdapter.isScaled()) {
+//                    outerAdapter.notifyDataSetChanged();
                     outerAdapter.setScaled(true);
                 } else if (scaleFactor < 2
                         && outerAdapter.isScaled()) {
@@ -152,7 +168,9 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
                 return false;
             }
         });
-        presenter.getBathroomList();
+//        presenter.getBathroomList();
+        showBathroomDialog();
+        presenter.precondition();
     }
 
     private void changeBottomUseWay() {
@@ -167,6 +185,9 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
     protected void onDestroy() {
         super.onDestroy();
         presenter.onDetach();
+        if (bathroomBookingDialog != null){
+            bathroomBookingDialog.onDettechView();
+        }
     }
 
 
@@ -194,7 +215,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
 
     private void onLeftClick() {
         if (isSelected) {
-            presenter.preBooking();
+            presenter.preBooking(deviceNo);
         } else {
             startActivity(new Intent(this, BuyCodeActivity.class));
         }
@@ -253,7 +274,24 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         bathGroups.clear();
         bathGroups.addAll(wrappers);
         outerAdapter.notifyDataSetChanged();
+        for (Integer method: methods){
+            setBathroomMethod(method);
+        }
     }
+
+
+    public void setBathroomMethod(int methods){
+
+        if (methods ==BOOKING.getCode()){
+            metaBall.getLlLeft().setVisibility(View.VISIBLE);
+        }else if (methods == BUY_CODE.getCode()){
+            metaBall.getLlRight().setVisibility(View.VISIBLE);
+        }
+
+    }
+
+
+
 
     @Override
     public void gotoBookingView(Double balance,
@@ -272,11 +310,48 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
                 .putExtra(KEY_MISSED_TIMES, missedTimes)
                 .putExtra(KEY_PREPAY, prepay)
                 .putExtra(KEY_RESERVEDTIME ,reservedTime)
+                .putExtra(KEY_DEVICE_NO ,deviceNo)
         );
     }
 
     @Override
     public void startPreconditionView(BathOrderPreconditionRespDTO respDTO) {
-
+        hideBathroomDialog();
+        startActivityForStatus(respDTO);
+//        startActivity(new Intent(this ,BookingActivity.class).putExtra(KEY_ORDER_PRECONDITION ,respDTO));
     }
+
+    /**
+     * 根据订单status跳转正确的界面
+     * @param respDTO
+     */
+    private void startActivityForStatus(BathOrderPreconditionRespDTO respDTO){
+        BathroomMethodStatus bathroomMethodStatus = BathroomMethodStatus.getBathroomMethodStatus(respDTO.getStatus());
+        switch (bathroomMethodStatus){
+            case BUY_CODE:
+                startActivity(new Intent(this ,BuyCodeActivity.class).putExtra(KEY_ORDER_PRECONDITION ,respDTO));
+                break;
+            case BOOKING:
+                break;
+        }
+    }
+
+    @Override
+    public void showBathroomDialog() {
+        if (bathroomBookingDialog == null){
+            bathroomBookingDialog = new BathroomBookingDialog(this);
+        }
+        bathroomBookingDialog.show();
+    }
+
+
+    @Override
+    public void hideBathroomDialog() {
+        if (bathroomBookingDialog != null){
+            bathroomBookingDialog.cancel();
+            bathroomBookingDialog.onDettechView();
+        }
+    }
+
+
 }

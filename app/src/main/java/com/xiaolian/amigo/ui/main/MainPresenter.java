@@ -379,7 +379,7 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
     public void deletePushToken() {
         mainDataManager.deletePushToken();
     }
-    
+
     @Override
     public String getPushToken() {
         return mainDataManager.getPushToken();
@@ -392,22 +392,25 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
 
     @Override
     public void routeHeaterOrBathroom() {
-        addObserver(mainDataManager.route(), new NetworkObserver<ApiResult<ShowerRoomRouterRespDTO>>() {
-
-            @Override
-            public void onReady(ApiResult<ShowerRoomRouterRespDTO> result) {
-                if (null == result.getError()) {
-                    if (UserResidenceType.ROOM == UserResidenceType.getUserResidenceType(result.getData().getUserResidenceType())) {
-                        getMvpView().routeToRoomShower();
+        // 测试
+//        getMvpView().routeToBathroomShower();
+          getMvpView().routeToRoomShower();
+//        addObserver(mainDataManager.route(), new NetworkObserver<ApiResult<ShowerRoomRouterRespDTO>>() {
+//
+//            @Override
+//            public void onReady(ApiResult<ShowerRoomRouterRespDTO> result) {
+//                if (null == result.getError()) {
+//                    if (UserResidenceType.ROOM == UserResidenceType.getUserResidenceType(result.getData().getUserResidenceType())) {
+////                        getMvpView().routeToRoomShower();
 //                        getMvpView().routeToBathroomShower();
-                    } else {
-                        getMvpView().routeToBathroomShower();
-                    }
-                } else {
-                    getMvpView().onError(result.getError().getDisplayMessage());
-                }
-            }
-        });
+//                    } else {
+//                        getMvpView().routeToBathroomShower();
+//                    }
+//                } else {
+//                    getMvpView().onError(result.getError().getDisplayMessage());
+//                }
+//            }
+//        });
     }
 
     private boolean isDeviceInfoUploaded(UploadUserDeviceInfoReqDTO newReq,

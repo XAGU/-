@@ -68,4 +68,9 @@ public interface IListChooseView extends IBaseView {
      * 隐藏空列表
      */
     void hideEmptyView();
+
+    /**
+     * 返回个人信息
+     */
+    void backToEditProfileActivity(String residenceName);
 }

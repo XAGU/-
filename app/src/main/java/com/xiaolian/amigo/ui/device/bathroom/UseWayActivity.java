@@ -40,6 +40,7 @@ import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_LOCATIO
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_MAX_MISSABLE_TIMES;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_MIN_PREPAY;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_MISSED_TIMES;
+import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_ORDER_PRECONDITION;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_PREPAY;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_RESERVEDTIME;
 
@@ -108,29 +109,29 @@ public abstract class UseWayActivity extends BathroomBaseActivity {
     /**
      * 过期时间
      */
-    private Long expiredTime;
+    protected Long expiredTime;
     /**
      * 预付金额
      */
-    private Double prepay;
+    protected Double prepay;
     /**
      * 最小预付金额
      */
-    private Double minPrepay;
+    protected Double minPrepay;
     /**
      * 用户余额
      */
-    private Double balance;
+    protected Double balance;
     /**
      * 红包
      */
-    protected Long bonusId;
+    protected Long bonusId = -1L ;
     /**
      * 预留时间
      */
     protected String reservedTime;
-    private String bonusDesc;
-    private Double bonusAmount;
+    protected String bonusDesc;
+    protected Double bonusAmount;
 
     /**
      * 失约次数 只有预约才会返回
@@ -141,7 +142,7 @@ public abstract class UseWayActivity extends BathroomBaseActivity {
      */
     protected Integer maxMissAbleTimes;
 
-    private boolean needRecharge;
+    protected boolean needRecharge;
     protected Double prepayAmount;
 
 
@@ -188,6 +189,7 @@ public abstract class UseWayActivity extends BathroomBaseActivity {
             missedTimes = getIntent().getIntExtra(KEY_MISSED_TIMES, 0);
             maxMissAbleTimes = getIntent().getIntExtra(KEY_MAX_MISSABLE_TIMES, 0);
             reservedTime = getIntent().getStringExtra(KEY_RESERVEDTIME);
+            bathOrderPreconditionRespDTO = getIntent().getParcelableExtra(KEY_ORDER_PRECONDITION);
         }
     }
 
@@ -205,7 +207,6 @@ public abstract class UseWayActivity extends BathroomBaseActivity {
                 viewLine.setVisibility(View.GONE);
             }
         });
-
         setTitle(tvTitle);
         setToolbarTitle(tvToolbarTitle);
         setSubTitle(tvSubTitle);
@@ -216,10 +217,12 @@ public abstract class UseWayActivity extends BathroomBaseActivity {
 
 
     protected void llBottomVisible(boolean isVisible){
-        if (isVisible){
+        if (isVisible && llBottom.getVisibility() == View.GONE){
             llBottom.setVisibility(View.VISIBLE);
-        }else{
+        }else if (!isVisible && llBottom.getVisibility()== View.VISIBLE){
             llBottom.setVisibility(View.GONE);
+        }else{
+
         }
     }
 

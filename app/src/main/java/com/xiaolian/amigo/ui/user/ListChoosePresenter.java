@@ -229,6 +229,7 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
     public void bindDormitory(Long id, Long residenceId, boolean isEdit, String activitySrc) {
         BindResidenceReq dto = new BindResidenceReq();
         dto.setResidenceId(residenceId);
+        dto.setType(1);
         if (isEdit) {
             dto.setId(id);
         }
@@ -246,7 +247,10 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
                         getMvpView().backToEditDormitory();
                     } else if (TextUtils.equals(activitySrc, Constant.MAIN_ACTIVITY_SRC)) {
                         getMvpView().backToMain(activitySrc);
-                    } else {
+                    }else if (TextUtils.equals(activitySrc ,Constant.USER_INFO_ACTIVITY_SRC)) {
+                        getMvpView().backToEditProfileActivity(result.getData().getResidenceName());
+                    }
+                    else {
                         getMvpView().backToDormitory();
                     }
                 } else {

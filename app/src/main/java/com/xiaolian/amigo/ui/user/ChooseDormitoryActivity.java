@@ -24,7 +24,7 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 
 /**
- * 选择宿舍
+ * 新的地址界面
  *
  * @author zcd
  * @date 17/10/11

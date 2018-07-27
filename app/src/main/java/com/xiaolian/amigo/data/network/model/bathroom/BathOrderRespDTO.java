@@ -21,7 +21,7 @@ public class BathOrderRespDTO {
     /**
      * 过期时间
      */
-    private Long expiredTime;
+    private long expiredTime;
     /**
      * 预付金额
      */
@@ -46,4 +46,10 @@ public class BathOrderRespDTO {
      * 失约次数 只有预约才会返回
      */
     private Integer missTimes;
+
+    /**
+     * 预约创建时间
+     */
+    private Long createTime ;
+
 }

@@ -114,25 +114,33 @@ public class TimeUtils {
 
     /**
      * 计算剩余时间
-     * @param expiredTime
+     * @param expiredTime  preString 时间前缀
      * @return
      */
-    public static String orderBathroomLastTime(long expiredTime){
-        String result = "剩余时间 " ;
+    public static String orderBathroomLastTime(long expiredTime , String preString){
+
         long curTime = System.currentTimeMillis() / (long)1000 ;
         long time = expiredTime / 1000 - curTime ;
         if (time > 0){
             if (time >= 600){  //  向前面添加0
-                result += (time / SIXTY + " ：" + time % SIXTY);
+                preString += (time / SIXTY + " ：" + time % SIXTY);
             }else if (time > 60){
-                result += ("0" + time / SIXTY +" ：" + time % SIXTY);
+                preString += ("0" + time / SIXTY +" ：" + time % SIXTY);
             }else{
-                result +=("00 ：" + time % SIXTY);
+                preString +=("00 ：" + time % SIXTY);
             }
         }
-        return  result ;
+        return  preString ;
     }
 
+    /**
+     * 过期时间与自己时间相比，倒计时的时间
+     * @param expiredTime
+     * @return
+     */
+    public static final long intervalTime(long expiredTime){
+        return (expiredTime - System.currentTimeMillis()) / (long)1000;
+    }
 
     public static String lostAndFoundTimestampFormat(long timeStamp) {
         String result = "";
@@ -203,6 +211,16 @@ public class TimeUtils {
 //        return time / 60 +"分钟" ;
 //    }
 
+    /**
+     * long 转化成String
+     * @param time
+     * @return
+     */
+    public static String covertTimeToString(long time){
+
+        Date date = new Date(time);
+        return MY_TIME_FORMAT.format(date);
+    }
 
     /**
      * 将Date类型转为时间戳
@@ -236,4 +254,6 @@ public class TimeUtils {
     public static String date2String(final Date date, final DateFormat format) {
         return format.format(date);
     }
+
+
 }

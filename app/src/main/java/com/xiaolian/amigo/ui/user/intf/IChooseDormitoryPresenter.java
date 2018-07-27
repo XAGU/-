@@ -4,11 +4,10 @@ import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 
 /**
  * 宿舍列表
- *
  * @author zcd
  * @date 17/10/11
  */
-
+@Deprecated
 public interface IChooseDormitoryPresenter<V extends IChooseDormitoryView> extends IBasePresenter<V> {
     /**
      * 获取宿舍列表

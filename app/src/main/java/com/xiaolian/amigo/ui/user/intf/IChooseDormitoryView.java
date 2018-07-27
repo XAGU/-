@@ -11,7 +11,7 @@ import java.util.List;
  * @author zcd
  * @date 17/10/11
  */
-
+@Deprecated
 public interface IChooseDormitoryView extends IBaseListView {
     /**
      * 加载宿舍列表

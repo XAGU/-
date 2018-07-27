@@ -23,7 +23,7 @@ import javax.inject.Inject;
  * @author zcd
  * @date 17/10/11
  */
-
+@Deprecated
 public class ChooseDormitoryPresenter<V extends IChooseDormitoryView> extends BasePresenter<V>
         implements IChooseDormitoryPresenter<V> {
 

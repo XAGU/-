@@ -126,4 +126,9 @@ public class RepairDetailPresenter<V extends IRepairDetailView> extends BasePres
             }
         });
     }
+
+    @Override
+    public void getToken() {
+
+    }
 }

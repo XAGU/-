@@ -133,9 +133,9 @@ public class MessageReceiver extends XGPushBaseReceiver {
     public void onNotifactionClickedResult(Context context, XGPushClickedResult message) {
 
         Log.e("LC", "+++++++++++++++ 通知被点击 跳转到指定页面。");
-        NotificationManager notificationManager = (NotificationManager) context
-                .getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.cancelAll();
+//        NotificationManager notificationManager = (NotificationManager) context
+//                .getSystemService(Context.NOTIFICATION_SERVICE);
+//        notificationManager.cancelAll();
         if (context == null || message == null) {
             return;
         }

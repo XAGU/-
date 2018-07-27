@@ -90,11 +90,19 @@ public class MetaBallView extends LinearLayout {
         });
     }
 
+    public LinearLayout getLlLeft() {
+        return llLeft;
+    }
+
+    public LinearLayout getLlRight() {
+        return llRight;
+    }
+
     /**
      * 显示购买编码
      */
     public void changeToBuyCodeWay() {
-        tvLeft.setText("购买编码");
+        tvLeft.setText("洗澡卷");
         ivLeft.setImageResource(R.drawable.ic_bathroom_buy_code);
         tvRight.setText("扫一扫");
         ivRight.setImageResource(R.drawable.ic_bathroom_scan);

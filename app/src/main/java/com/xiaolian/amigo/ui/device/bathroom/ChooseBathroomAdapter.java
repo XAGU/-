@@ -5,6 +5,7 @@ import android.support.v4.util.ObjectsCompat;
 import android.view.View;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.util.scale.ViewHelper;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -44,11 +45,11 @@ public class ChooseBathroomAdapter extends CommonAdapter<ChooseBathroomAdapter.B
         if (itemWrapper.isSelected()) {
             holder.getView(R.id.tv_content).setVisibility(View.VISIBLE);
             holder.setTextColorRes(R.id.tv_content, R.color.white);
-            holder.setText(R.id.tv_content, itemWrapper.getName());
+            holder.setText(R.id.tv_content, itemWrapper.getDeviceNo());
             holder.setBackgroundRes(R.id.ll_inner, R.drawable.bg_bathroom_item_choosed);
             return;
         }
-        holder.setText(R.id.tv_content, itemWrapper.getName());
+        holder.setText(R.id.tv_content, itemWrapper.getDeviceNo());
         switch (itemWrapper.getStatus()) {
             case ERROR:
                 holder.setBackgroundRes(R.id.ll_inner, R.drawable.bg_bathroom_item_error);
@@ -62,7 +63,9 @@ public class ChooseBathroomAdapter extends CommonAdapter<ChooseBathroomAdapter.B
                 if (isScaled) {
                     holder.getView(R.id.tv_content).setVisibility(View.VISIBLE);
                     holder.setTextColorRes(R.id.tv_content, R.color.colorFullRed);
-                    holder.setText(R.id.tv_content, itemWrapper.getName());
+                    holder.setText(R.id.tv_content, itemWrapper.getDeviceNo());
+                    ViewHelper.setScaleX(holder.getView(R.id.tv_content), 2.0f );// x方向上缩小
+                    ViewHelper.setScaleY(holder.getView(R.id.tv_content), 2.0f );// y方向上缩小
                 } else {
                     holder.getView(R.id.tv_content).setVisibility(View.GONE);
                 }
@@ -83,12 +86,13 @@ public class ChooseBathroomAdapter extends CommonAdapter<ChooseBathroomAdapter.B
     @Data
     public static final class BathroomWrapper {
         private Long id;
-        private String name;
+        private String deviceNo;
         private BathroomStatus status;
         private boolean selected = false;
 
+
         public BathroomWrapper(String name, BathroomStatus status) {
-            this.name = name;
+            this.deviceNo = name;
             this.status = status;
         }
     }

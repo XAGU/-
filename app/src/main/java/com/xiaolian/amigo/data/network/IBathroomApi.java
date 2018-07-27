@@ -3,12 +3,15 @@ package com.xiaolian.amigo.data.network;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.bathroom.BathBookingReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathBookingRespDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.BathBookingStatusReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathBuildingRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathOrderPreconditionRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathOrderReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathOrderRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathPasswordUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathPreBookingRespDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.BathRoomReqDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.CreateBathOrderRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.QueryBathOrderListReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.QueryBathOrderListRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.ShowerRoomRouterRespDTO;
@@ -20,6 +23,7 @@ import com.xiaolian.amigo.data.network.model.login.VerificationCodeCheckReqDTO;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
 import rx.Observable;
+import rx.Observer;
 
 /**
  * 公共浴室
@@ -62,7 +66,7 @@ public interface IBathroomApi {
      * 查询指定订单状态
      */
     @POST("bath/trade/query")
-    Observable<ApiResult<BathOrderRespDTO>> query(@Body BathBookingReqDTO reqDTO);
+    Observable<ApiResult<BathOrderRespDTO>> query(@Body BathBookingStatusReqDTO reqDTO);
 
     /**
      * 根据当前登录用户所在学校配置，以及用户上次洗澡的习惯，决定路由到"宿舍热水澡模块"、还是"公共浴室模块"
@@ -112,5 +116,11 @@ public interface IBathroomApi {
      */
     @POST("bath/precondition")
     Observable<ApiResult<BathOrderPreconditionRespDTO>> getOrderPrecondition() ;
+
+    /**
+     * 解除设备绑定
+     */
+    @POST("bath/trade/unlock")
+    Observable<ApiResult<BooleanRespDTO>> unlock(@Body BathRoomReqDTO reqDTO);
 
 }

@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
+import com.xiaolian.amigo.data.vo.BathAddressEvent;
 import com.xiaolian.amigo.ui.device.bathroom.EditBathroomPasswordActivity;
 import com.xiaolian.amigo.ui.user.intf.IEditProfilePresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditProfileView;
@@ -169,21 +170,31 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
                 break;
             case R.id.rel_edit_room:
                 isNeedRefresh = true;
-                if (TextUtils.isEmpty(tvResidence.getText())) {
-                    intent = new Intent(this, EditDormitoryActivity.class);
-                    intent.putExtra(Constant.EXTRA_KEY, false);
-                    startActivityForResult(intent, REQUEST_CODE_EDIT_DORMITORY);
-                    intent = new Intent(this, ListChooseActivity.class);
-                    intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
-                    intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION,
-                            ListChooseActivity.ACTION_LIST_BUILDING);
-                    intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_SRC_ACTIVITY, Constant.EDIT_PROFILE_ACTIVITY_SRC);
-                    intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_DEVICE_TYPE, Device.HEATER.getType());
-                    startActivity(intent);
-                } else {
-                    intent = new Intent(this, EditDormitoryActivity.class);
-                    startActivityForResult(intent, REQUEST_CODE_EDIT_DORMITORY);
-                }
+//                if (TextUtils.isEmpty(tvResidence.getText())) {
+//                    intent = new Intent(this, EditDormitoryActivity.class);
+//                    intent.putExtra(Constant.EXTRA_KEY, false);
+//                    startActivityForResult(intent, REQUEST_CODE_EDIT_DORMITORY);
+//                    intent = new Intent(this, ListChooseActivity.class);
+//                    intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
+//                    intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION,
+//                            ListChooseActivity.ACTION_LIST_BUILDING);
+//                    intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_SRC_ACTIVITY, Constant.EDIT_PROFILE_ACTIVITY_SRC);
+//                    intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_DEVICE_TYPE, Device.HEATER.getType());
+//                    startActivity(intent);
+//                } else {
+//                    intent = new Intent(this, EditDormitoryActivity.class);
+//                    startActivityForResult(intent, REQUEST_CODE_EDIT_DORMITORY);
+//                }
+
+//                intent = new Intent(this, EditDormitoryActivity.class);
+//                startActivityForResult(intent, REQUEST_CODE_EDIT_DORMITORY);
+                intent = new Intent(this, ListChooseActivity.class);
+                intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
+                intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION,
+                        ListChooseActivity.ACTION_LIST_BUILDING);
+                intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_SRC_ACTIVITY, Constant.EDIT_PROFILE_ACTIVITY_SRC);
+                intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_DEVICE_TYPE, Device.HEATER.getType());
+                startActivity(intent);
                 break;
             default:
                 break;
@@ -326,6 +337,17 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
                 this.type = type;
             }
         }
+    }
+
+    /**
+     * 获取洗澡地址
+     * @param bathAddressEvent
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void changeBathroomAddress(BathAddressEvent bathAddressEvent){
+        String address = bathAddressEvent.getAddress();
+        if (TextUtils.isEmpty(address)) tvResidence.setText(address);
+
     }
 
     @Override

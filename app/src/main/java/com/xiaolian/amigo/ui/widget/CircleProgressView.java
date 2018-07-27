@@ -2,6 +2,7 @@ package com.xiaolian.amigo.ui.widget;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -11,18 +12,25 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.IntDef;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ProgressBar;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.util.DimentionUtils;
+import com.xiaolian.amigo.util.RxHelper;
 import com.xiaolian.amigo.util.ScreenUtils;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-public class CircleProgressView extends ProgressBar {
+import rx.internal.util.ObserverSubscriber;
 
+public class CircleProgressView extends ProgressBar {
+    private static final String TAG = CircleProgressView.class.getSimpleName();
+    private static final int HEX_MAX  =  255 ;
+    private static boolean isFinish = false ;
+    private static final String BASE_PRE_COLOR = "#" ;
     @IntDef({PROGRESS_STYLE_NORMAL, PROGRESS_STYLE_FILL_IN,
             PROGRESS_STYLE_FILL_IN_ARC})
     @Retention(RetentionPolicy.SOURCE)
@@ -165,7 +173,11 @@ public class CircleProgressView extends ProgressBar {
     private int mRealWidth;
     private int mRealHeight;
 
+    private int mTextValue = 0 ;
 
+    private ValueAnimator valueAnimator ;
+    private ValueAnimator circleAnimator ;
+    private boolean setMtextValue = true ;
     public CircleProgressView(Context context) {
         this(context, null);
     }
@@ -206,7 +218,6 @@ public class CircleProgressView extends ProgressBar {
         mReachPaint.setAntiAlias(true);
         mReachPaint.setStrokeCap(mReachCapRound ? Paint.Cap.ROUND : Paint.Cap.BUTT);
         mReachPaint.setStrokeWidth(mReachBarSize);
-
         if (needDrawInnerBackground) {
             mInnerBackgroundPaint = new Paint();
             mInnerBackgroundPaint.setStyle(Paint.Style.FILL);
@@ -378,8 +389,8 @@ public class CircleProgressView extends ProgressBar {
         // 文字显示在最上层最后绘制
         canvas.rotate(180);
         // 绘制文字
-        if (mTextVisible) {
-            String text = mTextPrefix + getProgress() + mTextSuffix;
+        if (mTextVisible ) {
+            String text = mTextPrefix + mTextValue  + mTextSuffix;
             float textWidth = mTextPaint.measureText(text);
             float textHeight = (mTextPaint.descent() + mTextPaint.ascent());
             canvas.drawText(text, -textWidth / 2, -textHeight / 2, mTextPaint);
@@ -399,7 +410,7 @@ public class CircleProgressView extends ProgressBar {
         }
         // 绘制文字
         if (mTextVisible) {
-            String text = mTextPrefix + getProgress() + mTextSuffix;
+            String text = mTextPrefix + mTextValue + mTextSuffix;
             float textWidth = mTextPaint.measureText(text);
             float textHeight = (mTextPaint.descent() + mTextPaint.ascent());
             canvas.drawText(text, -textWidth / 2, -textHeight / 2, mTextPaint);
@@ -432,26 +443,133 @@ public class CircleProgressView extends ProgressBar {
         setProgressInTime(progress, getProgress(), duration);
     }
 
+
     /**
      * @param startProgress 起始进度
      * @param progress 进度值
      * @param duration 动画播放时间
      */
-    public void setProgressInTime(int startProgress, final int progress, final long duration) {
-        ValueAnimator valueAnimator = ValueAnimator.ofInt(startProgress, progress);
-        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+    public void setProgressInTime(int startProgress, final int progress, final long duration ) {
+        if (valueAnimator == null || !isFinish) {
+            valueAnimator = ValueAnimator.ofInt(startProgress, progress);
+            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 
-            @Override
-            public void onAnimationUpdate(ValueAnimator animator) {
-                //获得当前动画的进度值，整型，1-100之间
-                int currentValue = (Integer) animator.getAnimatedValue();
-                setProgress(currentValue);
-            }
-        });
-        AccelerateDecelerateInterpolator interpolator = new AccelerateDecelerateInterpolator();
-        valueAnimator.setInterpolator(interpolator);
-        valueAnimator.setDuration(duration);
-        valueAnimator.start();
+                @Override
+                public void onAnimationUpdate(ValueAnimator animator) {
+                    //获得当前动画的进度值，整型，1-100之间
+                    int currentValue = (Integer) animator.getAnimatedValue();
+                    mReachBarColor = Color.parseColor("#00d3c7");
+                    mNormalBarColor = Color.parseColor("#FFD3D6DA");
+
+                    if (setMtextValue) {
+                        mTextValue = currentValue;
+                    }
+                    setProgress(currentValue);
+                    if (currentValue == progress) {
+                        setCircleAnimator(2000);
+                    }
+                }
+            });
+            AccelerateDecelerateInterpolator interpolator = new AccelerateDecelerateInterpolator();
+            valueAnimator.setInterpolator(interpolator);
+            valueAnimator.setDuration(duration);
+        }
+        if (!valueAnimator.isRunning()) {
+            valueAnimator.start();
+        }
+    }
+
+    /**
+     * 设置完成
+     */
+    public void setFinish(){
+        isFinish = true ;
+    }
+
+    /**
+     * 设置外圆的透明度
+     */
+    public void setCircleAnimator(long duration){
+        if (circleAnimator == null) {
+            circleAnimator = ValueAnimator.ofInt(100, 0);
+            circleAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+                @Override
+                public void onAnimationUpdate(ValueAnimator animator) {
+                    //获得当前动画的进度值，整型，1-100之间
+                    int currentValue = (int) animator.getAnimatedValue();
+//                    Log.e(TAG, "onAnimationUpdate: " + currentValue );
+                    int alpha = currentValue * HEX_MAX / 100 ;
+//                    Log.e(TAG, "onAnimationUpdate: " + alpha );
+                    setCircleColor(currentValue , alpha);
+                    invalidate();
+                    if (0 == currentValue) {
+                        setMtextValue = false ;
+                        if (isFinish){
+                            setProgressInTime(0 , 100 ,2000);
+                        }else {
+                            setProgressInTime(0, 90, 2000);
+                        }
+                    }
+                }
+            });
+            AccelerateDecelerateInterpolator interpolator = new AccelerateDecelerateInterpolator();
+            circleAnimator.setInterpolator(interpolator);
+            circleAnimator.setDuration(duration);
+        }
+        if (!circleAnimator.isRunning()) {
+            circleAnimator.start();
+        }
+    }
+
+    /**
+     * 设置圆环透明度
+     * @param currentValue
+     */
+    private void setCircleColor(int currentValue  , int alpha){
+        String mBaseReachBarColor = "00d3c7";
+        String mBaseNormalBarColor = "D3D6DA";
+        String alphaHex = Integer.toHexString(alpha);
+        if (alphaHex.length() == 1){  //  透明度必须为2位数，不够的添上0
+            alphaHex = "00";
+            mBaseNormalBarColor = "000000";
+            mBaseReachBarColor = "000000";
+        }
+        setCircleColor(getAlphaCircle(alphaHex,mBaseReachBarColor) ,getAlphaCircle(alphaHex ,mBaseNormalBarColor));
+    }
+
+    /**
+     * 获取设置带透明度的颜色
+     * @param alpha
+     * @param baseColor
+     * @return
+     */
+    private  String getAlphaCircle(String alpha ,String baseColor){
+       return BASE_PRE_COLOR+alpha+baseColor ;
+    }
+
+    /**
+     * 设置透明度
+     * @param mReacherColor   已完成进度的颜色
+     * @param normalColor    未完成进度的颜色
+     */
+    private void setCircleColor( String mReacherColor , String normalColor){
+//        Log.e(TAG, "setCircleColor: " + mReacherColor + " >>>>>>" + normalColor );
+        mReachBarColor = Color.parseColor(mReacherColor);
+        mNormalBarColor = Color.parseColor(normalColor);
+    }
+
+    /**
+     * 取消所有动画
+     */
+    public void cancelAnimator(){
+        if (valueAnimator != null && valueAnimator.isRunning()){
+            valueAnimator.cancel();
+        }
+
+        if (circleAnimator != null && circleAnimator.isRunning()){
+            circleAnimator.cancel();
+        }
     }
 
     public int getReachBarSize() {

@@ -20,10 +20,14 @@ import lombok.Data;
  */
 public class DeviceInfoAdapter extends CommonAdapter<DeviceInfoAdapter.DeviceInfoWrapper> {
     private Context context;
-
+    private CountTimeText countTimeText ;
     public DeviceInfoAdapter(Context context, int layoutId, List<DeviceInfoWrapper> datas) {
         super(context, layoutId, datas);
         this.context = context;
+    }
+
+    public void setCountTime(CountTimeText countTimeText){
+        this.countTimeText = countTimeText ;
     }
 
     @Override
@@ -40,6 +44,9 @@ public class DeviceInfoAdapter extends CommonAdapter<DeviceInfoAdapter.DeviceInf
         tvRight.setTypeface(tvRight.getTypeface(), deviceInfoWrapper.getRightTextStyle());
         ImageView ivArrow = holder.getView(R.id.iv_arrow);
         ivArrow.setVisibility(deviceInfoWrapper.isHasArrow() ? View.VISIBLE : View.GONE);
+        if ("剩余时间：".equals(deviceInfoWrapper.getRightText())){
+            if (countTimeText != null) countTimeText.countTime(tvRight);
+        }
     }
 
     @Data
@@ -62,5 +69,9 @@ public class DeviceInfoAdapter extends CommonAdapter<DeviceInfoAdapter.DeviceInf
             this.rightTextStyle = rightTextStyle;
             this.hasArrow = hasArrow;
         }
+    }
+
+    public interface CountTimeText{
+        void countTime(TextView textView);
     }
 }

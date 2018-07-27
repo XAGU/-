@@ -5,11 +5,12 @@
     android:id="@+id/ll_inner"
     android:gravity="center"
     android:layout_height="13dp">
+
     <TextView
-        android:textSize="4sp"
-        android:textColor="@color/white"
-        android:gravity="center"
         android:id="@+id/tv_content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_width="13dp"
+        android:layout_height="13dp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="4sp" />
 </LinearLayout>

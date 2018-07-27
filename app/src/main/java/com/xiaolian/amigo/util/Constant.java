@@ -133,7 +133,7 @@ public final class Constant {
     public static final String REPAIR_APPLY_ACTIVITY_SRC = "repair_apply";
     public static final String EDIT_PROFILE_ACTIVITY_SRC = "edit_profile";
     public static final String MAIN_ACTIVITY_SRC = "main_activity";
-
+    public static final String USER_INFO_ACTIVITY_SRC = "user_info";
     /**
      * 位置
      */

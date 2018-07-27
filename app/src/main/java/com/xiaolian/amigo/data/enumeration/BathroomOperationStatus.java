@@ -3,6 +3,15 @@ package com.xiaolian.amigo.data.enumeration;
 /**
  * 公共浴室相关操作状态
  *
+ *INIT(1),
+ ACCEPTED(2),
+ BOOKING_FAIL(3),
+ CANCELED(4),
+ EXPIRED(5),
+ OPENED(6),
+ FINISHED(7);  还未更新的状态
+ *
+ *    1 、  订单初始化 （预约订单 ， 支付之后）   2、下发成功（预约）  购买成功（洗澡卷）3  、 失败    4、 取消
  * @author zcd
  * @date 18/7/13
  */
@@ -45,5 +54,28 @@ public enum BathroomOperationStatus {
 
     public int getCode() {
         return code;
+    }
+
+
+
+    public static BathroomOperationStatus getBathroomOperationStatus(int code){
+        switch (code){
+            case 1:
+                return CANCEL;
+            case 2 :
+                return PAYED;
+            case 3:
+                return BOOKING_SUCCESS;
+            case 4:
+                return BOOKING_FAIL;
+            case 5:
+                return EXPIRED;
+            case 6:
+                return USING;
+            case 7:
+                return FINISHED;
+                default:
+                    return null ;
+        }
     }
 }

@@ -34,6 +34,8 @@ import com.xiaolian.amigo.ui.widget.RecycleViewDivider;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -200,8 +202,8 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                 case ACTION_LIST_BUILDING:
                     tvTitle.setText("选择楼栋");
                     if (getIntent() != null) {
-                        isEditDormitory = getIntent().getBooleanExtra(INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
-                        residenceBindId = getIntent().getLongExtra(INTENT_KEY_LIST_CHOOSE_RESIDENCE_BIND_ID, -1);
+                        isEditDormitory = getIntent().getBooleanExtra(INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);    //  是否是编辑页面进入
+                        residenceBindId = getIntent().getLongExtra(INTENT_KEY_LIST_CHOOSE_RESIDENCE_BIND_ID, -1);   //  type 表示是什么类型， 楼栋 ， 宿舍
                         deviceType = getIntent().getIntExtra(INTENT_KEY_LIST_DEVICE_TYPE, Device.UNKNOWN.getType());
                         activitySrc = getIntent().getStringExtra(INTENT_KEY_LIST_SRC_ACTIVITY);
                         residenceDetail = (UserResidenceDTO) getIntent().getSerializableExtra(INTENT_KEY_LIST_RESIDENCE_DETAIL);
@@ -266,7 +268,7 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                         activitySrc = getIntent().getStringExtra(INTENT_KEY_LIST_SRC_ACTIVITY);
                         residenceDetail = (UserResidenceDTO) getIntent().getSerializableExtra(INTENT_KEY_LIST_RESIDENCE_DETAIL);
                         if (deviceType == Device.HEATER.getType()) {
-                            tvTitle.setText("选择宿舍");
+                            tvTitle.setText("选择洗澡房间");
                         } else {
                             tvTitle.setText("选择位置");
                         }
@@ -486,6 +488,13 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
     public void hideEmptyView() {
         rlEmpty.setVisibility(View.GONE);
         vDivideTop.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void backToEditProfileActivity(String residenceName) {
+        startActivity(this ,EditProfileActivity.class);
+        EventBus.getDefault().post(residenceName);
+        this.finish();
     }
 
     @Override

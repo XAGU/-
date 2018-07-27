@@ -19,7 +19,7 @@ import com.xiaolian.amigo.R;
  * @author zcd
  * @date 18/6/27
  */
-public class ZoomRecyclerView extends RecyclerView {
+public class ZoomRecyclerView extends RecyclerView implements View.OnTouchListener {
     /** 非法的手指ID */
     private static final int INVALID_POINTER_ID = -1;
 
@@ -31,7 +31,7 @@ public class ZoomRecyclerView extends RecyclerView {
     /** 缩放因子*/
     private float mScaleFactor;
     /** 上次触摸点坐标 */
-    private float mLastTouchX;
+    private float mLastTouchX;// Map what appeared to be clicked in the potentially zoomed view back to the scale = 1 view.
     private float mLastTouchY;
     /** canvas的偏移量 */
     private float mDeltaX;
@@ -56,6 +56,8 @@ public class ZoomRecyclerView extends RecyclerView {
     private ScaleGestureDetector mScaleGestureDetector;
     /** 开放监听接口 */
     private OnGestureListener mOnGestureListener;
+
+
     public interface OnGestureListener{
         boolean onScale(ScaleGestureDetector detector, float scaleFactor);
         boolean onSingleTapConfirmed(MotionEvent e);
@@ -250,6 +252,7 @@ public class ZoomRecyclerView extends RecyclerView {
                 mLastTouchX = event.getX();
                 mLastTouchY = event.getY();
                 mMainPointerId = event.getPointerId(0);
+                mClickCandidate = true ;
                 break;
             case MotionEvent.ACTION_MOVE:
                 final int mainPointIndex = (event.getAction() & MotionEvent.ACTION_POINTER_INDEX_MASK)
@@ -293,6 +296,61 @@ public class ZoomRecyclerView extends RecyclerView {
         return true;
     }
 
+    /**
+     * 映射缩放后的View 位置 ，实现RecyclerView的点击事件   **********/
+
+    // Map what appeared to be clicked in the potentially zoomed view back to the scale = 1 view.
+    public View getMappedView(View v, float x, float y) {
+        View expectedView = null;
+        View scanView;
+
+
+        int mappedX = (int) (getWidth() * (x - mDeltaX) / (getWidth() * getScaleFactor()));
+        int mappedY = (int) (getHeight() * (y - mDeltaY) / (getHeight() * getScaleFactor()));
+
+        for (int i = 0; i < getChildCount(); i++) {
+            scanView = getChildAt(i);
+            if ((mappedX >= scanView.getLeft()) && (mappedX <= scanView.getRight())
+                    && (mappedY >= scanView.getTop()) && (mappedY <= scanView.getBottom())) {
+                expectedView = scanView;
+                break;
+            }
+
+        }
+        return expectedView;
+    }
+//
+    private boolean mClickCandidate = false;
+
+
+    @Override
+    public boolean onTouch(View view, MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                mClickCandidate = true;
+                break;
+
+            case MotionEvent.ACTION_MOVE:
+                mClickCandidate = false;
+                break;
+
+            case MotionEvent.ACTION_UP:
+                if (mClickCandidate) {
+                    View v = getMappedView(view, event.getX() + view.getLeft(),
+                            event.getY() + view.getTop());
+                    if (v != null) {
+                        v.performClick();
+                    }
+                }
+                mClickCandidate = false;
+                return true;
+        }
+        return false;
+    }
+
+
+
+    /***********************/
     @Override
     public void setAdapter(Adapter adapter) {
         Adapter oldAdapter = getAdapter();

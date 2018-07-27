@@ -11,6 +11,7 @@ static def releaseTime() {
     return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
 }
 
+//测试版    20   1.1.51
 android {
     compileSdkVersion versions.compileSdk
     buildToolsVersion versions.buildTools
@@ -18,8 +19,8 @@ android {
         applicationId "com.xiaolian.amigo"
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
-        versionCode 19
-        versionName "1.1.50"
+        versionCode 20
+        versionName "1.1.51"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
@@ -60,6 +61,7 @@ android {
             }
         }
     }
+
     flavorDimensions "default"
     productFlavors {
         dev {
@@ -72,7 +74,8 @@ android {
 //            buildConfigField "String", "SERVER", "\"http://39.108.97.229:5081/\""
 //            buildConfigField "String", "SERVER", "\"http://10.195.90.167:5081/\""
             buildConfigField "String", "SERVER", "\"http://10.195.90.167:5081/\""
-            buildConfigField "String", "SERVER_BATHROOM", "\"http://10.195.90.167:5082/\""
+//            buildConfigField "String", "SERVER_BATHROOM", "\"http://10.195.90.167:5082/\""  大帝的服务器
+            buildConfigField "String", "SERVER_BATHROOM", "\"http://10.195.90.250:5082/\""
 //            buildConfigField "String", "SERVER", "\"http://10.195.90.130:5081/\""
 //            buildConfigField "String", "SERVER", "\"http://10.195.90.187:8081\""
 //            buildConfigField "String", "SERVER", "\"http://10.0.0.4:5081/\""

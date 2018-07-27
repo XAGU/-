@@ -8,5 +8,7 @@ import lombok.Data;
  */
 @Data
 public class BooleanRespDTO {
-    private boolean result;
+    private boolean result;   //  结果
+    private String failReason ;   // 失败原因
+
 }

@@ -81,7 +81,7 @@ public interface IUserApi {
     /**
      * 用户绑定编辑寝室
      */
-    @POST("user/residence/bind")
+    @POST("user/residence/bath/record")
     Observable<ApiResult<UserResidenceInListDTO>> bindResidence(@Body BindResidenceReq body);
 
     /**

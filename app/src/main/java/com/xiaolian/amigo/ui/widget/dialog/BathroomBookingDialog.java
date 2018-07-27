@@ -43,13 +43,29 @@ public class BathroomBookingDialog extends Dialog {
         circleProgressView.setProgressInTime(100, 300);
     }
 
+
+
+
     @Override
     public void show() {
         super.show();
-        circleProgressView.runProgressAnim(1000);
-        circleProgressView.postDelayed(this::finishProcess, 1500);
+        circleProgressView.setProgressInTime(0,90 , 2000);
     }
 
+    @Override
+    public void dismiss() {
+        super.dismiss();
+        circleProgressView.cancelAnimator();
+    }
+
+    /**
+     * 解除绑定
+     */
+    public void onDettechView(){
+        if (context != null){
+            context = null ;
+        }
+    }
     private <T extends View> T $(@IdRes int id) {
         return (T) findViewById(id);
     }

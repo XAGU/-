@@ -46,4 +46,9 @@ public class BathPreBookingRespDTO {
      * 预留时间
      */
     private String reservedTime;
+
+    /**
+     * 设备号
+     */
+    private int deviceNo;
 }

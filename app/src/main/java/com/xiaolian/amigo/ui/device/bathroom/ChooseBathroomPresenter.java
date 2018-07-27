@@ -1,5 +1,7 @@
 package com.xiaolian.amigo.ui.device.bathroom;
 
+import android.util.Log;
+
 import com.xiaolian.amigo.data.enumeration.BathTradeType;
 import com.xiaolian.amigo.data.manager.intf.IBathroomDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
@@ -26,6 +28,7 @@ import javax.inject.Inject;
  */
 public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends BasePresenter<V>
         implements IChooseBathroomPresenter<V> {
+    private static final String TAG = ChooseBathroomPresenter.class.getSimpleName();
     private IBathroomDataManager bathroomDataManager;
 
     @Inject
@@ -53,9 +56,9 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
     }
 
     @Override
-    public void preBooking() {
+    public void preBooking(String deviceNo) {
         BathBookingReqDTO reqDTO = new BathBookingReqDTO();
-        reqDTO.setDeviceNo("111111");
+        reqDTO.setDeviceNo(deviceNo);
         reqDTO.setType(BathTradeType.BOOKING.getCode());
         addObserver(bathroomDataManager.preBooking(reqDTO), new NetworkObserver<ApiResult<BathPreBookingRespDTO>>() {
 
@@ -93,6 +96,8 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
                  if (result.getError() == null){
                      if (result.getData().isExistUsingOrder()){
                         getMvpView().startPreconditionView(result.getData());
+                     }else{
+                         getMvpView().hideBathroomDialog();
                      }
                  }
             }
@@ -124,7 +129,8 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
                     bathroomWrappers.get(room.getYaxis() * maxX + room.getXaxis())
                             .setId(room.getId());
                     bathroomWrappers.get(room.getYaxis() * maxX + room.getXaxis())
-                            .setName(room.getDeviceNo());
+                            .setDeviceNo(room.getDeviceNo());
+//                    Log.e(TAG, "convertFrom: " + room.getDeviceNo());
                     bathroomWrappers.get(room.getYaxis() * maxX + room.getXaxis())
                             .setStatus(ChooseBathroomAdapter.BathroomStatus.getStatus(room.getStatus()));
                 }

@@ -21,4 +21,14 @@ public interface IChooseBathroomView extends IBaseView {
 
 
     void startPreconditionView(BathOrderPreconditionRespDTO respDTO);
+
+    /**
+     * 显示动画
+     */
+    void showBathroomDialog();
+
+    /**
+     * 隐藏动画
+     */
+    void hideBathroomDialog();
 }
