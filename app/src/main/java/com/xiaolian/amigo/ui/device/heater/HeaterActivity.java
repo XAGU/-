@@ -34,7 +34,7 @@ public class HeaterActivity extends WaterDeviceBaseActivity<IHeaterPresenter> im
      * 设置文字右边图片
      */
     private  void initView(){
-        Drawable drawable = getResources().getDrawable(R.drawable.arrow_down);
+        Drawable drawable = getResources().getDrawable(R.drawable.white_down);
         drawable.setBounds(0,0,drawable.getMinimumWidth() ,drawable.getMinimumHeight());
         tvDeviceTitle.setCompoundDrawablesRelative(null , null ,drawable ,null);
     }

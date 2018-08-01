@@ -22,7 +22,6 @@ import rx.Subscriber;
 import rx.Subscription;
 import rx.functions.Action0;
 
-import static com.xiaolian.amigo.data.enumeration.BathroomOperationStatus.BOOKING_SUCCESS;
 
 /**
  * 购买编码
@@ -58,23 +57,23 @@ public class BuyCodePresenter<V extends IBuyCodeView> extends BasePresenter<V>
 
     @Override
     public void pay(Double prepayAmount ,Long bonusId) {
-        BathOrderReqDTO reqDTO = new BathOrderReqDTO();
-        reqDTO.setPrepayAmount(prepayAmount);
-        reqDTO.setType(BathTradeType.BUY_CODE.getCode());
-        reqDTO.setUserBonusId(bonusId);
-        addObserver(bathroomDataManager.pay(reqDTO),
-                new NetworkObserver<ApiResult<BathOrderRespDTO>>() {
-
-                    @Override
-                    public void onReady(ApiResult<BathOrderRespDTO> result) {
-                        if (null == result.getError()) {
-                            bathOrderId = result.getData().getBathOrderId();
-                            getMvpView().bookingSuccess(result.getData());
-                        } else {
-                            getMvpView().onError(result.getError().getDisplayMessage());
-                        }
-                    }
-                });
+//        BathOrderReqDTO reqDTO = new BathOrderReqDTO();
+//        reqDTO.setPrepayAmount(prepayAmount);
+//        reqDTO.setType(BathTradeType.BUY_CODE.getCode());
+//        reqDTO.setUserBonusId(bonusId);
+//        addObserver(bathroomDataManager.pay(reqDTO),
+//                new NetworkObserver<ApiResult<BathOrderRespDTO>>() {
+//
+//                    @Override
+//                    public void onReady(ApiResult<BathOrderRespDTO> result) {
+//                        if (null == result.getError()) {
+//                            bathOrderId = result.getData().getBathOrderId();
+//                            getMvpView().bookingSuccess(result.getData());
+//                        } else {
+//                            getMvpView().onError(result.getError().getDisplayMessage());
+//                        }
+//                    }
+//                });
     }
 
     @Override

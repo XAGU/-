@@ -53,4 +53,11 @@ public interface IBookingView extends IBaseView {
      */
     void SendDeviceTimeOut();
 
+
+    /**
+     * 剩余时间倒计时
+     * @param text
+     */
+    void countTimeLeft(String text);
+
 }

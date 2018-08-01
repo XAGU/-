@@ -45,19 +45,14 @@ public interface IBathroomApi {
      * 预约设备
      */
     @POST("bath/trade/booking")
-    Observable<ApiResult<BathBookingRespDTO>> booking(@Body SimpleReqDTO reqDTO);
+    Observable<ApiResult<BathOrderRespDTO>> booking(@Body BathBookingReqDTO reqDTO);
 
-    /**
-     * 用户支付预约或者购买编码
-     */
-    @POST("bath/trade/pay")
-    Observable<ApiResult<BathOrderRespDTO>> pay(@Body BathOrderReqDTO reqDTO);
 
     /**
      * 用户取消预约或者购买的编码
      */
     @POST("bath/trade/cancel")
-    Observable<ApiResult<BooleanRespDTO>> cancel(@Body SimpleReqDTO reqDTO);
+    Observable<ApiResult<BathOrderRespDTO>> cancel(@Body SimpleReqDTO reqDTO);
 
     /**
      * 检查当前用户是否有已经预约或者购买了编码的

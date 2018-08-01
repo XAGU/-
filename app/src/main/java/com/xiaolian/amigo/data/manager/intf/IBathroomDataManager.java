@@ -2,6 +2,7 @@ package com.xiaolian.amigo.data.manager.intf;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.bathroom.BathBookingReqDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.BathBookingRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathBookingStatusReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathBuildingRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathOrderPreconditionRespDTO;
@@ -43,15 +44,11 @@ public interface IBathroomDataManager {
      */
     Observable<ApiResult<BathPreBookingRespDTO>> preBooking(@Body BathBookingReqDTO reqDTO);
 
-    /**
-     * 用户支付预约或者购买编码
-     */
-    Observable<ApiResult<BathOrderRespDTO>> pay(@Body BathOrderReqDTO reqDTO);
 
     /**
      * 用户取消预约或者购买的编码
      */
-    Observable<ApiResult<BooleanRespDTO>> cancel(@Body SimpleReqDTO reqDTO);
+    Observable<ApiResult<BathOrderRespDTO>> cancel(@Body SimpleReqDTO reqDTO);
 
     /**
      * 获取订单列表
@@ -93,4 +90,10 @@ public interface IBathroomDataManager {
      * 该方法用于购买洗澡劵前的操作，返回预付信息和红包信息，用户余额，设备详细位置等信息
      */
     Observable<ApiResult<BathPreBookingRespDTO>> preBuyVoucher();
+
+
+    /**
+     * 预约设备
+     */
+    Observable<ApiResult<BathOrderRespDTO>> booking(@Body BathBookingReqDTO reqDTO);
 }

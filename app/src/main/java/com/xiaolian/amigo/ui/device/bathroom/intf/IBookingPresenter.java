@@ -10,14 +10,18 @@ import java.util.Observable;
  * @date 18/6/29
  */
 public interface IBookingPresenter<V extends IBookingView> extends IBasePresenter<V> {
-    void pay(Double prepayAmount, Long bonusId);
 
-    void cancel(BathOrderRespDTO data);
+
+    /**
+     * 取消预约
+     * @param id
+     */
+    void cancel(long id);
 
     /**
      * 预约倒计时
      */
-    void bathroomBookingCountDown();
+    void bathroomBookingCountDown( );
 
 
     /**
@@ -42,4 +46,15 @@ public interface IBookingPresenter<V extends IBookingView> extends IBasePresente
      * @param deviceNo
      */
     void unLock(String deviceNo);
+
+    /**
+     * 预约
+     * @param device
+     */
+    void booking(String device);
+
+    /**
+     * 根据过期时间倒计时
+     */
+    void countDownexpiredTime(long expiredTime );
 }

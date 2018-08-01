@@ -25,24 +25,24 @@ public class BathOrderRespDTO {
          * tradeOrderId : 0
          */
 
-        private int balance;
+        private Double balance;
         private Long bathOrderId;
         private Long createTime;
         private long expiredTime;
         private String location;
-        private int minPrepay;
+        private Double minPrepay;
         private int missedTimes;
-        private int prepay;
-        private int prepayAmount;
+        private Double prepay;
+        private Double prepayAmount;
         private int status;
         private int totalMissTimes;
         private Long tradeOrderId;
 
-        public int getBalance() {
+        public Double getBalance() {
             return balance;
         }
 
-        public void setBalance(int balance) {
+        public void setBalance(Double balance) {
             this.balance = balance;
         }
 
@@ -78,11 +78,11 @@ public class BathOrderRespDTO {
             this.location = location;
         }
 
-        public int getMinPrepay() {
+        public Double getMinPrepay() {
             return minPrepay;
         }
 
-        public void setMinPrepay(int minPrepay) {
+        public void setMinPrepay(Double minPrepay) {
             this.minPrepay = minPrepay;
         }
 
@@ -94,19 +94,19 @@ public class BathOrderRespDTO {
             this.missedTimes = missedTimes;
         }
 
-        public int getPrepay() {
+        public Double getPrepay() {
             return prepay;
         }
 
-        public void setPrepay(int prepay) {
+        public void setPrepay(Double prepay) {
             this.prepay = prepay;
         }
 
-        public int getPrepayAmount() {
+        public Double getPrepayAmount() {
             return prepayAmount;
         }
 
-        public void setPrepayAmount(int prepayAmount) {
+        public void setPrepayAmount(Double prepayAmount) {
             this.prepayAmount = prepayAmount;
         }
 

@@ -41,8 +41,6 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.xiaolian.amigo.data.enumeration.BathroomOperationStatus.BOOKING_SUCCESS;
-import static com.xiaolian.amigo.data.enumeration.BathroomOperationStatus.CANCEL;
 import static com.xiaolian.amigo.data.enumeration.BathroomOperationStatus.EXPIRED;
 import static com.xiaolian.amigo.data.enumeration.BathroomOperationStatus.FINISHED;
 
@@ -137,7 +135,7 @@ public class BookingRecordActivity extends BathroomBaseActivity implements IBook
         wrapper3.setCreateTime(1332089719L);
         wrapper3.setLeftBottomText("浴室房间 215");
         wrapper3.setRecord(true);
-        ordersBean.setStatus(CANCEL.getCode());
+//        ordersBean.setStatus(CANCEL.getCode());
         wrapper3.setOrder(ordersBean);
         wrapper3.setRightText("取消预约");
         records.add(wrapper3);
@@ -150,7 +148,7 @@ public class BookingRecordActivity extends BathroomBaseActivity implements IBook
         wrapper1.setCreateTime(System.currentTimeMillis() + 200000L);
         wrapper1.setLeftBottomText("浴室房间 215");
         wrapper1.setRecord(true);
-        ordersBean.setStatus(BOOKING_SUCCESS.getCode());
+//        ordersBean.setStatus(BOOKING_SUCCESS.getCode());
         wrapper1.setOrder(ordersBean);
         wrapper1.setRightText("等待洗浴");
         records.add(wrapper1);

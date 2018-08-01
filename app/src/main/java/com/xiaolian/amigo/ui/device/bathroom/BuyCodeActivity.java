@@ -73,15 +73,15 @@ public class BuyCodeActivity extends UseWayActivity implements IBuyCodeView {
         bathOrderId = bathOrderPreconditionRespDTO.getBathOrderId();
         BathroomOperationStatus bathroomOperationStatus = BathroomOperationStatus.getBathroomOperationStatus(bathOrderPreconditionRespDTO.getStatus());
         switch (bathroomOperationStatus){
-            case CANCEL:
-                cancelForOldOrder(true);
-                break;
-            case PAYED:
-                buySuccessForOldOrder(true);
-                break;
-            case EXPIRED:
-                expiredForOldOrder(true);
-                break;
+//            case CANCEL:
+//                cancelForOldOrder(true);
+//                break;
+//            case PAYED:
+//                buySuccessForOldOrder(true);
+//                break;
+//            case EXPIRED:
+//                expiredForOldOrder(true);
+//                break;
         }
     }
 

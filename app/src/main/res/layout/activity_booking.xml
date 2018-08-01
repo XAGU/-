@@ -133,7 +133,7 @@
                 android:id="@+id/tv_booking_tip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="每月失约3次将无法预约，已失约2次"
+                tool:text="每月失约3次将无法预约，已失约2次"
                 android:textColor="@color/colorDark6"
                 android:textSize="12sp" />
 

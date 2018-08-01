@@ -2,6 +2,8 @@ package com.xiaolian.amigo.util;
 
 import android.util.Log;
 
+import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -122,13 +124,22 @@ public class TimeUtils {
         long curTime = System.currentTimeMillis() / (long)1000 ;
         long time = expiredTime / 1000 - curTime ;
         if (time > 0){
-            if (time >= 600){  //  向前面添加0
-                preString += (time / SIXTY + " ：" + time % SIXTY);
-            }else if (time > 60){
-                preString += ("0" + time / SIXTY +" ：" + time % SIXTY);
+
+            /**  分少于2位数加0  */
+            if (time / SIXTY < 10){
+                preString += "0" + time/SIXTY ;
             }else{
-                preString +=("00 ：" + time % SIXTY);
+                preString += time / SIXTY ;
             }
+
+
+            /**   秒少于2位数加0   */
+            if (time % SIXTY < 10){
+                preString += " ：0" +time % SIXTY ;
+            }else{
+                preString += " ：" + time % SIXTY ;
+            }
+
         }
         return  preString ;
     }
@@ -138,8 +149,8 @@ public class TimeUtils {
      * @param expiredTime
      * @return
      */
-    public static final long intervalTime(long expiredTime){
-        return (expiredTime - System.currentTimeMillis()) / (long)1000;
+    public static final int intervalTime(long expiredTime){
+        return (int) ((expiredTime - System.currentTimeMillis()) / 1000);
     }
 
     public static String lostAndFoundTimestampFormat(long timeStamp) {

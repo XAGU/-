@@ -4,6 +4,7 @@ import com.xiaolian.amigo.data.manager.intf.IBathroomDataManager;
 import com.xiaolian.amigo.data.network.IBathroomApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.bathroom.BathBookingReqDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.BathBookingRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathBookingStatusReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathBuildingRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathOrderPreconditionRespDTO;
@@ -58,13 +59,9 @@ public class BathroomDataManager implements IBathroomDataManager {
         return bathroomApi.preBooking(reqDTO);
     }
 
-    @Override
-    public Observable<ApiResult<BathOrderRespDTO>> pay(BathOrderReqDTO reqDTO) {
-        return bathroomApi.pay(reqDTO);
-    }
 
     @Override
-    public Observable<ApiResult<BooleanRespDTO>> cancel(SimpleReqDTO reqDTO) {
+    public Observable<ApiResult<BathOrderRespDTO>> cancel(SimpleReqDTO reqDTO) {
         return bathroomApi.cancel(reqDTO);
     }
 
@@ -96,6 +93,11 @@ public class BathroomDataManager implements IBathroomDataManager {
     @Override
     public Observable<ApiResult<BathPreBookingRespDTO>> preBuyVoucher() {
         return bathroomApi.preBuyVoucher();
+    }
+
+    @Override
+    public Observable<ApiResult<BathOrderRespDTO>> booking(BathBookingReqDTO reqDTO) {
+        return bathroomApi.booking(reqDTO);
     }
 
 

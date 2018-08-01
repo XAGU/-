@@ -220,4 +220,30 @@ public final class Constant {
 
 
 
+    /**
+     *  预约状态
+     */
+    public static final int INIT = 1 ;  // 初始化
+    public static final int ACCEPTED = 2 ;  // 已处理
+    public static final int FAIL = 3 ;  // 预约失败
+    public static final int CANCELED = 4 ;  // 取消
+    public static final int EXPIRED = 5 ;  // 过期
+    public static final int OPENED = 6 ;  // 已经开阀，同时支付
+    public static final int FINISHED = 7 ;  // 已经结算
+
+
+    /**
+     * 预约的方式状态
+     */
+
+    public static final int BOOKING =  1  ;  // 预约
+
+    public static final int BUY_CODE = 2 ;  //  购买编码
+
+    public static final int SCANNING = 3 ;  //  扫一扫
+
+    public static final int USING = 4 ;  //  直接使用
+
+
+
 }

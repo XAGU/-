@@ -1,25 +1,23 @@
 package com.xiaolian.amigo.ui.device.bathroom;
 
+import android.text.TextUtils;
+import android.util.Log;
+
 import com.xiaolian.amigo.data.enumeration.BathTradeType;
-import com.xiaolian.amigo.data.manager.BathroomDataManager;
 import com.xiaolian.amigo.data.manager.intf.IBathroomDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.bathroom.BathBookingReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathBookingStatusReqDTO;
-import com.xiaolian.amigo.data.network.model.bathroom.BathOrderReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathOrderRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathPreBookingRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathRoomReqDTO;
-import com.xiaolian.amigo.data.network.model.bathroom.CreateBathOrderRespDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IBookingPresenter;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IBookingView;
 import com.xiaolian.amigo.util.RxHelper;
-
-import java.util.Observable;
-import java.util.Observer;
+import com.xiaolian.amigo.util.TimeUtils;
 
 import javax.inject.Inject;
 
@@ -27,8 +25,8 @@ import rx.Subscriber;
 import rx.Subscription;
 import rx.functions.Action0;
 
-import static com.xiaolian.amigo.data.enumeration.BathroomOperationStatus.BOOKING_SUCCESS;
-import static com.xiaolian.amigo.data.enumeration.BathroomOperationStatus.FINISHED;
+import static com.xiaolian.amigo.util.Constant.ACCEPTED;
+
 
 /**
  * 预约使用
@@ -38,6 +36,7 @@ import static com.xiaolian.amigo.data.enumeration.BathroomOperationStatus.FINISH
  */
 public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
         implements IBookingPresenter<V> {
+    private static final String TAG = BookingPresenter.class.getSimpleName();
     private IBathroomDataManager bathroomDataManager;
     private Long bathOrderId;  //  设备订单
     private Subscription subscription;
@@ -47,45 +46,18 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
         this.bathroomDataManager = bathroomDataManager;
     }
 
+
     @Override
-    public void pay(Double prepayAmount, Long bonusId) {
-        BathOrderReqDTO reqDTO = new BathOrderReqDTO();
-        reqDTO.setPrepayAmount(prepayAmount);
-        reqDTO.setType(BathTradeType.BOOKING.getCode());
-        reqDTO.setUserBonusId(bonusId);
-        addObserver(bathroomDataManager.pay(reqDTO),
+    public void cancel(long id) {
+        SimpleReqDTO reqDTO = new SimpleReqDTO();
+        reqDTO.setId(id);
+        addObserver(bathroomDataManager.cancel(reqDTO),
                 new NetworkObserver<ApiResult<BathOrderRespDTO>>() {
 
                     @Override
                     public void onReady(ApiResult<BathOrderRespDTO> result) {
                         if (null == result.getError()) {
-                            bathOrderId = result.getData().getBathOrderId();
-                            if (result.getData().getStatus() ==BOOKING_SUCCESS.getCode() ) {
-                                getMvpView().bookingSuccess(result.getData());
-                            }else{
-                                getMvpView().showWaitLoading();
-                                query(result.getData().getBathOrderId()+"");
-                            }
-                        } else {
-                            getMvpView().onError(result.getError().getDisplayMessage());
-                        }
-                    }
-                });
-    }
-
-
-
-    @Override
-    public void cancel(BathOrderRespDTO data) {
-        SimpleReqDTO reqDTO = new SimpleReqDTO();
-        reqDTO.setId(bathOrderId);
-        addObserver(bathroomDataManager.cancel(reqDTO),
-                new NetworkObserver<ApiResult<BooleanRespDTO>>() {
-
-                    @Override
-                    public void onReady(ApiResult<BooleanRespDTO> result) {
-                        if (null == result.getError()) {
-                            getMvpView().bookingCancel(data);
+                            getMvpView().bookingCancel(result.getData());
                         } else {
                             getMvpView().onError(result.getError().getDisplayMessage());
                         }
@@ -95,7 +67,6 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
 
     @Override
     public void bathroomBookingCountDown() {
-
         subscription = RxHelper.countDown(120)
                 .doOnSubscribe(new Action0() {
                     @Override
@@ -133,15 +104,25 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
     @Override
     public void cancelCountDown() {
         if (subscription != null && !subscription.isUnsubscribed()){
+            Log.e(TAG, "cancelCountDown: " );
             subscription.unsubscribe();
+            this.subscriptions.remove(subscription);
+        }else{
+            Log.e(TAG, "cancelCountDown: "  + (subscriptions== null) + (subscriptions.isUnsubscribed()) );
         }
     }
 
     @Override
     public void preBooking(String deviceNo) {
         BathBookingReqDTO reqDTO = new BathBookingReqDTO();
-        reqDTO.setDeviceNo(deviceNo);
-        reqDTO.setType(BathTradeType.BOOKING.getCode());
+        if (TextUtils.isEmpty(deviceNo)|| "null".equals(deviceNo)){
+            reqDTO.setDeviceNo(null);
+            reqDTO.setType(BathTradeType.BUY_CODE.getCode());
+        }else{
+            reqDTO.setDeviceNo(Integer.parseInt(deviceNo));
+            reqDTO.setType(BathTradeType.BOOKING.getCode());
+        }
+
         addObserver(bathroomDataManager.preBooking(reqDTO), new NetworkObserver<ApiResult<BathPreBookingRespDTO>>() {
 
             @Override
@@ -173,31 +154,31 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
             @Override
             public void onReady(ApiResult<BathOrderRespDTO> result) {
                 if (result.getError() == null){
-                    if (result.getData().getStatus() == BOOKING_SUCCESS.getCode()){
-                        getMvpView().bookingSuccess(result.getData());
-                    }else{
-                        if (queryNum < 5) {
-                            queryNum++ ;
-                            delay(3, new Subscriber<Long>() {
-                                @Override
-                                public void onCompleted() {
-
-                                }
-
-                                @Override
-                                public void onError(Throwable e) {
-
-                                }
-
-                                @Override
-                                public void onNext(Long aLong) {
-                                    query(bathOrderId);
-                                }
-                            });
-                        }else{
-
-                        }
-                    }
+//                    if (result.getData().getStatus() == ACCEPTED.getCode()){
+//                        getMvpView().bookingSuccess(result.getData());
+//                    }else{
+//                        if (queryNum < 5) {
+//                            queryNum++ ;
+//                            delay(3, new Subscriber<Long>() {
+//                                @Override
+//                                public void onCompleted() {
+//
+//                                }
+//
+//                                @Override
+//                                public void onError(Throwable e) {
+//
+//                                }
+//
+//                                @Override
+//                                public void onNext(Long aLong) {
+//                                    query(bathOrderId);
+//                                }
+//                            });
+//                        }else{
+//
+//                        }
+//                    }
                 }else{
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }
@@ -220,6 +201,69 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
                 }
             }
         });
+    }
+
+    @Override
+    public void booking(String device) {
+        BathBookingReqDTO reqDTO = new BathBookingReqDTO();
+        if (TextUtils.isEmpty(device)){
+            reqDTO.setDeviceNo(null);
+        }else{
+            reqDTO.setDeviceNo(Integer.parseInt(device));
+        }
+        reqDTO.setType(BathTradeType.BUY_CODE.getCode());
+        addObserver(bathroomDataManager.booking(reqDTO) , new NetworkObserver<ApiResult<BathOrderRespDTO>>(){
+
+            @Override
+            public void onStart() {
+                getMvpView().showWaitLoading();
+            }
+
+            @Override
+            public void onReady(ApiResult<BathOrderRespDTO> result) {
+                if (null == result.getError()) {
+                    bathOrderId = result.getData().getBathOrderId();
+                    if (result.getData().getStatus() ==ACCEPTED ) {
+                              getMvpView().bookingSuccess(result.getData());
+                        }else{
+
+                              query(result.getData().getBathOrderId()+"");
+                    }
+                } else {
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+                getMvpView().hideWaitLoading();
+            }
+        });
+    }
+
+    @Override
+    public void countDownexpiredTime(long expiredTime) {
+             int countTime = TimeUtils.intervalTime(expiredTime);
+        subscription = RxHelper.countDown(countTime)
+                .doOnSubscribe(new Action0() {
+                    @Override
+                    public void call() {
+                        getMvpView().countTimeLeft(TimeUtils.orderBathroomLastTime(expiredTime ,""));
+                    }
+                })
+                .subscribe(new Subscriber<Integer>() {
+                    @Override
+                    public void onCompleted() {
+                        getMvpView().setBookingCountDownTime("0:00");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(Integer integer) {
+                        getMvpView().countTimeLeft(TimeUtils.orderBathroomLastTime(expiredTime ,""));
+                    }
+                });
+        this.subscriptions.add(subscription);
     }
 
 

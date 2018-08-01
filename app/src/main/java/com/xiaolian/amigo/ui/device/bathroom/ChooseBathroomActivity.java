@@ -47,6 +47,8 @@ import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_MISSED_
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_ORDER_PRECONDITION;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_PREPAY;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_RESERVEDTIME;
+import static com.xiaolian.amigo.util.Constant.BOOKING;
+import static com.xiaolian.amigo.util.Constant.BUY_CODE;
 
 /**
  * 选择浴室
@@ -120,7 +122,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
 //                onRightClick();
 //            }
 //        });
-        setBtnText("预约洗澡 (任意空浴室)");
+        setBtnText("预约洗澡 (任意空浴室)" , false );
 
     }
 
@@ -182,7 +184,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
                         isSelected = true;
                     }
                     outerAdapter.notifyDataSetChanged();
-                    setBtnText(("预约洗澡 ("+ bathGroups.get(groupPosition).getBathGroups().get(bathroomPosition).getId()+"号浴室)"));
+                    setBtnText(("预约洗澡 ("+ bathGroups.get(groupPosition).getBathGroups().get(bathroomPosition).getId()+"号浴室)") , true);
                 });
 //        recyclerView.setLayoutManager(new LinearLayoutManager(this, OrientationHelper.HORIZONTAL, false));
         LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) recyclerView.getLayoutParams();
@@ -450,12 +452,12 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
      * @param respDTO
      */
     private void startActivityForStatus(BathOrderPreconditionRespDTO respDTO) {
-        BathroomMethodStatus bathroomMethodStatus = BathroomMethodStatus.getBathroomMethodStatus(respDTO.getStatus());
-        switch (bathroomMethodStatus) {
+        switch (respDTO.getStatus()) {
             case BUY_CODE:
-                startActivity(new Intent(this, BuyCodeActivity.class).putExtra(KEY_ORDER_PRECONDITION, respDTO));
+                startActivity(new Intent(this, BookingActivity.class).putExtra(KEY_ORDER_PRECONDITION, respDTO));
                 break;
             case BOOKING:
+                startActivity(new Intent(this, BookingActivity.class).putExtra(KEY_ORDER_PRECONDITION, respDTO));
                 break;
         }
     }
@@ -482,19 +484,22 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         tvTitle.setText(name);
     }
 
+
     @Override
-    public void setBtnText(String text) {
+    public void setBtnText(String text , boolean isSelected) {
         Spannable spannable = new SpannableString(text);
         spannable.setSpan(new AbsoluteSizeSpan(16, true), 0, 4, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
         spannable.setSpan(new AbsoluteSizeSpan(14, true), 4, text.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
         preBathroom.setText(spannable);
-        isSelected = true ;
+        this.isSelected = isSelected ;
+        if (!isSelected) preBathroom.setBackgroundResource(R.drawable.green_button);
+        else preBathroom.setBackgroundResource(R.drawable.red_button);
     }
 
 
     @OnClick(R.id.pre_bathroom)
     public void preBathRoom(){
-        if (isSelected){
+        if (this.isSelected){
             presenter.preBooking(deviceNo);
         }else{
             presenter.preBooking("");

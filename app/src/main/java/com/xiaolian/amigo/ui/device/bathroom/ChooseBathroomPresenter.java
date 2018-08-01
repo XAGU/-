@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.device.bathroom;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.xiaolian.amigo.data.enumeration.BathTradeType;
@@ -44,6 +45,11 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
                 new NetworkObserver<ApiResult<BathBuildingRespDTO>>() {
 
                     @Override
+                    public void onStart() {
+
+                    }
+
+                    @Override
                     public void onReady(ApiResult<BathBuildingRespDTO> result) {
                         if (null == result.getError()) {
                             getMvpView().setTvTitle(result.getData().getBuildingName());
@@ -53,14 +59,25 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
                             getMvpView().onError(result.getError().getDisplayMessage());
                         }
                     }
+
+                    @Override
+                    public void onCompleted() {
+                        getMvpView().hideBathroomDialog();
+                    }
                 });
     }
 
     @Override
     public void preBooking(String deviceNo) {
         BathBookingReqDTO reqDTO = new BathBookingReqDTO();
-        reqDTO.setDeviceNo(deviceNo);
-        reqDTO.setType(BathTradeType.BOOKING.getCode());
+        if (TextUtils.isEmpty(deviceNo)){
+            reqDTO.setDeviceNo(null);
+            reqDTO.setType(BathTradeType.BUY_CODE.getCode());
+        }else {
+            reqDTO.setDeviceNo(Integer.parseInt(deviceNo));
+            reqDTO.setType(BathTradeType.BOOKING.getCode());
+        }
+
         addObserver(bathroomDataManager.preBooking(reqDTO), new NetworkObserver<ApiResult<BathPreBookingRespDTO>>() {
 
             @Override
@@ -98,6 +115,10 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
     @Override
     public void precondition() {
         addObserver(bathroomDataManager.getOrderPrecondition(),new NetworkObserver<ApiResult<BathOrderPreconditionRespDTO>>(){
+            @Override
+            public void onStart() {
+                getMvpView().showBathroomDialog();
+            }
 
             @Override
             public void onReady(ApiResult<BathOrderPreconditionRespDTO> result) {
@@ -105,9 +126,14 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
                      if (result.getData().isExistUsingOrder()){
                         getMvpView().startPreconditionView(result.getData());
                      }else{
-                         getMvpView().hideBathroomDialog();
+
                      }
                  }
+            }
+
+            @Override
+            public void onCompleted() {
+                getMvpView().hideBathroomDialog();
             }
         });
     }

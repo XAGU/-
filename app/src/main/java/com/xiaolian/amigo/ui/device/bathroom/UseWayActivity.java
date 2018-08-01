@@ -1,14 +1,10 @@
 package com.xiaolian.amigo.ui.device.bathroom;
 
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
-import android.text.style.AbsoluteSizeSpan;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -21,7 +17,6 @@ import com.xiaolian.amigo.ui.device.bathroom.adapter.DeviceInfoAdapter;
 import com.xiaolian.amigo.ui.widget.BathroomOperationStatusView;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.util.Constant;
-import com.xiaolian.amigo.util.DimentionUtils;
 import com.xiaolian.amigo.util.ScreenUtils;
 
 import java.text.DecimalFormat;
@@ -402,12 +397,42 @@ public abstract class UseWayActivity extends BathroomBaseActivity {
         }
     }
 
+    /**
+     * 根据上一笔订单设置tip 内容
+     */
+    public void forOldOrderToSetTipTxt(BathOrderPreconditionRespDTO  dto){
+        // 余额大于等于最小预付金额
+        if (dto.getBalance()>= dto.getMinPrepay()) {
+            // 余额大于等于预付金额
+            if (dto.getBalance() >= dto.getPrepay()) {
+                prepayAmount = dto.getPrepay();
+                setTipTxt(getString(R.string.atLeastInTheWallet ,df.format(prepayAmount)));
+            } else {
+                prepayAmount = dto.getBalance();
+                setTipTxt(getString(R.string.atLeastInTheWallet ,df.format(prepayAmount)));
+            }
+        }
+        // 余额不足
+        else {
+            setTipTxt(getString(R.string.atLeastInTheWallet ,df.format(dto.getMinPrepay())));
+        }
+    }
+
+    /**
+     * 设置Tip内容
+     */
+    public void setTipTxt(String tipTxt){
+        statusView.getTip().setVisibility(View.VISIBLE);
+        statusView.getTip().setText(tipTxt);
+    }
+
 
     private void initRecyclerView() {
         adapter = new DeviceInfoAdapter(this, R.layout.item_bathroom_device_info, items);
         recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 1)));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
+        ((SimpleItemAnimator)recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
     }
 
     private void setTitleVisible(int visible) {

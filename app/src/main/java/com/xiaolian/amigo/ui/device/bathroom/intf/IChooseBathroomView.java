@@ -42,5 +42,5 @@ public interface IChooseBathroomView extends IBaseView {
      * 设置button字体
      * @param text
      */
-    void setBtnText(String text);
+    void setBtnText(String text , boolean isSelected);
 }
