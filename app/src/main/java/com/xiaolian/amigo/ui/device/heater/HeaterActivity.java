@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.device.heater;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 
@@ -15,7 +16,6 @@ import javax.inject.Inject;
 
 /**
  * 热水澡设备页
- *
  * @author zcd
  * @date 17/9/20
  */
@@ -27,6 +27,16 @@ public class HeaterActivity extends WaterDeviceBaseActivity<IHeaterPresenter> im
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initView();
+    }
+
+    /**
+     * 设置文字右边图片
+     */
+    private  void initView(){
+        Drawable drawable = getResources().getDrawable(R.drawable.arrow_down);
+        drawable.setBounds(0,0,drawable.getMinimumWidth() ,drawable.getMinimumHeight());
+        tvDeviceTitle.setCompoundDrawablesRelative(null , null ,drawable ,null);
     }
 
     @Override
@@ -47,7 +57,7 @@ public class HeaterActivity extends WaterDeviceBaseActivity<IHeaterPresenter> im
 
     @Override
     protected String setSubtitleString() {
-        return getString(R.string.change_dormitory);
+        return "";
     }
 
     @Override
@@ -95,4 +105,6 @@ public class HeaterActivity extends WaterDeviceBaseActivity<IHeaterPresenter> im
             }
         });
     }
+
+
 }

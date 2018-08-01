@@ -250,94 +250,104 @@ public abstract class UseWayActivity extends BathroomBaseActivity {
             onError("预付信息不全");
             return;
         }
+        String tip = getString(R.string.atLeastInTheWallet);
         // 有代金券
         if (bonusId != -1) {
-            String tip = "";
-            String buttonText;
-            // 余额为0
-            if (balance == 0) {
-                // 代金券金额大于等于最小预付金额
-                if (bonusAmount >= minPrepay) {
-                    tip = df.format(minPrepay) + getString(R.string.yuan);
-                    prepayAmount = 0.0;
-                    needRecharge = false;
-                    SpannableStringBuilder builder = new SpannableStringBuilder();
-                    builder.append(getString(R.string.prepay));
-                    buttonText = df.format(prepayAmount) + getString(R.string.yuan);
-                    SpannableString buttonSpan = new SpannableString(buttonText);
-                    buttonSpan.setSpan(new AbsoluteSizeSpan(
-                                    DimentionUtils.convertSpToPixels(18, this)), 0, buttonText.length(),
-                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    builder.append(buttonSpan);
-                    builder.append(getButtonText());
-                    btStartToUse.setText(builder);
-                }
-                // 代金券金额小于最小预付金额  需要充值
-                else {
-//                    tip = df.format(minPrepay) + getString(R.string.yuan);
-                    tip = "低于" + df.format(minPrepay) + getString(R.string.yuan) + "，请前往充值";
-                    needRecharge = true;
-                    buttonText = getString(R.string.to_recharge);
-                    btStartToUse.setText(buttonText);
-                }
-            }
-            // 余额不为0
-            else {
-                // 余额加代金券大于等于预付金额
-                if (balance + bonusAmount >= prepay) {
-                    tip = df.format(prepay) + getString(R.string.yuan);
-                    prepayAmount = prepay - bonusAmount;
-                    if (prepayAmount < 0) {
-                        prepayAmount = 0.0;
-                    }
-                    needRecharge = false;
-                    SpannableStringBuilder builder = new SpannableStringBuilder();
-                    builder.append(getString(R.string.prepay));
-                    buttonText = df.format(prepayAmount) + getString(R.string.yuan);
-                    SpannableString buttonSpan = new SpannableString(buttonText);
-                    buttonSpan.setSpan(new AbsoluteSizeSpan(
-                                    DimentionUtils.convertSpToPixels(18, this)), 0, buttonText.length(),
-                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    builder.append(buttonSpan);
-                    builder.append(getButtonText());
-                    btStartToUse.setText(builder);
-                }
-                // 余额加代金券小于预付金额 大于等于最小预付金额
-                else if (balance + bonusAmount >= minPrepay
-                        && balance + bonusAmount < prepay) {
-                    tip = "低于" + df.format(prepay) + getString(R.string.yuan) + "需预付全部余额";
-                    prepayAmount = balance;
-                    needRecharge = false;
-                    SpannableStringBuilder builder = new SpannableStringBuilder();
-                    builder.append(getString(R.string.prepay));
-                    buttonText = df.format(prepayAmount) + getString(R.string.yuan);
-                    SpannableString buttonSpan = new SpannableString(buttonText);
-                    buttonSpan.setSpan(new AbsoluteSizeSpan(
-                                    DimentionUtils.convertSpToPixels(18, this)), 0, buttonText.length(),
-                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    builder.append(buttonSpan);
-                    builder.append(getButtonText());
-                    btStartToUse.setText(builder);
-                }
-                // 余额加代金券小于最小预付金额
-                else if (balance + bonusAmount < minPrepay) {
-                    tip = "低于" + df.format(minPrepay) + "，请前往充值";
-                    needRecharge = true;
-                    buttonText = getString(R.string.to_recharge);
-                    btStartToUse.setText(buttonText);
-                }
-            }
-            items.add(new DeviceInfoAdapter.DeviceInfoWrapper("预付金额：",
-                    tip, R.color.colorDark2, 14, Typeface.NORMAL, false));
-            items.add(new DeviceInfoAdapter.DeviceInfoWrapper("红包抵扣：",
-                    bonusDesc,
-                    R.color.colorDark2, 14, Typeface.NORMAL, true));
-            adapter.notifyDataSetChanged();
+
+//            String buttonText;
+//            // 余额为0
+//            if (balance == 0) {
+//                // 代金券金额大于等于最小预付金额
+//                if (bonusAmount >= minPrepay) {
+////                    tip = df.format(minPrepay) + getString(R.string.yuan);
+//                    prepayAmount = 0.0;
+//                    needRecharge = false;
+//                    SpannableStringBuilder builder = new SpannableStringBuilder();
+//                    builder.append(getString(R.string.prepay));
+//                    buttonText = df.format(prepayAmount) + getString(R.string.yuan);
+//                    SpannableString buttonSpan = new SpannableString(buttonText);
+//                    buttonSpan.setSpan(new AbsoluteSizeSpan(
+//                                    DimentionUtils.convertSpToPixels(18, this)), 0, buttonText.length(),
+//                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//                    builder.append(buttonSpan);
+//                    builder.append(getButtonText());
+//                    btStartToUse.setText(builder);
+//                    statusView.getTip().setVisibility(View.GONE);
+//                }
+//                // 代金券金额小于最小预付金额  需要充值
+//                else {
+////                    tip = df.format(minPrepay) + getString(R.string.yuan);
+////                    tip = "低于" + df.format(minPrepay) + getString(R.string.yuan) + "，请前往充值";
+//                      tip = String.format(tip ,df.format(minPrepay));
+//                    needRecharge = true;
+//                    buttonText = getString(R.string.InsufficientBalance);
+//                    btStartToUse.setText(buttonText);
+//                    statusView.getTip().setText(tip);
+//                    statusView.getTip().setVisibility(View.VISIBLE);
+//                }
+//            }
+//            // 余额不为0
+//            else {
+//                // 余额加代金券大于等于预付金额
+//                if (balance + bonusAmount >= prepay) {
+////                    tip = df.format(prepay) + getString(R.string.yuan);
+//                    prepayAmount = prepay - bonusAmount;
+//                    if (prepayAmount < 0) {
+//                        prepayAmount = 0.0;
+//                    }
+//                    needRecharge = false;
+//                    SpannableStringBuilder builder = new SpannableStringBuilder();
+//                    builder.append(getString(R.string.prepay));
+//                    buttonText = df.format(prepayAmount) + getString(R.string.yuan);
+//                    SpannableString buttonSpan = new SpannableString(buttonText);
+//                    buttonSpan.setSpan(new AbsoluteSizeSpan(
+//                                    DimentionUtils.convertSpToPixels(18, this)), 0, buttonText.length(),
+//                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//                    builder.append(buttonSpan);
+//                    builder.append(getButtonText());
+//                    btStartToUse.setText(builder);
+//                    statusView.getTip().setVisibility(View.GONE);
+//                }
+//                // 余额加代金券小于预付金额 大于等于最小预付金额
+//                else if (balance + bonusAmount >= minPrepay
+//                        && balance + bonusAmount < prepay) {
+////                    tip = "低于" + df.format(prepay) + getString(R.string.yuan) + "需预付全部余额";
+//                    prepayAmount = balance;
+//                    needRecharge = false;
+//                    SpannableStringBuilder builder = new SpannableStringBuilder();
+//                    builder.append(getString(R.string.prepay));
+//                    buttonText = df.format(prepayAmount) + getString(R.string.yuan);
+//                    SpannableString buttonSpan = new SpannableString(buttonText);
+//                    buttonSpan.setSpan(new AbsoluteSizeSpan(
+//                                    DimentionUtils.convertSpToPixels(18, this)), 0, buttonText.length(),
+//                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//                    builder.append(buttonSpan);
+//                    builder.append(getButtonText());
+//                    btStartToUse.setText(builder);
+//                    statusView.getTip().setVisibility(View.GONE);
+//                }
+//                // 余额加代金券小于最小预付金额
+//                else if (balance + bonusAmount < minPrepay) {
+////                    tip = "低于" + df.format(minPrepay) + "，请前往充值";
+//                    tip = String.format(tip ,df.format(minPrepay));
+//                    needRecharge = true;
+//                    buttonText = getString(R.string.InsufficientBalance);
+//                    btStartToUse.setText(buttonText);
+//                    statusView.getTip().setText(tip);
+//                    statusView.getTip().setVisibility(View.VISIBLE);
+//                }
+//            }
+////            items.add(new DeviceInfoAdapter.DeviceInfoWrapper("预付金额：",
+////                    tip, R.color.colorDark2, 14, Typeface.NORMAL, false));
+//            items.add(new DeviceInfoAdapter.DeviceInfoWrapper("红包抵扣：",
+//                    bonusDesc,
+//                    R.color.colorDark2, 14, Typeface.NORMAL, true));
+//            adapter.notifyDataSetChanged();
         }
         // 无代金券
         else {
+            statusView.getTip().setVisibility(View.VISIBLE);
             String title;
-            String tip;
             String buttonText;
             // 余额大于等于最小预付金额
             if (balance >= minPrepay) {
@@ -345,45 +355,49 @@ public abstract class UseWayActivity extends BathroomBaseActivity {
                 if (balance >= prepay) {
                     prepayAmount = prepay;
                     title = getString(R.string.need_prepay_amount, df.format(prepayAmount));
-                    tip = df.format(prepay) + getString(R.string.yuan);
-                    SpannableStringBuilder builder = new SpannableStringBuilder();
-                    builder.append(getString(R.string.prepay));
-                    buttonText = df.format(prepayAmount) + getString(R.string.yuan);
-                    SpannableString buttonSpan = new SpannableString(buttonText);
-                    buttonSpan.setSpan(new AbsoluteSizeSpan(
-                                    DimentionUtils.convertSpToPixels(18, this)), 0, buttonText.length(),
-                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    builder.append(buttonSpan);
-                    needRecharge = false;
-                    builder.append(getButtonText());
-                    btStartToUse.setText(builder);
+//                    tip = df.format(prepay) + getString(R.string.yuan);
+//                    SpannableStringBuilder builder = new SpannableStringBuilder();
+//                    builder.append(getString(R.string.prepay));
+//                    buttonText = df.format(prepayAmount) + getString(R.string.yuan);
+//                    SpannableString buttonSpan = new SpannableString(buttonText);
+//                    buttonSpan.setSpan(new AbsoluteSizeSpan(
+//                                    DimentionUtils.convertSpToPixels(18, this)), 0, buttonText.length(),
+//                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//                    builder.append(buttonSpan);
+//                    needRecharge = false;
+//                    builder.append(getButtonText());
+                    statusView.getTip().setText(getString(R.string.atLeastInTheWallet ,df.format(prepayAmount)));
+                    btStartToUse.setText(getButtonText());
                 } else {
                     prepayAmount = balance;
                     title = getString(R.string.need_prepay_amount, df.format(prepayAmount));
-                    tip = "低于" + df.format(prepay) + getString(R.string.yuan) + "，需预付全部余额";
+//                    tip = "低于" + df.format(prepay) + getString(R.string.yuan) + "，需预付全部余额";
                     needRecharge = false;
-                    SpannableStringBuilder builder = new SpannableStringBuilder();
-                    builder.append(getString(R.string.prepay));
-                    buttonText = df.format(prepayAmount) + getString(R.string.yuan);
-                    SpannableString buttonSpan = new SpannableString(buttonText);
-                    buttonSpan.setSpan(new AbsoluteSizeSpan(
-                                    DimentionUtils.convertSpToPixels(18, this)), 0, buttonText.length(),
-                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    builder.append(buttonSpan);
-                    builder.append(getButtonText());
-                    btStartToUse.setText(builder);
+//                    SpannableStringBuilder builder = new SpannableStringBuilder();
+//                    builder.append(getString(R.string.prepay));
+//                    buttonText = df.format(prepayAmount) + getString(R.string.yuan);
+//                    SpannableString buttonSpan = new SpannableString(buttonText);
+//                    buttonSpan.setSpan(new AbsoluteSizeSpan(
+//                                    DimentionUtils.convertSpToPixels(18, this)), 0, buttonText.length(),
+//                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//                    builder.append(buttonSpan);
+//                    builder.append(getButtonText());
+                    statusView.getTip().setText(getString(R.string.atLeastInTheWallet ,df.format(prepayAmount)));
+                    btStartToUse.setText(getButtonText());
                 }
             }
             // 余额不足
             else {
-                title = getString(R.string.prepay_no_balance);
-                tip = "低于" + df.format(minPrepay) + getString(R.string.yuan) + "，请前往充值";
-                buttonText = getString(R.string.to_recharge);
+//                title = getString(R.string.prepay_no_balance);
+//                tip = "低于" + df.format(minPrepay) + getString(R.string.yuan) + "，请前往充值";
+                tip = String.format(tip , df.format(minPrepay));
+                buttonText = getString(R.string.InsufficientBalance);
                 needRecharge = true;
                 btStartToUse.setText(buttonText);
+                statusView.getTip().setText(tip);
             }
-            items.add(new DeviceInfoAdapter.DeviceInfoWrapper("预付金额：",
-                    tip, R.color.colorDark2, 14, Typeface.NORMAL, false));
+//            items.add(new DeviceInfoAdapter.DeviceInfoWrapper("预付金额：",
+//                    tip, R.color.colorDark2, 14, Typeface.NORMAL, false));
             adapter.notifyDataSetChanged();
         }
     }

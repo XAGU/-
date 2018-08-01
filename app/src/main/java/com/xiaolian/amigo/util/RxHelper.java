@@ -1,15 +1,19 @@
 package com.xiaolian.amigo.util;
 
 
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
 import rx.Observer;
+import rx.Scheduler;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.plugins.RxAndroidSchedulersHook;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action;
+import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
@@ -46,10 +50,15 @@ public class RxHelper {
         if (time < 0) time = 0 ;
         return Observable.interval(0 ,time ,TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.io())
-                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
+    }
 
-
-
+    public static Observable<Integer> delay(int time ,TimeUnit timeUnit){
+        if (time < 0) time = 0 ;
+        return Observable.just(time).delay(time ,timeUnit)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                ;
     }
 }

@@ -328,4 +328,7 @@
     <string name="repurchase">重新购买</string>
     <string name="preBookTimeOut">预约超时</string>
     <string name="retry">重试</string>
+    <string name="preBathWithAnyEmptyBath">预约洗澡(任意空浴室)</string>
+    <string name="InsufficientBalance">余额不足，请前往充值</string>
+    <string name="atLeastInTheWallet">请确保你的钱包中可用余额至少%1$s元</string>
 </resources>

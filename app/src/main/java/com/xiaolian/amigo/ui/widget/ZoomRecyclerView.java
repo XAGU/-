@@ -1,5 +1,7 @@
 package com.xiaolian.amigo.ui.widget;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -227,13 +229,33 @@ public class ZoomRecyclerView extends RecyclerView implements View.OnTouchListen
             mDeltaX = 0.0f;
             mDeltaY = 0.0f;
         }
-        canvas.translate(mDeltaX, mDeltaY);
+
+        anim();
+//        canvas.translate(mDeltaX, mDeltaY);
 //        canvas.scale(mScaleFactor, mScaleFactor, centerX, centerY);
-        canvas.scale(mScaleFactor, mScaleFactor);
+//        canvas.scale(mScaleFactor, mScaleFactor);
         super.dispatchDraw(canvas);
         canvas.restore();
     }
 
+
+    /**
+     * 属性动画解决缩放不能点击问题
+     */
+    private void  anim(){
+//        ObjectAnimator objectAnimatorTransle = ObjectAnimator.ofFloat(this ,"translationX",mDeltaX);
+//        ObjectAnimator objectAnimatorTranslaY = ObjectAnimator.ofFloat(this ,"translationY" , mDeltaY);
+        ObjectAnimator objectAnimatorX = ObjectAnimator.ofFloat(this ,"scaleX" ,mScaleFactor);
+        ObjectAnimator objectAnimatorY = ObjectAnimator.ofFloat(this ,"scaleY" , mScaleFactor);
+        objectAnimatorX.setDuration(500);
+        objectAnimatorY.setDuration(500);
+//        objectAnimatorTranslaY.setDuration(500);
+//        objectAnimatorTransle.setDuration(500);
+        objectAnimatorX.start();
+        objectAnimatorY.start();
+//        objectAnimatorTranslaY.start();
+//        objectAnimatorTransle.start();
+    }
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         super.onTouchEvent(event);

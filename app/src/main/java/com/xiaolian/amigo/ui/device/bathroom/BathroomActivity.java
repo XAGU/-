@@ -22,6 +22,7 @@ import butterknife.ButterKnife;
  * @author zcd
  * @date 18/6/29
  */
+@Deprecated
 public class BathroomActivity extends BathroomBaseActivity implements IBathroomView {
 
     @Inject
@@ -88,4 +89,6 @@ public class BathroomActivity extends BathroomBaseActivity implements IBathroomV
             bsvWave.startAnim();
         }
     }
+
+
 }

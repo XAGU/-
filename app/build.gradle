@@ -68,14 +68,18 @@ android {
             // 测试
             applicationId "com.xiaolian.amigo_dev"
             resValue "string", "app_name", "笑联测试版"
-
+                
             buildConfigField "String", "ENVIRONMENT", '"dev"'
 //            buildConfigField "String", "SERVER", "\"http://116.62.236.67:5081/\""
 //            buildConfigField "String", "SERVER", "\"http://39.108.97.229:5081/\""
 //            buildConfigField "String", "SERVER", "\"http://10.195.90.167:5081/\""
+//            buildConfigField "String", "SERVER", "\"http://10.195.90.167:5081/\""
+//            buildConfigField "String", "SERVER", "\"http://10.195.90.167:5081/\""
             buildConfigField "String", "SERVER", "\"http://10.195.90.167:5081/\""
-//            buildConfigField "String", "SERVER_BATHROOM", "\"http://10.195.90.167:5082/\""  大帝的服务器
-            buildConfigField "String", "SERVER_BATHROOM", "\"http://10.195.90.250:5082/\""
+//            buildConfigField "String", "SERVER", "\"http://192.168.43.213:5081/\""
+//            buildConfigField "String", "SERVER_BATHROOM", "\"http://192.168.43.213:5082/\""   //大帝的服务器
+//            buildConfigField "String", "SERVER_BATHROOM", "\"http://10.195.90.250:5082/\""
+            buildConfigField "String", "SERVER_BATHROOM", "\"http://10.195.90.167:5082/\""
 //            buildConfigField "String", "SERVER", "\"http://10.195.90.130:5081/\""
 //            buildConfigField "String", "SERVER", "\"http://10.195.90.187:8081\""
 //            buildConfigField "String", "SERVER", "\"http://10.0.0.4:5081/\""

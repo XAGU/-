@@ -11,6 +11,8 @@ import lombok.Data;
  */
 @Data
 public class BathBuildingRespDTO {
+
+    private String buildingName;
     private List<BathFloorDTO> floors;  //  楼层列表
     private Integer missTimes;   //  失约次数
     /**
@@ -21,4 +23,6 @@ public class BathBuildingRespDTO {
      * 直接使用 4
      */
     private List<Integer> methods;
+
+
 }

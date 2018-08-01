@@ -36,6 +36,7 @@ import com.xiaolian.amigo.ui.device.intf.IWaterDeviceBaseView;
 import com.xiaolian.amigo.ui.main.MainActivity;
 import com.xiaolian.amigo.ui.repair.RepairApplyActivity;
 import com.xiaolian.amigo.ui.user.ChooseDormitoryActivity;
+import com.xiaolian.amigo.ui.user.EditDormitoryActivity;
 import com.xiaolian.amigo.ui.wallet.RechargeActivity;
 import com.xiaolian.amigo.ui.widget.BezierWaveView;
 import com.xiaolian.amigo.ui.widget.DotFlashView;
@@ -195,7 +196,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
      * 设备标题
      */
     @BindView(R.id.tv_device_title)
-    TextView tvDeviceTitle;
+    protected  TextView tvDeviceTitle;
     /**
      * 显示加载动画
      */
@@ -342,6 +343,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         }
     }
 
+
     /**
      * 初始化注入
      */
@@ -390,6 +392,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         // 默认显示连接中状态
         showConnecting();
         initSlideView();
+
     }
 
     private void initSlideView() {
@@ -1166,8 +1169,8 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         // 只有在step为SETILE时才不能更换宿舍
         if (!recorvery && presenter.getStep() != TradeStep.SETTLE) {
             startActivityForResult(
-                    new Intent(this, ChooseDormitoryActivity.class)
-                            .putExtra(ChooseDormitoryActivity.INTENT_KEY_LAST_DORMITORY, residenceId),
+                    new Intent(this, EditDormitoryActivity.class)
+                            .putExtra(EditDormitoryActivity.INTENT_KEY_LAST_DORMITORY, residenceId),
                     CHOOSE_DORMITORY_CODE);
         }
     }

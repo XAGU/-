@@ -1,6 +1,8 @@
 package com.xiaolian.amigo.data.network;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.bathroom.RecordResidenceReqDTO;
+import com.xiaolian.amigo.data.network.model.common.EmptyRespDTO;
 import com.xiaolian.amigo.data.network.model.user.BindResidenceReq;
 import com.xiaolian.amigo.data.network.model.user.MobileUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.user.PasswordCheckReqDTO;
@@ -69,19 +71,22 @@ public interface IUserApi {
     /**
      * 用户绑定的寝室列表
      */
+    @Deprecated
     @POST("user/residence/list")
     Observable<ApiResult<QueryUserResidenceListRespDTO>> queryUserResidenceList(@Body SimpleQueryReqDTO body);
 
     /**
      * 用户删除绑定寝室
      */
+    @Deprecated
     @POST("user/residence/delete")
     Observable<ApiResult<DeleteResidenceRespDTO>> deleteResidence(@Body SimpleReqDTO body);
 
     /**
      * 用户绑定编辑寝室
      */
-    @POST("user/residence/bath/record")
+    @POST("user/residence/bind")
+    @Deprecated
     Observable<ApiResult<UserResidenceInListDTO>> bindResidence(@Body BindResidenceReq body);
 
     /**
@@ -107,4 +112,34 @@ public interface IUserApi {
      */
     @POST("user/deviceInfo/upload")
     Observable<ApiResult<BooleanRespDTO>> uploadDeviceInfo(@Body UploadUserDeviceInfoReqDTO reqDTO);
+
+    /**
+     * 用户绑定洗澡地址
+     */
+    @POST("/user/residence/bath/record")
+    Observable<ApiResult<UserResidenceInListDTO>> recordBath(@Body RecordResidenceReqDTO reqDTO);
+
+    /**
+     * 公共浴室列表
+     */
+    @POST("user/residence/bath/record/list")
+    Observable<ApiResult<QueryUserResidenceListRespDTO>> bathList(@Body EmptyRespDTO dto);
+
+    /**
+     * 删除洗澡地址记录
+     * @param dto
+     * @return
+     */
+    @POST("user/residence/bath/record/delete")
+    Observable<ApiResult<DeleteResidenceRespDTO>>  deleteBathRecord(@Body SimpleReqDTO dto);
+
+
+    /**
+     * 更新默认洗澡地址
+     * @param dto
+     * @return
+     */
+    @POST("user/residence/bath/record/default/update")
+    Observable<ApiResult<BooleanRespDTO>>  updateNormalBathroom(@Body SimpleReqDTO dto);
+
 }

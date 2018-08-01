@@ -23,6 +23,8 @@ public class BathroomOperationStatusView extends LinearLayout {
     public final static int IMG_RES_STATUS_OPERATING = R.drawable.ic_bathroom_status_operating;
     public final static int IMG_RES_STATUS_FAIL = R.drawable.ic_bathroom_status_fail;
     public final static int IMG_RES_STATUS_CANCEL = R.drawable.ic_bathroom_status_cancel;
+    @BindView(R.id.tip)
+    TextView tip;
 
     private int status;
 
@@ -70,9 +72,15 @@ public class BathroomOperationStatusView extends LinearLayout {
         tvRight.setOnClickListener(v -> listener.onCancelClick());
     }
 
-    public TextView getRightText(){
-        return tvRight ;
+    public TextView getRightText() {
+        return tvRight;
     }
+
+
+    public TextView getTip() {
+         return tip ;
+    }
+
     public void hideCancelButton() {
         tvRight.setVisibility(GONE);
     }

@@ -11,9 +11,11 @@ import com.xiaolian.amigo.data.network.ITimeRangeApi;
 import com.xiaolian.amigo.data.network.IUserApi;
 import com.xiaolian.amigo.data.network.IVersionApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.bathroom.BathRouteRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.ShowerRoomRouterRespDTO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCategoryBO;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
+import com.xiaolian.amigo.data.network.model.user.QueryUserResidenceListRespDTO;
 import com.xiaolian.amigo.data.network.model.version.CheckVersionUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.order.OrderReqDTO;
@@ -284,7 +286,7 @@ public class MainDataManager implements IMainDataManager {
     }
 
     @Override
-    public Observable<ApiResult<ShowerRoomRouterRespDTO>> route() {
+    public Observable<ApiResult<BathRouteRespDTO>> route() {
         return bathroomApi.route();
     }
 
@@ -292,4 +294,5 @@ public class MainDataManager implements IMainDataManager {
     public void setBathroomPasswordDesc(ArrayList<String> bathPasswordDescription) {
         sharedPreferencesHelp.setBathPasswordDescription(bathPasswordDescription);
     }
+
 }

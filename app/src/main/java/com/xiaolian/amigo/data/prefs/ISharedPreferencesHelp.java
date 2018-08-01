@@ -3,6 +3,7 @@ package com.xiaolian.amigo.data.prefs;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
 import com.xiaolian.amigo.data.network.model.user.UploadUserDeviceInfoReqDTO;
 import com.xiaolian.amigo.data.vo.DeviceCategory;
+import com.xiaolian.amigo.data.vo.NormalBathroom;
 import com.xiaolian.amigo.data.vo.User;
 
 import java.util.ArrayList;
@@ -162,4 +163,16 @@ public interface ISharedPreferencesHelp {
     void setBathPasswordDescription(ArrayList<String> bathPasswordDescription);
 
     List<String> getBathPasswordDescription();
+
+    /**
+     * 缓存默认浴室地址
+     * @param normalBathroom
+     */
+    void setNormalBathroom(NormalBathroom normalBathroom);
+
+    /**
+     * 得到默认浴室地址
+     * @return
+     */
+    NormalBathroom getNormalBathroom();
 }

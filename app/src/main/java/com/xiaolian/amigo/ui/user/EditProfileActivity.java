@@ -9,8 +9,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
-import com.xiaolian.amigo.data.vo.BathAddressEvent;
-import com.xiaolian.amigo.ui.device.bathroom.EditBathroomPasswordActivity;
 import com.xiaolian.amigo.ui.user.intf.IEditProfilePresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditProfileView;
 import com.xiaolian.amigo.ui.widget.dialog.AvailabilityDialog;
@@ -35,7 +33,7 @@ import lombok.Data;
  */
 
 public class EditProfileActivity extends UserBaseActivity implements IEditProfileView {
-
+    private static final String TAG = EditProfileActivity.class.getSimpleName();
     private static final int REQUEST_CODE_CHECK_PASSWORD = 0x0101;
     private static final int REQUEST_CODE_EDIT_NICKNAME = 0x0102;
     private static final int REQUEST_CODE_EDIT_SCHOOL = 0x0103;
@@ -192,7 +190,7 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
                 intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
                 intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION,
                         ListChooseActivity.ACTION_LIST_BUILDING);
-                intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_SRC_ACTIVITY, Constant.EDIT_PROFILE_ACTIVITY_SRC);
+                intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_SRC_ACTIVITY, Constant.USER_INFO_ACTIVITY_SRC);
                 intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_DEVICE_TYPE, Device.HEATER.getType());
                 startActivity(intent);
                 break;
@@ -339,16 +337,7 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
         }
     }
 
-    /**
-     * 获取洗澡地址
-     * @param bathAddressEvent
-     */
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void changeBathroomAddress(BathAddressEvent bathAddressEvent){
-        String address = bathAddressEvent.getAddress();
-        if (TextUtils.isEmpty(address)) tvResidence.setText(address);
 
-    }
 
     @Override
     public void onBackPressed() {

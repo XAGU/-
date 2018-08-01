@@ -11,6 +11,6 @@ import lombok.Data;
 @Data
 public class BindResidenceReq {
     private Long id;
-    private Long residenceId;
-    private int type ;
+    private Long residenceId;  //  楼栋id
+//    private int type  ;   //   1、宿舍 2、公共浴室
 }

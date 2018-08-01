@@ -216,7 +216,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
-        <!--宿舍列表-->
+        <!--洗澡地址列表-->
         <activity
             android:name=".ui.user.EditDormitoryActivity"
             android:launchMode="singleTask"
@@ -247,6 +247,7 @@
         <activity
             android:name=".ui.device.heater.HeaterActivity"
             android:screenOrientation="portrait"
+            android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <!--选择饮水机页面-->
@@ -320,7 +321,9 @@
         <activity android:name=".ui.device.bathroom.ChooseBathroomActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            />
+            android:launchMode="singleTop"
+            >
+        </activity>
 
         <!--公共澡堂扫一扫使用-->
         <activity android:name=".ui.device.bathroom.BathroomScanActivity"

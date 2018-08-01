@@ -187,7 +187,7 @@ public class BuyCodeActivity extends UseWayActivity implements IBuyCodeView {
      */
     @Override
     public void preBuy(BathPreBookingRespDTO data) {
-        if (data.getBonus() != null) bonusId = data.getBonus().getId();
+//        if (data.getBonus() != null) bonusId = data.getBonus().getId();
         prepayAmount = data.getPrepay();
         initValue(data);
         llBottomVisible(false);
@@ -198,8 +198,8 @@ public class BuyCodeActivity extends UseWayActivity implements IBuyCodeView {
         List<DeviceInfoAdapter.DeviceInfoWrapper> wrapperList = new ArrayList<>();
         wrapperList.add(new DeviceInfoAdapter.DeviceInfoWrapper("浴室位置：" ,data.getLocation()
         ,R.color.colorDark2 , 14 , Typeface.NORMAL ,false));
-        wrapperList.add(new DeviceInfoAdapter.DeviceInfoWrapper("有效时间：" , data.getReservedTime(),R.color.colorDark2 ,
-                14 , Typeface.NORMAL ,false));
+//        wrapperList.add(new DeviceInfoAdapter.DeviceInfoWrapper("有效时间：" , data.getReservedTime(),R.color.colorDark2 ,
+//                14 , Typeface.NORMAL ,false));
         referItems(wrapperList ,false);
 
         setButtonText();

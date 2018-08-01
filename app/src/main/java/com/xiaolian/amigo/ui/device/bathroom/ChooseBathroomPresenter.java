@@ -37,15 +37,16 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
     }
 
     @Override
-    public void getBathroomList() {
+    public void getBathroomList(long buildingId) {
         SimpleReqDTO reqDTO = new SimpleReqDTO();
-        reqDTO.setId(2659L);
-        addObserver(bathroomDataManager.list(reqDTO),
+        reqDTO.setId(buildingId);
+        addObserver(bathroomDataManager.tree(reqDTO),
                 new NetworkObserver<ApiResult<BathBuildingRespDTO>>() {
 
                     @Override
                     public void onReady(ApiResult<BathBuildingRespDTO> result) {
                         if (null == result.getError()) {
+                            getMvpView().setTvTitle(result.getData().getBuildingName());
                             getMvpView().refreshBathroom(convertFrom(result.getData()),
                                     result.getData().getMethods(), result.getData().getMissTimes());
                         } else {
@@ -65,21 +66,28 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
             @Override
             public void onReady(ApiResult<BathPreBookingRespDTO> result) {
                 if (null == result.getError()) {
-                    if (result.getData().getBonus() != null) {
-                        getMvpView().gotoBookingView(result.getData().getBalance(),
-                                result.getData().getBonus().getId(), result.getData().getBonus().getDescription(),
-                                result.getData().getBonus().getAmount(), result.getData().getExpiredTime(),
-                                result.getData().getLocation(), result.getData().getMaxMissAbleTimes(),
-                                result.getData().getMinPrepay(), result.getData().getMissedTimes(),
-                                result.getData().getPrepay() , result.getData().getReservedTime());
-                    }else{
-                        getMvpView().gotoBookingView(result.getData().getBalance(),
-                                null, null,
-                                null, result.getData().getExpiredTime(),
-                                result.getData().getLocation(), result.getData().getMaxMissAbleTimes(),
-                                result.getData().getMinPrepay(), result.getData().getMissedTimes(),
-                                result.getData().getPrepay() ,result.getData().getReservedTime());
-                    }
+
+                    getMvpView().gotoBookingView(result.getData().getBalance(),
+                            null, null,
+                            null, null,
+                            result.getData().getLocation(), result.getData().getMaxMissAbleTimes(),
+                            result.getData().getMinPrepay(), result.getData().getMissedTimes(),
+                            result.getData().getPrepay() ,result.getData().getReservedMinute());
+//                    if (result.getData().getBonus() != null) {
+//                        getMvpView().gotoBookingView(result.getData().getBalance(),
+//                                result.getData().getBonus().getId(), result.getData().getBonus().getDescription(),
+//                                result.getData().getBonus().getAmount(), result.getData().getExpiredTime(),
+//                                result.getData().getLocation(), result.getData().getMaxMissAbleTimes(),
+//                                result.getData().getMinPrepay(), result.getData().getMissedTimes(),
+//                                result.getData().getPrepay() , result.getData().getReservedTime());
+//                    }else{
+//                        getMvpView().gotoBookingView(result.getData().getBalance(),
+//                                null, null,
+//                                null, result.getData().getExpiredTime(),
+//                                result.getData().getLocation(), result.getData().getMaxMissAbleTimes(),
+//                                result.getData().getMinPrepay(), result.getData().getMissedTimes(),
+//                                result.getData().getPrepay() ,result.getData().getReservedTime());
+//                    }
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }

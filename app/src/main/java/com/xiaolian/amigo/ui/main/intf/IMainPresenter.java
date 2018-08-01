@@ -180,4 +180,9 @@ public interface IMainPresenter<V extends IMainView> extends IBasePresenter<V> {
     void setPushToken(String pushToken);
 
     void routeHeaterOrBathroom();
+
+    /**
+     * 存储room信息
+     */
+    void saveRoomInfo(Long residenceId);
 }

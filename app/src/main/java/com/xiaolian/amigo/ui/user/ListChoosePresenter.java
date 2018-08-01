@@ -9,6 +9,7 @@ import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.enumeration.ResidenceLevel;
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.bathroom.RecordResidenceReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleQueryReqDTO;
 import com.xiaolian.amigo.data.network.model.login.EntireUserDTO;
 import com.xiaolian.amigo.data.network.model.residence.QueryResidenceListReqDTO;
@@ -206,7 +207,7 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
                     if (result.getData().getResidences() != null && result.getData().getResidences().size() > 0) {
                         ArrayList<ListChooseAdaptor.Item> wapper = new ArrayList<>();
                         for (Residence residence : result.getData().getResidences()) {
-                            wapper.add(new ListChooseAdaptor.Item(residence));
+                            wapper.add(new ListChooseAdaptor.Item(residence ));
                         }
                         getMvpView().addMore(wapper);
                     } else {
@@ -229,7 +230,7 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
     public void bindDormitory(Long id, Long residenceId, boolean isEdit, String activitySrc) {
         BindResidenceReq dto = new BindResidenceReq();
         dto.setResidenceId(residenceId);
-        dto.setType(1);
+//        dto.setType(1);
         if (isEdit) {
             dto.setId(id);
         }
@@ -259,4 +260,164 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
             }
         });
     }
+
+    @Override
+    public void updateUser(long residenceId) {
+        PersonalUpdateReqDTO reqDTO = new PersonalUpdateReqDTO();
+        reqDTO.setResidenceId(residenceId);
+        addObserver(userDataManager.updateUserInfo(reqDTO) , new NetworkObserver<ApiResult<EntireUserDTO>>(){
+
+            @Override
+            public void onReady(ApiResult<EntireUserDTO> result) {
+                if (null == result.getError() ){
+                    User user = userDataManager.getUser();
+                    EntireUserDTO entireUserDTO = result.getData();
+                    user.setResidenceId(entireUserDTO.getResidenceId());
+                    user.setResidenceName(entireUserDTO.getResidenceName());
+                    userDataManager.setUser(user);
+                    getMvpView().backToEditProfileActivity(entireUserDTO.getResidenceName());
+                }else{
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+            }
+        });
+    }
+
+    @Override
+    public void queryBathResidenceList(Integer page, Integer size, Integer deviceType) {
+        QueryResidenceListReqDTO reqDTO = new QueryResidenceListReqDTO();
+        reqDTO.setPage(page);
+        reqDTO.setSize(size);
+        if (deviceType == Device.HEATER.getType()) {
+            reqDTO.setBuildingType(BuildingType.DORMITORY.getType());
+        }
+        reqDTO.setDeviceType(deviceType);
+        reqDTO.setSchoolId(userDataManager.getUser().getSchoolId());
+        // residencelevel 1 表示楼栋
+        reqDTO.setResidenceLevel(ResidenceLevel.BUILDING.getType());
+        addObserver(userDataManager.queryBathResidenceList(reqDTO), new NetworkObserver<ApiResult<ResidenceListRespDTO>>() {
+
+            @Override
+            public void onReady(ApiResult<ResidenceListRespDTO> result) {
+                getMvpView().hideEmptyView();
+                if (null == result.getError()) {
+                    if (result.getData().getResidences() != null && result.getData().getResidences().size() > 0) {
+                        ArrayList<ListChooseAdaptor.Item> wapper = new ArrayList<>();
+                        for (Residence residence : result.getData().getResidences()) {
+                            wapper.add(new ListChooseAdaptor.Item(residence));
+                        }
+                        getMvpView().addMore(wapper);
+                    } else {
+                        getMvpView().showEmptyView();
+                    }
+                } else {
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+        });
+    }
+
+    @Override
+    public void getBathFloorList(Integer page, Integer size, Integer deviceType, Long parentId) {
+        QueryResidenceListReqDTO dto = new QueryResidenceListReqDTO();
+        dto.setPage(page);
+        dto.setSize(size);
+        dto.setParentId(parentId);
+        dto.setDeviceType(deviceType);
+        dto.setSchoolId(userDataManager.getUser().getSchoolId());
+        // residencelevel 2 表示楼层
+        dto.setResidenceLevel(ResidenceLevel.FLOOR.getType());
+        addObserver(userDataManager.queryBathResidenceList(dto), new NetworkObserver<ApiResult<ResidenceListRespDTO>>() {
+
+            @Override
+            public void onReady(ApiResult<ResidenceListRespDTO> result) {
+                getMvpView().hideEmptyView();
+                if (null == result.getError()) {
+                    if (result.getData().getResidences() != null && result.getData().getResidences().size() > 0) {
+                        ArrayList<ListChooseAdaptor.Item> wapper = new ArrayList<>();
+                        for (Residence residence : result.getData().getResidences()) {
+                            wapper.add(new ListChooseAdaptor.Item(residence));
+                        }
+                        getMvpView().addMore(wapper);
+                    } else {
+                        getMvpView().showEmptyView();
+                    }
+                } else {
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+        });
+    }
+
+    @Override
+    public void getBathroomList(Integer page, Integer size, Integer deviceType, Long parentId, boolean existDevice) {
+        QueryResidenceListReqDTO dto = new QueryResidenceListReqDTO();
+        dto.setPage(page);
+        dto.setSize(size);
+        dto.setExistDevice(existDevice);
+        dto.setDeviceType(deviceType);
+        dto.setParentId(parentId);
+        dto.setSchoolId(userDataManager.getUser().getSchoolId());
+        // residencelevel 3 表示宿舍
+        dto.setResidenceLevel(ResidenceLevel.ROOM.getType());
+        addObserver(userDataManager.queryBathResidenceList(dto), new NetworkObserver<ApiResult<ResidenceListRespDTO>>() {
+
+            @Override
+            public void onReady(ApiResult<ResidenceListRespDTO> result) {
+                getMvpView().hideEmptyView();
+                if (null == result.getError()) {
+                    if (result.getData().getResidences() != null && result.getData().getResidences().size() > 0) {
+                        ArrayList<ListChooseAdaptor.Item> wapper = new ArrayList<>();
+                        for (Residence residence : result.getData().getResidences()) {
+                            wapper.add(new ListChooseAdaptor.Item(residence));
+                        }
+                        getMvpView().addMore(wapper);
+                    } else {
+                        getMvpView().showEmptyView();
+                    }
+                } else {
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+        });
+    }
+
+    @Override
+    public void recordBath(long residenceId, int bathType , Long id) {
+        RecordResidenceReqDTO reqDTO = new RecordResidenceReqDTO();
+        reqDTO.setResidenceId(residenceId);
+        reqDTO.setBathType(bathType);
+        reqDTO.setId(id);
+        addObserver(userDataManager.recordBath(reqDTO) , new NetworkObserver<ApiResult<UserResidenceInListDTO>>(){
+            @Override
+            public void onReady(ApiResult<UserResidenceInListDTO> result) {
+                if (null == result.getError()){
+                    UserResidenceInListDTO dto = result.getData();
+                    userDataManager.getUser().setRoomId(residenceId);
+                    if (dto.isPubBath()){
+                        getMvpView().startBathroom(dto);
+                    }else{
+                        getMvpView().startShower(dto);
+                    }
+                }else{
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+        });
+    }
+
+    @Override
+    public boolean isStartBathroom(ListChooseAdaptor.Item residence) {
+        if (residence.isAllBaths()){
+            recordBath(residence.getId() ,2 ,null);
+            return false ;
+        }
+        return true ;
+    }
+
 }

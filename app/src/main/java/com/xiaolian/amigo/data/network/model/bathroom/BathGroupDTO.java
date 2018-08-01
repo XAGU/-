@@ -15,5 +15,6 @@ public class BathGroupDTO {
      * 客户端显示名称  楼层+ groupName（如果只有一条则只有楼层名）
      */
     private String displayName;
+    private long groupId ;
     private List<BathRoomDTO> bathRooms;
 }

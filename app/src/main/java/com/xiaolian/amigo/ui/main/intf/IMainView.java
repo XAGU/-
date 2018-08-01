@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.main.intf;
 
 import com.xiaolian.amigo.data.enumeration.Device;
+import com.xiaolian.amigo.data.network.model.bathroom.BathRouteRespDTO;
 import com.xiaolian.amigo.data.network.model.system.BannerDTO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.user.PersonalExtraInfoDTO;
@@ -137,10 +138,16 @@ public interface IMainView extends IBaseView {
     /**
      * 路由到宿舍
      */
-    void routeToRoomShower();
+    void routeToRoomShower(BathRouteRespDTO dto);
 
     /**
      * 路由到公共浴室
      */
-    void routeToBathroomShower();
+    void routeToBathroomShower(BathRouteRespDTO dto);
+
+
+    /**
+     * 洗澡地址为空时,选择洗澡地址
+     */
+    void choseBathroomAddress();
 }

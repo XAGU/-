@@ -32,4 +32,15 @@
     <dimen name="listBottomMargin">10dp</dimen>
     <dimen name="sp15">15sp</dimen>
     <dimen name="sp12">12sp</dimen>
+    
+    
+    <!--common-->
+    <!--纯文字-->
+    <dimen name="text">16sp</dimen>
+
+    <!--文字和数字一起中的数字-->
+    <dimen name="numberInNumberAndText">16sp</dimen>
+
+    <!--文字和数字一起种的数字-->
+    <dimen name="TextInNumberAndText">14sp</dimen>
 </resources>

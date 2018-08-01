@@ -2,7 +2,9 @@ package com.xiaolian.amigo.data.manager.intf;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.bathroom.BathPasswordUpdateReqDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.RecordResidenceReqDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
+import com.xiaolian.amigo.data.network.model.common.EmptyRespDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleQueryReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
@@ -101,7 +103,8 @@ public interface IUserDataManager {
     /**
      * 用户绑定的寝室列表
      */
-    Observable<ApiResult<QueryUserResidenceListRespDTO>> queryUserResidenceList(@Body SimpleQueryReqDTO body);
+    @Deprecated
+    Observable<ApiResult<QueryUserResidenceListRespDTO>> queryUserResidenceList();
 
     /**
      * 用户删除绑定寝室
@@ -117,6 +120,7 @@ public interface IUserDataManager {
     /**
      * 用户绑定编辑寝室
      */
+    @Deprecated
     Observable<ApiResult<UserResidenceInListDTO>> bindResidence(@Body BindResidenceReq body);
 
     /**
@@ -164,4 +168,40 @@ public interface IUserDataManager {
      * @return
      */
     List<String> getBathroomPasswordDesc();
+
+    /**
+     * 获取公共浴室地址列表
+     * @return
+     */
+    Observable<ApiResult<QueryUserResidenceListRespDTO>> bathList(@Body EmptyRespDTO dto);
+
+
+    /**
+     * 获取洗澡地址
+     * @param body
+     * @return
+     */
+    Observable<ApiResult<ResidenceListRespDTO>> queryBathResidenceList(@Body QueryResidenceListReqDTO body);
+
+    /**
+     * 记录洗澡地址
+     * @param reqDTO
+     * @return
+     */
+    Observable<ApiResult<UserResidenceInListDTO>> recordBath(@Body RecordResidenceReqDTO reqDTO);
+
+    /**
+     * 删除洗澡地址记录
+     * @param dto
+     * @return
+     */
+    Observable<ApiResult<DeleteResidenceRespDTO>>  deleteBathRecord(@Body SimpleReqDTO dto);
+
+
+    /**
+     * 更新默认洗澡地址
+     * @param dto
+     * @return
+     */
+    Observable<ApiResult<BooleanRespDTO>>  updateNormalBathroom(@Body SimpleReqDTO dto);
 }

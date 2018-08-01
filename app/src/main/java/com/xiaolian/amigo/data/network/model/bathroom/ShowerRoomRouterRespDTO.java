@@ -6,6 +6,7 @@ import lombok.Data;
  * @author zcd
  * @date 18/7/17
  */
+@Deprecated
 @Data
 public class ShowerRoomRouterRespDTO {
     private String macAddress;

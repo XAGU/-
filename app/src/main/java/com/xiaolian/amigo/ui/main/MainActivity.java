@@ -1,6 +1,5 @@
 package com.xiaolian.amigo.ui.main;
 
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -40,6 +39,7 @@ import com.xiaolian.amigo.data.enumeration.DispenserWater;
 import com.xiaolian.amigo.data.enumeration.IntentAction;
 import com.xiaolian.amigo.data.enumeration.Orientation;
 import com.xiaolian.amigo.data.enumeration.UserResidenceType;
+import com.xiaolian.amigo.data.network.model.bathroom.BathRouteRespDTO;
 import com.xiaolian.amigo.data.network.model.system.BannerDTO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.order.OrderPreInfoDTO;
@@ -103,6 +103,10 @@ import lombok.Data;
 import static com.xiaolian.amigo.data.enumeration.Device.DISPENSER;
 import static com.xiaolian.amigo.data.enumeration.Device.DRYER;
 import static com.xiaolian.amigo.data.enumeration.Device.HEATER;
+import static com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity.KEY_BUILDING_ID;
+import static com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity.KEY_ID;
+import static com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity.KEY_RESIDENCE_ID;
+import static com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity.KEY_RESIDENCE_TYPE;
 import static com.xiaolian.amigo.util.Log.getContext;
 
 /**
@@ -1162,25 +1166,49 @@ public class MainActivity extends MainBaseActivity implements IMainView {
      */
     public void gotoHeater() {
         Log.d(TAG, "gotoHeater");
-//        routeToRoomShower();
-//<<<<<<< HEAD
-//        routeToBathroomShower();
         presenter.routeHeaterOrBathroom();
-//=======
-//        routeToBathroomShower();
-//        presenter.routeHeaterOrBathroom();
-//>>>>>>> 102fc11a63b9cd8c1fd245e9d85da699b9f0ca2e
     }
 
     @Override
-    public void routeToRoomShower() {
+    public void routeToRoomShower(BathRouteRespDTO dto) {
         setBleCallback(() -> checkDeviceUsage(HEATER));
         getBlePermission();
     }
 
     @Override
-    public void routeToBathroomShower() {
-        startActivity(new Intent(this, ChooseBathroomActivity.class));
+    public void routeToBathroomShower(BathRouteRespDTO dto) {
+        startActivity(new Intent(this, ChooseBathroomActivity.class)
+        .putExtra(KEY_BUILDING_ID ,dto.getBuildingId())
+        .putExtra(KEY_RESIDENCE_TYPE , dto.getResidenceType() )
+        .putExtra(KEY_RESIDENCE_ID ,dto.getResidenceId()));
+    }
+
+    @Override
+    public void choseBathroomAddress() {
+        Log.d(TAG, "showBindDormitoryDialog");
+        if (null == availabilityDialog) {
+            availabilityDialog = new AvailabilityDialog(this);
+        }
+        if (availabilityDialog.isShowing()
+                && availabilityDialog.getType() == AvailabilityDialog.Type.BIND_DORMITORY) {
+            return;
+        }
+        availabilityDialog.setType(AvailabilityDialog.Type.BIND_DORMITORY);
+        availabilityDialog.setOkText("前往绑定");
+        availabilityDialog.setTitle(AvailabilityDialog.Type.BIND_DORMITORY.getTitle());
+        availabilityDialog.setTip("热水澡需要先绑定洗澡地址");
+        availabilityDialog.setOnOkClickListener(dialog1 -> {
+            Intent intent;
+            intent = new Intent(this, ListChooseActivity.class);
+            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
+            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION,
+                    ListChooseActivity.ACTION_LIST_BUILDING);
+            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_SRC_ACTIVITY, Constant.MAIN_ACTIVITY_BATHROOM_SRC);
+            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_DEVICE_TYPE, Device.HEATER.getType());
+            startActivity(intent);
+        });
+        availabilityDialog.show();
+//        startActivity(new Intent(this , ListChooseActivity.class));
     }
 
     /**

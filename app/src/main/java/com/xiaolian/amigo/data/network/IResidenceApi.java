@@ -22,4 +22,13 @@ public interface IResidenceApi {
      */
     @POST("residence/list")
     Observable<ApiResult<ResidenceListRespDTO>> queryResidenceList(@Body QueryResidenceListReqDTO body);
+
+    /**
+     * 获取公共浴室列表
+     * residenceLevel 1幢 2楼层 3宿舍 具体位置 buildingType 1宿舍楼 parentId上一层事物Id
+     */
+    @POST("residence/bath/list")
+    Observable<ApiResult<ResidenceListRespDTO>> queryBathResidenceList(@Body QueryResidenceListReqDTO body);
+
+
 }

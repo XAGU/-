@@ -11,14 +11,17 @@ import com.xiaolian.amigo.data.network.model.bathroom.BathOrderRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathPasswordUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathPreBookingRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathRoomReqDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.BathRouteRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.CreateBathOrderRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.QueryBathOrderListReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.QueryBathOrderListRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.ShowerRoomRouterRespDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
+import com.xiaolian.amigo.data.network.model.common.EmptyRespDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
 import com.xiaolian.amigo.data.network.model.login.VerificationCodeCheckReqDTO;
+import com.xiaolian.amigo.data.network.model.user.QueryUserResidenceListRespDTO;
 
 import retrofit2.http.Body;
 import retrofit2.http.POST;
@@ -36,7 +39,7 @@ public interface IBathroomApi {
      * 获取当前楼栋的浴室房间信息
      */
     @POST("bath/room/tree")
-    Observable<ApiResult<BathBuildingRespDTO>> list(@Body SimpleReqDTO reqDTO);
+    Observable<ApiResult<BathBuildingRespDTO>> tree(@Body SimpleReqDTO reqDTO);
 
     /**
      * 预约设备
@@ -72,7 +75,7 @@ public interface IBathroomApi {
      * 根据当前登录用户所在学校配置，以及用户上次洗澡的习惯，决定路由到"宿舍热水澡模块"、还是"公共浴室模块"
      */
     @POST("bath/room/route")
-    Observable<ApiResult<ShowerRoomRouterRespDTO>> route();
+    Observable<ApiResult<BathRouteRespDTO>> route();
 
     /**
      * 该方法用于锁定指定设备,以及返回预付信息和红包信息，用户余额，设备详细位置，失约次数，支付过期时间等
@@ -122,5 +125,8 @@ public interface IBathroomApi {
      */
     @POST("bath/trade/unlock")
     Observable<ApiResult<BooleanRespDTO>> unlock(@Body BathRoomReqDTO reqDTO);
+
+
+
 
 }

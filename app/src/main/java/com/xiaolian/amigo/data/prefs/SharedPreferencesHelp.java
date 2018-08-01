@@ -9,6 +9,7 @@ import com.google.gson.reflect.TypeToken;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
 import com.xiaolian.amigo.data.network.model.user.UploadUserDeviceInfoReqDTO;
 import com.xiaolian.amigo.data.vo.DeviceCategory;
+import com.xiaolian.amigo.data.vo.NormalBathroom;
 import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.di.ApplicationContext;
 import com.xiaolian.blelib.BluetoothConstants;
@@ -82,6 +83,7 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
      */
     private static final String PREF_KEY_BATH_ROOM_PASSWORD_DESC = "PREF_KEY_BATH_ROOM_PASSWORD_DESC";
 
+
     private String tokenHolder;
     private String deviceTokenHolder;
     private User userHolder;
@@ -97,6 +99,7 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     private boolean transfer;
     // 推送token
     private String pushToken;
+
 
     @Inject
     public SharedPreferencesHelp(@ApplicationContext Context context, Gson gson) {
@@ -509,6 +512,16 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
                     new TypeToken<List<String>>() {
                     }.getType());
         }
+        return null;
+    }
+
+    @Override
+    public void setNormalBathroom(NormalBathroom normalBathroom) {
+
+    }
+
+    @Override
+    public NormalBathroom getNormalBathroom() {
         return null;
     }
 

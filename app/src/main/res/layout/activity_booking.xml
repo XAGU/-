@@ -182,12 +182,14 @@
                     android:gravity="center"
                     android:text="@string/consumer_bill"
                     android:textColor="#45b0ff"
+                    android:visibility="gone"
                     android:textSize="12sp"
                     android:textStyle="bold" />
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
+                    android:visibility="gone"
                     android:background="#eee" />
 
                 <TextView

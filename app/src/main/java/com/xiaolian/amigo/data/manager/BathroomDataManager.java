@@ -11,6 +11,7 @@ import com.xiaolian.amigo.data.network.model.bathroom.BathOrderReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathOrderRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathPreBookingRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathRoomReqDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.BathRouteRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.CreateBathOrderRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.QueryBathOrderListReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.QueryBathOrderListRespDTO;
@@ -41,13 +42,14 @@ public class BathroomDataManager implements IBathroomDataManager {
         this.iSharedPreferencesHelp = iSharedPreferencesHelp ;
     }
 
+
     @Override
-    public Observable<ApiResult<BathBuildingRespDTO>> list(SimpleReqDTO reqDTO) {
-        return bathroomApi.list(reqDTO);
+    public Observable<ApiResult<BathBuildingRespDTO>> tree(SimpleReqDTO reqDTO) {
+        return bathroomApi.tree(reqDTO);
     }
 
     @Override
-    public Observable<ApiResult<ShowerRoomRouterRespDTO>> route() {
+    public Observable<ApiResult<BathRouteRespDTO>> route() {
         return bathroomApi.route();
     }
 

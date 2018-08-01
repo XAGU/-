@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.user.intf;
 
 import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
+import com.xiaolian.amigo.ui.user.adaptor.ListChooseAdaptor;
 
 /**
  * 列表选择页
@@ -81,4 +82,60 @@ public interface IListChoosePresenter<V extends IListChooseView> extends IBasePr
      * @param activitySrc 来源activity
      */
     void bindDormitory(Long id, Long residenceId, boolean isEdit, String activitySrc);
+
+
+    /**
+     * 更新宿舍信息
+     * @param residenceId  位置id
+     */
+    void updateUser(long residenceId);
+
+
+
+    /**
+     * 获取建筑物列表
+     *
+     * @param page       页数
+     * @param size       每页个数
+     * @param deviceType 设备类型
+     */
+    void queryBathResidenceList(Integer page, Integer size, Integer deviceType);
+
+
+    /**
+     * 获取楼层列表
+     *
+     * @param page       页数
+     * @param size       每页个数
+     * @param deviceType 设备类型
+     * @param parentId   父id
+     */
+    void getBathFloorList(Integer page, Integer size, Integer deviceType, Long parentId);
+
+
+    /**
+     * 获取公共浴室列表
+     *
+     * @param page        页数
+     * @param size        每页个数
+     * @param deviceType  设备类型
+     * @param parentId    父id
+     * @param existDevice 是否存在设备
+     */
+    void getBathroomList(Integer page, Integer size, Integer deviceType, Long parentId, boolean existDevice);
+
+    /**
+     *  用户记录洗澡地址
+     *  @param residenceId  公共浴室位置
+     *  @param bathType  1、宿舍 ， 2 、公共浴室
+     */
+    void recordBath(long residenceId ,int bathType ,Long id);
+
+
+    /**
+     * 只要allBaths 为true  ， 就跳转到公共浴室
+     * @param residence
+     */
+    boolean isStartBathroom(ListChooseAdaptor.Item residence);
+
 }

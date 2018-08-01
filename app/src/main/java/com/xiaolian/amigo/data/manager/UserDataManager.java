@@ -12,7 +12,9 @@ import com.xiaolian.amigo.data.network.ISchoolApi;
 import com.xiaolian.amigo.data.network.IUserApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.bathroom.BathPasswordUpdateReqDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.RecordResidenceReqDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
+import com.xiaolian.amigo.data.network.model.common.EmptyRespDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleQueryReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
@@ -127,8 +129,13 @@ public class UserDataManager implements IUserDataManager {
     public Observable<ApiResult<BooleanRespDTO>> getVerifyCode(VerificationCodeGetReqDTO body) {
         return loginApi.getVerification(body);
     }
-
+    @Deprecated
     @Override
+    public Observable<ApiResult<QueryUserResidenceListRespDTO>> queryUserResidenceList() {
+        return userApi.queryUserResidenceList(new SimpleQueryReqDTO());
+    }
+
+//    @Override
     public Observable<ApiResult<QueryUserResidenceListRespDTO>> queryUserResidenceList(@Body SimpleQueryReqDTO body) {
         return userApi.queryUserResidenceList(body);
     }
@@ -143,6 +150,7 @@ public class UserDataManager implements IUserDataManager {
         return residenceApi.queryResidenceList(body);
     }
 
+    @Deprecated
     @Override
     public Observable<ApiResult<UserResidenceInListDTO>> bindResidence(@Body BindResidenceReq body) {
         return userApi.bindResidence(body);
@@ -196,6 +204,32 @@ public class UserDataManager implements IUserDataManager {
     @Override
     public List<String> getBathroomPasswordDesc() {
         return sharedPreferencesHelp.getBathPasswordDescription();
+    }
+
+
+    @Override
+    public Observable<ApiResult<QueryUserResidenceListRespDTO>> bathList(EmptyRespDTO dto) {
+        return userApi.bathList(dto);
+    }
+
+    @Override
+    public Observable<ApiResult<ResidenceListRespDTO>> queryBathResidenceList(QueryResidenceListReqDTO body) {
+        return residenceApi.queryBathResidenceList(body);
+    }
+
+    @Override
+    public Observable<ApiResult<UserResidenceInListDTO>> recordBath(RecordResidenceReqDTO reqDTO) {
+        return userApi.recordBath(reqDTO);
+    }
+
+    @Override
+    public Observable<ApiResult<DeleteResidenceRespDTO>> deleteBathRecord(SimpleReqDTO dto) {
+        return userApi.deleteBathRecord(dto);
+    }
+
+    @Override
+    public Observable<ApiResult<BooleanRespDTO>> updateNormalBathroom(SimpleReqDTO dto) {
+        return userApi.updateNormalBathroom(dto);
     }
 
     @Override

@@ -134,6 +134,10 @@ public final class Constant {
     public static final String EDIT_PROFILE_ACTIVITY_SRC = "edit_profile";
     public static final String MAIN_ACTIVITY_SRC = "main_activity";
     public static final String USER_INFO_ACTIVITY_SRC = "user_info";
+    public static final String MAIN_ACTIVITY_BATHROOM_SRC = "main_activity_bathroom_src";  //  公共浴室方式
+    public static final String ADD_BATHROOM_SRC = "add_bathroom_src" ;  //  新增公共浴室
+
+
     /**
      * 位置
      */

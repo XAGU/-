@@ -35,12 +35,14 @@ public class ChooseDormitoryPresenter<V extends IChooseDormitoryView> extends Ba
         this.userDataManager = userDataManager;
     }
 
+
+    @Deprecated
     @Override
     public void queryDormitoryList(int page, int size) {
         SimpleQueryReqDTO dto = new SimpleQueryReqDTO();
         dto.setPage(page);
         dto.setSize(size);
-        addObserver(userDataManager.queryUserResidenceList(dto), new NetworkObserver<ApiResult<QueryUserResidenceListRespDTO>>(false, true) {
+        addObserver(userDataManager.queryUserResidenceList(), new NetworkObserver<ApiResult<QueryUserResidenceListRespDTO>>(false, true) {
 
             @Override
             public void onReady(ApiResult<QueryUserResidenceListRespDTO> result) {
@@ -52,9 +54,9 @@ public class ChooseDormitoryPresenter<V extends IChooseDormitoryView> extends Ba
                     if (result.getData().getUserResidences() != null && result.getData().getUserResidences().size() > 0) {
                         List<EditDormitoryAdaptor.UserResidenceWrapper> wrappers = new ArrayList<>();
                         for (UserResidenceInListDTO userResidence : result.getData().getUserResidences()) {
-                            wrappers.add(new EditDormitoryAdaptor.UserResidenceWrapper(userResidence.transform(),
-                                    ObjectsCompat.equals(userResidence.getResidenceId(),
-                                            userDataManager.getUser().getResidenceId())));
+//                            wrappers.add(new EditDormitoryAdaptor.UserResidenceWrapper(userResidence.transform(),
+//                                    ObjectsCompat.equals(userResidence.getResidenceId(),
+//                                            userDataManager.getUser().getResidenceId())));
                         }
                         getMvpView().addMore(wrappers);
                         getMvpView().addPage();

@@ -76,8 +76,17 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
         getActivityComponent().inject(this);
         presenter.onAttach(this);
         initIntent();
-        setTopTip();
+        initTopTip();
         referBooking();
+    }
+
+    /**
+     * 初始化失约提示,有失约记录时才显示失约提示
+     */
+    private void initTopTip(){
+        if (missedTimes >0){
+            setTopTip();
+        }
     }
 
     /**
@@ -155,14 +164,14 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
 
     @Override
     protected void setToolbarSubTitle(TextView textView) {
-        textView.setText("预约记录");
-        textView.setOnClickListener(v -> onSubtitleClick());
+        textView.setText("");
+//        textView.setOnClickListener(v -> onSubtitleClick());
     }
 
     @Override
     protected void setSubTitle(TextView textView) {
-        textView.setText("预约记录");
-        textView.setOnClickListener(v -> onSubtitleClick());
+        textView.setText("");
+//        textView.setOnClickListener(v -> onSubtitleClick());
     }
 
     @Override
@@ -177,7 +186,7 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
 
     @Override
     protected String getButtonText() {
-        return "，确认预约";
+        return "确认预约";
     }
 
     private void showBookingDialog() {
@@ -189,9 +198,9 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
 
 
 
-    private void onSubtitleClick() {
-        startActivity(new Intent(this, BookingRecordActivity.class));
-    }
+//    private void onSubtitleClick() {
+//        startActivity(new Intent(this, BookingRecordActivity.class));
+//    }
 
     @Override
     public void bookingSuccess(BathOrderRespDTO data) {
@@ -277,8 +286,6 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
 
     }
 
-
-
     @Override
     public void setBookingCountDownTime(String time) {
         TextView textView = statusView.getRightText();
@@ -296,19 +303,19 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
 
     @Override
     public void reschedule(BathPreBookingRespDTO respDTO) {
-          if (respDTO.getBonus() != null){
-              bonusId = respDTO.getBonus().getId();
-              bonusDesc = respDTO.getBonus().getDescription();
-              bonusAmount = respDTO.getBonus().getAmount();
-          }
+//          if (respDTO.getBonus() != null){
+//              bonusId = respDTO.getBonus().getId();
+//              bonusDesc = respDTO.getBonus().getDescription();
+//              bonusAmount = respDTO.getBonus().getAmount();
+//          }
           balance = respDTO.getBalance();
           minPrepay = respDTO.getMinPrepay();
           prepay = respDTO.getPrepay();
           location = respDTO.getLocation();
-          expiredTime = respDTO.getExpiredTime();
+//          expiredTime = respDTO.getExpiredTime();
           missedTimes = respDTO.getMissedTimes();
           maxMissAbleTimes = respDTO.getMaxMissAbleTimes();
-          reservedTime = respDTO.getReservedTime();
+          reservedTime = respDTO.getReservedMinute();
           referBooking();
     }
 

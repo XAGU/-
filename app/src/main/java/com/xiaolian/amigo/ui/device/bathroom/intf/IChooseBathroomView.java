@@ -31,4 +31,16 @@ public interface IChooseBathroomView extends IBaseView {
      * 隐藏动画
      */
     void hideBathroomDialog();
+
+    /**
+     * 设置标题名字
+     * @param name
+     */
+    void setTvTitle(String name);
+
+    /**
+     * 设置button字体
+     * @param text
+     */
+    void setBtnText(String text);
 }

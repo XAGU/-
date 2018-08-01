@@ -5,10 +5,9 @@ import android.text.TextUtils;
 
 import com.xiaolian.amigo.data.base.LogInterceptor;
 import com.xiaolian.amigo.data.enumeration.Device;
-import com.xiaolian.amigo.data.enumeration.UserResidenceType;
 import com.xiaolian.amigo.data.manager.intf.IMainDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.bathroom.ShowerRoomRouterRespDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.BathRouteRespDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCheckRespDTO;
@@ -390,27 +389,37 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
         mainDataManager.setPushToken(pushToken);
     }
 
+
+
     @Override
     public void routeHeaterOrBathroom() {
         // 测试
-//        getMvpView().routeToBathroomShower();
-          getMvpView().routeToRoomShower();
-//        addObserver(mainDataManager.route(), new NetworkObserver<ApiResult<ShowerRoomRouterRespDTO>>() {
-//
-//            @Override
-//            public void onReady(ApiResult<ShowerRoomRouterRespDTO> result) {
-//                if (null == result.getError()) {
-//                    if (UserResidenceType.ROOM == UserResidenceType.getUserResidenceType(result.getData().getUserResidenceType())) {
-////                        getMvpView().routeToRoomShower();
+        addObserver(mainDataManager.route(), new NetworkObserver<ApiResult<BathRouteRespDTO>>() {
+
+            @Override
+            public void onReady(ApiResult<BathRouteRespDTO> result) {
+                if (null == result.getError()) {
+                    if (!result.getData().isExistHistory()) {
+                            getMvpView().choseBathroomAddress();
+                    }else {
+                        saveRoomInfo(result.getData().getResidenceId());
+                        if (result.getData().isIsPubBath()) {
+                            getMvpView().routeToBathroomShower(result.getData());
+                        } else {
+                            getMvpView().routeToRoomShower(result.getData());
 //                        getMvpView().routeToBathroomShower();
-//                    } else {
-//                        getMvpView().routeToBathroomShower();
-//                    }
-//                } else {
-//                    getMvpView().onError(result.getError().getDisplayMessage());
-//                }
-//            }
-//        });
+                        }
+                    }
+                } else {
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+        });
+    }
+
+    @Override
+    public void saveRoomInfo(Long residenceId) {
+        getUserInfo().setRoomId(residenceId);
     }
 
     private boolean isDeviceInfoUploaded(UploadUserDeviceInfoReqDTO newReq,
