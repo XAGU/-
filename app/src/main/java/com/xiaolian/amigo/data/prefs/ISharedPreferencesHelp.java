@@ -175,4 +175,8 @@ public interface ISharedPreferencesHelp {
      * @return
      */
     NormalBathroom getNormalBathroom();
+
+    void setBathroomPassword(String password);
+
+    String getBathroomPassword();
 }

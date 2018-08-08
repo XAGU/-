@@ -38,7 +38,7 @@ public class BookingRecordPresenter<V extends IBookingRecordView> extends BasePr
         QueryBathOrderListReqDTO reqDTO = new QueryBathOrderListReqDTO();
         reqDTO.setPage(page);
         reqDTO.setSize(pageSize);
-        reqDTO.setType(BathTradeType.BOOKING.getCode());
+        reqDTO.setType(BathTradeType.BOOKING_DEVICE.getCode());
         reqDTO.setUserId(bathroomDataManager.getUserId());
         addObserver(bathroomDataManager.getOrderRecordList(reqDTO) , new NetworkObserver<ApiResult<QueryBathOrderListRespDTO>>(){
 

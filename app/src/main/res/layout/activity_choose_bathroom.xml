@@ -196,6 +196,7 @@
         android:textStyle="bold"
         android:text="@string/preBathWithAnyEmptyBath"
         tools:text="预约洗澡（任意空浴室）"
+        android:stateListAnimator="@null"
         android:layout_alignParentBottom="true"
         />
 

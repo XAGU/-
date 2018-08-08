@@ -13,6 +13,12 @@ import java.util.List;
 
 import lombok.Data;
 
+import static com.xiaolian.amigo.util.Constant.AVAILABLE;
+import static com.xiaolian.amigo.util.Constant.BATH_USING;
+import static com.xiaolian.amigo.util.Constant.ERROR;
+import static com.xiaolian.amigo.util.Constant.NONE;
+import static com.xiaolian.amigo.util.Constant.USING;
+
 /**
  * @author zcd
  * @date 18/6/27
@@ -27,6 +33,8 @@ public class ChooseBathroomAdapter extends CommonAdapter<ChooseBathroomAdapter.B
         this.listener = listener;
     }
 
+
+
     @Override
     protected void convert(ViewHolder holder, BathroomWrapper itemWrapper, int position) {
         holder.getConvertView().setOnClickListener(new View.OnClickListener() {
@@ -37,7 +45,7 @@ public class ChooseBathroomAdapter extends CommonAdapter<ChooseBathroomAdapter.B
                 }
             }
         });
-        if (itemWrapper.getStatus() == BathroomStatus.NONE) {
+        if (itemWrapper.getStatus() == NONE) {
             holder.getConvertView().setVisibility(View.GONE);
             return;
         }
@@ -55,7 +63,7 @@ public class ChooseBathroomAdapter extends CommonAdapter<ChooseBathroomAdapter.B
                 holder.setBackgroundRes(R.id.ll_inner, R.drawable.bg_bathroom_item_error);
                 holder.getView(R.id.tv_content).setVisibility(View.GONE);
                 break;
-            case USING:
+            case BATH_USING:
                 holder.setBackgroundRes(R.id.ll_inner, R.drawable.bg_bathroom_item_using);
                 holder.getView(R.id.tv_content).setVisibility(View.GONE);
                 break;
@@ -87,41 +95,16 @@ public class ChooseBathroomAdapter extends CommonAdapter<ChooseBathroomAdapter.B
     public static final class BathroomWrapper {
         private Long id;
         private String deviceNo;
-        private BathroomStatus status;
+        private int status;
         private boolean selected = false;
 
 
-        public BathroomWrapper(String name, BathroomStatus status) {
+        public BathroomWrapper(String name, int status) {
             this.deviceNo = name;
             this.status = status;
         }
     }
 
-    public enum BathroomStatus {
-        NONE(0),
-        AVAILABLE(1),
-        USING(2),
-        ERROR(3);
-
-        BathroomStatus(int code) {
-            this.code = code;
-        }
-
-        private int code;
-
-        public int getCode() {
-            return code;
-        }
-
-        public static BathroomStatus getStatus(int code) {
-            for (BathroomStatus status : BathroomStatus.values()) {
-                if (ObjectsCompat.equals(status.getCode(), code)) {
-                    return status;
-                }
-            }
-            return null;
-        }
-    }
 
     public interface BathroomSelectListener {
         void onBathroomSelected(int bathroomPosition);

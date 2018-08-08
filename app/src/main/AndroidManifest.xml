@@ -323,6 +323,10 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTop"
             >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <!--公共澡堂扫一扫使用-->
@@ -395,6 +399,11 @@
         <!--图片浏览-->
         <activity
             android:name=".ui.widget.photoview.AlbumItemActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+
+        <activity android:name=".ui.device.bathroom.BathOrderActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
@@ -563,6 +572,17 @@
             android:theme="@style/AppTheme.NoActionBar"
             />
 
+        <!--公共浴室的洗热水澡界面-->
+        <activity android:name=".ui.device.bathroom.BathroomHeaterActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+
         <!--更新窗口-->
         <activity
             android:name=".ui.main.update.UpdateActivity"
@@ -609,10 +629,10 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
         </activity>
 
         <!--选择设备类型-->

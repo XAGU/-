@@ -185,4 +185,11 @@ public interface IMainPresenter<V extends IMainView> extends IBasePresenter<V> {
      * 存储room信息
      */
     void saveRoomInfo(Long residenceId);
+
+    /**
+     * 获取上一个订单状态
+     */
+    void currentOrder();
+
+    void getUser();
 }

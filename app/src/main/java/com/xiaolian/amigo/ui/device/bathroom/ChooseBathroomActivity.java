@@ -17,11 +17,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.data.enumeration.BathroomMethodStatus;
 import com.xiaolian.amigo.data.network.model.bathroom.BathOrderPreconditionRespDTO;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IChooseBathroomPresenter;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IChooseBathroomView;
 import com.xiaolian.amigo.ui.user.EditDormitoryActivity;
+import com.xiaolian.amigo.ui.user.FindBathroomPasswordActivity;
 import com.xiaolian.amigo.ui.widget.ZoomRecyclerView;
 import com.xiaolian.amigo.ui.widget.dialog.BathroomBookingDialog;
 
@@ -47,8 +47,12 @@ import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_MISSED_
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_ORDER_PRECONDITION;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_PREPAY;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_RESERVEDTIME;
-import static com.xiaolian.amigo.util.Constant.BOOKING;
-import static com.xiaolian.amigo.util.Constant.BUY_CODE;
+import static com.xiaolian.amigo.ui.device.bathroom.BathroomHeaterActivity.KEY_BATH_ORDER_ID;
+import static com.xiaolian.amigo.util.Constant.AVAILABLE;
+import static com.xiaolian.amigo.util.Constant.BATH_USING;
+import static com.xiaolian.amigo.util.Constant.ERROR;
+import static com.xiaolian.amigo.util.Constant.NONE;
+import static com.xiaolian.amigo.util.Constant.USING_STATUS;
 
 /**
  * 选择浴室
@@ -161,12 +165,12 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
     }
 
     private void initRecyclerView() {
-//        setMockData(bathGroups);
+        setMockData(bathGroups);
         outerAdapter = new ChooseBathroomOuterAdapter(this, R.layout.item_choose_bathroom_outer, bathGroups,
                 (groupPosition, bathroomPosition) -> {
                     onSuccess(groupPosition + " " + bathroomPosition);
                     if (bathGroups.get(groupPosition).getBathGroups().get(bathroomPosition).getStatus()
-                            != ChooseBathroomAdapter.BathroomStatus.AVAILABLE) {
+                            != AVAILABLE) {
                         if (lastSelectedGroupPosition != -1 && lastSelectedRoomPosition != -1) {
                             bathGroups.get(lastSelectedGroupPosition).getBathGroups().get(lastSelectedRoomPosition).setSelected(false);
                         }
@@ -216,7 +220,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
                 return false;
             }
         });
-        presenter.getBathroomList(buildId);
+//        presenter.getBathroomList(buildId);
         showBathroomDialog();
         presenter.precondition();
     }
@@ -294,102 +298,102 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
 
     private void setMockData(List<ChooseBathroomOuterAdapter.BathGroupWrapper> bathGroups) {
         List<ChooseBathroomAdapter.BathroomWrapper> inner1 = new ArrayList<>();
-        inner1.add(new ChooseBathroomAdapter.BathroomWrapper("101", ChooseBathroomAdapter.BathroomStatus.NONE));
-        inner1.add(new ChooseBathroomAdapter.BathroomWrapper("102", ChooseBathroomAdapter.BathroomStatus.AVAILABLE));
-        inner1.add(new ChooseBathroomAdapter.BathroomWrapper("103", ChooseBathroomAdapter.BathroomStatus.NONE));
-        inner1.add(new ChooseBathroomAdapter.BathroomWrapper("104", ChooseBathroomAdapter.BathroomStatus.USING));
-        inner1.add(new ChooseBathroomAdapter.BathroomWrapper("105", ChooseBathroomAdapter.BathroomStatus.ERROR));
-        inner1.add(new ChooseBathroomAdapter.BathroomWrapper("105", ChooseBathroomAdapter.BathroomStatus.ERROR));
-        inner1.add(new ChooseBathroomAdapter.BathroomWrapper("105", ChooseBathroomAdapter.BathroomStatus.ERROR));
-        inner1.add(new ChooseBathroomAdapter.BathroomWrapper("105", ChooseBathroomAdapter.BathroomStatus.ERROR));
-        inner1.add(new ChooseBathroomAdapter.BathroomWrapper("105", ChooseBathroomAdapter.BathroomStatus.ERROR));
+        inner1.add(new ChooseBathroomAdapter.BathroomWrapper("101", NONE));
+        inner1.add(new ChooseBathroomAdapter.BathroomWrapper("102", AVAILABLE));
+        inner1.add(new ChooseBathroomAdapter.BathroomWrapper("103", NONE));
+        inner1.add(new ChooseBathroomAdapter.BathroomWrapper("104", BATH_USING));
+        inner1.add(new ChooseBathroomAdapter.BathroomWrapper("105", ERROR));
+        inner1.add(new ChooseBathroomAdapter.BathroomWrapper("105", ERROR));
+        inner1.add(new ChooseBathroomAdapter.BathroomWrapper("105", ERROR));
+        inner1.add(new ChooseBathroomAdapter.BathroomWrapper("105", ERROR));
+        inner1.add(new ChooseBathroomAdapter.BathroomWrapper("105", ERROR));
         bathGroups.add(new ChooseBathroomOuterAdapter.BathGroupWrapper(inner1, "一层A"));
 
         List<ChooseBathroomAdapter.BathroomWrapper> inner2 = new ArrayList<>();
-        inner2.add(new ChooseBathroomAdapter.BathroomWrapper("101", ChooseBathroomAdapter.BathroomStatus.NONE));
-        inner2.add(new ChooseBathroomAdapter.BathroomWrapper("102", ChooseBathroomAdapter.BathroomStatus.ERROR));
-        inner2.add(new ChooseBathroomAdapter.BathroomWrapper("103", ChooseBathroomAdapter.BathroomStatus.AVAILABLE));
-        inner2.add(new ChooseBathroomAdapter.BathroomWrapper("104", ChooseBathroomAdapter.BathroomStatus.AVAILABLE));
-        inner2.add(new ChooseBathroomAdapter.BathroomWrapper("105", ChooseBathroomAdapter.BathroomStatus.USING));
+        inner2.add(new ChooseBathroomAdapter.BathroomWrapper("101", NONE));
+        inner2.add(new ChooseBathroomAdapter.BathroomWrapper("102", ERROR));
+        inner2.add(new ChooseBathroomAdapter.BathroomWrapper("103", AVAILABLE));
+        inner2.add(new ChooseBathroomAdapter.BathroomWrapper("104", AVAILABLE));
+        inner2.add(new ChooseBathroomAdapter.BathroomWrapper("105", BATH_USING));
         bathGroups.add(new ChooseBathroomOuterAdapter.BathGroupWrapper(inner2, "一层B"));
 
         List<ChooseBathroomAdapter.BathroomWrapper> inner3 = new ArrayList<>();
-        inner3.add(new ChooseBathroomAdapter.BathroomWrapper("101", ChooseBathroomAdapter.BathroomStatus.NONE));
-        inner3.add(new ChooseBathroomAdapter.BathroomWrapper("102", ChooseBathroomAdapter.BathroomStatus.ERROR));
-        inner3.add(new ChooseBathroomAdapter.BathroomWrapper("103", ChooseBathroomAdapter.BathroomStatus.AVAILABLE));
-        inner3.add(new ChooseBathroomAdapter.BathroomWrapper("104", ChooseBathroomAdapter.BathroomStatus.AVAILABLE));
-        inner3.add(new ChooseBathroomAdapter.BathroomWrapper("105", ChooseBathroomAdapter.BathroomStatus.USING));
+        inner3.add(new ChooseBathroomAdapter.BathroomWrapper("101", NONE));
+        inner3.add(new ChooseBathroomAdapter.BathroomWrapper("102", ERROR));
+        inner3.add(new ChooseBathroomAdapter.BathroomWrapper("103", AVAILABLE));
+        inner3.add(new ChooseBathroomAdapter.BathroomWrapper("104", AVAILABLE));
+        inner3.add(new ChooseBathroomAdapter.BathroomWrapper("105", BATH_USING));
         bathGroups.add(new ChooseBathroomOuterAdapter.BathGroupWrapper(inner3, "一层A"));
 
         List<ChooseBathroomAdapter.BathroomWrapper> inner4 = new ArrayList<>();
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("101", ChooseBathroomAdapter.BathroomStatus.NONE));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("102", ChooseBathroomAdapter.BathroomStatus.ERROR));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("103", ChooseBathroomAdapter.BathroomStatus.AVAILABLE));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("104", ChooseBathroomAdapter.BathroomStatus.AVAILABLE));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("105", ChooseBathroomAdapter.BathroomStatus.USING));
+        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("101", NONE));
+        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("102", ERROR));
+        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("103", AVAILABLE));
+        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("104", AVAILABLE));
+        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("105", BATH_USING));
         bathGroups.add(new ChooseBathroomOuterAdapter.BathGroupWrapper(inner4, "一层A"));
 
 
         List<ChooseBathroomAdapter.BathroomWrapper> inner5 = new ArrayList<>();
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("101", ChooseBathroomAdapter.BathroomStatus.NONE));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("102", ChooseBathroomAdapter.BathroomStatus.ERROR));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("103", ChooseBathroomAdapter.BathroomStatus.AVAILABLE));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("104", ChooseBathroomAdapter.BathroomStatus.AVAILABLE));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("105", ChooseBathroomAdapter.BathroomStatus.USING));
+        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("101", NONE));
+        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("102", ERROR));
+        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("103", AVAILABLE));
+        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("104", AVAILABLE));
+        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("105", BATH_USING));
         bathGroups.add(new ChooseBathroomOuterAdapter.BathGroupWrapper(inner4, "一层A"));
 
 
         List<ChooseBathroomAdapter.BathroomWrapper> inner6 = new ArrayList<>();
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("101", ChooseBathroomAdapter.BathroomStatus.NONE));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("102", ChooseBathroomAdapter.BathroomStatus.ERROR));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("103", ChooseBathroomAdapter.BathroomStatus.AVAILABLE));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("104", ChooseBathroomAdapter.BathroomStatus.AVAILABLE));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("105", ChooseBathroomAdapter.BathroomStatus.USING));
+        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("101", NONE));
+        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("102", ERROR));
+        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("103", AVAILABLE));
+        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("104", AVAILABLE));
+        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("105", BATH_USING));
         bathGroups.add(new ChooseBathroomOuterAdapter.BathGroupWrapper(inner4, "一层A"));
 
 
         List<ChooseBathroomAdapter.BathroomWrapper> inner7 = new ArrayList<>();
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("101", ChooseBathroomAdapter.BathroomStatus.NONE));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("102", ChooseBathroomAdapter.BathroomStatus.ERROR));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("103", ChooseBathroomAdapter.BathroomStatus.AVAILABLE));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("104", ChooseBathroomAdapter.BathroomStatus.AVAILABLE));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("105", ChooseBathroomAdapter.BathroomStatus.USING));
+        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("101", NONE));
+        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("102", ERROR));
+        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("103", AVAILABLE));
+        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("104", AVAILABLE));
+        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("105", BATH_USING));
         bathGroups.add(new ChooseBathroomOuterAdapter.BathGroupWrapper(inner4, "一层A"));
 
 
         List<ChooseBathroomAdapter.BathroomWrapper> inner8 = new ArrayList<>();
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("101", ChooseBathroomAdapter.BathroomStatus.NONE));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("102", ChooseBathroomAdapter.BathroomStatus.ERROR));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("103", ChooseBathroomAdapter.BathroomStatus.AVAILABLE));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("104", ChooseBathroomAdapter.BathroomStatus.AVAILABLE));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("105", ChooseBathroomAdapter.BathroomStatus.USING));
+        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("101", NONE));
+        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("102", ERROR));
+        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("103", AVAILABLE));
+        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("104", AVAILABLE));
+        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("105", BATH_USING));
         bathGroups.add(new ChooseBathroomOuterAdapter.BathGroupWrapper(inner4, "一层A"));
 
 
         List<ChooseBathroomAdapter.BathroomWrapper> inner9 = new ArrayList<>();
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("101", ChooseBathroomAdapter.BathroomStatus.NONE));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("102", ChooseBathroomAdapter.BathroomStatus.ERROR));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("103", ChooseBathroomAdapter.BathroomStatus.AVAILABLE));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("104", ChooseBathroomAdapter.BathroomStatus.AVAILABLE));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("105", ChooseBathroomAdapter.BathroomStatus.USING));
+        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("101", NONE));
+        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("102", ERROR));
+        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("103", AVAILABLE));
+        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("104", AVAILABLE));
+        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("105", BATH_USING));
         bathGroups.add(new ChooseBathroomOuterAdapter.BathGroupWrapper(inner4, "一层A"));
 
 
         List<ChooseBathroomAdapter.BathroomWrapper> inner10 = new ArrayList<>();
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("101", ChooseBathroomAdapter.BathroomStatus.NONE));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("102", ChooseBathroomAdapter.BathroomStatus.ERROR));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("103", ChooseBathroomAdapter.BathroomStatus.AVAILABLE));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("104", ChooseBathroomAdapter.BathroomStatus.AVAILABLE));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("105", ChooseBathroomAdapter.BathroomStatus.USING));
+        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("101", NONE));
+        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("102", ERROR));
+        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("103", AVAILABLE));
+        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("104", AVAILABLE));
+        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("105", BATH_USING));
         bathGroups.add(new ChooseBathroomOuterAdapter.BathGroupWrapper(inner4, "一层A"));
 
 
         List<ChooseBathroomAdapter.BathroomWrapper> inner11 = new ArrayList<>();
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("101", ChooseBathroomAdapter.BathroomStatus.NONE));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("102", ChooseBathroomAdapter.BathroomStatus.ERROR));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("103", ChooseBathroomAdapter.BathroomStatus.AVAILABLE));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("104", ChooseBathroomAdapter.BathroomStatus.AVAILABLE));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("105", ChooseBathroomAdapter.BathroomStatus.USING));
+        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("101", NONE));
+        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("102", ERROR));
+        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("103", AVAILABLE));
+        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("104", AVAILABLE));
+        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("105", BATH_USING));
         bathGroups.add(new ChooseBathroomOuterAdapter.BathGroupWrapper(inner4, "一层A"));
 
 
@@ -439,6 +443,8 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         );
     }
 
+
+
     @Override
     public void startPreconditionView(BathOrderPreconditionRespDTO respDTO) {
         hideBathroomDialog();
@@ -452,14 +458,13 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
      * @param respDTO
      */
     private void startActivityForStatus(BathOrderPreconditionRespDTO respDTO) {
-        switch (respDTO.getStatus()) {
-            case BUY_CODE:
-                startActivity(new Intent(this, BookingActivity.class).putExtra(KEY_ORDER_PRECONDITION, respDTO));
-                break;
-            case BOOKING:
-                startActivity(new Intent(this, BookingActivity.class).putExtra(KEY_ORDER_PRECONDITION, respDTO));
-                break;
-        }
+                if (respDTO.getStatus() == USING_STATUS){
+                    startActivity(new Intent(this , BathroomHeaterActivity.class)
+                    .putExtra(KEY_BATH_ORDER_ID ,respDTO.getBathOrderId()));
+                }else {
+                    startActivity(new Intent(this, BookingActivity.class).putExtra(KEY_ORDER_PRECONDITION, respDTO));
+                }
+
     }
 
     @Override
@@ -492,18 +497,28 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         spannable.setSpan(new AbsoluteSizeSpan(14, true), 4, text.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
         preBathroom.setText(spannable);
         this.isSelected = isSelected ;
-        if (!isSelected) preBathroom.setBackgroundResource(R.drawable.green_button);
+        if (isSelected) preBathroom.setBackgroundResource(R.drawable.green_button);
         else preBathroom.setBackgroundResource(R.drawable.red_button);
+    }
+
+    @Override
+    public void gotoUsing(BathOrderPreconditionRespDTO respDTO) {
+
     }
 
 
     @OnClick(R.id.pre_bathroom)
     public void preBathRoom(){
-        if (this.isSelected){
-            presenter.preBooking(deviceNo);
+        if (presenter.getBathroomPassword()) {
+            if (this.isSelected) {
+                presenter.preBooking(deviceNo);
+            } else {
+                presenter.preBooking("");
+            }
         }else{
-            presenter.preBooking("");
+            startActivity(this , FindBathroomPasswordActivity.class);
         }
+
     }
 
 }

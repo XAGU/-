@@ -188,7 +188,7 @@ public class BuyCodeActivity extends UseWayActivity implements IBuyCodeView {
     @Override
     public void preBuy(BathPreBookingRespDTO data) {
 //        if (data.getBonus() != null) bonusId = data.getBonus().getId();
-        prepayAmount = data.getPrepay();
+        prepayAmount = data.getPrepayInfo().getPrepay();
         initValue(data);
         llBottomVisible(false);
         statusView.setStatusText("购买中");
@@ -225,9 +225,9 @@ public class BuyCodeActivity extends UseWayActivity implements IBuyCodeView {
      * @param data
      */
     private void initValue(BathPreBookingRespDTO data){
-            minPrepay = data.getMinPrepay();
-            prepay = data.getPrepay();
-            balance = data.getBalance();
+            minPrepay = data.getPrepayInfo().getMinPrepay();
+            prepay = data.getPrepayInfo().getPrepay();
+            balance = data.getPrepayInfo().getBalance();
     }
     @Override
     public void bookingSuccess(BathOrderRespDTO respDTO) {

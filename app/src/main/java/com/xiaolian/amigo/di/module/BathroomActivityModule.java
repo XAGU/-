@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.xiaolian.amigo.data.manager.BathroomDataManager;
 import com.xiaolian.amigo.data.manager.intf.IBathroomDataManager;
 import com.xiaolian.amigo.di.BathroomActivityContext;
+import com.xiaolian.amigo.ui.device.bathroom.BathroomHeartPresenter;
 import com.xiaolian.amigo.ui.device.bathroom.BathroomPresenter;
 import com.xiaolian.amigo.ui.device.bathroom.BathroomScanPresenter;
 import com.xiaolian.amigo.ui.device.bathroom.BookingPresenter;
@@ -16,6 +17,8 @@ import com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomPresenter;
 import com.xiaolian.amigo.ui.device.bathroom.EditBathroomPasswordPresenter;
 import com.xiaolian.amigo.ui.device.bathroom.PayUsePresenter;
 import com.xiaolian.amigo.ui.device.bathroom.ScanUsePresenter;
+import com.xiaolian.amigo.ui.device.bathroom.intf.IBathroomHeartPresenter;
+import com.xiaolian.amigo.ui.device.bathroom.intf.IBathroomHeartView;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IBathroomPresenter;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IBathroomScanPresenter;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IBathroomScanView;
@@ -137,4 +140,12 @@ public class BathroomActivityModule {
     AppCompatActivity provideActivity() {
         return mActivity;
     }
+
+    @Provides
+    @BathroomActivityContext
+    IBathroomHeartPresenter<IBathroomHeartView> provideBathroomHeartPresenter(
+            BathroomHeartPresenter<IBathroomHeartView> presenter){
+        return presenter ;
+    }
+
 }

@@ -24,8 +24,11 @@ import javax.inject.Inject;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.functions.Action0;
+import rx.functions.Action1;
 
 import static com.xiaolian.amigo.util.Constant.ACCEPTED;
+import static com.xiaolian.amigo.util.Constant.EXPIRED;
+import static com.xiaolian.amigo.util.Constant.OPENED;
 
 
 /**
@@ -52,12 +55,12 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
         SimpleReqDTO reqDTO = new SimpleReqDTO();
         reqDTO.setId(id);
         addObserver(bathroomDataManager.cancel(reqDTO),
-                new NetworkObserver<ApiResult<BathOrderRespDTO>>() {
+                new NetworkObserver<ApiResult<BooleanRespDTO>>() {
 
                     @Override
-                    public void onReady(ApiResult<BathOrderRespDTO> result) {
+                    public void onReady(ApiResult<BooleanRespDTO> result) {
                         if (null == result.getError()) {
-                            getMvpView().bookingCancel(result.getData());
+                            getMvpView().bookingCancel();
                         } else {
                             getMvpView().onError(result.getError().getDisplayMessage());
                         }
@@ -117,10 +120,10 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
         BathBookingReqDTO reqDTO = new BathBookingReqDTO();
         if (TextUtils.isEmpty(deviceNo)|| "null".equals(deviceNo)){
             reqDTO.setDeviceNo(null);
-            reqDTO.setType(BathTradeType.BUY_CODE.getCode());
+            reqDTO.setType(BathTradeType.BOOKING_WITHOUT_DEVICE.getCode());
         }else{
             reqDTO.setDeviceNo(Integer.parseInt(deviceNo));
-            reqDTO.setType(BathTradeType.BOOKING.getCode());
+            reqDTO.setType(BathTradeType.BOOKING_DEVICE.getCode());
         }
 
         addObserver(bathroomDataManager.preBooking(reqDTO), new NetworkObserver<ApiResult<BathPreBookingRespDTO>>() {
@@ -145,44 +148,56 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
         });
     }
 
+    /**
+     * 预约时查询订单状态
+     * @param bathOrderId
+     * @param isToUsing  是否是已预约成功界面查询订单状态，预约成功时要一直查询订单状态，看是否是预约中， 如果是否， 则表明
+     *                   是预约中界面查询， 要最多查询5次是否为预约成功
+     */
     @Override
-    public void query(String bathOrderId) {
+    public void query(String bathOrderId , boolean isToUsing , int time) {
         BathBookingStatusReqDTO reqDTO = new BathBookingStatusReqDTO();
         reqDTO.setId(bathOrderId);
         addObserver(bathroomDataManager.query(reqDTO) , new NetworkObserver<ApiResult<BathOrderRespDTO>>(){
 
             @Override
             public void onReady(ApiResult<BathOrderRespDTO> result) {
-                if (result.getError() == null){
-//                    if (result.getData().getStatus() == ACCEPTED.getCode()){
-//                        getMvpView().bookingSuccess(result.getData());
-//                    }else{
-//                        if (queryNum < 5) {
-//                            queryNum++ ;
-//                            delay(3, new Subscriber<Long>() {
-//                                @Override
-//                                public void onCompleted() {
-//
-//                                }
-//
-//                                @Override
-//                                public void onError(Throwable e) {
-//
-//                                }
-//
-//                                @Override
-//                                public void onNext(Long aLong) {
-//                                    query(bathOrderId);
-//                                }
-//                            });
-//                        }else{
-//
-//                        }
-//                    }
+                if (result.getError() == null) {
+                    if (isToUsing) {
+                        if (result.getData().getStatus() == OPENED) {
+                            getMvpView().gotoUsing(result.getData());
+                        } else if (result.getData().getStatus() == ACCEPTED) {
+                            delay(time, new Action1<Long>() {
+                                @Override
+                                public void call(Long aLong) {
+                                    query(bathOrderId, true , time);
+                                }
+                            });
+
+                        } else if (result.getData().getStatus() == EXPIRED) {
+                            getMvpView().appointMentTimeOut();
+                        }
+                    } else {
+                        if (result.getData().getStatus() == ACCEPTED) {
+                            getMvpView().bookingSuccess(result.getData());
+                        } else {
+                            if (queryNum < 5) {
+                                queryNum++;
+                                delay(time, new Action1<Long>() {
+                                    @Override
+                                    public void call(Long aLong) {
+                                        query(bathOrderId, false , time);
+                                    }
+                                });
+                            }
+                        }
+                    }
                 }else{
-                    getMvpView().onError(result.getError().getDisplayMessage());
+                        if (queryNum >= 5) {
+                            getMvpView().onError(result.getError().getDisplayMessage());
+                        }
+                    }
                 }
-            }
         });
     }
 
@@ -208,10 +223,12 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
         BathBookingReqDTO reqDTO = new BathBookingReqDTO();
         if (TextUtils.isEmpty(device)){
             reqDTO.setDeviceNo(null);
+            reqDTO.setType(BathTradeType.BOOKING_WITHOUT_DEVICE.getCode());
         }else{
             reqDTO.setDeviceNo(Integer.parseInt(device));
+            reqDTO.setType(BathTradeType.BOOKING_DEVICE.getCode());
         }
-        reqDTO.setType(BathTradeType.BUY_CODE.getCode());
+
         addObserver(bathroomDataManager.booking(reqDTO) , new NetworkObserver<ApiResult<BathOrderRespDTO>>(){
 
             @Override
@@ -226,8 +243,7 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
                     if (result.getData().getStatus() ==ACCEPTED ) {
                               getMvpView().bookingSuccess(result.getData());
                         }else{
-
-                              query(result.getData().getBathOrderId()+"");
+                              query(result.getData().getBathBookingId()+"" , false , 3);
                     }
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
@@ -236,6 +252,8 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
             }
         });
     }
+
+
 
     @Override
     public void countDownexpiredTime(long expiredTime) {
@@ -251,6 +269,7 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
                     @Override
                     public void onCompleted() {
                         getMvpView().setBookingCountDownTime("0:00");
+                        getMvpView().appointMentTimeOut();
                     }
 
                     @Override
@@ -267,7 +286,7 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
     }
 
 
-    private void delay(int time ,Subscriber<Long> subscription){
-        this.subscriptions.add(RxHelper.delay(time ,subscription));
+    private void delay(int time ,  Action1<Long> action0 ){
+        this.subscriptions.add(RxHelper.delay(time , action0));
     }
 }

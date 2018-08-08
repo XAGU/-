@@ -4,12 +4,9 @@ package com.xiaolian.amigo.data.network.model.bathroom;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.io.Serializable;
-
 public class BathOrderPreconditionRespDTO implements Parcelable {
-
         /**
-         * balance : 0
+         * bathBookingId : 0
          * bathOrderId : 0
          * createTime : 0
          * deviceNo : 0
@@ -17,70 +14,39 @@ public class BathOrderPreconditionRespDTO implements Parcelable {
          * expiredTime : 0
          * location : string
          * maxMissAbleTimes : 0
-         * minPrepay : 0
          * missedTimes : 0
-         * prepay : 0
          * prepayAmount : 0
+         * prepayInfo : {"balance":0,"minPrepay":0,"prepay":0}
          * status : 0
          * type : 0
          */
 
-        private Double balance;   // 用户余额
-        private Long bathOrderId;    // 订单id
-        private Long createTime;   // 创建时间
-        private Long deviceNo;   //  设备号
-        private boolean existUsingOrder;  // 存在上一次订单
-        private Long expiredTime;  // 过期时间
-        private String location;   // 位置
-        private int maxMissAbleTimes;   // 最多失约次数
-        private Double minPrepay;   // 最小预付金额
-        private int missedTimes;   //  失约次数
-        private Double prepay;   // 预付金额
-        private Double prepayAmount;   // 用户实际预付金额
-        private int status;   //  1-取消预约/购买洗澡卷 2-已支付 3-预约成功 4-预约失败 5-已经过期 6-使用中 7-已完成 ,
-        private int type;    //  预约订单类型:1-预约购买，2-洗澡劵
+        private long bathBookingId;
+        private long bathOrderId;
+        private long createTime;
+        private long deviceNo;
+        private boolean existUsingOrder;
+        private long expiredTime;
+        private String location;
+        private int maxMissAbleTimes;
+        private int missedTimes;
+        private int prepayAmount;
+        private PrepayInfoBean prepayInfo;
+        private int status;
+        private int type;
 
     protected BathOrderPreconditionRespDTO(Parcel in) {
-        if (in.readByte() == 0) {
-            balance = null;
-        } else {
-            balance = in.readDouble();
-        }
-        if (in.readByte() == 0) {
-            bathOrderId = null;
-        } else {
-            bathOrderId = in.readLong();
-        }
-        if (in.readByte() == 0) {
-            createTime = null;
-        } else {
-            createTime = in.readLong();
-        }
-        if (in.readByte() == 0) {
-            deviceNo = null;
-        } else {
-            deviceNo = in.readLong();
-        }
+        bathBookingId = in.readLong();
+        bathOrderId = in.readLong();
+        createTime = in.readLong();
+        deviceNo = in.readLong();
         existUsingOrder = in.readByte() != 0;
-        if (in.readByte() == 0) {
-            expiredTime = null;
-        } else {
-            expiredTime = in.readLong();
-        }
+        expiredTime = in.readLong();
         location = in.readString();
         maxMissAbleTimes = in.readInt();
-        if (in.readByte() == 0) {
-            minPrepay = null;
-        } else {
-            minPrepay = in.readDouble();
-        }
         missedTimes = in.readInt();
-        prepay = in.readDouble();
-        if (in.readByte() == 0) {
-            prepayAmount = null;
-        } else {
-            prepayAmount = in.readDouble();
-        }
+        prepayAmount = in.readInt();
+        prepayInfo = in.readParcelable(PrepayInfoBean.class.getClassLoader());
         status = in.readInt();
         type = in.readInt();
     }
@@ -97,35 +63,35 @@ public class BathOrderPreconditionRespDTO implements Parcelable {
         }
     };
 
-    public Double getBalance() {
-            return balance;
+    public long getBathBookingId() {
+            return bathBookingId;
         }
 
-        public void setBalance(Double balance) {
-            this.balance = balance;
+        public void setBathBookingId(long bathBookingId) {
+            this.bathBookingId = bathBookingId;
         }
 
-        public Long getBathOrderId() {
+        public long getBathOrderId() {
             return bathOrderId;
         }
 
-        public void setBathOrderId(Long bathOrderId) {
+        public void setBathOrderId(long bathOrderId) {
             this.bathOrderId = bathOrderId;
         }
 
-        public Long getCreateTime() {
+        public long getCreateTime() {
             return createTime;
         }
 
-        public void setCreateTime(Long createTime) {
+        public void setCreateTime(long createTime) {
             this.createTime = createTime;
         }
 
-        public Long getDeviceNo() {
+        public long getDeviceNo() {
             return deviceNo;
         }
 
-        public void setDeviceNo(Long deviceNo) {
+        public void setDeviceNo(long deviceNo) {
             this.deviceNo = deviceNo;
         }
 
@@ -137,11 +103,11 @@ public class BathOrderPreconditionRespDTO implements Parcelable {
             this.existUsingOrder = existUsingOrder;
         }
 
-        public Long getExpiredTime() {
+        public long getExpiredTime() {
             return expiredTime;
         }
 
-        public void setExpiredTime(Long expiredTime) {
+        public void setExpiredTime(long expiredTime) {
             this.expiredTime = expiredTime;
         }
 
@@ -161,14 +127,6 @@ public class BathOrderPreconditionRespDTO implements Parcelable {
             this.maxMissAbleTimes = maxMissAbleTimes;
         }
 
-        public Double getMinPrepay() {
-            return minPrepay;
-        }
-
-        public void setMinPrepay(Double minPrepay) {
-            this.minPrepay = minPrepay;
-        }
-
         public int getMissedTimes() {
             return missedTimes;
         }
@@ -177,20 +135,20 @@ public class BathOrderPreconditionRespDTO implements Parcelable {
             this.missedTimes = missedTimes;
         }
 
-        public Double getPrepay() {
-            return prepay;
-        }
-
-        public void setPrepay(Double prepay) {
-            this.prepay = prepay;
-        }
-
-        public Double getPrepayAmount() {
+        public int getPrepayAmount() {
             return prepayAmount;
         }
 
-        public void setPrepayAmount(Double prepayAmount) {
+        public void setPrepayAmount(int prepayAmount) {
             this.prepayAmount = prepayAmount;
+        }
+
+        public PrepayInfoBean getPrepayInfo() {
+            return prepayInfo;
+        }
+
+        public void setPrepayInfo(PrepayInfoBean prepayInfo) {
+            this.prepayInfo = prepayInfo;
         }
 
         public int getStatus() {
@@ -216,55 +174,86 @@ public class BathOrderPreconditionRespDTO implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        if (balance == null) {
-            dest.writeByte((byte) 0);
-        } else {
-            dest.writeByte((byte) 1);
-            dest.writeDouble(balance);
-        }
-        if (bathOrderId == null) {
-            dest.writeByte((byte) 0);
-        } else {
-            dest.writeByte((byte) 1);
-            dest.writeLong(bathOrderId);
-        }
-        if (createTime == null) {
-            dest.writeByte((byte) 0);
-        } else {
-            dest.writeByte((byte) 1);
-            dest.writeLong(createTime);
-        }
-        if (deviceNo == null) {
-            dest.writeByte((byte) 0);
-        } else {
-            dest.writeByte((byte) 1);
-            dest.writeLong(deviceNo);
-        }
+        dest.writeLong(bathBookingId);
+        dest.writeLong(bathOrderId);
+        dest.writeLong(createTime);
+        dest.writeLong(deviceNo);
         dest.writeByte((byte) (existUsingOrder ? 1 : 0));
-        if (expiredTime == null) {
-            dest.writeByte((byte) 0);
-        } else {
-            dest.writeByte((byte) 1);
-            dest.writeLong(expiredTime);
-        }
+        dest.writeLong(expiredTime);
         dest.writeString(location);
         dest.writeInt(maxMissAbleTimes);
-        if (minPrepay == null) {
-            dest.writeByte((byte) 0);
-        } else {
-            dest.writeByte((byte) 1);
-            dest.writeDouble(minPrepay);
-        }
         dest.writeInt(missedTimes);
-        dest.writeDouble(prepay);
-        if (prepayAmount == null) {
-            dest.writeByte((byte) 0);
-        } else {
-            dest.writeByte((byte) 1);
-            dest.writeDouble(prepayAmount);
-        }
+        dest.writeInt(prepayAmount);
+        dest.writeParcelable(prepayInfo ,flags);
         dest.writeInt(status);
         dest.writeInt(type);
+
     }
-}
+
+    public static class PrepayInfoBean implements Parcelable {
+            /**
+             * balance : 0
+             * minPrepay : 0
+             * prepay : 0
+             */
+
+            private double balance;
+            private double minPrepay;
+            private double prepay;
+
+        protected PrepayInfoBean(Parcel in) {
+            balance = in.readDouble();
+            minPrepay = in.readDouble();
+            prepay = in.readDouble();
+        }
+
+        public static final Creator<PrepayInfoBean> CREATOR = new Creator<PrepayInfoBean>() {
+            @Override
+            public PrepayInfoBean createFromParcel(Parcel in) {
+                return new PrepayInfoBean(in);
+            }
+
+            @Override
+            public PrepayInfoBean[] newArray(int size) {
+                return new PrepayInfoBean[size];
+            }
+        };
+
+        public double getBalance() {
+                return balance;
+            }
+
+            public void setBalance(double balance) {
+                this.balance = balance;
+            }
+
+            public double getMinPrepay() {
+                return minPrepay;
+            }
+
+            public void setMinPrepay(double minPrepay) {
+                this.minPrepay = minPrepay;
+            }
+
+            public double getPrepay() {
+                return prepay;
+            }
+
+            public void setPrepay(double prepay) {
+                this.prepay = prepay;
+            }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeDouble(balance);
+            dest.writeDouble(minPrepay);
+            dest.writeDouble(prepay);
+        }
+    }
+    }
 

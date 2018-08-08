@@ -12,6 +12,7 @@ import com.xiaolian.amigo.data.network.IUserApi;
 import com.xiaolian.amigo.data.network.IVersionApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.bathroom.BathRouteRespDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.CurrentBathOrderRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.ShowerRoomRouterRespDTO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCategoryBO;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
@@ -293,6 +294,11 @@ public class MainDataManager implements IMainDataManager {
     @Override
     public void setBathroomPasswordDesc(ArrayList<String> bathPasswordDescription) {
         sharedPreferencesHelp.setBathPasswordDescription(bathPasswordDescription);
+    }
+
+    @Override
+    public Observable<ApiResult<CurrentBathOrderRespDTO>> currentOrder() {
+        return bathroomApi.currentOrder();
     }
 
 }

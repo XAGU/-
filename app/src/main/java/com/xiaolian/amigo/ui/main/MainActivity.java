@@ -40,6 +40,7 @@ import com.xiaolian.amigo.data.enumeration.IntentAction;
 import com.xiaolian.amigo.data.enumeration.Orientation;
 import com.xiaolian.amigo.data.enumeration.UserResidenceType;
 import com.xiaolian.amigo.data.network.model.bathroom.BathRouteRespDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.CurrentBathOrderRespDTO;
 import com.xiaolian.amigo.data.network.model.system.BannerDTO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.order.OrderPreInfoDTO;
@@ -408,6 +409,10 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 tvSchoolName.setText(presenter.getUserInfo().getSchoolName());
                 // 设置学校业务
                 presenter.getSchoolBusiness();
+
+
+                presenter.getUser();
+
                 return;
             }
             initSchoolBiz();
@@ -429,6 +434,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             // 请求通知
             presenter.getNoticeAmount();
             presenter.getSchoolBusiness();
+            presenter.getUser();
             Log.d(TAG, "onResume: login");
             // 设置昵称
             tvNickName.setText(presenter.getUserInfo().getNickName());
@@ -870,6 +876,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         EventBus.getDefault()
                 .post(new HomeFragment2.Event(HomeFragment2.Event.EventType.INIT_BIZ,
                         null));
+
     }
 
     @Override
@@ -887,6 +894,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 dispenserOrderSize = business.getPrepayOrder();
             } else if (business.getBusinessId() == 3) {
                 dryerOrderSize = business.getPrepayOrder();
+            }else if (business.getBusinessId() == Constant.PUB_BATH){
+                presenter.currentOrder();
             }
         }
         EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.SCHOOL_BIZ,
@@ -1209,6 +1218,11 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         });
         availabilityDialog.show();
 //        startActivity(new Intent(this , ListChooseActivity.class));
+    }
+
+    @Override
+    public void currentOrder(CurrentBathOrderRespDTO dto) {
+        EventBus.getDefault().post(dto);
     }
 
     /**

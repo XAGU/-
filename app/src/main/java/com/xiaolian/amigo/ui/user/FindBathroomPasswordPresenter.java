@@ -1,7 +1,5 @@
 package com.xiaolian.amigo.ui.user;
 
-import android.widget.Toast;
-
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.bathroom.BathPasswordUpdateReqDTO;
@@ -11,7 +9,6 @@ import com.xiaolian.amigo.data.network.model.login.VerificationCodeCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.login.VerificationCodeGetReqDTO;
 import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.ui.base.BasePresenter;
-import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 import com.xiaolian.amigo.ui.user.intf.IFindBathroomPasswordPresenter;
 import com.xiaolian.amigo.ui.user.intf.IFindBathroomPasswordView;
 
@@ -25,6 +22,7 @@ implements IFindBathroomPasswordPresenter<V>{
     private IUserDataManager manager ;
     private String code ;
     private String mobile ;
+
     @Inject
     public FindBathroomPasswordPresenter(IUserDataManager manager){
         super();
@@ -45,6 +43,7 @@ implements IFindBathroomPasswordPresenter<V>{
             public void onReady(ApiResult<SimpleRespDTO> result) {
                 if(null == result.getError() ){
                     getMvpView().onSuccess("浴室密码更新成功");
+                    manager.setBathroomPassword();
                     getMvpView().backToCenter();
                 }else{
                     getMvpView().onError(result.getError().getDisplayMessage());

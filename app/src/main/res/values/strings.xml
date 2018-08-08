@@ -219,6 +219,7 @@
     <string name="prepaid">已预付%1$s元</string>
     <string name="settlement_and_change">结算找零</string>
     <string name="use_time_colon">使用时间：</string>
+    <string name="user_style">使用方式：</string>
     <string name="device_location_colon">设备位置：</string>
     <string name="order_number_colon">订单号：</string>
     <string name="back_bonus_colon">退还代金券：</string>
@@ -308,6 +309,11 @@
     <string name="booking_use_tip3">3.洗浴结束后，消费金额将以实际用水量为准，系统会自动找零；</string>
     <string name="booking_use_tip4">4.若未在预约时间内使用，系统将会自动退回预付金额。</string>
 
+    <string name="booking_user_common_tip">2.请确保你的可用余额在预约成功后，至少为页面中的提示金额，否则将无法使用设备。</string>
+    <string name="booking_user_empty">1.预约成功后，请在预留时间内任意前往一间空浴室，在设备上输入你的笑联手机号和浴室密码，即可使用；</string>
+    <string name="booking_user_this">1.预约成功后，请在预留时间内前往指定的浴室，在设备上输入你的笑联手机号和浴室密码，即可使用；</string>
+
+
     <string name="buy_code_tip1">1.购买编码时，需要先预付10元，若有红包，可选择红包进行抵扣；</string>
     <string name="buy_code_tip2">2.购买成功后，编码有效时间为60分钟，前往任意可以使用的空浴室房间，在设备上输入编码或者购买编码时对应的笑联手机号和登录密码即可使用；</string>
     <string name="buy_code_tip3">3.洗浴结束后，消费金额将以实际用水量为准，系统会自动找零；</string>
@@ -325,10 +331,13 @@
     <string name="successful_appointments_this_month">本月成功预约次数：</string>
     <string name="reservation_tip">提示:每月失约3次将无法预约，你已失约<font color="#ff5555">%1$s</font>次</string>
     <string name="consumer_bill">消费账单</string>
-    <string name="repurchase">重新购买</string>
+    <string name="repurchase">重新预约</string>
     <string name="preBookTimeOut">预约超时</string>
     <string name="retry">重试</string>
     <string name="preBathWithAnyEmptyBath">预约洗澡(任意空浴室)</string>
     <string name="InsufficientBalance">余额不足，请前往充值</string>
     <string name="atLeastInTheWallet">请确保你的钱包中可用余额至少%1$s元</string>
+    <string name="tip">用水结束后，请务必滑动下方按钮，进行结算找零\n消费金额以实际用水量为准</string>
+    <string name="tip_timeout">已失约，请重新预约</string>
+
 </resources>

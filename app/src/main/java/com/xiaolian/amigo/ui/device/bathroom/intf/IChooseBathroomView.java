@@ -43,4 +43,6 @@ public interface IChooseBathroomView extends IBaseView {
      * @param text
      */
     void setBtnText(String text , boolean isSelected);
+
+    void gotoUsing(BathOrderPreconditionRespDTO respDTO);
 }

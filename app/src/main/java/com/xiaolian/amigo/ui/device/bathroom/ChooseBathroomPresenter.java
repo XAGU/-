@@ -14,6 +14,7 @@ import com.xiaolian.amigo.data.network.model.bathroom.BathOrderPreconditionRespD
 import com.xiaolian.amigo.data.network.model.bathroom.BathPreBookingRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathRoomDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
+import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IChooseBathroomPresenter;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IChooseBathroomView;
@@ -23,6 +24,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import static com.xiaolian.amigo.util.Constant.NONE;
+
 /**
  * @author zcd
  * @date 18/7/3
@@ -31,6 +34,7 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
         implements IChooseBathroomPresenter<V> {
     private static final String TAG = ChooseBathroomPresenter.class.getSimpleName();
     private IBathroomDataManager bathroomDataManager;
+    private ISharedPreferencesHelp sharedPreferencesHelp ;
 
     @Inject
     public ChooseBathroomPresenter(IBathroomDataManager bathroomDataManager) {
@@ -72,10 +76,10 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
         BathBookingReqDTO reqDTO = new BathBookingReqDTO();
         if (TextUtils.isEmpty(deviceNo)){
             reqDTO.setDeviceNo(null);
-            reqDTO.setType(BathTradeType.BUY_CODE.getCode());
+            reqDTO.setType(BathTradeType.BOOKING_WITHOUT_DEVICE.getCode());
         }else {
             reqDTO.setDeviceNo(Integer.parseInt(deviceNo));
-            reqDTO.setType(BathTradeType.BOOKING.getCode());
+            reqDTO.setType(BathTradeType.BOOKING_DEVICE.getCode());
         }
 
         addObserver(bathroomDataManager.preBooking(reqDTO), new NetworkObserver<ApiResult<BathPreBookingRespDTO>>() {
@@ -84,12 +88,12 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
             public void onReady(ApiResult<BathPreBookingRespDTO> result) {
                 if (null == result.getError()) {
 
-                    getMvpView().gotoBookingView(result.getData().getBalance(),
+                    getMvpView().gotoBookingView(result.getData().getPrepayInfo().getBalance(),
                             null, null,
                             null, null,
                             result.getData().getLocation(), result.getData().getMaxMissAbleTimes(),
-                            result.getData().getMinPrepay(), result.getData().getMissedTimes(),
-                            result.getData().getPrepay() ,result.getData().getReservedMinute());
+                            result.getData().getPrepayInfo().getMinPrepay(), result.getData().getMissedTimes(),
+                            result.getData().getPrepayInfo().getPrepay() ,result.getData().getReservedMinute());
 //                    if (result.getData().getBonus() != null) {
 //                        getMvpView().gotoBookingView(result.getData().getBalance(),
 //                                result.getData().getBonus().getId(), result.getData().getBonus().getDescription(),
@@ -138,6 +142,11 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
         });
     }
 
+    @Override
+    public boolean getBathroomPassword() {
+       return  bathroomDataManager.getBathroomPassword();
+    }
+
     private List<ChooseBathroomOuterAdapter.BathGroupWrapper> convertFrom(BathBuildingRespDTO bathBuildingRespDTO) {
         List<ChooseBathroomOuterAdapter.BathGroupWrapper> bathGroupWrappers = new ArrayList<>();
         for (BathFloorDTO floor : bathBuildingRespDTO.getFloors()) {
@@ -156,7 +165,7 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
                 List<ChooseBathroomAdapter.BathroomWrapper> bathroomWrappers = new ArrayList<>();
                 for (int i = 0; i < (maxX + 1) * (maxY + 1); i ++) {
                     bathroomWrappers.add(new ChooseBathroomAdapter.BathroomWrapper("",
-                            ChooseBathroomAdapter.BathroomStatus.NONE));
+                            NONE));
                 }
 
                 for (BathRoomDTO room : group.getBathRooms()) {
@@ -166,7 +175,7 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
                             .setDeviceNo(room.getDeviceNo());
 //                    Log.e(TAG, "convertFrom: " + room.getDeviceNo());
                     bathroomWrappers.get(room.getYaxis() * maxX + room.getXaxis())
-                            .setStatus(ChooseBathroomAdapter.BathroomStatus.getStatus(room.getStatus()));
+                            .setStatus(room.getStatus());
                 }
 
                 groupWrapper.setBathGroups(bathroomWrappers);

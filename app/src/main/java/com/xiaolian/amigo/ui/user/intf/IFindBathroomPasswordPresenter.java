@@ -1,6 +1,5 @@
 package com.xiaolian.amigo.ui.user.intf;
 
-import com.xiaolian.amigo.data.network.model.bathroom.BathPasswordUpdateReqDTO;
 import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 
 import java.util.List;

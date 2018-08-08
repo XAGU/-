@@ -18,6 +18,7 @@ import com.xiaolian.amigo.ui.widget.BathroomOperationStatusView;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.ScreenUtils;
+import com.zhy.adapter.recyclerview.CommonAdapter;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -41,6 +42,7 @@ import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_RESERVE
 
 /**
  * 使用公共澡堂基础类
+ *
  * @author zcd
  * @date 18/7/2
  */
@@ -120,7 +122,7 @@ public abstract class UseWayActivity extends BathroomBaseActivity {
     /**
      * 红包
      */
-    protected Long bonusId = -1L ;
+    protected Long bonusId = -1L;
     /**
      * 预留时间
      */
@@ -144,10 +146,17 @@ public abstract class UseWayActivity extends BathroomBaseActivity {
     /**
      * 已存在订单状态
      */
-    protected BathOrderPreconditionRespDTO  bathOrderPreconditionRespDTO ;
+    protected BathOrderPreconditionRespDTO bathOrderPreconditionRespDTO;
+    @BindView(R.id.tip_recycler)
+    RecyclerView tipRecycler;
     private DecimalFormat df = new DecimalFormat("###.##");
 
+    private List<String> tips = new ArrayList<>();
 
+    private CommonAdapter<String> commonAdapter ;
+
+
+    private String Tips = "" ;
     protected List<DeviceInfoAdapter.DeviceInfoWrapper> items = new ArrayList<DeviceInfoAdapter.DeviceInfoWrapper>() {
         {
 //            add(new DeviceInfoAdapter.DeviceInfoWrapper("浴室位置：",
@@ -168,8 +177,10 @@ public abstract class UseWayActivity extends BathroomBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booking);
         setUnBinder(ButterKnife.bind(this));
+        initIntent();
         initView();
     }
+
 
     protected void initIntent() {
         if (getIntent() != null) {
@@ -210,13 +221,17 @@ public abstract class UseWayActivity extends BathroomBaseActivity {
         initRecyclerView();
     }
 
+    protected String getTips(){
+        return "";
+    }
 
-    protected void llBottomVisible(boolean isVisible){
-        if (isVisible && llBottom.getVisibility() == View.GONE){
+
+    protected void llBottomVisible(boolean isVisible) {
+        if (isVisible && llBottom.getVisibility() == View.GONE) {
             llBottom.setVisibility(View.VISIBLE);
-        }else if (!isVisible && llBottom.getVisibility()== View.VISIBLE){
+        } else if (!isVisible && llBottom.getVisibility() == View.VISIBLE) {
             llBottom.setVisibility(View.GONE);
-        }else{
+        } else {
 
         }
     }
@@ -361,7 +376,7 @@ public abstract class UseWayActivity extends BathroomBaseActivity {
 //                    builder.append(buttonSpan);
 //                    needRecharge = false;
 //                    builder.append(getButtonText());
-                    statusView.getTip().setText(getString(R.string.atLeastInTheWallet ,df.format(prepayAmount)));
+                    statusView.getTip().setText(getString(R.string.atLeastInTheWallet, df.format(prepayAmount)));
                     btStartToUse.setText(getButtonText());
                 } else {
                     prepayAmount = balance;
@@ -377,7 +392,7 @@ public abstract class UseWayActivity extends BathroomBaseActivity {
 //                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 //                    builder.append(buttonSpan);
 //                    builder.append(getButtonText());
-                    statusView.getTip().setText(getString(R.string.atLeastInTheWallet ,df.format(prepayAmount)));
+                    statusView.getTip().setText(getString(R.string.atLeastInTheWallet, df.format(prepayAmount)));
                     btStartToUse.setText(getButtonText());
                 }
             }
@@ -385,7 +400,7 @@ public abstract class UseWayActivity extends BathroomBaseActivity {
             else {
 //                title = getString(R.string.prepay_no_balance);
 //                tip = "低于" + df.format(minPrepay) + getString(R.string.yuan) + "，请前往充值";
-                tip = String.format(tip , df.format(minPrepay));
+                tip = String.format(tip, df.format(minPrepay));
                 buttonText = getString(R.string.InsufficientBalance);
                 needRecharge = true;
                 btStartToUse.setText(buttonText);
@@ -400,28 +415,28 @@ public abstract class UseWayActivity extends BathroomBaseActivity {
     /**
      * 根据上一笔订单设置tip 内容
      */
-    public void forOldOrderToSetTipTxt(BathOrderPreconditionRespDTO  dto){
+    public void forOldOrderToSetTipTxt(BathOrderPreconditionRespDTO dto) {
         // 余额大于等于最小预付金额
-        if (dto.getBalance()>= dto.getMinPrepay()) {
+        if (dto.getPrepayInfo().getBalance() >= dto.getPrepayInfo().getMinPrepay()) {
             // 余额大于等于预付金额
-            if (dto.getBalance() >= dto.getPrepay()) {
-                prepayAmount = dto.getPrepay();
-                setTipTxt(getString(R.string.atLeastInTheWallet ,df.format(prepayAmount)));
+            if (dto.getPrepayInfo().getBalance() >= dto.getPrepayInfo().getPrepay()) {
+                prepayAmount = dto.getPrepayInfo().getPrepay();
+                setTipTxt(getString(R.string.atLeastInTheWallet, df.format(prepayAmount)));
             } else {
-                prepayAmount = dto.getBalance();
-                setTipTxt(getString(R.string.atLeastInTheWallet ,df.format(prepayAmount)));
+                prepayAmount = dto.getPrepayInfo().getBalance();
+                setTipTxt(getString(R.string.atLeastInTheWallet, df.format(prepayAmount)));
             }
         }
         // 余额不足
         else {
-            setTipTxt(getString(R.string.atLeastInTheWallet ,df.format(dto.getMinPrepay())));
+            setTipTxt(getString(R.string.atLeastInTheWallet, df.format(dto.getPrepayInfo().getPrepay())));
         }
     }
 
     /**
      * 设置Tip内容
      */
-    public void setTipTxt(String tipTxt){
+    public void setTipTxt(String tipTxt) {
         statusView.getTip().setVisibility(View.VISIBLE);
         statusView.getTip().setText(tipTxt);
     }
@@ -432,7 +447,7 @@ public abstract class UseWayActivity extends BathroomBaseActivity {
         recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 1)));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
-        ((SimpleItemAnimator)recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
+        ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
     }
 
     private void setTitleVisible(int visible) {

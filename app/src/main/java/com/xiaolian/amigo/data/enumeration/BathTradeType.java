@@ -6,13 +6,13 @@ package com.xiaolian.amigo.data.enumeration;
  */
 public enum BathTradeType {
     /**
-     * 预约使用
+     * 预约使用(预约指定房间)
      */
-    BOOKING(1),
+    BOOKING_DEVICE(1),
     /**
-     * 购买编码
+     * 预约不锁定设备
      */
-    BUY_CODE(2),
+    BOOKING_WITHOUT_DEVICE(2),
     /**
      * 扫一扫
      */

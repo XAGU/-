@@ -331,6 +331,8 @@ public class SlideUnlockView extends View {
         return sqrt <= blockWidth / 2;
     }
 
+
+
     /**
      * 设置解锁监听
      */

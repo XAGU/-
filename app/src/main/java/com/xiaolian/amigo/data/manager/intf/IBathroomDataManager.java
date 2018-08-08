@@ -2,26 +2,22 @@ package com.xiaolian.amigo.data.manager.intf;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.bathroom.BathBookingReqDTO;
-import com.xiaolian.amigo.data.network.model.bathroom.BathBookingRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathBookingStatusReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathBuildingRespDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.BathOrderCurrentRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathOrderPreconditionRespDTO;
-import com.xiaolian.amigo.data.network.model.bathroom.BathOrderReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathOrderRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathPreBookingRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathRoomReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathRouteRespDTO;
-import com.xiaolian.amigo.data.network.model.bathroom.CreateBathOrderRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.QueryBathOrderListReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.QueryBathOrderListRespDTO;
-import com.xiaolian.amigo.data.network.model.bathroom.ShowerRoomRouterRespDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
 
 import retrofit2.http.Body;
 import retrofit2.http.POST;
 import rx.Observable;
-import rx.Observer;
 
 /**
  * @author zcd
@@ -79,6 +75,14 @@ public interface IBathroomDataManager {
      */
     Observable<ApiResult<BathOrderRespDTO>> query(@Body BathBookingStatusReqDTO reqDTO);
 
+
+    /**
+     * 查询指定订单状态
+     * @param reqDTO
+     * @return
+     */
+    Observable<ApiResult<BathOrderCurrentRespDTO>> orderQuery(@Body SimpleReqDTO reqDTO);
+
     /**
      * 解除设备绑定
      * @return
@@ -96,4 +100,17 @@ public interface IBathroomDataManager {
      * 预约设备
      */
     Observable<ApiResult<BathOrderRespDTO>> booking(@Body BathBookingReqDTO reqDTO);
+
+
+    /**
+     * 客户端请求结账
+     */
+    Observable<ApiResult<BooleanRespDTO>> askSettle(SimpleReqDTO reqDTO);
+
+
+    /**
+     * 获取是否有公共浴室密码
+     */
+    boolean getBathroomPassword();
+
 }

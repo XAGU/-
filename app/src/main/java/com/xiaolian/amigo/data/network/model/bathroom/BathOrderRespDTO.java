@@ -1,5 +1,8 @@
 package com.xiaolian.amigo.data.network.model.bathroom;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import lombok.Data;
 
 /**
@@ -9,172 +12,139 @@ import lombok.Data;
  * @date 18/7/12
  */
 @Data
-public class BathOrderRespDTO {
+public class BathOrderRespDTO implements Parcelable {
+
         /**
-         * balance : 0     // 用户金额
-         * bathOrderId : 0   预约Id, 购买编码不会有
-         * createTime : 0  创建预约时间
-         * expiredTime : 0  过期时间
-         * location : string 位置
-         * minPrepay : 0  最小预约金额
-         * missedTimes : 0  失约次数
-         * prepay : 0   预付金额
-         * prepayAmount : 0
-         * status : 0  订单状态
-         * totalMissTimes : 0   总共可失约次数，只有预约才会返回
-         * tradeOrderId : 0
+         * bathBookingId : 0
+         * bathOrderId : 0
+         * createTime : 0
+         * deviceNo : 0
+         * expiredTime : 0
+         * location : string
+         * missedTimes : 0
+         * prepayInfo : {"balance":0,"minPrepay":0,"prepay":0}
+         * status : 0
+         * totalMissTimes : 0
          */
 
-        private Double balance;
-        private Long bathOrderId;
-        private Long createTime;
+        private long bathBookingId;
+        private long bathOrderId;
+        private long createTime;
+        private long deviceNo;
         private long expiredTime;
         private String location;
-        private Double minPrepay;
         private int missedTimes;
-        private Double prepay;
-        private Double prepayAmount;
+        private PrepayInfoBean prepayInfo;
         private int status;
         private int totalMissTimes;
-        private Long tradeOrderId;
 
-        public Double getBalance() {
-            return balance;
+    protected BathOrderRespDTO(Parcel in) {
+        bathBookingId = in.readLong();
+        bathOrderId = in.readLong();
+        createTime = in.readLong();
+        deviceNo = in.readLong();
+        expiredTime = in.readLong();
+        location = in.readString();
+        missedTimes = in.readInt();
+        prepayInfo =in.readParcelable(PrepayInfoBean.class.getClassLoader());
+        status = in.readInt();
+        totalMissTimes = in.readInt();
+    }
+
+    public static final Creator<BathOrderRespDTO> CREATOR = new Creator<BathOrderRespDTO>() {
+        @Override
+        public BathOrderRespDTO createFromParcel(Parcel in) {
+            return new BathOrderRespDTO(in);
         }
 
-        public void setBalance(Double balance) {
-            this.balance = balance;
+        @Override
+        public BathOrderRespDTO[] newArray(int size) {
+            return new BathOrderRespDTO[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(bathBookingId);
+        dest.writeLong(bathOrderId);
+        dest.writeLong(createTime);
+        dest.writeLong(deviceNo);
+        dest.writeLong(expiredTime);
+        dest.writeString(location);
+        dest.writeInt(missedTimes);
+        dest.writeParcelable(prepayInfo ,flags);
+        dest.writeInt(status);
+        dest.writeInt(totalMissTimes);
+    }
+
+    public static class PrepayInfoBean implements Parcelable {
+            /**
+             * balance : 0
+             * minPrepay : 0
+             * prepay : 0
+             */
+
+            private double balance;
+            private double minPrepay;
+            private double prepay;
+
+        protected PrepayInfoBean(Parcel in) {
+            balance = in.readDouble();
+            minPrepay = in.readDouble();
+            prepay = in.readDouble();
         }
 
-        public Long getBathOrderId() {
-            return bathOrderId;
+        public static final Creator<PrepayInfoBean> CREATOR = new Creator<PrepayInfoBean>() {
+            @Override
+            public PrepayInfoBean createFromParcel(Parcel in) {
+                return new PrepayInfoBean(in);
+            }
+
+            @Override
+            public PrepayInfoBean[] newArray(int size) {
+                return new PrepayInfoBean[size];
+            }
+        };
+
+        public double getBalance() {
+                return balance;
+            }
+
+            public void setBalance(double balance) {
+                this.balance = balance;
+            }
+
+            public double getMinPrepay() {
+                return minPrepay;
+            }
+
+            public void setMinPrepay(double minPrepay) {
+                this.minPrepay = minPrepay;
+            }
+
+            public double getPrepay() {
+                return prepay;
+            }
+
+            public void setPrepay(double prepay) {
+                this.prepay = prepay;
+            }
+
+        @Override
+        public int describeContents() {
+            return 0;
         }
 
-        public void setBathOrderId(Long bathOrderId) {
-            this.bathOrderId = bathOrderId;
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeDouble(balance);
+            dest.writeDouble(minPrepay);
+            dest.writeDouble(prepay);
         }
-
-        public Long getCreateTime() {
-            return createTime;
-        }
-
-        public void setCreateTime(Long createTime) {
-            this.createTime = createTime;
-        }
-
-        public long getExpiredTime() {
-            return expiredTime;
-        }
-
-        public void setExpiredTime(long expiredTime) {
-            this.expiredTime = expiredTime;
-        }
-
-        public String getLocation() {
-            return location;
-        }
-
-        public void setLocation(String location) {
-            this.location = location;
-        }
-
-        public Double getMinPrepay() {
-            return minPrepay;
-        }
-
-        public void setMinPrepay(Double minPrepay) {
-            this.minPrepay = minPrepay;
-        }
-
-        public int getMissedTimes() {
-            return missedTimes;
-        }
-
-        public void setMissedTimes(int missedTimes) {
-            this.missedTimes = missedTimes;
-        }
-
-        public Double getPrepay() {
-            return prepay;
-        }
-
-        public void setPrepay(Double prepay) {
-            this.prepay = prepay;
-        }
-
-        public Double getPrepayAmount() {
-            return prepayAmount;
-        }
-
-        public void setPrepayAmount(Double prepayAmount) {
-            this.prepayAmount = prepayAmount;
-        }
-
-        public int getStatus() {
-            return status;
-        }
-
-        public void setStatus(int status) {
-            this.status = status;
-        }
-
-        public int getTotalMissTimes() {
-            return totalMissTimes;
-        }
-
-        public void setTotalMissTimes(int totalMissTimes) {
-            this.totalMissTimes = totalMissTimes;
-        }
-
-        public Long getTradeOrderId() {
-            return tradeOrderId;
-        }
-
-        public void setTradeOrderId(Long tradeOrderId) {
-            this.tradeOrderId = tradeOrderId;
-        }
-//    /**
-//     * 预约订单id，购买编码不会生成
-//     */
-//    private Long bathOrderId;
-//    /**
-//     * 设备位置
-//     */
-//    private String location;
-//    /**
-//     * 过期时间
-//     */
-//    private long expiredTime;
-//    /**
-//     * 预付金额
-//     */
-//    private Double amount;
-//    /**
-//     * 用户余额
-//     */
-//    private Double balance;
-//    /**
-//     * 编码:购买编码方式会生成
-//     */
-//    private String code;
-//    /**
-//     * 一个随机红包
-//     */
-//    private BriefBonusDTO bonus;
-//    /**
-//     * 1 预约中（未支付） 2 预约成功  3 预约失败
-//     */
-//    private Integer status;
-//    /**
-//     * 失约次数 只有预约才会返回
-//     */
-//    private Integer missTimes;
-//
-//    /**
-//     * 预约创建时间
-//     */
-//    private Long createTime ;
-
-
-
-}
+    }
+    }

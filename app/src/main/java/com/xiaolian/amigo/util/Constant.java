@@ -244,6 +244,42 @@ public final class Constant {
 
     public static final int USING = 4 ;  //  直接使用
 
+    /**
+     * 上一笔订单状态
+     */
+    public static final int WAIT_STATUS = 2 ;  // 等待洗浴
+
+    public static final int TIMEOUT_STATUS = 5 ;  // 预约超时
+
+    public static final int USING_STATUS = 6 ; //  正在洗浴
+
+
+    /**
+     * 预览图公共浴室状态
+     */
+    public static final int NONE =  0 ;   // 没有
+
+    public static final int AVAILABLE =  1 ;   //  可用
+
+    public static final int BATH_USING = 2 ;   // 正在使用
+
+    public static final int ERROR = 3 ;    //  报错
+
+
+    /**
+     * 业务状态
+     */
+
+
+    public static final int SHOWER = 1 ;
+
+    public static final int WATER = 2 ;
+
+    public static final int HAIR_DRYER = 3 ;
+
+    public static final int WASHING = 4 ;
+
+    public static final int PUB_BATH = 5 ;
 
 
 }

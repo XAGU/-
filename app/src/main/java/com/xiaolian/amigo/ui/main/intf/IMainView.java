@@ -2,6 +2,7 @@ package com.xiaolian.amigo.ui.main.intf;
 
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.network.model.bathroom.BathRouteRespDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.CurrentBathOrderRespDTO;
 import com.xiaolian.amigo.data.network.model.system.BannerDTO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.user.PersonalExtraInfoDTO;
@@ -150,4 +151,10 @@ public interface IMainView extends IBaseView {
      * 洗澡地址为空时,选择洗澡地址
      */
     void choseBathroomAddress();
+
+
+    /**
+     * 显示上一洗澡订单状态
+     */
+    void currentOrder(CurrentBathOrderRespDTO dto);
 }

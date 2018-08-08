@@ -17,6 +17,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.network.model.bathroom.CurrentBathOrderRespDTO;
 import com.xiaolian.amigo.data.network.model.system.BannerDTO;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
 import com.xiaolian.amigo.ui.main.adaptor.HomeAdaptor;
@@ -24,6 +25,7 @@ import com.xiaolian.amigo.ui.main.adaptor.HomeBannerDelegate;
 import com.xiaolian.amigo.ui.main.adaptor.HomeNormalDelegate;
 import com.xiaolian.amigo.ui.main.adaptor.HomeSmallDelegate;
 import com.xiaolian.amigo.ui.widget.RecyclerItemClickListener;
+import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
 
 import org.greenrobot.eventbus.EventBus;
@@ -230,6 +232,9 @@ public class HomeFragment2 extends Fragment {
         }
     }
 
+
+
+
     public void onSchoolBizEvent(List<BriefSchoolBusiness> businesses) {
         int currentPrepayOrderSize = 0;
         int currentBusinessSize = 0;
@@ -259,6 +264,7 @@ public class HomeFragment2 extends Fragment {
                 shower.setActive(true);
                 shower.setPrepaySize(business.getPrepayOrder());
                 shower.setUsing(business.getUsing());
+                shower.setStatus(0);
                 currentPrepayOrderSize += business.getPrepayOrder();
                 currentBusinessSize += 1;
             } else if (business.getBusinessId() == 3) {
@@ -367,6 +373,32 @@ public class HomeFragment2 extends Fragment {
                 break;
         }
     }
+
+    @SuppressWarnings("unchecked")
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void OrderEvent(CurrentBathOrderRespDTO  event){
+        Log.e(TAG  ,"预约订单" +event.getStatus());
+        if (event.isExistOrder()){
+            checkTitleTip(event);
+        }
+    }
+
+    /**
+     * 显示主页面是否有上一订单
+     * @param event
+     */
+    private void checkTitleTip(CurrentBathOrderRespDTO event){
+      shower.setExistOrder(true);
+      shower.setStatus(event.getStatus());
+      if (event.getStatus() == Constant.USING_STATUS){
+        shower.setUsing(true);
+      }else{
+          shower.setUsing(false);
+      }
+        Log.e(TAG  ,"checkTitleTip预约订单" +event.getStatus());
+      notifyAdaptor();
+    }
+
 
     private void changeAnimation(int animationRes) {
         LayoutAnimationController animation = AnimationUtils

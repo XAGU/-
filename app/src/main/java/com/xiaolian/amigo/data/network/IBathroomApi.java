@@ -2,31 +2,26 @@ package com.xiaolian.amigo.data.network;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.bathroom.BathBookingReqDTO;
-import com.xiaolian.amigo.data.network.model.bathroom.BathBookingRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathBookingStatusReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathBuildingRespDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.BathOrderCurrentRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathOrderPreconditionRespDTO;
-import com.xiaolian.amigo.data.network.model.bathroom.BathOrderReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathOrderRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathPasswordUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathPreBookingRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathRoomReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathRouteRespDTO;
-import com.xiaolian.amigo.data.network.model.bathroom.CreateBathOrderRespDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.CurrentBathOrderRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.QueryBathOrderListReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.QueryBathOrderListRespDTO;
-import com.xiaolian.amigo.data.network.model.bathroom.ShowerRoomRouterRespDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
-import com.xiaolian.amigo.data.network.model.common.EmptyRespDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
 import com.xiaolian.amigo.data.network.model.login.VerificationCodeCheckReqDTO;
-import com.xiaolian.amigo.data.network.model.user.QueryUserResidenceListRespDTO;
 
 import retrofit2.http.Body;
 import retrofit2.http.POST;
 import rx.Observable;
-import rx.Observer;
 
 /**
  * 公共浴室
@@ -51,7 +46,7 @@ public interface IBathroomApi {
     /**
      * 用户取消预约或者购买的编码
      */
-    @POST("bath/trade/cancel")
+    @POST("bath/trade/booking/cancel")
     Observable<ApiResult<BathOrderRespDTO>> cancel(@Body SimpleReqDTO reqDTO);
 
     /**
@@ -61,10 +56,18 @@ public interface IBathroomApi {
     Observable<ApiResult<BathOrderRespDTO>> check(@Body BathBookingReqDTO reqDTO);
 
     /**
+     * 查询指定预约订单状态
+     */
+    @POST("bath/trade/booking/query")
+    Observable<ApiResult<BathOrderRespDTO>> query(@Body BathBookingStatusReqDTO reqDTO);
+
+
+    /**
      * 查询指定订单状态
      */
-    @POST("bath/trade/query")
-    Observable<ApiResult<BathOrderRespDTO>> query(@Body BathBookingStatusReqDTO reqDTO);
+    @POST("bath/trade/order/query")
+    Observable<ApiResult<BathOrderCurrentRespDTO>> orderQuery(@Body SimpleReqDTO reqDTO);
+
 
     /**
      * 根据当前登录用户所在学校配置，以及用户上次洗澡的习惯，决定路由到"宿舍热水澡模块"、还是"公共浴室模块"
@@ -122,6 +125,16 @@ public interface IBathroomApi {
     Observable<ApiResult<BooleanRespDTO>> unlock(@Body BathRoomReqDTO reqDTO);
 
 
+    /**
+     * 主页上显示是否有上一次订单
+     * @return
+     */
+    @POST("bath/order/current")
+    Observable<ApiResult<CurrentBathOrderRespDTO>> currentOrder();
 
-
+    /**
+     * 客户端请求结账
+     */
+    @POST("bath/trade/askSettle")
+    Observable<ApiResult<BooleanRespDTO>> askSettle(@Body  SimpleReqDTO reqDTO);
 }

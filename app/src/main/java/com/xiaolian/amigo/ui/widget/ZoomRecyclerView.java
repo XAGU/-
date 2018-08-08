@@ -191,7 +191,7 @@ public class ZoomRecyclerView extends RecyclerView implements View.OnTouchListen
             @Override
             public boolean onSingleTapConfirmed(MotionEvent e) {
                 if(mOnGestureListener!=null){
-                    return mOnGestureListener.onSingleTapConfirmed(e);
+//                    return mOnGestureListener.onSingleTapConfirmed(e);
                 }
                 return false;
             }
@@ -206,15 +206,15 @@ public class ZoomRecyclerView extends RecyclerView implements View.OnTouchListen
                 centerX = 0;
                 centerY = 0;
                 if (mScaleFactor < mMidScaleFactor) {
-                    postDelayed(new AutoScaleRunnable(mMidScaleFactor, centerX, centerY, mAutoBigger), mAutoTime);
+//                    postDelayed(new AutoScaleRunnable(mMidScaleFactor, centerX, centerY, mAutoBigger), mAutoTime);
                 } else if(mScaleFactor < mMaxScaleFactor){
-                    postDelayed(new AutoScaleRunnable(mMaxScaleFactor, centerX, centerY, mAutoBigger), mAutoTime);
+//                    postDelayed(new AutoScaleRunnable(mMaxScaleFactor, centerX, centerY, mAutoBigger), mAutoTime);
                 } else {
-                    postDelayed(new AutoScaleRunnable(mInitScaleFactor, centerX, centerY, mAutoSmall), mAutoTime);
+//                    postDelayed(new AutoScaleRunnable(mInitScaleFactor, centerX, centerY, mAutoSmall), mAutoTime);
                 }
 
                 if(mOnGestureListener!=null){
-                    mOnGestureListener.onDoubleTap(e);
+//                    mOnGestureListener.onDoubleTap(e);
                 }
                 return true;
             }
@@ -230,10 +230,10 @@ public class ZoomRecyclerView extends RecyclerView implements View.OnTouchListen
             mDeltaY = 0.0f;
         }
 
-        anim();
-//        canvas.translate(mDeltaX, mDeltaY);
-//        canvas.scale(mScaleFactor, mScaleFactor, centerX, centerY);
-//        canvas.scale(mScaleFactor, mScaleFactor);
+//        anim();
+        canvas.translate(mDeltaX, mDeltaY);
+        canvas.scale(mScaleFactor, mScaleFactor, centerX, centerY);
+        canvas.scale(mScaleFactor, mScaleFactor);
         super.dispatchDraw(canvas);
         canvas.restore();
     }
@@ -247,8 +247,8 @@ public class ZoomRecyclerView extends RecyclerView implements View.OnTouchListen
 //        ObjectAnimator objectAnimatorTranslaY = ObjectAnimator.ofFloat(this ,"translationY" , mDeltaY);
         ObjectAnimator objectAnimatorX = ObjectAnimator.ofFloat(this ,"scaleX" ,mScaleFactor);
         ObjectAnimator objectAnimatorY = ObjectAnimator.ofFloat(this ,"scaleY" , mScaleFactor);
-        objectAnimatorX.setDuration(500);
-        objectAnimatorY.setDuration(500);
+        objectAnimatorX.setDuration(100);
+        objectAnimatorY.setDuration(100);
 //        objectAnimatorTranslaY.setDuration(500);
 //        objectAnimatorTransle.setDuration(500);
         objectAnimatorX.start();

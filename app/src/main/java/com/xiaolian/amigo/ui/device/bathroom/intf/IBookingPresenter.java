@@ -1,9 +1,6 @@
 package com.xiaolian.amigo.ui.device.bathroom.intf;
 
-import com.xiaolian.amigo.data.network.model.bathroom.BathOrderRespDTO;
 import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
-
-import java.util.Observable;
 
 /**
  * @author zcd
@@ -39,7 +36,7 @@ public interface IBookingPresenter<V extends IBookingView> extends IBasePresente
      * 查询特定订单的状态
      * @param bathOrderId
      */
-    void query(String bathOrderId);
+    void query(String bathOrderId , boolean isToUsing , int time);
 
     /**
      * 解除绑定设备
@@ -57,4 +54,5 @@ public interface IBookingPresenter<V extends IBookingView> extends IBasePresente
      * 根据过期时间倒计时
      */
     void countDownexpiredTime(long expiredTime );
+
 }

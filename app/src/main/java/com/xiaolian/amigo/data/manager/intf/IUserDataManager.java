@@ -204,4 +204,7 @@ public interface IUserDataManager {
      * @return
      */
     Observable<ApiResult<BooleanRespDTO>>  updateNormalBathroom(@Body SimpleReqDTO dto);
+
+
+    void setBathroomPassword();
 }

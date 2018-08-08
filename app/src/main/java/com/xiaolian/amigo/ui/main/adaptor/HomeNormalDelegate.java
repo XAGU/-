@@ -3,12 +3,15 @@ package com.xiaolian.amigo.ui.main.adaptor;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.GridLayoutManager;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.widget.DotFlashView;
+import com.xiaolian.amigo.util.Constant;
 import com.zhy.adapter.recyclerview.base.ItemViewDelegate;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -51,6 +54,27 @@ public class HomeNormalDelegate implements ItemViewDelegate<HomeAdaptor.ItemWrap
         holder.getView(R.id.rl_item).setBackgroundResource(itemWrapper.getRes());
         holder.setText(R.id.tv_device_title, itemWrapper.getDeviceName());
         holder.setText(R.id.tv_desc, itemWrapper.getDesc());
+
+        if (itemWrapper.isExistOrder()){
+            String stauts = "";
+            switch (itemWrapper.getStatus()){
+                case Constant.WAIT_STATUS:
+                    stauts = "等待洗浴";
+                    break;
+                case Constant.TIMEOUT_STATUS:
+                    stauts = "预约超时";
+                    break;
+                case Constant.USING:
+                    stauts = "正在洗浴";
+                    break;
+            }
+            if (!TextUtils.isEmpty(stauts)) {
+                holder.getView(R.id.tv_prepay).setVisibility(View.VISIBLE);
+                holder.setText(R.id.tv_prepay, stauts);
+            }else{
+                holder.getView(R.id.tv_prepay).setVisibility(View.GONE);
+            }
+        }
         if (itemWrapper.getPrepaySize() != 0) {
             holder.getView(R.id.tv_prepay).setVisibility(View.VISIBLE);
             holder.setText(R.id.tv_prepay, "(有" + itemWrapper.getPrepaySize() + "笔未找零金额)");

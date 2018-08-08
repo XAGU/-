@@ -6,11 +6,14 @@ import android.text.TextUtils;
 import com.xiaolian.amigo.data.base.LogInterceptor;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.manager.intf.IMainDataManager;
+import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.bathroom.BathRouteRespDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.CurrentBathOrderRespDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCheckRespDTO;
+import com.xiaolian.amigo.data.network.model.login.EntireUserDTO;
 import com.xiaolian.amigo.data.network.model.notify.ReadNotifyReqDTO;
 import com.xiaolian.amigo.data.network.model.school.QuerySchoolBizListRespDTO;
 import com.xiaolian.amigo.data.network.model.system.BannerDTO;
@@ -44,13 +47,15 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
     private static final int GUIDE_REMIND_MAX_TIME = 3;
     private static final String TAG = MainPresenter.class.getSimpleName();
     private IMainDataManager mainDataManager;
+    private IUserDataManager userDataManager ;
     private Integer guideTime;
     private LogInterceptor interceptor;
 
     @Inject
-    MainPresenter(IMainDataManager mainDataManager, LogInterceptor interceptor) {
+    MainPresenter(IMainDataManager mainDataManager,IUserDataManager userDataManager ,LogInterceptor interceptor) {
         this.mainDataManager = mainDataManager;
         this.interceptor = interceptor;
+        this.userDataManager = userDataManager ;
     }
 
     @Override
@@ -420,6 +425,37 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
     @Override
     public void saveRoomInfo(Long residenceId) {
         getUserInfo().setRoomId(residenceId);
+    }
+
+    @Override
+    public void currentOrder() {
+        addObserver(mainDataManager.currentOrder() ,new NetworkObserver<ApiResult<CurrentBathOrderRespDTO>>(){
+
+            @Override
+            public void onReady(ApiResult<CurrentBathOrderRespDTO> result) {
+                if (result.getError() == null){
+                    getMvpView().currentOrder(result.getData());
+                }else{
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+        });
+    }
+
+    @Override
+    public void getUser() {
+        addObserver(userDataManager.getUserInfo(), new NetworkObserver<ApiResult<EntireUserDTO>>() {
+
+            @Override
+            public void onReady(ApiResult<EntireUserDTO> result) {
+                if (null == result.getError()) {
+                    User user = new User(result.getData());
+                    userDataManager.setUser(user);
+                } else {
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+        });
     }
 
     private boolean isDeviceInfoUploaded(UploadUserDeviceInfoReqDTO newReq,

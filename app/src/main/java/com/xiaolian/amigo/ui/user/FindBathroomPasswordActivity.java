@@ -1,8 +1,5 @@
 package com.xiaolian.amigo.ui.user;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
@@ -10,12 +7,9 @@ import com.xiaolian.amigo.ui.user.intf.IFindBathroomPasswordPresenter;
 import com.xiaolian.amigo.ui.user.intf.IFindBathroomPasswordView;
 import com.xiaolian.amigo.util.Constant;
 
-import org.greenrobot.eventbus.EventBus;
-
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
-import lombok.Data;
 
 public class FindBathroomPasswordActivity extends UserBaseActivity implements IFindBathroomPasswordView {
 

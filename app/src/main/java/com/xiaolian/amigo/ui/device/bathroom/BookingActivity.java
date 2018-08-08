@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.device.bathroom;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -23,10 +24,10 @@ import com.xiaolian.amigo.data.network.model.bathroom.BathPreBookingRespDTO;
 import com.xiaolian.amigo.ui.device.bathroom.adapter.DeviceInfoAdapter;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IBookingPresenter;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IBookingView;
-import com.xiaolian.amigo.ui.order.OrderDetailActivity;
 import com.xiaolian.amigo.ui.widget.BathroomOperationStatusView;
 import com.xiaolian.amigo.ui.widget.dialog.BathroomBookingDialog;
-import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.ui.widget.dialog.BookingCancelDialog;
+import com.xiaolian.amigo.ui.widget.dialog.PrepayDialog;
 import com.xiaolian.amigo.util.DimentionUtils;
 import com.xiaolian.amigo.util.TimeUtils;
 
@@ -38,13 +39,13 @@ import javax.inject.Inject;
 import static android.view.View.GONE;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_DEVICE_NO;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_ORDER_PRECONDITION;
+import static com.xiaolian.amigo.ui.device.bathroom.BathroomHeaterActivity.KEY_BATH_ORDER_ID;
 import static com.xiaolian.amigo.ui.widget.BathroomOperationStatusView.IMG_RES_STATUS_CANCEL;
 import static com.xiaolian.amigo.ui.widget.BathroomOperationStatusView.IMG_RES_STATUS_FAIL;
 import static com.xiaolian.amigo.ui.widget.BathroomOperationStatusView.IMG_RES_STATUS_OPERATING;
 import static com.xiaolian.amigo.ui.widget.BathroomOperationStatusView.IMG_RES_STATUS_SUCCESS;
 import static com.xiaolian.amigo.util.Constant.ACCEPTED;
 import static com.xiaolian.amigo.util.Constant.EXPIRED;
-import static com.xiaolian.amigo.util.Constant.USING;
 
 /**
  * 预约使用
@@ -55,8 +56,10 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
     private static final String TAG = BookingActivity.class.getSimpleName();
     private String deviceNo="" ;
     private long orderId ;
+    private BookingCancelDialog dialog ;
     @Inject
     IBookingPresenter<IBookingView> presenter;
+
 
     private DeviceInfoAdapter.DeviceInfoWrapper wrapper = null ;  // 剩余时间
     private BathroomBookingDialog bathroomBookingDialog;
@@ -67,13 +70,15 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
         super.onCreate(savedInstanceState);
         getActivityComponent().inject(this);
         presenter.onAttach(this);
-        initIntent();
         if (bathOrderPreconditionRespDTO != null){
             referUiForLastOrderStatus();
+
         }else{
             initTopTip();
             referBooking();
         }
+
+
 
     }
 
@@ -93,7 +98,9 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
      */
     private void expiredForOldOrder(boolean isNeedChange){
         showOrderHideBtnUser();
-        statusView.setStatusText("洗澡卷失效");
+        statusView.setStatusText("预约超时");
+        setTopTip();
+        statusView.hideCancelButton();
         statusView.setLeftImageResource(IMG_RES_STATUS_FAIL);
         List<DeviceInfoAdapter.DeviceInfoWrapper> wrapperList = getListDevceInfoAdapter(true);
         referItems(wrapperList ,isNeedChange);
@@ -184,10 +191,12 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
      * 购买成功界面
      */
     private void buySuccessForOldOrder(boolean isNeedChange){
+        setTopTip();
         buySuccessUi();
         List<DeviceInfoAdapter.DeviceInfoWrapper> wrapperList = getListDevceInfoAdapter(true);
         referItems(wrapperList ,isNeedChange);
         presenter.countDownexpiredTime(bathOrderPreconditionRespDTO.getExpiredTime());
+        presenter.query(bathOrderPreconditionRespDTO.getBathBookingId()+"" , true , 10);
     }
 
     /**
@@ -218,12 +227,18 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
         if (bathOrderPreconditionRespDTO == null){
             return ;
         }
-        orderId = bathOrderPreconditionRespDTO.getBathOrderId();
+
+        if (bathOrderPreconditionRespDTO.getBathBookingId() != 0) {
+            orderId = bathOrderPreconditionRespDTO.getBathBookingId();
+        }else{
+            if (bathOrderPreconditionRespDTO.getBathOrderId() != 0)
+            orderId = bathOrderPreconditionRespDTO.getBathOrderId();
+        }
         forOldOrderToSetTipTxt(bathOrderPreconditionRespDTO);
         switch (bathOrderPreconditionRespDTO.getStatus()){
-            case USING:
-                cancelForOldOrder(true);
-                break;
+//            case USING:
+//                cancelForOldOrder(true);
+//                break;
             case ACCEPTED:
                 buySuccessForOldOrder(true);
                 break;
@@ -243,12 +258,12 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
         statusView.setLeftImageResource(IMG_RES_STATUS_OPERATING);
         statusView.setStatusText("预约中");
         statusView.hideCancelButton();
+        btStartToUse.setClickable(true);
         btStartToUse.setOnClickListener(v -> {
             showBookingDialog();
             presenter.booking(deviceNo);
         });
-
-        presenter.bathroomBookingCountDown();
+//        presenter.bathroomBookingCountDown();
         btStartToUse.setVisibility(View.VISIBLE);
     }
 
@@ -264,7 +279,7 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
     private void setTopTip() {
         SpannableStringBuilder builder = new SpannableStringBuilder();
         SpannableString tipSpan1 = new SpannableString("指定浴室每月失约" + maxMissAbleTimes
-                + "次将无法预约，已失约");
+                + "次后将无法预约，已");
         tipSpan1.setSpan(new AbsoluteSizeSpan(
                         DimentionUtils.convertSpToPixels(12, this)), 0, tipSpan1.length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -327,10 +342,14 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
     @Override
     protected void setTips(TextView tip1, TextView tip2, TextView tip3, TextView tip4,
                            TextView tip, RelativeLayout rlTip) {
-        tip1.setText(getString(R.string.booking_use_tip1));
-        tip2.setText(getString(R.string.booking_use_tip2));
-        tip3.setText(getString(R.string.booking_use_tip3));
-        tip4.setText(getString(R.string.booking_use_tip4));
+        if (!TextUtils.isEmpty(deviceNo) || bathOrderPreconditionRespDTO != null && bathOrderPreconditionRespDTO.getDeviceNo() != 0){
+            tip1.setText(getString(R.string.booking_user_this));
+        }else{
+            tip1.setText(getString(R.string.booking_user_empty));
+        }
+        tip2.setText(getString(R.string.booking_user_common_tip));
+//        tip3.setText(getString(R.string.booking_use_tip3));
+//        tip4.setText(getString(R.string.booking_use_tip4));
         tip.setText("预约使用说明");
     }
 
@@ -346,8 +365,6 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
         bathroomBookingDialog.show();
     }
 
-
-
     @Override
     public void bookingSuccess(BathOrderRespDTO data) {
         orderId = data.getBathOrderId();
@@ -356,15 +373,39 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
         presenter.cancelCountDown();
         btStartToUse.setVisibility(View.GONE);
         statusView.showCancelButton(() -> {
-            presenter.cancel(data.getBathOrderId());
-            presenter.cancelCountDown();
+//            presenter.cancel(data.getBathBookingId());
+            cancelDialog(data.getBathBookingId());
+//            presenter.cancelCountDown();
         });
         successRecyclerView(data);
         statusView.getRightText().setText("取消");
         statusView.getRightText().setTextColor(getResources().getColor(R.color.colorDarkB ));
         presenter.countDownexpiredTime(data.getExpiredTime());
+        presenter.query(data.getBathBookingId()+"" ,true , 10);
     }
 
+    /**
+     * 取消预约弹窗
+     * @param id
+     */
+    private void cancelDialog(long id){
+        if (dialog == null){
+            dialog = new BookingCancelDialog(this);
+            dialog.setOnCancelClickListener(new PrepayDialog.OnCancelClickListener() {
+                @Override
+                public void onCancelClick(Dialog dialog) {
+                    presenter.cancel(id);
+                }
+            });
+            dialog.setOnOkClickListener(new PrepayDialog.OnOkClickListener() {
+                @Override
+                public void onOkClick(Dialog dialog) {
+                    dialog.cancel();
+                }
+            });
+        }
+        dialog.show();
+    }
     /**
      * 预约成功界面刷新
      * @param data
@@ -396,11 +437,11 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
     }
 
     @Override
-    public void bookingCancel(BathOrderRespDTO data) {
+    public void bookingCancel() {
         statusView.setLeftImageResource(IMG_RES_STATUS_CANCEL);
         statusView.setStatusText("取消预约");
         statusView.hideCancelButton();
-        CancelBookingView(data);
+        CancelBookingView();
         rightOper.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -409,20 +450,15 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
         });
     }
 
-
-
-
-
     /**
      * 取消预约
      */
-    private void CancelBookingView(BathOrderRespDTO data){
-        List<DeviceInfoAdapter.DeviceInfoWrapper> wrapperList = new ArrayList<>();
-        wrapperList.add(new DeviceInfoAdapter.DeviceInfoWrapper("浴室位置：",
-                data.getLocation(), R.color.colorDark2, 14, Typeface.NORMAL, false));
-        wrapperList.add(new DeviceInfoAdapter.DeviceInfoWrapper("预留时间：" , getReservedTime(data.getCreateTime() ,data.getExpiredTime())
-                ,R.color.colorDark2 ,14 , Typeface.NORMAL , false));
-        referRecyclerView(wrapperList);
+    private void CancelBookingView(){
+        if (items!= null && items.size() > 0 && adapter != null){
+            items.remove(items.size() -1 );
+            adapter.notifyDataSetChanged();
+            presenter.cancelCountDown();
+        }
         llBottomVisible(true);
         rightOper.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -455,9 +491,9 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
 //              bonusDesc = respDTO.getBonus().getDescription();
 //              bonusAmount = respDTO.getBonus().getAmount();
 //          }
-          balance = respDTO.getBalance();
-          minPrepay = respDTO.getMinPrepay();
-          prepay = respDTO.getPrepay();
+          balance = respDTO.getPrepayInfo().getBalance();
+          minPrepay = respDTO.getPrepayInfo().getMinPrepay();
+          prepay = respDTO.getPrepayInfo().getPrepay();
           location = respDTO.getLocation();
 //          expiredTime = respDTO.getExpiredTime();
           missedTimes = respDTO.getMissedTimes();
@@ -468,8 +504,10 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
 
     @Override
     public void appointMentTimeOut() {
+        setTopTip();
         statusView.setLeftImageResource(IMG_RES_STATUS_FAIL);
         statusView.setStatusText(getString(R.string.preBookTimeOut));
+        statusView.getTip().setText(getString(R.string.tip_timeout));
         llBottom.setVisibility(View.VISIBLE);
         statusView.hideCancelButton();
         btStartToUse.setVisibility(GONE);
@@ -479,15 +517,6 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
                 presenter.preBooking(deviceNo+"");
             }
         });
-//        leftOper.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                // 跳转至订单详情
-//                Intent intent = new Intent(BookingActivity.this, OrderDetailActivity.class);
-//                intent.putExtra(Constant.EXTRA_KEY, orderId);
-//                startActivity(intent);
-//            }
-//        });
     }
 
     @Override
@@ -518,6 +547,13 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
                 adapter.notifyItemChanged(currentPosition);
             }
         }
+    }
+
+    @Override
+    public void gotoUsing(BathOrderRespDTO dto) {
+        presenter.cancelCountDown();
+        startActivity(new Intent(this ,BathroomHeaterActivity.class)
+        .putExtra(KEY_BATH_ORDER_ID , dto.getBathOrderId()));
     }
 
     @Override

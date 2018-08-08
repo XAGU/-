@@ -16,7 +16,7 @@ public interface IBookingView extends IBaseView {
      */
     void bookingSuccess(BathOrderRespDTO data);
 
-    void bookingCancel(BathOrderRespDTO data );
+    void bookingCancel();
 
     /**
      * 设置预约倒计时
@@ -59,5 +59,12 @@ public interface IBookingView extends IBaseView {
      * @param text
      */
     void countTimeLeft(String text);
+
+    /**
+     * 去洗浴中界面
+     * @param dto
+     */
+    void gotoUsing(BathOrderRespDTO  dto);
+
 
 }

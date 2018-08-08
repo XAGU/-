@@ -13,6 +13,7 @@ import rx.Subscription;
 import rx.android.plugins.RxAndroidSchedulersHook;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action;
+import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -43,22 +44,21 @@ public class RxHelper {
     /**
      * 延迟发送
      * @param time
-     * @param observer
+     * @param
      * @return
      */
-    public static Subscription delay(int time , Subscriber<Long> observer){
+    public static Subscription delay(int time , Action1<Long> action1){
         if (time < 0) time = 0 ;
-        return Observable.interval(0 ,time ,TimeUnit.SECONDS)
+        return Observable.timer( time ,TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(observer);
+                .subscribe(action1);
     }
 
     public static Observable<Integer> delay(int time ,TimeUnit timeUnit){
         if (time < 0) time = 0 ;
         return Observable.just(time).delay(time ,timeUnit)
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                ;
+                .observeOn(AndroidSchedulers.mainThread());
     }
 }

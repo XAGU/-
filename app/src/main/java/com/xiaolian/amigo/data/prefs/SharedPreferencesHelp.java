@@ -84,6 +84,12 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     private static final String PREF_KEY_BATH_ROOM_PASSWORD_DESC = "PREF_KEY_BATH_ROOM_PASSWORD_DESC";
 
 
+    /**
+     * 浴室密码
+     */
+    private static final String PREF_KEY_BATH_ROOM_PASSWORD = "PREF_KEY_BATH_ROOM_PASSWORD";
+
+
     private String tokenHolder;
     private String deviceTokenHolder;
     private User userHolder;
@@ -524,6 +530,20 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     public NormalBathroom getNormalBathroom() {
         return null;
     }
+
+    @Override
+    public void setBathroomPassword(String password) {
+        mSharedPreferences
+                .edit()
+                .putString(PREF_KEY_BATH_ROOM_PASSWORD, password)
+                .apply();
+    }
+
+    @Override
+    public String getBathroomPassword() {
+        return mSharedPreferences.getString(PREF_KEY_BATH_ROOM_PASSWORD ,"");
+    }
+
 
     @Override
     public void logout() {

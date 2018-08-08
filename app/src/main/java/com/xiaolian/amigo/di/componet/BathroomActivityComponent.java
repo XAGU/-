@@ -3,6 +3,7 @@ package com.xiaolian.amigo.di.componet;
 import com.xiaolian.amigo.di.BathroomActivityContext;
 import com.xiaolian.amigo.di.module.BathroomActivityModule;
 import com.xiaolian.amigo.ui.device.bathroom.BathroomActivity;
+import com.xiaolian.amigo.ui.device.bathroom.BathroomHeaterActivity;
 import com.xiaolian.amigo.ui.device.bathroom.BathroomScanActivity;
 import com.xiaolian.amigo.ui.device.bathroom.BookingActivity;
 import com.xiaolian.amigo.ui.device.bathroom.BookingRecordActivity;
@@ -42,4 +43,6 @@ public interface BathroomActivityComponent {
     void inject(EditBathroomPasswordActivity activity);
 
     void inject(ChooseBathroomActivity  activity);
+
+    void inject(BathroomHeaterActivity activity);
 }

@@ -2,6 +2,7 @@ package com.xiaolian.amigo.data.manager.intf;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.bathroom.BathRouteRespDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.CurrentBathOrderRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.ShowerRoomRouterRespDTO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCategoryBO;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
@@ -163,4 +164,9 @@ public interface IMainDataManager {
 
     void setBathroomPasswordDesc(ArrayList<String> bathPasswordDescription);
 
+    /**
+     * 主页上显示是否有上一次订单
+     * @return
+     */
+    Observable<ApiResult<CurrentBathOrderRespDTO>> currentOrder();
 }

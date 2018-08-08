@@ -78,7 +78,7 @@ public class CircleProgressView extends ProgressBar {
     /**
      * 未完成进度颜色
      */
-    private int mNormalBarColor = Color.parseColor("#FFD3D6DA");
+    private int mNormalBarColor = Color.parseColor("#FFFFFF");
     /**
      * 进度值字体大小
      */
@@ -286,7 +286,7 @@ public class CircleProgressView extends ProgressBar {
                 mStartArc = ta.getInt(R.styleable.CircleProgressView_progressStartArc, 0) + 270;
                 if (ta.hasValue(R.styleable.CircleProgressView_innerBackgroundColor)) {
                     mInnerBackgroundColor = ta.getColor(R.styleable.CircleProgressView_innerBackgroundColor,
-                            Color.argb(0, 0, 0, 0));
+                            Color.WHITE);
                     needDrawInnerBackground = true;
                 }
                 break;
@@ -404,10 +404,10 @@ public class CircleProgressView extends ProgressBar {
         canvas.save();
         canvas.translate(mRealWidth / 2, mRealHeight / 2);
         // 绘制内部圆形背景色
-        if (needDrawInnerBackground) {
-            canvas.drawCircle(0, 0, mRadius - Math.min(mReachBarSize, mNormalBarSize) / 2,
-                    mInnerBackgroundPaint);
-        }
+//        if (needDrawInnerBackground) {
+//            canvas.drawCircle(0, 0, mRadius - Math.min(mReachBarSize, mNormalBarSize) / 2,
+//                    mInnerBackgroundPaint);
+//        }
         // 绘制文字
         if (mTextVisible) {
             String text = mTextPrefix + mTextValue + mTextSuffix;
@@ -418,9 +418,9 @@ public class CircleProgressView extends ProgressBar {
         // 计算进度值
         float reachArc = getProgress() * 1.0f / getMax() * 360;
         // 绘制未到达进度
-        if (reachArc != 360) {
-            canvas.drawArc(rectF, reachArc + mStartArc, 360 - reachArc, false, mNormalPaint);
-        }
+//        if (reachArc != 360) {
+//            canvas.drawArc(rectF, reachArc + mStartArc, 360 - reachArc, false, mNormalPaint);
+//        }
         // 绘制已到达进度
         canvas.drawArc(rectF, mStartArc, reachArc, false, mReachPaint);
         canvas.restore();
