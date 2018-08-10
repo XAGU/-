@@ -6,10 +6,12 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -21,7 +23,9 @@ import com.xiaolian.amigo.R;
  * @author zcd
  * @date 18/6/27
  */
-public class ZoomRecyclerView extends RecyclerView implements View.OnTouchListener {
+public class ZoomRecyclerView extends RecyclerView {
+    private static final String TAG = ZoomRecyclerView.class.getSimpleName();
+
     /** 非法的手指ID */
     private static final int INVALID_POINTER_ID = -1;
 
@@ -60,6 +64,9 @@ public class ZoomRecyclerView extends RecyclerView implements View.OnTouchListen
     private OnGestureListener mOnGestureListener;
 
 
+    float[] m = new float[9];
+
+    private  int       mShortAnimationDuration = getResources().getInteger(android.R.integer.config_shortAnimTime);
     public interface OnGestureListener{
         boolean onScale(ScaleGestureDetector detector, float scaleFactor);
         boolean onSingleTapConfirmed(MotionEvent e);
@@ -161,9 +168,30 @@ public class ZoomRecyclerView extends RecyclerView implements View.OnTouchListen
 
     }
 
+
+    private void translate(float x , float y){
+        if (x >0){
+            ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(this ,"translationX" , x);
+            objectAnimator.setDuration(mShortAnimationDuration);
+            objectAnimator.start();
+        }else{
+            ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(this ,"translationX" , y);
+            objectAnimator.setDuration(mShortAnimationDuration);
+            objectAnimator.start();
+        }
+    }
+
+    @Override
+    protected void onMeasure(int widthSpec, int heightSpec) {
+//        super.onMeasure(widthSpec, heightSpec);
+        setMeasuredDimension((int)mScaleFactor * widthSpec , (int)mScaleFactor * heightSpec);
+    }
+
+
     /** 初始化手势监听 */
     private void initDetector() {
         mScaleGestureDetector = new ScaleGestureDetector(mContext, new ScaleGestureDetector.SimpleOnScaleGestureListener() {
+            //缩放操作进行中
             @Override
             public boolean onScale(ScaleGestureDetector detector) {
                 /** 获取缩放中心 */
@@ -174,24 +202,52 @@ public class ZoomRecyclerView extends RecyclerView implements View.OnTouchListen
                 mScaleFactor *= detector.getScaleFactor();
                 mScaleFactor = Math.max(mInitScaleFactor, Math.min(mScaleFactor, mMaxScaleFactor));
 
+
+//                float matrixScaleX = getMatrixScaleX();
+//                //缩放矩阵
+//                scaleMatrix.postScale(mScaleFactor, mScaleFactor, centerX , centerY);
+//                //传入原始比例,进行计算,一定需要上面原始比例
+//                scaleHierarchyScroll(matrixScaleX, centerX,centerY);
+
+
+
                 /** 缩放导致偏移 */
 //                mDeltaX += centerX * (mScaleFactor - lastScaleFactor);
 //                mDeltaY += centerY * (mScaleFactor - lastScaleFactor);
 //                checkBorder();//检查边界
                 ZoomRecyclerView.this.invalidate();
-
                 if(mOnGestureListener!=null){
                     mOnGestureListener.onScale(detector, mScaleFactor);
                 }
                 return true;
             }
+
+            //缩放操作进行前
+            @Override
+            public boolean onScaleBegin(ScaleGestureDetector detector) {
+                return super.onScaleBegin(detector);
+            }
+
+            //缩放操作结束
+            @Override
+            public void onScaleEnd(ScaleGestureDetector detector) {
+                super.onScaleEnd(detector);
+
+//                float matrixScaleX = getMatrixScaleX();
+//                if (matrixScaleX < 1)
+//                anim(1, centerX,centerY);
+//                else
+//                    anim(matrixScaleX ,centerX , centerY);
+
+            }
         });
+
 
         mGestureDetector = new GestureDetector(mContext, new GestureDetector.SimpleOnGestureListener() {
             @Override
             public boolean onSingleTapConfirmed(MotionEvent e) {
                 if(mOnGestureListener!=null){
-//                    return mOnGestureListener.onSingleTapConfirmed(e);
+                    return mOnGestureListener.onSingleTapConfirmed(e);
                 }
                 return false;
             }
@@ -206,15 +262,15 @@ public class ZoomRecyclerView extends RecyclerView implements View.OnTouchListen
                 centerX = 0;
                 centerY = 0;
                 if (mScaleFactor < mMidScaleFactor) {
-//                    postDelayed(new AutoScaleRunnable(mMidScaleFactor, centerX, centerY, mAutoBigger), mAutoTime);
+                    postDelayed(new AutoScaleRunnable(mMidScaleFactor, centerX, centerY, mAutoBigger), mAutoTime);
                 } else if(mScaleFactor < mMaxScaleFactor){
-//                    postDelayed(new AutoScaleRunnable(mMaxScaleFactor, centerX, centerY, mAutoBigger), mAutoTime);
+                    postDelayed(new AutoScaleRunnable(mMaxScaleFactor, centerX, centerY, mAutoBigger), mAutoTime);
                 } else {
-//                    postDelayed(new AutoScaleRunnable(mInitScaleFactor, centerX, centerY, mAutoSmall), mAutoTime);
+                    postDelayed(new AutoScaleRunnable(mInitScaleFactor, centerX, centerY, mAutoSmall), mAutoTime);
                 }
 
                 if(mOnGestureListener!=null){
-//                    mOnGestureListener.onDoubleTap(e);
+                    mOnGestureListener.onDoubleTap(e);
                 }
                 return true;
             }
@@ -229,33 +285,86 @@ public class ZoomRecyclerView extends RecyclerView implements View.OnTouchListen
             mDeltaX = 0.0f;
             mDeltaY = 0.0f;
         }
-
-//        anim();
-        canvas.translate(mDeltaX, mDeltaY);
+//
+//        Log.e(TAG, "dispatchDraw: " + mScaleFactor  +" mDeltaX  " + mDeltaX  + " mDeltaY " + mDeltaY);
+//        canvas.translate(mDeltaX, mDeltaY);
         canvas.scale(mScaleFactor, mScaleFactor, centerX, centerY);
         canvas.scale(mScaleFactor, mScaleFactor);
         super.dispatchDraw(canvas);
+////        requestLayout();
         canvas.restore();
+    }
+    private  ValueAnimator zoomAnimator ;
+
+    private Matrix scaleMatrix = new Matrix();
+
+    private float  getMatrixScaleX(){
+        scaleMatrix.getValues(m);
+        return m[Matrix.MSCALE_X];
+    }
+
+    private float  getMatrixScaley(){
+        scaleMatrix.getValues(m);
+        return m[Matrix.MSCALE_Y];
+    }
+
+
+    /**
+     * 缩放视图时,自动滚动位置
+     */
+    private void scaleHierarchyScroll(float matrixScale, float focusX, float focusY) {
+        //计算出放大中心点
+        int scrollX = (int) ((getScrollX() + focusX) / matrixScale * getMatrixScaleX());
+        int scrollY = (int) ((getScrollY() + focusY) / matrixScale * getMatrixScaley());
+        scrollX = scrollX - (int) focusX;
+        scrollY = (int) (scrollY -focusY);
+        //动态滚动至缩放中心点
+        scrollTo(scrollX , scrollY);
+        postInvalidate();
     }
 
 
     /**
      * 属性动画解决缩放不能点击问题
      */
-    private void  anim(){
+    private void  anim(float scale , float focusX , float focusY){
+
+          zoomAnimator = ValueAnimator.ofFloat(getMatrixScaleX() , scale);
+          zoomAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+              @Override
+              public void onAnimationUpdate(ValueAnimator animation) {
+                  float matrixScale = getMatrixScaleX();
+                  float aimatedValue = (float) animation.getAnimatedValue();
+                  scaleMatrix.setScale(aimatedValue , aimatedValue);
+                  scaleHierarchyScroll(matrixScale,focusX,focusY);
+
+              }
+          });
+          zoomAnimator.setDuration(200);
+          zoomAnimator.start();
+        }
 //        ObjectAnimator objectAnimatorTransle = ObjectAnimator.ofFloat(this ,"translationX",mDeltaX);
 //        ObjectAnimator objectAnimatorTranslaY = ObjectAnimator.ofFloat(this ,"translationY" , mDeltaY);
-        ObjectAnimator objectAnimatorX = ObjectAnimator.ofFloat(this ,"scaleX" ,mScaleFactor);
-        ObjectAnimator objectAnimatorY = ObjectAnimator.ofFloat(this ,"scaleY" , mScaleFactor);
-        objectAnimatorX.setDuration(100);
-        objectAnimatorY.setDuration(100);
-//        objectAnimatorTranslaY.setDuration(500);
-//        objectAnimatorTransle.setDuration(500);
-        objectAnimatorX.start();
-        objectAnimatorY.start();
-//        objectAnimatorTranslaY.start();
-//        objectAnimatorTransle.start();
-    }
+//
+//        AnimatorSet animatorSet = new AnimatorSet();
+//        ObjectAnimator objectAnimatorX = ObjectAnimator.ofFloat(this ,"scaleX" ,mScaleFactor);
+//        ObjectAnimator objectAnimatorY = ObjectAnimator.ofFloat(this ,"scaleY" , mScaleFactor);
+////        objectAnimatorX.setDuration(mShortAnimationDuration);
+////        objectAnimatorY.setDuration(mShortAnimationDuration);
+//        animatorSet.play(objectAnimatorX).with(objectAnimatorY);
+//        animatorSet.setDuration(mShortAnimationDuration);
+//        animatorSet.start();
+////        objectAnimatorTranslaY.setDuration(500);
+////        objectAnimatorTransle.setDuration(500);
+////        objectAnimatorX.start();
+////        objectAnimatorY.start();
+////        objectAnimatorTranslaY.start();
+////        objectAnimatorTransle.start();
+
+
+
+
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         super.onTouchEvent(event);
@@ -267,6 +376,7 @@ public class ZoomRecyclerView extends RecyclerView implements View.OnTouchListen
         /** 缩放事件的处理 */
         mScaleGestureDetector.onTouchEvent(event);
 
+
         /** 拖动事件的处理 */
         /** 只获得事件类型值，不获得point的index值 */
         switch (event.getActionMasked()) {
@@ -274,7 +384,6 @@ public class ZoomRecyclerView extends RecyclerView implements View.OnTouchListen
                 mLastTouchX = event.getX();
                 mLastTouchY = event.getY();
                 mMainPointerId = event.getPointerId(0);
-                mClickCandidate = true ;
                 break;
             case MotionEvent.ACTION_MOVE:
                 final int mainPointIndex = (event.getAction() & MotionEvent.ACTION_POINTER_INDEX_MASK)
@@ -287,13 +396,20 @@ public class ZoomRecyclerView extends RecyclerView implements View.OnTouchListen
                 mDeltaX += (mainPointX - mLastTouchX);
                 mDeltaY += (mainPointY - mLastTouchY);
 
+               float x = mainPointX - mLastTouchX ;
+                float y = mainPointY - mLastTouchY ;
+                Log.e(TAG, "onTouchEvent: " + x  + "  " + y   );
                 /** 保存坐标 */
                 mLastTouchX = mainPointX;
                 mLastTouchY = mainPointY;
-
+                if (Math.abs(x) > Math.abs(y)){
+                    translate(x ,0);
+                }else{
+                    translate(0 ,y);
+                }
                 /** 检查边界 */
-                checkBorder();
-                invalidate();
+//                checkBorder();
+//                invalidate();
                 break;
             case MotionEvent.ACTION_UP:
                 mMainPointerId = INVALID_POINTER_ID;
@@ -318,61 +434,8 @@ public class ZoomRecyclerView extends RecyclerView implements View.OnTouchListen
         return true;
     }
 
-    /**
-     * 映射缩放后的View 位置 ，实现RecyclerView的点击事件   **********/
-
-    // Map what appeared to be clicked in the potentially zoomed view back to the scale = 1 view.
-    public View getMappedView(View v, float x, float y) {
-        View expectedView = null;
-        View scanView;
 
 
-        int mappedX = (int) (getWidth() * (x - mDeltaX) / (getWidth() * getScaleFactor()));
-        int mappedY = (int) (getHeight() * (y - mDeltaY) / (getHeight() * getScaleFactor()));
-
-        for (int i = 0; i < getChildCount(); i++) {
-            scanView = getChildAt(i);
-            if ((mappedX >= scanView.getLeft()) && (mappedX <= scanView.getRight())
-                    && (mappedY >= scanView.getTop()) && (mappedY <= scanView.getBottom())) {
-                expectedView = scanView;
-                break;
-            }
-
-        }
-        return expectedView;
-    }
-//
-    private boolean mClickCandidate = false;
-
-
-    @Override
-    public boolean onTouch(View view, MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                mClickCandidate = true;
-                break;
-
-            case MotionEvent.ACTION_MOVE:
-                mClickCandidate = false;
-                break;
-
-            case MotionEvent.ACTION_UP:
-                if (mClickCandidate) {
-                    View v = getMappedView(view, event.getX() + view.getLeft(),
-                            event.getY() + view.getTop());
-                    if (v != null) {
-                        v.performClick();
-                    }
-                }
-                mClickCandidate = false;
-                return true;
-        }
-        return false;
-    }
-
-
-
-    /***********************/
     @Override
     public void setAdapter(Adapter adapter) {
         Adapter oldAdapter = getAdapter();

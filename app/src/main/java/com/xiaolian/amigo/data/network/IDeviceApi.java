@@ -45,7 +45,7 @@ public interface IDeviceApi {
     /**
      * 首页设备用水校验
      */
-    @POST("device/check")
+    @POST("device/bath/check")
     Observable<ApiResult<DeviceCheckRespDTO>> checkDeviceUseage(@Body DeviceCheckReqDTO reqDTO);
 
     /**

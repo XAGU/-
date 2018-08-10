@@ -405,4 +405,13 @@
         <item name="android:lineSpacingExtra">3dp</item>
     </style>
 
+    <style name="ChooseBathroomDialog" parent="@android:style/Animation.Dialog">
+        <item name="android:windowAnimationStyle">@style/DialogAnimation</item>
+    </style>
+
+    <!--底部滑动动画-->
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/dialog_slide_up</item>
+        <item name="android:windowExitAnimation">@anim/dialog_slide_down</item>
+    </style>
 </resources>

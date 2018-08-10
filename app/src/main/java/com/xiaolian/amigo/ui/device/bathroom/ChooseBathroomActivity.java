@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.device.bathroom;
 
 import android.content.Intent;
+import android.icu.util.MeasureUnit;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.text.Spannable;
@@ -11,9 +12,12 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
@@ -21,9 +25,10 @@ import com.xiaolian.amigo.data.network.model.bathroom.BathOrderPreconditionRespD
 import com.xiaolian.amigo.ui.device.bathroom.intf.IChooseBathroomPresenter;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IChooseBathroomView;
 import com.xiaolian.amigo.ui.user.EditDormitoryActivity;
-import com.xiaolian.amigo.ui.user.FindBathroomPasswordActivity;
 import com.xiaolian.amigo.ui.widget.ZoomRecyclerView;
 import com.xiaolian.amigo.ui.widget.dialog.BathroomBookingDialog;
+import com.xiaolian.amigo.ui.widget.popWindow.ChooseBathroomPop;
+import com.xiaolian.amigo.util.ScreenUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,6 +80,8 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
     ImageView ivHelp;
     @BindView(R.id.pre_bathroom)
     Button preBathroom;
+    @BindView(R.id.root)
+    RelativeLayout root;
     private BathroomBookingDialog bathroomBookingDialog;
 
     private long buildId;    //  楼栋id ；
@@ -93,7 +100,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
 //    private MetaBallView metaBall;
     private int lastSelectedGroupPosition = -1;
     private int lastSelectedRoomPosition = -1;
-    private String deviceNo="";
+    private String deviceNo = "";
     /**
      * 当前是否处于选中状态 选中状态显示预约使用 非选中状态显示购买编码
      */
@@ -102,6 +109,12 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
      * 是否显示付费使用
      */
     private boolean isShowBuyUse = false;
+
+
+    /**
+     * 显示选择房间信息的popwindow
+     */
+    private ChooseBathroomPop pop;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +128,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         initRecyclerView();
     }
 
+
     private void bindView() {
         findViewById(R.id.iv_back).setOnClickListener(v -> onBackPressed());
         recyclerView = findViewById(R.id.recyclerView);
@@ -126,7 +140,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
 //                onRightClick();
 //            }
 //        });
-        setBtnText("预约洗澡 (任意空浴室)" , false );
+        setBtnText("预约洗澡 (任意空浴室)", false);
 
     }
 
@@ -188,7 +202,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
                         isSelected = true;
                     }
                     outerAdapter.notifyDataSetChanged();
-                    setBtnText(("预约洗澡 ("+ bathGroups.get(groupPosition).getBathGroups().get(bathroomPosition).getId()+"号浴室)") , true);
+                    setBtnText(("预约洗澡 (" + bathGroups.get(groupPosition).getBathGroups().get(bathroomPosition).getId() + "号浴室)"), true);
                 });
 //        recyclerView.setLayoutManager(new LinearLayoutManager(this, OrientationHelper.HORIZONTAL, false));
         LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) recyclerView.getLayoutParams();
@@ -256,6 +270,53 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         }
     }
 
+
+    /**
+     * 显示pop
+     *
+     * @param view 在哪个view
+     */
+    private void showPop(View view) {
+
+        if (pop == null) {
+            pop = new ChooseBathroomPop(this);
+        }
+
+         pop.showUp(root);
+//        int[] location = new int[2];
+//        view.getLocationOnScreen(location);
+//        pop.showAtLocation(root, Gravity.NO_GRAVITY,  (location[0]) - pop.getWidth() / 2, location[1] - pop.getHeight());
+        lightOff();
+
+
+        /**
+         * 消失时屏幕变亮
+         */
+        pop.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
+
+                layoutParams.alpha = 1.0f;
+
+                getWindow().setAttributes(layoutParams);
+            }
+        });
+    }
+
+
+    /**
+     * 显示时屏幕变暗
+     */
+    private void lightOff() {
+
+        WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
+
+        layoutParams.alpha = 0.6f;
+
+        getWindow().setAttributes(layoutParams);
+
+    }
 
     //    private void changeToBookingUse() {
 //        if (!isSelected) {
@@ -369,34 +430,6 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         inner4.add(new ChooseBathroomAdapter.BathroomWrapper("105", BATH_USING));
         bathGroups.add(new ChooseBathroomOuterAdapter.BathGroupWrapper(inner4, "一层A"));
 
-
-        List<ChooseBathroomAdapter.BathroomWrapper> inner9 = new ArrayList<>();
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("101", NONE));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("102", ERROR));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("103", AVAILABLE));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("104", AVAILABLE));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("105", BATH_USING));
-        bathGroups.add(new ChooseBathroomOuterAdapter.BathGroupWrapper(inner4, "一层A"));
-
-
-        List<ChooseBathroomAdapter.BathroomWrapper> inner10 = new ArrayList<>();
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("101", NONE));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("102", ERROR));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("103", AVAILABLE));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("104", AVAILABLE));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("105", BATH_USING));
-        bathGroups.add(new ChooseBathroomOuterAdapter.BathGroupWrapper(inner4, "一层A"));
-
-
-        List<ChooseBathroomAdapter.BathroomWrapper> inner11 = new ArrayList<>();
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("101", NONE));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("102", ERROR));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("103", AVAILABLE));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("104", AVAILABLE));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("105", BATH_USING));
-        bathGroups.add(new ChooseBathroomOuterAdapter.BathGroupWrapper(inner4, "一层A"));
-
-
     }
 
     @Override
@@ -444,7 +477,6 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
     }
 
 
-
     @Override
     public void startPreconditionView(BathOrderPreconditionRespDTO respDTO) {
         hideBathroomDialog();
@@ -458,12 +490,12 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
      * @param respDTO
      */
     private void startActivityForStatus(BathOrderPreconditionRespDTO respDTO) {
-                if (respDTO.getStatus() == USING_STATUS){
-                    startActivity(new Intent(this , BathroomHeaterActivity.class)
-                    .putExtra(KEY_BATH_ORDER_ID ,respDTO.getBathOrderId()));
-                }else {
-                    startActivity(new Intent(this, BookingActivity.class).putExtra(KEY_ORDER_PRECONDITION, respDTO));
-                }
+        if (respDTO.getStatus() == USING_STATUS) {
+            startActivity(new Intent(this, BathroomHeaterActivity.class)
+                    .putExtra(KEY_BATH_ORDER_ID, respDTO.getBathOrderId()));
+        } else {
+            startActivity(new Intent(this, BookingActivity.class).putExtra(KEY_ORDER_PRECONDITION, respDTO));
+        }
 
     }
 
@@ -491,12 +523,12 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
 
 
     @Override
-    public void setBtnText(String text , boolean isSelected) {
+    public void setBtnText(String text, boolean isSelected) {
         Spannable spannable = new SpannableString(text);
         spannable.setSpan(new AbsoluteSizeSpan(16, true), 0, 4, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
         spannable.setSpan(new AbsoluteSizeSpan(14, true), 4, text.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
         preBathroom.setText(spannable);
-        this.isSelected = isSelected ;
+        this.isSelected = isSelected;
         if (isSelected) preBathroom.setBackgroundResource(R.drawable.green_button);
         else preBathroom.setBackgroundResource(R.drawable.red_button);
     }
@@ -508,17 +540,19 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
 
 
     @OnClick(R.id.pre_bathroom)
-    public void preBathRoom(){
-        if (presenter.getBathroomPassword()) {
-            if (this.isSelected) {
-                presenter.preBooking(deviceNo);
-            } else {
-                presenter.preBooking("");
-            }
-        }else{
-            startActivity(this , FindBathroomPasswordActivity.class);
-        }
+    public void preBathRoom() {
 
+        showPop(preBathroom);
+
+//        if (presenter.getBathroomPassword()) {
+//            if (this.isSelected) {
+//                presenter.preBooking(deviceNo);
+//            } else {
+//                presenter.preBooking("");
+//            }
+//        }else{
+//            startActivity(this , FindBathroomPasswordActivity.class);
+//        }
     }
 
 }

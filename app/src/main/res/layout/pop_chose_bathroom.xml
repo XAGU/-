@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/corner_12px"
+    android:layout_marginStart="@dimen/mainMarginLeftRight"
+    android:layout_marginEnd="@dimen/mainMarginLeftRight"
+    >
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/bathroom_recy"
+        android:layout_marginStart="@dimen/mainMarginLeftRight"
+        android:layout_marginEnd="@dimen/mainMarginLeftRight"
+        android:layout_marginBottom="@dimen/mainMarginLeftRight">
+
+    </android.support.v7.widget.RecyclerView>
+
+    <Button
+        android:enabled="true"
+        android:id="@+id/pre_bathroom"
+        android:textAllCaps="false"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/corner_redsolid_button"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:text="@string/preBathWithAnyEmptyBath"
+        tools:text="预约洗澡（任意空浴室）"
+        android:stateListAnimator="@null"
+        />
+
+
+</LinearLayout>
