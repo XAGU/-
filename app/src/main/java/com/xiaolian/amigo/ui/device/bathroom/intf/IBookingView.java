@@ -67,4 +67,10 @@ public interface IBookingView extends IBaseView {
     void gotoUsing(BathOrderRespDTO  dto);
 
 
+    /**
+     * 预约排队等待界面
+     */
+    void preBookingWait();
+
+
 }

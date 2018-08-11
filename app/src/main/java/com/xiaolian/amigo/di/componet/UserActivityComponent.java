@@ -13,6 +13,7 @@ import com.xiaolian.amigo.ui.user.EditPasswordActivity;
 import com.xiaolian.amigo.ui.user.EditProfileActivity;
 import com.xiaolian.amigo.ui.user.FindBathroomPasswordActivity;
 import com.xiaolian.amigo.ui.user.ListChooseActivity;
+import com.xiaolian.amigo.ui.user.CompleteInfoActivity;
 
 import dagger.Component;
 
@@ -46,4 +47,6 @@ public interface UserActivityComponent {
     void inject(ChangeBathroomPasswordActivity activity);
 
     void inject(FindBathroomPasswordActivity activity);
+
+    void inject(CompleteInfoActivity activity);
 }

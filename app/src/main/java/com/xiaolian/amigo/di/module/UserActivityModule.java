@@ -11,6 +11,7 @@ import com.xiaolian.amigo.di.UserActivityContext;
 import com.xiaolian.amigo.ui.user.ChangeBathroomPasswordPresenter;
 import com.xiaolian.amigo.ui.user.CheckPasswordPresenter;
 import com.xiaolian.amigo.ui.user.ChooseDormitoryPresenter;
+import com.xiaolian.amigo.ui.user.CompleteInfoPresenter;
 import com.xiaolian.amigo.ui.user.EditAvatarPresenter;
 import com.xiaolian.amigo.ui.user.EditDormitoryPresenter;
 import com.xiaolian.amigo.ui.user.EditMobilePresenter;
@@ -25,6 +26,8 @@ import com.xiaolian.amigo.ui.user.intf.ICheckPasswordPresenter;
 import com.xiaolian.amigo.ui.user.intf.ICheckPasswordView;
 import com.xiaolian.amigo.ui.user.intf.IChooseDormitoryPresenter;
 import com.xiaolian.amigo.ui.user.intf.IChooseDormitoryView;
+import com.xiaolian.amigo.ui.user.intf.ICompleteInfoPresenter;
+import com.xiaolian.amigo.ui.user.intf.ICompleteInfoView;
 import com.xiaolian.amigo.ui.user.intf.IEditAvatarPresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditAvatarView;
 import com.xiaolian.amigo.ui.user.intf.IEditDormitoryPresenter;
@@ -156,6 +159,14 @@ public class UserActivityModule {
     @UserActivityContext
     IFindBathroomPasswordPresenter<IFindBathroomPasswordView> provideFindBathroomPasswordPresenter(
             FindBathroomPasswordPresenter<IFindBathroomPasswordView> presenter){
+        return presenter ;
+    }
+
+
+    @Provides
+    @UserActivityContext
+    ICompleteInfoPresenter<ICompleteInfoView> provideCompleteInfoPresenter(
+            CompleteInfoPresenter<ICompleteInfoView> presenter){
         return presenter ;
     }
 }

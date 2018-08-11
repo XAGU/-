@@ -377,7 +377,7 @@ public abstract class UseWayActivity extends BathroomBaseActivity {
 //                    needRecharge = false;
 //                    builder.append(getButtonText());
                     statusView.getTip().setText(getString(R.string.atLeastInTheWallet, df.format(prepayAmount)));
-                    btStartToUse.setText(getButtonText());
+//                    btStartToUse.setText(getButtonText());
                 } else {
                     prepayAmount = balance;
                     title = getString(R.string.need_prepay_amount, df.format(prepayAmount));
@@ -393,7 +393,7 @@ public abstract class UseWayActivity extends BathroomBaseActivity {
 //                    builder.append(buttonSpan);
 //                    builder.append(getButtonText());
                     statusView.getTip().setText(getString(R.string.atLeastInTheWallet, df.format(prepayAmount)));
-                    btStartToUse.setText(getButtonText());
+//                    btStartToUse.setText(getButtonText());
                 }
             }
             // 余额不足
@@ -403,7 +403,7 @@ public abstract class UseWayActivity extends BathroomBaseActivity {
                 tip = String.format(tip, df.format(minPrepay));
                 buttonText = getString(R.string.InsufficientBalance);
                 needRecharge = true;
-                btStartToUse.setText(buttonText);
+//                btStartToUse.setText(buttonText);
                 statusView.getTip().setText(tip);
             }
 //            items.add(new DeviceInfoAdapter.DeviceInfoWrapper("预付金额：",

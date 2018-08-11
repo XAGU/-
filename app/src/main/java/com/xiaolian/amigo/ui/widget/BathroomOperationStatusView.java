@@ -77,6 +77,15 @@ public class BathroomOperationStatusView extends LinearLayout {
     }
 
 
+    /**
+     * 设置tip 内容
+     * @param tipContent
+     */
+    public void setTip(String tipContent){
+        if (tip != null){
+            tip.setText(tipContent);
+        }
+    }
     public TextView getTip() {
          return tip ;
     }

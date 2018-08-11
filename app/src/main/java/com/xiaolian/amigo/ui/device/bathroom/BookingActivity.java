@@ -258,13 +258,14 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
         statusView.setLeftImageResource(IMG_RES_STATUS_OPERATING);
         statusView.setStatusText("预约中");
         statusView.hideCancelButton();
-        btStartToUse.setClickable(true);
-        btStartToUse.setOnClickListener(v -> {
-            showBookingDialog();
-            presenter.booking(deviceNo);
-        });
+        btStartToUse.setVisibility(GONE);
+//        btStartToUse.setClickable(true);
+//        btStartToUse.setOnClickListener(v -> {
+//            showBookingDialog();
+//            presenter.booking(deviceNo);
+//        });
 //        presenter.bathroomBookingCountDown();
-        btStartToUse.setVisibility(View.VISIBLE);
+//        btStartToUse.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -554,6 +555,30 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
         presenter.cancelCountDown();
         startActivity(new Intent(this ,BathroomHeaterActivity.class)
         .putExtra(KEY_BATH_ORDER_ID , dto.getBathOrderId()));
+    }
+
+    @Override
+    public void preBookingWait() {
+        statusView.setStatusText(getString(R.string.preBookingWait));
+        statusView.setLeftImageResource(IMG_RES_STATUS_OPERATING);
+        statusView.setTip(getString(R.string.preBookingWaitTip));
+        List<DeviceInfoAdapter.DeviceInfoWrapper> wrapperList = new ArrayList<>();
+//        wrapperList.add(new DeviceInfoAdapter.DeviceInfoWrapper("浴室位置：",
+//                bathOrderPreconditionRespDTO.getLocation(), R.color.colorDark2, 14, Typeface.NORMAL, false));
+//        wrapperList.add(new DeviceInfoAdapter.DeviceInfoWrapper("有效时间：" , getReservedTime(bathOrderPreconditionRespDTO.getCreateTime() ,bathOrderPreconditionRespDTO.getExpiredTime())
+//                ,R.color.colorDark2 ,14 , Typeface.NORMAL , false));
+//        if (isShowRemainTime) {
+//            wrapper  = new DeviceInfoAdapter.DeviceInfoWrapper("剩余时间：", TimeUtils.orderBathroomLastTime(bathOrderPreconditionRespDTO.getExpiredTime(), " "),
+//                    R.color.colorFullRed, 14, Typeface.NORMAL, false) ;
+//            wrapperList.add(wrapper);
+//        }
+//        return wrapperList ;
+        wrapperList.add(new DeviceInfoAdapter.DeviceInfoWrapper("浴室位置" ,
+                "佩奇公寓3栋" , R.color.colorDark2 , 14 ,Typeface.NORMAL , false));
+        wrapperList.add(new DeviceInfoAdapter.DeviceInfoWrapper("还需等待",
+                "15人" , R.color.refresh_red ,14 , Typeface.NORMAL , false));
+        referItems(wrapperList ,true);
+
     }
 
     @Override

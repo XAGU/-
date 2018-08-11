@@ -324,6 +324,7 @@
     <string name="choose_building">选择楼栋</string>
     <string name="choose_floor">选择楼层</string>
     <string name="choose_room">选择洗澡房间</string>
+    <string name="choose_bathroom">选择洗澡地址</string>
 
     <string name="bathroom_password_tip1">1.请设置你的6位数字浴室密码，设置完成后可前往"个人中心"——"编辑个人信息"里进行修改或找回；</string>
     <string name="bathroom_password_tip2">2.浴室密码的作用：在浴室房间里的设备上输入手机号＋浴室密码，便可开阀洗澡。</string>
@@ -339,5 +340,8 @@
     <string name="atLeastInTheWallet">请确保你的钱包中可用余额至少%1$s元</string>
     <string name="tip">用水结束后，请务必滑动下方按钮，进行结算找零\n消费金额以实际用水量为准</string>
     <string name="tip_timeout">已失约，请重新预约</string>
-
+    <string name="preBookingWait">预约排队</string>
+    <string name="preBookingWaitTip">预约排队中，请耐心等候</string>
+    <string name="tv_add_dormitory">添加宿舍</string>
+    <string name="complete_info">完善资料</string>
 </resources>

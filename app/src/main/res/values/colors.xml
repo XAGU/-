@@ -99,4 +99,8 @@
     <color name="credit_dispenser">#43eda3</color>
     <color name="credit_washer">#9370DB</color>
     <color name="credit_dryer">#ffc460</color>
+
+
+    <color name="color_blue">#6BABFB</color>
+    <color name="color_red_woman">#ff8a33</color>
 </resources>
