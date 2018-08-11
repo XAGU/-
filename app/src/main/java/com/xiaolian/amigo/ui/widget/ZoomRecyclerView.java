@@ -367,71 +367,71 @@ public class ZoomRecyclerView extends RecyclerView {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        super.onTouchEvent(event);
-        /** 单击、双击事件的处理 */
-        if (mGestureDetector.onTouchEvent(event)) {
-            mMainPointerId = event.getPointerId(0);//防止发生手势事件后,mActivePointerId=-1的情况
-            return true;
-        }
-        /** 缩放事件的处理 */
-        mScaleGestureDetector.onTouchEvent(event);
-
-
-        /** 拖动事件的处理 */
-        /** 只获得事件类型值，不获得point的index值 */
-        switch (event.getActionMasked()) {
-            case MotionEvent.ACTION_DOWN:
-                mLastTouchX = event.getX();
-                mLastTouchY = event.getY();
-                mMainPointerId = event.getPointerId(0);
-                break;
-            case MotionEvent.ACTION_MOVE:
-                final int mainPointIndex = (event.getAction() & MotionEvent.ACTION_POINTER_INDEX_MASK)
-                        >> MotionEvent.ACTION_POINTER_INDEX_SHIFT;
-//                int mainPointIndex = event.findPointerIndex(mMainPointerId);
-                float mainPointX = event.getX(mainPointIndex);
-                float mainPointY = event.getY(mainPointIndex);
-
-                /** 计算与上次坐标的偏移量并累加 */
-                mDeltaX += (mainPointX - mLastTouchX);
-                mDeltaY += (mainPointY - mLastTouchY);
-
-               float x = mainPointX - mLastTouchX ;
-                float y = mainPointY - mLastTouchY ;
-                Log.e(TAG, "onTouchEvent: " + x  + "  " + y   );
-                /** 保存坐标 */
-                mLastTouchX = mainPointX;
-                mLastTouchY = mainPointY;
-                if (Math.abs(x) > Math.abs(y)){
-                    translate(x ,0);
-                }else{
-                    translate(0 ,y);
-                }
-                /** 检查边界 */
-//                checkBorder();
-//                invalidate();
-                break;
-            case MotionEvent.ACTION_UP:
-                mMainPointerId = INVALID_POINTER_ID;
-                break;
-            case MotionEvent.ACTION_CANCEL:
-                mMainPointerId = INVALID_POINTER_ID;
-                break;
-            case MotionEvent.ACTION_POINTER_UP: {
-                /** 获取抬起手指 */
-                int pointerIndex = event.getActionIndex();
-                int pointerId = event.getPointerId(pointerIndex);
-                if (pointerId == mMainPointerId) {
-                    /** 抬起手指是主手指,则寻找另一根手指*/
-                    int newPointerIndex = (pointerIndex==0?1:0);
-                    mLastTouchX = event.getX(newPointerIndex);
-                    mLastTouchY = event.getY(newPointerIndex);
-                    mMainPointerId = event.getPointerId(newPointerIndex);
-                }
-                break;
-            }
-        }
-        return true;
+        return super.onTouchEvent(event);
+//        /** 单击、双击事件的处理 */
+//        if (mGestureDetector.onTouchEvent(event)) {
+//            mMainPointerId = event.getPointerId(0);//防止发生手势事件后,mActivePointerId=-1的情况
+//            return true;
+//        }
+//        /** 缩放事件的处理 */
+//        mScaleGestureDetector.onTouchEvent(event);
+//
+//
+//        /** 拖动事件的处理 */
+//        /** 只获得事件类型值，不获得point的index值 */
+//        switch (event.getActionMasked()) {
+//            case MotionEvent.ACTION_DOWN:
+//                mLastTouchX = event.getX();
+//                mLastTouchY = event.getY();
+//                mMainPointerId = event.getPointerId(0);
+//                break;
+//            case MotionEvent.ACTION_MOVE:
+//                final int mainPointIndex = (event.getAction() & MotionEvent.ACTION_POINTER_INDEX_MASK)
+//                        >> MotionEvent.ACTION_POINTER_INDEX_SHIFT;
+////                int mainPointIndex = event.findPointerIndex(mMainPointerId);
+//                float mainPointX = event.getX(mainPointIndex);
+//                float mainPointY = event.getY(mainPointIndex);
+//
+//                /** 计算与上次坐标的偏移量并累加 */
+//                mDeltaX += (mainPointX - mLastTouchX);
+//                mDeltaY += (mainPointY - mLastTouchY);
+//
+//               float x = mainPointX - mLastTouchX ;
+//                float y = mainPointY - mLastTouchY ;
+//                Log.e(TAG, "onTouchEvent: " + x  + "  " + y   );
+//                /** 保存坐标 */
+//                mLastTouchX = mainPointX;
+//                mLastTouchY = mainPointY;
+//                if (Math.abs(x) > Math.abs(y)){
+//                    translate(x ,0);
+//                }else{
+//                    translate(0 ,y);
+//                }
+//                /** 检查边界 */
+////                checkBorder();
+////                invalidate();
+//                break;
+//            case MotionEvent.ACTION_UP:
+//                mMainPointerId = INVALID_POINTER_ID;
+//                break;
+//            case MotionEvent.ACTION_CANCEL:
+//                mMainPointerId = INVALID_POINTER_ID;
+//                break;
+//            case MotionEvent.ACTION_POINTER_UP: {
+//                /** 获取抬起手指 */
+//                int pointerIndex = event.getActionIndex();
+//                int pointerId = event.getPointerId(pointerIndex);
+//                if (pointerId == mMainPointerId) {
+//                    /** 抬起手指是主手指,则寻找另一根手指*/
+//                    int newPointerIndex = (pointerIndex==0?1:0);
+//                    mLastTouchX = event.getX(newPointerIndex);
+//                    mLastTouchY = event.getY(newPointerIndex);
+//                    mMainPointerId = event.getPointerId(newPointerIndex);
+//                }
+//                break;
+//            }
+//        }
+//        return true;
     }
 
 
