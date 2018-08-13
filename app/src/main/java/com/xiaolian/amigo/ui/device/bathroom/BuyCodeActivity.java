@@ -124,19 +124,16 @@ public class BuyCodeActivity extends UseWayActivity implements IBuyCodeView {
      */
     private List<DeviceInfoAdapter.DeviceInfoWrapper> getListDevceInfoAdapter(boolean isShowRemainTime){
         List<DeviceInfoAdapter.DeviceInfoWrapper> wrapperList = new ArrayList<>();
-        wrapperList.add(new DeviceInfoAdapter.DeviceInfoWrapper("浴室位置：",
-                bathOrderPreconditionRespDTO.getLocation(), R.color.colorDark2, 14, Typeface.NORMAL, false));
-        wrapperList.add(new DeviceInfoAdapter.DeviceInfoWrapper("有效时间：" , getReservedTime(bathOrderPreconditionRespDTO.getCreateTime() ,bathOrderPreconditionRespDTO.getExpiredTime())
-                ,R.color.colorDark2 ,14 , Typeface.NORMAL , false));
-        if (isShowRemainTime) {
-            wrapperList.add(new DeviceInfoAdapter.DeviceInfoWrapper("剩余时间：", TimeUtils.orderBathroomLastTime(bathOrderPreconditionRespDTO.getExpiredTime(), " "),
-                    R.color.colorFullRed, 14, Typeface.NORMAL, false));
-        }
+//        wrapperList.add(new DeviceInfoAdapter.DeviceInfoWrapper("浴室位置：",
+//                bathOrderPreconditionRespDTO.getLocation(), R.color.colorDark2, 14, Typeface.NORMAL, false));
+//        wrapperList.add(new DeviceInfoAdapter.DeviceInfoWrapper("有效时间：" , getReservedTime(bathOrderPreconditionRespDTO.getCreateTime() ,bathOrderPreconditionRespDTO.getExpiredTime())
+//                ,R.color.colorDark2 ,14 , Typeface.NORMAL , false));
+//        if (isShowRemainTime) {
+//            wrapperList.add(new DeviceInfoAdapter.DeviceInfoWrapper("剩余时间：", TimeUtils.orderBathroomLastTime(bathOrderPreconditionRespDTO.getExpiredTime(), " "),
+//                    R.color.colorFullRed, 14, Typeface.NORMAL, false));
+//        }
         return wrapperList ;
     }
-
-
-
 
     @Override
     protected void setToolbarTitle(TextView textView) {

@@ -282,4 +282,22 @@ public final class Constant {
     public static final int PUB_BATH = 5 ;
 
 
+    /**
+     * 上一个订单的状态
+     */
+    public static final int EMPTY = 1 ;  // 空闲
+
+    public static final int QUEUEING = 2 ;  //  排队中
+
+    public static final int BOOKING_SUCCESS = 3 ; // 预约成功
+
+    public static final  int PRE_USING = 4 ; // 使用中
+
+
+    /**
+     * 预约状态
+     */
+    public static final int BOOKING_DEVICE = 1 ;  //  预约楼层
+
+    public static final int BOOKING_FLOOR = 2 ;  //  预约设备
 }

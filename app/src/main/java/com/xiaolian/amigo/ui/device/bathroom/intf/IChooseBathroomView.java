@@ -1,6 +1,8 @@
 package com.xiaolian.amigo.ui.device.bathroom.intf;
 
 import com.xiaolian.amigo.data.network.model.bathroom.BathOrderPreconditionRespDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.BuildingTrafficDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.QueueInfo;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 import com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomOuterAdapter;
 
@@ -45,4 +47,33 @@ public interface IChooseBathroomView extends IBaseView {
     void setBtnText(String text , boolean isSelected);
 
     void gotoUsing(BathOrderPreconditionRespDTO respDTO);
+
+    /**
+     * 现在楼层浴室洗澡信息
+     */
+    void trafficInfo(List<BuildingTrafficDTO.FloorsBean> floorsBeans);
+
+    /**
+     * 去排队状态界面
+     * @param
+     */
+    void startQueue(long id );
+
+    /**
+     * 去预约状态界面
+     * @param bathOrderId
+     */
+    void startBooking(long bathOrderId);
+
+    /**
+     * 保存预约信息，包括最大失约次数， 已失约次数，预付信息
+     * @param data
+     */
+    void saveBookingInfo(BathOrderPreconditionRespDTO data);
+
+    /**
+     * 去使用中界面
+     * @param bathOrderId
+     */
+    void startUsing(long bathOrderId);
 }

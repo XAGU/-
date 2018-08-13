@@ -1,7 +1,9 @@
 package com.xiaolian.amigo.ui.device.bathroom.intf;
 
+import com.xiaolian.amigo.data.network.model.bathroom.BathBookingRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathOrderRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathPreBookingRespDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.BookingQueueProgressDTO;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 
 /**
@@ -14,9 +16,13 @@ public interface IBookingView extends IBaseView {
      * 预约成功，刷新界面
      * @param data
      */
-    void bookingSuccess(BathOrderRespDTO data);
+    void bookingSuccess(BathBookingRespDTO data);
 
-    void bookingCancel();
+
+    /**
+     * 预约取消
+     */
+    void  bookingCancel() ;
 
     /**
      * 设置预约倒计时
@@ -28,15 +34,11 @@ public interface IBookingView extends IBaseView {
      */
     void finishActivity();
 
-    /**
-     * 重新预约
-     */
-    void reschedule(BathPreBookingRespDTO respDTO);
 
     /**
      * 预约超时
      */
-    void appointMentTimeOut();
+    void appointMentTimeOut(BathBookingRespDTO respDTO);
 
     /**
      * 支付成功等待下发订单给设备
@@ -64,13 +66,19 @@ public interface IBookingView extends IBaseView {
      * 去洗浴中界面
      * @param dto
      */
-    void gotoUsing(BathOrderRespDTO  dto);
+    void gotoUsing(long  dto);
+
 
 
     /**
-     * 预约排队等待界面
+     * 无参预约倒计时
+     * @param
      */
-    void preBookingWait();
+    void appointMentTimeOut();
 
-
+    /**
+     * 显示排队信息
+     * @param data
+     */
+    void showQueue(BookingQueueProgressDTO data);
 }

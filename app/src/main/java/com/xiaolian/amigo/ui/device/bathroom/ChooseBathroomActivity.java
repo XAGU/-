@@ -7,7 +7,9 @@ import android.support.v7.widget.GridLayoutManager;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -22,6 +24,8 @@ import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.bathroom.BathOrderPreconditionRespDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.BuildingTrafficDTO;
+import com.xiaolian.amigo.intf.OnItemClickListener;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IChooseBathroomPresenter;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IChooseBathroomView;
 import com.xiaolian.amigo.ui.user.EditDormitoryActivity;
@@ -53,6 +57,8 @@ import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_ORDER_P
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_PREPAY;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_RESERVEDTIME;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomHeaterActivity.KEY_BATH_ORDER_ID;
+import static com.xiaolian.amigo.ui.device.bathroom.BookingActivity.KEY_BATHQUEUE_ID;
+import static com.xiaolian.amigo.ui.device.bathroom.BookingActivity.KEY_BOOKING_ID;
 import static com.xiaolian.amigo.util.Constant.AVAILABLE;
 import static com.xiaolian.amigo.util.Constant.BATH_USING;
 import static com.xiaolian.amigo.util.Constant.ERROR;
@@ -89,8 +95,34 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
     private long residenceType;
     private long id;
     private String residenceName;
+
+    /**
+     * 预付金额
+     */
+    protected Double prepay;
+    /**
+     * 最小预付金额
+     */
+    protected Double minPrepay;
+    /**
+     * 用户余额
+     */
+    protected Double balance;
+    /**
+     * 失约次数 只有预约才会返回
+     */
+    protected Integer missedTimes;
+    /**
+     * 总共可失约次数 只有预约才会返回
+     */
+    protected Integer maxMissAbleTimes;
+
+
     @Inject
     IChooseBathroomPresenter<IChooseBathroomView> presenter;
+
+
+    private String deviceName ;
 
     private List<ChooseBathroomOuterAdapter.BathGroupWrapper> bathGroups = new ArrayList<>();
 
@@ -101,6 +133,8 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
     private int lastSelectedGroupPosition = -1;
     private int lastSelectedRoomPosition = -1;
     private String deviceNo = "";
+
+
     /**
      * 当前是否处于选中状态 选中状态显示预约使用 非选中状态显示购买编码
      */
@@ -126,22 +160,31 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         setUp();
         bindView();
         initRecyclerView();
+        initPop();
+    }
+
+
+    public void initPop(){
+        if (pop == null) {
+            pop = new ChooseBathroomPop(this);
+            pop.setPopButtonClickListener(new ChooseBathroomPop.PopButtonClickListener() {
+                @Override
+                public void click(BuildingTrafficDTO.FloorsBean floorsBean) {
+                    if (TextUtils.isEmpty(floorsBean.getDeviceNo())){
+                        presenter.booking(Long.parseLong(floorsBean.getDeviceNo()) , 0);
+                    }else{
+                        presenter.booking(0 , floorsBean.getId());
+                    }
+                }
+            });
+        }
     }
 
 
     private void bindView() {
         findViewById(R.id.iv_back).setOnClickListener(v -> onBackPressed());
         recyclerView = findViewById(R.id.recyclerView);
-//        metaBall = findViewById(R.id.metaBall);
-//        metaBall.setOnButtonClickListener(left -> {
-//            if (left) {
-//                onLeftClick();
-//            } else {
-//                onRightClick();
-//            }
-//        });
         setBtnText("预约洗澡 (任意空浴室)", false);
-
     }
 
     /**
@@ -179,7 +222,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
     }
 
     private void initRecyclerView() {
-        setMockData(bathGroups);
+//        setMockData(bathGroups);
         outerAdapter = new ChooseBathroomOuterAdapter(this, R.layout.item_choose_bathroom_outer, bathGroups,
                 (groupPosition, bathroomPosition) -> {
                     onSuccess(groupPosition + " " + bathroomPosition);
@@ -195,14 +238,16 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
                         if (lastSelectedGroupPosition != -1 && lastSelectedRoomPosition != -1) {
                             bathGroups.get(lastSelectedGroupPosition).getBathGroups().get(lastSelectedRoomPosition).setSelected(false);
                         }
+
                         deviceNo = bathGroups.get(groupPosition).getBathGroups().get(bathroomPosition).getDeviceNo();
                         bathGroups.get(groupPosition).getBathGroups().get(bathroomPosition).setSelected(true);
                         lastSelectedGroupPosition = groupPosition;
                         lastSelectedRoomPosition = bathroomPosition;
                         isSelected = true;
+                        deviceName = bathGroups.get(groupPosition).getBathGroups().get(bathroomPosition).getId() + "号浴室" ;
+                        Log.e(TAG, "initRecyclerView: " + deviceNo );
                     }
                     outerAdapter.notifyDataSetChanged();
-                    setBtnText(("预约洗澡 (" + bathGroups.get(groupPosition).getBathGroups().get(bathroomPosition).getId() + "号浴室)"), true);
                 });
 //        recyclerView.setLayoutManager(new LinearLayoutManager(this, OrientationHelper.HORIZONTAL, false));
         LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) recyclerView.getLayoutParams();
@@ -234,7 +279,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
                 return false;
             }
         });
-//        presenter.getBathroomList(buildId);
+        presenter.getBathroomList(buildId);
         showBathroomDialog();
         presenter.precondition();
     }
@@ -271,18 +316,76 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
     }
 
 
-    /**
-     * 显示pop
-     *
-     * @param view 在哪个view
-     */
-    private void showPop(View view) {
-
+    private void showPopForDevice(List<BuildingTrafficDTO.FloorsBean> floorsBean){
         if (pop == null) {
             pop = new ChooseBathroomPop(this);
+            pop.setPopButtonClickListener(new ChooseBathroomPop.PopButtonClickListener() {
+                @Override
+                public void click(BuildingTrafficDTO.FloorsBean floorsBean) {
+                    if (TextUtils.isEmpty(floorsBean.getDeviceNo())){
+                        presenter.booking(Long.parseLong(floorsBean.getDeviceNo()) , 0);
+                    }else{
+                        presenter.booking(0 , floorsBean.getId());
+                    }
+                }
+            });
         }
 
-         pop.showUp(root);
+        pop.setData(floorsBean);
+        showPopNoDevice();
+    }
+
+
+    private void showPopForDevice(BuildingTrafficDTO.FloorsBean floorsBean){
+        if (pop == null) {
+            pop = new ChooseBathroomPop(this);
+            pop.setPopButtonClickListener(new ChooseBathroomPop.PopButtonClickListener() {
+                @Override
+                public void click(BuildingTrafficDTO.FloorsBean floorsBean) {
+                    if (TextUtils.isEmpty(floorsBean.getDeviceNo())){
+                        presenter.booking(Long.parseLong(floorsBean.getDeviceNo()) , 0);
+                    }else{
+                        presenter.booking(0 , floorsBean.getId());
+                    }
+                }
+            });
+        }
+
+        pop.setData(floorsBean);
+        showPopNoDevice();
+    }
+
+
+
+
+
+
+
+
+
+    /**
+     * 显示pop
+     */
+    private void showPop() {
+            presenter.buildingTraffic(buildId);
+        if (pop == null) {
+            pop = new ChooseBathroomPop(this);
+            pop.setPopButtonClickListener(new ChooseBathroomPop.PopButtonClickListener() {
+                @Override
+                public void click(BuildingTrafficDTO.FloorsBean floorsBean) {
+                    if ( !TextUtils.isEmpty(floorsBean.getDeviceNo())){
+                        presenter.booking(Long.parseLong(floorsBean.getDeviceNo()) , 0);
+                    }else{
+                        presenter.booking(0 , floorsBean.getId());
+                    }
+                }
+            });
+        }
+        showPopNoDevice();
+    }
+
+    private void showPopNoDevice() {
+        pop.showUp(root);
 //        int[] location = new int[2];
 //        view.getLocationOnScreen(location);
 //        pop.showAtLocation(root, Gravity.NO_GRAVITY,  (location[0]) - pop.getWidth() / 2, location[1] - pop.getHeight());
@@ -494,7 +597,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
             startActivity(new Intent(this, BathroomHeaterActivity.class)
                     .putExtra(KEY_BATH_ORDER_ID, respDTO.getBathOrderId()));
         } else {
-            startActivity(new Intent(this, BookingActivity.class).putExtra(KEY_ORDER_PRECONDITION, respDTO));
+//            startActivity(new Intent(this, BookingActivity.class).putExtra(KEY_ORDER_PRECONDITION, respDTO));
         }
 
     }
@@ -538,21 +641,64 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
 
     }
 
+    @Override
+    public void trafficInfo(List<BuildingTrafficDTO.FloorsBean> floorsBeans) {
+        pop.setData(floorsBeans);
+    }
+
+    @Override
+    public void startQueue(long id) {
+        startActivity(new Intent(this ,BookingActivity.class)
+                .putExtra(KEY_BATHQUEUE_ID , id)
+                .putExtra(KEY_BALANCE ,balance)
+                .putExtra(KEY_MIN_PREPAY ,minPrepay)
+                .putExtra(KEY_PREPAY ,prepay)
+                .putExtra(KEY_MISSED_TIMES ,missedTimes)
+                .putExtra(KEY_MAX_MISSABLE_TIMES ,maxMissAbleTimes));
+
+    }
+
+    @Override
+    public void startBooking(long bathOrderId) {
+        startActivity(new Intent(this ,BookingActivity.class)
+        .putExtra(KEY_BOOKING_ID ,bathOrderId)
+        .putExtra(KEY_BALANCE ,balance)
+        .putExtra(KEY_MIN_PREPAY ,minPrepay)
+        .putExtra(KEY_PREPAY ,prepay)
+        .putExtra(KEY_MISSED_TIMES ,missedTimes)
+        .putExtra(KEY_MAX_MISSABLE_TIMES ,maxMissAbleTimes)
+        );
+    }
+
+    @Override
+    public void saveBookingInfo(BathOrderPreconditionRespDTO data) {
+        balance = data.getPrepayInfo().getBalance();
+        minPrepay = data.getPrepayInfo().getMinPrepay();
+        prepay = data.getPrepayInfo().getPrepay();
+        maxMissAbleTimes = data.getMaxMissAbleTimes();
+        missedTimes = data.getMissedTimes() ;
+    }
+
+    @Override
+    public void startUsing(long bathOrderId) {
+        startActivity(new Intent(this ,BathroomHeaterActivity.class)
+        .putExtra(KEY_BATH_ORDER_ID ,bathOrderId));
+    }
+
 
     @OnClick(R.id.pre_bathroom)
     public void preBathRoom() {
+            deviceNo = "1111";
+        if (TextUtils.isEmpty(deviceNo)){
+            showPop();
+        }else{
+            List<BuildingTrafficDTO.FloorsBean> floorsBeans = new ArrayList<>();
+            BuildingTrafficDTO.FloorsBean floorsBean = new BuildingTrafficDTO.FloorsBean();
+            floorsBean.setName("一层公共浴室101房间");
+            floorsBean.setDeviceNo("1111111111");
+            showPopForDevice(floorsBean);
+        }
 
-        showPop(preBathroom);
-
-//        if (presenter.getBathroomPassword()) {
-//            if (this.isSelected) {
-//                presenter.preBooking(deviceNo);
-//            } else {
-//                presenter.preBooking("");
-//            }
-//        }else{
-//            startActivity(this , FindBathroomPasswordActivity.class);
-//        }
     }
 
 }

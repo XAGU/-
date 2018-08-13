@@ -13,6 +13,8 @@ import com.xiaolian.amigo.data.network.model.bathroom.BathGroupDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathOrderPreconditionRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathPreBookingRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathRoomDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.BuildingTrafficDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.TryBookingResultRespDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.ui.base.BasePresenter;
@@ -21,10 +23,15 @@ import com.xiaolian.amigo.ui.device.bathroom.intf.IChooseBathroomView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
 
 import javax.inject.Inject;
 
+import static com.xiaolian.amigo.util.Constant.BOOKING_SUCCESS;
+import static com.xiaolian.amigo.util.Constant.EMPTY;
 import static com.xiaolian.amigo.util.Constant.NONE;
+import static com.xiaolian.amigo.util.Constant.PRE_USING;
+import static com.xiaolian.amigo.util.Constant.QUEUEING;
 
 /**
  * @author zcd
@@ -75,7 +82,7 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
     public void preBooking(String deviceNo) {
         BathBookingReqDTO reqDTO = new BathBookingReqDTO();
         if (TextUtils.isEmpty(deviceNo)){
-            reqDTO.setDeviceNo(null);
+            reqDTO.setDeviceNo(0);
             reqDTO.setType(BathTradeType.BOOKING_WITHOUT_DEVICE.getCode());
         }else {
             reqDTO.setDeviceNo(Integer.parseInt(deviceNo));
@@ -127,10 +134,13 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
             @Override
             public void onReady(ApiResult<BathOrderPreconditionRespDTO> result) {
                  if (result.getError() == null){
-                     if (result.getData().isExistUsingOrder()){
-                        getMvpView().startPreconditionView(result.getData());
-                     }else{
-
+                     getMvpView().saveBookingInfo(result.getData());
+                     if (result.getData().getStatus() == QUEUEING){
+                            getMvpView().startQueue(result.getData().getBathQueueId());
+                     }else if (result.getData().getStatus() == BOOKING_SUCCESS){
+                            getMvpView().startBooking(result.getData().getBathBookingId());
+                     }else if (result.getData().getStatus() == PRE_USING){
+                           getMvpView().startUsing(result.getData().getBathOrderId());
                      }
                  }
             }
@@ -145,6 +155,55 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
     @Override
     public boolean getBathroomPassword() {
        return  bathroomDataManager.getBathroomPassword();
+    }
+
+    @Override
+    public void buildingTraffic(long id) {
+        SimpleReqDTO reqDTO = new SimpleReqDTO();
+        reqDTO.setId(id);
+        addObserver(bathroomDataManager.traffi(reqDTO) ,new NetworkObserver<ApiResult<BuildingTrafficDTO>>(){
+
+            @Override
+            public void onReady(ApiResult<BuildingTrafficDTO> result) {
+                if (result.getError() == null){
+                    getMvpView().trafficInfo(result.getData().getFloors());
+                }else{
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+        });
+
+    }
+
+    @Override
+    public void booking(long deviceNo, long floorId) {
+        BathBookingReqDTO reqDTO = new BathBookingReqDTO();
+        if (floorId != 0){
+            reqDTO.setFloorId(floorId);
+            reqDTO.setType(BathTradeType.BOOKING_WITHOUT_DEVICE.getCode());
+        }else{
+            reqDTO.setDeviceNo(deviceNo);
+            reqDTO.setType(BathTradeType.BOOKING_DEVICE.getCode());
+        }
+
+        addObserver(bathroomDataManager.booking(reqDTO) , new NetworkObserver<ApiResult<TryBookingResultRespDTO>>(){
+
+
+            @Override
+            public void onReady(ApiResult<TryBookingResultRespDTO> result) {
+                if (null == result.getError()) {
+                    if (result.getData().getQueueInfo() != null){
+                         getMvpView().startQueue(result.getData().getQueueInfo().getId());
+                    }else{
+                        if (result.getData().getBookingInfo()!= null){
+                            getMvpView().startBooking(result.getData().getBookingInfo().getId());
+                        }
+                    }
+                } else {
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+        });
     }
 
     private List<ChooseBathroomOuterAdapter.BathGroupWrapper> convertFrom(BathBuildingRespDTO bathBuildingRespDTO) {

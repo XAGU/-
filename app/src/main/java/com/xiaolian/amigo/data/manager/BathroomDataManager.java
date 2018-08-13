@@ -4,6 +4,7 @@ import com.xiaolian.amigo.data.manager.intf.IBathroomDataManager;
 import com.xiaolian.amigo.data.network.IBathroomApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.bathroom.BathBookingReqDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.BathBookingRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathBookingStatusReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathBuildingRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathOrderCurrentRespDTO;
@@ -12,8 +13,11 @@ import com.xiaolian.amigo.data.network.model.bathroom.BathOrderRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathPreBookingRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathRoomReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathRouteRespDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.BookingQueueProgressDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.BuildingTrafficDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.QueryBathOrderListReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.QueryBathOrderListRespDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.TryBookingResultRespDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
@@ -77,7 +81,7 @@ public class BathroomDataManager implements IBathroomDataManager {
     }
 
     @Override
-    public Observable<ApiResult<BathOrderRespDTO>> query(BathBookingStatusReqDTO reqDTO) {
+    public Observable<ApiResult<BathBookingRespDTO>> query(BathBookingStatusReqDTO reqDTO) {
         return bathroomApi.query(reqDTO);
     }
 
@@ -97,7 +101,7 @@ public class BathroomDataManager implements IBathroomDataManager {
     }
 
     @Override
-    public Observable<ApiResult<BathOrderRespDTO>> booking(BathBookingReqDTO reqDTO) {
+    public Observable<ApiResult<TryBookingResultRespDTO>> booking(BathBookingReqDTO reqDTO) {
         return bathroomApi.booking(reqDTO);
     }
 
@@ -109,6 +113,16 @@ public class BathroomDataManager implements IBathroomDataManager {
     @Override
     public boolean getBathroomPassword() {
         return iSharedPreferencesHelp.getUserInfo().isHadSetBathPassword();
+    }
+
+    @Override
+    public Observable<ApiResult<BuildingTrafficDTO>> traffi(SimpleReqDTO reqDTO) {
+        return bathroomApi.traffi(reqDTO);
+    }
+
+    @Override
+    public Observable<ApiResult<BookingQueueProgressDTO>> queueQuery(SimpleReqDTO reqDTO) {
+        return bathroomApi.queueQuery(reqDTO);
     }
 
 

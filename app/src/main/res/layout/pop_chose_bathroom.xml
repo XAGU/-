@@ -30,7 +30,7 @@
         android:textColor="@color/white"
         android:textSize="14sp"
         android:textStyle="bold"
-        android:text="@string/preBathWithAnyEmptyBath"
+        android:text="确认预约"
         tools:text="预约洗澡（任意空浴室）"
         android:stateListAnimator="@null"
         />
