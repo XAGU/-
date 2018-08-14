@@ -71,7 +71,7 @@ public class BathroomHeartPresenter<V extends IBathroomHeartView> extends BasePr
                             }
                         });
                     }else if (result.getData().getStatus() == ORDER_SETTLE){
-                        getMvpView().getOrderInfo(result.getData());
+                        getMvpView().goToOrderInfo(result.getData());
                     }
 
                 }else{

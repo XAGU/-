@@ -248,7 +248,7 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
             }
         });
     }
-
+    
     @Override
     public void queryBathorder(long bathOrder) {
         SimpleReqDTO simpleReqDTO = new SimpleReqDTO();
