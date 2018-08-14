@@ -413,8 +413,8 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
                         if (result.getData().isIsPubBath()) {
                             //设置了洗澡地址并且是公共浴室，判断是否设置了用户性别和宿舍信息
 //                            没有设置用户性别
-                            boolean isSetSex =  (userDataManager.getUser().getSex()==1 || userDataManager.getUser().getSex()==2);
-                            boolean isSetDormitoryAddress = (userDataManager.getUser().getMacAddress()!=null && !userDataManager.getUser().getMacAddress().isEmpty());
+                            boolean isSetSex =  !(userDataManager.getUser().getSex()==1 || userDataManager.getUser().getSex()==2);
+                            boolean isSetDormitoryAddress = (userDataManager.getUser().getResidenceName()!=null && !userDataManager.getUser().getResidenceName().isEmpty());
                             if (!isSetSex || !isSetDormitoryAddress) /*没有设置性别或是宿舍信息*/{
                                 getMvpView().gotoCompleteInfoActivity(result.getData());
                             } else  {

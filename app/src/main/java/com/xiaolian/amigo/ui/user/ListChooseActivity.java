@@ -292,16 +292,17 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                         deviceType = getIntent().getIntExtra(INTENT_KEY_LIST_DEVICE_TYPE, Device.UNKNOWN.getType());
                         activitySrc = getIntent().getStringExtra(INTENT_KEY_LIST_SRC_ACTIVITY);
                         residenceDetail = (UserResidenceDTO) getIntent().getSerializableExtra(INTENT_KEY_LIST_RESIDENCE_DETAIL);
-                        if (TextUtils.equals(activitySrc, Constant.USER_INFO_ACTIVITY_SRC)) {
+                        if (TextUtils.equals(activitySrc, Constant.USER_INFO_ACTIVITY_SRC) || TextUtils.equals(activitySrc, Constant.COMPLETE_INFO_ACTIVITY_SRC)){
                                 tvTitle.setText("选择宿舍");
+                            adapter = new ListChooseAdaptor(items, false);
                         }else {
+                            adapter = new ListChooseAdaptor(items, true);
                             if (deviceType == Device.HEATER.getType()) {
                                 tvTitle.setText("选择洗澡房间");
                             } else {
                                 tvTitle.setText("选择位置");
                             }
                         }
-                        adapter = new ListChooseAdaptor(items, true);
                         recyclerView.setAdapter(adapter);
                         Long parentId = getIntent().getLongExtra(INTENT_KEY_LIST_CHOOSE_PARENT_ID, -1);
                         if (parentId != -1) {
@@ -314,7 +315,9 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                                 presenter.getDormitoryList(null, null, deviceType, parentId, false);
                             } else if (TextUtils.equals(activitySrc, Constant.MAIN_ACTIVITY_SRC)) {
                                 presenter.getDormitoryList(null, null, deviceType, parentId, false);
-                            }else if (TextUtils.equals(activitySrc ,Constant.USER_INFO_ACTIVITY_SRC)){
+                            } else if (TextUtils.equals(activitySrc ,Constant.USER_INFO_ACTIVITY_SRC)){
+                                presenter.getDormitoryList(null, null, deviceType, parentId, false);
+                            } else if (TextUtils.equals(activitySrc ,Constant.COMPLETE_INFO_ACTIVITY_SRC)) {
                                 presenter.getDormitoryList(null, null, deviceType, parentId, false);
                             }else if (TextUtils.equals(activitySrc ,Constant.MAIN_ACTIVITY_BATHROOM_SRC)){
                                 presenter.getBathroomList(null, null, deviceType, parentId, false);
