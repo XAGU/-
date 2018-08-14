@@ -68,7 +68,6 @@ public class CompleteInfoActivity extends UserBaseActivity implements ICompleteI
         getActivityComponent().inject(this);
         presenter.onAttach(this);
         setMainBackground(R.color.colorBackgroundGray);
-
     }
 
     @Override
