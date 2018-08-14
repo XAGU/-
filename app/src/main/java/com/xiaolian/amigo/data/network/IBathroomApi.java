@@ -2,6 +2,7 @@ package com.xiaolian.amigo.data.network;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.bathroom.BathBookingReqDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.BathBookingRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathBookingStatusReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathBuildingRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathOrderCurrentRespDTO;
@@ -11,9 +12,12 @@ import com.xiaolian.amigo.data.network.model.bathroom.BathPasswordUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathPreBookingRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathRoomReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathRouteRespDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.BookingQueueProgressDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.BuildingTrafficDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.CurrentBathOrderRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.QueryBathOrderListReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.QueryBathOrderListRespDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.TryBookingResultRespDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
@@ -40,7 +44,7 @@ public interface IBathroomApi {
      * 预约设备
      */
     @POST("bath/trade/booking")
-    Observable<ApiResult<BathOrderRespDTO>> booking(@Body BathBookingReqDTO reqDTO);
+    Observable<ApiResult<TryBookingResultRespDTO>> booking(@Body BathBookingReqDTO reqDTO);
 
 
     /**
@@ -59,7 +63,7 @@ public interface IBathroomApi {
      * 查询指定预约订单状态
      */
     @POST("bath/trade/booking/query")
-    Observable<ApiResult<BathOrderRespDTO>> query(@Body BathBookingStatusReqDTO reqDTO);
+    Observable<ApiResult<BathBookingRespDTO>> query(@Body BathBookingStatusReqDTO reqDTO);
 
 
     /**
@@ -137,4 +141,29 @@ public interface IBathroomApi {
      */
     @POST("bath/trade/askSettle")
     Observable<ApiResult<BooleanRespDTO>> askSettle(@Body  SimpleReqDTO reqDTO);
+
+
+    /**
+     * 查询每个楼层的使用流量
+     */
+    @POST("bath/trade/building/traffic")
+    Observable<ApiResult<BuildingTrafficDTO>>  traffi(@Body SimpleReqDTO reqDTO) ;
+
+
+    /**
+     * 查询指定排队订单的信息
+     * @param reqDTO
+     * @return
+     */
+    @POST("bath/trade/queue/progress")
+    Observable<ApiResult<BookingQueueProgressDTO>> queueQuery(@Body SimpleReqDTO reqDTO);
+
+
+    /**
+     * 取消预约排队
+     * @param reqDTO
+     * @return
+     */
+    @POST("bath/trade/queue/cancel")
+    Observable<ApiResult<BooleanRespDTO>> cancelQueue(@Body SimpleReqDTO reqDTO);
 }

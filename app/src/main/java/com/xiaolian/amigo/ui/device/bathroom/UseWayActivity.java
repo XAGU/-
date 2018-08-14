@@ -221,6 +221,23 @@ public abstract class UseWayActivity extends BathroomBaseActivity {
         initRecyclerView();
     }
 
+
+    public TextView getTvTip1() {
+        return tvTip1;
+    }
+
+    public TextView getTvTip2() {
+        return tvTip2;
+    }
+
+    public TextView getTvTip() {
+        return tvTip;
+    }
+
+    public TextView getTvTip3() {
+        return tvTip3;
+    }
+
     protected String getTips(){
         return "";
     }

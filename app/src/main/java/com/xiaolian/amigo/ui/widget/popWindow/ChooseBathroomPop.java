@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -13,11 +14,16 @@ import android.widget.Button;
 import android.widget.PopupWindow;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.network.model.bathroom.BuildingTrafficDTO;
+import com.xiaolian.amigo.intf.OnItemClickListener;
 import com.xiaolian.amigo.ui.widget.dialog.adapter.ChooseRoomAdapter;
 import com.xiaolian.amigo.util.ScreenUtils;
 
-public class ChooseBathroomPop  extends PopupWindow{
+import java.util.ArrayList;
+import java.util.List;
 
+public class ChooseBathroomPop  extends PopupWindow{
+    private static final String TAG = ChooseBathroomPop.class.getSimpleName();
     private Context context ;
 
     private RecyclerView recyclerView ;
@@ -26,7 +32,13 @@ public class ChooseBathroomPop  extends PopupWindow{
 
     private ChooseRoomAdapter adapter ;
 
-    private PopButtonClickListener clickListener ;
+
+    private List<BuildingTrafficDTO.FloorsBean> floorsBeans ;
+
+    private PopButtonClickListener popButtonClickListener ;
+
+
+    private BuildingTrafficDTO.FloorsBean  floorsBean ;
 
     private int popupWidth ;
     private int popupHeight ;
@@ -38,16 +50,25 @@ public class ChooseBathroomPop  extends PopupWindow{
         init();
     }
 
-    public void setPopClickListtener(PopButtonClickListener clickListtener){
-        this.clickListener = clickListtener ;
+    public void setPopButtonClickListener(PopButtonClickListener popButtonClickListener) {
+        this.popButtonClickListener = popButtonClickListener;
     }
 
     private void init(){
+        floorsBeans = new ArrayList<>();
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View contentView = layoutInflater.inflate(R.layout.pop_chose_bathroom, null , false);
         recyclerView = contentView.findViewById(R.id.bathroom_recy);
         button = contentView.findViewById(R.id.pre_bathroom) ;
-        adapter = new ChooseRoomAdapter(context);
+        adapter = new ChooseRoomAdapter(context ,floorsBeans);
+        adapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void click(int poisition) {
+                if (floorsBeans != null && floorsBeans.size() > 0 && poisition < floorsBeans.size()) {
+                    floorsBean = floorsBeans.get(poisition);
+                }
+            }
+        });
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(adapter);
         setContentView(contentView);
@@ -71,8 +92,9 @@ public class ChooseBathroomPop  extends PopupWindow{
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (clickListener != null){
-                    clickListener.click();
+                if (popButtonClickListener != null){
+                    Log.e(TAG, "onClick: " + floorsBean.getDeviceNo() );
+                    popButtonClickListener.click(floorsBean);
                 }
             }
         });
@@ -81,6 +103,28 @@ public class ChooseBathroomPop  extends PopupWindow{
         popupHeight = contentView.getMeasuredHeight();
         popupWidth = contentView.getMeasuredWidth();
     }
+
+
+    public void setData(List<BuildingTrafficDTO.FloorsBean> floorsBeanList){
+        if (floorsBeans != null){
+            floorsBeans.clear();
+            floorsBeans.addAll(floorsBeanList);
+        }
+        if (adapter != null) adapter.notifyDataSetChanged();
+    }
+
+    public void setData(BuildingTrafficDTO.FloorsBean floorsBean){
+        if (floorsBeans != null){
+            floorsBeans.clear();
+            floorsBeans.add(floorsBean);
+        }
+        this.floorsBean = floorsBean ;
+        Log.e(TAG, "setData: " + floorsBean.getDeviceNo() );
+        button.setBackgroundResource(R.color.colorGreen);
+        if (adapter != null ) adapter.notifyDataSetChanged();
+
+    }
+
 
 
     /**
@@ -97,17 +141,10 @@ public class ChooseBathroomPop  extends PopupWindow{
 
 
     /**
-     * 设置data
-     */
-    public void setAdapter(){
-
-    }
-
-    /**
      * pop 中 点击事件
      */
-    interface PopButtonClickListener{
-        void click();
+    public interface PopButtonClickListener{
+        void click(BuildingTrafficDTO.FloorsBean floorsBean);
     }
 
 }

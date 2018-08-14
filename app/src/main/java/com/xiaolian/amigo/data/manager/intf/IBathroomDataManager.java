@@ -2,6 +2,7 @@ package com.xiaolian.amigo.data.manager.intf;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.bathroom.BathBookingReqDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.BathBookingRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathBookingStatusReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathBuildingRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathOrderCurrentRespDTO;
@@ -10,8 +11,11 @@ import com.xiaolian.amigo.data.network.model.bathroom.BathOrderRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathPreBookingRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathRoomReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathRouteRespDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.BookingQueueProgressDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.BuildingTrafficDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.QueryBathOrderListReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.QueryBathOrderListRespDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.TryBookingResultRespDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
 
@@ -73,7 +77,7 @@ public interface IBathroomDataManager {
      * @param reqDTO
      * @return
      */
-    Observable<ApiResult<BathOrderRespDTO>> query(@Body BathBookingStatusReqDTO reqDTO);
+    Observable<ApiResult<BathBookingRespDTO>> query(@Body BathBookingStatusReqDTO reqDTO);
 
 
     /**
@@ -99,7 +103,7 @@ public interface IBathroomDataManager {
     /**
      * 预约设备
      */
-    Observable<ApiResult<BathOrderRespDTO>> booking(@Body BathBookingReqDTO reqDTO);
+    Observable<ApiResult<TryBookingResultRespDTO>> booking(@Body BathBookingReqDTO reqDTO);
 
 
     /**
@@ -112,5 +116,26 @@ public interface IBathroomDataManager {
      * 获取是否有公共浴室密码
      */
     boolean getBathroomPassword();
+
+    /**
+     * 查询每个楼层的使用流量
+     */
+    Observable<ApiResult<BuildingTrafficDTO>>  traffi(@Body SimpleReqDTO reqDTO) ;
+
+
+    /**
+     * 查询指定排队订单的信息
+     * @param reqDTO
+     * @return
+     */
+    Observable<ApiResult<BookingQueueProgressDTO>> queueQuery(@Body SimpleReqDTO reqDTO);
+
+
+    /**
+     * 取消预约排队
+     * @param reqDTO
+     * @return
+     */
+    Observable<ApiResult<BooleanRespDTO>> cancelQueue(@Body SimpleReqDTO reqDTO);
 
 }

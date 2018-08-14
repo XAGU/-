@@ -15,10 +15,6 @@ public interface IBookingPresenter<V extends IBookingView> extends IBasePresente
      */
     void cancel(long id);
 
-    /**
-     * 预约倒计时
-     */
-    void bathroomBookingCountDown( );
 
 
     /**
@@ -26,17 +22,14 @@ public interface IBookingPresenter<V extends IBookingView> extends IBasePresente
      */
     void cancelCountDown();
 
-    /**
-     * 查询是否已存在订单
-     * @param deviceNo
-     */
-    void preBooking(String deviceNo);
 
     /**
      * 查询特定订单的状态
      * @param bathOrderId
      */
     void query(String bathOrderId , boolean isToUsing , int time);
+
+
 
     /**
      * 解除绑定设备
@@ -54,5 +47,18 @@ public interface IBookingPresenter<V extends IBookingView> extends IBasePresente
      * 根据过期时间倒计时
      */
     void countDownexpiredTime(long expiredTime );
+
+
+    /**
+     * 查询排队状态
+     * @param id
+     */
+    void queryQueueId(long id);
+
+    /**
+     * 取消预约排队
+     * @param id
+     */
+    void cancelQueue(long id);
 
 }

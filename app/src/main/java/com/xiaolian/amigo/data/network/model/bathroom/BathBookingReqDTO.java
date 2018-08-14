@@ -11,9 +11,14 @@ public class BathBookingReqDTO {
     /**
      * 设备编号
      */
-    private Integer deviceNo;
+    private long deviceNo;
     /**
      * 交易类型 1预约 2购买编码 3 扫一扫 4 直接使用
      */
     private Integer type;
+
+    /**
+     * floorId
+     */
+    private long floorId ;
 }
