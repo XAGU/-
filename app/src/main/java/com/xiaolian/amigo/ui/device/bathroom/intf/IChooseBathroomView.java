@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.device.bathroom.intf;
 
+import com.xiaolian.amigo.data.network.model.bathroom.BathOrderCurrentRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathOrderPreconditionRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BuildingTrafficDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.QueueInfo;
@@ -16,13 +17,8 @@ public interface IChooseBathroomView extends IBaseView {
     void refreshBathroom(List<ChooseBathroomOuterAdapter.BathGroupWrapper> wrappers,
                          List<Integer> methods, Integer missTimes);
 
-    void gotoBookingView(Double balance,
-                         Long bonusId, String bonusDesc, Double bonusAmount,
-                         Long expiredTime, String location, Integer maxMissAbleTimes,
-                         Double minPrepay, Integer missedTimes, Double prepay , String reservedTime);
 
 
-    void startPreconditionView(BathOrderPreconditionRespDTO respDTO);
 
     /**
      * 显示动画
@@ -46,7 +42,6 @@ public interface IChooseBathroomView extends IBaseView {
      */
     void setBtnText(String text , boolean isSelected);
 
-    void gotoUsing(BathOrderPreconditionRespDTO respDTO);
 
     /**
      * 现在楼层浴室洗澡信息
@@ -76,4 +71,9 @@ public interface IChooseBathroomView extends IBaseView {
      * @param bathOrderId
      */
     void startUsing(long bathOrderId);
+
+    /**
+     * 去结算页面
+     */
+    void startOrderInfo(BathOrderCurrentRespDTO data);
 }

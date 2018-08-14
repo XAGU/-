@@ -52,6 +52,15 @@ public class BookingCancelDialog extends Dialog {
         });
     }
 
+
+    public void setTvTitle(String text){
+        if (tvTitle != null) tvTitle.setText(text);
+    }
+
+    public void setTvTip(String text){
+        if (tvTip != null)  tvTip.setText(text);
+    }
+
     public void setCancelText(String text) {
         tvCancel.setText(text);
     }

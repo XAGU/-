@@ -9,8 +9,14 @@ import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IBathroomHeartPresenter;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IBathroomHeartView;
+import com.xiaolian.amigo.util.RxHelper;
 
 import javax.inject.Inject;
+
+import rx.functions.Action1;
+
+import static com.xiaolian.amigo.util.Constant.ORDER_SETTLE;
+import static com.xiaolian.amigo.util.Constant.ORDER_USING;
 
 public class BathroomHeartPresenter<V extends IBathroomHeartView> extends BasePresenter<V>
         implements IBathroomHeartPresenter<V> {
@@ -56,12 +62,27 @@ public class BathroomHeartPresenter<V extends IBathroomHeartView> extends BasePr
             @Override
             public void onReady(ApiResult<BathOrderCurrentRespDTO> result) {
                 if (result.getError() == null){
-                    getMvpView().getOrderInfo(result.getData());
+                    if (result.getData().getStatus() == ORDER_USING) {
+                        getMvpView().getOrderInfo(result.getData());
+                        delay(3, new Action1<Long>() {
+                            @Override
+                            public void call(Long aLong) {
+                                queryBathroomOrder(id);
+                            }
+                        });
+                    }else if (result.getData().getStatus() == ORDER_SETTLE){
+                        getMvpView().getOrderInfo(result.getData());
+                    }
+
                 }else{
                     getMvpView().onError(result.getError().getDisplayMessage());
 
                 }
             }
         });
+    }
+
+    private void delay(int time ,  Action1<Long> action0 ){
+        this.subscriptions.add(RxHelper.delay(time , action0));
     }
 }

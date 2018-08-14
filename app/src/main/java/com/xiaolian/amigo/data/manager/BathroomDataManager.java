@@ -125,5 +125,10 @@ public class BathroomDataManager implements IBathroomDataManager {
         return bathroomApi.queueQuery(reqDTO);
     }
 
+    @Override
+    public Observable<ApiResult<BooleanRespDTO>> cancelQueue(SimpleReqDTO reqDTO) {
+        return bathroomApi.cancelQueue(reqDTO);
+    }
+
 
 }

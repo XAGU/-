@@ -234,6 +234,10 @@ public abstract class UseWayActivity extends BathroomBaseActivity {
         return tvTip;
     }
 
+    public TextView getTvTip3() {
+        return tvTip3;
+    }
+
     protected String getTips(){
         return "";
     }

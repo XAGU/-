@@ -149,15 +149,15 @@ public class BathroomHeaterActivity extends BathroomBaseActivity implements IBat
 
 
     @Override
-    public void goToOrderInfo() {
+    public void goToOrderInfo(BathOrderCurrentRespDTO dto) {
         String userMethod ="";
-        if (bathOrderRespDTO.getLocation().equals("任意空浴室")){
+        if (dto.getLocation().equals("任意空浴室")){
             userMethod = "预约任意空浴室";
         }else{
             userMethod = "预约指定浴室";
         }
         Intent intent = new Intent(this, BathOrderActivity.class);
-        intent.putExtra(Constant.BUNDLE_ID, bathOrderRespDTO.getBathOrderId());
+        intent.putExtra(Constant.BUNDLE_ID, dto.getBathOrderId());
         intent.putExtra(KEY_USER_STYLE ,userMethod);
         startActivity(intent);
     }
@@ -173,6 +173,20 @@ public class BathroomHeaterActivity extends BathroomBaseActivity implements IBat
     @Override
     public void reset() {
         slideView.reset();
+    }
+
+    @Override
+    public void goToOrderInfo() {
+        String userMethod ="";
+        if (bathOrderRespDTO.getLocation().equals("任意空浴室")){
+            userMethod = "预约任意空浴室";
+        }else{
+            userMethod = "预约指定浴室";
+        }
+        Intent intent = new Intent(this, BathOrderActivity.class);
+        intent.putExtra(Constant.BUNDLE_ID, bathOrderRespDTO.getBathOrderId());
+        intent.putExtra(KEY_USER_STYLE ,userMethod);
+        startActivity(intent);
     }
 
     @Override

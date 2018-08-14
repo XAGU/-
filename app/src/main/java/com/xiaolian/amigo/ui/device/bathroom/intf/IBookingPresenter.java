@@ -55,6 +55,10 @@ public interface IBookingPresenter<V extends IBookingView> extends IBasePresente
      */
     void queryQueueId(long id);
 
-
+    /**
+     * 取消预约排队
+     * @param id
+     */
+    void cancelQueue(long id);
 
 }

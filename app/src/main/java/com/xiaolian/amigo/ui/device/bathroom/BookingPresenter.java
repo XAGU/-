@@ -33,6 +33,7 @@ import static com.xiaolian.amigo.util.Constant.ACCEPTED;
 import static com.xiaolian.amigo.util.Constant.CANCELED;
 import static com.xiaolian.amigo.util.Constant.EXPIRED;
 import static com.xiaolian.amigo.util.Constant.FAIL;
+import static com.xiaolian.amigo.util.Constant.INIT;
 import static com.xiaolian.amigo.util.Constant.OPENED;
 
 
@@ -93,6 +94,7 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
      */
     @Override
     public void query(String bathOrderId , boolean isToUsing , int time) {
+        Log.e(TAG, "query: " + isToUsing  + "     " +time);
         BathBookingStatusReqDTO reqDTO = new BathBookingStatusReqDTO();
         reqDTO.setId(bathOrderId);
         addObserver(bathroomDataManager.query(reqDTO) , new NetworkObserver<ApiResult<BathBookingRespDTO>>(){
@@ -117,6 +119,7 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
                     } else {
                           if (result.getData().getStatus() == ACCEPTED){  // 成功
                                 getMvpView().bookingSuccess(result.getData());
+                                query(bathOrderId ,true ,10);
                           } else if (result.getData().getStatus() == OPENED){  // 使用中
                               getMvpView().gotoUsing(result.getData().getBathOrderId());
                           }else if (result.getData().getStatus() == EXPIRED){   //  超时
@@ -216,11 +219,38 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
 
             @Override
             public void onReady(ApiResult<BookingQueueProgressDTO> result) {
-                    if (result.getError() != null){
-                        getMvpView().showQueue(result.getData());
+                    if (result.getError() == null){
+                        if (result.getData().getBathBookingId() == 0){
+                            getMvpView().showQueue(result.getData());
+                            delay(5, new Action1<Long>() {
+                                @Override
+                                public void call(Long aLong) {
+                                    queryQueueId(id);
+                                }
+                            });
+                        }else {
+                            query(result.getData().getBathBookingId()+"" ,false ,10);
+                        }
                     }else{
                         getMvpView().onError(result.getError().getDisplayMessage());
                     }
+            }
+        });
+    }
+
+    @Override
+    public void cancelQueue(long id) {
+        SimpleReqDTO simpleReqDTO = new SimpleReqDTO();
+        simpleReqDTO.setId(id);
+        addObserver(bathroomDataManager.cancelQueue(simpleReqDTO) , new NetworkObserver<ApiResult<BooleanRespDTO>>(){
+
+            @Override
+            public void onReady(ApiResult<BooleanRespDTO> result) {
+                if (result.getError() == null){
+                    getMvpView().finishActivity();
+                }else{
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
             }
         });
     }

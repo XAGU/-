@@ -9,9 +9,11 @@ public interface IBathroomHeartView extends IBaseView{
     /**
      * 跳转账单详情
      */
-    void goToOrderInfo();
+    void goToOrderInfo(BathOrderCurrentRespDTO dto);
 
     void getOrderInfo(BathOrderCurrentRespDTO dto);
 
     void reset();
+
+    void goToOrderInfo();
 }

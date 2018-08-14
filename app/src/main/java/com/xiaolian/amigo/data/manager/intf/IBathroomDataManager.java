@@ -131,5 +131,11 @@ public interface IBathroomDataManager {
     Observable<ApiResult<BookingQueueProgressDTO>> queueQuery(@Body SimpleReqDTO reqDTO);
 
 
+    /**
+     * 取消预约排队
+     * @param reqDTO
+     * @return
+     */
+    Observable<ApiResult<BooleanRespDTO>> cancelQueue(@Body SimpleReqDTO reqDTO);
 
 }

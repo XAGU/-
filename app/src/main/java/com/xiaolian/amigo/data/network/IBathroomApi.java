@@ -157,4 +157,13 @@ public interface IBathroomApi {
      */
     @POST("bath/trade/queue/progress")
     Observable<ApiResult<BookingQueueProgressDTO>> queueQuery(@Body SimpleReqDTO reqDTO);
+
+
+    /**
+     * 取消预约排队
+     * @param reqDTO
+     * @return
+     */
+    @POST("bath/trade/queue/cancel")
+    Observable<ApiResult<BooleanRespDTO>> cancelQueue(@Body SimpleReqDTO reqDTO);
 }

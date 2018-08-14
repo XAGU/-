@@ -59,10 +59,18 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
 
     public  static final String KEY_BOOKING_ID = "BOOKING_ID" ;  //  预约id
     public  static final String KEY_BATHQUEUE_ID = "BATHQUEUE_ID" ; // 排队id
+
+    public static final int QUEUE_CANCEL =  1 ;   //  排队取消
+    public static final int BOOKING_CANCEL = 2 ;   //  预约取消
     private static final String TAG = BookingActivity.class.getSimpleName();
     private String deviceNo="" ;
     private long orderId ;
     private BookingCancelDialog dialog ;
+
+    /**
+     *   取消排队预约
+     */
+    private BookingCancelDialog cancelQueueDialog ;
     @Inject
     IBookingPresenter<IBookingView> presenter;
 
@@ -156,11 +164,9 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
             public void onClick(View v) {
                  // todo
 
-
             }
         });
     }
-
 
     /**
      * 购买成功UI处理
@@ -228,14 +234,6 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
         tvBookingTip.setVisibility(View.VISIBLE);
     }
 
-    private void setList() {
-        items.clear();
-        items.add(new DeviceInfoAdapter.DeviceInfoWrapper("浴室位置：",
-                location, R.color.colorDark2, 14, Typeface.NORMAL, false));
-        items.add(new DeviceInfoAdapter.DeviceInfoWrapper("预留时间：",
-                reservedTime +"分钟", R.color.colorDark2, 14, Typeface.NORMAL, false));
-
-    }
 
 
     @Override
@@ -276,18 +274,22 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
         getTvTip().setText("预约使用说明");
     }
 
+    /**
+     * 设置排队预约tip
+     */
+    public void setQueueTip(){
+        getTvTip1().setText(getString(R.string.booking_queue_tip_1));
+
+        getTvTip2().setText(R.string.booking_queue_tip_2);
+
+        getTvTip3().setText(R.string.booking_queue_tip_3);
+
+        getTvTip().setText("预约使用说明");
+    }
+
     @Override
     protected void setTips(TextView tip1, TextView tip2, TextView tip3, TextView tip4,
                            TextView tip, RelativeLayout rlTip) {
-//        if (!TextUtils.isEmpty(deviceNo) ){
-//            tip1.setText(getString(R.string.booking_user_this));
-//        }else{
-//            tip1.setText(getString(R.string.booking_user_empty));
-//        }
-//        tip2.setText(getString(R.string.booking_user_common_tip));
-////        tip3.setText(getString(R.string.booking_use_tip3));
-////        tip4.setText(getString(R.string.booking_use_tip4));
-//        tip.setText("预约使用说明");
     }
 
     @Override
@@ -307,23 +309,47 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
      * 取消预约弹窗
      * @param id
      */
-    private void cancelDialog(long id){
-        if (dialog == null){
-            dialog = new BookingCancelDialog(this);
-            dialog.setOnCancelClickListener(new PrepayDialog.OnCancelClickListener() {
-                @Override
-                public void onCancelClick(Dialog dialog) {
-                    presenter.cancel(id);
-                }
-            });
-            dialog.setOnOkClickListener(new PrepayDialog.OnOkClickListener() {
-                @Override
-                public void onOkClick(Dialog dialog) {
-                    dialog.cancel();
-                }
-            });
+    private void cancelDialog(long id , int type){
+
+        if (type == BOOKING_CANCEL ) {
+            if (dialog == null) {
+                dialog = new BookingCancelDialog(this);
+                dialog.setTvTip(getString(R.string.book_dialog_tip));
+                dialog.setTvTitle(getString(R.string.book_dialog_title));
+                dialog.setOnCancelClickListener(new PrepayDialog.OnCancelClickListener() {
+                    @Override
+                    public void onCancelClick(Dialog dialog) {
+                        presenter.cancel(id);
+                    }
+                });
+                dialog.setOnOkClickListener(new PrepayDialog.OnOkClickListener() {
+                    @Override
+                    public void onOkClick(Dialog dialog) {
+                        dialog.cancel();
+                    }
+                });
+            }
+            dialog.show();
+        }else if (type == QUEUE_CANCEL){
+            if (cancelQueueDialog == null) {
+                cancelQueueDialog = new BookingCancelDialog(this);
+                cancelQueueDialog.setTvTip(getString(R.string.queue_dialog_tip));
+                cancelQueueDialog.setTvTitle(getString(R.string.queue_dialog_title));
+                cancelQueueDialog.setOnCancelClickListener(new PrepayDialog.OnCancelClickListener() {
+                    @Override
+                    public void onCancelClick(Dialog dialog) {
+                        presenter.cancelQueue(id);
+                    }
+                });
+                cancelQueueDialog.setOnOkClickListener(new PrepayDialog.OnOkClickListener() {
+                    @Override
+                    public void onOkClick(Dialog dialog) {
+                        dialog.cancel();
+                    }
+                });
+            }
+            cancelQueueDialog.show();
         }
-        dialog.show();
     }
     /**
      * 预约成功界面刷新
@@ -364,7 +390,7 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
         presenter.cancelCountDown();
         btStartToUse.setVisibility(View.GONE);
         statusView.showCancelButton(() -> {
-            cancelDialog(data.getId());
+            cancelDialog(data.getId() , BOOKING_CANCEL);
 
         });
         successRecyclerView(data);
@@ -386,6 +412,7 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
             public void onClick(View v) {
 
                 // todo
+
             }
         });
     }
@@ -466,11 +493,18 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
         });
     }
 
+
+
     @Override
     public void showQueue(BookingQueueProgressDTO data) {
         initTopTip();
         getQueueInfo(data);
+        setQueueTip();
+
     }
+
+
+
 
     /**
      * 刷新预约排队的信息
@@ -480,6 +514,13 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
         statusView.setStatusText(getString(R.string.preBookingWait));
         statusView.setLeftImageResource(IMG_RES_STATUS_OPERATING);
         statusView.setTip(getString(R.string.preBookingWaitTip));
+        statusView.showCancelButton(new BathroomOperationStatusView.OnCancelClickListener(){
+
+            @Override
+            public void onCancelClick() {
+                cancelDialog(data.getId() , QUEUE_CANCEL);
+            }
+        });
         llBottomVisible(false);
         List<DeviceInfoAdapter.DeviceInfoWrapper> list = getListWaitItems(data.getLocation() , data.getRemain());
         referItems(list , true);

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -22,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChooseBathroomPop  extends PopupWindow{
-
+    private static final String TAG = ChooseBathroomPop.class.getSimpleName();
     private Context context ;
 
     private RecyclerView recyclerView ;
@@ -92,6 +93,7 @@ public class ChooseBathroomPop  extends PopupWindow{
             @Override
             public void onClick(View v) {
                 if (popButtonClickListener != null){
+                    Log.e(TAG, "onClick: " + floorsBean.getDeviceNo() );
                     popButtonClickListener.click(floorsBean);
                 }
             }
@@ -116,6 +118,8 @@ public class ChooseBathroomPop  extends PopupWindow{
             floorsBeans.clear();
             floorsBeans.add(floorsBean);
         }
+        this.floorsBean = floorsBean ;
+        Log.e(TAG, "setData: " + floorsBean.getDeviceNo() );
         button.setBackgroundResource(R.color.colorGreen);
         if (adapter != null ) adapter.notifyDataSetChanged();
 

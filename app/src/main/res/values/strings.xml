@@ -312,6 +312,9 @@
     <string name="booking_user_common_tip">2.请确保你的可用余额在预约成功后，至少为页面中的提示金额，否则将无法使用设备。</string>
     <string name="booking_user_empty">1.预约成功后，请在预留时间内任意前往一间空浴室，在设备上输入你的笑联手机号和浴室密码，即可使用；</string>
     <string name="booking_user_this">1.预约成功后，请在预留时间内前往指定的浴室，在设备上输入你的笑联手机号和浴室密码，即可使用；</string>
+    <string name="booking_queue_tip_1">1.我的排队序号为0时，系统将自动预约成功；</string>
+    <string name="booking_queue_tip_2">2.预约成功后，请在预留时间内任意前往一间空浴室，在设备上输入你的笑联手机号和浴室密码，即可使用；</string>
+    <string name="booking_queue_tip_3">3.请确保你的可用余额在预约成功后，至少为页面中的提示金额，否则将无法使用设备。</string>
 
 
     <string name="buy_code_tip1">1.购买编码时，需要先预付10元，若有红包，可选择红包进行抵扣；</string>
@@ -344,4 +347,12 @@
     <string name="preBookingWaitTip">预约排队中，请耐心等候</string>
     <string name="tv_add_dormitory">添加宿舍</string>
     <string name="complete_info">完善资料</string>
+
+    <!--排队 -->
+    <string name="queue_dialog_title">确认取消排队吗?</string>
+    <string name="queue_dialog_tip">取消排队后，下次进入需重新排队哦</string>
+
+
+    <string name="book_dialog_title">确认取消预约吗?</string>
+    <string name="book_dialog_tip">取消预约后，无法在浴室内洗澡哦</string>
 </resources>
