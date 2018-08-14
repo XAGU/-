@@ -141,7 +141,7 @@ public class BathroomHeaterActivity extends BathroomBaseActivity implements IBat
             @Override
             public void setUnLocked(boolean lock) {
                 if (lock) {
-                    presenter.askSettle(bathOrderRespDTO.getBathOrderId());
+                    presenter.askSettle(bathOrderRespDTO.getTradeOrderId());
                 }
             }
         });
@@ -157,7 +157,7 @@ public class BathroomHeaterActivity extends BathroomBaseActivity implements IBat
             userMethod = "预约指定浴室";
         }
         Intent intent = new Intent(this, BathOrderActivity.class);
-        intent.putExtra(Constant.BUNDLE_ID, dto.getBathOrderId());
+        intent.putExtra(Constant.BUNDLE_ID, dto.getTradeOrderId());
         intent.putExtra(KEY_USER_STYLE ,userMethod);
         startActivity(intent);
     }
@@ -184,7 +184,7 @@ public class BathroomHeaterActivity extends BathroomBaseActivity implements IBat
             userMethod = "预约指定浴室";
         }
         Intent intent = new Intent(this, BathOrderActivity.class);
-        intent.putExtra(Constant.BUNDLE_ID, bathOrderRespDTO.getBathOrderId());
+        intent.putExtra(Constant.BUNDLE_ID, bathOrderRespDTO.getTradeOrderId());
         intent.putExtra(KEY_USER_STYLE ,userMethod);
         startActivity(intent);
     }

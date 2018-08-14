@@ -146,29 +146,6 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
     }
 
     /**
-     * 隐藏预付按钮显示消费账单按钮
-     */
-    private void showOrderHideBtnUser(){
-        btStartToUse.setVisibility(View.GONE);
-        llBottomVisible(true);
-        setllBottomClickListener();
-    }
-
-    /**
-     * 设置消费账单和重新购买的监听
-     */
-    private void setllBottomClickListener(){
-
-        rightOper.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                 // todo
-
-            }
-        });
-    }
-
-    /**
      * 购买成功UI处理
      */
     private void buySuccessUi() {
@@ -407,14 +384,6 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
         statusView.setStatusText("取消预约");
         statusView.hideCancelButton();
         CancelBookingView();
-        rightOper.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                // todo
-
-            }
-        });
     }
 
     /**
@@ -426,6 +395,15 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
             adapter.notifyDataSetChanged();
             presenter.cancelCountDown();
         }
+        cancelBookingUi();
+
+    }
+
+    /**
+     * 取消预约的处理
+     */
+    private void cancelBookingUi() {
+        btStartToUse.setVisibility(View.GONE);
         llBottomVisible(true);
         rightOper.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -434,7 +412,6 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
                 // todo
             }
         });
-
     }
 
     @Override
@@ -461,16 +438,9 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
         statusView.setLeftImageResource(IMG_RES_STATUS_FAIL);
         statusView.setStatusText(getString(R.string.preBookTimeOut));
         statusView.getTip().setText(getString(R.string.tip_timeout));
-        llBottom.setVisibility(View.VISIBLE);
         statusView.hideCancelButton();
         btStartToUse.setVisibility(GONE);
-        rightOper.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                //  todo
-            }
-        });
+        cancelBookingUi();
         List<DeviceInfoAdapter.DeviceInfoWrapper> deviceInfoWrappers = getListDevceInfoAdapter(respDTO , true);
         referItems(deviceInfoWrappers , true);
     }
@@ -481,16 +451,9 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
         statusView.setLeftImageResource(IMG_RES_STATUS_FAIL);
         statusView.setStatusText(getString(R.string.preBookTimeOut));
         statusView.getTip().setText(getString(R.string.tip_timeout));
-        llBottom.setVisibility(View.VISIBLE);
         statusView.hideCancelButton();
         btStartToUse.setVisibility(GONE);
-        rightOper.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                //  todo
-            }
-        });
+        cancelBookingUi();
     }
 
 
