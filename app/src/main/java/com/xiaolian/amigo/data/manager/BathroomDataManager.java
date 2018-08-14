@@ -130,5 +130,10 @@ public class BathroomDataManager implements IBathroomDataManager {
         return bathroomApi.cancelQueue(reqDTO);
     }
 
+    @Override
+    public Observable<ApiResult<BooleanRespDTO>> notyfyExpired() {
+        return bathroomApi.notyfyExpired();
+    }
+
 
 }

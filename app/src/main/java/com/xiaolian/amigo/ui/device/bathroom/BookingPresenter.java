@@ -93,11 +93,21 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
      *                   是预约中界面查询， 要最多查询5次是否为预约成功
      */
     @Override
-    public void query(String bathOrderId , boolean isToUsing , int time) {
+    public void query(String bathOrderId , boolean isToUsing , int time , boolean isShowDialog) {
         Log.e(TAG, "query: " + isToUsing  + "     " +time);
         BathBookingStatusReqDTO reqDTO = new BathBookingStatusReqDTO();
         reqDTO.setId(bathOrderId);
         addObserver(bathroomDataManager.query(reqDTO) , new NetworkObserver<ApiResult<BathBookingRespDTO>>(){
+
+
+            @Override
+            public void onStart() {
+                if (isShowDialog) {
+                    super.onStart();
+                }else{
+
+                }
+            }
 
             @Override
             public void onReady(ApiResult<BathBookingRespDTO> result) {
@@ -109,17 +119,17 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
                             delay(time, new Action1<Long>() {
                                 @Override
                                 public void call(Long aLong) {
-                                    query(bathOrderId, true , time);
+                                    query(bathOrderId, true , time , false);
                                 }
                             });
 
                         } else if (result.getData().getStatus() == EXPIRED) {
-                            getMvpView().appointMentTimeOut();
+                            getMvpView().appointMentTimeOut(true);
                         }
                     } else {
                           if (result.getData().getStatus() == ACCEPTED){  // 成功
                                 getMvpView().bookingSuccess(result.getData());
-                                query(bathOrderId ,true ,10);
+                                query(bathOrderId ,true ,10 , false);
                           } else if (result.getData().getStatus() == OPENED){  // 使用中
                               getMvpView().gotoUsing(result.getData().getBathOrderId());
                           }else if (result.getData().getStatus() == EXPIRED){   //  超时
@@ -194,8 +204,9 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
                 .subscribe(new Subscriber<Integer>() {
                     @Override
                     public void onCompleted() {
-                        getMvpView().setBookingCountDownTime("0:00");
-                        getMvpView().appointMentTimeOut();
+
+                        getMvpView().countTimeLeft("0:00");
+                        getMvpView().appointMentTimeOut(false);
                     }
 
                     @Override
@@ -212,14 +223,18 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
     }
 
     @Override
-    public void queryQueueId(long id) {
+    public void queryQueueId(long id , boolean isShowDialog) {
         SimpleReqDTO simpleReqDTO = new SimpleReqDTO();
         simpleReqDTO.setId(id);
         addObserver(bathroomDataManager.queueQuery(simpleReqDTO) , new NetworkObserver<ApiResult<BookingQueueProgressDTO>>(){
 
             @Override
             public void onStart() {
+                if (isShowDialog){
+                    super.onStart();
+                }else{
 
+                }
             }
 
             @Override
@@ -230,11 +245,11 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
                             delay(5, new Action1<Long>() {
                                 @Override
                                 public void call(Long aLong) {
-                                    queryQueueId(id);
+                                    queryQueueId(id , false);
                                 }
                             });
                         }else {
-                            query(result.getData().getBathBookingId()+"" ,false ,10);
+                            query(result.getData().getBathBookingId()+"" ,false ,10 , false);
                         }
                     }else{
                         getMvpView().onError(result.getError().getDisplayMessage());
@@ -254,6 +269,26 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
                 if (result.getError() == null){
                     getMvpView().finishActivity();
                 }else{
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+        });
+    }
+
+    @Override
+    public void notifyExpired() {
+        addObserver(bathroomDataManager.notyfyExpired() ,new NetworkObserver<ApiResult<BooleanRespDTO>>(){
+
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onReady(ApiResult<BooleanRespDTO> result) {
+                if (result.getError() == null){
+
+                }else {
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }
             }

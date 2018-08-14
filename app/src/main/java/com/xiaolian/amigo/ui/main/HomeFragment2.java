@@ -378,9 +378,9 @@ public class HomeFragment2 extends Fragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void OrderEvent(CurrentBathOrderRespDTO  event){
         Log.e(TAG  ,"预约订单" +event.getStatus());
-        if (event.isExistOrder()){
+//        if (event.isExistOrder()){
             checkTitleTip(event);
-        }
+//        }
     }
 
     /**

@@ -59,10 +59,10 @@ public class HomeNormalDelegate implements ItemViewDelegate<HomeAdaptor.ItemWrap
             String stauts = "";
             switch (itemWrapper.getStatus()){
                 case Constant.WAIT_STATUS:
-                    stauts = "等待洗浴";
+                    stauts = "正在排队";
                     break;
                 case Constant.TIMEOUT_STATUS:
-                    stauts = "预约超时";
+                    stauts = "等待洗浴";
                     break;
                 case Constant.USING:
                     stauts = "正在洗浴";

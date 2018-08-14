@@ -27,7 +27,7 @@ public interface IBookingPresenter<V extends IBookingView> extends IBasePresente
      * 查询特定订单的状态
      * @param bathOrderId
      */
-    void query(String bathOrderId , boolean isToUsing , int time);
+    void query(String bathOrderId , boolean isToUsing , int time , boolean isShowDialog);
 
 
 
@@ -53,12 +53,17 @@ public interface IBookingPresenter<V extends IBookingView> extends IBasePresente
      * 查询排队状态
      * @param id
      */
-    void queryQueueId(long id);
+    void queryQueueId(long id  , boolean isShowDialog);
 
     /**
      * 取消预约排队
      * @param id
      */
     void cancelQueue(long id);
+
+    /**
+     * 提醒服务器预约超时
+     */
+    void notifyExpired();
 
 }

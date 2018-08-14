@@ -9,7 +9,6 @@ import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
-import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
@@ -20,12 +19,11 @@ import android.widget.TextView;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.bathroom.BathBookingRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathOrderPreconditionRespDTO;
-import com.xiaolian.amigo.data.network.model.bathroom.BathOrderRespDTO;
-import com.xiaolian.amigo.data.network.model.bathroom.BathPreBookingRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BookingQueueProgressDTO;
 import com.xiaolian.amigo.ui.device.bathroom.adapter.DeviceInfoAdapter;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IBookingPresenter;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IBookingView;
+import com.xiaolian.amigo.ui.main.MainActivity;
 import com.xiaolian.amigo.ui.widget.BathroomOperationStatusView;
 import com.xiaolian.amigo.ui.widget.dialog.BathroomBookingDialog;
 import com.xiaolian.amigo.ui.widget.dialog.BookingCancelDialog;
@@ -48,8 +46,6 @@ import static com.xiaolian.amigo.ui.widget.BathroomOperationStatusView.IMG_RES_S
 import static com.xiaolian.amigo.ui.widget.BathroomOperationStatusView.IMG_RES_STATUS_FAIL;
 import static com.xiaolian.amigo.ui.widget.BathroomOperationStatusView.IMG_RES_STATUS_OPERATING;
 import static com.xiaolian.amigo.ui.widget.BathroomOperationStatusView.IMG_RES_STATUS_SUCCESS;
-import static com.xiaolian.amigo.util.Constant.ACCEPTED;
-import static com.xiaolian.amigo.util.Constant.EXPIRED;
 
 /**
  * 预约使用
@@ -77,6 +73,8 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
     @Inject
     IBookingPresenter<IBookingView> presenter;
 
+    private boolean isTimeOut = false ;   //  是否超时
+
 
     private long bookingId ;   //  预约id
     private long bathQueueId ;   //  排队id
@@ -99,22 +97,27 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
      */
     public void initData(){
         if (bookingId > 0){
-            presenter.query(bookingId+"" , false ,0);
+            presenter.query(bookingId+"" , false ,0 , true);
         }else{
             if (bathQueueId > 0){
-                presenter.queryQueueId(bathQueueId);
+                presenter.queryQueueId(bathQueueId , false);
             }
         }
     }
+
+
+
+
+
 
     /**
      * 初始化失约提示,有失约记录时才显示失约提示
      */
     private void initTopTip(){
         if (bookingId > 0 &&missedTimes >0  ){
-            setTopTip();
+            if (tvBookingTip != null) setTopTip();
         }else{
-            tvBookingTip.setVisibility(GONE);
+            if (tvBookingTip != null) tvBookingTip.setVisibility(GONE);
         }
     }
 
@@ -210,8 +213,10 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
                 0, tipSpan2.length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         builder.append(tipSpan2);
-        tvBookingTip.setText(builder);
-        tvBookingTip.setVisibility(View.VISIBLE);
+        if (tvBookingTip != null) {
+            tvBookingTip.setText(builder);
+            tvBookingTip.setVisibility(View.VISIBLE);
+        }
     }
 
 
@@ -363,11 +368,11 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
 
     @Override
     public void bookingSuccess(BathBookingRespDTO data) {
+        isTimeOut = false ;
         setTip(data.getType());
         deviceNo = data.getDeviceNo()+"" ;
         statusView.setLeftImageResource(IMG_RES_STATUS_SUCCESS);
         statusView.setStatusText("预约成功");
-        presenter.cancelCountDown();
         btStartToUse.setVisibility(View.GONE);
         statusView.showCancelButton(() -> {
             cancelDialog(data.getId() , BOOKING_CANCEL);
@@ -377,12 +382,13 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
         statusView.getRightText().setText("取消");
         statusView.getRightText().setTextColor(getResources().getColor(R.color.colorDarkB ));
         presenter.countDownexpiredTime(data.getExpiredTime());
-        presenter.query(data.getId()+"" ,true , 10);
+        presenter.query(data.getId()+"" ,true , 10 , true);
     }
 
 
     @Override
     public void bookingCancel() {
+        isTimeOut = true ;
         statusView.setLeftImageResource(IMG_RES_STATUS_CANCEL);
         statusView.setStatusText("取消预约");
         statusView.hideCancelButton();
@@ -419,15 +425,6 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
         });
     }
 
-    @Override
-    public void setBookingCountDownTime(String time) {
-        TextView textView = statusView.getRightText();
-        if (textView != null){
-            textView.setVisibility(View.VISIBLE);
-            textView.setTextColor(getResources().getColor(R.color.colorFullRed));
-            textView.setText(time);
-        }
-    }
 
 
     @Override
@@ -438,7 +435,9 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
 
     @Override
     public void appointMentTimeOut(BathBookingRespDTO respDTO) {
-        setTip(respDTO.getType());
+        isTimeOut = true  ;
+        missedTimes++  ;
+        setTopTip();
         deviceNo = respDTO.getDeviceNo()+"" ;
         statusView.setLeftImageResource(IMG_RES_STATUS_FAIL);
         statusView.setStatusText(getString(R.string.preBookTimeOut));
@@ -451,7 +450,10 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
     }
 
     @Override
-    public void appointMentTimeOut() {
+    public void appointMentTimeOut(boolean isServer) {
+        if (!isServer) presenter.notifyExpired();
+        isTimeOut = true ;
+        missedTimes++  ;
         setTopTip();
         statusView.setLeftImageResource(IMG_RES_STATUS_FAIL);
         statusView.setStatusText(getString(R.string.preBookTimeOut));
@@ -536,6 +538,7 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
 
     @Override
     public void gotoUsing(long bathOrderId) {
+        isTimeOut = false ;
         presenter.cancelCountDown();
         startActivity(new Intent(this ,BathroomHeaterActivity.class)
         .putExtra(KEY_BATH_ORDER_ID , bathOrderId));
@@ -553,6 +556,10 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Log.e(TAG, "onBackPressed: " );
+        if (!isTimeOut){
+            startActivity(new Intent(this , MainActivity.class));
+        }else{
+            finishActivity();
+        }
     }
 }

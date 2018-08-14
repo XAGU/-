@@ -138,4 +138,12 @@ public interface IBathroomDataManager {
      */
     Observable<ApiResult<BooleanRespDTO>> cancelQueue(@Body SimpleReqDTO reqDTO);
 
+
+
+    /**
+     * 提醒服务器超时
+     * @return
+     */
+    Observable<ApiResult<BooleanRespDTO>> notyfyExpired();
+
 }

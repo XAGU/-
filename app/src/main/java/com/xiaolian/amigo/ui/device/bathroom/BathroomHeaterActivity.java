@@ -90,7 +90,7 @@ public class BathroomHeaterActivity extends BathroomBaseActivity implements IBat
             this.finish();
             return;
         }
-        presenter.queryBathroomOrder(orderId);
+        presenter.queryBathroomOrder(orderId , true);
 
     }
 

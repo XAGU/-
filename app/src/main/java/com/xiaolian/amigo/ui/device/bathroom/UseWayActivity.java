@@ -26,6 +26,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_BALANCE;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_BONUS_AMOUNT;
@@ -181,6 +182,11 @@ public abstract class UseWayActivity extends BathroomBaseActivity {
         initView();
     }
 
+
+    @OnClick(R.id.iv_back)
+    public void back(){
+        onBackPressed();
+    }
 
     protected void initIntent() {
         if (getIntent() != null) {

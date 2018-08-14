@@ -26,6 +26,7 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.bathroom.BathOrderCurrentRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathOrderPreconditionRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BuildingTrafficDTO;
+import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IChooseBathroomPresenter;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IChooseBathroomView;
 import com.xiaolian.amigo.ui.user.EditDormitoryActivity;
@@ -100,6 +101,8 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
     private long id;
     private String residenceName;
 
+
+    private boolean isShowDialog = true ;  //  是否显示动画dialog
     /**
      * 预付金额
      */
@@ -185,6 +188,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         findViewById(R.id.iv_back).setOnClickListener(v -> onBackPressed());
         recyclerView = findViewById(R.id.recyclerView);
         setBtnText("预约洗澡 (任意空浴室)", false);
+        isShowDialog = true ;
     }
 
 
@@ -197,10 +201,8 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
      * 获取帮助
      */
     private void help() {
-        isSelected = !isSelected;
-//            changeToBookingUse();
-//            metaBall.translation();
-        gotoShowerAddress();
+        new Intent(getApplicationContext(), WebActivity.class)
+                .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_HELP);
     }
 
     @OnClick({R.id.iv_help, R.id.tv_title})
@@ -290,6 +292,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
     }
 
 
+
     /**
      * 显示有设备提示的弹窗
      * @param deviceName
@@ -299,13 +302,19 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         BuildingTrafficDTO.FloorsBean floorsBean = new BuildingTrafficDTO.FloorsBean();
         floorsBean.setName(deviceName);
         floorsBean.setDeviceNo(deviceNo);
+
+        //  避免预约指定房间出现空闲几人的显示
+        floorsBean.setWaitCount(-1);
+        floorsBean.setAvailableCount(-1);
         showPopForDevice(floorsBean);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        presenter.precondition();
+
+        presenter.precondition(isShowDialog);
+        presenter.buildingTraffic(buildId);
     }
 
     @Override
@@ -628,6 +637,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
      * 重新预约时，自动帮用户选择
      */
     private void autoChoseBathroom(Intent data){
+        isShowDialog = false ;
         String deviceNo = data.getStringExtra(KEY_DEVICE_ACTIVITY_FOR_RESULT);
         if (TextUtils.isEmpty(deviceNo)){
             showPop();

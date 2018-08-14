@@ -54,10 +54,17 @@ public class BathroomHeartPresenter<V extends IBathroomHeartView> extends BasePr
     }
 
     @Override
-    public void queryBathroomOrder(Long id) {
+    public void queryBathroomOrder(Long id , boolean isShowDialog) {
         SimpleReqDTO simpleReqDTO  = new SimpleReqDTO();
         simpleReqDTO.setId(id);
         addObserver(bathroomDataManager.orderQuery(simpleReqDTO) , new NetworkObserver<ApiResult<BathOrderCurrentRespDTO>>(){
+
+            @Override
+            public void onStart() {
+                if (isShowDialog) {
+                    super.onStart();
+                }
+            }
 
             @Override
             public void onReady(ApiResult<BathOrderCurrentRespDTO> result) {
@@ -67,7 +74,7 @@ public class BathroomHeartPresenter<V extends IBathroomHeartView> extends BasePr
                         delay(3, new Action1<Long>() {
                             @Override
                             public void call(Long aLong) {
-                                queryBathroomOrder(id);
+                                queryBathroomOrder(id , false);
                             }
                         });
                     }else if (result.getData().getStatus() == ORDER_SETTLE){

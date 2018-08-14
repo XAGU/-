@@ -137,14 +137,15 @@
                 android:textColor="@color/colorDark6"
                 tool:visibility="visible"
                 android:visibility="gone"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:layout_marginBottom="21dp"/>
 
             <com.xiaolian.amigo.ui.widget.BathroomOperationStatusView
                 android:id="@+id/statusView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="21dp"
-                android:layout_marginTop="21dp" />
+                />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerView"

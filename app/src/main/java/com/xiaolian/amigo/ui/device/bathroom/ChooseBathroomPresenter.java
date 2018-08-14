@@ -48,7 +48,6 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
         implements IChooseBathroomPresenter<V> {
     private static final String TAG = ChooseBathroomPresenter.class.getSimpleName();
     private IBathroomDataManager bathroomDataManager;
-    private ISharedPreferencesHelp sharedPreferencesHelp ;
 
     private static int time = 0  ;
     @Inject
@@ -88,11 +87,13 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
 
 
     @Override
-    public void precondition() {
+    public void precondition(boolean isShowDialog) {
         addObserver(bathroomDataManager.getOrderPrecondition(),new NetworkObserver<ApiResult<BathOrderPreconditionRespDTO>>(){
             @Override
             public void onStart() {
-                getMvpView().showBathroomDialog();
+                if (isShowDialog) {
+                    getMvpView().showBathroomDialog();
+                }
             }
 
             @Override
@@ -212,10 +213,6 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
                            getMvpView().hideBathroomDialog();
                            clearTime();
                             getMvpView().startBooking(result.getData().getId());
-                       }else if (result.getData().getStatus() == EXPIRED) {
-                           getMvpView().hideBathroomDialog();
-                           clearTime();
-                           getMvpView().startBooking(result.getData().getId());
                        }else if (result.getData().getStatus() == OPENED){
                            getMvpView().hideBathroomDialog();
                            clearTime();
@@ -233,12 +230,15 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
                            }else{
                                getMvpView().hideBathroomDialog();
                                    clearTime();
-                                   precondition();
+                                   precondition(true);
                            }
                        }else if (result.getData().getStatus() == FAIL){
                            getMvpView().hideBathroomDialog();
                            clearTime();
                            getMvpView().onError("预约失败");
+                       }else{
+                           getMvpView().hideBathroomDialog();
+                           clearTime();
                        }
                  }else{
                      getMvpView().hideBathroomDialog();

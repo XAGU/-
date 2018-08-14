@@ -72,10 +72,10 @@ public class HomeSmallDelegate implements ItemViewDelegate<HomeAdaptor.ItemWrapp
                 String status = "";
                 switch (itemWrapper.getStatus()) {
                     case Constant.WAIT_STATUS:
-                        status = "等待洗浴";
+                        status = "正在排队";
                         break;
                     case Constant.TIMEOUT_STATUS:
-                        status = "预约超时";
+                        status = "等待洗浴";
                         break;
                     case Constant.USING_STATUS:
                         status = "正在洗浴";

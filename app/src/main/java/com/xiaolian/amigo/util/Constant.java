@@ -248,11 +248,11 @@ public final class Constant {
     /**
      * 上一笔订单状态
      */
-    public static final int WAIT_STATUS = 2 ;  // 等待洗浴
+    public static final int WAIT_STATUS = 2 ;  // 正在排队
 
-    public static final int TIMEOUT_STATUS = 5 ;  // 预约超时
+    public static final int TIMEOUT_STATUS = 3 ;  // 等待洗浴
 
-    public static final int USING_STATUS = 6 ; //  正在洗浴
+    public static final int USING_STATUS = 4 ; //  正在洗浴
 
 
     /**
