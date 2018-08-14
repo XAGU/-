@@ -135,6 +135,8 @@
                 android:layout_height="wrap_content"
                 tool:text="每月失约3次将无法预约，已失约2次"
                 android:textColor="@color/colorDark6"
+                tool:visibility="visible"
+                android:visibility="gone"
                 android:textSize="12sp" />
 
             <com.xiaolian.amigo.ui.widget.BathroomOperationStatusView

@@ -218,6 +218,11 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
         addObserver(bathroomDataManager.queueQuery(simpleReqDTO) , new NetworkObserver<ApiResult<BookingQueueProgressDTO>>(){
 
             @Override
+            public void onStart() {
+
+            }
+
+            @Override
             public void onReady(ApiResult<BookingQueueProgressDTO> result) {
                     if (result.getError() == null){
                         if (result.getData().getBathBookingId() == 0){

@@ -2,6 +2,7 @@ package com.xiaolian.amigo.ui.device.bathroom;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.util.ObjectsCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -58,6 +59,7 @@ import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_RESERVE
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomHeaterActivity.KEY_BATH_ORDER_ID;
 import static com.xiaolian.amigo.ui.device.bathroom.BookingActivity.KEY_BATHQUEUE_ID;
 import static com.xiaolian.amigo.ui.device.bathroom.BookingActivity.KEY_BOOKING_ID;
+import static com.xiaolian.amigo.ui.device.bathroom.BookingActivity.KEY_DEVICE_ACTIVITY_FOR_RESULT;
 import static com.xiaolian.amigo.util.Constant.AVAILABLE;
 import static com.xiaolian.amigo.util.Constant.BATH_USING;
 import static com.xiaolian.amigo.util.Constant.ERROR;
@@ -77,6 +79,8 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
     public static final String KEY_BUILDING_ID = "key_building_id";
     public static final String KEY_RESIDENCE_NAME = "key_residence_name";
     public static final int KEY_BOOKING_RESQCODE = 11 ;   //  booking 页面返回
+
+    public static final int KEY_BOOKING_RESULTCODE = 12 ;  //
     private static final String TAG = ChooseBathroomActivity.class.getSimpleName();
     @BindView(R.id.iv_back)
     ImageView ivBack;
@@ -181,6 +185,12 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         findViewById(R.id.iv_back).setOnClickListener(v -> onBackPressed());
         recyclerView = findViewById(R.id.recyclerView);
         setBtnText("预约洗澡 (任意空浴室)", false);
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(this ,ChooseBathroomActivity.class));
     }
 
     /**
@@ -601,4 +611,40 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
 
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case KEY_BOOKING_RESQCODE:
+                if (resultCode == KEY_BOOKING_RESULTCODE) {
+                    autoChoseBathroom(data);
+                }
+                break;
+        }
+    }
+
+    /**
+     * 重新预约时，自动帮用户选择
+     */
+    private void autoChoseBathroom(Intent data){
+        String deviceNo = data.getStringExtra(KEY_DEVICE_ACTIVITY_FOR_RESULT);
+        if (TextUtils.isEmpty(deviceNo)){
+            showPop();
+        }else{
+            if (bathGroups!= null && bathGroups.size() > 0){
+
+                 for (ChooseBathroomOuterAdapter.BathGroupWrapper bathGroupWrapper : bathGroups){
+                      for (ChooseBathroomAdapter.BathroomWrapper bathroomWrapper : bathGroupWrapper.getBathGroups()){
+                            if (ObjectsCompat.equals(deviceNo ,bathroomWrapper.getDeviceNo())){
+
+                            }
+
+                      }
+                 }
+            }
+//            showPopForDevice();
+        }
+
+    }
 }

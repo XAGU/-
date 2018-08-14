@@ -43,6 +43,7 @@ import static android.view.View.GONE;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_DEVICE_NO;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_ORDER_PRECONDITION;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomHeaterActivity.KEY_BATH_ORDER_ID;
+import static com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity.KEY_BOOKING_RESULTCODE;
 import static com.xiaolian.amigo.ui.widget.BathroomOperationStatusView.IMG_RES_STATUS_CANCEL;
 import static com.xiaolian.amigo.ui.widget.BathroomOperationStatusView.IMG_RES_STATUS_FAIL;
 import static com.xiaolian.amigo.ui.widget.BathroomOperationStatusView.IMG_RES_STATUS_OPERATING;
@@ -59,6 +60,8 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
 
     public  static final String KEY_BOOKING_ID = "BOOKING_ID" ;  //  预约id
     public  static final String KEY_BATHQUEUE_ID = "BATHQUEUE_ID" ; // 排队id
+
+    public static final String KEY_DEVICE_ACTIVITY_FOR_RESULT = "KEY_DEVICE_ACTIVITY_FOR_RESULT" ;
 
     public static final int QUEUE_CANCEL =  1 ;   //  排队取消
     public static final int BOOKING_CANCEL = 2 ;   //  预约取消
@@ -408,8 +411,10 @@ public class BookingActivity extends UseWayActivity implements IBookingView {
         rightOper.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                // todo
+                Intent intent = new Intent();
+                intent.putExtra(KEY_DEVICE_ACTIVITY_FOR_RESULT ,deviceNo);
+                BookingActivity.this.setResult(KEY_BOOKING_RESULTCODE,intent);
+                BookingActivity.this.finish();
             }
         });
     }

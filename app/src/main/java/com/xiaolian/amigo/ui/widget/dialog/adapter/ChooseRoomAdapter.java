@@ -68,7 +68,7 @@ public class ChooseRoomAdapter extends RecyclerView.Adapter<ChooseRoomAdapter.Ro
                 holder.bathroom_status.setText("[空闲："+floorsBean.getAvailableCount() + "间浴室]");
                 holder.bathroom_status.setTextColor(context.getResources().getColor(R.color.colorGreen));
                 holder.radioButton.setBackgroundResource(R.drawable.bathroom_radio_bg);
-            }else if (floorsBean.getWaitCount() > 0){
+            }else if (floorsBean.getWaitCount() >= 0){
                 holder.bathroom_status.setText("[排队："+floorsBean.getWaitCount() + "人]");
                 holder.bathroom_status.setTextColor(context.getResources().getColor(R.color.colorFullRed));
                 holder.radioButton.setBackgroundResource(R.drawable.bathroom_radio_color_bg);

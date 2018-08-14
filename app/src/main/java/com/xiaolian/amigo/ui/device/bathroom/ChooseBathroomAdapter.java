@@ -1,7 +1,6 @@
 package com.xiaolian.amigo.ui.device.bathroom;
 
 import android.content.Context;
-import android.support.v4.util.ObjectsCompat;
 import android.view.View;
 
 import com.xiaolian.amigo.R;
@@ -17,7 +16,6 @@ import static com.xiaolian.amigo.util.Constant.AVAILABLE;
 import static com.xiaolian.amigo.util.Constant.BATH_USING;
 import static com.xiaolian.amigo.util.Constant.ERROR;
 import static com.xiaolian.amigo.util.Constant.NONE;
-import static com.xiaolian.amigo.util.Constant.USING;
 
 /**
  * @author zcd
@@ -32,8 +30,6 @@ public class ChooseBathroomAdapter extends CommonAdapter<ChooseBathroomAdapter.B
         super(context, layoutId, datas);
         this.listener = listener;
     }
-
-
 
     @Override
     protected void convert(ViewHolder holder, BathroomWrapper itemWrapper, int position) {
