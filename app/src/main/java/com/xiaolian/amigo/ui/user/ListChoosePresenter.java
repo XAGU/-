@@ -262,7 +262,7 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
     }
 
     @Override
-    public void updateUser(long residenceId) {
+    public void updateUser(long residenceId, String activitySrc) {
         PersonalUpdateReqDTO reqDTO = new PersonalUpdateReqDTO();
         reqDTO.setResidenceId(residenceId);
         addObserver(userDataManager.updateUserInfo(reqDTO) , new NetworkObserver<ApiResult<EntireUserDTO>>(){
@@ -275,7 +275,11 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
                     user.setResidenceId(entireUserDTO.getResidenceId());
                     user.setResidenceName(entireUserDTO.getResidenceName());
                     userDataManager.setUser(user);
-                    getMvpView().backToEditProfileActivity(entireUserDTO.getResidenceName());
+                    if (Constant.COMPLETE_INFO_ACTIVITY_SRC.equals(activitySrc)) /*跳转回完善资料页面*/{
+                        getMvpView().backToCompeteInfoActivity(entireUserDTO.getResidenceName());
+                    } else if (Constant.USER_INFO_ACTIVITY_SRC.equals(activitySrc)) /*跳转到编辑个人信息页面*/{
+                        getMvpView().backToEditProfileActivity(entireUserDTO.getResidenceName());
+                    }
                 }else{
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }

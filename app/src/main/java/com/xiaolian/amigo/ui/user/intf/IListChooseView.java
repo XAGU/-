@@ -77,9 +77,14 @@ public interface IListChooseView extends IBaseView {
     void backToEditProfileActivity(String residenceName);
 
     /**
-     * 选择完洗澡地址，直接进入公共浴室界面
-     * @param dto
+     * 返回完善资料
      */
+    void backToCompeteInfoActivity(String residenceName);
+
+        /**
+         * 选择完洗澡地址，直接进入公共浴室界面
+         * @param dto
+         */
     void startBathroom(UserResidenceInListDTO dto);
 
     /**

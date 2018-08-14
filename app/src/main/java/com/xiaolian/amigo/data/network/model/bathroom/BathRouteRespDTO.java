@@ -1,6 +1,9 @@
 package com.xiaolian.amigo.data.network.model.bathroom;
 
-public class BathRouteRespDTO {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class BathRouteRespDTO implements Parcelable {
         /**
          * buildingId : 0
          * existHistory : false
@@ -17,6 +20,44 @@ public class BathRouteRespDTO {
         private long residenceId;   // 建筑id
         private int residenceType;  //位置类别：1、楼栋 2、楼层 3、宿舍房间/设备位置 4、公共浴室组
         private long  supplierId ;  // 设备商id
+
+    protected BathRouteRespDTO(Parcel in) {
+        buildingId = in.readLong();
+        existHistory = in.readByte() != 0;
+        isPubBath = in.readByte() != 0;
+        macAddress = in.readString();
+        residenceId = in.readLong();
+        residenceType = in.readInt();
+        supplierId = in.readLong();
+    }
+
+    public static final Creator<BathRouteRespDTO> CREATOR = new Creator<BathRouteRespDTO>() {
+        @Override
+        public BathRouteRespDTO createFromParcel(Parcel in) {
+            return new BathRouteRespDTO(in);
+        }
+
+        @Override
+        public BathRouteRespDTO[] newArray(int size) {
+            return new BathRouteRespDTO[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(buildingId);
+        dest.writeByte((byte) (existHistory ? 1 : 0));
+        dest.writeByte((byte) (isPubBath ? 1 : 0));
+        dest.writeString(macAddress);
+        dest.writeLong(residenceId);
+        dest.writeInt(residenceType);
+        dest.writeLong(supplierId);
+    }
 
     public boolean isPubBath() {
         return isPubBath;
@@ -81,4 +122,4 @@ public class BathRouteRespDTO {
         public void setResidenceType(int residenceType) {
             this.residenceType = residenceType;
         }
-    }
+}

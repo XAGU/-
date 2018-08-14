@@ -30,6 +30,7 @@ import com.xiaolian.amigo.ui.device.heater.HeaterActivity;
 import com.xiaolian.amigo.ui.main.MainActivity;
 import com.xiaolian.amigo.ui.repair.RepairApplyActivity;
 import com.xiaolian.amigo.ui.user.adaptor.ListChooseAdaptor;
+import com.xiaolian.amigo.ui.user.CompleteInfoActivity;
 import com.xiaolian.amigo.ui.user.intf.IListChoosePresenter;
 import com.xiaolian.amigo.ui.user.intf.IListChooseView;
 import com.xiaolian.amigo.ui.wallet.WithdrawalActivity;
@@ -342,7 +343,9 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                                 } else if (Constant.MAIN_ACTIVITY_SRC.equals(activitySrc)) {
 //                                presenter.bindDormitory(residenceBindId, items.get(position).getId(), isEditDormitory, activitySrc);
                                 } else if (Constant.USER_INFO_ACTIVITY_SRC.equals(activitySrc)) {
-                                    presenter.updateUser(items.get(position).getId());
+                                    presenter.updateUser(items.get(position).getId(), activitySrc);
+                                } else if (Constant.COMPLETE_INFO_ACTIVITY_SRC.equals(activitySrc)) {
+                                    presenter.updateUser(items.get(position).getId(), activitySrc);
                                 } else if (Constant.MAIN_ACTIVITY_BATHROOM_SRC.equals(activitySrc)) {
                                     presenter.recordBath(items.get(position).getId(), bathType, null);
                                 } else if (Constant.ADD_BATHROOM_SRC.equals(activitySrc)) {
@@ -539,6 +542,11 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
     @Override
     public void backToEditProfileActivity(String residenceName) {
         startActivity(this ,EditProfileActivity.class);
+        this.finish();
+    }
+
+    public void backToCompeteInfoActivity(String residenceName) {
+        startActivity(this ,CompleteInfoActivity.class);
         this.finish();
     }
 

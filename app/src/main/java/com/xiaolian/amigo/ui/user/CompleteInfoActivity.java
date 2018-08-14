@@ -1,13 +1,24 @@
 package com.xiaolian.amigo.ui.user;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.enumeration.Device;
+import com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity;
+import com.xiaolian.amigo.ui.user.ListChooseActivity;
+import com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity;
+import com.xiaolian.amigo.data.network.model.bathroom.BathRouteRespDTO;
 import com.xiaolian.amigo.ui.user.intf.ICompleteInfoPresenter;
 import com.xiaolian.amigo.ui.user.intf.ICompleteInfoView;
+import com.xiaolian.amigo.util.Constant;
 
 import javax.inject.Inject;
 
@@ -15,7 +26,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+/*该页面只针对公共浴室的设置，如果已经选择了普通洗澡地址，但未设置其他信息，不应该进到该页面*/
 public class CompleteInfoActivity extends UserBaseActivity implements ICompleteInfoView {
+
+    public static final String TAG = "CompleteInfoActivity";
+    public static final String KEY_BATHROUTERESPDTO = "key_bathRouteRespDTO";
 
     @Inject
     ICompleteInfoPresenter<ICompleteInfoView> presenter;
@@ -30,8 +45,22 @@ public class CompleteInfoActivity extends UserBaseActivity implements ICompleteI
     LinearLayout woman;
     @BindView(R.id.tv_add_dormitory)
     RelativeLayout tvAddDormitory;
+
+    @BindView(R.id.dormitory_address)
+    TextView dormitoryAddressTextView;
+
     @BindView(R.id.choose_bathroom)
     Button chooseBathroom;
+
+    ///性别，1：男，2：女，0或其他：未设置（和服务器端同步）
+    private  Integer sex;
+
+    ///宿舍地址信息
+    private  String dormitoryName;
+
+    ///上一个页面传递进来的值
+    private  BathRouteRespDTO bathRouteRespDTO;
+
 
     @Override
     protected void initView() {
@@ -39,6 +68,7 @@ public class CompleteInfoActivity extends UserBaseActivity implements ICompleteI
         getActivityComponent().inject(this);
         presenter.onAttach(this);
         setMainBackground(R.color.colorBackgroundGray);
+
     }
 
     @Override
@@ -52,11 +82,65 @@ public class CompleteInfoActivity extends UserBaseActivity implements ICompleteI
         return R.layout.activity_complete_info;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //配置用户的初始值
+        initialPersonalInfo();
 
+        //刷新页面
+        refreshCompleteInfoView();
+
+    }
 
     @OnClick(R.id.tv_add_dormitory)
     public void addDormitory() {
-//        startActivity(new Intent(this , ));
+        //跳转到选择宿舍页面
+        Log.d(TAG, "addDormitory: " + "跳转到选择宿舍列表页面");
+        Intent intent = new Intent(this, ListChooseActivity.class);
+        intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
+        intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION,
+                ListChooseActivity.ACTION_LIST_BUILDING);
+        intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_SRC_ACTIVITY, Constant.COMPLETE_INFO_ACTIVITY_SRC);
+        intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_DEVICE_TYPE, Device.HEATER.getType());
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.choose_bathroom)
+    public void chooseBathroom() {
+        //跳转到选择洗澡地址页面，如果设置完成则跳转到洗澡页面
+        //先判断性别、宿舍是否已经设置成功，必须要先设置性别和宿舍
+        if (sex == null || (sex != 1 && sex != 2)) /*未设置性别，提示先设置性别*/{
+            //弹框提示设置性别
+            Toast toast = Toast.makeText(this, "请先设置你的性别哦！", Toast.LENGTH_SHORT);
+            toast.show();
+            return;
+        }
+        if (dormitoryName == null || dormitoryName.isEmpty()) /*未设置宿舍地址信息*/{
+            //弹框提示设置宿舍信息
+            Toast toast = Toast.makeText(this, "请先设置你的宿舍信息哦！", Toast.LENGTH_SHORT);
+            toast.show();
+            return;
+        }
+        presenter.updateSex(sex); //更新个人性别，异步操作，有可能会失败
+
+        if (bathRouteRespDTO!=null && bathRouteRespDTO.isExistHistory()) /*未设置洗澡地址信息*/ {
+            Log.d(TAG, "chooseBathroom: " + "跳转到选择洗澡地址页面");
+            Intent intent = new Intent(this, ListChooseActivity.class);
+            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
+            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION,
+                    ListChooseActivity.ACTION_LIST_BUILDING);
+            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_SRC_ACTIVITY, Constant.MAIN_ACTIVITY_BATHROOM_SRC);
+            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_DEVICE_TYPE, Device.HEATER.getType());
+            startActivity(intent);
+        } else if (bathRouteRespDTO!=null)/*跳转到公共浴室页面*/{
+            Intent intent = new Intent(this, ChooseBathroomActivity.class)
+                    .putExtra(ChooseBathroomActivity.KEY_BUILDING_ID, bathRouteRespDTO.getBuildingId())
+                    .putExtra(ChooseBathroomActivity.KEY_RESIDENCE_TYPE, bathRouteRespDTO.getResidenceType())
+                    .putExtra(ChooseBathroomActivity.KEY_RESIDENCE_ID, bathRouteRespDTO.getResidenceId());
+            startActivity(intent);
+            Log.d(TAG, "chooseBathroom: " + "跳转到洗澡页面");
+        }
     }
 
     @Override
@@ -68,13 +152,71 @@ public class CompleteInfoActivity extends UserBaseActivity implements ICompleteI
 
     @OnClick(R.id.woman)
     public void choseWoman(){
+        sex = 2;
         radioMan.setChecked(false);
         radioWoman.setChecked(true);
     }
 
     @OnClick(R.id.man)
     public void choseMan(){
+        sex = 1;
         radioMan.setChecked(true);
         radioWoman.setChecked(false);
+    }
+
+    ///刷新页面
+    @Override
+    public void refreshCompleteInfoView() {
+        refreshSexStatus();
+        refreshDomitoryAddress();
+        refreshBathroomAddress();
+    }
+
+    private void refreshSexStatus() {
+        if (sex == null) {
+            return;
+        }
+        if (sex == 1) /*选中男*/{
+            radioMan.setChecked(true);
+            radioWoman.setChecked(false);
+        } else if (sex == 2)/*选中女*/ {
+            radioMan.setChecked(false);
+            radioWoman.setChecked(true);
+        } else /*都没有选中*/{
+            radioMan.setChecked(false);
+            radioWoman.setChecked(false);
+        }
+    }
+
+    private void refreshDomitoryAddress() {
+        if (dormitoryName != null && !dormitoryName.isEmpty()) /*设置了宿舍地址信息*/{
+            dormitoryAddressTextView.setText(dormitoryName);
+        } else {
+            dormitoryAddressTextView.setText("添加宿舍");
+        }
+    }
+
+    private void refreshBathroomAddress() {
+        if (bathRouteRespDTO!=null && bathRouteRespDTO.isExistHistory()) /*设置了洗澡地址信息*/{
+            chooseBathroom.setText("可以去洗澡啦");
+        } else {
+            chooseBathroom.setText("选择洗澡地址");
+        }
+    }
+
+    ///根据已有的值配置初始信息
+    private void initialPersonalInfo() {
+        if (presenter.getUserInfo() != null) {
+            sex = presenter.getUserInfo().getSex();
+            dormitoryName = presenter.getUserInfo().getResidenceName();
+        }
+        initIntent();
+    }
+
+    ///获取上个页面传递进来的值
+    protected void initIntent() {
+        if (getIntent() != null) /*由上一个页面带进来的值*/{
+            bathRouteRespDTO = getIntent().getParcelableExtra(KEY_BATHROUTERESPDTO);
+        }
     }
 }

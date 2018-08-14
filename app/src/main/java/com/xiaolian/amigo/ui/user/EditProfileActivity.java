@@ -25,6 +25,8 @@ import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import lombok.Data;
 
+import static com.xiaolian.amigo.util.Constant.USER_INFO_ACTIVITY_SRC;
+
 /**
  * 编辑个人信息Activity
  *
@@ -190,7 +192,7 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
                 intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
                 intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION,
                         ListChooseActivity.ACTION_LIST_BUILDING);
-                intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_SRC_ACTIVITY, Constant.USER_INFO_ACTIVITY_SRC);
+                intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_SRC_ACTIVITY, USER_INFO_ACTIVITY_SRC);
                 intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_DEVICE_TYPE, Device.HEATER.getType());
                 startActivity(intent);
                 break;

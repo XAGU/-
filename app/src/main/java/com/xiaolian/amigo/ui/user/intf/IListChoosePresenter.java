@@ -88,7 +88,7 @@ public interface IListChoosePresenter<V extends IListChooseView> extends IBasePr
      * 更新宿舍信息
      * @param residenceId  位置id
      */
-    void updateUser(long residenceId);
+    public void updateUser(long residenceId, String activitySrc);
 
 
 

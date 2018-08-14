@@ -152,6 +152,11 @@ public interface IMainView extends IBaseView {
      */
     void choseBathroomAddress();
 
+    /**
+     * 洗澡地址为空时，跳转到配置用户性别、宿舍洗澡地址信息页面
+     */
+    void gotoCompleteInfoActivity(BathRouteRespDTO dto);
+
 
     /**
      * 显示上一洗澡订单状态

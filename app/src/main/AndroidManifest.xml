@@ -639,6 +639,7 @@
         <activity android:name=".ui.user.CompleteInfoActivity"
             android:exported="true"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar">
 
             <intent-filter>

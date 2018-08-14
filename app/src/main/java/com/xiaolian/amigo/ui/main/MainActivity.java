@@ -49,6 +49,7 @@ import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
 import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.ui.device.DeviceConstant;
 import com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity;
+import com.xiaolian.amigo.ui.user.CompleteInfoActivity;
 import com.xiaolian.amigo.ui.device.bathroom.BathroomActivity;
 import com.xiaolian.amigo.ui.device.bathroom.BookingActivity;
 import com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity;
@@ -1218,6 +1219,13 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         });
         availabilityDialog.show();
 //        startActivity(new Intent(this , ListChooseActivity.class));
+    }
+
+    @Override
+    public void gotoCompleteInfoActivity(BathRouteRespDTO dto) {
+        //跳转到配置信息页面
+        startActivity(new Intent(this, CompleteInfoActivity.class)
+                .putExtra(CompleteInfoActivity.KEY_BATHROUTERESPDTO ,dto));
     }
 
     @Override
