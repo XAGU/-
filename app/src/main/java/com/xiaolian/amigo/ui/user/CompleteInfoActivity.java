@@ -9,6 +9,7 @@ import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.text.TextUtils;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
@@ -115,7 +116,8 @@ public class CompleteInfoActivity extends UserBaseActivity implements ICompleteI
             toast.show();
             return;
         }
-        if (dormitoryName == null || dormitoryName.isEmpty()) /*未设置宿舍地址信息*/{
+
+        if (TextUtils.isEmpty(dormitoryName)) /*未设置宿舍地址信息*/{
             //弹框提示设置宿舍信息
             Toast toast = Toast.makeText(this, "请先设置你的宿舍信息哦！", Toast.LENGTH_SHORT);
             toast.show();
@@ -188,7 +190,7 @@ public class CompleteInfoActivity extends UserBaseActivity implements ICompleteI
     }
 
     private void refreshDomitoryAddress() {
-        if (dormitoryName != null && !dormitoryName.isEmpty()) /*设置了宿舍地址信息*/{
+        if (TextUtils.isEmpty(dormitoryName)) /*设置了宿舍地址信息*/{
             dormitoryAddressTextView.setText(dormitoryName);
         } else {
             dormitoryAddressTextView.setText("添加宿舍");
