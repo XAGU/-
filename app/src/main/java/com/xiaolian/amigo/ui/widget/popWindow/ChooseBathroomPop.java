@@ -118,7 +118,6 @@ public class ChooseBathroomPop  extends PopupWindow{
             floorsBeans.add(floorsBean);
         }
         this.floorsBean = floorsBean ;
-        Log.e(TAG, "setData: " + floorsBean.getDeviceNo() );
         button.setBackgroundResource(R.color.colorGreen);
         if (adapter != null ) adapter.notifyDataSetChanged();
 

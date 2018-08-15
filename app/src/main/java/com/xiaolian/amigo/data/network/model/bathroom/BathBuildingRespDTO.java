@@ -158,8 +158,8 @@ public class BathBuildingRespDTO {
                      * yaxis : 0
                      */
 
-                    private int deviceNo;
-                    private int id;
+                    private long deviceNo;
+                    private long id;
                     private String name;
                     private int status;
                     private int xaxis;
@@ -203,19 +203,19 @@ public class BathBuildingRespDTO {
                         this.bottom = bottom;
                     }
 
-                    public int getDeviceNo() {
+                    public long getDeviceNo() {
                         return deviceNo;
                     }
 
-                    public void setDeviceNo(int deviceNo) {
+                    public void setDeviceNo(long deviceNo) {
                         this.deviceNo = deviceNo;
                     }
 
-                    public int getId() {
+                    public long getId() {
                         return id;
                     }
 
-                    public void setId(int id) {
+                    public void setId(long id) {
                         this.id = id;
                     }
 

@@ -28,6 +28,7 @@ import android.view.animation.DecelerateInterpolator;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.bathroom.BathBuildingRespDTO;
+import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.ScreenUtils;
 
 import java.util.ArrayList;
@@ -48,6 +49,7 @@ public class AutoBathroom extends View {
 
     Paint paint = new Paint();
 
+    private Context context ;
 
     private List<BathBuildingRespDTO.FloorsBean> floorsBeanList ;
 
@@ -236,6 +238,8 @@ public class AutoBathroom extends View {
      */
     private BathroomClick bathroomClick ;
 
+    private static BathBuildingRespDTO.FloorsBean.GroupsBean.BathRoomsBean  bathRoomsBean ;
+
     public void setBathroomClick(BathroomClick bathroomClick) {
         this.bathroomClick = bathroomClick;
     }
@@ -300,7 +304,7 @@ public class AutoBathroom extends View {
      */
     private Rect getTextWidth (BathBuildingRespDTO.FloorsBean.GroupsBean groupsBean){
         Rect rect = new Rect();
-        textPaint.getTextBounds(groupsBean.getDisplayName() ,0 ,groupsBean.getGroupName().length() ,rect);
+        textPaint.getTextBounds(groupsBean.getDisplayName() ,0 ,groupsBean.getDisplayName().length() ,rect);
         return  rect;
     }
 
@@ -370,6 +374,7 @@ public class AutoBathroom extends View {
     }
 
     private void init(Context context) {
+        this.context = context ;
         marginTop = ScreenUtils.dpToPx(context ,10);
         BathroomMin = ScreenUtils.dpToPx(context ,15)  ;
 
@@ -404,7 +409,6 @@ public class AutoBathroom extends View {
         screenWidth = displayMetrics.widthPixels;
         screentHeight = displayMetrics.heightPixels;
 
-        textPaint = new TextPaint();
         textPaint = new TextPaint();
         textPaint.setAntiAlias(true);
         textPaint.setColor(Color.BLACK);
@@ -501,33 +505,37 @@ public class AutoBathroom extends View {
      * @param top
      * @param
      */
-    private void drawRect(Canvas canvas , float left , float top  , String text , BathBuildingRespDTO.FloorsBean.GroupsBean.BathRoomsBean bathRoomsBean , float scaleX){
+    private void drawRect(Canvas canvas , float left , float top  , String text , BathBuildingRespDTO.FloorsBean.GroupsBean.BathRoomsBean room , float scaleX){
         Path path = new Path();
-
-        switch (bathRoomsBean.getStatus()){
+        float radius = ScreenUtils.dpToPx(context ,3);
+        switch (room.getStatus()){
             case BATH_USING:
-                path.addRoundRect(new RectF(left , top ,left + BathroomMin * scaleX , top + BathroomMin* scaleX ) , 5 , 5  , Path.Direction.CW);
+                path.addRoundRect(new RectF(left , top ,left + BathroomMin * scaleX , top + BathroomMin* scaleX ) , radius, radius , Path.Direction.CW);
                 canvas.drawPath(path ,paintUsing);
                 break;
             case AVAILABLE:
-                path.addRoundRect(new RectF(left , top ,left + BathroomMin * scaleX , top + BathroomMin* scaleX ) , 5 , 5  , Path.Direction.CW);
+                path.addRoundRect(new RectF(left , top ,left + BathroomMin * scaleX , top + BathroomMin* scaleX ) , radius, radius, Path.Direction.CW);
                 canvas.drawPath(path ,paintCanUse);
                 break;
             case BATH_BOOKED:
-                path.addRoundRect(new RectF(left , top ,left + BathroomMin * scaleX , top + BathroomMin* scaleX ) , 5 , 5  , Path.Direction.CW);
+                path.addRoundRect(new RectF(left , top ,left + BathroomMin * scaleX , top + BathroomMin* scaleX ) , radius, radius  , Path.Direction.CW);
                 canvas.drawPath(path ,paintBooked);
                 break;
             case BATH_CHOSE:
-                path.addRoundRect(new RectF(left , top ,left + BathroomMin * scaleX , top + BathroomMin* scaleX ) , 5 , 5  , Path.Direction.CW);
+                path.addRoundRect(new RectF(left , top ,left + BathroomMin * scaleX , top + BathroomMin* scaleX ) , radius , radius  , Path.Direction.CW);
                 canvas.drawPath(path ,paintChose);
                 break;
             }
-        bathRoomsBean.setLeft(left);
-        bathRoomsBean.setTop(top);
-        bathRoomsBean.setRight((left + BathroomMin * scaleX));
-        bathRoomsBean.setBottom((top + BathroomMin * scaleX));
-        if (isAddName) {
-            updataFloorBeans.add(bathRoomsBean);
+        room.setLeft(left);
+        room.setTop(top);
+        room.setRight((left + BathroomMin * scaleX));
+        room.setBottom((top + BathroomMin * scaleX));
+        if ( bathRoomsBean != null && room.getDeviceNo() == bathRoomsBean.getDeviceNo()){
+            room.setStatus(Constant.BATH_CHOSE);
+            Log.e(TAG, "drawRect: "  + bathRoomsBean.getDeviceNo() );
+        }
+        if (updataFloorBeans.indexOf(room) == -1) {
+            updataFloorBeans.add(room);
         }
 
 
@@ -576,13 +584,13 @@ public class AutoBathroom extends View {
                         if (isAddName) {
                             roomsBean.setName(groupsBean.getDisplayName() + roomsBean.getName() + "房浴室");
                         }
-                        drawRect(canvas, baseBathroomRectWidth + (roomsBean.getXaxis() - 1) * (BathroomMin + borderBathroom) * scaleX,
+                            drawRect(canvas, baseBathroomRectWidth + (roomsBean.getXaxis() - 1) * (BathroomMin + borderBathroom) * scaleX,
                                 baseHeight + (roomsBean.getYaxis() - 1) * (BathroomMin + borderBathroom) * scaleY
                                 , roomsBean.getId() + "" , roomsBean , scaleX);
 
 
                     }
-
+                    Log.e(TAG, "drawSeat: " + groupsBean.getWidth() * scaleX );
                     drawGruopsName(canvas, baseWidth , baseHeight + floorsBean.getHeight() * scaleY, groupsBean.getDisplayName(), groupsBean.getWidth() * scaleX);
                     //  每列的开头位置
 //                    baseWidth += (groupsBean.getWidth() + borderGroups ) * scaleX ;
@@ -595,7 +603,6 @@ public class AutoBathroom extends View {
 
                 if (i != floorsBeanList.size() - 1) {
                     baseHeight += (floorsBean.getHeight() + borderfloor) * scaleY;
-                    
                 }
                 baseWidth = translateX ;
             }
@@ -603,9 +610,10 @@ public class AutoBathroom extends View {
             }
 
             if (bathRoomsBeanList!= null && bathRoomsBeanList.size() > 0){
-               for (BathBuildingRespDTO.FloorsBean.GroupsBean.BathRoomsBean bathRoomsBeen : bathRoomsBeanList) {
-                   drawRect(canvas, bathRoomsBeen.getLeft() , bathRoomsBeen.getTop()  ,bathRoomsBeen.getDeviceNo() + "", bathRoomsBeen , scaleX);
-               }
+                Log.e(TAG, "drawSeat: " + bathRoomsBeanList.size() );
+                for (BathBuildingRespDTO.FloorsBean.GroupsBean.BathRoomsBean bathRoomsBeen : bathRoomsBeanList) {
+                    drawRect(canvas, bathRoomsBeen.getLeft(), bathRoomsBeen.getTop(), bathRoomsBeen.getDeviceNo() + "", bathRoomsBeen, scaleX);
+                }
             }
         isAddName = false ;
 
@@ -620,11 +628,10 @@ public class AutoBathroom extends View {
          * @param text
          */
         private void drawGruopsName(Canvas canvas , float left , float top , String text , float rectWidth){
-            Paint.FontMetricsInt fontMetrics = textPaint.getFontMetricsInt();
             Rect rect = new Rect();
             textPaint.getTextBounds(text ,0 , text.length() , rect);
             int baseline = (int) top - (rect.bottom  - rect.top) /2 ;
-            canvas.drawText(text,left + rectWidth / 2  ,baseline , textPaint);
+            canvas.drawText(text,left + rectWidth / 2   ,baseline , textPaint);
         }
 
 
@@ -883,7 +890,7 @@ public class AutoBathroom extends View {
             isOnClick = true;
             int x = (int) e.getX();
             int y = (int) e.getY();
-
+            Log.e(TAG, "onSingleTapConfirmed: " + x + "   " + y );
             if (bathRoomsBeanList != null && bathRoomsBeanList.size() > 0){
                 bathRoomsBeanList.clear();
             }
@@ -891,16 +898,14 @@ public class AutoBathroom extends View {
                 for (BathBuildingRespDTO.FloorsBean.GroupsBean.BathRoomsBean roomsBean : updataFloorBeans) {
                     if (x > roomsBean.getLeft() && x < roomsBean.getRight() &&
                             y > roomsBean.getTop() && y < roomsBean.getBottom()) {
-
                         if (roomsBean.getStatus() == AVAILABLE) {
-                            int position = updataFloorBeans.indexOf(roomsBean);
+                            bathRoomsBean = roomsBean ;
                             roomsBean.setStatus(BATH_CHOSE);
-                            bathRoomsBeanList.add(roomsBean);
-                            updataFloorBeans.set(position ,roomsBean);
                             if (bathroomClick != null) bathroomClick.BathroomClick( roomsBean);
-                        } else if (roomsBean.getStatus() == BATH_CHOSE) {
-                            roomsBean.setStatus(AVAILABLE);
                             bathRoomsBeanList.add(roomsBean);
+                        } else if (roomsBean.getStatus() == BATH_CHOSE) {
+                            bathRoomsBean = null ;
+                            roomsBean.setStatus(AVAILABLE);
                         }
                     }
                 }
