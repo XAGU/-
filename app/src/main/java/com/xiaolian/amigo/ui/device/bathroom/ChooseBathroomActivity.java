@@ -49,9 +49,7 @@ import static com.xiaolian.amigo.ui.device.bathroom.BathroomHeaterActivity.KEY_B
 import static com.xiaolian.amigo.ui.device.bathroom.BookingActivity.KEY_BATHQUEUE_ID;
 import static com.xiaolian.amigo.ui.device.bathroom.BookingActivity.KEY_BOOKING_ID;
 import static com.xiaolian.amigo.ui.device.bathroom.BookingActivity.KEY_DEVICE_ACTIVITY_FOR_RESULT;
-import static com.xiaolian.amigo.util.Constant.AVAILABLE;
-import static com.xiaolian.amigo.util.Constant.BATH_USING;
-import static com.xiaolian.amigo.util.Constant.ERROR;
+import com.xiaolian.amigo.data.network.model.bathroom.BathBuildingRespDTO.FloorsBean.GroupsBean;
 
 /**
  * 选择浴室
@@ -140,7 +138,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
      */
     private ChooseBathroomPop pop;
 
-    private List<BathBuildingRespDTO.FloorsBean> floorsBeans;
+    private List<BathBuildingRespDTO.FloorsBean> floorsBeans = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -222,7 +220,80 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
     }
 
     private void initRecyclerView() {
-//        setMockData(bathGroups);
+
+        List<BathBuildingRespDTO.FloorsBean.GroupsBean> groupsBeans = new ArrayList<>();
+
+        List<GroupsBean.BathRoomsBean> bathRoomsBeans = new ArrayList<>();
+
+        List<GroupsBean.BathRoomsBean> bathRoomsBeans1 = new ArrayList<>();
+        
+        BathBuildingRespDTO.FloorsBean.GroupsBean.BathRoomsBean bathRoomsBean1 = new BathBuildingRespDTO.FloorsBean.GroupsBean.BathRoomsBean();
+        bathRoomsBean1.setId(11111);
+        bathRoomsBean1.setXaxis(1);
+        bathRoomsBean1.setYaxis(1);
+        bathRoomsBean1.setStatus(2);
+        bathRoomsBeans.add(bathRoomsBean1);
+
+        BathBuildingRespDTO.FloorsBean.GroupsBean.BathRoomsBean bathRoomsBean2 = new BathBuildingRespDTO.FloorsBean.GroupsBean.BathRoomsBean();
+        bathRoomsBean2.setId(2222);
+        bathRoomsBean2.setXaxis(1);
+        bathRoomsBean2.setYaxis(2);
+        bathRoomsBean2.setStatus(2);
+        bathRoomsBeans.add(bathRoomsBean2);
+
+        BathBuildingRespDTO.FloorsBean.GroupsBean.BathRoomsBean bathRoomsBean7 = new BathBuildingRespDTO.FloorsBean.GroupsBean.BathRoomsBean();
+        bathRoomsBean7.setId(2222);
+        bathRoomsBean7.setXaxis(1);
+        bathRoomsBean7.setYaxis(2);
+        bathRoomsBean7.setStatus(1);
+        bathRoomsBeans.add(bathRoomsBean7);
+
+        BathBuildingRespDTO.FloorsBean.GroupsBean.BathRoomsBean bathRoomsBean4 = new BathBuildingRespDTO.FloorsBean.GroupsBean.BathRoomsBean();
+        bathRoomsBean4.setId(33333);
+        bathRoomsBean4.setXaxis(2);
+        bathRoomsBean4.setYaxis(2);
+        bathRoomsBean4.setStatus(1);
+        bathRoomsBeans.add(bathRoomsBean4);
+
+
+        BathBuildingRespDTO.FloorsBean.GroupsBean.BathRoomsBean bathRoomsBean3 = new BathBuildingRespDTO.FloorsBean.GroupsBean.BathRoomsBean();
+        bathRoomsBean3.setId(2222);
+        bathRoomsBean3.setXaxis(1);
+        bathRoomsBean3.setYaxis(1);
+        bathRoomsBean3.setStatus(2);
+        bathRoomsBeans1.add(bathRoomsBean3);
+
+        BathBuildingRespDTO.FloorsBean.GroupsBean.BathRoomsBean bathRoomsBean5 = new BathBuildingRespDTO.FloorsBean.GroupsBean.BathRoomsBean();
+        bathRoomsBean5.setId(2222);
+        bathRoomsBean5.setXaxis(1);
+        bathRoomsBean5.setYaxis(5);
+        bathRoomsBean5.setStatus(1);
+        bathRoomsBeans1.add(bathRoomsBean5);
+
+        BathBuildingRespDTO.FloorsBean.GroupsBean.BathRoomsBean bathRoomsBean6 = new BathBuildingRespDTO.FloorsBean.GroupsBean.BathRoomsBean();
+        bathRoomsBean6.setId(2222);
+        bathRoomsBean6.setXaxis(2);
+        bathRoomsBean6.setYaxis(5);
+        bathRoomsBean6.setStatus(4);
+        bathRoomsBeans1.add(bathRoomsBean6);
+
+
+        GroupsBean groupsBean = new GroupsBean();
+        groupsBean.setBathRooms(bathRoomsBeans);
+        groupsBean.setDisplayName("A层1组101房间");
+        groupsBeans.add(groupsBean);
+
+
+        GroupsBean groupsBean1 = new GroupsBean();
+        groupsBean1.setBathRooms(bathRoomsBeans1);
+        groupsBean1.setDisplayName("A层2组102房间");
+        groupsBeans.add(groupsBean1);
+
+
+        BathBuildingRespDTO.FloorsBean floorsBean2 = new BathBuildingRespDTO.FloorsBean();
+        floorsBean2.setGroups(groupsBeans);
+        floorsBeans.add(floorsBean2);
+        autoBathroom.setData(floorsBeans);
 //        outerAdapter = new ChooseBathroomOuterAdapter(this, R.layout.item_choose_bathroom_outer, bathGroups,
 //                (groupPosition, bathroomPosition) -> {
 //                    onSuccess(groupPosition + " " + bathroomPosition);
@@ -279,8 +350,8 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
 //                return false;
 //            }
 //        });
-        presenter.getBathroomList(buildId);
-        showBathroomDialog();
+//        presenter.getBathroomList(buildId);
+//        showBathroomDialog();
     }
 
 
@@ -305,8 +376,8 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
     protected void onResume() {
         super.onResume();
 
-        presenter.precondition(isShowDialog);
-        presenter.buildingTraffic(buildId);
+//        presenter.precondition(isShowDialog);
+//        presenter.buildingTraffic(buildId);
     }
 
     @Override
@@ -406,72 +477,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
 
     }
 
-
-    private void setMockData(List<ChooseBathroomOuterAdapter.BathGroupWrapper> bathGroups) {
-        List<ChooseBathroomAdapter.BathroomWrapper> inner1 = new ArrayList<>();
-        inner1.add(new ChooseBathroomAdapter.BathroomWrapper("102", AVAILABLE));
-        inner1.add(new ChooseBathroomAdapter.BathroomWrapper("104", BATH_USING));
-        inner1.add(new ChooseBathroomAdapter.BathroomWrapper("105", ERROR));
-        inner1.add(new ChooseBathroomAdapter.BathroomWrapper("105", ERROR));
-        inner1.add(new ChooseBathroomAdapter.BathroomWrapper("105", ERROR));
-        inner1.add(new ChooseBathroomAdapter.BathroomWrapper("105", ERROR));
-        inner1.add(new ChooseBathroomAdapter.BathroomWrapper("105", ERROR));
-        bathGroups.add(new ChooseBathroomOuterAdapter.BathGroupWrapper(inner1, "一层A"));
-
-        List<ChooseBathroomAdapter.BathroomWrapper> inner2 = new ArrayList<>();
-        inner2.add(new ChooseBathroomAdapter.BathroomWrapper("102", ERROR));
-        inner2.add(new ChooseBathroomAdapter.BathroomWrapper("103", AVAILABLE));
-        inner2.add(new ChooseBathroomAdapter.BathroomWrapper("104", AVAILABLE));
-        inner2.add(new ChooseBathroomAdapter.BathroomWrapper("105", BATH_USING));
-        bathGroups.add(new ChooseBathroomOuterAdapter.BathGroupWrapper(inner2, "一层B"));
-
-        List<ChooseBathroomAdapter.BathroomWrapper> inner3 = new ArrayList<>();
-        inner3.add(new ChooseBathroomAdapter.BathroomWrapper("102", ERROR));
-        inner3.add(new ChooseBathroomAdapter.BathroomWrapper("103", AVAILABLE));
-        inner3.add(new ChooseBathroomAdapter.BathroomWrapper("104", AVAILABLE));
-        inner3.add(new ChooseBathroomAdapter.BathroomWrapper("105", BATH_USING));
-        bathGroups.add(new ChooseBathroomOuterAdapter.BathGroupWrapper(inner3, "一层A"));
-
-        List<ChooseBathroomAdapter.BathroomWrapper> inner4 = new ArrayList<>();
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("102", ERROR));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("103", AVAILABLE));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("104", AVAILABLE));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("105", BATH_USING));
-        bathGroups.add(new ChooseBathroomOuterAdapter.BathGroupWrapper(inner4, "一层A"));
-
-
-        List<ChooseBathroomAdapter.BathroomWrapper> inner5 = new ArrayList<>();
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("102", ERROR));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("103", AVAILABLE));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("104", AVAILABLE));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("105", BATH_USING));
-        bathGroups.add(new ChooseBathroomOuterAdapter.BathGroupWrapper(inner4, "一层A"));
-
-
-        List<ChooseBathroomAdapter.BathroomWrapper> inner6 = new ArrayList<>();
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("102", ERROR));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("103", AVAILABLE));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("104", AVAILABLE));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("105", BATH_USING));
-        bathGroups.add(new ChooseBathroomOuterAdapter.BathGroupWrapper(inner4, "一层A"));
-
-
-        List<ChooseBathroomAdapter.BathroomWrapper> inner7 = new ArrayList<>();
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("102", ERROR));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("103", AVAILABLE));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("104", AVAILABLE));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("105", BATH_USING));
-        bathGroups.add(new ChooseBathroomOuterAdapter.BathGroupWrapper(inner4, "一层A"));
-
-
-        List<ChooseBathroomAdapter.BathroomWrapper> inner8 = new ArrayList<>();
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("102", ERROR));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("103", AVAILABLE));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("104", AVAILABLE));
-        inner4.add(new ChooseBathroomAdapter.BathroomWrapper("105", BATH_USING));
-        bathGroups.add(new ChooseBathroomOuterAdapter.BathGroupWrapper(inner4, "一层A"));
-
-    }
+    
 
     @Override
     public void refreshBathroom(List<ChooseBathroomOuterAdapter.BathGroupWrapper> wrappers,

@@ -550,10 +550,13 @@ public class AutoBathroom extends View {
     private float zoom;
 
     void drawSeat(Canvas canvas) {
+
         zoom = getMatrixScaleX();
         if (zoom < 1){
             zoom = 1 ;
         }
+
+        textPaint.setTextSize(ScreenUtils.sp2px(context ,10) * zoom);
         long startTime = System.currentTimeMillis();
         float translateX = getTranslateX();
         float translateY = getTranslateY();
