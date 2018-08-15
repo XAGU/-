@@ -201,7 +201,6 @@ public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenser
         }
     }
 
-    @Data
     public static class DispenserWrapper {
         /**
          * 设备位置
@@ -217,6 +216,46 @@ public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenser
             this.location = device.getLocation();
             this.deviceGroup = device;
             this.residenceId = device.getResidenceId();
+        }
+
+        public String getLocation() {
+            return location;
+        }
+
+        public void setLocation(String location) {
+            this.location = location;
+        }
+
+        public ScanDeviceGroup getDeviceGroup() {
+            return deviceGroup;
+        }
+
+        public void setDeviceGroup(ScanDeviceGroup deviceGroup) {
+            this.deviceGroup = deviceGroup;
+        }
+
+        public boolean isExpanded() {
+            return expanded;
+        }
+
+        public void setExpanded(boolean expanded) {
+            this.expanded = expanded;
+        }
+
+        public boolean isFavor() {
+            return favor;
+        }
+
+        public void setFavor(boolean favor) {
+            this.favor = favor;
+        }
+
+        public Long getResidenceId() {
+            return residenceId;
+        }
+
+        public void setResidenceId(Long residenceId) {
+            this.residenceId = residenceId;
         }
     }
 

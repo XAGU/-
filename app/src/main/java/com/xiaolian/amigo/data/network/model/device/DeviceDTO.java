@@ -15,8 +15,57 @@ import lombok.Data;
  */
 @Data
 public class DeviceDTO implements Mapper<ScanDeviceGroup> {
+    public Integer getCategory() {
+        return category;
+    }
+
+    public void setCategory(Integer category) {
+        this.category = category;
+    }
+
+    public List<DeviceInListDTO> getDevices() {
+        return devices;
+    }
+
+    public void setDevices(List<DeviceInListDTO> devices) {
+        this.devices = devices;
+    }
+
+    public Boolean getFavor() {
+        return favor;
+    }
+
+    public void setFavor(Boolean favor) {
+        this.favor = favor;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public Long getResidenceId() {
+        return residenceId;
+    }
+
+    public void setResidenceId(Long residenceId) {
+        this.residenceId = residenceId;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
     /**
      * 1、普通饮水机 2、三合一饮水机
+
      **/
     private Integer category;
     private List<DeviceInListDTO> devices;

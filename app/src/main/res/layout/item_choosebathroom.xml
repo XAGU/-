@@ -14,8 +14,9 @@
         android:layout_alignParentLeft="true"
         android:id="@+id/text"
         android:textSize="14sp"
+        android:maxLength="16"
         android:textColor="@color/black"
-        tool:text = "一层223浴室"/>
+        tool:text = "一层223浴"/>
 
 
     <TextView
@@ -28,6 +29,7 @@
         android:textColor="@color/colorGreen"
         android:layout_marginLeft="5dp"
         tool:text=" [空闲：4间浴室]"
+        android:maxLines="1"
         />
 
     <!--android:background="@drawable/bathroom_radio_bg"-->

@@ -49,7 +49,7 @@ public class DeviceInfoAdapter extends CommonAdapter<DeviceInfoAdapter.DeviceInf
         }
     }
 
-    @Data
+
     public static final class DeviceInfoWrapper {
         private String leftText;
         private int leftTextColor = R.color.colorDark6;
@@ -67,6 +67,62 @@ public class DeviceInfoAdapter extends CommonAdapter<DeviceInfoAdapter.DeviceInf
             this.rightTextColor = rightTextColor;
             this.rightTextSizeSp = rightTextSizeSp;
             this.rightTextStyle = rightTextStyle;
+            this.hasArrow = hasArrow;
+        }
+
+        public String getLeftText() {
+            return leftText;
+        }
+
+        public void setLeftText(String leftText) {
+            this.leftText = leftText;
+        }
+
+        public int getLeftTextColor() {
+            return leftTextColor;
+        }
+
+        public void setLeftTextColor(int leftTextColor) {
+            this.leftTextColor = leftTextColor;
+        }
+
+        public String getRightText() {
+            return rightText;
+        }
+
+        public void setRightText(String rightText) {
+            this.rightText = rightText;
+        }
+
+        public int getRightTextColor() {
+            return rightTextColor;
+        }
+
+        public void setRightTextColor(int rightTextColor) {
+            this.rightTextColor = rightTextColor;
+        }
+
+        public int getRightTextSizeSp() {
+            return rightTextSizeSp;
+        }
+
+        public void setRightTextSizeSp(int rightTextSizeSp) {
+            this.rightTextSizeSp = rightTextSizeSp;
+        }
+
+        public int getRightTextStyle() {
+            return rightTextStyle;
+        }
+
+        public void setRightTextStyle(int rightTextStyle) {
+            this.rightTextStyle = rightTextStyle;
+        }
+
+        public boolean isHasArrow() {
+            return hasArrow;
+        }
+
+        public void setHasArrow(boolean hasArrow) {
             this.hasArrow = hasArrow;
         }
     }

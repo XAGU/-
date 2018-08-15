@@ -30,7 +30,6 @@ public class BuyCodeRecordAdapter extends CommonAdapter<BuyCodeRecordAdapter.Rec
         holder.setText(R.id.tv_right, recordWrapper.getRightText());
     }
 
-    @Data
     public static final class RecordWrapper {
         private String amount;
         private String leftBottomText;
@@ -41,6 +40,38 @@ public class BuyCodeRecordAdapter extends CommonAdapter<BuyCodeRecordAdapter.Rec
             this.amount = amount;
             this.leftBottomText = leftBottomText;
             this.createTime = createTime;
+            this.rightText = rightText;
+        }
+
+        public String getAmount() {
+            return amount;
+        }
+
+        public void setAmount(String amount) {
+            this.amount = amount;
+        }
+
+        public String getLeftBottomText() {
+            return leftBottomText;
+        }
+
+        public void setLeftBottomText(String leftBottomText) {
+            this.leftBottomText = leftBottomText;
+        }
+
+        public Long getCreateTime() {
+            return createTime;
+        }
+
+        public void setCreateTime(Long createTime) {
+            this.createTime = createTime;
+        }
+
+        public String getRightText() {
+            return rightText;
+        }
+
+        public void setRightText(String rightText) {
             this.rightText = rightText;
         }
     }

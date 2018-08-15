@@ -71,7 +71,7 @@ public class ChooseBathroomOuterAdapter extends CommonAdapter<ChooseBathroomOute
         holder.setText(R.id.tv_content, bathGroupWrapper.getName());
     }
 
-    @Data
+
     public static final class BathGroupWrapper {
         List<ChooseBathroomAdapter.BathroomWrapper> bathGroups;
         String name;
@@ -83,6 +83,30 @@ public class ChooseBathroomOuterAdapter extends CommonAdapter<ChooseBathroomOute
         public BathGroupWrapper(List<ChooseBathroomAdapter.BathroomWrapper> bathGroups, String name) {
             this.bathGroups = bathGroups;
             this.name = name;
+        }
+
+        public List<ChooseBathroomAdapter.BathroomWrapper> getBathGroups() {
+            return bathGroups;
+        }
+
+        public void setBathGroups(List<ChooseBathroomAdapter.BathroomWrapper> bathGroups) {
+            this.bathGroups = bathGroups;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public int getSpanWidth() {
+            return spanWidth;
+        }
+
+        public void setSpanWidth(int spanWidth) {
+            this.spanWidth = spanWidth;
         }
     }
 

@@ -126,36 +126,14 @@
             <View
                 android:layout_width="13dp"
                 android:layout_height="13dp"
-                android:background="@drawable/bg_bathroom_item_choosed" />
+                android:background="@drawable/bg_bathroom_item_booked" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
                 android:gravity="center"
-                android:text="选中"
-                android:textColor="@color/colorDark9"
-                android:textSize="12sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <View
-                android:layout_width="13dp"
-                android:layout_height="13dp"
-                android:background="@drawable/bg_bathroom_item_error" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:gravity="center"
-                android:text="异常"
+                android:text="已预约"
                 android:textColor="@color/colorDark9"
                 android:textSize="12sp" />
         </LinearLayout>
@@ -168,15 +146,20 @@
         android:layout_below="@id/ll_top"
         android:gravity="center">
 
-        <com.xiaolian.amigo.ui.widget.ZoomRecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:overScrollMode="never"
-            android:paddingEnd="21dp"
-            android:paddingStart="21dp" />
+        <!--<com.xiaolian.amigo.ui.widget.ZoomRecyclerView-->
+            <!--android:id="@+id/recyclerView"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:overScrollMode="never"-->
+            <!--android:paddingEnd="21dp"-->
+            <!--android:paddingStart="21dp" />-->
 
+
+        <com.xiaolian.amigo.ui.widget.AutoBathroom
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/auto_bathroom"/>
     </LinearLayout>
 
     <Button

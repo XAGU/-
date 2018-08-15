@@ -258,13 +258,16 @@ public final class Constant {
     /**
      * 预览图公共浴室状态
      */
-    public static final int NONE =  0 ;   // 没有
 
     public static final int AVAILABLE =  1 ;   //  可用
 
     public static final int BATH_USING = 2 ;   // 正在使用
 
-    public static final int ERROR = 3 ;    //  报错
+    public static final int ERROR = 3 ;    //  异常
+
+    public static final int BATH_BOOKED = 4 ; // 已预约
+
+    public static final int BATH_CHOSE = 5 ; // 已选择
 
 
     /**
@@ -309,4 +312,7 @@ public final class Constant {
     public static final int ORDER_USING = 1 ;  // 使用中
 
     public static final int ORDER_SETTLE = 2 ;   //  已结算
+
+
+
 }

@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.device.bathroom.intf;
 
+import com.xiaolian.amigo.data.network.model.bathroom.BathBuildingRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathOrderCurrentRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathOrderPreconditionRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BuildingTrafficDTO;
@@ -18,7 +19,11 @@ public interface IChooseBathroomView extends IBaseView {
                          List<Integer> methods, Integer missTimes);
 
 
-
+    /**
+     * 刷新浴室场景图
+     * @param respDTO
+     */
+    void refreshBathroom(BathBuildingRespDTO respDTO);
 
     /**
      * 显示动画

@@ -7,22 +7,15 @@ import com.xiaolian.amigo.data.network.model.bathroom.BathBookingReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathBookingRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathBookingStatusReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathBuildingRespDTO;
-import com.xiaolian.amigo.data.network.model.bathroom.BathFloorDTO;
-import com.xiaolian.amigo.data.network.model.bathroom.BathGroupDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathOrderCurrentRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathOrderPreconditionRespDTO;
-import com.xiaolian.amigo.data.network.model.bathroom.BathRoomDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BuildingTrafficDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.TryBookingResultRespDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
-import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IChooseBathroomPresenter;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IChooseBathroomView;
 import com.xiaolian.amigo.util.RxHelper;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -30,10 +23,8 @@ import rx.functions.Action1;
 
 import static com.xiaolian.amigo.util.Constant.ACCEPTED;
 import static com.xiaolian.amigo.util.Constant.BOOKING_SUCCESS;
-import static com.xiaolian.amigo.util.Constant.EXPIRED;
 import static com.xiaolian.amigo.util.Constant.FAIL;
 import static com.xiaolian.amigo.util.Constant.INIT;
-import static com.xiaolian.amigo.util.Constant.NONE;
 import static com.xiaolian.amigo.util.Constant.OPENED;
 import static com.xiaolian.amigo.util.Constant.ORDER_SETTLE;
 import static com.xiaolian.amigo.util.Constant.ORDER_USING;
@@ -71,8 +62,9 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
                     public void onReady(ApiResult<BathBuildingRespDTO> result) {
                         if (null == result.getError()) {
                             getMvpView().setTvTitle(result.getData().getBuildingName());
-                            getMvpView().refreshBathroom(convertFrom(result.getData()),
-                                    result.getData().getMethods(), result.getData().getMissTimes());
+//                            getMvpView().refreshBathroom(convertFrom(result.getData()),
+//                                    result.getData().getMethods(), result.getData().getMissTimes());
+                            getMvpView().refreshBathroom(result.getData());
                         } else {
                             getMvpView().onError(result.getError().getDisplayMessage());
                         }
@@ -271,47 +263,47 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
     }
 
 
-    private List<ChooseBathroomOuterAdapter.BathGroupWrapper> convertFrom(BathBuildingRespDTO bathBuildingRespDTO) {
-        List<ChooseBathroomOuterAdapter.BathGroupWrapper> bathGroupWrappers = new ArrayList<>();
-        for (BathFloorDTO floor : bathBuildingRespDTO.getFloors()) {
-            for (BathGroupDTO group : floor.getGroups()) {
-                int maxX = 0;
-                int maxY = 0;
-                for (BathRoomDTO room : group.getBathRooms()) {
-                    if (room.getXaxis() > maxX) {
-                        maxX = room.getXaxis();
-                    }
-                    if (room.getYaxis() > maxY) {
-                        maxY = room.getYaxis();
-                    }
-                }
-                ChooseBathroomOuterAdapter.BathGroupWrapper groupWrapper = new ChooseBathroomOuterAdapter.BathGroupWrapper();
-                List<ChooseBathroomAdapter.BathroomWrapper> bathroomWrappers = new ArrayList<>();
-                for (int i = 0; i < (maxX + 1) * (maxY + 1); i ++) {
-                    bathroomWrappers.add(new ChooseBathroomAdapter.BathroomWrapper("",
-                            NONE));
-                }
-
-                for (BathRoomDTO room : group.getBathRooms()) {
-                    bathroomWrappers.get(room.getYaxis() * maxX + room.getXaxis())
-                            .setId(room.getId());
-                    bathroomWrappers.get(room.getYaxis() * maxX + room.getXaxis())
-                            .setDeviceNo(room.getDeviceNo());
-//                    Log.e(TAG, "convertFrom: " + room.getDeviceNo());
-                    bathroomWrappers.get(room.getYaxis() * maxX + room.getXaxis())
-                            .setStatus(room.getStatus());
-                }
-
-                groupWrapper.setBathGroups(bathroomWrappers);
-                groupWrapper.setName(floor.getFloorName() + group.getDisplayName());
-                groupWrapper.setSpanWidth(maxX + 1);
-
-                bathGroupWrappers.add(groupWrapper);
-            }
-        }
-
-        return bathGroupWrappers;
-    }
+//    private List<ChooseBathroomOuterAdapter.BathGroupWrapper> convertFrom(BathBuildingRespDTO bathBuildingRespDTO) {
+//        List<ChooseBathroomOuterAdapter.BathGroupWrapper> bathGroupWrappers = new ArrayList<>();
+//        for (BathFloorDTO floor : bathBuildingRespDTO.getFloors()) {
+//            for (BathGroupDTO group : floor.getGroups()) {
+//                int maxX = 0;
+//                int maxY = 0;
+//                for (BathRoomDTO room : group.getBathRooms()) {
+//                    if (room.getXaxis() > maxX) {
+//                        maxX = room.getXaxis();
+//                    }
+//                    if (room.getYaxis() > maxY) {
+//                        maxY = room.getYaxis();
+//                    }
+//                }
+//                ChooseBathroomOuterAdapter.BathGroupWrapper groupWrapper = new ChooseBathroomOuterAdapter.BathGroupWrapper();
+//                List<ChooseBathroomAdapter.BathroomWrapper> bathroomWrappers = new ArrayList<>();
+//                for (int i = 0; i < (maxX + 1) * (maxY + 1); i ++) {
+//                    bathroomWrappers.add(new ChooseBathroomAdapter.BathroomWrapper("",
+//                            NONE));
+//                }
+//
+//                for (BathRoomDTO room : group.getBathRooms()) {
+//                    bathroomWrappers.get(room.getYaxis() * maxX + room.getXaxis())
+//                            .setId(room.getId());
+//                    bathroomWrappers.get(room.getYaxis() * maxX + room.getXaxis())
+//                            .setDeviceNo(room.getDeviceNo());
+////                    Log.e(TAG, "convertFrom: " + room.getDeviceNo());
+//                    bathroomWrappers.get(room.getYaxis() * maxX + room.getXaxis())
+//                            .setStatus(room.getStatus());
+//                }
+//
+//                groupWrapper.setBathGroups(bathroomWrappers);
+//                groupWrapper.setName(floor.getFloorName() + group.getDisplayName());
+//                groupWrapper.setSpanWidth(maxX + 1);
+//
+//                bathGroupWrappers.add(groupWrapper);
+//            }
+//        }
+//
+//        return bathGroupWrappers;
+//    }
 
 
     private void delay(int time ,  Action1<Long> action0 ){

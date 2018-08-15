@@ -8,7 +8,6 @@ import lombok.Data;
  * @author caidong
  * @date 17/10/16
  */
-@Data
 public class ScanDeviceGroup {
     /**
      * 1、普通饮水机 2、三合一饮水机
@@ -26,4 +25,52 @@ public class ScanDeviceGroup {
     private Long residenceId;
 
     private List<ScanDevice> water;
+
+    public Integer getCategory() {
+        return category;
+    }
+
+    public void setCategory(Integer category) {
+        this.category = category;
+    }
+
+    public Boolean getFavor() {
+        return favor;
+    }
+
+    public void setFavor(Boolean favor) {
+        this.favor = favor;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public Long getResidenceId() {
+        return residenceId;
+    }
+
+    public void setResidenceId(Long residenceId) {
+        this.residenceId = residenceId;
+    }
+
+    public List<ScanDevice> getWater() {
+        return water;
+    }
+
+    public void setWater(List<ScanDevice> water) {
+        this.water = water;
+    }
 }
