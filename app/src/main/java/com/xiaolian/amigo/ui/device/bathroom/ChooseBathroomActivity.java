@@ -2,6 +2,7 @@ package com.xiaolian.amigo.ui.device.bathroom;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.util.ObjectsCompat;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -191,8 +192,8 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
      * 获取帮助
      */
     private void help() {
-        new Intent(getApplicationContext(), WebActivity.class)
-                .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_HELP);
+       startActivity( new Intent(getApplicationContext(), WebActivity.class)
+                .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_HELP));
     }
 
     @OnClick({R.id.iv_help, R.id.tv_title})
@@ -221,34 +222,40 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
 
     private void initRecyclerView() {
 
-        List<BathBuildingRespDTO.FloorsBean.GroupsBean> groupsBeans = new ArrayList<>();
+//        test();
+        presenter.getBathroomList(buildId);
+        showBathroomDialog();
+    }
+
+    private void test() {
+        List<GroupsBean> groupsBeans = new ArrayList<>();
 
         List<GroupsBean.BathRoomsBean> bathRoomsBeans = new ArrayList<>();
 
         List<GroupsBean.BathRoomsBean> bathRoomsBeans1 = new ArrayList<>();
-        
-        BathBuildingRespDTO.FloorsBean.GroupsBean.BathRoomsBean bathRoomsBean1 = new BathBuildingRespDTO.FloorsBean.GroupsBean.BathRoomsBean();
+
+        GroupsBean.BathRoomsBean bathRoomsBean1 = new GroupsBean.BathRoomsBean();
         bathRoomsBean1.setId(11111);
         bathRoomsBean1.setXaxis(1);
         bathRoomsBean1.setYaxis(1);
         bathRoomsBean1.setStatus(2);
         bathRoomsBeans.add(bathRoomsBean1);
 
-        BathBuildingRespDTO.FloorsBean.GroupsBean.BathRoomsBean bathRoomsBean2 = new BathBuildingRespDTO.FloorsBean.GroupsBean.BathRoomsBean();
+        GroupsBean.BathRoomsBean bathRoomsBean2 = new GroupsBean.BathRoomsBean();
         bathRoomsBean2.setId(2222);
         bathRoomsBean2.setXaxis(1);
         bathRoomsBean2.setYaxis(2);
         bathRoomsBean2.setStatus(2);
         bathRoomsBeans.add(bathRoomsBean2);
 
-        BathBuildingRespDTO.FloorsBean.GroupsBean.BathRoomsBean bathRoomsBean7 = new BathBuildingRespDTO.FloorsBean.GroupsBean.BathRoomsBean();
+        GroupsBean.BathRoomsBean bathRoomsBean7 = new GroupsBean.BathRoomsBean();
         bathRoomsBean7.setId(2222);
         bathRoomsBean7.setXaxis(1);
         bathRoomsBean7.setYaxis(2);
         bathRoomsBean7.setStatus(1);
         bathRoomsBeans.add(bathRoomsBean7);
 
-        BathBuildingRespDTO.FloorsBean.GroupsBean.BathRoomsBean bathRoomsBean4 = new BathBuildingRespDTO.FloorsBean.GroupsBean.BathRoomsBean();
+        GroupsBean.BathRoomsBean bathRoomsBean4 = new GroupsBean.BathRoomsBean();
         bathRoomsBean4.setId(33333);
         bathRoomsBean4.setXaxis(2);
         bathRoomsBean4.setYaxis(2);
@@ -256,24 +263,24 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         bathRoomsBeans.add(bathRoomsBean4);
 
 
-        BathBuildingRespDTO.FloorsBean.GroupsBean.BathRoomsBean bathRoomsBean3 = new BathBuildingRespDTO.FloorsBean.GroupsBean.BathRoomsBean();
+        GroupsBean.BathRoomsBean bathRoomsBean3 = new GroupsBean.BathRoomsBean();
         bathRoomsBean3.setId(2222);
         bathRoomsBean3.setXaxis(1);
         bathRoomsBean3.setYaxis(1);
         bathRoomsBean3.setStatus(2);
         bathRoomsBeans1.add(bathRoomsBean3);
 
-        BathBuildingRespDTO.FloorsBean.GroupsBean.BathRoomsBean bathRoomsBean5 = new BathBuildingRespDTO.FloorsBean.GroupsBean.BathRoomsBean();
+        GroupsBean.BathRoomsBean bathRoomsBean5 = new GroupsBean.BathRoomsBean();
         bathRoomsBean5.setId(2222);
         bathRoomsBean5.setXaxis(1);
         bathRoomsBean5.setYaxis(5);
         bathRoomsBean5.setStatus(1);
         bathRoomsBeans1.add(bathRoomsBean5);
 
-        BathBuildingRespDTO.FloorsBean.GroupsBean.BathRoomsBean bathRoomsBean6 = new BathBuildingRespDTO.FloorsBean.GroupsBean.BathRoomsBean();
+        GroupsBean.BathRoomsBean bathRoomsBean6 = new GroupsBean.BathRoomsBean();
         bathRoomsBean6.setId(2222);
-        bathRoomsBean6.setXaxis(2);
-        bathRoomsBean6.setYaxis(5);
+        bathRoomsBean6.setXaxis(5);
+        bathRoomsBean6.setYaxis(2);
         bathRoomsBean6.setStatus(4);
         bathRoomsBeans1.add(bathRoomsBean6);
 
@@ -294,64 +301,6 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         floorsBean2.setGroups(groupsBeans);
         floorsBeans.add(floorsBean2);
         autoBathroom.setData(floorsBeans);
-//        outerAdapter = new ChooseBathroomOuterAdapter(this, R.layout.item_choose_bathroom_outer, bathGroups,
-//                (groupPosition, bathroomPosition) -> {
-//                    onSuccess(groupPosition + " " + bathroomPosition);
-//                    if (bathGroups.get(groupPosition).getBathGroups().get(bathroomPosition).getStatus()
-//                            != AVAILABLE) {
-//                        if (lastSelectedGroupPosition != -1 && lastSelectedRoomPosition != -1) {
-//                            bathGroups.get(lastSelectedGroupPosition).getBathGroups().get(lastSelectedRoomPosition).setSelected(false);
-//                        }
-//                        lastSelectedGroupPosition = -1;
-//                        lastSelectedRoomPosition = -1;
-//                        isSelected = false;
-//                    } else {
-//                        if (lastSelectedGroupPosition != -1 && lastSelectedRoomPosition != -1) {
-//                            bathGroups.get(lastSelectedGroupPosition).getBathGroups().get(lastSelectedRoomPosition).setSelected(false);
-//                        }
-//
-//                        deviceNo = bathGroups.get(groupPosition).getBathGroups().get(bathroomPosition).getDeviceNo();
-//                        bathGroups.get(groupPosition).getBathGroups().get(bathroomPosition).setSelected(true);
-//                        lastSelectedGroupPosition = groupPosition;
-//                        lastSelectedRoomPosition = bathroomPosition;
-//                        isSelected = true;
-//                        deviceName = bathGroups.get(groupPosition).getBathGroups().get(bathroomPosition).getId() + "号浴室" ;
-//                        showPop(deviceName , deviceNo);
-//                    }
-//                    outerAdapter.notifyDataSetChanged();
-//                });
-////        recyclerView.setLayoutManager(new LinearLayoutManager(this, OrientationHelper.HORIZONTAL, false));
-//        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) recyclerView.getLayoutParams();
-//        lp.gravity = Gravity.CENTER;
-//        recyclerView.setLayoutParams(lp);
-//        recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
-//        recyclerView.setAdapter(outerAdapter);
-//        recyclerView.setOnGestureListener(new ZoomRecyclerView.OnGestureListener() {
-//            @Override
-//            public boolean onScale(ScaleGestureDetector detector, float scaleFactor) {
-//                if (scaleFactor > 2
-//                        && !outerAdapter.isScaled()) {
-////
-//                    outerAdapter.setScaled(true);
-//                } else if (scaleFactor < 2
-//                        && outerAdapter.isScaled()) {
-//                    outerAdapter.setScaled(false);
-//                }
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onSingleTapConfirmed(MotionEvent e) {
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onDoubleTap(MotionEvent e) {
-//                return false;
-//            }
-//        });
-//        presenter.getBathroomList(buildId);
-//        showBathroomDialog();
     }
 
 
@@ -613,7 +562,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         if (TextUtils.isEmpty(deviceNo)) {
             showPop();
         } else {
-
+            autoShowDevice(deviceNo);
         }
 
     }
@@ -640,25 +589,35 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         if (TextUtils.isEmpty(deviceNo)) {
             showPop();
         } else {
-//            if (bathGroups!= null && bathGroups.size() > 0){
-//
-//                 for (ChooseBathroomOuterAdapter.BathGroupWrapper bathGroupWrapper : bathGroups){
-//                      for (ChooseBathroomAdapter.BathroomWrapper bathroomWrapper : bathGroupWrapper.getBathGroups()){
-//                            if (ObjectsCompat.equals(deviceNo ,bathroomWrapper.getDeviceNo())){
-//
-//                            }
-//
-//                      }
-//                 }
-//            }
+
+            autoShowDevice(deviceNo);
 //            showPopForDevice();
         }
 
     }
 
+    private void autoShowDevice(String deviceNo) {
+        if (floorsBeans!= null && floorsBeans.size() > 0){
+
+             for (BathBuildingRespDTO.FloorsBean floorsBean  : floorsBeans){
+                  for (GroupsBean groupsBean: floorsBean.getGroups()){
+
+                      for (GroupsBean.BathRoomsBean bathRoomsBean : groupsBean.getBathRooms()) {
+                          if (ObjectsCompat.equals(deviceNo, bathRoomsBean.getDeviceNo())) {
+                              this.deviceNo = bathRoomsBean.getDeviceNo() +"" ;
+                              showPop(bathRoomsBean.getName() , bathRoomsBean.getDeviceNo() +"");
+                          }
+                      }
+                  }
+             }
+        }
+    }
+
     @Override
     public void BathroomClick(BathBuildingRespDTO.FloorsBean.GroupsBean.BathRoomsBean bathRoomsBean) {
         showPop(bathRoomsBean.getName() , bathRoomsBean.getDeviceNo()+"");
+        this.deviceNo = bathRoomsBean.getDeviceNo()+"" ;
+
     }
 
     @Override

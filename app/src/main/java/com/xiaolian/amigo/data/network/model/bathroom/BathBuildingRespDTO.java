@@ -57,6 +57,25 @@ public class BathBuildingRespDTO {
             private String floorName;
             private java.util.List<GroupsBean> groups;
 
+            private float left ;   //  每层的左边坐标
+            private float bottom ;  //  每层的底部坐标
+
+            public float getLeft() {
+                return left;
+            }
+
+            public void setLeft(float left) {
+                this.left = left;
+            }
+
+            public float getBottom() {
+                return bottom;
+            }
+
+            public void setBottom(float bottom) {
+                this.bottom = bottom;
+            }
+
             private float height ;  //每层的高度  用于更好的计算位置坐标
 
             public float getHeight() {
@@ -96,9 +115,44 @@ public class BathBuildingRespDTO {
                 private String groupName;
                 private java.util.List<BathRoomsBean> bathRooms;
 
+                private float borderTextToBathroom ;  //  每组的底部坐标到浴室块的距离
+
+                private float left ;  //  每组的左边坐标
+
+                private float bottom ;  //  每组的底部坐标
+
                 private float width ;   //  每组的宽度  便于计算列的位置 ， 这个宽度有可能是房间矩形的宽度，也有可能是下面字体的宽，取最大值
 
                 private float rectWidth ;  //  每组矩形的宽度
+
+                private float  maxX ;  //  组的最大行数
+
+                private float maxY ;    //  组的最大列数
+
+
+                public float getBorderTextToBathroom() {
+                    return borderTextToBathroom;
+                }
+
+                public void setBorderTextToBathroom(float borderTextToBathroom) {
+                    this.borderTextToBathroom = borderTextToBathroom;
+                }
+
+                public float getLeft() {
+                    return left;
+                }
+
+                public void setLeft(float left) {
+                    this.left = left;
+                }
+
+                public float getBottom() {
+                    return bottom;
+                }
+
+                public void setBottom(float bottom) {
+                    this.bottom = bottom;
+                }
 
                 public float getRectWidth() {
                     return rectWidth;
@@ -146,6 +200,22 @@ public class BathBuildingRespDTO {
 
                 public void setBathRooms(List<BathRoomsBean> bathRooms) {
                     this.bathRooms = bathRooms;
+                }
+
+                public float getMaxX() {
+                    return maxX;
+                }
+
+                public void setMaxX(float maxX) {
+                    this.maxX = maxX;
+                }
+
+                public float getMaxY() {
+                    return maxY;
+                }
+
+                public void setMaxY(float maxY) {
+                    this.maxY = maxY;
                 }
 
                 public static class BathRoomsBean {
