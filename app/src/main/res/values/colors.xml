@@ -104,4 +104,6 @@
     <color name="color_blue">#6BABFB</color>
     <color name="color_red_woman">#ff8a33</color>
     <color name="color_bathroom_can_use">#ffd5d4</color>
+
+    <color name= "bathroom_stroke" >#fed5d5</color>
 </resources>

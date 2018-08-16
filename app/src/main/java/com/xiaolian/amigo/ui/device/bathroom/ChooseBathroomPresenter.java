@@ -1,5 +1,8 @@
 package com.xiaolian.amigo.ui.device.bathroom;
 
+import android.content.Context;
+import android.content.Intent;
+
 import com.xiaolian.amigo.data.enumeration.BathTradeType;
 import com.xiaolian.amigo.data.manager.intf.IBathroomDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
@@ -198,8 +201,15 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
         simpleReqDTO.setId(bookingId +"");
         addObserver(bathroomDataManager.query(simpleReqDTO) , new NetworkObserver<ApiResult<BathBookingRespDTO>>(){
 
+
+            @Override
+            public void onStart() {
+
+            }
+
             @Override
             public void onReady(ApiResult<BathBookingRespDTO> result) {
+
                  if (result.getError() == null){
                        if (result.getData().getStatus() == ACCEPTED){
                            getMvpView().hideBathroomDialog();

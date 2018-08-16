@@ -12,6 +12,8 @@ import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.text.Layout;
+import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -461,8 +463,10 @@ public class AutoBathroom extends View {
 //        setMeasuredDimension((int)(realWidth * getMatrixScaleX() ), (int)(realHeight * getMatrixScaleX()));
 
     }
-
+    float  Animzoom  ;
+    Paint strokePaint  ;
     private void init(Context context) {
+        Animzoom = getMatrixScaleX();
         this.context = context ;
         marginTop = ScreenUtils.dpToPx(context ,10);
         BathroomMin = ScreenUtils.dpToPx(context ,15)  ;
@@ -485,7 +489,7 @@ public class AutoBathroom extends View {
 
         borderfloor = ScreenUtils.dpToPxInt(context ,6) ;
 
-
+        paintStroke = ScreenUtils.dpToPx(context , 1 );
         updataFloorBeans = new ArrayList<>();
 
         displayMetrics = new DisplayMetrics();
@@ -513,10 +517,20 @@ public class AutoBathroom extends View {
 
 //        colorCanUse = context.getResources().getColor(R.color.color_bathroom_can_use);
         paintCanUse = new Paint();
-        paintCanUse.setStyle(Paint.Style.FILL_AND_STROKE);
+        paintCanUse.setStyle(Paint.Style.FILL);
         paintCanUse.setAntiAlias(true);
         paintCanUse.setStrokeWidth(paintStroke);
         paintCanUse.setColor(colorCanUse);
+
+        int clolorStroke = context.getResources().getColor(R.color.bathroom_stroke);
+
+        strokePaint = new Paint();
+        strokePaint.setStyle(Paint.Style.STROKE);
+        strokePaint.setAntiAlias(true);
+        strokePaint.setStrokeWidth(paintStroke * zoom);
+        strokePaint.setColor(clolorStroke);
+
+
 
         paintUsing = new Paint();
         paintUsing.setStyle(Paint.Style.FILL);
@@ -634,6 +648,7 @@ public class AutoBathroom extends View {
             case AVAILABLE:
                 path.addRoundRect(new RectF(left , top ,left + BathroomMin * scaleX , top + BathroomMin* scaleX ) , radius, radius, Path.Direction.CW);
                 canvas.drawPath(path ,paintCanUse);
+                canvas.drawPath(path ,strokePaint);
                 break;
             case BATH_BOOKED:
                 path.addRoundRect(new RectF(left , top ,left + BathroomMin * scaleX , top + BathroomMin* scaleX ) , radius, radius  , Path.Direction.CW);
@@ -642,14 +657,21 @@ public class AutoBathroom extends View {
             case BATH_CHOSE:
                 path.addRoundRect(new RectF(left , top ,left + BathroomMin * scaleX , top + BathroomMin* scaleX ) , radius , radius  , Path.Direction.CW);
                 canvas.drawPath(path ,paintChose);
+
                 break;
             }
 
 
-        if (scaleX > 1.2 ){
+        if (scaleX > 1.4 ){
             Paint.FontMetricsInt fontMetrics = hintPaint.getFontMetricsInt();
-            int baseline = (int) ((top + BathroomMin * scaleX / 2  - ((fontMetrics.bottom + fontMetrics.top) / 2 - fontMetrics.top)));
-            canvas.drawText(text,left + BathroomMin / 2 ,baseline , hintPaint);
+            int baseline = (int) ((top  + BathroomMin * scaleX  /2 - ((fontMetrics.bottom + fontMetrics.top)  /2  - fontMetrics.top) *scaleX));
+            StaticLayout layout = new StaticLayout(text, hintPaint, (int)(BathroomMin * scaleX), Layout.Alignment.ALIGN_NORMAL, 1.0F, 0.0F, true);
+            // 这里的参数300，表示字符串的长度，当满300时，就会换行
+            canvas.save();
+            canvas.translate(left +BathroomMin / 2 * scaleX , baseline);
+            layout.draw(canvas);
+            canvas.restore();//别忘了restore
+//            canvas.drawText(text,left + BathroomMin / 2 * scaleX ,baseline , hintPaint);
         }
 
     }
@@ -829,8 +851,8 @@ public class AutoBathroom extends View {
 
     private void autoScale() {
 
-        if (getMatrixScaleX() > 1.5f) {
-            zoomAnimate(getMatrixScaleX(), 1.5f);
+        if (getMatrixScaleX() > 2.0f) {
+            zoomAnimate(getMatrixScaleX(), 2.0f);
         } else if (getMatrixScaleX() < 0.98f) {
             zoomAnimate(getMatrixScaleX(), 1.0f);
         }
@@ -972,6 +994,7 @@ public class AutoBathroom extends View {
             if (bathroomClick != null) bathroomClick.onScale(scaleFactor);
             invalidate();
             requestLayout();
+            init(context);
             return true;
         }
 
