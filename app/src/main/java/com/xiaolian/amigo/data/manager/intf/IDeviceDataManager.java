@@ -18,6 +18,8 @@ import com.xiaolian.amigo.data.network.model.trade.CmdResultReqDTO;
 import com.xiaolian.amigo.data.network.model.trade.CmdResultRespDTO;
 import com.xiaolian.amigo.data.network.model.trade.ConnectCommandReqDTO;
 import com.xiaolian.amigo.data.network.model.trade.ConnectCommandRespDTO;
+import com.xiaolian.amigo.data.network.model.trade.UpdateDeviceRateCommandReqDTO;
+import com.xiaolian.amigo.data.network.model.trade.UpdateDeviceRateCommandRespDTO;
 import com.xiaolian.amigo.data.network.model.trade.PayReqDTO;
 import com.xiaolian.amigo.data.network.model.trade.PayRespDTO;
 import com.xiaolian.amigo.data.vo.DeviceCategory;
@@ -49,6 +51,11 @@ public interface IDeviceDataManager {
      * 请求连接设备指令
      */
     Observable<ApiResult<ConnectCommandRespDTO>> getConnectCommand(@Body ConnectCommandReqDTO reqDTO);
+
+    /**
+     * 请求更新设备费率指令
+     */
+    Observable<ApiResult<UpdateDeviceRateCommandRespDTO>> getUpdateDeviceRateCommand(@Body UpdateDeviceRateCommandReqDTO reqDTO);
 
     /**
      * 请求处理设备指令响应结果

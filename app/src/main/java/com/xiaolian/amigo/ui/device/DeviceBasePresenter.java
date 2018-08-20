@@ -36,6 +36,8 @@ import com.xiaolian.amigo.data.network.model.trade.CmdResultReqDTO;
 import com.xiaolian.amigo.data.network.model.trade.CmdResultRespDTO;
 import com.xiaolian.amigo.data.network.model.trade.ConnectCommandReqDTO;
 import com.xiaolian.amigo.data.network.model.trade.ConnectCommandRespDTO;
+import com.xiaolian.amigo.data.network.model.trade.UpdateDeviceRateCommandReqDTO;
+import com.xiaolian.amigo.data.network.model.trade.UpdateDeviceRateCommandRespDTO;
 import com.xiaolian.amigo.data.network.model.trade.PayReqDTO;
 import com.xiaolian.amigo.data.network.model.trade.PayRespDTO;
 import com.xiaolian.amigo.data.vo.DeviceCategory;
@@ -437,7 +439,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                                 handleDisConnectError("辛纳设备写入ENABLE_NOTIFICATION_VALUE失败 code:" + code1);
                                 return;
                             }
-                            afterBleConnected();
+                            getUpdateDeviceRateCommand(currentMacAddress);
                             bleDataManager.notify(currentMacAddress, UUID.fromString(supplier.getServiceUuid()),
                                     UUID.fromString(supplier.getWriteUuid()), data -> {
                                         if (null != data) {
@@ -574,7 +576,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                                                 }
 
                                             });
-                                    afterBleConnected();
+                                    getUpdateDeviceRateCommand(currentMacAddress);
                                 });
                     } else {
                         Log.d(TAG, "设置notify失败 thread " + Thread.currentThread().getName());
@@ -727,6 +729,32 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         } catch (InterruptedException e) {
             Log.wtf(TAG, e);
         }
+    }
+
+    // 网络请求获取下发费率指令，若存在则直接先对设备进行费率更新
+    private void getUpdateDeviceRateCommand(String macAddress) {
+        UpdateDeviceRateCommandReqDTO reqDTO = new UpdateDeviceRateCommandReqDTO();
+        reqDTO.setMacAddress(macAddress);
+        addObserver(deviceDataManager.getUpdateDeviceRateCommand(reqDTO), new NetworkObserver<ApiResult<UpdateDeviceRateCommandRespDTO>>(false) {
+            @Override
+            public void onReady(ApiResult<UpdateDeviceRateCommandRespDTO> result) {
+                if (null == result.getError()) /*获取更新费率指令*/{
+                    String updateDeviceRateCmd = result.getData().getUpdateDeviceRateCmd();
+                    if (!TextUtils.isEmpty(updateDeviceRateCmd)) /*指令存在，需要进行费率更新*/{
+                        onWrite(updateDeviceRateCmd);
+                    } else /*指令不存在，直接进行握手*/{
+                        afterBleConnected();
+                    }
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                //异常情况处理，容错处理，进行握手
+                afterBleConnected();
+            }
+        }, Schedulers.io());
     }
 
     // 网络请求获取握手连接指令
@@ -899,6 +927,15 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 return;
             }
             switch (Command.getCommand(result.getData().getSrcCommandType())) {
+                case UPDATE_DEVICE_RATE:
+                    boolean isConnectCmd = (Command.getCommand(result.getData().getSrcCommandType())==Command.CONNECT);
+                    if (!TextUtils.isEmpty(nextCommand) && isConnectCmd) {
+                        connectCmd = nextCommand;
+                        onWrite(connectCmd);
+                    } else {
+                        afterBleConnected();
+                    }
+                    break;
                 case CONNECT:
                     // 如果用户本人在三小时之内再次连接该设备，需要进入第二步账单结算页面
                     // 表明用户是正在使用状态
