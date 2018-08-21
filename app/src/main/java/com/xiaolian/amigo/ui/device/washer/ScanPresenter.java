@@ -99,12 +99,12 @@ public class ScanPresenter<V extends IScanView> extends BasePresenter<V>
 
 
     @Override
-    public void gotoHeaterDevice(String defaultAddress, Long defaultSupplierId, String location) {
+    public void gotoHeaterDevice(String defaultAddress, Long defaultSupplierId, String location ,long reseniceId) {
         if (TextUtils.isEmpty(defaultAddress)) {
             getMvpView().onError("二维码扫描失败");
         } else {
-            getMvpView().gotoDevice(Device.HEATER, defaultAddress, defaultSupplierId,
-                    ,location, false);
+            getMvpView().gotoDevice(Device.HEATER, defaultAddress, defaultSupplierId,reseniceId
+                    ,location);
         }
     }
 

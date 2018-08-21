@@ -42,7 +42,7 @@ public interface IScanPresenter<V extends IScanView> extends IBasePresenter<V> {
      * @param location          位置
      */
     void gotoHeaterDevice(String defaultMacAddress, Long defaultSupplierId,
-                          String location);
+                          String location ,long resdienceId);
 
     /**
      * 扫一扫获取设备信息

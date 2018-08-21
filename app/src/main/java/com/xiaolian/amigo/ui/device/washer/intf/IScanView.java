@@ -39,17 +39,16 @@ public interface IScanView extends IBaseView {
     void showDeviceUsageDialog(int type, DeviceCheckRespDTO data , String mac ,boolean isBle);
 
     /**
-     * 跳转到设备页面
+     * 跳转到扫一扫设备页面
      *
      * @param device      设备类型
      * @param macAddress  mac地址
      * @param supplierId  供应商id
      * @param location    位置
      * @param residenceId 位置id
-     * @param recovery    是否显示正在恢复
      */
     void gotoDevice(Device device, String macAddress, Long supplierId,
-                    long residenceId,String location, boolean recovery);
+                    long residenceId,String location);
 
 
     /**
@@ -80,4 +79,14 @@ public interface IScanView extends IBaseView {
      */
     void showScanDialog(int type , DeviceCheckRespDTO dto , OrderPreInfoDTO orderPreInfoDTO);
 
+
+    /**
+     * 扫一扫二维码，跳转到对应的设备页面
+     * @param isTimeValid
+     * @param type
+     * @param macAddress
+     * @param data
+     * @param isBle
+     */
+    void goToBleDevice(boolean isTimeValid, int type, String macAddress, BriefDeviceDTO data, boolean isBle);
 }
