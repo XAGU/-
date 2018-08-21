@@ -475,8 +475,8 @@ public class ScanActivity extends WasherBaseActivity
 
     /****     扫一扫中扫描设备地址的处理  ，留做以后代码重构后做成父类处理   *****/
     @Override
-    public void showDeviceUsageDialog(int type, DeviceCheckRespDTO data) {
-            com.xiaolian.amigo.util.Log.d(TAG, "showDeviceUsageDialog: " + type);
+    public void showDeviceUsageDialog(int type, DeviceCheckRespDTO data ,String mac ,boolean isBle) {
+            Log.d(TAG, "showDeviceUsageDialog: " + type);
             if (data == null || data.getBalance() == null
                     || data.getPrepay() == null || data.getMinPrepay() == null
                     || data.getTimeValid() == null) {
@@ -499,29 +499,9 @@ public class ScanActivity extends WasherBaseActivity
 
                 // 调用one
 
-                        presenter.getDeviceDetail(type ,data.get);
+                        presenter.getDeviceDetail(type , mac , isBle);
                     // 如果热水澡 检查默认宿舍
-                    if (type == Device.HEATER.getType() && !presenter.checkDefaultDormitoryExist()) {
-                        showBindDormitoryDialog();
-                        return;
-                    }
-                    if (!data.getTimeValid()) {
-                        showTimeValidDialog(type, data);
-                    } else {
-                        if (type == Device.HEATER.getType()) {
-                            // 前往默认宿舍的热水澡
-                            presenter.gotoHeaterDevice(data.getDefaultMacAddress(),
-                                    data.getDefaultSupplierId(), data.getLocation(),
-                                    data.getResidenceId());
-                        } else if (type == Device.DISPENSER.getType()) {
-                            // 进入饮水机选择页面
-                            gotoChooseDispenser();
-                        } else if (type == Device.DRYER.getType()) {
-                            // 进入吹风机选择页面 复用饮水机选择页面
-                            gotoChooseDryer();
-                        }
-                    }
-                }
+
             }
     }
 
@@ -608,7 +588,26 @@ public class ScanActivity extends WasherBaseActivity
 
     @Override
     public void goToBleDevice(int type, BriefDeviceDTO dto, boolean isBle) {
-
+        if (type == Device.HEATER.getType() && !presenter.checkDefaultDormitoryExist()) {
+            showBindDormitoryDialog();
+            return;
+        }
+        if (!data.getTimeValid()) {
+            showTimeValidDialog(type, data);
+        } else {
+            if (type == Device.HEATER.getType()) {
+                // 前往默认宿舍的热水澡
+                presenter.gotoHeaterDevice(data.getDefaultMacAddress(),
+                        data.getDefaultSupplierId(), data.getLocation(),
+                        data.getResidenceId());
+            } else if (type == Device.DISPENSER.getType()) {
+                // 进入饮水机选择页面
+                gotoChooseDispenser();
+            } else if (type == Device.DRYER.getType()) {
+                // 进入吹风机选择页面 复用饮水机选择页面
+                gotoChooseDryer();
+            }
+        }
     }
 
     @Override
