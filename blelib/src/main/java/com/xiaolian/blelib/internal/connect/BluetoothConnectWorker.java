@@ -16,10 +16,9 @@ import android.util.Log;
 
 import com.xiaolian.blelib.BluetoothConstants;
 import com.xiaolian.blelib.BluetoothHelp;
+import com.xiaolian.blelib.connect.BluetoothCharacteristicNotifyCallback;
 import com.xiaolian.blelib.connect.BluetoothConnectCallback;
 import com.xiaolian.blelib.connect.BluetoothConnectStatusListener;
-import com.xiaolian.blelib.connect.BluetoothCharacteristicNotifyCallback;
-import com.xiaolian.blelib.connect.BluetoothReadCharacteristicResponse;
 import com.xiaolian.blelib.connect.BluetoothReadDescriptorCallback;
 import com.xiaolian.blelib.connect.BluetoothWriteCharacteristicCallback;
 import com.xiaolian.blelib.connect.BluetoothWriteDescriptorCallback;
@@ -309,10 +308,6 @@ public class BluetoothConnectWorker implements IBluetoothConnectWorker {
             return false;
         }
 
-//        if (!isCharacteristicWritable(characteristic)) {
-//            BluetoothLog.e(String.format("characteristic not writable!"));
-//            return false;
-//        }
 
         return bluetoothGatt != null
                 && bluetoothGatt.setCharacteristicNotification(characteristic, enable);

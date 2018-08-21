@@ -1,5 +1,7 @@
 package com.xiaolian.blelib;
 
+import java.util.UUID;
+
 /**
  * @author zcd
  * @date 18/3/27
@@ -51,4 +53,6 @@ public class BluetoothConstants {
      * 其他错误
      */
     public static final int GATT_OTHER_FAILURE = 0x111;
+
+    public static final UUID CLIENT_CHARACTERISTIC_CONFIG = UUID.fromString("00002902-0000-1000-8000-00805f9b34fb");
 }
