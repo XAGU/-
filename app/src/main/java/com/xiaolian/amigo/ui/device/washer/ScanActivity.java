@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.device.washer;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Rect;
@@ -26,6 +27,7 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.enumeration.DispenserCategory;
 import com.xiaolian.amigo.data.enumeration.DispenserWater;
+import com.xiaolian.amigo.data.network.model.device.BriefDeviceDTO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.order.OrderPreInfoDTO;
 import com.xiaolian.amigo.data.vo.Bonus;
@@ -490,33 +492,14 @@ public class ScanActivity extends WasherBaseActivity
             orderPreInfo.setMinPrepay(data.getMinPrepay());
             orderPreInfo.setPrepay(data.getPrepay());
             orderPreInfo.setPrice(data.getPrice());
-            // 2小时内存在未找零订单
+            // 2小时内存在未找零订单，弹窗提示需要结账
             if (data.getExistsUnsettledOrder() != null && data.getExistsUnsettledOrder()) {
-                // 1 表示热水澡 2 表示饮水机
-                if (type == Device.HEATER.getType()) {
-                    // 直接前往热水澡处理找零
-                    gotoDevice(HEATER, data.getUnsettledMacAddress(),
-                            data.getUnsettledSupplierId(), data.getLocation(),
-                            data.getResidenceId(), true);
-                } else if (type == Device.DISPENSER.getType()) {
-                    gotoDispenser(data.getUnsettledMacAddress(), data.getUnsettledSupplierId(),
-                            data.getLocation(), data.getResidenceId(),
-                            data.getFavor(), (data.getCategory() != null
-                                    && DispenserCategory.MULTI.getType() == data.getCategory())
-                                    ? Integer.valueOf(DispenserWater.ALL.getType()) : data.getUsefor(), true);
-                } else if (type == Device.DRYER.getType()) {
-                    gotoDryer(data.getUnsettledMacAddress(), data.getUnsettledSupplierId(),
-                            data.getLocation(), data.getResidenceId(),
-                            data.getFavor(), true);
-                }
+                    showScanDialog(type ,data ,orderPreInfo);
             } else {
-                if (type == Device.HEATER.getType() && heaterOrderSize > 0) {
-//                    showPrepayDialog(type, heaterOrderSize, data);
-                } else if (type == Device.DISPENSER.getType() && dispenserOrderSize > 0) {
-                    showPrepayDialog(type, dispenserOrderSize, data);
-                } else if (type == Device.DRYER.getType() && dryerOrderSize > 0) {
-                    showPrepayDialog(type, dryerOrderSize, data);
-                } else {
+
+                // 调用one
+
+                        presenter.getDeviceDetail(type ,data.get);
                     // 如果热水澡 检查默认宿舍
                     if (type == Device.HEATER.getType() && !presenter.checkDefaultDormitoryExist()) {
                         showBindDormitoryDialog();
@@ -578,6 +561,53 @@ public class ScanActivity extends WasherBaseActivity
 
     @Override
     public void showNoDeviceDialog() {
+
+    }
+
+    @Override
+    public void showScanDialog(int type , DeviceCheckRespDTO data , OrderPreInfoDTO orderPreInfoDTO) {
+        if (scanDialog == null) {
+            scanDialog = new ScanDialog(this);
+        }
+        if (scanDialog.isShowing()) {
+            return;
+        }
+
+        scanDialog.setOnCancelClickListener(new ScanDialog.OnCancelClickListener() {
+            @Override
+            public void onCancelClick(Dialog dialog) {
+                // 1 表示热水澡 2 表示饮水机
+                if (type == Device.HEATER.getType()) {
+                    // 直接前往热水澡处理找零
+                    gotoDevice(HEATER, data.getUnsettledMacAddress(),
+                            data.getUnsettledSupplierId(), data.getLocation(),
+                            data.getResidenceId(), true);
+                } else if (type == Device.DISPENSER.getType()) {
+                    gotoDispenser(data.getUnsettledMacAddress(), data.getUnsettledSupplierId(),
+                            data.getLocation(), data.getResidenceId(),
+                            data.getFavor(), (data.getCategory() != null
+                                    && DispenserCategory.MULTI.getType() == data.getCategory())
+                                    ? Integer.valueOf(DispenserWater.ALL.getType()) : data.getUsefor(), true);
+                } else if (type == Device.DRYER.getType()) {
+                    gotoDryer(data.getUnsettledMacAddress(), data.getUnsettledSupplierId(),
+                            data.getLocation(), data.getResidenceId(),
+                            data.getFavor(), true);
+                }
+                dialog.dismiss();
+            }
+        });
+
+        scanDialog.setOnOkClickListener(new ScanDialog.OnOkClickListener() {
+            @Override
+            public void onOkClick(Dialog dialog) {
+                dialog.dismiss();
+            }
+        });
+
+    }
+
+    @Override
+    public void goToBleDevice(int type, BriefDeviceDTO dto, boolean isBle) {
 
     }
 

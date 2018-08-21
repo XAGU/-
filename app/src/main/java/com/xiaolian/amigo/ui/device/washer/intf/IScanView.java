@@ -1,7 +1,9 @@
 package com.xiaolian.amigo.ui.device.washer.intf;
 
 import com.xiaolian.amigo.data.enumeration.Device;
+import com.xiaolian.amigo.data.network.model.device.BriefDeviceDTO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCheckRespDTO;
+import com.xiaolian.amigo.data.network.model.order.OrderPreInfoDTO;
 import com.xiaolian.amigo.data.vo.Bonus;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 
@@ -34,7 +36,7 @@ public interface IScanView extends IBaseView {
      * @param type 设备类型
      * @param data 设备校验结果
      */
-    void showDeviceUsageDialog(int type, DeviceCheckRespDTO data);
+    void showDeviceUsageDialog(int type, DeviceCheckRespDTO data , String mac ,boolean isBle);
 
     /**
      * 跳转到设备页面
@@ -70,5 +72,17 @@ public interface IScanView extends IBaseView {
     void showNoDeviceDialog();
 
 
-    void showPrepayDialog();
+    /**
+     * 显示扫描设备时， 返现存在2小时内未结账订单
+     * @param type
+     * @param dto
+     * @param orderPreInfoDTO
+     */
+    void showScanDialog(int type , DeviceCheckRespDTO dto , OrderPreInfoDTO orderPreInfoDTO);
+
+    /**
+     * 扫一扫跳转对应设备
+     * @param
+     */
+    void goToBleDevice(int type , BriefDeviceDTO dto , boolean isBle);
 }

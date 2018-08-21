@@ -1,7 +1,9 @@
 package com.xiaolian.amigo.data.network;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.device.BriefDeviceDTO;
 import com.xiaolian.amigo.data.network.model.device.FavorDeviceReqDTO;
+import com.xiaolian.amigo.data.network.model.device.GetDeviceDetailReqDTO;
 import com.xiaolian.amigo.data.network.model.device.QueryDeviceListReqDTO;
 import com.xiaolian.amigo.data.network.model.device.QueryDeviceListRespDTO;
 import com.xiaolian.amigo.data.network.model.device.QueryFavorDeviceRespDTO;
@@ -53,4 +55,11 @@ public interface IDeviceApi {
      */
     @POST("device/list")
     Observable<ApiResult<QueryDeviceListRespDTO>> getDeviceList(@Body QueryDeviceListReqDTO reqDTO);
+
+    /**
+     * 设备详情 ， 扫一扫中使用
+     */
+    @POST("device/one")
+    Observable<ApiResult<BriefDeviceDTO>>  getDeviceDetail(@Body GetDeviceDetailReqDTO reqDTO);
+
 }

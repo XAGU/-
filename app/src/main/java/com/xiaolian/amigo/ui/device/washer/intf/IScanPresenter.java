@@ -1,6 +1,5 @@
 package com.xiaolian.amigo.ui.device.washer.intf;
 
-import com.xiaolian.amigo.data.network.model.device.DeviceCheckRespDTO;
 import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 
 /**
@@ -22,7 +21,7 @@ public interface IScanPresenter<V extends IScanView> extends IBasePresenter<V> {
      * 检查设备
      * @param type
      */
-    void checkDeviceUseage(int type);
+    void checkDeviceUseage(int type , String mac ,boolean isBle);
 
 
     /**
@@ -45,4 +44,11 @@ public interface IScanPresenter<V extends IScanView> extends IBasePresenter<V> {
      */
     void gotoHeaterDevice(String defaultMacAddress, Long defaultSupplierId,
                           String location, Long residenceId);
+
+    /**
+     * 扫一扫获取设备信息
+     * @param macAddress
+     * @param isBle
+     */
+    void getDeviceDetail(int type,String macAddress , boolean isBle);
 }

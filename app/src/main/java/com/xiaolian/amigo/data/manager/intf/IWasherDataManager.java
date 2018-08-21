@@ -1,9 +1,11 @@
 package com.xiaolian.amigo.data.manager.intf;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.device.BriefDeviceDTO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCategoryBO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCheckRespDTO;
+import com.xiaolian.amigo.data.network.model.device.GetDeviceDetailReqDTO;
 import com.xiaolian.amigo.data.network.model.trade.PayReqDTO;
 import com.xiaolian.amigo.data.network.model.trade.QrCodeGenerateRespDTO;
 import com.xiaolian.amigo.data.network.model.trade.QrCodeScanReqDTO;
@@ -15,6 +17,7 @@ import com.xiaolian.amigo.data.vo.User;
 import java.util.List;
 
 import retrofit2.http.Body;
+import retrofit2.http.POST;
 import rx.Observable;
 
 /**
@@ -59,6 +62,13 @@ public interface IWasherDataManager {
      * 首页设备用水校验
      */
     Observable<ApiResult<DeviceCheckRespDTO>> checkDeviceUseage(@Body DeviceCheckReqDTO reqDTO);
+
+
+    /**
+     * 设备详情 ， 扫一扫中使用
+     */
+    @POST("device/one")
+    Observable<ApiResult<BriefDeviceDTO>>  getDeviceDetail(@Body GetDeviceDetailReqDTO reqDTO);
 
 
     void saveDeviceCategory(List<DeviceCategoryBO> devices);
