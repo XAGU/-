@@ -1,4 +1,4 @@
-package com.xiaolian.amigo.ui.widget.dialog;
+package com.xiaolian.amigo.ui.widget;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -19,7 +19,7 @@ import com.xiaolian.amigo.data.enumeration.Device;
  * @date 17/10/12
  */
 
-public class PrepayDialog extends Dialog {
+public class ScanDialog extends Dialog {
     private TextView tvTip;
     private TextView tvTitle;
     private TextView tvCancel;
@@ -27,7 +27,7 @@ public class PrepayDialog extends Dialog {
     private OnOkClickListener okClickListener;
     private OnCancelClickListener cancelClickListener;
 
-    public PrepayDialog(@NonNull Context context ) {
+    public ScanDialog(@NonNull Context context ) {
         super(context, R.style.AlertDialogStyle);
         Window window = this.getWindow();
         window.requestFeature(Window.FEATURE_NO_TITLE);
@@ -42,8 +42,7 @@ public class PrepayDialog extends Dialog {
     }
 
     private void initView() {
-        setContentView(R.layout.dialog_prepay);
-        tvTitle = findViewById(R.id.tv_title);
+        setContentView(R.layout.dialog_scan);
         tvTip = findViewById(R.id.tv_tip);
         tvCancel = findViewById(R.id.tv_cancel);
         tvOk = findViewById(R.id.tv_ok);
@@ -63,15 +62,6 @@ public class PrepayDialog extends Dialog {
 
     public void setCancelText(String text) {
         tvCancel.setText(text);
-    }
-
-    public void setDeviceTypeAndPrepaySize(int type, int size) {
-        String tip1 = "你在\"";
-        String tip2 = "\"中有预付金额还未找零";
-        String deviceStr = Device.getDevice(type).getDesc();
-        SpannableString builder = new SpannableString(tip1 + deviceStr + tip2);
-        tvTip.setText(builder);
-        tvTitle.setText("你有" + size + "笔未找零金额！");
     }
 
     public void setOnOkClickListener(OnOkClickListener listener) {

@@ -42,9 +42,9 @@ public class CustomViewfinderView extends ViewfinderView {
 
     public void setColors(int  type){
         if (type == 1){
-            linearColor = colorsScan ;
-        }else{
             linearColor = colors ;
+        }else{
+            linearColor = colorsScan ;
         }
         invalidate();
     }

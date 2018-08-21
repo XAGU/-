@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.device.washer.intf;
 
+import com.xiaolian.amigo.data.network.model.device.DeviceCheckRespDTO;
 import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 
 /**
@@ -15,4 +16,33 @@ public interface IScanPresenter<V extends IScanView> extends IBasePresenter<V> {
      * @param content 二维码内容
      */
     void scanCheckout(String content);
+
+
+    /**
+     * 检查设备
+     * @param type
+     */
+    void checkDeviceUseage(int type);
+
+
+    /**
+     * 检查默认宿舍是否存在
+     *
+     * @return 是否存在
+     */
+    boolean checkDefaultDormitoryExist();
+
+
+
+
+    /**
+     * 跳转到热水澡
+     *
+     * @param defaultMacAddress 默认mac地址
+     * @param defaultSupplierId 默认供应商id
+     * @param location          位置
+     * @param residenceId       宿舍id
+     */
+    void gotoHeaterDevice(String defaultMacAddress, Long defaultSupplierId,
+                          String location, Long residenceId);
 }

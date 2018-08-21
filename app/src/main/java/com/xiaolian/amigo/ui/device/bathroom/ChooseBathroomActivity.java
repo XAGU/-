@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.device.bathroom;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.util.ObjectsCompat;
 import android.support.v7.widget.Toolbar;
@@ -36,15 +37,18 @@ import com.xiaolian.amigo.ui.widget.CircleProgressView;
 import com.xiaolian.amigo.ui.widget.dialog.BathroomBookingDialog;
 import com.xiaolian.amigo.ui.widget.popWindow.ChooseBathroomPop;
 import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.util.RxHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.functions.Action1;
 
 import static com.xiaolian.amigo.ui.device.DeviceOrderActivity.KEY_USER_STYLE;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_BALANCE;
@@ -189,8 +193,6 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         bindView();
         initRecyclerView();
         initPop();
-
-
     }
 
 
@@ -351,6 +353,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         floorsBean.setWaitCount(-1);
         floorsBean.setAvailableCount(-1);
         showPopForDevice(floorsBean);
+        preBathroom.setClickable(true);
     }
 
     @Override
@@ -422,20 +425,6 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
      */
     private void showPop() {
         presenter.buildingTraffic(buildId);
-        if (pop == null) {
-            pop = new ChooseBathroomPop(this);
-            pop.setPopButtonClickListener(new ChooseBathroomPop.PopButtonClickListener() {
-                @Override
-                public void click(BuildingTrafficDTO.FloorsBean floorsBean) {
-                    if (!TextUtils.isEmpty(floorsBean.getDeviceNo())) {
-                        presenter.booking(Long.parseLong(floorsBean.getDeviceNo()), 0);
-                    } else {
-                        presenter.booking(0, floorsBean.getId());
-                    }
-                }
-            });
-        }
-        showPopNoDevice();
     }
 
     private void showPopNoDevice() {
@@ -457,6 +446,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
                 presenter.setIsResume(true);
             }
         });
+        preBathroom.setClickable(true);
     }
 
 
@@ -477,7 +467,9 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
     public void refreshBathroom(BathBuildingRespDTO respDTO) {
         idContent.setVisibility(View.VISIBLE);
         rlError.setVisibility(View.GONE);
-        tvTitle.setCompoundDrawables(null , null ,getResources().getDrawable(R.drawable.arrow_down ) , null);
+        Drawable drawable = getResources().getDrawable(R.drawable.white_down);
+        drawable.setBounds(0,0,drawable.getMinimumWidth() ,drawable.getMinimumHeight());
+        tvTitle.setCompoundDrawablesRelative(null , null ,drawable ,null);
         if (floorsBeans == null) {
             floorsBeans = respDTO.getFloors();
         } else {
@@ -488,9 +480,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
     }
 
 
-
-
-
+    
     @Override
     public void showBathroomDialog(String content) {
         if (bathroomBookingDialog == null) {
@@ -533,14 +523,28 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
 
     @Override
     public void trafficInfo(List<BuildingTrafficDTO.FloorsBean> floorsBeans) {
+        if (pop == null) {
+            pop = new ChooseBathroomPop(this);
+            pop.setPopButtonClickListener(new ChooseBathroomPop.PopButtonClickListener() {
+                @Override
+                public void click(BuildingTrafficDTO.FloorsBean floorsBean) {
+                    if (!TextUtils.isEmpty(floorsBean.getDeviceNo())) {
+                        presenter.booking(Long.parseLong(floorsBean.getDeviceNo()), 0);
+                    } else {
+                        presenter.booking(0, floorsBean.getId());
+                    }
+                }
+            });
+        }
         pop.setData(floorsBeans);
+        showPopNoDevice();
     }
 
 
     @Override
     public void startQueue(long id) {
         this.queueId = id;
-        Log.e(TAG, "startQueue: ");
+        Log.e(TAG, "startQueue: "   + id);
         bathroomBookingDialog.setFinish();
 //        if (isCanJump) {
 //            startActivityForResult(new Intent(this, BookingActivity.class)
@@ -614,16 +618,20 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
 
     @OnClick(R.id.pre_bathroom)
     public void preBathRoom() {
+        preBathroom.setClickable(false);
         if (needCharge) {
             setBtnText("余额不足，请前往充值" , false);
             startActivity(new Intent(getApplicationContext(), RechargeActivity.class));
+            preBathroom.setClickable(true);
         } else {
             if (TextUtils.isEmpty(deviceNo)) {
                 showPop();
+
             } else {
                 autoShowDevice(deviceNo);
             }
         }
+
     }
 
 
@@ -703,7 +711,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         } else if (queueId != 0) {
             if (isCanJump) {
                 startActivityForResult(new Intent(this, BookingActivity.class)
-                        .putExtra(KEY_BATHQUEUE_ID, id)
+                        .putExtra(KEY_BATHQUEUE_ID, queueId)
                         .putExtra(KEY_BALANCE, balance)
                         .putExtra(KEY_MIN_PREPAY, minPrepay)
                         .putExtra(KEY_PREPAY, prepay)
@@ -728,8 +736,22 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
             intent.putExtra(KEY_USER_STYLE, userMethod);
             if (isCanJump) {
                 startActivity(intent);
+                isCanJump = false ;
             }
 
         }
+    }
+
+
+    @Override
+    public void finish() {
+        RxHelper.delay(500 , TimeUnit.MILLISECONDS)
+                .subscribe(new Action1<Integer>() {
+                    @Override
+                    public void call(Integer integer) {
+                        ChooseBathroomActivity.super.finish();
+                    }
+                });
+
     }
 }

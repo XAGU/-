@@ -1,7 +1,10 @@
 package com.xiaolian.amigo.ui.device.bathroom.adapter;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.v4.content.ContextCompat;
+import android.text.TextPaint;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,6 +22,8 @@ import lombok.Data;
  * @date 18/7/2
  */
 public class DeviceInfoAdapter extends CommonAdapter<DeviceInfoAdapter.DeviceInfoWrapper> {
+    private static final String TAG = DeviceInfoWrapper.class.getSimpleName();
+
     private Context context;
     private CountTimeText countTimeText ;
     public DeviceInfoAdapter(Context context, int layoutId, List<DeviceInfoWrapper> datas) {
@@ -41,7 +46,13 @@ public class DeviceInfoAdapter extends CommonAdapter<DeviceInfoAdapter.DeviceInf
         tvRight.setTextColor(ContextCompat.getColor(context,
                 deviceInfoWrapper.getRightTextColor()));
         tvRight.setTextSize(deviceInfoWrapper.getRightTextSizeSp());
-        tvRight.setTypeface(tvRight.getTypeface(), deviceInfoWrapper.getRightTextStyle());
+        if (deviceInfoWrapper.getRightTextStyle() == Typeface.BOLD){
+            TextPaint tp = tvRight.getPaint();
+            tp.setFakeBoldText(true);
+        }else{
+            TextPaint tp = tvRight.getPaint();
+            tp.setFakeBoldText(false);
+        }
         ImageView ivArrow = holder.getView(R.id.iv_arrow);
         ivArrow.setVisibility(deviceInfoWrapper.isHasArrow() ? View.VISIBLE : View.GONE);
         if ("剩余时间：".equals(deviceInfoWrapper.getRightText())){

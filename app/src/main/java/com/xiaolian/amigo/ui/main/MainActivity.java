@@ -7,8 +7,6 @@ import android.content.Intent;
 import android.graphics.RectF;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
@@ -33,7 +31,6 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushConfig;
 import com.tencent.android.tpush.XGPushManager;
-import com.tencent.android.tpush.common.Constants;
 import com.umeng.analytics.MobclickAgent;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
@@ -41,29 +38,23 @@ import com.xiaolian.amigo.data.enumeration.DispenserCategory;
 import com.xiaolian.amigo.data.enumeration.DispenserWater;
 import com.xiaolian.amigo.data.enumeration.IntentAction;
 import com.xiaolian.amigo.data.enumeration.Orientation;
-import com.xiaolian.amigo.data.enumeration.UserResidenceType;
 import com.xiaolian.amigo.data.network.model.bathroom.BathRouteRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.CurrentBathOrderRespDTO;
-import com.xiaolian.amigo.data.network.model.system.BannerDTO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.order.OrderPreInfoDTO;
-import com.xiaolian.amigo.data.network.model.user.PersonalExtraInfoDTO;
+import com.xiaolian.amigo.data.network.model.system.BannerDTO;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
+import com.xiaolian.amigo.data.network.model.user.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.ui.device.DeviceConstant;
 import com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity;
-import com.xiaolian.amigo.ui.device.washer.ScanActivity;
-import com.xiaolian.amigo.ui.user.CompleteInfoActivity;
-import com.xiaolian.amigo.ui.device.bathroom.BathroomActivity;
-import com.xiaolian.amigo.ui.device.bathroom.BookingActivity;
 import com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity;
-import com.xiaolian.amigo.ui.device.bathroom.PayUseActivity;
 import com.xiaolian.amigo.ui.device.dispenser.ChooseDispenserActivity;
 import com.xiaolian.amigo.ui.device.dispenser.DispenserActivity;
 import com.xiaolian.amigo.ui.device.dryer.DryerActivity;
+import com.xiaolian.amigo.ui.device.washer.ScanActivity;
 import com.xiaolian.amigo.ui.device.washer.WasherActivity;
 import com.xiaolian.amigo.ui.login.LoginActivity;
-import com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity;
 import com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity2;
 import com.xiaolian.amigo.ui.main.intf.IMainPresenter;
 import com.xiaolian.amigo.ui.main.intf.IMainView;
@@ -72,6 +63,7 @@ import com.xiaolian.amigo.ui.main.update.IntentKey;
 import com.xiaolian.amigo.ui.main.update.UpdateActivity;
 import com.xiaolian.amigo.ui.notice.NoticeListActivity;
 import com.xiaolian.amigo.ui.repair.RepairActivity;
+import com.xiaolian.amigo.ui.user.CompleteInfoActivity;
 import com.xiaolian.amigo.ui.user.EditDormitoryActivity;
 import com.xiaolian.amigo.ui.user.EditProfileActivity;
 import com.xiaolian.amigo.ui.user.ListChooseActivity;
@@ -92,7 +84,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.lang.ref.WeakReference;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -110,9 +101,9 @@ import static com.xiaolian.amigo.data.enumeration.Device.DISPENSER;
 import static com.xiaolian.amigo.data.enumeration.Device.DRYER;
 import static com.xiaolian.amigo.data.enumeration.Device.HEATER;
 import static com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity.KEY_BUILDING_ID;
-import static com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity.KEY_ID;
 import static com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity.KEY_RESIDENCE_ID;
 import static com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity.KEY_RESIDENCE_TYPE;
+import static com.xiaolian.amigo.ui.device.washer.ScanActivity.IS_SACN;
 import static com.xiaolian.amigo.ui.device.washer.ScanActivity.SCAN_TYPE;
 import static com.xiaolian.amigo.util.Log.getContext;
 
@@ -488,6 +479,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         integrator.addExtra(DecodeHintType.TRY_HARDER.name(), Boolean.TRUE);
         integrator.addExtra(DecodeHintType.POSSIBLE_FORMATS.name(), BarcodeFormat.QR_CODE);
         integrator.addExtra(SCAN_TYPE , 2);
+        integrator.addExtra(IS_SACN , true);
         integrator.initiateScan();
     }
 
@@ -1054,6 +1046,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         });
         openLocationDialog.show();
     }
+
+
 
     @Override
     public void showNoDeviceDialog() {

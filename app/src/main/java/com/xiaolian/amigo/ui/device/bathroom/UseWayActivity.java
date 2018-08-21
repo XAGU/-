@@ -148,8 +148,6 @@ public abstract class UseWayActivity extends BathroomBaseActivity {
      * 已存在订单状态
      */
     protected BathOrderPreconditionRespDTO bathOrderPreconditionRespDTO;
-    @BindView(R.id.tip_recycler)
-    RecyclerView tipRecycler;
     private DecimalFormat df = new DecimalFormat("###.##");
 
     private List<String> tips = new ArrayList<>();

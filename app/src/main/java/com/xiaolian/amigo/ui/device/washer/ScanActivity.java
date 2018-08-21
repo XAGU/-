@@ -7,6 +7,7 @@ import android.graphics.RectF;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.support.v4.math.MathUtils;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,10 +23,23 @@ import com.journeyapps.barcodescanner.DecoderThread;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 import com.journeyapps.barcodescanner.camera.CameraThread;
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.enumeration.Device;
+import com.xiaolian.amigo.data.enumeration.DispenserCategory;
+import com.xiaolian.amigo.data.enumeration.DispenserWater;
+import com.xiaolian.amigo.data.network.model.device.DeviceCheckRespDTO;
+import com.xiaolian.amigo.data.network.model.order.OrderPreInfoDTO;
 import com.xiaolian.amigo.data.vo.Bonus;
+import com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity;
+import com.xiaolian.amigo.ui.device.dispenser.DispenserActivity;
+import com.xiaolian.amigo.ui.device.dryer.DryerActivity;
 import com.xiaolian.amigo.ui.device.washer.intf.IScanPresenter;
 import com.xiaolian.amigo.ui.device.washer.intf.IScanView;
+import com.xiaolian.amigo.ui.main.MainActivity;
+import com.xiaolian.amigo.ui.user.ListChooseActivity;
+import com.xiaolian.amigo.ui.widget.ScanDialog;
+import com.xiaolian.amigo.ui.widget.dialog.AvailabilityDialog;
 import com.xiaolian.amigo.ui.widget.qrcode.CustomCaptureManager;
+import com.xiaolian.amigo.util.Constant;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -35,6 +49,13 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.xiaolian.amigo.data.enumeration.Device.HEATER;
+import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_DEVICE_TYPE;
+import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_LOCATION;
+import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_MAC_ADDRESS;
+import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_RESIDENCE_ID;
+import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_SUPPLIER_ID;
 
 /**
  * 二维码扫描页面
@@ -50,6 +71,10 @@ public class ScanActivity extends WasherBaseActivity
 
     public static final String SCAN_TYPE= "SCAN_TYPE"  ;   // 扫描类型
 
+    public static final String IS_SACN = "IS_SCAN" ; // 是否是扫描
+
+
+    private OrderPreInfoDTO orderPreInfo ;
     @Inject
     IScanPresenter<IScanView> presenter;
     @BindView(R.id.zxing_barcode_scanner)
@@ -67,8 +92,17 @@ public class ScanActivity extends WasherBaseActivity
     private DecoratedBarcodeView barcodeScannerView;
     private boolean torchOn = false;
 
-    private int scanType ;
 
+    /*****  扫一扫中处理， 留做以后代码重构提取出来构造子类*****/
+    private int scanType ;
+    private boolean scan  = false ;
+    private AvailabilityDialog availabilityDialog;
+
+    private int heaterOrderSize;
+
+    private ScanDialog scanDialog ;
+
+    /*****      ***/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,7 +126,11 @@ public class ScanActivity extends WasherBaseActivity
                         Log.d(TAG, "Cancelled");
                     } else {
                         Log.d(TAG, "Scanned: " + result.getContents());
-                        presenter.scanCheckout(result.getContents());
+                        if (scan){
+                            
+                        }else {
+                            presenter.scanCheckout(result.getContents());
+                        }
                     }
                 }
             }
@@ -147,6 +185,11 @@ public class ScanActivity extends WasherBaseActivity
 
     private void init(){
         if (zxingBarcodeScanner != null) zxingBarcodeScanner.setType(scanType);
+        if (scanType == 1){
+            tvTitle.setText("洗衣机扫描");
+        }else{
+            tvTitle.setText("扫一扫");
+        }
     }
 
     private void setFlashlight() {
@@ -368,7 +411,8 @@ public class ScanActivity extends WasherBaseActivity
     @Override
     protected void setUp() {
         if (getIntent() != null){
-            scanType = getIntent().getIntExtra("SCAN_TYPE" , 1);
+            scanType = getIntent().getIntExtra(SCAN_TYPE , 1);
+            scan = getIntent().getBooleanExtra(IS_SACN , false);
         }
     }
 
@@ -424,4 +468,205 @@ public class ScanActivity extends WasherBaseActivity
         capture.onResume();
         capture.decode();
     }
+
+
+
+    /****     扫一扫中扫描设备地址的处理  ，留做以后代码重构后做成父类处理   *****/
+    @Override
+    public void showDeviceUsageDialog(int type, DeviceCheckRespDTO data) {
+            com.xiaolian.amigo.util.Log.d(TAG, "showDeviceUsageDialog: " + type);
+            if (data == null || data.getBalance() == null
+                    || data.getPrepay() == null || data.getMinPrepay() == null
+                    || data.getTimeValid() == null) {
+                onError("服务器飞走啦，努力修复中");
+                return;
+            }
+            if (orderPreInfo == null) {
+                orderPreInfo = new OrderPreInfoDTO();
+            }
+            orderPreInfo.setBalance(data.getBalance());
+            orderPreInfo.setBonus(data.getBonus());
+            orderPreInfo.setCsMobile(data.getCsMobile());
+            orderPreInfo.setMinPrepay(data.getMinPrepay());
+            orderPreInfo.setPrepay(data.getPrepay());
+            orderPreInfo.setPrice(data.getPrice());
+            // 2小时内存在未找零订单
+            if (data.getExistsUnsettledOrder() != null && data.getExistsUnsettledOrder()) {
+                // 1 表示热水澡 2 表示饮水机
+                if (type == Device.HEATER.getType()) {
+                    // 直接前往热水澡处理找零
+                    gotoDevice(HEATER, data.getUnsettledMacAddress(),
+                            data.getUnsettledSupplierId(), data.getLocation(),
+                            data.getResidenceId(), true);
+                } else if (type == Device.DISPENSER.getType()) {
+                    gotoDispenser(data.getUnsettledMacAddress(), data.getUnsettledSupplierId(),
+                            data.getLocation(), data.getResidenceId(),
+                            data.getFavor(), (data.getCategory() != null
+                                    && DispenserCategory.MULTI.getType() == data.getCategory())
+                                    ? Integer.valueOf(DispenserWater.ALL.getType()) : data.getUsefor(), true);
+                } else if (type == Device.DRYER.getType()) {
+                    gotoDryer(data.getUnsettledMacAddress(), data.getUnsettledSupplierId(),
+                            data.getLocation(), data.getResidenceId(),
+                            data.getFavor(), true);
+                }
+            } else {
+                if (type == Device.HEATER.getType() && heaterOrderSize > 0) {
+//                    showPrepayDialog(type, heaterOrderSize, data);
+                } else if (type == Device.DISPENSER.getType() && dispenserOrderSize > 0) {
+                    showPrepayDialog(type, dispenserOrderSize, data);
+                } else if (type == Device.DRYER.getType() && dryerOrderSize > 0) {
+                    showPrepayDialog(type, dryerOrderSize, data);
+                } else {
+                    // 如果热水澡 检查默认宿舍
+                    if (type == Device.HEATER.getType() && !presenter.checkDefaultDormitoryExist()) {
+                        showBindDormitoryDialog();
+                        return;
+                    }
+                    if (!data.getTimeValid()) {
+                        showTimeValidDialog(type, data);
+                    } else {
+                        if (type == Device.HEATER.getType()) {
+                            // 前往默认宿舍的热水澡
+                            presenter.gotoHeaterDevice(data.getDefaultMacAddress(),
+                                    data.getDefaultSupplierId(), data.getLocation(),
+                                    data.getResidenceId());
+                        } else if (type == Device.DISPENSER.getType()) {
+                            // 进入饮水机选择页面
+                            gotoChooseDispenser();
+                        } else if (type == Device.DRYER.getType()) {
+                            // 进入吹风机选择页面 复用饮水机选择页面
+                            gotoChooseDryer();
+                        }
+                    }
+                }
+            }
+    }
+
+
+
+
+    @Override
+    public void showTimeValidDialog(int deviceType, DeviceCheckRespDTO data) {
+        com.xiaolian.amigo.util.Log.d(TAG, "showTimeValidDialog: " + data.getTitle() + "->" + data.getRemark() + "->" + deviceType);
+        if (null == availabilityDialog) {
+            availabilityDialog = new AvailabilityDialog(this);
+        }
+        if (availabilityDialog.isShowing()) {
+            if (availabilityDialog.getType() == AvailabilityDialog.Type.TIME_VALID) {
+                return;
+            } else {
+                availabilityDialog.dismiss();
+            }
+        }
+        availabilityDialog.setType(AvailabilityDialog.Type.TIME_VALID);
+        availabilityDialog.setOkText(getString(R.string.keep_use_cold_water));
+        availabilityDialog.setTitle(data.getTitle());
+        availabilityDialog.setTip(data.getRemark());
+        availabilityDialog.setOnOkClickListener(dialog1 -> {
+            if (deviceType == Device.HEATER.getType()) {
+                presenter.gotoHeaterDevice(data.getDefaultMacAddress(),
+                        data.getDefaultSupplierId(), data.getLocation(),
+                        data.getResidenceId());
+            } else if (deviceType == Device.DISPENSER.getType()) {
+                gotoChooseDispenser();
+            } else if (deviceType == Device.DRYER.getType()) {
+                gotoChooseDryer();
+            }
+        });
+        availabilityDialog.show();
+    }
+
+    @Override
+    public void showNoDeviceDialog() {
+
+    }
+
+    @Override
+    public void gotoDevice(Device device, String macAddress, Long supplierId,
+                           String location, Long residenceId, boolean recovery) {
+        com.xiaolian.amigo.util.Log.d(TAG, "gotoDevice: " + device.getDesc() + "->" + macAddress + "->" + supplierId + "->" + location + "->" + residenceId);
+        if (TextUtils.isEmpty(macAddress)) {
+            onError("设备macAddress不合法");
+        } else {
+            Intent intent = new Intent(this, device.getClz());
+            intent.putExtra(INTENT_KEY_LOCATION, location);
+            intent.putExtra(INTENT_KEY_SUPPLIER_ID, supplierId);
+            intent.putExtra(INTENT_KEY_MAC_ADDRESS, macAddress);
+            intent.putExtra(INTENT_KEY_DEVICE_TYPE, device.getType());
+            intent.putExtra(INTENT_KEY_RESIDENCE_ID, residenceId);
+            intent.putExtra(MainActivity.INTENT_KEY_RECOVERY, recovery);
+            intent.putExtra(WaterDeviceBaseActivity.INTENT_PREPAY_INFO, orderPreInfo);
+            startActivity(intent);
+        }
+    }
+
+
+    public void gotoDryer(String macAddress, Long supplierId, String location, Long residenceId,
+                          boolean favor, boolean recovery) {
+        if (TextUtils.isEmpty(macAddress)) {
+            onError("设备macAddress不合法");
+        } else {
+            Intent intent = new Intent(this, DryerActivity.class);
+            intent.putExtra(INTENT_KEY_LOCATION, location);
+            intent.putExtra(INTENT_KEY_SUPPLIER_ID, supplierId);
+            intent.putExtra(INTENT_KEY_MAC_ADDRESS, macAddress);
+            intent.putExtra(INTENT_KEY_DEVICE_TYPE, Device.DRYER.getType());
+            intent.putExtra(DispenserActivity.INTENT_KEY_ID, residenceId);
+            intent.putExtra(MainActivity.INTENT_KEY_RESIDENCE_ID, residenceId);
+            intent.putExtra(MainActivity.INTENT_KEY_RECOVERY, recovery);
+            intent.putExtra(DispenserActivity.INTENT_KEY_FAVOR, favor);
+            intent.putExtra(WaterDeviceBaseActivity.INTENT_PREPAY_INFO, orderPreInfo);
+            startActivity(intent);
+        }
+    }
+
+    public void gotoDispenser(String macAddress, Long supplierId, String location, Long residenceId,
+                              boolean favor, int usefor,
+                              boolean recovery) {
+        if (TextUtils.isEmpty(macAddress)) {
+            onError("设备macAddress不合法");
+        } else {
+            Intent intent = new Intent(this, DispenserActivity.class);
+            intent.putExtra(INTENT_KEY_LOCATION, location);
+            intent.putExtra(INTENT_KEY_SUPPLIER_ID, supplierId);
+            intent.putExtra(INTENT_KEY_MAC_ADDRESS, macAddress);
+            intent.putExtra(INTENT_KEY_DEVICE_TYPE, Device.DISPENSER.getType());
+            intent.putExtra(DispenserActivity.INTENT_KEY_ID, residenceId);
+            intent.putExtra(MainActivity.INTENT_KEY_RESIDENCE_ID, residenceId);
+            intent.putExtra(MainActivity.INTENT_KEY_RECOVERY, recovery);
+            intent.putExtra(DispenserActivity.INTENT_KEY_FAVOR, favor);
+            intent.putExtra(DispenserActivity.INTENT_KEY_TEMPERATURE, String.valueOf(usefor));
+            intent.putExtra(WaterDeviceBaseActivity.INTENT_PREPAY_INFO, orderPreInfo);
+            startActivity(intent);
+        }
+    }
+
+
+    @Override
+    public void showBindDormitoryDialog() {
+        com.xiaolian.amigo.util.Log.d(TAG, "showBindDormitoryDialog");
+        if (null == availabilityDialog) {
+            availabilityDialog = new AvailabilityDialog(this);
+        }
+        if (availabilityDialog.isShowing()
+                && availabilityDialog.getType() == AvailabilityDialog.Type.BIND_DORMITORY) {
+            return;
+        }
+        availabilityDialog.setType(AvailabilityDialog.Type.BIND_DORMITORY);
+        availabilityDialog.setOkText("前往绑定");
+        availabilityDialog.setTitle(AvailabilityDialog.Type.BIND_DORMITORY.getTitle());
+        availabilityDialog.setTip("热水澡需要先绑定宿舍");
+        availabilityDialog.setOnOkClickListener(dialog1 -> {
+            Intent intent;
+            intent = new Intent(this, ListChooseActivity.class);
+            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
+            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION,
+                    ListChooseActivity.ACTION_LIST_BUILDING);
+            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_SRC_ACTIVITY, Constant.MAIN_ACTIVITY_SRC);
+            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_DEVICE_TYPE, Device.HEATER.getType());
+            startActivity(intent);
+        });
+        availabilityDialog.show();
+    }
 }
+

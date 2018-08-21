@@ -57,9 +57,6 @@ public class ChooseBathroomPop  extends PopupWindow {
     }
 
 
-
-
-
     private void init(){
         floorsBeans = new ArrayList<>();
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -67,6 +64,7 @@ public class ChooseBathroomPop  extends PopupWindow {
         recyclerView = contentView.findViewById(R.id.bathroom_recy);
         button = contentView.findViewById(R.id.pre_bathroom) ;
         adapter = new ChooseRoomAdapter(context ,floorsBeans);
+
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void click(int poisition) {
@@ -80,13 +78,11 @@ public class ChooseBathroomPop  extends PopupWindow {
             @Override
             public void clickable(boolean clickable) {
                 if (clickable){
-                    Log.e(TAG, "clickable: " + clickable );
                     button.setClickable(true);
                     button.setBackgroundResource(R.drawable.corner_redsolid_button);
                 }else{
-                    Log.e(TAG, "clickable: " + clickable );
-                    button.setClickable(true);
-                    button.setBackgroundResource(R.drawable.corner_redsolid_button);
+                    button.setClickable(false);
+                    button.setBackgroundResource(R.drawable.thirty_red_bg);
                 }
             }
         });
@@ -130,18 +126,19 @@ public class ChooseBathroomPop  extends PopupWindow {
     public void setData(List<BuildingTrafficDTO.FloorsBean> floorsBeanList){
         if (floorsBeans != null){
             floorsBeans.clear();
-            floorsBeans.addAll(floorsBeanList);
+            adapter.notifyDataSetChanged();
         }
+        floorsBeans.addAll(floorsBeanList);
+        button.setBackgroundResource(R.drawable.thirty_red_bg);
         if (adapter != null) adapter.notifyDataSetChanged();
     }
 
     public void setData(BuildingTrafficDTO.FloorsBean floorsBean){
         if (floorsBeans != null){
             floorsBeans.clear();
-            floorsBeans.add(floorsBean);
         }
-        this.floorsBean = floorsBean ;
         Log.e(TAG, "setData: "  );
+        floorsBeans.add(floorsBean);
         button.setBackgroundResource(R.color.colorGreen);
         if (adapter != null ) adapter.notifyDataSetChanged();
 

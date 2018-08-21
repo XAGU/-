@@ -222,7 +222,8 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                     }
                     // page size 为null 加载全部
                     if (Constant.MAIN_ACTIVITY_BATHROOM_SRC.equals(activitySrc)
-                           || Constant.ADD_BATHROOM_SRC.equals(activitySrc) ){
+                           || Constant.ADD_BATHROOM_SRC.equals(activitySrc)
+                            || Constant.HEATER_TO_BATHROOM.equals(activitySrc)){
                         presenter.queryBathResidenceList(null ,null , deviceType);
                     }else {
                         presenter.getBuildList(null, null, deviceType);
@@ -323,6 +324,8 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                                 presenter.getBathroomList(null, null, deviceType, parentId, false);
                             }else if (TextUtils.equals(activitySrc ,Constant.ADD_BATHROOM_SRC)){
                                 presenter.getBathroomList(null, null, deviceType, parentId, false);
+                            }else if (TextUtils.equals(activitySrc ,Constant.HEATER_TO_BATHROOM)){
+                                presenter.getBathroomList(null, null, deviceType, parentId, false);
                             }
                         }
                     }
@@ -352,6 +355,8 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                                 } else if (Constant.MAIN_ACTIVITY_BATHROOM_SRC.equals(activitySrc)) {
                                     presenter.recordBath(items.get(position).getId(), bathType, null);
                                 } else if (Constant.ADD_BATHROOM_SRC.equals(activitySrc)) {
+                                    presenter.recordBath(items.get(position).getId(), bathType, null);
+                                } else if (Constant.HEATER_TO_BATHROOM.equals(activitySrc)) {
                                     presenter.recordBath(items.get(position).getId(), bathType, null);
                                 } else {
 //                                presenter.bindDormitory(residenceBindId, items.get(position).getId(), isEditDormitory);

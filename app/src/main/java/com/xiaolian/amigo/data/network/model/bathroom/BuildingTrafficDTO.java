@@ -54,6 +54,15 @@ public class BuildingTrafficDTO {
             private String name;
             private int waitCount;
             private String deviceNo ;
+            private boolean isCheck ;
+
+            public boolean isCheck() {
+                return isCheck;
+            }
+
+            public void setCheck(boolean check) {
+                isCheck = check;
+            }
 
             public String getDeviceNo() {
                 return deviceNo;

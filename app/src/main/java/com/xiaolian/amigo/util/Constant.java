@@ -138,6 +138,8 @@ public final class Constant {
     public static final String MAIN_ACTIVITY_BATHROOM_SRC = "main_activity_bathroom_src";  //  公共浴室方式
     public static final String ADD_BATHROOM_SRC = "add_bathroom_src" ;  //  新增公共浴室
 
+    public static final String HEATER_TO_BATHROOM = "CHOSE_TO_BATHROOM" ;  // 从热水澡进公共浴室
+
 
     /**
      * 位置

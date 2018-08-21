@@ -155,14 +155,14 @@ public class CompleteInfoActivity extends UserBaseActivity implements ICompleteI
     }
 
 
-    @OnClick(R.id.woman)
+    @OnClick({R.id.woman ,R.id.radio_woman})
     public void choseWoman(){
         sex = 2;
         radioMan.setChecked(false);
         radioWoman.setChecked(true);
     }
 
-    @OnClick(R.id.man)
+    @OnClick({R.id.man , R.id.radio_man})
     public void choseMan(){
         sex = 1;
         radioMan.setChecked(true);

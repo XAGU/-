@@ -489,16 +489,18 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
      * @param data
      */
     public void getQueueInfo(BookingQueueProgressDTO data ){
-        statusView.setStatusText(getString(R.string.preBookingWait));
-        statusView.setLeftImageResource(IMG_RES_STATUS_OPERATING);
-        statusView.setTip(getString(R.string.preBookingWaitTip));
-        statusView.showCancelButton(new BathroomOperationStatusView.OnCancelClickListener(){
+        if (statusView != null) {
+            statusView.setStatusText(getString(R.string.preBookingWait));
+            statusView.setLeftImageResource(IMG_RES_STATUS_OPERATING);
+            statusView.setTip(getString(R.string.preBookingWaitTip));
+            statusView.showCancelButton(new BathroomOperationStatusView.OnCancelClickListener() {
 
-            @Override
-            public void onCancelClick() {
-                cancelDialog(data.getId() , QUEUE_CANCEL);
-            }
-        });
+                @Override
+                public void onCancelClick() {
+                    cancelDialog(data.getId(), QUEUE_CANCEL);
+                }
+            });
+        }
         llBottomVisible(false);
         List<DeviceInfoAdapter.DeviceInfoWrapper> list = getListWaitItems(data.getLocation() , data.getRemain());
         referItems(list , true);

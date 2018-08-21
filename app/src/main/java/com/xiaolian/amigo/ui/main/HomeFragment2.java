@@ -387,11 +387,12 @@ public class HomeFragment2 extends Fragment {
     private void checkTitleTip(CurrentBathOrderRespDTO event) {
             shower.setExistOrder(true);
             shower.setStatus(event.getStatus());
-            if (event.getStatus() == Constant.USING_STATUS) {
-                shower.setUsing(true);
-            } else {
-                shower.setUsing(false);
-            }
+//            if (event.getStatus() == Constant.USING_STATUS) {
+//                shower.setUsing(true);
+//            } else {
+//                shower.setUsing(false);
+//            }
+            shower.setUsing(true);
             Log.e(TAG, "checkTitleTip预约订单" + event.getStatus());
             notifyAdaptor();
     }

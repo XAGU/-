@@ -50,6 +50,8 @@ public class AutoBathroom extends View {
 
     private Context context ;
 
+    private static final float MAXZ00M = 1.6f ;
+
     private List<BathBuildingRespDTO.FloorsBean> floorsBeanList ;
 
 
@@ -254,9 +256,6 @@ public class AutoBathroom extends View {
     float mDelWidth ;
     float mDelHeight ;
 
-
-    float centerX ;
-    float centerY ;
 
     private static BathBuildingRespDTO.FloorsBean.GroupsBean.BathRoomsBean  bathRoomsBean ;
 
@@ -588,8 +587,10 @@ public class AutoBathroom extends View {
             zoomView = 1.6f ;
         }
 
-            mDelWidth = (getWidth() - realWidth) / 2  ;
-            mDelHeight = (getHeight() - realHeight) / 2 ;
+            mDelWidth = (getWidth() - realWidth * zoomView) / 2  ;
+            mDelHeight = (getHeight() - realHeight * zoomView) / 2 ;
+
+        Log.e(TAG, "onDraw: " + mDelWidth  +"  " + mDelHeight );
 
         drawSeat(canvas);
     }

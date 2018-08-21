@@ -30,6 +30,7 @@ public class ChooseRoomAdapter extends RecyclerView.Adapter<ChooseRoomAdapter.Ro
 
     private ChooseBathroomPop.PopClickableListener popClickableListener ;
 
+
     public ChooseRoomAdapter(Context context , List<BuildingTrafficDTO.FloorsBean> floorsBeans){
         this.context =  context ;
         this.floorsBeans = floorsBeans ;
@@ -43,6 +44,7 @@ public class ChooseRoomAdapter extends RecyclerView.Adapter<ChooseRoomAdapter.Ro
         this.onItemClickListener = onItemClickListener;
     }
 
+
     @Override
     public RoomHodler onCreateViewHolder(ViewGroup parent, int viewType) {
         RoomHodler roomHodler = new RoomHodler(LayoutInflater.from(context).inflate(R.layout.item_choosebathroom , parent , false));
@@ -51,7 +53,6 @@ public class ChooseRoomAdapter extends RecyclerView.Adapter<ChooseRoomAdapter.Ro
 
     @Override
     public void onBindViewHolder(RoomHodler holder, int position) {
-        boolean isCheck = false ;
         holder.bathroom_status.setTextColor(context.getResources().getColor(R.color.colorFullRed));
         BuildingTrafficDTO.FloorsBean floorsBean = floorsBeans.get(position);
         holder.rl.setOnClickListener(new View.OnClickListener() {
@@ -63,6 +64,11 @@ public class ChooseRoomAdapter extends RecyclerView.Adapter<ChooseRoomAdapter.Ro
                 if (onItemClickListener != null) onItemClickListener.click(position);
                 states.put(position , true);
                 notifyDataSetChanged();
+                if (floorsBean != null) {
+                    if (TextUtils.isEmpty(floorsBean.getDeviceNo())) {
+                        if (popClickableListener != null) popClickableListener.clickable(true);
+                    }
+                }
             }
         });
 
@@ -75,6 +81,11 @@ public class ChooseRoomAdapter extends RecyclerView.Adapter<ChooseRoomAdapter.Ro
                 if (onItemClickListener != null) onItemClickListener.click(position);
                 states.put(position , true);
                 notifyDataSetChanged();
+                if (floorsBean != null) {
+                    if (TextUtils.isEmpty(floorsBean.getDeviceNo())) {
+                        if (popClickableListener != null) popClickableListener.clickable(true);
+                    }
+                }
             }
         });
 
@@ -84,29 +95,19 @@ public class ChooseRoomAdapter extends RecyclerView.Adapter<ChooseRoomAdapter.Ro
             holder.radioButton.setChecked(true);
         }
 
-
-        if (holder.radioButton.isChecked()){
-            Log.e(TAG, "onBindViewHolder: >>>>>" );
-            isCheck = true ;
-        }else{
-            Log.e(TAG, "onBindViewHolder: >>>>>>" );
-            isCheck = false ;
-        }
-
-
-        if (floorsBean != null) {
-            if (TextUtils.isEmpty(floorsBean.getDeviceNo())) {
-                if (popClickableListener != null) popClickableListener.clickable(isCheck);
-            }
+        if (states == null || states.size() ==0 ){
+            holder.radioButton.setChecked(false);
         }
 
         if (floorsBean != null){
             holder.textView.setText(floorsBean.getName());
             if (floorsBean.getAvailableCount() > 0){
                 holder.bathroom_status.setText("[空闲："+floorsBean.getAvailableCount() + "间浴室]");
-                holder.radioButton.setBackgroundResource(R.drawable.bathroom_radio_bg);
+                holder.bathroom_status.setTextColor(context.getResources().getColor(R.color.colorGreen));
+                holder.radioButton.setBackgroundResource(R.drawable.bathroom_radio_color_bg);
             }else if (floorsBean.getWaitCount() >= 0){
                 holder.bathroom_status.setText("[排队："+floorsBean.getWaitCount() + "人]");
+                holder.bathroom_status.setTextColor(context.getResources().getColor(R.color.colorFullRed));
                 holder.radioButton.setBackgroundResource(R.drawable.bathroom_radio_color_bg);
             }
         }
