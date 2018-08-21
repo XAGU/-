@@ -49,7 +49,7 @@ public interface IScanView extends IBaseView {
      * @param recovery    是否显示正在恢复
      */
     void gotoDevice(Device device, String macAddress, Long supplierId,
-                    String location, Long residenceId, boolean recovery);
+                    long residenceId,String location, boolean recovery);
 
 
     /**
@@ -80,9 +80,4 @@ public interface IScanView extends IBaseView {
      */
     void showScanDialog(int type , DeviceCheckRespDTO dto , OrderPreInfoDTO orderPreInfoDTO);
 
-    /**
-     * 扫一扫跳转对应设备
-     * @param
-     */
-    void goToBleDevice(int type , BriefDeviceDTO dto , boolean isBle);
 }

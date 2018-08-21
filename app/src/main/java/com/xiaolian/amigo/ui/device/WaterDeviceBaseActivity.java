@@ -262,7 +262,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     /**
      * 设备位置id
      */
-    private Long residenceId;
+    public  Long residenceId;
     private boolean homePageJump;
     /**
      * 供应商id
@@ -272,6 +272,8 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
      * 标记是否为恢复用水
      */
     private boolean recorvery;
+
+
     private CountDownTimer timer;
     private volatile boolean userWater = false;
     private boolean needRecharge;
@@ -1167,7 +1169,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
     public void changeDormitory() {
         // 只有在step为SETILE时才不能更换宿舍
-        if (!recorvery && presenter.getStep() != TradeStep.SETTLE) {
+        if (!recorvery && presenter.getStep() != TradeStep.SETTLE && residenceId != -1L) {
             startActivityForResult(
                     new Intent(this, EditDormitoryActivity.class)
                             .putExtra(EditDormitoryActivity.INTENT_KEY_LAST_DORMITORY, residenceId),

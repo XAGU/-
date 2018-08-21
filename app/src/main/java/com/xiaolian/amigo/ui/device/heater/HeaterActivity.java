@@ -36,21 +36,21 @@ public class HeaterActivity extends WaterDeviceBaseActivity<IHeaterPresenter> im
      * 设置文字右边图片
      */
     private  void initView(){
-        Drawable drawable = getResources().getDrawable(R.drawable.white_down);
-        drawable.setBounds(0,0,drawable.getMinimumWidth() ,drawable.getMinimumHeight());
-        tvDeviceTitle.setCompoundDrawablesRelative(null , null ,drawable ,null);
-        tvDeviceTitle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HeaterActivity.this, ListChooseActivity.class);
-                intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
-                intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION,
-                        ListChooseActivity.ACTION_LIST_BUILDING);
-                intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_SRC_ACTIVITY, Constant.HEATER_TO_BATHROOM);
-                intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_DEVICE_TYPE, Device.HEATER.getType());
-                startActivity(intent );
-            }
-        });
+            Drawable drawable = getResources().getDrawable(R.drawable.white_down);
+            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+            tvDeviceTitle.setCompoundDrawablesRelative(null, null, drawable, null);
+            tvDeviceTitle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(HeaterActivity.this, ListChooseActivity.class);
+                    intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
+                    intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION,
+                            ListChooseActivity.ACTION_LIST_BUILDING);
+                    intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_SRC_ACTIVITY, Constant.HEATER_TO_BATHROOM);
+                    intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_DEVICE_TYPE, Device.HEATER.getType());
+                    startActivity(intent);
+                }
+            });
     }
 
     @Override

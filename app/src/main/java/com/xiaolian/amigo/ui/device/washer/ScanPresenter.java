@@ -99,17 +99,17 @@ public class ScanPresenter<V extends IScanView> extends BasePresenter<V>
 
 
     @Override
-    public void gotoHeaterDevice(String defaultAddress, Long defaultSupplierId, String location, Long residenceId) {
+    public void gotoHeaterDevice(String defaultAddress, Long defaultSupplierId, String location) {
         if (TextUtils.isEmpty(defaultAddress)) {
             getMvpView().onError("二维码扫描失败");
         } else {
             getMvpView().gotoDevice(Device.HEATER, defaultAddress, defaultSupplierId,
-                    location, residenceId, false);
+                    ,location, false);
         }
     }
 
     @Override
-    public void getDeviceDetail(int type,String macAddress, boolean isBle) {
+    public void getDeviceDetail(boolean isTimeValid,int type,String macAddress, boolean isBle) {
         GetDeviceDetailReqDTO getDeviceDetailReqDTO = new GetDeviceDetailReqDTO();
         getDeviceDetailReqDTO.setMacAddress(macAddress);
         addObserver(washerDataManager.getDeviceDetail(getDeviceDetailReqDTO) ,new NetworkObserver<ApiResult<BriefDeviceDTO>>(){
@@ -117,7 +117,7 @@ public class ScanPresenter<V extends IScanView> extends BasePresenter<V>
             @Override
             public void onReady(ApiResult<BriefDeviceDTO> result) {
                 if (result.getError() == null){
-                    getMvpView().goToBleDevice( type ,result.getData() ,isBle);
+                    getMvpView().goToBleDevice( isTimeValid,type ,macAddress,result.getData() ,isBle);
                 }else{
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }

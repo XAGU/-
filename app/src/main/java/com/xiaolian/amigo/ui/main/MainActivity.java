@@ -126,6 +126,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     public static final String INTENT_KEY_SWITCH_TO_HOME = "intent_key_switch_to_home";
     public static final String INTENT_KEY_SERVER_ERROR = "intent_key_server_error";
     public static final String INTENT_KEY_BANNERS = "intent_key_banners";
+    public static final String INTENT_KEY_SCAN = "intent_key_scan";
     private static final String FRAGMENT_TAG_HOME = "home";
     private static final String FRAGMENT_TAG_PROFILE = "profile";
     private static final int GESTURE_DETECTOR_MIN_LENGHT = 200;

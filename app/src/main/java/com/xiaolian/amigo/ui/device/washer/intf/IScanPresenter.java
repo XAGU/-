@@ -40,15 +40,14 @@ public interface IScanPresenter<V extends IScanView> extends IBasePresenter<V> {
      * @param defaultMacAddress 默认mac地址
      * @param defaultSupplierId 默认供应商id
      * @param location          位置
-     * @param residenceId       宿舍id
      */
     void gotoHeaterDevice(String defaultMacAddress, Long defaultSupplierId,
-                          String location, Long residenceId);
+                          String location);
 
     /**
      * 扫一扫获取设备信息
      * @param macAddress
      * @param isBle
      */
-    void getDeviceDetail(int type,String macAddress , boolean isBle);
+    void getDeviceDetail(boolean isTimeValid,int type,String macAddress , boolean isBle);
 }

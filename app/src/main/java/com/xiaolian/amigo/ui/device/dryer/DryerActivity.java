@@ -22,6 +22,7 @@ public class DryerActivity extends WaterDeviceBaseActivity<IDryerPresenter> impl
     private boolean isFavor;
     private Long id;
 
+
     @Inject
     IDryerPresenter<IDryerView> presenter;
 
@@ -31,6 +32,7 @@ public class DryerActivity extends WaterDeviceBaseActivity<IDryerPresenter> impl
         if (getIntent() != null) {
             isFavor = getIntent().getBooleanExtra(DispenserActivity.INTENT_KEY_FAVOR, false);
             id = getIntent().getLongExtra(DispenserActivity.INTENT_KEY_ID, -1);
+
         }
     }
 

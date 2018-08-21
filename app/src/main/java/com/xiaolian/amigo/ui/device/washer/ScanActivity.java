@@ -499,7 +499,7 @@ public class ScanActivity extends WasherBaseActivity
 
                 // 调用one
 
-                        presenter.getDeviceDetail(type , mac , isBle);
+                        presenter.getDeviceDetail(data.getTimeValid(),type , mac , isBle);
                     // 如果热水澡 检查默认宿舍
 
             }
@@ -528,12 +528,18 @@ public class ScanActivity extends WasherBaseActivity
         availabilityDialog.setOnOkClickListener(dialog1 -> {
             if (deviceType == Device.HEATER.getType()) {
                 presenter.gotoHeaterDevice(data.getDefaultMacAddress(),
-                        data.getDefaultSupplierId(), data.getLocation(),
-                        data.getResidenceId());
+                        data.getDefaultSupplierId(), data.getLocation()
+                         );
             } else if (deviceType == Device.DISPENSER.getType()) {
-                gotoChooseDispenser();
+                gotoDispenser(data.getUnsettledMacAddress(), data.getUnsettledSupplierId(),
+                        data.getLocation(), data.getResidenceId(),
+                        data.getFavor(), (data.getCategory() != null
+                                && DispenserCategory.MULTI.getType() == data.getCategory())
+                                ? Integer.valueOf(DispenserWater.ALL.getType()) : data.getUsefor(), true);
             } else if (deviceType == Device.DRYER.getType()) {
-                gotoChooseDryer();
+                gotoDryer(data.getUnsettledMacAddress(), data.getUnsettledSupplierId(),
+                        data.getLocation(), data.getResidenceId(),
+                        data.getFavor(), true);
             }
         });
         availabilityDialog.show();
@@ -556,22 +562,26 @@ public class ScanActivity extends WasherBaseActivity
         scanDialog.setOnCancelClickListener(new ScanDialog.OnCancelClickListener() {
             @Override
             public void onCancelClick(Dialog dialog) {
-                // 1 表示热水澡 2 表示饮水机
-                if (type == Device.HEATER.getType()) {
-                    // 直接前往热水澡处理找零
-                    gotoDevice(HEATER, data.getUnsettledMacAddress(),
-                            data.getUnsettledSupplierId(), data.getLocation(),
-                            data.getResidenceId(), true);
-                } else if (type == Device.DISPENSER.getType()) {
-                    gotoDispenser(data.getUnsettledMacAddress(), data.getUnsettledSupplierId(),
-                            data.getLocation(), data.getResidenceId(),
-                            data.getFavor(), (data.getCategory() != null
-                                    && DispenserCategory.MULTI.getType() == data.getCategory())
-                                    ? Integer.valueOf(DispenserWater.ALL.getType()) : data.getUsefor(), true);
-                } else if (type == Device.DRYER.getType()) {
-                    gotoDryer(data.getUnsettledMacAddress(), data.getUnsettledSupplierId(),
-                            data.getLocation(), data.getResidenceId(),
-                            data.getFavor(), true);
+                if (data.getTimeValid()) {
+                    // 1 表示热水澡 2 表示饮水机
+                    if (type == Device.HEATER.getType()) {
+                        // 直接前往热水澡处理找零
+                        gotoDevice(HEATER, data.getUnsettledMacAddress(),
+                                data.getUnsettledSupplierId(), data.getLocation(),
+                                data.getResidenceId(), true);
+                    } else if (type == Device.DISPENSER.getType()) {
+                        gotoDispenser(data.getUnsettledMacAddress(), data.getUnsettledSupplierId(),
+                                data.getLocation(), data.getResidenceId(),
+                                data.getFavor(), (data.getCategory() != null
+                                        && DispenserCategory.MULTI.getType() == data.getCategory())
+                                        ? Integer.valueOf(DispenserWater.ALL.getType()) : data.getUsefor(), true);
+                    } else if (type == Device.DRYER.getType()) {
+                        gotoDryer(data.getUnsettledMacAddress(), data.getUnsettledSupplierId(),
+                                data.getLocation(), data.getResidenceId(),
+                                data.getFavor(), true);
+                    }
+                }else{
+                    showTimeValidDialog(type, data);
                 }
                 dialog.dismiss();
             }
@@ -587,30 +597,24 @@ public class ScanActivity extends WasherBaseActivity
     }
 
     @Override
-    public void goToBleDevice(int type, BriefDeviceDTO dto, boolean isBle) {
+    public void goToBleDevice( boolean isTimeValid ,int type,String mac, BriefDeviceDTO dto, boolean isBle) {
         if (type == Device.HEATER.getType() && !presenter.checkDefaultDormitoryExist()) {
             showBindDormitoryDialog();
             return;
         }
-        if (!data.getTimeValid()) {
-            showTimeValidDialog(type, data);
-        } else {
             if (type == Device.HEATER.getType()) {
-                // 前往默认宿舍的热水澡
-                presenter.gotoHeaterDevice(data.getDefaultMacAddress(),
-                        data.getDefaultSupplierId(), data.getLocation(),
-                        data.getResidenceId());
+                // 前往热水澡
+                presenter.gotoHeaterDevice(mac, dto.getSupplierId(), dto.getLocation());
             } else if (type == Device.DISPENSER.getType()) {
-                // 进入饮水机选择页面
-                gotoChooseDispenser();
+                // 进入饮水机
+//
             } else if (type == Device.DRYER.getType()) {
-                // 进入吹风机选择页面 复用饮水机选择页面
-                gotoChooseDryer();
+                // 进入吹风机
+
             }
         }
-    }
 
-    @Override
+     @Override
     public void gotoDevice(Device device, String macAddress, Long supplierId,
                            String location, Long residenceId, boolean recovery) {
         com.xiaolian.amigo.util.Log.d(TAG, "gotoDevice: " + device.getDesc() + "->" + macAddress + "->" + supplierId + "->" + location + "->" + residenceId);
@@ -623,6 +627,24 @@ public class ScanActivity extends WasherBaseActivity
             intent.putExtra(INTENT_KEY_MAC_ADDRESS, macAddress);
             intent.putExtra(INTENT_KEY_DEVICE_TYPE, device.getType());
             intent.putExtra(INTENT_KEY_RESIDENCE_ID, residenceId);
+            intent.putExtra(MainActivity.INTENT_KEY_RECOVERY, recovery);
+            intent.putExtra(WaterDeviceBaseActivity.INTENT_PREPAY_INFO, orderPreInfo);
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    public void gotoDevice(Device device, String macAddress, Long supplierId,
+                           String location, boolean recovery) {
+        com.xiaolian.amigo.util.Log.d(TAG, "gotoDevice: " + device.getDesc() + "->" + macAddress + "->" + supplierId + "->" + location + "->" + residenceId);
+        if (TextUtils.isEmpty(macAddress)) {
+            onError("设备macAddress不合法");
+        } else {
+            Intent intent = new Intent(this, device.getClz());
+            intent.putExtra(INTENT_KEY_LOCATION, location);
+            intent.putExtra(INTENT_KEY_SUPPLIER_ID, supplierId);
+            intent.putExtra(INTENT_KEY_MAC_ADDRESS, macAddress);
+            intent.putExtra(INTENT_KEY_DEVICE_TYPE, device.getType());
             intent.putExtra(MainActivity.INTENT_KEY_RECOVERY, recovery);
             intent.putExtra(WaterDeviceBaseActivity.INTENT_PREPAY_INFO, orderPreInfo);
             startActivity(intent);
