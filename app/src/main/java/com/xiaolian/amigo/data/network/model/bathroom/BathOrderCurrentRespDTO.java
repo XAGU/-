@@ -5,117 +5,57 @@ import lombok.Data;
 @Data
 public class BathOrderCurrentRespDTO {
 
-        /**
-         * balance : 0
-         * bathOrderId : 0
-         * createTime : 0
-         * location : string
-         * minPrepay : 0
-         * missedTimes : 0
-         * prepay : 0
-         * prepayAmount : 0
-         * status : 0
-         * totalMissTimes : 0
-         * tradeOrderId : 0
-         */
+                /**
+                 * id : 0
+                 * location : string
+                 * prepayAmount : 0
+                 * status : 0
+                 * tradeOrderId : 0
+                 */
 
-        private double balance;
-        private long bathOrderId;
-        private long createTime;
-        private String location;
-        private double minPrepay;
-        private int missedTimes;
-        private double prepay;
-        private double prepayAmount;
-        private int status;
-        private int totalMissTimes;
-        private long tradeOrderId;
+                private long id;
+                private String location;
+                private long prepayAmount;
+                private int status;
+                private long tradeOrderId;
 
-        public double getBalance() {
-                return balance;
-        }
+                public long getId() {
+                        return id;
+                }
 
-        public void setBalance(double balance) {
-                this.balance = balance;
-        }
+                public void setId(long id) {
+                        this.id = id;
+                }
 
-        public long getBathOrderId() {
-                return bathOrderId;
-        }
+                public String getLocation() {
+                        return location;
+                }
 
-        public void setBathOrderId(long bathOrderId) {
-                this.bathOrderId = bathOrderId;
-        }
+                public void setLocation(String location) {
+                        this.location = location;
+                }
 
-        public long getCreateTime() {
-                return createTime;
-        }
+                public long getPrepayAmount() {
+                        return prepayAmount;
+                }
 
-        public void setCreateTime(long createTime) {
-                this.createTime = createTime;
-        }
+                public void setPrepayAmount(long prepayAmount) {
+                        this.prepayAmount = prepayAmount;
+                }
 
-        public String getLocation() {
-                return location;
-        }
+                public int getStatus() {
+                        return status;
+                }
 
-        public void setLocation(String location) {
-                this.location = location;
-        }
+                public void setStatus(int status) {
+                        this.status = status;
+                }
 
-        public double getMinPrepay() {
-                return minPrepay;
-        }
+                public long getTradeOrderId() {
+                        return tradeOrderId;
+                }
 
-        public void setMinPrepay(double minPrepay) {
-                this.minPrepay = minPrepay;
-        }
-
-        public int getMissedTimes() {
-                return missedTimes;
-        }
-
-        public void setMissedTimes(int missedTimes) {
-                this.missedTimes = missedTimes;
-        }
-
-        public double getPrepay() {
-                return prepay;
-        }
-
-        public void setPrepay(double prepay) {
-                this.prepay = prepay;
-        }
-
-        public double getPrepayAmount() {
-                return prepayAmount;
-        }
-
-        public void setPrepayAmount(double prepayAmount) {
-                this.prepayAmount = prepayAmount;
-        }
-
-        public int getStatus() {
-                return status;
-        }
-
-        public void setStatus(int status) {
-                this.status = status;
-        }
-
-        public int getTotalMissTimes() {
-                return totalMissTimes;
-        }
-
-        public void setTotalMissTimes(int totalMissTimes) {
-                this.totalMissTimes = totalMissTimes;
-        }
-
-        public long getTradeOrderId() {
-                return tradeOrderId;
-        }
-
-        public void setTradeOrderId(long tradeOrderId) {
-                this.tradeOrderId = tradeOrderId;
-        }
+                public void setTradeOrderId(long tradeOrderId) {
+                        this.tradeOrderId = tradeOrderId;
+                }
 }

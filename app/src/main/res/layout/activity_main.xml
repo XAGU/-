@@ -44,10 +44,21 @@
         <ImageView
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
             android:id="@+id/iv_notice"
             android:src="@drawable/ic_notice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_scan"
+            android:layout_alignParentRight="true"
+            android:layout_above="@id/iv_notice"
+            android:id="@+id/iv_scan"
+            android:layout_marginBottom="14dp"/>
         <TextView
             android:id="@+id/tv_notice_count"
             android:visibility="gone"

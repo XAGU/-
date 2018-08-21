@@ -37,11 +37,6 @@ public interface IBookingPresenter<V extends IBookingView> extends IBasePresente
      */
     void unLock(String deviceNo);
 
-    /**
-     * 预约
-     * @param device
-     */
-    void booking(String device);
 
     /**
      * 根据过期时间倒计时

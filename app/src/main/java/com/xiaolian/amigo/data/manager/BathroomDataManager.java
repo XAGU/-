@@ -61,7 +61,7 @@ public class BathroomDataManager implements IBathroomDataManager {
 
 
     @Override
-    public Observable<ApiResult<BathOrderRespDTO>> cancel(SimpleReqDTO reqDTO) {
+    public Observable<ApiResult<BooleanRespDTO>> cancel(SimpleReqDTO reqDTO) {
         return bathroomApi.cancel(reqDTO);
     }
 

@@ -41,10 +41,13 @@ public interface IBookingView extends IBaseView {
      */
     void showWaitLoading();
 
+
+    void showLoading(String text );
+
     /**
      * 取消等待动画
      */
-    void hideWaitLoading();
+    void hideWaitLoading(boolean isSuccess);
 
     /**
      * 等待服务器下发设备超时

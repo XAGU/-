@@ -33,6 +33,10 @@ public class CompleteInfoActivity extends UserBaseActivity implements ICompleteI
     public static final String TAG = "CompleteInfoActivity";
     public static final String KEY_BATHROUTERESPDTO = "key_bathRouteRespDTO";
 
+    public static final int DORMITORY =  1 ;
+
+    public static final int BATHROOM = 2 ;
+
     @Inject
     ICompleteInfoPresenter<ICompleteInfoView> presenter;
 
@@ -54,7 +58,7 @@ public class CompleteInfoActivity extends UserBaseActivity implements ICompleteI
     Button chooseBathroom;
 
     ///性别，1：男，2：女，0或其他：未设置（和服务器端同步）
-    private  Integer sex;
+    private  int sex = -1 ;
 
     ///宿舍地址信息
     private  String dormitoryName;
@@ -103,14 +107,14 @@ public class CompleteInfoActivity extends UserBaseActivity implements ICompleteI
                 ListChooseActivity.ACTION_LIST_BUILDING);
         intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_SRC_ACTIVITY, Constant.COMPLETE_INFO_ACTIVITY_SRC);
         intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_DEVICE_TYPE, Device.HEATER.getType());
-        startActivity(intent);
+        startActivity(intent );
     }
 
     @OnClick(R.id.choose_bathroom)
     public void chooseBathroom() {
         //跳转到选择洗澡地址页面，如果设置完成则跳转到洗澡页面
         //先判断性别、宿舍是否已经设置成功，必须要先设置性别和宿舍
-        if (sex == null || (sex != 1 && sex != 2)) /*未设置性别，提示先设置性别*/{
+        if (sex == -1 || (sex != 1 && sex != 2)) /*未设置性别，提示先设置性别*/{
             //弹框提示设置性别
             Toast toast = Toast.makeText(this, "请先设置你的性别哦！", Toast.LENGTH_SHORT);
             toast.show();
@@ -174,7 +178,7 @@ public class CompleteInfoActivity extends UserBaseActivity implements ICompleteI
     }
 
     private void refreshSexStatus() {
-        if (sex == null) {
+        if (sex == -1) {
             return;
         }
         if (sex == 1) /*选中男*/{
@@ -190,7 +194,7 @@ public class CompleteInfoActivity extends UserBaseActivity implements ICompleteI
     }
 
     private void refreshDomitoryAddress() {
-        if (TextUtils.isEmpty(dormitoryName)) /*设置了宿舍地址信息*/{
+        if (!TextUtils.isEmpty(dormitoryName)) /*设置了宿舍地址信息*/{
             dormitoryAddressTextView.setText(dormitoryName);
         } else {
             dormitoryAddressTextView.setText("添加宿舍");
@@ -205,10 +209,20 @@ public class CompleteInfoActivity extends UserBaseActivity implements ICompleteI
         }
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+    }
+
     ///根据已有的值配置初始信息
     private void initialPersonalInfo() {
         if (presenter.getUserInfo() != null) {
-            sex = presenter.getUserInfo().getSex();
+            if (presenter.getUserInfo().getSex() != null) {
+                sex = presenter.getUserInfo().getSex();
+            }
+            if (presenter.getUserInfo().getResidenceName() != null)
             dormitoryName = presenter.getUserInfo().getResidenceName();
         }
         initIntent();

@@ -27,6 +27,9 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.DecodeHintType;
+import com.google.zxing.integration.android.IntentIntegrator;
 import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushConfig;
 import com.tencent.android.tpush.XGPushManager;
@@ -49,6 +52,7 @@ import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
 import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.ui.device.DeviceConstant;
 import com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity;
+import com.xiaolian.amigo.ui.device.washer.ScanActivity;
 import com.xiaolian.amigo.ui.user.CompleteInfoActivity;
 import com.xiaolian.amigo.ui.device.bathroom.BathroomActivity;
 import com.xiaolian.amigo.ui.device.bathroom.BookingActivity;
@@ -109,6 +113,7 @@ import static com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity.KEY_B
 import static com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity.KEY_ID;
 import static com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity.KEY_RESIDENCE_ID;
 import static com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity.KEY_RESIDENCE_TYPE;
+import static com.xiaolian.amigo.ui.device.washer.ScanActivity.SCAN_TYPE;
 import static com.xiaolian.amigo.util.Log.getContext;
 
 /**
@@ -294,6 +299,13 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         }
     }
 
+    /**
+     * 扫一扫
+     */
+    @OnClick(R.id.iv_scan)
+    public void scan(){
+        scanQRCode();
+    }
     @Override
     protected void setUp() {
         super.setUp();
@@ -454,6 +466,29 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         }
         // 注册信鸽推送
         registerXGPush();
+    }
+
+
+
+
+
+    private void scanQRCode() {
+//        startActivity(new Intent(this, CaptureActivity.class));
+        IntentIntegrator integrator = new IntentIntegrator(this);
+        //底部的提示文字，设为""可以置空
+        integrator.setPrompt("");
+        //前置或者后置摄像头
+        integrator.setCameraId(0);
+        //扫描成功的「哔哔」声，默认开启
+        integrator.setBeepEnabled(false);
+        integrator.setCaptureActivity(ScanActivity.class);
+        integrator.setOrientationLocked(true);
+        integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
+        integrator.addExtra(DecodeHintType.CHARACTER_SET.name(), "utf-8");
+        integrator.addExtra(DecodeHintType.TRY_HARDER.name(), Boolean.TRUE);
+        integrator.addExtra(DecodeHintType.POSSIBLE_FORMATS.name(), BarcodeFormat.QR_CODE);
+        integrator.addExtra(SCAN_TYPE , 2);
+        integrator.initiateScan();
     }
 
     private void uploadDeviceInfo() {
@@ -1185,6 +1220,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         getBlePermission();
     }
 
+
+
+
     @Override
     public void routeToBathroomShower(BathRouteRespDTO dto) {
         startActivity(new Intent(this, ChooseBathroomActivity.class)
@@ -1231,6 +1269,14 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @Override
     public void currentOrder(CurrentBathOrderRespDTO dto) {
         EventBus.getDefault().post(dto);
+    }
+
+    @Override
+    public void startToBathroomShower() {
+        startActivity(new Intent(this, ChooseBathroomActivity.class)
+                .putExtra(KEY_BUILDING_ID ,1L)
+                .putExtra(KEY_RESIDENCE_TYPE , 1L )
+                .putExtra(KEY_RESIDENCE_ID ,1L));
     }
 
     /**

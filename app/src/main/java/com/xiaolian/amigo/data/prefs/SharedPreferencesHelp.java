@@ -42,6 +42,7 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     private static final String PREF_KEY_MOBILE = "PREF_KEY_MOBILE";
     private static final String PREF_KEY_PICTURE_URL = "PREF_KEY_PICTURE_URL";
     private static final String PREF_KEY_BUILD_ID = "PREF_KEY_BUILD_ID";
+    private static final String PREF_KEY_SEX = "PREF_KEY_SEX" ;
     private static final String PREF_CMD_CONNECT_PREFIX = "PREF_CMD_CONNECT_";
     private static final String PREF_CMD_CLOSE_PREFIX = "PREF_CMD_CLOSE_";
     private static final String PREF_ORDER_ID_PREFIX = "PREF_ORDER_ID_PREFIX";
@@ -168,16 +169,17 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
             userHolder = new User();
         }
         userHolder.setId(mSharedPreferences.getLong(PREF_KEY_UID, -1));
-        userHolder.setResidenceId(mSharedPreferences.getLong(PREF_KEY_RESIDENCE_ID, -1));
-        userHolder.setResidenceName(mSharedPreferences.getString(PREF_KEY_RESIDENCE_NAME, null));
+        userHolder.setResidenceId(mSharedPreferences.getLong(PREF_KEY_RESIDENCE_ID, -1L));
+        userHolder.setResidenceName(mSharedPreferences.getString(PREF_KEY_RESIDENCE_NAME, ""));
         userHolder.setMacAddress(mSharedPreferences.getString(PREF_KEY_MAC_ADDRESS, null));
-        userHolder.setSchoolId(mSharedPreferences.getLong(PREF_KEY_SCHOOL_ID, -1));
+        userHolder.setSchoolId(mSharedPreferences.getLong(PREF_KEY_SCHOOL_ID, -1L));
         userHolder.setSchoolName(mSharedPreferences.getString(PREF_KEY_SCHOOL_NAME, null));
         userHolder.setNickName(mSharedPreferences.getString(PREF_KEY_NICKNAME, null));
         userHolder.setMobile(mSharedPreferences.getString(PREF_KEY_MOBILE, null));
         userHolder.setPictureUrl(mSharedPreferences.getString(PREF_KEY_PICTURE_URL, null));
-        userHolder.setCreateTime(mSharedPreferences.getLong(PREF_KEY_USER_CREATE_TIME, 0));
-        userHolder.setBuildingId(mSharedPreferences.getLong(PREF_KEY_BUILD_ID, -1));
+        userHolder.setCreateTime(mSharedPreferences.getLong(PREF_KEY_USER_CREATE_TIME, 0L));
+        userHolder.setBuildingId(mSharedPreferences.getLong(PREF_KEY_BUILD_ID, -1L));
+        userHolder.setSex(mSharedPreferences.getInt(PREF_KEY_SEX , -1));
         return userHolder;
     }
 
@@ -222,6 +224,11 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
         if (null != user.getBuildingId()) {
             mSharedPreferences.edit().putLong(PREF_KEY_BUILD_ID,
                     user.getBuildingId()).apply();
+        }
+
+        if (null != user.getSex()){
+            mSharedPreferences.edit().putInt(PREF_KEY_SEX,
+                    user.getSex()).apply();
         }
     }
 

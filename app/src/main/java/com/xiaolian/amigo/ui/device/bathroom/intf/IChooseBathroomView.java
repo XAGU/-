@@ -7,6 +7,7 @@ import com.xiaolian.amigo.data.network.model.bathroom.BuildingTrafficDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.QueueInfo;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 import com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomOuterAdapter;
+import com.xiaolian.amigo.ui.widget.CircleProgressView;
 
 import java.util.List;
 
@@ -15,8 +16,6 @@ import java.util.List;
  * @date 18/7/3
  */
 public interface IChooseBathroomView extends IBaseView {
-    void refreshBathroom(List<ChooseBathroomOuterAdapter.BathGroupWrapper> wrappers,
-                         List<Integer> methods, Integer missTimes);
 
 
     /**
@@ -25,15 +24,17 @@ public interface IChooseBathroomView extends IBaseView {
      */
     void refreshBathroom(BathBuildingRespDTO respDTO);
 
+
     /**
      * 显示动画
      */
-    void showBathroomDialog();
+    void showBathroomDialog(String content);
 
     /**
      * 隐藏动画
      */
-    void hideBathroomDialog();
+    void hideBathroomDialog(boolean isSuccess);
+
 
     /**
      * 设置标题名字
@@ -81,4 +82,6 @@ public interface IChooseBathroomView extends IBaseView {
      * 去结算页面
      */
     void startOrderInfo(BathOrderCurrentRespDTO data);
+
+    void showError();
 }

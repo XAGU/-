@@ -64,6 +64,11 @@ public class BathroomHeaterActivity extends BathroomBaseActivity implements IBat
 
     private BathOrderCurrentRespDTO bathOrderRespDTO;
 
+    /**
+     * 是否需要去订单详情，是为了解决结账后已经进入订单详情时，延迟查询还在查询的时候进入订单详情。
+     */
+    boolean needToOrderInfo = false ;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,7 +79,6 @@ public class BathroomHeaterActivity extends BathroomBaseActivity implements IBat
         setUp();
         initPreView();
         initView();
-//        initTextData();
     }
 
     @Override
@@ -90,6 +94,7 @@ public class BathroomHeaterActivity extends BathroomBaseActivity implements IBat
             this.finish();
             return;
         }
+        needToOrderInfo = true ;
         presenter.queryBathroomOrder(orderId , true);
 
     }
@@ -107,20 +112,6 @@ public class BathroomHeaterActivity extends BathroomBaseActivity implements IBat
         tradeTip.setText("用水结束后，请务必滑动下方按钮，进行结算找零\n消费金额以实际用水量为准");
     }
 
-
-    private void initTextData() {
-        tvDeviceTitle.setText("3楼1栋");
-
-        if (bsvWave != null && !bsvWave.isRunning()) {
-            bsvWave.startAnim();
-        }
-        tvShowerPayed.setText("已预付5元");
-        flBottom.setVisibility(View.VISIBLE);
-        String tip = "用水结束后，请务必滑动下方按钮，进行结算找零\n消费金额以实际用水量为准" ;
-
-        tradeTip.setText(tip.replace("\\n" ,"\n"));
-
-    }
 
     private void initData() {
         tvDeviceTitle.setText(bathOrderRespDTO.getLocation());
@@ -141,25 +132,30 @@ public class BathroomHeaterActivity extends BathroomBaseActivity implements IBat
             @Override
             public void setUnLocked(boolean lock) {
                 if (lock) {
-                    presenter.askSettle(bathOrderRespDTO.getTradeOrderId());
+                    presenter.askSettle(bathOrderRespDTO.getId());
                 }
             }
         });
     }
 
 
+
     @Override
     public void goToOrderInfo(BathOrderCurrentRespDTO dto) {
-        String userMethod ="";
-        if (dto.getLocation().equals("任意空浴室")){
-            userMethod = "预约任意空浴室";
-        }else{
-            userMethod = "预约指定浴室";
+        if (needToOrderInfo) {
+            String userMethod = "";
+            if (dto.getLocation().equals("任意空浴室")) {
+                userMethod = "预约任意空浴室";
+            } else {
+                userMethod = "预约指定浴室";
+            }
+            Intent intent = new Intent(this, BathOrderActivity.class);
+            intent.putExtra(Constant.BUNDLE_ID, dto.getTradeOrderId());
+            intent.putExtra(KEY_USER_STYLE, userMethod);
+            startActivity(intent);
         }
-        Intent intent = new Intent(this, BathOrderActivity.class);
-        intent.putExtra(Constant.BUNDLE_ID, dto.getTradeOrderId());
-        intent.putExtra(KEY_USER_STYLE ,userMethod);
-        startActivity(intent);
+        needToOrderInfo = false ;
+
     }
 
     @Override
@@ -177,17 +173,21 @@ public class BathroomHeaterActivity extends BathroomBaseActivity implements IBat
 
     @Override
     public void goToOrderInfo() {
-        String userMethod ="";
-        if (bathOrderRespDTO.getLocation().equals("任意空浴室")){
-            userMethod = "预约任意空浴室";
-        }else{
-            userMethod = "预约指定浴室";
+        if (needToOrderInfo) {
+            String userMethod = "";
+            if (bathOrderRespDTO.getLocation().equals("任意空浴室")) {
+                userMethod = "预约任意空浴室";
+            } else {
+                userMethod = "预约指定浴室";
+            }
+            Intent intent = new Intent(this, BathOrderActivity.class);
+            intent.putExtra(Constant.BUNDLE_ID, bathOrderRespDTO.getTradeOrderId());
+            intent.putExtra(KEY_USER_STYLE, userMethod);
+            startActivity(intent);
         }
-        Intent intent = new Intent(this, BathOrderActivity.class);
-        intent.putExtra(Constant.BUNDLE_ID, bathOrderRespDTO.getTradeOrderId());
-        intent.putExtra(KEY_USER_STYLE ,userMethod);
-        startActivity(intent);
+        needToOrderInfo = false ;
     }
+
 
     @Override
     protected void onDestroy() {

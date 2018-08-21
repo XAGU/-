@@ -162,4 +162,10 @@ public interface IMainView extends IBaseView {
      * 显示上一洗澡订单状态
      */
     void currentOrder(CurrentBathOrderRespDTO dto);
+
+
+    /**
+     * 测试,直接写死数据
+     */
+    void startToBathroomShower();
 }

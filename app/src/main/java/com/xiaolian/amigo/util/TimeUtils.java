@@ -135,9 +135,9 @@ public class TimeUtils {
 
             /**   秒少于2位数加0   */
             if (time % SIXTY < 10){
-                preString += " ：0" +time % SIXTY ;
+                preString += ":0" +time % SIXTY ;
             }else{
-                preString += " ：" + time % SIXTY ;
+                preString += ":" + time % SIXTY ;
             }
 
         }

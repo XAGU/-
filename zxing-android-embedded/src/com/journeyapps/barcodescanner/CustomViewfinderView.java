@@ -1,4 +1,4 @@
-package com.xiaolian.amigo.ui.widget.qrcode;
+package com.journeyapps.barcodescanner;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -10,11 +10,6 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 
 import com.google.zxing.ResultPoint;
-import com.journeyapps.barcodescanner.ViewfinderView;
-import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.util.Constant;
-import com.xiaolian.amigo.util.DimentionUtils;
-import com.xiaolian.amigo.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +41,7 @@ public class CustomViewfinderView extends ViewfinderView {
 
 
     public void setColors(int  type){
-        if (type == Constant.COLOR_SCAN){
+        if (type == 1){
             linearColor = colorsScan ;
         }else{
             linearColor = colors ;
@@ -164,7 +159,8 @@ public class CustomViewfinderView extends ViewfinderView {
 
     private void drawTipText(Canvas canvas, Rect frame, int width) {
         if (TextUtils.isEmpty(scannerTipText)) {
-            scannerTipText = getResources().getString(R.string.zxing_scanner_tip);
+//            scannerTipText = getResources().getString(R.string.zxing_scanner_tip);
+              scannerTipText = "请将二维码放入框内，即可自动扫描" ;
         }
         paint.setColor(Color.WHITE);
         paint.setTextSize(DimentionUtils.convertSpToPixels(12, getContext()));

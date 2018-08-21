@@ -1,8 +1,8 @@
 package com.xiaolian.amigo.ui.widget;
 
+import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -13,18 +13,20 @@ import android.os.Parcelable;
 import android.support.annotation.IntDef;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.LinearInterpolator;
 import android.widget.ProgressBar;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.util.DimentionUtils;
 import com.xiaolian.amigo.util.RxHelper;
 import com.xiaolian.amigo.util.ScreenUtils;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.concurrent.TimeUnit;
 
-import rx.internal.util.ObserverSubscriber;
+import rx.functions.Action1;
 
 public class CircleProgressView extends ProgressBar {
     private static final String TAG = CircleProgressView.class.getSimpleName();
@@ -176,8 +178,6 @@ public class CircleProgressView extends ProgressBar {
     private int mTextValue = 0 ;
 
     private ValueAnimator valueAnimator ;
-    private ValueAnimator circleAnimator ;
-    private boolean setMtextValue = true ;
     public CircleProgressView(Context context) {
         this(context, null);
     }
@@ -191,6 +191,9 @@ public class CircleProgressView extends ProgressBar {
         obtainAttributes(attrs);
         initPaint();
     }
+
+
+
 
 
     /**
@@ -403,11 +406,6 @@ public class CircleProgressView extends ProgressBar {
     private void drawNormalCircle(Canvas canvas) {
         canvas.save();
         canvas.translate(mRealWidth / 2, mRealHeight / 2);
-        // 绘制内部圆形背景色
-//        if (needDrawInnerBackground) {
-//            canvas.drawCircle(0, 0, mRadius - Math.min(mReachBarSize, mNormalBarSize) / 2,
-//                    mInnerBackgroundPaint);
-//        }
         // 绘制文字
         if (mTextVisible) {
             String text = mTextPrefix + mTextValue + mTextSuffix;
@@ -417,31 +415,12 @@ public class CircleProgressView extends ProgressBar {
         }
         // 计算进度值
         float reachArc = getProgress() * 1.0f / getMax() * 360;
-        // 绘制未到达进度
-//        if (reachArc != 360) {
-//            canvas.drawArc(rectF, reachArc + mStartArc, 360 - reachArc, false, mNormalPaint);
-//        }
         // 绘制已到达进度
         canvas.drawArc(rectF, mStartArc, reachArc, false, mReachPaint);
         canvas.restore();
     }
 
-    /**
-     * 动画进度(0-当前进度)
-     *
-     * @param duration 动画时长
-     */
-    public void runProgressAnim(long duration) {
-        setProgressInTime(0, duration);
-    }
 
-    /**
-     * @param progress 进度值
-     * @param duration 动画播放时间
-     */
-    public void setProgressInTime(final int progress, final long duration) {
-        setProgressInTime(progress, getProgress(), duration);
-    }
 
 
     /**
@@ -450,7 +429,7 @@ public class CircleProgressView extends ProgressBar {
      * @param duration 动画播放时间
      */
     public void setProgressInTime(int startProgress, final int progress, final long duration ) {
-        if (valueAnimator == null || !isFinish) {
+        if (valueAnimator == null ) {
             valueAnimator = ValueAnimator.ofInt(startProgress, progress);
             valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 
@@ -458,105 +437,87 @@ public class CircleProgressView extends ProgressBar {
                 public void onAnimationUpdate(ValueAnimator animator) {
                     //获得当前动画的进度值，整型，1-100之间
                     int currentValue = (Integer) animator.getAnimatedValue();
-                    mReachBarColor = Color.parseColor("#00d3c7");
-                    mNormalBarColor = Color.parseColor("#FFD3D6DA");
-
-                    if (setMtextValue) {
-                        mTextValue = currentValue;
-                    }
+                    mTextValue = currentValue ;
                     setProgress(currentValue);
-                    if (currentValue == progress) {
-                        setCircleAnimator(2000);
-                    }
+                    invalidate();
                 }
             });
-            AccelerateDecelerateInterpolator interpolator = new AccelerateDecelerateInterpolator();
-            valueAnimator.setInterpolator(interpolator);
+            valueAnimator.setInterpolator(new LinearInterpolator());
             valueAnimator.setDuration(duration);
         }
         if (!valueAnimator.isRunning()) {
             valueAnimator.start();
+        }else{
+            valueAnimator.cancel();
+            valueAnimator.start();
         }
     }
 
+
+    FinishListener finishListener ;
+
+
+    public void setFinishListener(FinishListener finishListener) {
+        this.finishListener = finishListener;
+    }
+
     /**
-     * 设置完成
+     * 设置完成 , 动画转到100 ；
      */
     public void setFinish(){
-        isFinish = true ;
-    }
-
-    /**
-     * 设置外圆的透明度
-     */
-    public void setCircleAnimator(long duration){
-        if (circleAnimator == null) {
-            circleAnimator = ValueAnimator.ofInt(100, 0);
-            circleAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-
-                @Override
-                public void onAnimationUpdate(ValueAnimator animator) {
-                    //获得当前动画的进度值，整型，1-100之间
-                    int currentValue = (int) animator.getAnimatedValue();
-//                    Log.e(TAG, "onAnimationUpdate: " + currentValue );
-                    int alpha = currentValue * HEX_MAX / 100 ;
-//                    Log.e(TAG, "onAnimationUpdate: " + alpha );
-                    setCircleColor(currentValue , alpha);
-                    invalidate();
-                    if (0 == currentValue) {
-                        setMtextValue = false ;
-                        if (isFinish){
-                            setProgressInTime(0 , 100 ,2000);
-                        }else {
-                            setProgressInTime(0, 90, 2000);
-                        }
-                    }
-                }
-            });
-            AccelerateDecelerateInterpolator interpolator = new AccelerateDecelerateInterpolator();
-            circleAnimator.setInterpolator(interpolator);
-            circleAnimator.setDuration(duration);
+        if (valueAnimator != null){
+            valueAnimator.cancel();
         }
-        if (!circleAnimator.isRunning()) {
-            circleAnimator.start();
-        }
+        Log.e(TAG, "setFinish: " );
+        ValueAnimator finishAnimator = ValueAnimator.ofInt(getProgress() , 100);
+        finishAnimator.setDuration(300);
+        valueAnimator.setInterpolator(new LinearInterpolator());
+        finishAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                int currentValue = (Integer) animation.getAnimatedValue();
+                mTextValue = currentValue ;
+                setProgress(currentValue);
+                invalidate();
+
+            }
+        });
+
+        finishAnimator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                Log.e(TAG, "onAnimationEnd: " );
+                RxHelper.delay(300 , TimeUnit.MILLISECONDS)
+                        .subscribe(new Action1<Integer>() {
+                            @Override
+                            public void call(Integer integer) {
+                                finishListener.finishDialog();
+                            }
+                        });
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+        finishAnimator.start();
     }
 
-    /**
-     * 设置圆环透明度
-     * @param currentValue
-     */
-    private void setCircleColor(int currentValue  , int alpha){
-        String mBaseReachBarColor = "00d3c7";
-        String mBaseNormalBarColor = "D3D6DA";
-        String alphaHex = Integer.toHexString(alpha);
-        if (alphaHex.length() == 1){  //  透明度必须为2位数，不够的添上0
-            alphaHex = "00";
-            mBaseNormalBarColor = "000000";
-            mBaseReachBarColor = "000000";
-        }
-        setCircleColor(getAlphaCircle(alphaHex,mBaseReachBarColor) ,getAlphaCircle(alphaHex ,mBaseNormalBarColor));
-    }
 
-    /**
-     * 获取设置带透明度的颜色
-     * @param alpha
-     * @param baseColor
-     * @return
-     */
-    private  String getAlphaCircle(String alpha ,String baseColor){
-       return BASE_PRE_COLOR+alpha+baseColor ;
-    }
 
-    /**
-     * 设置透明度
-     * @param mReacherColor   已完成进度的颜色
-     * @param normalColor    未完成进度的颜色
-     */
-    private void setCircleColor( String mReacherColor , String normalColor){
-//        Log.e(TAG, "setCircleColor: " + mReacherColor + " >>>>>>" + normalColor );
-        mReachBarColor = Color.parseColor(mReacherColor);
-        mNormalBarColor = Color.parseColor(normalColor);
+    public interface FinishListener{
+        void finishDialog();
     }
 
     /**
@@ -567,9 +528,6 @@ public class CircleProgressView extends ProgressBar {
             valueAnimator.cancel();
         }
 
-        if (circleAnimator != null && circleAnimator.isRunning()){
-            circleAnimator.cancel();
-        }
     }
 
     public int getReachBarSize() {
@@ -804,4 +762,5 @@ public class CircleProgressView extends ProgressBar {
         initPaint();
         super.invalidate();
     }
+
 }

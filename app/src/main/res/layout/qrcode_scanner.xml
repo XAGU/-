@@ -10,14 +10,11 @@
         app:zxing_framing_rect_height="220dp">
     </com.journeyapps.barcodescanner.BarcodeView>
 
-    <com.xiaolian.amigo.ui.widget.qrcode.CustomViewfinderView
+    <com.journeyapps.barcodescanner.CustomViewfinderView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/zxing_viewfinder_view"
-        app:zxing_possible_result_points="@color/zxing_custom_possible_result_points"
-        app:zxing_result_view="@color/zxing_custom_result_view"
-        app:zxing_viewfinder_laser="#FFFFFF"
-        app:zxing_viewfinder_mask="@color/zxing_custom_viewfinder_mask"/>
+        android:id="@+id/zxing_viewfinder_view"/>
+
 
     <TextView
         android:visibility="gone"

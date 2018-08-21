@@ -338,9 +338,9 @@
     <string name="repurchase">重新预约</string>
     <string name="preBookTimeOut">预约超时</string>
     <string name="retry">重试</string>
-    <string name="preBathWithAnyEmptyBath">预约洗澡(任意空浴室)</string>
+    <string name="preBathWithAnyEmptyBath">预约洗澡<font >(任意空浴室)</font></string>
     <string name="InsufficientBalance">余额不足，请前往充值</string>
-    <string name="atLeastInTheWallet">请确保你的钱包中可用余额至少%1$s元</string>
+    <string name="atLeastInTheWallet">请确保你的钱包中可用余额大于%1$s元</string>
     <string name="tip">用水结束后，请务必滑动下方按钮，进行结算找零\n消费金额以实际用水量为准</string>
     <string name="tip_timeout">已失约，请重新预约</string>
     <string name="preBookingWait">预约排队</string>

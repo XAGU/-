@@ -314,5 +314,14 @@ public final class Constant {
     public static final int ORDER_SETTLE = 2 ;   //  已结算
 
 
+    /**
+     * color  拍照渐变线
+     */
+
+    public static final int COLOR_WASHING = 1 ;  // 洗衣机
+
+    public static final int COLOR_SCAN = 2 ; // 扫一扫
+
+
 
 }

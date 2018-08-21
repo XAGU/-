@@ -377,26 +377,23 @@ public class HomeFragment2 extends Fragment {
     @SuppressWarnings("unchecked")
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void OrderEvent(CurrentBathOrderRespDTO  event){
-        Log.e(TAG  ,"预约订单" +event.getStatus());
-//        if (event.isExistOrder()){
             checkTitleTip(event);
-//        }
     }
 
     /**
      * 显示主页面是否有上一订单
      * @param event
      */
-    private void checkTitleTip(CurrentBathOrderRespDTO event){
-      shower.setExistOrder(true);
-      shower.setStatus(event.getStatus());
-      if (event.getStatus() == Constant.USING_STATUS){
-        shower.setUsing(true);
-      }else{
-          shower.setUsing(false);
-      }
-        Log.e(TAG  ,"checkTitleTip预约订单" +event.getStatus());
-      notifyAdaptor();
+    private void checkTitleTip(CurrentBathOrderRespDTO event) {
+            shower.setExistOrder(true);
+            shower.setStatus(event.getStatus());
+            if (event.getStatus() == Constant.USING_STATUS) {
+                shower.setUsing(true);
+            } else {
+                shower.setUsing(false);
+            }
+            Log.e(TAG, "checkTitleTip预约订单" + event.getStatus());
+            notifyAdaptor();
     }
 
 

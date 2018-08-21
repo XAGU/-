@@ -243,8 +243,6 @@ public class UserDataManager implements IUserDataManager {
         return fileApi.uploadFile(images);
     }
 
-
-
     @Override
     public User getUser() {
         return sharedPreferencesHelp.getUserInfo();

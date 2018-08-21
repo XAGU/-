@@ -3,6 +3,7 @@ package com.xiaolian.amigo.ui.main.adaptor;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -67,47 +68,51 @@ public class HomeSmallDelegate implements ItemViewDelegate<HomeAdaptor.ItemWrapp
         holder.getView(R.id.rl_item).setBackgroundResource(itemWrapper.getSmallRes());
         holder.setText(R.id.tv_device_title, itemWrapper.getDeviceName());
         holder.setText(R.id.tv_desc, itemWrapper.getDesc());
-        if (itemWrapper.isExistOrder() || itemWrapper.getPrepaySize() != 0) {
-            if (itemWrapper.isExistOrder()) {
-                String status = "";
-                switch (itemWrapper.getStatus()) {
-                    case Constant.WAIT_STATUS:
-                        status = "正在排队";
-                        break;
-                    case Constant.TIMEOUT_STATUS:
-                        status = "等待洗浴";
-                        break;
-                    case Constant.USING_STATUS:
-                        status = "正在洗浴";
-                        break;
-                    case 0:
-                        status = "TAKE A SHOWER";
-                        break;
-                }
-                if (!TextUtils.isEmpty(status)) {
-                    holder.getView(R.id.tv_prepay).setVisibility(View.VISIBLE);
-                    holder.setText(R.id.tv_prepay, status);
-                    holder.getView(R.id.tv_desc).setVisibility(View.GONE);
-                }
-            }else {
-                if (itemWrapper.getPrepaySize() != 0) {
-                    holder.getView(R.id.tv_prepay).setVisibility(View.VISIBLE);
-                    holder.setText(R.id.tv_prepay, "(有" + itemWrapper.getPrepaySize() + "笔未找零金额)");
-                    holder.getView(R.id.tv_desc).setVisibility(View.GONE);
-                }
+        if (itemWrapper.isExistOrder()){
+            String stauts = "";
+            switch (itemWrapper.getStatus()){
+                case Constant.WAIT_STATUS:
+                    stauts = "正在排队";
+                    break;
+                case Constant.TIMEOUT_STATUS:
+                    stauts = "等待洗浴";
+                    break;
+                case Constant.USING:
+                    stauts = "正在洗浴";
+                    break;
             }
-        }else{
-                holder.getView(R.id.tv_desc).setVisibility(View.VISIBLE);
+            if (!TextUtils.isEmpty(stauts)) {
+                holder.setText(R.id.tv_device_title, stauts);
+                holder.getView(R.id.tv_prepay).setVisibility(View.GONE);
+                if (itemWrapper.isUsing() ) {
+                    holder.getView(R.id.dfv_dot).setVisibility(View.VISIBLE);
+                    ((DotFlashView) holder.getView(R.id.dfv_dot)).startAnimation();
+                } else {
+                    holder.getView(R.id.dfv_dot).setVisibility(View.GONE);
+                    ((DotFlashView) holder.getView(R.id.dfv_dot)).endAnimation();
+                }
+
+            }else{
+                holder.setText(R.id.tv_device_title, itemWrapper.getDeviceName());
+                holder.getView(R.id.tv_prepay).setVisibility(View.GONE);
+                ((DotFlashView) holder.getView(R.id.dfv_dot)).endAnimation();
+            }
+        }else {
+            if (itemWrapper.getPrepaySize() != 0) {
+                holder.getView(R.id.tv_prepay).setVisibility(View.VISIBLE);
+                holder.setText(R.id.tv_prepay, "(有" + itemWrapper.getPrepaySize() + "笔未找零金额)");
+            } else {
                 holder.getView(R.id.tv_prepay).setVisibility(View.GONE);
             }
-        if (itemWrapper.isUsing()) {
-            holder.setText(R.id.tv_device_title, "正在使用");
-            holder.getView(R.id.dfv_dot).setVisibility(View.VISIBLE);
-            ((DotFlashView) holder.getView(R.id.dfv_dot)).startAnimation();
-        } else {
-            holder.setText(R.id.tv_device_title, itemWrapper.getDeviceName());
-            holder.getView(R.id.dfv_dot).setVisibility(View.GONE);
-            ((DotFlashView) holder.getView(R.id.dfv_dot)).endAnimation();
+            if (itemWrapper.isUsing()) {
+                holder.setText(R.id.tv_device_title, "正在使用" + itemWrapper.getDeviceName());
+                holder.getView(R.id.dfv_dot).setVisibility(View.VISIBLE);
+                ((DotFlashView) holder.getView(R.id.dfv_dot)).startAnimation();
+            } else {
+                holder.setText(R.id.tv_device_title, itemWrapper.getDeviceName());
+                holder.getView(R.id.dfv_dot).setVisibility(View.GONE);
+                ((DotFlashView) holder.getView(R.id.dfv_dot)).endAnimation();
+            }
         }
     }
 

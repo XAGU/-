@@ -1,19 +1,13 @@
 package com.xiaolian.amigo.ui.device.bathroom;
 
-import android.text.TextUtils;
 import android.util.Log;
 
-import com.xiaolian.amigo.data.enumeration.BathTradeType;
 import com.xiaolian.amigo.data.manager.intf.IBathroomDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.bathroom.BathBookingReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathBookingRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathBookingStatusReqDTO;
-import com.xiaolian.amigo.data.network.model.bathroom.BathOrderRespDTO;
-import com.xiaolian.amigo.data.network.model.bathroom.BathPreBookingRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathRoomReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BookingQueueProgressDTO;
-import com.xiaolian.amigo.data.network.model.bathroom.TryBookingResultRespDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
@@ -32,8 +26,6 @@ import rx.functions.Action1;
 import static com.xiaolian.amigo.util.Constant.ACCEPTED;
 import static com.xiaolian.amigo.util.Constant.CANCELED;
 import static com.xiaolian.amigo.util.Constant.EXPIRED;
-import static com.xiaolian.amigo.util.Constant.FAIL;
-import static com.xiaolian.amigo.util.Constant.INIT;
 import static com.xiaolian.amigo.util.Constant.OPENED;
 
 
@@ -50,24 +42,37 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
     private Long bathOrderId;  //  设备订单
     private Subscription subscription;
     private static int queryNum = 0 ;  //  查询订单状态次数，最多只能五次
+
+    private static int queryCancle = 0 ;  //  查询取消状态  ， 最多5次
     @Inject
     public BookingPresenter(IBathroomDataManager bathroomDataManager) {
         this.bathroomDataManager = bathroomDataManager;
     }
 
-
+        
     @Override
     public void cancel(long id) {
         SimpleReqDTO reqDTO = new SimpleReqDTO();
         reqDTO.setId(id);
         addObserver(bathroomDataManager.cancel(reqDTO),
                 new NetworkObserver<ApiResult<BooleanRespDTO>>() {
+                    @Override
+                    public void onStart() {
+                        getMvpView().showLoading("正在取消预约，T~T");
+                    }
 
                     @Override
                     public void onReady(ApiResult<BooleanRespDTO> result) {
                         if (null == result.getError()) {
-                            getMvpView().bookingCancel();
+                            if (result.getData().isResult()) {
+                                getMvpView().hideWaitLoading(true);
+                                getMvpView().bookingCancel();
+                            }else{
+                                queryCancle = 1 ;
+                                query(id);
+                            }
                         } else {
+                            getMvpView().hideWaitLoading(false);
                             getMvpView().onError(result.getError().getDisplayMessage());
                         }
                     }
@@ -119,6 +124,7 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
                             delay(time, new Action1<Long>() {
                                 @Override
                                 public void call(Long aLong) {
+                                    Log.e(TAG, "queryBookign:  >>>> delay"   );
                                     query(bathOrderId, true , time , false);
                                 }
                             });
@@ -129,8 +135,9 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
                     } else {
                           if (result.getData().getStatus() == ACCEPTED){  // 成功
                                 getMvpView().bookingSuccess(result.getData());
-                                query(bathOrderId ,true ,10 , false);
+//                                query(bathOrderId ,true ,10 , false);
                           } else if (result.getData().getStatus() == OPENED){  // 使用中
+                              Log.e(TAG, "queryBookign: >>>>> using"   );
                               getMvpView().gotoUsing(result.getData().getBathOrderId());
                           }else if (result.getData().getStatus() == EXPIRED){   //  超时
                               getMvpView().appointMentTimeOut(result.getData());
@@ -138,6 +145,51 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
                     }
                 }
                 }
+        });
+    }
+
+    /**
+     * 预约时查询订单状态
+     * @param
+     */
+    public void query(long bookingId ) {
+        BathBookingStatusReqDTO reqDTO = new BathBookingStatusReqDTO();
+        reqDTO.setId(bookingId+"");
+        addObserver(bathroomDataManager.query(reqDTO) , new NetworkObserver<ApiResult<BathBookingRespDTO>>() {
+
+
+            @Override
+            public void onStart() {
+            }
+
+            @Override
+            public void onReady(ApiResult<BathBookingRespDTO> result) {
+                if (result.getError() == null) {
+                    if (result.getData().getStatus() == ACCEPTED){
+                        if (queryCancle < 4) {
+                            delay(3, new Action1<Long>() {
+                                @Override
+                                public void call(Long aLong) {
+                                    queryCancle++;
+                                    query(bookingId);
+                                }
+                            });
+                        }else{
+                            queryCancle = 0 ;
+                            getMvpView().onError("取消预约失败");
+                            getMvpView().hideWaitLoading(false);
+                        }
+                    }else if (result.getData().getStatus() ==CANCELED){
+                        queryCancle = 0 ;
+                        getMvpView().bookingCancel();
+                        getMvpView().hideWaitLoading(true);
+                    }
+                }else{
+                    queryCancle = 0 ;
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                    getMvpView().hideWaitLoading(false);
+                }
+            }
         });
     }
 
@@ -157,39 +209,6 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
             }
         });
     }
-
-    @Override
-    public void booking(String device ) {
-        BathBookingReqDTO reqDTO = new BathBookingReqDTO();
-        if (TextUtils.isEmpty(device)){
-            reqDTO.setDeviceNo(0);
-            reqDTO.setType(BathTradeType.BOOKING_WITHOUT_DEVICE.getCode());
-        }else{
-            reqDTO.setDeviceNo(Integer.parseInt(device));
-            reqDTO.setType(BathTradeType.BOOKING_DEVICE.getCode());
-        }
-
-        addObserver(bathroomDataManager.booking(reqDTO) , new NetworkObserver<ApiResult<TryBookingResultRespDTO>>(){
-
-            @Override
-            public void onStart() {
-                getMvpView().showWaitLoading();
-            }
-
-            @Override
-            public void onReady(ApiResult<TryBookingResultRespDTO> result) {
-                if (null == result.getError()) {
-
-
-                } else {
-                    getMvpView().onError(result.getError().getDisplayMessage());
-                }
-                getMvpView().hideWaitLoading();
-            }
-        });
-    }
-
-
 
     @Override
     public void countDownexpiredTime(long expiredTime) {

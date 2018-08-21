@@ -43,7 +43,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
-                        tool:text="预约使用" />
+                        tool:text="预约洗澡" />
 
 
                     <TextView
@@ -88,7 +88,7 @@
                         android:textColor="#222"
                         android:textSize="@dimen/sp15"
                         android:textStyle="bold"
-                        tool:text="预约使用" />
+                        tool:text="预约洗澡" />
 
                     <TextView
                         android:id="@+id/tv_sub_title"
@@ -214,13 +214,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="14dp"
-                android:layout_marginTop="14dp">
+                android:layout_marginTop="@dimen/mainMarginLeftRight">
 
                 <TextView
                     android:id="@+id/tv_tip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
+                    android:textSize="@dimen/sp12"
+                    android:textColor="@color/colorDark6"
                     android:text="预约使用说明" />
 
                 <View
@@ -250,9 +252,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="9dp"
                 android:lineSpacingExtra="3dp"
+                style="@style/content_tip"
                 tool:text="@string/booking_use_tip1" />
 
             <TextView
+                style="@style/content_tip"
                 android:id="@+id/tv_tip2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -261,6 +265,7 @@
                 tool:text="@string/booking_use_tip2" />
 
             <TextView
+                style="@style/content_tip"
                 android:id="@+id/tv_tip3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -269,6 +274,7 @@
                 tool:text="@string/booking_use_tip3" />
 
             <TextView
+                style="@style/content_tip"
                 android:id="@+id/tv_tip4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -32,7 +32,7 @@
     <dimen name="listBottomMargin">10dp</dimen>
     <dimen name="sp15">15sp</dimen>
     <dimen name="sp12">12sp</dimen>
-    
+    <dimen name="sp11">11sp</dimen>
     
     <!--common-->
     <!--纯文字-->

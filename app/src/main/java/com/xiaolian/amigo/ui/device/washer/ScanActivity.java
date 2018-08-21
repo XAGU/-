@@ -10,6 +10,8 @@ import android.support.v4.math.MathUtils;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.zxing.ResultPoint;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -31,6 +33,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * 二维码扫描页面
  *
@@ -43,17 +48,34 @@ public class ScanActivity extends WasherBaseActivity
     private static final String TAG = ScanActivity.class.getSimpleName();
     private static final int FRAMING_SIZE_DIVISOR = 4;
 
+    public static final String SCAN_TYPE= "SCAN_TYPE"  ;   // 扫描类型
+
     @Inject
     IScanPresenter<IScanView> presenter;
+    @BindView(R.id.zxing_barcode_scanner)
+    DecoratedBarcodeView zxingBarcodeScanner;
+    @BindView(R.id.zxing_status_view)
+    TextView zxingStatusView;
+    @BindView(R.id.iv_flashlight)
+    ImageView ivFlashlight;
+    @BindView(R.id.iv_back)
+    ImageView ivBack;
+    @BindView(R.id.tv_title)
+    TextView tvTitle;
 
     private CustomCaptureManager capture;
     private DecoratedBarcodeView barcodeScannerView;
     private boolean torchOn = false;
 
+    private int scanType ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan);
+        ButterKnife.bind(this);
+        setUp();
+        init();
         getActivityComponent().inject(this);
         presenter.onAttach(this);
 
@@ -120,6 +142,11 @@ public class ScanActivity extends WasherBaseActivity
             public void cameraClosed() {
             }
         });
+    }
+
+
+    private void init(){
+        if (zxingBarcodeScanner != null) zxingBarcodeScanner.setType(scanType);
     }
 
     private void setFlashlight() {
@@ -340,7 +367,9 @@ public class ScanActivity extends WasherBaseActivity
 
     @Override
     protected void setUp() {
-
+        if (getIntent() != null){
+            scanType = getIntent().getIntExtra("SCAN_TYPE" , 1);
+        }
     }
 
     @Override

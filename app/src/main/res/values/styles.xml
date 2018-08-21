@@ -434,4 +434,8 @@
         <item name="android:drawableLeft">@drawable/radio_woman</item>
     </style>
 
+    <style name="content_tip">
+        <item name="android:textColor">@color/colorDark9</item>
+        <item name="android:textSize">@dimen/sp11</item>
+    </style>
 </resources>

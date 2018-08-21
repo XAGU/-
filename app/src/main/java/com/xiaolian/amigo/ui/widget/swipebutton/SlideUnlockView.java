@@ -307,7 +307,7 @@ public class SlideUnlockView extends View {
                     } else {
                         currentState = STATE_UNLOCK;
                         // 通过回调设置未解锁
-                        onUnLockListener.setUnLocked(true);
+                        if (onUnLockListener != null) onUnLockListener.setUnLocked(true);
                     }
                     downOnBlock = false;
                     // 调用onDraw方法

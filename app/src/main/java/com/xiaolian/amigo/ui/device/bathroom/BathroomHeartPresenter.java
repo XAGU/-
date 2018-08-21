@@ -1,5 +1,7 @@
 package com.xiaolian.amigo.ui.device.bathroom;
 
+import android.util.Log;
+
 import com.xiaolian.amigo.data.manager.intf.IBathroomDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.bathroom.BathOrderCurrentRespDTO;
@@ -21,6 +23,7 @@ import static com.xiaolian.amigo.util.Constant.ORDER_USING;
 public class BathroomHeartPresenter<V extends IBathroomHeartView> extends BasePresenter<V>
         implements IBathroomHeartPresenter<V> {
 
+    private static final String TAG = BathroomHeartPresenter.class.getSimpleName();
     private IBathroomDataManager bathroomDataManager ;
 
     @Inject
@@ -39,6 +42,7 @@ public class BathroomHeartPresenter<V extends IBathroomHeartView> extends BasePr
                 if (result.getError() == null){
                     if (result.getData().isResult()){
                         getMvpView().onSuccess("结算成功");
+                        Log.e(TAG, "onReady: >>>> askSettle" );
                         getMvpView().goToOrderInfo();
                     }else{
                         getMvpView().onError(result.getData().getFailReason());
@@ -68,12 +72,15 @@ public class BathroomHeartPresenter<V extends IBathroomHeartView> extends BasePr
 
             @Override
             public void onReady(ApiResult<BathOrderCurrentRespDTO> result) {
+
+                Log.e(TAG, "onReady: " );
                 if (result.getError() == null){
                     if (result.getData().getStatus() == ORDER_USING) {
                         getMvpView().getOrderInfo(result.getData());
                         delay(3, new Action1<Long>() {
                             @Override
                             public void call(Long aLong) {
+                                Log.e(TAG, "call:>>>>> delay " );
                                 queryBathroomOrder(id , false);
                             }
                         });
