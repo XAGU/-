@@ -72,6 +72,10 @@ public class NoticeAlertDialog extends Dialog {
         });
     }
 
+    public void setOkButtonTitle(String title) {
+        btOk.setText(title);
+    }
+
     public void setTitle(String title) {
         tvTitle.setText(title);
     }

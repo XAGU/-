@@ -32,4 +32,9 @@ public interface IRepairDetailView extends IBaseView {
      * 返回列表页
      */
     void backToList();
+
+    /**
+     * 显示引导
+     */
+    void showGuide(Integer credits);
 }

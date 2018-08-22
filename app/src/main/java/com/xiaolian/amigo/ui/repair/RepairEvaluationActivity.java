@@ -60,6 +60,11 @@ public class RepairEvaluationActivity extends RepairBaseActivity implements IRep
      * 报修时间
      */
     public static final String INTENT_KEY_REPAIR_EVALUATION_TIME = "intent_key_repair_evaluation_time";
+    /**
+     * 维修评价积分
+     */
+    public static final String INTENT_KEY_REPAIR_CREDITS = "intent_key_repair_credits";
+
 
     @Inject
     IRepairEvaluationPresenter<IRepairEvaluationView> presenter;
@@ -90,6 +95,7 @@ public class RepairEvaluationActivity extends RepairBaseActivity implements IRep
 
     private Long repairId;
     private Integer rating;
+    private Integer credits;
     private List<Integer> ratingOptions = new ArrayList<>();
 
     List<RepairEvaluationLabelAdaptor.Label> labels = new ArrayList<RepairEvaluationLabelAdaptor.Label>() {
@@ -120,6 +126,7 @@ public class RepairEvaluationActivity extends RepairBaseActivity implements IRep
 
         if (getIntent() != null) {
             repairId = getIntent().getLongExtra(INTENT_KEY_REPAIR_EVALUATION_ID, -1);
+            credits = getIntent().getIntExtra(INTENT_KEY_REPAIR_CREDITS, -1);
             String name = getIntent().getStringExtra(INTENT_KEY_REPAIR_EVALUATION_REPAIR_MAN_NAME);
             if (name != null) {
                 tvRepairMan.setText(name);
@@ -220,6 +227,16 @@ public class RepairEvaluationActivity extends RepairBaseActivity implements IRep
     @OnTextChanged(R.id.et_content)
     void onTextChange() {
         toggleBtnStatus();
+    }
+
+    @Override
+    public void repairSuccess() {
+        if (credits == null) /*没有积分，只显示成功*/{
+            onSuccess("评价成功");
+        } else {
+            String message = "评价完成，已获得" + credits.toString() + "积分";
+            onSuccess(message);
+        }
     }
 
     @Override

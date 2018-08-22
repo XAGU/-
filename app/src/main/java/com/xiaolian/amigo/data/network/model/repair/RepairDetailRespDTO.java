@@ -61,4 +61,9 @@ public class RepairDetailRespDTO {
      * 评价
      */
     private String comment;
+    /**
+     * 评价积分
+     */
+    private Integer credits;
+
 }
