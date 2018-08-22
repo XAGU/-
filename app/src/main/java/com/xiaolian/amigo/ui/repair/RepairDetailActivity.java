@@ -80,10 +80,8 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
     ImageView ivSecond;
     @BindView(R.id.iv_third)
     ImageView ivThird;
-    @BindView(R.id.left_oper)
-    Button leftOper;
-//    @BindView(R.id.right_oper)
-//    TextView rightOper;
+    @BindView(R.id.gotoEvaluationButton)
+    Button gotoEvaluationButton;
     @BindView(R.id.ll_extra)
     LinearLayout llExtra;
     @BindView(R.id.tv_extra_title)
@@ -95,9 +93,7 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
     @BindView(R.id.ll_bottom)
     LinearLayout llBottom;
 
-    /**
-     * 温馨提示dialog
-     */
+    /*温馨提示dialog*/
     private NoticeAlertDialog noticeAlertDialog;
 
     /*维修评价详情数据*/
@@ -260,16 +256,15 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
             llBottom.setVisibility(View.VISIBLE);
         }
         String[] opers = status.getNextOperations();
-        leftOper.setText(opers[0]);
-//        rightOper.setText(opers[1]);
+        gotoEvaluationButton.setText(opers[0]);
         /////积分提示
         Integer credits = detail.getCredits();
         if (credits != null) /*有积分时候弹出彩蛋，并且底部的按钮样式也要同步修改*/{
             String repairDoneText = "前往评价，获得" + credits.toString() + "积分";
-            leftOper.setText(repairDoneText);
+            gotoEvaluationButton.setText(repairDoneText);
             presenter.showGuide(credits);
         }
-        leftOper.setOnClickListener(v -> {
+        gotoEvaluationButton.setOnClickListener(v -> {
             switch (status) {
                 case REPAIR_DONE:
                     Intent intent = new Intent(RepairDetailActivity.this, RepairEvaluationActivity.class);
@@ -293,25 +288,9 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
                     break;
             }
         });
-//        rightOper.setOnClickListener(v -> {
-//            switch (status) {
-//                case REPAIR_DONE:
-//                case REPAIR_PENDING:
-//                case REPAIRING:
-//                case AUDIT_PENDING:
-//                    startActivity(new Intent(RepairDetailActivity.this, WebActivity.class)
-//                            .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_HELP));
-//                    break;
-//                case AUDIT_FAIL:
-//                    CommonUtil.call(RepairDetailActivity.this, detail.getCsMobile());
-//                    break;
-//                default:
-//                    break;
-//            }
-//        });
         if (EvaluateStatus.getStatus(detail.getRated()) == EvaluateStatus.EVALUATE_DONE) {
-            leftOper.setEnabled(false);
-            leftOper.setTextColor(ContextCompat.getColor(this, R.color.colorDark9));
+            gotoEvaluationButton.setEnabled(false);
+            gotoEvaluationButton.setTextColor(ContextCompat.getColor(this, R.color.colorDark9));
             llExtra.setVisibility(View.VISIBLE);
             tvExtraTitle.setText(getString(R.string.evaluation_info));
             tvExtraContent1.setVisibility(View.VISIBLE);

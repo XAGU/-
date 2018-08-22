@@ -205,36 +205,9 @@
                 android:layout_marginTop="14dp"
                 android:background="@color/colorWhite"
                 android:orientation="horizontal">
-
-                <!--<TextView-->
-                    <!--android:id="@+id/left_oper"-->
-                    <!--android:layout_width="0dp"-->
-                    <!--android:layout_height="48dp"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:gravity="center"-->
-                    <!--android:text="常见问题"-->
-                    <!--android:textColor="#ffffff"-->
-                    <!--android:textSize="18sp"-->
-                    <!--android:textStyle="bold" />-->
-                <Button
-                    android:id="@+id/left_oper"
+                 <Button
+                    android:id="@+id/gotoEvaluationButton"
                     style="@style/SubmitButton" />
-
-                <!--<View-->
-                    <!--android:layout_width="1dp"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:background="#eee" />-->
-
-                <!--<TextView-->
-                    <!--android:id="@+id/right_oper"-->
-                    <!--android:layout_width="0dp"-->
-                    <!--android:layout_height="48dp"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:gravity="center"-->
-                    <!--android:text="联系客服"-->
-                    <!--android:textColor="#45b0ff"-->
-                    <!--android:textSize="12sp"-->
-                    <!--android:textStyle="bold" />-->
             </LinearLayout>
         </RelativeLayout>
     </ScrollView>
