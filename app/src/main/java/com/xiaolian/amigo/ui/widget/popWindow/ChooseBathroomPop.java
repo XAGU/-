@@ -44,7 +44,7 @@ public class ChooseBathroomPop  extends PopupWindow {
 
     private int popupWidth ;
     private int popupHeight ;
-
+    
 
     public ChooseBathroomPop(Context context) {
         super(context);
