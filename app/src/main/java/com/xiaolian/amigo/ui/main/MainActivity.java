@@ -200,7 +200,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     private OrderPreInfoDTO orderPreInfo;
     private ArrayList<BannerDTO> defaultBanners;
 
-//    private Message m;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

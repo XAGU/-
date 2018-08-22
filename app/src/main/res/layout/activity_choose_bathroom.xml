@@ -33,7 +33,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:drawableEnd="@drawable/arrow_down"
+                android:drawableEnd="@drawable/white_down"
                 android:drawablePadding="6dp"
                 tools:text="123公寓4栋"
                 android:textColor="#222"
@@ -184,7 +184,8 @@
                 <com.xiaolian.amigo.ui.widget.AutoBathroom
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/auto_bathroom"/>
+                    android:id="@+id/auto_bathroom"
+                    android:layout_marginBottom="50dp"/>
             </LinearLayout>
 
             <Button

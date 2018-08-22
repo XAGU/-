@@ -37,14 +37,11 @@ public class ChooseBathroomPop  extends PopupWindow {
 
     private PopButtonClickListener popButtonClickListener ;
 
-
-
-
     private BuildingTrafficDTO.FloorsBean  floorsBean ;
 
     private int popupWidth ;
     private int popupHeight ;
-    
+
 
     public ChooseBathroomPop(Context context) {
         super(context);
@@ -55,6 +52,7 @@ public class ChooseBathroomPop  extends PopupWindow {
     public void setPopButtonClickListener(PopButtonClickListener popButtonClickListener) {
         this.popButtonClickListener = popButtonClickListener;
     }
+
 
 
     private void init(){
@@ -78,11 +76,10 @@ public class ChooseBathroomPop  extends PopupWindow {
             @Override
             public void clickable(boolean clickable) {
                 if (clickable){
-                    button.setClickable(true);
+                    button.setEnabled(true);
                     button.setBackgroundResource(R.drawable.corner_redsolid_button);
                 }else{
-                    button.setClickable(false);
-                    button.setBackgroundResource(R.drawable.thirty_red_bg);
+                    button.setEnabled(true);
                 }
             }
         });
@@ -110,7 +107,6 @@ public class ChooseBathroomPop  extends PopupWindow {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e(TAG, "onClick: " + (popButtonClickListener == null) );
                 if (popButtonClickListener != null){
                     popButtonClickListener.click(floorsBean);
                 }
@@ -126,18 +122,22 @@ public class ChooseBathroomPop  extends PopupWindow {
     public void setData(List<BuildingTrafficDTO.FloorsBean> floorsBeanList){
         if (floorsBeans != null){
             floorsBeans.clear();
+        }
+        button.setEnabled(false);
+        floorsBeans.addAll(floorsBeanList);
+        this.floorsBean = null ;
+        button.setBackgroundResource(R.drawable.thirty_red_bg);
+        if (adapter != null) {
+            adapter.setIndex(-1);
             adapter.notifyDataSetChanged();
         }
-        floorsBeans.addAll(floorsBeanList);
-        button.setBackgroundResource(R.drawable.thirty_red_bg);
-        if (adapter != null) adapter.notifyDataSetChanged();
     }
 
     public void setData(BuildingTrafficDTO.FloorsBean floorsBean){
         if (floorsBeans != null){
             floorsBeans.clear();
+
         }
-        Log.e(TAG, "setData: "  );
         floorsBeans.add(floorsBean);
         button.setBackgroundResource(R.color.colorGreen);
         if (adapter != null ) adapter.notifyDataSetChanged();
@@ -155,7 +155,9 @@ public class ChooseBathroomPop  extends PopupWindow {
         int[] location = new int[2];
         v.getLocationOnScreen(location);
         //在控件上方显示
-        showAtLocation(v, Gravity.BOTTOM, 0 , ScreenUtils.dpToPxInt(context ,20));
+        showAtLocation(v, Gravity.BOTTOM, 0 , ScreenUtils.dpToPxInt(context , 20));
+
+//        showAtLocation(v, Gravity.NO_GRAVITY, (location[0] + v.getWidth() / 2) - popupWidth / 2, location[1] - popupHeight-70);
     }
 
 
@@ -176,5 +178,6 @@ public class ChooseBathroomPop  extends PopupWindow {
         void clickable(boolean clickable );
 
     }
+
 
 }

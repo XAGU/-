@@ -70,13 +70,13 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
                             if (isResume) {
                                 getMvpView().setTvTitle(result.getData().getBuildingName());
                                 getMvpView().refreshBathroom(result.getData());
-                                delay(10, new Action1<Long>() {
-                                    @Override
-                                    public void call(Long aLong) {
-
-                                        getBathroomList(buildingId);
-                                    }
-                                });
+//                                delay(10, new Action1<Long>() {
+//                                    @Override
+//                                    public void call(Long aLong) {
+//
+//                                        getBathroomList(buildingId);
+//                                    }
+//                                });
                             }
                         } else {
                             getMvpView().onError(result.getError().getDisplayMessage());
@@ -172,7 +172,6 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
 
     @Override
     public void booking(long deviceNo, long floorId) {
-        Log.e(TAG, "booking: "  );
         BathBookingReqDTO reqDTO = new BathBookingReqDTO();
         if (floorId != 0){
             reqDTO.setFloorId(floorId);
@@ -188,6 +187,8 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
             public void onStart() {
                 if (deviceNo > 0){
                     getMvpView().showBathroomDialog("系统君正在预约，请稍后");
+                }else{
+                    super.onStart();
                 }
             }
 

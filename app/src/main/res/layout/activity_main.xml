@@ -58,7 +58,7 @@
             android:layout_alignParentRight="true"
             android:layout_above="@id/iv_notice"
             android:id="@+id/iv_scan"
-            android:layout_marginBottom="14dp"/>
+            android:layout_marginBottom="3dp"/>
         <TextView
             android:id="@+id/tv_notice_count"
             android:visibility="gone"

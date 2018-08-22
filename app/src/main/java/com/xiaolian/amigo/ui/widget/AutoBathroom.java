@@ -304,11 +304,11 @@ public class AutoBathroom extends View {
         }
         groupsBean.setMaxX(rows);
         groupsBean.setMaxY(lows);
-        widthAndHeight[0] = (BathroomMin * lows + borderBathroom * (lows -1))    ;    // 宽  即为房间块形的宽+ 块之间间隔的宽 , 即组中房间的宽度
-        widthAndHeight[1] = BathroomMin * rows + borderBathroom * (rows -1 ) ;   // 高
+        widthAndHeight[0] = (BathroomMin * rows + borderBathroom * (rows -1))    ;    // 宽  即为房间块形的宽+ 块之间间隔的宽 , 即组中房间的宽度
+        widthAndHeight[1] = BathroomMin * lows + borderBathroom * (lows -1 ) ;   // 高
         widthAndHeight[2] = widthAndHeight[0];
 
-        //  宽高度为   浴室的宽度与字体的宽度比较，取两者间最大者
+        //  宽度为   浴室的宽度与字体的宽度比较，取两者间最大者
         widthAndHeight[0] = Math.max(widthAndHeight[0] , getTextWidth(groupsBean).width());
 
         //  行高为   浴室的行高+ 字体的高度 + 字体与上一层的高度
@@ -327,23 +327,39 @@ public class AutoBathroom extends View {
         textPaint.getTextBounds(groupsBean.getDisplayName() ,0 ,groupsBean.getDisplayName().length() ,rect);
         return  rect;
     }
-
+    float realMaxWidth = 0 ;
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
          width = MeasureSpec.getSize(widthMeasureSpec);
          height = MeasureSpec.getSize(heightMeasureSpec);
+        measureBathroom(widthMeasureSpec, heightMeasureSpec);
 
 
-         //  缓存未设置bottom的楼层
-         List<BathBuildingRespDTO.FloorsBean> cacheListfloorBeans = new ArrayList<>();
+//        if (zoom < 1f){
+//            zoom = 1f ;
+//        }else if (zoom > 1.6f){
+//            zoom = 1.6f ;
+//        }
+//        realWidth  = realWidth  * zoom ;
+//        realHeight = realHeight * zoom  ;
 
-         // 缓存未设置最大组的楼层
-         List<BathBuildingRespDTO.FloorsBean.GroupsBean> cacheGroupsBeans = new ArrayList<>();
+//        setMeasuredDimension((int)realWidth , (int)realHeight);
 
-          realHeight = 0 ;
-          realWidth = 0 ;
+    }
+
+    private void measureBathroom(int widthMeasureSpec, int heightMeasureSpec) {
+        //  缓存未设置bottom的楼层
+        List<BathBuildingRespDTO.FloorsBean> cacheListfloorBeans = new ArrayList<>();
+
+        // 缓存未设置最大组的楼层
+        List<BathBuildingRespDTO.FloorsBean.GroupsBean> cacheGroupsBeans = new ArrayList<>();
+
+        realHeight = 0 ;
+        realWidth = 0 ;
+        realMaxWidth = 0 ;
+
         float floorHeight  ;   //  每一行的高度
         float floorWidth  ;   //  每一行的宽度
 
@@ -351,7 +367,7 @@ public class AutoBathroom extends View {
         float cacheWidth = 0 ;  //  缓存的宽度
 
         // 是否是要加层与层之间的间距 ,如果是就表明换行了，要加上间距；否则不加
-        boolean isAddFloorBorder = false ;
+        boolean isAddFloorBorder = true ;
         if (floorsBeanList == null){
             setMeasuredDimension(widthMeasureSpec , heightMeasureSpec);
             return;
@@ -368,84 +384,100 @@ public class AutoBathroom extends View {
          * 计算view 的大小为， 先计算组的宽高不包括字体大高度， 然后再每个组的高度相加再加上间隔就为view的高度
          * view 的宽度为一行每组的宽度，按最大的宽度计算
          */
-       for (int i = 0 ; i < floorsBeanList.size() ; i ++){  // 每层
-           BathBuildingRespDTO.FloorsBean floorsBean = floorsBeanList.get(i);
-           floorsBean.setLeft(realWidth);
-            // 如果不在同一行， 高度相加 ， 否则就为0
-            if (isAddFloorBorder){
-                floorGroupLeft = 0;
-            }else {
-                floorGroupLeft  += realWidth  + (borderFloorHorizontal - borderGroupsHorziontal);
-            }
-           floorWidth = 0 ;   //  这行的行宽
-           floorHeight = 0 ;   //  这行的行高
-           groupLeft = floorGroupLeft ;
-            for (int groupIndex  = 0 ; groupIndex < floorsBean.getGroups().size() ; groupIndex++){   // 每组
+        for (int i = 0 ; i < floorsBeanList.size() ; i ++){  // 每层
+            BathBuildingRespDTO.FloorsBean floorsBean = floorsBeanList.get(i);
+            floorsBean.setLeft(realWidth);
+             // 如果不在同一行， 高度相加 ， 否则就为0
+             if (isAddFloorBorder){
+                 floorGroupLeft = 0;
+                 realWidth = 0 ;
+             }else {
+                 floorGroupLeft  += realWidth  + (borderFloorHorizontal - borderGroupsHorziontal);
+             }
+            floorWidth = 0 ;   //  这行的行宽
+            floorHeight = 0 ;   //  这行的行高
+            groupLeft = floorGroupLeft ;
+             for (int groupIndex  = 0 ; groupIndex < floorsBean.getGroups().size() ; groupIndex++){   // 每组
 
-                BathBuildingRespDTO.FloorsBean.GroupsBean groupsBean = floorsBean.getGroups().get(groupIndex);
-                float[] widthAndHeight = measureHeight(groupsBean);
-                //  组的宽度 , 再加上每组间距 , 已经加了间距了
-                floorWidth += widthAndHeight[0] + borderGroupsHorziontal;
+                 BathBuildingRespDTO.FloorsBean.GroupsBean groupsBean = floorsBean.getGroups().get(groupIndex);
+                 float[] widthAndHeight = measureHeight(groupsBean);
+                 //  组的宽度 , 再加上每组间距 , 已经加了间距了
+                 floorWidth += widthAndHeight[0] + borderGroupsHorziontal;
 
-                //  高度取最大者，将字体与浴室作为一个整体取值 ，  这层楼的最大值
-                floorHeight = Math.max(floorHeight ,widthAndHeight[1]);
+                 //  高度取最大者，将字体与浴室作为一个整体取值 ，  这层楼的最大值
+                 floorHeight = Math.max(floorHeight ,widthAndHeight[1]);
 
-                // 设置房间块的宽度
-                groupsBean.setRectWidth(widthAndHeight[2]);
+                 // 设置房间块的宽度
+                 groupsBean.setRectWidth(widthAndHeight[2]);
 
-                maxGroupY = Math.max(maxGroupY , groupsBean.getMaxY());
-                // 设置组的真正宽度
-                groupsBean.setWidth(widthAndHeight[0]);
+                 maxGroupY = Math.max(maxGroupY , groupsBean.getMaxY());
+                 // 设置组的真正宽度
+                 groupsBean.setWidth(widthAndHeight[0]);
 
-                groupsBean.setLeft(groupLeft);
-                floorsBean.getGroups().set(groupIndex , groupsBean);
-                groupLeft += widthAndHeight[0] + borderFloorHorizontal ;
-                cacheGroupsBeans.add(groupsBean);
-            }
+                 groupsBean.setLeft(groupLeft);
+                 floorsBean.getGroups().set(groupIndex , groupsBean);
+                 //   下一组的宽度
+                 groupLeft += widthAndHeight[0] + borderGroupsHorziontal  ;
 
-            /**  先缓存一个宽度，这个宽度 =  之前的宽度+ 这一行的宽度 ， 如果这个宽度大于 screenWidth , 则换行
-             *   否则 ，不换行
-            */
-            cacheWidth = realWidth + floorWidth ;
-            if (cacheWidth < screenWidth){
-                 //  宽相加，  高 不变
-                realWidth = cacheWidth ;
-                isAddFloorBorder = false ;
-                realHeight = Math.max(realHeight , floorHeight);
-                cacheListfloorBeans.add(floorsBean);
-            }else{
-                //  换行宽 , 高+
-                realWidth = cacheWidth ;
+                 //  添加缓存的楼层组
+                 cacheGroupsBeans.add(groupsBean);
+             }
 
-                //  设置之前缓存的未设置的楼层
-                for (BathBuildingRespDTO.FloorsBean floorsBean1 : cacheListfloorBeans){
-                    floorsBean1.setBottom(realHeight);
+            Log.e(TAG, "onMeasure:   >>>>>> "  + floorHeight );
+
+             /**  先缓存一个宽度，这个宽度 =  之前的宽度+ 这一行的宽度 ， 如果这个宽度大于 screenWidth , 则换行
+              *   否则 ，不换行
+             */
+             cacheWidth = realWidth + floorWidth ;
+            if (cacheWidth > 0) {
+                if (cacheWidth < screenWidth) {
+
+                    if (i == floorsBeanList.size()-1 ){
+                        realHeight += floorHeight ;
+                        cacheListfloorBeans.add(floorsBean);
+                    }else {
+                        //  宽相加，  高 不变
+                        realWidth = cacheWidth;
+                        isAddFloorBorder = false;
+                        realHeight = Math.max(realHeight, floorHeight);
+                        cacheListfloorBeans.add(floorsBean);
+                    }
+                } else {
+                    //  换行宽 , 高+
+                    cacheListfloorBeans.add(floorsBean);
+                    realWidth = cacheWidth;
+                    realMaxWidth = Math.max(realMaxWidth, realWidth);
+                    //  设置之前缓存的未设置的楼层
+                    for (BathBuildingRespDTO.FloorsBean floorsBean1 : cacheListfloorBeans) {
+                        floorsBean1.setBottom(realHeight);
+                    }
+
+                    for (BathBuildingRespDTO.FloorsBean.GroupsBean groupsBean : cacheGroupsBeans) {
+                        groupsBean.setMaxY(maxGroupY);
+
+                    }
+                    maxGroupY = 0;
+                    realHeight += floorHeight;
+                    Log.e(TAG, "floorHeight: " + floorHeight);
+                    isAddFloorBorder = true;
+
+                    // 表示增加高度
+                    cacheListfloorBeans.clear();
+                    cacheListfloorBeans = new ArrayList<>();
+
+                    cacheGroupsBeans.clear();
+                    cacheGroupsBeans = new ArrayList<>();
+
+                    //  将换行的楼层加入进未设置的楼层
+
                 }
 
-                for (BathBuildingRespDTO.FloorsBean.GroupsBean groupsBean : cacheGroupsBeans){
-                    groupsBean.setMaxY(maxGroupY);
-                    maxGroupY = 0 ;
-                }
-                realHeight += floorHeight ;
-                isAddFloorBorder = true ;
+                //  设置的是每一行的高度
+                floorsBean.setHeight(floorHeight);
 
-                // 表示增加高度
-                cacheListfloorBeans.clear();
-                cacheListfloorBeans = new ArrayList<>();
-
-                cacheGroupsBeans.clear();
-                cacheGroupsBeans = new ArrayList<>();
-
-                //  将换行的楼层加入进未设置的楼层
-                cacheListfloorBeans.add(floorsBean);
+                floorsBeanList.set(i, floorsBean);
             }
-
-            //  设置的是每一行的高度
-            floorsBean.setHeight(floorHeight);
-
-           floorsBeanList.set(i , floorsBean);
-
-        }
+         }
 
         /**
          * 循环完发现还有楼层未设置，再进行设置
@@ -468,23 +500,17 @@ public class AutoBathroom extends View {
         }
 
         //  加上间距
-        realWidth  += 2 * marginTop ;
+        realMaxWidth  += 2 * marginTop ;
         realHeight += 2 * marginTop ;
+        realWidth = realMaxWidth ;
         if (isAddName){
             zoom  = 1 ;
         }else {
             float zoom = getMatrixScaleX();
             Log.e(TAG, "onMeasure: " + zoom);
         }
-        if (zoom < 1f){
-            zoom = 1f ;
-        }else if (zoom > 1.6f){
-            zoom = 1.6f ;
-        }
-        realWidth  = realWidth  * zoom ;
-        realHeight = realHeight * zoom  ;
-
     }
+
     float  Animzoom  ;
     Paint strokePaint  ;
     private void init(Context context) {
@@ -554,8 +580,6 @@ public class AutoBathroom extends View {
         strokePaint.setStrokeWidth(paintStroke * zoom);
         strokePaint.setColor(clolorStroke);
 
-
-
         paintUsing = new Paint();
         paintUsing.setStyle(Paint.Style.FILL);
         paintUsing.setColor(colorUsing);
@@ -580,28 +604,47 @@ public class AutoBathroom extends View {
             updataFloorBeans = new ArrayList<>();
         }
 
-        float zoomView = getMatrixScaleX() ;
-        if (zoomView <  1f ){
-            zoomView = 1f ;
-        }else if (zoomView > 1.6f){
-            zoomView = 1.6f ;
-        }
+            mDelWidth = (getWidth() - realWidth ) / 2  ;
+            mDelHeight = (getHeight() - realHeight ) / 2 ;
 
-            mDelWidth = (getWidth() - realWidth * zoomView) / 2  ;
-            mDelHeight = (getHeight() - realHeight * zoomView) / 2 ;
+        Log.e(TAG, "onDraw: " + mDelWidth +"  " + mDelHeight  + "   " + getWidth() +  "   " + realWidth  +"  "+ getHeight()+" "+ realHeight );
 
-        Log.e(TAG, "onDraw: " + mDelWidth  +"  " + mDelHeight );
-
+//        drawRect(canvas);
         drawSeat(canvas);
+
     }
+
+    private void drawRect(Canvas canvas){
+        Paint paint = new Paint();
+        paint.setStyle(Paint.Style.FILL);
+        paint.setColor(Color.GRAY);
+        paint.setStrokeWidth(5);
+        canvas.drawLine(0 , realWidth / 2 , realHeight ,realWidth /2  ,paint);
+
+        canvas.drawLine(realWidth /2  , 0 , realWidth /2  ,realHeight  ,paint);
+
+
+        paint.setColor(Color.YELLOW);
+
+        canvas.drawLine(0 , getWidth() / 2 , getHeight() ,getWidth() /2  ,paint);
+
+        canvas.drawLine(getWidth() /2  , 0 , getWidth() /2  ,getHeight()  ,paint);
+
+//        canvas.drawRect(0 , 0 ,realWidth , realHeight ,paint);
+
+//        canvas.drawLine(getWidth() / 2 , 0  , getHeight() / 2 ,0 , paint);
+
+//        canvas.drawLine(0 ,0 , realWidth , realHeight , paint);
+    }
+
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         int y = (int) event.getY();
         int x = (int) event.getX();
         super.onTouchEvent(event);
-
-        scaleGestureDetector.onTouchEvent(event);
+        isScaling = false ;
+//        scaleGestureDetector.onTouchEvent(event);
         gestureDetector.onTouchEvent(event);
         int pointerCount = event.getPointerCount();
         if (pointerCount > 1) {
@@ -615,7 +658,6 @@ public class AutoBathroom extends View {
                 downY = y;
                 break;
             case MotionEvent.ACTION_MOVE:
-//                Log.e(TAG, "onTouchEvent: " + isScaling + "  " + isOnClick + "  "  + pointer );
                 if (!isScaling && !isOnClick ) {
                     int dx ;
                     int dy ;
@@ -629,20 +671,18 @@ public class AutoBathroom extends View {
                             dx = 0 ;
                         }
 
-
                         if (realHeight > getHeight()){
                               dy = y - lastY;
                         }else{
                             dy = 0 ;
                         }
-
                         matrix.postTranslate(dx, dy);
                         invalidate();
                     }
                 }
                 break;
             case MotionEvent.ACTION_UP:
-                autoScale();
+//                autoScale();
                 int downDX = Math.abs(x - downX);
                 int downDY = Math.abs(y - downY);
                 if ((downDX > 10 || downDY > 10) && !pointer) {
@@ -688,25 +728,29 @@ public class AutoBathroom extends View {
             updataFloorBeans.set(position , room);
         }
 
-
+        Paint paint = new Paint();
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setColor(Color.BLACK);
         switch (room.getStatus()){
             case BATH_USING:
                 path.addRoundRect(new RectF(left , top ,left + BathroomMin * scaleX , top + BathroomMin* scaleX ) , radius, radius , Path.Direction.CW);
                 canvas.drawPath(path ,paintUsing);
+//                canvas.drawPath(path ,paint);
                 break;
             case AVAILABLE:
                 path.addRoundRect(new RectF(left , top ,left + BathroomMin * scaleX , top + BathroomMin* scaleX ) , radius, radius, Path.Direction.CW);
-                canvas.drawPath(path ,paintCanUse);
+//                canvas.drawPath(path ,paint);
                 canvas.drawPath(path ,strokePaint);
                 break;
             case BATH_BOOKED:
                 path.addRoundRect(new RectF(left , top ,left + BathroomMin * scaleX , top + BathroomMin* scaleX ) , radius, radius  , Path.Direction.CW);
                 canvas.drawPath(path ,paintBooked);
+//                canvas.drawPath(path ,paint);
                 break;
             case BATH_CHOSE:
                 path.addRoundRect(new RectF(left , top ,left + BathroomMin * scaleX , top + BathroomMin* scaleX ) , radius , radius  , Path.Direction.CW);
                 canvas.drawPath(path ,paintChose);
-
+//                canvas.drawPath(path ,paint);
                 break;
             }
 
@@ -715,12 +759,8 @@ public class AutoBathroom extends View {
             Paint.FontMetricsInt fontMetrics = hintPaint.getFontMetricsInt();
             Rect rect = new Rect();
             hintPaint.getTextBounds(text ,0 , text.length() , rect);
-            int baseline = 0 ;
-            if (rect.width() > BathroomMin * scaleX){
-                 baseline = (int) ((top  + (BathroomMin   - rect.height())  * scaleX   - ((fontMetrics.bottom -  fontMetrics.top)  /2  - fontMetrics.top)));
-            }else{
-                 baseline = (int) ((top  + (BathroomMin   * scaleX - rect.height() * 2)* scaleX  - ((fontMetrics.bottom -  fontMetrics.top)  /2  - fontMetrics.top)));
-            }
+
+            int baseline = (int) ((top  + (BathroomMin   * scaleX - rect.height() * 2)* scaleX  - ((fontMetrics.bottom -  fontMetrics.top)  /2  - fontMetrics.top)));
 
 
             StaticLayout layout = new StaticLayout(text, hintPaint, (int)(BathroomMin * scaleX), Layout.Alignment.ALIGN_NORMAL, 1.0F, 0.0F, true);
@@ -742,21 +782,14 @@ public class AutoBathroom extends View {
         if (zoom < 1){
             zoom = 1 ;
         }
-        int textSize = (int) (12 * zoom);
+        int textSize = (int) (13 * zoom);
         if (textSize  < 12){
             textSize = 12 ;
         }else if (textSize  > 15){
             textSize = 15 ;
         }
 
-        int hintSize = (int) (10 * zoom);
-        if (hintSize < 10){
-            hintSize = 10 ;
-        }
-
-        if (hintSize > 13){
-            hintSize = 13 ;
-        }
+        int hintSize = (int) (5 * zoom);
         textPaint.setTextSize(ScreenUtils.sp2px(context ,textSize ));
         hintPaint.setTextSize(ScreenUtils.sp2px(context ,hintSize) );
         float translateX = getTranslateX();
@@ -799,9 +832,9 @@ public class AutoBathroom extends View {
                         if (isAddName) {
                             roomsBean.setName(groupsBean.getDisplayName() + roomsBean.getName() + "房浴室");
                         }
-                            drawRect(canvas, groupsBathroomLeft + mDelWidth + ( roomsBean.getYaxis() -1 ) * (BathroomMin + borderBathroom) * scaleX,
-                                    groupBathroomBottom  + mDelHeight- ((groupsBean.getMaxX() - roomsBean.getXaxis() + 1 ) * (BathroomMin) + (groupsBean.getMaxX() - roomsBean.getXaxis()) * borderBathroom ) * scaleY
-                                , roomsBean.getDeviceNo() + "" , roomsBean , scaleX);
+                            drawRect(canvas, groupsBathroomLeft + mDelWidth + ( roomsBean.getXaxis() -1 ) * (BathroomMin + borderBathroom) * scaleX,
+                                    groupBathroomBottom  + mDelHeight- ((groupsBean.getMaxY() - roomsBean.getYaxis() + 1 ) * (BathroomMin) + (groupsBean.getMaxY() - roomsBean.getYaxis()) * borderBathroom ) * scaleY
+                                , roomsBean.getId() + "" , roomsBean , scaleX);
 
 
                     }
@@ -1134,6 +1167,15 @@ public class AutoBathroom extends View {
         }
     });
 
+    /**
+     * 设置浴室房间选择为空
+     */
+    public void setBathroomAvable(){
+        if (bathRoomsBean != null && bathRoomsBean.getStatus() == BATH_CHOSE){
+            bathRoomsBean.setStatus(AVAILABLE);
+        }
+        if (bathroomClick != null) bathroomClick.BathroomClick(null);
+    }
 
 
     public  interface  BathroomClick{

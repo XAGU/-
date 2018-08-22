@@ -30,7 +30,7 @@ public class ChooseRoomAdapter extends RecyclerView.Adapter<ChooseRoomAdapter.Ro
 
     private ChooseBathroomPop.PopClickableListener popClickableListener ;
 
-
+    private int  index ;
     public ChooseRoomAdapter(Context context , List<BuildingTrafficDTO.FloorsBean> floorsBeans){
         this.context =  context ;
         this.floorsBeans = floorsBeans ;
@@ -44,6 +44,13 @@ public class ChooseRoomAdapter extends RecyclerView.Adapter<ChooseRoomAdapter.Ro
         this.onItemClickListener = onItemClickListener;
     }
 
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index){
+        this.index = index ;
+    }
 
     @Override
     public RoomHodler onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -58,46 +65,36 @@ public class ChooseRoomAdapter extends RecyclerView.Adapter<ChooseRoomAdapter.Ro
         holder.rl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for (int i = 0 ; i < getItemCount() ; i++){
-                    states.put(i , false);
-                }
-                if (onItemClickListener != null) onItemClickListener.click(position);
-                states.put(position , true);
+                index = position ;
                 notifyDataSetChanged();
-                if (floorsBean != null) {
-                    if (TextUtils.isEmpty(floorsBean.getDeviceNo())) {
-                        if (popClickableListener != null) popClickableListener.clickable(true);
-                    }
-                }
+                if (onItemClickListener != null) onItemClickListener.click(position);
+
+                if (popClickableListener != null) popClickableListener.clickable(true);
             }
         });
 
         holder.radioButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for (int i = 0 ; i < getItemCount() ; i++){
-                    states.put(i , false);
-                }
-                if (onItemClickListener != null) onItemClickListener.click(position);
-                states.put(position , true);
+                index = position ;
                 notifyDataSetChanged();
-                if (floorsBean != null) {
-                    if (TextUtils.isEmpty(floorsBean.getDeviceNo())) {
-                        if (popClickableListener != null) popClickableListener.clickable(true);
-                    }
-                }
+
+                if (onItemClickListener != null) onItemClickListener.click(position);
+
+                if (popClickableListener != null) popClickableListener.clickable(true);
             }
         });
-
-        if (states.get((Integer) position) == null || states.get((Integer) position) == false) {  //true说明被选中
+        if (index != -1) {
+            if (index == position) {
+                holder.radioButton.setChecked(true);
+            } else {
+                holder.radioButton.setChecked(false);
+            }
+        }else{
             holder.radioButton.setChecked(false);
-        } else {
-            holder.radioButton.setChecked(true);
         }
 
-        if (states == null || states.size() ==0 ){
-            holder.radioButton.setChecked(false);
-        }
+
 
         if (floorsBean != null){
             holder.textView.setText(floorsBean.getName());
@@ -116,9 +113,10 @@ public class ChooseRoomAdapter extends RecyclerView.Adapter<ChooseRoomAdapter.Ro
         if (!TextUtils.isEmpty(floorsBean.getDeviceNo())){
             holder.textView.setText(floorsBean.getName());
             holder.bathroom_status.setText("");
-            holder.radioButton.setBackgroundResource(R.drawable.bathroom_radio_bg);
             holder.radioButton.setChecked(true);
+            holder.radioButton.setBackgroundResource(R.drawable.bathroom_radio_bg);
             if (onItemClickListener != null) onItemClickListener.click(position);
+            if (popClickableListener != null) popClickableListener.clickable(false);
         }
     }
 
@@ -127,7 +125,7 @@ public class ChooseRoomAdapter extends RecyclerView.Adapter<ChooseRoomAdapter.Ro
         return  floorsBeans == null ? 0 : floorsBeans.size() ;
     }
 
-    class RoomHodler extends RecyclerView.ViewHolder {
+    public class RoomHodler extends RecyclerView.ViewHolder {
         private TextView textView  , bathroom_status;
         private RadioButton radioButton ;
         private RelativeLayout rl ;

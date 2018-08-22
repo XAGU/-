@@ -620,10 +620,10 @@ public class ScanActivity extends WasherBaseActivity
 
     @Override
     public void goToBleDevice(boolean isTimeValid, int type, String macAddress, BriefDeviceDTO data, boolean isBle) {
-        if (type == Device.HEATER.getType() && !presenter.checkDefaultDormitoryExist()) {
-            showBindDormitoryDialog();
-            return;
-        }
+//        if (type == Device.HEATER.getType() && !presenter.checkDefaultDormitoryExist()) {
+//            showBindDormitoryDialog();
+//            return;
+//        }
         if (type == Device.HEATER.getType()) {
             // 前往热水澡
             gotoDevice(HEATER, macAddress,

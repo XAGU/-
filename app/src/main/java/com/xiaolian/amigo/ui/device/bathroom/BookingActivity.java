@@ -175,7 +175,6 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
 
             bookingId = getIntent().getLongExtra(KEY_BOOKING_ID , 0);
             bathQueueId = getIntent().getLongExtra(KEY_BATHQUEUE_ID , 0);
-
         }
     }
 
@@ -425,8 +424,13 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
         rightOper.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.e(TAG, "onClick: "  + bathQueueId );
                 Intent intent = new Intent();
-                intent.putExtra(KEY_DEVICE_ACTIVITY_FOR_RESULT ,deviceNo);
+                if (bathQueueId > 0) {
+                    intent.putExtra(KEY_DEVICE_ACTIVITY_FOR_RESULT, "");
+                }else{
+                    intent.putExtra(KEY_DEVICE_ACTIVITY_FOR_RESULT, deviceNo);
+                }
                 BookingActivity.this.setResult(KEY_BOOKING_RESULTCODE,intent);
                 BookingActivity.this.finish();
             }
