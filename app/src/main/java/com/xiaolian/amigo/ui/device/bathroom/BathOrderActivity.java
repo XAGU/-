@@ -41,7 +41,7 @@ import butterknife.OnClick;
 
 public class BathOrderActivity extends BaseActivity implements IDeviceOrderView {
 
-    private static final String TAG = DeviceOrderActivity.class.getSimpleName();
+    private static final String TAG = BathOrderActivity.class.getSimpleName();
     @BindView(R.id.tv_toolbar_title)
     TextView tvToolbarTitle;
     @BindView(R.id.tv_title)

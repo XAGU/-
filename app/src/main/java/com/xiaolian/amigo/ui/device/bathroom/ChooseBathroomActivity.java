@@ -202,10 +202,12 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
             pop.setPopButtonClickListener(new ChooseBathroomPop.PopButtonClickListener() {
                 @Override
                 public void click(BuildingTrafficDTO.FloorsBean floorsBean) {
-                    if (!TextUtils.isEmpty(floorsBean.getDeviceNo())) {
-                        presenter.booking(Long.parseLong(floorsBean.getDeviceNo()), 0);
-                    } else {
-                        presenter.booking(0, floorsBean.getId());
+                    if (floorsBean != null) {
+                        if (!TextUtils.isEmpty(floorsBean.getDeviceNo())) {
+                            presenter.booking(Long.parseLong(floorsBean.getDeviceNo()), 0);
+                        } else {
+                            presenter.booking(0, floorsBean.getId());
+                        }
                     }
                 }
             });
@@ -406,10 +408,12 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
             pop.setPopButtonClickListener(new ChooseBathroomPop.PopButtonClickListener() {
                 @Override
                 public void click(BuildingTrafficDTO.FloorsBean floorsBean) {
-                    if (!TextUtils.isEmpty(floorsBean.getDeviceNo())) {
-                        presenter.booking(Long.parseLong(floorsBean.getDeviceNo()), 0);
-                    } else {
-                        presenter.booking(0, floorsBean.getId());
+                    if (floorsBean != null) {
+                        if (!TextUtils.isEmpty(floorsBean.getDeviceNo())) {
+                            presenter.booking(Long.parseLong(floorsBean.getDeviceNo()), 0);
+                        } else {
+                            presenter.booking(0, floorsBean.getId());
+                        }
                     }
                 }
             });
@@ -528,10 +532,12 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
             pop.setPopButtonClickListener(new ChooseBathroomPop.PopButtonClickListener() {
                 @Override
                 public void click(BuildingTrafficDTO.FloorsBean floorsBean) {
-                    if (!TextUtils.isEmpty(floorsBean.getDeviceNo())) {
-                        presenter.booking(Long.parseLong(floorsBean.getDeviceNo()), 0);
-                    } else {
-                        presenter.booking(0, floorsBean.getId());
+                    if (floorsBean != null) {
+                        if (!TextUtils.isEmpty(floorsBean.getDeviceNo())) {
+                            presenter.booking(Long.parseLong(floorsBean.getDeviceNo()), 0);
+                        } else {
+                            presenter.booking(0, floorsBean.getId());
+                        }
                     }
                 }
             });

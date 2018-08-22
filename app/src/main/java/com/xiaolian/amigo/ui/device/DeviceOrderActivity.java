@@ -307,13 +307,13 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
                 .putExtra(MainActivity.INTENT_KEY_SWITCH_TO_HOME, true));
     }
 
-//    /**
-//     * 投诉
-//     */
-//    @OnClick(R.id.tv_complaint)
-//    public void complaint() {
-//        presenter.checkComplaint(orderId, orderType);
-//    }
+    /**
+     * 投诉
+     */
+    @OnClick(R.id.tv_complaint)
+    public void complaint() {
+        presenter.checkComplaint(orderId, orderType);
+    }
 
     /**
      * 复制
