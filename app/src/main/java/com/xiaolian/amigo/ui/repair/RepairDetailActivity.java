@@ -289,8 +289,7 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
             }
         });
         if (EvaluateStatus.getStatus(detail.getRated()) == EvaluateStatus.EVALUATE_DONE) {
-            gotoEvaluationButton.setEnabled(false);
-            gotoEvaluationButton.setTextColor(ContextCompat.getColor(this, R.color.colorDark9));
+            gotoEvaluationButton.setVisibility(View.GONE);
             llExtra.setVisibility(View.VISIBLE);
             tvExtraTitle.setText(getString(R.string.evaluation_info));
             tvExtraContent1.setVisibility(View.VISIBLE);
