@@ -2,11 +2,14 @@ package com.xiaolian.amigo.ui.device.bathroom;
 
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -148,14 +151,22 @@ public abstract class UseWayActivity extends BathroomBaseActivity {
      * 已存在订单状态
      */
     protected BathOrderPreconditionRespDTO bathOrderPreconditionRespDTO;
+    @BindView(R.id.iv_back)
+    ImageView ivBack;
+    @BindView(R.id.tool_bar)
+    Toolbar toolBar;
+    @BindView(R.id.ll_main_content)
+    LinearLayout llMainContent;
+    @BindView(R.id.cl_main)
+    CoordinatorLayout clMain;
     private DecimalFormat df = new DecimalFormat("###.##");
 
     private List<String> tips = new ArrayList<>();
 
-    private CommonAdapter<String> commonAdapter ;
+    private CommonAdapter<String> commonAdapter;
 
 
-    private String Tips = "" ;
+    private String Tips = "";
     protected List<DeviceInfoAdapter.DeviceInfoWrapper> items = new ArrayList<DeviceInfoAdapter.DeviceInfoWrapper>() {
         {
 //            add(new DeviceInfoAdapter.DeviceInfoWrapper("浴室位置：",
@@ -180,9 +191,13 @@ public abstract class UseWayActivity extends BathroomBaseActivity {
         initView();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 
     @OnClick(R.id.iv_back)
-    public void back(){
+    public void back() {
         onBackPressed();
     }
 
@@ -242,18 +257,20 @@ public abstract class UseWayActivity extends BathroomBaseActivity {
         return tvTip3;
     }
 
-    protected String getTips(){
+    protected String getTips() {
         return "";
     }
 
 
     protected void llBottomVisible(boolean isVisible) {
-        if (isVisible && llBottom.getVisibility() == View.GONE) {
-            llBottom.setVisibility(View.VISIBLE);
-        } else if (!isVisible && llBottom.getVisibility() == View.VISIBLE) {
-            llBottom.setVisibility(View.GONE);
-        } else {
+        if (llBottom != null) {
+            if (isVisible && llBottom.getVisibility() == View.GONE) {
+                llBottom.setVisibility(View.VISIBLE);
+            } else if (!isVisible && llBottom.getVisibility() == View.VISIBLE) {
+                llBottom.setVisibility(View.GONE);
+            } else {
 
+            }
         }
     }
 

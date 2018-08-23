@@ -1,14 +1,18 @@
 package com.xiaolian.amigo.ui.device.bathroom;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -36,6 +40,7 @@ import com.xiaolian.amigo.ui.widget.CircleProgressView;
 import com.xiaolian.amigo.ui.widget.dialog.BathroomBookingDialog;
 import com.xiaolian.amigo.ui.widget.popWindow.ChooseBathroomPop;
 import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.util.DimentionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,7 +84,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
     TextView tvTitle;
     @BindView(R.id.iv_help)
     ImageView ivHelp;
-    @BindView(R.id.pre_bathroom)
+    @BindView(R.id.pre_bathroom1)
     Button preBathroom;
     @BindView(R.id.root)
     RelativeLayout root;
@@ -192,6 +197,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
     }
 
 
+
     public void initPop() {
         if (pop == null) {
             pop = new ChooseBathroomPop(this);
@@ -213,8 +219,8 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
 
 
     private void bindView() {
-        findViewById(R.id.iv_back).setOnClickListener(v -> onBackPressed());
         setBtnText("预约洗澡 (任意空浴室)", false);
+        findViewById(R.id.iv_back).setOnClickListener(v -> onBackPressed());
         isShowDialog = true;
         autoBathroom.setBathroomClick(this);
     }
@@ -258,7 +264,6 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         if (autoBathroom  != null && presenter != null)
          autoBathroom.setPresenter((ChooseBathroomPresenter<IChooseBathroomView>) presenter);
 //        test();
-//        showBathroomDialog();
     }
 
     private void test() {
@@ -353,7 +358,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         floorsBean.setWaitCount(-1);
         floorsBean.setAvailableCount(-1);
         showPopForDevice(floorsBean);
-        preBathroom.setClickable(true);
+
         this.deviceNo = deviceNo + "";
     }
 
@@ -368,6 +373,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         presenter.setIsResume(true);
         presenter.getBathroomList(buildId);
         presenter.precondition(isShowDialog);
+        if (preBathroom != null) preBathroom.setEnabled(true);
     }
 
     @Override
@@ -417,8 +423,8 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
                 }
             });
         }
-
         pop.setData(floorsBean);
+
         showPopNoDevice();
     }
 
@@ -432,7 +438,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
 
     private void showPopNoDevice() {
         presenter.setIsResume(false);
-//        preBathroom.setVisibility(View.GONE);
+        preBathroom.setEnabled(false);
         pop.showUp(preBathroom);
         lightOff();
 
@@ -448,19 +454,19 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
 
                 getWindow().setAttributes(layoutParams);
 
-//                root.setBackgroundResource(R.color.colorBackgroundGray);
-//                toolBar.setBackgroundResource(R.color.white);
-//                llTop.setBackgroundResource(R.color.white);
+//              root.setBackgroundResource(R.color.colorBackgroundGray);
+//              toolBar.setBackgroundResource(R.color.white);
+//              llTop.setBackgroundResource(R.color.white);
                 presenter.setIsResume(true);
                 deviceNo = "";
                 if (autoBathroom != null) {
                     autoBathroom.setBathroomAvable();
                     autoBathroom.invalidate();
                 }
+                preBathroom.setEnabled(true);
 //                preBathroom.setVisibility(View.VISIBLE);
             }
         });
-        preBathroom.setClickable(true);
     }
 
 
@@ -474,6 +480,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         layoutParams.alpha = 0.7f;
 
         getWindow().setAttributes(layoutParams);
+//        preBathroom.setBackgroundResource(R.drawable.thirty_red_bg);
 //        root.setBackgroundResource(R.color.colorBackgroundGray70);
 //        toolBar.setBackgroundResource(R.color.colorBackgroundGray100);
 //        llTop.setBackgroundResource(R.color.colorBackgroundGray100);
@@ -483,6 +490,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
 
     @Override
     public void refreshBathroom(BathBuildingRespDTO respDTO) {
+        viewLine.setVisibility(View.VISIBLE);
         idContent.setVisibility(View.VISIBLE);
         rlError.setVisibility(View.GONE);
         Drawable drawable = getResources().getDrawable(R.drawable.arrow_down);
@@ -531,12 +539,15 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
     @Override
     public void setBtnText(String text, boolean isSelected) {
         Spannable spannable = new SpannableString(text);
-        spannable.setSpan(new AbsoluteSizeSpan(16, true), 0, 4, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-        spannable.setSpan(new AbsoluteSizeSpan(14, true), 4, text.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-        preBathroom.setText(spannable);
-        this.isSelected = isSelected;
-        if (isSelected) preBathroom.setBackgroundResource(R.drawable.green_button);
-        else preBathroom.setBackgroundResource(R.drawable.red_button);
+        SpannableStringBuilder builder = new SpannableStringBuilder();
+        spannable.setSpan(new AbsoluteSizeSpan(DimentionUtils.convertSpToPixels(16, this)), 0, 4, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+        spannable.setSpan(new AbsoluteSizeSpan(DimentionUtils.convertSpToPixels(12, this)), 4, text.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+        builder.append(spannable);
+        if (preBathroom != null){
+            preBathroom.setText(builder);
+            preBathroom.setEnabled(true);
+        }
+
     }
 
     @Override
@@ -596,12 +607,14 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
     }
 
 
+
+
     private void setPreBtnText(BathOrderPreconditionRespDTO.PrepayInfoBean prepayInfo) {
         if (prepayInfo.getBalance() < prepayInfo.getMinPrepay()) {
             preBathroom.setText("余额不足，请前往充值");
             needCharge = true;
         } else {
-            preBathroom.setText(getString(R.string.preBathWithAnyEmptyBath));
+            setBtnText("预约洗澡(任意空浴室)" ,false);
             needCharge = false;
         }
 
@@ -622,9 +635,10 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
 
     @Override
     public void showError() {
+        viewLine.setVisibility(View.GONE);
         rlError.setVisibility(View.VISIBLE);
         idContent.setVisibility(View.GONE);
-        setTvTitle("迷失");
+//        setTvTitle("迷失");
         tvTitle.setCompoundDrawables(null , null , null , null);
         refer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -636,13 +650,12 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
     }
 
 
-    @OnClick(R.id.pre_bathroom)
+    @OnClick(R.id.pre_bathroom1)
     public void preBathRoom() {
-        preBathroom.setClickable(false);
+        preBathroom.setEnabled(false);
         if (needCharge) {
             setBtnText("余额不足，请前往充值" , false);
             startActivity(new Intent(getApplicationContext(), RechargeActivity.class));
-            preBathroom.setClickable(true);
         } else {
             if (TextUtils.isEmpty(deviceNo)) {
                 showPop();

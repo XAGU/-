@@ -38,6 +38,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.Unbinder;
+
 import static android.view.View.GONE;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_DEVICE_NO;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_ORDER_PRECONDITION;
@@ -95,6 +97,8 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
         setButtonText();
         initData();
     }
+
+
 
     /**
      * 初始化数据
@@ -215,12 +219,12 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
 
     @Override
     protected void setToolbarTitle(TextView textView) {
-        textView.setText("预约使用");
+        textView.setText("预约洗澡");
     }
 
     @Override
     protected void setTitle(TextView textView) {
-        textView.setText("预约使用");
+        textView.setText("预约洗澡");
     }
 
     @Override
@@ -349,7 +353,7 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
         wrapperList.add(new DeviceInfoAdapter.DeviceInfoWrapper("预留时间：" , getReservedTime(data.getCreateTime() ,data.getExpiredTime())
                 ,R.color.colorDark2 ,14 , Typeface.NORMAL , false));
         wrapper = new DeviceInfoAdapter.DeviceInfoWrapper("剩余时间：" ,TimeUtils.orderBathroomLastTime(data.getExpiredTime() ," "),
-                R.color.colorFullRed , 14 , Typeface.NORMAL , false);
+                R.color.colorFullRed , 14 , Typeface.BOLD , false);
         wrapperList.add(wrapper);
         referRecyclerView(wrapperList);
     }
@@ -419,7 +423,7 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
      * 取消预约的处理
      */
     private void cancelBookingUi() {
-        btStartToUse.setVisibility(View.GONE);
+        if (btStartToUse != null) btStartToUse.setVisibility(View.GONE);
         llBottomVisible(true);
         rightOper.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -451,11 +455,14 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
         missedTimes++  ;
         setTopTip();
         deviceNo = respDTO.getDeviceNo()+"" ;
-        statusView.setLeftImageResource(IMG_RES_STATUS_FAIL);
-        statusView.setStatusText(getString(R.string.preBookTimeOut));
-        statusView.getTip().setText(getString(R.string.tip_timeout));
-        statusView.hideCancelButton();
-        btStartToUse.setVisibility(GONE);
+        if (statusView != null) {
+            statusView.setLeftImageResource(IMG_RES_STATUS_FAIL);
+            statusView.setStatusText(getString(R.string.preBookTimeOut));
+            statusView.getTip().setText(getString(R.string.tip_timeout));
+            statusView.hideCancelButton();
+        }
+
+        if (btStartToUse != null) btStartToUse.setVisibility(GONE);
         cancelBookingUi();
         List<DeviceInfoAdapter.DeviceInfoWrapper> deviceInfoWrappers = getListDevceInfoAdapter(respDTO , true);
         referItems(deviceInfoWrappers , true);
@@ -467,14 +474,15 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
         isTimeOut = true ;
         missedTimes++  ;
         setTopTip();
-        statusView.setLeftImageResource(IMG_RES_STATUS_FAIL);
-        statusView.setStatusText(getString(R.string.preBookTimeOut));
-        statusView.getTip().setText(getString(R.string.tip_timeout));
-        statusView.hideCancelButton();
-        btStartToUse.setVisibility(GONE);
+        if (statusView != null) {
+            statusView.setLeftImageResource(IMG_RES_STATUS_FAIL);
+            statusView.setStatusText(getString(R.string.preBookTimeOut));
+            statusView.getTip().setText(getString(R.string.tip_timeout));
+            statusView.hideCancelButton();
+        }
+        if (btStartToUse != null) btStartToUse.setVisibility(GONE);
         cancelBookingUi();
     }
-
 
 
     @Override
@@ -482,7 +490,6 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
         initTopTip();
         getQueueInfo(data);
         setQueueTip();
-
     }
 
 

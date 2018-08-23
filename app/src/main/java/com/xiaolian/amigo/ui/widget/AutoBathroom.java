@@ -123,7 +123,7 @@ public class AutoBathroom extends View {
 
 
     /**
-     * 边框o
+     * 描边
      */
     private float paintStroke = 1 ;
     /**
@@ -213,6 +213,9 @@ public class AutoBathroom extends View {
 
 
     private int colorTextGroup = Color.BLACK ;
+
+
+    private int colorHint  = Color.RED ;
 
     /**
      * 可选的bathroomPaint
@@ -436,7 +439,6 @@ public class AutoBathroom extends View {
                  cacheGroupsBeans.add(groupsBean);
              }
 
-            Log.e(TAG, "onMeasure:   >>>>>> "  + floorHeight );
 
              /**  先缓存一个宽度，这个宽度 =  之前的宽度+ 这一行的宽度 ， 如果这个宽度大于 screenWidth , 则换行
               *   否则 ，不换行
@@ -498,6 +500,7 @@ public class AutoBathroom extends View {
         /**
          * 循环完发现还有楼层未设置，再进行设置
          */
+        realHeight -= borderGroups ;
         if (cacheListfloorBeans != null && cacheListfloorBeans.size() > 0){
             for (BathBuildingRespDTO.FloorsBean floorsBean1 : cacheListfloorBeans){
                 floorsBean1.setBottom(realHeight);
@@ -517,7 +520,6 @@ public class AutoBathroom extends View {
 
         //  加上间距
         realWidth = realMaxWidth ;
-        realHeight+= 0 * marginTop ;
         if (isAddName){
             zoom  = 1 ;
         }else {
@@ -537,7 +539,7 @@ public class AutoBathroom extends View {
 
         bathroomMax = ScreenUtils.dpToPx(context , 45) ;
 
-        borderBathroom = ScreenUtils.dpToPx(context , 15) ;   //  最大为
+        borderBathroom = ScreenUtils.dpToPx(context , 9) ;   //
 
         borderScreenLeft = ScreenUtils.dpToPxInt(context , 21) ;
 
@@ -552,7 +554,7 @@ public class AutoBathroom extends View {
 
         borderfloor = ScreenUtils.dpToPxInt(context ,40) ;
 
-        paintStroke = ScreenUtils.dpToPx(context , 3 );
+        paintStroke = 1;
         updataFloorBeans = new ArrayList<>();
 
         displayMetrics = new DisplayMetrics();
@@ -561,7 +563,7 @@ public class AutoBathroom extends View {
 
         //  颜色
         colorTextGroup = context.getResources().getColor(R.color.colorDark6);
-
+        colorHint = context.getResources().getColor(R.color.colorHintBathroom);
         //  获取屏幕宽度
         windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         windowManager.getDefaultDisplay().getMetrics(displayMetrics);
@@ -605,7 +607,7 @@ public class AutoBathroom extends View {
         paintBooked.setStrokeWidth(paintStroke);
         paintBooked.setColor(colorBooked);
 
-        colorChose = context.getResources().getColor(R.color.colorGreen);
+        colorChose = context.getResources().getColor(R.color.colorGreenBathroom);
         paintChose = new Paint();
         paintChose.setStyle(Paint.Style.FILL);
         paintChose.setColor(colorChose);
@@ -718,7 +720,7 @@ public class AutoBathroom extends View {
         return true;
     }
 
-
+    float drawTextDel;
 
     /**
      * 画房间框
@@ -728,6 +730,7 @@ public class AutoBathroom extends View {
      * @param
      */
     private void drawRect(Canvas canvas , float left , float top  , String text , BathBuildingRespDTO.FloorsBean.GroupsBean.BathRoomsBean room , float scaleX){
+        drawTextDel = ScreenUtils.dpToPx(context , 1);
         Path path = new Path();
         float radius = ScreenUtils.dpToPx(context ,3);
         room.setLeft(left);
@@ -780,7 +783,13 @@ public class AutoBathroom extends View {
             Rect rect = new Rect();
             hintPaint.getTextBounds(text ,0 , text.length() , rect);
 
-            int baseline = (int) ((top  + (  BathroomMin * scaleX  - rect.height()   / 2  )* scaleX  - ((fontMetrics.bottom -  fontMetrics.top)  /2  - fontMetrics.top)));
+            if (room.getStatus() == BATH_CHOSE){
+                hintPaint.setColor(Color.WHITE);
+            }else{
+                hintPaint.setColor(colorTextGroup);
+            }
+
+            int baseline = (int) ((top - drawTextDel + (  BathroomMin * scaleX  - rect.height()   / 2  )* scaleX  - ((fontMetrics.bottom -  fontMetrics.top)  /2  - fontMetrics.top)));
 
 
             StaticLayout layout = new StaticLayout(text, hintPaint, (int)(BathroomMin * scaleX), Layout.Alignment.ALIGN_NORMAL, 1.0F, 0.0F, true);
@@ -924,12 +933,12 @@ public class AutoBathroom extends View {
             }
         } else {
 
-            if (getTranslateX() < 0 && currentSeatBitmapWidth /2  + getTranslateX()   < getWidth() /2 ) {
-                moveXLength = (getWidth() /2  - getTranslateX() - currentSeatBitmapWidth /2 );
+            if (getTranslateX() < 0 && currentSeatBitmapWidth /2  + getTranslateX()   < getWidth() /2  + marginTop ) {
+                moveXLength = (getWidth() /2   - getTranslateX() - currentSeatBitmapWidth /2- marginTop );
             } else {
                 //往左侧滑动
-                if (getTranslateX() + getWidth() /2  > currentSeatBitmapWidth / 2 ) {
-                    moveXLength = -(getWidth() /2   + getTranslateX() - currentSeatBitmapWidth / 2);
+                if (getTranslateX() + getWidth() /2  > currentSeatBitmapWidth / 2 + marginTop ) {
+                    moveXLength = -(getWidth() /2   + getTranslateX() - currentSeatBitmapWidth / 2 - marginTop);
                 } else {
                     //右侧滑动
 //                    moveXLength = -getTranslateX() ;
@@ -1165,7 +1174,6 @@ public class AutoBathroom extends View {
                             roomsBean.setStatus(BATH_CHOSE);
                             if (bathroomClick != null) bathroomClick.BathroomClick( roomsBean);
                             bathRoomsBeanList.add(roomsBean);
-//                            matrix.postTranslate(lastPointX - x  ,  lastPointY - y );
                         } else if (roomsBean.getStatus() == BATH_CHOSE) {
                             bathRoomsBean = roomsBean;
                             roomsBean.setStatus(AVAILABLE);

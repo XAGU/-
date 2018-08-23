@@ -135,7 +135,7 @@ public class ListChooseAdaptor extends RecyclerView.Adapter<ListChooseAdaptor.Vi
         String extra;
         int deviceType;
         boolean deviceExist = true;
-        boolean allBaths ;
+        String groupId ;
 
         public Item(String content, boolean tick, Long id) {
             this(content, tick);
@@ -164,7 +164,7 @@ public class ListChooseAdaptor extends RecyclerView.Adapter<ListChooseAdaptor.Vi
             this.id = residence.getId();
             this.tick = false;
             this.deviceExist = !TextUtils.isEmpty(residence.getMacAddress());
-            this.allBaths = residence.isAllBaths();
+            this.groupId = residence.getGroupId();
         }
 
 
@@ -180,7 +180,7 @@ public class ListChooseAdaptor extends RecyclerView.Adapter<ListChooseAdaptor.Vi
             dest.writeValue(this.id);
             dest.writeString(this.extra);
             dest.writeByte(this.deviceExist ? (byte) 1 : (byte) 0);
-            dest.writeByte(this.allBaths ? (byte) 1 : (byte) 0);
+            dest.writeString(this.groupId);
         }
 
         protected Item(Parcel in) {
@@ -189,7 +189,7 @@ public class ListChooseAdaptor extends RecyclerView.Adapter<ListChooseAdaptor.Vi
             this.id = (Long) in.readValue(Long.class.getClassLoader());
             this.extra = in.readString();
             this.deviceExist = in.readByte() != 0;
-            this.allBaths = in.readByte() != 0 ;
+            this.groupId = in.readString();
         }
 
         public static final Parcelable.Creator<Item> CREATOR = new Parcelable.Creator<Item>() {

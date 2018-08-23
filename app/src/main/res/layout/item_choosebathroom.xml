@@ -24,12 +24,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/bathroom_status"
-        android:textStyle="bold"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/text"
         android:textColor="@color/colorGreen"
         android:layout_marginLeft="5dp"
-        tool:text=" [空闲：4间浴室]"
+        tool:text=" [空闲: "
         android:maxLines="1"
         />
 

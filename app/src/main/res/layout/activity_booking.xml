@@ -143,7 +143,7 @@
             <com.xiaolian.amigo.ui.widget.BathroomOperationStatusView
                 android:id="@+id/statusView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="71dp"
                 android:layout_marginBottom="21dp"
                 />
 
@@ -173,8 +173,7 @@
                 android:id="@+id/ll_bottom"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="21dp"
-                android:layout_marginTop="14dp"
+                android:layout_marginTop="21dp"
                 android:visibility="gone"
                 android:background="@color/colorBackgroundWhite"
                 android:orientation="horizontal">
@@ -246,7 +245,7 @@
                 android:id="@+id/tv_tip1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="9dp"
+                android:layout_marginBottom="7dp"
                 android:lineSpacingExtra="3dp"
                 style="@style/content_tip"
                 tool:text="@string/booking_use_tip1" />
@@ -256,7 +255,7 @@
                 android:id="@+id/tv_tip2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="9dp"
+                android:layout_marginBottom="7dp"
                 android:lineSpacingExtra="3dp"
                 tool:text="@string/booking_use_tip2" />
 
@@ -265,7 +264,7 @@
                 android:id="@+id/tv_tip3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="9dp"
+                android:layout_marginBottom="7dp"
                 android:lineSpacingExtra="3dp"
                 tool:text="@string/booking_use_tip3" />
 

@@ -29,7 +29,9 @@
     <color name="colorFullRed">#ffff5555</color>
     <color name="colorShadowRed">#4dff5555</color>
     <color name="colorGreen">#50e3de</color>
+    <color name="colorGreenBathroom">#50e3d1</color>
     <color name="colorBlue">#45b0ff</color>
+    <color name="colorHintBathroom">#FF7572</color>
 
     <color name="black">#000000</color>
     <color name="black50">#7f000000</color>
@@ -109,5 +111,5 @@
     <color name="color_red_woman">#ff8a33</color>
     <color name="color_bathroom_can_use">#ffd5d4</color>
 
-    <color name= "bathroom_stroke" >#fed5d5</color>
+    <color name= "bathroom_stroke" >#FFB3B2</color>
 </resources>

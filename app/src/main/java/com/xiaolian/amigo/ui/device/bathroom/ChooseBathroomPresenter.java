@@ -72,7 +72,6 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
                         if (null == result.getError()) {
                             if (isResume) {
                                 getMvpView().setTvTitle(result.getData().getBuildingName());
-                                Log.e(TAG, "onReady: " + isReferBathroom );
                                 if (isReferBathroom) {
                                     getMvpView().refreshBathroom(result.getData());
                                 }
@@ -91,9 +90,12 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
                     }
 
                     @Override
-                    public void onCompleted() {
-//                        getMvpView().hideBathroomDialog(true);
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        getMvpView().hideBathroomDialog(false);
+                        getMvpView().showError();
                     }
+
                 });
     }
 
@@ -137,7 +139,11 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
             }
 
             @Override
-            public void onCompleted() {
+            public void onError(Throwable e) {
+                super.onError(e);
+                getMvpView().hideBathroomDialog(false);
+                getMvpView().showError();
+
             }
         });
     }
@@ -220,9 +226,11 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
             }
 
             @Override
-            public void onCompleted() {
-                super.onCompleted();
+            public void onError(Throwable e) {
+                super.onError(e);
+                getMvpView().hideBathroomDialog(false);
             }
+
         });
     }
 

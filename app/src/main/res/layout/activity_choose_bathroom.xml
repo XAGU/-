@@ -47,7 +47,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/mainMarginLeftRight"
-                android:src="@drawable/ic_help" />
+                android:src="@drawable/ic_help_bathroom" />
 
             <View
                 android:id="@+id/view_line"
@@ -159,7 +159,7 @@
                     <View
                         android:layout_width="13dp"
                         android:layout_height="13dp"
-                        android:background="@drawable/bg_bathroom_chosed" />
+                        android:background="@color/colorGreenBathroom" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -188,25 +188,37 @@
                     android:layout_marginBottom="50dp"/>
             </LinearLayout>
 
+            <!--<Button-->
+                <!--android:id="@+id/pre_bathroom2"-->
+                <!--android:textAllCaps="false"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginBottom="21dp"-->
+                <!--android:gravity="center"-->
+                <!--android:textColor="@color/white"-->
+                <!--android:background="@drawable/button_enable"-->
+                <!--android:textStyle="bold"-->
+                <!--android:stateListAnimator="@null"-->
+                <!--android:layout_marginStart="@dimen/mainMarginLeftRight"-->
+                <!--android:layout_marginEnd="@dimen/mainMarginLeftRight"-->
+                <!--android:layout_alignParentBottom="true"-->
+                <!--android:visibility="gone"-->
+                <!--/>-->
+
             <Button
-                android:enabled="true"
-                android:id="@+id/pre_bathroom"
-                android:layout_marginTop="21dp"
+                android:id="@+id/pre_bathroom1"
                 android:textAllCaps="false"
+                android:layout_marginBottom="21dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="21dp"
-                android:background="@drawable/button_enable"
                 android:gravity="center"
                 android:textColor="@color/white"
-                android:textSize="14sp"
                 android:layout_marginStart="@dimen/mainMarginLeftRight"
                 android:layout_marginEnd="@dimen/mainMarginLeftRight"
-                android:textStyle="bold"
-                android:text="@string/preBathWithAnyEmptyBath"
-                tools:text="预约洗澡（任意空浴室）"
-                android:stateListAnimator="@null"
                 android:layout_alignParentBottom="true"
+                android:background="@drawable/button_enable"
+                android:textStyle="bold"
+                android:stateListAnimator="@null"
                 />
         </RelativeLayout>
 

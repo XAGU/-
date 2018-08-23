@@ -133,7 +133,7 @@ public interface IListChoosePresenter<V extends IListChooseView> extends IBasePr
 
 
     /**
-     * 只要allBaths 为true  ， 就跳转到公共浴室
+     * 只要groupId 不为空，返回true  ， 就跳转到公共浴室
      * @param residence
      */
     boolean isStartBathroom(ListChooseAdaptor.Item residence);

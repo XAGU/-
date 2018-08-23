@@ -25,7 +25,6 @@ import com.xiaolian.amigo.ui.main.adaptor.HomeBannerDelegate;
 import com.xiaolian.amigo.ui.main.adaptor.HomeNormalDelegate;
 import com.xiaolian.amigo.ui.main.adaptor.HomeSmallDelegate;
 import com.xiaolian.amigo.ui.widget.RecyclerItemClickListener;
-import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
 
 import org.greenrobot.eventbus.EventBus;
@@ -387,12 +386,11 @@ public class HomeFragment2 extends Fragment {
     private void checkTitleTip(CurrentBathOrderRespDTO event) {
             shower.setExistOrder(true);
             shower.setStatus(event.getStatus());
-//            if (event.getStatus() == Constant.USING_STATUS) {
-//                shower.setUsing(true);
-//            } else {
-//                shower.setUsing(false);
-//            }
-            shower.setUsing(true);
+            if (shower.getStatus() == 1 ){
+                shower.setUsing(false);
+            }else {
+                shower.setUsing(true);
+            }
             Log.e(TAG, "checkTitleTip预约订单" + event.getStatus());
             notifyAdaptor();
     }
