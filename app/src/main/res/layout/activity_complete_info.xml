@@ -32,7 +32,7 @@
                 android:textColor="@color/black"
                 style="@style/info_radio_style_man"
                 android:checked="false"
-                android:enabled="false"
+                android:enabled="true"
                 android:layout_gravity="center_horizontal"
                 android:text="糙汉"
                 android:id="@+id/radio_man"/>
@@ -60,7 +60,7 @@
                 android:textColor="@color/black"
                 style="@style/info_radio_style_woman"
                 android:checked="false"
-                android:enabled="false"
+                android:enabled="true"
                 android:layout_gravity="center_horizontal"
                 android:text="软妹"
                 android:id="@+id/radio_woman"/>

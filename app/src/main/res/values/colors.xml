@@ -13,6 +13,8 @@
 
     <color name="colorBackgroundWhite">#ffffff</color>
     <color name="colorBackgroundGray">#f5f5f5</color>
+    <color name="colorBackgroundGray70">#4c000000</color>
+    <color name="colorBackgroundGray100">#00f5f5f5</color>
     <color name="colorDividingLine">#eee</color>
     <color name="colorDark2">#222</color>
     <color name="colorDarkB">#bbb</color>

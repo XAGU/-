@@ -3,7 +3,6 @@ package com.xiaolian.amigo.ui.device.bathroom;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.util.ObjectsCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -37,18 +36,15 @@ import com.xiaolian.amigo.ui.widget.CircleProgressView;
 import com.xiaolian.amigo.ui.widget.dialog.BathroomBookingDialog;
 import com.xiaolian.amigo.ui.widget.popWindow.ChooseBathroomPop;
 import com.xiaolian.amigo.util.Constant;
-import com.xiaolian.amigo.util.RxHelper;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import rx.functions.Action1;
 
 import static com.xiaolian.amigo.ui.device.DeviceOrderActivity.KEY_USER_STYLE;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_BALANCE;
@@ -212,6 +208,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
                 }
             });
         }
+
     }
 
 
@@ -258,7 +255,8 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
 
 
     private void initRecyclerView() {
-
+        if (autoBathroom  != null && presenter != null)
+         autoBathroom.setPresenter((ChooseBathroomPresenter<IChooseBathroomView>) presenter);
 //        test();
 //        showBathroomDialog();
     }
@@ -434,8 +432,10 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
 
     private void showPopNoDevice() {
         presenter.setIsResume(false);
+//        preBathroom.setVisibility(View.GONE);
         pop.showUp(preBathroom);
         lightOff();
+
         /**
          * 消失时屏幕变亮
          */
@@ -448,12 +448,16 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
 
                 getWindow().setAttributes(layoutParams);
 
+//                root.setBackgroundResource(R.color.colorBackgroundGray);
+//                toolBar.setBackgroundResource(R.color.white);
+//                llTop.setBackgroundResource(R.color.white);
                 presenter.setIsResume(true);
                 deviceNo = "";
                 if (autoBathroom != null) {
                     autoBathroom.setBathroomAvable();
                     autoBathroom.invalidate();
                 }
+//                preBathroom.setVisibility(View.VISIBLE);
             }
         });
         preBathroom.setClickable(true);
@@ -470,6 +474,9 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         layoutParams.alpha = 0.7f;
 
         getWindow().setAttributes(layoutParams);
+//        root.setBackgroundResource(R.color.colorBackgroundGray70);
+//        toolBar.setBackgroundResource(R.color.colorBackgroundGray100);
+//        llTop.setBackgroundResource(R.color.colorBackgroundGray100);
 
     }
 

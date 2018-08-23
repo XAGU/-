@@ -25,6 +25,13 @@ public interface IDevicePresenter<V extends IBaseView> extends IBasePresenter<V>
     void onPreConnect(@NonNull String macAddress);
 
     /**
+     * 扫一扫的连接设备前准备
+     * @param macAddress
+     * @param isScan
+     */
+    void onPreConnect(@NonNull String macAddress  , boolean isScan);
+
+    /**
      * 连接设备
      *
      * @param macAddress 设备mac地址

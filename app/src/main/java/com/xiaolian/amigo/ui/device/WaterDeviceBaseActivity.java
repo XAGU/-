@@ -68,6 +68,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     public static final String INTENT_HOME_PAGE_JUMP = "intent_home_page_jump";
     public static final String INTENT_RECOVER = "intent_recover";
     public static final String INTENT_PREPAY_INFO = "intent_prepay_info";
+    public static final String CONN_TYPE = "CONN_TYPE" ;  // 连接方式， 是否是扫一扫， 是为true; 否 为false
 
     private static final String TAG = WaterDeviceBaseActivity.class.getSimpleName();
     /**
@@ -282,6 +283,8 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     private OrderPreInfoDTO orderPreInfo;
     protected boolean bleError = false;
 
+    private  boolean isScan ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -291,13 +294,16 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         initPresenter();
         initView();
 
-
         // 连接蓝牙设备
         presenter.setHomePageJump(homePageJump);
         if (recorvery || !homePageJump) {
             presenter.setStep(TradeStep.SETTLE);
         }
-        presenter.onPreConnect(macAddress);
+        if (isScan){
+            presenter.onPreConnect(macAddress , true);
+        }else {
+            presenter.onPreConnect(macAddress);
+        }
         if (prepay == null) {
             presenter.queryPrepayOption(deviceType);
         } else {
@@ -321,6 +327,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             supplierId = getIntent().getLongExtra(MainActivity.INTENT_KEY_SUPPLIER_ID, -1L);
             homePageJump = getIntent().getBooleanExtra(INTENT_HOME_PAGE_JUMP, true);
             recorvery = getIntent().getBooleanExtra(MainActivity.INTENT_KEY_RECOVERY, false);
+            isScan = getIntent().getBooleanExtra(CONN_TYPE , false);
             orderPreInfo = getIntent().getParcelableExtra(INTENT_PREPAY_INFO);
             if (orderPreInfo != null) {
                 price = orderPreInfo.getPrice();

@@ -81,13 +81,14 @@ public class ScanPresenter<V extends IScanView> extends BasePresenter<V>
                     getMvpView().showDeviceUsageDialog(type, result.getData() ,mac ,isBle);
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
+                    getMvpView().resumeScan();
                 }
             }
 
             @Override
             public void onError(Throwable e) {
                 super.onError(e);
-                EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.ENABLE_VIEW));
+                getMvpView().resumeScan();
             }
         });
     }
@@ -103,8 +104,8 @@ public class ScanPresenter<V extends IScanView> extends BasePresenter<V>
         if (TextUtils.isEmpty(defaultAddress)) {
             getMvpView().onError("二维码扫描失败");
         } else {
-            getMvpView().gotoDevice(Device.HEATER, defaultAddress, defaultSupplierId,reseniceId
-                    ,location);
+            getMvpView().gotoDevice(Device.HEATER, defaultAddress, defaultSupplierId,location ,reseniceId
+                    , false);
         }
     }
 

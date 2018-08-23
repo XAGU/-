@@ -114,6 +114,7 @@
     <string name="prepay_money_colon">预付金额：</string>
     <string name="withdrawal">提现</string>
     <string name="network_available_error_tip">当前网络质量较差</string>
+    <string name="network_not_available">当前网络不可用，检查网络</string>
     <string name="please_enter_password_to_verify">请输入登录密码进行验证</string>
     <string name="manage_dormitory">新的地址</string>
     <string name="notice_center">通知中心</string>
@@ -275,7 +276,9 @@
     <string name="heater_notice_content">1.热水澡最低消费&lt;font color=&quot;#ff5555&quot;&gt;%1$d分钱&lt;/font&gt;，请确认需要用水再点击“开始洗澡”按钮；&lt;br&gt;&lt;br&gt;2.洗澡时手机不用带进浴室哦，可通过水阀门暂停用水。最终消费由水表根据用水量而定，与使用时间无关。</string>
     <string name="dispenser_notice_content">1.饮水机最低消费&lt;font color=&quot;#ff5555&quot;&gt;%1$d分钱&lt;/font&gt;，请确认需要用水再点击“开始接水”按钮；&lt;br&gt;&lt;br&gt;2.最终消费由水表根据用水量而定，与使用时间无关。</string>
     <string name="dryer_notice_content">1.吹风机最低消费&lt;font color=&quot;#ff5555&quot;&gt;%1$d分钱&lt;/font&gt;，请确认需要使用再点击“开始使用”按钮；&lt;br&gt;&lt;br&gt;2.最终消费根据使用时间而定。</string>
+    <string name="repair_evaluate_tips_content">每评价一次就可以获得&lt;font color=&quot;#ff5555&quot;&gt;%1$d&lt;/font&gt;积分，想成为积分土豪红包土豪就快来评价吧～</string>
     <string name="water_use_notice_title">温馨提示</string>
+    <string name="repair_evaluate_tips">评价彩蛋</string>
     <string name="hair_dryer">吹风机</string>
     <string name="used_time_colon">使用时长：</string>
     <string name="washer">洗衣机</string>

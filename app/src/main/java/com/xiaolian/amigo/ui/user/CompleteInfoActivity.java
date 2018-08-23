@@ -3,7 +3,9 @@ package com.xiaolian.amigo.ui.user;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
@@ -95,6 +97,19 @@ public class CompleteInfoActivity extends UserBaseActivity implements ICompleteI
         //刷新页面
         refreshCompleteInfoView();
 
+        radioWoman.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                choseWoman();
+            }
+        });
+
+        radioMan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                choseMan();
+            }
+        });
     }
 
     @OnClick(R.id.tv_add_dormitory)
@@ -155,14 +170,14 @@ public class CompleteInfoActivity extends UserBaseActivity implements ICompleteI
     }
 
 
-    @OnClick({R.id.woman ,R.id.radio_woman})
+    @OnClick({R.id.woman })
     public void choseWoman(){
         sex = 2;
         radioMan.setChecked(false);
         radioWoman.setChecked(true);
     }
 
-    @OnClick({R.id.man , R.id.radio_man})
+    @OnClick({R.id.man })
     public void choseMan(){
         sex = 1;
         radioMan.setChecked(true);

@@ -155,7 +155,7 @@ public class ChooseBathroomPop  extends PopupWindow {
         int[] location = new int[2];
         v.getLocationOnScreen(location);
         //在控件上方显示
-        showAtLocation(v, Gravity.BOTTOM, 0 , ScreenUtils.dpToPxInt(context , 20));
+        showAtLocation(v, Gravity.BOTTOM, 0 , ScreenUtils.dpToPxInt(context ,20 ));
 
 //        showAtLocation(v, Gravity.NO_GRAVITY, (location[0] + v.getWidth() / 2) - popupWidth / 2, location[1] - popupHeight-70);
     }

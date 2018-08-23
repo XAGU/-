@@ -45,6 +45,9 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
     private static int time = 0  ;
 
     private boolean isResume = false ;
+
+    public  boolean isReferBathroom = true ;
+
     @Inject
     public ChooseBathroomPresenter(IBathroomDataManager bathroomDataManager) {
         this.bathroomDataManager = bathroomDataManager;
@@ -69,14 +72,17 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
                         if (null == result.getError()) {
                             if (isResume) {
                                 getMvpView().setTvTitle(result.getData().getBuildingName());
-                                getMvpView().refreshBathroom(result.getData());
-//                                delay(10, new Action1<Long>() {
-//                                    @Override
-//                                    public void call(Long aLong) {
-//
-//                                        getBathroomList(buildingId);
-//                                    }
-//                                });
+                                Log.e(TAG, "onReady: " + isReferBathroom );
+                                if (isReferBathroom) {
+                                    getMvpView().refreshBathroom(result.getData());
+                                }
+                                delay(60, new Action1<Long>() {
+                                    @Override
+                                    public void call(Long aLong) {
+
+                                        getBathroomList(buildingId);
+                                    }
+                                });
                             }
                         } else {
                             getMvpView().onError(result.getError().getDisplayMessage());

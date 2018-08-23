@@ -72,6 +72,7 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     private static final String PREF_ALERT_HEATER = "PREF_ALERT_HEATER";
     private static final String PREF_ALERT_DISPENSER = "PREF_ALERT_DISPENSER";
     private static final String PREF_ALERT_DRYER = "PREF_ALERT_DRYER";
+    private static final String PREF_ALERT_REPAIR = "PREF_ALERT_REPAIR";
     /************* 记住手机号 ******************/
     private static final String PREF_REMEMBER_MOBILE = "PREF_REMEMBER_MOBILE";
     /**
@@ -364,6 +365,16 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     public void setLastRepairTime(Long time) {
         Long id = getUserInfo().getId();
         mUnclearSharedPreferences.edit().putLong(PREF_LAST_VIEW_REPAIR_PREFIX + id, time).apply();
+    }
+
+    @Override
+    public void setRepairGuide(Integer guideTime) {
+        mUnclearSharedPreferences.edit().putInt(PREF_ALERT_REPAIR, guideTime).apply();
+    }
+
+    @Override
+    public Integer getRepairGuide() {
+        return mUnclearSharedPreferences.getInt(PREF_ALERT_REPAIR, 0);
     }
 
     @Override

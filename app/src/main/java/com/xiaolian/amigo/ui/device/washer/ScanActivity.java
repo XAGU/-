@@ -53,6 +53,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.xiaolian.amigo.data.enumeration.Device.HEATER;
+import static com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity.CONN_TYPE;
 import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_DEVICE_TYPE;
 import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_LOCATION;
 import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_MAC_ADDRESS;
@@ -524,11 +525,6 @@ public class ScanActivity extends WasherBaseActivity
             }
     }
 
-    @Override
-    public void gotoDevice(Device device, String macAddress, Long supplierId, long residenceId, String location) {
-
-    }
-
 
     @Override
     public void showTimeValidDialog(int deviceType, DeviceCheckRespDTO data) {
@@ -620,10 +616,6 @@ public class ScanActivity extends WasherBaseActivity
 
     @Override
     public void goToBleDevice(boolean isTimeValid, int type, String macAddress, BriefDeviceDTO data, boolean isBle) {
-//        if (type == Device.HEATER.getType() && !presenter.checkDefaultDormitoryExist()) {
-//            showBindDormitoryDialog();
-//            return;
-//        }
         if (type == Device.HEATER.getType()) {
             // 前往热水澡
             gotoDevice(HEATER, macAddress,

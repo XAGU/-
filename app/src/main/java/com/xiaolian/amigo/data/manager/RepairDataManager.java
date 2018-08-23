@@ -97,6 +97,22 @@ public class RepairDataManager implements IRepairDataManager {
     }
 
     @Override
+    public void setRepairGuide(Integer guideTime) {
+        sharedPreferencesHelp.setRepairGuide(guideTime);
+    }
+
+    @Override
+    public boolean isRepairGuideDone() {
+        return !(sharedPreferencesHelp.getRepairGuide() != null
+                && sharedPreferencesHelp.getRepairGuide() < 3);
+    }
+
+    @Override
+    public void doneRepairGuide() {
+        sharedPreferencesHelp.setRepairGuide(sharedPreferencesHelp.getRepairGuide() + 1);
+    }
+
+    @Override
     public Observable<ApiResult<BooleanRespDTO>> cancelRepair(@Body SimpleReqDTO reqDTO) {
         return repairApi.cancelRepair(reqDTO);
     }

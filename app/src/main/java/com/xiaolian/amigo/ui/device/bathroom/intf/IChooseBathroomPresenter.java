@@ -9,6 +9,7 @@ import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 public interface IChooseBathroomPresenter<V extends IChooseBathroomView>
         extends IBasePresenter<V> {
 
+
     void getBathroomList(long buildingId);
 
 

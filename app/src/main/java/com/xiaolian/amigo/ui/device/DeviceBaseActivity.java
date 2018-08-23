@@ -41,6 +41,8 @@ public abstract class DeviceBaseActivity extends BaseActivity implements IDevice
 
     }
 
+
+
     public DeviceActivityComponent getActivityComponent() {
         return mActivityComponent;
     }

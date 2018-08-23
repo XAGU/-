@@ -59,4 +59,15 @@ public interface IRepairDetailPresenter<V extends IRepairDetailView> extends IBa
      * 获取Token
      */
     void getToken();
-}
+
+
+    /**
+     * 弹框提示
+     */
+    public void notShowRemindAlert();
+
+    /**
+     * 显示温馨提示
+     */
+    void showGuide(Integer credits);
+    }

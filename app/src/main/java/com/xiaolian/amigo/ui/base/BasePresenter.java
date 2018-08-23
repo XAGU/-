@@ -81,7 +81,8 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
     @Override
     public void onRemoteInvocationError(Throwable e) {
         if (!getMvpView().isNetworkAvailable()) {
-            getMvpView().onError(R.string.network_available_error_tip);
+            getMvpView().onError(R.string.network_not_available);
+//            getMvpView().onError(R.string.network_available_error_tip);
         } else if (e instanceof ConnectException) {
             getMvpView().onError(R.string.server_available_error_tip);
         } else if (e instanceof SocketTimeoutException) {

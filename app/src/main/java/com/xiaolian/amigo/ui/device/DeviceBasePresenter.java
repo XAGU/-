@@ -135,6 +135,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     // 扫描方式
     private int scanType = BluetoothConstants.SCAN_TYPE_BLE;
 
+
+
     DeviceBasePresenter(IBleDataManager bleDataManager, IDeviceDataManager deviceDataManager) {
         super();
         this.bleDataManager = bleDataManager;
@@ -238,6 +240,39 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
     }
 
+
+    /**
+     * 连接间隔为5s
+     * @param macAddress 设备mac地址
+     */
+    @Override
+    public void onPreConnect(@NonNull String macAddress  , boolean isScan) {
+        // 校验macAddress
+        if (TextUtils.isEmpty(macAddress)) {
+            if (getMvpView() != null) {
+                getMvpView().post(() -> getMvpView().onError(TradeError.DEVICE_BROKEN_2));
+                getMvpView().post(() -> getMvpView().hideLoading());
+            }
+            Log.wtf(TAG, "macAddress为空!");
+            reportError(getStep().getStep(), ConnectErrorType.BLE_CONNECT_ERROR.getType(),
+                    DisplayErrorType.CONNECT_ERROR.getType(), "macAddress为空!", "");
+            return;
+        }
+
+        Long lastConnectTime = TimeHolder.get().getLastConnectTime();
+        if (null != lastConnectTime) {
+            Long diff = System.currentTimeMillis() - lastConnectTime;
+            if (diff < 5000) {
+                new Handler().postDelayed(() -> onConnect(macAddress), 5000 - diff);
+            } else {
+                onConnect(macAddress);
+            }
+        } else {
+            onConnect(macAddress);
+        }
+
+    }
+
     @Override
     public void onConnect(@NonNull String macAddress, Long supplierId) {
         setSupplierId(supplierId);
@@ -280,12 +315,15 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         //  macAddress是服务器返回的deviceNo  ,currentMacAddress是全局变量，是正确的蓝牙设备mac地址
         // 设备连接上存储mac地址供后续读写数据使用
         // 查询是否存在该deviceNo的macAddress
-        if (deviceDataManager.getMacAddressByDeviceNo(macAddress) != null) {
-            Log.i(TAG, "缓存中存在macAddress，不需要扫描");
-            currentMacAddress = deviceDataManager.getMacAddressByDeviceNo(macAddress);
-            realConnect(macAddress);
-            return;
-        }
+            if (deviceDataManager.getMacAddressByDeviceNo(macAddress) != null) {
+                Log.i(TAG, "缓存中存在macAddress，不需要扫描");
+                currentMacAddress = deviceDataManager.getMacAddressByDeviceNo(macAddress);
+                realConnect(macAddress);
+                return;
+            }
+
+
+
 
         // 扫描macAddress
         Log.i(TAG, "开始扫描macAddress");

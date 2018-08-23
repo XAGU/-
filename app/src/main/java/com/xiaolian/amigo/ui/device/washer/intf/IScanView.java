@@ -48,7 +48,7 @@ public interface IScanView extends IBaseView {
      * @param residenceId 位置id
      */
     void gotoDevice(Device device, String macAddress, Long supplierId,
-                    long residenceId,String location);
+                    String location, Long residenceId, boolean recovery);
 
 
     /**
