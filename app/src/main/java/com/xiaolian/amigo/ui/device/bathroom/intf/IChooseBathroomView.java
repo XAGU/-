@@ -64,7 +64,7 @@ public interface IChooseBathroomView extends IBaseView {
      * 去预约状态界面
      * @param bathOrderId
      */
-    void startBooking(long bathOrderId);
+    void startBooking(long bathOrderId , boolean isFloor);
 
     /**
      * 保存预约信息，包括最大失约次数， 已失约次数，预付信息
@@ -84,4 +84,6 @@ public interface IChooseBathroomView extends IBaseView {
     void startOrderInfo(BathOrderCurrentRespDTO data);
 
     void showError();
+
+    void setPrebathroomEnable(boolean isEnable);
 }

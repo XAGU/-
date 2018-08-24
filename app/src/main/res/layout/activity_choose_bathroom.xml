@@ -184,6 +184,7 @@
                 <com.xiaolian.amigo.ui.widget.AutoBathroom
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:id="@+id/auto_bathroom"
                     android:layout_marginBottom="50dp"/>
             </LinearLayout>

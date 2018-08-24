@@ -58,7 +58,7 @@ public class HomeAdaptor extends MultiItemTypeAdapter<HomeAdaptor.ItemWrapper> {
         int smallRes;
         int res;
         int prepaySize = 0;
-        boolean active = true;
+        boolean active = false;
         boolean using = false;
         boolean existOrder = false ;  // 是否存在预约订单
         int status ;  //  预约状态   2 等待洗浴 5 预约超时 6正在洗浴

@@ -81,6 +81,20 @@ public class BathroomHeaterActivity extends BathroomBaseActivity implements IBat
         initView();
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        presenter.onResume();
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        presenter.onPause();
+    }
+
     @Override
     protected void setUp() {
         if (getIntent() != null) {
@@ -100,6 +114,7 @@ public class BathroomHeaterActivity extends BathroomBaseActivity implements IBat
     }
 
     private void initPreView() {
+
         ivTopRightIcon.setImageResource(R.drawable.ic_question);
         rlHeader.setBackgroundResource(R.drawable.bg_rect_red);
         flBottom.setBackgroundResource(R.color.heater_gradient_start);

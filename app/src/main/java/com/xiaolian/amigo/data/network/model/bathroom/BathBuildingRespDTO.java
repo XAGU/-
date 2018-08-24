@@ -60,6 +60,16 @@ public class BathBuildingRespDTO {
             private float left ;   //  每层的左边坐标
             private float bottom ;  //  每层的底部坐标
 
+            private float Width ;
+
+            public float getWidth() {
+                return Width;
+            }
+
+            public void setWidth(float width) {
+                Width = width;
+            }
+
             public float getLeft() {
                 return left;
             }
@@ -235,11 +245,20 @@ public class BathBuildingRespDTO {
                     private int xaxis;
                     private int yaxis;
 
+                    private String roomName ;
+
                     private float left ;  //  left坐标
                     private float top ;   //  top坐标
                     private float right ;  // right坐标
                     private float bottom;  // bottom坐标
 
+                    public String getRoomName() {
+                        return roomName;
+                    }
+
+                    public void setRoomName(String roomName) {
+                        this.roomName = roomName;
+                    }
 
                     public float getLeft() {
                         return left;

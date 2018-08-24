@@ -22,6 +22,7 @@ public class BathroomConstant {
     public static final String KEY_PREPAY = "key_prepay";
     public static final String KEY_RESERVEDTIME = "key_reservedTime";
     public static final String KEY_DEVICE_NO = "key_device_no";
+    public static final String KEY_FLOOR = "KEY_FLOOR" ;
 
     //  已存在订单消息
     public static final String KEY_ORDER_PRECONDITION = "key_order_precondition";

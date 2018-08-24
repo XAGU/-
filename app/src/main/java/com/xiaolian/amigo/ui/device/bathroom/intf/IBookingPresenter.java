@@ -15,6 +15,10 @@ public interface IBookingPresenter<V extends IBookingView> extends IBasePresente
      */
     void cancel(long id);
 
+    void onPause();
+
+
+    void onResume();
 
 
     /**

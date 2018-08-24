@@ -24,6 +24,10 @@ public interface IChooseBathroomPresenter<V extends IChooseBathroomView>
     void buildingTraffic(long id);
 
 
+    void onPause();
+
+    void onResume();
+
     /**
      * 预约楼栋
      * @param   deviceNo  type 为1

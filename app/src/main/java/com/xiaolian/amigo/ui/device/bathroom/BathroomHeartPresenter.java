@@ -25,6 +25,7 @@ public class BathroomHeartPresenter<V extends IBathroomHeartView> extends BasePr
 
     private static final String TAG = BathroomHeartPresenter.class.getSimpleName();
     private IBathroomDataManager bathroomDataManager ;
+    private boolean isPause = false ;
 
     @Inject
     public BathroomHeartPresenter(IBathroomDataManager bathroomDataManager) {
@@ -57,8 +58,22 @@ public class BathroomHeartPresenter<V extends IBathroomHeartView> extends BasePr
         });
     }
 
+
+    @Override
+    public void onResume() {
+        isPause = false ;
+    }
+
+
+    @Override
+    public void onPause() {
+        isPause = true ;
+    }
+
     @Override
     public void queryBathroomOrder(Long id , boolean isShowDialog) {
+
+        if (isPause) return ;
         SimpleReqDTO simpleReqDTO  = new SimpleReqDTO();
         simpleReqDTO.setId(id);
         addObserver(bathroomDataManager.orderQuery(simpleReqDTO) , new NetworkObserver<ApiResult<BathOrderCurrentRespDTO>>(){

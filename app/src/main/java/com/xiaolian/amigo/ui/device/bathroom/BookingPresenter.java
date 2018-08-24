@@ -44,6 +44,8 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
     private static int queryNum = 0 ;  //  查询订单状态次数，最多只能五次
 
     private static int queryCancle = 0 ;  //  查询取消状态  ， 最多5次
+
+    boolean isOnPause = false  ;
     @Inject
     public BookingPresenter(IBathroomDataManager bathroomDataManager) {
         this.bathroomDataManager = bathroomDataManager;
@@ -79,6 +81,16 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
                 });
     }
 
+    @Override
+    public void onPause() {
+        this.isOnPause = true ;
+    }
+
+    @Override
+    public void onResume() {
+        this.isOnPause = false ;
+    }
+
 
     @Override
     public void cancelCountDown() {
@@ -100,6 +112,7 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
     @Override
     public void query(String bathOrderId , boolean isToUsing , int time , boolean isShowDialog) {
         Log.e(TAG, "query: " + isToUsing  + "     " +time);
+        if (isOnPause )  return ;
         BathBookingStatusReqDTO reqDTO = new BathBookingStatusReqDTO();
         reqDTO.setId(bathOrderId);
         addObserver(bathroomDataManager.query(reqDTO) , new NetworkObserver<ApiResult<BathBookingRespDTO>>(){
@@ -153,6 +166,7 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
      * @param
      */
     public void query(long bookingId ) {
+        if (isOnPause )  return ;
         BathBookingStatusReqDTO reqDTO = new BathBookingStatusReqDTO();
         reqDTO.setId(bookingId+"");
         addObserver(bathroomDataManager.query(reqDTO) , new NetworkObserver<ApiResult<BathBookingRespDTO>>() {
@@ -243,6 +257,7 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
 
     @Override
     public void queryQueueId(long id , boolean isShowDialog) {
+        if (isOnPause )  return ;
         SimpleReqDTO simpleReqDTO = new SimpleReqDTO();
         simpleReqDTO.setId(id);
         addObserver(bathroomDataManager.queueQuery(simpleReqDTO) , new NetworkObserver<ApiResult<BookingQueueProgressDTO>>(){
@@ -261,12 +276,7 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
                     if (result.getError() == null){
                         if (result.getData().getBathBookingId() == 0){
                             getMvpView().showQueue(result.getData());
-                            delay(5, new Action1<Long>() {
-                                @Override
-                                public void call(Long aLong) {
-                                    queryQueueId(id , false);
-                                }
-                            });
+
                         }else {
                             query(result.getData().getBathBookingId()+"" ,false ,10 , false);
                         }
@@ -274,11 +284,23 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
                         getMvpView().onError(result.getError().getDisplayMessage());
                     }
             }
+
+            @Override
+            public void onCompleted() {
+                super.onCompleted();
+                delay(5, new Action1<Long>() {
+                    @Override
+                    public void call(Long aLong) {
+                        queryQueueId(id , false);
+                    }
+                });
+            }
         });
     }
 
     @Override
     public void cancelQueue(long id) {
+        if (isOnPause )  return ;
         SimpleReqDTO simpleReqDTO = new SimpleReqDTO();
         simpleReqDTO.setId(id);
         addObserver(bathroomDataManager.cancelQueue(simpleReqDTO) , new NetworkObserver<ApiResult<BooleanRespDTO>>(){

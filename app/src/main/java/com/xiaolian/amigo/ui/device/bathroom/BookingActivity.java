@@ -42,6 +42,7 @@ import butterknife.Unbinder;
 
 import static android.view.View.GONE;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_DEVICE_NO;
+import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_FLOOR;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_ORDER_PRECONDITION;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomHeaterActivity.KEY_BATH_ORDER_ID;
 import static com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity.KEY_BOOKING_RESULTCODE;
@@ -117,6 +118,7 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
     protected void onResume() {
         super.onResume();
         isCanJump = true ;
+        presenter.onResume();
 
     }
 
@@ -136,6 +138,8 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
     protected void onPause() {
         super.onPause();
         isCanJump = false ;
+        presenter.onPause();
+
     }
 
     /**
@@ -166,7 +170,7 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
         return wrapperList ;
     }
 
-
+    boolean isFloor ;
 
     @Override
     protected void initIntent() {
@@ -179,6 +183,7 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
 
             bookingId = getIntent().getLongExtra(KEY_BOOKING_ID , 0);
             bathQueueId = getIntent().getLongExtra(KEY_BATHQUEUE_ID , 0);
+            isFloor = getIntent().getBooleanExtra(KEY_FLOOR ,false);
         }
     }
 
@@ -425,20 +430,22 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
     private void cancelBookingUi() {
         if (btStartToUse != null) btStartToUse.setVisibility(View.GONE);
         llBottomVisible(true);
-        rightOper.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.e(TAG, "onClick: "  + bathQueueId );
-                Intent intent = new Intent();
-                if (bathQueueId > 0) {
-                    intent.putExtra(KEY_DEVICE_ACTIVITY_FOR_RESULT, "");
-                }else{
-                    intent.putExtra(KEY_DEVICE_ACTIVITY_FOR_RESULT, deviceNo);
+        if (rightOper != null) {
+            rightOper.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.e(TAG, "onClick: " + bathQueueId);
+                    Intent intent = new Intent();
+                    if (bathQueueId > 0 || isFloor) {
+                        intent.putExtra(KEY_DEVICE_ACTIVITY_FOR_RESULT, "");
+                    } else {
+                        intent.putExtra(KEY_DEVICE_ACTIVITY_FOR_RESULT, deviceNo);
+                    }
+                    BookingActivity.this.setResult(KEY_BOOKING_RESULTCODE, intent);
+                    BookingActivity.this.finish();
                 }
-                BookingActivity.this.setResult(KEY_BOOKING_RESULTCODE,intent);
-                BookingActivity.this.finish();
-            }
-        });
+            });
+        }
     }
 
 
@@ -523,7 +530,7 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
         wrapperList.add(new DeviceInfoAdapter.DeviceInfoWrapper("浴室位置" ,
                 location , R.color.colorDark2 , 14 ,Typeface.NORMAL , false));
         wrapperList.add(new DeviceInfoAdapter.DeviceInfoWrapper("还需等待",
-                remain +"人" , R.color.refresh_red ,14 , Typeface.NORMAL , false));
+                remain +"人" , R.color.refresh_red ,14 , Typeface.BOLD , false));
         return wrapperList ;
     }
 
@@ -603,4 +610,5 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
         bookingCancel();
         bathroomBookingDialog.dismiss();
     }
+
 }

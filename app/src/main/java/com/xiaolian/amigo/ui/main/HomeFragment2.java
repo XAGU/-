@@ -223,12 +223,14 @@ public class HomeFragment2 extends Fragment {
         if (gate.isActive()) {
             items.add(gate);
         }
-        if (lost.isActive()) {
-            items.add(lost);
-        }
+//        if (lost.isActive()) {
+//            items.add(lost);
+//        }
+        items.add(lost);
         if (banner != null) {
             items.add(banner);
         }
+
     }
 
 
@@ -244,6 +246,7 @@ public class HomeFragment2 extends Fragment {
         water.setActive(false);
         washer.setActive(false);
         gate.setActive(false);
+        lost.setActive(true);
         /// business为空则不显示shower和water
         if (businesses == null || businesses.isEmpty()) {
             notifyAdaptor();

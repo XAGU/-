@@ -53,6 +53,7 @@ import butterknife.OnClick;
 
 import static com.xiaolian.amigo.ui.device.DeviceOrderActivity.KEY_USER_STYLE;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_BALANCE;
+import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_FLOOR;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_MAX_MISSABLE_TIMES;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_MIN_PREPAY;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_MISSED_TIMES;
@@ -106,7 +107,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
 
     private long buildId;    //  楼栋id ；
     private long residenceId;   //  建筑id
-    private long residenceType;
+    private int residenceType;
     private long id;
     private String residenceName;
 
@@ -373,6 +374,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         presenter.setIsResume(true);
         presenter.getBathroomList(buildId);
         presenter.precondition(isShowDialog);
+        presenter.onResume();
         if (preBathroom != null) preBathroom.setEnabled(true);
     }
 
@@ -380,10 +382,10 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
     protected void setUp() {
         super.setUp();
         if (getIntent() != null) {
-            buildId = getIntent().getLongExtra(KEY_BUILDING_ID, -1);
-            residenceId = getIntent().getLongExtra(KEY_RESIDENCE_ID, -1);
-            residenceType = getIntent().getLongExtra(KEY_RESIDENCE_TYPE, -1L);
-            id = getIntent().getLongExtra(KEY_ID, -1);
+            buildId = getIntent().getLongExtra(KEY_BUILDING_ID, -1L);
+            residenceId = getIntent().getLongExtra(KEY_RESIDENCE_ID, -1L);
+            residenceType = getIntent().getIntExtra(KEY_RESIDENCE_TYPE, -1);
+            id = getIntent().getLongExtra(KEY_ID, -1L);
             residenceName = getIntent().getStringExtra(KEY_RESIDENCE_NAME);
 
         }
@@ -394,6 +396,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         super.onPause();
         isCanJump = false;
         presenter.setIsResume(false);
+        presenter.onPause();
     }
 
     @Override
@@ -463,6 +466,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
                     autoBathroom.setBathroomAvable();
                     autoBathroom.invalidate();
                 }
+                Log.e(TAG, "onDismiss: " );
                 preBathroom.setEnabled(true);
 //                preBathroom.setVisibility(View.VISIBLE);
             }
@@ -494,6 +498,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         idContent.setVisibility(View.VISIBLE);
         rlError.setVisibility(View.GONE);
         Drawable drawable = getResources().getDrawable(R.drawable.arrow_down);
+        setTvTitle(respDTO.getBuildingName());
         drawable.setBounds(0,0,drawable.getMinimumWidth() ,drawable.getMinimumHeight());
         tvTitle.setCompoundDrawablesRelative(null , null ,drawable ,null);
         if (floorsBeans == null) {
@@ -588,9 +593,11 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
 //        }
     }
 
+    boolean isFloor ;
     @Override
-    public void startBooking(long bathOrderId) {
+    public void startBooking(long bathOrderId , boolean isFloor) {
         this.bookingId = bathOrderId;
+        this.isFloor = isFloor ;
         Log.e(TAG, "startBooking: ");
         bathroomBookingDialog.setFinish();
     }
@@ -649,12 +656,19 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
 
     }
 
+    @Override
+    public void setPrebathroomEnable(boolean isEnable) {
+        preBathroom.setEnabled(isEnable);
+    }
+
 
     @OnClick(R.id.pre_bathroom1)
     public void preBathRoom() {
+        Log.e(TAG, "preBathRoom: " );
         preBathroom.setEnabled(false);
         if (needCharge) {
-            setBtnText("余额不足，请前往充值" , false);
+//            setBtnText("余额不足，请前往充值" , false);
+            preBathroom.setText("余额不足，请前往充值");
             startActivity(new Intent(getApplicationContext(), RechargeActivity.class));
         } else {
             if (TextUtils.isEmpty(deviceNo)) {
@@ -717,10 +731,8 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         if (null == bathRoomsBean) {
             this.deviceNo = "";
         } else {
-            showPop(bathRoomsBean.getName(), bathRoomsBean.getDeviceNo() + "");
-
+            showPop(bathRoomsBean.getRoomName(), bathRoomsBean.getDeviceNo() + "");
         }
-
     }
 
     @Override
@@ -737,6 +749,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
                     .putExtra(KEY_BALANCE, balance)
                     .putExtra(KEY_MIN_PREPAY, minPrepay)
                     .putExtra(KEY_PREPAY, prepay)
+                    .putExtra(KEY_FLOOR ,this.isFloor)
                     .putExtra(KEY_MISSED_TIMES, missedTimes)
                     .putExtra(KEY_MAX_MISSABLE_TIMES, maxMissAbleTimes), KEY_BOOKING_RESQCODE
             );
