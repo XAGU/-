@@ -187,6 +187,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     ProfileFragment2 profileFragment;
 
     int current = 0;
+
+    private boolean isNotice = false  ;
     private boolean hasBanners;
     List<BriefSchoolBusiness> businesses;
     private AvailabilityDialog availabilityDialog;
@@ -210,6 +212,10 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         getActivityComponent().inject(this);
 
         presenter.onAttach(this);
+
+        if (isNotice){
+            presenter.routeHeaterOrBathroom();
+        }
         // 友盟日志加密
         MobclickAgent.enableEncrypt(true);
         MobclickAgent.setCatchUncaughtExceptions(true);
@@ -277,6 +283,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        setIntent(intent);
         if (intent != null) {
             boolean isSwitchToHome = intent.getBooleanExtra(INTENT_KEY_SWITCH_TO_HOME, false);
             if (isSwitchToHome) {
@@ -288,7 +295,10 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                     btSwitch.postDelayed(this::gotoHeater, 200);
                 }
             }
+            isNotice = intent.getBooleanExtra(Constant.BUNDLE_ID , false);
         }
+
+
     }
 
     /**
@@ -304,6 +314,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         if (getIntent() != null) {
             isServerError = getIntent().getBooleanExtra(INTENT_KEY_SERVER_ERROR, false);
             defaultBanners = getIntent().getParcelableArrayListExtra(INTENT_KEY_BANNERS);
+            isNotice = getIntent().getBooleanExtra(Constant.BUNDLE_ID ,false);
             android.util.Log.e(TAG, "setUp: "  + (defaultBanners == null));
         }
     }
@@ -383,6 +394,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         XGPushConfig.getToken(this);
     }
 
+
+
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -403,6 +417,10 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 //            Log.wtf(TAG, e);
 //        }
         Log.d(TAG, "onResume");
+        if (isNotice && presenter != null) {
+            presenter.routeHeaterOrBathroom();
+            isNotice = false ;
+        }
         showBanners(null);
         if (!isNetworkAvailable()) {
             onError(R.string.network_available_error_tip);
@@ -1320,6 +1338,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         Log.d(TAG, "onStart");
         super.onStart();
         EventBus.getDefault().register(this);
+
     }
 
     @Override

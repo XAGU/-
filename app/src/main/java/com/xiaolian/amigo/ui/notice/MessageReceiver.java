@@ -1,7 +1,7 @@
 package com.xiaolian.amigo.ui.notice;
 
-import android.app.NotificationManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -43,6 +43,8 @@ public class MessageReceiver extends XGPushBaseReceiver {
             text = message + "注册失败错误码：" + errorCode;
         }
         Log.d(TAG, text);
+
+
     }
 
     @Override
@@ -106,7 +108,7 @@ public class MessageReceiver extends XGPushBaseReceiver {
 //            }
 //        }
         CustomDTO customDTO = mGson.fromJson(customContent, CustomDTO.class);
-        Log.d("LC", "++++++++++++++++透传消息");
+        Log.d(TAG,"++++++++++++++++透传消息");
         // APP自主处理消息的过程...
         Log.d(TAG, text);
         switch (customDTO.getAction()) {
@@ -125,6 +127,16 @@ public class MessageReceiver extends XGPushBaseReceiver {
                 CommonUtil.sendNotify(context.getApplicationContext(), (int) (Math.random() * 10000), message.getTitle(),
                         message.getTitle(), message.getContent(), RepairDetailActivity.class, bundle);
                 break;
+
+                // 排队预约成功通知
+//            case 7:
+//                Bundle queueBundle = new Bundle();
+//                queueBundle.putBoolean(Constant.BUNDLE_ID, true);
+//                CommonUtil.sendNotify(context.getApplicationContext() ,(int) (Math.random() * 10000) ,message.getTitle() ,
+//                        message.getTitle(), message.getContent(), MainActivity.class  , queueBundle);
+//                break ;
+
+
         }
     }
 
@@ -145,6 +157,17 @@ public class MessageReceiver extends XGPushBaseReceiver {
             // APP自己处理点击的相关动作
             // 这个动作可以在activity的onResume也能监听，请看第3点相关内容
             text = "通知被打开 :" + message;
+            String customContent = message.getCustomContent();
+            CustomDTO customDTO = mGson.fromJson(customContent, CustomDTO.class);
+            switch (customDTO.getAction()) {
+                case 7:
+                    Bundle queueBundle = new Bundle();
+                    queueBundle.putBoolean(Constant.BUNDLE_ID, true);
+                    context.startActivity(new Intent(context , MainActivity.class)
+                    .putExtra(Constant.BUNDLE_ID , true));
+                    break;
+            }
+
         } else if (message.getActionType() == XGPushClickedResult.NOTIFACTION_DELETED_TYPE) {
             // 通知被清除啦。。。。
             // APP自己处理通知被清除后的相关动作
@@ -163,7 +186,8 @@ public class MessageReceiver extends XGPushBaseReceiver {
                     String value = obj.getString("key");
                     Log.d(TAG, "get custom value:" + value);
                 }
-                // ...
+
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }

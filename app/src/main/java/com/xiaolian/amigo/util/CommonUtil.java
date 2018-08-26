@@ -258,6 +258,8 @@ public final class CommonUtil {
         manager.notify(id, notification);
     }
 
+
+
     public static String getRuningApp(Context context) {
         if (Build.VERSION.SDK_INT >= 21) {
             final int PROCESS_STATE_TOP = 2;

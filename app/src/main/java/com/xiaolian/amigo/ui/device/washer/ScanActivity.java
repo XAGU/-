@@ -197,11 +197,14 @@ public class ScanActivity extends WasherBaseActivity
             mac = contents[1];
             isBle = "1".equals(contents[2]) ? true : false ;
              type = Integer.parseInt(contents[0]);
+             presenter.checkDeviceUseage(type , mac ,isBle);
         }catch (Exception e){
             Log.d(TAG, "scanContent: " + scanContent );
+            resumeScan();
         }
 
-        presenter.checkDeviceUseage(type , mac ,isBle);
+
+
 
 
     }

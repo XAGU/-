@@ -116,7 +116,7 @@ public interface IUserApi {
     /**
      * 用户绑定洗澡地址
      */
-    @POST("/user/residence/bath/record")
+    @POST("user/residence/bath/record")
     Observable<ApiResult<UserResidenceInListDTO>> recordBath(@Body RecordResidenceReqDTO reqDTO);
 
     /**
