@@ -66,8 +66,8 @@ public class EditDormitoryActivity extends UserBaseListActivity implements IEdit
 
     @Override
     public void addMore(List<EditDormitoryAdaptor.UserResidenceWrapper> userResidenceWrappers) {
-        items.addAll(userResidenceWrappers);
-        adaptor.notifyDataSetChanged();
+            items.addAll(userResidenceWrappers);
+            adaptor.notifyDataSetChanged();
     }
 
     @Override

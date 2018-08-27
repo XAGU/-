@@ -54,6 +54,7 @@ public class EditDormitoryPresenter<V extends IEditDormitoryView> extends BasePr
                 getMvpView().setLoadMoreComplete();
                 getMvpView().hideEmptyView();
                 getMvpView().hideErrorView();
+
                 if (null == result.getError()) {
                     if (result.getData().getUserResidences() != null && result.getData().getUserResidences().size() > 0) {
                         List<EditDormitoryAdaptor.UserResidenceWrapper> wrappers = new ArrayList<>();
