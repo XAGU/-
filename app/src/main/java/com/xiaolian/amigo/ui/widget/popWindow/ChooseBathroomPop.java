@@ -108,6 +108,7 @@ public class ChooseBathroomPop  extends PopupWindow {
             @Override
             public void onClick(View v) {
                 if (popButtonClickListener != null){
+                    Log.e(TAG, "onClick:>>>>>>>>>pop " );
                     popButtonClickListener.click(floorsBean);
                 }
             }

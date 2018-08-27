@@ -69,6 +69,8 @@ public class BathroomHeaterActivity extends BathroomBaseActivity implements IBat
      */
     boolean needToOrderInfo = false ;
 
+    private boolean isCreate = true ;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,6 +81,7 @@ public class BathroomHeaterActivity extends BathroomBaseActivity implements IBat
         setUp();
         initPreView();
         initView();
+        isCreate  = true ;
     }
 
 
@@ -86,6 +89,11 @@ public class BathroomHeaterActivity extends BathroomBaseActivity implements IBat
     protected void onResume() {
         super.onResume();
         presenter.onResume();
+
+        if (!isCreate){
+            presenter.queryBathroomOrder(orderId , false);
+        }
+        isCreate = false ;
     }
 
 

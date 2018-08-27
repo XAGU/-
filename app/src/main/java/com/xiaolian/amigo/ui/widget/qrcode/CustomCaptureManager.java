@@ -52,6 +52,8 @@ public class CustomCaptureManager {
 
     private static int cameraPermissionReqCode = 250;
 
+    public boolean isCanPause = true ;
+
     private Activity activity;
     private DecoratedBarcodeView barcodeView;
     private int orientationLock = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
@@ -70,9 +72,6 @@ public class CustomCaptureManager {
     private BarcodeCallback callback = new BarcodeCallback() {
         @Override
         public void barcodeResult(final BarcodeResult result) {
-            barcodeView.pause();
-            beepManager.playBeepSoundAndVibrate();
-
             handler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -282,9 +281,8 @@ public class CustomCaptureManager {
      * Call from Activity#onPause().
      */
     public void onPause() {
-
-        inactivityTimer.cancel();
-        barcodeView.pauseAndWait();
+            inactivityTimer.cancel();
+            barcodeView.pauseAndWait();
     }
 
     /**
@@ -405,17 +403,26 @@ public class CustomCaptureManager {
         Intent intent = resultIntent(rawResult, getBarcodeImagePath(rawResult));
         activity.setResult(Activity.RESULT_OK, intent);
 //        closeAndFinish();
-        if (barcodeView.getBarcodeView().isCameraClosed()) {
-//            finish();
-            if (null != resultCallback) {
-                resultCallback.callback(IntentIntegrator.REQUEST_CODE,
-                        Activity.RESULT_OK, intent);
-            }
-        } else {
+//        if (barcodeView.getBarcodeView().isCameraClosed()) {
+////            finish();
+//            if (null != resultCallback) {
+//                resultCallback.callback(IntentIntegrator.REQUEST_CODE,
+//                        Activity.RESULT_OK, intent);
+//            }
+//        } else {
+//            finishWhenClosed = true;
+//        }
+
+        if (null != resultCallback){
+            resultCallback.callback(IntentIntegrator.REQUEST_CODE , Activity.RESULT_OK , intent);
+        }
+
+        if (isCanPause) {
+            barcodeView.pause();
+            beepManager.playBeepSoundAndVibrate();
+            inactivityTimer.cancel();
             finishWhenClosed = true;
         }
-        barcodeView.pause();
-        inactivityTimer.cancel();
     }
 
     public interface ResultCallback {

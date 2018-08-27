@@ -42,6 +42,7 @@ import com.xiaolian.amigo.ui.widget.ScanDialog;
 import com.xiaolian.amigo.ui.widget.dialog.AvailabilityDialog;
 import com.xiaolian.amigo.ui.widget.qrcode.CustomCaptureManager;
 import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.util.RxHelper;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -51,6 +52,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.functions.Action1;
 
 import static com.xiaolian.amigo.data.enumeration.Device.HEATER;
 import static com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity.CONN_TYPE;
@@ -193,19 +195,29 @@ public class ScanActivity extends WasherBaseActivity
         int type = -1 ;
         String mac = "";
         boolean isBle = true ;
-        try{
-            mac = contents[1];
-            isBle = "1".equals(contents[2]) ? true : false ;
-             type = Integer.parseInt(contents[0]);
-             presenter.checkDeviceUseage(type , mac ,isBle);
-        }catch (Exception e){
-            Log.d(TAG, "scanContent: " + scanContent );
+        if (contents.length == 3) {
+            try {
+                mac = contents[1];
+                isBle = "1".equals(contents[2]) ? true : false;
+                type = Integer.parseInt(contents[0]);
+                presenter.checkDeviceUseage(type, mac, isBle);
+                capture.isCanPause = true ;
+            } catch (Exception e) {
+                Log.d(TAG, "scanContent: " + scanContent);
+                capture.isCanPause = false ;
+                resumeScan();
+            }
+        }else{
+//            RxHelper.delay(1, new Action1<Long>() {
+//                @Override
+//                public void call(Long aLong) {
+//                    resumeScan();
+//                }
+//            });
+
+            capture.isCanPause = false ;
             resumeScan();
         }
-
-
-
-
 
     }
 

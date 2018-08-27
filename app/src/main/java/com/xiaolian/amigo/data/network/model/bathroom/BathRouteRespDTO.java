@@ -20,6 +20,7 @@ public class BathRouteRespDTO implements Parcelable {
         private long residenceId;   // 建筑id
         private int residenceType;  //位置类别：1、楼栋 2、楼层 3、宿舍房间/设备位置 4、公共浴室组
         private long  supplierId ;  // 设备商id
+        private String residenceName ;
 
     protected BathRouteRespDTO(Parcel in) {
         buildingId = in.readLong();
@@ -29,6 +30,7 @@ public class BathRouteRespDTO implements Parcelable {
         residenceId = in.readLong();
         residenceType = in.readInt();
         supplierId = in.readLong();
+        residenceName = in.readString();
     }
 
     public static final Creator<BathRouteRespDTO> CREATOR = new Creator<BathRouteRespDTO>() {
@@ -57,6 +59,16 @@ public class BathRouteRespDTO implements Parcelable {
         dest.writeLong(residenceId);
         dest.writeInt(residenceType);
         dest.writeLong(supplierId);
+        dest.writeString(residenceName);
+    }
+
+
+    public String getResidenceName() {
+        return residenceName;
+    }
+
+    public void setResidenceName(String residenceName) {
+        this.residenceName = residenceName;
     }
 
     public boolean isPubBath() {

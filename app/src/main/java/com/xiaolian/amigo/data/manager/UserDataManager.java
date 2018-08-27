@@ -178,9 +178,11 @@ public class UserDataManager implements IUserDataManager {
 
     @Override
     public boolean isExistBathroomBiz() {
-        for (BriefSchoolBusiness biz : sharedPreferencesHelp.getSchoolBiz()) {
-            if (ObjectsCompat.equals(biz.getBusinessId(), 5L)) {
-                return true;
+        if (sharedPreferencesHelp.getSchoolBiz() !=null && sharedPreferencesHelp.getSchoolBiz().size() > 0) {
+            for (BriefSchoolBusiness biz : sharedPreferencesHelp.getSchoolBiz()) {
+                if (ObjectsCompat.equals(biz.getBusinessId(), 5L)) {
+                    return true;
+                }
             }
         }
         return false;
@@ -235,6 +237,26 @@ public class UserDataManager implements IUserDataManager {
     @Override
     public void setBathroomPassword() {
         sharedPreferencesHelp.getUserInfo().setHadSetBathPassword(true);
+    }
+
+    @Override
+    public void setRoomId(Long residenceId) {
+        sharedPreferencesHelp.setRoomId(residenceId);
+    }
+
+    @Override
+    public Long getRoomId() {
+        return sharedPreferencesHelp.getRoomId();
+    }
+
+
+    public void setBathroomPassword(String password){
+        sharedPreferencesHelp.setBathroomPassword(password);
+    }
+
+
+    public String getBathroomPassword(){
+       return sharedPreferencesHelp.getBathroomPassword();
     }
 
     @Override

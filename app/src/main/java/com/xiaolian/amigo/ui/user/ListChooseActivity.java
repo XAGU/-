@@ -334,8 +334,8 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                         try {
                             if (presenter.isStartBathroom(this.items.get(position))) {
                                 int bathType = -1;
-                                if (TextUtils.isEmpty(items.get(position).getGroupId())) bathType = 2;
-                                else bathType = 1;
+                                if (TextUtils.isEmpty(items.get(position).getGroupId())) bathType = 1;
+                                else bathType = 2;
                                 if (Constant.REPAIR_APPLY_ACTIVITY_SRC.equals(activitySrc)) {
                                     ListChooseAdaptor.Item item = items.get(position);
                                     Intent intent = new Intent(ListChooseActivity.this, RepairApplyActivity.class);

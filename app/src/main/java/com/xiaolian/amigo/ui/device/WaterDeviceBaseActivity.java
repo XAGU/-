@@ -1176,7 +1176,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
     public void changeDormitory() {
         // 只有在step为SETILE时才不能更换宿舍
-        if (!recorvery && presenter.getStep() != TradeStep.SETTLE && residenceId != -1L) {
+            if (!recorvery && presenter.getStep() != TradeStep.SETTLE) {   //  residenceId  != -1L
             startActivityForResult(
                     new Intent(this, EditDormitoryActivity.class)
                             .putExtra(EditDormitoryActivity.INTENT_KEY_LAST_DORMITORY, residenceId),

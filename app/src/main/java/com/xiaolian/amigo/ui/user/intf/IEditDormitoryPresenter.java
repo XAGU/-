@@ -60,7 +60,7 @@ public interface IEditDormitoryPresenter<V extends IEditDormitoryView> extends I
      * 删除洗澡地址记录
      * @param id
      */
-    void deleteBathroomRecord(long id , int position);
+    void deleteBathroomRecord(long id , int position , boolean isDefault);
 
     /**
      * 更新默认洗澡地址

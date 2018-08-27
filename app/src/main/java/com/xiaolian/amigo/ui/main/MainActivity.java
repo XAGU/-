@@ -102,6 +102,7 @@ import static com.xiaolian.amigo.data.enumeration.Device.DRYER;
 import static com.xiaolian.amigo.data.enumeration.Device.HEATER;
 import static com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity.KEY_BUILDING_ID;
 import static com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity.KEY_RESIDENCE_ID;
+import static com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity.KEY_RESIDENCE_NAME;
 import static com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity.KEY_RESIDENCE_TYPE;
 import static com.xiaolian.amigo.ui.device.washer.ScanActivity.IS_SACN;
 import static com.xiaolian.amigo.ui.device.washer.ScanActivity.SCAN_TYPE;
@@ -306,7 +307,12 @@ public class MainActivity extends MainBaseActivity implements IMainView {
      */
     @OnClick(R.id.iv_scan)
     public void scan(){
-        scanQRCode();
+
+        if (presenter.isLogin()) {
+            scanQRCode();
+        }else{
+            startActivity(new Intent(this ,LoginActivity.class));
+        }
     }
     @Override
     protected void setUp() {
@@ -458,6 +464,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             presenter.getNoticeAmount();
             presenter.getSchoolBusiness();
             presenter.getUser();
+            presenter.currentOrder();
             Log.d(TAG, "onResume: login");
             // 设置昵称
             tvNickName.setText(presenter.getUserInfo().getNickName());
@@ -1241,6 +1248,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         startActivity(new Intent(this, ChooseBathroomActivity.class)
         .putExtra(KEY_BUILDING_ID ,dto.getBuildingId())
         .putExtra(KEY_RESIDENCE_TYPE , dto.getResidenceType() )
+        .putExtra(KEY_RESIDENCE_NAME ,dto.getResidenceName())
         .putExtra(KEY_RESIDENCE_ID ,dto.getResidenceId()));
     }
 

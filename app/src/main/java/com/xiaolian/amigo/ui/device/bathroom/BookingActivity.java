@@ -63,6 +63,14 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
 
     public static final String KEY_DEVICE_ACTIVITY_FOR_RESULT = "KEY_DEVICE_ACTIVITY_FOR_RESULT" ;
 
+    private static final int QUEUE = 1 ;   // 排队
+
+    private static final int BOOKING = 2 ;  // 预约成功
+
+    private static final int CANCLE = 3 ;  // 取消排队或者取消预约
+
+    private static final int USING = 4 ;  //  正在使用
+
     public static final int QUEUE_CANCEL =  1 ;   //  排队取消
     public static final int BOOKING_CANCEL = 2 ;   //  预约取消
     private static final String TAG = BookingActivity.class.getSimpleName();
@@ -90,6 +98,12 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
     private DeviceInfoAdapter.DeviceInfoWrapper wrapper = null ;  // 剩余时间
     private BathroomBookingDialog bathroomBookingDialog;
 
+    private int status ;  //  状态， 屏幕息屏后，rxJava的倒计时会没有， 用这个来表示当前状态
+
+    private boolean isOnCreate = true ;  //  判断是否是onCreate ;
+
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,6 +111,7 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
         presenter.onAttach(this);
         setButtonText();
         initData();
+        isOnCreate = true ;
     }
 
 
@@ -106,9 +121,11 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
      */
     public void initData(){
         if (bookingId > 0){
+            status = BOOKING ;
             presenter.query(bookingId+"" , false ,0 , true);
         }else{
             if (bathQueueId > 0){
+                status = QUEUE ;
                 presenter.queryQueueId(bathQueueId , false);
             }
         }
@@ -119,8 +136,29 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
         super.onResume();
         isCanJump = true ;
         presenter.onResume();
+        if (!isOnCreate) {
+            if (expiredTime != 0) {
+                presenter.countDownexpiredTime(expiredTime);
+            }
+
+            if (status == BOOKING && bookingId > 0) {
+                Log.e(TAG, "onResume:>>>>>>>> BOOKING" );
+                presenter.query(bookingId + "", true, 10, false);
+            }
+
+            if (status == QUEUE && bathQueueId > 0) {
+                Log.e(TAG, "onResume: >>>>>>>>  QUEUE" );
+                presenter.queryQueueId(bathQueueId, false);
+            }
+        }
+
+
+        isOnCreate = false ;
 
     }
+
+
+
 
     /**
      * 初始化失约提示,有失约记录时才显示失约提示
@@ -139,6 +177,7 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
         super.onPause();
         isCanJump = false ;
         presenter.onPause();
+        presenter.cancelCountDown();
 
     }
 
@@ -184,6 +223,8 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
             bookingId = getIntent().getLongExtra(KEY_BOOKING_ID , 0);
             bathQueueId = getIntent().getLongExtra(KEY_BATHQUEUE_ID , 0);
             isFloor = getIntent().getBooleanExtra(KEY_FLOOR ,false);
+
+            Log.e(TAG, "initIntent: " + isFloor );
         }
     }
 
@@ -301,6 +342,7 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
     }
 
 
+
     /**
      * 取消预约弹窗
      * @param id
@@ -373,12 +415,16 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
         adapter.notifyDataSetChanged();
     }
 
+    long expiredTime = 0 ;
+
     private String getReservedTime(long startTime , long endTime){
         return TimeUtils.covertTimeToString(startTime) +"~"+TimeUtils.covertTimeToString(endTime);
     }
 
     @Override
     public void bookingSuccess(BathBookingRespDTO data) {
+        status = BOOKING ;
+        bookingId = data.getId();
         isTimeOut = false ;
         setTip(data.getType());
         deviceNo = data.getDeviceNo()+"" ;
@@ -392,6 +438,8 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
         successRecyclerView(data);
         statusView.getRightText().setText("取消");
         statusView.getRightText().setTextColor(getResources().getColor(R.color.colorDarkB ));
+        Log.e(TAG, "bookingSuccess: " );
+        expiredTime = data.getExpiredTime();
         presenter.countDownexpiredTime(data.getExpiredTime());
         presenter.query(data.getId()+"" ,true , 10 , true);
     }
@@ -407,6 +455,8 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
         statusView.setTip("已成功取消预约");
         CancelBookingView();
     }
+
+
 
     /**
      * 取消预约
@@ -434,7 +484,7 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
             rightOper.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.e(TAG, "onClick: " + bathQueueId);
+                    Log.e(TAG, "onClick: " + bathQueueId +"   " +  isFloor);
                     Intent intent = new Intent();
                     if (bathQueueId > 0 || isFloor) {
                         intent.putExtra(KEY_DEVICE_ACTIVITY_FOR_RESULT, "");
@@ -447,7 +497,6 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
             });
         }
     }
-
 
 
     @Override
@@ -575,6 +624,7 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
             }
         }
     }
+
 
     @Override
     public void gotoUsing(long bathOrderId) {

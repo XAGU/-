@@ -86,4 +86,6 @@ public interface IChooseBathroomView extends IBaseView {
     void showError();
 
     void setPrebathroomEnable(boolean isEnable);
+
+    void startToFindBathroomFindPassword();
 }

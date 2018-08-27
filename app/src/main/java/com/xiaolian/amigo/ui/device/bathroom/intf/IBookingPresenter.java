@@ -48,6 +48,7 @@ public interface IBookingPresenter<V extends IBookingView> extends IBasePresente
     void countDownexpiredTime(long expiredTime );
 
 
+    void cancleDownExpiredTime();
     /**
      * 查询排队状态
      * @param id

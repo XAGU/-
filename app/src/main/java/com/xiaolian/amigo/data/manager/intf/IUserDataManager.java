@@ -142,10 +142,12 @@ public interface IUserDataManager {
      * oss
      */
     Observable<ApiResult<OssModel>> getOssModel();
+
     /**
      * 是否存在公共浴室业务
      */
     boolean isExistBathroomBiz();
+
     /**
      * 获取验证码
      */
@@ -158,6 +160,7 @@ public interface IUserDataManager {
 
     /**
      * 更新浴室密码
+     *
      * @param reqDTO
      * @return
      */
@@ -165,12 +168,14 @@ public interface IUserDataManager {
 
     /**
      * 获取浴室密码说明
+     *
      * @return
      */
     List<String> getBathroomPasswordDesc();
 
     /**
      * 获取公共浴室地址列表
+     *
      * @return
      */
     Observable<ApiResult<QueryUserResidenceListRespDTO>> bathList(@Body EmptyRespDTO dto);
@@ -178,6 +183,7 @@ public interface IUserDataManager {
 
     /**
      * 获取洗澡地址
+     *
      * @param body
      * @return
      */
@@ -185,6 +191,7 @@ public interface IUserDataManager {
 
     /**
      * 记录洗澡地址
+     *
      * @param reqDTO
      * @return
      */
@@ -192,19 +199,29 @@ public interface IUserDataManager {
 
     /**
      * 删除洗澡地址记录
+     *
      * @param dto
      * @return
      */
-    Observable<ApiResult<DeleteResidenceRespDTO>>  deleteBathRecord(@Body SimpleReqDTO dto);
+    Observable<ApiResult<DeleteResidenceRespDTO>> deleteBathRecord(@Body SimpleReqDTO dto);
 
 
     /**
      * 更新默认洗澡地址
+     *
      * @param dto
      * @return
      */
-    Observable<ApiResult<BooleanRespDTO>>  updateNormalBathroom(@Body SimpleReqDTO dto);
+    Observable<ApiResult<BooleanRespDTO>> updateNormalBathroom(@Body SimpleReqDTO dto);
 
 
     void setBathroomPassword();
+
+    void setRoomId(Long residenceId);
+
+    Long getRoomId();
+
+    public void setBathroomPassword(String password);
+
+    public String getBathroomPassword();
 }

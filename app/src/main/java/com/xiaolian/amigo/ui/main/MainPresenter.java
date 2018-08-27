@@ -442,7 +442,7 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
 
     @Override
     public void saveRoomInfo(Long residenceId) {
-        getUserInfo().setRoomId(residenceId);
+        userDataManager.setRoomId(residenceId);
     }
 
     @Override

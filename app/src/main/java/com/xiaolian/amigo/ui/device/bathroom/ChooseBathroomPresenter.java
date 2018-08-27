@@ -1,5 +1,7 @@
 package com.xiaolian.amigo.ui.device.bathroom;
 
+import android.util.Log;
+
 import com.xiaolian.amigo.data.enumeration.BathTradeType;
 import com.xiaolian.amigo.data.manager.intf.IBathroomDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
@@ -69,13 +71,15 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
                     @Override
                     public void onReady(ApiResult<BathBuildingRespDTO> result) {
                         if (null == result.getError()) {
-                                getMvpView().setTvTitle(result.getData().getBuildingName());
+                            if (getMvpView() != null) {
+                                getMvpView().setTvTitle("");
                                 if (isReferBathroom) {
                                     getMvpView().refreshBathroom(result.getData());
                                 }
 
-                        } else {
-                            getMvpView().onError(result.getError().getDisplayMessage());
+                            } else {
+                                getMvpView().onError(result.getError().getDisplayMessage());
+                            }
                         }
                     }
 
@@ -208,59 +212,65 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
 
     @Override
     public void booking(long deviceNo, long floorId) {
-        BathBookingReqDTO reqDTO = new BathBookingReqDTO();
-        boolean isFloor = false ;
-        if (floorId != 0){
-            reqDTO.setFloorId(floorId);
-            reqDTO.setType(BathTradeType.BOOKING_WITHOUT_DEVICE.getCode());
-            isFloor = true ;
-        }else{
-            reqDTO.setDeviceNo(deviceNo);
-            reqDTO.setType(BathTradeType.BOOKING_DEVICE.getCode());
-            isFloor = false ;
-        }
-
-        boolean finalIsFloor = isFloor;
-        addObserver(bathroomDataManager.booking(reqDTO) , new NetworkObserver<ApiResult<TryBookingResultRespDTO>>(){
-
-            @Override
-            public void onStart() {
-                if (deviceNo > 0){
-                    getMvpView().showBathroomDialog("系统君正在预约，请稍后");
-                }else{
-                    super.onStart();
-                }
+        Log.e(TAG, "booking: " );
+        if (bathroomDataManager.getBathroomPassword()) {
+            BathBookingReqDTO reqDTO = new BathBookingReqDTO();
+            boolean isFloor = false;
+            if (floorId != 0) {
+                reqDTO.setFloorId(floorId);
+                reqDTO.setType(BathTradeType.BOOKING_WITHOUT_DEVICE.getCode());
+                isFloor = true;
+            } else {
+                reqDTO.setDeviceNo(deviceNo);
+                reqDTO.setType(BathTradeType.BOOKING_DEVICE.getCode());
+                isFloor = false;
             }
 
-            @Override
-            public void onReady(ApiResult<TryBookingResultRespDTO> result) {
-                if (null == result.getError()) {
-                    if (result.getData().getQueueInfo() != null){
-                         clearTime();
-                         getMvpView().startQueue(result.getData().getQueueInfo().getId());
-                    }else{
-                        if (result.getData().getBookingInfo()!= null){
-                            if (result.getData().getBookingInfo().getStatus() ==ACCEPTED){
-                                getMvpView().startBooking(result.getData().getBookingInfo().getId() , finalIsFloor);
-                            }else if (result.getData().getBookingInfo().getStatus() == INIT){
-                                queryBooking(result.getData().getBookingInfo().getId());
+            boolean finalIsFloor = isFloor;
+            addObserver(bathroomDataManager.booking(reqDTO), new NetworkObserver<ApiResult<TryBookingResultRespDTO>>() {
+
+                @Override
+                public void onStart() {
+                    if (deviceNo > 0) {
+                        getMvpView().showBathroomDialog("系统君正在预约，请稍后");
+                    } else {
+                        super.onStart();
+                    }
+                }
+
+                @Override
+                public void onReady(ApiResult<TryBookingResultRespDTO> result) {
+                    if (null == result.getError()) {
+                        if (result.getData().getQueueInfo() != null) {
+                            clearTime();
+                            getMvpView().startQueue(result.getData().getQueueInfo().getId());
+                        } else {
+                            if (result.getData().getBookingInfo() != null) {
+                                if (result.getData().getBookingInfo().getStatus() == ACCEPTED) {
+                                    getMvpView().startBooking(result.getData().getBookingInfo().getId(), finalIsFloor);
+                                } else if (result.getData().getBookingInfo().getStatus() == INIT) {
+                                    queryBooking(result.getData().getBookingInfo().getId());
+                                }
                             }
                         }
+                    } else {
+                        getMvpView().hideBathroomDialog(false);
+                        getMvpView().onError(result.getError().getDisplayMessage());
+
                     }
-                } else {
-                    getMvpView().hideBathroomDialog(false);
-                    getMvpView().onError(result.getError().getDisplayMessage());
                 }
-            }
 
-            @Override
-            public void onError(Throwable e) {
-                super.onError(e);
-                getMvpView().hideBathroomDialog(false);
-                getMvpView().showError();
-            }
+                @Override
+                public void onError(Throwable e) {
+                    super.onError(e);
+                    getMvpView().hideBathroomDialog(false);
+                    getMvpView().showError();
+                }
 
-        });
+            });
+        }else{
+            getMvpView().startToFindBathroomFindPassword();
+        }
     }
 
     @Override

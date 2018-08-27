@@ -64,7 +64,12 @@ public class EditDormitoryAdaptor extends CommonAdapter<EditDormitoryAdaptor.Use
 //            ((TextView) holder.getView(R.id.tv_choose)).setText("设为默认");
 //            ((TextView) holder.getView(R.id.tv_choose)).setTextColor(ContextCompat.getColor(context, R.color.colorDark6));
         }
-        holder.getView(R.id.tv_delete).setOnClickListener(v -> presenter.deleteBathroomRecord(userResidenceWrapper.getId(),position));
+        holder.getView(R.id.tv_delete).setOnClickListener(v ->
+                {
+                    presenter.deleteBathroomRecord(userResidenceWrapper.getId(), position, userResidenceWrapper.isDefault());
+                }
+                );
+
 //        holder.getView(R.id.tv_edit).setOnClickListener(v -> {
 //            if (editListener != null) {
 //                editListener.onItemEdit(holder.getAdapterPosition());

@@ -76,19 +76,30 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
                         } else {
                             getMvpView().hideWaitLoading(false);
                             getMvpView().onError(result.getError().getDisplayMessage());
+
                         }
                     }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        getMvpView().hideWaitLoading(false);
+                    }
                 });
+
+
     }
 
     @Override
     public void onPause() {
+        Log.e(TAG, "onPause:>>>>>>>>presenter " );
         this.isOnPause = true ;
     }
 
     @Override
     public void onResume() {
         this.isOnPause = false ;
+
     }
 
 
@@ -111,7 +122,7 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
      */
     @Override
     public void query(String bathOrderId , boolean isToUsing , int time , boolean isShowDialog) {
-        Log.e(TAG, "query: " + isToUsing  + "     " +time);
+        Log.e(TAG, "query: " + isToUsing  + "     " +time  + "   " + isOnPause);
         if (isOnPause )  return ;
         BathBookingStatusReqDTO reqDTO = new BathBookingStatusReqDTO();
         reqDTO.setId(bathOrderId);
@@ -226,34 +237,49 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
 
     @Override
     public void countDownexpiredTime(long expiredTime) {
-             int countTime = TimeUtils.intervalTime(expiredTime);
-        subscription = RxHelper.countDown(countTime)
-                .doOnSubscribe(new Action0() {
-                    @Override
-                    public void call() {
-                        getMvpView().countTimeLeft(TimeUtils.orderBathroomLastTime(expiredTime ,""));
-                    }
-                })
-                .subscribe(new Subscriber<Integer>() {
-                    @Override
-                    public void onCompleted() {
+        Log.e(TAG, "countDownexpiredTime: " );
+        int countTime = TimeUtils.intervalTime(expiredTime);
+        if (countTime > 0) {
+                subscription = RxHelper.countDown(countTime)
+                        .doOnSubscribe(new Action0() {
+                            @Override
+                            public void call() {
+                                getMvpView().countTimeLeft(TimeUtils.orderBathroomLastTime(expiredTime, ""));
+                            }
+                        })
+                        .subscribe(new Subscriber<Integer>() {
+                            @Override
+                            public void onCompleted() {
 
-                        getMvpView().countTimeLeft("0:00");
-                        getMvpView().appointMentTimeOut(false);
-                    }
+                                getMvpView().countTimeLeft("0:00");
+                                getMvpView().appointMentTimeOut(false);
+                            }
 
-                    @Override
-                    public void onError(Throwable e) {
+                            @Override
+                            public void onError(Throwable e) {
 
-                    }
+                            }
 
-                    @Override
-                    public void onNext(Integer integer) {
-                        getMvpView().countTimeLeft(TimeUtils.orderBathroomLastTime(expiredTime ,""));
-                    }
-                });
-        this.subscriptions.add(subscription);
+                            @Override
+                            public void onNext(Integer integer) {
+                                Log.e(TAG, "onNext: " + integer);
+                                getMvpView().countTimeLeft(TimeUtils.orderBathroomLastTime(expiredTime, ""));
+                            }
+                        });
+            }
+            if (this.subscriptions != null && !subscriptions.isUnsubscribed() && subscription != null ) {
+                this.subscriptions.add(subscription);
+            }
+        }
+
+
+    @Override
+    public void cancleDownExpiredTime() {
+        if (subscriptions != null) {
+            this.subscriptions.remove(subscription);
+        }
     }
+
 
     @Override
     public void queryQueueId(long id , boolean isShowDialog) {

@@ -98,7 +98,6 @@ public class ScanPresenter<V extends IScanView> extends BasePresenter<V>
         return washerDataManager.getUserInfo().getResidenceId() != null;
     }
 
-
     @Override
     public void gotoHeaterDevice(String defaultAddress, Long defaultSupplierId, String location ,long reseniceId) {
         if (TextUtils.isEmpty(defaultAddress)) {

@@ -183,4 +183,8 @@ public interface ISharedPreferencesHelp {
     void setBathroomPassword(String password);
 
     String getBathroomPassword();
+
+    void setRoomId(Long id);
+
+    Long getRoomId();
 }

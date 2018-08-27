@@ -312,12 +312,12 @@
     <string name="booking_use_tip3">3.洗浴结束后，消费金额将以实际用水量为准，系统会自动找零；</string>
     <string name="booking_use_tip4">4.若未在预约时间内使用，系统将会自动退回预付金额。</string>
 
-    <string name="booking_user_common_tip">2.请确保你的可用余额在预约成功后，至少为页面中的提示金额，否则将无法使用设备。</string>
+    <string name="booking_user_common_tip">2.请确保你的可用余额在预约成功后，大于页面中的提示金额，否则将无法使用设备。</string>
     <string name="booking_user_empty">1.预约成功后，请在预留时间内任意前往一间空浴室，在设备上输入你的笑联手机号和浴室密码，即可使用；</string>
     <string name="booking_user_this">1.预约成功后，请在预留时间内前往指定的浴室，在设备上输入你的笑联手机号和浴室密码，即可使用；</string>
     <string name="booking_queue_tip_1">1.还需等待人数为0时，系统将自动预约成功；</string>
     <string name="booking_queue_tip_2">2.预约成功后，请在预留时间内任意前往一间空浴室，在设备上输入你的笑联手机号和浴室密码，即可使用；</string>
-    <string name="booking_queue_tip_3">3.请确保你的可用余额在预约成功后，至少为页面中的提示金额，否则将无法使用设备。</string>
+    <string name="booking_queue_tip_3">3.请确保你的可用余额在预约成功后，大于页面中的提示金额，否则将无法使用设备。</string>
 
 
     <string name="buy_code_tip1">1.购买编码时，需要先预付10元，若有红包，可选择红包进行抵扣；</string>
