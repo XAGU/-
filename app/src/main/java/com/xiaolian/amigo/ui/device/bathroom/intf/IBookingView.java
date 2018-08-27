@@ -80,4 +80,6 @@ public interface IBookingView extends IBaseView {
      * @param data
      */
     void showQueue(BookingQueueProgressDTO data);
+
+    void startOrderInfo(BathBookingRespDTO dto);
 }

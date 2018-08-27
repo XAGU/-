@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.bathroom.BathBookingRespDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.BathOrderCurrentRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathOrderPreconditionRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BookingQueueProgressDTO;
 import com.xiaolian.amigo.ui.device.bathroom.adapter.DeviceInfoAdapter;
@@ -41,6 +42,7 @@ import javax.inject.Inject;
 import butterknife.Unbinder;
 
 import static android.view.View.GONE;
+import static com.xiaolian.amigo.ui.device.DeviceOrderActivity.KEY_USER_STYLE;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_DEVICE_NO;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_FLOOR;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_ORDER_PRECONDITION;
@@ -50,6 +52,8 @@ import static com.xiaolian.amigo.ui.widget.BathroomOperationStatusView.IMG_RES_S
 import static com.xiaolian.amigo.ui.widget.BathroomOperationStatusView.IMG_RES_STATUS_FAIL;
 import static com.xiaolian.amigo.ui.widget.BathroomOperationStatusView.IMG_RES_STATUS_OPERATING;
 import static com.xiaolian.amigo.ui.widget.BathroomOperationStatusView.IMG_RES_STATUS_SUCCESS;
+import static com.xiaolian.amigo.util.Constant.BOOKING_DEVICE;
+import static com.xiaolian.amigo.util.Constant.BOOKING_FLOOR;
 
 /**
  * 预约使用
@@ -290,7 +294,7 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
      * @param type
      */
     public void setTip(int type){
-        if (type == Constant.BOOKING_DEVICE){
+        if (type == BOOKING_DEVICE){
             getTvTip1().setText(getString(R.string.booking_user_this));
         }else if (type == Constant.BOOKING_FLOOR){
             getTvTip1().setText(getString(R.string.booking_user_empty));
@@ -548,7 +552,22 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
         setQueueTip();
     }
 
+    @Override
+    public void startOrderInfo(BathBookingRespDTO dto) {
 
+                String userMethod = "";
+                if (dto.getType() == BOOKING_FLOOR) {
+                    userMethod = "预约任意空浴室";
+                } else {
+                    userMethod = "预约指定浴室";
+                }
+                Intent intent = new Intent(this, BathOrderActivity.class);
+                intent.putExtra(Constant.BUNDLE_ID, dto.getBathOrderId());
+                intent.putExtra(KEY_USER_STYLE, userMethod);
+                startActivity(intent);
+
+
+    }
 
 
     /**

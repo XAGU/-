@@ -26,6 +26,7 @@ import rx.functions.Action1;
 import static com.xiaolian.amigo.util.Constant.ACCEPTED;
 import static com.xiaolian.amigo.util.Constant.CANCELED;
 import static com.xiaolian.amigo.util.Constant.EXPIRED;
+import static com.xiaolian.amigo.util.Constant.FINISHED;
 import static com.xiaolian.amigo.util.Constant.OPENED;
 
 
@@ -155,6 +156,8 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
 
                         } else if (result.getData().getStatus() == EXPIRED) {
                             getMvpView().appointMentTimeOut(true);
+                        }else if (result.getData().getStatus() == FINISHED){
+                            getMvpView().startOrderInfo(result.getData());
                         }
                     } else {
                           if (result.getData().getStatus() == ACCEPTED){  // 成功
@@ -165,6 +168,8 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
                               getMvpView().gotoUsing(result.getData().getBathOrderId());
                           }else if (result.getData().getStatus() == EXPIRED){   //  超时
                               getMvpView().appointMentTimeOut(result.getData());
+                          }else if (result.getData().getStatus() ==FINISHED){
+                              getMvpView().startOrderInfo(result.getData());
                           }
                     }
                 }

@@ -15,7 +15,7 @@ public class BathOrderCurrentRespDTO {
 
                 private long id;
                 private String location;
-                private long prepayAmount;
+                private float prepayAmount;
                 private int status;
                 private long tradeOrderId;
 
@@ -35,11 +35,11 @@ public class BathOrderCurrentRespDTO {
                         this.location = location;
                 }
 
-                public long getPrepayAmount() {
+                public float getPrepayAmount() {
                         return prepayAmount;
                 }
 
-                public void setPrepayAmount(long prepayAmount) {
+                public void setPrepayAmount(float prepayAmount) {
                         this.prepayAmount = prepayAmount;
                 }
 

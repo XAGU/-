@@ -307,7 +307,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
      */
     @OnClick(R.id.iv_scan)
     public void scan(){
-
         if (presenter.isLogin()) {
             scanQRCode();
         }else{

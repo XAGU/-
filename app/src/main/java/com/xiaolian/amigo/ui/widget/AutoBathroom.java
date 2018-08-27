@@ -86,6 +86,7 @@ public class AutoBathroom extends View {
     }
 
     public void setIsSelect(boolean isCanSelect){
+        Log.e(TAG, "setIsSelect: " + isCanSelect );
         this.isCanSelect  = isCanSelect ;
     }
 
@@ -582,6 +583,7 @@ public class AutoBathroom extends View {
         presenter.isReferBathroom = false ;
 //        scaleGestureDetector.onTouchEvent(event);
         if (isCanSelect) {
+            Log.e(TAG, "onTouchEvent: " + isCanSelect );
             gestureDetector.onTouchEvent(event);
         }
         int pointerCount = event.getPointerCount();
