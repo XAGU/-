@@ -268,6 +268,7 @@ public class EditDormitoryPresenter<V extends IEditDormitoryView> extends BasePr
                 if (null == result.getError()){
                     if (result.getData().isResult()) {
                         saveNormalBathroomId(wrapper.getResidenceId());
+                        userDataManager.setRoomId(wrapper.getResidenceId());
                         getMvpView().notifyAdapter( wrapper,currentPosition);
                         RxHelper.delay(300 ,TimeUnit.MILLISECONDS)
                                 .subscribe(new Action1<Integer>() {
