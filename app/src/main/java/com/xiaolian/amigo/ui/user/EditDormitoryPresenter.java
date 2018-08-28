@@ -186,7 +186,6 @@ public class EditDormitoryPresenter<V extends IEditDormitoryView> extends BasePr
                     if (result.getData().getUserResidences() != null && result.getData().getUserResidences().size() > 0) {
                         List<EditDormitoryAdaptor.UserResidenceWrapper> wrappers = addBathroomListItem(result.getData());
                         getMvpView().addMore(wrappers);
-//
                     } else {
                         getMvpView().addMore(new ArrayList<>());
                         getMvpView().showEmptyView();

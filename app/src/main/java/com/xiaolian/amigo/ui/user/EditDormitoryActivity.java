@@ -87,9 +87,13 @@ public class EditDormitoryActivity extends UserBaseListActivity implements IEdit
 //            refreshFlag = false;
 //            items.clear();
 //        }
-        items.clear();
-        items.addAll(userResidenceWrappers);
-        adaptor.notifyDataSetChanged();
+        if (items != null) {
+            items.clear();
+            items.addAll(userResidenceWrappers);
+            adaptor.notifyDataSetChanged();
+        }else{
+
+        }
     }
 
     @Override

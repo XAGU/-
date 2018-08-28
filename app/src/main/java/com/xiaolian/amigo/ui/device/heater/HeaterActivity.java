@@ -1,7 +1,6 @@
 package com.xiaolian.amigo.ui.device.heater;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 
@@ -16,42 +15,18 @@ import javax.inject.Inject;
 
 /**
  * 热水澡设备页
+ *
  * @author zcd
  * @date 17/9/20
  */
 
 public class HeaterActivity extends WaterDeviceBaseActivity<IHeaterPresenter> implements IHeaterView {
-
-    private static final String TAG = HeaterActivity.class.getSimpleName() ;
     @Inject
     IHeaterPresenter<IHeaterView> presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initView();
-    }
-
-    /**
-     * 设置文字右边图片
-     */
-    private  void initView(){
-            Drawable drawable = getResources().getDrawable(R.drawable.white_down);
-            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-            tvDeviceTitle.setCompoundDrawablesRelative(null, null, drawable, null);
-//            tvDeviceTitle.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Log.e(TAG, "onClick: " );
-//                    Intent intent = new Intent(HeaterActivity.this, ListChooseActivity.class);
-//                    intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
-//                    intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION,
-//                            ListChooseActivity.ACTION_LIST_BUILDING);
-//                    intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_SRC_ACTIVITY, Constant.HEATER_TO_BATHROOM);
-//                    intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_DEVICE_TYPE, Device.HEATER.getType());
-//                    startActivity(intent);
-//                }
-//            });
     }
 
     @Override
@@ -72,7 +47,7 @@ public class HeaterActivity extends WaterDeviceBaseActivity<IHeaterPresenter> im
 
     @Override
     protected String setSubtitleString() {
-        return "";
+        return getString(R.string.change_dormitory);
     }
 
     @Override
@@ -119,11 +94,5 @@ public class HeaterActivity extends WaterDeviceBaseActivity<IHeaterPresenter> im
                 presenter.notShowRemindAlert();
             }
         });
-    }
-
-
-    @Override
-    public void onBackPressed() {
-        back2Main();
     }
 }
