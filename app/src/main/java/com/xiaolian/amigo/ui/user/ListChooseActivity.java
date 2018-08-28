@@ -571,6 +571,7 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
 
     @Override
     public void startShower(UserResidenceInListDTO dto) {
+        android.util.Log.e(TAG, "startShower: " + dto.getMacAddress() );
         startActivity(new Intent(this , HeaterActivity.class)
                 .putExtra(INTENT_KEY_LOCATION ,dto.getResidenceName())
                 .putExtra(INTENT_KEY_MAC_ADDRESS ,dto.getMacAddress())

@@ -595,10 +595,10 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
 
     public List<DeviceInfoAdapter.DeviceInfoWrapper> getListWaitItems(String location , int remain){
         List<DeviceInfoAdapter.DeviceInfoWrapper> wrapperList = new ArrayList<>();
-        wrapperList.add(new DeviceInfoAdapter.DeviceInfoWrapper("浴室位置" ,
+        wrapperList.add(new DeviceInfoAdapter.DeviceInfoWrapper("浴室位置：" ,
                 location , R.color.colorDark2 , 14 ,Typeface.NORMAL , false));
-        wrapperList.add(new DeviceInfoAdapter.DeviceInfoWrapper("还需等待",
-                remain +"人" , R.color.refresh_red ,14 , Typeface.BOLD , false));
+        wrapperList.add(new DeviceInfoAdapter.DeviceInfoWrapper("当前排位：",
+                remain +"号" , R.color.refresh_red ,14 , Typeface.BOLD , false));
         return wrapperList ;
     }
 

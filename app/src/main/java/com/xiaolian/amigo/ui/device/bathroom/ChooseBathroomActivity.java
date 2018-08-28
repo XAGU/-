@@ -686,6 +686,11 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         startActivity(new Intent(this , FindBathroomPasswordActivity.class));
     }
 
+    @Override
+    public void setBtnEnable() {
+        pop.setBtnEnable();
+    }
+
 
     @OnClick(R.id.pre_bathroom1)
     public void preBathRoom() {
@@ -811,6 +816,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
             }
 
         }
+        setBtnEnable();
     }
 
 

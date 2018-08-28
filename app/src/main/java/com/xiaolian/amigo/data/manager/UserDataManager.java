@@ -180,7 +180,7 @@ public class UserDataManager implements IUserDataManager {
     public boolean isExistBathroomBiz() {
         if (sharedPreferencesHelp.getSchoolBiz() !=null && sharedPreferencesHelp.getSchoolBiz().size() > 0) {
             for (BriefSchoolBusiness biz : sharedPreferencesHelp.getSchoolBiz()) {
-                if (ObjectsCompat.equals(biz.getBusinessId(), 5L)) {
+                if (ObjectsCompat.equals(biz.getBusinessId(), 1L) && biz.getPublicBath() != null && biz.getPublicBath()) {
                     return true;
                 }
             }

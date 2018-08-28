@@ -300,8 +300,10 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             presenter.setStep(TradeStep.SETTLE);
         }
         if (isScan){
+            android.util.Log.e(TAG, "onCreate: " );
             presenter.onPreConnect(macAddress , true);
         }else {
+            android.util.Log.e(TAG, "onCreate: " );
             presenter.onPreConnect(macAddress);
         }
         if (prepay == null) {
@@ -320,7 +322,9 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     protected void setUp() {
         super.setUp();
         if (getIntent() != null) {
+
             macAddress = getIntent().getStringExtra(MainActivity.INTENT_KEY_MAC_ADDRESS);
+            android.util.Log.e(TAG, "setUp: " + getIntent().getStringExtra(MainActivity.INTENT_KEY_MAC_ADDRESS) );
             deviceType = getIntent().getIntExtra(MainActivity.INTENT_KEY_DEVICE_TYPE, 1);
             location = getIntent().getStringExtra(MainActivity.INTENT_KEY_LOCATION);
             residenceId = getIntent().getLongExtra(MainActivity.INTENT_KEY_RESIDENCE_ID, -1L);
@@ -350,6 +354,8 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                 }
             }
         }
+
+        android.util.Log.e(TAG, "setUp: " + macAddress );
     }
 
 

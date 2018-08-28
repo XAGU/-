@@ -102,8 +102,10 @@ public class HomeSmallDelegate implements ItemViewDelegate<HomeAdaptor.ItemWrapp
             if (itemWrapper.getPrepaySize() != 0) {
                 holder.getView(R.id.tv_prepay).setVisibility(View.VISIBLE);
                 holder.setText(R.id.tv_prepay, "(有" + itemWrapper.getPrepaySize() + "笔未找零金额)");
+                holder.getView(R.id.tv_desc).setVisibility(View.GONE);
             } else {
                 holder.getView(R.id.tv_prepay).setVisibility(View.GONE);
+                holder.getView(R.id.tv_desc).setVisibility(View.VISIBLE);
             }
             if (itemWrapper.isUsing()) {
                 holder.setText(R.id.tv_device_title, "正在使用" + itemWrapper.getDeviceName());

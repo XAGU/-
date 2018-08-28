@@ -166,6 +166,11 @@ public class ChooseBathroomPop  extends PopupWindow {
         super.dismiss();
     }
 
+
+    public void setBtnEnable(){
+        if (button != null && !button.isEnabled()) button.setEnabled(true);
+    }
+
     /**
      * pop 中 点击事件
      */

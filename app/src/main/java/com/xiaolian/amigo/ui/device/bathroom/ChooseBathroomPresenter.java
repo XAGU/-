@@ -256,6 +256,7 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
                     } else {
                         getMvpView().hideBathroomDialog(false);
                         getMvpView().onError(result.getError().getDisplayMessage());
+                        getMvpView().setBtnEnable();
 
                     }
                 }
@@ -265,6 +266,7 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
                     super.onError(e);
                     getMvpView().hideBathroomDialog(false);
                     getMvpView().showError();
+                    getMvpView().setBtnEnable();
                 }
 
             });
@@ -300,7 +302,6 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
                            getMvpView().startBooking(result.getData().getId() , false);
                        }else if (result.getData().getStatus() == OPENED){
                            getMvpView().startUsing(result.getData().getBathOrderId());
-
                        }else if (result.getData().getStatus() == INIT){
                            if (time < 5) {
                                delay(3, new Action1<Long>() {
@@ -316,19 +317,23 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
                                    clearTime();
                                    precondition(false);
                                getMvpView().onError("预约失败，请重试");
+                               getMvpView().setBtnEnable();
                            }
                        }else if (result.getData().getStatus() == FAIL){
                            getMvpView().hideBathroomDialog(false);
                            clearTime();
                            getMvpView().onError("预约失败，请重试");
+                           getMvpView().setBtnEnable();
                        }else{
                            getMvpView().hideBathroomDialog(false);
                            clearTime();
+                           getMvpView().setBtnEnable();
                        }
                  }else{
                      getMvpView().hideBathroomDialog(false);
                      clearTime();
                      getMvpView().onError(result.getError().getDisplayMessage());
+                     getMvpView().setBtnEnable();
                  }
             }
 
@@ -337,6 +342,7 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
                 super.onError(e);
                 getMvpView().hideBathroomDialog(false);
                 getMvpView().showError();
+                getMvpView().setBtnEnable();
             }
         });
 

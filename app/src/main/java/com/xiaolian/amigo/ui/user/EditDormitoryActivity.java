@@ -136,10 +136,12 @@ public class EditDormitoryActivity extends UserBaseListActivity implements IEdit
 
     @Override
     public void startShower(UserResidenceInListDTO dto) {
+
         startActivity(new Intent(this , HeaterActivity.class)
                 .putExtra(INTENT_KEY_LOCATION ,dto.getResidenceName())
                 .putExtra(INTENT_KEY_MAC_ADDRESS ,dto.getMacAddress())
                 .putExtra(INTENT_KEY_SUPPLIER_ID , dto.getSupplierId()));
+        Log.e(TAG, "startShower: " + dto.getMacAddress() );
         this.finish();
     }
 
