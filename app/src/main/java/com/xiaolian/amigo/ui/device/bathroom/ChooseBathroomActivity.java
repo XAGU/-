@@ -210,7 +210,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
                             onError("余额不足，请前往充值");
                             startActivity(new Intent(getApplicationContext(), RechargeActivity.class));
                         }else {
-                            Log.e(TAG, "click: "  );
+                            Log.e(TAG, "click: >>>>>>>>>> "  );
                             if (!TextUtils.isEmpty(floorsBean.getDeviceNo())) {
                                 presenter.booking(Long.parseLong(floorsBean.getDeviceNo()), 0);
                             } else {

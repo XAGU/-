@@ -2,6 +2,7 @@ package com.xiaolian.amigo.ui.user.adaptor;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 
 import com.xiaolian.amigo.R;
@@ -24,7 +25,7 @@ import lombok.Data;
  */
 
 public class EditDormitoryAdaptor extends CommonAdapter<EditDormitoryAdaptor.UserResidenceWrapper> {
-
+    private static final String TAG = EditDormitoryAdaptor.class.getSimpleName();
     private Context context;
     private IEditDormitoryPresenter<IEditDormitoryView> presenter;
     private OnItemClickListener listener;
@@ -33,7 +34,7 @@ public class EditDormitoryAdaptor extends CommonAdapter<EditDormitoryAdaptor.Use
 
     public EditDormitoryAdaptor(Context context, int layoutId, List<UserResidenceWrapper> datas) {
         super(context, layoutId, datas);
-        setHasStableIds(true);
+        setHasStableIds(false);
         this.context = context;
     }
 
@@ -54,38 +55,19 @@ public class EditDormitoryAdaptor extends CommonAdapter<EditDormitoryAdaptor.Use
         // 只有一个宿舍时，显示为默认宿舍
         if (userResidenceWrapper.isDefault() || getDatas().size() == 1) {
             holder.getView(R.id.iv_tick).setVisibility(View.VISIBLE);
-//            presenter.saveDefaultResidenceId(userResidenceWrapper.getResidenceId());
-//            ((ImageView) holder.getView(R.id.iv_choose)).setImageResource(R.drawable.dot_red);
-//            ((TextView) holder.getView(R.id.tv_choose)).setText("默认宿舍");
-//            ((TextView) holder.getView(R.id.tv_choose)).setTextColor(ContextCompat.getColor(context, R.color.colorFullRed));
         } else {
-            holder.getView(R.id.iv_tick).setVisibility(View.GONE);
-//            ((ImageView) holder.getView(R.id.iv_choose)).setImageResource(R.drawable.dot_gray);
-//            ((TextView) holder.getView(R.id.tv_choose)).setText("设为默认");
-//            ((TextView) holder.getView(R.id.tv_choose)).setTextColor(ContextCompat.getColor(context, R.color.colorDark6));
-        }
+            holder.getView(R.id.iv_tick).setVisibility(View.GONE); }
         holder.getView(R.id.tv_delete).setOnClickListener(v ->
                 {
                     presenter.deleteBathroomRecord(userResidenceWrapper.getId(), position, userResidenceWrapper.isDefault());
                 }
                 );
 
-//        holder.getView(R.id.tv_edit).setOnClickListener(v -> {
-//            if (editListener != null) {
-//                editListener.onItemEdit(holder.getAdapterPosition());
-//            }
-//        });
         holder.getView(R.id.ll_dormitory).setOnClickListener(v -> listener.onItemClick(userResidenceWrapper, position));
         holder.getView(R.id.ll_dormitory).setOnLongClickListener(v -> {
             longClickListener.onItemLongClick();
             return true;
         });
-//        // 是否存在设备
-//        if (userResidenceWrapper.isExist()) {
-//            holder.getView(R.id.tv_device_exist).setVisibility(View.GONE);
-//        } else {
-//            holder.getView(R.id.tv_device_exist).setVisibility(View.VISIBLE);
-//        }
     }
 
     public interface OnItemClickListener {
