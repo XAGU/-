@@ -1226,6 +1226,12 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
 
     @Override
+    public void finish() {
+        back2Main();
+        super.finish();
+    }
+
+    @Override
     public boolean isBleError() {
         return bleError;
     }

@@ -36,7 +36,6 @@ public class BathroomHeaterActivity extends BathroomBaseActivity implements IBat
     @Inject
     IBathroomHeartPresenter<IBathroomHeartView> presenter;
 
-
     @BindView(R.id.tv_device_title)
     TextView tvDeviceTitle;
     @BindView(R.id.iv_top_right_icon)
@@ -216,6 +215,17 @@ public class BathroomHeaterActivity extends BathroomBaseActivity implements IBat
     protected void onDestroy() {
         super.onDestroy();
         presenter.onDetach();
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        onBackPressed();
+    }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(this , MainActivity.class));
     }
 
     @OnClick(R.id.iv_back)
