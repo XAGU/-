@@ -241,6 +241,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         if (isNotice) {
             presenter.routeHeaterOrBathroom();
         }
+
         // 友盟日志加密
         MobclickAgent.enableEncrypt(true);
         MobclickAgent.setCatchUncaughtExceptions(true);
@@ -1431,13 +1432,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         EventBus.getDefault().post(dto);
     }
 
-    @Override
-    public void startToBathroomShower() {
-        startActivity(new Intent(this, ChooseBathroomActivity.class)
-                .putExtra(KEY_BUILDING_ID, 1L)
-                .putExtra(KEY_RESIDENCE_TYPE, 1L)
-                .putExtra(KEY_RESIDENCE_ID, 1L));
-    }
 
     /**
      * 点击进入饮水机页面

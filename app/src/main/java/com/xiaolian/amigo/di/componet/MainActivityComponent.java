@@ -18,6 +18,7 @@ package com.xiaolian.amigo.di.componet;
 
 import com.xiaolian.amigo.di.MainActivityContext;
 import com.xiaolian.amigo.di.module.MainActivityModule;
+import com.xiaolian.amigo.ui.main.HomeFragment2;
 import com.xiaolian.amigo.ui.main.MainActivity;
 import com.xiaolian.amigo.ui.main.SplashActivity;
 import com.xiaolian.amigo.ui.notice.MessageReceiver;
@@ -32,6 +33,8 @@ public interface MainActivityComponent {
     void inject(MainActivity activity);
 
     void inject(SplashActivity activity);
+
+    void inject(HomeFragment2 fragment2);
 
 
 }

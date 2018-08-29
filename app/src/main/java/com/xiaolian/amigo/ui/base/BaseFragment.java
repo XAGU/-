@@ -16,9 +16,10 @@ import android.view.ViewGroup;
  */
 public abstract class BaseFragment extends Fragment {
 
-//    protected View mRootView;
+    protected View mRootView;
 
     protected Activity mActivity ;
+
 
 
     @Override
@@ -33,20 +34,22 @@ public abstract class BaseFragment extends Fragment {
         super.onDetach();
         this.mActivity = null ;
     }
-//
-//    @Nullable
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//        if (mRootView == null) {
-//            mRootView = inflater.inflate(setLayout(), container, false);
-//            initView(mRootView);
-//        }
-//        return mRootView;
-//    }
-//
-//    @LayoutRes
-//    protected abstract int setLayout();
-//
-//    protected abstract void initView(View view);
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        if (mRootView == null) {
+            mRootView = inflater.inflate(setLayout(), container, false);
+            initView(mRootView);
+        }
+        return mRootView;
+    }
+
+    @LayoutRes
+    protected abstract int setLayout();
+
+    protected abstract void initView(View view);
+
+
 
 }

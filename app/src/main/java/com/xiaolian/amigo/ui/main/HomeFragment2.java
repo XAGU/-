@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.bathroom.CurrentBathOrderRespDTO;
@@ -36,6 +38,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import lombok.Data;
 
 /**
@@ -80,6 +83,10 @@ public class HomeFragment2 extends Fragment {
     RecyclerView recyclerView;
 
     HomeAdaptor adaptor;
+    @BindView(R.id.school_name)
+    TextView schoolName;
+    @BindView(R.id.scan)
+    ImageView scan;
     /**
      * 未找零账单个数
      */
@@ -96,12 +103,14 @@ public class HomeFragment2 extends Fragment {
     private HomeAdaptor.ItemWrapper banner;
     private GridLayoutManager gridLayoutManager;
 
+    private Unbinder unbinder ;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View homeView = inflater.inflate(R.layout.fragment_home, container, false);
-        ButterKnife.bind(this, homeView);
+        unbinder = ButterKnife.bind(this, homeView);
         return homeView;
     }
 
@@ -232,8 +241,6 @@ public class HomeFragment2 extends Fragment {
         }
 
     }
-
-
 
 
     public void onSchoolBizEvent(List<BriefSchoolBusiness> businesses) {
@@ -378,24 +385,25 @@ public class HomeFragment2 extends Fragment {
 
     @SuppressWarnings("unchecked")
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void OrderEvent(CurrentBathOrderRespDTO  event){
-            checkTitleTip(event);
+    public void OrderEvent(CurrentBathOrderRespDTO event) {
+        checkTitleTip(event);
     }
 
     /**
      * 显示主页面是否有上一订单
+     *
      * @param event
      */
     private void checkTitleTip(CurrentBathOrderRespDTO event) {
-            shower.setExistOrder(true);
-            shower.setStatus(event.getStatus());
-            if (shower.getStatus() == 1 ){
-                shower.setUsing(false);
-            }else {
-                shower.setUsing(true);
-            }
-            Log.e(TAG, "checkTitleTip预约订单" + event.getStatus());
-            notifyAdaptor();
+        shower.setExistOrder(true);
+        shower.setStatus(event.getStatus());
+        if (shower.getStatus() == 1) {
+            shower.setUsing(false);
+        } else {
+            shower.setUsing(true);
+        }
+        Log.e(TAG, "checkTitleTip预约订单" + event.getStatus());
+        notifyAdaptor();
     }
 
 
@@ -419,6 +427,12 @@ public class HomeFragment2 extends Fragment {
             }
         }
         return true;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     @Data

@@ -164,8 +164,4 @@ public interface IMainView extends IBaseView {
     void currentOrder(CurrentBathOrderRespDTO dto);
 
 
-    /**
-     * 测试,直接写死数据
-     */
-    void startToBathroomShower();
 }
