@@ -28,10 +28,8 @@ import android.view.animation.DecelerateInterpolator;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.bathroom.BathBuildingRespDTO;
 import com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomPresenter;
-import com.xiaolian.amigo.ui.device.bathroom.intf.IChooseBathroomPresenter;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IChooseBathroomView;
 import com.xiaolian.amigo.util.Constant;
-import com.xiaolian.amigo.util.RxHelper;
 import com.xiaolian.amigo.util.ScreenUtils;
 
 import java.util.ArrayList;
@@ -568,8 +566,6 @@ public class AutoBathroom extends View {
         drawSeat(canvas);
         presenter.isReferBathroom = true ;
 
-        Log.e(TAG, "onDraw >>>>>>>>>>>>>>>: draw " );
-
     }
 
 
@@ -653,6 +649,11 @@ public class AutoBathroom extends View {
      */
     private void drawRect(Canvas canvas , float left , float top  , String text , BathBuildingRespDTO.FloorsBean.GroupsBean.BathRoomsBean room , float scaleX){
 
+
+        //  如果超出屏幕就不绘制  left  > screenWidth top > screenHeight right < 0  bottom < 0
+        if (left > screenWidth || top + BathroomMin  < 0 || left + BathroomMin < 0 || top > screentHeight ){
+            return ;
+        }
         drawTextDel = ScreenUtils.dpToPx(context , 1);
         Path path = new Path();
         float radius = ScreenUtils.dpToPx(context ,3);
@@ -787,9 +788,6 @@ public class AutoBathroom extends View {
                         if (isAddName) {
                             roomsBean.setRoomName(groupsBean.getDisplayName() + roomsBean.getName() + "号房间");
                         }
-//                            drawRect(canvas, groupsBathroomLeft  + ( roomsBean.getXaxis() -1 ) * (BathroomMin + borderBathroom),
-//                                    groupBathroomBottom  - ((groupsBean.getMaxY() - roomsBean.getYaxis()  + 1 ) * (BathroomMin) + (groupsBean.getMaxY() - roomsBean.getYaxis()) * borderBathroom )
-//                                , roomsBean.getName() + "" , roomsBean , scaleX);
 
                         drawRect(canvas, groupsBathroomLeft + mDelWidth + ( roomsBean.getXaxis() -1 ) * (BathroomMin + borderBathroom) * scaleX,
                                                                  groupBathroomBottom  + mDelHeight- ((groupsBean.getMaxY() - roomsBean.getYaxis() + 1 ) * (BathroomMin) + (groupsBean.getMaxY() - roomsBean.getYaxis()) * borderBathroom ) * scaleY
