@@ -4,30 +4,27 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.RectF;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.ObjectsCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -39,7 +36,6 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.enumeration.DispenserCategory;
 import com.xiaolian.amigo.data.enumeration.DispenserWater;
-import com.xiaolian.amigo.data.enumeration.IntentAction;
 import com.xiaolian.amigo.data.enumeration.Orientation;
 import com.xiaolian.amigo.data.network.model.bathroom.BathRouteRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.CurrentBathOrderRespDTO;
@@ -71,18 +67,17 @@ import com.xiaolian.amigo.ui.user.CompleteInfoActivity;
 import com.xiaolian.amigo.ui.user.EditDormitoryActivity;
 import com.xiaolian.amigo.ui.user.EditProfileActivity;
 import com.xiaolian.amigo.ui.user.ListChooseActivity;
+import com.xiaolian.amigo.ui.user.adaptor.TableFragmentPagerAdapter;
 import com.xiaolian.amigo.ui.wallet.PrepayActivity;
 import com.xiaolian.amigo.ui.widget.dialog.AvailabilityDialog;
 import com.xiaolian.amigo.ui.widget.dialog.GuideDialog;
 import com.xiaolian.amigo.ui.widget.dialog.NoticeAlertDialog;
 import com.xiaolian.amigo.ui.widget.dialog.PrepayDialog;
 import com.xiaolian.amigo.util.AppUtils;
-import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
 import com.xiaolian.amigo.util.MD5Util;
 import com.xiaolian.amigo.util.ScreenUtils;
-import com.youth.banner.Banner;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -139,52 +134,72 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @Inject
     IMainPresenter<IMainView> presenter;
 
-    @BindView(R.id.bt_switch)
-    ImageView btSwitch;
-
-    @BindView(R.id.tv_nickName)
-    TextView tvNickName;
-
-    @BindView(R.id.tv_schoolName)
-    TextView tvSchoolName;
-
-    /**
-     * 头像
-     */
-    @BindView(R.id.iv_avatar)
-    ImageView ivAvatar;
-
-    /**
-     * 通知数量上标
-     */
-    @BindView(R.id.tv_notice_count)
-    TextView tvNoticeCount;
-
-    /**
-     * MainActivity根View
-     */
+    //    @BindView(R.id.bt_switch)
+//    ImageView btSwitch;
+//
+//    @BindView(R.id.tv_nickName)
+//    TextView tvNickName;
+//
+//    @BindView(R.id.tv_schoolName)
+//    TextView tvSchoolName;
+//
+//    /**
+//     * 头像
+//     */
+//    @BindView(R.id.iv_avatar)
+//    ImageView ivAvatar;
+//
+//    /**
+//     * 通知数量上标
+//     */
+//    @BindView(R.id.tv_notice_count)
+//    TextView tvNoticeCount;
+//
+//    /**
+//     * MainActivity根View
+//     */
+//    @BindView(R.id.rl_main)
+//    RelativeLayout rlMain;
+//
+//    /**
+//     * 通知
+//     */
+//    @BindView(R.id.rl_notice)
+//    RelativeLayout rlNotice;
+//
+//    @BindView(R.id.sv_main)
+//    ScrollView slMain;
+//
+//    @BindView(R.id.fm_container)
+//    LinearLayout llContainer;
+//
+//    /**
+//     * 校ok迁移
+//     */
+//    @BindView(R.id.iv_xok_migrate)
+//    ImageView ivXokMigrate;
+    @BindView(R.id.vg_fragment)
+    ViewPager vgFragment;
+    @BindView(R.id.home_image)
+    ImageView homeImage;
+    @BindView(R.id.home_rl)
+    RelativeLayout homeRl;
+    @BindView(R.id.social_image)
+    ImageView socialImage;
+    @BindView(R.id.social_rl)
+    RelativeLayout socialRl;
+    @BindView(R.id.personal_image)
+    ImageView personalImage;
+    @BindView(R.id.personal_rl)
+    RelativeLayout personalRl;
     @BindView(R.id.rl_main)
-    RelativeLayout rlMain;
-
-    /**
-     * 通知
-     */
-    @BindView(R.id.rl_notice)
-    RelativeLayout rlNotice;
-
-    @BindView(R.id.sv_main)
-    ScrollView slMain;
-
-    @BindView(R.id.fm_container)
-    LinearLayout llContainer;
-
-    /**
-     * 校ok迁移
-     */
-    @BindView(R.id.iv_xok_migrate)
-    ImageView ivXokMigrate;
-    @BindView(R.id.main_table)
-    TabLayout mainTable;
+    LinearLayout rlMain;
+    @BindView(R.id.social_red)
+    ImageView socialRed;
+    @BindView(R.id.personal_red)
+    ImageView personalRed;
+    @BindView(R.id.social_sel_rl)
+    RelativeLayout socialSelRl;
 
     private GestureDetector mGestureDetector;
 
@@ -210,6 +225,10 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     private ArrayList<BannerDTO> defaultBanners;
 
 
+    private TableFragmentPagerAdapter mTableFragmentAdapter;
+    private FragmentManager fm;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -227,62 +246,62 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         MobclickAgent.setCatchUncaughtExceptions(true);
 
 
-        btSwitch.setBackgroundResource(R.drawable.profile);
+//        btSwitch.setBackgroundResource(R.drawable.profile);
 
         presenter.checkUpdate(AppUtils.getAppVersionCode(this),
                 AppUtils.getVersionName(this));
+//
+//        if (savedInstanceState == null) {
+//            homeFragment = new HomeFragment2();
+//            getSupportFragmentManager().beginTransaction().add(R.id.fm_container, homeFragment, FRAGMENT_TAG_HOME).commit();
+//        } else {
+//            homeFragment = (HomeFragment2) getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG_HOME);
+//            profileFragment = (ProfileFragment2) getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG_PROFILE);
+//            if (homeFragment != null && profileFragment != null) {
+//                getSupportFragmentManager().beginTransaction()
+//                        .show(homeFragment)
+//                        .hide(profileFragment)
+//                        .commitAllowingStateLoss();
+//            } else {
+//                if (homeFragment != null) {
+//                    getSupportFragmentManager().beginTransaction()
+//                            .show(homeFragment).commitAllowingStateLoss();
+//                }
+//                if (profileFragment != null && homeFragment == null) {
+//                    getSupportFragmentManager().beginTransaction()
+//                            .show(profileFragment).commitAllowingStateLoss();
+//                }
+//            }
+//        }
 
-        if (savedInstanceState == null) {
-            homeFragment = new HomeFragment2();
-            getSupportFragmentManager().beginTransaction().add(R.id.fm_container, homeFragment, FRAGMENT_TAG_HOME).commit();
-        } else {
-            homeFragment = (HomeFragment2) getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG_HOME);
-            profileFragment = (ProfileFragment2) getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG_PROFILE);
-            if (homeFragment != null && profileFragment != null) {
-                getSupportFragmentManager().beginTransaction()
-                        .show(homeFragment)
-                        .hide(profileFragment)
-                        .commitAllowingStateLoss();
-            } else {
-                if (homeFragment != null) {
-                    getSupportFragmentManager().beginTransaction()
-                            .show(homeFragment).commitAllowingStateLoss();
-                }
-                if (profileFragment != null && homeFragment == null) {
-                    getSupportFragmentManager().beginTransaction()
-                            .show(profileFragment).commitAllowingStateLoss();
-                }
-            }
-        }
-
-        mGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
-            @Override
-            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-                if (e1 == null || e2 == null) {
-                    return super.onFling(e1, e2, velocityX, velocityY);
-                }
-                if (hasBanners && current == 0) {
-                    Banner banner = (Banner) slMain.getRootView().findViewById(R.id.banner);
-                    if (banner != null) {
-                        RectF rectF = CommonUtil.calcViewScreenLocation(banner);
-                        if (rectF.contains(e1.getRawX(), e1.getRawY())) {
-                            return false;
-                        }
-                    }
-                }
-                if ((e1.getRawX() - e2.getRawX()) > GESTURE_DETECTOR_MIN_LENGHT) {
-                    onSwitch(Orientation.RIGHT_TO_LEFT);
-                    return true;
-                }
-
-                if ((e2.getRawX() - e1.getRawX()) > GESTURE_DETECTOR_MIN_LENGHT) {
-                    onSwitch(Orientation.LEFT_TO_RIGHT);
-                    //消费掉当前事件  不让当前事件继续向下传递
-                    return true;
-                }
-                return super.onFling(e1, e2, velocityX, velocityY);
-            }
-        });
+//        mGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
+//            @Override
+//            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+//                if (e1 == null || e2 == null) {
+//                    return super.onFling(e1, e2, velocityX, velocityY);
+//                }
+//                if (hasBanners && current == 0) {
+//                    Banner banner = (Banner) slMain.getRootView().findViewById(R.id.banner);
+//                    if (banner != null) {
+//                        RectF rectF = CommonUtil.calcViewScreenLocation(banner);
+//                        if (rectF.contains(e1.getRawX(), e1.getRawY())) {
+//                            return false;
+//                        }
+//                    }
+//                }
+////                if ((e1.getRawX() - e2.getRawX()) > GESTURE_DETECTOR_MIN_LENGHT) {
+////                    onSwitch(Orientation.RIGHT_TO_LEFT);
+////                    return true;
+////                }
+////
+////                if ((e2.getRawX() - e1.getRawX()) > GESTURE_DETECTOR_MIN_LENGHT) {
+////                    onSwitch(Orientation.LEFT_TO_RIGHT);
+////                    //消费掉当前事件  不让当前事件继续向下传递
+////                    return true;
+////                }
+//                return super.onFling(e1, e2, velocityX, velocityY);
+//            }
+//        });
 
         initTable();
 
@@ -291,67 +310,126 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     /**
      * 初始化底部导航栏
      */
-    private void initTable(){
-        mainTable.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+    private void initTable() {
+        if (fm == null) fm = getSupportFragmentManager();
+        mTableFragmentAdapter = new TableFragmentPagerAdapter(fm, DataGenerator.getFragment());
+        vgFragment.setAdapter(mTableFragmentAdapter);
+
+
+        vgFragment.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                onTabItemSelect(tab.getPosition());
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
             }
 
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
+            public void onPageSelected(int position) {
+                pageSelected(position);
             }
 
             @Override
-            public void onTabReselected(TabLayout.Tab tab) {
+            public void onPageScrollStateChanged(int state) {
 
             }
         });
+        setDefalutItem(0);
 
-        mainTable.addTab(mainTable.newTab().setIcon(getResources().getDrawable(R.drawable.tab_home_nor)));
-        mainTable.addTab(mainTable.newTab().setIcon(getResources().getDrawable(R.drawable.tab_social_nor)));
-        mainTable.addTab(mainTable.newTab().setIcon(getResources().getDrawable(R.drawable.tab_personal_nor)));
     }
 
-    private void onTabItemSelect(int position){
-        Fragment  fragment  = null ;
-        switch (position){
+    /**
+     * 设置默认选择底部那个模块
+     *
+     * @param position
+     */
+    private void setDefalutItem(int position) {
+        vgFragment.setCurrentItem(0);
+        tableBottomImageChange(0);
+    }
+
+    private void pageSelected(int position) {
+        switch (position) {
             case 0:
-                fragment = DataGenerator.getFragment()[0];
+                tableBottomImageChange(0);
                 break;
             case 1:
-                fragment = DataGenerator.getFragment()[1];
+                tableBottomImageChange(1);
                 break;
             case 2:
-                fragment = DataGenerator.getFragment()[2];
+                tableBottomImageChange(2);
                 break;
-                default:
-                    fragment = DataGenerator.getFragment()[0];
-                    break;
+            default:
+                tableBottomImageChange(0);
+                break;
+
+        }
+    }
+
+    /**
+     * 底部按钮的变化
+     * @param position
+     */
+    private void tableBottomImageChange(int position) {
+        if (position == 0) {
+            homeImage.setImageResource(R.drawable.tab_home_sel);
+        } else {
+            homeImage.setImageResource(R.drawable.tab_home_nor);
         }
 
+        if (position == 1) {
+            socialSelRl.setVisibility(View.VISIBLE);
+            socialImage.setVisibility(View.GONE);
+            socialRed.setVisibility(View.GONE);
+        } else {
+            socialSelRl.setVisibility(View.GONE);
+            socialImage.setVisibility(View.VISIBLE);
+        }
 
+        if (position == 2) {
+            personalImage.setImageResource(R.drawable.tab_personal_sel);
+            personalRed.setVisibility(View.GONE);
+        } else {
+            personalImage.setImageResource(R.drawable.tab_personal_nor);
+            personalRed.setVisibility(View.VISIBLE);
+        }
     }
+
+
+    @OnClick({R.id.home_rl, R.id.social_rl, R.id.personal_rl})
+    public void onTabItemSelect(View view) {
+        switch (view.getId()) {
+            case R.id.home_rl:
+                tableBottomImageChange(0);
+                vgFragment.setCurrentItem(0);
+                break;
+            case R.id.social_rl:
+                tableBottomImageChange(1);
+                vgFragment.setCurrentItem(1);
+                break;
+            case R.id.personal_rl:
+                tableBottomImageChange(2);
+                vgFragment.setCurrentItem(2);
+                break;
+        }
+    }
+
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
-        if (intent != null) {
-            boolean isSwitchToHome = intent.getBooleanExtra(INTENT_KEY_SWITCH_TO_HOME, false);
-            if (isSwitchToHome) {
-                onSwitch(0);
-            }
-            int actionType = intent.getIntExtra(Constant.INTENT_ACTION, 0);
-            if (IntentAction.getAction(actionType) == IntentAction.ACTION_GOTO_HEATER) {
-                if (btSwitch != null) {
-                    btSwitch.postDelayed(this::gotoHeater, 200);
-                }
-            }
-            isNotice = intent.getBooleanExtra(Constant.BUNDLE_ID, false);
-        }
-
+//        if (intent != null) {
+//            boolean isSwitchToHome = intent.getBooleanExtra(INTENT_KEY_SWITCH_TO_HOME, false);
+//            if (isSwitchToHome) {
+//                onSwitch(0);
+//            }
+//            int actionType = intent.getIntExtra(Constant.INTENT_ACTION, 0);
+//            if (IntentAction.getAction(actionType) == IntentAction.ACTION_GOTO_HEATER) {
+//                if (btSwitch != null) {
+//                    btSwitch.postDelayed(this::gotoHeater, 200);
+//                }
+//            }
+//            isNotice = intent.getBooleanExtra(Constant.BUNDLE_ID, false);
+//        }
 
 
     }
@@ -359,7 +437,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     /**
      * 扫一扫
      */
-    @OnClick(R.id.iv_scan)
+//    @OnClick(R.id.iv_scan)
     public void scan() {
         if (presenter.isLogin()) {
             scanQRCode();
@@ -381,21 +459,21 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (mGestureDetector.onTouchEvent(ev)) {
-            Log.d(TAG, "mGestureDetector onTouchEvent");
-            return true;
-        }
+//        if (mGestureDetector.onTouchEvent(ev)) {
+//            Log.d(TAG, "mGestureDetector onTouchEvent");
+//            return true;
+//        }
         if (hasBanners && current == 0) {
-            Banner banner = (Banner) slMain.getRootView().findViewById(R.id.banner);
-            if (banner != null) {
-                RectF rectF = CommonUtil.calcViewScreenLocation(banner);
-                if (rectF.contains(ev.getRawX(), ev.getRawY())) {
-                    if (!presenter.isLogin()) {
-                        redirectToLogin();
-                        return true;
-                    }
-                }
-            }
+//            Banner banner = (Banner) slMain.getRootView().findViewById(R.id.banner);
+//            if (banner != null) {
+//                RectF rectF = CommonUtil.calcViewScreenLocation(banner);
+//                if (rectF.contains(ev.getRawX(), ev.getRawY())) {
+//                    if (!presenter.isLogin()) {
+//                        redirectToLogin();
+//                        return true;
+//                    }
+//                }
+//            }
         }
         return super.dispatchTouchEvent(ev);
     }
@@ -485,9 +563,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             showNoticeAmount(0);
             if (presenter.isLogin()) {
                 // 设置昵称
-                tvNickName.setText(presenter.getUserInfo().getNickName());
+//                tvNickName.setText(presenter.getUserInfo().getNickName());
                 // 设置学校
-                tvSchoolName.setText(presenter.getUserInfo().getSchoolName());
+//                tvSchoolName.setText(presenter.getUserInfo().getSchoolName());
                 // 设置学校业务
                 presenter.getSchoolBusiness();
 
@@ -503,9 +581,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             showNoticeAmount(0);
             initSchoolBiz();
             Log.d(TAG, "onResume: not login");
-            tvNickName.setText("登录／注册");
-            tvSchoolName.setText("登录以后才能使用哦");
-            ivAvatar.setImageResource(R.drawable.ic_picture_error);
+//            tvNickName.setText("登录／注册");
+//            tvSchoolName.setText("登录以后才能使用哦");
+//            ivAvatar.setImageResource(R.drawable.ic_picture_error);
         } else {
             if (isServerError) {
                 showNoticeAmount(0);
@@ -519,19 +597,19 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             presenter.currentOrder();
             Log.d(TAG, "onResume: login");
             // 设置昵称
-            tvNickName.setText(presenter.getUserInfo().getNickName());
-            // 设置学校
-            tvSchoolName.setText(presenter.getUserInfo().getSchoolName());
-            // 设置头像
-            if (presenter.getUserInfo().getPictureUrl() != null) {
-                Glide.with(this).load(Constant.IMAGE_PREFIX + presenter.getUserInfo().getPictureUrl())
-                        .asBitmap()
-                        .placeholder(R.drawable.ic_picture_error)
-                        .error(R.drawable.ic_picture_error)
-                        .into(ivAvatar);
-            } else {
-                ivAvatar.setImageResource(R.drawable.ic_picture_error);
-            }
+//            tvNickName.setText(presenter.getUserInfo().getNickName());
+//            // 设置学校
+//            tvSchoolName.setText(presenter.getUserInfo().getSchoolName());
+//            // 设置头像
+//            if (presenter.getUserInfo().getPictureUrl() != null) {
+//                Glide.with(this).load(Constant.IMAGE_PREFIX + presenter.getUserInfo().getPictureUrl())
+//                        .asBitmap()
+//                        .placeholder(R.drawable.ic_picture_error)
+//                        .error(R.drawable.ic_picture_error)
+//                        .into(ivAvatar);
+//            } else {
+//                ivAvatar.setImageResource(R.drawable.ic_picture_error);
+//            }
         }
         // 注册信鸽推送
         registerXGPush();
@@ -582,54 +660,56 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             startActivity(intent);
             return;
         }
-        switch (orientation) {
-            case LEFT_TO_RIGHT:
-                // 当前在home
-                if (current == 0) {
-                    EventBus.getDefault().post(new ProfileFragment2.Event(
-                            ProfileFragment2.Event.EventType.CHANGE_ANIMATION,
-                            R.anim.layout_animation_profile_slide_left_to_right));
-                    imageViewAnimatedChange(this, btSwitch, R.drawable.home, orientation);
-                } else {
-                    EventBus.getDefault().post(
-                            new HomeFragment2.Event(
-                                    HomeFragment2.Event.EventType.CHANGE_ANIMATION,
-                                    R.anim.layout_animation_home_slide_left_to_right));
-                    imageViewAnimatedChange(this, btSwitch, R.drawable.profile, orientation);
-                }
-                break;
-            case RIGHT_TO_LEFT:
-                if (current == 0) {
-                    EventBus.getDefault().post(new ProfileFragment2.Event(
-                            ProfileFragment2.Event.EventType.CHANGE_ANIMATION,
-                            R.anim.layout_animation_profile_slide_right_to_left));
-                    imageViewAnimatedChange(this, btSwitch, R.drawable.home, orientation);
-                } else {
-                    EventBus.getDefault().post(
-                            new HomeFragment2.Event(
-                                    HomeFragment2.Event.EventType.CHANGE_ANIMATION,
-                                    R.anim.layout_animation_home_slide_right_to_left));
-                    imageViewAnimatedChange(this, btSwitch, R.drawable.profile, orientation);
-                }
-                break;
-            default:
-                break;
-        }
+//        switch (orientation) {
+//            case LEFT_TO_RIGHT:
+//                // 当前在home
+//                if (current == 0) {
+//                    EventBus.getDefault().post(new ProfileFragment2.Event(
+//                            ProfileFragment2.Event.EventType.CHANGE_ANIMATION,
+//                            R.anim.layout_animation_profile_slide_left_to_right));
+//                    imageViewAnimatedChange(this, btSwitch, R.drawable.home, orientation);
+//                } else {
+//                    EventBus.getDefault().post(
+//                            new HomeFragment2.Event(
+//                                    HomeFragment2.Event.EventType.CHANGE_ANIMATION,
+//                                    R.anim.layout_animation_home_slide_left_to_right));
+//                    imageViewAnimatedChange(this, btSwitch, R.drawable.profile, orientation);
+//                }
+//                break;
+//            case RIGHT_TO_LEFT:
+//                if (current == 0) {
+//                    EventBus.getDefault().post(new ProfileFragment2.Event(
+//                            ProfileFragment2.Event.EventType.CHANGE_ANIMATION,
+//                            R.anim.layout_animation_profile_slide_right_to_left));
+//                    imageViewAnimatedChange(this, btSwitch, R.drawable.home, orientation);
+//                } else {
+//                    EventBus.getDefault().post(
+//                            new HomeFragment2.Event(
+//                                    HomeFragment2.Event.EventType.CHANGE_ANIMATION,
+//                                    R.anim.layout_animation_home_slide_right_to_left));
+//                    imageViewAnimatedChange(this, btSwitch, R.drawable.profile, orientation);
+//                }
+//                break;
+//            default:
+//                break;
+//        }
         onSwitch();
     }
 
-    private  void onSwitchFragment(){
+    private void onSwitchFragment(Fragment fragment) {
         // 未登录跳转到登录页
         if (!presenter.isLogin()) {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
             return;
         }
-
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//        if (fragment != null)
+//        transaction.replace(R.id.fm_container, fragment).commit();
 
     }
 
-    @OnClick(R.id.bt_switch)
+    //    @OnClick(R.id.bt_switch)
     void onSwitchClick() {
         // 未登录跳转到登录页
         if (!presenter.isLogin()) {
@@ -637,18 +717,18 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             startActivity(intent);
             return;
         }
-        if (current == 0) {
-            EventBus.getDefault().post(new ProfileFragment2.Event(
-                    ProfileFragment2.Event.EventType.CHANGE_ANIMATION,
-                    R.anim.layout_animation_profile_slide_left_to_right));
-            imageViewAnimatedChange(this, btSwitch, R.drawable.home, Orientation.LEFT_TO_RIGHT);
-        } else {
-            EventBus.getDefault().post(
-                    new HomeFragment2.Event(
-                            HomeFragment2.Event.EventType.CHANGE_ANIMATION,
-                            R.anim.layout_animation_home_slide_right_to_left));
-            imageViewAnimatedChange(this, btSwitch, R.drawable.profile, Orientation.RIGHT_TO_LEFT);
-        }
+//        if (current == 0) {
+//            EventBus.getDefault().post(new ProfileFragment2.Event(
+//                    ProfileFragment2.Event.EventType.CHANGE_ANIMATION,
+//                    R.anim.layout_animation_profile_slide_left_to_right));
+//            imageViewAnimatedChange(this, btSwitch, R.drawable.home, Orientation.LEFT_TO_RIGHT);
+//        } else {
+//            EventBus.getDefault().post(
+//                    new HomeFragment2.Event(
+//                            HomeFragment2.Event.EventType.CHANGE_ANIMATION,
+//                            R.anim.layout_animation_home_slide_right_to_left));
+//            imageViewAnimatedChange(this, btSwitch, R.drawable.profile, Orientation.RIGHT_TO_LEFT);
+//        }
         onSwitch();
     }
 
@@ -677,7 +757,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 transaction = transaction.hide(homeFragment);
             }
             if (!profileFragment.isAdded()) {
-                transaction.add(R.id.fm_container, profileFragment, FRAGMENT_TAG_PROFILE).commitAllowingStateLoss();
+//                transaction.add(R.id.fm_container, profileFragment, FRAGMENT_TAG_PROFILE).commitAllowingStateLoss();
             } else {
                 transaction.show(profileFragment).commitAllowingStateLoss();
             }
@@ -693,7 +773,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 transaction = transaction.hide(profileFragment);
             }
             if (!homeFragment.isAdded()) {
-                transaction.add(R.id.fm_container, homeFragment, FRAGMENT_TAG_HOME).commitAllowingStateLoss();
+//                transaction.add(R.id.fm_container, homeFragment, FRAGMENT_TAG_HOME).commitAllowingStateLoss();
             } else {
                 transaction.show(homeFragment).commitAllowingStateLoss();
             }
@@ -702,14 +782,14 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     }
 
     void onSwitch(int current) {
-        if (this.current != current) {
-            if (current == 0) {
-                btSwitch.setBackgroundResource(R.drawable.profile);
-            } else {
-                btSwitch.setBackgroundResource(R.drawable.home);
-            }
-            onSwitch();
-        }
+//        if (this.current != current) {
+//            if (current == 0) {
+//                btSwitch.setBackgroundResource(R.drawable.profile);
+//            } else {
+//                btSwitch.setBackgroundResource(R.drawable.home);
+//            }
+//            onSwitch();
+//        }
     }
 
     public void imageViewAnimatedChange(Context context, ImageView imageView, int res, Orientation orientation) {
@@ -786,7 +866,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     }
 
 
-    @OnClick({R.id.iv_avatar, R.id.ll_user_info})
+    //    @OnClick({R.id.iv_avatar, R.id.ll_user_info})
     void gotoLoginView() {
         if (!presenter.isLogin()) {
             Intent intent = new Intent(this, LoginActivity.class);
@@ -797,7 +877,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     /**
      * 通知
      */
-    @OnClick(R.id.iv_notice)
+//    @OnClick(R.id.iv_notice)
     void gotoNoticeList() {
         if (presenter.isLogin()) {
             startActivity(new Intent(this, NoticeListActivity.class));
@@ -809,7 +889,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     /**
      * 点击头像 跳转到编辑个人信息页面
      */
-    @OnClick(R.id.iv_avatar)
+//    @OnClick(R.id.iv_avatar)
     void onAvatarClick() {
         if (checkLogin()) {
             startActivity(this, EditProfileActivity.class);
@@ -819,7 +899,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     /**
      * 点击昵称 跳转到编辑个人信息页面
      */
-    @OnClick(R.id.ll_user_info)
+//    @OnClick(R.id.ll_user_info)
     void onUserInfoClick() {
         if (checkLogin()) {
             startActivity(this, EditProfileActivity.class);
@@ -835,12 +915,12 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @Override
     public void showNoticeAmount(Integer amount) {
         Log.d(TAG, "showNoticeAmount: " + amount);
-        if (amount != null && amount != 0) {
-            tvNoticeCount.setVisibility(View.VISIBLE);
-            tvNoticeCount.setText(String.valueOf(amount));
-        } else {
-            tvNoticeCount.setVisibility(View.GONE);
-        }
+//        if (amount != null && amount != 0) {
+//            tvNoticeCount.setVisibility(View.VISIBLE);
+//            tvNoticeCount.setText(String.valueOf(amount));
+//        } else {
+//            tvNoticeCount.setVisibility(View.GONE);
+//        }
     }
 
     @Override
@@ -1198,23 +1278,23 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public void showXOkMigrate() {
-        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) llContainer.getLayoutParams();
-        lp.topMargin = -ScreenUtils.dpToPxInt(this.getApplicationContext(), 11);
-        llContainer.setLayoutParams(lp);
-        ivXokMigrate.setVisibility(View.VISIBLE);
-        ivXokMigrate.setOnClickListener(v -> {
-            startActivity(new Intent(MainActivity.this, WebActivity.class)
-                    .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_MIGRATE
-                            + "?token=" + presenter.getToken()));
-        });
+//        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) llContainer.getLayoutParams();
+//        lp.topMargin = -ScreenUtils.dpToPxInt(this.getApplicationContext(), 11);
+//        llContainer.setLayoutParams(lp);
+//        ivXokMigrate.setVisibility(View.VISIBLE);
+//        ivXokMigrate.setOnClickListener(v -> {
+//            startActivity(new Intent(MainActivity.this, WebActivity.class)
+//                    .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_MIGRATE
+//                            + "?token=" + presenter.getToken()));
+//        });
     }
 
     @Override
     public void hideXOkMigrate() {
-        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) llContainer.getLayoutParams();
-        lp.topMargin = ScreenUtils.dpToPxInt(this.getApplicationContext(), 0);
-        llContainer.setLayoutParams(lp);
-        ivXokMigrate.setVisibility(View.GONE);
+//        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) llContainer.getLayoutParams();
+//        lp.topMargin = ScreenUtils.dpToPxInt(this.getApplicationContext(), 0);
+//        llContainer.setLayoutParams(lp);
+//        ivXokMigrate.setVisibility(View.GONE);
     }
 
     public void refreshProfile() {
