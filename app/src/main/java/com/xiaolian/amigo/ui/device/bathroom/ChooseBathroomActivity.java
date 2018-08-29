@@ -380,7 +380,6 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         bathOrderId = 0;
         isNeedSwipe = false ;
         bathOrderCurrentRespDTO = null;
-        Log.e(TAG, "onResume: ");
         presenter.onResume();
         presenter.setIsResume(true);
         presenter.getBathroomList(buildId);
@@ -599,6 +598,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
     @Override
     public void startQueue(long id) {
         this.queueId = id;
+        this.isFloor = false ;
         Log.e(TAG, "startQueue: " + id);
         bathroomBookingDialog.setFinish();
 //        if (isCanJump) {
@@ -733,7 +733,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         if (TextUtils.isEmpty(deviceNo)) {
             showPop();
         } else {
-            autoShowDevice(deviceNo);
+//            autoShowDevice(deviceNo);
 //            showPopForDevice();
         }
 
@@ -788,6 +788,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
             if (isCanJump) {
                 startActivityForResult(new Intent(this, BookingActivity.class)
                         .putExtra(KEY_BATHQUEUE_ID, queueId)
+                        .putExtra(KEY_FLOOR ,this.isFloor)
                         .putExtra(KEY_BALANCE, balance)
                         .putExtra(KEY_MIN_PREPAY, minPrepay)
                         .putExtra(KEY_PREPAY, prepay)

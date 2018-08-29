@@ -112,4 +112,6 @@
     <color name="color_bathroom_can_use">#ffd5d4</color>
 
     <color name= "bathroom_stroke" >#FFB3B2</color>
+
+    <color name="color_bg_main_table">#F8F8F8</color>
 </resources>

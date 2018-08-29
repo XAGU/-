@@ -9,6 +9,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.ObjectsCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +25,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.zxing.BarcodeFormat;
@@ -56,6 +59,7 @@ import com.xiaolian.amigo.ui.device.washer.ScanActivity;
 import com.xiaolian.amigo.ui.device.washer.WasherActivity;
 import com.xiaolian.amigo.ui.login.LoginActivity;
 import com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity2;
+import com.xiaolian.amigo.ui.main.data.DataGenerator;
 import com.xiaolian.amigo.ui.main.intf.IMainPresenter;
 import com.xiaolian.amigo.ui.main.intf.IMainView;
 import com.xiaolian.amigo.ui.main.update.IVersionModel;
@@ -179,6 +183,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
      */
     @BindView(R.id.iv_xok_migrate)
     ImageView ivXokMigrate;
+    @BindView(R.id.main_table)
+    TabLayout mainTable;
 
     private GestureDetector mGestureDetector;
 
@@ -189,7 +195,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     int current = 0;
 
-    private boolean isNotice = false  ;
+    private boolean isNotice = false;
     private boolean hasBanners;
     List<BriefSchoolBusiness> businesses;
     private AvailabilityDialog availabilityDialog;
@@ -204,7 +210,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     private ArrayList<BannerDTO> defaultBanners;
 
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -214,7 +219,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
         presenter.onAttach(this);
 
-        if (isNotice){
+        if (isNotice) {
             presenter.routeHeaterOrBathroom();
         }
         // 友盟日志加密
@@ -279,6 +284,54 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             }
         });
 
+        initTable();
+
+    }
+
+    /**
+     * 初始化底部导航栏
+     */
+    private void initTable(){
+        mainTable.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                onTabItemSelect(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+        mainTable.addTab(mainTable.newTab().setIcon(getResources().getDrawable(R.drawable.tab_home_nor)));
+        mainTable.addTab(mainTable.newTab().setIcon(getResources().getDrawable(R.drawable.tab_social_nor)));
+        mainTable.addTab(mainTable.newTab().setIcon(getResources().getDrawable(R.drawable.tab_personal_nor)));
+    }
+
+    private void onTabItemSelect(int position){
+        Fragment  fragment  = null ;
+        switch (position){
+            case 0:
+                fragment = DataGenerator.getFragment()[0];
+                break;
+            case 1:
+                fragment = DataGenerator.getFragment()[1];
+                break;
+            case 2:
+                fragment = DataGenerator.getFragment()[2];
+                break;
+                default:
+                    fragment = DataGenerator.getFragment()[0];
+                    break;
+        }
+
+
     }
 
     @Override
@@ -296,8 +349,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                     btSwitch.postDelayed(this::gotoHeater, 200);
                 }
             }
-            isNotice = intent.getBooleanExtra(Constant.BUNDLE_ID , false);
+            isNotice = intent.getBooleanExtra(Constant.BUNDLE_ID, false);
         }
+
 
 
     }
@@ -306,21 +360,22 @@ public class MainActivity extends MainBaseActivity implements IMainView {
      * 扫一扫
      */
     @OnClick(R.id.iv_scan)
-    public void scan(){
+    public void scan() {
         if (presenter.isLogin()) {
             scanQRCode();
-        }else{
-            startActivity(new Intent(this ,LoginActivity.class));
+        } else {
+            startActivity(new Intent(this, LoginActivity.class));
         }
     }
+
     @Override
     protected void setUp() {
         super.setUp();
         if (getIntent() != null) {
             isServerError = getIntent().getBooleanExtra(INTENT_KEY_SERVER_ERROR, false);
             defaultBanners = getIntent().getParcelableArrayListExtra(INTENT_KEY_BANNERS);
-            isNotice = getIntent().getBooleanExtra(Constant.BUNDLE_ID ,false);
-            android.util.Log.e(TAG, "setUp: "  + (defaultBanners == null));
+            isNotice = getIntent().getBooleanExtra(Constant.BUNDLE_ID, false);
+            android.util.Log.e(TAG, "setUp: " + (defaultBanners == null));
         }
     }
 
@@ -400,8 +455,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     }
 
 
-
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -424,7 +477,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         Log.d(TAG, "onResume");
         if (isNotice && presenter != null) {
             presenter.routeHeaterOrBathroom();
-            isNotice = false ;
+            isNotice = false;
         }
         showBanners(null);
         if (!isNetworkAvailable()) {
@@ -485,9 +538,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     }
 
 
-
-
-
     private void scanQRCode() {
 //        startActivity(new Intent(this, CaptureActivity.class));
         IntentIntegrator integrator = new IntentIntegrator(this);
@@ -503,8 +553,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         integrator.addExtra(DecodeHintType.CHARACTER_SET.name(), "utf-8");
         integrator.addExtra(DecodeHintType.TRY_HARDER.name(), Boolean.TRUE);
         integrator.addExtra(DecodeHintType.POSSIBLE_FORMATS.name(), BarcodeFormat.QR_CODE);
-        integrator.addExtra(SCAN_TYPE , 2);
-        integrator.addExtra(IS_SACN , true);
+        integrator.addExtra(SCAN_TYPE, 2);
+        integrator.addExtra(IS_SACN, true);
         integrator.initiateScan();
     }
 
@@ -522,6 +572,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     /**
      * orientation 1 表示左->右 右->左
+     *
      * @param orientation 方向
      */
     void onSwitch(Orientation orientation) {
@@ -565,6 +616,17 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 break;
         }
         onSwitch();
+    }
+
+    private  void onSwitchFragment(){
+        // 未登录跳转到登录页
+        if (!presenter.isLogin()) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            return;
+        }
+
+
     }
 
     @OnClick(R.id.bt_switch)
@@ -909,7 +971,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public void showBanners(List<BannerDTO> banners) {
-        android.util.Log.e(TAG, "showBanners: " + (defaultBanners == null) );
+        android.util.Log.e(TAG, "showBanners: " + (defaultBanners == null));
         List<BannerDTO> settingBanners = new ArrayList<>();
         if (defaultBanners != null) {
             settingBanners.addAll(defaultBanners);
@@ -947,7 +1009,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 dispenserOrderSize = business.getPrepayOrder();
             } else if (business.getBusinessId() == 3) {
                 dryerOrderSize = business.getPrepayOrder();
-            }else if (business.getBusinessId() == Constant.PUB_BATH){
+            } else if (business.getBusinessId() == Constant.PUB_BATH) {
                 presenter.currentOrder();
             }
         }
@@ -1071,7 +1133,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         });
         openLocationDialog.show();
     }
-
 
 
     @Override
@@ -1210,6 +1271,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     /**
      * 设备用水检查
+     *
      * @param device 设备类型
      */
     public void checkDeviceUsage(Device device) {
@@ -1240,15 +1302,13 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     }
 
 
-
-
     @Override
     public void routeToBathroomShower(BathRouteRespDTO dto) {
         startActivity(new Intent(this, ChooseBathroomActivity.class)
-        .putExtra(KEY_BUILDING_ID ,dto.getBuildingId())
-        .putExtra(KEY_RESIDENCE_TYPE , dto.getResidenceType() )
-        .putExtra(KEY_RESIDENCE_NAME ,dto.getResidenceName())
-        .putExtra(KEY_RESIDENCE_ID ,dto.getResidenceId()));
+                .putExtra(KEY_BUILDING_ID, dto.getBuildingId())
+                .putExtra(KEY_RESIDENCE_TYPE, dto.getResidenceType())
+                .putExtra(KEY_RESIDENCE_NAME, dto.getResidenceName())
+                .putExtra(KEY_RESIDENCE_ID, dto.getResidenceId()));
     }
 
     @Override
@@ -1283,7 +1343,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     public void gotoCompleteInfoActivity(BathRouteRespDTO dto) {
         //跳转到配置信息页面
         startActivity(new Intent(this, CompleteInfoActivity.class)
-                .putExtra(CompleteInfoActivity.KEY_BATHROUTERESPDTO ,dto));
+                .putExtra(CompleteInfoActivity.KEY_BATHROUTERESPDTO, dto));
     }
 
     @Override
@@ -1294,9 +1354,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @Override
     public void startToBathroomShower() {
         startActivity(new Intent(this, ChooseBathroomActivity.class)
-                .putExtra(KEY_BUILDING_ID ,1L)
-                .putExtra(KEY_RESIDENCE_TYPE , 1L )
-                .putExtra(KEY_RESIDENCE_ID ,1L));
+                .putExtra(KEY_BUILDING_ID, 1L)
+                .putExtra(KEY_RESIDENCE_TYPE, 1L)
+                .putExtra(KEY_RESIDENCE_ID, 1L));
     }
 
     /**
@@ -1484,29 +1544,5 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         }
     }
 
-//    private static class HandlerExtension extends Handler {
-//        WeakReference<MainActivity> mActivity;
-//
-//        HandlerExtension(MainActivity activity) {
-//            mActivity = new WeakReference<MainActivity>(activity);
-//        }
-//
-//        @Override
-//        public void handleMessage(Message msg) {
-//            super.handleMessage(msg);
-//            MainActivity theActivity = mActivity.get();
-//            if (theActivity == null) {
-//                theActivity = new MainActivity();
-//            }
-//            if (msg != null) {
-//                Log.d("TPush", msg.obj.toString());
-////                TextView textView = (TextView) theActivity
-////                        .findViewById(R.id.deviceToken);
-////                textView.setText(XGPushConfig.getToken(theActivity));
-//            }
-//            // XGPushManager.registerCustomNotification(theActivity,
-//            // "BACKSTREET", "BOYS", System.currentTimeMillis() + 5000, 0);
-//        }
-//    }
 
 }

@@ -320,9 +320,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
     @Override
     protected void setUp() {
-        super.setUp();
         if (getIntent() != null) {
-
             macAddress = getIntent().getStringExtra(MainActivity.INTENT_KEY_MAC_ADDRESS);
             android.util.Log.e(TAG, "setUp: " + getIntent().getStringExtra(MainActivity.INTENT_KEY_MAC_ADDRESS) );
             deviceType = getIntent().getIntExtra(MainActivity.INTENT_KEY_DEVICE_TYPE, 1);
