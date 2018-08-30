@@ -48,10 +48,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.xiaolian.amigo.data.enumeration.RepairStatus.AUDIT_FAIL;
-import static com.xiaolian.amigo.data.enumeration.RepairStatus.AUDIT_PENDING;
-import static com.xiaolian.amigo.data.enumeration.RepairStatus.REPAIRING;
 import static com.xiaolian.amigo.data.enumeration.RepairStatus.REPAIR_DONE;
-import static com.xiaolian.amigo.data.enumeration.RepairStatus.REPAIR_PENDING;
 
 /**
  * 报修详情
