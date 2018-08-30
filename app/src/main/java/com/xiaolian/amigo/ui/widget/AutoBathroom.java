@@ -10,12 +10,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.graphics.RectF;
-import android.text.Layout;
-import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -30,19 +26,14 @@ import android.view.animation.DecelerateInterpolator;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.bathroom.BathBuildingRespDTO;
 import com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomPresenter;
-import com.xiaolian.amigo.ui.device.bathroom.intf.IChooseBathroomPresenter;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IChooseBathroomView;
-import com.xiaolian.amigo.util.Constant;
-import com.xiaolian.amigo.util.RxHelper;
 import com.xiaolian.amigo.util.ScreenUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.xiaolian.amigo.util.Constant.AVAILABLE;
-import static com.xiaolian.amigo.util.Constant.BATH_BOOKED;
 import static com.xiaolian.amigo.util.Constant.BATH_CHOSE;
-import static com.xiaolian.amigo.util.Constant.BATH_USING;
 
 /**
  * Created by baoyunlong on 16/6/16.
@@ -513,6 +504,7 @@ public class AutoBathroom extends View {
 
         checkedSeatBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.seat_gray);
         seatSoldBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.seat_gray);
+        paint.setColor(Color.RED);
         Animzoom = getMatrixScaleX();
         this.context = context ;
         marginTop = ScreenUtils.dpToPx(context ,21);
@@ -692,6 +684,8 @@ public class AutoBathroom extends View {
 
     float drawTextDel;
 
+    Matrix tempMatrix = new Matrix();
+
     /**
      * 画房间框
      * @param canvas
@@ -701,78 +695,96 @@ public class AutoBathroom extends View {
      */
     private void drawRect(Canvas canvas , float left , float top  , String text , BathBuildingRespDTO.FloorsBean.GroupsBean.BathRoomsBean room , float scaleX){
 
-        drawTextDel = ScreenUtils.dpToPx(context , 1);
-        Path path = new Path();
-        float radius = ScreenUtils.dpToPx(context ,3);
-        room.setLeft(left);
-        room.setTop(top);
-        room.setRight((left + BathroomMin ));
-        room.setBottom((top + BathroomMin ));
-        if ( bathRoomsBean != null && room.getDeviceNo() == bathRoomsBean.getDeviceNo()){
-            room.setStatus(bathRoomsBean.getStatus());
-        }else{
-            if (room.getStatus() == Constant.BATH_CHOSE){
-                room.setStatus(AVAILABLE);
-            }
+        zoom = getMatrixScaleX();
+        long startTime = System.currentTimeMillis();
+        float translateX = getTranslateX();
+        float translateY = getTranslateY();
+        float scaleX1 = zoom;
+        float scaleY = zoom;
+
+        tempMatrix.setTranslate(left, top);
+        tempMatrix.postScale(1, 1, left, top);
+        tempMatrix.postScale(scaleX1, scaleY, left, top);
+
+        canvas.drawBitmap(seatBitmap, tempMatrix, paint);
+
+        if (true) {
+            long drawTime = System.currentTimeMillis() - startTime;
+            Log.d("drawTime", "seatDrawTime:" + drawTime);
         }
-        if (updataFloorBeans.indexOf(room) == -1) {
-            updataFloorBeans.add(room);
-        }else{
-            int  position = updataFloorBeans.indexOf(room);
-            updataFloorBeans.set(position , room);
-        }
-        Paint paint = new Paint();
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setColor(Color.BLACK);
-        switch (room.getStatus()){
-            case BATH_USING:
-                path.addRoundRect(new RectF(left , top ,left + BathroomMin  , top + BathroomMin ) , radius, radius , Path.Direction.CW);
-                canvas.drawPath(path ,paintUsing);
-//                canvas.drawPath(path ,paint);
-                break;
-            case AVAILABLE:
-                path.addRoundRect(new RectF(left , top ,left + BathroomMin  , top + BathroomMin ) , radius, radius, Path.Direction.CW);
-                canvas.drawPath(path ,fillPaint);
-                canvas.drawPath(path ,strokePaint);
 
-                break;
-            case BATH_BOOKED:
-                path.addRoundRect(new RectF(left , top ,left + BathroomMin  , top + BathroomMin ) , radius, radius  , Path.Direction.CW);
-                canvas.drawPath(path ,paintBooked);
-//                canvas.drawPath(path ,paint);
-                break;
-            case BATH_CHOSE:
-                path.addRoundRect(new RectF(left , top ,left + BathroomMin  , top + BathroomMin ) , radius , radius  , Path.Direction.CW);
-                canvas.drawPath(path ,paintChose);
-//                canvas.drawPath(path ,paint);
-                break;
-            }
-
-
-        if (scaleX > 0.9 ){
-            if (room.getStatus() != BATH_BOOKED) {
-                Paint.FontMetricsInt fontMetrics = hintPaint.getFontMetricsInt();
-                Rect rect = new Rect();
-                hintPaint.getTextBounds(text, 0, text.length(), rect);
-
-                if (room.getStatus() == BATH_CHOSE) {
-                    hintPaint.setColor(Color.WHITE);
-                } else {
-                    hintPaint.setColor(colorHint);
-                }
-
-                int baseline = (int) ((top - drawTextDel + (BathroomMin * scaleX - rect.height() / 2) * scaleX - ((fontMetrics.bottom - fontMetrics.top) / 2 - fontMetrics.top)));
-
-
-                StaticLayout layout = new StaticLayout(text, hintPaint, (int) (BathroomMin * scaleX), Layout.Alignment.ALIGN_NORMAL, 1.0F, 0.0F, true);
-                // 这里的参数300，表示字符串的长度，当满300时，就会换行
-                canvas.save();
-                canvas.translate(left + BathroomMin / 2 * scaleX, baseline);
-                layout.draw(canvas);
-                canvas.restore();//别忘了restore
-            }
+//        drawTextDel = ScreenUtils.dpToPx(context , 1);
+//        Path path = new Path();
+//        float radius = ScreenUtils.dpToPx(context ,3);
+//        room.setLeft(left);
+//        room.setTop(top);
+//        room.setRight((left + BathroomMin ));
+//        room.setBottom((top + BathroomMin ));
+//        if ( bathRoomsBean != null && room.getDeviceNo() == bathRoomsBean.getDeviceNo()){
+//            room.setStatus(bathRoomsBean.getStatus());
+//        }else{
+//            if (room.getStatus() == Constant.BATH_CHOSE){
+//                room.setStatus(AVAILABLE);
+//            }
+//        }
+//        if (updataFloorBeans.indexOf(room) == -1) {
+//            updataFloorBeans.add(room);
+//        }else{
+//            int  position = updataFloorBeans.indexOf(room);
+//            updataFloorBeans.set(position , room);
+//        }
+//        Paint paint = new Paint();
+//        paint.setStyle(Paint.Style.STROKE);
+//        paint.setColor(Color.BLACK);
+//        switch (room.getStatus()){
+//            case BATH_USING:
+//                path.addRoundRect(new RectF(left , top ,left + BathroomMin  , top + BathroomMin ) , radius, radius , Path.Direction.CW);
+//                canvas.drawPath(path ,paintUsing);
+////                canvas.drawPath(path ,paint);
+//                break;
+//            case AVAILABLE:
+//                path.addRoundRect(new RectF(left , top ,left + BathroomMin  , top + BathroomMin ) , radius, radius, Path.Direction.CW);
+//                canvas.drawPath(path ,fillPaint);
+//                canvas.drawPath(path ,strokePaint);
+//
+//                break;
+//            case BATH_BOOKED:
+//                path.addRoundRect(new RectF(left , top ,left + BathroomMin  , top + BathroomMin ) , radius, radius  , Path.Direction.CW);
+//                canvas.drawPath(path ,paintBooked);
+////                canvas.drawPath(path ,paint);
+//                break;
+//            case BATH_CHOSE:
+//                path.addRoundRect(new RectF(left , top ,left + BathroomMin  , top + BathroomMin ) , radius , radius  , Path.Direction.CW);
+//                canvas.drawPath(path ,paintChose);
+////                canvas.drawPath(path ,paint);
+//                break;
+//            }
+//
+//
+//        if (scaleX > 0.9 ){
+//            if (room.getStatus() != BATH_BOOKED) {
+//                Paint.FontMetricsInt fontMetrics = hintPaint.getFontMetricsInt();
+//                Rect rect = new Rect();
+//                hintPaint.getTextBounds(text, 0, text.length(), rect);
+//
+//                if (room.getStatus() == BATH_CHOSE) {
+//                    hintPaint.setColor(Color.WHITE);
+//                } else {
+//                    hintPaint.setColor(colorHint);
+//                }
+//
+//                int baseline = (int) ((top - drawTextDel + (BathroomMin * scaleX - rect.height() / 2) * scaleX - ((fontMetrics.bottom - fontMetrics.top) / 2 - fontMetrics.top)));
+//
+//
+//                StaticLayout layout = new StaticLayout(text, hintPaint, (int) (BathroomMin * scaleX), Layout.Alignment.ALIGN_NORMAL, 1.0F, 0.0F, true);
+//                // 这里的参数300，表示字符串的长度，当满300时，就会换行
+//                canvas.save();
+//                canvas.translate(left + BathroomMin / 2 * scaleX, baseline);
+//                layout.draw(canvas);
+//                canvas.restore();//别忘了restore
+//            }
 //            canvas.drawText(text,left + BathroomMin / 2 * scaleX ,baseline , hintPaint);
-        }
+//        }
 
     }
 
