@@ -35,20 +35,20 @@ public abstract class BaseFragment extends Fragment {
         this.mActivity = null ;
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if (mRootView == null) {
-            mRootView = inflater.inflate(setLayout(), container, false);
-            initView(mRootView);
-        }
-        return mRootView;
-    }
+//    @Nullable
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+//        if (mRootView == null) {
+//            mRootView = inflater.inflate(setLayout(), container, false);
+//            initView(mRootView);
+//        }
+//        return mRootView;
+//    }
 
-    @LayoutRes
-    protected abstract int setLayout();
-
-    protected abstract void initView(View view);
+//    @LayoutRes
+//    protected abstract int setLayout();
+//
+//    protected abstract void initView(View view);
 
 
 

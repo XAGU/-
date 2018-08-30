@@ -4,6 +4,8 @@ import android.animation.Animator;
 import android.animation.TypeEvaluator;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
@@ -256,6 +258,8 @@ public class AutoBathroom extends View {
     float width;
     float height;
     float scaleFactor = 1.0f;
+
+
     /**
      * 带有每个浴室x, y 坐标的floorBeans ;
      */
@@ -276,6 +280,45 @@ public class AutoBathroom extends View {
 
     float mDelWidth;
     float mDelHeight;
+
+
+    /**
+     * 默认的座位图宽度,如果使用的自己的座位图片比这个尺寸大或者小,会缩放到这个大小
+     */
+    private float defaultImgW = 40;
+
+    /**
+     * 默认的座位图高度
+     */
+    private float defaultImgH = 34;
+
+    /**
+     * 座位图片的宽度
+     */
+    private int seatWidth;
+
+    /**
+     * 座位图片的高度
+     */
+    private int seatHeight;
+
+
+    /**
+     * 可选时座位的图片
+     */
+    Bitmap seatBitmap;
+
+    /**
+     * 选中时座位的图片
+     */
+    Bitmap checkedSeatBitmap;
+
+    /**
+     * 座位已经售出时的图片
+     */
+    Bitmap seatSoldBitmap;
+
+    Bitmap overviewBitmap;
 
 
     private static BathBuildingRespDTO.FloorsBean.GroupsBean.BathRoomsBean bathRoomsBean;
@@ -467,10 +510,15 @@ public class AutoBathroom extends View {
     Paint strokePaint  ;
     Paint fillPaint ;
     private void init(Context context) {
+
+        checkedSeatBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.seat_gray);
+        seatSoldBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.seat_gray);
         Animzoom = getMatrixScaleX();
         this.context = context ;
         marginTop = ScreenUtils.dpToPx(context ,21);
-        BathroomMin = ScreenUtils.dpToPx(context ,30)  ;
+//        BathroomMin = ScreenUtils.dpToPx(context ,30)  ;
+        BathroomMin = seatSoldBitmap.getHeight() ;
+        BathroomMin = seatSoldBitmap.getWidth() ;
 
         bathroomMax = ScreenUtils.dpToPx(context , 45) ;
 
