@@ -568,7 +568,6 @@ public class AutoBathroom extends View {
         drawSeat(canvas);
         presenter.isReferBathroom = true ;
 
-        Log.e(TAG, "onDraw >>>>>>>>>>>>>>>: draw " );
 
     }
 
@@ -629,7 +628,6 @@ public class AutoBathroom extends View {
                 int downDX = Math.abs(x - downX);
                 int downDY = Math.abs(y - downY);
                 if ((downDX > 10 || downDY > 10) && !pointer) {
-                    Log.e(TAG, "onTouchEvent:>>>>>>>   move " );
                     autoScroll();
                 }
                 break;
@@ -676,6 +674,7 @@ public class AutoBathroom extends View {
         Paint paint = new Paint();
         paint.setStyle(Paint.Style.STROKE);
         paint.setColor(Color.BLACK);
+
         switch (room.getStatus()){
             case BATH_USING:
                 path.addRoundRect(new RectF(left , top ,left + BathroomMin  , top + BathroomMin ) , radius, radius , Path.Direction.CW);
