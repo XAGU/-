@@ -291,11 +291,6 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
 
 
         if (EvaluateStatus.getStatus(detail.getRated()) == EvaluateStatus.EVALUATE_DONE) {
-//<<<<<<< HEAD
-////            gotoEvaluationButton.setEnabled(false);
-////            gotoEvaluationButton.setTextColor(ContextCompat.getColor(this, R.color.colorDark9));
-//=======
-//>>>>>>> 3df33253e946471fbfd2714433de843ac52e1839
             gotoEvaluationButton.setVisibility(View.GONE);
             llExtra.setVisibility(View.VISIBLE);
             tvExtraTitle.setText(getString(R.string.evaluation_info));
