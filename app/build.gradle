@@ -82,8 +82,8 @@ android {
 
             //  连接测试服
             buildConfigField "String", "SERVER", "\"http://47.107.45.109:5081/\"" //qa5
-//            buildConfigField "String", "SERVER_BATHROOM", "\"http://47.107.45.109:5082/\"" //qa5
-            buildConfigField "String", "SERVER_BATHROOM", "\"http://10.195.90.250:5082/\"" //qa5
+            buildConfigField "String", "SERVER_BATHROOM", "\"http://47.107.45.109:5082/\"" //qa5
+//            buildConfigField "String", "SERVER_BATHROOM", "\"http://10.195.90.250:5082/\"" //qa5
             buildConfigField "String", "H5_SERVER", "\"http://47.107.45.109:5097/c\"" //qa5
 
 
