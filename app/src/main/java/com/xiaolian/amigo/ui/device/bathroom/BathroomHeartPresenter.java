@@ -48,7 +48,7 @@ public class BathroomHeartPresenter<V extends IBathroomHeartView> extends BasePr
                         delay(3, new Action1<Long>() {
                             @Override
                             public void call(Long aLong) {
-                                queryBathroomOrder(id ,false);
+                                queryBathroomOrder(id ,false , 3);
                             }
                         });
                     }else{
@@ -77,7 +77,7 @@ public class BathroomHeartPresenter<V extends IBathroomHeartView> extends BasePr
     }
 
     @Override
-    public void queryBathroomOrder(Long id , boolean isShowDialog) {
+    public void queryBathroomOrder(Long id , boolean isShowDialog , int  time) {
 
         if (isPause) return ;
         SimpleReqDTO simpleReqDTO  = new SimpleReqDTO();
@@ -99,11 +99,11 @@ public class BathroomHeartPresenter<V extends IBathroomHeartView> extends BasePr
                 if (result.getError() == null){
                     if (result.getData().getStatus() == ORDER_USING) {
                         getMvpView().getOrderInfo(result.getData());
-                        delay(10, new Action1<Long>() {
+                        delay(time, new Action1<Long>() {
                             @Override
                             public void call(Long aLong) {
                                 Log.e(TAG, "call:>>>>> delay " );
-                                queryBathroomOrder(id , false);
+                                queryBathroomOrder(id , false ,time);
                             }
                         });
                     }else if (result.getData().getStatus() == ORDER_SETTLE){

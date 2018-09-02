@@ -90,7 +90,7 @@ public class BathroomHeaterActivity extends BathroomBaseActivity implements IBat
         presenter.onResume();
 
         if (!isCreate){
-            presenter.queryBathroomOrder(orderId , false);
+            presenter.queryBathroomOrder(orderId , false , 10);
         }
         isCreate = false ;
     }
@@ -116,7 +116,7 @@ public class BathroomHeaterActivity extends BathroomBaseActivity implements IBat
             return;
         }
         needToOrderInfo = true ;
-        presenter.queryBathroomOrder(orderId , true);
+        presenter.queryBathroomOrder(orderId , true , 10);
 
     }
 

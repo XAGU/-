@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.data.enumeration;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.ui.device.bathroom.BathroomHeaterActivity;
 import com.xiaolian.amigo.ui.device.dispenser.DispenserActivity;
 import com.xiaolian.amigo.ui.device.dryer.DryerActivity;
 import com.xiaolian.amigo.ui.device.heater.HeaterActivity;
@@ -80,7 +81,6 @@ public enum Device {
         public int getColorRes() {
             return R.color.device_washer;
         }
-
         @Override
         public int getDrawableRes() {
             return R.drawable.washer;
@@ -89,6 +89,21 @@ public enum Device {
         @Override
         public Class getClz() {
             return WasherActivity.class;
+        }
+    },PUB_BATH(5 ,"热水澡"){
+        @Override
+        public int getColorRes() {
+            return R.color.device_heator;
+        }
+
+        @Override
+        public int getDrawableRes() {
+            return R.drawable.shower;
+        }
+
+        @Override
+        public Class getClz() {
+            return BathroomHeaterActivity.class;
         }
     };
 
