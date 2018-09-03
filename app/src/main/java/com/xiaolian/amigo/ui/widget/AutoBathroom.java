@@ -935,7 +935,7 @@ public class AutoBathroom extends View {
             moveXLength = - getTranslateX() ;
         } else {
             //  mDelWidth   <   0
-            if (realWidth / zoom > getWidth()) {
+//            if (realWidth / zoom > getWidth()) {
                 if (getTranslateX() > 0 && getTranslateX() + mDelWidth - marginTop > 0) {
                     moveXLength = -(getTranslateX() + mDelWidth - marginTop);
                 } else {
@@ -943,20 +943,20 @@ public class AutoBathroom extends View {
                         moveXLength = -(getTranslateX() + (currentSeatBitmapWidth - getWidth() + mDelWidth + marginTop));
                     }
                 }
-            }else{
-                if (getTranslateX() > 0 && getTranslateX() + mDelWidth - marginTop > 0) {
-                        moveXLength = -(getTranslateX() + mDelWidth - marginTop);
-
-                } else if(getTranslateX() < 0) {
-                    if (getTranslateX() + mDelWidth + marginTop < 0) {
-                        moveXLength = -(getTranslateX()  + mDelWidth - marginTop);
-                    }else{
-
-                    }
-                }else{
-                    moveXLength = -(mDelWidth - marginTop);
-                }
-            }
+//            }else{
+//                if (getTranslateX() > 0 && getTranslateX() + mDelWidth - marginTop > 0) {
+//                        moveXLength = -(getTranslateX() + mDelWidth - marginTop);
+//
+//                } else if(getTranslateX() < 0) {
+//                    if (getTranslateX() + mDelWidth + marginTop < 0) {
+//                        moveXLength = -(getTranslateX()  + mDelWidth - marginTop);
+//                    }else{
+//
+//                    }
+//                }else{
+//                    moveXLength = -(mDelWidth - marginTop);
+//                }
+//            }
         }
 
         //处理上下滑动
@@ -965,7 +965,7 @@ public class AutoBathroom extends View {
             moveYLength = - getTranslateY() ;
         } else {
             //  mDelHeight < 0
-            if (realHeight / zoom > getHeight()) {
+//            if (realHeight / zoom > getHeight()) {
                 if (getTranslateY() > 0) {
                     if (getTranslateY() + (mDelHeight - marginTop) > 0) {
                         moveYLength = -(getTranslateY() + (mDelHeight - marginTop));
@@ -975,20 +975,20 @@ public class AutoBathroom extends View {
                         moveYLength = -(getTranslateY() + (currentSeatBitmapHeight - getHeight()) + mDelHeight + marginTop);
                     }
                 }
-            }else{
+//            }else{
 
-                if (getTranslateY() > 0) {
-                    if (getTranslateY() + (mDelHeight - marginTop) > 0) {
-                        moveYLength = -(getTranslateY() + (mDelHeight - marginTop));
-                    }
-                } else  if ( getTranslateY() < 0){
-                    if (getTranslateY() + mDelHeight + marginTop < 0) {
-                        moveYLength = -(getTranslateY()  + mDelHeight - marginTop);
-                    }
-                }else{
-                    moveYLength = -(mDelHeight - marginTop);
-                }
-            }
+//                if (getTranslateY() > 0) {
+//                    if (getTranslateY() + (mDelHeight - marginTop) > 0) {
+//                        moveYLength = -(getTranslateY() + (mDelHeight - marginTop));
+//                    }
+//                } else  if ( getTranslateY() < 0){
+//                    if (getTranslateY() + mDelHeight + marginTop < 0) {
+//                        moveYLength = -(getTranslateY()  + mDelHeight - marginTop);
+//                    }
+//                }else{
+//                    moveYLength = -(mDelHeight - marginTop);
+//                }
+//            }
         }
 
         Point start = new Point();
