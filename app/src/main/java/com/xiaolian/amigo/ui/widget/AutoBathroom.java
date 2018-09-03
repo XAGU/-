@@ -60,7 +60,9 @@ public class AutoBathroom extends View {
 
     ChooseBathroomPresenter<IChooseBathroomView> presenter;
 
-    public void setData(List<BathBuildingRespDTO.FloorsBean> floorsBeans) {
+    private long buildId ;  //  浴室场景图中心位置
+
+    public void setData(List<BathBuildingRespDTO.FloorsBean> floorsBeans , long buildId ) {
         if (this.floorsBeanList != null && this.floorsBeanList.size() > 0) {
             this.floorsBeanList.clear();
         }
@@ -69,6 +71,10 @@ public class AutoBathroom extends View {
         } else {
             this.floorsBeanList = new ArrayList<>();
             this.floorsBeanList.addAll(floorsBeans);
+        }
+        if (this.buildId != buildId) {
+            this.buildId = buildId;
+            zoomCenter(3.0f);
         }
         isAddName = true;
         bathRoomsBean = null;
@@ -253,6 +259,14 @@ public class AutoBathroom extends View {
     float width;
     float height;
     float scaleFactor = 1.0f;
+
+
+    /**
+     *  场景图中心位置
+     */
+
+    float centerX ;
+    float centerY ;
     /**
      * 带有每个浴室x, y 坐标的floorBeans ;
      */
@@ -464,6 +478,13 @@ public class AutoBathroom extends View {
 
                     floorsBean.getGroups().set(groupIndex, groupsBean);
 
+
+                    // 组的中心点，
+                    if (groupsBean.getGroupId() == buildId && zoom == 3){
+                        centerX = groupLeft + widthAndHeight[0] / 2 ;
+                        centerY = realHeight + floorHeight / 2 ;
+                    }
+
                 }
                 realWidth = Math.max(realWidth, floorWidth);
                 realHeight += floorHeight ;
@@ -593,9 +614,6 @@ public class AutoBathroom extends View {
 
     }
 
-    float  centerX =  0   ;
-    float  centerY = 0 ;
-
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -605,20 +623,20 @@ public class AutoBathroom extends View {
             updataFloorBeans.clear();
             updataFloorBeans = new ArrayList<>();
         }
-            if (centerX == 0  ){
-                mDelWidth = (getWidth() * zoom - realWidth ) / 2  ;
-            }else{
-//                mDelWidth = getWidth() / 2 -   centerX  * zoom ;
-            }
+//            if (centerX == 0  ){
+//                mDelWidth = (getWidth() * zoom - realWidth ) / 2  ;
+//            }else{
+////                mDelWidth = getWidth() / 2 -   centerX  * zoom ;
+//            }
+//
+//            if (centerY == 0){
+//                mDelHeight = (getHeight() * zoom  - realHeight ) / 2 ;
+//            }else{
+////                mDelHeight = getHeight() / 2  -  centerY  * zoom   ;
+//            }
 
-            if (centerY == 0){
-                mDelHeight = (getHeight() * zoom  - realHeight ) / 2 ;
-            }else{
-//                mDelHeight = getHeight() / 2  -  centerY  * zoom   ;
-            }
-
-//        mDelHeight = 0 ;
-//        mDelWidth = 0 ;
+        mDelWidth = getWidth()  * zoom  /2   - centerX ;
+        mDelHeight = getHeight()  * zoom  / 2  - centerY ;
 
 
         drawSeat(canvas);
@@ -680,7 +698,7 @@ public class AutoBathroom extends View {
                 int downDX = Math.abs(x - downX);
                 int downDY = Math.abs(y - downY);
                 if ((downDX > 10 || downDY > 10 && !pointer) ) {
-                    autoScroll();
+//                    autoScroll();
                 }
                 break;
         }
@@ -875,14 +893,9 @@ public class AutoBathroom extends View {
 
     /**
      * 自动回弹
-     * 整个大小不超过控件大小的时候:
-     * 往左边滑动,自动回弹到行号右边
-     * 往右边滑动,自动回弹到右边
-     * 往上,下滑动,自动回弹到顶部
-     * <p>
-     * 整个大小超过控件大小的时候:
-     * 往左侧滑动,回弹到最右边,往右侧滑回弹到最左边
-     * 往上滑动,回弹到底部,往下滑动回弹到顶部
+     *   左边回弹计算方式  判断条件： getTranslateX - (centerX  - getWidth() /2 ) - marginTop > 0
+     *
+     *   回弹距离    -(translateX - (centerX - getWidth() / 2))
      */
     private void autoScroll() {
         float currentSeatBitmapWidth = realWidth  ;
@@ -1028,6 +1041,14 @@ public class AutoBathroom extends View {
     private void zoom(float zoom , float x , float y){
         float z = zoom / getMatrixScaleX();
         matrix.postScale(z, z  ,x , y );
+        requestLayout();
+        invalidate();
+    }
+
+
+    private void zoomCenter(float zoom){
+        float z = zoom / getMatrixScaleX();
+        matrix.postScale(z, z);
         requestLayout();
         invalidate();
     }
@@ -1212,4 +1233,6 @@ public class AutoBathroom extends View {
 
         void onScale(float scale) ;
     }
+
+
 }

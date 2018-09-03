@@ -348,7 +348,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         BathBuildingRespDTO.FloorsBean floorsBean2 = new BathBuildingRespDTO.FloorsBean();
         floorsBean2.setGroups(groupsBeans);
         floorsBeans.add(floorsBean2);
-        autoBathroom.setData(floorsBeans);
+//        autoBathroom.setData(floorsBeans);
     }
 
 
@@ -432,7 +432,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         if (pop == null) {
             return ;
         }
-        pop.setData(floorsBean);
+        pop.setData(floorsBean );
 
         showPopNoDevice();
     }
@@ -525,7 +525,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
                 floorsBeans.clear();
                 floorsBeans.addAll(respDTO.getFloors());
             }
-        autoBathroom.setData(floorsBeans);
+        autoBathroom.setData(floorsBeans , residenceId);
         autoBathroom.setIsSelect(isPublicBathroom);
     }
 
