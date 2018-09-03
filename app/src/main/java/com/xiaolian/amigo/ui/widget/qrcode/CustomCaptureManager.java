@@ -372,7 +372,8 @@ public class CustomCaptureManager {
     }
 
     private void finish() {
-        activity.finish();
+        Log.e(TAG, "finish: " );
+//        activity.finish();
     }
 
     protected void closeAndFinish() {
