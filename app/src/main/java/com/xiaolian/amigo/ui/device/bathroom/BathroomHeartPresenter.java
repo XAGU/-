@@ -43,7 +43,6 @@ public class BathroomHeartPresenter<V extends IBathroomHeartView> extends BasePr
                 if (result.getError() == null){
                     if (result.getData().isResult()){
                         getMvpView().onSuccess("结算成功");
-                        Log.e(TAG, "onReady: >>>> askSettle" );
                         getMvpView().goToOrderInfo();
                     }else{
                         getMvpView().onError(result.getData().getFailReason());

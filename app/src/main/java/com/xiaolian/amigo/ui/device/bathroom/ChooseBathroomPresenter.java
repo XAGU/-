@@ -120,7 +120,14 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
                  if (result.getError() == null){
 
                      if (result.getData().getStatus() == INIT){
-                         getMvpView().hideBathroomDialog(true);
+                         if (isShowDialog){
+                             getMvpView().hideBathroomDialog(true);
+                         }else {
+                             getMvpView().onError("预约失败，请重试");
+                             getMvpView().setBtnEnable();
+                             getMvpView().hideBathroomDialog(false);
+
+                         }
                      }
                      getMvpView().saveBookingInfo(result.getData());
                      if (result.getData().getStatus() == QUEUEING){
@@ -313,11 +320,10 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
                                    }
                                });
                            }else{
-                                   getMvpView().hideBathroomDialog(false);
+//                                   getMvpView().hideBathroomDialog(false);
                                    clearTime();
                                    precondition(false);
-                               getMvpView().onError("预约失败，请重试");
-                               getMvpView().setBtnEnable();
+//
                            }
                        }else if (result.getData().getStatus() == FAIL){
                            getMvpView().hideBathroomDialog(false);

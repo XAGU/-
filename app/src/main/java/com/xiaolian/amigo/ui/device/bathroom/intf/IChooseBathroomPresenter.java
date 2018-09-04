@@ -13,7 +13,7 @@ public interface IChooseBathroomPresenter<V extends IChooseBathroomView>
     void getBathroomList(long buildingId);
 
 
-    void precondition(boolean isShowDialog);
+    void precondition(boolean isShowDialog );
 
     boolean getBathroomPassword();
 

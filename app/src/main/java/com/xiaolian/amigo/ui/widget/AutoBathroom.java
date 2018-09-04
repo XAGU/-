@@ -673,13 +673,14 @@ public class AutoBathroom extends View {
 
     }
 
-
+    boolean isScale ;
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         int y = (int) event.getY();
         int x = (int) event.getX();
         super.onTouchEvent(event);
         isScaling = false ;
+        isScale = false ;
         presenter.isReferBathroom = false ;
         scaleGestureDetector.onTouchEvent(event);
         if (isCanSelect) {
@@ -730,6 +731,7 @@ public class AutoBathroom extends View {
                 break;
         }
         isOnClick = false;
+        isScale = false ;
         presenter.isReferBathroom = true ;
         lastY = y;
         lastX = x;
@@ -935,7 +937,7 @@ public class AutoBathroom extends View {
             moveXLength = - getTranslateX() ;
         } else {
             //  mDelWidth   <   0
-//            if (realWidth / zoom > getWidth()) {
+            if (realWidth / zoom > getWidth()) {
                 if (getTranslateX() > 0 && getTranslateX() + mDelWidth - marginTop > 0) {
                     moveXLength = -(getTranslateX() + mDelWidth - marginTop);
                 } else {
@@ -943,20 +945,20 @@ public class AutoBathroom extends View {
                         moveXLength = -(getTranslateX() + (currentSeatBitmapWidth - getWidth() + mDelWidth + marginTop));
                     }
                 }
-//            }else{
-//                if (getTranslateX() > 0 && getTranslateX() + mDelWidth - marginTop > 0) {
-//                        moveXLength = -(getTranslateX() + mDelWidth - marginTop);
-//
-//                } else if(getTranslateX() < 0) {
-//                    if (getTranslateX() + mDelWidth + marginTop < 0) {
-//                        moveXLength = -(getTranslateX()  + mDelWidth - marginTop);
-//                    }else{
-//
-//                    }
-//                }else{
-//                    moveXLength = -(mDelWidth - marginTop);
-//                }
-//            }
+            }else if (realWidth / zoom <= getWidth() && !isScale){
+                if (getTranslateX() > 0 && getTranslateX() + mDelWidth - marginTop > 0) {
+                        moveXLength = -(getTranslateX() + mDelWidth - marginTop);
+
+                } else if(getTranslateX() < 0) {
+                    if (getTranslateX() + mDelWidth + marginTop < 0) {
+                        moveXLength = -(getTranslateX()  + mDelWidth - marginTop);
+                    }else{
+
+                    }
+                }else{
+                    moveXLength = -(mDelWidth - marginTop);
+                }
+            }
         }
 
         //处理上下滑动
@@ -965,7 +967,7 @@ public class AutoBathroom extends View {
             moveYLength = - getTranslateY() ;
         } else {
             //  mDelHeight < 0
-//            if (realHeight / zoom > getHeight()) {
+            if (realHeight / zoom > getHeight()) {
                 if (getTranslateY() > 0) {
                     if (getTranslateY() + (mDelHeight - marginTop) > 0) {
                         moveYLength = -(getTranslateY() + (mDelHeight - marginTop));
@@ -975,20 +977,20 @@ public class AutoBathroom extends View {
                         moveYLength = -(getTranslateY() + (currentSeatBitmapHeight - getHeight()) + mDelHeight + marginTop);
                     }
                 }
-//            }else{
+            }else if (realHeight / zoom <= getHeight() && !isScale){
 
-//                if (getTranslateY() > 0) {
-//                    if (getTranslateY() + (mDelHeight - marginTop) > 0) {
-//                        moveYLength = -(getTranslateY() + (mDelHeight - marginTop));
-//                    }
-//                } else  if ( getTranslateY() < 0){
-//                    if (getTranslateY() + mDelHeight + marginTop < 0) {
-//                        moveYLength = -(getTranslateY()  + mDelHeight - marginTop);
-//                    }
-//                }else{
-//                    moveYLength = -(mDelHeight - marginTop);
-//                }
-//            }
+                if (getTranslateY() > 0) {
+                    if (getTranslateY() + (mDelHeight - marginTop) > 0) {
+                        moveYLength = -(getTranslateY() + (mDelHeight - marginTop));
+                    }
+                } else  if ( getTranslateY() < 0){
+                    if (getTranslateY() + mDelHeight + marginTop < 0) {
+                        moveYLength = -(getTranslateY()  + mDelHeight - marginTop);
+                    }
+                }else{
+                    moveYLength = -(mDelHeight - marginTop);
+                }
+            }
         }
 
         Point start = new Point();
@@ -1144,6 +1146,7 @@ public class AutoBathroom extends View {
         @Override
         public boolean onScale(ScaleGestureDetector detector) {
             isScaling = true;
+            isScale = true  ;
             float scaleFactor = detector.getScaleFactor();
             if (firstScale) {
                 if (realWidth * scaleFactor  > getWidth()) {
