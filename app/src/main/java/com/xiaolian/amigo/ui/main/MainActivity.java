@@ -463,7 +463,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             presenter.getNoticeAmount();
             presenter.getSchoolBusiness();
             presenter.getUser();
-            presenter.currentOrder();
+//            presenter.currentOrder();
             Log.d(TAG, "onResume: login");
             // 设置昵称
             tvNickName.setText(presenter.getUserInfo().getNickName());
@@ -942,6 +942,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         this.businesses = businesses;
         for (BriefSchoolBusiness business : businesses) {
             if (business.getBusinessId() == 1) {
+                if (!business.getUsing()){
+                    presenter.currentOrder();
+                }
                 heaterOrderSize = business.getPrepayOrder();
             } else if (business.getBusinessId() == 2) {
                 dispenserOrderSize = business.getPrepayOrder();

@@ -146,4 +146,9 @@ public interface IBathroomDataManager {
      */
     Observable<ApiResult<BooleanRespDTO>> notyfyExpired();
 
+
+    void setBookMethod(int bookMethod);
+
+    int getBookMethod();
+
 }

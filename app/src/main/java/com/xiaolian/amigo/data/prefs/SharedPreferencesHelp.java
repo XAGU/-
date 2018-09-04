@@ -92,6 +92,8 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
      */
     private static final String PREF_KEY_BATH_ROOM_PASSWORD = "PREF_KEY_BATH_ROOM_PASSWORD";
 
+    private static final String PREF_KEY_BOOK_METHOD ="PREF_KEY_BOOK_METHOD";
+
 
     private String tokenHolder;
     private String deviceTokenHolder;
@@ -579,6 +581,19 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     public Long getRoomId() {
         Long roomId = mSharedPreferences.getLong(PREF_KEY_ROOMID , -1L);
         return roomId ;
+    }
+
+    @Override
+    public void setBookMethod(int bookMethod) {
+        mSharedPreferences
+                .edit()
+                .putInt(PREF_KEY_BOOK_METHOD, bookMethod)
+                .apply();
+    }
+
+    @Override
+    public int getBookMethrod() {
+        return mSharedPreferences.getInt(PREF_KEY_BOOK_METHOD , -1);
     }
 
 

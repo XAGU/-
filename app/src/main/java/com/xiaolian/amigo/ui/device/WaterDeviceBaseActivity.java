@@ -645,6 +645,10 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
     }
 
+    public  void setDvTitleNull(){
+        tvDeviceTitle.setCompoundDrawables(null , null , null , null);
+    }
+
     /**
      * 滑动按钮文字 比如 热水澡显示为"开始洗澡" 饮水机显示为 "开始接水"
      *
@@ -1219,15 +1223,15 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         back2Main();
     }
 
-//    @Override
-//    public void onBackPressed() {
-//        back2Main();
-//    }
+    @Override
+    public void onBackPressed() {
+        back2Main();
+    }
 
 
     @Override
     public void finish() {
-        back2Main();
+//        back2Main();
         super.finish();
     }
 

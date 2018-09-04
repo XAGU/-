@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.device.dryer;
 
+import android.os.Bundle;
 import android.view.View;
 
 import com.xiaolian.amigo.R;
@@ -127,5 +128,12 @@ public class DryerActivity extends WaterDeviceBaseActivity<IDryerPresenter> impl
     @Override
     public void onBackPressed() {
         back2Main();
+    }
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setDvTitleNull();
     }
 }

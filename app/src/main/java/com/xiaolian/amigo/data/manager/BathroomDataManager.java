@@ -135,5 +135,15 @@ public class BathroomDataManager implements IBathroomDataManager {
         return bathroomApi.notyfyExpired();
     }
 
+    @Override
+    public void setBookMethod(int bookMethod) {
+        iSharedPreferencesHelp.setBookMethod(bookMethod);
+    }
+
+    @Override
+    public int getBookMethod() {
+        return iSharedPreferencesHelp.getBookMethrod();
+    }
+
 
 }
