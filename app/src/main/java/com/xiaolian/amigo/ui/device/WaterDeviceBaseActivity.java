@@ -259,7 +259,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     /**
      * 设备位置
      */
-    private String location;
+    protected String location;
     /**
      * 设备位置id
      */

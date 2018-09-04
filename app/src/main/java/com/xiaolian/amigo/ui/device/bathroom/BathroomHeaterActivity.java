@@ -1,7 +1,6 @@
 package com.xiaolian.amigo.ui.device.bathroom;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -138,9 +137,6 @@ public class BathroomHeaterActivity extends BathroomBaseActivity implements IBat
 
     private void initData() {
         tvDeviceTitle.setText(bathOrderRespDTO.getLocation());
-        Drawable drawable = getResources().getDrawable(R.drawable.white_down);
-//        setTvTitle(respDTO.getBuildingName() + respDTO.getFloors().get(0).getFloorName());
-        drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
         ivTopRightIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -163,8 +159,6 @@ public class BathroomHeaterActivity extends BathroomBaseActivity implements IBat
             }
         });
     }
-
-
 
     @Override
     public void goToOrderInfo(BathOrderCurrentRespDTO dto) {

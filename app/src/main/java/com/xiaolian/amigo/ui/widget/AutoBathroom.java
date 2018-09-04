@@ -810,7 +810,7 @@ public class AutoBathroom extends View {
         if (scaleX > 1.5 ){
             if (room.getStatus() != BATH_BOOKED) {
                 Rect rect = new Rect();
-                hintPaint.setTextSize(BathroomMin * xScale1 * zoom / 3 );
+                hintPaint.setTextSize(BathroomMin * xScale1 * zoom / 3.5f );
                 hintPaint.getTextBounds(text, 0, text.length(), rect);
 
                 //获取中间线

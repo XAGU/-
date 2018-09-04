@@ -504,10 +504,6 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         viewLine.setVisibility(View.VISIBLE);
         idContent.setVisibility(View.VISIBLE);
         rlError.setVisibility(View.GONE);
-        Drawable drawable = getResources().getDrawable(R.drawable.arrow_down);
-//        setTvTitle(respDTO.getBuildingName() + respDTO.getFloors().get(0).getFloorName());
-        drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-        tvTitle.setCompoundDrawablesRelative(null, null, drawable, null);
         if (respDTO.getMethods() != null && respDTO.getMethods().size() > 0) {
             for (Integer method : respDTO.getMethods()) {
                 if (method == 1) isPublicBathroom = true;

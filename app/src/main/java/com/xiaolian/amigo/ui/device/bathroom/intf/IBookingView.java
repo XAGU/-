@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.device.bathroom.intf;
 
 import com.xiaolian.amigo.data.network.model.bathroom.BathBookingRespDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.BathOrderCurrentRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathOrderRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathPreBookingRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BookingQueueProgressDTO;
@@ -81,5 +82,5 @@ public interface IBookingView extends IBaseView {
      */
     void showQueue(BookingQueueProgressDTO data);
 
-    void startOrderInfo(BathBookingRespDTO dto);
+    void startOrderInfo(BathOrderCurrentRespDTO dto);
 }

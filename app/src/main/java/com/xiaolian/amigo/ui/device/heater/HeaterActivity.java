@@ -47,7 +47,7 @@ public class HeaterActivity extends WaterDeviceBaseActivity<IHeaterPresenter> im
 
     @Override
     protected String setSubtitleString() {
-        return getString(R.string.change_dormitory);
+        return "";
     }
 
     @Override

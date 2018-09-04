@@ -66,4 +66,10 @@ public interface IBookingPresenter<V extends IBookingView> extends IBasePresente
      */
     void notifyExpired();
 
+    /**
+     * 查询订单状态
+     * @param bathOrderId
+     */
+    void queryTradeOrder(long bathOrderId);
+
 }
