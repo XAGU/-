@@ -984,8 +984,8 @@ public class AutoBathroom extends View {
                         moveYLength = -(getTranslateY() + (mDelHeight - marginTop));
                     }
                 } else  if ( getTranslateY() < 0){
-                    if (getTranslateY() - mDelHeight + marginTop < 0) {
-                        moveYLength = -(getTranslateY()  - mDelHeight - marginTop);
+                    if (getTranslateY() +(currentSeatBitmapHeight -getHeight() + mDelHeight + marginTop) < 0) {
+                        moveYLength = -(getTranslateY() +(currentSeatBitmapHeight -getHeight() + mDelHeight + marginTop));
                     }
                 }else{
                     moveYLength = -(mDelHeight - marginTop);
