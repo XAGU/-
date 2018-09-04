@@ -75,11 +75,11 @@ android {
 //            buildConfigField "String", "SERVER", "\"http://10.195.90.167:5081/\""
 //            buildConfigField "String", "SERVER", "\"http://10.195.90.167:5081/\""
 //            buildConfigField "String", "SERVER", "\"http://10.195.90.167:5081/\""
-            buildConfigField "String", "SERVER", "\"http://10.195.90.250:5081/\""
+            buildConfigField "String", "SERVER", "\"http://10.195.90.167:5081/\""
 //            buildConfigField "String", "SERVER", "\"http://192.168.43.213:5081/\""
 //            buildConfigField "String", "SERVER_BATHROOM", "\"http://192.168.43.213:5082/\""   //大帝的服务器
 //            buildConfigField "String", "SERVER_BATHROOM", "\"http://10.195.90.250:5082/\""
-            buildConfigField "String", "SERVER_BATHROOM", "\"http://10.195.90.250:5082/\""
+            buildConfigField "String", "SERVER_BATHROOM", "\"http://39.108.74.164:5082/\""
 //            buildConfigField "String", "SERVER", "\"http://10.195.90.130:5081/\""
 //            buildConfigField "String", "SERVER", "\"http://10.195.90.187:8081\""
 //            buildConfigField "String", "SERVER", "\"http://10.0.0.4:5081/\""

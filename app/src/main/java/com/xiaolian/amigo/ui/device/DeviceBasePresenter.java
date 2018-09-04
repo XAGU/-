@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.ParcelUuid;
 import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.util.ObjectsCompat;
 import android.text.TextUtils;
 
@@ -439,7 +440,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                                 handleDisConnectError("辛纳设备写入ENABLE_NOTIFICATION_VALUE失败 code:" + code1);
                                 return;
                             }
-                            getUpdateDeviceRateCommand(currentMacAddress);
+                            afterBleConnected();
                             bleDataManager.notify(currentMacAddress, UUID.fromString(supplier.getServiceUuid()),
                                     UUID.fromString(supplier.getWriteUuid()), data -> {
                                         if (null != data) {
@@ -576,7 +577,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                                                 }
 
                                             });
-                                    getUpdateDeviceRateCommand(currentMacAddress);
+                                    afterBleConnected();
                                 });
                     } else {
                         Log.d(TAG, "设置notify失败 thread " + Thread.currentThread().getName());
@@ -732,7 +733,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     }
 
     // 网络请求获取下发费率指令，若存在则直接先对设备进行费率更新
-    private void getUpdateDeviceRateCommand(String macAddress) {
+    @Override
+    public void onUpdateDeviceRate(@Nullable String macAddress) {
         UpdateDeviceRateCommandReqDTO reqDTO = new UpdateDeviceRateCommandReqDTO();
         reqDTO.setMacAddress(macAddress);
         addObserver(deviceDataManager.getUpdateDeviceRateCommand(reqDTO), new NetworkObserver<ApiResult<UpdateDeviceRateCommandRespDTO>>(false) {
@@ -742,8 +744,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     String updateDeviceRateCmd = result.getData().getUpdateDeviceRateCmd();
                     if (!TextUtils.isEmpty(updateDeviceRateCmd)) /*指令存在，需要进行费率更新*/{
                         onWrite(updateDeviceRateCmd);
-                    } else /*指令不存在，直接进行握手*/{
-                        afterBleConnected();
+                    } else /*指令不存在，直接进行预支付开阀使用*/{
+                        getMvpView().realPay();
                     }
                 }
             }
@@ -752,7 +754,6 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             public void onError(Throwable e) {
                 super.onError(e);
                 //异常情况处理，容错处理，进行握手
-                afterBleConnected();
             }
         }, Schedulers.io());
     }
@@ -776,6 +777,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         Log.i(TAG, "获取握手指令成功。command:" + connectCmd);
                         connectCmdLock.notifyAll();
                     }
+
                 } else {
                     if (result.getError().getCode() == BizError.DEVICE_BREAKDOWN.getCode()) {
                         reportError(getStep().getStep(), ConnectErrorType.SERVER_ERROR.getType(),
@@ -911,8 +913,14 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     }
 
     private void handleResult(ApiResult<CmdResultRespDTO> result) {
+
         Log.i(TAG, "主线程开始处理指令响应结果");
         if (null == result.getError()) {
+            if (result.getData() != null && result.getData().getMacAddress() != null
+                    && result.getData().getDeviceToken() != null) {
+                deviceDataManager.setDeviceToken(result.getData().getMacAddress(), result.getData().getDeviceToken());
+                Log.i(TAG, "收到deviceToken：" + result.getData().getDeviceToken());
+            }
             // 下一步执行指令
             String nextCommand = result.getData().getNextCommand();
             if (result.getData().getSrcCommandType() == null) {
@@ -928,13 +936,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             }
             switch (Command.getCommand(result.getData().getSrcCommandType())) {
                 case UPDATE_DEVICE_RATE:
-                    boolean isConnectCmd = (Command.getCommand(result.getData().getSrcCommandType())==Command.CONNECT);
-                    if (!TextUtils.isEmpty(nextCommand) && isConnectCmd) {
-                        connectCmd = nextCommand;
-                        onWrite(connectCmd);
-                    } else {
-                        afterBleConnected();
-                    }
+                    getMvpView().realPay();
                     break;
                 case CONNECT:
                     // 如果用户本人在三小时之内再次连接该设备，需要进入第二步账单结算页面

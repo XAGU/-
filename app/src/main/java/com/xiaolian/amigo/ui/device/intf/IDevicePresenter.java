@@ -62,6 +62,13 @@ public interface IDevicePresenter<V extends IBaseView> extends IBasePresenter<V>
     void onPay(@Nullable Double prepay, @Nullable Long bonusId);
 
     /**
+     * 更新费率
+     *
+     * @param macAddress  设备地址
+     */
+    void onUpdateDeviceRate(@Nullable String macAddress);
+
+    /**
      * 点击结束用水
      */
     void onClose();
