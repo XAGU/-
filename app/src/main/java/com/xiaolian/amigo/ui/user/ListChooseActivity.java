@@ -353,11 +353,11 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                                 } else if (Constant.COMPLETE_INFO_ACTIVITY_SRC.equals(activitySrc)) {
                                     presenter.updateUser(items.get(position).getId(), activitySrc);
                                 } else if (Constant.MAIN_ACTIVITY_BATHROOM_SRC.equals(activitySrc)) {
-                                    presenter.recordBath(items.get(position).getId(), bathType, null);
+                                    presenter.recordBath(items.get(position).getId(), bathType, null , items.get(position).getMac());
                                 } else if (Constant.ADD_BATHROOM_SRC.equals(activitySrc)) {
-                                    presenter.recordBath(items.get(position).getId(), bathType, null);
+                                    presenter.recordBath(items.get(position).getId(), bathType, null , items.get(position).getMac());
                                 } else if (Constant.HEATER_TO_BATHROOM.equals(activitySrc)) {
-                                    presenter.recordBath(items.get(position).getId(), bathType, null);
+                                    presenter.recordBath(items.get(position).getId(), bathType, null , items.get(position).getMac());
                                 } else {
 //                                presenter.bindDormitory(residenceBindId, items.get(position).getId(), isEditDormitory);
                                 }

@@ -726,6 +726,7 @@ public class AutoBathroom extends View {
                 int downDX = Math.abs(x - downX);
                 int downDY = Math.abs(y - downY);
                 if ((downDX > 10 || downDY > 10) ) {
+
                     autoScroll();
                 }
                 break;
@@ -789,6 +790,7 @@ public class AutoBathroom extends View {
         Paint paint = new Paint();
         paint.setStyle(Paint.Style.STROKE);
         paint.setColor(Color.BLACK);
+
         switch (room.getStatus()){
             case BATH_USING:
                 canvas.drawBitmap(usingBitmap, tempMatrix, paint);

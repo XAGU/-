@@ -14,7 +14,7 @@ public interface IBathroomHeartPresenter<V extends IBathroomHeartView>  extends 
      * 查询id
      * @param id
      */
-    void queryBathroomOrder(Long id , boolean isShowDialog);
+    void queryBathroomOrder(Long id , boolean isShowDialog , int time);
 
 
     void onPause() ;
