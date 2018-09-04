@@ -24,10 +24,6 @@ public interface IBookingView extends IBaseView {
      */
     void  bookingCancel() ;
 
-    /**
-     * 设置预约倒计时
-     */
-    void setBookingCountDownTime(String time);
 
     /**
      * 退出activity
@@ -45,10 +41,13 @@ public interface IBookingView extends IBaseView {
      */
     void showWaitLoading();
 
+
+    void showLoading(String text );
+
     /**
      * 取消等待动画
      */
-    void hideWaitLoading();
+    void hideWaitLoading(boolean isSuccess);
 
     /**
      * 等待服务器下发设备超时
@@ -74,11 +73,13 @@ public interface IBookingView extends IBaseView {
      * 无参预约倒计时
      * @param
      */
-    void appointMentTimeOut();
+    void appointMentTimeOut(boolean isServer);
 
     /**
      * 显示排队信息
      * @param data
      */
     void showQueue(BookingQueueProgressDTO data);
+
+    void startOrderInfo(BathBookingRespDTO dto);
 }

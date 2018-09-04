@@ -20,6 +20,7 @@ import com.xiaolian.amigo.di.MainActivityContext;
 import com.xiaolian.amigo.di.module.MainActivityModule;
 import com.xiaolian.amigo.ui.main.MainActivity;
 import com.xiaolian.amigo.ui.main.SplashActivity;
+import com.xiaolian.amigo.ui.notice.MessageReceiver;
 
 import dagger.Component;
 
@@ -31,4 +32,6 @@ public interface MainActivityComponent {
     void inject(MainActivity activity);
 
     void inject(SplashActivity activity);
+
+
 }

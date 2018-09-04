@@ -114,6 +114,7 @@
     <string name="prepay_money_colon">预付金额：</string>
     <string name="withdrawal">提现</string>
     <string name="network_available_error_tip">当前网络质量较差</string>
+    <string name="network_not_available">当前网络不可用，检查网络</string>
     <string name="please_enter_password_to_verify">请输入登录密码进行验证</string>
     <string name="manage_dormitory">新的地址</string>
     <string name="notice_center">通知中心</string>
@@ -275,7 +276,9 @@
     <string name="heater_notice_content">1.热水澡最低消费&lt;font color=&quot;#ff5555&quot;&gt;%1$d分钱&lt;/font&gt;，请确认需要用水再点击“开始洗澡”按钮；&lt;br&gt;&lt;br&gt;2.洗澡时手机不用带进浴室哦，可通过水阀门暂停用水。最终消费由水表根据用水量而定，与使用时间无关。</string>
     <string name="dispenser_notice_content">1.饮水机最低消费&lt;font color=&quot;#ff5555&quot;&gt;%1$d分钱&lt;/font&gt;，请确认需要用水再点击“开始接水”按钮；&lt;br&gt;&lt;br&gt;2.最终消费由水表根据用水量而定，与使用时间无关。</string>
     <string name="dryer_notice_content">1.吹风机最低消费&lt;font color=&quot;#ff5555&quot;&gt;%1$d分钱&lt;/font&gt;，请确认需要使用再点击“开始使用”按钮；&lt;br&gt;&lt;br&gt;2.最终消费根据使用时间而定。</string>
+    <string name="repair_evaluate_tips_content">每评价一次就可以获得&lt;font color=&quot;#ff5555&quot;&gt;%1$d&lt;/font&gt;积分，想成为积分土豪红包土豪就快来评价吧～</string>
     <string name="water_use_notice_title">温馨提示</string>
+    <string name="repair_evaluate_tips">评价彩蛋</string>
     <string name="hair_dryer">吹风机</string>
     <string name="used_time_colon">使用时长：</string>
     <string name="washer">洗衣机</string>
@@ -309,12 +312,12 @@
     <string name="booking_use_tip3">3.洗浴结束后，消费金额将以实际用水量为准，系统会自动找零；</string>
     <string name="booking_use_tip4">4.若未在预约时间内使用，系统将会自动退回预付金额。</string>
 
-    <string name="booking_user_common_tip">2.请确保你的可用余额在预约成功后，至少为页面中的提示金额，否则将无法使用设备。</string>
+    <string name="booking_user_common_tip">2.请确保你的可用余额在预约成功后，大于页面中的提示金额，否则将无法使用设备。</string>
     <string name="booking_user_empty">1.预约成功后，请在预留时间内任意前往一间空浴室，在设备上输入你的笑联手机号和浴室密码，即可使用；</string>
     <string name="booking_user_this">1.预约成功后，请在预留时间内前往指定的浴室，在设备上输入你的笑联手机号和浴室密码，即可使用；</string>
-    <string name="booking_queue_tip_1">1.我的排队序号为0时，系统将自动预约成功；</string>
+    <string name="booking_queue_tip_1">1.当前排位号为0时，系统将自动预约成功；</string>
     <string name="booking_queue_tip_2">2.预约成功后，请在预留时间内任意前往一间空浴室，在设备上输入你的笑联手机号和浴室密码，即可使用；</string>
-    <string name="booking_queue_tip_3">3.请确保你的可用余额在预约成功后，至少为页面中的提示金额，否则将无法使用设备。</string>
+    <string name="booking_queue_tip_3">3.请确保你的可用余额在预约成功后，大于页面中的提示金额，否则将无法使用设备。</string>
 
 
     <string name="buy_code_tip1">1.购买编码时，需要先预付10元，若有红包，可选择红包进行抵扣；</string>
@@ -338,9 +341,9 @@
     <string name="repurchase">重新预约</string>
     <string name="preBookTimeOut">预约超时</string>
     <string name="retry">重试</string>
-    <string name="preBathWithAnyEmptyBath">预约洗澡(任意空浴室)</string>
+    <string name="preBathWithAnyEmptyBath">预约洗澡<font >(任意空浴室)</font></string>
     <string name="InsufficientBalance">余额不足，请前往充值</string>
-    <string name="atLeastInTheWallet">请确保你的钱包中可用余额至少%1$s元</string>
+    <string name="atLeastInTheWallet">请确保你的钱包中可用余额大于%1$s元</string>
     <string name="tip">用水结束后，请务必滑动下方按钮，进行结算找零\n消费金额以实际用水量为准</string>
     <string name="tip_timeout">已失约，请重新预约</string>
     <string name="preBookingWait">预约排队</string>

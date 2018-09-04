@@ -48,7 +48,7 @@ public interface IBathroomDataManager {
     /**
      * 用户取消预约或者购买的编码
      */
-    Observable<ApiResult<BathOrderRespDTO>> cancel(@Body SimpleReqDTO reqDTO);
+    Observable<ApiResult<BooleanRespDTO>> cancel(@Body SimpleReqDTO reqDTO);
 
     /**
      * 获取订单列表
@@ -137,5 +137,13 @@ public interface IBathroomDataManager {
      * @return
      */
     Observable<ApiResult<BooleanRespDTO>> cancelQueue(@Body SimpleReqDTO reqDTO);
+
+
+
+    /**
+     * 提醒服务器超时
+     * @return
+     */
+    Observable<ApiResult<BooleanRespDTO>> notyfyExpired();
 
 }

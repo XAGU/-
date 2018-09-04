@@ -14,4 +14,9 @@ public interface IRepairEvaluationView extends IBaseView {
      * 结束页面
      */
     void finishView();
-}
+
+    /**
+     * 评价成功
+     */
+    void repairSuccess();
+    }

@@ -1,19 +1,11 @@
 package com.xiaolian.amigo.util;
 
 
-import org.greenrobot.eventbus.Subscribe;
-
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
-import rx.Observer;
-import rx.Scheduler;
-import rx.Subscriber;
 import rx.Subscription;
-import rx.android.plugins.RxAndroidSchedulersHook;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action;
-import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;

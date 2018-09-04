@@ -346,6 +346,8 @@ public abstract class BaseActivity extends SwipeBackActivity
         }
     }
 
+
+
     private void showSuccessToast(String message) {
         if (toast == null) {
             toast = new Toast(getApplicationContext());

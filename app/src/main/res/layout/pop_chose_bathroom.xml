@@ -20,15 +20,16 @@
     </android.support.v7.widget.RecyclerView>
 
     <Button
-        android:enabled="true"
+        android:enabled="false"
         android:id="@+id/pre_bathroom"
         android:textAllCaps="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/corner_redsolid_button"
+        android:background="@drawable/thirty_red_bg"
         android:gravity="center"
         android:textColor="@color/white"
         android:textSize="14sp"
+        android:visibility="visible"
         android:textStyle="bold"
         android:text="确认预约"
         tools:text="预约洗澡（任意空浴室）"

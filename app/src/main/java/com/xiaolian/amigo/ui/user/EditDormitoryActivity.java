@@ -3,6 +3,7 @@ package com.xiaolian.amigo.ui.user;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
@@ -43,6 +44,7 @@ import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_SUPPLIER_ID;
 
 public class EditDormitoryActivity extends UserBaseListActivity implements IEditDormitoryView {
 
+    private static final String TAG = EditDormitoryActivity.class.getSimpleName() ;
     private static final int REQUEST_CODE_EDIT_DORMITORY = 0x1020;
     public static final String INTENT_KEY_LAST_DORMITORY = "intent_key_last_dormitory";
     @Inject
@@ -83,13 +85,13 @@ public class EditDormitoryActivity extends UserBaseListActivity implements IEdit
 
     @Override
     public void addMore(List<EditDormitoryAdaptor.UserResidenceWrapper> userResidenceWrappers) {
-//        if (refreshFlag) {
-//            refreshFlag = false;
-//            items.clear();
-//        }
-        items.clear();
-        items.addAll(userResidenceWrappers);
-        adaptor.notifyDataSetChanged();
+        if (this.items != null) {
+            this.items.clear();
+            this.items.addAll(userResidenceWrappers);
+            adaptor.notifyDataSetChanged();
+        }else{
+
+        }
     }
 
     @Override
@@ -134,10 +136,12 @@ public class EditDormitoryActivity extends UserBaseListActivity implements IEdit
 
     @Override
     public void startShower(UserResidenceInListDTO dto) {
+
         startActivity(new Intent(this , HeaterActivity.class)
                 .putExtra(INTENT_KEY_LOCATION ,dto.getResidenceName())
                 .putExtra(INTENT_KEY_MAC_ADDRESS ,dto.getMacAddress())
                 .putExtra(INTENT_KEY_SUPPLIER_ID , dto.getSupplierId()));
+        Log.e(TAG, "startShower: " + dto.getMacAddress() );
         this.finish();
     }
 
@@ -185,13 +189,6 @@ public class EditDormitoryActivity extends UserBaseListActivity implements IEdit
         }
     }
 
-//    @Deprecated
-//    @Override
-//    public void deleteBathroom(Long  defaultId) {
-//        presenter.saveDefaultResidenceId(defaultId);
-//        onRefresh();
-//    }
-
     @Override
     protected void onRefresh() {
         if (!needRefresh) {
@@ -200,15 +197,12 @@ public class EditDormitoryActivity extends UserBaseListActivity implements IEdit
             return;
         }
         refreshFlag = true;
-        page = Constant.PAGE_START_NUM;
-//        presenter.queryDormitoryList(page, Constant.PAGE_SIZE);
         presenter.queryBathList();
     }
 
     @Override
     public void onLoadMore() {
-//        presenter.queryDormitoryList(page, Constant.PAGE_SIZE);
-        presenter.queryBathList();
+        setLoadMoreComplete();
     }
 
     @Override

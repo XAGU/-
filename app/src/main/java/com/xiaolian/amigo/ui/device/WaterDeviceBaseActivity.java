@@ -68,6 +68,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     public static final String INTENT_HOME_PAGE_JUMP = "intent_home_page_jump";
     public static final String INTENT_RECOVER = "intent_recover";
     public static final String INTENT_PREPAY_INFO = "intent_prepay_info";
+    public static final String CONN_TYPE = "CONN_TYPE" ;  // 连接方式， 是否是扫一扫， 是为true; 否 为false
 
     private static final String TAG = WaterDeviceBaseActivity.class.getSimpleName();
     /**
@@ -262,7 +263,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     /**
      * 设备位置id
      */
-    private Long residenceId;
+    public  Long residenceId;
     private boolean homePageJump;
     /**
      * 供应商id
@@ -272,6 +273,8 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
      * 标记是否为恢复用水
      */
     private boolean recorvery;
+
+
     private CountDownTimer timer;
     private volatile boolean userWater = false;
     private boolean needRecharge;
@@ -279,6 +282,8 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     private DecimalFormat df = new DecimalFormat("###.##");
     private OrderPreInfoDTO orderPreInfo;
     protected boolean bleError = false;
+
+    private  boolean isScan ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -289,13 +294,18 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         initPresenter();
         initView();
 
-
         // 连接蓝牙设备
         presenter.setHomePageJump(homePageJump);
         if (recorvery || !homePageJump) {
             presenter.setStep(TradeStep.SETTLE);
         }
-        presenter.onPreConnect(macAddress);
+        if (isScan){
+            android.util.Log.e(TAG, "onCreate: " );
+            presenter.onPreConnect(macAddress , true);
+        }else {
+            android.util.Log.e(TAG, "onCreate: " );
+            presenter.onPreConnect(macAddress);
+        }
         if (prepay == null) {
             presenter.queryPrepayOption(deviceType);
         } else {
@@ -312,13 +322,16 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     protected void setUp() {
         super.setUp();
         if (getIntent() != null) {
+
             macAddress = getIntent().getStringExtra(MainActivity.INTENT_KEY_MAC_ADDRESS);
+            android.util.Log.e(TAG, "setUp: " + getIntent().getStringExtra(MainActivity.INTENT_KEY_MAC_ADDRESS) );
             deviceType = getIntent().getIntExtra(MainActivity.INTENT_KEY_DEVICE_TYPE, 1);
             location = getIntent().getStringExtra(MainActivity.INTENT_KEY_LOCATION);
             residenceId = getIntent().getLongExtra(MainActivity.INTENT_KEY_RESIDENCE_ID, -1L);
             supplierId = getIntent().getLongExtra(MainActivity.INTENT_KEY_SUPPLIER_ID, -1L);
             homePageJump = getIntent().getBooleanExtra(INTENT_HOME_PAGE_JUMP, true);
             recorvery = getIntent().getBooleanExtra(MainActivity.INTENT_KEY_RECOVERY, false);
+            isScan = getIntent().getBooleanExtra(CONN_TYPE , false);
             orderPreInfo = getIntent().getParcelableExtra(INTENT_PREPAY_INFO);
             if (orderPreInfo != null) {
                 price = orderPreInfo.getPrice();
@@ -341,6 +354,8 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                 }
             }
         }
+
+        android.util.Log.e(TAG, "setUp: " + macAddress );
     }
 
 
@@ -1170,7 +1185,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
     public void changeDormitory() {
         // 只有在step为SETILE时才不能更换宿舍
-        if (!recorvery && presenter.getStep() != TradeStep.SETTLE) {
+            if (!recorvery && presenter.getStep() != TradeStep.SETTLE) {   //  residenceId  != -1L
             startActivityForResult(
                     new Intent(this, EditDormitoryActivity.class)
                             .putExtra(EditDormitoryActivity.INTENT_KEY_LAST_DORMITORY, residenceId),

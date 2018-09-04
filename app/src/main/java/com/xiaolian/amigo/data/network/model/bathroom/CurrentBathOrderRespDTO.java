@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class CurrentBathOrderRespDTO {
 
-    private boolean existOrder ;   // 是否存在上一订单
 
-    private Integer status ;   // 转态  2 等待洗浴 5 预约超时 6正在洗浴
+    private Integer status ;   //1 空闲 2 正在排队 3 等待洗浴 4 正在洗浴
+
 }

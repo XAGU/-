@@ -51,7 +51,7 @@ public interface IBathroomApi {
      * 用户取消预约或者购买的编码
      */
     @POST("bath/trade/booking/cancel")
-    Observable<ApiResult<BathOrderRespDTO>> cancel(@Body SimpleReqDTO reqDTO);
+    Observable<ApiResult<BooleanRespDTO>> cancel(@Body SimpleReqDTO reqDTO);
 
     /**
      * 检查当前用户是否有已经预约或者购买了编码的
@@ -166,4 +166,12 @@ public interface IBathroomApi {
      */
     @POST("bath/trade/queue/cancel")
     Observable<ApiResult<BooleanRespDTO>> cancelQueue(@Body SimpleReqDTO reqDTO);
+
+
+    /**
+     * 提醒服务器超时
+     * @return
+     */
+    @POST("bath/trade/booking/notify/expired")
+    Observable<ApiResult<BooleanRespDTO>> notyfyExpired();
 }

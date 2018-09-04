@@ -19,8 +19,8 @@ android {
         applicationId "com.xiaolian.amigo"
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
-        versionCode 20
-        versionName "1.1.51"
+        versionCode 22
+        versionName "1.1.61"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
@@ -31,6 +31,8 @@ android {
             abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a' ,'x86'
         }
     }
+
+    
     signingConfigs {
         config {
             keyAlias 'android_amigo'
@@ -65,26 +67,47 @@ android {
     flavorDimensions "default"
     productFlavors {
         dev {
-            // 测试
+//            // 测试
             applicationId "com.xiaolian.amigo_dev"
             resValue "string", "app_name", "笑联测试版"
-                
+
+
+            //  测试连接正式服
+
+//            buildConfigField "String", "SERVER", "\"https://api.xiaolian365.com/c/\""
+//            buildConfigField "String", "SERVER_BATHROOM", "\"https://api.xiaolian365.com/b/\""
+//            buildConfigField "String", "H5_SERVER", "\"https://h5.xiaolian365.com/c\""
+
+
+
+            //  连接测试服
+            buildConfigField "String", "SERVER", "\"http://47.107.45.109:5081/\"" //qa5
+//            buildConfigField "String", "SERVER_BATHROOM", "\"http://47.107.45.109:5082/\"" //qa5
+            buildConfigField "String", "SERVER_BATHROOM", "\"http://10.195.90.250:5082/\"" //qa5
+            buildConfigField "String", "H5_SERVER", "\"http://47.107.45.109:5097/c\"" //qa5
+
+
+
             buildConfigField "String", "ENVIRONMENT", '"dev"'
 //            buildConfigField "String", "SERVER", "\"http://116.62.236.67:5081/\""
 //            buildConfigField "String", "SERVER", "\"http://39.108.97.229:5081/\""
 //            buildConfigField "String", "SERVER", "\"http://10.195.90.167:5081/\""
 //            buildConfigField "String", "SERVER", "\"http://10.195.90.167:5081/\""
 //            buildConfigField "String", "SERVER", "\"http://10.195.90.167:5081/\""
-            buildConfigField "String", "SERVER", "\"http://10.195.90.167:5081/\""
+//            buildConfigField "String", "SERVER", "\"http://47.107.45.109:5081/\"" //qa5
+//            buildConfigField "String", "SERVER", "\"http://39.108.74.164:5081/\""
 //            buildConfigField "String", "SERVER", "\"http://192.168.43.213:5081/\""
 //            buildConfigField "String", "SERVER_BATHROOM", "\"http://192.168.43.213:5082/\""   //大帝的服务器
 //            buildConfigField "String", "SERVER_BATHROOM", "\"http://10.195.90.250:5082/\""
-            buildConfigField "String", "SERVER_BATHROOM", "\"http://39.108.74.164:5082/\""
+//            buildConfigField "String", "SERVER", "\"http://47.107.45.109:5081/\"" //qa5
+//            buildConfigField "String", "SERVER_BATHROOM", "\"http://47.107.45.109:5082/\"" //qa5
+//            buildConfigField "String", "SERVER_BATHROOM", "\"http://39.108.74.164:5082/\""
 //            buildConfigField "String", "SERVER", "\"http://10.195.90.130:5081/\""
 //            buildConfigField "String", "SERVER", "\"http://10.195.90.187:8081\""
 //            buildConfigField "String", "SERVER", "\"http://10.0.0.4:5081/\""
 //            buildConfigField "String", "H5_SERVER", "\"http://116.62.236.67:5097/c\""
-            buildConfigField "String", "H5_SERVER", "\"http://39.108.97.229:5097/c\""
+//            buildConfigField "String", "H5_SERVER", "\"http://47.107.45.109:5097/c\"" //qa5
+//            buildConfigField "String", "H5_SERVER", "\"http://39.108.74.164:5097/c\""
 //            buildConfigField "String", "H5_SERVER", "\"http://10.195.90.130:5097/c\""
 //            buildConfigField "String", "H5_SERVER", "\"http://10.0.0.5:5000/c\""
             buildConfigField "String", "FILE_PREFIX", "\"https://s.xiaolian365.com/\""
@@ -96,12 +119,13 @@ android {
                                     XG_ACCESS_KEY : "A37FU75FK6KC",
             ]
 
-            // 预发
+//            // 预发
 //            applicationId "com.xiaolian.amigo_pre"
 //            resValue "string", "app_name", "笑联预发版"
 //            buildConfigField "String", "ENVIRONMENT", '"dev"'
+//            buildConfigField "String", "SERVER_BATHROOM", "\"http://47.106.62.186/b/\""
 //            buildConfigField "String", "SERVER", "\"http://47.106.62.186/c/\""
-//            buildConfigField "String", "H5_SERVER", "\"http://47.106.62.186/c\""
+//            buildConfigField "String", "H5_SERVER", "\"http://47.106.62.186:5097/c\""
 //            buildConfigField "String", "FILE_PREFIX", "\"https://s.xiaolian365.com/\""
 //            buildConfigField "String", "TRADE_PREFIX", "\"/c/trade\""
 //            // 修改 AndroidManifest.xml 里渠道变量
@@ -117,11 +141,16 @@ android {
             resValue "string", "app_name", "笑联"
 
             buildConfigField "String", "ENVIRONMENT", '"prod"'
-//            buildConfigField "String", "SERVER", "\"https://c.api.xiaolian365.com/\""
-//            buildConfigField "String", "H5_SERVER", "\"https://c.h5.xiaolian365.com/\""
-//            buildConfigField "String", "FILE_PREFIX", "\"https://s.xiaolian365.com/\""
+
+            //  测试
+//            buildConfigField "String", "SERVER", "\"http://47.107.45.109:5081/\"" //qa5
+////            buildConfigField "String", "SERVER_BATHROOM", "\"http://47.107.45.109:5082/\"" //qa5
+//            buildConfigField "String", "SERVER_BATHROOM", "\"http://10.195.90.250:5082/\"" //qa5
+//            buildConfigField "String", "H5_SERVER", "\"http://47.107.45.109:5097/c\"" //qa5
+
 
             buildConfigField "String", "SERVER", "\"https://api.xiaolian365.com/c/\""
+            buildConfigField "String", "SERVER_BATHROOM", "\"https://api.xiaolian365.com/b/\""
             buildConfigField "String", "H5_SERVER", "\"https://h5.xiaolian365.com/c\""
             buildConfigField "String", "FILE_PREFIX", "\"https://s.xiaolian365.com/\""
             buildConfigField "String", "TRADE_PREFIX", "\"/c/trade\""

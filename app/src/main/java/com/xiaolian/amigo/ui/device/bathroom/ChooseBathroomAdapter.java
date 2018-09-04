@@ -1,7 +1,6 @@
 package com.xiaolian.amigo.ui.device.bathroom;
 
 import android.content.Context;
-import android.support.v4.util.ObjectsCompat;
 import android.view.View;
 
 import com.xiaolian.amigo.R;
@@ -11,13 +10,9 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.List;
 
-import lombok.Data;
-
 import static com.xiaolian.amigo.util.Constant.AVAILABLE;
 import static com.xiaolian.amigo.util.Constant.BATH_USING;
 import static com.xiaolian.amigo.util.Constant.ERROR;
-import static com.xiaolian.amigo.util.Constant.NONE;
-import static com.xiaolian.amigo.util.Constant.USING;
 
 /**
  * @author zcd
@@ -33,8 +28,6 @@ public class ChooseBathroomAdapter extends CommonAdapter<ChooseBathroomAdapter.B
         this.listener = listener;
     }
 
-
-
     @Override
     protected void convert(ViewHolder holder, BathroomWrapper itemWrapper, int position) {
         holder.getConvertView().setOnClickListener(new View.OnClickListener() {
@@ -45,10 +38,7 @@ public class ChooseBathroomAdapter extends CommonAdapter<ChooseBathroomAdapter.B
                 }
             }
         });
-        if (itemWrapper.getStatus() == NONE) {
-            holder.getConvertView().setVisibility(View.GONE);
-            return;
-        }
+
         holder.getConvertView().setVisibility(View.VISIBLE);
         if (itemWrapper.isSelected()) {
             holder.getView(R.id.tv_content).setVisibility(View.VISIBLE);
@@ -91,7 +81,7 @@ public class ChooseBathroomAdapter extends CommonAdapter<ChooseBathroomAdapter.B
         isScaled = scaled;
     }
 
-    @Data
+
     public static final class BathroomWrapper {
         private Long id;
         private String deviceNo;
@@ -102,6 +92,38 @@ public class ChooseBathroomAdapter extends CommonAdapter<ChooseBathroomAdapter.B
         public BathroomWrapper(String name, int status) {
             this.deviceNo = name;
             this.status = status;
+        }
+
+        public Long getId() {
+            return id;
+        }
+
+        public void setId(Long id) {
+            this.id = id;
+        }
+
+        public String getDeviceNo() {
+            return deviceNo;
+        }
+
+        public void setDeviceNo(String deviceNo) {
+            this.deviceNo = deviceNo;
+        }
+
+        public int getStatus() {
+            return status;
+        }
+
+        public void setStatus(int status) {
+            this.status = status;
+        }
+
+        public boolean isSelected() {
+            return selected;
+        }
+
+        public void setSelected(boolean selected) {
+            this.selected = selected;
         }
     }
 

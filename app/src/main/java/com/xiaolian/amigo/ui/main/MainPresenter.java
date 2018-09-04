@@ -395,11 +395,8 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
         mainDataManager.setPushToken(pushToken);
     }
 
-
-
     @Override
     public void routeHeaterOrBathroom() {
-        // 测试
         addObserver(mainDataManager.route(), new NetworkObserver<ApiResult<BathRouteRespDTO>>() {
 
             @Override
@@ -408,22 +405,32 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
                     if (!result.getData().isExistHistory()) {
                         //没有设置过洗澡地址，直接跳转到CompleteInfoActivity页面进行配置
                             getMvpView().gotoCompleteInfoActivity(result.getData());
+//                        getMvpView().startToBathroomShower();
                     }else {
                         saveRoomInfo(result.getData().getResidenceId());
                         if (result.getData().isIsPubBath()) {
                             //设置了洗澡地址并且是公共浴室，判断是否设置了用户性别和宿舍信息
 //                            没有设置用户性别
-
                             boolean isSetSex =  (userDataManager.getUser().getSex()!=null && (userDataManager.getUser().getSex()==1 || userDataManager.getUser().getSex()==2));
                             boolean isSetDormitoryAddress = !TextUtils.isEmpty(userDataManager.getUser().getResidenceName());
+
                             if (!isSetSex || !isSetDormitoryAddress) /*没有设置性别或是宿舍信息*/{
                                 getMvpView().gotoCompleteInfoActivity(result.getData());
                             } else  {
                                 getMvpView().routeToBathroomShower(result.getData());
                             }
                         } else {
-                            getMvpView().routeToRoomShower(result.getData());
-//                        getMvpView().routeToBathroomShower();
+
+                            boolean isSetSex =  (userDataManager.getUser().getSex()!=null && (userDataManager.getUser().getSex()==1 || userDataManager.getUser().getSex()==2));
+                            boolean isSetDormitoryAddress = !TextUtils.isEmpty(userDataManager.getUser().getResidenceName());
+
+                            if (!isSetSex || !isSetDormitoryAddress) /*没有设置性别或是宿舍信息*/{
+                                getMvpView().gotoCompleteInfoActivity(result.getData());
+                            } else  {
+                                getMvpView().routeToRoomShower(result.getData());
+                            }
+
+//
                         }
                     }
                 } else {
@@ -435,7 +442,7 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
 
     @Override
     public void saveRoomInfo(Long residenceId) {
-        getUserInfo().setRoomId(residenceId);
+        userDataManager.setRoomId(residenceId);
     }
 
     @Override

@@ -94,6 +94,7 @@ public class RepairAdaptor extends RecyclerView.Adapter<RepairAdaptor.ViewHolder
                 intent.putExtra(RepairEvaluationActivity.INTENT_KEY_REPAIR_EVALUATION_DEVICE_LOCATION, wrapper.location);
                 intent.putExtra(RepairEvaluationActivity.INTENT_KEY_REPAIR_EVALUATION_DEVICE_TYPE, wrapper.deviceType);
                 intent.putExtra(RepairEvaluationActivity.INTENT_KEY_REPAIR_EVALUATION_TIME, wrapper.time);
+                intent.putExtra(RepairEvaluationActivity.INTENT_KEY_REPAIR_CREDITS, wrapper.credits);
                 context.startActivity(intent);
             });
         } else {
@@ -181,6 +182,12 @@ public class RepairAdaptor extends RecyclerView.Adapter<RepairAdaptor.ViewHolder
          */
         String location;
 
+        /**
+         *
+         * @param 评价积分
+         */
+        Integer credits;
+
         public RepairWrapper(Repair repair) {
             String location = repair.getLocation() == null ? "未知位置" : repair.getLocation();
             this.device = Device.getDevice(repair.getDeviceType()).getDesc() + Constant.CHINEASE_COLON + location;
@@ -197,6 +204,7 @@ public class RepairAdaptor extends RecyclerView.Adapter<RepairAdaptor.ViewHolder
             this.id = repair.getId();
             this.deviceType = repair.getDeviceType();
             this.location = repair.getLocation();
+            this.credits = repair.getCredits();
         }
     }
 }

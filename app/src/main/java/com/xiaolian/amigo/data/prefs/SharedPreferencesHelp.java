@@ -42,6 +42,8 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     private static final String PREF_KEY_MOBILE = "PREF_KEY_MOBILE";
     private static final String PREF_KEY_PICTURE_URL = "PREF_KEY_PICTURE_URL";
     private static final String PREF_KEY_BUILD_ID = "PREF_KEY_BUILD_ID";
+    private static final String PREF_KEY_SEX = "PREF_KEY_SEX" ;
+    private static final String PREF_KEY_ROOMID = "PREF_KEY_ROOMID" ;
     private static final String PREF_CMD_CONNECT_PREFIX = "PREF_CMD_CONNECT_";
     private static final String PREF_CMD_CLOSE_PREFIX = "PREF_CMD_CLOSE_";
     private static final String PREF_ORDER_ID_PREFIX = "PREF_ORDER_ID_PREFIX";
@@ -71,6 +73,7 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     private static final String PREF_ALERT_HEATER = "PREF_ALERT_HEATER";
     private static final String PREF_ALERT_DISPENSER = "PREF_ALERT_DISPENSER";
     private static final String PREF_ALERT_DRYER = "PREF_ALERT_DRYER";
+    private static final String PREF_ALERT_REPAIR = "PREF_ALERT_REPAIR";
     /************* 记住手机号 ******************/
     private static final String PREF_REMEMBER_MOBILE = "PREF_REMEMBER_MOBILE";
     /**
@@ -168,16 +171,18 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
             userHolder = new User();
         }
         userHolder.setId(mSharedPreferences.getLong(PREF_KEY_UID, -1));
-        userHolder.setResidenceId(mSharedPreferences.getLong(PREF_KEY_RESIDENCE_ID, -1));
-        userHolder.setResidenceName(mSharedPreferences.getString(PREF_KEY_RESIDENCE_NAME, null));
+        userHolder.setResidenceId(mSharedPreferences.getLong(PREF_KEY_RESIDENCE_ID, -1L));
+        userHolder.setResidenceName(mSharedPreferences.getString(PREF_KEY_RESIDENCE_NAME, ""));
         userHolder.setMacAddress(mSharedPreferences.getString(PREF_KEY_MAC_ADDRESS, null));
-        userHolder.setSchoolId(mSharedPreferences.getLong(PREF_KEY_SCHOOL_ID, -1));
+        userHolder.setSchoolId(mSharedPreferences.getLong(PREF_KEY_SCHOOL_ID, -1L));
         userHolder.setSchoolName(mSharedPreferences.getString(PREF_KEY_SCHOOL_NAME, null));
         userHolder.setNickName(mSharedPreferences.getString(PREF_KEY_NICKNAME, null));
         userHolder.setMobile(mSharedPreferences.getString(PREF_KEY_MOBILE, null));
         userHolder.setPictureUrl(mSharedPreferences.getString(PREF_KEY_PICTURE_URL, null));
-        userHolder.setCreateTime(mSharedPreferences.getLong(PREF_KEY_USER_CREATE_TIME, 0));
-        userHolder.setBuildingId(mSharedPreferences.getLong(PREF_KEY_BUILD_ID, -1));
+        userHolder.setCreateTime(mSharedPreferences.getLong(PREF_KEY_USER_CREATE_TIME, 0L));
+        userHolder.setBuildingId(mSharedPreferences.getLong(PREF_KEY_BUILD_ID, -1L));
+        userHolder.setSex(mSharedPreferences.getInt(PREF_KEY_SEX , -1));
+        userHolder.setRoomId(mSharedPreferences.getLong(PREF_KEY_ROOMID ,-1l));
         return userHolder;
     }
 
@@ -223,7 +228,16 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
             mSharedPreferences.edit().putLong(PREF_KEY_BUILD_ID,
                     user.getBuildingId()).apply();
         }
+
+        if (null != user.getSex()){
+            mSharedPreferences.edit().putInt(PREF_KEY_SEX,
+                    user.getSex()).apply();
+        }
+
     }
+
+
+
 
     @Override
     public boolean isShowUrgencyNotify() {
@@ -357,6 +371,16 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     public void setLastRepairTime(Long time) {
         Long id = getUserInfo().getId();
         mUnclearSharedPreferences.edit().putLong(PREF_LAST_VIEW_REPAIR_PREFIX + id, time).apply();
+    }
+
+    @Override
+    public void setRepairGuide(Integer guideTime) {
+        mUnclearSharedPreferences.edit().putInt(PREF_ALERT_REPAIR, guideTime).apply();
+    }
+
+    @Override
+    public Integer getRepairGuide() {
+        return mUnclearSharedPreferences.getInt(PREF_ALERT_REPAIR, 0);
     }
 
     @Override
@@ -542,6 +566,19 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     @Override
     public String getBathroomPassword() {
         return mSharedPreferences.getString(PREF_KEY_BATH_ROOM_PASSWORD ,"");
+    }
+
+    @Override
+    public void setRoomId(Long id) {
+        if (id != null){
+            mSharedPreferences.edit().putLong(PREF_KEY_ROOMID , id).apply();
+        }
+    }
+
+    @Override
+    public Long getRoomId() {
+        Long roomId = mSharedPreferences.getLong(PREF_KEY_ROOMID , -1L);
+        return roomId ;
     }
 
 

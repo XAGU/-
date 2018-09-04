@@ -15,6 +15,10 @@ public interface IBookingPresenter<V extends IBookingView> extends IBasePresente
      */
     void cancel(long id);
 
+    void onPause();
+
+
+    void onResume();
 
 
     /**
@@ -27,7 +31,7 @@ public interface IBookingPresenter<V extends IBookingView> extends IBasePresente
      * 查询特定订单的状态
      * @param bathOrderId
      */
-    void query(String bathOrderId , boolean isToUsing , int time);
+    void query(String bathOrderId , boolean isToUsing , int time , boolean isShowDialog);
 
 
 
@@ -37,11 +41,6 @@ public interface IBookingPresenter<V extends IBookingView> extends IBasePresente
      */
     void unLock(String deviceNo);
 
-    /**
-     * 预约
-     * @param device
-     */
-    void booking(String device);
 
     /**
      * 根据过期时间倒计时
@@ -49,16 +48,22 @@ public interface IBookingPresenter<V extends IBookingView> extends IBasePresente
     void countDownexpiredTime(long expiredTime );
 
 
+    void cancleDownExpiredTime();
     /**
      * 查询排队状态
      * @param id
      */
-    void queryQueueId(long id);
+    void queryQueueId(long id  , boolean isShowDialog);
 
     /**
      * 取消预约排队
      * @param id
      */
     void cancelQueue(long id);
+
+    /**
+     * 提醒服务器预约超时
+     */
+    void notifyExpired();
 
 }

@@ -117,6 +117,7 @@ public final class Constant {
      */
     public static final String BUNDLE_ID = "id";
 
+
     /**
      * 非法id
      */
@@ -137,6 +138,8 @@ public final class Constant {
     public static final String COMPLETE_INFO_ACTIVITY_SRC = "complete_info"; //新增编辑个人信息方式
     public static final String MAIN_ACTIVITY_BATHROOM_SRC = "main_activity_bathroom_src";  //  公共浴室方式
     public static final String ADD_BATHROOM_SRC = "add_bathroom_src" ;  //  新增公共浴室
+
+    public static final String HEATER_TO_BATHROOM = "CHOSE_TO_BATHROOM" ;  // 从热水澡进公共浴室
 
 
     /**
@@ -248,23 +251,26 @@ public final class Constant {
     /**
      * 上一笔订单状态
      */
-    public static final int WAIT_STATUS = 2 ;  // 等待洗浴
+    public static final int WAIT_STATUS = 2 ;  // 正在排队
 
-    public static final int TIMEOUT_STATUS = 5 ;  // 预约超时
+    public static final int TIMEOUT_STATUS = 3 ;  // 等待洗浴
 
-    public static final int USING_STATUS = 6 ; //  正在洗浴
+    public static final int USING_STATUS = 4 ; //  正在洗浴
 
 
     /**
      * 预览图公共浴室状态
      */
-    public static final int NONE =  0 ;   // 没有
 
     public static final int AVAILABLE =  1 ;   //  可用
 
     public static final int BATH_USING = 2 ;   // 正在使用
 
-    public static final int ERROR = 3 ;    //  报错
+    public static final int ERROR = 3 ;    //  异常
+
+    public static final int BATH_BOOKED = 4 ; // 已预约
+
+    public static final int BATH_CHOSE = 5 ; // 已选择
 
 
     /**
@@ -309,4 +315,16 @@ public final class Constant {
     public static final int ORDER_USING = 1 ;  // 使用中
 
     public static final int ORDER_SETTLE = 2 ;   //  已结算
+
+
+    /**
+     * color  拍照渐变线
+     */
+
+    public static final int COLOR_WASHING = 1 ;  // 洗衣机
+
+    public static final int COLOR_SCAN = 2 ; // 扫一扫
+
+
+
 }

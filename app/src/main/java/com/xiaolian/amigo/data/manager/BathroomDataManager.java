@@ -61,7 +61,7 @@ public class BathroomDataManager implements IBathroomDataManager {
 
 
     @Override
-    public Observable<ApiResult<BathOrderRespDTO>> cancel(SimpleReqDTO reqDTO) {
+    public Observable<ApiResult<BooleanRespDTO>> cancel(SimpleReqDTO reqDTO) {
         return bathroomApi.cancel(reqDTO);
     }
 
@@ -128,6 +128,11 @@ public class BathroomDataManager implements IBathroomDataManager {
     @Override
     public Observable<ApiResult<BooleanRespDTO>> cancelQueue(SimpleReqDTO reqDTO) {
         return bathroomApi.cancelQueue(reqDTO);
+    }
+
+    @Override
+    public Observable<ApiResult<BooleanRespDTO>> notyfyExpired() {
+        return bathroomApi.notyfyExpired();
     }
 
 

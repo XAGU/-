@@ -19,7 +19,7 @@ public class BookingRecordAdapter extends MultiItemTypeAdapter<BookingRecordAdap
         super(context, datas);
     }
 
-    @Data
+
     public static final class BookingRecordWrapper {
 
         /**
@@ -42,5 +42,69 @@ public class BookingRecordAdapter extends MultiItemTypeAdapter<BookingRecordAdap
          */
         private Integer bookingTime;   // 预约次数
         private Integer missedBookingTime;  // 失约次数
+
+        public boolean isRecord() {
+            return record;
+        }
+
+        public void setRecord(boolean record) {
+            this.record = record;
+        }
+
+        public QueryBathOrderListRespDTO.OrdersBean getOrder() {
+            return order;
+        }
+
+        public void setOrder(QueryBathOrderListRespDTO.OrdersBean order) {
+            this.order = order;
+        }
+
+        public String getAmount() {
+            return amount;
+        }
+
+        public void setAmount(String amount) {
+            this.amount = amount;
+        }
+
+        public String getLeftBottomText() {
+            return leftBottomText;
+        }
+
+        public void setLeftBottomText(String leftBottomText) {
+            this.leftBottomText = leftBottomText;
+        }
+
+        public Long getCreateTime() {
+            return createTime;
+        }
+
+        public void setCreateTime(Long createTime) {
+            this.createTime = createTime;
+        }
+
+        public String getRightText() {
+            return rightText;
+        }
+
+        public void setRightText(String rightText) {
+            this.rightText = rightText;
+        }
+
+        public Integer getBookingTime() {
+            return bookingTime;
+        }
+
+        public void setBookingTime(Integer bookingTime) {
+            this.bookingTime = bookingTime;
+        }
+
+        public Integer getMissedBookingTime() {
+            return missedBookingTime;
+        }
+
+        public void setMissedBookingTime(Integer missedBookingTime) {
+            this.missedBookingTime = missedBookingTime;
+        }
     }
 }

@@ -403,6 +403,7 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
                 if (null == result.getError()){
                     UserResidenceInListDTO dto = result.getData();
                     userDataManager.getUser().setRoomId(residenceId);
+                    userDataManager.setRoomId(residenceId);
                     if (dto.isPubBath()){
                         getMvpView().startBathroom(dto);
                     }else{
@@ -417,7 +418,7 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
 
     @Override
     public boolean isStartBathroom(ListChooseAdaptor.Item residence) {
-        if (residence.isAllBaths()){
+        if (!TextUtils.isEmpty(residence.getGroupId())){
             recordBath(residence.getId() ,2 ,null);
             return false ;
         }

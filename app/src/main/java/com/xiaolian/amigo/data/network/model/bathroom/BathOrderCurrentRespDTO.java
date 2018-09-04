@@ -5,30 +5,57 @@ import lombok.Data;
 @Data
 public class BathOrderCurrentRespDTO {
 
-        /**
-         * balance : 0
-         * bathOrderId : 0
-         * createTime : 0
-         * location : string
-         * minPrepay : 0
-         * missedTimes : 0
-         * prepay : 0
-         * prepayAmount : 0
-         * status : 0
-         * totalMissTimes : 0
-         * tradeOrderId : 0
-         */
+                /**
+                 * id : 0
+                 * location : string
+                 * prepayAmount : 0
+                 * status : 0
+                 * tradeOrderId : 0
+                 */
 
-        private double balance;
-        private long bathOrderId;
-        private long createTime;
-        private String location;
-        private double minPrepay;
-        private int missedTimes;
-        private double prepay;
-        private double prepayAmount;
-        private int status;
-        private int totalMissTimes;
-        private long tradeOrderId;
+                private long id;
+                private String location;
+                private float prepayAmount;
+                private int status;
+                private long tradeOrderId;
 
+                public long getId() {
+                        return id;
+                }
+
+                public void setId(long id) {
+                        this.id = id;
+                }
+
+                public String getLocation() {
+                        return location;
+                }
+
+                public void setLocation(String location) {
+                        this.location = location;
+                }
+
+                public float getPrepayAmount() {
+                        return prepayAmount;
+                }
+
+                public void setPrepayAmount(float prepayAmount) {
+                        this.prepayAmount = prepayAmount;
+                }
+
+                public int getStatus() {
+                        return status;
+                }
+
+                public void setStatus(int status) {
+                        this.status = status;
+                }
+
+                public long getTradeOrderId() {
+                        return tradeOrderId;
+                }
+
+                public void setTradeOrderId(long tradeOrderId) {
+                        this.tradeOrderId = tradeOrderId;
+                }
 }

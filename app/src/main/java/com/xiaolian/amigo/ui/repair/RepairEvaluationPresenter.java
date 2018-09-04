@@ -44,7 +44,7 @@ public class RepairEvaluationPresenter<V extends IRepairEvaluationView> extends 
             public void onReady(ApiResult<BooleanRespDTO> result) {
                 if (null == result.getError()) {
                     if (result.getData().isResult()) {
-                        getMvpView().onSuccess("评价成功");
+                        getMvpView().repairSuccess();
                         getMvpView().finishView();
                     }
                 } else {

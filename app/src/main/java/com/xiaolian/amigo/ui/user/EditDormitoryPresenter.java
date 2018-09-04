@@ -57,6 +57,8 @@ public class EditDormitoryPresenter<V extends IEditDormitoryView> extends BasePr
 //        dto.setSize(size);
         addObserver(userDataManager.queryUserResidenceList(), new NetworkObserver<ApiResult<QueryUserResidenceListRespDTO>>(false, true) {
 
+
+
             @Override
             public void onReady(ApiResult<QueryUserResidenceListRespDTO> result) {
                 getMvpView().setRefreshComplete();
@@ -171,6 +173,10 @@ public class EditDormitoryPresenter<V extends IEditDormitoryView> extends BasePr
         addObserver(userDataManager.bathList(emptyRespDTO),new NetworkObserver<ApiResult<QueryUserResidenceListRespDTO>>(){
 
             @Override
+            public void onStart() {
+
+            }
+            @Override
             public void onReady(ApiResult<QueryUserResidenceListRespDTO> result) {
                 getMvpView().setRefreshComplete();
                 getMvpView().setLoadMoreComplete();
@@ -180,7 +186,6 @@ public class EditDormitoryPresenter<V extends IEditDormitoryView> extends BasePr
                     if (result.getData().getUserResidences() != null && result.getData().getUserResidences().size() > 0) {
                         List<EditDormitoryAdaptor.UserResidenceWrapper> wrappers = addBathroomListItem(result.getData());
                         getMvpView().addMore(wrappers);
-//
                     } else {
                         getMvpView().addMore(new ArrayList<>());
                         getMvpView().showEmptyView();
@@ -216,7 +221,7 @@ public class EditDormitoryPresenter<V extends IEditDormitoryView> extends BasePr
 
         for (UserResidenceInListDTO userResidence : dto.getUserResidences()) {
             EditDormitoryAdaptor.UserResidenceWrapper userResidenceWrapper = null ;
-            if (ObjectsCompat.equals(userResidence.getResidenceId() , userDataManager.getUser().getRoomId())){
+            if (ObjectsCompat.equals(userResidence.getResidenceId() , userDataManager.getRoomId())){
                 userResidenceWrapper = new EditDormitoryAdaptor.UserResidenceWrapper(
                         userResidence ,true );
                 wrappers.add(userResidenceWrapper);
@@ -232,19 +237,23 @@ public class EditDormitoryPresenter<V extends IEditDormitoryView> extends BasePr
     }
 
     @Override
-    public void deleteBathroomRecord(long id , int position) {
-        SimpleReqDTO simpleReqDTO = new SimpleReqDTO();
-        simpleReqDTO.setId(id);
-        addObserver(userDataManager.deleteBathRecord(simpleReqDTO) , new NetworkObserver<ApiResult<DeleteResidenceRespDTO>>(){
-            @Override
-            public void onReady(ApiResult<DeleteResidenceRespDTO> result) {
-                    if (null == result.getError()){
-                         getMvpView().notifyAdaptor();
-                    }else{
+    public void deleteBathroomRecord(long id , int position , boolean isDefault) {
+        if (isDefault){
+            getMvpView().onError("当前浴室为默认浴室，无法删除");
+        }else {
+            SimpleReqDTO simpleReqDTO = new SimpleReqDTO();
+            simpleReqDTO.setId(id);
+            addObserver(userDataManager.deleteBathRecord(simpleReqDTO), new NetworkObserver<ApiResult<DeleteResidenceRespDTO>>() {
+                @Override
+                public void onReady(ApiResult<DeleteResidenceRespDTO> result) {
+                    if (null == result.getError()) {
+                        getMvpView().notifyAdaptor();
+                    } else {
                         getMvpView().onError(result.getError().getDisplayMessage());
                     }
-            }
-        });
+                }
+            });
+        }
     }
 
     @Override
@@ -258,6 +267,7 @@ public class EditDormitoryPresenter<V extends IEditDormitoryView> extends BasePr
                 if (null == result.getError()){
                     if (result.getData().isResult()) {
                         saveNormalBathroomId(wrapper.getResidenceId());
+                        userDataManager.setRoomId(wrapper.getResidenceId());
                         getMvpView().notifyAdapter( wrapper,currentPosition);
                         RxHelper.delay(300 ,TimeUnit.MILLISECONDS)
                                 .subscribe(new Action1<Integer>() {
@@ -287,7 +297,10 @@ public class EditDormitoryPresenter<V extends IEditDormitoryView> extends BasePr
      * @param id
      */
     private void saveNormalBathroomId(Long id){
-        userDataManager.getUser().setRoomId(id);
+
+        User user = userDataManager.getUser() ;
+        user.setRoomId(id);
+        userDataManager.setUser(user);
     }
 
 }

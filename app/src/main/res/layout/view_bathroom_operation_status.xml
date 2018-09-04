@@ -4,9 +4,9 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:background="@color/white"
-    android:layout_height="wrap_content"
-    android:paddingTop="9dp"
-    android:paddingBottom="9dp">
+    android:layout_height="71dp"
+    android:paddingTop="14dp"
+    >
 
     <ImageView
         android:id="@+id/iv_status"
@@ -14,7 +14,6 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="9dp"
         android:layout_marginStart="14dp"
-        android:layout_marginTop="9dp"
         android:src="@drawable/ic_bathroom_status_success" />
     <TextView
         android:id="@+id/tv_status"
@@ -29,26 +28,28 @@
     <TextView
         android:id="@+id/tv_right"
         android:text="@string/cancel"
-        android:layout_marginEnd="5dp"
+        android:layout_marginEnd="14dp"
         android:textColor="@color/colorDarkB"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="9dp"
-        android:textSize="14sp"
+        android:layout_marginTop="2dp"
+        android:textSize="@dimen/sp12"
         android:gravity="center"
-        android:layout_width="42dp"
-        android:layout_height="28dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="9dp"
+        android:layout_alignParentBottom="true"
         android:layout_below="@id/tv_status"
         android:id="@+id/tip"
+        android:gravity="bottom"
         android:visibility="gone"
         android:textSize="12sp"
         android:textColor="@color/colorDark6"
         tools:visibility="visible"
         android:layout_alignLeft="@id/tv_status"
-        tools:text="请确保你钱中可用余额为xx元"/>
+        tools:text="请确保你钱中可用余额为xx元"
+        android:layout_marginBottom="14dp"/>
 </RelativeLayout>

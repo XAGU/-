@@ -49,4 +49,10 @@ public class Repair {
      */
     private Long repairmanId;
 
+    /**
+     *
+     * @param 评价积分
+     */
+    Integer credits;
+
 }

@@ -94,7 +94,7 @@ public class RegisterStep1Fragment extends Fragment {
     EditText etVerificationCode;
 
     CountDownButtonHelper cdb;
-
+    
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

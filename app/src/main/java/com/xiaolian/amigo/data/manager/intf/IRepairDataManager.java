@@ -69,4 +69,10 @@ public interface IRepairDataManager {
     User getUser();
 
     void setLastRepairTime(long l);
-}
+
+    void setRepairGuide(Integer guideTime);
+
+    boolean isRepairGuideDone();
+
+    void doneRepairGuide();
+    }

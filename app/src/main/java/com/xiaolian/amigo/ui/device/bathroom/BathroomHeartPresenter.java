@@ -1,5 +1,7 @@
 package com.xiaolian.amigo.ui.device.bathroom;
 
+import android.util.Log;
+
 import com.xiaolian.amigo.data.manager.intf.IBathroomDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.bathroom.BathOrderCurrentRespDTO;
@@ -21,7 +23,9 @@ import static com.xiaolian.amigo.util.Constant.ORDER_USING;
 public class BathroomHeartPresenter<V extends IBathroomHeartView> extends BasePresenter<V>
         implements IBathroomHeartPresenter<V> {
 
+    private static final String TAG = BathroomHeartPresenter.class.getSimpleName();
     private IBathroomDataManager bathroomDataManager ;
+    private boolean isPause = false ;
 
     @Inject
     public BathroomHeartPresenter(IBathroomDataManager bathroomDataManager) {
@@ -53,21 +57,45 @@ public class BathroomHeartPresenter<V extends IBathroomHeartView> extends BasePr
         });
     }
 
+
     @Override
-    public void queryBathroomOrder(Long id) {
+    public void onResume() {
+        isPause = false ;
+    }
+
+
+    @Override
+    public void onPause() {
+        isPause = true ;
+    }
+
+    @Override
+    public void queryBathroomOrder(Long id , boolean isShowDialog) {
+
+        if (isPause) return ;
         SimpleReqDTO simpleReqDTO  = new SimpleReqDTO();
         simpleReqDTO.setId(id);
         addObserver(bathroomDataManager.orderQuery(simpleReqDTO) , new NetworkObserver<ApiResult<BathOrderCurrentRespDTO>>(){
 
             @Override
+            public void onStart() {
+                if (isShowDialog) {
+                    super.onStart();
+                }
+            }
+
+            @Override
             public void onReady(ApiResult<BathOrderCurrentRespDTO> result) {
+
+                Log.e(TAG, "onReady: " );
                 if (result.getError() == null){
                     if (result.getData().getStatus() == ORDER_USING) {
                         getMvpView().getOrderInfo(result.getData());
                         delay(3, new Action1<Long>() {
                             @Override
                             public void call(Long aLong) {
-                                queryBathroomOrder(id);
+                                Log.e(TAG, "call:>>>>> delay " );
+                                queryBathroomOrder(id , false);
                             }
                         });
                     }else if (result.getData().getStatus() == ORDER_SETTLE){

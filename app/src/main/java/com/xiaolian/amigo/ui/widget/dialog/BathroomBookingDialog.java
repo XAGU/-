@@ -8,17 +8,21 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.widget.CircleProgressView;
+
+import butterknife.BindView;
 
 /**
  * @author zcd
  * @date 18/7/6
  */
 public class BathroomBookingDialog extends Dialog {
+    public CircleProgressView circleProgressView;
+    TextView title;
     private Context context;
-    private CircleProgressView circleProgressView;
 
     public BathroomBookingDialog(@NonNull Context context) {
         super(context, R.style.AlertDialogStyle);
@@ -37,19 +41,19 @@ public class BathroomBookingDialog extends Dialog {
     private void initView() {
         setContentView(R.layout.dialog_bathroom_booking);
         circleProgressView = $(R.id.circleProgressView);
+        title = $(R.id.title);
     }
-
-    public void finishProcess() {
-        circleProgressView.setProgressInTime(100, 300);
-    }
-
-
 
 
     @Override
     public void show() {
         super.show();
-        circleProgressView.setProgressInTime(0,90 , 2000);
+        if (circleProgressView != null)
+            circleProgressView.setProgressInTime(0, 99, 15000);
+    }
+
+    public void setTitleContent(String content) {
+        if (title != null) title.setText(content);
     }
 
     @Override
@@ -59,13 +63,22 @@ public class BathroomBookingDialog extends Dialog {
     }
 
     /**
+     * 设置完成
+     */
+    public void setFinish() {
+        if (circleProgressView != null)
+            circleProgressView.setFinish();
+    }
+
+    /**
      * 解除绑定
      */
-    public void onDettechView(){
-        if (context != null){
-            context = null ;
+    public void onDettechView() {
+        if (context != null) {
+            context = null;
         }
     }
+
     private <T extends View> T $(@IdRes int id) {
         return (T) findViewById(id);
     }

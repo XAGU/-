@@ -14,5 +14,5 @@ public class Residence {
     private String name;
     private String fullName;
     private String macAddress;
-    private boolean allBaths ;  // 是否全是公共浴室
+    private String groupId ;
 }

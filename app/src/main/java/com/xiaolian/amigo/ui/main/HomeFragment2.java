@@ -25,7 +25,6 @@ import com.xiaolian.amigo.ui.main.adaptor.HomeBannerDelegate;
 import com.xiaolian.amigo.ui.main.adaptor.HomeNormalDelegate;
 import com.xiaolian.amigo.ui.main.adaptor.HomeSmallDelegate;
 import com.xiaolian.amigo.ui.widget.RecyclerItemClickListener;
-import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
 
 import org.greenrobot.eventbus.EventBus;
@@ -224,12 +223,14 @@ public class HomeFragment2 extends Fragment {
         if (gate.isActive()) {
             items.add(gate);
         }
-        if (lost.isActive()) {
-            items.add(lost);
-        }
+//        if (lost.isActive()) {
+//            items.add(lost);
+//        }
+        items.add(lost);
         if (banner != null) {
             items.add(banner);
         }
+
     }
 
 
@@ -245,6 +246,7 @@ public class HomeFragment2 extends Fragment {
         water.setActive(false);
         washer.setActive(false);
         gate.setActive(false);
+        lost.setActive(true);
         /// business为空则不显示shower和water
         if (businesses == null || businesses.isEmpty()) {
             notifyAdaptor();
@@ -377,26 +379,23 @@ public class HomeFragment2 extends Fragment {
     @SuppressWarnings("unchecked")
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void OrderEvent(CurrentBathOrderRespDTO  event){
-        Log.e(TAG  ,"预约订单" +event.getStatus());
-        if (event.isExistOrder()){
             checkTitleTip(event);
-        }
     }
 
     /**
      * 显示主页面是否有上一订单
      * @param event
      */
-    private void checkTitleTip(CurrentBathOrderRespDTO event){
-      shower.setExistOrder(true);
-      shower.setStatus(event.getStatus());
-      if (event.getStatus() == Constant.USING_STATUS){
-        shower.setUsing(true);
-      }else{
-          shower.setUsing(false);
-      }
-        Log.e(TAG  ,"checkTitleTip预约订单" +event.getStatus());
-      notifyAdaptor();
+    private void checkTitleTip(CurrentBathOrderRespDTO event) {
+            shower.setExistOrder(true);
+            shower.setStatus(event.getStatus());
+            if (shower.getStatus() == 1 ){
+                shower.setUsing(false);
+            }else {
+                shower.setUsing(true);
+            }
+            Log.e(TAG, "checkTitleTip预约订单" + event.getStatus());
+            notifyAdaptor();
     }
 
 

@@ -8,19 +8,25 @@ import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
  */
 public interface IChooseBathroomPresenter<V extends IChooseBathroomView>
         extends IBasePresenter<V> {
+
+
     void getBathroomList(long buildingId);
 
 
-    void precondition();
+    void precondition(boolean isShowDialog );
 
     boolean getBathroomPassword();
 
-
+    void setIsResume(boolean isResume);
     /**
      * 获取楼栋流量
      */
     void buildingTraffic(long id);
 
+
+    void onPause();
+
+    void onResume();
 
     /**
      * 预约楼栋

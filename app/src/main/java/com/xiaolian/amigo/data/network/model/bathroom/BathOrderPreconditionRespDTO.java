@@ -1,9 +1,6 @@
 package com.xiaolian.amigo.data.network.model.bathroom;
 
 
-import lombok.Data;
-
-@Data
 public class BathOrderPreconditionRespDTO {
         /**
          * bathBookingId : 0
@@ -29,9 +26,63 @@ public class BathOrderPreconditionRespDTO {
         private PrepayInfoBean prepayInfo;
         private int status;
 
+    public long getBathBookingId() {
+        return bathBookingId;
+    }
+
+    public void setBathBookingId(long bathBookingId) {
+        this.bathBookingId = bathBookingId;
+    }
+
+    public long getBathOrderId() {
+        return bathOrderId;
+    }
+
+    public void setBathOrderId(long bathOrderId) {
+        this.bathOrderId = bathOrderId;
+    }
+
+    public long getBathQueueId() {
+        return bathQueueId;
+    }
+
+    public void setBathQueueId(long bathQueueId) {
+        this.bathQueueId = bathQueueId;
+    }
+
+    public int getMaxMissAbleTimes() {
+        return maxMissAbleTimes;
+    }
+
+    public void setMaxMissAbleTimes(int maxMissAbleTimes) {
+        this.maxMissAbleTimes = maxMissAbleTimes;
+    }
+
+    public int getMissedTimes() {
+        return missedTimes;
+    }
+
+    public void setMissedTimes(int missedTimes) {
+        this.missedTimes = missedTimes;
+    }
+
+    public PrepayInfoBean getPrepayInfo() {
+        return prepayInfo;
+    }
+
+    public void setPrepayInfo(PrepayInfoBean prepayInfo) {
+        this.prepayInfo = prepayInfo;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
 
-    @Data
     public static class PrepayInfoBean {
             /**
              * balance : 0
@@ -44,6 +95,29 @@ public class BathOrderPreconditionRespDTO {
             private double prepay;
 
 
+        public double getBalance() {
+            return balance;
+        }
+
+        public void setBalance(double balance) {
+            this.balance = balance;
+        }
+
+        public double getMinPrepay() {
+            return minPrepay;
+        }
+
+        public void setMinPrepay(double minPrepay) {
+            this.minPrepay = minPrepay;
+        }
+
+        public double getPrepay() {
+            return prepay;
+        }
+
+        public void setPrepay(double prepay) {
+            this.prepay = prepay;
+        }
     }
     }
 

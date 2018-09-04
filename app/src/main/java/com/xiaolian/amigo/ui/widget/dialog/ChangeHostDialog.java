@@ -35,6 +35,18 @@ import lombok.Data;
 
 public class ChangeHostDialog extends Dialog {
 
+    private static final String QA1 = "http://116.62.236.67:";
+    private static final String QA2 = "http://39.108.97.229";
+    private static final String QA3= "http://39.108.74.164";
+    private static final String QA4 = "http://47.107.47.24";
+    private static final String QA5 = "http://47.107.45.109";
+    private static final String BATH2 ="http://120.77.214.212";
+    private static final String BATH1 = "http://39.108.85.163";
+
+    private static final String HOST1 = ":5081/";
+    private static final String HOST2 = ":5082/";
+    private static final String HOST3 = ":5097/";
+
     private TextView tvOk;
     private TextView tvCancel;
     private EditText etHost;
@@ -47,22 +59,26 @@ public class ChangeHostDialog extends Dialog {
 
     private List<HostAddress> userHosts = new ArrayList<HostAddress>() {
         {
-            add(new HostAddress("qa-feature1/基线", "http://39.108.74.164:5081/"));
-            add(new HostAddress("qa-feature1/feature1", "http://39.108.74.164:5051/"));
-            add(new HostAddress("qa-feature1/feature2", "http://39.108.74.164:5061/"));
-            add(new HostAddress("qa-feature1/feature3", "http://39.108.74.164:5071/"));
-            add(new HostAddress("qa-base2/基线", "http://39.108.97.229:5081/"));
+            add(new HostAddress("qa1", QA1+ HOST1));
+            add(new HostAddress("qa2", QA2 + HOST1));
+            add(new HostAddress("qa3", QA3 + HOST1));
+            add(new HostAddress("qa4", QA4+ HOST1));
+            add(new HostAddress("qa5" , QA5 + HOST1));
+            add(new HostAddress("bath1" ,BATH1 + HOST1));
+            add(new HostAddress("bath2" , BATH2 + HOST1));
             add(new HostAddress("预发", "http://47.106.62.186/c/"));
         }
     };
 
     private List<HostAddress> bathroomHosts = new ArrayList<HostAddress>() {
         {
-            add(new HostAddress("qa-feature1/基线", "http://39.108.74.164:5082/"));
-            add(new HostAddress("qa-feature1/feature1", "http://39.108.74.164:5052/"));
-            add(new HostAddress("qa-feature1/feature2", "http://39.108.74.164:5062/"));
-            add(new HostAddress("qa-feature1/feature3", "http://39.108.74.164:5072/"));
-            add(new HostAddress("qa-base2/基线", "http://39.108.97.229:5082/"));
+            add(new HostAddress("qa1", QA1+ HOST2));
+            add(new HostAddress("qa2", QA2 + HOST2));
+            add(new HostAddress("qa3", QA3 + HOST2));
+            add(new HostAddress("qa4", QA4+ HOST2));
+            add(new HostAddress("qa5" , QA5 + HOST2));
+            add(new HostAddress("bath1" ,BATH1 + HOST2));
+            add(new HostAddress("bath2" , BATH2 + HOST2));
             add(new HostAddress("预发", "http://47.106.62.186/c/"));
         }
     };
@@ -70,12 +86,14 @@ public class ChangeHostDialog extends Dialog {
 
     private List<HostAddress> h5Hosts = new ArrayList<HostAddress>() {
         {
-            add(new HostAddress("qa-feature1/基线", "http://39.108.74.164:5097/c"));
-            add(new HostAddress("qa-feature1/feature1", "http://39.108.74.164:5107/c"));
-            add(new HostAddress("qa-feature1/feature2", "http://39.108.74.164:5117/c"));
-            add(new HostAddress("qa-feature1/feature3", "http://39.108.74.164:5127/c"));
-            add(new HostAddress("qa-base2/基线", "http://39.108.97.229:5097/c"));
-            add(new HostAddress("预发", "http://47.106.62.186:5097/c"));
+            add(new HostAddress("qa1", QA1+ HOST3));
+            add(new HostAddress("qa2", QA2 + HOST3));
+            add(new HostAddress("qa3", QA3 + HOST3));
+            add(new HostAddress("qa4", QA4+ HOST3));
+            add(new HostAddress("qa5" , QA5 + HOST3));
+            add(new HostAddress("bath1" ,BATH1 + HOST3));
+            add(new HostAddress("bath2" , BATH2 + HOST3));
+            add(new HostAddress("预发", "http://47.106.62.186/c/"));
         }
     };
 

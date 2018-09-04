@@ -22,7 +22,7 @@ import com.xiaolian.amigo.util.ScreenUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChooseBathroomPop  extends PopupWindow{
+public class ChooseBathroomPop  extends PopupWindow {
     private static final String TAG = ChooseBathroomPop.class.getSimpleName();
     private Context context ;
 
@@ -36,7 +36,6 @@ public class ChooseBathroomPop  extends PopupWindow{
     private List<BuildingTrafficDTO.FloorsBean> floorsBeans ;
 
     private PopButtonClickListener popButtonClickListener ;
-
 
     private BuildingTrafficDTO.FloorsBean  floorsBean ;
 
@@ -54,6 +53,8 @@ public class ChooseBathroomPop  extends PopupWindow{
         this.popButtonClickListener = popButtonClickListener;
     }
 
+
+
     private void init(){
         floorsBeans = new ArrayList<>();
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -61,6 +62,7 @@ public class ChooseBathroomPop  extends PopupWindow{
         recyclerView = contentView.findViewById(R.id.bathroom_recy);
         button = contentView.findViewById(R.id.pre_bathroom) ;
         adapter = new ChooseRoomAdapter(context ,floorsBeans);
+
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void click(int poisition) {
@@ -69,6 +71,19 @@ public class ChooseBathroomPop  extends PopupWindow{
                 }
             }
         });
+
+        adapter.setPopClickableListener(new PopClickableListener() {
+            @Override
+            public void clickable(boolean clickable) {
+                if (clickable){
+                    button.setEnabled(true);
+                    button.setBackgroundResource(R.drawable.corner_redsolid_button);
+                }else{
+                    button.setEnabled(true);
+                }
+            }
+        });
+
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(adapter);
         setContentView(contentView);
@@ -88,12 +103,12 @@ public class ChooseBathroomPop  extends PopupWindow{
                 return  false ;
             }
         });
-
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                button.setEnabled(false);
                 if (popButtonClickListener != null){
-                    Log.e(TAG, "onClick: " + floorsBean.getDeviceNo() );
+                    Log.e(TAG, "onClick:>>>>>>>>>pop " );
                     popButtonClickListener.click(floorsBean);
                 }
             }
@@ -108,18 +123,23 @@ public class ChooseBathroomPop  extends PopupWindow{
     public void setData(List<BuildingTrafficDTO.FloorsBean> floorsBeanList){
         if (floorsBeans != null){
             floorsBeans.clear();
-            floorsBeans.addAll(floorsBeanList);
         }
-        if (adapter != null) adapter.notifyDataSetChanged();
+        button.setEnabled(false);
+        floorsBeans.addAll(floorsBeanList);
+        this.floorsBean = null ;
+        button.setBackgroundResource(R.drawable.thirty_red_bg);
+        if (adapter != null) {
+            adapter.setIndex(-1);
+            adapter.notifyDataSetChanged();
+        }
     }
 
     public void setData(BuildingTrafficDTO.FloorsBean floorsBean){
         if (floorsBeans != null){
             floorsBeans.clear();
-            floorsBeans.add(floorsBean);
+
         }
-        this.floorsBean = floorsBean ;
-        Log.e(TAG, "setData: " + floorsBean.getDeviceNo() );
+        floorsBeans.add(floorsBean);
         button.setBackgroundResource(R.color.colorGreen);
         if (adapter != null ) adapter.notifyDataSetChanged();
 
@@ -136,9 +156,20 @@ public class ChooseBathroomPop  extends PopupWindow{
         int[] location = new int[2];
         v.getLocationOnScreen(location);
         //在控件上方显示
-        showAtLocation(v, Gravity.BOTTOM, 0 , ScreenUtils.dpToPxInt(context ,20));
+        showAtLocation(v, Gravity.BOTTOM, 0 , ScreenUtils.dpToPxInt(context ,20 ) );
+//        showAtLocation(v, Gravity.NO_GRAVITY, (location[0] + v.getWidth() / 2) - popupWidth / 2, location[1] - popupHeight-70);
     }
 
+
+    @Override
+    public void dismiss() {
+        super.dismiss();
+    }
+
+
+    public void setBtnEnable(){
+        if (button != null && !button.isEnabled()) button.setEnabled(true);
+    }
 
     /**
      * pop 中 点击事件
@@ -146,5 +177,12 @@ public class ChooseBathroomPop  extends PopupWindow{
     public interface PopButtonClickListener{
         void click(BuildingTrafficDTO.FloorsBean floorsBean);
     }
+
+
+    public interface PopClickableListener{
+        void clickable(boolean clickable );
+
+    }
+
 
 }
