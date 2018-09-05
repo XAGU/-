@@ -73,6 +73,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
+        android:visibility="gone"
         android:id="@+id/tv_add_dormitory"
         android:layout_marginTop="14dp"
         android:background="@color/white"

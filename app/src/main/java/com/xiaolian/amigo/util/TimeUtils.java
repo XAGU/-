@@ -1,13 +1,16 @@
 package com.xiaolian.amigo.util;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * 日期时间相关工具类
@@ -100,10 +103,12 @@ public class TimeUtils {
     public static String orderTimestampFormat(long timeStamp) {
         String result = "";
         long curTime = System.currentTimeMillis() / (long) 1000;
-        long time = curTime - timeStamp / 1000;
-        if (time >= 0 && time < 3600 * 24) {
+        long  toDayZero = getStartTimeOfDay(System.currentTimeMillis() ,"") / 1000;
+//        long time = curTime - timeStamp / 1000;
+        long time = timeStamp / 1000  - toDayZero ;
+        if (time >= 0 ) {
             result += "今天";
-        } else if (time >= 3600 * 24 && time < 3600 * 24 * 2) {
+        } else if (time < 0 && Math.abs(time) < 3600 * 24) {
             result += "昨天";
         } else if (time >= 3600 * 24 * 2 && time < 3600 * 24 * 365) {
             result += millis2String(timeStamp, MY_DATE_MONTH) + " ";
@@ -113,6 +118,19 @@ public class TimeUtils {
         return result + millis2String(timeStamp, MY_TIME_FORMAT);
     }
 
+
+    //获取当天（按当前传入的时区）00:00:00所对应时刻的long型值
+    public static long getStartTimeOfDay(long now, String timeZone) {
+        String tz = TextUtils.isEmpty(timeZone) ? "GMT+8" : timeZone;
+        TimeZone curTimeZone = TimeZone.getTimeZone(tz);
+        Calendar calendar = Calendar.getInstance(curTimeZone);
+        calendar.setTimeInMillis(now);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTimeInMillis();
+    }
 
     /**
      * 计算剩余时间

@@ -187,4 +187,8 @@ public interface ISharedPreferencesHelp {
     void setRoomId(Long id);
 
     Long getRoomId();
+
+    void setBookMethod(int bookMethod) ;
+
+    int getBookMethrod();
 }

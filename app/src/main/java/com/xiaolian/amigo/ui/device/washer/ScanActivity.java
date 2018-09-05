@@ -636,12 +636,18 @@ public class ScanActivity extends WasherBaseActivity
 
     @Override
     public void goToBleDevice(boolean isTimeValid, int type, String macAddress, BriefDeviceDTO data, boolean isBle) {
+
             if (type == Device.HEATER.getType()) {
 
                 // 前往热水澡
                 gotoDevice(HEATER, macAddress,
                         data.getSupplierId(), data.getLocation(),
                         data.getResidenceId(), false);
+        } else if (type == Device.DISPENSER.getType()) {
+            // 进入饮水机
+
+            gotoDispenser(macAddress ,data.getSupplierId() ,data.getLocation() ,
+                    data.getResidenceId() ,data.isFavor() ,0 ,false);
             } else if (type == Device.DISPENSER.getType()) {
                 // 进入饮水机
 

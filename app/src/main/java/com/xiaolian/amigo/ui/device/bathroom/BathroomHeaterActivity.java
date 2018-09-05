@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.bathroom.BathOrderCurrentRespDTO;
 import com.xiaolian.amigo.ui.base.WebActivity;
-import com.xiaolian.amigo.ui.device.DeviceOrderActivity;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IBathroomHeartPresenter;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IBathroomHeartView;
 import com.xiaolian.amigo.ui.main.MainActivity;
@@ -82,6 +81,7 @@ public class BathroomHeaterActivity extends BathroomBaseActivity implements IBat
         initView();
         isCreate  = true ;
     }
+
 
 
     @Override
@@ -159,8 +159,6 @@ public class BathroomHeaterActivity extends BathroomBaseActivity implements IBat
             }
         });
     }
-
-
 
     @Override
     public void goToOrderInfo(BathOrderCurrentRespDTO dto) {

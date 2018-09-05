@@ -259,7 +259,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     /**
      * 设备位置
      */
-    private String location;
+    protected String location;
     /**
      * 设备位置id
      */
@@ -643,6 +643,10 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             }
         }
 
+    }
+
+    public  void setDvTitleNull(){
+        tvDeviceTitle.setCompoundDrawables(null , null , null , null);
     }
 
     /**
@@ -1219,15 +1223,15 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         back2Main();
     }
 
-//    @Override
-//    public void onBackPressed() {
-//        back2Main();
-//    }
+    @Override
+    public void onBackPressed() {
+        back2Main();
+    }
 
 
     @Override
     public void finish() {
-        back2Main();
+//        back2Main();
         super.finish();
     }
 

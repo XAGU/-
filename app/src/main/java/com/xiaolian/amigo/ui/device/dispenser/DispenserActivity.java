@@ -32,6 +32,7 @@ public class DispenserActivity extends WaterDeviceBaseActivity<IDispenserPresent
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setDvTitleNull();
     }
 
     @Override

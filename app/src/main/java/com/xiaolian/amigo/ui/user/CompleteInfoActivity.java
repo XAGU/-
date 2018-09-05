@@ -136,12 +136,12 @@ public class CompleteInfoActivity extends UserBaseActivity implements ICompleteI
             return;
         }
 
-        if (TextUtils.isEmpty(dormitoryName)) /*未设置宿舍地址信息*/{
-            //弹框提示设置宿舍信息
-            Toast toast = Toast.makeText(this, "请先设置你的宿舍信息哦！", Toast.LENGTH_SHORT);
-            toast.show();
-            return;
-        }
+//        if (TextUtils.isEmpty(dormitoryName)) /*未设置宿舍地址信息*/{
+//            //弹框提示设置宿舍信息
+//            Toast toast = Toast.makeText(this, "请先设置你的宿舍信息哦！", Toast.LENGTH_SHORT);
+//            toast.show();
+//            return;
+//        }
         presenter.updateSex(sex); //更新个人性别，异步操作，有可能会失败
 
         if (bathRouteRespDTO!=null && !bathRouteRespDTO.isExistHistory()) /*未设置洗澡地址信息*/ {
@@ -209,11 +209,11 @@ public class CompleteInfoActivity extends UserBaseActivity implements ICompleteI
     }
 
     private void refreshDomitoryAddress() {
-        if (!TextUtils.isEmpty(dormitoryName)) /*设置了宿舍地址信息*/{
-            dormitoryAddressTextView.setText(dormitoryName);
-        } else {
-            dormitoryAddressTextView.setText("添加宿舍");
-        }
+//        if (!TextUtils.isEmpty(dormitoryName)) /*设置了宿舍地址信息*/{
+//            dormitoryAddressTextView.setText(dormitoryName);
+//        } else {
+//            dormitoryAddressTextView.setText("添加宿舍");
+//        }
     }
 
     private void refreshBathroomAddress() {

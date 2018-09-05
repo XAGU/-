@@ -258,25 +258,33 @@ public class HomeFragment2 extends Fragment {
             }
             if (business.getBusinessId() == 2) {
                 water.setActive(true);
+                shower.setExistOrder(false);
                 water.setPrepaySize(business.getPrepayOrder());
                 water.setUsing(business.getUsing());
                 currentPrepayOrderSize += business.getPrepayOrder();
                 currentBusinessSize += 1;
             } else if (business.getBusinessId() == 1) {
                 shower.setActive(true);
+                shower.setExistOrder(false);
                 shower.setPrepaySize(business.getPrepayOrder());
                 shower.setUsing(business.getUsing());
                 shower.setStatus(0);
                 currentPrepayOrderSize += business.getPrepayOrder();
                 currentBusinessSize += 1;
+                if (shower.isExistOrder()){
+                    needNotify = true ;
+                    shower.setExistOrder(false);
+                }
             } else if (business.getBusinessId() == 3) {
                 dryer.setActive(true);
+                shower.setExistOrder(false);
                 dryer.setPrepaySize(business.getPrepayOrder());
                 dryer.setUsing(business.getUsing());
                 currentPrepayOrderSize += business.getPrepayOrder();
                 currentBusinessSize += 1;
             } else if (business.getBusinessId() == 4) {
                 washer.setActive(true);
+                shower.setExistOrder(false);
                 washer.setPrepaySize(business.getPrepayOrder());
                 washer.setUsing(business.getUsing());
                 currentPrepayOrderSize += business.getPrepayOrder();
@@ -306,6 +314,7 @@ public class HomeFragment2 extends Fragment {
             usingAmount = currentUsingAmount;
             needNotify = true;
         }
+
         if (needNotify) {
             Log.d(TAG, "onSchoolBizEvent notify");
             notifyAdaptor();

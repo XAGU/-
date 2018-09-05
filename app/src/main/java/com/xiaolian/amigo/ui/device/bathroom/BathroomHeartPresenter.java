@@ -42,7 +42,7 @@ public class BathroomHeartPresenter<V extends IBathroomHeartView> extends BasePr
             public void onReady(ApiResult<BooleanRespDTO> result) {
                 if (result.getError() == null){
                     if (result.getData().isResult()){
-                        getMvpView().onSuccess("结算成功");
+//                        getMvpView().onSuccess("结算成功");
                         Log.e(TAG, "onReady: >>>> askSettle" );
 //                        getMvpView().goToOrderInfo();
                         delay(3, new Action1<Long>() {
@@ -86,7 +86,7 @@ public class BathroomHeartPresenter<V extends IBathroomHeartView> extends BasePr
 
             @Override
             public void onStart() {
-                if (isShowDialog) {
+                if (isShowDialog || time == 3) {
                     super.onStart();
                 }
             }
@@ -98,15 +98,18 @@ public class BathroomHeartPresenter<V extends IBathroomHeartView> extends BasePr
                 Log.e(TAG, "onReady: " );
                 if (result.getError() == null){
                     if (result.getData().getStatus() == ORDER_USING) {
-                        getMvpView().getOrderInfo(result.getData());
-                        delay(time, new Action1<Long>() {
-                            @Override
-                            public void call(Long aLong) {
-                                Log.e(TAG, "call:>>>>> delay " );
-                                queryBathroomOrder(id , false ,time);
-                            }
-                        });
+                            getMvpView().getOrderInfo(result.getData());
+                            delay(time, new Action1<Long>() {
+                                @Override
+                                public void call(Long aLong) {
+                                    Log.e(TAG, "call:>>>>> delay ");
+                                    queryBathroomOrder(id, false, time);
+                                }
+                            });
                     }else if (result.getData().getStatus() == ORDER_SETTLE){
+                        if (time == 3 ){
+                            getMvpView().onSuccess("结算成功");
+                        }
                         getMvpView().goToOrderInfo(result.getData());
                     }
 

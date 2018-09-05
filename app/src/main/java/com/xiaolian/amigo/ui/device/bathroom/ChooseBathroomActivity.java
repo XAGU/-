@@ -348,7 +348,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         BathBuildingRespDTO.FloorsBean floorsBean2 = new BathBuildingRespDTO.FloorsBean();
         floorsBean2.setGroups(groupsBeans);
         floorsBeans.add(floorsBean2);
-        autoBathroom.setData(floorsBeans);
+//        autoBathroom.setData(floorsBeans);
     }
 
 
@@ -384,7 +384,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         presenter.onResume();
         presenter.setIsResume(true);
         presenter.getBathroomList(buildId);
-        presenter.precondition(isShowDialog);
+        presenter.precondition(isShowDialog , true);
         if (preBathroom != null) preBathroom.setEnabled(true);
     }
 
@@ -432,7 +432,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         if (pop == null) {
             return ;
         }
-        pop.setData(floorsBean);
+        pop.setData(floorsBean );
 
         showPopNoDevice();
     }
@@ -504,10 +504,6 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         viewLine.setVisibility(View.VISIBLE);
         idContent.setVisibility(View.VISIBLE);
         rlError.setVisibility(View.GONE);
-        Drawable drawable = getResources().getDrawable(R.drawable.arrow_down);
-//        setTvTitle(respDTO.getBuildingName() + respDTO.getFloors().get(0).getFloorName());
-        drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-        tvTitle.setCompoundDrawablesRelative(null, null, drawable, null);
         if (respDTO.getMethods() != null && respDTO.getMethods().size() > 0) {
             for (Integer method : respDTO.getMethods()) {
                 if (method == 1) isPublicBathroom = true;
@@ -525,7 +521,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
                 floorsBeans.clear();
                 floorsBeans.addAll(respDTO.getFloors());
             }
-        autoBathroom.setData(floorsBeans);
+        autoBathroom.setData(floorsBeans , residenceId);
         autoBathroom.setIsSelect(isPublicBathroom);
     }
 
@@ -601,6 +597,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         this.queueId = id;
         Log.e(TAG, "startQueue: " + id);
         bathroomBookingDialog.setFinish();
+        presenter.setBookMethod(1);
 //        if (isCanJump) {
 //            startActivityForResult(new Intent(this, BookingActivity.class)
 //                    .putExtra(KEY_BATHQUEUE_ID, id)
@@ -702,11 +699,13 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
             startActivity(new Intent(getApplicationContext(), RechargeActivity.class));
         } else {
             if (TextUtils.isEmpty(deviceNo)) {
+
                 showPop();
 
             } else {
 //                autoShowDevice(deviceNo);
             }
+
         }
 
     }
@@ -730,31 +729,19 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
     private void autoChoseBathroom(Intent data) {
         isShowDialog = false;
         String deviceNo = data.getStringExtra(KEY_DEVICE_ACTIVITY_FOR_RESULT);
-        if (TextUtils.isEmpty(deviceNo)) {
+//        if (TextUtils.isEmpty(deviceNo)) {
+//            showPop();
+//        } else {
+////            autoShowDevice(deviceNo);
+////            showPopForDevice();
+//        }
+
+        if (presenter.getBookMehtod() == 1 ){
             showPop();
-        } else {
-            autoShowDevice(deviceNo);
-//            showPopForDevice();
         }
 
     }
 
-    private void autoShowDevice(String deviceNo) {
-        if (floorsBeans != null && floorsBeans.size() > 0) {
-
-            for (BathBuildingRespDTO.FloorsBean floorsBean : floorsBeans) {
-                for (GroupsBean groupsBean : floorsBean.getGroups()) {
-
-                    for (GroupsBean.BathRoomsBean bathRoomsBean : groupsBean.getBathRooms()) {
-                        if (deviceNo.equals(bathRoomsBean.getDeviceNo() + "")) {
-                            this.deviceNo = bathRoomsBean.getDeviceNo() + "";
-                            showPop(bathRoomsBean.getName(), bathRoomsBean.getDeviceNo() + "");
-                        }
-                    }
-                }
-            }
-        }
-    }
 
     @Override
     public void BathroomClick(GroupsBean.BathRoomsBean bathRoomsBean) {

@@ -129,7 +129,7 @@ public interface IListChoosePresenter<V extends IListChooseView> extends IBasePr
      *  @param residenceId  公共浴室位置
      *  @param bathType  1、宿舍 ， 2 、公共浴室
      */
-    void recordBath(long residenceId ,int bathType ,Long id);
+    void recordBath(long residenceId ,int bathType ,Long id , String mac);
 
 
     /**
