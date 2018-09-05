@@ -738,12 +738,9 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
 
         if (presenter.getBookMehtod() == 1 ){
             showPop();
-<<<<<<< HEAD
         } else {
 //            autoShowDevice(deviceNo);
 //            showPopForDevice();
-=======
->>>>>>> 3d39c4262acff470b561e1b8e14cf3b9d269c846
         }
 
     }

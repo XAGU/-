@@ -12,6 +12,8 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.lostandfound.SocalFragment;
 import com.xiaolian.amigo.ui.main.HomeFragment2;
 import com.xiaolian.amigo.ui.main.ProfileFragment2;
+import com.xiaolian.amigo.ui.main.intf.IMainPresenter;
+import com.xiaolian.amigo.ui.main.intf.IMainView;
 
 /**
  *  @author   wcm
@@ -23,9 +25,9 @@ public class DataGenerator {
     public static int[] mTableSle  = new int[]{R.drawable.tab_home_sel , R.drawable.tab_social_nor, R.drawable.tab_personal_sel  };
 
 
-    public static Fragment[] getFragment(){
+    public static Fragment[] getFragment(IMainPresenter<IMainView> presenter){
         Fragment fragments[] = new Fragment[3];
-        fragments[0] = new HomeFragment2();
+        fragments[0] = new HomeFragment2(presenter);
         fragments[1] = new SocalFragment();
         fragments[2] = new ProfileFragment2();
         return fragments;

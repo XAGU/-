@@ -238,9 +238,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
         presenter.onAttach(this);
 
-        if (isNotice) {
-            presenter.routeHeaterOrBathroom();
-        }
+//        if (isNotice) {
+//            presenter.routeHeaterOrBathroom();
+//        }
 
         // 友盟日志加密
         MobclickAgent.enableEncrypt(true);
@@ -313,7 +313,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
      */
     private void initTable() {
         if (fm == null) fm = getSupportFragmentManager();
-        mTableFragmentAdapter = new TableFragmentPagerAdapter(fm, DataGenerator.getFragment());
+        mTableFragmentAdapter = new TableFragmentPagerAdapter(fm, DataGenerator.getFragment(presenter));
         vgFragment.setAdapter(mTableFragmentAdapter);
 
 
@@ -554,14 +554,16 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 //            Log.wtf(TAG, e);
 //        }
         Log.d(TAG, "onResume");
-        if (isNotice && presenter != null) {
-            presenter.routeHeaterOrBathroom();
-            isNotice = false;
-        }
+
+        // TODO: 18/9/5   还没有想好这个是做什么的
+//        if (isNotice && presenter != null) {
+//            presenter.routeHeaterOrBathroom();
+//            isNotice = false;
+//        }
         showBanners(null);
         if (!isNetworkAvailable()) {
             onError(R.string.network_available_error_tip);
-            showNoticeAmount(0);
+//            showNoticeAmount(0);
             if (presenter.isLogin()) {
                 // 设置昵称
 //                tvNickName.setText(presenter.getUserInfo().getNickName());

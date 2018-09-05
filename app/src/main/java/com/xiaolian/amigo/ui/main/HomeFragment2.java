@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.main;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -22,10 +23,13 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.bathroom.CurrentBathOrderRespDTO;
 import com.xiaolian.amigo.data.network.model.system.BannerDTO;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
+import com.xiaolian.amigo.ui.base.BaseFragment;
 import com.xiaolian.amigo.ui.main.adaptor.HomeAdaptor;
 import com.xiaolian.amigo.ui.main.adaptor.HomeBannerDelegate;
 import com.xiaolian.amigo.ui.main.adaptor.HomeNormalDelegate;
 import com.xiaolian.amigo.ui.main.adaptor.HomeSmallDelegate;
+import com.xiaolian.amigo.ui.main.intf.IMainPresenter;
+import com.xiaolian.amigo.ui.main.intf.IMainView;
 import com.xiaolian.amigo.ui.widget.RecyclerItemClickListener;
 import com.xiaolian.amigo.util.Log;
 
@@ -48,7 +52,17 @@ import lombok.Data;
  * @date 17/9/5
  */
 
-public class HomeFragment2 extends Fragment {
+public class HomeFragment2 extends BaseFragment {
+    private IMainPresenter<IMainView> presenter ;
+
+
+    @SuppressLint("ValidFragment")
+    public HomeFragment2(IMainPresenter<IMainView> presenter){
+        this.presenter = presenter ;
+    }
+
+    public HomeFragment2(){} ;
+
     private static final int SMALL_LIST_FORMAT_MIN_SIZE = 3;
 
     private static final String TAG = HomeFragment2.class.getSimpleName();
@@ -104,6 +118,8 @@ public class HomeFragment2 extends Fragment {
     private GridLayoutManager gridLayoutManager;
 
     private Unbinder unbinder ;
+
+
 
     @Nullable
     @Override
@@ -170,9 +186,12 @@ public class HomeFragment2 extends Fragment {
                 }));
     }
 
+
+
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
+        Log.d(TAG ,hidden+"");
         if (!hidden) {
             recyclerView.scheduleLayoutAnimation();
         }
@@ -198,6 +217,9 @@ public class HomeFragment2 extends Fragment {
             }
         }
     }
+
+
+
 
     private void notifyAdaptor() {
         if (recyclerView.getAdapter() == null) {
@@ -347,6 +369,8 @@ public class HomeFragment2 extends Fragment {
         gate.setType(HomeAdaptor.SMALL_TYPE);
         lost.setType(HomeAdaptor.SMALL_TYPE);
     }
+
+
 
     private void onPrepayOrderEvent(HomeAdaptor.ItemWrapper itemWrapper) {
         boolean needNotify = false;
