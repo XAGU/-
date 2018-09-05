@@ -137,7 +137,7 @@ public class SocalFragment extends BaseFragment {
     public void showPop() {
         if (mPopupWindow == null) return;
         // 相对于 + 号正下面，同时可以设置偏移量
-        mPopupWindow.showAsDropDown(more, ScreenUtils.dpToPxInt(mActivity, 11), ScreenUtils.dpToPxInt(mActivity , 16) );
+        mPopupWindow.showAsDropDown(more, 0, ScreenUtils.dpToPxInt(mActivity , 16) );
         // 设置pop关闭监听，用于改变背景透明度
     }
 
