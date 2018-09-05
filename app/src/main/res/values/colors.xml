@@ -114,4 +114,6 @@
     <color name= "bathroom_stroke" >#FFB3B2</color>
 
     <color name="color_bg_main_table">#F8F8F8</color>
+
+    <color name="color_bg_gray_f8">#fff8f8f8</color>
 </resources>

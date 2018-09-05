@@ -69,6 +69,7 @@ public abstract class BaseFragment extends Fragment  implements IBaseView{
 
     protected Activity mActivity ;
 
+    protected  boolean isCreated  ;
 
     private final String TAG = this.getClass().getSimpleName();
 
@@ -101,8 +102,23 @@ public abstract class BaseFragment extends Fragment  implements IBaseView{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        isCreated = true ;
         if (mActivity != null) rxPermissions = RxPermissions.getInstance(mActivity);
     }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (!isCreated){
+            return ;
+        }
+
+        if (isVisibleToUser){
+            initData();
+        }
+    }
+
+    protected abstract  void initData();
 
     private void selectPhoto() {
         mPickImageUri = getImageUri("pick");

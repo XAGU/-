@@ -2,6 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <include layout="@layout/activity_main_top" />
+
     <android.support.v7.widget.RecyclerView
         android:layout_marginLeft="@dimen/mainMarginLeftRight"
         android:layout_marginRight="@dimen/mainMarginLeftRight"

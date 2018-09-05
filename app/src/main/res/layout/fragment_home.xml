@@ -17,6 +17,7 @@
             android:textSize="19sp"
             android:textColor="@color/colorDark2"
             android:id="@+id/school_name"
+            android:layout_marginLeft="21dp"
             />
 
         <ImageView
@@ -26,6 +27,7 @@
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:src="@drawable/icon_scan_home"
+            android:layout_marginRight="21dp"
             />
 
         <View
@@ -36,6 +38,7 @@
     </RelativeLayout>
     <android.support.v7.widget.RecyclerView
         android:visibility="visible"
+        android:layout_marginTop="21dp"
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

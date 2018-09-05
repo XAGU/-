@@ -1,11 +1,12 @@
 package com.xiaolian.amigo.ui.main;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.util.ObjectsCompat;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -13,17 +14,21 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.DecodeHintType;
+import com.google.zxing.integration.android.IntentIntegrator;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.bathroom.CurrentBathOrderRespDTO;
 import com.xiaolian.amigo.data.network.model.system.BannerDTO;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
 import com.xiaolian.amigo.ui.base.BaseFragment;
+import com.xiaolian.amigo.ui.device.washer.ScanActivity;
+import com.xiaolian.amigo.ui.login.LoginActivity;
 import com.xiaolian.amigo.ui.main.adaptor.HomeAdaptor;
 import com.xiaolian.amigo.ui.main.adaptor.HomeBannerDelegate;
 import com.xiaolian.amigo.ui.main.adaptor.HomeNormalDelegate;
@@ -31,6 +36,7 @@ import com.xiaolian.amigo.ui.main.adaptor.HomeSmallDelegate;
 import com.xiaolian.amigo.ui.main.intf.IMainPresenter;
 import com.xiaolian.amigo.ui.main.intf.IMainView;
 import com.xiaolian.amigo.ui.widget.RecyclerItemClickListener;
+import com.xiaolian.amigo.util.AppUtils;
 import com.xiaolian.amigo.util.Log;
 
 import org.greenrobot.eventbus.EventBus;
@@ -42,8 +48,12 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import lombok.Data;
+
+import static com.xiaolian.amigo.ui.device.washer.ScanActivity.IS_SACN;
+import static com.xiaolian.amigo.ui.device.washer.ScanActivity.SCAN_TYPE;
 
 /**
  * 主页
@@ -54,14 +64,15 @@ import lombok.Data;
 
 public class HomeFragment2 extends BaseFragment {
     private IMainPresenter<IMainView> presenter ;
-
+    private boolean isServerError ;
 
     @SuppressLint("ValidFragment")
-    public HomeFragment2(IMainPresenter<IMainView> presenter){
+    public HomeFragment2(IMainPresenter<IMainView> presenter , boolean isServerError){
         this.presenter = presenter ;
+        this.isServerError = isServerError ;
     }
 
-    public HomeFragment2(){} ;
+    public HomeFragment2(){}
 
     private static final int SMALL_LIST_FORMAT_MIN_SIZE = 3;
 
@@ -81,15 +92,15 @@ public class HomeFragment2 extends BaseFragment {
     HomeAdaptor.ItemWrapper gate = new HomeAdaptor.ItemWrapper(HomeAdaptor.SMALL_TYPE,
             null, "门禁卡", "ACCESS CONTROL",
             R.drawable.gate, R.drawable.small_gate);
-    HomeAdaptor.ItemWrapper lost = new HomeAdaptor.ItemWrapper(HomeAdaptor.SMALL_TYPE,
-            null, "失物招领", "LOST AND FOUND",
-            R.drawable.lost, R.drawable.small_lost);
+//    HomeAdaptor.ItemWrapper lost = new HomeAdaptor.ItemWrapper(HomeAdaptor.SMALL_TYPE,
+//            null, "失物招领", "LOST AND FOUND",
+//            R.drawable.lost, R.drawable.small_lost);
 
     List<HomeAdaptor.ItemWrapper> items = new ArrayList<HomeAdaptor.ItemWrapper>() {
         {
 //            add(shower);
 //            add(water);
-            add(lost);
+//            add(lost);
         }
     };
 
@@ -120,13 +131,14 @@ public class HomeFragment2 extends BaseFragment {
     private Unbinder unbinder ;
 
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View homeView = inflater.inflate(R.layout.fragment_home, container, false);
         unbinder = ButterKnife.bind(this, homeView);
+        requestData();
+        Log.d(TAG , "onCreateView");
         return homeView;
     }
 
@@ -139,10 +151,6 @@ public class HomeFragment2 extends BaseFragment {
         adaptor.addItemViewDelegate(new HomeSmallDelegate(getActivity()));
         adaptor.addItemViewDelegate(new HomeBannerDelegate(getActivity()));
         recyclerView.setLayoutManager(gridLayoutManager);
-        ((DefaultItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
-        LayoutAnimationController animation = AnimationUtils
-                .loadLayoutAnimation(getContext(), R.anim.layout_animation_home_slide_left_to_right);
-        recyclerView.setLayoutAnimation(animation);
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), recyclerView,
                 new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
@@ -188,13 +196,58 @@ public class HomeFragment2 extends BaseFragment {
 
 
 
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        Log.d(TAG ,hidden+"");
-        if (!hidden) {
-            recyclerView.scheduleLayoutAnimation();
+    /**
+     * 请求网络数据
+     */
+    public void requestData(){
+        if (presenter == null )  return ;
+        if (!isNetworkAvailable()) {
+//            onError(R.string.network_available_error_tip);
+            if (presenter.isLogin()) {
+                presenter.getUser();
+                presenter.getSchoolBusiness();
+                // 设置学校
+                schoolName.setText(presenter.getUserInfo().getSchoolName());
+                // 设置学校业务
+                return;
+            }
+            initSchoolBiz();
+            return;
         }
+        if (!presenter.isLogin()) {
+            initSchoolBiz();
+            Log.d(TAG, "onResume: not login");
+        } else {
+            if (isServerError) {
+                initSchoolBiz();
+            }
+            uploadDeviceInfo();
+            // 请求通知
+            presenter.getSchoolBusiness();
+            presenter.getUser();
+            schoolName.setText(presenter.getUserInfo().getSchoolName());
+            presenter.getNoticeAmount();
+            // 设置昵称
+        }
+    }
+
+
+    private void uploadDeviceInfo() {
+        @SuppressLint("HardwareIds")
+        String androidId = Settings.Secure.getString(getContext().getContentResolver(),
+                Settings.Secure.ANDROID_ID);
+        String model = Build.MODEL;
+        String brand = Build.BRAND;
+        int systemVersion = Build.VERSION.SDK_INT;
+        String appVersion = AppUtils.getVersionName(mActivity);
+        if (presenter != null)
+        presenter.uploadDeviceInfo(appVersion, brand, model,
+                systemVersion, androidId);
+    }
+
+    private void initSchoolBiz(){
+        onEvent(new HomeFragment2.Event(HomeFragment2.Event.EventType.INIT_BIZ,
+                null));
     }
 
     @Override
@@ -219,18 +272,16 @@ public class HomeFragment2 extends BaseFragment {
     }
 
 
-
-
     private void notifyAdaptor() {
         if (recyclerView.getAdapter() == null) {
             resetItem();
             recyclerView.setAdapter(adaptor);
             recyclerView.setVisibility(View.VISIBLE);
-            LayoutAnimationController animation = AnimationUtils
-                    .loadLayoutAnimation(getContext(), R.anim.layout_animation_home_slide_left_to_right);
-            AlphaAnimation anim = new AlphaAnimation(0.0f, 1.0f);
-            anim.setDuration(500);
-            recyclerView.startAnimation(animation.getAnimation());
+//            LayoutAnimationController animation = AnimationUtils
+//                    .loadLayoutAnimation(getContext(), R.anim.layout_animation_home_slide_left_to_right);
+////            AlphaAnimation anim = new AlphaAnimation(0.0f, 1.0f);
+//            anim.setDuration(500);
+//            recyclerView.startAnimation(animation.getAnimation());
         } else {
             resetItem();
             adaptor.notifyDataSetChanged();
@@ -257,7 +308,7 @@ public class HomeFragment2 extends BaseFragment {
 //        if (lost.isActive()) {
 //            items.add(lost);
 //        }
-        items.add(lost);
+//        items.add(lost);
         if (banner != null) {
             items.add(banner);
         }
@@ -275,7 +326,7 @@ public class HomeFragment2 extends BaseFragment {
         water.setActive(false);
         washer.setActive(false);
         gate.setActive(false);
-        lost.setActive(true);
+//        lost.setActive(true);
         /// business为空则不显示shower和water
         if (businesses == null || businesses.isEmpty()) {
             notifyAdaptor();
@@ -357,7 +408,7 @@ public class HomeFragment2 extends BaseFragment {
         water.setType(HomeAdaptor.NORMAL_TYPE);
         washer.setType(HomeAdaptor.NORMAL_TYPE);
         gate.setType(HomeAdaptor.NORMAL_TYPE);
-        lost.setType(HomeAdaptor.NORMAL_TYPE);
+//        lost.setType(HomeAdaptor.NORMAL_TYPE);
     }
 
     private void switchSmallLayout() {
@@ -367,7 +418,7 @@ public class HomeFragment2 extends BaseFragment {
         water.setType(HomeAdaptor.SMALL_TYPE);
         washer.setType(HomeAdaptor.SMALL_TYPE);
         gate.setType(HomeAdaptor.SMALL_TYPE);
-        lost.setType(HomeAdaptor.SMALL_TYPE);
+//        lost.setType(HomeAdaptor.SMALL_TYPE);
     }
 
 
@@ -468,6 +519,16 @@ public class HomeFragment2 extends BaseFragment {
         unbinder.unbind();
     }
 
+    @Override
+    protected void initData() {
+        requestData();
+
+
+        // 禁止动画
+//        if (recyclerView != null)
+//        recyclerView.scheduleLayoutAnimation();
+    }
+
     @Data
     public static class Event {
         private EventType type;
@@ -523,5 +584,38 @@ public class HomeFragment2 extends BaseFragment {
     public void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
+    }
+
+
+    /**
+     * 扫一扫
+     */
+    @OnClick(R.id.scan)
+    public void scan() {
+        if (presenter.isLogin()) {
+            scanQRCode();
+        } else {
+            startActivity(new Intent(mActivity, LoginActivity.class));
+        }
+    }
+
+    private void scanQRCode() {
+//        startActivity(new Intent(this, CaptureActivity.class));
+        IntentIntegrator integrator = new IntentIntegrator(mActivity);
+        //底部的提示文字，设为""可以置空
+        integrator.setPrompt("");
+        //前置或者后置摄像头
+        integrator.setCameraId(0);
+        //扫描成功的「哔哔」声，默认开启
+        integrator.setBeepEnabled(false);
+        integrator.setCaptureActivity(ScanActivity.class);
+        integrator.setOrientationLocked(true);
+        integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
+        integrator.addExtra(DecodeHintType.CHARACTER_SET.name(), "utf-8");
+        integrator.addExtra(DecodeHintType.TRY_HARDER.name(), Boolean.TRUE);
+        integrator.addExtra(DecodeHintType.POSSIBLE_FORMATS.name(), BarcodeFormat.QR_CODE);
+        integrator.addExtra(SCAN_TYPE, 2);
+        integrator.addExtra(IS_SACN, true);
+        integrator.initiateScan();
     }
 }

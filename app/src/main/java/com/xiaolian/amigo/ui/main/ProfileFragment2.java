@@ -100,9 +100,9 @@ public class ProfileFragment2 extends Fragment {
             }
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        LayoutAnimationController animation = AnimationUtils
-                .loadLayoutAnimation(getContext(), R.anim.layout_animation_profile_slide_left_to_right);
-        recyclerView.setLayoutAnimation(animation);
+//        LayoutAnimationController animation = AnimationUtils
+//                .loadLayoutAnimation(getContext(), R.anim.layout_animation_profile_slide_left_to_right);
+//        recyclerView.setLayoutAnimation(animation);
         recyclerView.setAdapter(adaptor);
     }
 
@@ -151,8 +151,8 @@ public class ProfileFragment2 extends Fragment {
     public void onEvent(Event event) {
         switch (event.getType()) {
             case CHANGE_ANIMATION:
-                int animationRes = (int) event.getObject();
-                changeAnimation(animationRes);
+//                int animationRes = (int) event.getObject();
+//                changeAnimation(animationRes);
                 break;
             default:
                 break;
@@ -165,13 +165,6 @@ public class ProfileFragment2 extends Fragment {
         recyclerView.setLayoutAnimation(animation);
     }
 
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (!hidden) {
-            recyclerView.scheduleLayoutAnimation();
-        }
-    }
 
     @Data
     public static class Event {
@@ -200,6 +193,9 @@ public class ProfileFragment2 extends Fragment {
             private int type;
         }
     }
+
+
+
 
     @Override
     public void onStart() {

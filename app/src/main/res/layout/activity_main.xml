@@ -37,7 +37,7 @@
     <!--</ScrollView>-->
     <!--<RelativeLayout-->
         <!--android:id="@+id/rl_notice"-->
-        <!--android:visibility="gone"-->
+        <!--android:visibility="visible"-->
         <!--android:layout_alignParentBottom="true"-->
         <!--android:layout_marginRight="14dp"-->
         <!--android:layout_marginEnd="14dp"-->
@@ -64,7 +64,7 @@
             <!--android:layout_marginBottom="3dp"/>-->
         <!--<TextView-->
             <!--android:id="@+id/tv_notice_count"-->
-            <!--android:visibility="gone"-->
+            <!--android:visibility="visible"-->
             <!--android:layout_alignParentRight="true"-->
             <!--android:layout_alignParentEnd="true"-->
             <!--android:layout_above="@id/iv_notice"-->
@@ -77,6 +77,7 @@
             <!--android:paddingRight="3dp"-->
             <!--android:paddingBottom="1dp"-->
             <!--android:gravity="center"-->
+            <!--android:text="1111"-->
             <!--android:background="@drawable/bg_rect_red_corner"-->
             <!--android:layout_width="wrap_content"-->
             <!--android:layout_height="wrap_content" />-->

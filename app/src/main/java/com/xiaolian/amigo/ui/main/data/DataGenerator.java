@@ -25,9 +25,9 @@ public class DataGenerator {
     public static int[] mTableSle  = new int[]{R.drawable.tab_home_sel , R.drawable.tab_social_nor, R.drawable.tab_personal_sel  };
 
 
-    public static Fragment[] getFragment(IMainPresenter<IMainView> presenter){
+    public static Fragment[] getFragment(IMainPresenter<IMainView> presenter , boolean isServerError){
         Fragment fragments[] = new Fragment[3];
-        fragments[0] = new HomeFragment2(presenter);
+        fragments[0] = new HomeFragment2(presenter ,isServerError);
         fragments[1] = new SocalFragment();
         fragments[2] = new ProfileFragment2();
         return fragments;

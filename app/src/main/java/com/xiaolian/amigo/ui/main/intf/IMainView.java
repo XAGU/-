@@ -150,6 +150,7 @@ public interface IMainView extends IBaseView {
     /**
      * 洗澡地址为空时,选择洗澡地址
      */
+    @Deprecated
     void choseBathroomAddress();
 
     /**
