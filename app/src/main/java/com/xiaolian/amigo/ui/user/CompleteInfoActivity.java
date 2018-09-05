@@ -142,6 +142,7 @@ public class CompleteInfoActivity extends UserBaseActivity implements ICompleteI
 //            toast.show();
 //            return;
 //        }
+
         presenter.updateSex(sex); //更新个人性别，异步操作，有可能会失败
 
         if (bathRouteRespDTO!=null && !bathRouteRespDTO.isExistHistory()) /*未设置洗澡地址信息*/ {
