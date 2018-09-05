@@ -91,7 +91,7 @@ public interface IListChooseView extends IBaseView {
      * 选择完洗澡地址， 直接进入热水澡界面
      * @param dto
      */
-    void startShower(UserResidenceInListDTO dto);
+    void startShower(UserResidenceInListDTO dto );
 
 
 }

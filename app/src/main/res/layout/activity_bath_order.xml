@@ -79,6 +79,7 @@
                         android:paddingBottom="10dp"
                         android:paddingStart="20dp"
                         android:paddingEnd="20dp"
+                        android:visibility="gone"
                         android:src="@drawable/back" />
 
                     <TextView

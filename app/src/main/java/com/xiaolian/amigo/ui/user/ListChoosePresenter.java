@@ -392,7 +392,7 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
     }
 
     @Override
-    public void recordBath(long residenceId, int bathType , Long id) {
+    public void recordBath(long residenceId, int bathType , Long id ,String mac) {
         RecordResidenceReqDTO reqDTO = new RecordResidenceReqDTO();
         reqDTO.setResidenceId(residenceId);
         reqDTO.setBathType(bathType);
@@ -407,6 +407,10 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
                     if (dto.isPubBath()){
                         getMvpView().startBathroom(dto);
                     }else{
+                        dto.setMacAddress(mac);
+                        if (TextUtils.isEmpty(dto.getMacAddress())){
+                            dto.setMacAddress(mac);
+                        }
                         getMvpView().startShower(dto);
                     }
                 }else{
@@ -419,7 +423,7 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
     @Override
     public boolean isStartBathroom(ListChooseAdaptor.Item residence) {
         if (!TextUtils.isEmpty(residence.getGroupId())){
-            recordBath(residence.getId() ,2 ,null);
+            recordBath(residence.getId() ,2 ,null , residence.getMac());
             return false ;
         }
         return true ;

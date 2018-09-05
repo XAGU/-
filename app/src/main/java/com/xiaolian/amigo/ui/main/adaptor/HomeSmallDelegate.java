@@ -108,7 +108,7 @@ public class HomeSmallDelegate implements ItemViewDelegate<HomeAdaptor.ItemWrapp
                 holder.getView(R.id.tv_desc).setVisibility(View.VISIBLE);
             }
             if (itemWrapper.isUsing()) {
-                holder.setText(R.id.tv_device_title, "正在使用" + itemWrapper.getDeviceName());
+                holder.setText(R.id.tv_device_title, "正在使用" );
                 holder.getView(R.id.dfv_dot).setVisibility(View.VISIBLE);
                 ((DotFlashView) holder.getView(R.id.dfv_dot)).startAnimation();
             } else {

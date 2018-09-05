@@ -13,7 +13,7 @@ public interface IChooseBathroomPresenter<V extends IChooseBathroomView>
     void getBathroomList(long buildingId);
 
 
-    void precondition(boolean isShowDialog);
+    void precondition(boolean isShowDialog , boolean isBooking );
 
     boolean getBathroomPassword();
 
@@ -51,5 +51,10 @@ public interface IChooseBathroomPresenter<V extends IChooseBathroomView>
      * @param bathOrder
      */
     void queryBathorder(long bathOrder);
+
+
+    void setBookMethod(int bookMethod);
+
+    int getBookMehtod();
 
 }

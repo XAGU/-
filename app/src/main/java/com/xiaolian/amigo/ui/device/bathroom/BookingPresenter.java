@@ -6,6 +6,7 @@ import com.xiaolian.amigo.data.manager.intf.IBathroomDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.bathroom.BathBookingRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathBookingStatusReqDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.BathOrderCurrentRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathRoomReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BookingQueueProgressDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
@@ -28,6 +29,8 @@ import static com.xiaolian.amigo.util.Constant.CANCELED;
 import static com.xiaolian.amigo.util.Constant.EXPIRED;
 import static com.xiaolian.amigo.util.Constant.FINISHED;
 import static com.xiaolian.amigo.util.Constant.OPENED;
+import static com.xiaolian.amigo.util.Constant.ORDER_SETTLE;
+import static com.xiaolian.amigo.util.Constant.ORDER_USING;
 
 
 /**
@@ -157,7 +160,7 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
                         } else if (result.getData().getStatus() == EXPIRED) {
                             getMvpView().appointMentTimeOut(true);
                         }else if (result.getData().getStatus() == FINISHED){
-                            getMvpView().startOrderInfo(result.getData());
+                            queryTradeOrder(result.getData().getBathOrderId());
                         }
                     } else {
                           if (result.getData().getStatus() == ACCEPTED){  // 成功
@@ -169,13 +172,15 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
                           }else if (result.getData().getStatus() == EXPIRED){   //  超时
                               getMvpView().appointMentTimeOut(result.getData());
                           }else if (result.getData().getStatus() ==FINISHED){
-                              getMvpView().startOrderInfo(result.getData());
+                              queryTradeOrder(result.getData().getBathOrderId());
                           }
                     }
                 }
                 }
         });
     }
+
+
 
     /**
      * 预约时查询订单状态
@@ -361,6 +366,30 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
                 if (result.getError() == null){
 
                 }else {
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+        });
+    }
+
+    @Override
+    public void queryTradeOrder(long id) {
+
+        SimpleReqDTO simpleReqDTO  = new SimpleReqDTO();
+        simpleReqDTO.setId(id);
+        addObserver(bathroomDataManager.orderQuery(simpleReqDTO) , new NetworkObserver<ApiResult<BathOrderCurrentRespDTO>>(){
+
+            @Override
+            public void onStart() {
+
+            }
+
+
+            @Override
+            public void onReady(ApiResult<BathOrderCurrentRespDTO> result) {
+                if (result.getError() == null) {
+                    getMvpView().startOrderInfo(result.getData());
+                }else{
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }
             }

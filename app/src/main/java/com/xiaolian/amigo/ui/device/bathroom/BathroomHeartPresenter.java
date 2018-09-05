@@ -42,9 +42,15 @@ public class BathroomHeartPresenter<V extends IBathroomHeartView> extends BasePr
             public void onReady(ApiResult<BooleanRespDTO> result) {
                 if (result.getError() == null){
                     if (result.getData().isResult()){
-                        getMvpView().onSuccess("结算成功");
+//                        getMvpView().onSuccess("结算成功");
                         Log.e(TAG, "onReady: >>>> askSettle" );
-                        getMvpView().goToOrderInfo();
+//                        getMvpView().goToOrderInfo();
+                        delay(3, new Action1<Long>() {
+                            @Override
+                            public void call(Long aLong) {
+                                queryBathroomOrder(id ,false , 3);
+                            }
+                        });
                     }else{
                         getMvpView().onError(result.getData().getFailReason());
                         getMvpView().reset();
@@ -71,7 +77,7 @@ public class BathroomHeartPresenter<V extends IBathroomHeartView> extends BasePr
     }
 
     @Override
-    public void queryBathroomOrder(Long id , boolean isShowDialog) {
+    public void queryBathroomOrder(Long id , boolean isShowDialog , int  time) {
 
         if (isPause) return ;
         SimpleReqDTO simpleReqDTO  = new SimpleReqDTO();
@@ -80,10 +86,11 @@ public class BathroomHeartPresenter<V extends IBathroomHeartView> extends BasePr
 
             @Override
             public void onStart() {
-                if (isShowDialog) {
+                if (isShowDialog || time == 3) {
                     super.onStart();
                 }
             }
+
 
             @Override
             public void onReady(ApiResult<BathOrderCurrentRespDTO> result) {
@@ -91,15 +98,18 @@ public class BathroomHeartPresenter<V extends IBathroomHeartView> extends BasePr
                 Log.e(TAG, "onReady: " );
                 if (result.getError() == null){
                     if (result.getData().getStatus() == ORDER_USING) {
-                        getMvpView().getOrderInfo(result.getData());
-                        delay(3, new Action1<Long>() {
-                            @Override
-                            public void call(Long aLong) {
-                                Log.e(TAG, "call:>>>>> delay " );
-                                queryBathroomOrder(id , false);
-                            }
-                        });
+                            getMvpView().getOrderInfo(result.getData());
+                            delay(time, new Action1<Long>() {
+                                @Override
+                                public void call(Long aLong) {
+                                    Log.e(TAG, "call:>>>>> delay ");
+                                    queryBathroomOrder(id, false, time);
+                                }
+                            });
                     }else if (result.getData().getStatus() == ORDER_SETTLE){
+                        if (time == 3 ){
+                            getMvpView().onSuccess("结算成功");
+                        }
                         getMvpView().goToOrderInfo(result.getData());
                     }
 

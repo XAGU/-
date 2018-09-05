@@ -10,6 +10,7 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.network.model.user.UserResidenceDTO;
 import com.xiaolian.amigo.data.network.model.user.UserResidenceInListDTO;
+import com.xiaolian.amigo.ui.device.bathroom.BathroomHeaterActivity;
 import com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity;
 import com.xiaolian.amigo.ui.device.heater.HeaterActivity;
 import com.xiaolian.amigo.ui.user.adaptor.EditDormitoryAdaptor;

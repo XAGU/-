@@ -106,7 +106,7 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
 
 
     @Override
-    public void precondition(boolean isShowDialog) {
+    public void precondition(boolean isShowDialog , boolean isBooking) {
         addObserver(bathroomDataManager.getOrderPrecondition(),new NetworkObserver<ApiResult<BathOrderPreconditionRespDTO>>(){
             @Override
             public void onStart() {
@@ -120,7 +120,16 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
                  if (result.getError() == null){
 
                      if (result.getData().getStatus() == INIT){
-                         getMvpView().hideBathroomDialog(true);
+                         if (isShowDialog ){
+                             getMvpView().hideBathroomDialog(true);
+                         }else {
+                             if (!isBooking) {
+                                 getMvpView().onError("预约失败，请重试");
+                                 getMvpView().setBtnEnable();
+                                 getMvpView().hideBathroomDialog(false);
+                             }
+
+                         }
                      }
                      getMvpView().saveBookingInfo(result.getData());
                      if (result.getData().getStatus() == QUEUEING){
@@ -212,7 +221,7 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
 
     @Override
     public void booking(long deviceNo, long floorId) {
-        Log.e(TAG, "booking: " );
+
         if (bathroomDataManager.getBathroomPassword()) {
             BathBookingReqDTO reqDTO = new BathBookingReqDTO();
             boolean isFloor = false;
@@ -227,6 +236,9 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
             }
 
             boolean finalIsFloor = isFloor;
+
+            if (finalIsFloor) setBookMethod(1);
+            else setBookMethod(2);
             addObserver(bathroomDataManager.booking(reqDTO), new NetworkObserver<ApiResult<TryBookingResultRespDTO>>() {
 
                 @Override
@@ -281,7 +293,7 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
     }
 
     @Override
-    public void queryBooking(long bookingId) {
+    public void queryBooking(long bookingId ) {
         if (this.isOnpause) return ;
         BathBookingStatusReqDTO simpleReqDTO = new BathBookingStatusReqDTO();
         simpleReqDTO.setId(bookingId +"");
@@ -313,11 +325,10 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
                                    }
                                });
                            }else{
-                                   getMvpView().hideBathroomDialog(false);
+//                                   getMvpView().hideBathroomDialog(false);
                                    clearTime();
-                                   precondition(false);
-                               getMvpView().onError("预约失败，请重试");
-                               getMvpView().setBtnEnable();
+                                   precondition(false , false);
+//
                            }
                        }else if (result.getData().getStatus() == FAIL){
                            getMvpView().hideBathroomDialog(false);
@@ -380,6 +391,15 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
         });
     }
 
+    @Override
+    public void setBookMethod(int bookMethod) {
+        bathroomDataManager.setBookMethod(bookMethod);
+    }
+
+    @Override
+    public int getBookMehtod() {
+        return bathroomDataManager.getBookMethod();
+    }
 
 
     private void delay(int time ,  Action1<Long> action0 ){

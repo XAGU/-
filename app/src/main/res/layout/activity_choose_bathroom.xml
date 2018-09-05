@@ -34,7 +34,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:layout_centerInParent="true"
-                android:drawableEnd="@drawable/white_down"
+                android:drawableEnd="@drawable/arrow_down"
                 android:drawablePadding="6dp"
                 tools:text="123公寓4栋"
                 android:textColor="#222"
@@ -174,21 +174,34 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <Button
+                android:id="@+id/pre_bathroom1"
+                android:textAllCaps="false"
+                android:layout_marginBottom="21dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:layout_marginStart="@dimen/mainMarginLeftRight"
+                android:layout_marginEnd="@dimen/mainMarginLeftRight"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/button_enable"
+                android:textStyle="bold"
+                android:stateListAnimator="@null"
+                />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_above="@id/ll_bottom"
+                android:layout_above="@id/pre_bathroom1"
                 android:layout_below="@id/ll_top"
                 android:gravity="center"
                 >
 
-
                 <com.xiaolian.amigo.ui.widget.AutoBathroom
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:id="@+id/auto_bathroom"
-                    android:layout_marginBottom="50dp"/>
+                    android:id="@+id/auto_bathroom" />
             </LinearLayout>
 
             <!--<Button-->
@@ -208,21 +221,7 @@
                 <!--android:visibility="gone"-->
                 <!--/>-->
 
-            <Button
-                android:id="@+id/pre_bathroom1"
-                android:textAllCaps="false"
-                android:layout_marginBottom="21dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="@color/white"
-                android:layout_marginStart="@dimen/mainMarginLeftRight"
-                android:layout_marginEnd="@dimen/mainMarginLeftRight"
-                android:layout_alignParentBottom="true"
-                android:background="@drawable/button_enable"
-                android:textStyle="bold"
-                android:stateListAnimator="@null"
-                />
+
         </RelativeLayout>
 
 

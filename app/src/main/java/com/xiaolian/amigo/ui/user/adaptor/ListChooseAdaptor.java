@@ -136,6 +136,7 @@ public class ListChooseAdaptor extends RecyclerView.Adapter<ListChooseAdaptor.Vi
         int deviceType;
         boolean deviceExist = true;
         String groupId ;
+        String mac ;
 
         public Item(String content, boolean tick, Long id) {
             this(content, tick);
@@ -165,6 +166,7 @@ public class ListChooseAdaptor extends RecyclerView.Adapter<ListChooseAdaptor.Vi
             this.tick = false;
             this.deviceExist = !TextUtils.isEmpty(residence.getMacAddress());
             this.groupId = residence.getGroupId();
+            this.mac = residence.getMacAddress() ;
         }
 
 

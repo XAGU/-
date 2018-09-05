@@ -3,6 +3,7 @@ package com.xiaolian.amigo.ui.widget.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -28,6 +29,7 @@ public class AvailabilityDialog extends Dialog {
     private View vDivide;
     private Type type;
     private OnOkClickListener listener;
+    private onCancelListener cancelListener ;
     private Context context;
 
     public AvailabilityDialog(@NonNull Context context) {
@@ -51,7 +53,11 @@ public class AvailabilityDialog extends Dialog {
         tvTip = findViewById(R.id.tv_tip);
         tvSubTip = findViewById(R.id.tv_sub_tip);
         tvCancel = findViewById(R.id.tv_cancel);
-        tvCancel.setOnClickListener(v -> dismiss());
+        tvCancel.setOnClickListener(v -> {
+            dismiss();
+            if (cancelListener != null) cancelListener.onCancelLick();
+        });
+
         tvOk = findViewById(R.id.tv_ok);
         tvOk.setOnClickListener(v -> {
             dismiss();
@@ -59,6 +65,11 @@ public class AvailabilityDialog extends Dialog {
                 listener.onOkClick(this);
             }
         });
+    }
+
+
+    public void setCancelListener(onCancelListener cancelListener) {
+        this.cancelListener = cancelListener;
     }
 
     public void setType(Type type) {
@@ -121,6 +132,10 @@ public class AvailabilityDialog extends Dialog {
 
     public interface OnOkClickListener {
         void onOkClick(Dialog dialog);
+    }
+
+    public interface onCancelListener{
+        void onCancelLick();
     }
 
     public enum Type {

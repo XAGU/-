@@ -89,4 +89,6 @@ public interface IScanView extends IBaseView {
      * @param isBle
      */
     void goToBleDevice(boolean isTimeValid, int type, String macAddress, BriefDeviceDTO data, boolean isBle);
+
+
 }

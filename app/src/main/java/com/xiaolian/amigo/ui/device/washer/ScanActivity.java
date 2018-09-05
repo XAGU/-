@@ -42,7 +42,6 @@ import com.xiaolian.amigo.ui.widget.ScanDialog;
 import com.xiaolian.amigo.ui.widget.dialog.AvailabilityDialog;
 import com.xiaolian.amigo.ui.widget.qrcode.CustomCaptureManager;
 import com.xiaolian.amigo.util.Constant;
-import com.xiaolian.amigo.util.RxHelper;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -52,10 +51,8 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import rx.functions.Action1;
 
 import static com.xiaolian.amigo.data.enumeration.Device.HEATER;
-import static com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity.CONN_TYPE;
 import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_DEVICE_TYPE;
 import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_LOCATION;
 import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_MAC_ADDRESS;
@@ -200,21 +197,14 @@ public class ScanActivity extends WasherBaseActivity
                 mac = contents[1];
                 isBle = "1".equals(contents[2]) ? true : false;
                 type = Integer.parseInt(contents[0]);
-                presenter.checkDeviceUseage(type, mac, isBle);
                 capture.isCanPause = true ;
+                presenter.checkDeviceUseage(type, mac, isBle);
             } catch (Exception e) {
                 Log.d(TAG, "scanContent: " + scanContent);
                 capture.isCanPause = false ;
                 resumeScan();
             }
         }else{
-//            RxHelper.delay(1, new Action1<Long>() {
-//                @Override
-//                public void call(Long aLong) {
-//                    resumeScan();
-//                }
-//            });
-
             capture.isCanPause = false ;
             resumeScan();
         }
@@ -440,10 +430,15 @@ public class ScanActivity extends WasherBaseActivity
         capture.onPause();
     }
 
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         capture.onDestroy();
+        Log.e(TAG, "onDestroy: "  );
+        if (availabilityDialog != null) availabilityDialog.dismiss();
+
+        if (scanDialog != null) availabilityDialog.dismiss();
     }
 
     @Override
@@ -529,23 +524,32 @@ public class ScanActivity extends WasherBaseActivity
             orderPreInfo.setPrepay(data.getPrepay());
             orderPreInfo.setPrice(data.getPrice());
             // 2小时内存在未找零订单，弹窗提示需要结账
+
             if (data.getExistsUnsettledOrder() != null && data.getExistsUnsettledOrder()) {
                     showScanDialog(type ,data ,orderPreInfo);
             } else {
-
                 // 调用one
-                        presenter.getDeviceDetail(data.getTimeValid(),type , mac , isBle);
+                if (!data.getTimeValid()) {
+                    showTimeValidDialog(type, data);
+                } else {
+                    presenter.getDeviceDetail(data.getTimeValid(), type, mac, isBle);
                     // 如果热水澡 检查默认宿舍
-
+                }
             }
     }
 
 
     @Override
     public void showTimeValidDialog(int deviceType, DeviceCheckRespDTO data) {
-        com.xiaolian.amigo.util.Log.d(TAG, "showTimeValidDialog: " + data.getTitle() + "->" + data.getRemark() + "->" + deviceType);
         if (null == availabilityDialog) {
             availabilityDialog = new AvailabilityDialog(this);
+            availabilityDialog.setCancelListener(new AvailabilityDialog.onCancelListener() {
+                @Override
+                public void onCancelLick() {
+                    capture.isCanPause = false ;
+                    resumeScan();
+                }
+            });
         }
         if (availabilityDialog.isShowing()) {
             if (availabilityDialog.getType() == AvailabilityDialog.Type.TIME_VALID) {
@@ -616,7 +620,6 @@ public class ScanActivity extends WasherBaseActivity
                 }else{
                     showTimeValidDialog(type, data);
                 }
-                dialog.dismiss();
             }
         });
 
@@ -629,26 +632,37 @@ public class ScanActivity extends WasherBaseActivity
 
     }
 
+
+
     @Override
     public void goToBleDevice(boolean isTimeValid, int type, String macAddress, BriefDeviceDTO data, boolean isBle) {
-        if (type == Device.HEATER.getType()) {
-            // 前往热水澡
-            gotoDevice(HEATER, macAddress,
-                    data.getSupplierId(), data.getLocation(),
-                    data.getResidenceId(), false);
+
+            if (type == Device.HEATER.getType()) {
+
+                // 前往热水澡
+                gotoDevice(HEATER, macAddress,
+                        data.getSupplierId(), data.getLocation(),
+                        data.getResidenceId(), false);
         } else if (type == Device.DISPENSER.getType()) {
             // 进入饮水机
 
             gotoDispenser(macAddress ,data.getSupplierId() ,data.getLocation() ,
                     data.getResidenceId() ,data.isFavor() ,0 ,false);
+            } else if (type == Device.DISPENSER.getType()) {
+                // 进入饮水机
+
+                gotoDispenser(macAddress, data.getSupplierId(), data.getLocation(),
+                        data.getResidenceId(), data.isFavor(), 0, false);
 //
-        } else if (type == Device.DRYER.getType()) {
-            // 进入吹风机
+            } else if (type == Device.DRYER.getType()) {
+                // 进入吹风机
 
-            gotoDryer(macAddress , data.getSupplierId() , data.getLocation() ,
-                    data.getResidenceId(), data.isFavor()  , false);
+                gotoDryer(macAddress, data.getSupplierId(), data.getLocation(),
+                        data.getResidenceId(), data.isFavor(), false);
 
-        }
+            }
+
+
     }
 
     public void gotoDevice(Device device, String macAddress, Long supplierId,
@@ -666,6 +680,7 @@ public class ScanActivity extends WasherBaseActivity
             intent.putExtra(MainActivity.INTENT_KEY_RECOVERY, recovery);
             intent.putExtra(WaterDeviceBaseActivity.INTENT_PREPAY_INFO, orderPreInfo);
             startActivity(intent);
+            finish();
         }
     }
 
@@ -684,6 +699,7 @@ public class ScanActivity extends WasherBaseActivity
             intent.putExtra(MainActivity.INTENT_KEY_RECOVERY, recovery);
             intent.putExtra(WaterDeviceBaseActivity.INTENT_PREPAY_INFO, orderPreInfo);
             startActivity(intent);
+            finish();
         }
     }
 
@@ -704,6 +720,7 @@ public class ScanActivity extends WasherBaseActivity
             intent.putExtra(DispenserActivity.INTENT_KEY_FAVOR, favor);
             intent.putExtra(WaterDeviceBaseActivity.INTENT_PREPAY_INFO, orderPreInfo);
             startActivity(intent);
+            finish();
         }
     }
 
@@ -725,6 +742,7 @@ public class ScanActivity extends WasherBaseActivity
             intent.putExtra(DispenserActivity.INTENT_KEY_TEMPERATURE, String.valueOf(usefor));
             intent.putExtra(WaterDeviceBaseActivity.INTENT_PREPAY_INFO, orderPreInfo);
             startActivity(intent);
+            finish();
         }
     }
 

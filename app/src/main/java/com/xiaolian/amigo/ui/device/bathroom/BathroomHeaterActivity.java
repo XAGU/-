@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.bathroom.BathOrderCurrentRespDTO;
 import com.xiaolian.amigo.ui.base.WebActivity;
-import com.xiaolian.amigo.ui.device.DeviceOrderActivity;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IBathroomHeartPresenter;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IBathroomHeartView;
 import com.xiaolian.amigo.ui.main.MainActivity;
@@ -35,7 +34,6 @@ public class BathroomHeaterActivity extends BathroomBaseActivity implements IBat
     public static final String KEY_BATH_ORDER_ID = "KEY_BATH_ORDER_ID";
     @Inject
     IBathroomHeartPresenter<IBathroomHeartView> presenter;
-
 
     @BindView(R.id.tv_device_title)
     TextView tvDeviceTitle;
@@ -85,13 +83,14 @@ public class BathroomHeaterActivity extends BathroomBaseActivity implements IBat
     }
 
 
+
     @Override
     protected void onResume() {
         super.onResume();
         presenter.onResume();
 
         if (!isCreate){
-            presenter.queryBathroomOrder(orderId , false);
+            presenter.queryBathroomOrder(orderId , false , 10);
         }
         isCreate = false ;
     }
@@ -117,7 +116,7 @@ public class BathroomHeaterActivity extends BathroomBaseActivity implements IBat
             return;
         }
         needToOrderInfo = true ;
-        presenter.queryBathroomOrder(orderId , true);
+        presenter.queryBathroomOrder(orderId , true , 10);
 
     }
 
@@ -160,8 +159,6 @@ public class BathroomHeaterActivity extends BathroomBaseActivity implements IBat
             }
         });
     }
-
-
 
     @Override
     public void goToOrderInfo(BathOrderCurrentRespDTO dto) {
@@ -216,6 +213,17 @@ public class BathroomHeaterActivity extends BathroomBaseActivity implements IBat
     protected void onDestroy() {
         super.onDestroy();
         presenter.onDetach();
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        onBackPressed();
+    }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(this , MainActivity.class));
     }
 
     @OnClick(R.id.iv_back)

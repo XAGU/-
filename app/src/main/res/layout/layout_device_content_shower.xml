@@ -60,5 +60,6 @@
         android:enabled="true"
         android:id="@+id/bt_stop_shower"
         style="@style/DeviceButton"
+        android:stateListAnimator="@null"
         />
 </LinearLayout>
