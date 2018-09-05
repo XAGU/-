@@ -954,11 +954,6 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
         Log.i(TAG, "主线程开始处理指令响应结果");
         if (null == result.getError()) {
-            if (result.getData() != null && result.getData().getMacAddress() != null
-                    && result.getData().getDeviceToken() != null) {
-                deviceDataManager.setDeviceToken(result.getData().getMacAddress(), result.getData().getDeviceToken());
-                Log.i(TAG, "收到deviceToken：" + result.getData().getDeviceToken());
-            }
             // 下一步执行指令
             String nextCommand = result.getData().getNextCommand();
             if (result.getData().getSrcCommandType() == null) {
