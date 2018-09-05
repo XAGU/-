@@ -268,7 +268,13 @@ public class BluetoothConnectWorker implements IBluetoothConnectWorker {
         if (SystemVersion.isMarshmallow()) {
             bluetoothGatt = bluetoothDevice.connectGatt(context, false, coreGattCallback, BluetoothDevice.TRANSPORT_LE);
         } else {
-            bluetoothGatt = bluetoothDevice.connectGatt(context, false, coreGattCallback);
+            try{
+                bluetoothGatt = bluetoothDevice.connectGatt(context, false, coreGattCallback, BluetoothDevice.TRANSPORT_LE);
+            }catch (Exception e){
+                Log.d(TAG ,"安卓6.0尝试使用  :>>>>>" + e.getMessage());
+                bluetoothGatt = bluetoothDevice.connectGatt(context, false, coreGattCallback);
+            }
+
         }
 
         return bluetoothGatt != null;
