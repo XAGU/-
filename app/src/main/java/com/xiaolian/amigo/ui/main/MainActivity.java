@@ -1093,7 +1093,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         availabilityDialog.setType(AvailabilityDialog.Type.NO_DEVICE);
         availabilityDialog.setTitle(AvailabilityDialog.Type.NO_DEVICE.getTitle());
         availabilityDialog.setOkText("前往设置");
-        availabilityDialog.setTip("请确认宿舍信息，或更换宿舍");
+        availabilityDialog.setTip("请确认洗澡地址，或更换洗澡地址");
         availabilityDialog.setOnOkClickListener(dialog1 ->
                 startActivity(new Intent(MainActivity.this, EditDormitoryActivity.class)));
         availabilityDialog.show();
