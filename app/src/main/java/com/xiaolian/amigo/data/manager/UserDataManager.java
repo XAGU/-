@@ -4,6 +4,7 @@ import android.support.v4.util.ObjectsCompat;
 
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.data.network.IBathroomApi;
+import com.xiaolian.amigo.data.network.IDeviceApi;
 import com.xiaolian.amigo.data.network.IFileApi;
 import com.xiaolian.amigo.data.network.ILoginApi;
 import com.xiaolian.amigo.data.network.IOssApi;
@@ -18,6 +19,9 @@ import com.xiaolian.amigo.data.network.model.common.EmptyRespDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleQueryReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
+import com.xiaolian.amigo.data.network.model.device.DeviceCategoryBO;
+import com.xiaolian.amigo.data.network.model.device.DeviceCheckReqDTO;
+import com.xiaolian.amigo.data.network.model.device.DeviceCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.file.OssModel;
 import com.xiaolian.amigo.data.network.model.login.EntireUserDTO;
 import com.xiaolian.amigo.data.network.model.login.VerificationCodeCheckReqDTO;
@@ -40,10 +44,12 @@ import com.xiaolian.amigo.data.network.model.user.QueryUserResidenceListRespDTO;
 import com.xiaolian.amigo.data.network.model.user.UserResidenceDTO;
 import com.xiaolian.amigo.data.network.model.user.UserResidenceInListDTO;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
+import com.xiaolian.amigo.data.vo.DeviceCategory;
 import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.di.BathroomServer;
 import com.xiaolian.amigo.di.UserServer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -71,6 +77,7 @@ public class UserDataManager implements IUserDataManager {
     private ILoginApi loginApi;
     private IOssApi ossApi;
     private IBathroomApi bathroomApi;
+    private IDeviceApi deviceApi ;
     private ISharedPreferencesHelp sharedPreferencesHelp;
 
     @Inject
@@ -81,6 +88,7 @@ public class UserDataManager implements IUserDataManager {
         fileApi = retrofit.create(IFileApi.class);
         loginApi = retrofit.create(ILoginApi.class);
         ossApi = retrofit.create(IOssApi.class);
+        deviceApi = retrofit.create(IDeviceApi.class);
         this.sharedPreferencesHelp = sharedPreferencesHelp;
         bathroomApi = bathroomRetrofit.create(IBathroomApi.class);
     }
@@ -232,6 +240,24 @@ public class UserDataManager implements IUserDataManager {
     @Override
     public Observable<ApiResult<BooleanRespDTO>> updateNormalBathroom(SimpleReqDTO dto) {
         return userApi.updateNormalBathroom(dto);
+    }
+
+    @Override
+    public void saveDeviceCategory(List<DeviceCategoryBO> devices) {
+            if (devices == null) {
+                return;
+            }
+            List<DeviceCategory> deviceCategories = new ArrayList<>();
+            for (DeviceCategoryBO bo : devices) {
+                deviceCategories.add(bo.transform());
+            }
+            sharedPreferencesHelp.saveDeviceCategory(deviceCategories);
+        }
+
+
+    @Override
+    public Observable<ApiResult<DeviceCheckRespDTO>> checkDeviceUseage(DeviceCheckReqDTO reqDTO) {
+        return deviceApi.checkDeviceUseage(reqDTO);
     }
 
     @Override

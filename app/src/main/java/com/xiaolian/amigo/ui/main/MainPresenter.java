@@ -195,6 +195,7 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
         });
     }
 
+
     @Override
     public boolean isShowUrgencyNotify() {
         return mainDataManager.isShowUrgencyNotify();

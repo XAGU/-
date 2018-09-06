@@ -138,4 +138,9 @@ public interface IListChoosePresenter<V extends IListChooseView> extends IBasePr
      */
     boolean isStartBathroom(ListChooseAdaptor.Item residence);
 
+    /**
+     * 检查设备,因为记录的时候不会返回供应商信息
+     */
+    void checkDeviceUsage();
+
 }

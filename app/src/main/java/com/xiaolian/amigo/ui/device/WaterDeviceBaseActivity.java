@@ -292,25 +292,31 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         setUnBinder(ButterKnife.bind(this));
         initInject();
         initPresenter();
-        initView();
+
 
         // 连接蓝牙设备
         presenter.setHomePageJump(homePageJump);
         if (recorvery || !homePageJump) {
             presenter.setStep(TradeStep.SETTLE);
         }
-        if (isScan){
-            android.util.Log.e(TAG, "onCreate: " );
-            presenter.onPreConnect(macAddress , true);
-        }else {
-            android.util.Log.e(TAG, "onCreate: " );
-            presenter.onPreConnect(macAddress);
-        }
-        if (prepay == null) {
-            presenter.queryPrepayOption(deviceType);
-        } else {
-            refreshPrepayStatus();
-        }
+
+        setBleCallback(() -> {
+            initView();
+            if (isScan){
+                android.util.Log.e(TAG, "onCreate: " );
+                presenter.onPreConnect(macAddress , true);
+            }else {
+                android.util.Log.e(TAG, "onCreate: " );
+                presenter.onPreConnect(macAddress);
+            }
+
+            if (prepay == null) {
+                presenter.queryPrepayOption(deviceType);
+            } else {
+                refreshPrepayStatus();
+            }
+        });
+        getBlePermission();
     }
 
     @Override

@@ -444,7 +444,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
         // 4、连接设备
         safeWait(300);
-        Log.d(TAG, "开始连接设备 thread " + Thread.currentThread().getName());
+        Log.d(TAG, "开始连接设备 thread " + Thread.currentThread().getName()  + "    id  >>>> " + supplier.getAgreement());
         switch (AgreementVersion.getAgreement(supplier.getAgreement())) {
             case HAONIANHUA:
                 connectHaoNianHaoDevice();
@@ -594,7 +594,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 if (characteristic.getProperties() == BluetoothGattCharacteristic.PROPERTY_NOTIFY) {
                     if (bleDataManager.setNotify(currentMacAddress, UUID.fromString(supplier.getServiceUuid()),
                             characteristic.getUuid(), true)) {
-                        Log.d(TAG, "设置notify成功 thread " + Thread.currentThread().getName());
+                        Log.d(TAG, "设置notify成功 thread " + Thread.currentThread().getName()  + " serviceUUID>>>> " + supplier.getServiceUuid() +"  characteristic>>>>>" + characteristic.getUuid());
                         bleDataManager.writeDescriptor(currentMacAddress, UUID.fromString(supplier.getServiceUuid()),
                                 characteristic.getUuid(), UUID.fromString(supplier.getNotifyUuid()),
                                 BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE, code1 -> {

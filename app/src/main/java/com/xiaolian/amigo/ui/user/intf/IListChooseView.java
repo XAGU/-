@@ -90,8 +90,13 @@ public interface IListChooseView extends IBaseView {
     /**
      * 选择完洗澡地址， 直接进入热水澡界面
      * @param dto
+     *  .putExtra(INTENT_KEY_LOCATION ,dto.getResidenceName())  strign
+    .putExtra(INTENT_KEY_MAC_ADDRESS ,dto.getMacAddress())   string
+    .putExtra(INTENT_KEY_SUPPLIER_ID , dto.getSupplierId()));  long
      */
-    void startShower(UserResidenceInListDTO dto );
+
+
+    void startShower(String residenceName ,String macAddress , long supplierId );
 
 
 }

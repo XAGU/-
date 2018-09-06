@@ -16,15 +16,16 @@ import android.util.Log;
 
 import com.xiaolian.blelib.BluetoothConstants;
 import com.xiaolian.blelib.BluetoothHelp;
+import com.xiaolian.blelib.connect.BluetoothCharacteristicNotifyCallback;
 import com.xiaolian.blelib.connect.BluetoothConnectCallback;
 import com.xiaolian.blelib.connect.BluetoothConnectStatusListener;
-import com.xiaolian.blelib.connect.BluetoothCharacteristicNotifyCallback;
-import com.xiaolian.blelib.connect.BluetoothReadCharacteristicResponse;
 import com.xiaolian.blelib.connect.BluetoothReadDescriptorCallback;
 import com.xiaolian.blelib.connect.BluetoothWriteCharacteristicCallback;
 import com.xiaolian.blelib.connect.BluetoothWriteDescriptorCallback;
 import com.xiaolian.blelib.internal.util.SystemVersion;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.UUID;
 
 /**
@@ -268,10 +269,39 @@ public class BluetoothConnectWorker implements IBluetoothConnectWorker {
         if (SystemVersion.isMarshmallow()) {
             bluetoothGatt = bluetoothDevice.connectGatt(context, false, coreGattCallback, BluetoothDevice.TRANSPORT_LE);
         } else {
-            bluetoothGatt = bluetoothDevice.connectGatt(context, false, coreGattCallback);
+            Class< ? extends BluetoothDevice> cls = BluetoothDevice.class;
+            Method m = null ;
+                    try {
+                        m = cls.getMethod("connectGatt", Context.class, boolean.class, BluetoothGattCallback.class, int.class);
+                        if (m != null){
+                            try {
+                                bluetoothGatt = (BluetoothGatt) m.invoke(bluetoothDevice ,context ,false ,coreGattCallback , 2);
+                            } catch (IllegalAccessException e) {
+                                e.printStackTrace();
+                                openGatt(context);
+                            } catch (InvocationTargetException e) {
+                                e.printStackTrace();
+                                openGatt(context);
+                            }
+                        }
+                    } catch (NoSuchMethodException e) {
+                        e.printStackTrace();
+                        openGatt(context);
+                    } catch (IllegalArgumentException e) {
+                        e.printStackTrace();
+                        openGatt(context);
+                    }
         }
 
         return bluetoothGatt != null;
+    }
+
+    private void openGatt(Context context){
+        try {
+            bluetoothGatt = bluetoothDevice.connectGatt(context, false, coreGattCallback);
+        }catch (Exception e){
+            Log.d(TAG ,e.getMessage());
+        }
     }
 
     @Override

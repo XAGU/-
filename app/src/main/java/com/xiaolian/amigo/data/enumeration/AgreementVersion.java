@@ -10,6 +10,7 @@ package com.xiaolian.amigo.data.enumeration;
 public enum AgreementVersion {
     HAONIANHUA(1, "好年华"),
     XINNA(2, "辛纳");
+
     private int type;
     private String desc;
 
