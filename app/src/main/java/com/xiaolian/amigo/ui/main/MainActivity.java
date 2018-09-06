@@ -837,10 +837,10 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 showPrepayDialog(type, dryerOrderSize, data);
             } else {
                 // 如果热水澡 检查默认宿舍
-                if (type == Device.HEATER.getType() && !presenter.checkDefaultDormitoryExist()) {
-                    showBindDormitoryDialog();
-                    return;
-                }
+//                if (type == Device.HEATER.getType() && !presenter.checkDefaultDormitoryExist()) {
+//                    showBindDormitoryDialog();
+//                    return;
+//                }
                 if (!data.getTimeValid()) {
                     showTimeValidDialog(type, data);
                 } else {
@@ -861,32 +861,32 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         }
     }
 
-    @Override
-    public void showBindDormitoryDialog() {
-        Log.d(TAG, "showBindDormitoryDialog");
-        if (null == availabilityDialog) {
-            availabilityDialog = new AvailabilityDialog(this);
-        }
-        if (availabilityDialog.isShowing()
-                && availabilityDialog.getType() == AvailabilityDialog.Type.BIND_DORMITORY) {
-            return;
-        }
-        availabilityDialog.setType(AvailabilityDialog.Type.BIND_DORMITORY);
-        availabilityDialog.setOkText("前往绑定");
-        availabilityDialog.setTitle(AvailabilityDialog.Type.BIND_DORMITORY.getTitle());
-        availabilityDialog.setTip("热水澡需要先绑定宿舍");
-        availabilityDialog.setOnOkClickListener(dialog1 -> {
-            Intent intent;
-            intent = new Intent(this, ListChooseActivity.class);
-            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
-            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION,
-                    ListChooseActivity.ACTION_LIST_BUILDING);
-            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_SRC_ACTIVITY, Constant.MAIN_ACTIVITY_SRC);
-            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_DEVICE_TYPE, Device.HEATER.getType());
-            startActivity(intent);
-        });
-        availabilityDialog.show();
-    }
+//    @Override
+//    public void showBindDormitoryDialog() {
+//        Log.d(TAG, "showBindDormitoryDialog");
+//        if (null == availabilityDialog) {
+//            availabilityDialog = new AvailabilityDialog(this);
+//        }
+//        if (availabilityDialog.isShowing()
+//                && availabilityDialog.getType() == AvailabilityDialog.Type.BIND_DORMITORY) {
+//            return;
+//        }
+//        availabilityDialog.setType(AvailabilityDialog.Type.BIND_DORMITORY);
+//        availabilityDialog.setOkText("前往绑定");
+//        availabilityDialog.setTitle(AvailabilityDialog.Type.BIND_DORMITORY.getTitle());
+//        availabilityDialog.setTip("热水澡需要先绑定宿舍");
+//        availabilityDialog.setOnOkClickListener(dialog1 -> {
+//            Intent intent;
+//            intent = new Intent(this, ListChooseActivity.class);
+//            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
+//            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION,
+//                    ListChooseActivity.ACTION_LIST_BUILDING);
+//            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_SRC_ACTIVITY, Constant.MAIN_ACTIVITY_SRC);
+//            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_DEVICE_TYPE, Device.HEATER.getType());
+//            startActivity(intent);
+//        });
+//        availabilityDialog.show();
+//    }
 
     @Override
     public void showOpenLocationDialog() {
@@ -925,7 +925,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         availabilityDialog.setType(AvailabilityDialog.Type.NO_DEVICE);
         availabilityDialog.setTitle(AvailabilityDialog.Type.NO_DEVICE.getTitle());
         availabilityDialog.setOkText("前往设置");
-        availabilityDialog.setTip("请确认宿舍信息，或更换宿舍");
+        availabilityDialog.setTip("你默认的洗澡地址无设备");
         availabilityDialog.setOnOkClickListener(dialog1 ->
                 startActivity(new Intent(MainActivity.this, EditDormitoryActivity.class)));
         availabilityDialog.show();
@@ -1089,7 +1089,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @Deprecated
     @Override
     public void choseBathroomAddress() {
-        Log.d(TAG, "showBindDormitoryDialog");
         if (null == availabilityDialog) {
             availabilityDialog = new AvailabilityDialog(this);
         }

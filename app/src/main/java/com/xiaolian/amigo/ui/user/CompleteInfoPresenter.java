@@ -41,7 +41,10 @@ public class CompleteInfoPresenter<V extends ICompleteInfoView>  extends BasePre
                     User user = userDataManager.getUser();
                     user.setSex(sex);
                     userDataManager.setUser(user);
+                    getMvpView().startChooseBathroom();
                 } else /*需要提示用户更新性别失败*/{
+
+                    getMvpView().onError(result.getError().getDisplayMessage());
 //                    Toast toast = Toast.makeText(getMvpView(), "", 1);
                 }
             }

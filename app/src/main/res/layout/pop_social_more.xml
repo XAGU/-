@@ -11,7 +11,7 @@
         android:layout_height="5dp"
         android:layout_gravity="right"
         android:src="@drawable/triangle"
-        android:layout_marginEnd="28dp"
+        android:layout_marginEnd="17dp"
         />
     <LinearLayout
         android:layout_width="106dp"
@@ -34,12 +34,13 @@
             android:text="我的通知"/>
 
         <TextView
-            android:layout_width="12dp"
-            android:layout_height="12dp"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
             android:text="6"
-            android:gravity="center"
+            android:gravity="center_horizontal"
             android:textColor="@color/colorFullRed"
             android:textSize="10sp"
+            android:id="@+id/circle"
             android:layout_alignParentRight="true"
             android:layout_marginEnd="16dp"
             android:layout_marginTop="11dp"
@@ -53,6 +54,7 @@
             android:textSize="14sp"
             android:textColor="@color/white"
             android:gravity="center"
+            android:id="@+id/collection"
             android:text="我的收藏"/>
 
         <TextView
@@ -62,6 +64,7 @@
             android:textSize="14sp"
             android:textColor="@color/white"
             android:gravity="center"
+            android:id="@+id/release"
             android:text="我的发布"/>
 
     </LinearLayout>

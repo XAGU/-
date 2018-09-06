@@ -21,8 +21,8 @@ android {
         applicationId "com.xiaolian.amigo"
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
-        versionCode 24
-        versionName "1.1.82"
+        versionCode 25
+        versionName "1.1.83"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
@@ -71,7 +71,7 @@ android {
 //            // 测试
             applicationId "com.xiaolian.amigo_dev"
             resValue "string", "app_name", "笑联测试版"
-
+                
             //  测试连接正式服
 
 //            buildConfigField "String", "SERVER", "\"https://api.xiaolian365.com/c/\""

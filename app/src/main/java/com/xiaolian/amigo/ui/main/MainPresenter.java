@@ -195,6 +195,7 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
         });
     }
 
+
     @Override
     public boolean isShowUrgencyNotify() {
         return mainDataManager.isShowUrgencyNotify();
@@ -209,12 +210,12 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
     public void gotoHeaterDevice(String defaultAddress, Long defaultSupplierId,
                                  String location, Long residenceId) {
         if (TextUtils.isEmpty(defaultAddress)) {
-            if (mainDataManager.getUserInfo().getResidenceId() == null
-                    || mainDataManager.getUserInfo().getResidenceId() == -1) {
-                getMvpView().showBindDormitoryDialog();
-            } else {
+//            if (mainDataManager.getUserInfo().getResidenceId() == null
+//                    || mainDataManager.getUserInfo().getResidenceId() == -1) {
+//                getMvpView().showBindDormitoryDialog();
+//            } else {
                 getMvpView().showNoDeviceDialog();
-            }
+//            }
         } else {
             getMvpView().gotoDevice(Device.HEATER, defaultAddress, defaultSupplierId,
                     location, residenceId, false);

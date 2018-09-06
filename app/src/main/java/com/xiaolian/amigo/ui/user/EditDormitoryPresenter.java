@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.user;
 
 import android.support.v4.util.ObjectsCompat;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.xiaolian.amigo.R;
@@ -276,7 +277,11 @@ public class EditDormitoryPresenter<V extends IEditDormitoryView> extends BasePr
                                         if (wrapper.isPubBath()){
                                             getMvpView().startBathroom(wrapper.getResidence());
                                         }else{
-                                            getMvpView().startShower(wrapper.getResidence());
+                                            if (TextUtils.isEmpty(wrapper.getMacAddress())){
+                                                getMvpView().onError("该地址下无设备");
+                                            }else {
+                                                getMvpView().startShower(wrapper.getResidence());
+                                            }
                                         }
                                     }
                                 });

@@ -8,6 +8,9 @@ import com.xiaolian.amigo.data.network.model.common.EmptyRespDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleQueryReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
+import com.xiaolian.amigo.data.network.model.device.DeviceCategoryBO;
+import com.xiaolian.amigo.data.network.model.device.DeviceCheckReqDTO;
+import com.xiaolian.amigo.data.network.model.device.DeviceCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.file.OssModel;
 import com.xiaolian.amigo.data.network.model.login.EntireUserDTO;
 import com.xiaolian.amigo.data.network.model.login.VerificationCodeCheckReqDTO;
@@ -215,6 +218,14 @@ public interface IUserDataManager {
     Observable<ApiResult<BooleanRespDTO>> updateNormalBathroom(@Body SimpleReqDTO dto);
 
 
+
+    void saveDeviceCategory(List<DeviceCategoryBO> devices);
+
+
+    /**
+     * 首页设备用水校验
+     */
+    Observable<ApiResult<DeviceCheckRespDTO>> checkDeviceUseage(@Body DeviceCheckReqDTO reqDTO);
     void setBathroomPassword();
 
     void setRoomId(Long residenceId);
@@ -224,4 +235,5 @@ public interface IUserDataManager {
     public void setBathroomPassword(String password);
 
     public String getBathroomPassword();
+
 }

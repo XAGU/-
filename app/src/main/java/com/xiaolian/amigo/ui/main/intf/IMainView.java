@@ -83,10 +83,10 @@ public interface IMainView extends IBaseView {
      */
     void showDeviceUsageDialog(int type, DeviceCheckRespDTO data);
 
-    /**
-     * 显示绑定宿舍对话框
-     */
-    void showBindDormitoryDialog();
+//    /**
+//     * 显示绑定宿舍对话框
+//     */
+//    void showBindDormitoryDialog();
 
     /**
      * 打开定位服务

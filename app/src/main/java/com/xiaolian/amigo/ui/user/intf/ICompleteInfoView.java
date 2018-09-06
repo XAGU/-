@@ -7,4 +7,9 @@ public interface ICompleteInfoView  extends IBaseView {
      * 刷新页面信息
      */
     void refreshCompleteInfoView();
+
+    /**
+     * 选择洗澡地址
+     */
+    void startChooseBathroom();
 }

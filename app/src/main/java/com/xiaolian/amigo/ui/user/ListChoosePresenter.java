@@ -11,6 +11,8 @@ import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.bathroom.RecordResidenceReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleQueryReqDTO;
+import com.xiaolian.amigo.data.network.model.device.DeviceCheckReqDTO;
+import com.xiaolian.amigo.data.network.model.device.DeviceCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.login.EntireUserDTO;
 import com.xiaolian.amigo.data.network.model.residence.QueryResidenceListReqDTO;
 import com.xiaolian.amigo.data.network.model.residence.ResidenceListRespDTO;
@@ -23,14 +25,19 @@ import com.xiaolian.amigo.data.network.model.user.School;
 import com.xiaolian.amigo.data.network.model.user.UserResidenceInListDTO;
 import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.ui.base.BasePresenter;
+import com.xiaolian.amigo.ui.main.HomeFragment2;
 import com.xiaolian.amigo.ui.user.adaptor.ListChooseAdaptor;
 import com.xiaolian.amigo.ui.user.intf.IListChoosePresenter;
 import com.xiaolian.amigo.ui.user.intf.IListChooseView;
 import com.xiaolian.amigo.util.Constant;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 
 import javax.inject.Inject;
+
+import static com.xiaolian.amigo.data.enumeration.Device.HEATER;
 
 /**
  * 列表选择
@@ -407,11 +414,10 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
                     if (dto.isPubBath()){
                         getMvpView().startBathroom(dto);
                     }else{
-                        dto.setMacAddress(mac);
-                        if (TextUtils.isEmpty(dto.getMacAddress())){
-                            dto.setMacAddress(mac);
-                        }
-                        getMvpView().startShower(dto);
+
+                        //   请求接口 获取device信息
+                        checkDeviceUsage();
+
                     }
                 }else{
                     getMvpView().onError(result.getError().getDisplayMessage());
@@ -427,6 +433,32 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
             return false ;
         }
         return true ;
+    }
+
+    @Override
+    public void checkDeviceUsage() {
+        DeviceCheckReqDTO reqDTO = new DeviceCheckReqDTO();
+        reqDTO.setDeviceType(HEATER.getType());
+        addObserver(userDataManager.checkDeviceUseage(reqDTO), new NetworkObserver<ApiResult<DeviceCheckRespDTO>>() {
+
+            @Override
+            public void onReady(ApiResult<DeviceCheckRespDTO> result) {
+                EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.ENABLE_VIEW));
+                if (null == result.getError()) {
+                    userDataManager.saveDeviceCategory(result.getData().getDevices());
+                    getMvpView().startShower(result.getData().getLocation()
+                            ,result.getData().getDefaultMacAddress() , result.getData().getDefaultSupplierId());
+                } else {
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.ENABLE_VIEW));
+            }
+        });
     }
 
 }

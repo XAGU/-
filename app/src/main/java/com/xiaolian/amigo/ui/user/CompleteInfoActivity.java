@@ -145,24 +145,11 @@ public class CompleteInfoActivity extends UserBaseActivity implements ICompleteI
 
         presenter.updateSex(sex); //更新个人性别，异步操作，有可能会失败
 
-        if (bathRouteRespDTO!=null && !bathRouteRespDTO.isExistHistory()) /*未设置洗澡地址信息*/ {
-            Log.d(TAG, "chooseBathroom: " + "跳转到选择洗澡地址页面");
-            Intent intent = new Intent(this, ListChooseActivity.class);
-            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
-            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION,
-                    ListChooseActivity.ACTION_LIST_BUILDING);
-            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_SRC_ACTIVITY, Constant.MAIN_ACTIVITY_BATHROOM_SRC);
-            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_DEVICE_TYPE, Device.HEATER.getType());
-            startActivity(intent);
-        } else if (bathRouteRespDTO!=null)/*跳转到公共浴室页面*/{
-            Intent intent = new Intent(this, ChooseBathroomActivity.class)
-                    .putExtra(ChooseBathroomActivity.KEY_BUILDING_ID, bathRouteRespDTO.getBuildingId())
-                    .putExtra(ChooseBathroomActivity.KEY_RESIDENCE_TYPE, bathRouteRespDTO.getResidenceType())
-                    .putExtra(ChooseBathroomActivity.KEY_RESIDENCE_ID, bathRouteRespDTO.getResidenceId());
-            startActivity(intent);
-            Log.d(TAG, "chooseBathroom: " + "跳转到洗澡页面");
-        }
+
     }
+
+
+
 
     @Override
     protected void onDestroy() {
@@ -191,6 +178,27 @@ public class CompleteInfoActivity extends UserBaseActivity implements ICompleteI
         refreshSexStatus();
         refreshDomitoryAddress();
         refreshBathroomAddress();
+    }
+
+    @Override
+    public void startChooseBathroom() {
+        if (bathRouteRespDTO!=null && !bathRouteRespDTO.isExistHistory()) /*未设置洗澡地址信息*/ {
+            Log.d(TAG, "chooseBathroom: " + "跳转到选择洗澡地址页面");
+            Intent intent = new Intent(this, ListChooseActivity.class);
+            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
+            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION,
+                    ListChooseActivity.ACTION_LIST_BUILDING);
+            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_SRC_ACTIVITY, Constant.MAIN_ACTIVITY_BATHROOM_SRC);
+            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_DEVICE_TYPE, Device.HEATER.getType());
+            startActivity(intent);
+        } else if (bathRouteRespDTO!=null)/*跳转到公共浴室页面*/{
+            Intent intent = new Intent(this, ChooseBathroomActivity.class)
+                    .putExtra(ChooseBathroomActivity.KEY_BUILDING_ID, bathRouteRespDTO.getBuildingId())
+                    .putExtra(ChooseBathroomActivity.KEY_RESIDENCE_TYPE, bathRouteRespDTO.getResidenceType())
+                    .putExtra(ChooseBathroomActivity.KEY_RESIDENCE_ID, bathRouteRespDTO.getResidenceId());
+            startActivity(intent);
+            Log.d(TAG, "chooseBathroom: " + "跳转到洗澡页面");
+        }
     }
 
     private void refreshSexStatus() {
