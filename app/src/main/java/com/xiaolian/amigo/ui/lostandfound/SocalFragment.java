@@ -81,6 +81,8 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener 
     View rootView;
     View popView;
 
+    private List<View> doitViews = new ArrayList<>();  //  存储diot view ;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -126,6 +128,17 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener 
 
             }
         }));
+        socialTags.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
         addDiot();
         initPop();
     }
@@ -166,18 +179,29 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener 
     }
 
     private void addDiot() {
+        if (doitViews == null) return ;
+        if (doitViews != null && doitViews.size() > 0){
+            doitViews.clear();
+        }
         socialTags.post(new Runnable() {
+
+
             @Override
             public void run() {
                 int width = socialTags.getWidth();
                 int diotNum = (width / screenWidth) + 1;
                 for (int i = 0; i < diotNum; i++) {
                     View view = new View(mActivity);
-                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT , ViewGroup.LayoutParams.WRAP_CONTENT);
+                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     layoutParams.width = (int) ScreenUtils.dpToPx(mActivity , 5);
                     layoutParams.height = (int) ScreenUtils.dpToPx(mActivity , 5);
                     layoutParams.rightMargin = (int) ScreenUtils.dpToPx(mActivity , 10);
-                    view.setBackgroundResource(R.drawable.dot_circle_red);
+                    view.setLayoutParams(layoutParams);
+                    if (i == 0 ) {
+                        view.setBackgroundResource(R.drawable.dot_circle_red);
+                    }else{
+                        view.setBackgroundResource(R.drawable.dot_circle_gray);
+                    }
                     circleDoit.addView(view);
                 }
             }

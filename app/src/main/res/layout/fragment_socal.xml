@@ -105,7 +105,8 @@
         android:id="@+id/circle_doit"
         android:layout_marginTop="22dp"
         android:orientation="horizontal"
-        android:gravity="center_horizontal">
+        android:gravity="center_horizontal"
+        android:layout_gravity="center_horizontal">
 
     </LinearLayout>
 </LinearLayout>

@@ -519,14 +519,11 @@ public class HomeFragment2 extends BaseFragment {
         unbinder.unbind();
     }
 
+
     @Override
     protected void initData() {
+        android.util.Log.d(TAG, "initData: " );
         requestData();
-
-
-        // 禁止动画
-//        if (recyclerView != null)
-//        recyclerView.scheduleLayoutAnimation();
     }
 
     @Data
