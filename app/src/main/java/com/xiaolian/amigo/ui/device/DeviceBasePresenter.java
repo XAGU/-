@@ -641,6 +641,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
     @Override
     public void onWrite(@NonNull String command) {
+        Log.wtf(TAG , "   onWrite >>>>>>>>>>  " +currentMacAddress);
         if (bleDataManager.getConnectStatus(currentMacAddress) != BluetoothConstants.STATE_CONNECTED) {
             reportError(getStep().getStep(), ConnectErrorType.BLE_CONNECT_ERROR.getType(),
                     DisplayErrorType.CONNECT_ERROR.getType(), "发送指令时设备未连接，command:" + command,
@@ -952,6 +953,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         } else {
                             Log.i(TAG, "未结算订单已经超出指定时间范围，继续下发预结账指令，走正常流程");
                             precheckCmd = nextCommand;
+
                             onWrite(precheckCmd);
                         }
                         return;
@@ -1017,6 +1019,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                                 Log.i(TAG, "orderStatus不为空，说明是给自己超过2小时的订单结账，需要重置orderStatus的状态。");
                                 orderStatus = null;
                             }
+                            Log.wtf(TAG ,"CHECK_OUT  >>>>>>>>>>"+currentMacAddress);
                             onWrite(connectCmd);
                         }
                     } else {
@@ -1028,6 +1031,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     }
                     break;
                 case PRE_CHECK:
+                    Log.wtf(TAG ,"PRE_CHECK  >>>>>>>>>>"+currentMacAddress);
                     Log.i(TAG, "正常流程，获取到结账指令。command:" + nextCommand);
                     checkoutCmd = nextCommand;
                     // 标识当前状态为预结账状态
