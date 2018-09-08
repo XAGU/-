@@ -79,7 +79,7 @@ public class ChangeHostDialog extends Dialog {
             add(new HostAddress("qa5" , QA5 + HOST2));
             add(new HostAddress("bath1" ,BATH1 + HOST2));
             add(new HostAddress("bath2" , BATH2 + HOST2));
-            add(new HostAddress("预发", "http://47.106.62.186/c/"));
+            add(new HostAddress("预发", "http://47.106.62.186/b/"));
         }
     };
 
@@ -93,7 +93,7 @@ public class ChangeHostDialog extends Dialog {
             add(new HostAddress("qa5" , QA5 + HOST3));
             add(new HostAddress("bath1" ,BATH1 + HOST3));
             add(new HostAddress("bath2" , BATH2 + HOST3));
-            add(new HostAddress("预发", "http://47.106.62.186/c/"));
+            add(new HostAddress("预发", "http://47.106.62.186:5097/"));
         }
     };
 

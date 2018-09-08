@@ -4,28 +4,23 @@ package com.xiaolian.amigo.ui.lostandfound;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.base.BaseFragment;
-import com.xiaolian.amigo.ui.widget.RecyclerItemClickListener;
+import com.xiaolian.amigo.ui.lostandfound.adapter.SocalTagsAdapter;
 import com.xiaolian.amigo.util.ScreenUtils;
-import com.zhy.adapter.recyclerview.CommonAdapter;
-import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,13 +58,12 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener 
     View titleBorder;
     @BindView(R.id.title_fl)
     FrameLayout titleFl;
-    @BindView(R.id.circle_doit)
-    LinearLayout circleDoit;
+    @BindView(R.id.social_recy)
+    RecyclerView socialRecy;
 
     private RelativeLayout rlNotice;
     private TextView circle, collection, release;
 
-    private CommonAdapter<String> socialTagAdatper;
     private List<String> mSocialTagDatas = new ArrayList<>();
 
     private PopupWindow mPopupWindow;
@@ -80,8 +74,6 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener 
 
     View rootView;
     View popView;
-
-    private List<View> doitViews = new ArrayList<>();  //  存储diot view ;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -102,46 +94,15 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener 
      */
     private void initRecycler() {
         initScreen();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 18; i++) {
             mSocialTagDatas.add("");
         }
-
-        socialTagAdatper = new CommonAdapter<String>(mActivity, R.layout.item_social_tag, mSocialTagDatas) {
-            @Override
-            protected void convert(ViewHolder holder, String s, int position) {
-
-            }
-        };
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity);
-        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        socialTags.setLayoutManager(linearLayoutManager);
-        socialTags.setAdapter(socialTagAdatper);
-        socialTags.addOnItemTouchListener(new RecyclerItemClickListener(mActivity, socialTags, new RecyclerItemClickListener.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(View view, int position, MotionEvent e) {
-                onSuccess(position + "");
-            }
-
-            @Override
-            public void onLongItemClick(View view, int position) {
-
-            }
-        }));
-        socialTags.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-            }
-        });
-        addDiot();
+        SocalTagsAdapter adapter = new SocalTagsAdapter(mActivity, mSocialTagDatas, socialTags);
+        socialTags.setAdapter(adapter);
         initPop();
     }
+
+
 
     private void initScreen() {
         WindowManager windowManager = (WindowManager) mActivity.getSystemService(Context.WINDOW_SERVICE);
@@ -176,36 +137,6 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener 
         rlNotice.setOnClickListener(this);
         collection.setOnClickListener(this);
         release.setOnClickListener(this);
-    }
-
-    private void addDiot() {
-        if (doitViews == null) return ;
-        if (doitViews != null && doitViews.size() > 0){
-            doitViews.clear();
-        }
-        socialTags.post(new Runnable() {
-
-
-            @Override
-            public void run() {
-                int width = socialTags.getWidth();
-                int diotNum = (width / screenWidth) + 1;
-                for (int i = 0; i < diotNum; i++) {
-                    View view = new View(mActivity);
-                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    layoutParams.width = (int) ScreenUtils.dpToPx(mActivity , 5);
-                    layoutParams.height = (int) ScreenUtils.dpToPx(mActivity , 5);
-                    layoutParams.rightMargin = (int) ScreenUtils.dpToPx(mActivity , 10);
-                    view.setLayoutParams(layoutParams);
-                    if (i == 0 ) {
-                        view.setBackgroundResource(R.drawable.dot_circle_red);
-                    }else{
-                        view.setBackgroundResource(R.drawable.dot_circle_gray);
-                    }
-                    circleDoit.addView(view);
-                }
-            }
-        });
     }
 
 

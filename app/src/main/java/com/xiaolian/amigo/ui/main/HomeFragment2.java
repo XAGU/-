@@ -273,15 +273,11 @@ public class HomeFragment2 extends BaseFragment {
 
 
     private void notifyAdaptor() {
+        if (recyclerView == null) return ;
         if (recyclerView.getAdapter() == null) {
             resetItem();
             recyclerView.setAdapter(adaptor);
             recyclerView.setVisibility(View.VISIBLE);
-//            LayoutAnimationController animation = AnimationUtils
-//                    .loadLayoutAnimation(getContext(), R.anim.layout_animation_home_slide_left_to_right);
-////            AlphaAnimation anim = new AlphaAnimation(0.0f, 1.0f);
-//            anim.setDuration(500);
-//            recyclerView.startAnimation(animation.getAnimation());
         } else {
             resetItem();
             adaptor.notifyDataSetChanged();
