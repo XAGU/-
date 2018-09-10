@@ -328,7 +328,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
         // 扫描macAddress
         Log.i(TAG, "开始扫描macAddress");
-        bleDataManager.scan(BluetoothConstants.SCAN_TYPE_BLE, new BluetoothScanResponse() {
+        bleDataManager.scan(scanType, new BluetoothScanResponse() {
             boolean savedScanType = false;
             @Override
             public void onScanStarted() {
@@ -892,7 +892,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 getMvpView().onError(TradeError.CONNECT_ERROR_4);
             }
         }
-        Log.wtf(TAG , "processCommandResult>>>>>" + result);
+        Log.wtf(TAG , "processCommandResult>>>>>" + result  + "   " + deviceNo);
         CmdResultReqDTO reqDTO = new CmdResultReqDTO();
         reqDTO.setData(result);
         reqDTO.setMacAddress(deviceNo);
