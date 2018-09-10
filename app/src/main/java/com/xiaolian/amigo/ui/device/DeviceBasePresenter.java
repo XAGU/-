@@ -316,8 +316,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         // 设备连接上存储mac地址供后续读写数据使用
         // 查询是否存在该deviceNo的macAddress
             if (deviceDataManager.getMacAddressByDeviceNo(macAddress) != null) {
-                Log.i(TAG, "缓存中存在macAddress，不需要扫描");
+
                 currentMacAddress = deviceDataManager.getMacAddressByDeviceNo(macAddress);
+                Log.i(TAG, "缓存中存在macAddress，不需要扫描" + currentMacAddress);
                 realConnect(macAddress);
                 return;
             }
@@ -496,6 +497,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             if (null == getStep()) {
                 Log.i(TAG, "首次连接就连接不上，需要重新下发握手指令:" + connectCmd);
                 waitConnectCmdResult();
+                Log.wtf(TAG , "   afterBleConnected 首次连接 >>>>>>>>>>  " +currentMacAddress);
                 onWrite(connectCmd);
                 reconnect = false; // 重置重连标志
             } else if (TradeStep.PAY == getStep()) { // 支付页面重连
@@ -504,6 +506,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 // getMvpView().post(() -> getMvpView().onReconnectSuccess());
                 // 最新修改，支付页面重连，继续下发握手指令，否则单纯物理连接上会被设备踢掉
                 waitConnectCmdResult();
+                Log.wtf(TAG , "   afterBleConnected  支付页面重连 >>>>>>>>>>  " +currentMacAddress);
                 onWrite(connectCmd);
                 reconnect = false; // 重置重连标志
             } else { // 结算页面重连
@@ -639,6 +642,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
     @Override
     public void onWrite(@NonNull String command) {
+        Log.wtf(TAG , "   onWrite >>>>>>>>>>  " +currentMacAddress);
         if (bleDataManager.getConnectStatus(currentMacAddress) != BluetoothConstants.STATE_CONNECTED) {
             reportError(getStep().getStep(), ConnectErrorType.BLE_CONNECT_ERROR.getType(),
                     DisplayErrorType.CONNECT_ERROR.getType(), "发送指令时设备未连接，command:" + command,
@@ -886,6 +890,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 getMvpView().onError(TradeError.CONNECT_ERROR_4);
             }
         }
+        Log.wtf(TAG , "processCommandResult>>>>>" + result);
         CmdResultReqDTO reqDTO = new CmdResultReqDTO();
         reqDTO.setData(result);
         reqDTO.setMacAddress(deviceNo);
@@ -899,7 +904,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     Log.i(TAG, "收到deviceToken：" + result.getData().getDeviceToken());
                 }
                 Log.i(TAG, "通知主线程更新数据。" + result.getData());
-                RxBus.getDefault().post(result);
+//                RxBus.getDefault().post(result);
+                handleResult(result);
             }
 
             @Override
@@ -915,7 +921,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_3));
                 }
             }
-        }, Schedulers.io());
+        }, AndroidSchedulers.mainThread());
     }
 
     private void handleResult(ApiResult<CmdResultRespDTO> result) {
@@ -950,6 +956,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         } else {
                             Log.i(TAG, "未结算订单已经超出指定时间范围，继续下发预结账指令，走正常流程");
                             precheckCmd = nextCommand;
+                            Log.w(TAG , "CONNECT  未结账订单超过时间>>>>>>>"+currentMacAddress);
                             onWrite(precheckCmd);
                         }
                         return;
@@ -961,6 +968,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         if (!reconnect) { // 正常流程
                             // 下发预结账指令
                             Log.i(TAG, "正常流程，设备上存在未结账订单，获取到预结账指令。command:" + nextCommand);
+
+                            Log.w(TAG , "CONNECT  正常流程，存在未结账订单>>>>>>>"+currentMacAddress);
                             onWrite(precheckCmd);
                         } else {
                             //  自己的未结账订单，显示未结账状态
@@ -990,6 +999,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     Log.i(TAG, "正常流程，获取到结账指令。command:" + nextCommand);
                     checkoutCmd = nextCommand;
                     // 下发结账指令
+
+                    Log.w(TAG , "CLOSE_VALVE >>>>>>>"+currentMacAddress);
                     onWrite(checkoutCmd);
                     break;
                 case CHECK_OUT:
@@ -1015,6 +1026,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                                 Log.i(TAG, "orderStatus不为空，说明是给自己超过2小时的订单结账，需要重置orderStatus的状态。");
                                 orderStatus = null;
                             }
+                            Log.wtf(TAG ,"CHECK_OUT  >>>>>>>>>>"+currentMacAddress);
                             onWrite(connectCmd);
                         }
                     } else {
@@ -1026,11 +1038,13 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     }
                     break;
                 case PRE_CHECK:
+                    Log.wtf(TAG ,"PRE_CHECK  >>>>>>>>>>"+currentMacAddress);
                     Log.i(TAG, "正常流程，获取到结账指令。command:" + nextCommand);
                     checkoutCmd = nextCommand;
                     // 标识当前状态为预结账状态
                     precheckFlag = true;
                     // 下发结账指令
+                    Log.wtf(TAG ,"PRE_CHECK  >>>>>>>>>>"+currentMacAddress);
                     onWrite(checkoutCmd);
                     break;
                 case UNKNOWN:
@@ -1244,6 +1258,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     // 向设备下发开阀指令
                     openCmd = result.getData().getOpenValveCommand();
                     Log.i(TAG, "开始下发开阀指令。command：" + openCmd);
+
                     onWrite(openCmd);
                 } else {
                     Log.wtf(TAG, "支付创建订单失败。");

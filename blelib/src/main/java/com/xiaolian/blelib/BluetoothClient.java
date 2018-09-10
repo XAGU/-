@@ -236,7 +236,7 @@ public class BluetoothClient implements IBluetoothClient {
     public synchronized int getConnectStatus(String mac) {
         if (!checkMacAddress(mac)) {
             Log.d(TAG, "[getConnectStatus]check mac失败" + mac + " " + bluetoothConnectWorker == null
-                    ? "worker为null" : bluetoothConnectWorker.getMacAddress());
+                    ? "worker为null" : bluetoothConnectWorker.getMacAddress()+"");
             return BluetoothConstants.STATE_DISCONNECTED;
         }
         return bluetoothConnectWorker.getCurrentStatus();
