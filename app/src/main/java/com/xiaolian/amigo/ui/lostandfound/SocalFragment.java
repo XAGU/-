@@ -4,6 +4,7 @@ package com.xiaolian.amigo.ui.lostandfound;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
@@ -19,7 +20,10 @@ import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.base.BaseFragment;
+import com.xiaolian.amigo.ui.lostandfound.adapter.SocalContentAdapter;
 import com.xiaolian.amigo.ui.lostandfound.adapter.SocalTagsAdapter;
+import com.xiaolian.amigo.ui.widget.SpaceBottomItemDecoration;
+import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.util.ScreenUtils;
 
 import java.util.ArrayList;
@@ -33,6 +37,7 @@ import butterknife.Unbinder;
 /**
  * @author wcm
  * 2018/09/04
+ *
  */
 public class SocalFragment extends BaseFragment implements View.OnClickListener {
     private static final String TAG = SocalFragment.class.getSimpleName();
@@ -75,6 +80,10 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener 
     View rootView;
     View popView;
 
+    // RecyclerVew
+    private SocalContentAdapter socalContentAdapter ;
+    private List<SocalContentAdapter.SocialContentWrapper> mDatas ;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -100,9 +109,8 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener 
         SocalTagsAdapter adapter = new SocalTagsAdapter(mActivity, mSocialTagDatas, socialTags);
         socialTags.setAdapter(adapter);
         initPop();
+        initSocialContentAdapter();
     }
-
-
 
     private void initScreen() {
         WindowManager windowManager = (WindowManager) mActivity.getSystemService(Context.WINDOW_SERVICE);
@@ -110,6 +118,17 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener 
         windowManager.getDefaultDisplay().getMetrics(displayMetrics);
         screentHeight = displayMetrics.heightPixels;
         screenWidth = displayMetrics.widthPixels;
+    }
+
+    private void initSocialContentAdapter(){
+        mDatas = new ArrayList<>();
+        for (int i = 0 ; i < 3 ; i ++){
+            mDatas.add(new SocalContentAdapter.SocialContentWrapper());
+        }
+        socalContentAdapter = new SocalContentAdapter(mActivity ,R.layout.item_socal ,mDatas);
+        socialRecy.setLayoutManager(new LinearLayoutManager(mActivity));
+        socialRecy.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(mActivity ,21)));
+        socialRecy.setAdapter(socalContentAdapter);
     }
 
     public void initPop() {
@@ -166,4 +185,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener 
                 break;
         }
     }
+
+
+
 }

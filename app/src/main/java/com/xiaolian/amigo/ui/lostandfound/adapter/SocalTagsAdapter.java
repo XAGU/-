@@ -45,7 +45,7 @@ public class SocalTagsAdapter extends RecyclerView.Adapter<SocalTagsAdapter.Item
         manager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(manager);
         recyclerView.addItemDecoration(new SpaceBottomItemDecoration(ScreenUtils.dpToPxInt(context ,5)));
-        recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);

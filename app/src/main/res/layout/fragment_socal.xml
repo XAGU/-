@@ -86,10 +86,10 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:scrollbars="none"
-        android:paddingStart="21dp"
+        android:layout_marginStart="21dp"
         android:layout_marginTop="6dp"
         android:id="@+id/social_tags"/>
-    
+
 
     <View
         android:layout_width="match_parent"
@@ -98,12 +98,20 @@
         android:id="@+id/title_border"
         android:background="@color/colorDarke" />
 
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         android:text="热门联子"
         android:textSize="16sp"
+        android:textStyle="bold"
         android:textColor="@color/colorDark2"
         android:layout_marginStart="21dp"
         />
@@ -117,4 +125,6 @@
         android:id="@+id/social_recy">
 
     </android.support.v7.widget.RecyclerView>
+    </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
 </LinearLayout>
