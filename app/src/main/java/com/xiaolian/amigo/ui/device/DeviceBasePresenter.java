@@ -315,18 +315,20 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         //  macAddress是服务器返回的deviceNo  ,currentMacAddress是全局变量，是正确的蓝牙设备mac地址
         // 设备连接上存储mac地址供后续读写数据使用
         // 查询是否存在该deviceNo的macAddress
-            if (deviceDataManager.getMacAddressByDeviceNo(macAddress) != null) {
+        if (deviceDataManager.getMacAddressByDeviceNo(macAddress) != null) {
 
-                currentMacAddress = deviceDataManager.getMacAddressByDeviceNo(macAddress);
-                Log.i(TAG, "缓存中存在macAddress，不需要扫描" + currentMacAddress);
-                realConnect(macAddress);
-                return;
-            }
+            currentMacAddress = deviceDataManager.getMacAddressByDeviceNo(macAddress);
+            Log.i(TAG, "缓存中存在macAddress，不需要扫描" + currentMacAddress);
+            realConnect(macAddress);
+            return;
+        }
+
+
 
 
         // 扫描macAddress
         Log.i(TAG, "开始扫描macAddress");
-        bleDataManager.scan(scanType, new BluetoothScanResponse() {
+        bleDataManager.scan(BluetoothConstants.SCAN_TYPE_BLE, new BluetoothScanResponse() {
             boolean savedScanType = false;
             @Override
             public void onScanStarted() {
