@@ -2,25 +2,38 @@ package com.xiaolian.amigo.ui.lostandfound.adapter;
 
 import android.animation.Animator;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
+import com.xiaolian.amigo.ui.widget.photoview.AlbumItemActivity;
+import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.ScreenUtils;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class SocalContentAdapter extends CommonAdapter<SocalContentAdapter.SocialContentWrapper> {
+/**
+ * @author  wcm
+ * @Data  18/09/10
+ *
+ */
 
+public class SocalContentAdapter extends CommonAdapter<SocalContentAdapter.SocialContentWrapper> {
+    private static final String TAG = SocalContentAdapter.class.getSimpleName();
     private Animation animation ;
     private Context context ;
     private boolean animating  =false ;
-    private LinearLayoutManager linearLayoutManager ;
 
     public SocalContentAdapter(Context context, int layoutId, List<SocalContentAdapter.SocialContentWrapper> datas) {
         super(context, layoutId, datas);
@@ -58,28 +71,21 @@ public class SocalContentAdapter extends CommonAdapter<SocalContentAdapter.Socia
             holder.getView(R.id.praise).startAnimation(animation);
         });
 
-
+        List<String> strings  = new ArrayList<>();
+        for (int i = 0 ; i < 3 ; i++) {
+            strings.add(Constant.IMAGE_PREFIX + "system/2.png");
+        }
+        setImage(holder ,strings);
     }
 
     private void setImage(ViewHolder holder ,List<String> imgs){
         RecyclerView recyclerView = holder.getView(R.id.images);
-        if (linearLayoutManager == null){
-            linearLayoutManager = new LinearLayoutManager(context);
-            linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        }
+        SocialImgAdapter socialImgAdapter = new SocialImgAdapter(context ,R.layout.item_social_img , imgs);
+        LinearLayoutManager    linearLayoutManager = new LinearLayoutManager(context);
+        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(context ,9)));
-        recyclerView.setAdapter(new CommonAdapter<String>() {
-            @Override
-            protected void convert(ViewHolder holder, Object o, int position) {
-
-            }
-
-            @Override
-            public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
-            }
-        });
+//        recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(context ,9)));
+        recyclerView.setAdapter(socialImgAdapter);
     }
 
 

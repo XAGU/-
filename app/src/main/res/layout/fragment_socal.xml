@@ -81,7 +81,13 @@
         </RelativeLayout>
 
     </FrameLayout>
-
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -98,33 +104,100 @@
         android:id="@+id/title_border"
         android:background="@color/colorDarke" />
 
-    <android.support.v4.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:text="热门联子"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:textColor="@color/colorDark2"
-        android:layout_marginStart="21dp"
-        />
 
-    <android.support.v7.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginStart="21dp"
-        android:layout_marginEnd="21dp"
-        android:id="@+id/social_recy">
+            <com.scwang.smartrefresh.layout.SmartRefreshLayout
+                android:id="@+id/refreshLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/mainMarginLeftRight"
+                android:layout_marginRight="@dimen/mainMarginLeftRight"
+                >
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <RelativeLayout
+                        android:id="@+id/rl_empty"
+                        android:layout_width="match_parent"
+                        android:visibility="gone"
+                        android:background="@color/colorBackgroundGray"
+                        android:layout_height="match_parent">
+                        <TextView
+                            android:id="@+id/tv_empty_tip"
+                            android:textSize="14sp"
+                            android:text="@string/empty_tip"
+                            android:textColor="@color/colorDark2"
+                            android:layout_centerInParent="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                        <ImageView
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginBottom="14dp"
+                            android:layout_above="@id/tv_empty_tip"
+                            android:src="@drawable/ic_empty_box"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:id="@+id/rl_error"
+                        android:layout_width="match_parent"
+                        android:visibility="gone"
+                        android:background="@color/colorBackgroundGray"
+                        android:layout_height="match_parent">
+                        <TextView
+                            android:id="@+id/tv_error_tip"
+                            android:textSize="14sp"
+                            android:text="@string/network_available_error_tip"
+                            android:textColor="@color/colorDark2"
+                            android:layout_centerInParent="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                        <ImageView
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginBottom="14dp"
+                            android:layout_above="@id/tv_error_tip"
+                            android:src="@drawable/ic_error_ballon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </RelativeLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="28dp"
+                            android:text="热门联子"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/colorDark2"
+                            />
 
-    </android.support.v7.widget.RecyclerView>
+                        <android.support.v7.widget.RecyclerView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:id="@+id/social_recy" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="28dp"
+                            android:text="最新联子"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/colorDark2"
+                            />
+
+                        <android.support.v7.widget.RecyclerView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:id="@+id/social_new" />
+                    </LinearLayout>
+                </FrameLayout>
+            </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
     </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 </LinearLayout>

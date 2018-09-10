@@ -18,12 +18,16 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.base.BaseFragment;
 import com.xiaolian.amigo.ui.lostandfound.adapter.SocalContentAdapter;
 import com.xiaolian.amigo.ui.lostandfound.adapter.SocalTagsAdapter;
-import com.xiaolian.amigo.ui.widget.SpaceBottomItemDecoration;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
+import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutFooter;
+import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutHeader;
 import com.xiaolian.amigo.util.ScreenUtils;
 
 import java.util.ArrayList;
@@ -37,7 +41,6 @@ import butterknife.Unbinder;
 /**
  * @author wcm
  * 2018/09/04
- *
  */
 public class SocalFragment extends BaseFragment implements View.OnClickListener {
     private static final String TAG = SocalFragment.class.getSimpleName();
@@ -65,6 +68,18 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener 
     FrameLayout titleFl;
     @BindView(R.id.social_recy)
     RecyclerView socialRecy;
+    @BindView(R.id.tv_empty_tip)
+    TextView tvEmptyTip;
+    @BindView(R.id.rl_empty)
+    RelativeLayout rlEmpty;
+    @BindView(R.id.tv_error_tip)
+    TextView tvErrorTip;
+    @BindView(R.id.rl_error)
+    RelativeLayout rlError;
+    @BindView(R.id.refreshLayout)
+    SmartRefreshLayout refreshLayout;
+    @BindView(R.id.social_new)
+    RecyclerView socialNew;
 
     private RelativeLayout rlNotice;
     private TextView circle, collection, release;
@@ -81,8 +96,11 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener 
     View popView;
 
     // RecyclerVew
-    private SocalContentAdapter socalContentAdapter ;
-    private List<SocalContentAdapter.SocialContentWrapper> mDatas ;
+    private SocalContentAdapter socalContentAdapter;
+    private List<SocalContentAdapter.SocialContentWrapper> mDatas;
+    private List<SocalContentAdapter.SocialContentWrapper> mNewContents;
+    private SocalContentAdapter socalNewContentAdapter;
+    private boolean autoRefresh;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -109,7 +127,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener 
         SocalTagsAdapter adapter = new SocalTagsAdapter(mActivity, mSocialTagDatas, socialTags);
         socialTags.setAdapter(adapter);
         initPop();
-        initSocialContentAdapter();
+        initContentRecycler();
     }
 
     private void initScreen() {
@@ -120,15 +138,57 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener 
         screenWidth = displayMetrics.widthPixels;
     }
 
-    private void initSocialContentAdapter(){
+    private void initContentRecycler() {
+        setAutoRefresh(true);
+        initSocialContentAdapter();
+        refreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
+            @Override
+            public void onLoadMore(RefreshLayout refreshLayout) {
+                onLoadMoreContent();
+            }
+
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                onRefreshContent();
+            }
+        });
+        refreshLayout.setRefreshHeader(new RefreshLayoutHeader(mActivity));
+        refreshLayout.setRefreshFooter(new RefreshLayoutFooter(mActivity));
+        refreshLayout.setReboundDuration(200);
+        if (autoRefresh) {
+            refreshLayout.autoRefresh(20);
+        }
+    }
+
+
+    protected void setAutoRefresh(boolean autoRefresh) {
+        this.autoRefresh = autoRefresh;
+    }
+
+    private void onLoadMoreContent() {
+
+    }
+
+    private void onRefreshContent() {
+
+    }
+
+
+    private void initSocialContentAdapter() {
         mDatas = new ArrayList<>();
-        for (int i = 0 ; i < 3 ; i ++){
+        for (int i = 0; i < 3; i++) {
             mDatas.add(new SocalContentAdapter.SocialContentWrapper());
         }
-        socalContentAdapter = new SocalContentAdapter(mActivity ,R.layout.item_socal ,mDatas);
+        socalContentAdapter = new SocalContentAdapter(mActivity, R.layout.item_socal, mDatas);
         socialRecy.setLayoutManager(new LinearLayoutManager(mActivity));
-        socialRecy.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(mActivity ,21)));
+        socialRecy.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(mActivity, 21)));
         socialRecy.setAdapter(socalContentAdapter);
+
+        mNewContents = new ArrayList<>();
+        socalNewContentAdapter = new SocalContentAdapter(mActivity ,R.layout.item_socal ,mNewContents);
+        socialNew.setLayoutManager(new LinearLayoutManager(mActivity));
+        socialNew.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(mActivity, 21)));
+        socialNew.setAdapter(socalContentAdapter);
     }
 
     public void initPop() {
@@ -185,7 +245,6 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener 
                 break;
         }
     }
-
 
 
 }

@@ -69,7 +69,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/images"
         android:layout_marginTop="14dp"
-        android:visibility="gone"
+        android:visibility="visible"
         />
 
     <RelativeLayout
