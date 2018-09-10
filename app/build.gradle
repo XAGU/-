@@ -74,15 +74,15 @@ android {
                 
             //  测试连接正式服
 
-//            buildConfigField "String", "SERVER", "\"https://api.xiaolian365.com/c/\""
-//            buildConfigField "String", "SERVER_BATHROOM", "\"https://api.xiaolian365.com/b/\""
-//            buildConfigField "String", "H5_SERVER", "\"https://h5.xiaolian365.com/c\""
+            buildConfigField "String", "SERVER", "\"https://api.xiaolian365.com/c/\""
+            buildConfigField "String", "SERVER_BATHROOM", "\"https://api.xiaolian365.com/b/\""
+            buildConfigField "String", "H5_SERVER", "\"https://h5.xiaolian365.com/c\""
 
             //  连接测试服
-            buildConfigField "String", "SERVER", "\"http://47.107.45.109:5081/\"" //qa5
-//            buildConfigField "String", "SERVER_BATHROOM", "\"http://47.107.45.109:5082/\"" //qa5
-            buildConfigField "String", "SERVER_BATHROOM", "\"http://10.195.90.250:5082/\"" //qa5
-            buildConfigField "String", "H5_SERVER", "\"http://47.107.45.109:5097/c\"" //qa5
+//            buildConfigField "String", "SERVER", "\"http://47.107.45.109:5081/\"" //qa5
+////            buildConfigField "String", "SERVER_BATHROOM", "\"http://47.107.45.109:5082/\"" //qa5
+//            buildConfigField "String", "SERVER_BATHROOM", "\"http://10.195.90.250:5082/\"" //qa5
+//            buildConfigField "String", "H5_SERVER", "\"http://47.107.45.109:5097/c\"" //qa5
 
 
 //            buildConfigField "String", "SERVER", "\"http://47.107.47.24:5081/\"" //qa4

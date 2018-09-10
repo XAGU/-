@@ -390,6 +390,12 @@
             android:windowSoftInputMode="adjustPan|stateHidden"
             />
 
+        <!--写联子-->
+        <activity android:name=".ui.lostandfound.WriteLZActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan|stateHidden"
+            />
         <!--报修评价-->
         <activity
             android:name=".ui.repair.RepairEvaluationActivity"

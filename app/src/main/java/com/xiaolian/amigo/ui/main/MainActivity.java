@@ -54,6 +54,7 @@ import com.xiaolian.amigo.ui.device.washer.ScanActivity;
 import com.xiaolian.amigo.ui.device.washer.WasherActivity;
 import com.xiaolian.amigo.ui.login.LoginActivity;
 import com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity2;
+import com.xiaolian.amigo.ui.lostandfound.WriteLZActivity;
 import com.xiaolian.amigo.ui.main.data.DataGenerator;
 import com.xiaolian.amigo.ui.main.intf.IMainPresenter;
 import com.xiaolian.amigo.ui.main.intf.IMainView;
@@ -348,8 +349,12 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 vgFragment.setCurrentItem(0);
                 break;
             case R.id.social_rl:
-                tableBottomImageChange(1);
-                vgFragment.setCurrentItem(1);
+                if (socialSelRl.getVisibility() == View.VISIBLE){
+                    startActivity(new Intent(this , WriteLZActivity.class));
+                }else {
+                    tableBottomImageChange(1);
+                    vgFragment.setCurrentItem(1);
+                }
                 break;
             case R.id.personal_rl:
                 tableBottomImageChange(2);
@@ -836,11 +841,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             } else if (type == Device.DRYER.getType() && dryerOrderSize > 0) {
                 showPrepayDialog(type, dryerOrderSize, data);
             } else {
-                // 如果热水澡 检查默认宿舍
-//                if (type == Device.HEATER.getType() && !presenter.checkDefaultDormitoryExist()) {
-//                    showBindDormitoryDialog();
-//                    return;
-//                }
                 if (!data.getTimeValid()) {
                     showTimeValidDialog(type, data);
                 } else {
@@ -860,33 +860,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             }
         }
     }
-
-//    @Override
-//    public void showBindDormitoryDialog() {
-//        Log.d(TAG, "showBindDormitoryDialog");
-//        if (null == availabilityDialog) {
-//            availabilityDialog = new AvailabilityDialog(this);
-//        }
-//        if (availabilityDialog.isShowing()
-//                && availabilityDialog.getType() == AvailabilityDialog.Type.BIND_DORMITORY) {
-//            return;
-//        }
-//        availabilityDialog.setType(AvailabilityDialog.Type.BIND_DORMITORY);
-//        availabilityDialog.setOkText("前往绑定");
-//        availabilityDialog.setTitle(AvailabilityDialog.Type.BIND_DORMITORY.getTitle());
-//        availabilityDialog.setTip("热水澡需要先绑定宿舍");
-//        availabilityDialog.setOnOkClickListener(dialog1 -> {
-//            Intent intent;
-//            intent = new Intent(this, ListChooseActivity.class);
-//            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
-//            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION,
-//                    ListChooseActivity.ACTION_LIST_BUILDING);
-//            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_SRC_ACTIVITY, Constant.MAIN_ACTIVITY_SRC);
-//            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_DEVICE_TYPE, Device.HEATER.getType());
-//            startActivity(intent);
-//        });
-//        availabilityDialog.show();
-//    }
 
     @Override
     public void showOpenLocationDialog() {
