@@ -251,6 +251,8 @@
             android:layout_marginEnd="21dp"
             android:layout_marginStart="14dp"
             android:text="发射"
+            android:visibility="gone"
+            android:id="@+id/reply"
             android:textSize="11sp"
             android:textColor="@color/white"
             android:background="@drawable/red_radius_4"

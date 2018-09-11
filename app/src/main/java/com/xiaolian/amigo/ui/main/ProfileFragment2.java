@@ -1,27 +1,35 @@
 package com.xiaolian.amigo.ui.main;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.umeng.analytics.MobclickAgent;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.user.PersonalExtraInfoDTO;
+import com.xiaolian.amigo.data.vo.User;
+import com.xiaolian.amigo.ui.base.BaseFragment;
 import com.xiaolian.amigo.ui.bonus.BonusActivity;
 import com.xiaolian.amigo.ui.credits.CreditsActivity;
 import com.xiaolian.amigo.ui.favorite.FavoriteActivity;
 import com.xiaolian.amigo.ui.main.adaptor.ProfileAdaptor;
+import com.xiaolian.amigo.ui.main.intf.IMainPresenter;
+import com.xiaolian.amigo.ui.main.intf.IMainView;
 import com.xiaolian.amigo.ui.more.MoreActivity;
 import com.xiaolian.amigo.ui.repair.RepairNavActivity;
 import com.xiaolian.amigo.ui.user.EditProfileActivity;
 import com.xiaolian.amigo.ui.wallet.WalletActivity;
+import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
@@ -35,6 +43,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
+import de.hdodenhof.circleimageview.CircleImageView;
 import lombok.Data;
 
 /**
@@ -44,7 +54,7 @@ import lombok.Data;
  * @date 17/10/10
  */
 
-public class ProfileFragment2 extends Fragment {
+public class ProfileFragment2 extends BaseFragment {
     private static final String TAG = ProfileFragment2.class.getSimpleName();
     ProfileAdaptor.Item wallet = new ProfileAdaptor.Item(R.drawable.profile_wallet, "我的钱包", WalletActivity.class);
     ProfileAdaptor.Item credits = new ProfileAdaptor.Item(R.drawable.profile_credits, "积分兑换", CreditsActivity.class);
@@ -62,19 +72,57 @@ public class ProfileFragment2 extends Fragment {
             add(new ProfileAdaptor.Item(R.drawable.profile_more, "更多", MoreActivity.class));
         }
     };
+    @BindView(R.id.tv_nickName)
+    TextView tvNickName;
+    @BindView(R.id.tv_schoolName)
+    TextView tvSchoolName;
+
+    public ProfileFragment2() {
+    }
+
+    @SuppressLint("ValidFragment")
+    public ProfileFragment2(IMainPresenter<IMainView> presenter, boolean isServerError) {
+        this.presenter = presenter;
+        this.isServerError = isServerError;
+    }
+
+    IMainPresenter<IMainView> presenter;
+    boolean isServerError;
 
     ProfileAdaptor adaptor;
+    @BindView(R.id.iv_avatar)
+    CircleImageView ivAvatar;
     private DecimalFormat df = new DecimalFormat("###.##");
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
 
+    private Unbinder unbinder;
+
+    private String avatarUrl;  //  图片url
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
         return view;
+    }
+
+
+    public void setAvatar(String pictureUrl) {
+        if (ivAvatar == null) return ;
+        if (!TextUtils.isEmpty(pictureUrl)) {
+            avatarUrl = pictureUrl;
+            Glide.with(this).load(Constant.IMAGE_PREFIX + pictureUrl)
+                    .asBitmap()
+                    .placeholder(R.drawable.ic_picture_error)
+                    .error(R.drawable.ic_picture_error)
+                    .into(ivAvatar);
+        } else {
+            ivAvatar.setImageResource(R.drawable.ic_picture_error);
+        }
     }
 
     @Override
@@ -105,6 +153,8 @@ public class ProfileFragment2 extends Fragment {
 //        recyclerView.setLayoutAnimation(animation);
         recyclerView.setAdapter(adaptor);
     }
+
+    // TODO: 9/11/18 从主页传过来的数据
 
     @SuppressWarnings("unchecked")
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -144,6 +194,7 @@ public class ProfileFragment2 extends Fragment {
         } else {
             adaptor.notifyDataSetChanged();
         }
+
     }
 
     @SuppressWarnings("unchecked")
@@ -163,6 +214,28 @@ public class ProfileFragment2 extends Fragment {
         LayoutAnimationController animation = AnimationUtils
                 .loadLayoutAnimation(getContext(), animationRes);
         recyclerView.setLayoutAnimation(animation);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
+    @Override
+    protected void initData() {
+        if (tvNickName == null) return ;
+        if (presenter.isLogin()) {
+            User user = presenter.getUserInfo();
+            setAvatar(user.getPictureUrl());
+            tvNickName.setText(user.getNickName());
+            tvSchoolName.setVisibility(View.GONE);
+        }else{
+            setAvatar("");
+            tvNickName.setText("登录/注册");
+            tvSchoolName.setVisibility(View.GONE);
+        }
+
     }
 
 
@@ -193,8 +266,6 @@ public class ProfileFragment2 extends Fragment {
             private int type;
         }
     }
-
-
 
 
     @Override

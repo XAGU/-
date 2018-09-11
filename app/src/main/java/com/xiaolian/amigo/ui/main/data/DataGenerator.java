@@ -29,7 +29,7 @@ public class DataGenerator {
         Fragment fragments[] = new Fragment[3];
         fragments[0] = new HomeFragment2(presenter ,isServerError);
         fragments[1] = new SocalFragment();
-        fragments[2] = new ProfileFragment2();
+        fragments[2] = new ProfileFragment2(presenter ,isServerError);
         return fragments;
     }
 

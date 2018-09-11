@@ -20,9 +20,10 @@
         android:layout_marginBottom="16dp"
         >
         <ImageView
-            android:layout_width="19dp"
-            android:layout_height="19dp"
-            android:layout_marginStart="21dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="21dp"
+            android:paddingEnd="20dp"
             android:src="@drawable/icon_search"
             android:id="@+id/search"
             android:layout_centerVertical="true"/>
@@ -54,29 +55,36 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/search_rl"
-            tools:visibility="gone"
+            tools:visibility="visible"
             android:visibility="gone"
+            android:layout_marginStart="21dp"
             android:background="@color/color_bg_gray_f8">
         
-            <TextView
+            <EditText
                 android:layout_width="276dp"
                 android:layout_height="29dp"
                 android:layout_marginTop="6dp"
                 android:layout_marginBottom="9dp"
                 android:background="@drawable/social_search_tv_bg"
                 android:paddingLeft="14dp"
+                android:textSize="13sp"
                 android:id="@+id/search_txt"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
                 android:gravity="center_vertical"
                 android:textColorHint="@color/colorDarkB"
+                android:textColor="@color/colorDark2"
                 android:hint="@string/social_search_hint"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/cancel"
                 android:layout_centerVertical="true"
-                android:layout_alignRight="@id/search_txt"
+                android:layout_toRightOf="@id/search_txt"
                 android:textSize="13sp"
-                android:layout_marginStart="14dp"
+                android:id="@+id/cancel_search"
+                android:paddingStart="14dp"
+                android:paddingEnd="20dp"
                 android:textColor="@color/colorDark2"/>
         </RelativeLayout>
 

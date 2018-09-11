@@ -103,7 +103,6 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lost_and_found2);
         setUnBinder(ButterKnife.bind(this));
-
         initRecyclerView();
     }
 

@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.lostandfound;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -9,10 +10,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
@@ -38,7 +43,12 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnEditorAction;
 import butterknife.Unbinder;
+
+import static android.app.Activity.RESULT_OK;
+import static com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity2.KEY_COMMENT_COUNT;
+import static com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity2.KEY_VIEW_COUNT;
 
 /**
  * @author wcm
@@ -47,6 +57,7 @@ import butterknife.Unbinder;
 public class SocalFragment extends BaseFragment implements View.OnClickListener {
     private static final String TAG = SocalFragment.class.getSimpleName();
 
+    private static final int REQUEST_CODE_PUBLISH = 0x0101;
     @BindView(R.id.search)
     ImageView search;
     @BindView(R.id.title)
@@ -56,7 +67,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener 
     @BindView(R.id.social_normal_rl)
     RelativeLayout socialNormalRl;
     @BindView(R.id.search_txt)
-    TextView searchTxt;
+    EditText searchTxt;
     @BindView(R.id.search_rl)
     RelativeLayout searchRl;
     @BindView(R.id.social_tags)
@@ -118,6 +129,73 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener 
 
     }
 
+    @OnClick(R.id.cancel_search)
+    public void showNormalRl(){
+        socialNormalRl.setVisibility(View.VISIBLE);
+        searchRl.setVisibility(View.GONE);
+
+
+    }
+    @OnClick(R.id.search)
+    public void showSearchRl(){
+        socialNormalRl.setVisibility(View.GONE);
+        searchRl.setVisibility(View.VISIBLE);
+        showSoftInputFromWindow(mActivity ,searchTxt);
+    }
+
+
+    /**
+     * EditText获取焦点并显示软键盘
+     */
+    public static void showSoftInputFromWindow(Activity activity, EditText editText) {
+        editText.setFocusable(true);
+        editText.setFocusableInTouchMode(true);
+        editText.requestFocus();
+        InputMethodManager inputManager =
+                (InputMethodManager)editText.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputManager.showSoftInput(editText, 0);
+    }
+
+
+    @OnEditorAction(R.id.search_txt)
+    boolean search(TextView v, int actionId, KeyEvent event) {
+        // 判断如果用户输入的是搜索键
+        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+//            this.dismiss();
+            InputMethodManager imm = (InputMethodManager) mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+//            if (listener != null) {
+//                listener.onSearch(etSearchContent.getText().toString());
+//            }
+            return true;
+        }
+        return false;
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+//        if (resultCode == RESULT_OK) {
+//            if (requestCode == REQUEST_CODE_PUBLISH) {
+////                refreshLostAndFound();
+//                onRefresh();
+//            } else if (requestCode == REQUEST_CODE_DETAIL) {
+//                if (data != null && currentChoosePosition != -1) {
+//                    int viewCount = data.getIntExtra(KEY_VIEW_COUNT, 0);
+//                    int commentCount = data.getIntExtra(KEY_COMMENT_COUNT, 0);
+//                    lostAndFounds.get(currentChoosePosition).setViewCount(viewCount);
+//                    lostAndFounds.get(currentChoosePosition).setCommentCount(commentCount);
+//                    currentChoosePosition = -1;
+//                    adaptor.notifyDataSetChanged();
+//                }
+//            }
+//        } else {
+//            adaptor.notifyDataSetChanged();
+//        }
+    }
+
+
     /**
      * 初始化横向滚动的tag
      */
@@ -167,7 +245,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener 
         this.autoRefresh = autoRefresh;
     }
 
-    private void onLoadMoreContent() {
+    private  void onLoadMoreContent() {
 
     }
 
@@ -240,7 +318,11 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener 
         rlNotice.setOnClickListener(this);
         collection.setOnClickListener(this);
         release.setOnClickListener(this);
+
     }
+
+
+
 
 
     @OnClick(R.id.more)
@@ -252,20 +334,39 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener 
         // 设置pop关闭监听，用于改变背景透明度
     }
 
+    public void hideNoticeRemind() {
+        circle.setVisibility(View.GONE);
+    }
+
+    public void showNoticeRemind(int num){
+        circle.setText(num);
+        circle.setVisibility(View.VISIBLE);
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
     }
 
+
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.rl_notice:
+                hideNoticeRemind();
+                mPopupWindow.dismiss();
+                startActivity(new Intent(mActivity, LostAndFoundNoticeActivity.class));
                 break;
             case R.id.collection:
+                mPopupWindow.dismiss();
+                startActivity(new Intent(mActivity, MyCollectActivity.class));
                 break;
             case R.id.release:
+                mPopupWindow.dismiss();
+                startActivityForResult(
+                        new Intent(mActivity, MyPublishActivity2.class), REQUEST_CODE_PUBLISH);
                 break;
         }
     }

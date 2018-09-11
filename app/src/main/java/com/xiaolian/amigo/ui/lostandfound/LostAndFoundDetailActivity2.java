@@ -7,6 +7,7 @@ import android.support.v4.util.ObjectsCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -41,6 +42,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnTextChanged;
 
 /**
  * 联子详情
@@ -53,6 +55,10 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
     public static final String KEY_TYPE = "LostAndFoundDetailType";
     public static final String KEY_ID = "LostAndFoundDetailId";
     private static final int REQUEST_CODE_REPLY_DETAIL = 0x0119;
+    @BindView(R.id.et_reply)
+    EditText etReply;
+    @BindView(R.id.reply)
+    TextView reply;
     private LostAndFoundDetailAdapter adapter;
     private List<LostAndFoundDetailAdapter.LostAndFoundDetailWrapper> items = new Vector<>();
     private LostAndFoundDetailAdapter.LostAndFoundDetailWrapper content;
@@ -169,6 +175,8 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
                 }
             }
         }));
+
+            
         adapter.addItemViewDelegate(new LostAndFoundDetailTitleDelegate());
         recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 14)));
         adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
@@ -207,18 +215,18 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
                            boolean owner, Long ownerId, Long time,
                            String avatar) {
         startActivityForResult(new Intent(this, LostAndFoundReplyDetailActivity.class)
-                .putExtra(LostAndFoundReplyDetailActivity.KEY_COMMENT_ID, commentId)
-                .putExtra(LostAndFoundReplyDetailActivity.KEY_COMMENT_CONTENT, commentContent)
-                .putExtra(LostAndFoundReplyDetailActivity.KEY_COMMENT_AUTHOR_ID, commentAuthorId)
-                .putExtra(LostAndFoundReplyDetailActivity.KEY_COMMENT_AUTHOR, commentAuthor)
-                .putExtra(LostAndFoundReplyDetailActivity.KEY_OWNER, owner)
-                .putExtra(LostAndFoundReplyDetailActivity.KEY_OWNER_ID, ownerId)
-                .putExtra(LostAndFoundReplyDetailActivity.KEY_TIME, time)
-                .putExtra(LostAndFoundReplyDetailActivity.KEY_AVATAR, avatar)
-                .putExtra(LostAndFoundReplyDetailActivity.KEY_LOST_FOUND_ID, presenter.getLostAndFound().getId())
-                .putExtra(LostAndFoundReplyDetailActivity.KEY_LOST_FOUND_TYPE,
-                        presenter.getLostAndFound().getType())
-                .putExtra(LostAndFoundReplyDetailActivity.KEY_COMMENT_ENABLE, presenter.isCommentEnable()),
+                        .putExtra(LostAndFoundReplyDetailActivity.KEY_COMMENT_ID, commentId)
+                        .putExtra(LostAndFoundReplyDetailActivity.KEY_COMMENT_CONTENT, commentContent)
+                        .putExtra(LostAndFoundReplyDetailActivity.KEY_COMMENT_AUTHOR_ID, commentAuthorId)
+                        .putExtra(LostAndFoundReplyDetailActivity.KEY_COMMENT_AUTHOR, commentAuthor)
+                        .putExtra(LostAndFoundReplyDetailActivity.KEY_OWNER, owner)
+                        .putExtra(LostAndFoundReplyDetailActivity.KEY_OWNER_ID, ownerId)
+                        .putExtra(LostAndFoundReplyDetailActivity.KEY_TIME, time)
+                        .putExtra(LostAndFoundReplyDetailActivity.KEY_AVATAR, avatar)
+                        .putExtra(LostAndFoundReplyDetailActivity.KEY_LOST_FOUND_ID, presenter.getLostAndFound().getId())
+                        .putExtra(LostAndFoundReplyDetailActivity.KEY_LOST_FOUND_TYPE,
+                                presenter.getLostAndFound().getType())
+                        .putExtra(LostAndFoundReplyDetailActivity.KEY_COMMENT_ENABLE, presenter.isCommentEnable()),
                 REQUEST_CODE_REPLY_DETAIL);
     }
 
@@ -237,6 +245,14 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
         presenter.getComments();
     }
 
+    @OnTextChanged({R.id.et_reply})
+    void etTextChange(){
+        if (TextUtils.isEmpty(etReply.getText().toString())){
+            reply.setVisibility(View.GONE);
+        }else{
+            reply.setVisibility(View.VISIBLE);
+        }
+    }
 
     @Override
     protected void setUp() {

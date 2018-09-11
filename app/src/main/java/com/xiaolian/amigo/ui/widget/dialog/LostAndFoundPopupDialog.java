@@ -2,6 +2,7 @@ package com.xiaolian.amigo.ui.widget.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -30,6 +31,8 @@ public class LostAndFoundPopupDialog extends Dialog {
     public LostAndFoundPopupDialog(@NonNull Context context) {
         super(context, R.style.LostAndFoundPopupDialogStyle);
         this.context = context;
+        // 设置pop透明效果
+
         Window window = this.getWindow();
         window.requestFeature(Window.FEATURE_NO_TITLE);
         window.setGravity(Gravity.END | Gravity.TOP);

@@ -229,7 +229,7 @@ public class ChooseWashModeActivity extends WasherBaseActivity implements IChoos
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new SpaceItemDecoration(42));
     }
-    
+
     private void bindView() {
         recyclerView = findViewById(R.id.recyclerView);
         findViewById(R.id.iv_back).setOnClickListener(v -> {
