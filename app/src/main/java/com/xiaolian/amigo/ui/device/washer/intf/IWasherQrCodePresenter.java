@@ -1,5 +1,7 @@
 package com.xiaolian.amigo.ui.device.washer.intf;
 
+import android.content.Context;
+
 import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 
 /**
@@ -15,5 +17,5 @@ public interface IWasherQrCodePresenter<V extends IWasherQrCodeView> extends IBa
      * @param data      二维码内容
      * @param dimension 二维码尺寸
      */
-    void generateQRCode(String data, int dimension);
+    void generateQRCode(String data, int dimension , Context context);
 }

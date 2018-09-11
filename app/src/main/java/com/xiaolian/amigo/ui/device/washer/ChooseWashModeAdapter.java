@@ -42,7 +42,7 @@ public class ChooseWashModeAdapter extends CommonAdapter<ChooseWashModeAdapter.W
         int type = washModeItem.getType();
         if (type == WASH_DRYER){
             holder.setImageResource(R.id.image ,R.drawable.ic_choose_wash_mode);
-        }{
+        }else{
             holder.setImageResource(R.id.image ,R.drawable.dryer1);
         }
         if (washModeItem.isChoose()) {

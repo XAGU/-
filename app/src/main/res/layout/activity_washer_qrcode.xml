@@ -43,8 +43,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp"
         android:layout_width="182dp"
-        android:layout_height="182dp"
-        android:background="@color/black"/>
+        android:layout_height="182dp" />
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -61,6 +60,7 @@
         android:id="@+id/tv_top_bar"
         tools:text="已成功支付4元(两洗两漂一脱水)"
         android:gravity="center"
+        android:layout_gravity="center_vertical"
         android:textColor="@color/colorFullRed"
         android:textStyle="bold"
         android:textSize="17sp"
@@ -87,6 +87,7 @@
             android:layout_height="wrap_content"
             android:text="烘干机使用说明"
             android:textSize="12sp"
+            android:id="@+id/tip"
             android:textColor="@color/colorDark6"
             />
 
@@ -103,18 +104,17 @@
         android:layout_marginTop="14dp"
         android:gravity="center"
         android:text="1.第一步：请触摸设备上的开关，将屏幕切换为拍摄模式;"
-        android:textColor="@color/colorDark2"
-        android:textSize="14sp"
+        android:textColor="@color/colorDark9"
+        android:textSize="12sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <TextView
-        android:layout_gravity="center_horizontal"
-        android:gravity="start"
-        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:layout_marginTop="12dp"
         android:textSize="12sp"
-        android:textColor="@color/colorDark2"
-        android:text="@string/washer_tip"
-        android:layout_width="wrap_content"
+        android:textColor="@color/colorDark9"
+        android:text="@string/code_pay_tip2"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     </LinearLayout>

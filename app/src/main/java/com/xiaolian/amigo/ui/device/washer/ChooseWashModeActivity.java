@@ -229,7 +229,7 @@ public class ChooseWashModeActivity extends WasherBaseActivity implements IChoos
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new SpaceItemDecoration(42));
     }
-
+    
     private void bindView() {
         recyclerView = findViewById(R.id.recyclerView);
         findViewById(R.id.iv_back).setOnClickListener(v -> {
@@ -245,7 +245,8 @@ public class ChooseWashModeActivity extends WasherBaseActivity implements IChoos
             String mode = items.get(adapter.getLastChoosePosition()).getName();
             startActivity(new Intent(this, WasherQrCodeActivity.class)
                     .putExtra(WasherContent.KEY_MODE_DESC, mode)
-                    .putExtra(WasherContent.KEY_PRICE, price));
+                    .putExtra(WasherContent.KEY_PRICE, price)
+                    .putExtra(KEY_TYPE ,type));
         }
     }
 
@@ -316,7 +317,8 @@ public class ChooseWashModeActivity extends WasherBaseActivity implements IChoos
         startActivity(new Intent(this, WasherQrCodeActivity.class)
                 .putExtra(WasherContent.KEY_PRICE, String.valueOf(chosenOriginalPirce))
                 .putExtra(WasherContent.KEY_MODE_DESC, modeDesc)
-                .putExtra(WasherContent.KEY_QR_CODE_URL, data));
+                .putExtra(WasherContent.KEY_QR_CODE_URL, data)
+                .putExtra(KEY_TYPE , type));
     }
 
     @Override

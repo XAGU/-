@@ -218,7 +218,11 @@ public class ScanActivity extends WasherBaseActivity
     private void init(){
         if (zxingBarcodeScanner != null) zxingBarcodeScanner.setType(scanType);
         if (scanType == 1){
-            tvTitle.setText("洗衣机扫描");
+            if (type == 4) {
+                tvTitle.setText("洗衣机扫描");
+            }else{
+                tvTitle.setText("烘干机扫描");
+            }
         }else{
             tvTitle.setText("扫一扫");
         }

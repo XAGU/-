@@ -269,6 +269,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <!--烘干机页面-->
+        <activity
+            android:name=".ui.device.washer.WasherActivity2"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <!--设置浴室密码-->
         <activity android:name=".ui.device.bathroom.EditBathroomPasswordActivity"
             android:screenOrientation="portrait"

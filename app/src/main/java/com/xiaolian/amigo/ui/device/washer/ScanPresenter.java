@@ -39,7 +39,7 @@ public class ScanPresenter<V extends IScanView> extends BasePresenter<V>
     @Override
     public void scanCheckout(String content , int type) {
         QrCodeScanReqDTO reqDTO = new QrCodeScanReqDTO();
-        reqDTO.setDeviceType(Device.WASHER.getType());
+        reqDTO.setDeviceType(type);
         reqDTO.setQrCodeData(content);
         // 1-绑定 2-扫描结账
         reqDTO.setPurpose(2);

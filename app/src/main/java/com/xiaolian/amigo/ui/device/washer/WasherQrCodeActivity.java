@@ -16,6 +16,11 @@ import com.xiaolian.amigo.ui.main.MainActivity;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+import static com.xiaolian.amigo.ui.device.washer.ScanActivity.KEY_TYPE;
+
 /**
  * 展示二维码页面
  *
@@ -27,18 +32,28 @@ public class WasherQrCodeActivity extends WasherBaseActivity implements IWasherQ
 
     @Inject
     IWasherQrCodePresenter<IWasherQrCodeView> presenter;
+    @BindView(R.id.tv_title)
+    TextView tvTitle;
+    @BindView(R.id.tip)
+    TextView tip;
     private TextView tvTopBar;
     private ImageView ivQrCode;
     private String action;
+    int type;
+    private String mode;
+    private String url;
+    private String price;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_washer_qrcode);
+        ButterKnife.bind(this);
         getActivityComponent().inject(this);
         presenter.onAttach(WasherQrCodeActivity.this);
-        bindView();
         setUp();
+        bindView();
+
     }
 
     @Override
@@ -60,17 +75,27 @@ public class WasherQrCodeActivity extends WasherBaseActivity implements IWasherQ
             onBackPressed();
         });
         ivQrCode = findViewById(R.id.iv_qr_code);
+        if (type == 4) {
+            tvTitle.setText("洗衣机");
+            tip.setText("洗衣机使用说明");
+        } else {
+            tvTitle.setText("烘干机");
+            tip.setText("烘干机使用说明");
+        }
+
+        renderTopBar(price, mode);
+        ivQrCode.post(() ->
+                presenter.generateQRCode(url, ivQrCode.getWidth(), this));
     }
 
     @Override
     protected void setUp() {
-        String mode = getIntent().getStringExtra(WasherContent.KEY_MODE_DESC);
-        String price = getIntent().getStringExtra(WasherContent.KEY_PRICE);
-        String url = getIntent().getStringExtra(WasherContent.KEY_QR_CODE_URL);
+        mode = getIntent().getStringExtra(WasherContent.KEY_MODE_DESC);
+        price = getIntent().getStringExtra(WasherContent.KEY_PRICE);
+        url = getIntent().getStringExtra(WasherContent.KEY_QR_CODE_URL);
+        type = getIntent().getIntExtra(KEY_TYPE, 4);
         action = getIntent().getAction();
-        renderTopBar(price, mode);
-        ivQrCode.post(() ->
-                presenter.generateQRCode(url, ivQrCode.getWidth()));
+
     }
 
     private void renderTopBar(String price, String mode) {

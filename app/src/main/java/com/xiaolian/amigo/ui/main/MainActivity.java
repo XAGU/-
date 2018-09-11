@@ -1198,11 +1198,11 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                     gotoWasher();
                 }
                 break;
-            case GOTO_DRAYER2:{
+            case GOTO_DRAYER2:
                 if (checkLogin()){
                     gotoDryer2();
                 }
-            }
+                break;
             case GOTO_GATE:
                 if (checkLogin()) {
                     gotoGate();

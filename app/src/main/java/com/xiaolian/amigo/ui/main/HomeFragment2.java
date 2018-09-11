@@ -307,7 +307,7 @@ public class HomeFragment2 extends BaseFragment {
             items.add(gate);
         }
         if (dryer1.isActive()){
-            items.add(dryer);
+            items.add(dryer1);
         }
 //        if (lost.isActive()) {
 //            items.add(lost);
@@ -330,6 +330,7 @@ public class HomeFragment2 extends BaseFragment {
         water.setActive(false);
         washer.setActive(false);
         gate.setActive(false);
+        dryer1.setActive(false);
 //        lost.setActive(true);
         /// business为空则不显示shower和water
         if (businesses == null || businesses.isEmpty()) {
