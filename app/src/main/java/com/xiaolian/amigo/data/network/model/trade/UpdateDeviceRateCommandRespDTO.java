@@ -7,5 +7,5 @@ public class UpdateDeviceRateCommandRespDTO {
     /**
      * 更新费率设备指令内容
      */
-    private String updateDeviceRateCmd;
+    private String configCommand;
 }

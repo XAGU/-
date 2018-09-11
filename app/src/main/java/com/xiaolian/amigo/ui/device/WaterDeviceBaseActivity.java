@@ -857,6 +857,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     void pay(Button button) {
         //先查询是否存在费率更新操作
         presenter.onUpdateDeviceRate(this.macAddress);
+//        realPay();
     }
 
     /**

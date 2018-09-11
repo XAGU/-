@@ -779,7 +779,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             @Override
             public void onReady(ApiResult<UpdateDeviceRateCommandRespDTO> result) {
                 if (null == result.getError()) /*获取更新费率指令*/{
-                    String updateDeviceRateCmd = result.getData().getUpdateDeviceRateCmd();
+                    String updateDeviceRateCmd = result.getData().getConfigCommand();
                     if (!TextUtils.isEmpty(updateDeviceRateCmd)) /*指令存在，需要进行费率更新*/{
                         onWrite(updateDeviceRateCmd);
                     } else /*指令不存在，直接进行预支付开阀使用*/{
