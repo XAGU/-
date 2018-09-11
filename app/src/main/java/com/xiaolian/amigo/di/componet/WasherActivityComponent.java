@@ -21,6 +21,7 @@ import com.xiaolian.amigo.di.module.WasherActivityModule;
 import com.xiaolian.amigo.ui.device.washer.ChooseWashModeActivity;
 import com.xiaolian.amigo.ui.device.washer.ScanActivity;
 import com.xiaolian.amigo.ui.device.washer.WasherActivity;
+import com.xiaolian.amigo.ui.device.washer.WasherActivity2;
 import com.xiaolian.amigo.ui.device.washer.WasherQrCodeActivity;
 
 import dagger.Component;
@@ -33,4 +34,5 @@ public interface WasherActivityComponent {
     void inject(ChooseWashModeActivity activity);
     void inject(ScanActivity activity);
     void inject(WasherQrCodeActivity activity);
+    void inject(WasherActivity2 activity2);
 }

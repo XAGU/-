@@ -114,7 +114,7 @@ public class LostAndFoundDetailCommentDelegate
         holder.setText(R.id.tv_like_count, String.valueOf(lostAndFoundDetailWrapper.getLikeCount()));
         holder.setImageResource(R.id.iv_like,
                 lostAndFoundDetailWrapper.isLiked() ?
-                        R.drawable.ic_like : R.drawable.ic_unlike);
+                        R.drawable.icon_praise_sel : R.drawable.ic_unlike);
 
         holder.getView(R.id.iv_like).setOnClickListener(v -> {
             if (animating) {
@@ -132,7 +132,7 @@ public class LostAndFoundDetailCommentDelegate
                 } else {
                     lostAndFoundDetailWrapper.setLiked(true);
                     lostAndFoundDetailWrapper.setLikeCount(likeCount + 1);
-                    holder.setImageResource(R.id.iv_like, R.drawable.ic_like);
+                    holder.setImageResource(R.id.iv_like, R.drawable.icon_praise_sel);
 //                    holder.setText(R.id.tv_like_count,
 //                            String.valueOf(lostAndFoundDetailWrapper.getLikeCount()));
                     likeClickListener.onLikeClick(position, lostAndFoundDetailWrapper.getId(), false);

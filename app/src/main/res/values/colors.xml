@@ -73,6 +73,7 @@
     <color name="device_dispenser">#00d3c7</color>
     <color name="device_dryer">#fddd5a</color>
     <color name="device_washer">#8e8eff</color>
+    <color name="device_dryer2">#ff9aed</color>
 
     <color name="repair_todo">@color/colorFullRed</color>
     <color name="repair_doing">@color/colorYellow</color>
@@ -118,4 +119,6 @@
     <color name="color_bg_gray_f8">#fff8f8f8</color>
 
     <color name="color_dot_uncheck_gray">#00D3C7</color>
+
+    <color name="dryer_line">#E9E9E9</color>
 </resources>

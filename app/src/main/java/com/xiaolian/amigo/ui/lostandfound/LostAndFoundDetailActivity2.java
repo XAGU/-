@@ -43,7 +43,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * 失物招领详情
+ * 联子详情
  *
  * @author zcd
  * @date 17/9/21
@@ -58,10 +58,10 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
     private LostAndFoundDetailAdapter.LostAndFoundDetailWrapper content;
     private LostAndFoundDetailAdapter.LostAndFoundDetailWrapper hotTitle =
             new LostAndFoundDetailAdapter.LostAndFoundDetailWrapper(LostAndFoundDetailAdapter.LostAndFoundDetailItemType.TITLE,
-                    "热门评论");
+                    "热门回复");
     private LostAndFoundDetailAdapter.LostAndFoundDetailWrapper normalTitle =
             new LostAndFoundDetailAdapter.LostAndFoundDetailWrapper(LostAndFoundDetailAdapter.LostAndFoundDetailItemType.TITLE,
-                    "全部评论");
+                    "全部回复");
 
 
     @BindView(R.id.recyclerView)
@@ -80,7 +80,7 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
     LinearLayout llHeader;
 
     @BindView(R.id.ll_footer)
-    LinearLayout llFooter;
+    RelativeLayout llFooter;
 
     @BindView(R.id.view_line)
     View viewLine;
@@ -139,10 +139,8 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
         if (getIntent() != null) {
             if (ObjectsCompat.equals(getIntent().getIntExtra(KEY_TYPE, 1), com.xiaolian.amigo.data.enumeration.annotation.LostAndFound.LOST)) {
                 presenter.setType(com.xiaolian.amigo.data.enumeration.annotation.LostAndFound.LOST);
-                showLostDetail();
             } else {
                 presenter.setType(com.xiaolian.amigo.data.enumeration.annotation.LostAndFound.FOUND);
-                showFoundDetail();
             }
 //            presenter.getDetail(getIntent().getLongExtra(KEY_ID, -1));
         }
@@ -239,15 +237,6 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
         presenter.getComments();
     }
 
-    private void showFoundDetail() {
-        tvToolbarTitle.setText("招领详情");
-        tvTitle.setText("招领详情");
-    }
-
-    private void showLostDetail() {
-        tvToolbarTitle.setText("失物详情");
-        tvTitle.setText("失物详情");
-    }
 
     @Override
     protected void setUp() {
@@ -278,6 +267,8 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
         }
         presenter.getComments();
     }
+
+    // TODO: 9/11/18   喜欢   
 
     @OnClick({R.id.iv_three_dot, R.id.v_more_hold,
             R.id.iv_three_dot2, R.id.v_more_hold_1})

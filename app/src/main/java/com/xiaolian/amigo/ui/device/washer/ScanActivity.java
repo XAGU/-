@@ -53,6 +53,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.xiaolian.amigo.data.enumeration.Device.HEATER;
+import static com.xiaolian.amigo.ui.device.washer.WasherContent.KEY_TYPE;
 import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_DEVICE_TYPE;
 import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_LOCATION;
 import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_MAC_ADDRESS;
@@ -75,6 +76,7 @@ public class ScanActivity extends WasherBaseActivity
 
     public static final String IS_SACN = "IS_SCAN" ; // 是否是扫描
 
+    public static final String KEY_TYPE = "KEY_TYPE" ;  // 4 为洗衣机  6 为烘干机
 
     private OrderPreInfoDTO orderPreInfo ;
     @Inject
@@ -104,6 +106,8 @@ public class ScanActivity extends WasherBaseActivity
 
     private ScanDialog scanDialog ;
 
+    private int type ;
+
     /*****      ***/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,7 +135,7 @@ public class ScanActivity extends WasherBaseActivity
                         if (scan){
                             handleScanContent(result.getContents());
                         }else {
-                            presenter.scanCheckout(result.getContents());
+                            presenter.scanCheckout(result.getContents() , type);
                         }
                     }
                 }
@@ -446,6 +450,7 @@ public class ScanActivity extends WasherBaseActivity
         if (getIntent() != null){
             scanType = getIntent().getIntExtra(SCAN_TYPE , 1);
             scan = getIntent().getBooleanExtra(IS_SACN , false);
+            type = getIntent().getIntExtra(KEY_TYPE ,4);
         }
     }
 
@@ -478,11 +483,12 @@ public class ScanActivity extends WasherBaseActivity
     }
 
     @Override
-    public void gotoChooseModeView(Bonus bonus, Double balance, String deviceNo) {
+    public void gotoChooseModeView(Bonus bonus, Double balance, String deviceNo , int type) {
         if (bonus == null) {
             startActivity(new Intent(ScanActivity.this, ChooseWashModeActivity.class)
                     .putExtra(WasherContent.KEY_DEVICE_NO, deviceNo)
                     .putExtra(WasherContent.KEY_BALANCE, balance)
+                    .putExtra(KEY_TYPE ,type)
             );
         } else {
             startActivity(new Intent(ScanActivity.this, ChooseWashModeActivity.class)
@@ -491,6 +497,7 @@ public class ScanActivity extends WasherBaseActivity
                     .putExtra(WasherContent.KEY_BONUS_AMOUNT, bonus.getAmount())
                     .putExtra(WasherContent.KEY_BONUS_DESC, bonus.getDescription())
                     .putExtra(WasherContent.KEY_BALANCE, balance)
+                    .putExtra(KEY_TYPE , type)
             );
         }
         finish();

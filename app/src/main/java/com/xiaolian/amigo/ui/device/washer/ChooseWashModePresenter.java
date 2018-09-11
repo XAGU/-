@@ -2,6 +2,7 @@ package com.xiaolian.amigo.ui.device.washer;
 
 import com.xiaolian.amigo.data.manager.intf.IWasherDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.trade.DryerModeRespDTO;
 import com.xiaolian.amigo.data.network.model.trade.Mode;
 import com.xiaolian.amigo.data.network.model.trade.PayReqDTO;
 import com.xiaolian.amigo.data.network.model.trade.QrCodeGenerateRespDTO;
@@ -55,7 +56,7 @@ public class ChooseWashModePresenter<V extends IChooseWashModeView> extends Base
                                 List<ChooseWashModeAdapter.WashModeItem> items = new ArrayList<>();
                                 for (Mode mode : result.getData().getModes()) {
                                     items.add(new ChooseWashModeAdapter.WashModeItem(mode.getDesc(),
-                                            mode.getPrice(), mode.getMode()));
+                                            mode.getPrice(), mode.getMode() ,4));
                                 }
                                 getMvpView().addMore(items);
                             }
@@ -64,6 +65,28 @@ public class ChooseWashModePresenter<V extends IChooseWashModeView> extends Base
                         }
                     }
                 });
+    }
+
+    @Override
+    public void getDryerMode() {
+        addObserver(washerDataManager.getDryerMode() ,new NetworkObserver<ApiResult<DryerModeRespDTO>>(){
+
+            @Override
+            public void onReady(ApiResult<DryerModeRespDTO> result) {
+                if (null == result.getError()) {
+                    if (result.getData() != null && result.getData().getModes() != null) {
+                        List<ChooseWashModeAdapter.WashModeItem> items = new ArrayList<>();
+                        for (Mode mode : result.getData().getModes()) {
+                            items.add(new ChooseWashModeAdapter.WashModeItem(mode.getDesc(),
+                                    mode.getPrice(), mode.getMode() ,6));
+                        }
+                        getMvpView().addMore(items);
+                    }
+                } else {
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+        });
     }
 
     @Override

@@ -10,6 +10,7 @@ import com.xiaolian.amigo.data.network.model.device.DeviceCategoryBO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.device.GetDeviceDetailReqDTO;
+import com.xiaolian.amigo.data.network.model.trade.DryerModeRespDTO;
 import com.xiaolian.amigo.data.network.model.trade.PayReqDTO;
 import com.xiaolian.amigo.data.network.model.trade.QrCodeGenerateRespDTO;
 import com.xiaolian.amigo.data.network.model.trade.QrCodeScanReqDTO;
@@ -66,6 +67,11 @@ public class WasherDataManager implements IWasherDataManager {
     @Override
     public Observable<ApiResult<WashingModeRespDTO>> getWasherMode() {
         return tradeApi.getWasherMode();
+    }
+
+    @Override
+    public Observable<ApiResult<DryerModeRespDTO>> getDryerMode() {
+        return tradeApi.getDryerMode();
     }
 
     @Override

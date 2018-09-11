@@ -31,6 +31,11 @@ public interface IChooseWashModePresenter<V extends IChooseWashModeView> extends
     void getWasherMode();
 
     /**
+     * 获取烘干机模式
+     */
+    void getDryerMode();
+
+    /**
      * 支付并获取二维码内容
      *
      * @param bonusId  红包id

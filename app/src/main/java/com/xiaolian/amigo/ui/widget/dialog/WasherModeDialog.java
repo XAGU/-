@@ -37,7 +37,7 @@ public class WasherModeDialog extends Dialog {
 
     private OnConfirmClickListener confirmClickListener;
     private OnBonusClickListener bonusClickListener;
-    private TextView tvConfirm;
+    private TextView tvConfirm , tvTitle;
     private TextView tvMode;
     private LinearLayout llBonus;
     private TextView tvBonus;
@@ -79,6 +79,9 @@ public class WasherModeDialog extends Dialog {
         vBonus.setVisibility(View.VISIBLE);
     }
 
+    public void setTvTitle(String title){
+        tvTitle.setText(title);
+    }
     public void setBonus(String bonus) {
         showBonus();
         tvBonus.setText(bonus);
@@ -123,5 +126,6 @@ public class WasherModeDialog extends Dialog {
             }
         });
         vBonus = findViewById(R.id.v_bonus);
+        tvTitle = findViewById(R.id.title);
     }
 }

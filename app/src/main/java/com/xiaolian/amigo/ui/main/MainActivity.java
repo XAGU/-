@@ -52,6 +52,7 @@ import com.xiaolian.amigo.ui.device.dispenser.DispenserActivity;
 import com.xiaolian.amigo.ui.device.dryer.DryerActivity;
 import com.xiaolian.amigo.ui.device.washer.ScanActivity;
 import com.xiaolian.amigo.ui.device.washer.WasherActivity;
+import com.xiaolian.amigo.ui.device.washer.WasherActivity2;
 import com.xiaolian.amigo.ui.login.LoginActivity;
 import com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity2;
 import com.xiaolian.amigo.ui.lostandfound.WriteLZActivity;
@@ -1197,6 +1198,11 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                     gotoWasher();
                 }
                 break;
+            case GOTO_DRAYER2:{
+                if (checkLogin()){
+                    gotoDryer2();
+                }
+            }
             case GOTO_GATE:
                 if (checkLogin()) {
                     gotoGate();
@@ -1229,6 +1235,10 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     private void gotoWasher() {
         startActivity(new Intent(this, WasherActivity.class));
+    }
+
+    private void gotoDryer2(){
+        startActivity(new Intent(this, WasherActivity2.class));
     }
 
     @Data
@@ -1274,6 +1284,10 @@ public class MainActivity extends MainBaseActivity implements IMainView {
              * 跳转页面
              */
             START_ACTIVITY(),
+            /**
+             * 跳转到烘干机
+             */
+            GOTO_DRAYER2(),
             /**
              * 刷新通知
              */

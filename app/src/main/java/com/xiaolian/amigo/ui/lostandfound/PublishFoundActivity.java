@@ -108,6 +108,7 @@ public class PublishFoundActivity extends LostAndFoundBaseActivity implements IP
     private boolean allValidated = false;
     private List<TextView> viewList;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -134,6 +135,8 @@ public class PublishFoundActivity extends LostAndFoundBaseActivity implements IP
     }
 
     private void initImageAdd() {
+
+
         addImages.add(new ImageAddAdapter.ImageItem());
         imageAddAdapter = new ImageAddAdapter(this, R.layout.item_image_add, addImages);
         imageAddAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
@@ -255,6 +258,7 @@ public class PublishFoundActivity extends LostAndFoundBaseActivity implements IP
                             .into(ivFirst);
                     ivFirst.setScaleType(ImageView.ScaleType.FIT_XY);
                     ivSecond.setVisibility(View.VISIBLE);
+
                     presenter.uploadImage(PublishFoundActivity.this,
                             imageUri, 0, OssFileType.FOUND);
                 });

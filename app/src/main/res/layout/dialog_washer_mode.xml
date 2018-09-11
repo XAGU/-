@@ -13,7 +13,8 @@
         android:background="@color/colorBackgroundGray"
         android:textColor="@color/colorDark2"
         android:layout_width="match_parent"
-        android:layout_height="58dp" />
+        android:layout_height="58dp"
+        android:id="@+id/title"/>
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"

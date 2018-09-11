@@ -14,7 +14,7 @@ public interface IScanPresenter<V extends IScanView> extends IBasePresenter<V> {
      * 将扫描到的二维码内容提交到服务器，进行预结账
      * @param content 二维码内容
      */
-    void scanCheckout(String content);
+    void scanCheckout(String content , int type);
 
 
     /**

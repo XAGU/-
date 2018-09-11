@@ -326,5 +326,13 @@ public final class Constant {
     public static final int COLOR_SCAN = 2 ; // 扫一扫
 
 
+    /**
+     * 洗衣机 、烘干机
+     */
+
+    public static final int WASH_DRYER = 4 ; //  洗衣机
+
+    public static final int DRYER = 6 ;  //  烘干机
+
 
 }

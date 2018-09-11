@@ -17,22 +17,22 @@ import javax.inject.Inject;
 import static com.xiaolian.amigo.ui.device.washer.ScanActivity.KEY_TYPE;
 
 /**
- * 洗衣机首页
+ * 烘干机
  *
  * @author zcd
  * @date 18/1/12
  */
 
-public class WasherActivity extends WasherBaseActivity implements IWasherView {
+public class WasherActivity2 extends WasherBaseActivity implements IWasherView {
     @SuppressWarnings("unused")
-    private static final String TAG = WasherActivity.class.getSimpleName();
+    private static final String TAG = WasherActivity2.class.getSimpleName();
     @Inject
     IWasherPresenter<IWasherView> presenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_washer);
+        setContentView(R.layout.activity_washer2);
         bindView();
     }
 
@@ -60,7 +60,7 @@ public class WasherActivity extends WasherBaseActivity implements IWasherView {
         integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
         integrator.addExtra(DecodeHintType.CHARACTER_SET.name(), "utf-8");
         integrator.addExtra(DecodeHintType.TRY_HARDER.name(), Boolean.TRUE);
-        integrator.addExtra(KEY_TYPE ,4);
+        integrator.addExtra(KEY_TYPE , 6);  //  6 为烘干机
         integrator.addExtra(DecodeHintType.POSSIBLE_FORMATS.name(), BarcodeFormat.QR_CODE);
         integrator.initiateScan();
     }

@@ -16,4 +16,5 @@ public class WasherContent {
     static final String KEY_BONUS_ID = "key_bonus_id";
     static final String KEY_BONUS_DESC = "key_bonus_desc";
     static final String KEY_BONUS_AMOUNT = "key_bonus_amount";
+    static final String KEY_TYPE = "KEY_TYPE" ;
 }

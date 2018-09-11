@@ -22,7 +22,7 @@ public interface IScanView extends IBaseView {
      * @param balance  余额
      * @param deviceNo 设备编号
      */
-    void gotoChooseModeView(Bonus bonus, Double balance, String deviceNo);
+    void gotoChooseModeView(Bonus bonus, Double balance, String deviceNo , int type);
 
     /**
      * 恢复扫描

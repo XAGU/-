@@ -6,6 +6,7 @@ import com.xiaolian.amigo.data.network.model.device.DeviceCategoryBO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.device.GetDeviceDetailReqDTO;
+import com.xiaolian.amigo.data.network.model.trade.DryerModeRespDTO;
 import com.xiaolian.amigo.data.network.model.trade.PayReqDTO;
 import com.xiaolian.amigo.data.network.model.trade.QrCodeGenerateRespDTO;
 import com.xiaolian.amigo.data.network.model.trade.QrCodeScanReqDTO;
@@ -42,6 +43,12 @@ public interface IWasherDataManager {
      * 请求洗衣机模式
      */
     Observable<ApiResult<WashingModeRespDTO>> getWasherMode();
+
+    /**
+     * 请求烘干机模式
+     */
+    Observable<ApiResult<DryerModeRespDTO>> getDryerMode();
+
 
     /**
      * 存储deviceToken

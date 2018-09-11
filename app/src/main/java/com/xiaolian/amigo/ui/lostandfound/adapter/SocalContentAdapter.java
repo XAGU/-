@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -34,10 +35,13 @@ public class SocalContentAdapter extends CommonAdapter<SocalContentAdapter.Socia
     private Animation animation ;
     private Context context ;
     private boolean animating  =false ;
+    private OnItemClickListener onItemClickListener ;
 
-    public SocalContentAdapter(Context context, int layoutId, List<SocalContentAdapter.SocialContentWrapper> datas) {
+
+    public SocalContentAdapter(Context context, int layoutId, List<SocalContentAdapter.SocialContentWrapper> datas ,OnItemClickListener onItemClickListener) {
         super(context, layoutId, datas);
         this.context = context ;
+        this.onItemClickListener = onItemClickListener ;
     }
 
     @Override
@@ -76,6 +80,13 @@ public class SocalContentAdapter extends CommonAdapter<SocalContentAdapter.Socia
             strings.add(Constant.IMAGE_PREFIX + "system/2.png");
         }
         setImage(holder ,strings);
+
+        holder.setOnClickListener(R.id.linear, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onItemClickListener != null) onItemClickListener.onItemClick(v , holder ,position );
+            }
+        });
     }
 
     private void setImage(ViewHolder holder ,List<String> imgs){

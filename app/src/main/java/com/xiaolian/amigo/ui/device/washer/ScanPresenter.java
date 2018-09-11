@@ -37,7 +37,7 @@ public class ScanPresenter<V extends IScanView> extends BasePresenter<V>
     }
 
     @Override
-    public void scanCheckout(String content) {
+    public void scanCheckout(String content , int type) {
         QrCodeScanReqDTO reqDTO = new QrCodeScanReqDTO();
         reqDTO.setDeviceType(Device.WASHER.getType());
         reqDTO.setQrCodeData(content);
@@ -52,7 +52,7 @@ public class ScanPresenter<V extends IScanView> extends BasePresenter<V>
                             washerDataManager.setDeviceToken(result.getData().getMacAddress(), result.getData().getDeviceToken());
                             getMvpView().gotoChooseModeView(result.getData().getBonus(),
                                     result.getData().getBalance(),
-                                    result.getData().getMacAddress());
+                                    result.getData().getMacAddress() ,type);
                         } else {
                             getMvpView().onError(result.getError().getDisplayMessage());
                             getMvpView().resumeScan();

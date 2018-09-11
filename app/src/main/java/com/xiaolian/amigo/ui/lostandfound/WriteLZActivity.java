@@ -9,13 +9,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.OssFileType;
+import com.xiaolian.amigo.data.vo.LZTag;
 import com.xiaolian.amigo.ui.lostandfound.intf.IPublishLostAndFoundPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.IPublishLostAndFoundView;
 import com.xiaolian.amigo.ui.repair.adaptor.ImageAddAdapter;
@@ -58,18 +58,6 @@ public class WriteLZActivity extends LostAndFoundBaseActivity implements IPublis
     @BindView(R.id.bt_submit)
     Button btSubmit;
 
-    /**
-     * 标题
-     */
-    @BindView(R.id.et_title)
-    EditText etTitle;
-
-
-    /**
-     * 描述
-     */
-    @BindView(R.id.et_desc)
-    EditText etDesc;
 
     @BindView(R.id.iv_first)
     ImageView ivFirst;
@@ -84,6 +72,10 @@ public class WriteLZActivity extends LostAndFoundBaseActivity implements IPublis
     ImageView ivBack;
     @BindView(R.id.topic)
     RecyclerView topic;
+    @BindView(R.id.main_title)
+    EditText mainTitle;
+    @BindView(R.id.main_content)
+    EditText mainContent;
     private ImageAddAdapter imageAddAdapter;
     List<ImageAddAdapter.ImageItem> addImages = new ArrayList<>();
 
@@ -93,7 +85,11 @@ public class WriteLZActivity extends LostAndFoundBaseActivity implements IPublis
     private List<TextView> viewList;
     private int type = 1;
 
-    private List<String> topics ;
+    private List<LZTag> topics;
+
+    private int screenWidth ;
+    private int imageWidth ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,40 +100,51 @@ public class WriteLZActivity extends LostAndFoundBaseActivity implements IPublis
 
         presenter.onAttach(WriteLZActivity.this);
 
-        viewList = new ArrayList<TextView>() {
-            {
-                add(etTitle);
-                add(etDesc);
-            }
-        };
 
-        CommonUtil.showSoftInput(this, etTitle);
+        CommonUtil.showSoftInput(this, mainTitle);
         initImageAdd();
         initRecy();
     }
 
 
-    private void initRecy(){
+    private void initRecy() {
         topics = new ArrayList<>();
-        topics.add("学习");
-        topics.add("兴趣");
-        topics.add("失物招领");
-        topics.add("自定义");
+        topics.add(new LZTag("学习" ,false));
+        topics.add(new LZTag("兴趣",false));
+        topics.add(new LZTag("失物招领" , false));
+        topics.add(new LZTag("自定义" , false));
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         topic.setLayoutManager(linearLayoutManager);
-        topic.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this ,10)));
-        topic.setAdapter(new CommonAdapter<String>(this , R.layout.item_socail_top ,topics){
+        topic.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 10)));
+        topic.setAdapter(new CommonAdapter<LZTag>(this, R.layout.item_socail_top, topics) {
 
             @Override
-            protected void convert(ViewHolder holder, String s, int position) {
-                holder.setText(R.id.topic_txt ,s);
+            protected void convert(ViewHolder holder, LZTag lzTag, int position) {
+                TextView textView = holder.getView(R.id.topic_txt);
+                holder.setText(R.id.topic_txt, lzTag.getContent());
+                textView.setOnClickListener(v -> {
+                    if (!lzTag.isCheck()){
+                        textView.setBackgroundResource(R.drawable.social_top_sel);
+                        textView.setTextColor(getResources().getColor(R.color.colorWhite));
+                        lzTag.setCheck(true);
+                        notifyDataSetChanged();
+                    }else {
+                        textView.setBackgroundResource(R.drawable.socical_topic);
+                        textView.setTextColor(getResources().getColor(R.color.colorDark9));
+                        lzTag.setCheck(false);
+                        notifyDataSetChanged();
+                    }
+
+                });
             }
         });
     }
 
 
     private void initImageAdd() {
+        screenWidth = ScreenUtils.getScreenWidth(this);
+        imageWidth = (screenWidth - ScreenUtils.dpToPxInt(this ,62)) / 3;
         addImages.add(new ImageAddAdapter.ImageItem());
         imageAddAdapter = new ImageAddAdapter(this, R.layout.item_image_add, addImages);
         imageAddAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
@@ -161,6 +168,7 @@ public class WriteLZActivity extends LostAndFoundBaseActivity implements IPublis
                 return false;
             }
         });
+        imageAddAdapter.setViewWidth(imageWidth);
         rvImage.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         rvImage.addItemDecoration(new GridSpacesItemDecoration(3, ScreenUtils.dpToPxInt(this, 10), false));
         rvImage.setAdapter(imageAddAdapter);
@@ -178,15 +186,15 @@ public class WriteLZActivity extends LostAndFoundBaseActivity implements IPublis
     }
 
 
-    @OnTextChanged({R.id.et_desc,
-            R.id.et_title})
+    @OnTextChanged({R.id.main_content,
+            R.id.main_title})
     void onTextChange() {
         toggleBtnStatus();
     }
 
     public void toggleBtnStatus() {
-        allValidated = !TextUtils.isEmpty(etTitle.getText())
-                && !TextUtils.isEmpty(etDesc.getText());
+        allValidated = !TextUtils.isEmpty(mainTitle.getText())
+                && !TextUtils.isEmpty(mainContent.getText());
         btSubmit.setBackgroundResource(allValidated ?
                 R.drawable.button_enable : R.drawable.button_disable);
     }
@@ -201,8 +209,6 @@ public class WriteLZActivity extends LostAndFoundBaseActivity implements IPublis
                 }
             }
         }
-        presenter.publishLostAndFound(etDesc.getText().toString(),
-                images, etTitle.getText().toString(), type);
     }
 
     @Override

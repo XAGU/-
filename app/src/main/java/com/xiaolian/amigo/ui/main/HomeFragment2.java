@@ -92,6 +92,9 @@ public class HomeFragment2 extends BaseFragment {
     HomeAdaptor.ItemWrapper gate = new HomeAdaptor.ItemWrapper(HomeAdaptor.SMALL_TYPE,
             null, "门禁卡", "ACCESS CONTROL",
             R.drawable.gate, R.drawable.small_gate);
+    HomeAdaptor.ItemWrapper dryer1 = new HomeAdaptor.ItemWrapper(HomeAdaptor.SMALL_TYPE ,
+            null ,"烘干机","DRYER" ,
+            R.drawable.hongganji_long , R.drawable.hongganji_short);
 //    HomeAdaptor.ItemWrapper lost = new HomeAdaptor.ItemWrapper(HomeAdaptor.SMALL_TYPE,
 //            null, "失物招领", "LOST AND FOUND",
 //            R.drawable.lost, R.drawable.small_lost);
@@ -178,6 +181,8 @@ public class HomeFragment2 extends BaseFragment {
                                     EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_WASHER));
                                 } else if (items.get(position).getRes() == R.drawable.gate) {
                                     EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_GATE));
+                                }else if (items.get(position).getRes() == R.drawable.hongganji_long){
+                                    EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_DRAYER2));
                                 }
                             }
                         } catch (ArrayIndexOutOfBoundsException ex) {
@@ -301,6 +306,9 @@ public class HomeFragment2 extends BaseFragment {
         if (gate.isActive()) {
             items.add(gate);
         }
+        if (dryer1.isActive()){
+            items.add(dryer);
+        }
 //        if (lost.isActive()) {
 //            items.add(lost);
 //        }
@@ -365,6 +373,13 @@ public class HomeFragment2 extends BaseFragment {
                 washer.setUsing(business.getUsing());
                 currentPrepayOrderSize += business.getPrepayOrder();
                 currentBusinessSize += 1;
+            }else if (business.getBusinessId() == 6){
+                dryer1.setActive(true);
+                shower.setExistOrder(false);
+                dryer1.setPrepaySize(business.getPrepayOrder());
+                dryer1.setUsing(business.getUsing());
+                currentPrepayOrderSize += business.getPrepayOrder();
+                currentBusinessSize += 1;
             } else if (business.getBusinessId() == 101) {
                 gate.setActive(true);
 //                gate.setPrepaySize(business.getPrepayOrder());
@@ -404,6 +419,7 @@ public class HomeFragment2 extends BaseFragment {
         water.setType(HomeAdaptor.NORMAL_TYPE);
         washer.setType(HomeAdaptor.NORMAL_TYPE);
         gate.setType(HomeAdaptor.NORMAL_TYPE);
+        dryer1.setType(HomeAdaptor.NORMAL_TYPE);
 //        lost.setType(HomeAdaptor.NORMAL_TYPE);
     }
 
@@ -414,6 +430,7 @@ public class HomeFragment2 extends BaseFragment {
         water.setType(HomeAdaptor.SMALL_TYPE);
         washer.setType(HomeAdaptor.SMALL_TYPE);
         gate.setType(HomeAdaptor.SMALL_TYPE);
+        dryer1.setType(HomeAdaptor.SMALL_TYPE);
 //        lost.setType(HomeAdaptor.SMALL_TYPE);
     }
 

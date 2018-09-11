@@ -49,14 +49,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
-                            tools:text="失物详情" />
+                            tools:text="联子详情" />
 
-                        <View
-                            android:id="@+id/v_more_hold_1"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:layout_width="50dp"
-                            android:layout_height="20dp"/>
+
 
                         <ImageView
                             android:layout_marginRight="@dimen/mainMarginLeftRight"
@@ -66,6 +61,15 @@
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
                             android:src="@drawable/ic_three_dot" />
+
+                        <ImageView
+                            android:id="@+id/v_more_hold_1"
+                            android:layout_toStartOf="@id/iv_three_dot2"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/uncollege"
+                            android:layout_marginEnd="10dp"
+                            android:layout_width="23dp"
+                            android:layout_height="23dp"/>
                     </RelativeLayout>
                 </LinearLayout>
 
@@ -95,17 +99,11 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
-                            android:text="失物详情"
+                            android:text="联子详情"
                             android:textColor="#222"
                             android:textSize="@dimen/sp15"
                             android:textStyle="bold" />
 
-                        <View
-                            android:id="@+id/v_more_hold"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:layout_width="50dp"
-                            android:layout_height="match_parent"/>
 
                         <ImageView
                             android:id="@+id/iv_three_dot"
@@ -115,6 +113,15 @@
                             android:layout_centerVertical="true"
                             android:layout_marginRight="@dimen/mainMarginLeftRight"
                             android:src="@drawable/ic_three_dot" />
+
+                        <ImageView
+                            android:id="@+id/v_more_hold"
+                            android:layout_toStartOf="@id/iv_three_dot"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/uncollege"
+                            android:layout_marginEnd="10dp"
+                            android:layout_width="23dp"
+                            android:layout_height="23dp"/>
 
                         <View
                             android:id="@+id/view_line"
@@ -206,7 +213,7 @@
                         android:id="@+id/recyclerView"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginBottom="21dp"
+                        android:layout_marginBottom="50dp"
                         android:overScrollMode="never" />
                 </LinearLayout>
 
@@ -214,31 +221,46 @@
         </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
     </android.support.design.widget.CoordinatorLayout>
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/ll_footer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:layout_gravity="bottom|center_horizontal"
-        android:orientation="vertical"
-        android:visibility="gone"
+        android:layout_gravity="bottom"
         app:layout_behavior="com.xiaolian.amigo.ui.lostandfound.behavior.FooterBehavior" >
-        <TextView
+
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:textSize="14sp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
             android:layout_marginStart="21dp"
+            android:layout_marginEnd="63dp"
+            android:id="@+id/et_reply"
+            android:textColorHint="@color/colorDarkB"
+            android:hint="要回复一下联子，喵 ～"
+            />
+        <TextView
+            android:layout_width="38dp"
+            android:layout_height="24dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
             android:layout_marginEnd="21dp"
-            android:background="@drawable/button_lost_and_found"
-            android:text="发表评论"
+            android:layout_marginStart="14dp"
+            android:text="发射"
+            android:textSize="11sp"
             android:textColor="@color/white"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="48dp" />
+            android:background="@drawable/red_radius_4"
+            android:gravity="center"/>
         <View
-            android:background="@color/white"
             android:layout_width="match_parent"
-            android:layout_height="21dp"/>
-    </LinearLayout>
+            android:layout_height="0.5dp"
+            android:background="@color/colorDarke"
+            android:layout_alignParentTop="true"/>
+    </RelativeLayout>
 
 </LinearLayout>
 

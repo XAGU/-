@@ -1,8 +1,12 @@
 package com.xiaolian.amigo.ui.repair.adaptor;
 
 import android.content.Context;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -25,18 +29,34 @@ import lombok.Data;
  */
 
 public class ImageAddAdapter extends CommonAdapter<ImageAddAdapter.ImageItem> {
-    private static final int DEFAULT_RES = R.drawable.device_picture_add;
+    private static final int DEFAULT_RES = R.drawable.image_add;
     private Context context;
     private int imageSize;
-
+    private int viewWidth ;
     public ImageAddAdapter(Context context, int layoutId, List<ImageItem> datas) {
         super(context, layoutId, datas);
         this.context = context;
         this.imageSize = ScreenUtils.dpToPxInt(context, 57);
     }
 
+
+    public void setViewWidth(int viewWidth){
+        this.viewWidth  = viewWidth ;
+        notifyDataSetChanged();
+    }
+
+
     @Override
     protected void convert(ViewHolder holder, ImageItem imageItem, int position) {
+        if (viewWidth != 0){
+            ImageView imageView = holder.getView(R.id.iv_image);
+            if (imageView.getWidth() != viewWidth) {
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                params.width = viewWidth;
+                params.height = viewWidth;
+                imageView.setLayoutParams(params);
+            }
+        }
         if (TextUtils.isEmpty(imageItem.getImageUrl())) {
 //            Glide.with(context).load(defaultRes)
 //                    .asBitmap()

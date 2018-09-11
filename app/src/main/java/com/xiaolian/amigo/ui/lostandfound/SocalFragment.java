@@ -2,6 +2,7 @@ package com.xiaolian.amigo.ui.lostandfound;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,6 +30,7 @@ import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutFooter;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutHeader;
 import com.xiaolian.amigo.util.ScreenUtils;
+import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -179,13 +181,35 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener 
         for (int i = 0; i < 3; i++) {
             mDatas.add(new SocalContentAdapter.SocialContentWrapper());
         }
-        socalContentAdapter = new SocalContentAdapter(mActivity, R.layout.item_socal, mDatas);
+        socalContentAdapter = new SocalContentAdapter(mActivity, R.layout.item_socal, mDatas, new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                Intent intent = new Intent(mActivity ,LostAndFoundDetailActivity2.class);
+                mActivity.startActivity(intent);
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
         socialRecy.setLayoutManager(new LinearLayoutManager(mActivity));
         socialRecy.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(mActivity, 21)));
         socialRecy.setAdapter(socalContentAdapter);
 
         mNewContents = new ArrayList<>();
-        socalNewContentAdapter = new SocalContentAdapter(mActivity ,R.layout.item_socal ,mNewContents);
+        socalNewContentAdapter = new SocalContentAdapter(mActivity, R.layout.item_socal, mNewContents, new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                Intent intent = new Intent(mActivity ,LostAndFoundDetailActivity2.class);
+                mActivity.startActivity(intent);
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
         socialNew.setLayoutManager(new LinearLayoutManager(mActivity));
         socialNew.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(mActivity, 21)));
         socialNew.setAdapter(socalContentAdapter);

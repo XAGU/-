@@ -10,7 +10,7 @@
     android:layout_height="wrap_content">
 
     <LinearLayout
-        android:layout_marginBottom="9dp"
+        android:layout_marginBottom="10dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -59,16 +59,50 @@
                 android:textColor="#999"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+
+
+            <TextView
+                android:layout_width="36dp"
+                android:layout_height="19dp"
+                android:id="@+id/tag"
+                android:text="互助"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:textSize="12sp"
+                android:textColor="@color/colorDark9"
+                android:background="@drawable/cir_rad10_gray"
+                android:layout_alignParentRight="true"/>
         </RelativeLayout>
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/tv_content_title"
+        tools:text="我丢失了一把雨伞"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorDark2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+    <TextView
+        android:id="@+id/tv_content_desc"
+        tools:text="我丢失了一把雨伞我丢失了一把雨伞我丢失了一把雨伞我丢失了一把雨伞我丢失了一把雨伞我丢失了一把雨伞我丢失了一把雨伞我丢失了一把雨伞我丢失了一把雨伞我丢失了一把雨伞我丢失了一把雨伞"
+        android:textSize="14sp"
+        android:lineSpacingExtra="4dp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/colorDark6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <LinearLayout
         android:id="@+id/ll_images"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         tools:visibility="visible"
+        android:layout_marginTop="14dp"
         android:visibility="gone">
 
         <com.xiaolian.amigo.ui.widget.SquareImageView
@@ -106,27 +140,9 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_content_title"
-        tools:text="我丢失了一把雨伞"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        android:textColor="@color/colorDark2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 
-    <TextView
-        android:id="@+id/tv_content_desc"
-        tools:text="我丢失了一把雨伞我丢失了一把雨伞我丢失了一把雨伞我丢失了一把雨伞我丢失了一把雨伞我丢失了一把雨伞我丢失了一把雨伞我丢失了一把雨伞我丢失了一把雨伞我丢失了一把雨伞我丢失了一把雨伞"
-        android:textSize="14sp"
-        android:lineSpacingExtra="4dp"
-        android:layout_marginTop="20dp"
-        android:textColor="@color/colorDark2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 
     <LinearLayout
-        android:layout_marginTop="20dp"
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:layout_width="match_parent"
@@ -162,7 +178,7 @@
     </LinearLayout>
 
     <View
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="22dp"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/colorDarke" />
