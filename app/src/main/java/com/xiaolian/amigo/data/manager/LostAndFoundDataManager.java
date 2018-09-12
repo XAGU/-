@@ -6,6 +6,7 @@ import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
+import com.xiaolian.amigo.data.network.model.lostandfound.BbsTopicListTradeRespDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.CollectItemReqDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.CollectListReqDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.CommonRespDTO;
@@ -28,6 +29,8 @@ import com.xiaolian.amigo.data.network.model.lostandfound.SaveLostFoundCommentsR
 import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.di.UserServer;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -131,6 +134,21 @@ public class LostAndFoundDataManager implements ILostAndFoundDataManager {
     @Override
     public Observable<ApiResult<NoticeListDTO>> getNoticeList(NoticeListReqDTO reqDTO) {
         return lostAndFoundApi.getNoticeList(reqDTO);
+    }
+
+    @Override
+    public Observable<ApiResult<BbsTopicListTradeRespDTO>> getTopicList() {
+        return lostAndFoundApi.getTopicList();
+    }
+
+    @Override
+    public void setTopic(List<BbsTopicListTradeRespDTO.TopicListBean> topicListBeans) {
+        sharedPreferencesHelp.setTopic(topicListBeans);
+    }
+
+    @Override
+    public List<BbsTopicListTradeRespDTO.TopicListBean> getTopic() {
+        return sharedPreferencesHelp.getTopic();
     }
 
     @Override

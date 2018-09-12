@@ -6,6 +6,7 @@ import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.xiaolian.amigo.data.network.model.lostandfound.BbsTopicListTradeRespDTO;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
 import com.xiaolian.amigo.data.network.model.user.UploadUserDeviceInfoReqDTO;
 import com.xiaolian.amigo.data.vo.DeviceCategory;
@@ -93,6 +94,12 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     private static final String PREF_KEY_BATH_ROOM_PASSWORD = "PREF_KEY_BATH_ROOM_PASSWORD";
 
     private static final String PREF_KEY_BOOK_METHOD ="PREF_KEY_BOOK_METHOD";
+
+
+    /**
+     * 社交标签
+     */
+    public static final String PREF_KEY_SOCAL_TAG = "PREF_KEY_SOCAL_TAG";
 
 
     private String tokenHolder;
@@ -594,6 +601,23 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     @Override
     public int getBookMethrod() {
         return mSharedPreferences.getInt(PREF_KEY_BOOK_METHOD , -1);
+    }
+
+    @Override
+    public void setTopic(List<BbsTopicListTradeRespDTO.TopicListBean> topicListBeans) {
+        String topic = mGson.toJson(topicListBeans);
+        mSharedPreferences.edit().putString(PREF_KEY_SOCAL_TAG ,topic)
+                .apply();
+    }
+
+    @Override
+    public List<BbsTopicListTradeRespDTO.TopicListBean> getTopic() {
+        String topic = mSharedPreferences.getString(PREF_KEY_SOCAL_TAG ,"");
+        if (topic != null){
+            return mGson.fromJson(topic ,new TypeToken<List<BbsTopicListTradeRespDTO.TopicListBean>>(){}.getType());
+        }else {
+            return null;
+        }
     }
 
 

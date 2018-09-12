@@ -12,7 +12,10 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.network.model.lostandfound.LostAndFoundDTO;
 import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundAdaptor2;
+import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundDetailContentDelegate;
+import com.xiaolian.amigo.ui.lostandfound.adapter.SocalContentAdapter;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundPresenter2;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundView2;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
@@ -28,6 +31,8 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.xiaolian.amigo.ui.lostandfound.LostAndFoundDetailActivity2.KEY_ID;
 
 /**
  * 我的发布
@@ -52,11 +57,15 @@ public class MyPublishActivity2 extends LostAndFoundBaseActivity implements ILos
     @BindView(R.id.rl_error)
     RelativeLayout rlError;
 
-    private LostAndFoundAdaptor2 adaptor;
+//    private LostAndFoundAdaptor2 adaptor;
 
-    List<LostAndFoundAdaptor2.LostAndFoundWrapper> lostAndFounds = new ArrayList<>();
+//    List<LostAndFoundAdaptor2.LostAndFoundWrapper> lostAndFounds = new ArrayList<>();
+
+    List<LostAndFoundDTO> lostAndFounds = new ArrayList<>();
 
     private volatile boolean refreshFlag;
+
+    private SocalContentAdapter publicAdapter ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,31 +77,32 @@ public class MyPublishActivity2 extends LostAndFoundBaseActivity implements ILos
     }
 
     private void initRecyclerView() {
-        adaptor = new LostAndFoundAdaptor2(this, R.layout.item_lost_and_found2, lostAndFounds, true);
-//        recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 10)));
-        adaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                try {
+        lostAndFounds = new ArrayList<>();
+        publicAdapter = new SocalContentAdapter(this, R.layout.item_socal, lostAndFounds, new MultiItemTypeAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                     Intent intent = new Intent(MyPublishActivity2.this, LostAndFoundDetailActivity2.class);
-                    intent.putExtra(LostAndFoundDetailActivity2.KEY_TYPE,
-                            lostAndFounds.get(position).getType());
-                    intent.putExtra(LostAndFoundDetailActivity2.KEY_ID, lostAndFounds.get(position).getId());
+                    intent.putExtra(KEY_ID ,lostAndFounds.get(position).getId());
                     startActivity(intent);
-
-                } catch (ArrayIndexOutOfBoundsException e) {
-                    Log.wtf(TAG, "数组越界", e);
-                } catch (Exception e) {
-                    Log.wtf(TAG, e);
                 }
-            }
 
-            @Override
-            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
-                return false;
-            }
-        });
-        recyclerView.setAdapter(adaptor);
+                @Override
+                public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                    return false;
+                }
+            }, new LostAndFoundDetailContentDelegate.OnLikeClickListener() {
+                @Override
+                public void onLikeClick(int position, long id, boolean like) {
+                    if (like) {
+                        presenter.unLikeComment(position, id);
+                    } else {
+                        presenter.likeComment(position, id);
+                    }
+                }
+            });
+        recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 21)));
+        recyclerView.setAdapter(publicAdapter);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         refreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
@@ -161,14 +171,15 @@ public class MyPublishActivity2 extends LostAndFoundBaseActivity implements ILos
         rlEmpty.setVisibility(View.VISIBLE);
     }
 
+
     @Override
-    public void addMore(List<LostAndFoundAdaptor2.LostAndFoundWrapper> wrappers) {
+    public void addMore(List<LostAndFoundDTO> wrappers) {
         if (refreshFlag) {
             refreshFlag = false;
             lostAndFounds.clear();
         }
         lostAndFounds.addAll(wrappers);
-        adaptor.notifyDataSetChanged();
+        publicAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -176,8 +187,9 @@ public class MyPublishActivity2 extends LostAndFoundBaseActivity implements ILos
 
     }
 
+
     @Override
-    public void showSearchResult(List<LostAndFoundAdaptor2.LostAndFoundWrapper> wrappers) {
+    public void showSearchResult(List<LostAndFoundDTO> wrappers) {
 
     }
 
@@ -206,4 +218,13 @@ public class MyPublishActivity2 extends LostAndFoundBaseActivity implements ILos
         presenter.onDetach();
         super.onDestroy();
     }
+
+    @Override
+    public void notifyAdapter(int position, boolean b) {
+        if (publicAdapter != null) {
+            publicAdapter.notifyItemChanged(position);
+        }
+
+    }
+
 }

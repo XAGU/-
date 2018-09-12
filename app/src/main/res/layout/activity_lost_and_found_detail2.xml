@@ -49,7 +49,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
-                            tools:text="联子详情" />
+                            android:text="联子详情" />
 
 
 
@@ -213,7 +213,6 @@
                         android:id="@+id/recyclerView"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginBottom="50dp"
                         android:overScrollMode="never" />
                 </LinearLayout>
 
@@ -225,11 +224,8 @@
         android:id="@+id/ll_footer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
         android:layout_gravity="bottom"
-        app:layout_behavior="com.xiaolian.amigo.ui.lostandfound.behavior.FooterBehavior" >
-
-
+        >
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -259,7 +255,7 @@
             android:gravity="center"/>
         <View
             android:layout_width="match_parent"
-            android:layout_height="0.5dp"
+            android:layout_height="1px"
             android:background="@color/colorDarke"
             android:layout_alignParentTop="true"/>
     </RelativeLayout>

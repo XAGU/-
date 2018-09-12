@@ -15,7 +15,6 @@
 
 package com.xiaolian.amigo.ui.base;
 
-
 import android.os.Handler;
 import android.os.HandlerThread;
 
@@ -306,7 +305,7 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
         public void onStart() {
             super.onStart();
             if (renderView) {
-                view.showLoading();
+                if (view != null) view.showLoading();
             }
         }
 

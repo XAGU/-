@@ -71,7 +71,7 @@ public class LostAndFoundDetailAdapter extends MultiItemTypeAdapter<LostAndFound
         /**
          * 发布者昵称
          */
-        private String contentAuthor;
+        private String nickName;
 
         /**
          * 点赞数量
@@ -87,6 +87,8 @@ public class LostAndFoundDetailAdapter extends MultiItemTypeAdapter<LostAndFound
          */
         private boolean collected = false;
 
+        private String topicName ;
+
         private LostAndFoundDetailWrapper() {
         }
 
@@ -99,7 +101,7 @@ public class LostAndFoundDetailAdapter extends MultiItemTypeAdapter<LostAndFound
             this.id = lostAndFound.getId();
             this.commentEnable = lostAndFound.getCommentEnable();
             this.itemType = LostAndFoundDetailItemType.CONTENT;
-            this.type = lostAndFound.getType();
+            this.type = 1;
             this.time = lostAndFound.getCreateTime();
             this.image = lostAndFound.getImages();
             this.contentTitle = lostAndFound.getTitle();
@@ -108,9 +110,10 @@ public class LostAndFoundDetailAdapter extends MultiItemTypeAdapter<LostAndFound
             this.commentCount = lostAndFound.getCommentsCount();
             this.likeCount = lostAndFound.getLikeCount();
             this.avatar = lostAndFound.getPictureUrl();
-            this.contentAuthor = lostAndFound.getUser();
+            this.nickName = lostAndFound.getNickname();
             this.liked = ObjectsCompat.equals(lostAndFound.getLiked(), 1);
             this.collected = ObjectsCompat.equals(lostAndFound.getCollected(), 1);
+            this.topicName = lostAndFound.getTopicName() ;
         }
 
         public LostAndFoundDetailWrapper(LostFoundCommentDTO comment, boolean owner, Long ownerId,
@@ -130,6 +133,7 @@ public class LostAndFoundDetailAdapter extends MultiItemTypeAdapter<LostAndFound
             this.ownerId = ownerId;
             this.likeCount = comment.getLikeCount();
             this.liked = ObjectsCompat.equals(comment.getLiked(), 1);
+            this.topicName = comment.getTopicName() ;
         }
     }
 }

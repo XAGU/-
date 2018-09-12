@@ -129,4 +129,9 @@ public class FindBathroomPasswordStep2Fragment extends BaseFragment {
     protected void initData() {
 
     }
+
+    @Override
+    protected void initView() {
+
+    }
 }

@@ -4,6 +4,7 @@ import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
+import com.xiaolian.amigo.data.network.model.lostandfound.BbsTopicListTradeRespDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.CollectItemReqDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.CollectListReqDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.CommonRespDTO;
@@ -130,4 +131,12 @@ public interface ILostAndFoundApi {
      */
     @POST("lost/notice/list")
     Observable<ApiResult<NoticeListDTO>> getNoticeList(@Body NoticeListReqDTO reqDTO);
+
+
+    /**
+     * 获取当前学校已开启的话题列表
+     */
+    @POST("lost/topic/list")
+    Observable<ApiResult<BbsTopicListTradeRespDTO>> getTopicList();
+
 }

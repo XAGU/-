@@ -4,6 +4,7 @@ import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
+import com.xiaolian.amigo.data.network.model.lostandfound.BbsTopicListTradeRespDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.CollectItemReqDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.CollectListReqDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.CommonRespDTO;
@@ -25,7 +26,10 @@ import com.xiaolian.amigo.data.network.model.lostandfound.SaveLostAndFoundReport
 import com.xiaolian.amigo.data.network.model.lostandfound.SaveLostFoundCommentsRepliesDTO;
 import com.xiaolian.amigo.data.vo.User;
 
+import java.util.List;
+
 import retrofit2.http.Body;
+import retrofit2.http.POST;
 import rx.Observable;
 
 /**
@@ -118,4 +122,17 @@ public interface ILostAndFoundDataManager {
      * 通知数量
      */
     Observable<ApiResult<NoticeListDTO>> getNoticeList(@Body NoticeListReqDTO reqDTO);
+
+
+    /**
+     * 获取当前学校已开启的话题列表
+     */
+    Observable<ApiResult<BbsTopicListTradeRespDTO>> getTopicList();
+
+
+    void setTopic(List<BbsTopicListTradeRespDTO.TopicListBean> topicListBeans);
+
+
+    List<BbsTopicListTradeRespDTO.TopicListBean> getTopic();
+
 }

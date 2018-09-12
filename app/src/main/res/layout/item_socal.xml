@@ -24,18 +24,23 @@
         android:layout_toRightOf="@id/iv_avatar"
         android:layout_marginStart="10dp"
         tools:text="佩琪琪"
-        android:text="佩琪琪"
         android:gravity="center"
         android:textSize="@dimen/sp12"
+        android:id="@+id/name"
         android:textColor="@color/colorDark2"
         />
 
     <TextView
-        android:layout_width="36dp"
-        android:layout_height="19dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:paddingStart="7dp"
+        android:paddingEnd="7dp"
         android:layout_alignParentRight="true"
         tools:text="学习"
         android:text="学习"
+        android:id="@+id/type"
         android:textColor="@color/colorDark9"
         android:layout_centerVertical="true"
         android:gravity="center"
@@ -52,7 +57,7 @@
         android:textSize="14sp"
         android:textColor="@color/colorDark2"
         tools:text="真让人头大啊"
-        android:text="真让人头大啊"
+        android:id="@+id/title"
         />
 
     <TextView
@@ -62,7 +67,7 @@
         android:textColor="@color/colorDark6"
         android:textSize="12sp"
         tools:text="55，在食堂2楼丢了我的小猪佩奇扇子～ 捡到的好心人请与我保持密切的联系，必有重谢，嘻嘻嘻"
-        android:text="55，在食堂2楼丢了我的小猪佩奇扇子～ 捡到的好心人请与我保持密切的联系，必有重谢，嘻嘻嘻"
+        android:id="@+id/content"
         android:lineSpacingMultiplier="1.4"/>
 
     <android.support.v7.widget.RecyclerView
@@ -85,7 +90,7 @@
             android:textSize="@dimen/sp12"
             android:textColor="@color/colorDarkB"
             tools:text="今天23:15发布"
-            android:text="今天23:15发布"
+            android:id="@+id/time"
             />
 
         <TextView

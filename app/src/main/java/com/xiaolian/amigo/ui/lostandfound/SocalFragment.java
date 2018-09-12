@@ -20,6 +20,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -27,18 +28,32 @@ import android.widget.TextView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
+import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.network.model.lostandfound.BbsTopicListTradeRespDTO;
+import com.xiaolian.amigo.data.network.model.lostandfound.LostAndFoundDTO;
+import com.xiaolian.amigo.data.network.model.lostandfound.QueryLostAndFoundListRespDTO;
+import com.xiaolian.amigo.di.componet.DaggerLostAndFoundActivityComponent;
+import com.xiaolian.amigo.di.componet.LostAndFoundActivityComponent;
+import com.xiaolian.amigo.di.module.LostAndFoundActivityModule;
+import com.xiaolian.amigo.intf.OnItemClickListener;
 import com.xiaolian.amigo.ui.base.BaseFragment;
+import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundDetailContentDelegate;
 import com.xiaolian.amigo.ui.lostandfound.adapter.SocalContentAdapter;
 import com.xiaolian.amigo.ui.lostandfound.adapter.SocalTagsAdapter;
+import com.xiaolian.amigo.ui.lostandfound.intf.ISocalPresenter;
+import com.xiaolian.amigo.ui.lostandfound.intf.ISocalView;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutFooter;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutHeader;
 import com.xiaolian.amigo.util.ScreenUtils;
+import com.xiaolian.amigo.util.SoftInputUtils;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,16 +61,24 @@ import butterknife.OnClick;
 import butterknife.OnEditorAction;
 import butterknife.Unbinder;
 
-import static android.app.Activity.RESULT_OK;
-import static com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity2.KEY_COMMENT_COUNT;
-import static com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity2.KEY_VIEW_COUNT;
+import static com.xiaolian.amigo.ui.lostandfound.LostAndFoundDetailActivity2.KEY_ID;
 
 /**
  * @author wcm
  * 2018/09/04
  */
-public class SocalFragment extends BaseFragment implements View.OnClickListener {
+public class SocalFragment extends BaseFragment implements View.OnClickListener, ISocalView {
     private static final String TAG = SocalFragment.class.getSimpleName();
+    @BindView(R.id.rl_empty)
+    RelativeLayout rlEmpty;
+    @BindView(R.id.rl_error)
+    RelativeLayout rlError;
+    @BindView(R.id.rl_content)
+    LinearLayout rlContent;
+    @BindView(R.id.iv_remaind)
+    ImageView ivRemaind;
+
+    private LostAndFoundActivityComponent mActivityComponent;
 
     private static final int REQUEST_CODE_PUBLISH = 0x0101;
     @BindView(R.id.search)
@@ -83,12 +106,8 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener 
     RecyclerView socialRecy;
     @BindView(R.id.tv_empty_tip)
     TextView tvEmptyTip;
-    @BindView(R.id.rl_empty)
-    RelativeLayout rlEmpty;
     @BindView(R.id.tv_error_tip)
     TextView tvErrorTip;
-    @BindView(R.id.rl_error)
-    RelativeLayout rlError;
     @BindView(R.id.refreshLayout)
     SmartRefreshLayout refreshLayout;
     @BindView(R.id.social_new)
@@ -97,7 +116,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener 
     private RelativeLayout rlNotice;
     private TextView circle, collection, release;
 
-    private List<String> mSocialTagDatas = new ArrayList<>();
+    private List<BbsTopicListTradeRespDTO.TopicListBean> mSocialTagDatas = new ArrayList<>();
 
     private PopupWindow mPopupWindow;
 
@@ -110,37 +129,66 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener 
 
     // RecyclerVew
     private SocalContentAdapter socalContentAdapter;
-    private List<SocalContentAdapter.SocialContentWrapper> mDatas;
-    private List<SocalContentAdapter.SocialContentWrapper> mNewContents;
+    private List<LostAndFoundDTO> mDatas;
+    private List<LostAndFoundDTO> mNewContents;
     private SocalContentAdapter socalNewContentAdapter;
     private boolean autoRefresh;
+
+    @Inject
+    ISocalPresenter<ISocalView> presenter;
+
+    private int page = 1;
+    private int size = 10;
+
+    private int topicId;
+
+    private String slectkey;
+
+    private String hotPosIds;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_socal, container, false);
         unbinder = ButterKnife.bind(this, rootView);
+        mActivityComponent = DaggerLostAndFoundActivityComponent.builder()
+                .lostAndFoundActivityModule(new LostAndFoundActivityModule(mActivity))
+                .applicationComponent(((MvpApp) mActivity.getApplication()).getComponent())
+                .build();
+        mActivityComponent.inject(this);
+        presenter.onAttach(this);
+        initPop();
         initRecycler();
         return rootView;
     }
 
+
     @Override
     protected void initData() {
+        presenter.getTopicList();
+        presenter.getLostList(hotPosIds, page, slectkey, topicId);
+        presenter.fetchNoticeCount();
 
     }
+
+    @Override
+    protected void initView() {
+
+    }
+
 
     @OnClick(R.id.cancel_search)
-    public void showNormalRl(){
+    public void showNormalRl() {
         socialNormalRl.setVisibility(View.VISIBLE);
         searchRl.setVisibility(View.GONE);
-
-
+        SoftInputUtils.hideSoftInputFromWindow(mActivity , searchTxt);
     }
+
     @OnClick(R.id.search)
-    public void showSearchRl(){
+    public void showSearchRl() {
         socialNormalRl.setVisibility(View.GONE);
         searchRl.setVisibility(View.VISIBLE);
-        showSoftInputFromWindow(mActivity ,searchTxt);
+        showSoftInputFromWindow(mActivity, searchTxt);
     }
 
 
@@ -152,21 +200,21 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener 
         editText.setFocusableInTouchMode(true);
         editText.requestFocus();
         InputMethodManager inputManager =
-                (InputMethodManager)editText.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                (InputMethodManager) editText.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         inputManager.showSoftInput(editText, 0);
     }
 
 
+
+
     @OnEditorAction(R.id.search_txt)
-    boolean search(TextView v, int actionId, KeyEvent event) {
+    boolean search(EditText v, int actionId, KeyEvent event) {
         // 判断如果用户输入的是搜索键
         if (actionId == EditorInfo.IME_ACTION_SEARCH) {
 //            this.dismiss();
             InputMethodManager imm = (InputMethodManager) mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-//            if (listener != null) {
-//                listener.onSearch(etSearchContent.getText().toString());
-//            }
+            presenter.getLostList("", 1, v.getText().toString(), 0);
             return true;
         }
         return false;
@@ -195,18 +243,28 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener 
 //        }
     }
 
+    SocalTagsAdapter adapter;
 
     /**
      * 初始化横向滚动的tag
      */
     private void initRecycler() {
         initScreen();
-        for (int i = 0; i < 18; i++) {
-            mSocialTagDatas.add("");
-        }
-        SocalTagsAdapter adapter = new SocalTagsAdapter(mActivity, mSocialTagDatas, socialTags);
+        mSocialTagDatas.add(new BbsTopicListTradeRespDTO.TopicListBean());
+        adapter = new SocalTagsAdapter(mActivity, mSocialTagDatas, socialTags, new OnItemClickListener() {
+            @Override
+            public void click(int poisition) {
+                if (poisition == 0) {
+                    presenter.getLostList("", 1, "", 0);
+                } else {
+                    topicId = mSocialTagDatas.get(poisition).getTopicId();
+                    refreshLayout.autoRefresh();
+                    presenter.getLostList("", 1, "", topicId);
+                }
+            }
+        });
         socialTags.setAdapter(adapter);
-        initPop();
+
         initContentRecycler();
     }
 
@@ -240,35 +298,43 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener 
         }
     }
 
-
     protected void setAutoRefresh(boolean autoRefresh) {
         this.autoRefresh = autoRefresh;
     }
 
-    private  void onLoadMoreContent() {
-
+    private void onLoadMoreContent() {
+        page++;
+        presenter.getLostList("", page, "", topicId);
     }
 
-    private void onRefreshContent() {
 
+    private void onRefreshContent() {
+        presenter.getLostList("", 1, "", topicId);
     }
 
 
     private void initSocialContentAdapter() {
         mDatas = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            mDatas.add(new SocalContentAdapter.SocialContentWrapper());
-        }
         socalContentAdapter = new SocalContentAdapter(mActivity, R.layout.item_socal, mDatas, new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                Intent intent = new Intent(mActivity ,LostAndFoundDetailActivity2.class);
+                Intent intent = new Intent(mActivity, LostAndFoundDetailActivity2.class);
+                intent.putExtra(KEY_ID ,mDatas.get(position).getId());
                 mActivity.startActivity(intent);
             }
 
             @Override
             public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
                 return false;
+            }
+        }, new LostAndFoundDetailContentDelegate.OnLikeClickListener() {
+            @Override
+            public void onLikeClick(int position, long id, boolean like) {
+                if (like) {
+                    presenter.unLikeComment(position, id);
+                } else {
+                    presenter.likeComment(position, id);
+                }
             }
         });
         socialRecy.setLayoutManager(new LinearLayoutManager(mActivity));
@@ -279,7 +345,8 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener 
         socalNewContentAdapter = new SocalContentAdapter(mActivity, R.layout.item_socal, mNewContents, new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                Intent intent = new Intent(mActivity ,LostAndFoundDetailActivity2.class);
+                Intent intent = new Intent(mActivity, LostAndFoundDetailActivity2.class);
+                intent.putExtra(KEY_ID ,mNewContents.get(position).getId());
                 mActivity.startActivity(intent);
             }
 
@@ -287,11 +354,22 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener 
             public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
                 return false;
             }
+        }, new LostAndFoundDetailContentDelegate.OnLikeClickListener() {
+            @Override
+            public void onLikeClick(int position, long id, boolean like) {
+                if (like) {
+                    presenter.unLikeComment(position, id);
+                } else {
+                    presenter.likeComment(position, id);
+                }
+            }
         });
         socialNew.setLayoutManager(new LinearLayoutManager(mActivity));
         socialNew.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(mActivity, 21)));
-        socialNew.setAdapter(socalContentAdapter);
+        socialNew.setAdapter(socalNewContentAdapter);
     }
+
+
 
     public void initPop() {
         // 设置布局文件
@@ -319,10 +397,8 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener 
         collection.setOnClickListener(this);
         release.setOnClickListener(this);
 
+
     }
-
-
-
 
 
     @OnClick(R.id.more)
@@ -331,16 +407,24 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener 
         if (popView == null) return;
         // 相对于 + 号正下面，同时可以设置偏移量
         mPopupWindow.showAtLocation(rootView, Gravity.NO_GRAVITY, (screenWidth - ScreenUtils.dpToPxInt(mActivity, 117)), ScreenUtils.dpToPxInt(mActivity, 75));
+        showNoticeNumRemind(presenter.getNoticeCount());
+
         // 设置pop关闭监听，用于改变背景透明度
     }
 
-    public void hideNoticeRemind() {
+    public void hideNoticeNumRemind() {
+        if ( circle == null) return ;
         circle.setVisibility(View.GONE);
     }
 
-    public void showNoticeRemind(int num){
-        circle.setText(num);
-        circle.setVisibility(View.VISIBLE);
+    public void showNoticeNumRemind(int num) {
+        if (circle == null) return ;
+        if (num > 0) {
+            circle.setText(num);
+            circle.setVisibility(View.GONE);
+        }else{
+            circle.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -350,12 +434,12 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener 
     }
 
 
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.rl_notice:
                 hideNoticeRemind();
+                hideNoticeNumRemind();
                 mPopupWindow.dismiss();
                 startActivity(new Intent(mActivity, LostAndFoundNoticeActivity.class));
                 break;
@@ -372,4 +456,103 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener 
     }
 
 
+    @Override
+    public void referTopic(BbsTopicListTradeRespDTO data) {
+        if (adapter == null) return;
+        if (data == null || data.getTopicList() == null || data.getTopicList().size() == 0) return;
+        if (this.mSocialTagDatas != null && this.mSocialTagDatas.size() > 0) {
+            this.mSocialTagDatas.clear();
+        }
+        this.mSocialTagDatas.addAll(data.getTopicList());
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void setReferComplete() {
+        refreshLayout.finishRefresh();
+        refreshLayout.finishLoadMore();
+    }
+
+    @Override
+    public void referTopicList(QueryLostAndFoundListRespDTO data) {
+        if (data.getHotPosts() != null && socalContentAdapter != null && data.getHotPosts().size() > 0) {
+            if (mDatas != null && mDatas.size() > 0) {
+                this.mDatas.clear();
+            }
+            this.mDatas.addAll(data.getHotPosts());
+            socalContentAdapter.notifyDataSetChanged();
+        }
+
+        if (data.getPosts() != null && socalNewContentAdapter != null && data.getPosts().size() > 0) {
+            if (mNewContents != null && mNewContents.size() > 0) {
+                this.mNewContents.clear();
+            }
+            this.mNewContents.addAll(data.getPosts());
+            socalNewContentAdapter.notifyDataSetChanged();
+            rlContent.setVisibility(View.VISIBLE);
+            rlError.setVisibility(View.GONE);
+            rlEmpty.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void loadMore(QueryLostAndFoundListRespDTO data) {
+        if (data.getPosts() != null && socalNewContentAdapter != null && data.getPosts().size() > 0) {
+            this.mNewContents.addAll(data.getPosts());
+            socalNewContentAdapter.notifyDataSetChanged();
+        } else {
+
+        }
+    }
+
+    @Override
+    public void reducePage() {
+        if (page > 1) {
+            page--;
+        }
+    }
+
+
+    @Override
+    public void onErrorView() {
+        rlError.setVisibility(View.VISIBLE);
+        rlEmpty.setVisibility(View.GONE);
+        rlContent.setVisibility(View.GONE);
+
+    }
+
+    @Override
+    public void onEmpty() {
+        rlEmpty.setVisibility(View.VISIBLE);
+        rlError.setVisibility(View.GONE);
+        rlContent.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void notifyAdapter(int position, boolean b) {
+        if (socalNewContentAdapter != null) {
+            socalNewContentAdapter.notifyItemChanged(position);
+        }
+
+        if (socalContentAdapter != null && position < 3) {
+            socalContentAdapter.notifyItemChanged(position);
+        }
+    }
+
+    @Override
+    public void showNoticeRemind(int num) {
+        if (circle != null) {
+            circle.setVisibility(View.VISIBLE);
+            circle.setText(num + "");
+        }
+        ivRemaind.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideNoticeRemind() {
+        ivRemaind.setVisibility(View.GONE);
+        if (circle != null) {
+            circle.setVisibility(View.GONE);
+        }
+    }
 }

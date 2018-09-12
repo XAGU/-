@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.lostandfound.intf;
 
+import com.xiaolian.amigo.data.network.model.lostandfound.LostAndFoundDTO;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundAdaptor2;
 
@@ -22,5 +23,7 @@ public interface IMyCollectView extends IBaseView {
 
     void showEmptyView();
 
-    void addMore(List<LostAndFoundAdaptor2.LostAndFoundWrapper> wrappers);
+    void addMore(List<LostAndFoundDTO> wrappers);
+
+    public void notifyAdapter(int position, boolean b);
 }

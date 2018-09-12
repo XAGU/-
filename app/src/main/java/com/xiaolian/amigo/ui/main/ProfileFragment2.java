@@ -107,6 +107,7 @@ public class ProfileFragment2 extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         unbinder = ButterKnife.bind(this, view);
+        initView();
         return view;
     }
 
@@ -224,7 +225,11 @@ public class ProfileFragment2 extends BaseFragment {
 
     @Override
     protected void initData() {
-        if (tvNickName == null) return ;
+
+    }
+
+    @Override
+    protected void initView() {
         if (presenter.isLogin()) {
             User user = presenter.getUserInfo();
             setAvatar(user.getPictureUrl());
@@ -235,7 +240,6 @@ public class ProfileFragment2 extends BaseFragment {
             tvNickName.setText("登录/注册");
             tvSchoolName.setVisibility(View.GONE);
         }
-
     }
 
 

@@ -30,6 +30,7 @@ import com.xiaolian.amigo.ui.lostandfound.MyPublishActivity2;
 import com.xiaolian.amigo.ui.lostandfound.PublishFoundActivity;
 import com.xiaolian.amigo.ui.lostandfound.PublishLostActivity;
 import com.xiaolian.amigo.ui.lostandfound.PublishLostAndFoundActivity;
+import com.xiaolian.amigo.ui.lostandfound.SocalFragment;
 import com.xiaolian.amigo.ui.lostandfound.WriteLZActivity;
 
 import dagger.Component;
@@ -64,4 +65,6 @@ public interface LostAndFoundActivityComponent {
     void inject(MyCollectActivity activity);
 
     void inject(WriteLZActivity activity);
+
+    void inject(SocalFragment socalFragment);
 }

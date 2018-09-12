@@ -2,6 +2,8 @@ package com.xiaolian.amigo.ui.lostandfound;
 
 import com.xiaolian.amigo.data.manager.intf.ILostAndFoundDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.lostandfound.CommonRespDTO;
+import com.xiaolian.amigo.data.network.model.lostandfound.LikeItemReqDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.LostAndFoundDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.NoticeCountDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.QueryLostAndFoundListReqDTO;
@@ -46,7 +48,7 @@ public class LostAndFoundPresenter2<V extends ILostAndFoundView2> extends BasePr
             reqDTO.setPage(page);
             reqDTO.setSize(size);
         }
-        reqDTO.setSchoolId(lostAndFoundDataManager.getUserInfo().getSchoolId());
+//        reqDTO.setSchoolId(lostAndFoundDataManager.getUserInfo().getSchoolId());
         addObserver(lostAndFoundDataManager.queryLostAndFounds(reqDTO),
                 new NetworkObserver<ApiResult<QueryLostAndFoundListRespDTO>>(false, true) {
 
@@ -65,29 +67,29 @@ public class LostAndFoundPresenter2<V extends ILostAndFoundView2> extends BasePr
                                 commentEnable = false;
                                 getMvpView().hideFootView();
                             }
-                            if (null != result.getData().getLostAndFounds()) {
-                                List<LostAndFoundAdaptor2.LostAndFoundWrapper> wrappers = new ArrayList<>();
-                                for (LostAndFoundDTO lost : result.getData().getLostAndFounds()) {
-                                    wrappers.add(new LostAndFoundAdaptor2.LostAndFoundWrapper(lost.transform()));
-                                }
-                                if (isSearch) {
-                                    if (wrappers.isEmpty()) {
-                                        getMvpView().showNoSearchResult(searchStr);
-                                    } else {
-                                        getMvpView().showSearchResult(wrappers);
-                                    }
-                                } else {
-                                    if (wrappers.isEmpty() && page == Constant.PAGE_START_NUM) {
-                                        getMvpView().showEmptyView();
-                                        return;
-                                    }
-                                    getMvpView().hideEmptyView();
-                                    page ++;
-                                    getMvpView().addMore(wrappers);
-                                }
-                            }
-                        } else {
-                            getMvpView().onError(result.getError().getDisplayMessage());
+//                            if (null != result.getData().getLostAndFounds()) {
+//                                List<LostAndFoundAdaptor2.LostAndFoundWrapper> wrappers = new ArrayList<>();
+//                                for (LostAndFoundDTO lost : result.getData().getLostAndFounds()) {
+//                                    wrappers.add(new LostAndFoundAdaptor2.LostAndFoundWrapper(lost.transform()));
+//                                }
+//                                if (isSearch) {
+//                                    if (wrappers.isEmpty()) {
+//                                        getMvpView().showNoSearchResult(searchStr);
+//                                    } else {
+//                                        getMvpView().showSearchResult(wrappers);
+//                                    }
+//                                } else {
+//                                    if (wrappers.isEmpty() && page == Constant.PAGE_START_NUM) {
+//                                        getMvpView().showEmptyView();
+//                                        return;
+//                                    }
+//                                    getMvpView().hideEmptyView();
+//                                    page ++;
+//                                    getMvpView().addMore(wrappers);
+//                                }
+//                            }
+//                        } else {
+//                            getMvpView().onError(result.getError().getDisplayMessage());
                         }
                     }
 
@@ -121,11 +123,8 @@ public class LostAndFoundPresenter2<V extends ILostAndFoundView2> extends BasePr
                             if (result.getData().getCommentEnable() != null) {
                                 commentEnable = result.getData().getCommentEnable();
                             }
-                            if (null != result.getData().getLostAndFounds()) {
-                                List<LostAndFoundAdaptor2.LostAndFoundWrapper> wrappers = new ArrayList<>();
-                                for (LostAndFoundDTO lost : result.getData().getLostAndFounds()) {
-                                    wrappers.add(new LostAndFoundAdaptor2.LostAndFoundWrapper(lost.transform()));
-                                }
+                            if (null != result.getData().getPosts()) {
+                                List<LostAndFoundDTO> wrappers = new ArrayList<>();
                                 if (wrappers.isEmpty() && page == Constant.PAGE_START_NUM) {
                                     getMvpView().showEmptyView();
                                     return;
@@ -177,5 +176,41 @@ public class LostAndFoundPresenter2<V extends ILostAndFoundView2> extends BasePr
                         }
                     }
                 });
+    }
+
+    private void likeOrUnLikeCommentOrContent(int position, long id, boolean comment, boolean like) {
+        LikeItemReqDTO reqDTO = new LikeItemReqDTO();
+        reqDTO.setItemId(id);
+        // 是否是点赞，1 点赞 2 取消点赞
+        reqDTO.setLike(like ? 1 : 2);
+        // 被点赞/取消点赞的类型，1 失物招领 2 评论
+        reqDTO.setType(comment ? 2 : 1);
+        addObserver(lostAndFoundDataManager.like(reqDTO),
+                new NetworkObserver<ApiResult<CommonRespDTO>>(false) {
+
+                    @Override
+                    public void onReady(ApiResult<CommonRespDTO> result) {
+                        if (null == result.getError()) {
+                            if (like) {
+                                getMvpView().notifyAdapter(position, true);
+                            } else {
+                                getMvpView().notifyAdapter(position, false);
+                            }
+                        } else {
+                            getMvpView().onError(result.getError().getDisplayMessage());
+                        }
+                    }
+                });
+
+    }
+
+    @Override
+    public void unLikeComment(int position, long id) {
+        likeOrUnLikeCommentOrContent(position, id, true, false);
+    }
+
+    @Override
+    public void likeComment(int position, long id) {
+        likeOrUnLikeCommentOrContent(position, id, true, true);
     }
 }

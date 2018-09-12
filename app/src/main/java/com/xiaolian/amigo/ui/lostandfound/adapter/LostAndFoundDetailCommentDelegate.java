@@ -84,15 +84,15 @@ public class LostAndFoundDetailCommentDelegate
     public void convert(ViewHolder holder,
                         LostAndFoundDetailAdapter.LostAndFoundDetailWrapper lostAndFoundDetailWrapper,
                         int position) {
-//        holder.setText(R.id.tv_comment_author, lostAndFoundDetailWrapper.getCommentAuthor());
+//        holder.setText(R.id.tv_comment_author, lostAndFoundDetailWrapper.getCommentAuthor());  lostAndFoundDetailWrapper.getType(),
         setCommentAuthor(holder.getView(R.id.tv_comment_author), lostAndFoundDetailWrapper.isOwner(),
-                lostAndFoundDetailWrapper.getType(),
+//
                 lostAndFoundDetailWrapper.getCommentAuthor());
         holder.getView(R.id.iv_owner)
                 .setVisibility(lostAndFoundDetailWrapper.isOwner() ? View.VISIBLE : View.GONE);
-        holder.setImageResource(R.id.iv_owner,
-                ObjectsCompat.equals(lostAndFoundDetailWrapper.getType(), LostAndFound.LOST) ?
-                        R.drawable.ic_lost_owner : R.drawable.ic_found_owner);
+//        holder.setImageResource(R.id.iv_owner,
+//                ObjectsCompat.equals(lostAndFoundDetailWrapper.getType(), LostAndFound.LOST) ?
+//                        R.drawable.ic_lost_owner : R.drawable.ic_found_owner);
         holder.setText(R.id.tv_comment_content, lostAndFoundDetailWrapper.getCommentContent());
         holder.setText(R.id.tv_time,
                 TimeUtils.lostAndFoundTimestampFormat(lostAndFoundDetailWrapper.getTime()));
@@ -242,7 +242,7 @@ public class LostAndFoundDetailCommentDelegate
         }
     }
 
-    private void setCommentAuthor(TextView textView, boolean isOwner, int type, String author) {
+    private void setCommentAuthor(TextView textView, boolean isOwner, String author) {
         SpannableStringBuilder builder = new SpannableStringBuilder();
         SpannableString authorSpan = new SpannableString(author);
         authorSpan.setSpan(new AbsoluteSizeSpan(

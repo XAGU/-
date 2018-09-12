@@ -80,7 +80,7 @@ public class LostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView2>
                             if (result.getData().getCommentEnable() != null
                                     && result.getData().getCommentEnable()) {
                                 commentEnable = true;
-                                getMvpView().showFootView();
+                                getMvpView().showFootView(ObjectsCompat.equals(result.getData().getCollected(), 1));
                             } else {
                                 commentEnable = false;
                                 getMvpView().hideFootView();
@@ -259,7 +259,7 @@ public class LostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView2>
         if (isOwner()) {
             DeleteLostFoundItemReqDTO reqDTO = new DeleteLostFoundItemReqDTO();
             reqDTO.setId(id);
-            reqDTO.setType(type);
+            reqDTO.setType(1);
             addObserver(lostAndFoundDataManager.delete(reqDTO),
                     new NetworkObserver<ApiResult<BooleanRespDTO>>() {
 
@@ -280,7 +280,7 @@ public class LostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView2>
         } else {
             SaveLostAndFoundReportDTO reqDTO = new SaveLostAndFoundReportDTO();
             reqDTO.setId(id);
-            reqDTO.setType(type);
+            reqDTO.setType(1);
             addObserver(lostAndFoundDataManager.report(reqDTO),
                     new NetworkObserver<ApiResult<SimpleRespDTO>>(){
 

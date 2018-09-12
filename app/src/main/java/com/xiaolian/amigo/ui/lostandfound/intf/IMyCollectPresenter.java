@@ -10,4 +10,10 @@ public interface IMyCollectPresenter<V extends IMyCollectView> extends IBasePres
     void getMyCollects();
 
     void resetPage();
+
+    void unLikeComment(int position, long id) ;
+
+    void likeComment(int position, long id);
+
+
 }

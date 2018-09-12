@@ -80,8 +80,9 @@ public class LostAndFoundDetailContentDelegate
                 .placeholder(R.drawable.ic_picture_error)
                 .error(R.drawable.ic_picture_error)
                 .into((ImageView) holder.getView(R.id.iv_avatar));
-        holder.setText(R.id.tv_content_author, lostAndFoundDetailWrapper.getContentAuthor());
+        holder.setText(R.id.tv_content_author, lostAndFoundDetailWrapper.getNickName());
 
+        holder.setText(R.id.tag ,lostAndFoundDetailWrapper.getTopicName());
         holder.setImageResource(R.id.iv_owner,
                 ObjectsCompat.equals(lostAndFoundDetailWrapper.getType(), LostAndFound.LOST) ?
                         R.drawable.ic_lost_owner : R.drawable.ic_found_owner);
@@ -93,7 +94,7 @@ public class LostAndFoundDetailContentDelegate
         holder.setText(R.id.tv_like_count, String.valueOf(lostAndFoundDetailWrapper.getLikeCount()));
         holder.setImageResource(R.id.iv_like,
                 lostAndFoundDetailWrapper.isLiked() ?
-                        R.drawable.ic_like : R.drawable.ic_unlike);
+                        R.drawable.icon_praise_sel : R.drawable.ic_unlike);
         holder.getView(R.id.iv_like).setOnClickListener(v -> {
             if (animating) {
                 return;
@@ -110,7 +111,7 @@ public class LostAndFoundDetailContentDelegate
                 } else {
                     lostAndFoundDetailWrapper.setLiked(true);
                     lostAndFoundDetailWrapper.setLikeCount(likeCount + 1);
-                    holder.setImageResource(R.id.iv_like, R.drawable.ic_like);
+                    holder.setImageResource(R.id.iv_like, R.drawable.icon_praise_sel);
                     holder.setText(R.id.tv_like_count,
                             String.valueOf(lostAndFoundDetailWrapper.getLikeCount()));
                     likeClickListener.onLikeClick(position, lostAndFoundDetailWrapper.getId(), false);

@@ -39,6 +39,8 @@ public class LostAndFoundDTO implements Mapper<LostAndFound> {
     private String user;
     private Long userId;
 
+
+    private String nickname ;
     /**
      * 点赞数量
      */
@@ -47,6 +49,8 @@ public class LostAndFoundDTO implements Mapper<LostAndFound> {
      * 本人是否点赞 1 本人已点赞 2 本人未点赞
      */
     private Integer liked;
+
+    private String topicName ;
     /**
      * 头像
      */
@@ -81,6 +85,8 @@ public class LostAndFoundDTO implements Mapper<LostAndFound> {
         lostAndFound.setLiked(liked);
         lostAndFound.setPictureUrl(pictureUrl);
         lostAndFound.setCollected(collected);
+        lostAndFound.setNickname(nickname);
+        lostAndFound.setTopicName(topicName);
         return lostAndFound;
     }
 }

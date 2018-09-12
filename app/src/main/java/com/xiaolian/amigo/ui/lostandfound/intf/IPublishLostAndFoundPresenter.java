@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 
 import com.xiaolian.amigo.data.enumeration.OssFileType;
+import com.xiaolian.amigo.data.network.model.lostandfound.BbsTopicListTradeRespDTO;
 import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 import com.xiaolian.amigo.ui.lostandfound.PublishLostAndFoundActivity;
 
@@ -18,4 +19,9 @@ public interface IPublishLostAndFoundPresenter<V extends IPublishLostAndFoundVie
     void uploadImage(Context activity, Uri imageUri, int position, OssFileType found);
 
     void publishLostAndFound(String desc, List<String> images, String title, int type);
+
+
+    List<BbsTopicListTradeRespDTO.TopicListBean> getTopicList();
+
+
 }

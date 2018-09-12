@@ -231,6 +231,11 @@ public class FindBathroomPasswordStep1Fragment extends BaseFragment {
     }
 
     @Override
+    protected void initView() {
+
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         CommonUtil.showSoftInput(getContext(), etVerificationCode);

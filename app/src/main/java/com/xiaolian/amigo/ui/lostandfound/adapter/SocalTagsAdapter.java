@@ -1,19 +1,18 @@
 package com.xiaolian.amigo.ui.lostandfound.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.xiaolian.amigo.R;
-import com.xiaolian.amigo.ui.widget.SpaceBottomItemDecoration;
-import com.xiaolian.amigo.util.ScreenUtils;
+import com.xiaolian.amigo.data.network.model.lostandfound.BbsTopicListTradeRespDTO;
+import com.xiaolian.amigo.intf.OnItemClickListener;
+import com.xiaolian.amigo.util.GildeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,25 +25,31 @@ import java.util.List;
 public class SocalTagsAdapter extends RecyclerView.Adapter<SocalTagsAdapter.ItemViewHolder> {
     private final RecyclerView recycleview;
     private LayoutInflater inflater;
-    private List<String> list;
+    private List<BbsTopicListTradeRespDTO.TopicListBean> list;
     private final LinearLayoutManager manager;
     private boolean move;
     private int index;
     private Context context ;
 
-    public SocalTagsAdapter(Context context, List<String> list, RecyclerView recyclerView) {
+    private OnItemClickListener onItemClickListener ;
+
+
+
+    public SocalTagsAdapter(Context context, List<BbsTopicListTradeRespDTO.TopicListBean> list, RecyclerView recyclerView
+            ,OnItemClickListener onItemClickListener) {
         this.context = context ;
         inflater = LayoutInflater.from(context);
         if (list == null) {
             list = new ArrayList<>();
         }
         this.list = list;
+        this.onItemClickListener = onItemClickListener ;
         //可以在这里做分割线处理
         manager = new LinearLayoutManager(context);
         this.recycleview = recyclerView;
         manager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(manager);
-        recyclerView.addItemDecoration(new SpaceBottomItemDecoration(ScreenUtils.dpToPxInt(context ,5)));
+//        recyclerView.addItemDecoration(new SpaceBottomItemDecoration(ScreenUtils.dpToPxInt(context ,5)));
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -65,6 +70,7 @@ public class SocalTagsAdapter extends RecyclerView.Adapter<SocalTagsAdapter.Item
         });
     }
 
+
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new ItemViewHolder(inflater.inflate(R.layout.item_social_tag, null , false));
@@ -72,27 +78,30 @@ public class SocalTagsAdapter extends RecyclerView.Adapter<SocalTagsAdapter.Item
 
     @Override
     public void onBindViewHolder(ItemViewHolder holder, int position) {
-        String  imgUrl = list.get(position);
-
         if (position ==0) {
             holder.img.setBackgroundResource(R.drawable.shishi);
-        }else if (position < list.size() - 8 ){
-            holder.img.setBackgroundResource(R.drawable.xingqu);
+        }else if (position < list.size() ){
+            String imgUrl = list.get(position ).getIcon();
+            GildeUtils.setNoErrorImage(context ,holder.img,imgUrl);
         }else{
-            holder.img.setBackgroundResource(R.drawable.shishi);
+            holder.img.setImageBitmap(null);
         }
         holder.img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(context ,"" + position ,Toast.LENGTH_SHORT).show();
-                scollToPosition(position);
+
+                if (onItemClickListener != null && position < list.size()) {
+                    onItemClickListener.click(position);
+                    scollToPosition(position);
+                }
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return list == null ? 0: (list.size() + 8);
     }
 
     public void scollToPosition(int n) {

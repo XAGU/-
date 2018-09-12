@@ -1,17 +1,3 @@
-/*
- * Copyright (C) 2017 MINDORKS NEXTGEN PRIVATE LIMITED
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     https://mindorks.com/license/apache-v2
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License
- */
 
 package com.xiaolian.amigo.di.module;
 
@@ -34,6 +20,7 @@ import com.xiaolian.amigo.ui.lostandfound.LostAndFoundReplyDetailPresenter;
 import com.xiaolian.amigo.ui.lostandfound.MyCollectPresenter;
 import com.xiaolian.amigo.ui.lostandfound.PublishLostAndFoundPresenter;
 import com.xiaolian.amigo.ui.lostandfound.PublishLostPresenter;
+import com.xiaolian.amigo.ui.lostandfound.SocalPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundDetailPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundDetailPresenter2;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundDetailView;
@@ -52,6 +39,8 @@ import com.xiaolian.amigo.ui.lostandfound.intf.IPublishLostAndFoundPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.IPublishLostAndFoundView;
 import com.xiaolian.amigo.ui.lostandfound.intf.IPublishLostPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.IPublishLostView;
+import com.xiaolian.amigo.ui.lostandfound.intf.ISocalPresenter;
+import com.xiaolian.amigo.ui.lostandfound.intf.ISocalView;
 
 import dagger.Module;
 import dagger.Provides;
@@ -151,6 +140,13 @@ public class LostAndFoundActivityModule {
     @Provides
     IOssDataManager provideOssDataManager(OssDataManager manager) {
         return manager;
+    }
+
+    @Provides
+    @LostAndFoundActivityContext
+    ISocalPresenter<ISocalView> provideSocalPresenter(
+            SocalPresenter<ISocalView> presenter) {
+        return presenter;
     }
 
 }

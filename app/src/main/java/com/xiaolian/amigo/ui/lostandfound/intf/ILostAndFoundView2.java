@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.lostandfound.intf;
 
+import com.xiaolian.amigo.data.network.model.lostandfound.LostAndFoundDTO;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundAdaptor2;
 
@@ -22,11 +23,11 @@ public interface ILostAndFoundView2 extends IBaseView {
 
     void showEmptyView();
 
-    void addMore(List<LostAndFoundAdaptor2.LostAndFoundWrapper> wrappers);
+    void addMore(List<LostAndFoundDTO> wrappers);
 
     void showNoSearchResult(String searchStr);
 
-    void showSearchResult(List<LostAndFoundAdaptor2.LostAndFoundWrapper> wrappers);
+    void showSearchResult(List<LostAndFoundDTO> wrappers);
 
     void showFootView();
 
@@ -35,4 +36,6 @@ public interface ILostAndFoundView2 extends IBaseView {
     void showNoticeRemind();
 
     void hideNoticeRemind();
+
+    void notifyAdapter(int position, boolean b);
 }

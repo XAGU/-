@@ -40,10 +40,8 @@ public class LostAndFoundPresenter<V extends ILostAndFoundView> extends BasePres
     private void queryLostAndFoundList(Integer page, Integer size, Integer type, String selectKey, boolean isSearch) {
         QueryLostAndFoundListReqDTO dto = new QueryLostAndFoundListReqDTO();
         dto.setPage(page);
-        dto.setSchoolId(lostAndFoundDataManager.getUserInfo().getSchoolId());
         dto.setSelectKey(selectKey);
         dto.setSize(size);
-        dto.setType(type);
         addObserver(lostAndFoundDataManager.queryLostAndFounds(dto), new NetworkObserver<ApiResult<QueryLostAndFoundListRespDTO>>(false, true) {
 
             @Override
@@ -54,37 +52,37 @@ public class LostAndFoundPresenter<V extends ILostAndFoundView> extends BasePres
                 getMvpView().hideErrorView();
                 if (null == result.getError()) {
 
-                    if (null != result.getData().getLostAndFounds()) {
-                        List<LostAndFoundAdaptor.LostAndFoundWapper> wrappers = new ArrayList<>();
-                        for (LostAndFoundDTO lost : result.getData().getLostAndFounds()) {
-                            wrappers.add(new LostAndFoundAdaptor.LostAndFoundWapper(lost.transform()));
-                        }
-                        if (isSearch) {
-                            if (wrappers.isEmpty()) {
-                                getMvpView().showNoSearchResult(selectKey);
-                            } else {
-                                getMvpView().showSearchResult(wrappers);
-                            }
-                        } else {
-                            if (wrappers.isEmpty() && page == Constant.PAGE_START_NUM) {
-                                getMvpView().showEmptyView(R.string.empty_tip_1);
-                                return;
-                            }
-                            getMvpView().hideEmptyView();
-                            if (type == null) {
-                                getMvpView().addMore(wrappers);
-                            } else {
-                                if (type == 1) {
-                                    getMvpView().addMoreLost(wrappers);
-                                } else {
-                                    getMvpView().addMoreFound(wrappers);
-                                }
-                            }
-                        }
-                    }
-                } else {
-                    getMvpView().hideErrorView();
-                    getMvpView().onError(result.getError().getDisplayMessage());
+//                    if (null != result.getData().getLostAndFounds()) {
+//                        List<LostAndFoundAdaptor.LostAndFoundWapper> wrappers = new ArrayList<>();
+//                        for (LostAndFoundDTO lost : result.getData().getLostAndFounds()) {
+//                            wrappers.add(new LostAndFoundAdaptor.LostAndFoundWapper(lost.transform()));
+//                        }
+//                        if (isSearch) {
+//                            if (wrappers.isEmpty()) {
+//                                getMvpView().showNoSearchResult(selectKey);
+//                            } else {
+//                                getMvpView().showSearchResult(wrappers);
+//                            }
+//                        } else {
+//                            if (wrappers.isEmpty() && page == Constant.PAGE_START_NUM) {
+//                                getMvpView().showEmptyView(R.string.empty_tip_1);
+//                                return;
+//                            }
+//                            getMvpView().hideEmptyView();
+//                            if (type == null) {
+//                                getMvpView().addMore(wrappers);
+//                            } else {
+//                                if (type == 1) {
+//                                    getMvpView().addMoreLost(wrappers);
+//                                } else {
+//                                    getMvpView().addMoreFound(wrappers);
+//                                }
+//                            }
+//                        }
+//                    }
+//                } else {
+//                    getMvpView().hideErrorView();
+//                    getMvpView().onError(result.getError().getDisplayMessage());
                 }
             }
 
@@ -138,20 +136,20 @@ public class LostAndFoundPresenter<V extends ILostAndFoundView> extends BasePres
                 getMvpView().hideEmptyView();
                 getMvpView().hideErrorView();
                 if (null == result.getError()) {
-                    if (result.getData().getLostAndFounds() != null && result.getData().getLostAndFounds().size() > 0) {
-                        List<LostAndFoundAdaptor.LostAndFoundWapper> wrappers = new ArrayList<>();
-                        for (LostAndFoundDTO lostAndFound : result.getData().getLostAndFounds()) {
-                            wrappers.add(new LostAndFoundAdaptor.LostAndFoundWapper(lostAndFound.transform()));
-                        }
-                        getMvpView().addMore(wrappers);
-                    } else {
-                        getMvpView().showEmptyView(R.string.empty_tip_1);
-                        getMvpView().addMore(new ArrayList<>());
-                    }
-                } else {
-                    getMvpView().addMore(new ArrayList<>());
-                    getMvpView().onError(result.getError().getDisplayMessage());
-                    getMvpView().showErrorView();
+//                    if (result.getData().getLostAndFounds() != null && result.getData().getLostAndFounds().size() > 0) {
+//                        List<LostAndFoundAdaptor.LostAndFoundWapper> wrappers = new ArrayList<>();
+//                        for (LostAndFoundDTO lostAndFound : result.getData().getLostAndFounds()) {
+//                            wrappers.add(new LostAndFoundAdaptor.LostAndFoundWapper(lostAndFound.transform()));
+//                        }
+//                        getMvpView().addMore(wrappers);
+//                    } else {
+//                        getMvpView().showEmptyView(R.string.empty_tip_1);
+//                        getMvpView().addMore(new ArrayList<>());
+//                    }
+//                } else {
+//                    getMvpView().addMore(new ArrayList<>());
+//                    getMvpView().onError(result.getError().getDisplayMessage());
+//                    getMvpView().showErrorView();
                 }
             }
 

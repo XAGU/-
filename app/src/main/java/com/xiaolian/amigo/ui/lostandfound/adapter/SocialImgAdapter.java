@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.widget.photoview.AlbumItemActivity;
+import com.xiaolian.amigo.util.GildeUtils;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
@@ -27,13 +28,8 @@ public class SocialImgAdapter extends CommonAdapter<String> {
     protected void convert(ViewHolder holder, String s, int position) {
         if (position != -1 && position < datas.size()){
             String imgUrl = datas.get(position);
-            Glide.with(context).load(imgUrl)
-                    .asBitmap()
-                    .placeholder(R.drawable.ic_picture_error)
-                    .error(R.drawable.ic_picture_error)
-                    .skipMemoryCache(true)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .into((ImageView) holder.getView(R.id.img));
+
+            GildeUtils.setImage(context ,(ImageView) holder.getView(R.id.img) ,imgUrl);
         }
 
         holder.getView(R.id.img).setOnClickListener(v -> {

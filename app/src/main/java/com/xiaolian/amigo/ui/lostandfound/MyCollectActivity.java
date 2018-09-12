@@ -12,13 +12,18 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.network.model.lostandfound.LostAndFoundDTO;
 import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundAdaptor2;
+import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundDetailContentDelegate;
+import com.xiaolian.amigo.ui.lostandfound.adapter.SocalContentAdapter;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundPresenter2;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundView2;
 import com.xiaolian.amigo.ui.lostandfound.intf.IMyCollectPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.IMyCollectView;
+import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutFooter;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutHeader;
+import com.xiaolian.amigo.util.ScreenUtils;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import java.util.ArrayList;
@@ -28,6 +33,8 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.xiaolian.amigo.ui.lostandfound.LostAndFoundDetailActivity2.KEY_ID;
 
 /**
  * 我的发布
@@ -52,9 +59,9 @@ public class MyCollectActivity extends LostAndFoundBaseActivity implements IMyCo
     @BindView(R.id.rl_error)
     RelativeLayout rlError;
 
-    private LostAndFoundAdaptor2 adaptor;
+    private SocalContentAdapter adaptor;
 
-    List<LostAndFoundAdaptor2.LostAndFoundWrapper> lostAndFounds = new ArrayList<>();
+    List<LostAndFoundDTO> lostAndFounds = new ArrayList<>();
 
     private volatile boolean refreshFlag;
 
@@ -68,32 +75,35 @@ public class MyCollectActivity extends LostAndFoundBaseActivity implements IMyCo
     }
 
     private void initRecyclerView() {
-        adaptor = new LostAndFoundAdaptor2(this, R.layout.item_lost_and_found2, lostAndFounds, true);
-//        recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 10)));
-        adaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+
+
+
+        lostAndFounds = new ArrayList<>();
+        adaptor = new SocalContentAdapter(this, R.layout.item_socal, lostAndFounds, new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                try {
-                    Intent intent = new Intent(MyCollectActivity.this, LostAndFoundDetailActivity2.class);
-                    intent.putExtra(LostAndFoundDetailActivity2.KEY_TYPE,
-                            lostAndFounds.get(position).getType());
-                    intent.putExtra(LostAndFoundDetailActivity2.KEY_ID, lostAndFounds.get(position).getId());
-                    startActivity(intent);
-
-                } catch (ArrayIndexOutOfBoundsException e) {
-                    Log.wtf(TAG, "数组越界", e);
-                } catch (Exception e) {
-                    Log.wtf(TAG, e);
-                }
+                Intent intent = new Intent(MyCollectActivity.this, LostAndFoundDetailActivity2.class);
+                intent.putExtra(KEY_ID ,lostAndFounds.get(position).getId());
+                startActivity(intent);
             }
 
             @Override
             public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
                 return false;
             }
+        }, new LostAndFoundDetailContentDelegate.OnLikeClickListener() {
+            @Override
+            public void onLikeClick(int position, long id, boolean like) {
+                if (like) {
+                    presenter.unLikeComment(position, id);
+                } else {
+                    presenter.likeComment(position, id);
+                }
+            }
         });
-        recyclerView.setAdapter(adaptor);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 21)));
+        recyclerView.setAdapter(adaptor);
         refreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(RefreshLayout refreshLayout) {
@@ -162,7 +172,7 @@ public class MyCollectActivity extends LostAndFoundBaseActivity implements IMyCo
     }
 
     @Override
-    public void addMore(List<LostAndFoundAdaptor2.LostAndFoundWrapper> wrappers) {
+    public void addMore(List<LostAndFoundDTO> wrappers) {
         if (refreshFlag) {
             refreshFlag = false;
             lostAndFounds.clear();
@@ -175,5 +185,10 @@ public class MyCollectActivity extends LostAndFoundBaseActivity implements IMyCo
     protected void onDestroy() {
         presenter.onDetach();
         super.onDestroy();
+    }
+
+    @Override
+    public void notifyAdapter(int position, boolean b) {
+        adaptor.notifyItemChanged(position);
     }
 }

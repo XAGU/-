@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.OssFileType;
+import com.xiaolian.amigo.data.network.model.lostandfound.BbsTopicListTradeRespDTO;
 import com.xiaolian.amigo.data.vo.LZTag;
 import com.xiaolian.amigo.ui.lostandfound.intf.IPublishLostAndFoundPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.IPublishLostAndFoundView;
@@ -66,6 +67,7 @@ public class WriteLZActivity extends LostAndFoundBaseActivity implements IPublis
     @BindView(R.id.iv_third)
     ImageView ivThird;
 
+
     @BindView(R.id.rv_image)
     RecyclerView rvImage;
     @BindView(R.id.iv_back)
@@ -82,14 +84,16 @@ public class WriteLZActivity extends LostAndFoundBaseActivity implements IPublis
     List<String> images = new ArrayList<>();
 
     private boolean allValidated = false;
-    private List<TextView> viewList;
-    private int type = 1;
+    private List<EditText> viewList;
+    private int type = -1;
 
     private List<LZTag> topics;
 
     private int screenWidth ;
     private int imageWidth ;
 
+
+    private int lastTopPosition = -1 ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,19 +104,21 @@ public class WriteLZActivity extends LostAndFoundBaseActivity implements IPublis
 
         presenter.onAttach(WriteLZActivity.this);
 
-
         CommonUtil.showSoftInput(this, mainTitle);
         initImageAdd();
         initRecy();
+        addListView();
+
     }
 
 
     private void initRecy() {
         topics = new ArrayList<>();
-        topics.add(new LZTag("学习" ,false));
-        topics.add(new LZTag("兴趣",false));
-        topics.add(new LZTag("失物招领" , false));
-        topics.add(new LZTag("自定义" , false));
+        if (presenter.getTopicList()!= null){
+            for (BbsTopicListTradeRespDTO.TopicListBean topicListBean : presenter.getTopicList()){
+                topics.add(new LZTag(topicListBean.getTopicName() ,false ,topicListBean.getTopicId()));
+            }
+        }
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         topic.setLayoutManager(linearLayoutManager);
@@ -122,17 +128,21 @@ public class WriteLZActivity extends LostAndFoundBaseActivity implements IPublis
             @Override
             protected void convert(ViewHolder holder, LZTag lzTag, int position) {
                 TextView textView = holder.getView(R.id.topic_txt);
+                if (lzTag.isCheck()){
+                    lastTopPosition = position ;
+                    textView.setBackgroundResource(R.drawable.social_top_sel);
+                    textView.setTextColor(getResources().getColor(R.color.colorWhite));
+                }else{
+                    textView.setBackgroundResource(R.drawable.socical_topic);
+                    textView.setTextColor(getResources().getColor(R.color.colorDark9));
+                }
                 holder.setText(R.id.topic_txt, lzTag.getContent());
                 textView.setOnClickListener(v -> {
-                    if (!lzTag.isCheck()){
-                        textView.setBackgroundResource(R.drawable.social_top_sel);
-                        textView.setTextColor(getResources().getColor(R.color.colorWhite));
+                    if (!lzTag.isCheck()) {
                         lzTag.setCheck(true);
-                        notifyDataSetChanged();
-                    }else {
-                        textView.setBackgroundResource(R.drawable.socical_topic);
-                        textView.setTextColor(getResources().getColor(R.color.colorDark9));
-                        lzTag.setCheck(false);
+                        type = lzTag.getId();
+                        if (lastTopPosition != -1 && lastTopPosition != position)
+                            topics.get(lastTopPosition).setCheck(false);
                         notifyDataSetChanged();
                     }
 
@@ -140,6 +150,14 @@ public class WriteLZActivity extends LostAndFoundBaseActivity implements IPublis
             }
         });
     }
+
+
+    private void addListView(){
+        viewList = new ArrayList<>();
+        viewList.add(mainTitle);
+        viewList.add(mainContent);
+    }
+
 
 
     private void initImageAdd() {
@@ -194,7 +212,7 @@ public class WriteLZActivity extends LostAndFoundBaseActivity implements IPublis
 
     public void toggleBtnStatus() {
         allValidated = !TextUtils.isEmpty(mainTitle.getText())
-                && !TextUtils.isEmpty(mainContent.getText());
+                && (!TextUtils.isEmpty(mainContent.getText())|| images.size() > 0) && type != -1;
         btSubmit.setBackgroundResource(allValidated ?
                 R.drawable.button_enable : R.drawable.button_disable);
     }
@@ -202,13 +220,19 @@ public class WriteLZActivity extends LostAndFoundBaseActivity implements IPublis
     @OnClick(R.id.bt_submit)
     void publishLostAndFound() {
         if (!allValidated) {
-            for (TextView view : viewList) {
-                if (TextUtils.isEmpty(view.getText())) {
-                    onError(view.getHint().toString());
-                    return;
-                }
+            if (TextUtils.isEmpty(mainTitle.getText())){
+                onError(mainTitle.getHint().toString());
+                return ;
+            }
+
+            if (TextUtils.isEmpty(mainContent.getText()) && images.size()== 0){
+                onError("请先选择图片或者填写文字");
+                return ;
             }
         }
+
+        presenter.publishLostAndFound(mainContent.getText().toString(),
+                images, mainTitle.getText().toString(), type);
     }
 
     @Override

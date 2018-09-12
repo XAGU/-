@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.data.prefs;
 
+import com.xiaolian.amigo.data.network.model.lostandfound.BbsTopicListTradeRespDTO;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
 import com.xiaolian.amigo.data.network.model.user.UploadUserDeviceInfoReqDTO;
 import com.xiaolian.amigo.data.vo.DeviceCategory;
@@ -191,4 +192,10 @@ public interface ISharedPreferencesHelp {
     void setBookMethod(int bookMethod) ;
 
     int getBookMethrod();
+
+
+    void setTopic(List<BbsTopicListTradeRespDTO.TopicListBean> topicListBeans);
+
+
+    List<BbsTopicListTradeRespDTO.TopicListBean> getTopic();
 }

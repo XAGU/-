@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/colorWhite"
     tools:context="com.xiaolian.amigo.ui.lostandfound.SocalFragment">
@@ -48,6 +49,15 @@
             android:layout_marginEnd="21dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"/>
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/red_soild_circle"
+            android:id="@+id/iv_remaind"
+            android:visibility="gone"
+            android:layout_alignRight="@id/more"/>
     </RelativeLayout>
         
         
@@ -55,7 +65,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/search_rl"
-            tools:visibility="visible"
+            tools:visibility="gone"
             android:visibility="gone"
             android:layout_marginStart="21dp"
             android:background="@color/color_bg_gray_f8">
@@ -91,44 +101,46 @@
     </FrameLayout>
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-    <android.support.v7.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:scrollbars="none"
-        android:layout_marginStart="21dp"
-        android:layout_marginTop="6dp"
-        android:id="@+id/social_tags"/>
-
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="6dp"
-        android:id="@+id/title_border"
-        android:background="@color/colorDarke" />
-
-
             <com.scwang.smartrefresh.layout.SmartRefreshLayout
                 android:id="@+id/refreshLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="6dp"
                 android:layout_marginLeft="@dimen/mainMarginLeftRight"
                 android:layout_marginRight="@dimen/mainMarginLeftRight"
                 >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <android.support.v7.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:scrollbars="none"
+                        android:layout_marginStart="21dp"
+                        android:id="@+id/social_tags"/>
+
+
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
+
+
                     <RelativeLayout
                         android:id="@+id/rl_empty"
                         android:layout_width="match_parent"
                         android:visibility="gone"
+                        android:layout_marginStart="-20dp"
+                        android:layout_marginEnd="-20dp"
                         android:background="@color/colorBackgroundGray"
-                        android:layout_height="match_parent">
+                        android:layout_height="516dp">
                         <TextView
                             android:id="@+id/tv_empty_tip"
                             android:textSize="14sp"
@@ -149,8 +161,10 @@
                         android:id="@+id/rl_error"
                         android:layout_width="match_parent"
                         android:visibility="gone"
+                        android:layout_marginStart="-20dp"
+                        android:layout_marginEnd="-20dp"
                         android:background="@color/colorBackgroundGray"
-                        android:layout_height="match_parent">
+                        android:layout_height="516dp">
                         <TextView
                             android:id="@+id/tv_error_tip"
                             android:textSize="14sp"
@@ -169,8 +183,17 @@
                     </RelativeLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:id="@+id/rl_content">
+
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="6dp"
+                            android:id="@+id/title_border"
+                            android:background="@color/colorDarke" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -204,6 +227,7 @@
                             android:id="@+id/social_new" />
                     </LinearLayout>
                 </FrameLayout>
+                </LinearLayout>
             </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
     </LinearLayout>

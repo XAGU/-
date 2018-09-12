@@ -67,7 +67,7 @@ public abstract class BaseFragment extends Fragment  implements IBaseView{
 
     protected View mRootView;
 
-    protected Activity mActivity ;
+    protected AppCompatActivity mActivity ;
 
     protected  boolean isCreated  ;
 
@@ -115,10 +115,18 @@ public abstract class BaseFragment extends Fragment  implements IBaseView{
 
         if (isVisibleToUser){
             initData();
+
+            if (getUserVisibleHint()){
+
+            }
         }
+
+
     }
 
     protected abstract  void initData();
+
+    protected abstract  void initView() ;
 
     private void selectPhoto() {
         mPickImageUri = getImageUri("pick");
@@ -622,7 +630,7 @@ public abstract class BaseFragment extends Fragment  implements IBaseView{
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        this.mActivity = (Activity) context;
+        this.mActivity = (AppCompatActivity) context;
     }
 
 

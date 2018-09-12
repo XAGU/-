@@ -12,8 +12,16 @@ import lombok.Data;
  */
 @Data
 public class QueryLostAndFoundListRespDTO {
+
+
+
     private Integer total;
-    private List<LostAndFoundDTO> lostAndFounds;
+    private List<LostAndFoundDTO> posts;
+    private List<LostAndFoundDTO> hotPosts ;
+    private int size ;
+    private int totalHidden ;
+    private int totalNormal ;
+
     /**
      * 是否开启评论
      */

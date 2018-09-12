@@ -261,7 +261,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
      */
     private void initTable() {
         if (fm == null) fm = getSupportFragmentManager();
-        mTableFragmentAdapter = new TableFragmentPagerAdapter(fm, DataGenerator.getFragment(presenter , isServerError));
+        mTableFragmentAdapter = new TableFragmentPagerAdapter(fm, DataGenerator.getFragment(presenter, isServerError));
         vgFragment.setAdapter(mTableFragmentAdapter);
 
         vgFragment.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -280,7 +280,12 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
             }
         });
-        setDefalutItem(0);
+        if (presenter.isLogin()) {
+            setDefalutItem(0);
+        }else{
+            setDefalutItem(2);
+            redirectToLogin();
+        }
 
     }
 
@@ -337,7 +342,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             personalRed.setVisibility(View.GONE);
         } else {
             personalImage.setImageResource(R.drawable.tab_personal_nor);
-            personalRed.setVisibility(View.VISIBLE);
+            personalRed.setVisibility(View.GONE);
         }
     }
 
@@ -475,7 +480,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 //        }
 //        Log.d(TAG, "onResume");
 
-//         TODO: 18/9/5   还没有想好这个是做什么的
+//
 //        if (isNotice && presenter != null) {
 //            presenter.routeHeaterOrBathroom();
 //            isNotice = false;
@@ -534,8 +539,15 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 //                ivAvatar.setImageResource(R.drawable.ic_picture_error);
 //            }
 //        }
-        // 注册信鸽推送
-        registerXGPush();
+
+        if (!presenter.isLogin()){
+            showNoticeAmount(0);
+            initSchoolBiz();
+            checkLogin();
+        }else {
+            // 注册信鸽推送
+            registerXGPush();
+        }
     }
 
 

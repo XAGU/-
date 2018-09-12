@@ -21,6 +21,7 @@ import com.xiaolian.amigo.data.manager.intf.IOssDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
 import com.xiaolian.amigo.data.network.model.file.OssModel;
+import com.xiaolian.amigo.data.network.model.lostandfound.BbsTopicListTradeRespDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.SaveLostAndFoundDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.IPublishLostAndFoundPresenter;
@@ -69,7 +70,8 @@ public class PublishLostAndFoundPresenter<V extends IPublishLostAndFoundView>
         dto.setDescription(desc);
         dto.setImages(images);
         dto.setTitle(title);
-        dto.setType(type);
+        dto.setType(1);
+        dto.setTopicId(type);
         addObserver(lostAndFoundManager.saveLostAndFounds(dto), new NetworkObserver<ApiResult<SimpleRespDTO>>() {
 
             @Override
@@ -82,6 +84,11 @@ public class PublishLostAndFoundPresenter<V extends IPublishLostAndFoundView>
                 }
             }
         });
+    }
+
+    @Override
+    public List<BbsTopicListTradeRespDTO.TopicListBean> getTopicList() {
+        return lostAndFoundManager.getTopic();
     }
 
     private void uploadImage(Context context, String filePath) {

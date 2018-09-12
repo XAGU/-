@@ -18,16 +18,15 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.annotation.LostAndFound;
+import com.xiaolian.amigo.data.network.model.lostandfound.LostAndFoundDTO;
 import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundAdaptor2;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundPresenter2;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundView2;
-import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.ui.widget.dialog.LostAndFoundPopupDialog;
 import com.xiaolian.amigo.ui.widget.dialog.LostAndFoundPublishDialog;
 import com.xiaolian.amigo.ui.widget.dialog.SearchDialog;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutFooter;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutHeader;
-import com.xiaolian.amigo.util.ScreenUtils;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import java.util.ArrayList;
@@ -242,54 +241,59 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
     }
 
     @Override
-    public void showSearchResult(List<LostAndFoundAdaptor2.LostAndFoundWrapper> wappers) {
-        if (searchRecyclerView == null) {
-            searchRecyclerView = new RecyclerView(this);
-            searchAdaptor = new LostAndFoundAdaptor2(this, R.layout.item_lost_and_found2, searchResult, false);
-//            searchRecyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 10)));
-            searchAdaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-//                    Intent intent = new Intent(LostAndFoundActivity.this, LostAndFoundDetailActivity.class);
-//                    intent.putExtra(LostAndFoundDetailActivity.INTENT_KEY_LOST_AND_FOUND_DETAIL_ID, searchResult.get(position).getId());
-//                    // listStatus false表示失物 true表示招领
-//                    if (listStatus) {
-//                        intent.putExtra(LostAndFoundDetailActivity.INTENT_KEY_LOST_AND_FOUND_DETAIL_TYPE,
-//                                LostAndFoundDetailActivity.TYPE_FOUND);
-//                    } else {
-//                        intent.putExtra(LostAndFoundDetailActivity.INTENT_KEY_LOST_AND_FOUND_DETAIL_TYPE,
-//                                LostAndFoundDetailActivity.TYPE_LOST);
-//                    }
-//                    startActivity(intent);
-                    try {
-                        Intent intent = new Intent(LostAndFoundActivity2.this, LostAndFoundDetailActivity2.class);
-                        intent.putExtra(LostAndFoundDetailActivity2.KEY_TYPE,
-                                wappers.get(position).getType());
-                        intent.putExtra(LostAndFoundDetailActivity2.KEY_ID, wappers.get(position).getId());
-                        startActivityForResult(intent, REQUEST_CODE_PUBLISH);
+    public void showSearchResult(List<LostAndFoundDTO> wrappers) {
 
-                    } catch (ArrayIndexOutOfBoundsException e) {
-                        Log.wtf(TAG, "数组越界", e);
-                    } catch (Exception e) {
-                        Log.wtf(TAG, e);
-                    }
-
-                }
-
-                @Override
-                public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
-                    return false;
-                }
-            });
-
-            searchRecyclerView.setAdapter(searchAdaptor);
-            searchRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        }
-        searchResult.clear();
-        searchResult.addAll(wappers);
-        searchAdaptor.notifyDataSetChanged();
-        searchDialog.showResult(searchRecyclerView);
     }
+
+//    @Override
+//    public void showSearchResult(List<LostAndFoundAdaptor2.LostAndFoundWrapper> wappers) {
+//        if (searchRecyclerView == null) {
+//            searchRecyclerView = new RecyclerView(this);
+//            searchAdaptor = new LostAndFoundAdaptor2(this, R.layout.item_lost_and_found2, searchResult, false);
+////            searchRecyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 10)));
+//            searchAdaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+//                @Override
+//                public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+////                    Intent intent = new Intent(LostAndFoundActivity.this, LostAndFoundDetailActivity.class);
+////                    intent.putExtra(LostAndFoundDetailActivity.INTENT_KEY_LOST_AND_FOUND_DETAIL_ID, searchResult.get(position).getId());
+////                    // listStatus false表示失物 true表示招领
+////                    if (listStatus) {
+////                        intent.putExtra(LostAndFoundDetailActivity.INTENT_KEY_LOST_AND_FOUND_DETAIL_TYPE,
+////                                LostAndFoundDetailActivity.TYPE_FOUND);
+////                    } else {
+////                        intent.putExtra(LostAndFoundDetailActivity.INTENT_KEY_LOST_AND_FOUND_DETAIL_TYPE,
+////                                LostAndFoundDetailActivity.TYPE_LOST);
+////                    }
+////                    startActivity(intent);
+//                    try {
+//                        Intent intent = new Intent(LostAndFoundActivity2.this, LostAndFoundDetailActivity2.class);
+//                        intent.putExtra(LostAndFoundDetailActivity2.KEY_TYPE,
+//                                wappers.get(position).getType());
+//                        intent.putExtra(LostAndFoundDetailActivity2.KEY_ID, wappers.get(position).getId());
+//                        startActivityForResult(intent, REQUEST_CODE_PUBLISH);
+//
+//                    } catch (ArrayIndexOutOfBoundsException e) {
+//                        Log.wtf(TAG, "数组越界", e);
+//                    } catch (Exception e) {
+//                        Log.wtf(TAG, e);
+//                    }
+//
+//                }
+//
+//                @Override
+//                public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+//                    return false;
+//                }
+//            });
+//
+//            searchRecyclerView.setAdapter(searchAdaptor);
+//            searchRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        }
+//        searchResult.clear();
+//        searchResult.addAll(wappers);
+//        searchAdaptor.notifyDataSetChanged();
+//        searchDialog.showResult(searchRecyclerView);
+//    }
 
     @Override
     public void showFootView() {
@@ -309,6 +313,11 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
     @Override
     public void hideNoticeRemind() {
         ivNoticeRemind.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void notifyAdapter(int position, boolean b) {
+
     }
 
     private void onLoadMore() {
@@ -371,13 +380,13 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
     }
 
     @Override
-    public void addMore(List<LostAndFoundAdaptor2.LostAndFoundWrapper> wrappers) {
-        if (refreshFlag) {
-            refreshFlag = false;
-            lostAndFounds.clear();
-        }
-        lostAndFounds.addAll(wrappers);
-        adaptor.notifyDataSetChanged();
+    public void addMore(List<LostAndFoundDTO> wrappers) {
+//        if (refreshFlag) {
+//            refreshFlag = false;
+//            lostAndFounds.clear();
+//        }
+//        lostAndFounds.addAll(wrappers);
+//        adaptor.notifyDataSetChanged();
     }
 
     @Override

@@ -537,6 +537,11 @@ public class HomeFragment2 extends BaseFragment {
     @Override
     protected void initData() {
         android.util.Log.d(TAG, "initData: " );
+//        requestData();
+    }
+
+    @Override
+    protected void initView() {
         requestData();
     }
 

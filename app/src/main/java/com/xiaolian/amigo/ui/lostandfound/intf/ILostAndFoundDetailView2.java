@@ -42,7 +42,7 @@ public interface ILostAndFoundDetailView2 extends IBaseView {
 
     void finishView();
 
-    void showFootView();
+    void showFootView(boolean isCollete);
 
     void hideFootView();
 

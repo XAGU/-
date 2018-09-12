@@ -36,6 +36,8 @@ public class LostAndFound implements Serializable {
     private Integer reportCount;
     private Integer viewCount;
 
+    private String nickname ;
+
     /**
      * 点赞数量
      */
@@ -52,6 +54,8 @@ public class LostAndFound implements Serializable {
      * 本人是否收藏此对象 1 已收藏 2 未收藏
      */
     private Integer collected;
+
+    private String topicName ;
 
     public Boolean getCommentEnable() {
         return commentEnable;
