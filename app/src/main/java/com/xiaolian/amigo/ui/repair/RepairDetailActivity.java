@@ -52,7 +52,6 @@ import static com.xiaolian.amigo.data.enumeration.RepairStatus.REPAIR_DONE;
 
 /**
  * 报修详情
- *
  * @author caidong
  * @date 17/9/18
  */
@@ -110,6 +109,8 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
     RepairProgressAdaptor adapter;
     RecyclerView.LayoutManager manager;
 
+    private boolean isCreate = false  ;
+
     private ArrayList<String> images = new ArrayList<>();
 
     @Override
@@ -129,12 +130,17 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
         manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rvRepairProgresses.setLayoutManager(manager);
         rvRepairProgresses.setAdapter(adapter);
-
+        isCreate = true ;
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        initData();
+
+    }
+
+    private void initData() {
         if (detailId == null) {
             //this必须为点击消息要跳转到页面的上下文。
             XGPushClickedResult clickedResult = XGPushManager.onActivityStarted(this);
@@ -191,6 +197,7 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
                 startActivity(intent);
             }
         });
+        isCreate = false ;
     }
 
     @Override
@@ -294,7 +301,10 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
         gotoEvaluationButton.setText(opers[0]);
         /////积分提示
         Integer credits = detail.getCredits();
-        if (credits != null) /*有积分时候弹出彩蛋，并且底部的按钮样式也要同步修改*/ {
+
+        //  有积分，并且是onCreate进入，并且是未评价的，并且是弹窗次数小于3才会出现弹窗
+        if (credits != null && isCreate  &&
+                EvaluateStatus.getStatus(detail.getRated()) == EvaluateStatus.EVALUATE_PENDING) /*有积分时候弹出彩蛋，并且底部的按钮样式也要同步修改*/ {
             String repairDoneText = "前往评价，获得" + credits.toString() + "积分";
             gotoEvaluationButton.setText(repairDoneText);
             presenter.showGuide(credits);

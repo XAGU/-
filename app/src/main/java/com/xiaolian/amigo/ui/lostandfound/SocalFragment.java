@@ -366,8 +366,6 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         socialNew.setAdapter(socalNewContentAdapter);
     }
 
-
-
     public void initPop() {
         // 设置布局文件
         mPopupWindow = new PopupWindow(mActivity);
