@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -66,10 +64,11 @@
                             android:id="@+id/v_more_hold_1"
                             android:layout_toStartOf="@id/iv_three_dot2"
                             android:layout_centerVertical="true"
-                            android:src="@drawable/uncollege"
+                            android:background="@drawable/uncollege"
                             android:layout_marginEnd="10dp"
                             android:layout_width="23dp"
-                            android:layout_height="23dp"/>
+                            android:layout_height="23dp"
+                            android:visibility="gone"/>
                     </RelativeLayout>
                 </LinearLayout>
 
@@ -118,10 +117,11 @@
                             android:id="@+id/v_more_hold"
                             android:layout_toStartOf="@id/iv_three_dot"
                             android:layout_centerVertical="true"
-                            android:src="@drawable/uncollege"
+                            android:background="@drawable/uncollege"
                             android:layout_marginEnd="10dp"
                             android:layout_width="23dp"
-                            android:layout_height="23dp"/>
+                            android:layout_height="23dp"
+                            android:visibility="gone"/>
 
                         <View
                             android:id="@+id/view_line"

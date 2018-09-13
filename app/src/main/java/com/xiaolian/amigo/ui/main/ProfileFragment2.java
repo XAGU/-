@@ -230,7 +230,8 @@ public class ProfileFragment2 extends BaseFragment {
 
     @Override
     protected void initView() {
-        if (presenter.isLogin()) {
+        if (presenter == null) return ;
+        if ( presenter.isLogin()) {
             User user = presenter.getUserInfo();
             setAvatar(user.getPictureUrl());
             tvNickName.setText(user.getNickName());

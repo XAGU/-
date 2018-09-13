@@ -119,6 +119,23 @@ public class TimeUtils {
     }
 
 
+    public static String orderTimestampFormatSocial(long timeStamp) {
+        String result = "";
+        long curTime = System.currentTimeMillis() / (long) 1000;
+        long  toDayZero = getStartTimeOfDay(System.currentTimeMillis() ,"") / 1000;
+//        long time = curTime - timeStamp / 1000;
+        long time = timeStamp / 1000  - toDayZero ;
+        if (time >= 0 ) {
+            result += "今天";
+        } else if (time < 0 && Math.abs(time) < 3600 * 24) {
+            result += "昨天";
+        } else  {
+            result += millis2String(timeStamp, MY_DATE_MONTH) + " ";
+        }
+        return result + millis2String(timeStamp, MY_TIME_FORMAT);
+    }
+
+
     //获取当天（按当前传入的时区）00:00:00所对应时刻的long型值
     public static long getStartTimeOfDay(long now, String timeZone) {
         String tz = TextUtils.isEmpty(timeZone) ? "GMT+8" : timeZone;

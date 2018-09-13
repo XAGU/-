@@ -151,6 +151,8 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
     }
 
     public void init(){
+        if (presenter == null  || vMoreHold == null
+                || vMoreHold1 == null) return ;
         if (presenter.isCommentEnable()) {
             vMoreHold.setVisibility(View.VISIBLE);
             vMoreHold1.setVisibility(View.VISIBLE);
@@ -247,6 +249,7 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
 
     @Override
     public void onRefresh() {
+        init();
         if (content == null) {
             presenter.getDetail(getIntent().getLongExtra(KEY_ID, -1));
         } else {
@@ -298,6 +301,12 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
 
     @Override
     public void render(LostAndFound lostAndFound) {
+        if (presenter == null ) return ;
+        if (presenter.isCommentEnable()){
+            showComment();
+        }else{
+            hideComment();
+        }
         if (content == null) {
             content = new LostAndFoundDetailAdapter.LostAndFoundDetailWrapper(lostAndFound);
             try {
@@ -319,7 +328,9 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
             content.setViewCount(lostAndFound.getViewCount());
             content.setLikeCount(lostAndFound.getLikeCount());
         }
-        presenter.getComments();
+        if (presenter.isCommentEnable()) {
+            presenter.getComments();
+        }
     }
 
 
@@ -539,6 +550,16 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
 //            recyclerView.postDelayed(() -> adapter.notifyItemChanged(position), 300);
 //        } else {
 //        }
+    }
+
+    @Override
+    public void showComment() {
+        if (llFooter != null) llFooter.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideComment() {
+        if (llFooter != null) llFooter.setVisibility(View.GONE);
     }
 
     @Override

@@ -89,8 +89,6 @@ public class SocalTagsAdapter extends RecyclerView.Adapter<SocalTagsAdapter.Item
         holder.img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context ,"" + position ,Toast.LENGTH_SHORT).show();
-
                 if (onItemClickListener != null && position < list.size()) {
                     onItemClickListener.click(position);
                     scollToPosition(position);

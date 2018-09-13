@@ -76,6 +76,7 @@ public class LostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView2>
 
                     @Override
                     public void onReady(ApiResult<LostAndFoundDTO> result) {
+                        getMvpView().setRefreshComplete();
                         if (null == result.getError()) {
                             if (result.getData().getCommentEnable() != null
                                     && result.getData().getCommentEnable()) {
@@ -116,10 +117,19 @@ public class LostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView2>
                     @Override
                     public void onReady(ApiResult<LostAndFoundDTO> result) {
                         if (null == result.getError()) {
+                            if (result.getData().getCommentEnable() != null
+                                    && result.getData().getCommentEnable()) {
+                                commentEnable = true;
+                                getMvpView().showFootView(ObjectsCompat.equals(result.getData().getCollected(), 1));
+                            } else {
+                                commentEnable = false;
+                                getMvpView().hideFootView();
+                            }
                             lostAndFound = result.getData().transform();
+                            preViewCount = lostAndFound.getViewCount();
+                            preReplyCount = lostAndFound.getCommentsCount();
                             getMvpView().post(() ->
-                                    getMvpView().render(result.getData().transform())
-                            );
+                                    getMvpView().render(result.getData().transform()));
                         } else {
                             getMvpView().onError(result.getError().getDisplayMessage());
                         }
@@ -387,6 +397,4 @@ public class LostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView2>
                 });
     }
 
-    private void fetchComment(Long id) {
-    }
 }

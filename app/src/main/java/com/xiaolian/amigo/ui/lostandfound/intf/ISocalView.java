@@ -24,4 +24,14 @@ public interface ISocalView extends IBaseView {
     void showNoticeRemind(int num);
 
     void hideNoticeRemind();
+
+    /**
+     * 没有开放评论时，没有评论功能
+     */
+    void hideCommentView();
+
+    /**
+     * 显示评论功能
+     */
+    void showCommentView();
 }

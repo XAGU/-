@@ -21,4 +21,6 @@ public interface ISocalPresenter <V extends ISocalView> extends IBasePresenter<V
     int getNoticeCount();
 
     void fetchNoticeCount();
+
+
 }

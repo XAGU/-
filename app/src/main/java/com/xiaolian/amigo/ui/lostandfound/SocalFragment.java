@@ -204,9 +204,6 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         inputManager.showSoftInput(editText, 0);
     }
 
-
-
-
     @OnEditorAction(R.id.search_txt)
     boolean search(EditText v, int actionId, KeyEvent event) {
         // 判断如果用户输入的是搜索键
@@ -255,6 +252,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
             @Override
             public void click(int poisition) {
                 if (poisition == 0) {
+                    refreshLayout.autoRefresh();
                     presenter.getLostList("", 1, "", 0);
                 } else {
                     topicId = mSocialTagDatas.get(poisition).getTopicId();
@@ -269,11 +267,9 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     }
 
     private void initScreen() {
-        WindowManager windowManager = (WindowManager) mActivity.getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        windowManager.getDefaultDisplay().getMetrics(displayMetrics);
-        screentHeight = displayMetrics.heightPixels;
-        screenWidth = displayMetrics.widthPixels;
+
+        screentHeight = ScreenUtils.getScreenHeight(mActivity);
+        screenWidth = ScreenUtils.getScreenWidth(mActivity);
     }
 
     private void initContentRecycler() {
@@ -314,6 +310,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
 
     private void initSocialContentAdapter() {
+
         mDatas = new ArrayList<>();
         socalContentAdapter = new SocalContentAdapter(mActivity, R.layout.item_socal, mDatas, new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
@@ -401,6 +398,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     }
 
 
+
     @OnClick(R.id.more)
     public void showPop() {
         if (mPopupWindow == null) return;
@@ -462,6 +460,9 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         if (data == null || data.getTopicList() == null || data.getTopicList().size() == 0) return;
         if (this.mSocialTagDatas != null && this.mSocialTagDatas.size() > 0) {
             this.mSocialTagDatas.clear();
+        }
+        if (mSocialTagDatas.size() == 0) {
+            this.mSocialTagDatas.add(new BbsTopicListTradeRespDTO.TopicListBean());
         }
         this.mSocialTagDatas.addAll(data.getTopicList());
         adapter.notifyDataSetChanged();
@@ -555,4 +556,36 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
             circle.setVisibility(View.GONE);
         }
     }
+
+    @Override
+    public void hideCommentView() {
+        if (ivRemaind != null){
+            ivRemaind.setVisibility(View.GONE);
+        }
+
+        if (rlNotice != null){
+            rlNotice.setVisibility(View.GONE);
+        }
+
+        if (collection != null){
+            collection.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void showCommentView() {
+        if (ivRemaind != null){
+            ivRemaind.setVisibility(View.VISIBLE);
+        }
+
+        if (rlNotice != null){
+            rlNotice.setVisibility(View.VISIBLE);
+        }
+
+        if (collection != null){
+            collection.setVisibility(View.VISIBLE);
+        }
+    }
+
+
 }

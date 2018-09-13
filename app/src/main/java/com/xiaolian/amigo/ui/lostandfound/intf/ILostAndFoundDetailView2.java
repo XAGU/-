@@ -51,4 +51,8 @@ public interface ILostAndFoundDetailView2 extends IBaseView {
     void unCollectSuccess();
 
     void notifyAdapter(int position, boolean delay);
+
+    void showComment();
+
+    void hideComment();
 }

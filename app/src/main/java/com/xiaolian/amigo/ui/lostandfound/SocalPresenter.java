@@ -52,7 +52,14 @@ public class SocalPresenter <V extends ISocalView> extends BasePresenter<V>
 
                 }else{
                     getMvpView().onError(result.getError().getDisplayMessage());
+                    getMvpView().onErrorView();
                 }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                getMvpView().onErrorView();
             }
         });
     }
@@ -86,6 +93,12 @@ public class SocalPresenter <V extends ISocalView> extends BasePresenter<V>
             public void onReady(ApiResult<QueryLostAndFoundListRespDTO> result) {
                 getMvpView().setReferComplete();
                 if (result.getError() == null){
+                    commentEnable  = result.getData().getCommentEnable();
+                    if (commentEnable){
+                        getMvpView().showCommentView();
+                    }else{
+                        getMvpView().hideCommentView();
+                    }
                     if (page == 1) {
                         if (result.getData().getPosts() == null && result.getData().getHotPosts()== null ||( result.getData().getPosts().size() == 0 &&
                                 result.getData().getHotPosts().size() == 0)){
@@ -108,6 +121,7 @@ public class SocalPresenter <V extends ISocalView> extends BasePresenter<V>
                 super.onError(e);
                 getMvpView().setReferComplete();
                 getMvpView().reducePage();
+                getMvpView().onErrorView();
             }
         });
 
@@ -118,8 +132,8 @@ public class SocalPresenter <V extends ISocalView> extends BasePresenter<V>
         reqDTO.setItemId(id);
         // 是否是点赞，1 点赞 2 取消点赞
         reqDTO.setLike(like ? 1 : 2);
-        // 被点赞/取消点赞的类型，1 失物招领 2 评论
-        reqDTO.setType(comment ? 2 : 1);
+        // 被点赞/取消点赞的类型，1 联子 2 评论 3 回复
+        reqDTO.setType(1);
         addObserver(lostAndFoundDataManager.like(reqDTO),
                 new NetworkObserver<ApiResult<CommonRespDTO>>(false) {
 

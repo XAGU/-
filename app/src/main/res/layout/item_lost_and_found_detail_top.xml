@@ -42,10 +42,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
-                <ImageView
+                <TextView
                     tools:visibility="visible"
                     android:id="@+id/iv_owner"
-                    android:visibility="visible"
+                    android:background="@drawable/tag_radius_2_stroke"
+                    tools:text="联主"
+                    android:paddingStart="2dp"
+                    android:paddingRight="2dp"
+                    android:textSize="10sp"
+                    android:textColor="@color/colorDark9"
                     android:layout_marginStart="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -67,6 +72,7 @@
                 android:paddingStart="7dp"
                 android:paddingEnd="7dp"
                 android:paddingTop="4dp"
+                android:paddingBottom="4dp"
                 android:paddingRight="4dp"
                 android:id="@+id/tag"
                 android:text="互助"
@@ -102,7 +108,7 @@
     <LinearLayout
         android:id="@+id/ll_images"
         android:layout_marginBottom="16dp"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         tools:visibility="visible"
@@ -111,8 +117,7 @@
 
         <com.xiaolian.amigo.ui.widget.SquareImageView
             android:id="@+id/iv_first"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:background="#ddd"
@@ -122,8 +127,7 @@
         <!--android:scaleType="fitXY"-->
         <com.xiaolian.amigo.ui.widget.SquareImageView
             android:id="@+id/iv_second"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"
@@ -133,8 +137,7 @@
 
         <com.xiaolian.amigo.ui.widget.SquareImageView
             android:id="@+id/iv_third"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"
@@ -168,10 +171,13 @@
             android:id="@+id/iv_like"
             android:src="@drawable/ic_unlike"
             android:layout_width="wrap_content"
+            android:scaleType="fitCenter"
+            android:paddingRight="5dp"
+            android:paddingLeft="10dp"
             android:layout_height="wrap_content" />
 
         <TextView
-            android:layout_marginStart="5dp"
+
             android:id="@+id/tv_like_count"
             android:gravity="end"
             tools:text="250"
