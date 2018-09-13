@@ -1,8 +1,11 @@
 package com.xiaolian.amigo.ui.lostandfound.intf;
 
 import com.xiaolian.amigo.data.network.model.lostandfound.BbsTopicListTradeRespDTO;
+import com.xiaolian.amigo.data.network.model.lostandfound.LostAndFoundDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.QueryLostAndFoundListRespDTO;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
+
+import java.util.List;
 
 public interface ISocalView extends IBaseView {
     void referTopic(BbsTopicListTradeRespDTO data);
@@ -34,4 +37,8 @@ public interface ISocalView extends IBaseView {
      * 显示评论功能
      */
     void showCommentView();
+
+    void showSearchResult(List<LostAndFoundDTO> posts);
+
+    void showNoSearchResult(String selectKey);
 }

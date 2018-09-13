@@ -15,6 +15,8 @@ import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.ISocalPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.ISocalView;
 
+import org.w3c.dom.Text;
+
 import javax.inject.Inject;
 
 public class SocalPresenter <V extends ISocalView> extends BasePresenter<V>
@@ -99,16 +101,25 @@ public class SocalPresenter <V extends ISocalView> extends BasePresenter<V>
                     }else{
                         getMvpView().hideCommentView();
                     }
-                    if (page == 1) {
-                        if (result.getData().getPosts() == null && result.getData().getHotPosts()== null ||( result.getData().getPosts().size() == 0 &&
-                                result.getData().getHotPosts().size() == 0)){
-                            getMvpView().onEmpty();
-                        }else {
-                            getMvpView().referTopicList(result.getData());
+
+                    if (!TextUtils.isEmpty(selectKey)) {
+                        if (result.getData().getPosts() == null || result.getData().getPosts().size() == 0) {
+                            getMvpView().showNoSearchResult(selectKey);
+                        } else {
+                            getMvpView().showSearchResult(result.getData().getPosts());
                         }
                     }else{
-                        getMvpView().loadMore(result.getData());
-                    }
+                            if (page == 1) {
+                                if (result.getData().getPosts() == null && result.getData().getHotPosts() == null || (result.getData().getPosts().size() == 0 &&
+                                        result.getData().getHotPosts().size() == 0)) {
+                                    getMvpView().onEmpty();
+                                } else {
+                                    getMvpView().referTopicList(result.getData());
+                                }
+                            } else {
+                                getMvpView().loadMore(result.getData());
+                            }
+                        }
                 }else{
                     getMvpView().reducePage();
                     getMvpView().onError(result.getError().getDisplayMessage());

@@ -41,7 +41,9 @@ import com.xiaolian.amigo.ui.lostandfound.adapter.SocalContentAdapter;
 import com.xiaolian.amigo.ui.lostandfound.adapter.SocalTagsAdapter;
 import com.xiaolian.amigo.ui.lostandfound.intf.ISocalPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.ISocalView;
+import com.xiaolian.amigo.ui.widget.SearchDialog2;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
+import com.xiaolian.amigo.ui.widget.dialog.SearchDialog;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutFooter;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutHeader;
 import com.xiaolian.amigo.util.ScreenUtils;
@@ -137,6 +139,8 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     @Inject
     ISocalPresenter<ISocalView> presenter;
 
+    private SearchDialog2 searchDialog;
+
     private int page = 1;
     private int size = 10;
 
@@ -145,6 +149,12 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     private String slectkey;
 
     private String hotPosIds;
+
+    private RecyclerView searchRecyclerView ;
+
+    private SocalContentAdapter searchAdaptor ;
+
+    private  List<LostAndFoundDTO> searchData ;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -186,36 +196,37 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
     @OnClick(R.id.search)
     public void showSearchRl() {
-        socialNormalRl.setVisibility(View.GONE);
-        searchRl.setVisibility(View.VISIBLE);
-        showSoftInputFromWindow(mActivity, searchTxt);
+//        socialNormalRl.setVisibility(View.GONE);
+//        searchRl.setVisibility(View.VISIBLE);
+//        showSoftInputFromWindow(mActivity, searchTxt);
+        search();
     }
 
 
-    /**
-     * EditText获取焦点并显示软键盘
-     */
-    public static void showSoftInputFromWindow(Activity activity, EditText editText) {
-        editText.setFocusable(true);
-        editText.setFocusableInTouchMode(true);
-        editText.requestFocus();
-        InputMethodManager inputManager =
-                (InputMethodManager) editText.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputManager.showSoftInput(editText, 0);
-    }
+//    /**
+//     * EditText获取焦点并显示软键盘
+//     */
+//    public static void showSoftInputFromWindow(Activity activity, EditText editText) {
+//        editText.setFocusable(true);
+//        editText.setFocusableInTouchMode(true);
+//        editText.requestFocus();
+//        InputMethodManager inputManager =
+//                (InputMethodManager) editText.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+//        inputManager.showSoftInput(editText, 0);
+//    }
 
-    @OnEditorAction(R.id.search_txt)
-    boolean search(EditText v, int actionId, KeyEvent event) {
-        // 判断如果用户输入的是搜索键
-        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-//            this.dismiss();
-            InputMethodManager imm = (InputMethodManager) mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-            presenter.getLostList("", 1, v.getText().toString(), 0);
-            return true;
-        }
-        return false;
-    }
+//    @OnEditorAction(R.id.search_txt)
+//    boolean search(EditText v, int actionId, KeyEvent event) {
+//        // 判断如果用户输入的是搜索键
+//        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+////            this.dismiss();
+//            InputMethodManager imm = (InputMethodManager) mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+//            imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+//            presenter.getLostList("", 1, v.getText().toString(), 0);
+//            return true;
+//        }
+//        return false;
+//    }
 
 
     @Override
@@ -270,6 +281,23 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
         screentHeight = ScreenUtils.getScreenHeight(mActivity);
         screenWidth = ScreenUtils.getScreenWidth(mActivity);
+    }
+
+    void search() {
+        if (searchDialog == null) {
+            searchDialog = new SearchDialog2(mActivity);
+            searchDialog.setSearchListener(searchStr -> {
+                presenter.getLostList("", 1, searchStr, 0);
+            });
+            searchDialog.setCanceledOnTouchOutside(true);
+            searchDialog.setCancelable(true);
+            searchDialog.setOnDismissListener(dialog -> {
+                searchData.clear();
+//                ablActionbar.setExpanded(true);
+            });
+        }
+//        ablActionbar.setExpanded(false);
+        searchDialog.show();
     }
 
     private void initContentRecycler() {
@@ -429,6 +457,50 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         unbinder.unbind();
     }
 
+
+        @Override
+    public void showSearchResult(List<LostAndFoundDTO>  wappers) {
+        if (searchData == null) searchData = new ArrayList<>();
+        if (searchRecyclerView == null) {
+            searchRecyclerView = new RecyclerView(mActivity);
+            searchAdaptor = new SocalContentAdapter(mActivity, R.layout.item_socal, searchData, new MultiItemTypeAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                    Intent intent = new Intent(mActivity, LostAndFoundDetailActivity2.class);
+                    intent.putExtra(KEY_ID, mDatas.get(position).getId());
+                    mActivity.startActivity(intent);
+                }
+
+                @Override
+                public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                    return false;
+                }
+            }, new LostAndFoundDetailContentDelegate.OnLikeClickListener() {
+                @Override
+                public void onLikeClick(int position, long id, boolean like) {
+                    if (like) {
+                        presenter.unLikeComment(position, id);
+                    } else {
+                        presenter.likeComment(position, id);
+                    }
+                }
+            });
+            socialRecy.setLayoutManager(new LinearLayoutManager(mActivity));
+            socialRecy.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(mActivity, 21)));
+            socialRecy.setAdapter(socalContentAdapter);
+        }else {
+
+            searchData.clear();
+            searchData.addAll(wappers);
+            searchAdaptor.notifyDataSetChanged();
+            searchDialog.showResult(searchRecyclerView);
+        }
+    }
+
+    @Override
+    public void showNoSearchResult(String selectKey) {
+        searchDialog.showNoResult(selectKey);
+    }
 
     @Override
     public void onClick(View v) {
