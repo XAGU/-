@@ -15,6 +15,7 @@ import com.xiaolian.amigo.data.network.model.file.OssModel;
 import com.xiaolian.amigo.data.network.model.login.EntireUserDTO;
 import com.xiaolian.amigo.data.network.model.login.VerificationCodeCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.login.VerificationCodeGetReqDTO;
+import com.xiaolian.amigo.data.network.model.lostandfound.NoticeCountDTO;
 import com.xiaolian.amigo.data.network.model.residence.QueryResidenceListReqDTO;
 import com.xiaolian.amigo.data.network.model.residence.ResidenceListRespDTO;
 import com.xiaolian.amigo.data.network.model.school.QueryBriefSchoolListRespDTO;
@@ -217,6 +218,11 @@ public interface IUserDataManager {
      */
     Observable<ApiResult<BooleanRespDTO>> updateNormalBathroom(@Body SimpleReqDTO dto);
 
+
+    /**
+     * 通知数量
+     */
+    Observable<ApiResult<NoticeCountDTO>> noticeCount();
 
 
     void saveDeviceCategory(List<DeviceCategoryBO> devices);

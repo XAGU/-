@@ -165,4 +165,7 @@ public interface IMainView extends IBaseView {
     void currentOrder(CurrentBathOrderRespDTO dto);
 
 
+    void showNoticeRemind();
+
+    void hideNoticeRemind();
 }

@@ -27,6 +27,7 @@ import com.xiaolian.amigo.data.network.model.file.OssModel;
 import com.xiaolian.amigo.data.network.model.login.EntireUserDTO;
 import com.xiaolian.amigo.data.network.model.login.VerificationCodeCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.login.VerificationCodeGetReqDTO;
+import com.xiaolian.amigo.data.network.model.lostandfound.NoticeCountDTO;
 import com.xiaolian.amigo.data.network.model.residence.QueryResidenceListReqDTO;
 import com.xiaolian.amigo.data.network.model.residence.ResidenceListRespDTO;
 import com.xiaolian.amigo.data.network.model.school.QueryBriefSchoolListRespDTO;
@@ -243,6 +244,11 @@ public class UserDataManager implements IUserDataManager {
     @Override
     public Observable<ApiResult<BooleanRespDTO>> updateNormalBathroom(SimpleReqDTO dto) {
         return userApi.updateNormalBathroom(dto);
+    }
+
+    @Override
+    public Observable<ApiResult<NoticeCountDTO>> noticeCount() {
+        return lostAndFoundApi.noticeCount();
     }
 
     @Override

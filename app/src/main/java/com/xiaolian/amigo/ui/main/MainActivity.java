@@ -358,10 +358,15 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         if (position == 1) {
             socialSelRl.setVisibility(View.VISIBLE);
             socialImage.setVisibility(View.GONE);
-            socialRed.setVisibility(View.GONE);
+            if (presenter.getNoticeCount() > 0){
+                socialRed.setVisibility(View.VISIBLE);
+            }else {
+                socialRed.setVisibility(View.GONE);
+            }
         } else {
             socialSelRl.setVisibility(View.GONE);
             socialImage.setVisibility(View.VISIBLE);
+            socialRed.setVisibility(View.GONE);
         }
 
         if (position == 2) {
@@ -516,6 +521,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             Log.d(TAG ,"onResume");
             presenter.getUser();
             presenter.getNoticeAmount();
+            presenter.noticeCount();
         }
         uploadDeviceInfo();
     }
@@ -553,10 +559,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 personalRed.setVisibility(View.VISIBLE);
             }
     }
-
-
-
-
 
     @Override
     public void showTimeValidDialog(int deviceType, DeviceCheckRespDTO data) {
@@ -1033,6 +1035,16 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @Override
     public void currentOrder(CurrentBathOrderRespDTO dto) {
         EventBus.getDefault().post(dto);
+    }
+
+    @Override
+    public void showNoticeRemind() {
+        if (lastFragment  != 1 ) socialRed.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideNoticeRemind() {
+        socialRed.setVisibility(View.GONE);
     }
 
 

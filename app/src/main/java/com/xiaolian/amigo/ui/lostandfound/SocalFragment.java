@@ -401,8 +401,9 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         if (mPopupWindow == null) return;
         if (popView == null) return;
         // 相对于 + 号正下面，同时可以设置偏移量
-        mPopupWindow.showAtLocation(rootView, Gravity.NO_GRAVITY, (screenWidth - ScreenUtils.dpToPxInt(mActivity, 117)), ScreenUtils.dpToPxInt(mActivity, 75));
         showNoticeNumRemind(presenter.getNoticeCount());
+        mPopupWindow.showAtLocation(rootView, Gravity.NO_GRAVITY, (screenWidth - ScreenUtils.dpToPxInt(mActivity, 117)), ScreenUtils.dpToPxInt(mActivity, 75));
+
 
         // 设置pop关闭监听，用于改变背景透明度
     }
@@ -415,8 +416,8 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     public void showNoticeNumRemind(int num) {
         if (circle == null) return;
         if (num > 0) {
-            circle.setText(num);
-            circle.setVisibility(View.GONE);
+            circle.setText(num+"");
+            circle.setVisibility(View.VISIBLE);
         } else {
             circle.setVisibility(View.GONE);
         }
@@ -546,11 +547,14 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
     @Override
     public void showNoticeRemind(int num) {
-        if (circle != null) {
-            circle.setVisibility(View.VISIBLE);
-            circle.setText(num + "");
-        }
         ivRemaind.setVisibility(View.VISIBLE);
+        if (circle != null) {
+            if (num > 0) {
+                circle.setVisibility(View.VISIBLE);
+                circle.setText(num + "");
+
+            }
+        }
     }
 
     @Override
@@ -563,12 +567,12 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
     @Override
     public void hideCommentView() {
-        if (ivRemaind != null) {
-            ivRemaind.setVisibility(View.GONE);
-        }
-
         if (rlNotice != null) {
             rlNotice.setVisibility(View.GONE);
+        }
+
+        if ( release!= null) {
+            release.setVisibility(View.GONE);
         }
 
         if (collection != null) {
@@ -578,12 +582,12 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
     @Override
     public void showCommentView() {
-        if (ivRemaind != null) {
-            ivRemaind.setVisibility(View.VISIBLE);
-        }
-
         if (rlNotice != null) {
             rlNotice.setVisibility(View.VISIBLE);
+        }
+
+        if (release != null) {
+            release.setVisibility(View.VISIBLE);
         }
 
         if (collection != null) {

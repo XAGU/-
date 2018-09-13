@@ -14,6 +14,7 @@ import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.login.EntireUserDTO;
+import com.xiaolian.amigo.data.network.model.lostandfound.NoticeCountDTO;
 import com.xiaolian.amigo.data.network.model.notify.ReadNotifyReqDTO;
 import com.xiaolian.amigo.data.network.model.school.QuerySchoolBizListRespDTO;
 import com.xiaolian.amigo.data.network.model.system.BannerDTO;
@@ -52,7 +53,7 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
     private Integer guideTime;
     private LogInterceptor interceptor;
 
-
+    int noticeCount  ;
     @Inject
     MainPresenter(IMainDataManager mainDataManager,IUserDataManager userDataManager ,LogInterceptor interceptor) {
         this.mainDataManager = mainDataManager;
@@ -476,6 +477,32 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
                 }
             }
         });
+    }
+
+
+    @Override
+    public int getNoticeCount() {
+        return noticeCount;
+    }
+
+
+    @Override
+    public void noticeCount() {
+        addObserver(userDataManager.noticeCount(),
+                new NetworkObserver<ApiResult<NoticeCountDTO>>(false) {
+
+                    @Override
+                    public void onReady(ApiResult<NoticeCountDTO> result) {
+                        if (null == result.getError()) {
+                            noticeCount =  result.getData().getNoticeCount();
+                            if (result.getData().getNoticeCount() != 0) {
+                                getMvpView().showNoticeRemind();
+                            } else {
+                                getMvpView().hideNoticeRemind();
+                            }
+                        }
+                    }
+                });
     }
 
     private boolean isDeviceInfoUploaded(UploadUserDeviceInfoReqDTO newReq,

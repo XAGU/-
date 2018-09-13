@@ -52,12 +52,15 @@
 
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="6dp"
+            android:layout_height="6dp"
             android:background="@drawable/red_soild_circle"
             android:id="@+id/iv_remaind"
-            android:visibility="gone"
-            android:layout_alignRight="@id/more"/>
+            android:visibility="visible"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="16dp"
+            />
     </RelativeLayout>
         
         

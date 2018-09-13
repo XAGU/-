@@ -105,8 +105,6 @@ public class ProfileFragment2 extends BaseFragment {
 
     private String avatarUrl;  //  图片url
 
-    //  是否点击通知
-    private boolean clickNotice = false ;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -159,7 +157,6 @@ public class ProfileFragment2 extends BaseFragment {
 
     @OnClick(R.id.notice)
     void gotoNoticeList() {
-        clickNotice = true ;
         if (presenter.isLogin()) {
             startActivity(new Intent(mActivity, NoticeListActivity.class));
         } else {
@@ -203,7 +200,7 @@ public class ProfileFragment2 extends BaseFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void noticeEvent(NoticeEvent event) {
         if (noticeRemind == null) return ;
-        if (event.isShowNotice && !clickNotice) {
+        if (event.isShowNotice) {
             noticeRemind.setVisibility(View.VISIBLE);
         } else {
             noticeRemind.setVisibility(View.GONE);
