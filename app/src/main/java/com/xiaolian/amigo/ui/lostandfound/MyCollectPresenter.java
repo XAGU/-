@@ -50,6 +50,7 @@ public class MyCollectPresenter<V extends IMyCollectView> extends BasePresenter<
                         if (null == result.getError()) {
                             if (null != result.getData().getPosts()) {
                                 List<LostAndFoundDTO> wrappers = new ArrayList<>();
+                                wrappers.addAll(result.getData().getPosts());
                                 if (wrappers.isEmpty() && page == Constant.PAGE_START_NUM) {
                                     getMvpView().showEmptyView();
                                     return;

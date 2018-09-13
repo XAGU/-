@@ -323,9 +323,6 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             return;
         }
 
-
-
-
         // 扫描macAddress
         Log.i(TAG, "开始扫描macAddress");
         bleDataManager.scan(scanType, new BluetoothScanResponse() {

@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.main;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,8 +10,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
-import android.view.animation.LayoutAnimationController;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -21,11 +21,12 @@ import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.ui.base.BaseFragment;
 import com.xiaolian.amigo.ui.bonus.BonusActivity;
 import com.xiaolian.amigo.ui.credits.CreditsActivity;
-import com.xiaolian.amigo.ui.favorite.FavoriteActivity;
+import com.xiaolian.amigo.ui.login.LoginActivity;
 import com.xiaolian.amigo.ui.main.adaptor.ProfileAdaptor;
 import com.xiaolian.amigo.ui.main.intf.IMainPresenter;
 import com.xiaolian.amigo.ui.main.intf.IMainView;
 import com.xiaolian.amigo.ui.more.MoreActivity;
+import com.xiaolian.amigo.ui.notice.NoticeListActivity;
 import com.xiaolian.amigo.ui.repair.RepairNavActivity;
 import com.xiaolian.amigo.ui.user.EditProfileActivity;
 import com.xiaolian.amigo.ui.wallet.WalletActivity;
@@ -43,6 +44,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import de.hdodenhof.circleimageview.CircleImageView;
 import lombok.Data;
@@ -67,7 +69,7 @@ public class ProfileFragment2 extends BaseFragment {
             add(wallet);
 //            add(new ProfileAdaptor.Item(R.drawable.profile_order, "消费记录", OrderActivity.class));
             add(bonus);
-            add(new ProfileAdaptor.Item(R.drawable.profile_favorite, "我收藏的设备", FavoriteActivity.class));
+//            add(new ProfileAdaptor.Item(R.drawable.profile_favorite, "我收藏的设备", FavoriteActivity.class));
             add(repair);
             add(new ProfileAdaptor.Item(R.drawable.profile_more, "更多", MoreActivity.class));
         }
@@ -76,6 +78,8 @@ public class ProfileFragment2 extends BaseFragment {
     TextView tvNickName;
     @BindView(R.id.tv_schoolName)
     TextView tvSchoolName;
+    @BindView(R.id.notice_remind)
+    ImageView noticeRemind;
 
     public ProfileFragment2() {
     }
@@ -101,7 +105,8 @@ public class ProfileFragment2 extends BaseFragment {
 
     private String avatarUrl;  //  图片url
 
-
+    //  是否点击通知
+    private boolean clickNotice = false ;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -113,7 +118,7 @@ public class ProfileFragment2 extends BaseFragment {
 
 
     public void setAvatar(String pictureUrl) {
-        if (ivAvatar == null) return ;
+        if (ivAvatar == null) return;
         if (!TextUtils.isEmpty(pictureUrl)) {
             avatarUrl = pictureUrl;
             Glide.with(this).load(Constant.IMAGE_PREFIX + pictureUrl)
@@ -149,13 +154,62 @@ public class ProfileFragment2 extends BaseFragment {
             }
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-//        LayoutAnimationController animation = AnimationUtils
-//                .loadLayoutAnimation(getContext(), R.anim.layout_animation_profile_slide_left_to_right);
-//        recyclerView.setLayoutAnimation(animation);
         recyclerView.setAdapter(adaptor);
     }
 
-    // TODO: 9/11/18 从主页传过来的数据
+    @OnClick(R.id.notice)
+    void gotoNoticeList() {
+        clickNotice = true ;
+        if (presenter.isLogin()) {
+            startActivity(new Intent(mActivity, NoticeListActivity.class));
+        } else {
+            gotoLoginView();
+        }
+    }
+
+    private boolean checkLogin() {
+        if (TextUtils.isEmpty(presenter.getToken())) {
+            redirectToLogin();
+            return false;
+        }
+        return true;
+    }
+
+
+    /**
+     * 点击昵称 跳转到编辑个人信息页面
+     */
+    @OnClick(R.id.ll_user_info)
+    void onUserInfoClick() {
+        if (checkLogin()) {
+            startActivity(mActivity, EditProfileActivity.class);
+        }
+    }
+
+    /**
+     * 点击头像 跳转到编辑个人信息页面
+     */
+        @OnClick({R.id.iv_avatar, R.id.ll_user_info})
+    void gotoLoginView() {
+        if (!presenter.isLogin()) {
+            Intent intent = new Intent(mActivity, LoginActivity.class);
+            startActivity(intent);
+        }
+    }
+
+
+
+    @SuppressWarnings("unchecked")
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void noticeEvent(NoticeEvent event) {
+        if (noticeRemind == null) return ;
+        if (event.isShowNotice && !clickNotice) {
+            noticeRemind.setVisibility(View.VISIBLE);
+        } else {
+            noticeRemind.setVisibility(View.GONE);
+        }
+    }
+
 
     @SuppressWarnings("unchecked")
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -198,24 +252,6 @@ public class ProfileFragment2 extends BaseFragment {
 
     }
 
-    @SuppressWarnings("unchecked")
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(Event event) {
-        switch (event.getType()) {
-            case CHANGE_ANIMATION:
-//                int animationRes = (int) event.getObject();
-//                changeAnimation(animationRes);
-                break;
-            default:
-                break;
-        }
-    }
-
-    private void changeAnimation(int animationRes) {
-        LayoutAnimationController animation = AnimationUtils
-                .loadLayoutAnimation(getContext(), animationRes);
-        recyclerView.setLayoutAnimation(animation);
-    }
 
     @Override
     public void onDestroyView() {
@@ -230,16 +266,24 @@ public class ProfileFragment2 extends BaseFragment {
 
     @Override
     protected void initView() {
-        if (presenter == null) return ;
-        if ( presenter.isLogin()) {
+
+        if (presenter == null) return;
+        if (presenter.isLogin()) {
             User user = presenter.getUserInfo();
             setAvatar(user.getPictureUrl());
-            tvNickName.setText(user.getNickName());
-            tvSchoolName.setVisibility(View.GONE);
-        }else{
+            if (tvNickName != null) {
+                if (!user.getNickName().equals(tvNickName.getText().toString()))
+                    tvNickName.setText(user.getNickName());
+            }
+
+            if (tvSchoolName != null)
+                tvSchoolName.setVisibility(View.GONE);
+        } else {
             setAvatar("");
-            tvNickName.setText("登录/注册");
-            tvSchoolName.setVisibility(View.GONE);
+            if (tvNickName != null)
+                tvNickName.setText("登录/注册");
+            if (tvSchoolName != null)
+                tvSchoolName.setVisibility(View.GONE);
         }
     }
 
@@ -284,6 +328,20 @@ public class ProfileFragment2 extends BaseFragment {
     public void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
+    }
+
+    @Data
+    public static class NoticeEvent {
+        /**
+         * 是否显示红点
+         */
+        private boolean isShowNotice;
+
+        public NoticeEvent(boolean isShowNotice) {
+            this.isShowNotice = isShowNotice;
+        }
+
+
     }
 
 }

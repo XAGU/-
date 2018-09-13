@@ -18,7 +18,6 @@ import com.xiaolian.amigo.ui.login.intf.ILoginPresenter;
 import com.xiaolian.amigo.ui.login.intf.ILoginView;
 import com.xiaolian.amigo.ui.main.MainActivity;
 import com.xiaolian.amigo.util.AppUtils;
-import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.MD5Util;
 
 import javax.inject.Inject;

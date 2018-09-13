@@ -7,6 +7,7 @@ import com.xiaolian.amigo.data.network.IBathroomApi;
 import com.xiaolian.amigo.data.network.IDeviceApi;
 import com.xiaolian.amigo.data.network.IFileApi;
 import com.xiaolian.amigo.data.network.ILoginApi;
+import com.xiaolian.amigo.data.network.ILostAndFoundApi;
 import com.xiaolian.amigo.data.network.IOssApi;
 import com.xiaolian.amigo.data.network.IResidenceApi;
 import com.xiaolian.amigo.data.network.ISchoolApi;
@@ -78,6 +79,7 @@ public class UserDataManager implements IUserDataManager {
     private IOssApi ossApi;
     private IBathroomApi bathroomApi;
     private IDeviceApi deviceApi ;
+    private ILostAndFoundApi lostAndFoundApi ;
     private ISharedPreferencesHelp sharedPreferencesHelp;
 
     @Inject
@@ -89,6 +91,7 @@ public class UserDataManager implements IUserDataManager {
         loginApi = retrofit.create(ILoginApi.class);
         ossApi = retrofit.create(IOssApi.class);
         deviceApi = retrofit.create(IDeviceApi.class);
+        lostAndFoundApi = retrofit.create(ILostAndFoundApi.class);
         this.sharedPreferencesHelp = sharedPreferencesHelp;
         bathroomApi = bathroomRetrofit.create(IBathroomApi.class);
     }

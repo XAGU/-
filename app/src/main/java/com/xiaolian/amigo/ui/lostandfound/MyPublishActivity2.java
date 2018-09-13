@@ -102,7 +102,6 @@ public class MyPublishActivity2 extends LostAndFoundBaseActivity implements ILos
             });
         recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 21)));
         recyclerView.setAdapter(publicAdapter);
-
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         refreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override

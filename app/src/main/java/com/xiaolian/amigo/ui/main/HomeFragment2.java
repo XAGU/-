@@ -140,8 +140,7 @@ public class HomeFragment2 extends BaseFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View homeView = inflater.inflate(R.layout.fragment_home, container, false);
         unbinder = ButterKnife.bind(this, homeView);
-        requestData();
-        Log.d(TAG , "onCreateView");
+        initView();
         return homeView;
     }
 
@@ -209,10 +208,12 @@ public class HomeFragment2 extends BaseFragment {
         if (!isNetworkAvailable()) {
 //            onError(R.string.network_available_error_tip);
             if (presenter.isLogin()) {
-                presenter.getUser();
                 presenter.getSchoolBusiness();
                 // 设置学校
-                schoolName.setText(presenter.getUserInfo().getSchoolName());
+                if (schoolName != null) {
+                    if (!presenter.getUserInfo().getSchoolName().equals(schoolName.getText().toString()))
+                        schoolName.setText(presenter.getUserInfo().getSchoolName());
+                }
                 // 设置学校业务
                 return;
             }
@@ -226,33 +227,22 @@ public class HomeFragment2 extends BaseFragment {
             if (isServerError) {
                 initSchoolBiz();
             }
-            uploadDeviceInfo();
             // 请求通知
             presenter.getSchoolBusiness();
-            presenter.getUser();
-            schoolName.setText(presenter.getUserInfo().getSchoolName());
-            presenter.getNoticeAmount();
+            if (schoolName != null) {
+                if (!presenter.getUserInfo().getSchoolName().equals(schoolName.getText().toString()))
+                    schoolName.setText(presenter.getUserInfo().getSchoolName());
+            }
             // 设置昵称
         }
     }
 
 
-    private void uploadDeviceInfo() {
-        @SuppressLint("HardwareIds")
-        String androidId = Settings.Secure.getString(getContext().getContentResolver(),
-                Settings.Secure.ANDROID_ID);
-        String model = Build.MODEL;
-        String brand = Build.BRAND;
-        int systemVersion = Build.VERSION.SDK_INT;
-        String appVersion = AppUtils.getVersionName(mActivity);
-        if (presenter != null)
-        presenter.uploadDeviceInfo(appVersion, brand, model,
-                systemVersion, androidId);
-    }
-
     private void initSchoolBiz(){
+
         onEvent(new HomeFragment2.Event(HomeFragment2.Event.EventType.INIT_BIZ,
                 null));
+
     }
 
     @Override
@@ -261,6 +251,7 @@ public class HomeFragment2 extends BaseFragment {
     }
 
     public void onBannerEvent(List<BannerDTO> banners) {
+        if (items.size() == 0) return ;
         if (items.get(items.size() - 1).getType() == HomeAdaptor.NORMAL_TYPE ||
                 items.get(items.size() - 1).getType() == HomeAdaptor.SMALL_TYPE) {
             banner = new HomeAdaptor.ItemWrapper(HomeAdaptor.BANNER_TYPE, banners, null, null, 0, 0);
@@ -536,9 +527,8 @@ public class HomeFragment2 extends BaseFragment {
 
     @Override
     protected void initData() {
-        android.util.Log.d(TAG, "initData: " );
-//        requestData();
-    }
+
+        }
 
     @Override
     protected void initView() {

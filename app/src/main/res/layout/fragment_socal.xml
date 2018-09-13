@@ -208,6 +208,8 @@
                             android:text="最新联子"
                             android:textSize="16sp"
                             android:textStyle="bold"
+                            android:visibility="gone"
+                            android:id="@+id/new_blog"
                             android:textColor="@color/colorDark2"
                             />
 

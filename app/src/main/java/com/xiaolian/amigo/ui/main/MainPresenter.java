@@ -52,6 +52,7 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
     private Integer guideTime;
     private LogInterceptor interceptor;
 
+
     @Inject
     MainPresenter(IMainDataManager mainDataManager,IUserDataManager userDataManager ,LogInterceptor interceptor) {
         this.mainDataManager = mainDataManager;

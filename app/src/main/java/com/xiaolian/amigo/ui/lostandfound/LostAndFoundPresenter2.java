@@ -125,6 +125,7 @@ public class LostAndFoundPresenter2<V extends ILostAndFoundView2> extends BasePr
                             }
                             if (null != result.getData().getPosts()) {
                                 List<LostAndFoundDTO> wrappers = new ArrayList<>();
+                                wrappers.addAll(result.getData().getPosts());
                                 if (wrappers.isEmpty() && page == Constant.PAGE_START_NUM) {
                                     getMvpView().showEmptyView();
                                     return;

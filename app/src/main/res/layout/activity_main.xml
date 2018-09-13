@@ -6,89 +6,19 @@
     android:background="#ffffff"
     android:id="@+id/rl_main"
     android:orientation="vertical">
-    <!--<ScrollView-->
-        <!--android:scrollbars="none"-->
-        <!--android:overScrollMode="never"-->
-        <!--android:id="@+id/sv_main"-->
+
+
+    <!--<com.xiaolian.amigo.ui.widget.ViewPagerSlide-->
         <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:visibility="gone">-->
-        <!--<LinearLayout-->
-            <!--android:descendantFocusability="blocksDescendants"-->
-            <!--android:orientation="vertical"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content">-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_weight="1"-->
+        <!--android:id="@+id/vg_fragment" />-->
 
-            <!--<include-->
-                <!--android:id="@+id/ll_header"-->
-                <!--layout="@layout/activity_main_top"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:visibility="gone"/>-->
-
-            <!--<LinearLayout-->
-                <!--android:id="@+id/fm_container"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:orientation="horizontal">-->
-            <!--</LinearLayout>-->
-        <!--</LinearLayout>-->
-
-    <!--</ScrollView>-->
-    <!--<RelativeLayout-->
-        <!--android:id="@+id/rl_notice"-->
-        <!--android:visibility="visible"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_marginRight="14dp"-->
-        <!--android:layout_marginEnd="14dp"-->
-        <!--android:layout_marginBottom="20dp"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content">-->
-        <!--<ImageView-->
-            <!--android:layout_alignParentRight="true"-->
-            <!--android:layout_alignParentEnd="true"-->
-            <!--android:layout_alignParentBottom="true"-->
-            <!--android:id="@+id/iv_notice"-->
-            <!--android:src="@drawable/ic_notice"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content" />-->
-
-
-        <!--<ImageView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:src="@drawable/ic_scan"-->
-            <!--android:layout_alignParentRight="true"-->
-            <!--android:layout_above="@id/iv_notice"-->
-            <!--android:id="@+id/iv_scan"-->
-            <!--android:layout_marginBottom="3dp"/>-->
-        <!--<TextView-->
-            <!--android:id="@+id/tv_notice_count"-->
-            <!--android:visibility="visible"-->
-            <!--android:layout_alignParentRight="true"-->
-            <!--android:layout_alignParentEnd="true"-->
-            <!--android:layout_above="@id/iv_notice"-->
-            <!--android:layout_marginBottom="-18dp"-->
-            <!--android:layout_marginRight="3dp"-->
-            <!--android:textSize="10sp"-->
-            <!--android:textColor="@color/white"-->
-            <!--android:textStyle="bold"-->
-            <!--android:paddingLeft="3dp"-->
-            <!--android:paddingRight="3dp"-->
-            <!--android:paddingBottom="1dp"-->
-            <!--android:gravity="center"-->
-            <!--android:text="1111"-->
-            <!--android:background="@drawable/bg_rect_red_corner"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content" />-->
-    <!--</RelativeLayout>-->
-
-
-    <android.support.v4.view.ViewPager
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:id="@+id/vg_fragment" />
+        android:id="@+id/fragment"/>
 
     <LinearLayout
         android:layout_width="match_parent"

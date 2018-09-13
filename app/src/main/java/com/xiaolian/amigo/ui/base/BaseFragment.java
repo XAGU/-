@@ -65,6 +65,7 @@ import static android.app.Activity.RESULT_OK;
  */
 public abstract class BaseFragment extends Fragment  implements IBaseView{
 
+
     protected View mRootView;
 
     protected AppCompatActivity mActivity ;
@@ -107,21 +108,11 @@ public abstract class BaseFragment extends Fragment  implements IBaseView{
     }
 
     @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (!isCreated){
-            return ;
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden){
+            initView();
         }
-
-        if (isVisibleToUser){
-            initData();
-
-            if (getUserVisibleHint()){
-
-            }
-        }
-
-
     }
 
     protected abstract  void initData();

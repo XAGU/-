@@ -8,13 +8,11 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -77,6 +75,8 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     LinearLayout rlContent;
     @BindView(R.id.iv_remaind)
     ImageView ivRemaind;
+    @BindView(R.id.new_blog)
+    TextView newBlog;
 
     private LostAndFoundActivityComponent mActivityComponent;
 
@@ -159,21 +159,21 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         presenter.onAttach(this);
         initPop();
         initRecycler();
+        initView();
         return rootView;
     }
 
 
     @Override
     protected void initData() {
-        presenter.getTopicList();
-        presenter.getLostList(hotPosIds, page, slectkey, topicId);
-        presenter.fetchNoticeCount();
 
     }
 
     @Override
     protected void initView() {
-
+        presenter.getTopicList();
+        presenter.getLostList(hotPosIds, page, slectkey, topicId);
+        presenter.fetchNoticeCount();
     }
 
 
@@ -181,7 +181,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     public void showNormalRl() {
         socialNormalRl.setVisibility(View.VISIBLE);
         searchRl.setVisibility(View.GONE);
-        SoftInputUtils.hideSoftInputFromWindow(mActivity , searchTxt);
+        SoftInputUtils.hideSoftInputFromWindow(mActivity, searchTxt);
     }
 
     @OnClick(R.id.search)
@@ -316,7 +316,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 Intent intent = new Intent(mActivity, LostAndFoundDetailActivity2.class);
-                intent.putExtra(KEY_ID ,mDatas.get(position).getId());
+                intent.putExtra(KEY_ID, mDatas.get(position).getId());
                 mActivity.startActivity(intent);
             }
 
@@ -343,7 +343,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 Intent intent = new Intent(mActivity, LostAndFoundDetailActivity2.class);
-                intent.putExtra(KEY_ID ,mNewContents.get(position).getId());
+                intent.putExtra(KEY_ID, mNewContents.get(position).getId());
                 mActivity.startActivity(intent);
             }
 
@@ -396,7 +396,6 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     }
 
 
-
     @OnClick(R.id.more)
     public void showPop() {
         if (mPopupWindow == null) return;
@@ -409,16 +408,16 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     }
 
     public void hideNoticeNumRemind() {
-        if ( circle == null) return ;
+        if (circle == null) return;
         circle.setVisibility(View.GONE);
     }
 
     public void showNoticeNumRemind(int num) {
-        if (circle == null) return ;
+        if (circle == null) return;
         if (num > 0) {
             circle.setText(num);
             circle.setVisibility(View.GONE);
-        }else{
+        } else {
             circle.setVisibility(View.GONE);
         }
     }
@@ -468,8 +467,10 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
     @Override
     public void setReferComplete() {
-        refreshLayout.finishRefresh();
-        refreshLayout.finishLoadMore();
+        if (refreshLayout != null) {
+            refreshLayout.finishRefresh();
+            refreshLayout.finishLoadMore();
+        }
     }
 
     @Override
@@ -488,9 +489,14 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
             }
             this.mNewContents.addAll(data.getPosts());
             socalNewContentAdapter.notifyDataSetChanged();
-            rlContent.setVisibility(View.VISIBLE);
-            rlError.setVisibility(View.GONE);
-            rlEmpty.setVisibility(View.GONE);
+            if (rlContent != null && rlEmpty != null && rlEmpty != null) {
+                rlContent.setVisibility(View.VISIBLE);
+                rlError.setVisibility(View.GONE);
+                rlEmpty.setVisibility(View.GONE);
+            }
+            newBlog.setVisibility(View.VISIBLE);
+        } else {
+            newBlog.setVisibility(View.GONE);
         }
     }
 
@@ -557,30 +563,30 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
     @Override
     public void hideCommentView() {
-        if (ivRemaind != null){
+        if (ivRemaind != null) {
             ivRemaind.setVisibility(View.GONE);
         }
 
-        if (rlNotice != null){
+        if (rlNotice != null) {
             rlNotice.setVisibility(View.GONE);
         }
 
-        if (collection != null){
+        if (collection != null) {
             collection.setVisibility(View.GONE);
         }
     }
 
     @Override
     public void showCommentView() {
-        if (ivRemaind != null){
+        if (ivRemaind != null) {
             ivRemaind.setVisibility(View.VISIBLE);
         }
 
-        if (rlNotice != null){
+        if (rlNotice != null) {
             rlNotice.setVisibility(View.VISIBLE);
         }
 
-        if (collection != null){
+        if (collection != null) {
             collection.setVisibility(View.VISIBLE);
         }
     }

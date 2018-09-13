@@ -95,6 +95,7 @@
         android:background="@drawable/red_soild_circle"
         android:layout_marginTop="50dp"
         android:visibility="gone"
+        android:id="@+id/notice_remind"
         android:layout_alignRight="@id/notice"/>
     <View
         android:layout_width="match_parent"
