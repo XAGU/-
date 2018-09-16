@@ -41,4 +41,6 @@ public interface ISocalView extends IBaseView {
     void showSearchResult(List<LostAndFoundDTO> posts);
 
     void showNoSearchResult(String selectKey);
+
+    void notifyAdapter(int position, boolean b, boolean b1);
 }

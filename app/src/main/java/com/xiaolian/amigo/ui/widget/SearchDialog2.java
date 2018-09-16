@@ -48,8 +48,8 @@ public class SearchDialog2 extends Dialog implements TextWatcher {
     FrameLayout flResultContain;
     @BindView(R.id.tv_no_result_tip)
     TextView tvNoResultTip;
-    @BindView(R.id.ll_container)
-    RelativeLayout llContainer;
+//    @BindView(R.id.ll_container)
+//    RelativeLayout llContainer;
 
     private OnSearchListener listener;
 
@@ -89,8 +89,8 @@ public class SearchDialog2 extends Dialog implements TextWatcher {
 
     @Override
     public void afterTextChanged(Editable s) {
-        String input = etSearchContent.getText().toString().trim();
-//        ivClear.setVisibility(input.isEmpty() ? View.GONE : View.VISIBLE);
+//        String input = etSearchContent.getText().toString().trim();
+////        ivClear.setVisibility(input.isEmpty() ? View.GONE : View.VISIBLE);
     }
 
     @OnEditorAction(R.id.et_search_content)
@@ -116,8 +116,8 @@ public class SearchDialog2 extends Dialog implements TextWatcher {
     @Override
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
-        TransitionManager.beginDelayedTransition(llContainer, new ChangeBounds().setDuration(1000));
-        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) etSearchContent.getLayoutParams();
+//        TransitionManager.beginDelayedTransition(llContainer, new ChangeBounds().setDuration(1000));
+        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) etSearchContent.getLayoutParams();
         lp.width = LinearLayout.LayoutParams.MATCH_PARENT;
         etSearchContent.setLayoutParams(lp);
         tvCancel.setVisibility(View.VISIBLE);
@@ -130,27 +130,14 @@ public class SearchDialog2 extends Dialog implements TextWatcher {
 
     @Override
     public void dismiss() {
-        TransitionManager.beginDelayedTransition(llContainer);
-        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) etSearchContent.getLayoutParams();
+//        TransitionManager.beginDelayedTransition(llContainer);
+        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) etSearchContent.getLayoutParams();
         lp.width = LinearLayout.LayoutParams.WRAP_CONTENT;
         etSearchContent.setLayoutParams(lp);
         tvCancel.setVisibility(View.GONE);
         super.dismiss();
     }
 
-    /**
-     * 点击清除图标
-     */
-//    @OnClick({R.id.iv_clear, R.id.v_clear_holder})
-//    void clear() {
-//        etSearchContent.setText("");
-//        ivClear.setVisibility(View.GONE);
-//    }
-
-//    @OnClick(R.id.iv_back)
-//    void back() {
-//        this.dismiss();
-//    }
 
     @OnClick(R.id.tv_cancel)
     void cancelSearch() {
@@ -166,7 +153,6 @@ public class SearchDialog2 extends Dialog implements TextWatcher {
         if (flResultContain.getChildCount() > 0) {
             flResultContain.removeAllViews();
         }
-        view.setBackgroundResource(R.color.colorBackgroundGray);
         flResultContain.addView(view);
     }
 

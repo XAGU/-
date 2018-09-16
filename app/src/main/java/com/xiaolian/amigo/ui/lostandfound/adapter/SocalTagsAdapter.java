@@ -79,7 +79,7 @@ public class SocalTagsAdapter extends RecyclerView.Adapter<SocalTagsAdapter.Item
     @Override
     public void onBindViewHolder(ItemViewHolder holder, int position) {
         if (position ==0) {
-            holder.img.setBackgroundResource(R.drawable.shishi);
+            holder.img.setBackground(context.getResources().getDrawable(R.drawable.shishi));
         }else if (position < list.size() ){
             String imgUrl = list.get(position ).getIcon();
             GildeUtils.setNoErrorImage(context ,holder.img,imgUrl);
@@ -99,7 +99,7 @@ public class SocalTagsAdapter extends RecyclerView.Adapter<SocalTagsAdapter.Item
 
     @Override
     public int getItemCount() {
-        return list == null ? 0: (list.size() + 8);
+        return list == null ? 0: (list.size() + 4);
     }
 
     public void scollToPosition(int n) {

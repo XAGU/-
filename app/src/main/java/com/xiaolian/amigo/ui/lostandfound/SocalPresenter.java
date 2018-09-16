@@ -2,11 +2,13 @@ package com.xiaolian.amigo.ui.lostandfound;
 
 import android.text.TextUtils;
 
+import com.xiaolian.amigo.data.enumeration.LostAndFound;
 import com.xiaolian.amigo.data.manager.intf.ILostAndFoundDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.lostandfound.BbsTopicListTradeRespDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.CommonRespDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.LikeItemReqDTO;
+import com.xiaolian.amigo.data.network.model.lostandfound.LostAndFoundDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.NoticeCountDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.QueryLostAndFoundListReqDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.QueryLostAndFoundListRespDTO;
@@ -16,6 +18,9 @@ import com.xiaolian.amigo.ui.lostandfound.intf.ISocalPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.ISocalView;
 
 import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -151,10 +156,18 @@ public class SocalPresenter <V extends ISocalView> extends BasePresenter<V>
                     @Override
                     public void onReady(ApiResult<CommonRespDTO> result) {
                         if (null == result.getError()) {
-                            if (like) {
-                                getMvpView().notifyAdapter(position, true);
-                            } else {
-                                getMvpView().notifyAdapter(position, false);
+                            if (comment) {
+                                if (like) {
+                                    getMvpView().notifyAdapter(position, true);
+                                } else {
+                                    getMvpView().notifyAdapter(position, false);
+                                }
+                            }else{
+                               if (like){
+                                   getMvpView().notifyAdapter(position , true , true);
+                               }else{
+                                   getMvpView().notifyAdapter(position , false , true );
+                               }
                             }
                         } else {
                             getMvpView().onError(result.getError().getDisplayMessage());
@@ -165,7 +178,7 @@ public class SocalPresenter <V extends ISocalView> extends BasePresenter<V>
     }
 
     @Override
-    public void unLikeComment(int position, long id) {
+    public void unLikeComment(int position ,long id) {
         likeOrUnLikeCommentOrContent(position, id, true, false);
     }
 
@@ -173,6 +186,17 @@ public class SocalPresenter <V extends ISocalView> extends BasePresenter<V>
     public void likeComment(int position, long id) {
         likeOrUnLikeCommentOrContent(position, id, true, true);
     }
+
+    @Override
+    public void unLikeComment(int position, long id, boolean isDialog) {
+        likeOrUnLikeCommentOrContent(position, id, false, false);
+    }
+
+    @Override
+    public void likeComment(int position, long id, boolean isDialog) {
+        likeOrUnLikeCommentOrContent(position, id, false, false);
+    }
+
 
     @Override
     public boolean isCommentEnable() {
