@@ -880,6 +880,13 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 // 存储设备响应结果
                 saveDeviceResult(result, orderId);
             }
+            String prefixAgrement2 = result.substring(0, 6);
+            if (TextUtils.equals("140804", prefixAgrement2)) {
+                setStep(TradeStep.CLOSE_VALVE);
+            } else if (TextUtils.equals("140803", prefixAgrement2)) {
+                // 存储设备响应结果
+                saveDeviceResult(result, orderId);
+            }
         } catch (Exception e) {
             Log.wtf(TAG, "获取设备响应结果前缀失败");
             reportError(getStep().getStep(), ConnectErrorType.RESULT_INVALID.getType(),
@@ -1157,7 +1164,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             if (TextUtils.isEmpty(savedCloseCmd)) {
                 Log.e(TAG, "从缓存中获取关阀指令为空，获取上次设备响应重新向服务器请求关阀指令");
                 String savedDeviceResult = getDeviceResult(orderId);
-                if (TextUtils.isEmpty(savedCloseCmd)) {
+                if (TextUtils.isEmpty(savedDeviceResult)) {
                     Log.e(TAG, "从缓存中获取设备响应为空");
                     if (getMvpView() != null) {
                         getMvpView().onError(TradeError.CONNECT_ERROR_2);
