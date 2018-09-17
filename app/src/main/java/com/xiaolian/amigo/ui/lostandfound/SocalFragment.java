@@ -416,6 +416,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         if (popView == null) return;
         // 相对于 + 号正下面，同时可以设置偏移量
         showNoticeNumRemind(presenter.getNoticeCount());
+        showOrHideCommentView();
         mPopupWindow.showAtLocation(rootView, Gravity.NO_GRAVITY, (screenWidth - ScreenUtils.dpToPxInt(mActivity, 117)), ScreenUtils.dpToPxInt(mActivity, 75));
 
 
@@ -520,7 +521,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     @Override
     public void referTopic(BbsTopicListTradeRespDTO data) {
         if (adapter == null) return;
-        if (data == null || data.getTopicList() == null || data.getTopicList().size() == 0) return;
+        if (data == null || data.getTopicList() == null || data.getTopicList().size() == 0)
         if (this.mSocialTagDatas != null && this.mSocialTagDatas.size() > 0) {
             this.mSocialTagDatas.clear();
         }
@@ -645,6 +646,29 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         ivRemaind.setVisibility(View.GONE);
         if (circle != null) {
             circle.setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     * 显示或者隐藏commentView
+     */
+    public void showOrHideCommentView(){
+        if (presenter.isCommentEnable()){
+            if (release != null) {
+                release.setVisibility(View.VISIBLE);
+            }
+
+            if (collection != null) {
+                collection.setVisibility(View.VISIBLE);
+            }
+        }else{
+            if (release != null) {
+                release.setVisibility(View.GONE);
+            }
+
+            if (collection != null) {
+                collection.setVisibility(View.GONE);
+            }
         }
     }
 
