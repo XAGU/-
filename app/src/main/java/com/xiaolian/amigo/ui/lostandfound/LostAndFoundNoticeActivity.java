@@ -274,6 +274,7 @@ public class LostAndFoundNoticeActivity extends LostAndFoundBaseActivity
 
     @Override
     public void addMoreReply(List<LostAndFoundNoticeAdapter.NoticeWrapper> wrappers) {
+        showContent();
         if (refreshFlag) {
             refreshFlag = false;
             replies.clear();
@@ -284,8 +285,17 @@ public class LostAndFoundNoticeActivity extends LostAndFoundBaseActivity
         adapter.notifyDataSetChanged();
     }
 
+    /**
+     * 显示内容布局，隐藏其他布局
+     */
+    public void showContent(){
+        rlEmpty.setVisibility(View.GONE);
+        rlEmpty.setVisibility(View.GONE);
+    }
+
     @Override
     public void addMoreLike(List<LostAndFoundNoticeAdapter.NoticeWrapper> wrappers) {
+        showContent();
         if (refreshFlag) {
             refreshFlag = false;
             likes.clear();
@@ -294,6 +304,7 @@ public class LostAndFoundNoticeActivity extends LostAndFoundBaseActivity
         likes.addAll(wrappers);
         items.addAll(likes);
         adapter.notifyDataSetChanged();
+
     }
 
     @Override

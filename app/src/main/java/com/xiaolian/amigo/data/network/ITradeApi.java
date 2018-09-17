@@ -14,6 +14,8 @@ import com.xiaolian.amigo.data.network.model.trade.QrCodeGenerateRespDTO;
 import com.xiaolian.amigo.data.network.model.trade.QrCodeScanReqDTO;
 import com.xiaolian.amigo.data.network.model.trade.QrCodeScanRespDTO;
 import com.xiaolian.amigo.data.network.model.trade.WashingModeRespDTO;
+import com.xiaolian.amigo.data.network.model.trade.UpdateDeviceRateCommandReqDTO;
+import com.xiaolian.amigo.data.network.model.trade.UpdateDeviceRateCommandRespDTO;
 
 import retrofit2.http.Body;
 import retrofit2.http.POST;
@@ -38,6 +40,12 @@ public interface ITradeApi {
      */
     @POST("trade/device/command-result/process")
     Observable<ApiResult<CmdResultRespDTO>> processCmdResult(@Body CmdResultReqDTO reqDTO);
+
+    /**
+     * 请求更新设备费率
+     */
+    @POST("device/rate/send")
+    Observable<ApiResult<UpdateDeviceRateCommandRespDTO>> getUpdateDeviceRateCommand(@Body UpdateDeviceRateCommandReqDTO reqDTO);
 
     /**
      * 网络支付，创建用水订单

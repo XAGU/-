@@ -3,8 +3,6 @@ package com.xiaolian.amigo.ui.widget;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.support.transition.ChangeBounds;
-import android.support.transition.TransitionManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,6 +11,8 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -42,7 +42,7 @@ public class SearchDialog2 extends Dialog implements TextWatcher {
     EditText etSearchContent;
     @BindView(R.id.tv_cancel)
     TextView tvCancel;
-//    @BindView(R.id.iv_clear)
+    //    @BindView(R.id.iv_clear)
 //    ImageView ivClear;
     @BindView(R.id.rl_result)
     RelativeLayout rlResult;
@@ -50,6 +50,8 @@ public class SearchDialog2 extends Dialog implements TextWatcher {
     FrameLayout flResultContain;
     @BindView(R.id.tv_no_result_tip)
     TextView tvNoResultTip;
+    @BindView(R.id.search_rl)
+    RelativeLayout searchRl;
 //    @BindView(R.id.ll_container)
 //    RelativeLayout llContainer;
 
@@ -61,7 +63,6 @@ public class SearchDialog2 extends Dialog implements TextWatcher {
         super(context, R.style.Search_Dialog);
         this.context = context;
 //        setOwnerActivity((Activity)context);
-
         Window window = this.getWindow();
         window.requestFeature(Window.FEATURE_NO_TITLE);
         window.setGravity(Gravity.TOP);
@@ -78,6 +79,13 @@ public class SearchDialog2 extends Dialog implements TextWatcher {
         etSearchContent.addTextChangedListener(this);
 
     }
+
+
+    public void showSearch() {
+        Animation animation = AnimationUtils.loadAnimation(context, R.anim.dialog_search);
+        searchRl.startAnimation(animation);
+    }
+
 
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -113,6 +121,7 @@ public class SearchDialog2 extends Dialog implements TextWatcher {
     @Override
     public void show() {
         super.show();
+        showSearch();
     }
 
     @Override
@@ -134,7 +143,7 @@ public class SearchDialog2 extends Dialog implements TextWatcher {
     @Override
     public void dismiss() {
 //        TransitionManager.beginDelayedTransition(llContainer);
-        SoftInputUtils.hideSoftInputFromWindow((Activity) context,etSearchContent);
+        SoftInputUtils.hideSoftInputFromWindow((Activity) context, etSearchContent);
         RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) etSearchContent.getLayoutParams();
         lp.width = LinearLayout.LayoutParams.WRAP_CONTENT;
         etSearchContent.setLayoutParams(lp);
@@ -146,6 +155,7 @@ public class SearchDialog2 extends Dialog implements TextWatcher {
 
     @OnClick(R.id.tv_cancel)
     void cancelSearch() {
+        etSearchContent.setText("");
         this.dismiss();
     }
 

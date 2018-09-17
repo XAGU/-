@@ -45,6 +45,10 @@ public class LogInterceptor implements Interceptor {
      * 该链接不上传deviceToken
      */
     private final static String ANTI_TRADE_PREFIX = "trade/qrCode/scan";
+    /**
+     * 该链接上传deviceToken
+     */
+    private final static String UPDAT_RATE_PREFIX = "device/rate/send";
     private long lastTime = 0;
     private Request lastRequest;
     private final static long NETWORK_INTERVAL = 500;
@@ -94,8 +98,8 @@ public class LogInterceptor implements Interceptor {
             token = "";
         }
 
-        if (request.url().url().getPath().startsWith(TRADE_PREFIX)
-                && !request.url().url().getPath().contains(ANTI_TRADE_PREFIX)) {
+        if ((request.url().url().getPath().startsWith(TRADE_PREFIX)
+                && !request.url().url().getPath().contains(ANTI_TRADE_PREFIX)) || request.url().url().getPath().contains(UPDAT_RATE_PREFIX)) {
             String deviceToken = sharedPreferencesHelp.getCurrentDeviceToken();
             if (deviceToken == null) {
                 deviceToken = "";

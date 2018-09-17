@@ -187,8 +187,14 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
     @Override
     protected void initView() {
+        if (refreshLayout != null){
+            page =1 ;
+            topicId =0 ;
+            slectkey = "";
+            refreshLayout.autoRefresh();
+        }
+
         presenter.getTopicList();
-        presenter.getLostList(hotPosIds, page, slectkey, topicId);
         presenter.fetchNoticeCount();
     }
 
@@ -300,10 +306,6 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         refreshLayout.setRefreshHeader(new RefreshLayoutHeader(mActivity));
         refreshLayout.setRefreshFooter(new RefreshLayoutFooter(mActivity));
         refreshLayout.setReboundDuration(200);
-        if (autoRefresh) {
-            refreshLayout.autoRefresh(20);
-        }
-//        onRefreshContent();
     }
 
     protected void setAutoRefresh(boolean autoRefresh) {

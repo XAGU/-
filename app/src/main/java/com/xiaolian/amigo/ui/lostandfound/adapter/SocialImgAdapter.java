@@ -35,7 +35,7 @@ public class SocialImgAdapter extends CommonAdapter<String> {
         holder.getView(R.id.img).setOnClickListener(v -> {
             if (datas != null) {
                 Intent intent = new Intent(context, AlbumItemActivity.class);
-                intent.putExtra(AlbumItemActivity.EXTRA_CURRENT, 0);
+                intent.putExtra(AlbumItemActivity.EXTRA_CURRENT, position);
                 intent.putStringArrayListExtra(AlbumItemActivity.EXTRA_TYPE_LIST, (ArrayList<String>) datas);
                 context.startActivity(intent);
             }

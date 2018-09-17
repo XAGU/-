@@ -229,6 +229,7 @@ public class HomeFragment2 extends BaseFragment {
             }
             // 请求通知
             presenter.getSchoolBusiness();
+            presenter.getNoticeAmount();
             if (schoolName != null) {
                 if (!presenter.getUserInfo().getSchoolName().equals(schoolName.getText().toString()))
                     schoolName.setText(presenter.getUserInfo().getSchoolName());

@@ -863,20 +863,9 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
      */
     @OnClick(R.id.bt_pay)
     void pay(Button button) {
-        // 需要充值
-        if (needRecharge) {
-            startActivityForResult(new Intent(this, RechargeActivity.class),
-                    REQUEST_CODE_RECHARGE);
-        } else {
-            if (prepayAmount == null || prepayAmount < 0) {
-                prepayAmount = 0.0;
-            }
-            if (prepayAmount <= 0 && bonusId == null) {
-                onError("预付金额不能为0");
-                return;
-            }
-            realPay();
-        }
+        //先查询是否存在费率更新操作
+        presenter.onUpdateDeviceRate(this.macAddress);
+//        realPay();
     }
 
     /**
@@ -904,7 +893,22 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         noticeAlertDialog.show();
     }
 
-    private void realPay() {
+    @Override
+    public void realPay() {
+        // 需要充值
+        if (needRecharge) {
+            startActivityForResult(new Intent(this, RechargeActivity.class),
+                    REQUEST_CODE_RECHARGE);
+            return;
+        } else {
+            if (prepayAmount == null || prepayAmount < 0) {
+                prepayAmount = 0.0;
+            }
+            if (prepayAmount <= 0 && bonusId == null) {
+                onError("预付金额不能为0");
+                return;
+            }
+        }
         userWater = true;
         // 点击支付操作时蓝牙必须为开启状态
         setBleCallback(() -> {

@@ -90,4 +90,9 @@ public abstract class DeviceBaseActivity extends BaseActivity implements IDevice
     public void onReconnectSuccess(Object... extra) {
 
     }
+
+    @Override
+    public void realPay() {
+
+    }
 }
