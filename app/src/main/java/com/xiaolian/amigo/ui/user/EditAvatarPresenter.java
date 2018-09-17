@@ -138,6 +138,7 @@ public class EditAvatarPresenter<V extends IEditAvatarView> extends BasePresente
                     public void onSuccess(PutObjectRequest request, PutObjectResult result) {
                         getMvpView().post(() -> getMvpView().hideLoading());
                         getMvpView().post(() -> getMvpView().setAvatar(request.getObjectKey()));
+                        userDataManager.getUser().setPictureUrl(request.getObjectKey());
                         Log.d("PutObject", "UploadSuccess " + request.getObjectKey());
                     }
 

@@ -4,6 +4,7 @@ package com.xiaolian.amigo.ui.lostandfound;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -72,6 +73,10 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     ImageView ivRemaind;
     @BindView(R.id.new_blog)
     TextView newBlog;
+    @BindView(R.id.hot_blog)
+    TextView hotBlog;
+    @BindView(R.id.scrollView)
+    NestedScrollView scrollView;
 
     private LostAndFoundActivityComponent mActivityComponent;
 
@@ -143,11 +148,15 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
     private String hotPosIds;
 
-    private RecyclerView searchRecyclerView ;
+    private RecyclerView searchRecyclerView;
 
-    private SocalContentAdapter searchAdaptor ;
+    private SocalContentAdapter searchAdaptor;
 
-    private  List<LostAndFoundDTO> searchData ;
+    private List<LostAndFoundDTO> searchData;
+
+    private boolean isReferTop   = false;  //  ScrollView 定位到指定位置
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -166,6 +175,10 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         return rootView;
     }
 
+    public void setReferTop(boolean referTop) {
+        this.isReferTop = referTop;
+        this.topicId = 0 ;
+    }
 
     @Override
     protected void initData() {
@@ -191,8 +204,6 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     public void showSearchRl() {
         search();
     }
-
-
 
 
     @Override
@@ -229,12 +240,17 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
             @Override
             public void click(int poisition) {
                 if (poisition == 0) {
+                    page = 1 ;
+                    slectkey = "";
+                    topicId = 0 ;
                     refreshLayout.autoRefresh();
-                    presenter.getLostList("", 1, "", 0);
+//                    presenter.getLostList("", 1, "", 0);
                 } else {
                     topicId = mSocialTagDatas.get(poisition).getTopicId();
+                    page = 1 ;
+                    slectkey ="";
                     refreshLayout.autoRefresh();
-                    presenter.getLostList("", 1, "", topicId);
+//                    presenter.getLostList("", 1, "", topicId);
                 }
             }
         });
@@ -253,13 +269,13 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         if (searchDialog == null) {
             searchDialog = new SearchDialog2(mActivity);
             searchDialog.setSearchListener(searchStr -> {
-                presenter.getLostList("", 1, searchStr, 0 );
+                presenter.getLostList("", 1, searchStr, 0);
             });
             searchDialog.setCanceledOnTouchOutside(true);
             searchDialog.setCancelable(true);
             searchDialog.setOnDismissListener(dialog -> {
                 if (searchData != null && searchData.size() > 0)
-                searchData.clear();
+                    searchData.clear();
 //                ablActionbar.setExpanded(true);
             });
         }
@@ -287,6 +303,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         if (autoRefresh) {
             refreshLayout.autoRefresh(20);
         }
+//        onRefreshContent();
     }
 
     protected void setAutoRefresh(boolean autoRefresh) {
@@ -411,7 +428,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     public void showNoticeNumRemind(int num) {
         if (circle == null) return;
         if (num > 0) {
-            circle.setText(num+"");
+            circle.setText(num + "");
             circle.setVisibility(View.VISIBLE);
         } else {
             circle.setVisibility(View.GONE);
@@ -425,8 +442,8 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     }
 
 
-        @Override
-    public void showSearchResult(List<LostAndFoundDTO>  wappers) {
+    @Override
+    public void showSearchResult(List<LostAndFoundDTO> wappers) {
         if (searchData == null) searchData = new ArrayList<>();
         if (searchRecyclerView == null) {
             searchRecyclerView = new RecyclerView(mActivity);
@@ -446,9 +463,9 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
                 @Override
                 public void onLikeClick(int position, long id, boolean like) {
                     if (like) {
-                        presenter.unLikeComment(position, id , true);
+                        presenter.unLikeComment(position, id, true);
                     } else {
-                        presenter.likeComment(position, id , true);
+                        presenter.likeComment(position, id, true);
                     }
                 }
             });
@@ -456,13 +473,13 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
             searchRecyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(mActivity, 21)));
             searchRecyclerView.setAdapter(searchAdaptor);
         }
-            searchData.clear();
-            for (LostAndFoundDTO wapper: wappers){
-                wapper.setCommentEnable(false);
-            }
-            searchData.addAll(wappers);
-            searchAdaptor.notifyDataSetChanged();
-            searchDialog.showResult(searchRecyclerView);
+        searchData.clear();
+        for (LostAndFoundDTO wapper : wappers) {
+            wapper.setCommentEnable(false);
+        }
+        searchData.addAll(wappers);
+        searchAdaptor.notifyDataSetChanged();
+        searchDialog.showResult(searchRecyclerView);
     }
 
     @Override
@@ -498,7 +515,6 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         }
     }
 
-
     @Override
     public void referTopic(BbsTopicListTradeRespDTO data) {
         if (adapter == null) return;
@@ -509,7 +525,9 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         if (mSocialTagDatas.size() == 0) {
             this.mSocialTagDatas.add(new BbsTopicListTradeRespDTO.TopicListBean());
         }
-        this.mSocialTagDatas.addAll(data.getTopicList());
+        if (mSocialTagDatas.size() == 1) {
+            this.mSocialTagDatas.addAll(data.getTopicList());
+        }
         adapter.notifyDataSetChanged();
     }
 
@@ -527,8 +545,11 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
             if (mDatas != null && mDatas.size() > 0) {
                 this.mDatas.clear();
             }
+            hotBlog.setVisibility(View.VISIBLE);
             this.mDatas.addAll(data.getHotPosts());
             socalContentAdapter.notifyDataSetChanged();
+        } else {
+            hotBlog.setVisibility(View.GONE);
         }
 
         if (data.getPosts() != null && socalNewContentAdapter != null && data.getPosts().size() > 0) {
@@ -546,6 +567,20 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         } else {
             newBlog.setVisibility(View.GONE);
         }
+
+        if (isReferTop){
+            socialRecy.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (scrollView == null) return ;
+                    int scrollHeight = socialRecy.getHeight() + socialTags.getHeight() + titleBorder.getHeight() +
+                            hotBlog.getHeight() + ScreenUtils.dpToPxInt(mActivity ,43);
+                    scrollView.scrollTo(0 ,  scrollHeight);
+                    socialNew.smoothScrollToPosition(0);
+                    isReferTop = false ;
+                }
+            });
+        }
     }
 
     @Override
@@ -554,7 +589,6 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
             this.mNewContents.addAll(data.getPosts());
             socalNewContentAdapter.notifyDataSetChanged();
         } else {
-
         }
     }
 
@@ -618,7 +652,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
             rlNotice.setVisibility(View.GONE);
         }
 
-        if ( release!= null) {
+        if (release != null) {
             release.setVisibility(View.GONE);
         }
 
@@ -641,6 +675,5 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
             collection.setVisibility(View.VISIBLE);
         }
     }
-
 
 }

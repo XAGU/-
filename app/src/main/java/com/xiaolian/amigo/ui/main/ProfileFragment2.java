@@ -57,6 +57,7 @@ import lombok.Data;
  */
 
 public class ProfileFragment2 extends BaseFragment {
+    public static final int START_EDIT_PROFILE = 01 ;
     private static final String TAG = ProfileFragment2.class.getSimpleName();
     ProfileAdaptor.Item wallet = new ProfileAdaptor.Item(R.drawable.profile_wallet, "我的钱包", WalletActivity.class);
     ProfileAdaptor.Item credits = new ProfileAdaptor.Item(R.drawable.profile_credits, "积分兑换", CreditsActivity.class);
@@ -129,6 +130,7 @@ public class ProfileFragment2 extends BaseFragment {
         }
     }
 
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -155,6 +157,12 @@ public class ProfileFragment2 extends BaseFragment {
         recyclerView.setAdapter(adaptor);
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+    }
+
     @OnClick(R.id.notice)
     void gotoNoticeList() {
         if (presenter.isLogin()) {
@@ -176,10 +184,11 @@ public class ProfileFragment2 extends BaseFragment {
     /**
      * 点击昵称 跳转到编辑个人信息页面
      */
-    @OnClick(R.id.ll_user_info)
+    @OnClick({R.id.ll_user_info , R.id.iv_avatar})
     void onUserInfoClick() {
         if (checkLogin()) {
-            startActivity(mActivity, EditProfileActivity.class);
+            Intent editInfo = new Intent(mActivity ,EditProfileActivity.class);
+            startActivityForResult(editInfo ,START_EDIT_PROFILE);
         }
     }
 
@@ -193,8 +202,6 @@ public class ProfileFragment2 extends BaseFragment {
             startActivity(intent);
         }
     }
-
-
 
     @SuppressWarnings("unchecked")
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -263,9 +270,9 @@ public class ProfileFragment2 extends BaseFragment {
 
     @Override
     protected void initView() {
-
         if (presenter == null) return;
         if (presenter.isLogin()) {
+            presenter.getNoticeAmount();
             User user = presenter.getUserInfo();
             setAvatar(user.getPictureUrl());
             if (tvNickName != null) {

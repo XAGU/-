@@ -122,6 +122,9 @@ public class SocalPresenter <V extends ISocalView> extends BasePresenter<V>
                                     getMvpView().referTopicList(result.getData());
                                 }
                             } else {
+                                if (result.getData().getPosts() == null || result.getData().getPosts().size() == 0){
+                                    getMvpView().reducePage();
+                                }
                                 getMvpView().loadMore(result.getData());
                             }
                         }

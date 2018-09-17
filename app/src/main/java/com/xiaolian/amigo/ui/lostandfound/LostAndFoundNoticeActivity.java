@@ -252,7 +252,6 @@ public class LostAndFoundNoticeActivity extends LostAndFoundBaseActivity
     public void setRefreshComplete() {
         refreshLayout.finishLoadMore(300);
     }
-
     @Override
     public void showEmptyView() {
         rlEmpty.setVisibility(View.VISIBLE);

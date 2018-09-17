@@ -109,11 +109,14 @@ public abstract class BaseFragment extends Fragment  implements IBaseView{
 
     @Override
     public void onHiddenChanged(boolean hidden) {
+        Log.d(TAG ,hidden +"");
         super.onHiddenChanged(hidden);
         if (!hidden){
             initView();
         }
     }
+
+
 
     protected abstract  void initData();
 
@@ -610,6 +613,7 @@ public abstract class BaseFragment extends Fragment  implements IBaseView{
     public void onResume() {
         super.onResume();
         MobclickAgent.onResume(mActivity);
+        onHiddenChanged(!isVisible());
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.widget;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.support.transition.ChangeBounds;
@@ -21,6 +22,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.util.SoftInputUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -128,13 +130,16 @@ public class SearchDialog2 extends Dialog implements TextWatcher {
         }
     }
 
+
     @Override
     public void dismiss() {
 //        TransitionManager.beginDelayedTransition(llContainer);
+        SoftInputUtils.hideSoftInputFromWindow((Activity) context,etSearchContent);
         RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) etSearchContent.getLayoutParams();
         lp.width = LinearLayout.LayoutParams.WRAP_CONTENT;
         etSearchContent.setLayoutParams(lp);
         tvCancel.setVisibility(View.GONE);
+
         super.dismiss();
     }
 

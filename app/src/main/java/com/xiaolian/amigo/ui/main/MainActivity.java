@@ -2,33 +2,24 @@ package com.xiaolian.amigo.ui.main;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.ObjectsCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.GestureDetector;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.DecodeHintType;
-import com.google.zxing.integration.android.IntentIntegrator;
 import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushConfig;
 import com.tencent.android.tpush.XGPushManager;
@@ -37,7 +28,6 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.enumeration.DispenserCategory;
 import com.xiaolian.amigo.data.enumeration.DispenserWater;
-import com.xiaolian.amigo.data.enumeration.Orientation;
 import com.xiaolian.amigo.data.network.model.bathroom.BathRouteRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.CurrentBathOrderRespDTO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCheckRespDTO;
@@ -45,7 +35,6 @@ import com.xiaolian.amigo.data.network.model.order.OrderPreInfoDTO;
 import com.xiaolian.amigo.data.network.model.system.BannerDTO;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
 import com.xiaolian.amigo.data.network.model.user.PersonalExtraInfoDTO;
-import com.xiaolian.amigo.ui.base.BaseFragment;
 import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.ui.device.DeviceConstant;
 import com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity;
@@ -53,30 +42,23 @@ import com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity;
 import com.xiaolian.amigo.ui.device.dispenser.ChooseDispenserActivity;
 import com.xiaolian.amigo.ui.device.dispenser.DispenserActivity;
 import com.xiaolian.amigo.ui.device.dryer.DryerActivity;
-import com.xiaolian.amigo.ui.device.washer.ScanActivity;
 import com.xiaolian.amigo.ui.device.washer.WasherActivity;
 import com.xiaolian.amigo.ui.device.washer.WasherActivity2;
-import com.xiaolian.amigo.ui.login.LoginActivity;
 import com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity2;
 import com.xiaolian.amigo.ui.lostandfound.SocalFragment;
 import com.xiaolian.amigo.ui.lostandfound.WriteLZActivity;
-import com.xiaolian.amigo.ui.main.data.DataGenerator;
 import com.xiaolian.amigo.ui.main.intf.IMainPresenter;
 import com.xiaolian.amigo.ui.main.intf.IMainView;
 import com.xiaolian.amigo.ui.main.update.IVersionModel;
 import com.xiaolian.amigo.ui.main.update.IntentKey;
 import com.xiaolian.amigo.ui.main.update.UpdateActivity;
-import com.xiaolian.amigo.ui.notice.NoticeListActivity;
 import com.xiaolian.amigo.ui.repair.RepairActivity;
 import com.xiaolian.amigo.ui.user.CompleteInfoActivity;
 import com.xiaolian.amigo.ui.user.EditDormitoryActivity;
-import com.xiaolian.amigo.ui.user.EditProfileActivity;
 import com.xiaolian.amigo.ui.user.ListChooseActivity;
 import com.xiaolian.amigo.ui.user.adaptor.TableFragmentPagerAdapter;
 import com.xiaolian.amigo.ui.wallet.PrepayActivity;
-import com.xiaolian.amigo.ui.widget.ViewPagerSlide;
 import com.xiaolian.amigo.ui.widget.dialog.AvailabilityDialog;
-import com.xiaolian.amigo.ui.widget.dialog.GuideDialog;
 import com.xiaolian.amigo.ui.widget.dialog.NoticeAlertDialog;
 import com.xiaolian.amigo.ui.widget.dialog.PrepayDialog;
 import com.xiaolian.amigo.util.AppUtils;
@@ -108,8 +90,6 @@ import static com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity.KEY_B
 import static com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity.KEY_RESIDENCE_ID;
 import static com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity.KEY_RESIDENCE_NAME;
 import static com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity.KEY_RESIDENCE_TYPE;
-import static com.xiaolian.amigo.ui.device.washer.ScanActivity.IS_SACN;
-import static com.xiaolian.amigo.ui.device.washer.ScanActivity.SCAN_TYPE;
 import static com.xiaolian.amigo.util.Log.getContext;
 
 /**
@@ -122,6 +102,7 @@ import static com.xiaolian.amigo.util.Log.getContext;
 public class MainActivity extends MainBaseActivity implements IMainView {
 
     private static final String TAG = MainActivity.class.getSimpleName();
+    public static final int WRITE_BLOG = 0x11 ;
     public static final String INTENT_KEY_MAC_ADDRESS = "intent_key_mac_address";
     public static final String INTENT_KEY_LOCATION = "intent_key_location";
     public static final String INTENT_KEY_SUPPLIER_ID = "intent_key_supplier_id";
@@ -228,6 +209,17 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == WRITE_BLOG){
+            if (socalFragment!= null) {
+                socalFragment.setReferTop(true);
+            }
+        }
+    }
+
     /**
      * 初始化底部导航栏
      */
@@ -254,7 +246,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     private void setDefalutItem(int position) {
 //        vgFragment.setCurrentItem(0);
 
-        tableBottomImageChange(position);
         if (position == 0){
            if (fm.findFragmentByTag(HomeFragment2.class.getSimpleName()) == null){
                transaction = fm.beginTransaction();
@@ -287,20 +278,21 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         if (position == 1 ){
             if (fm.findFragmentByTag(SocalFragment.class.getSimpleName()) == null){
                 transaction = fm.beginTransaction();
-                fragment = new SocalFragment();
-                fragments[1] = fragment;
+                socalFragment = new SocalFragment();
+                fragments[1] = socalFragment;
                 if (lastFragment == -1){
-                    transaction.add(R.id.fragment, fragment, SocalFragment.class.getSimpleName());
+                    transaction.add(R.id.fragment, socalFragment, SocalFragment.class.getSimpleName());
                     transaction.commit();
                 }else{
                     transaction.hide(fragments[lastFragment]);
-                    transaction.add(R.id.fragment, fragment, SocalFragment.class.getSimpleName());
+                    transaction.add(R.id.fragment, socalFragment, SocalFragment.class.getSimpleName());
                     transaction.commit();
                 }
 
             }else{
                 transaction = fm.beginTransaction();
                 fragment = fm.findFragmentByTag(SocalFragment.class.getSimpleName());
+                socalFragment = (SocalFragment) fragment;
                 if (lastFragment != -1) {
                     if (fragment.isAdded()) {
                         transaction.hide(fragments[lastFragment]).show(fragment).commit();
@@ -342,6 +334,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             }
         }
         lastFragment = position ;
+        tableBottomImageChange(position);
     }
 
     /**
@@ -358,15 +351,15 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         if (position == 1) {
             socialSelRl.setVisibility(View.VISIBLE);
             socialImage.setVisibility(View.GONE);
+            socialRed.setVisibility(View.GONE);
+        } else {
+            socialSelRl.setVisibility(View.GONE);
+            socialImage.setVisibility(View.VISIBLE);
             if (presenter.getNoticeCount() > 0){
                 socialRed.setVisibility(View.VISIBLE);
             }else {
                 socialRed.setVisibility(View.GONE);
             }
-        } else {
-            socialSelRl.setVisibility(View.GONE);
-            socialImage.setVisibility(View.VISIBLE);
-            socialRed.setVisibility(View.GONE);
         }
 
         if (position == 2) {
@@ -403,7 +396,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 break;
             case R.id.social_rl:
                 if (socialSelRl.getVisibility() == View.VISIBLE){
-                    startActivity(new Intent(this , WriteLZActivity.class));
+                    startActivityForResult(new Intent(this , WriteLZActivity.class) ,WRITE_BLOG);
                 }else {
                     tableBottomImageChange(1);
                     setDefalutItem(1);
@@ -553,7 +546,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             if (personalRed == null) return ;
             if ( amount == null||amount == 0){
                 personalRed.setVisibility(View.GONE);
-                EventBus.getDefault().post(new ProfileFragment2.NoticeEvent(true));
+                EventBus.getDefault().post(new ProfileFragment2.NoticeEvent(false));
             }else{
                 EventBus.getDefault().post(new ProfileFragment2.NoticeEvent(true));
                 personalRed.setVisibility(View.VISIBLE);

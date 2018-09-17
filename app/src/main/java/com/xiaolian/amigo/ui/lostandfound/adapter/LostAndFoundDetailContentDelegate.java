@@ -166,6 +166,7 @@ public class LostAndFoundDetailContentDelegate
                 int width = measureImageWidth();
                 params.width = width ;
                 params.height = width ;
+                params.rightMargin = ScreenUtils.dpToPxInt(context , 10);
                 ivFirst.setLayoutParams(params);
                 manager.load(Constant.IMAGE_PREFIX + images.get(0)).into(ivFirst);
             }
@@ -177,7 +178,8 @@ public class LostAndFoundDetailContentDelegate
                 int width = measureImageWidth();
                 params.width = width ;
                 params.height = width ;
-                ivFirst.setLayoutParams(params);
+                params.rightMargin = ScreenUtils.dpToPxInt(context , 10);
+                ivSecond.setLayoutParams(params);
                 manager.load(Constant.IMAGE_PREFIX + images.get(1)).into(ivSecond);
             }
             // 渲染第三张图
@@ -188,7 +190,7 @@ public class LostAndFoundDetailContentDelegate
                 int width = measureImageWidth();
                 params.width = width ;
                 params.height = width ;
-                ivFirst.setLayoutParams(params);
+                ivThird.setLayoutParams(params);
                 manager.load(Constant.IMAGE_PREFIX + images.get(2)).into(ivThird);
             }
 

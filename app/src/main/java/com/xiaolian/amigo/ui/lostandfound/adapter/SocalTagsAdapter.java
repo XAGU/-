@@ -1,6 +1,9 @@
 package com.xiaolian.amigo.ui.lostandfound.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -30,7 +33,7 @@ public class SocalTagsAdapter extends RecyclerView.Adapter<SocalTagsAdapter.Item
     private boolean move;
     private int index;
     private Context context ;
-
+    private Bitmap normalDrawable ;
     private OnItemClickListener onItemClickListener ;
 
 
@@ -38,6 +41,7 @@ public class SocalTagsAdapter extends RecyclerView.Adapter<SocalTagsAdapter.Item
     public SocalTagsAdapter(Context context, List<BbsTopicListTradeRespDTO.TopicListBean> list, RecyclerView recyclerView
             ,OnItemClickListener onItemClickListener) {
         this.context = context ;
+        normalDrawable = BitmapFactory.decodeResource(context.getResources(),R.drawable.shishi);
         inflater = LayoutInflater.from(context);
         if (list == null) {
             list = new ArrayList<>();
@@ -70,7 +74,6 @@ public class SocalTagsAdapter extends RecyclerView.Adapter<SocalTagsAdapter.Item
         });
     }
 
-
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new ItemViewHolder(inflater.inflate(R.layout.item_social_tag, null , false));
@@ -82,7 +85,8 @@ public class SocalTagsAdapter extends RecyclerView.Adapter<SocalTagsAdapter.Item
             holder.img.setBackground(context.getResources().getDrawable(R.drawable.shishi));
         }else if (position < list.size() ){
             String imgUrl = list.get(position ).getIcon();
-            GildeUtils.setNoErrorImage(context ,holder.img,imgUrl);
+
+            GildeUtils.setNoErrorImage(context ,holder.img,imgUrl ,holder.img.getHeight());
         }else{
             holder.img.setImageBitmap(null);
         }
@@ -95,6 +99,11 @@ public class SocalTagsAdapter extends RecyclerView.Adapter<SocalTagsAdapter.Item
                 }
             }
         });
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position ;
     }
 
     @Override

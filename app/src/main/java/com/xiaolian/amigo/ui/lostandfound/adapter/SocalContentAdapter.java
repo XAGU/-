@@ -100,7 +100,7 @@ public class SocalContentAdapter extends CommonAdapter<LostAndFoundDTO> {
         holder.setText(R.id.praise_num ,dto.getLikeCount()+"");
 
         if (dto.getCommentEnable()) {
-            holder.setText(R.id.message_num, dto.getReportCount() + "");
+            holder.setText(R.id.message_num, dto.getCommentsCount() + "");
             showMessage(holder ,true);
         }else {
             showMessage(holder , false);

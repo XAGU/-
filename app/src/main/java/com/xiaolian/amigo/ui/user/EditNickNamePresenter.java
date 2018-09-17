@@ -38,6 +38,7 @@ public class EditNickNamePresenter<V extends IEditNickNameView> extends BasePres
                 if (null == result.getError()) {
                     getMvpView().onSuccess(R.string.change_nickname_success);
                     getMvpView().finishView();
+                    userDataManager.getUser().setNickName(nickName);
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }

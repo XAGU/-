@@ -339,8 +339,6 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
         }
     }
 
-
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();

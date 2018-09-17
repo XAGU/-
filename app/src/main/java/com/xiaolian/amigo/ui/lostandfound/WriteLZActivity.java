@@ -140,11 +140,13 @@ public class WriteLZActivity extends LostAndFoundBaseActivity implements IPublis
                 textView.setOnClickListener(v -> {
                     if (!lzTag.isCheck()) {
                         lzTag.setCheck(true);
+
                         type = lzTag.getId();
                         if (lastTopPosition != -1 && lastTopPosition != position)
                             topics.get(lastTopPosition).setCheck(false);
                         notifyDataSetChanged();
                     }
+                    onTextChange();
 
                 });
             }

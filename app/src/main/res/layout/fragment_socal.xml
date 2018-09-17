@@ -117,7 +117,8 @@
 
                 <android.support.v4.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                    android:id="@+id/scrollView">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -182,8 +183,6 @@
                         android:layout_marginLeft="@dimen/mainMarginLeftRight"
                         android:layout_marginRight="@dimen/mainMarginLeftRight"
                         android:id="@+id/rl_content">
-
-
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
@@ -197,6 +196,8 @@
                             android:text="热门联子"
                             android:textSize="16sp"
                             android:textStyle="bold"
+                            android:visibility="gone"
+                            android:id="@+id/hot_blog"
                             android:textColor="@color/colorDark2"
                             />
 
