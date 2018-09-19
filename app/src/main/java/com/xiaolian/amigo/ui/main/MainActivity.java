@@ -237,7 +237,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         spring.addListener(new SimpleSpringListener(){
            float value = (float) spring.getCurrentValue();
            float scale = 1.0f - (value * 0.5f);
-
+           
         });
     }
 
@@ -382,7 +382,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 socialRed.setVisibility(View.GONE);
             }
         }
-        
+
         if (position == 2) {
             personalImage.setImageResource(R.drawable.tab_personal_sel);
             personalRed.setVisibility(View.GONE);
