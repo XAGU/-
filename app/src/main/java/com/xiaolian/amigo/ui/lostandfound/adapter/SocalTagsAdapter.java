@@ -16,6 +16,7 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.lostandfound.BbsTopicListTradeRespDTO;
 import com.xiaolian.amigo.intf.OnItemClickListener;
 import com.xiaolian.amigo.util.GildeUtils;
+import com.xiaolian.amigo.util.ScreenUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,24 +56,24 @@ public class SocalTagsAdapter extends RecyclerView.Adapter<SocalTagsAdapter.Item
         manager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(manager);
 //        recyclerView.addItemDecoration(new SpaceBottomItemDecoration(ScreenUtils.dpToPxInt(context ,5)));
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                //在这里进行第二次滚动
-                if (move ){
-                    move = false;
-                    //获取要置顶的项在当前屏幕的位置，mIndex是记录的要置顶项在RecyclerView中的位置
-                    int n = index - manager.findFirstVisibleItemPosition();
-                    if ( 0 <= n && n < recyclerView.getChildCount()){
-                        //获取要置顶的项顶部离RecyclerView顶部的距离
-                        int top = recyclerView.getChildAt(n).getLeft();
-                        //最后的移动
-                        recyclerView.smoothScrollBy(top, top);
-                    }
-                }
-            }
-        });
+//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled(recyclerView, dx, dy);
+//                //在这里进行第二次滚动
+//                if (move ){
+//                    move = false;
+//                    //获取要置顶的项在当前屏幕的位置，mIndex是记录的要置顶项在RecyclerView中的位置
+//                    int n = index - manager.findFirstVisibleItemPosition();
+//                    if ( 0 <= n && n < recyclerView.getChildCount()){
+//                        //获取要置顶的项顶部离RecyclerView顶部的距离
+//                        int top = recyclerView.getChildAt(n).getLeft();
+//                        //最后的移动
+//                        recyclerView.smoothScrollBy(top, top);
+//                    }
+//                }
+//            }
+//        });
     }
 
     @Override
@@ -82,21 +83,20 @@ public class SocalTagsAdapter extends RecyclerView.Adapter<SocalTagsAdapter.Item
 
     @Override
     public void onBindViewHolder(ItemViewHolder holder, int position) {
-        if (position ==0) {
-            holder.img.setBackground(context.getResources().getDrawable(R.drawable.shishi));
-        }else if (position < list.size() ){
-            String imgUrl = list.get(position ).getIcon();
 
-            GildeUtils.setNoErrorImage(context ,holder.img,imgUrl ,holder.img.getHeight());
-        }else{
-            holder.img.setImageBitmap(null);
+        ImageView imageView = holder.img;
+        if (position ==0) {
+            imageView.setBackground(context.getResources().getDrawable(R.drawable.shishi));
+        }else {
+//            holder.img.setBackgroundResource(R.drawable.shishi);
+            String imgUrl = list.get(position).getIcon();
+            GildeUtils.setNoErrorImage(context ,imageView,imgUrl , ScreenUtils.dpToPx(context ,50));
         }
         holder.img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (onItemClickListener != null && position < list.size()) {
                     onItemClickListener.click(position);
-                    scollToPosition(position);
                 }
             }
         });
@@ -109,7 +109,7 @@ public class SocalTagsAdapter extends RecyclerView.Adapter<SocalTagsAdapter.Item
 
     @Override
     public int getItemCount() {
-        return list == null ? 0: (list.size() + 4);
+        return (list == null ? 0: list.size());
     }
 
     public void scollToPosition(int n) {
