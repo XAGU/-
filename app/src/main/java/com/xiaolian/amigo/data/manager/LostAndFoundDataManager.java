@@ -152,6 +152,11 @@ public class LostAndFoundDataManager implements ILostAndFoundDataManager {
     }
 
     @Override
+    public void setCommentEnable(boolean commentEnable) {
+         sharedPreferencesHelp.setCommentEnable(commentEnable);
+    }
+
+    @Override
     public User getUserInfo() {
         return sharedPreferencesHelp.getUserInfo();
     }

@@ -198,4 +198,12 @@ public interface IMainPresenter<V extends IMainView> extends IBasePresenter<V> {
     void noticeCount();
 
     int getNoticeCount();
+
+    boolean getCommentEnable();
+
+    /**
+     * 返回是否显示设备保修
+     * @return
+     */
+    boolean getIsShowRepair();
 }

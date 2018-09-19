@@ -301,4 +301,9 @@ public class MainDataManager implements IMainDataManager {
         return bathroomApi.currentOrder();
     }
 
+    @Override
+    public boolean getCommentEnable() {
+        return sharedPreferencesHelp.getCommentEnable();
+    }
+
 }

@@ -46,6 +46,9 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
     private static final String TAG = LostAndFoundActivity2.class.getSimpleName();
     private static final int REQUEST_CODE_PUBLISH = 0x0101;
     private static final int REQUEST_CODE_DETAIL = 0x0102;
+
+
+    public static final String  KEY_LIKE = "KEY_LIKE";
     public static final String KEY_VIEW_COUNT = "key_view_count";
     public static final String KEY_COMMENT_COUNT = "key_comment_count";
 
@@ -317,6 +320,11 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
 
     @Override
     public void notifyAdapter(int position, boolean b) {
+
+    }
+
+    @Override
+    public void delete(int position) {
 
     }
 

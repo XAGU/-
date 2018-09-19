@@ -25,4 +25,8 @@ public interface ILostAndFoundPresenter2<V extends ILostAndFoundView2> extends I
     void unLikeComment(int position, long id) ;
 
     void likeComment(int position, long id);
+
+    void deleteLostAndFounds(Long id , int position);
+
+
 }

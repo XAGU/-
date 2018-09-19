@@ -38,4 +38,6 @@ public interface ILostAndFoundView2 extends IBaseView {
     void hideNoticeRemind();
 
     void notifyAdapter(int position, boolean b);
+
+    void delete(int position);
 }

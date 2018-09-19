@@ -10,6 +10,8 @@ import android.view.animation.AnimationUtils;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.lostandfound.LostAndFoundDTO;
+import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundPresenter2;
+import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundView2;
 import com.xiaolian.amigo.util.GildeUtils;
 import com.xiaolian.amigo.util.TimeUtils;
 import com.zhy.adapter.recyclerview.CommonAdapter;
@@ -25,37 +27,38 @@ import de.hdodenhof.circleimageview.CircleImageView;
  *
  */
 
-public class SocalContentAdapter extends CommonAdapter<LostAndFoundDTO> {
-    private static final String TAG = SocalContentAdapter.class.getSimpleName();
+public class SocalContentAdapter2 extends CommonAdapter<LostAndFoundDTO> {
+    private static final String TAG = SocalContentAdapter2.class.getSimpleName();
     private Animation animation ;
     private Context context ;
     private boolean animating  =false ;
     private OnItemClickListener onItemClickListener ;
     private LostAndFoundDetailContentDelegate.OnLikeClickListener likeClickListener ;
-
-    private SocialImgAdapter.PhotoClickListener photoClickListener ;
-
     /**
      * 是否本人点赞
      */
     private boolean liked = false;
 
+    private ILostAndFoundPresenter2<ILostAndFoundView2> presenter ;
 
-    public SocalContentAdapter(Context context, int layoutId, List<LostAndFoundDTO> datas , OnItemClickListener onItemClickListener
-        ,LostAndFoundDetailContentDelegate.OnLikeClickListener likeClickListener) {
+    public SocalContentAdapter2(Context context, int layoutId, List<LostAndFoundDTO> datas , OnItemClickListener onItemClickListener
+        , LostAndFoundDetailContentDelegate.OnLikeClickListener likeClickListener) {
         super(context, layoutId, datas);
         this.context = context ;
         this.onItemClickListener = onItemClickListener ;
         this.likeClickListener = likeClickListener ;
     }
 
-
-    public void setPhotoClickListener(SocialImgAdapter.PhotoClickListener photoClickListener) {
-        this.photoClickListener = photoClickListener;
+    public void setPresenter(ILostAndFoundPresenter2<ILostAndFoundView2> presenter) {
+        this.presenter = presenter;
     }
 
     @Override
-    protected void convert(ViewHolder holder, LostAndFoundDTO dto, int position) {
+    protected void convert(ViewHolder holder, LostAndFoundDTO dto, int position ) {
+
+        holder.getView(R.id.ll_operator).setOnClickListener(v -> {
+            if (presenter != null) presenter.deleteLostAndFounds(dto.getId() , position);
+        });
 
         holder.setImageResource(R.id.praise,
                 ObjectsCompat.equals(dto.getLiked() ,1 ) ?
@@ -116,11 +119,7 @@ public class SocalContentAdapter extends CommonAdapter<LostAndFoundDTO> {
             showMessage(holder , false);
         }
         holder.setText(R.id.time , TimeUtils.orderTimestampFormatSocial(dto.getCreateTime()) +"发布");
-        if (dto.getImages() != null &&dto.getImages().size() > 0) {
-            setImage(holder, dto.getImages());
-        }else{
-            holder.getView(R.id.images).setVisibility(View.GONE);
-        }
+        setImage(holder ,dto.getImages());
         holder.setText(R.id.type , dto.getTopicName());
         holder.setOnClickListener(R.id.linear, new View.OnClickListener() {
             @Override
@@ -132,9 +131,7 @@ public class SocalContentAdapter extends CommonAdapter<LostAndFoundDTO> {
 
     private void setImage(ViewHolder holder ,List<String> imgs){
         RecyclerView recyclerView = holder.getView(R.id.images);
-        recyclerView.setVisibility(View.VISIBLE);
         SocialImgAdapter socialImgAdapter = new SocialImgAdapter(context ,R.layout.item_social_img , imgs);
-        socialImgAdapter.setPhotoClickListener(photoClickListener);
         LinearLayoutManager    linearLayoutManager = new LinearLayoutManager(context);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(linearLayoutManager);

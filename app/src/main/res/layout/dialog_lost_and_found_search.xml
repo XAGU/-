@@ -14,7 +14,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="43dp"
                 android:id="@+id/search_rl"
                 tools:visibility="visible"
                 android:visibility="visible"
@@ -36,7 +36,8 @@
                     android:gravity="center_vertical"
                     android:textColorHint="@color/colorDarkB"
                     android:textColor="@color/colorDark2"
-                    android:hint="@string/social_search_hint"/>
+                    android:hint="@string/social_search_hint"
+                    android:layout_centerVertical="true"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
@@ -85,7 +86,7 @@
         android:paddingTop="10dp"
         android:paddingStart="21dp"
         android:paddingEnd="21dp"
-        android:visibility="gone"
+        android:visibility="visible"
         android:background="@color/white">
     </FrameLayout>
 

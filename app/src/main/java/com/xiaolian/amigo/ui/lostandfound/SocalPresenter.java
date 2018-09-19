@@ -51,7 +51,6 @@ public class SocalPresenter <V extends ISocalView> extends BasePresenter<V>
             @Override
             public void onReady(ApiResult<BbsTopicListTradeRespDTO> result) {
                 if (result.getError() == null){
-                    getMvpView().setReferComplete();
                     if (result.getData().getTopicList() != null && result.getData().getTopicList().size() > 0) {
                         lostAndFoundDataManager.setTopic(result.getData().getTopicList());
                         getMvpView().referTopic(result.getData());
@@ -99,39 +98,60 @@ public class SocalPresenter <V extends ISocalView> extends BasePresenter<V>
             @Override
             public void onReady(ApiResult<QueryLostAndFoundListRespDTO> result) {
                 getMvpView().setReferComplete();
-                if (result.getError() == null){
-                    commentEnable  = result.getData().getCommentEnable();
-                    if (commentEnable){
-                        getMvpView().showCommentView();
-                    }else{
-                        getMvpView().hideCommentView();
-                    }
 
-                    if (!TextUtils.isEmpty(selectKey)) {
-                        if (result.getData().getPosts() == null || result.getData().getPosts().size() == 0) {
-                            getMvpView().showNoSearchResult(selectKey);
+                if (!TextUtils.isEmpty(selectKey)) {
+                        getMvpView().showSearchResult(result.getData().getPosts());
+                }else {
+                    if (result.getError() == null) {
+                        commentEnable = result.getData().getCommentEnable();
+                        lostAndFoundDataManager.setCommentEnable(commentEnable);
+                        fetchNoticeCount();
+                        if (commentEnable) {
+                            getMvpView().showCommentView();
                         } else {
-                            getMvpView().showSearchResult(result.getData().getPosts());
+                            getMvpView().hideCommentView();
                         }
-                    }else{
+
+                        if (!TextUtils.isEmpty(selectKey)) {
+                            if (result.getData().getPosts() == null || result.getData().getPosts().size() == 0) {
+                                getMvpView().showNoSearchResult(selectKey);
+                            } else {
+                                getMvpView().showSearchResult(result.getData().getPosts());
+                            }
+                        } else {
                             if (page == 1) {
                                 if (result.getData().getPosts() == null && result.getData().getHotPosts() == null || (result.getData().getPosts().size() == 0 &&
                                         result.getData().getHotPosts().size() == 0)) {
                                     getMvpView().onEmpty();
+                                    return;
                                 } else {
-                                    getMvpView().referTopicList(result.getData());
+                                    if (result.getData().getPosts() != null && result.getData().getPosts().size() != 0) {
+                                        getMvpView().referPost(result.getData().getPosts());
+                                    } else {
+                                        getMvpView().postEmpty();
+                                    }
+
+                                    if (result.getData().getHotPosts() != null && result.getData().getHotPosts().size() != 0) {
+                                        getMvpView().referHotPost(result.getData().getHotPosts());
+                                    } else {
+                                        getMvpView().hostPostsEmpty();
+                                    }
+
                                 }
+
                             } else {
-                                if (result.getData().getPosts() == null || result.getData().getPosts().size() == 0){
+                                if (result.getData().getPosts() == null || result.getData().getPosts().size() == 0) {
                                     getMvpView().reducePage();
+                                    return;
                                 }
                                 getMvpView().loadMore(result.getData());
                             }
                         }
-                }else{
-                    getMvpView().reducePage();
-                    getMvpView().onError(result.getError().getDisplayMessage());
-                    getMvpView().onErrorView();
+                    } else {
+                        getMvpView().reducePage();
+                        getMvpView().onError(result.getError().getDisplayMessage());
+                        getMvpView().onErrorView();
+                    }
                 }
             }
 
@@ -216,6 +236,10 @@ public class SocalPresenter <V extends ISocalView> extends BasePresenter<V>
     public void fetchNoticeCount() {
         addObserver(lostAndFoundDataManager.noticeCount(),
                 new NetworkObserver<ApiResult<NoticeCountDTO>>(false) {
+                    @Override
+                    public void onStart() {
+
+                    }
 
                     @Override
                     public void onReady(ApiResult<NoticeCountDTO> result) {

@@ -101,6 +101,7 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
      */
     public static final String PREF_KEY_SOCAL_TAG = "PREF_KEY_SOCAL_TAG";
 
+    public static final String PREF_KEY_COMMENTABLE = "PREF_KEY_COMMENTABLE";
 
     private String tokenHolder;
     private String deviceTokenHolder;
@@ -618,6 +619,16 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
         }else {
             return null;
         }
+    }
+
+    @Override
+    public void setCommentEnable(boolean commentEnable) {
+        mSharedPreferences.edit().putBoolean(PREF_KEY_COMMENTABLE ,commentEnable).commit();
+    }
+
+    @Override
+    public boolean getCommentEnable() {
+        return mSharedPreferences.getBoolean(PREF_KEY_COMMENTABLE ,true);
     }
 
 

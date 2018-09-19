@@ -24,8 +24,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingBottom="@dimen/mainMarginLeftRight"
-            android:paddingLeft="@dimen/mainMarginLeftRight"
-            android:paddingRight="@dimen/mainMarginLeftRight"
             >
             <LinearLayout
                 android:layout_width="match_parent"
@@ -34,15 +32,15 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="50dp">
                 <ImageView
                     android:id="@+id/iv_back"
                     android:layout_width="wrap_content"
-                    android:paddingTop="14dp"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:paddingRight="40dp"
-                    android:paddingBottom="24dp"
-                    android:src="@drawable/back" />
+                    android:src="@drawable/back"
+                    android:paddingStart="21dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -55,13 +53,15 @@
                 </RelativeLayout>
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1dip"
-                    android:background="#eee" />
+                    android:layout_height="0.5dip"
+                    android:background="#eeeeee" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="58dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/mainMarginLeftRight"
+                    android:paddingRight="@dimen/mainMarginLeftRight">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -83,18 +83,22 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dip"
                     android:background="#eee"
+                    android:layout_marginLeft="@dimen/mainMarginLeftRight"
                     android:layout_gravity="bottom"/>
 
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="添加一个炫酷的标题 "
+                    android:hint="添加一个酷炫的标题 "
                     android:layout_marginTop="21dp"
                     android:textColorHint="@color/colorDark9"
                     android:textSize="19sp"
                     android:id="@+id/main_title"
+                    android:textStyle="bold"
                     android:textColor="@color/colorDark2"
                     android:background="@null"
+                    android:paddingLeft="@dimen/mainMarginLeftRight"
+                    android:paddingRight="@dimen/mainMarginLeftRight"
                     />
 
                 <EditText
@@ -108,6 +112,8 @@
                     android:textColor="@color/colorDark6"
                     android:lineSpacingMultiplier="1.4"
                     android:background="@null"
+                    android:paddingLeft="@dimen/mainMarginLeftRight"
+                    android:paddingRight="@dimen/mainMarginLeftRight"
                     />
 
                 <LinearLayout
@@ -121,7 +127,9 @@
                         android:id="@+id/rv_image"
                         android:overScrollMode="never"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="@dimen/mainMarginLeftRight"
+                        android:paddingRight="@dimen/mainMarginLeftRight"/>
 
                     <LinearLayout
                         android:visibility="gone"

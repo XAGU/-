@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -108,10 +110,28 @@ public class WriteLZActivity extends LostAndFoundBaseActivity implements IPublis
         initImageAdd();
         initRecy();
         addListView();
-
     }
 
 
+
+    /**
+     * 禁止EditText输入空格和换行符
+     *
+     * @param editText EditText输入框
+     */
+    public static void setEditTextInputSpace(EditText editText) {
+        InputFilter filter = new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                if (source.equals(" ") || source.toString().contentEquals("\n")) {
+                    return "";
+                } else {
+                    return null;
+                }
+            }
+        };
+        editText.setFilters(new InputFilter[]{filter});
+    }
     private void initRecy() {
         topics = new ArrayList<>();
         if (presenter.getTopicList()!= null){

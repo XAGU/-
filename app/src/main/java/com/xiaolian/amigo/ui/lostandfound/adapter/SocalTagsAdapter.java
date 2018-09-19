@@ -46,7 +46,8 @@ public class SocalTagsAdapter extends RecyclerView.Adapter<SocalTagsAdapter.Item
         if (list == null) {
             list = new ArrayList<>();
         }
-        this.list = list;
+
+        this.list = list ;
         this.onItemClickListener = onItemClickListener ;
         //可以在这里做分割线处理
         manager = new LinearLayoutManager(context);

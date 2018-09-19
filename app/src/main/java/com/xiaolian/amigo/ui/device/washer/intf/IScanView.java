@@ -62,7 +62,7 @@ public interface IScanView extends IBaseView {
      * @param deviceType 设备类型
      * @param data       设备校验结果
      */
-    void showTimeValidDialog(int deviceType, DeviceCheckRespDTO data);
+    void showTimeValidDialog(int deviceType, DeviceCheckRespDTO data , String mac);
 
 
     /**

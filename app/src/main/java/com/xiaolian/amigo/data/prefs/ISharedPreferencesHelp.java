@@ -198,4 +198,8 @@ public interface ISharedPreferencesHelp {
 
 
     List<BbsTopicListTradeRespDTO.TopicListBean> getTopic();
+
+    void setCommentEnable(boolean commentEnable);
+
+    boolean getCommentEnable();
 }

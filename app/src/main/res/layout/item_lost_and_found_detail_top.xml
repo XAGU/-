@@ -68,20 +68,20 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="22dp"
+                android:paddingBottom="1dp"
                 android:paddingStart="7dp"
                 android:paddingEnd="7dp"
-                android:paddingTop="4dp"
-                android:paddingBottom="4dp"
-                android:paddingRight="4dp"
+                android:layout_alignParentRight="true"
+                tools:text="学习"
+                android:text="学习"
                 android:id="@+id/tag"
-                android:text="互助"
+                android:textColor="@color/colorDark9"
                 android:layout_centerVertical="true"
                 android:gravity="center"
-                android:textSize="12sp"
-                android:textColor="@color/colorDark9"
+                android:textSize="@dimen/sp12"
                 android:background="@drawable/cir_rad10_gray"
-                android:layout_alignParentRight="true"/>
+                />
         </RelativeLayout>
     </LinearLayout>
 
@@ -188,7 +188,7 @@
     </LinearLayout>
 
     <View
-        android:layout_marginTop="22dp"
+        android:layout_marginTop="9dp"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/colorDarke" />

@@ -54,6 +54,8 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
     private LogInterceptor interceptor;
 
     int noticeCount  ;
+
+    private boolean isShowRepair = false ;
     @Inject
     MainPresenter(IMainDataManager mainDataManager,IUserDataManager userDataManager ,LogInterceptor interceptor) {
         this.mainDataManager = mainDataManager;
@@ -66,6 +68,9 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
         super.onAttach(view);
         setUpInterceptor();
     }
+
+
+
 
     private void setUpInterceptor() {
         String androidId = getMvpView().getAndroidId();
@@ -130,7 +135,9 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
                     PersonalExtraInfoDTO dto = result.getData();
                     if (dto.getLastRepairTime() != null && mainDataManager.getLastRepairTime() < dto.getLastRepairTime()) {
                         dto.setNeedShowDot(true);
+                        isShowRepair = true ;
                     } else {
+                        isShowRepair = false ;
                         dto.setNeedShowDot(false);
                         dto.setLastRepairTime(null);
                     }
@@ -142,7 +149,11 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
                         getMvpView().hideXOkMigrate();
                     }
                     getMvpView().refreshProfile(dto);
-                    getMvpView().showNoticeAmount(result.getData().getNotifyAmount());
+                    if (result.getData().getNotifyAmount() != null) {
+                        getMvpView().showNoticeAmount(result.getData().getNotifyAmount());
+                    }else{
+                        getMvpView().showNoticeAmount(0);
+                    }
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }
@@ -483,6 +494,16 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
     @Override
     public int getNoticeCount() {
         return noticeCount;
+    }
+
+    @Override
+    public boolean getCommentEnable() {
+        return mainDataManager.getCommentEnable();
+    }
+
+    @Override
+    public boolean getIsShowRepair() {
+        return isShowRepair;
     }
 
 

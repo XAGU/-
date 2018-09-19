@@ -87,16 +87,26 @@
         android:layout_alignParentRight="true"
         android:id="@+id/notice"
         android:src="@drawable/notice"/>
-    
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/red_soild_circle"
-        android:layout_marginTop="50dp"
+
+    <TextView
+        android:id="@+id/tv_notice_count"
         android:visibility="gone"
-        android:id="@+id/notice_remind"
-        android:layout_alignRight="@id/notice"/>
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="45dp"
+        android:layout_marginRight="20dp"
+        android:textSize="10sp"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+        android:paddingBottom="1dp"
+        android:gravity="center"
+        android:background="@drawable/bg_rect_red_corner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"

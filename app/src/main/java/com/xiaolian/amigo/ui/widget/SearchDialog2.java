@@ -160,6 +160,7 @@ public class SearchDialog2 extends Dialog implements TextWatcher {
     }
 
     public void showNoResult(String selectKey) {
+        flResultContain.setVisibility(View.GONE);
         rlResult.setVisibility(View.VISIBLE);
     }
 
@@ -168,6 +169,7 @@ public class SearchDialog2 extends Dialog implements TextWatcher {
         if (flResultContain.getChildCount() > 0) {
             flResultContain.removeAllViews();
         }
+        flResultContain.setVisibility(View.VISIBLE);
         flResultContain.addView(view);
     }
 

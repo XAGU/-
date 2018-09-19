@@ -44,6 +44,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
 
+import static com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity2.KEY_LIKE;
+
 /**
  * 联子详情
  *
@@ -118,6 +120,11 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
 
     private long replyToId;
     private long replyToUserId;
+
+    /**
+     * 记录是否like
+     */
+    private int likeed ;
     @Inject
     ILostAndFoundDetailPresenter2<ILostAndFoundDetailView2> presenter;
 
@@ -176,8 +183,10 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
             @Override
             public void onLikeClick(int position, long id, boolean like) {
                 if (like) {
+
                     presenter.unLikeComment(position, id);
                 } else {
+
                     presenter.likeComment(position, id);
                 }
             }
@@ -186,8 +195,10 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
             @Override
             public void onLikeClick(int position, long id, boolean like) {
                 if (like) {
+                    likeed =2 ;
                     presenter.unLikeContent(position, id);
                 } else {
+                    likeed = 1 ;
                     presenter.likeContent(position, id);
                 }
             }
@@ -199,6 +210,7 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
         adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+
             }
 
             @Override
@@ -388,18 +400,6 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
         if (!presenter.isCommentEnable()) {
             return;
         }
-//        if (replyDialog == null) {
-//            replyDialog = new LostAndFoundReplyDialog(this);
-//        }
-//        replyDialog.setReplyUser(replyToUserName);
-//        replyDialog.setPublishClickListener((dialog, reply) -> {
-//            if (TextUtils.isEmpty(reply)) {
-//                onError("内容为空");
-//                return;
-//            }
-//            presenter.publishReply(replyToId, replyToUserId, reply);
-//        });
-//        replyDialog.show();
 
         etReply.setText("");
         etReply.setHint("回复：" + replyToUserName);
@@ -425,17 +425,17 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
 
     @Override
     public void showErrorView() {
-//        rlError.setVisibility(View.VISIBLE);
+        rlError.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideEmptyView() {
-//        rlEmpty.setVisibility(View.GONE);
+        rlEmpty.setVisibility(View.GONE);
     }
 
     @Override
     public void hideErrorView() {
-//        rlError.setVisibility(View.GONE);
+        rlError.setVisibility(View.GONE);
     }
 
     @Override
@@ -493,9 +493,14 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
         }
     }
 
+    @OnClick({R.id.iv_back})
     @Override
     public void finishView() {
-        setResult(RESULT_OK);
+        Intent intent = new Intent();
+        intent.putExtra(LostAndFoundActivity2.KEY_COMMENT_COUNT, content == null ?
+                0 : content.getCommentCount());
+        intent.putExtra(KEY_LIKE ,likeed);
+        setResult(RESULT_OK ,intent);
         finish();
     }
 
@@ -534,7 +539,6 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
 
     @Override
     public void unCollectSuccess() {
-        onSuccess("取消收藏成功");
         if (content != null) {
             content.setCollected(false);
         }
@@ -563,16 +567,22 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
     }
 
     @Override
+    public void showContent() {
+        recyclerView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideContent() {
+        recyclerView.setVisibility(View.GONE);
+    }
+
+
+    @Override
     public void onBackPressed() {
-//        if (presenter.needRefresh()) {
-//            finishView();
-//        } else {
-//        }
         Intent intent = new Intent();
-        intent.putExtra(LostAndFoundActivity2.KEY_VIEW_COUNT, content == null ?
-                0 : content.getViewCount() + 1);
         intent.putExtra(LostAndFoundActivity2.KEY_COMMENT_COUNT, content == null ?
                 0 : content.getCommentCount());
+        intent.putExtra(KEY_LIKE ,likeed);
         setResult(RESULT_OK, intent);
         super.onBackPressed();
     }

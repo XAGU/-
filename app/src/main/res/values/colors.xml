@@ -121,4 +121,5 @@
     <color name="color_dot_uncheck_gray">#00D3C7</color>
 
     <color name="dryer_line">#E9E9E9</color>
+    <color name="reply_own_name">#3969AD</color>
 </resources>

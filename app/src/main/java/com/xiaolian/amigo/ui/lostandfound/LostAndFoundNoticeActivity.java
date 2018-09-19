@@ -184,6 +184,8 @@ public class LostAndFoundNoticeActivity extends LostAndFoundBaseActivity
     }
 
     private void changeItemToReply() {
+        hideEmptyView();
+        hideErrorView();
         tvToolbarTitle.setTextColor(ContextCompat.getColor(this, R.color.colorDark2));
         tvToolbarTitle2.setTextColor(ContextCompat.getColor(this, R.color.colorDarkB));
         tvTitle.setTextColor(ContextCompat.getColor(this, R.color.colorDark2));
@@ -198,6 +200,8 @@ public class LostAndFoundNoticeActivity extends LostAndFoundBaseActivity
     }
 
     private void changeItemToLike() {
+        hideEmptyView();
+        hideEmptyView();
         tvToolbarTitle.setTextColor(ContextCompat.getColor(this, R.color.colorDarkB));
         tvToolbarTitle2.setTextColor(ContextCompat.getColor(this, R.color.colorDark2));
         tvTitle.setTextColor(ContextCompat.getColor(this, R.color.colorDarkB));

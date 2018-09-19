@@ -1,7 +1,9 @@
 package com.xiaolian.amigo.ui.lostandfound.adapter;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.support.v4.util.ObjectsCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +14,7 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.ImageSpan;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -86,13 +89,7 @@ public class LostAndFoundDetailCommentDelegate
                         int position) {
 //        holder.setText(R.id.tv_comment_author, lostAndFoundDetailWrapper.getCommentAuthor());  lostAndFoundDetailWrapper.getType(),
         setCommentAuthor(holder.getView(R.id.tv_comment_author), lostAndFoundDetailWrapper.isOwner(),
-//
-                lostAndFoundDetailWrapper.getCommentAuthor());
-        holder.getView(R.id.iv_owner)
-                .setVisibility(lostAndFoundDetailWrapper.isOwner() ? View.VISIBLE : View.GONE);
-//        holder.setImageResource(R.id.iv_owner,
-//                ObjectsCompat.equals(lostAndFoundDetailWrapper.getType(), LostAndFound.LOST) ?
-//                        R.drawable.ic_lost_owner : R.drawable.ic_found_owner);
+                lostAndFoundDetailWrapper.getCommentAuthor() ,holder.getView(R.id.iv_owner));
         holder.setText(R.id.tv_comment_content, lostAndFoundDetailWrapper.getCommentContent());
         holder.setText(R.id.tv_time,
                 TimeUtils.lostAndFoundTimestampFormat(lostAndFoundDetailWrapper.getTime()));
@@ -192,10 +189,10 @@ public class LostAndFoundDetailCommentDelegate
                             replies, lostAndFoundDetailWrapper.getType(),
                             lostAndFoundDetailWrapper.getCommentAuthorId(),
                             lostAndFoundDetailWrapper.getOwnerId());
-            if (itemDecoration == null) {
-                itemDecoration = new SpaceItemDecoration(ScreenUtils.dpToPxInt(context, 5));
-                recyclerView.addItemDecoration(itemDecoration);
-            }
+//            if (itemDecoration == null) {
+//                itemDecoration = new SpaceItemDecoration(ScreenUtils.dpToPxInt(context, 5));
+//                recyclerView.addItemDecoration(itemDecoration);
+//            }
             adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
@@ -242,7 +239,7 @@ public class LostAndFoundDetailCommentDelegate
         }
     }
 
-    private void setCommentAuthor(TextView textView, boolean isOwner, String author) {
+    private void setCommentAuthor(TextView textView, boolean isOwner, String author , TextView ower) {
         SpannableStringBuilder builder = new SpannableStringBuilder();
         SpannableString authorSpan = new SpannableString(author);
         authorSpan.setSpan(new AbsoluteSizeSpan(
@@ -251,31 +248,14 @@ public class LostAndFoundDetailCommentDelegate
         authorSpan.setSpan(new ForegroundColorSpan(Color.parseColor("#222222")), 0, authorSpan.length(),
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         builder.append(authorSpan);
-        if (isOwner) {
-//            builder.append(" ");
-//            SpannableString ownerSpan = new SpannableString(
-//                    ObjectsCompat.equals(type, LostAndFound.LOST) ? "失主" : "拾主");
-//            Drawable bg = context.getResources().getDrawable(R.drawable.bg_lost_and_found_stroke_gray);
-////            ownerSpan.setSpan(new ImageSpan(bg) {
-////                @Override
-////                public void draw(Canvas canvas, CharSequence text, int start, int end, float x, int top, int y, int bottom, Paint paint) {
-////                    paint.setTextSize(50);
-////                    int len = Math.round(paint.measureText(text, start, end));
-////                    getDrawable().setBounds(0, 0, len, 60);
-////                    super.draw(canvas, text, start, end, x, top, y, bottom, paint);
-////                    paint.setColor(Color.parseColor("#999999"));
-////                    paint.setTextSize(40);
-////                    canvas.drawText(text.subSequence(start, end).toString(), x + 10, y, paint);
-////                }
-////            }, 0, ownerSpan.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-//            ownerSpan.setSpan(new AbsoluteSizeSpan(
-//                            DimentionUtils.convertSpToPixels(9, context)), 0, ownerSpan.length(),
-//                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-//            ownerSpan.setSpan(new BorderedSpan(context, 10, 5), 0, ownerSpan.length(),
-//                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-//            builder.append(ownerSpan);
-        }
         textView.setText(builder);
+        if (isOwner) {
+            ower.setVisibility(View.VISIBLE);
+            ower.setText("联主");
+        }else{
+            ower.setVisibility(View.GONE);
+        }
+
     }
 
     public interface OnReplyCommentListener {

@@ -42,9 +42,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
-                <ImageView
+                <TextView
+                    tools:visibility="visible"
                     android:id="@+id/iv_owner"
-                    android:visibility="gone"
+                    android:background="@drawable/tag_radius_2_stroke"
+                    tools:text="联主"
+                    android:paddingStart="2dp"
+                    android:paddingRight="2dp"
+                    android:textSize="10sp"
+                    android:textColor="@color/colorDark9"
                     android:layout_marginStart="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -104,7 +110,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <android.support.v7.widget.RecyclerView
-        android:paddingTop="9dp"
+        android:paddingTop="4dp"
         android:paddingBottom="10dp"
         android:paddingStart="10dp"
         android:paddingEnd="14dp"

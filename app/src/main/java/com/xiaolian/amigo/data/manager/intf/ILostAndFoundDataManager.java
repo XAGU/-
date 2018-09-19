@@ -135,4 +135,7 @@ public interface ILostAndFoundDataManager {
 
     List<BbsTopicListTradeRespDTO.TopicListBean> getTopic();
 
+
+    void setCommentEnable(boolean commentEnable);
+
 }

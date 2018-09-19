@@ -169,4 +169,10 @@ public interface IMainDataManager {
      * @return
      */
     Observable<ApiResult<CurrentBathOrderRespDTO>> currentOrder();
+
+    /**
+     * 获取评论是否开启
+     * @return
+     */
+    boolean getCommentEnable();
 }

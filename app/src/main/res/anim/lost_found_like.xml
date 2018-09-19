@@ -6,8 +6,8 @@
         android:fromYScale="1"
         android:pivotX="0%"
         android:pivotY="50%"
-        android:toXScale="1.5"
-        android:toYScale="1.5"/>
+        android:toXScale="1.2"
+        android:toYScale="1.2"/>
 
     <!--<scale-->
         <!--android:startOffset="90"-->

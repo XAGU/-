@@ -18,10 +18,15 @@ import java.util.List;
 public class SocialImgAdapter extends CommonAdapter<String> {
     private Context context ;
     private List<String> datas ;
+    private PhotoClickListener photoClickListener ;
     public SocialImgAdapter(Context context, int layoutId, List<String> datas) {
         super(context, layoutId, datas);
         this.context = context ;
         this.datas = datas ;
+    }
+
+    public void setPhotoClickListener(PhotoClickListener photoClickListener) {
+        this.photoClickListener = photoClickListener;
     }
 
     @Override
@@ -34,11 +39,14 @@ public class SocialImgAdapter extends CommonAdapter<String> {
 
         holder.getView(R.id.img).setOnClickListener(v -> {
             if (datas != null) {
-                Intent intent = new Intent(context, AlbumItemActivity.class);
-                intent.putExtra(AlbumItemActivity.EXTRA_CURRENT, position);
-                intent.putStringArrayListExtra(AlbumItemActivity.EXTRA_TYPE_LIST, (ArrayList<String>) datas);
-                context.startActivity(intent);
+                if (photoClickListener != null)
+                    photoClickListener.photoClick(position , (ArrayList<String>) datas);
             }
         });
+    }
+
+
+    public static interface PhotoClickListener{
+        void photoClick(int position , ArrayList<String> datas);
     }
 }

@@ -2,7 +2,10 @@ package com.xiaolian.amigo.ui.lostandfound;
 
 import com.xiaolian.amigo.data.manager.intf.ILostAndFoundDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
+import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.CommonRespDTO;
+import com.xiaolian.amigo.data.network.model.lostandfound.DeleteLostFoundItemReqDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.LikeItemReqDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.LostAndFoundDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.NoticeCountDTO;
@@ -214,4 +217,30 @@ public class LostAndFoundPresenter2<V extends ILostAndFoundView2> extends BasePr
     public void likeComment(int position, long id) {
         likeOrUnLikeCommentOrContent(position, id, true, true);
     }
+
+
+    @Override
+    public void deleteLostAndFounds(Long id , int position) {
+        DeleteLostFoundItemReqDTO reqDTO = new DeleteLostFoundItemReqDTO();
+        reqDTO.setId(id);
+        reqDTO.setType(1);
+        addObserver(lostAndFoundDataManager.delete(reqDTO),
+                new NetworkObserver<ApiResult<BooleanRespDTO>>() {
+
+                    @Override
+                    public void onReady(ApiResult<BooleanRespDTO> result) {
+                        if (null == result.getError()) {
+                            if (result.getData().isResult()) {
+                                getMvpView().onSuccess("删除成功");
+                                getMvpView().delete(position);
+                            } else {
+                                getMvpView().onError("删除失败");
+                            }
+                        } else {
+                            getMvpView().onError(result.getError().getDisplayMessage());
+                        }
+                    }
+                });
+    }
 }
+

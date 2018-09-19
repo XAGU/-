@@ -12,8 +12,6 @@ public interface ISocalView extends IBaseView {
 
     void setReferComplete();
 
-    void referTopicList(QueryLostAndFoundListRespDTO data);
-
     void loadMore(QueryLostAndFoundListRespDTO data);
 
     void reducePage();
@@ -43,4 +41,26 @@ public interface ISocalView extends IBaseView {
     void showNoSearchResult(String selectKey);
 
     void notifyAdapter(int position, boolean b, boolean b1);
+
+    /**
+     * 最新联子为空
+     */
+    void postEmpty();
+
+    /**
+     * 热门联子为空
+     */
+    void hostPostsEmpty();
+
+    /**
+     * 刷新最新联子
+     * @param posts
+     */
+    void referPost(List<LostAndFoundDTO> posts);
+
+    /**
+     * 刷新热门联子
+     * @param hotPosts
+     */
+    void referHotPost(List<LostAndFoundDTO> hotPosts);
 }

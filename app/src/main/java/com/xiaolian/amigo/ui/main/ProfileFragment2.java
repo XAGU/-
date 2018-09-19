@@ -57,7 +57,7 @@ import lombok.Data;
  */
 
 public class ProfileFragment2 extends BaseFragment {
-    public static final int START_EDIT_PROFILE = 01 ;
+    public static final int START_EDIT_PROFILE = 01;
     private static final String TAG = ProfileFragment2.class.getSimpleName();
     ProfileAdaptor.Item wallet = new ProfileAdaptor.Item(R.drawable.profile_wallet, "我的钱包", WalletActivity.class);
     ProfileAdaptor.Item credits = new ProfileAdaptor.Item(R.drawable.profile_credits, "积分兑换", CreditsActivity.class);
@@ -79,8 +79,8 @@ public class ProfileFragment2 extends BaseFragment {
     TextView tvNickName;
     @BindView(R.id.tv_schoolName)
     TextView tvSchoolName;
-    @BindView(R.id.notice_remind)
-    ImageView noticeRemind;
+    @BindView(R.id.tv_notice_count)
+    TextView tvNoticeCount;
 
     public ProfileFragment2() {
     }
@@ -184,18 +184,18 @@ public class ProfileFragment2 extends BaseFragment {
     /**
      * 点击昵称 跳转到编辑个人信息页面
      */
-    @OnClick({R.id.ll_user_info , R.id.iv_avatar})
+    @OnClick({R.id.ll_user_info, R.id.iv_avatar})
     void onUserInfoClick() {
         if (checkLogin()) {
-            Intent editInfo = new Intent(mActivity ,EditProfileActivity.class);
-            startActivityForResult(editInfo ,START_EDIT_PROFILE);
+            Intent editInfo = new Intent(mActivity, EditProfileActivity.class);
+            startActivityForResult(editInfo, START_EDIT_PROFILE);
         }
     }
 
     /**
      * 点击头像 跳转到编辑个人信息页面
      */
-        @OnClick({R.id.iv_avatar, R.id.ll_user_info})
+    @OnClick({R.id.iv_avatar, R.id.ll_user_info})
     void gotoLoginView() {
         if (!presenter.isLogin()) {
             Intent intent = new Intent(mActivity, LoginActivity.class);
@@ -206,11 +206,12 @@ public class ProfileFragment2 extends BaseFragment {
     @SuppressWarnings("unchecked")
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void noticeEvent(NoticeEvent event) {
-        if (noticeRemind == null) return ;
-        if (event.isShowNotice) {
-            noticeRemind.setVisibility(View.VISIBLE);
+        if (tvNoticeCount == null) return;
+        if (event.num > 0) {
+            tvNoticeCount.setVisibility(View.VISIBLE);
+            tvNoticeCount.setText(event.num+"");
         } else {
-            noticeRemind.setVisibility(View.GONE);
+            tvNoticeCount.setVisibility(View.GONE);
         }
     }
 
@@ -339,10 +340,11 @@ public class ProfileFragment2 extends BaseFragment {
         /**
          * 是否显示红点
          */
-        private boolean isShowNotice;
+        private int num;
 
-        public NoticeEvent(boolean isShowNotice) {
-            this.isShowNotice = isShowNotice;
+
+        public NoticeEvent(int num) {
+            this.num = num;
         }
 
 

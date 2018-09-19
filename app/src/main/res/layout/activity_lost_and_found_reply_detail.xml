@@ -5,13 +5,13 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:background="@color/white"
-        android:id="@+id/cl_main"
-        xmlns:tools="http://schemas.android.com/tools">
+        android:id="@+id/cl_main">
 
         <android.support.design.widget.AppBarLayout
             android:fitsSystemWindows="true"

@@ -84,7 +84,7 @@ public class ScanPresenter<V extends IScanView> extends BasePresenter<V>
                     getMvpView().resumeScan();
                 }
             }
-
+            
             @Override
             public void onError(Throwable e) {
                 super.onError(e);
@@ -117,7 +117,7 @@ public class ScanPresenter<V extends IScanView> extends BasePresenter<V>
             @Override
             public void onReady(ApiResult<BriefDeviceDTO> result) {
                 if (result.getError() == null){
-                    getMvpView().goToBleDevice( isTimeValid,type ,macAddress,result.getData() ,isBle);
+                    getMvpView().goToBleDevice( isTimeValid,result.getData().getDeviceType() ,macAddress,result.getData() ,isBle);
                 }else{
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }

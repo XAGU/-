@@ -20,6 +20,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.facebook.rebound.SimpleSpringListener;
+import com.facebook.rebound.Spring;
+import com.facebook.rebound.SpringSystem;
 import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushConfig;
 import com.tencent.android.tpush.XGPushManager;
@@ -183,6 +186,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     private int lastFragment = -1  ;
 
+
+    private int nowPosition = - 1 ;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -210,14 +215,30 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     }
 
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == WRITE_BLOG){
-            if (socalFragment!= null) {
-                socalFragment.setReferTop(true);
+        if(resultCode ==RESULT_OK) {
+            if (requestCode == WRITE_BLOG) {
+                if (socalFragment != null) {
+                    socalFragment.setReferTop(true);
+                }
             }
         }
+    }
+
+    /**
+     * 弹性动画
+     */
+    private void springAnimator(){
+        SpringSystem springSystem = SpringSystem.create();
+        Spring spring = springSystem.createSpring();
+        spring.addListener(new SimpleSpringListener(){
+           float value = (float) spring.getCurrentValue();
+           float scale = 1.0f - (value * 0.5f);
+
+        });
     }
 
     /**
@@ -272,7 +293,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                        transaction.commit();
                    }
                }
-
            }
         }
         if (position == 1 ){
@@ -342,6 +362,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
      * @param position
      */
     private void tableBottomImageChange(int position) {
+        nowPosition = position ;
         if (position == 0) {
             homeImage.setImageResource(R.drawable.tab_home_sel);
         } else {
@@ -355,19 +376,18 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         } else {
             socialSelRl.setVisibility(View.GONE);
             socialImage.setVisibility(View.VISIBLE);
-            if (presenter.getNoticeCount() > 0){
+            if (presenter.getNoticeCount() > 0 && presenter.getCommentEnable()){
                 socialRed.setVisibility(View.VISIBLE);
             }else {
                 socialRed.setVisibility(View.GONE);
             }
         }
-
+        
         if (position == 2) {
             personalImage.setImageResource(R.drawable.tab_personal_sel);
             personalRed.setVisibility(View.GONE);
         } else {
             personalImage.setImageResource(R.drawable.tab_personal_nor);
-            personalRed.setVisibility(View.GONE);
         }
     }
 
@@ -544,13 +564,13 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @Override
     public void showNoticeAmount(Integer amount) {
             if (personalRed == null) return ;
-            if ( amount == null||amount == 0){
+            if ( (amount ==0 &&!presenter.getIsShowRepair())|| nowPosition == 2){
                 personalRed.setVisibility(View.GONE);
-                EventBus.getDefault().post(new ProfileFragment2.NoticeEvent(false));
+
             }else{
-                EventBus.getDefault().post(new ProfileFragment2.NoticeEvent(true));
                 personalRed.setVisibility(View.VISIBLE);
             }
+        EventBus.getDefault().post(new ProfileFragment2.NoticeEvent(amount));
     }
 
     @Override
@@ -1032,7 +1052,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public void showNoticeRemind() {
-        if (lastFragment  != 1 ) socialRed.setVisibility(View.VISIBLE);
+        if (nowPosition  != 1  && presenter.getCommentEnable()) socialRed.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -1084,7 +1104,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public void onStart() {
-        Log.d(TAG, "onStart");
         super.onStart();
         EventBus.getDefault().register(this);
 

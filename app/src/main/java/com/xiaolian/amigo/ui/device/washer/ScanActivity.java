@@ -517,7 +517,7 @@ public class ScanActivity extends WasherBaseActivity
 
     /****     扫一扫中扫描设备地址的处理  ，留做以后代码重构后做成父类处理   *****/
     @Override
-    public void showDeviceUsageDialog(int type, DeviceCheckRespDTO data ,String mac ,boolean isBle) {
+    public void showDeviceUsageDialog(int deviceType, DeviceCheckRespDTO data ,String mac ,boolean isBle) {
             Log.d(TAG, "showDeviceUsageDialog: " + type);
             if (data == null || data.getBalance() == null
                     || data.getPrepay() == null || data.getMinPrepay() == null
@@ -537,13 +537,13 @@ public class ScanActivity extends WasherBaseActivity
             // 2小时内存在未找零订单，弹窗提示需要结账
 
             if (data.getExistsUnsettledOrder() != null && data.getExistsUnsettledOrder()) {
-                    showScanDialog(type ,data ,orderPreInfo);
+                    showScanDialog(type ,data ,orderPreInfo );
             } else {
                 // 调用one
                 if (!data.getTimeValid()) {
-                    showTimeValidDialog(type, data);
+                    showTimeValidDialog(type, data , mac);
                 } else {
-                    presenter.getDeviceDetail(data.getTimeValid(), type, mac, isBle);
+                    presenter.getDeviceDetail(false ,deviceType ,mac ,true);
                     // 如果热水澡 检查默认宿舍
                 }
             }
@@ -551,7 +551,7 @@ public class ScanActivity extends WasherBaseActivity
 
 
     @Override
-    public void showTimeValidDialog(int deviceType, DeviceCheckRespDTO data) {
+    public void showTimeValidDialog(int deviceType, DeviceCheckRespDTO data , String mac) {
         if (null == availabilityDialog) {
             availabilityDialog = new AvailabilityDialog(this);
             availabilityDialog.setCancelListener(new AvailabilityDialog.onCancelListener() {
@@ -575,9 +575,7 @@ public class ScanActivity extends WasherBaseActivity
         availabilityDialog.setTip(data.getRemark());
         availabilityDialog.setOnOkClickListener(dialog1 -> {
             if (deviceType == Device.HEATER.getType()) {
-                presenter.gotoHeaterDevice(data.getDefaultMacAddress(),
-                        data.getDefaultSupplierId(), data.getLocation(),data.getResidenceId()
-                         );
+                presenter.getDeviceDetail(false ,deviceType ,mac ,true);
             } else if (deviceType == Device.DISPENSER.getType()) {
                 gotoDispenser(data.getUnsettledMacAddress(), data.getUnsettledSupplierId(),
                         data.getLocation(), data.getResidenceId(),
@@ -629,7 +627,7 @@ public class ScanActivity extends WasherBaseActivity
                                 data.getFavor(), true);
                     }
                 }else{
-                    showTimeValidDialog(type, data);
+                    showTimeValidDialog(type, data , data.getUnsettledMacAddress());
                 }
             }
         });
@@ -649,16 +647,10 @@ public class ScanActivity extends WasherBaseActivity
     public void goToBleDevice(boolean isTimeValid, int type, String macAddress, BriefDeviceDTO data, boolean isBle) {
 
             if (type == Device.HEATER.getType()) {
-
                 // 前往热水澡
                 gotoDevice(HEATER, macAddress,
                         data.getSupplierId(), data.getLocation(),
                         data.getResidenceId(), false);
-        } else if (type == Device.DISPENSER.getType()) {
-            // 进入饮水机
-
-            gotoDispenser(macAddress ,data.getSupplierId() ,data.getLocation() ,
-                    data.getResidenceId() ,data.isFavor() ,0 ,false);
             } else if (type == Device.DISPENSER.getType()) {
                 // 进入饮水机
 

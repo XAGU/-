@@ -35,12 +35,15 @@ import com.xiaolian.amigo.ui.base.BaseFragment;
 import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundDetailContentDelegate;
 import com.xiaolian.amigo.ui.lostandfound.adapter.SocalContentAdapter;
 import com.xiaolian.amigo.ui.lostandfound.adapter.SocalTagsAdapter;
+import com.xiaolian.amigo.ui.lostandfound.adapter.SocialImgAdapter;
 import com.xiaolian.amigo.ui.lostandfound.intf.ISocalPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.ISocalView;
 import com.xiaolian.amigo.ui.widget.SearchDialog2;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutFooter;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutHeader;
+import com.xiaolian.amigo.ui.widget.photoview.AlbumItemActivity;
+import com.xiaolian.amigo.util.Log;
 import com.xiaolian.amigo.util.ScreenUtils;
 import com.xiaolian.amigo.util.SoftInputUtils;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
@@ -55,13 +58,19 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
+import static com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity2.KEY_COMMENT_COUNT;
+import static com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity2.KEY_LIKE;
 import static com.xiaolian.amigo.ui.lostandfound.LostAndFoundDetailActivity2.KEY_ID;
 
 /**
  * @author wcm
  * 2018/09/04
  */
-public class SocalFragment extends BaseFragment implements View.OnClickListener, ISocalView {
+public class SocalFragment extends BaseFragment implements View.OnClickListener, ISocalView ,SocialImgAdapter.PhotoClickListener {
+
+    private static final int REQUEST_CODE_DETAIL = 0x02 ;
+    public static final int REQUEST_CODE_PHOTO = 0x03 ;
+
     private static final String TAG = SocalFragment.class.getSimpleName();
     @BindView(R.id.rl_empty)
     RelativeLayout rlEmpty;
@@ -115,6 +124,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
     private RelativeLayout rlNotice;
     private TextView circle, collection, release;
+    private View line1 , line2 ;
 
     private List<BbsTopicListTradeRespDTO.TopicListBean> mSocialTagDatas = new ArrayList<>();
 
@@ -156,7 +166,11 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
     private boolean isReferTop   = false;  //  ScrollView 定位到指定位置
 
+    private int currentChoosePosition = -1 ;
 
+    private int currentHotPosition = -1 ;
+
+    private boolean isActivityResult = false ;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -171,7 +185,6 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         presenter.onAttach(this);
         initPop();
         initRecycler();
-        initView();
         return rootView;
     }
 
@@ -187,6 +200,12 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
     @Override
     protected void initView() {
+        Log.d(TAG ,"initView");
+        if (isActivityResult) {
+            isActivityResult = false;
+            return ;
+        }
+        presenter.getTopicList();
         if (refreshLayout != null){
             page =1 ;
             topicId =0 ;
@@ -194,8 +213,9 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
             refreshLayout.autoRefresh();
         }
 
-        presenter.getTopicList();
-        presenter.fetchNoticeCount();
+        if (socialTags != null) socialTags.smoothScrollToPosition(0);
+
+
     }
 
 
@@ -211,28 +231,66 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         search();
     }
 
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-//        if (resultCode == RESULT_OK) {
+        isActivityResult = true;
+        Log.d(TAG, "onActivityResult");
 //            if (requestCode == REQUEST_CODE_PUBLISH) {
 ////                refreshLostAndFound();
 //                onRefresh();
-//            } else if (requestCode == REQUEST_CODE_DETAIL) {
-//                if (data != null && currentChoosePosition != -1) {
-//                    int viewCount = data.getIntExtra(KEY_VIEW_COUNT, 0);
-//                    int commentCount = data.getIntExtra(KEY_COMMENT_COUNT, 0);
-//                    lostAndFounds.get(currentChoosePosition).setViewCount(viewCount);
-//                    lostAndFounds.get(currentChoosePosition).setCommentCount(commentCount);
-//                    currentChoosePosition = -1;
-//                    adaptor.notifyDataSetChanged();
-//                }
-//            }
+            if (requestCode == REQUEST_CODE_DETAIL) {
+                if (data != null && currentHotPosition != -1) {
+                    int commentCount = data.getIntExtra(KEY_COMMENT_COUNT, 0);
+                    int liked = data.getIntExtra(KEY_LIKE ,0);
+                    int oldLiked = mDatas.get(currentHotPosition).getLiked();
+                    int likeCount ;
+                    int oldLikeCount = mDatas.get(currentHotPosition).getLikeCount() ;
+                    if (liked != oldLiked && liked != 0) {
+                        if (liked == 2) {
+                            likeCount = (oldLikeCount - 1) < 0 ? 0 :
+                                    mDatas.get(currentHotPosition).getLikeCount() - 1;
+                        } else {
+                            likeCount = oldLikeCount + 1;
+                        }
+                        mDatas.get(currentHotPosition).setLikeCount(likeCount);
+                        mDatas.get(currentHotPosition).setLiked(liked);
+                    }
+                    mDatas.get(currentHotPosition).setCommentsCount(commentCount);
+
+                    socalContentAdapter.notifyItemChanged(currentHotPosition);
+                    currentHotPosition = -1;
+                }
+
+                if (data != null && currentChoosePosition != -1) {
+                    int commentCount = data.getIntExtra(KEY_COMMENT_COUNT, 0);
+                    int liked = data.getIntExtra(KEY_LIKE ,0);
+                    int oldLiked = mNewContents.get(currentChoosePosition).getLiked();
+                    int likeCount ;
+                    int oldLikeCount = mNewContents.get(currentChoosePosition).getLikeCount() ;
+                    if (liked != oldLiked && liked != 0) {
+                        if (liked == 2) {
+                            likeCount = (oldLikeCount - 1) < 0 ? 0 :
+                                    mDatas.get(currentChoosePosition).getLikeCount() - 1;
+                        } else {
+                            likeCount = oldLikeCount + 1;
+                        }
+                        mNewContents.get(currentChoosePosition).setLikeCount(likeCount);
+                        mNewContents.get(currentChoosePosition).setLiked(liked);
+                    }
+                    mNewContents.get(currentChoosePosition).setCommentsCount(commentCount);
+
+                    socalNewContentAdapter.notifyItemChanged(currentChoosePosition);
+                    currentChoosePosition = -1;
+                }
+            }
 //        } else {
 //            adaptor.notifyDataSetChanged();
 //        }
-    }
+
+        }
+
+
 
     SocalTagsAdapter adapter;
 
@@ -250,13 +308,11 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
                     slectkey = "";
                     topicId = 0 ;
                     refreshLayout.autoRefresh();
-//                    presenter.getLostList("", 1, "", 0);
                 } else {
                     topicId = mSocialTagDatas.get(poisition).getTopicId();
                     page = 1 ;
                     slectkey ="";
                     refreshLayout.autoRefresh();
-//                    presenter.getLostList("", 1, "", topicId);
                 }
             }
         });
@@ -290,7 +346,6 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     }
 
     private void initContentRecycler() {
-        setAutoRefresh(true);
         initSocialContentAdapter();
         refreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
@@ -319,9 +374,25 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
 
     private void onRefreshContent() {
-        presenter.getLostList("", 1, "", topicId);
+        presenter.getLostList("", page, "", topicId);
+
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (searchDialog != null ){
+            if (searchDialog.isShowing()) searchDialog.dismiss();
+            searchDialog = null ;
+        }
+
+        if (mPopupWindow != null){
+
+            if (mPopupWindow.isShowing()) mPopupWindow.dismiss();
+
+            mPopupWindow = null ;
+        }
+    }
 
     private void initSocialContentAdapter() {
 
@@ -329,9 +400,11 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         socalContentAdapter = new SocalContentAdapter(mActivity, R.layout.item_socal, mDatas, new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                currentHotPosition = position ;
+                currentChoosePosition = -1 ;
                 Intent intent = new Intent(mActivity, LostAndFoundDetailActivity2.class);
                 intent.putExtra(KEY_ID, mDatas.get(position).getId());
-                mActivity.startActivity(intent);
+                startActivityForResult(intent,REQUEST_CODE_DETAIL);
             }
 
             @Override
@@ -348,6 +421,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
                 }
             }
         });
+        socalContentAdapter.setPhotoClickListener(this);
         socialRecy.setLayoutManager(new LinearLayoutManager(mActivity));
         socialRecy.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(mActivity, 21)));
         socialRecy.setAdapter(socalContentAdapter);
@@ -356,9 +430,11 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         socalNewContentAdapter = new SocalContentAdapter(mActivity, R.layout.item_socal, mNewContents, new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                currentChoosePosition = position ;
+                currentHotPosition = -1 ;
                 Intent intent = new Intent(mActivity, LostAndFoundDetailActivity2.class);
                 intent.putExtra(KEY_ID, mNewContents.get(position).getId());
-                mActivity.startActivity(intent);
+                startActivityForResult(intent,REQUEST_CODE_DETAIL);
             }
 
             @Override
@@ -375,6 +451,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
                 }
             }
         });
+        socalNewContentAdapter.setPhotoClickListener(this);
         socialNew.setLayoutManager(new LinearLayoutManager(mActivity));
         socialNew.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(mActivity, 21)));
         socialNew.setAdapter(socalNewContentAdapter);
@@ -401,6 +478,8 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         rlNotice = popView.findViewById(R.id.rl_notice);
         circle = popView.findViewById(R.id.circle);
         release = popView.findViewById(R.id.release);
+        line1 = popView.findViewById(R.id.v_line1);
+        line2 = popView.findViewById(R.id.v_line2);
         collection = popView.findViewById(R.id.collection);
         rlNotice.setOnClickListener(this);
         collection.setOnClickListener(this);
@@ -454,7 +533,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
                 @Override
                 public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                     Intent intent = new Intent(mActivity, LostAndFoundDetailActivity2.class);
-                    intent.putExtra(KEY_ID, mDatas.get(position).getId());
+                    intent.putExtra(KEY_ID, searchData.get(position).getId());
                     mActivity.startActivity(intent);
                 }
 
@@ -498,6 +577,66 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     }
 
     @Override
+    public void postEmpty() {
+        if (mNewContents != null && socalNewContentAdapter != null) {
+            mNewContents.clear();
+            socalNewContentAdapter.notifyDataSetChanged();
+        }
+        newBlog.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void hostPostsEmpty() {
+        if (mDatas != null && socalContentAdapter != null) {
+            mDatas.clear();
+            socalContentAdapter.notifyDataSetChanged();
+        }
+        hotBlog.setVisibility(View.GONE);
+
+    }
+
+    @Override
+    public void referPost(List<LostAndFoundDTO> posts) {
+        rlEmpty.setVisibility(View.GONE);
+        rlEmpty.setVisibility(View.GONE);
+        rlContent.setVisibility(View.VISIBLE);
+        newBlog.setVisibility(View.VISIBLE);
+        if (mNewContents != null && socalNewContentAdapter != null) {
+            mNewContents.clear();
+            mNewContents.addAll(posts);
+            socalNewContentAdapter.notifyDataSetChanged();
+        }
+
+        if (isReferTop){
+            socialRecy.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (scrollView == null) return ;
+                    int scrollHeight = socialRecy.getHeight() + socialTags.getHeight() + titleBorder.getHeight() +
+                            hotBlog.getHeight() + ScreenUtils.dpToPxInt(mActivity ,43);
+                    scrollView.scrollTo(0 ,  scrollHeight);
+                    socialNew.smoothScrollToPosition(0);
+                    isReferTop = false ;
+                }
+            });
+        }
+
+    }
+
+    @Override
+    public void referHotPost(List<LostAndFoundDTO> hotPosts) {
+        rlEmpty.setVisibility(View.GONE);
+        rlError.setVisibility(View.GONE);
+        rlContent.setVisibility(View.VISIBLE);
+        hotBlog.setVisibility(View.VISIBLE);
+        if (mDatas != null && socalContentAdapter != null) {
+            mDatas.clear();
+            mDatas.addAll(hotPosts);
+            socalContentAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.rl_notice:
@@ -521,7 +660,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     @Override
     public void referTopic(BbsTopicListTradeRespDTO data) {
         if (adapter == null) return;
-        if (data == null || data.getTopicList() == null || data.getTopicList().size() == 0)
+        if (data == null || data.getTopicList() == null || data.getTopicList().size() == 0)  return ;
         if (this.mSocialTagDatas != null && this.mSocialTagDatas.size() > 0) {
             this.mSocialTagDatas.clear();
         }
@@ -531,7 +670,13 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         if (mSocialTagDatas.size() == 1) {
             this.mSocialTagDatas.addAll(data.getTopicList());
         }
-        adapter.notifyDataSetChanged();
+        mActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                adapter.notifyDataSetChanged();
+            }
+        });
+
     }
 
     @Override
@@ -543,54 +688,13 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     }
 
     @Override
-    public void referTopicList(QueryLostAndFoundListRespDTO data) {
-        if (data.getHotPosts() != null && socalContentAdapter != null && data.getHotPosts().size() > 0) {
-            if (mDatas != null && mDatas.size() > 0) {
-                this.mDatas.clear();
-            }
-            hotBlog.setVisibility(View.VISIBLE);
-            this.mDatas.addAll(data.getHotPosts());
-            socalContentAdapter.notifyDataSetChanged();
-        } else {
-            hotBlog.setVisibility(View.GONE);
-        }
-
-        if (data.getPosts() != null && socalNewContentAdapter != null && data.getPosts().size() > 0) {
-            if (mNewContents != null && mNewContents.size() > 0) {
-                this.mNewContents.clear();
-            }
-            this.mNewContents.addAll(data.getPosts());
-            socalNewContentAdapter.notifyDataSetChanged();
-            if (rlContent != null && rlEmpty != null && rlEmpty != null) {
-                rlContent.setVisibility(View.VISIBLE);
-                rlError.setVisibility(View.GONE);
-                rlEmpty.setVisibility(View.GONE);
-            }
-            newBlog.setVisibility(View.VISIBLE);
-        } else {
-            newBlog.setVisibility(View.GONE);
-        }
-
-        if (isReferTop){
-            socialRecy.post(new Runnable() {
-                @Override
-                public void run() {
-                    if (scrollView == null) return ;
-                    int scrollHeight = socialRecy.getHeight() + socialTags.getHeight() + titleBorder.getHeight() +
-                            hotBlog.getHeight() + ScreenUtils.dpToPxInt(mActivity ,43);
-                    scrollView.scrollTo(0 ,  scrollHeight);
-                    socialNew.smoothScrollToPosition(0);
-                    isReferTop = false ;
-                }
-            });
-        }
-    }
-
-    @Override
     public void loadMore(QueryLostAndFoundListRespDTO data) {
         if (data.getPosts() != null && socalNewContentAdapter != null && data.getPosts().size() > 0) {
             this.mNewContents.addAll(data.getPosts());
-            socalNewContentAdapter.notifyDataSetChanged();
+            int positionStart = mNewContents.size() - data.getPosts().size() ;
+            if (positionStart >= 0 ) {
+                socalNewContentAdapter.notifyItemRangeInserted(positionStart ,mNewContents.size());
+            }
         } else {
         }
     }
@@ -631,13 +735,17 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
     @Override
     public void showNoticeRemind(int num) {
-        ivRemaind.setVisibility(View.VISIBLE);
-        if (circle != null) {
-            if (num > 0) {
-                circle.setVisibility(View.VISIBLE);
-                circle.setText(num + "");
+        if (presenter.isCommentEnable()) {
+            ivRemaind.setVisibility(View.VISIBLE);
+            if (circle != null) {
+                if (num > 0) {
+                    circle.setVisibility(View.VISIBLE);
+                    circle.setText(num + "");
 
+                }
             }
+        }else{
+            ivRemaind.setVisibility(View.GONE);
         }
     }
 
@@ -661,14 +769,26 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
             if (collection != null) {
                 collection.setVisibility(View.VISIBLE);
             }
+
+            if (rlNotice != null){
+                rlNotice.setVisibility(View.VISIBLE);
+
+            }
         }else{
             if (release != null) {
-                release.setVisibility(View.GONE);
+                release.setVisibility(View.VISIBLE);
             }
 
             if (collection != null) {
                 collection.setVisibility(View.GONE);
             }
+            if (rlNotice != null){
+                rlNotice.setVisibility(View.GONE);
+            }
+
+            line2.setVisibility(View.GONE);
+            line2.setVisibility(View.GONE);
+
         }
     }
 
@@ -700,6 +820,14 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         if (collection != null) {
             collection.setVisibility(View.VISIBLE);
         }
+
     }
 
+    @Override
+    public void photoClick(int position, ArrayList<String> datas) {
+        Intent intent = new Intent(mActivity, AlbumItemActivity.class);
+        intent.putExtra(AlbumItemActivity.EXTRA_CURRENT, position);
+        intent.putStringArrayListExtra(AlbumItemActivity.EXTRA_TYPE_LIST, (ArrayList<String>) datas);
+        startActivityForResult(intent ,REQUEST_CODE_PHOTO);
+    }
 }

@@ -16,6 +16,7 @@ import com.xiaolian.amigo.data.network.model.lostandfound.LostAndFoundDTO;
 import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundAdaptor2;
 import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundDetailContentDelegate;
 import com.xiaolian.amigo.ui.lostandfound.adapter.SocalContentAdapter;
+import com.xiaolian.amigo.ui.lostandfound.adapter.SocalContentAdapter2;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundPresenter2;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundView2;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
@@ -65,20 +66,19 @@ public class MyPublishActivity2 extends LostAndFoundBaseActivity implements ILos
 
     private volatile boolean refreshFlag;
 
-    private SocalContentAdapter publicAdapter ;
+    private SocalContentAdapter2 publicAdapter ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lost_and_found_my_publish);
         setUnBinder(ButterKnife.bind(this));
-
         initRecyclerView();
     }
 
     private void initRecyclerView() {
         lostAndFounds = new ArrayList<>();
-        publicAdapter = new SocalContentAdapter(this, R.layout.item_socal, lostAndFounds, new MultiItemTypeAdapter.OnItemClickListener() {
+        publicAdapter = new SocalContentAdapter2(this, R.layout.item_socal2, lostAndFounds, new MultiItemTypeAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                     Intent intent = new Intent(MyPublishActivity2.this, LostAndFoundDetailActivity2.class);
@@ -88,6 +88,7 @@ public class MyPublishActivity2 extends LostAndFoundBaseActivity implements ILos
 
                 @Override
                 public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                    onError("请左滑删除");
                     return false;
                 }
             }, new LostAndFoundDetailContentDelegate.OnLikeClickListener() {
@@ -100,6 +101,7 @@ public class MyPublishActivity2 extends LostAndFoundBaseActivity implements ILos
                     }
                 }
             });
+        publicAdapter.setPresenter(presenter);
         recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 21)));
         recyclerView.setAdapter(publicAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -222,6 +224,17 @@ public class MyPublishActivity2 extends LostAndFoundBaseActivity implements ILos
     public void notifyAdapter(int position, boolean b) {
         if (publicAdapter != null) {
             publicAdapter.notifyItemChanged(position);
+        }
+
+    }
+
+    @Override
+    public void delete(int position) {
+        try {
+            publicAdapter.notifyItemRemoved(position);
+            lostAndFounds.remove(position);
+        }catch (Exception e){
+            Log.e(TAG ,e.getMessage());
         }
 
     }

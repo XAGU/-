@@ -77,7 +77,10 @@ public class LostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView2>
                     @Override
                     public void onReady(ApiResult<LostAndFoundDTO> result) {
                         getMvpView().setRefreshComplete();
+                        getMvpView().hideEmptyView();
                         if (null == result.getError()) {
+                            getMvpView().hideErrorView();
+                            getMvpView().showContent();
                             if (result.getData().getCommentEnable() != null
                                     && result.getData().getCommentEnable()) {
                                 commentEnable = true;
@@ -101,6 +104,8 @@ public class LostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView2>
                         super.onError(e);
                         getMvpView().setRefreshComplete();
                         getMvpView().setLoadMoreComplete();
+                        getMvpView().hideEmptyView();
+                        getMvpView().hideContent();
                         getMvpView().showErrorView();
                     }
                 });
@@ -116,7 +121,12 @@ public class LostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView2>
 
                     @Override
                     public void onReady(ApiResult<LostAndFoundDTO> result) {
+                        getMvpView().setRefreshComplete();
+                        getMvpView().setLoadMoreComplete();
+                        getMvpView().hideEmptyView();
                         if (null == result.getError()) {
+                            getMvpView().showContent();
+                            getMvpView().hideErrorView();
                             if (result.getData().getCommentEnable() != null
                                     && result.getData().getCommentEnable()) {
                                 commentEnable = true;
@@ -131,8 +141,20 @@ public class LostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView2>
                             getMvpView().post(() ->
                                     getMvpView().render(result.getData().transform()));
                         } else {
+                            getMvpView().showErrorView();
+                            getMvpView().hideContent();
                             getMvpView().onError(result.getError().getDisplayMessage());
                         }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        getMvpView().setRefreshComplete();
+                        getMvpView().setLoadMoreComplete();
+                        getMvpView().hideContent();
+                        getMvpView().hideEmptyView();
+                        getMvpView().showErrorView();
                     }
                 });
     }
@@ -158,7 +180,7 @@ public class LostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView2>
                         getMvpView().setRefreshComplete();
                         getMvpView().setLoadMoreComplete();
                         getMvpView().hideEmptyView();
-                        getMvpView().hideErrorView();
+                        getMvpView().showContent();
                         if (null == result.getError()) {
                             if (null != result.getData()) {
                                 if ((result.getData().getCommentsSize() <= 0
@@ -186,6 +208,7 @@ public class LostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView2>
                                         getMvpView().addMore(wrappers, hots));
                             }
                         } else {
+                            getMvpView().hideErrorView();
                             getMvpView().onError(result.getError().getDisplayMessage());
                         }
                     }
@@ -195,7 +218,9 @@ public class LostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView2>
                         super.onError(e);
                         getMvpView().setRefreshComplete();
                         getMvpView().setLoadMoreComplete();
-                        getMvpView().showErrorView();
+//                        getMvpView().showErrorView();
+                        getMvpView().hideContent();
+                        getMvpView().hideEmptyView();
                     }
                 });
     }

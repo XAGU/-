@@ -55,4 +55,8 @@ public interface ILostAndFoundDetailView2 extends IBaseView {
     void showComment();
 
     void hideComment();
+
+    void showContent();
+
+    void hideContent();
 }

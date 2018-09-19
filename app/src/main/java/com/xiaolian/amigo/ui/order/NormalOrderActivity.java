@@ -194,7 +194,7 @@ public class NormalOrderActivity extends OrderBaseActivity implements INormalOrd
         vBottomLine2.setVisibility(View.VISIBLE);
 
         // 洗衣机
-        if (Device.getDevice(data.getDeviceType()) == Device.WASHER) {
+        if (Device.getDevice(data.getDeviceType()) == Device.WASHER || Device.getDevice(data.getDeviceType()) == Device.DRYER2 ) {
             if (ObjectsCompat.equals(data.getStatus(), ORDER_ERROR_STATUS)) {
                 // 异常订单
                 tvBottomTip.setVisibility(View.VISIBLE);
