@@ -182,6 +182,8 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         this.mainPresenter = mainPresenter;
     }
 
+    public SocalFragment(){}
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -220,7 +222,8 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
             page =1 ;
             topicId =0 ;
             slectkey = "";
-            refreshLayout.autoRefresh();
+//            refreshLayout.autoRefresh();
+            presenter.getLostList("" ,page , slectkey ,topicId);
         }
 
         if (socialTags != null) socialTags.smoothScrollToPosition(0);
@@ -294,9 +297,6 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
                     currentChoosePosition = -1;
                 }
             }
-//        } else {
-//            adaptor.notifyDataSetChanged();
-//        }
 
         }
 
@@ -317,18 +317,17 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
                     page = 1 ;
                     slectkey = "";
                     topicId = 0 ;
-                    refreshLayout.autoRefresh();
+                    presenter.getLostList("" ,page ,slectkey ,0);
                 } else {
                     topicId = mSocialTagDatas.get(poisition).getTopicId();
                     page = 1 ;
                     slectkey ="";
-                    refreshLayout.autoRefresh();
+                    presenter.getLostList("" ,page ,slectkey ,topicId);
                 }
             }
         });
         adapter.setHasStableIds(true);
         socialTags.setAdapter(adapter);
-
         initContentRecycler();
     }
 

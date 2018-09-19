@@ -110,6 +110,11 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
         addObserver(mainDataManager.getExtraInfo(), new NetworkObserver<ApiResult<PersonalExtraInfoDTO>>(false) {
 
             @Override
+            public void onStart() {
+
+            }
+
+            @Override
             public void onReady(ApiResult<PersonalExtraInfoDTO> result) {
                 if (null == result.getError()) {
                     if (!TextUtils.isEmpty(result.getData().getPreFileUrl())) {
