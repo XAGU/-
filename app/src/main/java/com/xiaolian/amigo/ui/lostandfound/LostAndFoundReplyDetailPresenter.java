@@ -170,7 +170,7 @@ public class LostAndFoundReplyDetailPresenter<V extends ILostAndFoundReplyDetail
         if (isPublisher()) {
             DeleteLostFoundItemReqDTO reqDTO = new DeleteLostFoundItemReqDTO();
             reqDTO.setId(commentId);
-            reqDTO.setType(3);
+            reqDTO.setType(2);
             addObserver(lostAndFoundManager.delete(reqDTO),
                     new NetworkObserver<ApiResult<BooleanRespDTO>>() {
 

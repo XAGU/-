@@ -83,9 +83,9 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
             getMvpView().onError(R.string.network_not_available);
 //            getMvpView().onError(R.string.network_available_error_tip);
         } else if (e instanceof ConnectException) {
-            getMvpView().onError(R.string.server_available_error_tip);
+            getMvpView().onError("服务器开小差了>_<");
         } else if (e instanceof SocketTimeoutException) {
-            getMvpView().onError(R.string.server_available_error_tip);
+            getMvpView().onError("服务器开小差了>_<");
         } else {
             if (e instanceof HttpException) {
                 switch (((HttpException) e).code()) {
@@ -97,7 +97,7 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
                         // ignore
                         break;
                     default:
-                        getMvpView().onError(R.string.server_available_error_tip);
+                        getMvpView().onError("服务器开小差了>_<");
                         break;
                 }
             } else if (e instanceof IOException) {
@@ -125,7 +125,7 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
             getMvpView().redirectToLogin();
         } else if (errorCode == CommonError.SERVER_SYSTEM_ERROR.getCode()) {
             Log.w(TAG, "服务器错误");
-            getMvpView().onError("服务器飞走啦，努力修复中");
+            getMvpView().onError("服务器开小差了>_<");
         } else if (errorCode == CommonError.CLIENT_PARAM_ERROR.getCode()) {
             Log.w(TAG, "参数异常");
         } else if (errorCode == CommonError.NO_ACCESS.getCode()) {

@@ -67,13 +67,14 @@
                 android:layout_centerInParent="true"
                 android:id="@+id/social_sel_rl"
                 android:visibility="gone"
-                tool:visibility="gone"
+                tool:visibility="visible"
                 android:background="@drawable/table_social_sel">
                 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="19dp"
                     android:src="@drawable/add"
+                    android:visibility="visible"
                     android:layout_centerInParent="true"/>
             </RelativeLayout>
         </RelativeLayout>

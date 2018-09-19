@@ -122,7 +122,7 @@ public class LostAndFoundDataManager implements ILostAndFoundDataManager {
     }
 
     @Override
-    public Observable<ApiResult<CommonRespDTO>> like(LikeItemReqDTO reqDTO) {
+    public Observable<ApiResult<CommonRespDTO>> like(@Body LikeItemReqDTO reqDTO) {
         return lostAndFoundApi.like(reqDTO);
     }
 

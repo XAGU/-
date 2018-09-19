@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.lostandfound;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.util.ObjectsCompat;
@@ -24,7 +25,9 @@ import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundReplyDetailMainDel
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundReplyDetailPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundReplyDetailView;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
+import com.xiaolian.amigo.ui.widget.dialog.BookingCancelDialog;
 import com.xiaolian.amigo.ui.widget.dialog.LostAndFoundBottomDialog;
+import com.xiaolian.amigo.ui.widget.dialog.PrepayDialog;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutFooter;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutHeader;
 import com.xiaolian.amigo.util.Log;
@@ -111,6 +114,10 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
 
     private long replyToId ;
     private long replyToUserId ;
+
+    private BookingCancelDialog deleteDialog ;
+
+    private BookingCancelDialog deleteReplyDialog ;
 
     @Inject
     ILostAndFoundReplyDetailPresenter<ILostAndFoundReplyDetailView> presenter;
@@ -201,7 +208,7 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
                                     publishReply(commentId, followRelays.get(position).getAuthorId(),
                                             followRelays.get(position).getAuthor()));
                             bottomDialog.setOnOkClickListener(dialog ->
-                                    presenter.deleteReply(followRelays.get(position).getId()));
+                                    showDeleteReplyDialog(followRelays.get(position).getId()));
                             bottomDialog.show();
                         } else {
                             if (bottomDialog == null) {
@@ -256,8 +263,65 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
             bottomDialog = new LostAndFoundBottomDialog(this);
         }
         bottomDialog.setOkText(presenter.isPublisher() ? "删除" : "举报");
-        bottomDialog.setOnOkClickListener(dialog -> presenter.reportOrDelete());
+        bottomDialog.setOnOkClickListener(dialog ->
+                {
+                    if (presenter.isPublisher()){
+                        showDialog();
+                    }else{
+                        presenter.reportOrDelete();
+                    }
+
+                });
+
         bottomDialog.show();
+    }
+
+    /**
+     * 显示弹窗
+     */
+    public void showDialog(){
+        if (deleteDialog == null){
+            deleteDialog = new BookingCancelDialog(this);
+            deleteDialog.setTvTitle("确认删除此条评论吗？");
+            deleteDialog.setTvTip("确认后词条评论的内容都将被删除");
+            deleteDialog.setOnCancelClickListener(new PrepayDialog.OnCancelClickListener() {
+                @Override
+                public void onCancelClick(Dialog dialog) {
+                    presenter.reportOrDelete();
+                }
+            });
+            deleteDialog.setOnOkClickListener(new PrepayDialog.OnOkClickListener() {
+                @Override
+                public void onOkClick(Dialog dialog) {
+                    dialog.cancel();
+                }
+            });
+        }
+
+        deleteDialog.show();
+    }
+
+
+    public void showDeleteReplyDialog(Long  id){
+        if (deleteReplyDialog == null){
+            deleteReplyDialog = new BookingCancelDialog(this);
+            deleteReplyDialog.setTvTitle("确认删除此条回复吗？");
+            deleteReplyDialog.setTvTip("确认后词条回复的内容都将被删除");
+            deleteReplyDialog.setOnCancelClickListener(new PrepayDialog.OnCancelClickListener() {
+                @Override
+                public void onCancelClick(Dialog dialog) {
+                    presenter.deleteReply(id);
+                }
+            });
+            deleteReplyDialog.setOnOkClickListener(new PrepayDialog.OnOkClickListener() {
+                @Override
+                public void onOkClick(Dialog dialog) {
+                    dialog.cancel();
+                }
+            });
+        }
+
+        deleteReplyDialog.show();
     }
 
 
@@ -401,5 +465,24 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
     protected void onDestroy() {
         presenter.onDetach();
         super.onDestroy();
+
+        if (bottomDialog != null){
+            if (bottomDialog.isShowing()) bottomDialog.cancel();
+
+            bottomDialog = null ;
+        }
+
+
+        if (deleteDialog != null){
+            if (deleteDialog.isShowing()) deleteDialog.cancel();
+
+            deleteDialog = null ;
+        }
+
+        if (deleteReplyDialog != null){
+            if (deleteReplyDialog.isShowing()) deleteReplyDialog.cancel();
+
+            deleteReplyDialog = null ;
+        }
     }
 }

@@ -235,7 +235,6 @@ dependencies {
     //mid包
     compile 'com.tencent.mid:mid:4.0.6-release'
     //    implementation 'com.android.support:support-dynamic-animation:25.3.0'
-    implementation files('libs/rebound-0.3.8.jar')
 }
 
 configurations.all {

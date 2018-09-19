@@ -56,7 +56,6 @@ public class LostAndFoundDetailCommentReplyAdapter
     }
 
     private void setReply(TextView textView, ReplyWrapper replyWrapper) {
-        final int[] replyLine = {-1};
         if (replyWrapper.isFooter()) {
             SpannableString footerSpan = new SpannableString(replyWrapper.getContent());
             footerSpan.setSpan(new AbsoluteSizeSpan(
@@ -86,10 +85,8 @@ public class LostAndFoundDetailCommentReplyAdapter
                     canvas.save();
                     int extra;
                     if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1) {
-                        replyLine[0] = textView.getLineCount() ;
                         extra = textView.getLineCount() > 1 ? (int) textView.getLineSpacingExtra() : 0;
                     } else {
-                        replyLine[0] = textView.getLineCount();
                         extra = (int) textView.getLineSpacingExtra();
                     }
                     int transY = bottom - b.getBounds().bottom - extra;
@@ -133,10 +130,8 @@ public class LostAndFoundDetailCommentReplyAdapter
                         canvas.save();
                         int extra = 0 ;
                         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1) {
-                            if (replyLine[0] != textView.getLineCount())
                             extra = textView.getLineCount() > 1 ? (int) textView.getLineSpacingExtra() : 0;
                         } else {
-                            if (replyLine[0] != textView.getLineCount())
                             extra = (int) textView.getLineSpacingExtra();
                         }
                         int transY = bottom - b.getBounds().bottom - extra;

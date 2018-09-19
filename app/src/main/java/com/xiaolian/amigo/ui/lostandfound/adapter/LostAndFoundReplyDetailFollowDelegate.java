@@ -134,7 +134,6 @@ public class LostAndFoundReplyDetailFollowDelegate
 
             spanLength += spanPaint.measureText(commentUserSpan.toString());
 
-
             if (ObjectsCompat.equals(ownerId, replyWrapper.getReplyToUserId())) {
                 builder.append(" ");
                 SpannableString ownerSpan = new SpannableString("联主");
@@ -143,7 +142,7 @@ public class LostAndFoundReplyDetailFollowDelegate
                     public void draw(Canvas canvas, CharSequence text, int start, int end, float x, int top, int y, int bottom, Paint paint) {
                         Drawable b = getDrawable();
                         canvas.save();
-                        int extra;
+                        int extra = 0;
                         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1) {
                             extra = textView.getLineCount() > 1 ? (int) textView.getLineSpacingExtra() : 0;
                         } else {
@@ -197,9 +196,8 @@ public class LostAndFoundReplyDetailFollowDelegate
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             timeSpan.setSpan(new CustomVerticalCenterSpan(10, context), 0,
                     timeSpan.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            timeSpan.setSpan(new ForegroundColorSpan(Color.parseColor("#bbbbbb")), 0, timeSpan.length(),
+            timeSpan.setSpan(new ForegroundColorSpan(Color.parseColor("#BBBBBB")), 0, timeSpan.length(),
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
             builder.append(timeSpan);
         } else {
             SpannableString timeSpan = new SpannableString(TimeUtils.lostAndFoundTimestampFormat(replyWrapper.getTime()));
@@ -208,7 +206,7 @@ public class LostAndFoundReplyDetailFollowDelegate
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             timeSpan.setSpan(new CustomVerticalCenterSpan(10, context), 0,
                     timeSpan.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            timeSpan.setSpan(new ForegroundColorSpan(Color.parseColor("#bbbbbb")), 0, timeSpan.length(),
+            timeSpan.setSpan(new ForegroundColorSpan(Color.parseColor("#BBBBBB")), 0, timeSpan.length(),
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
             builder.append(timeSpan);

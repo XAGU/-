@@ -19,12 +19,17 @@ public class SwipeBackActivity extends AppCompatActivity implements SwipeBackHel
     protected   boolean isNeedSwipe = true  ;
     private SwipeBackHelper mSwipeBackHelper;
 
+
+    protected void setNeedSwipe(boolean needSwipe) {
+        isNeedSwipe = needSwipe;
+    }
+
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         if (mSwipeBackHelper == null && isNeedSwipe) {
             mSwipeBackHelper = new SwipeBackHelper(this);
         }
-        if (mSwipeBackHelper != null ) {
+        if (mSwipeBackHelper != null && isNeedSwipe ) {
             return mSwipeBackHelper.processTouchEvent(ev) || super.dispatchTouchEvent(ev);
         }else{
             return super.dispatchTouchEvent(ev);

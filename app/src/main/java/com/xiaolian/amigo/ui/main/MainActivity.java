@@ -1,6 +1,8 @@
 package com.xiaolian.amigo.ui.main;
 
 import android.Manifest;
+import android.animation.AnimatorSet;
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Build;
@@ -15,14 +17,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.GestureDetector;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.facebook.rebound.SimpleSpringListener;
-import com.facebook.rebound.Spring;
-import com.facebook.rebound.SpringSystem;
 import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushConfig;
 import com.tencent.android.tpush.XGPushManager;
@@ -68,6 +68,7 @@ import com.xiaolian.amigo.util.AppUtils;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
 import com.xiaolian.amigo.util.MD5Util;
+import com.xiaolian.amigo.util.ScreenUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -86,6 +87,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import lombok.Data;
 
+import static android.widget.RelativeLayout.CENTER_IN_PARENT;
 import static com.xiaolian.amigo.data.enumeration.Device.DISPENSER;
 import static com.xiaolian.amigo.data.enumeration.Device.DRYER;
 import static com.xiaolian.amigo.data.enumeration.Device.HEATER;
@@ -231,14 +233,63 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     /**
      * 弹性动画
      */
-    private void springAnimator(){
-        SpringSystem springSystem = SpringSystem.create();
-        Spring spring = springSystem.createSpring();
-        spring.addListener(new SimpleSpringListener(){
-           float value = (float) spring.getCurrentValue();
-           float scale = 1.0f - (value * 0.5f);
-           
+    private void springAnimator(View view){
+
+        AnimatorSet set = new AnimatorSet();
+        ValueAnimator animator1 = ValueAnimator.ofInt(ScreenUtils.dpToPxInt(this ,5),ScreenUtils.dpToPxInt(this ,30));
+        animator1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT);
+                int currentValue = (int) animation.getAnimatedValue();
+                params.addRule(CENTER_IN_PARENT);
+                params.width = currentValue ;
+                params.height = currentValue ;
+                view.setLayoutParams(params);
+                view.postInvalidate();
+            }
         });
+
+        animator1.setDuration(50);
+        ValueAnimator animator2 = ValueAnimator.ofInt(ScreenUtils.dpToPxInt(this ,30) , ScreenUtils.dpToPxInt(this ,75));
+        animator2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT);
+                int currentValue = (int) animation.getAnimatedValue();
+                params.addRule(CENTER_IN_PARENT);
+                params.height = (int) ScreenUtils.dpToPx(MainActivity.this ,30);
+                params.width = currentValue ;
+                view.setLayoutParams(params);
+                view.postInvalidate();
+            }
+        });
+        animator2.setDuration(100);
+
+
+        ValueAnimator animator3 = ValueAnimator.ofInt(ScreenUtils.dpToPxInt(this ,75) , ScreenUtils.dpToPxInt(this ,65));
+        animator3.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+
+                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT);
+                int currentValue = (int) animation.getAnimatedValue();
+                Log.d(TAG , currentValue +"" );
+                params.addRule(CENTER_IN_PARENT);
+                params.height = (int) ScreenUtils.dpToPx(MainActivity.this ,30);
+                params.width = currentValue ;
+                view.setLayoutParams(params);
+                view.postInvalidate();
+            }
+
+        });
+        animator2.setDuration(15);
+
+        set.playSequentially(animator1 , animator2 , animator3);
+        set.start();
     }
 
     /**
@@ -298,7 +349,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         if (position == 1 ){
             if (fm.findFragmentByTag(SocalFragment.class.getSimpleName()) == null){
                 transaction = fm.beginTransaction();
-                socalFragment = new SocalFragment();
+                socalFragment = new SocalFragment(presenter);
                 fragments[1] = socalFragment;
                 if (lastFragment == -1){
                     transaction.add(R.id.fragment, socalFragment, SocalFragment.class.getSimpleName());
@@ -373,6 +424,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             socialSelRl.setVisibility(View.VISIBLE);
             socialImage.setVisibility(View.GONE);
             socialRed.setVisibility(View.GONE);
+            springAnimator(socialSelRl);
         } else {
             socialSelRl.setVisibility(View.GONE);
             socialImage.setVisibility(View.VISIBLE);

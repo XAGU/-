@@ -100,7 +100,11 @@ public class SocalPresenter <V extends ISocalView> extends BasePresenter<V>
                 getMvpView().setReferComplete();
 
                 if (!TextUtils.isEmpty(selectKey)) {
+                    if (result.getData().getPosts() == null || result.getData().getPosts().size() == 0) {
+                        getMvpView().showNoSearchResult(selectKey);
+                    } else {
                         getMvpView().showSearchResult(result.getData().getPosts());
+                    }
                 }else {
                     if (result.getError() == null) {
                         commentEnable = result.getData().getCommentEnable();

@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.lostandfound;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -25,9 +26,11 @@ import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundDetailPresenter2;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundDetailView2;
 import com.xiaolian.amigo.ui.widget.CustomLinearLayoutManager;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
+import com.xiaolian.amigo.ui.widget.dialog.BookingCancelDialog;
 import com.xiaolian.amigo.ui.widget.dialog.LostAndFoundBottomDialog;
 import com.xiaolian.amigo.ui.widget.dialog.LostAndFoundCommentDialog;
 import com.xiaolian.amigo.ui.widget.dialog.LostAndFoundReplyDialog;
+import com.xiaolian.amigo.ui.widget.dialog.PrepayDialog;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutFooter;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutHeader;
 import com.xiaolian.amigo.util.ScreenUtils;
@@ -128,6 +131,7 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
     @Inject
     ILostAndFoundDetailPresenter2<ILostAndFoundDetailView2> presenter;
 
+    private BookingCancelDialog deleteDialog ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -174,6 +178,30 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
             vMoreHold.setVisibility(View.GONE);
             vMoreHold1.setVisibility(View.GONE);
         }
+    }
+
+
+    private void showDialog(){
+        if (deleteDialog == null){
+            deleteDialog = new BookingCancelDialog(this);
+            deleteDialog.setTvTitle("确认删除此条联子吗？");
+            deleteDialog.setTvTip("确认后词条联子的内容都将被删除");
+            deleteDialog.setOnCancelClickListener(new PrepayDialog.OnCancelClickListener() {
+                @Override
+                public void onCancelClick(Dialog dialog) {
+                    presenter.reportOrDelete();
+                }
+            });
+            deleteDialog.setOnOkClickListener(new PrepayDialog.OnOkClickListener() {
+                @Override
+                public void onOkClick(Dialog dialog) {
+                    dialog.cancel();
+                }
+            });
+        }
+
+        deleteDialog.show();
+
     }
 
     private void initRecyclerView() {
@@ -357,9 +385,18 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
         }
         bottomDialog.setOkText(presenter.isOwner() ? "删除" : "举报");
         bottomDialog.setOkTextColor(R.color.colorDark6);
-        bottomDialog.setOnOkClickListener(dialog -> presenter.reportOrDelete());
+        bottomDialog.setOnOkClickListener(dialog ->{
+                    if (presenter.isOwner()){
+                        showDialog();
+                    }else {
+                        presenter.reportOrDelete();
+                    }
+                }
+                );
         bottomDialog.show();
     }
+
+
 
     @OnClick({R.id.v_more_hold, R.id.v_more_hold_1})
     public void collect() {
@@ -591,5 +628,11 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
     protected void onDestroy() {
         presenter.onDetach();
         super.onDestroy();
+
+        if (deleteDialog != null){
+            if (deleteDialog.isShowing()) deleteDialog.cancel();
+
+            deleteDialog = null ;
+        }
     }
 }

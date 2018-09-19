@@ -28,7 +28,7 @@ public class DataGenerator {
     public static Fragment[] getFragment(IMainPresenter<IMainView> presenter , boolean isServerError){
         Fragment fragments[] = new Fragment[3];
         fragments[0] = new HomeFragment2(presenter ,isServerError);
-        fragments[1] = new SocalFragment();
+        fragments[1] = new SocalFragment(presenter);
         fragments[2] = new ProfileFragment2(presenter ,isServerError);
         return fragments;
     }

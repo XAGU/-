@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.lostandfound;
 
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -38,6 +39,8 @@ import com.xiaolian.amigo.ui.lostandfound.adapter.SocalTagsAdapter;
 import com.xiaolian.amigo.ui.lostandfound.adapter.SocialImgAdapter;
 import com.xiaolian.amigo.ui.lostandfound.intf.ISocalPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.ISocalView;
+import com.xiaolian.amigo.ui.main.intf.IMainPresenter;
+import com.xiaolian.amigo.ui.main.intf.IMainView;
 import com.xiaolian.amigo.ui.widget.SearchDialog2;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutFooter;
@@ -172,6 +175,13 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
     private boolean isActivityResult = false ;
 
+    private IMainPresenter<IMainView> mainPresenter;
+
+    @SuppressLint("ValidFragment")
+    public SocalFragment(IMainPresenter<IMainView> mainPresenter) {
+        this.mainPresenter = mainPresenter;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -214,7 +224,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         }
 
         if (socialTags != null) socialTags.smoothScrollToPosition(0);
-
+        mainPresenter.getNoticeAmount();
 
     }
 
@@ -522,7 +532,6 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         super.onDestroyView();
         unbinder.unbind();
     }
-
 
     @Override
     public void showSearchResult(List<LostAndFoundDTO> wappers) {

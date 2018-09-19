@@ -17,6 +17,7 @@
         android:layout_above="@id/bt_submit"
         android:overScrollMode="never"
         android:scrollbars="none"
+        android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout

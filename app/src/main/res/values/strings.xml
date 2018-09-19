@@ -113,8 +113,8 @@
     <string name="prepay_money">预付金额</string>
     <string name="prepay_money_colon">预付金额：</string>
     <string name="withdrawal">提现</string>
-    <string name="network_available_error_tip">当前网络质量较差</string>
-    <string name="network_not_available">当前网络不可用，检查网络</string>
+    <string name="network_available_error_tip">当前网络质量较差 ಠ_ಠ</string>
+    <string name="network_not_available"> 网络连接已断开 ･᷄ὢ･᷅</string>
     <string name="please_enter_password_to_verify">请输入登录密码进行验证</string>
     <string name="manage_dormitory">新的地址</string>
     <string name="notice_center">通知中心</string>
@@ -263,7 +263,7 @@
     <string name="cancel_repair">取消报修</string>
     <string name="cancel_repair_success">取消报修成功</string>
     <string name="crash_toast_text">很抱歉,程序出现异常,即将退出.</string>
-    <string name="server_available_error_tip">服务器飞走啦，努力修复中</string>
+    <string name="server_available_error_tip">服务器开小差了</string>
     <string name="device_broken_tip_3">当前设备出现了故障，维修员正在赶来维修\n给您带来的不便敬请谅解！</string>
     <string name="device_broken_btn_3">切换宿舍</string>
     <string name="order_no_use_tip">

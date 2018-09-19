@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.lostandfound;
 
+import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -7,10 +8,12 @@ import android.support.v7.widget.RecyclerView;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -26,7 +29,9 @@ import com.xiaolian.amigo.ui.widget.GridSpacesItemDecoration;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.ui.widget.photoview.AlbumItemActivity;
 import com.xiaolian.amigo.util.CommonUtil;
+import com.xiaolian.amigo.util.Log;
 import com.xiaolian.amigo.util.ScreenUtils;
+import com.xiaolian.amigo.util.SoftInputUtils;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -49,6 +54,8 @@ import butterknife.OnTextChanged;
  */
 
 public class WriteLZActivity extends LostAndFoundBaseActivity implements IPublishLostAndFoundView {
+
+    private static final String TAG = WriteLZActivity.class.getSimpleName();
     private static final int REQUEST_IMAGE = 0x3302;
     private static final int IMAGE_COUNT = 3;
     public static final String KEY_TYPE = "publish_lost_and_found_key_type";
@@ -80,6 +87,8 @@ public class WriteLZActivity extends LostAndFoundBaseActivity implements IPublis
     EditText mainTitle;
     @BindView(R.id.main_content)
     EditText mainContent;
+    @BindView(R.id.scroll)
+    ScrollView scroll;
     private ImageAddAdapter imageAddAdapter;
     List<ImageAddAdapter.ImageItem> addImages = new ArrayList<>();
 
@@ -91,11 +100,13 @@ public class WriteLZActivity extends LostAndFoundBaseActivity implements IPublis
 
     private List<LZTag> topics;
 
-    private int screenWidth ;
-    private int imageWidth ;
+    private int screenWidth;
+    private int imageWidth;
 
 
-    private int lastTopPosition = -1 ;
+    private int lastTopPosition = -1;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,9 +114,7 @@ public class WriteLZActivity extends LostAndFoundBaseActivity implements IPublis
 
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
-
         presenter.onAttach(WriteLZActivity.this);
-
         CommonUtil.showSoftInput(this, mainTitle);
         initImageAdd();
         initRecy();
@@ -113,6 +122,43 @@ public class WriteLZActivity extends LostAndFoundBaseActivity implements IPublis
     }
 
 
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        float touchX  ;
+        float touchY ;
+        float moveY = 0 ;
+        switch (event.getAction()){
+            case MotionEvent.ACTION_DOWN:
+                touchX = event.getX();
+                touchY = event.getY();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                Log.d(TAG ,event.getY() +"");
+                moveY += event.getY();
+                if (scroll != null) scroll.scrollTo(0 , (int) moveY);
+                break;
+                case MotionEvent.ACTION_UP:
+                    if (moveY !=0)
+                    moveAnim(moveY);
+                break;
+        }
+
+        return true;
+    }
+
+    public void moveAnim(float moveY){
+        ValueAnimator valueAnimator = ValueAnimator.ofFloat(moveY , 0);
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float currentValue = (float) animation.getAnimatedValue();
+                scroll.scrollTo(0 , (int) currentValue);
+            }
+        });
+        valueAnimator.setDuration(100);
+        valueAnimator.start();
+    }
 
     /**
      * 禁止EditText输入空格和换行符
@@ -132,11 +178,12 @@ public class WriteLZActivity extends LostAndFoundBaseActivity implements IPublis
         };
         editText.setFilters(new InputFilter[]{filter});
     }
+
     private void initRecy() {
         topics = new ArrayList<>();
-        if (presenter.getTopicList()!= null){
-            for (BbsTopicListTradeRespDTO.TopicListBean topicListBean : presenter.getTopicList()){
-                topics.add(new LZTag(topicListBean.getTopicName() ,false ,topicListBean.getTopicId()));
+        if (presenter.getTopicList() != null) {
+            for (BbsTopicListTradeRespDTO.TopicListBean topicListBean : presenter.getTopicList()) {
+                topics.add(new LZTag(topicListBean.getTopicName(), false, topicListBean.getTopicId()));
             }
         }
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -148,11 +195,11 @@ public class WriteLZActivity extends LostAndFoundBaseActivity implements IPublis
             @Override
             protected void convert(ViewHolder holder, LZTag lzTag, int position) {
                 TextView textView = holder.getView(R.id.topic_txt);
-                if (lzTag.isCheck()){
-                    lastTopPosition = position ;
+                if (lzTag.isCheck()) {
+                    lastTopPosition = position;
                     textView.setBackgroundResource(R.drawable.social_top_sel);
                     textView.setTextColor(getResources().getColor(R.color.colorWhite));
-                }else{
+                } else {
                     textView.setBackgroundResource(R.drawable.socical_topic);
                     textView.setTextColor(getResources().getColor(R.color.colorDark9));
                 }
@@ -167,6 +214,8 @@ public class WriteLZActivity extends LostAndFoundBaseActivity implements IPublis
                         notifyDataSetChanged();
                     }
                     onTextChange();
+                    SoftInputUtils.hideSoftInputFromWindow(WriteLZActivity.this ,mainContent);
+                    SoftInputUtils.hideSoftInputFromWindow(WriteLZActivity.this ,mainTitle);
 
                 });
             }
@@ -174,17 +223,16 @@ public class WriteLZActivity extends LostAndFoundBaseActivity implements IPublis
     }
 
 
-    private void addListView(){
+    private void addListView() {
         viewList = new ArrayList<>();
         viewList.add(mainTitle);
         viewList.add(mainContent);
     }
 
 
-
     private void initImageAdd() {
         screenWidth = ScreenUtils.getScreenWidth(this);
-        imageWidth = (screenWidth - ScreenUtils.dpToPxInt(this ,62)) / 3;
+        imageWidth = (screenWidth - ScreenUtils.dpToPxInt(this, 62)) / 3;
         addImages.add(new ImageAddAdapter.ImageItem());
         imageAddAdapter = new ImageAddAdapter(this, R.layout.item_image_add, addImages);
         imageAddAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
@@ -234,7 +282,7 @@ public class WriteLZActivity extends LostAndFoundBaseActivity implements IPublis
 
     public void toggleBtnStatus() {
         allValidated = !TextUtils.isEmpty(mainTitle.getText())
-                && (!TextUtils.isEmpty(mainContent.getText())|| images.size() > 0) && type != -1;
+                && (!TextUtils.isEmpty(mainContent.getText()) || images.size() > 0) && type != -1;
         btSubmit.setBackgroundResource(allValidated ?
                 R.drawable.button_enable : R.drawable.button_disable);
     }
@@ -242,14 +290,14 @@ public class WriteLZActivity extends LostAndFoundBaseActivity implements IPublis
     @OnClick(R.id.bt_submit)
     void publishLostAndFound() {
         if (!allValidated) {
-            if (TextUtils.isEmpty(mainTitle.getText())){
+            if (TextUtils.isEmpty(mainTitle.getText())) {
                 onError(mainTitle.getHint().toString());
-                return ;
+                return;
             }
 
-            if (TextUtils.isEmpty(mainContent.getText()) && images.size()== 0){
+            if (TextUtils.isEmpty(mainContent.getText()) && images.size() == 0) {
                 onError("请先选择图片或者填写文字");
-                return ;
+                return;
             }
         }
 

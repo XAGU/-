@@ -61,6 +61,8 @@ public class BookingCancelDialog extends Dialog {
         if (tvTip != null)  tvTip.setText(text);
     }
 
+
+
     public void setCancelText(String text) {
         tvCancel.setText(text);
     }
