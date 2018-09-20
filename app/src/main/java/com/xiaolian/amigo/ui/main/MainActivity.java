@@ -18,6 +18,7 @@ import android.text.TextUtils;
 import android.view.GestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -251,7 +252,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             }
         });
 
-        animator1.setDuration(50);
+        animator1.setDuration(40);
         ValueAnimator animator2 = ValueAnimator.ofInt(ScreenUtils.dpToPxInt(this ,30) , ScreenUtils.dpToPxInt(this ,75));
         animator2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -266,7 +267,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 view.postInvalidate();
             }
         });
-        animator2.setDuration(100);
+        animator2.setDuration(80);
 
 
         ValueAnimator animator3 = ValueAnimator.ofInt(ScreenUtils.dpToPxInt(this ,75) , ScreenUtils.dpToPxInt(this ,65));
@@ -284,9 +285,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 view.setLayoutParams(params);
                 view.postInvalidate();
             }
-
         });
-        animator2.setDuration(15);
+        animator3.setDuration(5);
 
         set.playSequentially(animator1 , animator2 , animator3);
         set.start();

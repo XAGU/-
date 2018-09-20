@@ -9,6 +9,7 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,13 +48,10 @@ import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutFooter;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutHeader;
 import com.xiaolian.amigo.ui.widget.photoview.AlbumItemActivity;
-import com.xiaolian.amigo.util.GildeUtils;
 import com.xiaolian.amigo.util.Log;
 import com.xiaolian.amigo.util.ScreenUtils;
 import com.xiaolian.amigo.util.SoftInputUtils;
-import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
-import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,9 +63,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-import static android.widget.LinearLayout.HORIZONTAL;
 import static com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity2.KEY_COMMENT_COUNT;
 import static com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity2.KEY_LIKE;
+import static com.xiaolian.amigo.ui.lostandfound.LostAndFoundDetailActivity2.KEY_DELETE;
 import static com.xiaolian.amigo.ui.lostandfound.LostAndFoundDetailActivity2.KEY_ID;
 
 /**
@@ -294,29 +292,43 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         if (requestCode == REQUEST_CODE_DETAIL) {
             if (data != null && currentHotPosition != -1) {
                 int commentCount = data.getIntExtra(KEY_COMMENT_COUNT, 0);
-                int liked = data.getIntExtra(KEY_LIKE, 0);
-                int oldLiked = mDatas.get(currentHotPosition).getLiked();
-                int likeCount;
-                int oldLikeCount = mDatas.get(currentHotPosition).getLikeCount();
-                if (liked != oldLiked && liked != 0) {
-                    if (liked == 2) {
-                        likeCount = (oldLikeCount - 1) < 0 ? 0 :
-                                mDatas.get(currentHotPosition).getLikeCount() - 1;
-                    } else {
-                        likeCount = oldLikeCount + 1;
+                boolean isDelete = data.getBooleanExtra(KEY_DELETE ,false);
+                if (isDelete){
+                    mDatas.remove(currentHotPosition);
+                    socalContentAdapter.notifyItemRemoved(currentHotPosition);
+                    socalContentAdapter.notifyItemRangeChanged(currentChoosePosition ,mDatas.size());
+                }else {
+                    int liked = data.getIntExtra(KEY_LIKE, 0);
+                    int oldLiked = mDatas.get(currentHotPosition).getLiked();
+                    int likeCount;
+                    int oldLikeCount = mDatas.get(currentHotPosition).getLikeCount();
+                    if (liked != oldLiked && liked != 0) {
+                        if (liked == 2) {
+                            likeCount = (oldLikeCount - 1) < 0 ? 0 :
+                                    mDatas.get(currentHotPosition).getLikeCount() - 1;
+                        } else {
+                            likeCount = oldLikeCount + 1;
+                        }
+                        mDatas.get(currentHotPosition).setLikeCount(likeCount);
+                        mDatas.get(currentHotPosition).setLiked(liked);
                     }
-                    mDatas.get(currentHotPosition).setLikeCount(likeCount);
-                    mDatas.get(currentHotPosition).setLiked(liked);
-                }
-                mDatas.get(currentHotPosition).setCommentsCount(commentCount);
+                    mDatas.get(currentHotPosition).setCommentsCount(commentCount);
 
-                socalContentAdapter.notifyItemChanged(currentHotPosition);
+                    socalContentAdapter.notifyItemChanged(currentHotPosition);
+
+                }
                 currentHotPosition = -1;
             }
 
             if (data != null && currentChoosePosition != -1) {
                 int commentCount = data.getIntExtra(KEY_COMMENT_COUNT, 0);
                 int liked = data.getIntExtra(KEY_LIKE, 0);
+                boolean isDelete = data.getBooleanExtra(KEY_DELETE ,false);
+                if (isDelete){
+                    mNewContents.remove(currentChoosePosition);
+                    socalNewContentAdapter.notifyItemRemoved(currentChoosePosition);
+                    socalNewContentAdapter.notifyItemRangeChanged(currentChoosePosition ,mNewContents.size());
+                }
                 int oldLiked = mNewContents.get(currentChoosePosition).getLiked();
                 int likeCount;
                 int oldLikeCount = mNewContents.get(currentChoosePosition).getLikeCount();
@@ -336,53 +348,19 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
                 currentChoosePosition = -1;
             }
         }
-
     }
 
-
-//    CommonAdapter<BbsTopicListTradeRespDTO.TopicListBean> adapter;
     SocalTagsAdapter adapter ;
     /**
      * 初始化横向滚动的tag
      */
     private void initRecycler() {
         initScreen();
+        socialNew.setNestedScrollingEnabled(false);
+        socialRecy.setNestedScrollingEnabled(false);
+        ((SimpleItemAnimator)socialRecy.getItemAnimator()).setSupportsChangeAnimations(false);
+        ((SimpleItemAnimator)socialNew.getItemAnimator()).setSupportsChangeAnimations(false);
         mSocialTagDatas.add(new BbsTopicListTradeRespDTO.TopicListBean());
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity);
-//        linearLayoutManager.setOrientation(HORIZONTAL);
-//        socialTags.setLayoutManager(linearLayoutManager);
-//        adapter = new CommonAdapter<BbsTopicListTradeRespDTO.TopicListBean>(mActivity ,R.layout.item_social_tag ,mSocialTagDatas) {
-//            @Override
-//            protected void convert(ViewHolder holder, BbsTopicListTradeRespDTO.TopicListBean o, int position) {
-//                if (position == 0){
-//                    holder.setImageResource(R.id.img ,R.drawable.shishi);
-//                }else{
-//                    ImageView imageView = holder.getView(R.id.img);
-//                    GildeUtils.setNoErrorImage(mActivity ,imageView,o.getIcon() ,imageView.getHeight());
-//                }
-//
-//                holder.setOnClickListener(R.id.img, new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        if (position == 0) {
-//                            page = 1;
-//                            slectkey = "";
-//                            topicId = 0;
-//                            presenter.getLostList("", page, slectkey, 0);
-//                            moveCursor(0);
-//                        } else {
-//                            topicId = mSocialTagDatas.get(position).getTopicId();
-//                            page = 1;
-//                            slectkey = "";
-//                            presenter.getLostList("", page, slectkey, topicId);
-//                            moveCursor(position);
-//                        }
-//
-//                    }
-//                });
-//
-//            }
-//        };
         adapter = new SocalTagsAdapter(mActivity, mSocialTagDatas, socialTags, new OnItemClickListener() {
             @Override
             public void click(int poisition) {

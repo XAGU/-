@@ -2,11 +2,14 @@ package com.xiaolian.amigo.ui.lostandfound;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -33,6 +36,8 @@ import com.xiaolian.amigo.ui.widget.dialog.LostAndFoundReplyDialog;
 import com.xiaolian.amigo.ui.widget.dialog.PrepayDialog;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutFooter;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutHeader;
+import com.xiaolian.amigo.util.KeyboardStatusDetector;
+import com.xiaolian.amigo.util.Log;
 import com.xiaolian.amigo.util.ScreenUtils;
 import com.xiaolian.amigo.util.SoftInputUtils;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
@@ -56,10 +61,15 @@ import static com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity2.KEY_LIKE;
  * @date 17/9/21
  */
 
-public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implements ILostAndFoundDetailView2 {
+public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implements ILostAndFoundDetailView2  ,KeyboardStatusDetector.KeyboardVisibilityListener {
     public static final String KEY_TYPE = "LostAndFoundDetailType";
     public static final String KEY_ID = "LostAndFoundDetailId";
+
+    public static final String KEY_DELETE = "LostAndFoundDelete";
+    private static final  String TAG = LostAndFoundDetailActivity2.class.getSimpleName();
     private static final int REQUEST_CODE_REPLY_DETAIL = 0x0119;
+
+    private boolean isDelete ;
     @BindView(R.id.et_reply)
     EditText etReply;
     @BindView(R.id.reply)
@@ -159,6 +169,25 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
                 vMoreHold.setVisibility(View.GONE);
             }
         });
+        keyboardListener();
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy != 0) SoftInputUtils.hideSoftInputFromWindow(LostAndFoundDetailActivity2.this ,etReply);
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        isDelete = false ;
     }
 
     public void init(){
@@ -189,6 +218,7 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
             deleteDialog.setOnCancelClickListener(new PrepayDialog.OnCancelClickListener() {
                 @Override
                 public void onCancelClick(Dialog dialog) {
+                    isDelete = true ;
                     presenter.reportOrDelete();
                 }
             });
@@ -231,8 +261,6 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
                 }
             }
         }));
-
-
         adapter.addItemViewDelegate(new LostAndFoundDetailTitleDelegate());
         recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 14)));
         adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
@@ -246,6 +274,7 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
                 return false;
             }
         });
+
         recyclerView.setItemAnimator(null);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new CustomLinearLayoutManager(this));
@@ -306,12 +335,12 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
     @OnTextChanged({R.id.et_reply})
     void etTextChange() {
         if (TextUtils.isEmpty(etReply.getText().toString())) {
-            reply.setVisibility(View.GONE);
+            reply.setEnabled(false);
         } else {
-            reply.setBackgroundResource(R.drawable.red_radius_4);
-            reply.setVisibility(View.VISIBLE);
+            reply.setEnabled(true);
         }
     }
+
 
     @OnClick({R.id.et_reply})
     public void etReply() {
@@ -320,11 +349,13 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
 
     @OnClick({R.id.reply})
     public void reply() {
+        Log.d(TAG ,"clickReply");
         String commentContent = etReply.getText().toString().trim();
         if (isReplyName) {
             presenter.publishReply(replyToId, replyToUserId, commentContent);
             etReply.setText("");
             SoftInputUtils.hideSoftInputFromWindow(this ,etReply);
+
             isReplyName = false ;
         } else {
             presenter.publishComment(commentContent);
@@ -415,23 +446,6 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
     }
 
 
-//    @OnClick(R.id.ll_footer)
-//    public void publishComment() {
-//        if (!presenter.isCommentEnable()) {
-//            return;
-//        }
-//        if (commentDialog == null) {
-//            commentDialog = new LostAndFoundCommentDialog(this);
-//        }
-//        commentDialog.setPublishClickListener((dialog, comment) -> {
-//            if (TextUtils.isEmpty(comment)) {
-//                onError("内容为空");
-//                return;
-//            }
-//            presenter.publishComment(comment);
-//        });
-//        commentDialog.show();
-//    }
 
     private void publishReply(Long replyToId, Long replyToUserId, String replyToUserName) {
         if (!presenter.isCommentEnable()) {
@@ -441,8 +455,6 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
         etReply.setText("");
         etReply.setHint("回复：" + replyToUserName);
         SoftInputUtils.showSoftInputFromWindow(this, etReply);
-        reply.setVisibility(View.VISIBLE);
-        reply.setBackgroundResource(R.drawable.red_radiu_4_translate);
         isReplyName = true;
         this.replyToId = replyToId;
         this.replyToUserId = replyToUserId;
@@ -537,6 +549,7 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
         intent.putExtra(LostAndFoundActivity2.KEY_COMMENT_COUNT, content == null ?
                 0 : content.getCommentCount());
         intent.putExtra(KEY_LIKE ,likeed);
+        intent.putExtra(KEY_DELETE ,isDelete);
         setResult(RESULT_OK ,intent);
         finish();
     }
@@ -584,6 +597,25 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
         vMoreHold.setBackgroundResource(R.drawable.uncollege);
     }
 
+    /**
+     * 软键盘显示与隐藏的监听
+     */
+    public void keyboardListener(){
+        int keyHeight = ScreenUtils.getScreenHeight(this) / 3 ;
+        llFooter.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                if (oldBottom != 0 && bottom != 0 && (oldBottom - bottom > keyHeight)) {
+                    reply.setVisibility(View.VISIBLE);
+                } else if (oldBottom != 0 && bottom != 0 && (bottom - oldBottom > keyHeight)) {
+                    reply.setVisibility(View.GONE);
+                }
+            }
+        });
+
+
+    }
+
     @Override
     public void notifyAdapter(int position, boolean delay) {
         adapter.notifyItemChanged(position);
@@ -620,6 +652,7 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
         intent.putExtra(LostAndFoundActivity2.KEY_COMMENT_COUNT, content == null ?
                 0 : content.getCommentCount());
         intent.putExtra(KEY_LIKE ,likeed);
+        intent.putExtra(KEY_DELETE ,isDelete);
         setResult(RESULT_OK, intent);
         super.onBackPressed();
     }
@@ -634,5 +667,10 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
 
             deleteDialog = null ;
         }
+    }
+
+    @Override
+    public void onVisibilityChanged(boolean keyboardVisible) {
+
     }
 }

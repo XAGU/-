@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -225,6 +226,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        android:background="@color/white"
         >
         <EditText
             android:layout_width="match_parent"
@@ -248,14 +250,16 @@
             android:layout_marginStart="14dp"
             android:text="发射"
             android:visibility="gone"
+            tool:visibility="visible"
+            android:enabled="false"
             android:id="@+id/reply"
             android:textSize="11sp"
             android:textColor="@color/white"
-            android:background="@drawable/red_radius_4"
+            android:background="@drawable/send_bg"
             android:gravity="center"/>
         <View
             android:layout_width="match_parent"
-            android:layout_height="1px"
+            android:layout_height="0.5dp"
             android:background="@color/colorDarke"
             android:layout_alignParentTop="true"/>
     </RelativeLayout>

@@ -202,6 +202,7 @@
         <activity android:name=".ui.lostandfound.LostAndFoundDetailActivity2"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
             />
 
         <!--失物招领回复详情-->

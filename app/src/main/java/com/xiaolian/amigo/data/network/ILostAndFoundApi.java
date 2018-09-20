@@ -39,13 +39,13 @@ public interface ILostAndFoundApi {
     /**
      * 获取失物招领列表
      */
-    @POST("lost/list")
+    @POST("lost/list2")
     Observable<ApiResult<QueryLostAndFoundListRespDTO>> queryLostAndFounds(@Body QueryLostAndFoundListReqDTO reqDTO);
 
     /**
      * 保存失物招领
      */
-    @POST("lost/add_new")
+    @POST("lost/add2")
     Observable<ApiResult<SimpleRespDTO>> saveLostAndFounds(@Body SaveLostAndFoundDTO reqDTO);
 
     /**
@@ -57,7 +57,7 @@ public interface ILostAndFoundApi {
     /**
      * 我的失物招领
      */
-    @POST("lost/personal/list_new")
+    @POST("lost/personal/list2")
     Observable<ApiResult<QueryLostAndFoundListRespDTO>> getMyLostAndFounds();
 
     /**
@@ -99,7 +99,7 @@ public interface ILostAndFoundApi {
     /**
      * 删除失物招领／评论／回复
      */
-    @POST("lost/delete_new")
+    @POST("lost/delete2")
     Observable<ApiResult<BooleanRespDTO>> delete(@Body DeleteLostFoundItemReqDTO reqDTO);
 
     /**
@@ -111,7 +111,7 @@ public interface ILostAndFoundApi {
     /**
      * 收藏列表
      */
-    @POST("lost/collect/list")
+    @POST("lost/collect/list2")
     Observable<ApiResult<QueryLostAndFoundListRespDTO>> getCollects(@Body CollectListReqDTO reqDTO);
 
     /**

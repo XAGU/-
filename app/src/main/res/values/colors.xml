@@ -27,6 +27,7 @@
     <color name="colorShadowWhite">#4dffffff</color>
     <color name="colorBorder">#e5e5e5</color>
     <color name="colorFullRed">#ffff5555</color>
+    <color name="colorFullRed30">#4dff5555</color>
     <color name="colorShadowRed">#4dff5555</color>
     <color name="colorGreen">#50e3de</color>
     <color name="colorGreenBathroom">#50e3d1</color>
@@ -43,6 +44,7 @@
     <color name="black10">#16000000</color>
     <color name="black80">#cc000000</color>
 
+    <color name="white30">#B2FFFFFF</color>
     <color name="white">#FFFFFFFF</color>
     <color name="white_10">#eeeeee</color>
     <color name="white10">#16ffffff</color>
