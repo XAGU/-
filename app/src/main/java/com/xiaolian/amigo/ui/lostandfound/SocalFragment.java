@@ -68,6 +68,7 @@ import butterknife.Unbinder;
 import static android.widget.LinearLayout.HORIZONTAL;
 import static com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity2.KEY_COMMENT_COUNT;
 import static com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity2.KEY_LIKE;
+import static com.xiaolian.amigo.ui.lostandfound.LostAndFoundDetailActivity2.KEY_DELETE;
 import static com.xiaolian.amigo.ui.lostandfound.LostAndFoundDetailActivity2.KEY_ID;
 
 /**
@@ -294,29 +295,43 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         if (requestCode == REQUEST_CODE_DETAIL) {
             if (data != null && currentHotPosition != -1) {
                 int commentCount = data.getIntExtra(KEY_COMMENT_COUNT, 0);
-                int liked = data.getIntExtra(KEY_LIKE, 0);
-                int oldLiked = mDatas.get(currentHotPosition).getLiked();
-                int likeCount;
-                int oldLikeCount = mDatas.get(currentHotPosition).getLikeCount();
-                if (liked != oldLiked && liked != 0) {
-                    if (liked == 2) {
-                        likeCount = (oldLikeCount - 1) < 0 ? 0 :
-                                mDatas.get(currentHotPosition).getLikeCount() - 1;
-                    } else {
-                        likeCount = oldLikeCount + 1;
+                boolean isDelete = data.getBooleanExtra(KEY_DELETE ,false);
+                if (isDelete){
+                    mDatas.remove(currentHotPosition);
+                    socalContentAdapter.notifyItemRemoved(currentHotPosition);
+                    socalContentAdapter.notifyItemRangeChanged(currentChoosePosition ,mDatas.size());
+                }else {
+                    int liked = data.getIntExtra(KEY_LIKE, 0);
+                    int oldLiked = mDatas.get(currentHotPosition).getLiked();
+                    int likeCount;
+                    int oldLikeCount = mDatas.get(currentHotPosition).getLikeCount();
+                    if (liked != oldLiked && liked != 0) {
+                        if (liked == 2) {
+                            likeCount = (oldLikeCount - 1) < 0 ? 0 :
+                                    mDatas.get(currentHotPosition).getLikeCount() - 1;
+                        } else {
+                            likeCount = oldLikeCount + 1;
+                        }
+                        mDatas.get(currentHotPosition).setLikeCount(likeCount);
+                        mDatas.get(currentHotPosition).setLiked(liked);
                     }
-                    mDatas.get(currentHotPosition).setLikeCount(likeCount);
-                    mDatas.get(currentHotPosition).setLiked(liked);
-                }
-                mDatas.get(currentHotPosition).setCommentsCount(commentCount);
+                    mDatas.get(currentHotPosition).setCommentsCount(commentCount);
 
-                socalContentAdapter.notifyItemChanged(currentHotPosition);
+                    socalContentAdapter.notifyItemChanged(currentHotPosition);
+
+                }
                 currentHotPosition = -1;
             }
 
             if (data != null && currentChoosePosition != -1) {
                 int commentCount = data.getIntExtra(KEY_COMMENT_COUNT, 0);
                 int liked = data.getIntExtra(KEY_LIKE, 0);
+                boolean isDelete = data.getBooleanExtra(KEY_DELETE ,false);
+                if (isDelete){
+                    mNewContents.remove(currentChoosePosition);
+                    socalNewContentAdapter.notifyItemRemoved(currentChoosePosition);
+                    socalNewContentAdapter.notifyItemRangeChanged(currentChoosePosition ,mNewContents.size());
+                }
                 int oldLiked = mNewContents.get(currentChoosePosition).getLiked();
                 int likeCount;
                 int oldLikeCount = mNewContents.get(currentChoosePosition).getLikeCount();

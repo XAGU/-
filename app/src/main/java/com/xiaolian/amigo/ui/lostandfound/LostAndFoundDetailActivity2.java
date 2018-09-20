@@ -33,6 +33,7 @@ import com.xiaolian.amigo.ui.widget.dialog.LostAndFoundReplyDialog;
 import com.xiaolian.amigo.ui.widget.dialog.PrepayDialog;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutFooter;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutHeader;
+import com.xiaolian.amigo.util.Log;
 import com.xiaolian.amigo.util.ScreenUtils;
 import com.xiaolian.amigo.util.SoftInputUtils;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
@@ -59,7 +60,12 @@ import static com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity2.KEY_LIKE;
 public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implements ILostAndFoundDetailView2 {
     public static final String KEY_TYPE = "LostAndFoundDetailType";
     public static final String KEY_ID = "LostAndFoundDetailId";
+
+    public static final String KEY_DELETE = "LostAndFoundDelete";
+    private static final  String TAG = LostAndFoundDetailActivity2.class.getSimpleName();
     private static final int REQUEST_CODE_REPLY_DETAIL = 0x0119;
+
+    private boolean isDelete ;
     @BindView(R.id.et_reply)
     EditText etReply;
     @BindView(R.id.reply)
@@ -161,6 +167,12 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        isDelete = false ;
+    }
+
     public void init(){
         if (presenter == null  || vMoreHold == null
                 || vMoreHold1 == null) return ;
@@ -189,6 +201,7 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
             deleteDialog.setOnCancelClickListener(new PrepayDialog.OnCancelClickListener() {
                 @Override
                 public void onCancelClick(Dialog dialog) {
+                    isDelete = true ;
                     presenter.reportOrDelete();
                 }
             });
@@ -306,9 +319,11 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
     @OnTextChanged({R.id.et_reply})
     void etTextChange() {
         if (TextUtils.isEmpty(etReply.getText().toString())) {
-            reply.setVisibility(View.GONE);
+            Log.d(TAG ,"编辑框内容为空");
+            reply.setEnabled(false);
+            reply.setVisibility(View.VISIBLE);
         } else {
-            reply.setBackgroundResource(R.drawable.red_radius_4);
+            reply.setEnabled(true);
             reply.setVisibility(View.VISIBLE);
         }
     }
@@ -320,15 +335,21 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
 
     @OnClick({R.id.reply})
     public void reply() {
+        Log.d(TAG ,"clickReply");
         String commentContent = etReply.getText().toString().trim();
         if (isReplyName) {
             presenter.publishReply(replyToId, replyToUserId, commentContent);
             etReply.setText("");
+            reply.setVisibility(View.GONE);
+            reply.setEnabled(false);
             SoftInputUtils.hideSoftInputFromWindow(this ,etReply);
+
             isReplyName = false ;
         } else {
             presenter.publishComment(commentContent);
             etReply.setText("");
+            reply.setVisibility(View.GONE);
+            reply.setEnabled(false);
             SoftInputUtils.hideSoftInputFromWindow(this ,etReply);
             isReplyName = false ;
         }
@@ -440,6 +461,7 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
 
         etReply.setText("");
         etReply.setHint("回复：" + replyToUserName);
+        reply.setEnabled(false);
         SoftInputUtils.showSoftInputFromWindow(this, etReply);
         reply.setVisibility(View.VISIBLE);
         reply.setBackgroundResource(R.drawable.red_radiu_4_translate);
@@ -537,6 +559,7 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
         intent.putExtra(LostAndFoundActivity2.KEY_COMMENT_COUNT, content == null ?
                 0 : content.getCommentCount());
         intent.putExtra(KEY_LIKE ,likeed);
+        intent.putExtra(KEY_DELETE ,isDelete);
         setResult(RESULT_OK ,intent);
         finish();
     }
@@ -620,6 +643,7 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
         intent.putExtra(LostAndFoundActivity2.KEY_COMMENT_COUNT, content == null ?
                 0 : content.getCommentCount());
         intent.putExtra(KEY_LIKE ,likeed);
+        intent.putExtra(KEY_DELETE ,isDelete);
         setResult(RESULT_OK, intent);
         super.onBackPressed();
     }

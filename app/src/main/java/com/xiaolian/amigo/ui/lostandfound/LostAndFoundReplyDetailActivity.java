@@ -333,9 +333,10 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
     @OnTextChanged({R.id.et_reply})
     void etTextChange(){
         if (TextUtils.isEmpty(etReply.getText().toString())){
-            reply.setVisibility(View.GONE);
+            reply.setEnabled(false);
+            reply.setVisibility(View.VISIBLE);
         }else{
-            reply.setBackgroundResource(R.drawable.red_radius_4);
+            reply.setEnabled(true);
             reply.setVisibility(View.VISIBLE);
         }
     }
@@ -349,6 +350,8 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
             presenter.publishReply(commentId, null, commentContent);
         }
 
+        reply.setVisibility(View.GONE);
+        reply.setEnabled(false);
         etReply.setText("");
         SoftInputUtils.hideSoftInputFromWindow(this ,etReply);
 
