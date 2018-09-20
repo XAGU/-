@@ -911,11 +911,11 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 // 存储设备响应结果
                 saveDeviceResult(result, orderId);
             }
-            String prefixAgrement2 = result.substring(0, 6);
-            if (TextUtils.equals("140804", prefixAgrement2)) {
+            String prefixAgrement2 = result.substring(2, 6);
+            if (TextUtils.equals("0804", prefixAgrement2)) {
                 setStep(TradeStep.CLOSE_VALVE);
-            } else if (TextUtils.equals("140803", prefixAgrement2)) {
-                // 存储设备响应结果
+            } else if (TextUtils.equals("0803", prefixAgrement2)) {
+                // 存储开阀设备响应结果
                 saveDeviceResult(result, orderId);
             }
         } catch (Exception e) {
@@ -929,6 +929,13 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         }
         Log.wtf(TAG , "processCommandResult>>>>>" + result  + "   " + deviceNo);
         CmdResultReqDTO reqDTO = new CmdResultReqDTO();
+//        if (result.startsWith("a805")) {
+//            reqDTO.setData("a80502af");
+//        } else if (result.startsWith("140810")) {
+//            reqDTO.setData("14081071360862C12F906D54993C4ED0643C48F5");
+//        } else {
+//            reqDTO.setData(result);
+//        }
         reqDTO.setData(result);
         reqDTO.setMacAddress(deviceNo);
         addObserver(deviceDataManager.processCmdResult(reqDTO), new NetworkObserver<ApiResult<CmdResultRespDTO>>(false) {
