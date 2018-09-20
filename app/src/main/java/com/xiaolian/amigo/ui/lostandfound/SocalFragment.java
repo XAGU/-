@@ -47,13 +47,10 @@ import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutFooter;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutHeader;
 import com.xiaolian.amigo.ui.widget.photoview.AlbumItemActivity;
-import com.xiaolian.amigo.util.GildeUtils;
 import com.xiaolian.amigo.util.Log;
 import com.xiaolian.amigo.util.ScreenUtils;
 import com.xiaolian.amigo.util.SoftInputUtils;
-import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
-import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +62,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-import static android.widget.LinearLayout.HORIZONTAL;
 import static com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity2.KEY_COMMENT_COUNT;
 import static com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity2.KEY_LIKE;
 import static com.xiaolian.amigo.ui.lostandfound.LostAndFoundDetailActivity2.KEY_DELETE;
@@ -351,11 +347,8 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
                 currentChoosePosition = -1;
             }
         }
-
     }
 
-
-//    CommonAdapter<BbsTopicListTradeRespDTO.TopicListBean> adapter;
     SocalTagsAdapter adapter ;
     /**
      * 初始化横向滚动的tag
@@ -363,41 +356,6 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     private void initRecycler() {
         initScreen();
         mSocialTagDatas.add(new BbsTopicListTradeRespDTO.TopicListBean());
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity);
-//        linearLayoutManager.setOrientation(HORIZONTAL);
-//        socialTags.setLayoutManager(linearLayoutManager);
-//        adapter = new CommonAdapter<BbsTopicListTradeRespDTO.TopicListBean>(mActivity ,R.layout.item_social_tag ,mSocialTagDatas) {
-//            @Override
-//            protected void convert(ViewHolder holder, BbsTopicListTradeRespDTO.TopicListBean o, int position) {
-//                if (position == 0){
-//                    holder.setImageResource(R.id.img ,R.drawable.shishi);
-//                }else{
-//                    ImageView imageView = holder.getView(R.id.img);
-//                    GildeUtils.setNoErrorImage(mActivity ,imageView,o.getIcon() ,imageView.getHeight());
-//                }
-//
-//                holder.setOnClickListener(R.id.img, new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        if (position == 0) {
-//                            page = 1;
-//                            slectkey = "";
-//                            topicId = 0;
-//                            presenter.getLostList("", page, slectkey, 0);
-//                            moveCursor(0);
-//                        } else {
-//                            topicId = mSocialTagDatas.get(position).getTopicId();
-//                            page = 1;
-//                            slectkey = "";
-//                            presenter.getLostList("", page, slectkey, topicId);
-//                            moveCursor(position);
-//                        }
-//
-//                    }
-//                });
-//
-//            }
-//        };
         adapter = new SocalTagsAdapter(mActivity, mSocialTagDatas, socialTags, new OnItemClickListener() {
             @Override
             public void click(int poisition) {
