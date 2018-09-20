@@ -299,10 +299,15 @@ public class WriteLZActivity extends LostAndFoundBaseActivity implements IPublis
                 onError("请先选择图片或者填写文字");
                 return;
             }
-        }
 
-        presenter.publishLostAndFound(mainContent.getText().toString(),
-                images, mainTitle.getText().toString(), type);
+            if (type == -1){
+                onError("请先选择标签");
+            }
+        }else {
+
+            presenter.publishLostAndFound(mainContent.getText().toString(),
+                    images, mainTitle.getText().toString(), type);
+        }
     }
 
     @Override

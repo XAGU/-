@@ -232,7 +232,7 @@ public class MyPublishActivity2 extends LostAndFoundBaseActivity implements ILos
     public void delete(int position) {
         try {
             publicAdapter.notifyItemRemoved(position);
-            lostAndFounds.remove(position);
+//            lostAndFounds.remove();
         }catch (Exception e){
             Log.e(TAG ,e.getMessage());
         }
