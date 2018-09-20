@@ -243,7 +243,6 @@ dependencies {
     compile 'com.tencent.wup:wup:1.0.0.E-release'
     //mid包
     compile 'com.tencent.mid:mid:4.0.6-release'
-    //    implementation 'com.android.support:support-dynamic-animation:25.3.0'
 }
 
 configurations.all {

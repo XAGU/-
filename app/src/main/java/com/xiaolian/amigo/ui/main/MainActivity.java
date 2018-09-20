@@ -18,12 +18,17 @@ import android.text.TextUtils;
 import android.view.GestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.BounceInterpolator;
 import android.view.animation.DecelerateInterpolator;
+import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.facebook.rebound.SimpleSpringListener;
+import com.facebook.rebound.Spring;
+import com.facebook.rebound.SpringSystem;
 import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushConfig;
 import com.tencent.android.tpush.XGPushManager;
@@ -235,25 +240,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
      * 弹性动画
      */
     private void springAnimator(View view){
-
-        AnimatorSet set = new AnimatorSet();
-        ValueAnimator animator1 = ValueAnimator.ofInt(ScreenUtils.dpToPxInt(this ,5),ScreenUtils.dpToPxInt(this ,30));
-        animator1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT);
-                int currentValue = (int) animation.getAnimatedValue();
-                params.addRule(CENTER_IN_PARENT);
-                params.width = currentValue ;
-                params.height = currentValue ;
-                view.setLayoutParams(params);
-                view.postInvalidate();
-            }
-        });
-
-        animator1.setDuration(40);
-        ValueAnimator animator2 = ValueAnimator.ofInt(ScreenUtils.dpToPxInt(this ,30) , ScreenUtils.dpToPxInt(this ,75));
+        int normalHeight = ScreenUtils.dpToPxInt(this ,30);
+        ValueAnimator animator2 = ValueAnimator.ofInt(ScreenUtils.dpToPxInt(this ,5),ScreenUtils.dpToPxInt(this ,30) , ScreenUtils.dpToPxInt(this ,65) , ScreenUtils.dpToPxInt(this ,80),ScreenUtils.dpToPxInt(this ,65)
+                                                         ,ScreenUtils.dpToPxInt(this ,70) ,ScreenUtils.dpToPxInt(this ,65)    );
         animator2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
@@ -261,35 +250,22 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                         ViewGroup.LayoutParams.WRAP_CONTENT);
                 int currentValue = (int) animation.getAnimatedValue();
                 params.addRule(CENTER_IN_PARENT);
-                params.height = (int) ScreenUtils.dpToPx(MainActivity.this ,30);
+
+                if (currentValue < normalHeight){
+                    params.height = currentValue ;
+                }else {
+                    params.height = (int) ScreenUtils.dpToPx(MainActivity.this, 30);
+                }
                 params.width = currentValue ;
                 view.setLayoutParams(params);
                 view.postInvalidate();
             }
         });
-        animator2.setDuration(80);
+        animator2.setDuration(300);
+        animator2.setInterpolator(new DecelerateInterpolator());
 
+        animator2.start();
 
-        ValueAnimator animator3 = ValueAnimator.ofInt(ScreenUtils.dpToPxInt(this ,75) , ScreenUtils.dpToPxInt(this ,65));
-        animator3.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-
-                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT);
-                int currentValue = (int) animation.getAnimatedValue();
-                Log.d(TAG , currentValue +"" );
-                params.addRule(CENTER_IN_PARENT);
-                params.height = (int) ScreenUtils.dpToPx(MainActivity.this ,30);
-                params.width = currentValue ;
-                view.setLayoutParams(params);
-                view.postInvalidate();
-            }
-        });
-        animator3.setDuration(5);
-
-        set.playSequentially(animator1 , animator2 , animator3);
-        set.start();
     }
 
     /**
