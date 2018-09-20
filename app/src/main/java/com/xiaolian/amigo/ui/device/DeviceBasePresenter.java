@@ -793,6 +793,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             public void onError(Throwable e) {
                 super.onError(e);
                 //异常情况处理，容错处理，进行握手
+                getMvpView().realPay();
             }
         }, Schedulers.io());
     }
@@ -1093,7 +1094,17 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             }
         } else {
             Log.e(TAG, String.format("处理异常返回结果。code:%s, msg:%s", result.getError().getCode(), result.getError().getDisplayMessage()));
-            // 如果在结账时服务器返回异常则状态改为SETTLE
+            Integer rateCmdType = result.getError().getBleCmdType();
+            if (null != rateCmdType) {
+                //
+                if (Command.UPDATE_DEVICE_RATE == Command.getCommand(rateCmdType)) {
+                    //更新费率的时候异常直接跳过该流程
+                    getMvpView().realPay();
+                    return;
+                }
+            }
+
+                    // 如果在结账时服务器返回异常则状态改为SETTLE
             if (getStep() == TradeStep.CLOSE_VALVE) {
                 setStep(TradeStep.SETTLE);
             }

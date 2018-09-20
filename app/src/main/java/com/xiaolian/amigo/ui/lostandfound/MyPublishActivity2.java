@@ -231,8 +231,9 @@ public class MyPublishActivity2 extends LostAndFoundBaseActivity implements ILos
     @Override
     public void delete(int position) {
         try {
+            lostAndFounds.remove(position);
             publicAdapter.notifyItemRemoved(position);
-//            lostAndFounds.remove();
+            publicAdapter.notifyItemRangeChanged(position ,lostAndFounds.size());
         }catch (Exception e){
             Log.e(TAG ,e.getMessage());
         }
