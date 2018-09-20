@@ -29,7 +29,6 @@ public class LostAndFoundReplyDialog extends Dialog {
     private Context context;
     private EditText etReply;
     private TextView tvSend;
-    private TextView tvReplyTip;
     private OnPublishClickListener listener;
 
     public LostAndFoundReplyDialog(@NonNull Context context) {
@@ -64,10 +63,10 @@ public class LostAndFoundReplyDialog extends Dialog {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (!TextUtils.isEmpty(s)) {
                     tvSend.setEnabled(true);
-                    tvSend.setTextColor(ContextCompat.getColor(context, R.color.lost_and_found_blue));
+                    tvSend.setTextColor(ContextCompat.getColor(context, R.color.white));
                 } else {
                     tvSend.setEnabled(false);
-                    tvSend.setTextColor(ContextCompat.getColor(context, R.color.colorDarkB));
+                    tvSend.setTextColor(ContextCompat.getColor(context, R.color.white));
                 }
             }
 
@@ -75,8 +74,7 @@ public class LostAndFoundReplyDialog extends Dialog {
             public void afterTextChanged(Editable s) {
             }
         });
-        ViewUtil.setEditHintAndSize("请输入内容...", 14, etReply);
-        tvReplyTip = findViewById(R.id.tv_reply_tip);
+//        ViewUtil.setEditHintAndSize("请输入内容...", 14, etReply);
     }
 
     @Override
@@ -94,7 +92,6 @@ public class LostAndFoundReplyDialog extends Dialog {
     }
 
     public void setReplyUser(String replyToUserName) {
-        tvReplyTip.setText(String.format("正在回复 %s", replyToUserName));
     }
 
     public interface OnPublishClickListener {

@@ -134,6 +134,8 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
 
     private volatile boolean refreshFlag;
 
+    private int lastVertivaloffSet = - 1 ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -183,6 +185,32 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
             }
         });
         presenter.getReplies();
+
+        keyboardListener();
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy != 0) SoftInputUtils.hideSoftInputFromWindow(LostAndFoundReplyDetailActivity.this ,etReply);
+            }
+        });
+
+        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                Log.d(TAG ,verticalOffset +" ");
+                if (verticalOffset != 0 && verticalOffset != lastVertivaloffSet) SoftInputUtils.hideSoftInputFromWindow(LostAndFoundReplyDetailActivity.this ,etReply);
+                lastVertivaloffSet = verticalOffset ;
+            }
+        });
+
+
     }
 
     private void initRecyclerView() {
@@ -276,6 +304,28 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
         bottomDialog.show();
     }
 
+
+
+
+    /**
+     * 软键盘显示与隐藏的监听
+     */
+    public void keyboardListener(){
+        int keyHeight = ScreenUtils.getScreenHeight(this) / 3 ;
+        llFooter.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                if (oldBottom != 0 && bottom != 0 && (oldBottom - bottom > keyHeight)) {
+                    reply.setVisibility(View.VISIBLE);
+                } else if (oldBottom != 0 && bottom != 0 && (bottom - oldBottom > keyHeight)) {
+                    reply.setVisibility(View.GONE);
+                }
+            }
+        });
+
+
+    }
+
     /**
      * 显示弹窗
      */
@@ -334,10 +384,8 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
     void etTextChange(){
         if (TextUtils.isEmpty(etReply.getText().toString())){
             reply.setEnabled(false);
-            reply.setVisibility(View.VISIBLE);
         }else{
             reply.setEnabled(true);
-            reply.setVisibility(View.VISIBLE);
         }
     }
 
@@ -350,8 +398,6 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
             presenter.publishReply(commentId, null, commentContent);
         }
 
-        reply.setVisibility(View.GONE);
-        reply.setEnabled(false);
         etReply.setText("");
         SoftInputUtils.hideSoftInputFromWindow(this ,etReply);
 
@@ -382,8 +428,6 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
         etReply.setText("");
         etReply.setHint("回复：" + replyToUserName);
         SoftInputUtils.showSoftInputFromWindow(this ,etReply);
-        reply.setVisibility(View.VISIBLE);
-        reply.setBackgroundResource(R.drawable.red_radiu_4_translate);
     }
 
     @Override

@@ -9,6 +9,7 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -355,6 +356,10 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
      */
     private void initRecycler() {
         initScreen();
+        socialNew.setNestedScrollingEnabled(false);
+        socialRecy.setNestedScrollingEnabled(false);
+        ((SimpleItemAnimator)socialRecy.getItemAnimator()).setSupportsChangeAnimations(false);
+        ((SimpleItemAnimator)socialNew.getItemAnimator()).setSupportsChangeAnimations(false);
         mSocialTagDatas.add(new BbsTopicListTradeRespDTO.TopicListBean());
         adapter = new SocalTagsAdapter(mActivity, mSocialTagDatas, socialTags, new OnItemClickListener() {
             @Override
