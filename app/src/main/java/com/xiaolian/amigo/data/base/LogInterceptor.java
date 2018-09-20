@@ -98,8 +98,8 @@ public class LogInterceptor implements Interceptor {
             token = "";
         }
 
-        if ((request.url().url().getPath().startsWith(TRADE_PREFIX)
-                && !request.url().url().getPath().contains(ANTI_TRADE_PREFIX)) || request.url().url().getPath().contains(UPDAT_RATE_PREFIX)) {
+        if ((request.url().url().getPath().contains(TRADE_PREFIX)
+                && (!request.url().url().getPath().contains(ANTI_TRADE_PREFIX))) || request.url().url().getPath().contains(UPDAT_RATE_PREFIX)) {
             String deviceToken = sharedPreferencesHelp.getCurrentDeviceToken();
             if (deviceToken == null) {
                 deviceToken = "";
