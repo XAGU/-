@@ -106,7 +106,7 @@ public class ScanActivity extends WasherBaseActivity
 
     private ScanDialog scanDialog ;
 
-    private int type ;
+    private int ScanType2 ;
 
     /*****      ***/
     @Override
@@ -135,7 +135,7 @@ public class ScanActivity extends WasherBaseActivity
                         if (scan){
                             handleScanContent(result.getContents());
                         }else {
-                            presenter.scanCheckout(result.getContents() , type);
+                            presenter.scanCheckout(result.getContents() , ScanType2);
                         }
                     }
                 }
@@ -218,7 +218,7 @@ public class ScanActivity extends WasherBaseActivity
     private void init(){
         if (zxingBarcodeScanner != null) zxingBarcodeScanner.setType(scanType);
         if (scanType == 1){
-            if (type == 4) {
+            if (ScanType2 == 4) {
                 tvTitle.setText("洗衣机扫描");
             }else{
                 tvTitle.setText("烘干机扫描");
@@ -454,7 +454,7 @@ public class ScanActivity extends WasherBaseActivity
         if (getIntent() != null){
             scanType = getIntent().getIntExtra(SCAN_TYPE , 1);
             scan = getIntent().getBooleanExtra(IS_SACN , false);
-            type = getIntent().getIntExtra(KEY_TYPE ,4);
+            ScanType2 = getIntent().getIntExtra(KEY_TYPE ,4);
         }
     }
 
@@ -518,7 +518,7 @@ public class ScanActivity extends WasherBaseActivity
     /****     扫一扫中扫描设备地址的处理  ，留做以后代码重构后做成父类处理   *****/
     @Override
     public void showDeviceUsageDialog(int deviceType, DeviceCheckRespDTO data ,String mac ,boolean isBle) {
-            Log.d(TAG, "showDeviceUsageDialog: " + type);
+            Log.d(TAG, "showDeviceUsageDialog: " + deviceType);
             if (data == null || data.getBalance() == null
                     || data.getPrepay() == null || data.getMinPrepay() == null
                     || data.getTimeValid() == null) {
@@ -537,11 +537,11 @@ public class ScanActivity extends WasherBaseActivity
             // 2小时内存在未找零订单，弹窗提示需要结账
 
             if (data.getExistsUnsettledOrder() != null && data.getExistsUnsettledOrder()) {
-                    showScanDialog(type ,data ,orderPreInfo );
+                    showScanDialog(deviceType ,data ,orderPreInfo );
             } else {
                 // 调用one
                 if (!data.getTimeValid()) {
-                    showTimeValidDialog(type, data , mac);
+                    showTimeValidDialog(deviceType, data , mac);
                 } else {
                     presenter.getDeviceDetail(false ,deviceType ,mac ,true);
                     // 如果热水澡 检查默认宿舍

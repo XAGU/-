@@ -2,16 +2,12 @@ package com.xiaolian.amigo.util;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
-import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.target.Target;
 import com.xiaolian.amigo.R;
 
 public class GildeUtils {
@@ -31,11 +27,12 @@ public class GildeUtils {
                     @Override
                     public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                         if (view == null) return  ;
-                        ViewGroup.LayoutParams params = view.getLayoutParams();
+                        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) view.getLayoutParams();
                         float scale = height /resource.getHeight();
                         int vw = (int) (resource.getWidth() * scale);
                         params.height = (int) height;
                         params.width = vw;
+                        params.setMarginEnd(ScreenUtils.dpToPxInt(context , 5));
                         view.setLayoutParams(params);
                         view.setImageBitmap(resource);
 //                        view.postInvalidate();

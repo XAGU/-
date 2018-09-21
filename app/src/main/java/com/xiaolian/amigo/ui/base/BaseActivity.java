@@ -19,21 +19,26 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.bluetooth.BluetoothAdapter;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,11 +60,16 @@ import com.xiaolian.amigo.ui.widget.dialog.LoadingDialog;
 import com.xiaolian.amigo.util.Log;
 import com.xiaolian.amigo.util.NetworkUtil;
 import com.yalantis.ucrop.UCrop;
+import com.yalantis.ucrop.util.BitmapLoadUtils;
+import com.yalantis.ucrop.util.FileUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.Map;
 
@@ -108,7 +118,7 @@ public abstract class BaseActivity extends SwipeBackActivity
 
 
     private void selectPhoto() {
-        mPickImageUri = getImageUri("pick");
+//        mPickImageUri = getImageUri("pick");
         Intent intent = new Intent(Intent.ACTION_PICK, null);
         intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
         startActivityForResult(intent, REQUEST_CODE_PICK);
@@ -124,18 +134,21 @@ public abstract class BaseActivity extends SwipeBackActivity
     }
 
 
+
+
     private Uri getImageUri(String fileName) {
-        String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xiaolian/";
-        File path = new File(filePath);
-        if (!path.exists()) {
-            boolean isPathSuccess = path.mkdirs();
-            if (!isPathSuccess) {
-                onError("没有SD卡权限");
-                return null;
-            }
-        }
+//        String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xiaolian/";
+//        File path = new File(filePath);
+//        if (!path.exists()) {
+//            boolean isPathSuccess = path.mkdirs();
+//            if (!isPathSuccess) {
+//                onError("没有SD卡权限");
+//                return null;
+//            }
+//        }
         Uri imageUri;
-        File outputImage = new File(path, fileName + ".jpg");
+//        File outputImage = new File(path, fileName + ".jpg");
+        File outputImage = new File(fileName);
         try {
             if (outputImage.exists()) {
                 boolean isDeleteSuccess = outputImage.delete();
@@ -156,6 +169,7 @@ public abstract class BaseActivity extends SwipeBackActivity
         } else {
             imageUri = Uri.fromFile(outputImage);
         }
+        Log.d(TAG ,imageUri.toString());
         return imageUri;
     }
 
@@ -182,6 +196,46 @@ public abstract class BaseActivity extends SwipeBackActivity
         return Uri.fromFile(outputImage);
     }
 
+    @TargetApi(19)
+    private String handleImageOnKitKat(Intent data){
+        String imagePath = null;
+        Uri uri = data.getData();
+        if (DocumentsContract.isDocumentUri(this,uri)){
+            //如果是document类型的Uri,则通过document id处理
+            String docId = DocumentsContract.getDocumentId(uri);
+            if ("com.android.providers.media.documents".equals(uri.getAuthority())){
+                String id = docId.split(":")[1];//解析出数字格式的id
+                String selection = MediaStore.Images.Media._ID + "=" + id;
+                imagePath = getImagePath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,selection);
+            }else if ("com.android.providers.downloads.documents".equals(uri.getAuthority())){
+                Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"),Long.valueOf(docId));
+                imagePath = getImagePath(contentUri,null);
+            }
+        }else if ("content".equalsIgnoreCase(uri.getScheme())){
+            //如果是content类型的Uri，则使用普通方式处理
+            imagePath = getImagePath(uri,null);
+        }else if ("file".equalsIgnoreCase(uri.getScheme())){
+            //如果是file类型的Uri，直接获取图片路径即可
+            imagePath = uri.getPath();
+        }
+
+        return imagePath ;
+    }
+
+
+    private String getImagePath(Uri uri,String selection){
+        String path = null;
+        //通过Uri和selection来获取真实的图片路径
+        Cursor cursor = getContentResolver().query(uri,null,selection,null,null);
+        if (cursor != null){
+            if (cursor.moveToFirst()){
+                path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+            }
+            cursor.close();
+        }
+        return path;
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -196,9 +250,13 @@ public abstract class BaseActivity extends SwipeBackActivity
                 options.setStatusBarColor(colorPrimary);
                 UCrop.of(mPhotoImageUri, mCropImageUri)
                         .withAspectRatio(1, 1)
-//                        .withMaxResultSize(250 * 2, 170 * 2)
+                        .withMaxResultSize(250 * 2, 170 * 2)
                         .withOptions(options)
                         .start(this);
+//                if (imageCallback != null) {
+//                    imageCallback.callback(mPhotoImageUri);
+//                }
+
 
             } else if (requestCode == UCrop.REQUEST_CROP) {
 //                mImage.setImageDrawable(null);
@@ -209,18 +267,24 @@ public abstract class BaseActivity extends SwipeBackActivity
                 }
             } else if (requestCode == REQUEST_CODE_PICK) {
                 if (data != null && data.getData() != null) {
-                    mPickImageUri = data.getData();
-                    mCropImageUri = getCropUri("crop");
-                    UCrop.Options options = new UCrop.Options();
-                    int colorPrimary = ContextCompat.getColor(this, R.color.colorPrimary);
-                    options.setToolbarColor(colorPrimary);
-                    options.setActiveWidgetColor(colorPrimary);
-                    options.setStatusBarColor(colorPrimary);
-                    UCrop.of(mPickImageUri, mCropImageUri)
-                            .withAspectRatio(1, 1)
+//                    mCropImageUri = getCropUri("crop");
+//                    UCrop.Options options = new UCrop.Options();
+//                    int colorPrimary = ContextCompat.getColor(this, R.color.colorPrimary);
+//                    options.setToolbarColor(colorPrimary);
+//                    options.setActiveWidgetColor(colorPrimary);
+//                    options.setStatusBarColor(colorPrimary);
+//                    UCrop.of(mPickImageUri, mCropImageUri)
+//                            .withAspectRatio(1, 1)
 //                            .withMaxResultSize(250 * 2, 170 * 2)
-                            .withOptions(options)
-                            .start(this);
+//                            .withOptions(options)
+//                            .start(this);
+
+                    String photoPath = FileUtils.getPath(this ,data.getData());
+                    mPickImageUri = getImageUri(photoPath);
+                    if (imageCallback != null) {
+                        imageCallback.callback(mPickImageUri);
+                    }
+
                 }
             } else if (requestCode == REQUEST_BLE) {
                 if (isLocationEnable()) {
@@ -301,6 +365,8 @@ public abstract class BaseActivity extends SwipeBackActivity
     public interface ImageCallback {
         void callback(Uri imageUri);
     }
+
+
 
     public interface EmptyImageCallback {
         void callback();

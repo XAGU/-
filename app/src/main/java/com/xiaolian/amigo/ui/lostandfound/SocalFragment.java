@@ -1,10 +1,13 @@
 package com.xiaolian.amigo.ui.lostandfound;
 
 
+import android.animation.Animator;
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +17,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.BounceInterpolator;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -249,16 +253,19 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
                     int left = socialTags.getChildAt(position).getLeft();
                     int right = socialTags.getChildAt(position).getRight();
                     int middle = (left + right) / 2;
-                    LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) titleBorder.getLayoutParams();
-                    layoutParams.setMarginStart(middle - ScreenUtils.dpToPxInt(mActivity, 4));
-                    titleBorder.setLayoutParams(layoutParams);
+//                    LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) titleBorder.getLayoutParams();
+//                    layoutParams.setMarginStart(middle - ScreenUtils.dpToPxInt(mActivity, 4));
+//                    titleBorder.setLayoutParams(layoutParams);
+                    animWidthMove(middle);
                 } else {
                     int left = socialTags.getChildAt(position - firstItem).getLeft();
                     int right = socialTags.getChildAt(position - firstItem).getRight();
+
                     int middle = (left + right) / 2;
-                    LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) titleBorder.getLayoutParams();
-                    layoutParams.setMarginStart(middle - ScreenUtils.dpToPxInt(mActivity, 4));
-                    titleBorder.setLayoutParams(layoutParams);
+                    animWidthMove(middle);
+//                    LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) titleBorder.getLayoutParams();
+//                    layoutParams.setMarginStart(middle - ScreenUtils.dpToPxInt(mActivity, 4));
+//                    titleBorder.setLayoutParams(layoutParams);
                 }
             }
         }catch (Exception e){
@@ -266,8 +273,143 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         }
     }
 
+    /**
+     * 动画第一步  ，  将View变宽
+     * @param moveLeft
+     */
+    private void animWidthMove(int moveLeft){
+       int oldLeft =   titleBorder.getLeft() ;
+       int maxWidth ;
+       int oldWidth = titleBorder.getWidth();
+       boolean backMove = false ;
+       if (oldLeft  < moveLeft){
+           backMove  = true ;
+           maxWidth = moveLeft - oldLeft + ScreenUtils.dpToPxInt(mActivity , 9) ;
+       }else{
+           backMove = false ;
+           maxWidth = oldLeft - moveLeft  + ScreenUtils.dpToPxInt(mActivity , 9) ;
+       }
+
+       if (backMove) {
+           ValueAnimator widthAnim = ValueAnimator.ofInt(oldWidth, maxWidth);
+
+           widthAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+               @Override
+               public void onAnimationUpdate(ValueAnimator animation) {
+                   int currentValue = (int) animation.getAnimatedValue();
+                   LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) titleBorder.getLayoutParams();
+                   layoutParams.width = currentValue;
+                   layoutParams.height = titleBorder.getHeight();
+                   titleBorder.setLayoutParams(layoutParams);
+               }
+           });
+
+           widthAnim.addListener(new Animator.AnimatorListener() {
+               @Override
+               public void onAnimationStart(Animator animation) {
+
+               }
+
+               @Override
+               public void onAnimationEnd(Animator animation) {
+                   animMove(oldWidth, maxWidth);
+               }
+
+               @Override
+               public void onAnimationCancel(Animator animation) {
+
+               }
+
+               @Override
+               public void onAnimationRepeat(Animator animation) {
+
+               }
+           });
+           widthAnim.setDuration(100);
+           widthAnim.setInterpolator(new FastOutSlowInInterpolator());
+           widthAnim.start();
+       }else{
+           int initMarginStart = ((LinearLayout.LayoutParams)titleBorder.getLayoutParams()).getMarginStart();
+           ValueAnimator widthAnim = ValueAnimator.ofInt(oldWidth, maxWidth);
+           widthAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+               @Override
+               public void onAnimationUpdate(ValueAnimator animation) {
+                   int currentValue = (int) animation.getAnimatedValue();
+                   LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) titleBorder.getLayoutParams();
+                   layoutParams.setMarginStart( initMarginStart - (currentValue - oldWidth));
+                   layoutParams.width = currentValue;
+                   layoutParams.height = titleBorder.getHeight();
+                   titleBorder.setLayoutParams(layoutParams);
+               }
+           });
+
+           widthAnim.addListener(new Animator.AnimatorListener() {
+               @Override
+               public void onAnimationStart(Animator animation) {
+
+               }
+
+               @Override
+               public void onAnimationEnd(Animator animation) {
+                   animMove2(oldWidth, maxWidth);
+               }
+
+               @Override
+               public void onAnimationCancel(Animator animation) {
+
+               }
+
+               @Override
+               public void onAnimationRepeat(Animator animation) {
+
+               }
+           });
+           widthAnim.setDuration(100);
+           widthAnim.setInterpolator(new FastOutSlowInInterpolator());
+           widthAnim.start();
+       }
+    }
 
 
+    private void animMove2(int oldWidth , int maxWidth){
+        ValueAnimator widthAnim = ValueAnimator.ofInt(maxWidth , oldWidth);
+        widthAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                int currentValue = (int) animation.getAnimatedValue();
+                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) titleBorder.getLayoutParams();
+                layoutParams.width = currentValue ;
+                layoutParams.height = titleBorder.getHeight();
+                titleBorder.setLayoutParams(layoutParams);
+            }
+        });
+        widthAnim.setDuration(100);
+        widthAnim.setInterpolator(new FastOutSlowInInterpolator());
+        widthAnim.start();
+    }
+
+    /**
+     * 动画第二步， 将view变小并移动
+     * @param
+     */
+    private void animMove(int oldWidth , int maxWidth){
+            int initMarginStart = ((LinearLayout.LayoutParams)titleBorder.getLayoutParams()).getMarginStart();
+            ValueAnimator widthAnim = ValueAnimator.ofInt(maxWidth , oldWidth);
+            widthAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    int currentValue = (int) animation.getAnimatedValue();
+                    LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) titleBorder.getLayoutParams();
+                    layoutParams.setMarginStart(initMarginStart + (maxWidth - currentValue));
+                    layoutParams.width = currentValue ;
+                    layoutParams.height = titleBorder.getHeight();
+                    titleBorder.setLayoutParams(layoutParams);
+                }
+            });
+            widthAnim.setDuration(100);
+            widthAnim.setInterpolator(new FastOutSlowInInterpolator());
+            widthAnim.start();
+        }
 
     @OnClick(R.id.cancel_search)
     public void showNormalRl() {
@@ -548,7 +690,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         // 设置pop透明效果
         mPopupWindow.setBackgroundDrawable(new ColorDrawable(0xffffff));
         // 设置pop出入动画
-        mPopupWindow.setAnimationStyle(R.style.pop_add);
+//        mPopupWindow.setAnimationStyle(R.style.pop_add);
         // 设置pop获取焦点，如果为false点击返回按钮会退出当前Activity，如果pop中有Editor的话，focusable必须要为true
         mPopupWindow.setFocusable(true);
         // 设置pop可点击，为false点击事件无效，默认为true

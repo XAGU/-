@@ -1,7 +1,6 @@
 package com.xiaolian.amigo.ui.main;
 
 import android.Manifest;
-import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -18,9 +17,7 @@ import android.text.TextUtils;
 import android.view.GestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.BounceInterpolator;
 import android.view.animation.DecelerateInterpolator;
-import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -71,6 +68,7 @@ import com.xiaolian.amigo.util.AppUtils;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
 import com.xiaolian.amigo.util.MD5Util;
+import com.xiaolian.amigo.util.MyInterpolator;
 import com.xiaolian.amigo.util.ScreenUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -259,7 +257,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             }
         });
         animator2.setDuration(300);
-        animator2.setInterpolator(new DecelerateInterpolator());
+        animator2.setInterpolator(new MyInterpolator());
 
         animator2.start();
 
