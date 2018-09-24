@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -419,6 +420,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putInt(KEY_LASTFRAGMENT ,lastFragment);
+
         super.onSaveInstanceState(outState);
     }
 
@@ -427,6 +429,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         lastFragment = savedInstanceState.getInt(KEY_LASTFRAGMENT);
+        initTable();
     }
 
     @OnClick({R.id.home_rl, R.id.social_rl, R.id.personal_rl})
@@ -1123,6 +1126,12 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); //如果是服务里调用，必须加入new task标识
         intent.addCategory(Intent.CATEGORY_HOME);
         startActivity(intent);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+
     }
 
     @Override

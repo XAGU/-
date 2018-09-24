@@ -68,6 +68,7 @@ public class PublishLostAndFoundPresenter<V extends IPublishLostAndFoundView>
     public void uploadImage(Context activity, String imagePath, int position, OssFileType type) {
         currentImagePosition = position;
         currentType = type;
+        Log.d(TAG ,imagePath);
         uploadImage(activity,imagePath);
     }
 
