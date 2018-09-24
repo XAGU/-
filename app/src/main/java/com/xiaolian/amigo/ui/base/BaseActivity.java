@@ -119,7 +119,7 @@ public abstract class BaseActivity extends SwipeBackActivity
 
 
     private void selectPhoto() {
-//        mPickImageUri = getImageUri("pick");
+        mPickImageUri = getImageUri("pick");
         Intent intent = new Intent(Intent.ACTION_PICK, null);
         intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
         startActivityForResult(intent, REQUEST_CODE_PICK);
@@ -138,20 +138,19 @@ public abstract class BaseActivity extends SwipeBackActivity
 
 
     private Uri getImageUri(String fileName) {
-//        String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xiaolian/";
-//        File path = new File(filePath);
-//        if (!path.exists()) {
-//            boolean isPathSuccess = path.mkdirs();
-//            if (!isPathSuccess) {
-//                onError("没有SD卡权限");
-//                return null;
-//            }
-//        }
+        String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xiaolian/";
+        File path = new File(filePath);
+        if (!path.exists()) {
+            boolean isPathSuccess = path.mkdirs();
+            if (!isPathSuccess) {
+                onError("没有SD卡权限");
+                return null;
+            }
+        }
         Uri imageUri;
-//        File outputImage = new File(path, fileName + ".jpg");
+        File outputImage = new File(path, fileName + ".jpg");
 
-        File outputImage = new File(fileName);
-        Log.d(TAG ,fileName +"    " + outputImage.getAbsolutePath());
+//        File outputImage = new File(fileName);
         try {
             if (outputImage.exists()) {
                 boolean isDeleteSuccess = outputImage.delete();
@@ -168,7 +167,7 @@ public abstract class BaseActivity extends SwipeBackActivity
             Log.e(TAG, e.getMessage());
         }
         if (Build.VERSION.SDK_INT >= 24) {
-            imageUri = FileProvider.getUriForFile(this, getPackageName() + ".fileprovider", outputImage);
+            imageUri = FileProvider.getUriForFile(this, getPackageName() + ".fileprovider" + , outputImage);
         } else {
             imageUri = Uri.fromFile(outputImage);
         }
@@ -270,24 +269,17 @@ public abstract class BaseActivity extends SwipeBackActivity
                 }
             } else if (requestCode == REQUEST_CODE_PICK) {
                 if (data != null && data.getData() != null) {
-//                    mCropImageUri = getCropUri("crop");
-//                    UCrop.Options options = new UCrop.Options();
-//                    int colorPrimary = ContextCompat.getColor(this, R.color.colorPrimary);
-//                    options.setToolbarColor(colorPrimary);
-//                    options.setActiveWidgetColor(colorPrimary);
-//                    options.setStatusBarColor(colorPrimary);
-//                    UCrop.of(mPickImageUri, mCropImageUri)
-//                            .withAspectRatio(1, 1)
-//                            .withMaxResultSize(250 * 2, 170 * 2)
-//                            .withOptions(options)
-//                            .start(this);
-
-//                    String photoPath = FileUtils.getPath(this ,data.getData());
-                    String photoPath = getRealPathFromUri(this ,data.getData());
-                    mPickImageUri = getImageUri(photoPath);
-                    if (imageCallback != null) {
-                        imageCallback.callback(mPickImageUri);
-                    }
+                    mCropImageUri = getCropUri("crop");
+                    UCrop.Options options = new UCrop.Options();
+                    int colorPrimary = ContextCompat.getColor(this, R.color.colorPrimary);
+                    options.setToolbarColor(colorPrimary);
+                    options.setActiveWidgetColor(colorPrimary);
+                    options.setStatusBarColor(colorPrimary);
+                    UCrop.of(mPickImageUri, mCropImageUri)
+                            .withAspectRatio(1, 1)
+                            .withMaxResultSize(250 * 2, 170 * 2)
+                            .withOptions(options)
+                            .start(this);
 
                 }
             } else if (requestCode == REQUEST_BLE) {
