@@ -167,7 +167,7 @@ public abstract class BaseActivity extends SwipeBackActivity
             Log.e(TAG, e.getMessage());
         }
         if (Build.VERSION.SDK_INT >= 24) {
-            imageUri = FileProvider.getUriForFile(this, getPackageName() + ".fileprovider" + , outputImage);
+            imageUri = FileProvider.getUriForFile(this, getPackageName() + ".fileprovider"  , outputImage);
         } else {
             imageUri = Uri.fromFile(outputImage);
         }
@@ -252,7 +252,7 @@ public abstract class BaseActivity extends SwipeBackActivity
                 options.setStatusBarColor(colorPrimary);
                 UCrop.of(mPhotoImageUri, mCropImageUri)
                         .withAspectRatio(1, 1)
-                        .withMaxResultSize(250 * 2, 170 * 2)
+//                        .withMaxResultSize(250 * 2, 170 * 2)
                         .withOptions(options)
                         .start(this);
 //                if (imageCallback != null) {
@@ -269,6 +269,7 @@ public abstract class BaseActivity extends SwipeBackActivity
                 }
             } else if (requestCode == REQUEST_CODE_PICK) {
                 if (data != null && data.getData() != null) {
+                    mPickImageUri  =data.getData();
                     mCropImageUri = getCropUri("crop");
                     UCrop.Options options = new UCrop.Options();
                     int colorPrimary = ContextCompat.getColor(this, R.color.colorPrimary);
@@ -277,7 +278,7 @@ public abstract class BaseActivity extends SwipeBackActivity
                     options.setStatusBarColor(colorPrimary);
                     UCrop.of(mPickImageUri, mCropImageUri)
                             .withAspectRatio(1, 1)
-                            .withMaxResultSize(250 * 2, 170 * 2)
+//                            .withMaxResultSize(250 * 2, 170 * 2)
                             .withOptions(options)
                             .start(this);
 
