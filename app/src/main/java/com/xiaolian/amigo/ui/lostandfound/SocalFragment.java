@@ -340,7 +340,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     private void animWidthMove(int moveLeft) {
         int oldLeft = titleBorder.getLeft();
         int maxWidth;
-        int oldWidth = titleBorder.getWidth();
+        int oldWidth = ScreenUtils.dpToPxInt(mActivity ,8);
         boolean backMove = false;
         if (oldLeft < moveLeft) {
             backMove = true;

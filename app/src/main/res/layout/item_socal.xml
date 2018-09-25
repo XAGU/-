@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="@dimen/verification_height"
         android:layout_toRightOf="@id/iv_avatar"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="9dp"
         tools:text="佩琪琪"
         android:gravity="center"
         android:textSize="@dimen/sp12"

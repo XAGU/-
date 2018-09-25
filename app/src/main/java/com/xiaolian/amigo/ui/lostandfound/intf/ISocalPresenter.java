@@ -13,7 +13,6 @@ public interface ISocalPresenter <V extends ISocalView> extends IBasePresenter<V
 
     void likeComment(int position, long id);
 
-
     void unLikeComment(int position, long id, boolean isDialog) ;
 
     void likeComment(int position, long id , boolean isDialog);
