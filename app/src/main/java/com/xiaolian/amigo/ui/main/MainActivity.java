@@ -416,11 +416,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     }
 
 
-
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(Bundle outState) {
         outState.putInt(KEY_LASTFRAGMENT ,lastFragment);
-
         super.onSaveInstanceState(outState);
     }
 

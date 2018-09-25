@@ -241,10 +241,8 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
             @Override
             public void onLikeClick(int position, long id, boolean like) {
                 if (like) {
-
                     presenter.unLikeComment(position, id);
                 } else {
-
                     presenter.likeComment(position, id);
                 }
             }

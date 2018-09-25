@@ -1,6 +1,8 @@
 package com.xiaolian.amigo.ui.lostandfound;
 
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
@@ -195,6 +197,8 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
     int[] tagLocations = new int[2];
 
+    boolean isCanMove = true ;
+
     @SuppressLint("ValidFragment")
     public SocalFragment(IMainPresenter<IMainView> mainPresenter) {
         this.mainPresenter = mainPresenter;
@@ -242,6 +246,16 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
     }
 
+    /**
+     * 滑动监听
+     */
+    private AnimatorSet.AnimatorListener moveListener = new AnimatorListenerAdapter() {
+        @Override
+        public void onAnimationEnd(Animator animation) {
+            super.onAnimationEnd(animation);
+            isCanMove = true ;
+        }
+    };
     /**
      * 向上滚动时，tag跟着滚动
      * 向下滚动时，tag显示
@@ -303,17 +317,20 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
         if (socialTags != null) socialTags.smoothScrollToPosition(0);
 
-
-        moveCursor(0);
+        if (isCanMove) moveCursor(0);
 
     }
 
-
     public void moveCursor(int position) {
+        isCanMove = false ;
         try {
             if (socialTags != null && socialTags.getLayoutManager() != null) {
                 LinearLayoutManager layoutManager = (LinearLayoutManager) socialTags.getLayoutManager();
                 int firstItem = layoutManager.findFirstVisibleItemPosition();
+                if (firstItem == -1) {
+                    isCanMove = true ;
+                    return;
+                }
                 if (firstItem == position) {
                     int left = socialTags.getChildAt(position).getLeft();
                     int right = socialTags.getChildAt(position).getRight();
@@ -334,22 +351,25 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
     /**
      * 动画第一步  ，  将View变宽
-     *
      * @param moveLeft
      */
     private void animWidthMove(int moveLeft) {
+        moveLeft = moveLeft - ScreenUtils.dpToPxInt(mActivity , 4);
         int oldLeft = titleBorder.getLeft();
         int maxWidth;
         int oldWidth = ScreenUtils.dpToPxInt(mActivity ,8);
         boolean backMove = false;
         if (oldLeft < moveLeft) {
             backMove = true;
-            maxWidth = moveLeft - oldLeft + ScreenUtils.dpToPxInt(mActivity, 9);
+            maxWidth = moveLeft - oldLeft + oldWidth;
         } else {
             backMove = false;
-            maxWidth = oldLeft - moveLeft + ScreenUtils.dpToPxInt(mActivity, 9);
+            maxWidth = oldLeft - moveLeft + oldWidth ;
         }
-
+        if (maxWidth < oldWidth) {
+            isCanMove = true ;
+            return;
+        }
         if (backMove) {
             AnimatorSet animatorSet = new AnimatorSet();
             ValueAnimator widthAnim = ValueAnimator.ofInt(oldWidth, maxWidth);
@@ -377,7 +397,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
                     titleBorder.setLayoutParams(layoutParams);
                 }
             });
-
+            animatorSet.addListener(moveListener);
             animatorSet.playSequentially(widthAnim, widthAnim2);
             animatorSet.setDuration(200);
             animatorSet.start();
@@ -408,6 +428,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
                     titleBorder.setLayoutParams(layoutParams);
                 }
             });
+            animatorSet.addListener(moveListener);
             animatorSet.setDuration(200);
             animatorSet.playSequentially(widthAnim, widthAnim2);
             animatorSet.start();
@@ -518,6 +539,8 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         adapter = new SocalTagsAdapter(mActivity, mSocialTagDatas, socialTags, new OnItemClickListener() {
             @Override
             public void click(int poisition) {
+                Log.d(TAG ,isCanMove + " ");
+                if (!isCanMove) return ;
                 if (poisition == 0) {
                     page = 1;
                     slectkey = "";

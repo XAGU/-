@@ -104,7 +104,6 @@ public abstract class BaseActivity extends SwipeBackActivity
     ActionSheetDialog actionSheetDialog;
     // 申请蓝牙访问权限后的回调
     private Callback blePermissonCallback;
-
     @Inject
     ISharedPreferencesHelp sharedPreferencesHelp;
     private Toast toast;

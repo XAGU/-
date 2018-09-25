@@ -62,8 +62,6 @@
             android:layout_marginEnd="15dp"
             />
     </RelativeLayout>
-
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -100,7 +98,6 @@
                 android:paddingEnd="20dp"
                 android:textColor="@color/colorDark2"/>
         </RelativeLayout>
-
     </FrameLayout>
 
             <FrameLayout
@@ -247,7 +244,7 @@
                                     android:layout_width="8dp"
                                     android:layout_height="2dp"
                                     android:layout_marginTop="6dp"
-                                    android:layout_marginStart="31dp"
+                                    android:layout_marginStart="32dp"
                                     android:id="@+id/title_border"
                                     android:layout_below="@id/social_tags"
                                     android:background="@drawable/red_cursor" />
