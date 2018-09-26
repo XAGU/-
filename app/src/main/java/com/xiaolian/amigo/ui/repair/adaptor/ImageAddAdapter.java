@@ -73,8 +73,10 @@ public class ImageAddAdapter extends CommonAdapter<ImageAddAdapter.ImageItem> {
             Glide.with(context).load(Constant.IMAGE_PREFIX + imageItem.getImageUrl()
                     + String.format(Locale.getDefault(), Constant.OSS_IMAGE_RESIZE,
                     imageSize))
-//                    .asBitmap()
-//                .skipMemoryCache(true)
+                    .asBitmap()
+                .skipMemoryCache(true)
+                    .error(R.drawable.ic_picture_error)
+                    .placeholder(R.drawable.ic_picture_error)
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .into((ImageView) holder.getView(R.id.iv_image));
             ((ImageView) holder.getView(R.id.iv_image)).setScaleType(ImageView.ScaleType.FIT_XY);

@@ -127,32 +127,6 @@ public class WriteLZActivity extends LostAndFoundBaseActivity implements IPublis
         addListView();
     }
 
-
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        float touchX  ;
-        float touchY ;
-        float moveY = 0 ;
-        switch (event.getAction()){
-            case MotionEvent.ACTION_DOWN:
-                touchX = event.getX();
-                touchY = event.getY();
-                break;
-            case MotionEvent.ACTION_MOVE:
-                Log.d(TAG ,event.getY() +"");
-                moveY += event.getY();
-                if (scroll != null) scroll.scrollTo(0 , (int) moveY);
-                break;
-                case MotionEvent.ACTION_UP:
-                    if (moveY !=0)
-                    moveAnim(moveY);
-                break;
-        }
-
-        return true;
-    }
-
     public void moveAnim(float moveY){
         ValueAnimator valueAnimator = ValueAnimator.ofFloat(moveY , 0);
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -245,9 +219,11 @@ public class WriteLZActivity extends LostAndFoundBaseActivity implements IPublis
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 if (images.isEmpty() || (images.size() < IMAGE_COUNT && position == images.size())) {
-                    getImage(imageUri ->
-                            presenter.uploadImage(WriteLZActivity.this,
-                                    imageUri, position, OssFileType.FOUND));
+                        getImage2(imagePath -> {
+                                    presenter.uploadImage(WriteLZActivity.this, imagePath, position, OssFileType.FOUND);
+
+                                }
+                        );
                 } else {
                     Intent intent = new Intent(WriteLZActivity.this, AlbumItemActivity.class);
                     intent.putExtra(AlbumItemActivity.INTENT_POSITION, position);
@@ -316,11 +292,9 @@ public class WriteLZActivity extends LostAndFoundBaseActivity implements IPublis
         }
     }
 
-
-
-
     @Override
     public void addImage(String url, int position) {
+        Log.d(TAG ,url);
         if (this.images.size() > position) {
             this.images.remove(position);
             this.images.add(position, url);
@@ -343,11 +317,26 @@ public class WriteLZActivity extends LostAndFoundBaseActivity implements IPublis
 
     @OnClick({R.id.iv_first, R.id.iv_second, R.id.iv_third})
     void chooseImage(ImageView view) {
+        Log.d(TAG ,"click");
         switch (view.getId()) {
             case R.id.iv_first: {
-                getImage(imageUri -> {
+//                getImage(imageUri -> {
+//
+//                    Glide.with(this).load(imageUri)
+//                            .asBitmap()
+//                            .placeholder(R.drawable.ic_picture_error)
+//                            .error(R.drawable.ic_picture_error)
+//                            .skipMemoryCache(true)
+//                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+//                            .into(ivFirst);
+//                    ivFirst.setScaleType(ImageView.ScaleType.FIT_XY);
+//                    ivSecond.setVisibility(View.VISIBLE);
+//                    presenter.uploadImage(WriteLZActivity.this,
+//                            imageUri, 0, OssFileType.FOUND);
+//                });
 
-                    Glide.with(this).load(imageUri)
+                getImage2(imagePath -> {
+                    Glide.with(this).load(imagePath)
                             .asBitmap()
                             .placeholder(R.drawable.ic_picture_error)
                             .error(R.drawable.ic_picture_error)
@@ -357,13 +346,27 @@ public class WriteLZActivity extends LostAndFoundBaseActivity implements IPublis
                     ivFirst.setScaleType(ImageView.ScaleType.FIT_XY);
                     ivSecond.setVisibility(View.VISIBLE);
                     presenter.uploadImage(WriteLZActivity.this,
-                            imageUri, 0, OssFileType.FOUND);
+                            imagePath, 0, OssFileType.FOUND);
                 });
                 break;
             }
             case R.id.iv_second: {
-                getImage(imageUri -> {
-                    Glide.with(this).load(imageUri)
+//                getImage(imageUri -> {
+//                    Glide.with(this).load(imageUri)
+//                            .asBitmap()
+//                            .placeholder(R.drawable.ic_picture_error)
+//                            .error(R.drawable.ic_picture_error)
+//                            .skipMemoryCache(true)
+//                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+//                            .into(ivSecond);
+//                    ivSecond.setScaleType(ImageView.ScaleType.FIT_XY);
+//                    ivThird.setVisibility(View.VISIBLE);
+//                    presenter.uploadImage(WriteLZActivity.this,
+//                            imageUri, 1, OssFileType.FOUND);
+//                });
+
+                getImage2(imagePath -> {
+                                        Glide.with(this).load(imagePath)
                             .asBitmap()
                             .placeholder(R.drawable.ic_picture_error)
                             .error(R.drawable.ic_picture_error)
@@ -373,13 +376,27 @@ public class WriteLZActivity extends LostAndFoundBaseActivity implements IPublis
                     ivSecond.setScaleType(ImageView.ScaleType.FIT_XY);
                     ivThird.setVisibility(View.VISIBLE);
                     presenter.uploadImage(WriteLZActivity.this,
-                            imageUri, 1, OssFileType.FOUND);
+                            imagePath, 1, OssFileType.FOUND);
                 });
+
                 break;
             }
             case R.id.iv_third: {
-                getImage(imageUri -> {
-                    Glide.with(this).load(imageUri)
+//                getImage(imageUri -> {
+//                    Glide.with(this).load(imageUri)
+//                            .asBitmap()
+//                            .placeholder(R.drawable.ic_picture_error)
+//                            .error(R.drawable.ic_picture_error)
+//                            .skipMemoryCache(true)
+//                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+//                            .into(ivThird);
+//                    ivThird.setScaleType(ImageView.ScaleType.FIT_XY);
+//                    presenter.uploadImage(WriteLZActivity.this,
+//                            imageUri, 2, OssFileType.FOUND);
+//                });
+
+                getImage2(imagePath -> {
+                    Glide.with(this).load(imagePath)
                             .asBitmap()
                             .placeholder(R.drawable.ic_picture_error)
                             .error(R.drawable.ic_picture_error)
@@ -388,7 +405,7 @@ public class WriteLZActivity extends LostAndFoundBaseActivity implements IPublis
                             .into(ivThird);
                     ivThird.setScaleType(ImageView.ScaleType.FIT_XY);
                     presenter.uploadImage(WriteLZActivity.this,
-                            imageUri, 2, OssFileType.FOUND);
+                            imagePath, 2, OssFileType.FOUND);
                 });
                 break;
             }

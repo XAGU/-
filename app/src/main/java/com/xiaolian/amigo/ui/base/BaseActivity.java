@@ -129,12 +129,13 @@ public abstract class BaseActivity extends SwipeBackActivity
         mPhotoImageUri = getImageUri("photo");
         //调用相机
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, mPhotoImageUri);
         startActivityForResult(intent, REQUEST_CODE_CAMERA);
     }
 
 
-
+    File outputImage ;
 
     private Uri getImageUri(String fileName) {
         String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xiaolian/";
@@ -147,9 +148,7 @@ public abstract class BaseActivity extends SwipeBackActivity
             }
         }
         Uri imageUri;
-        File outputImage = new File(path, fileName + ".jpg");
-
-//        File outputImage = new File(fileName);
+        outputImage = new File(path, fileName + ".jpg");
         try {
             if (outputImage.exists()) {
                 boolean isDeleteSuccess = outputImage.delete();
@@ -170,7 +169,7 @@ public abstract class BaseActivity extends SwipeBackActivity
         } else {
             imageUri = Uri.fromFile(outputImage);
         }
-        Log.d(TAG ,imageUri.toString());
+        Log.d(TAG ,imageUri.getPath());
         return imageUri;
     }
 
@@ -237,26 +236,33 @@ public abstract class BaseActivity extends SwipeBackActivity
         return path;
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_CODE_CAMERA) {
-                mCropImageUri = getCropUri("crop");
-                UCrop.Options options = new UCrop.Options();
-                int colorPrimary = ContextCompat.getColor(this, R.color.colorPrimary);
-                options.setToolbarColor(colorPrimary);
-                options.setActiveWidgetColor(colorPrimary);
-                options.setStatusBarColor(colorPrimary);
-                UCrop.of(mPhotoImageUri, mCropImageUri)
-                        .withAspectRatio(1, 1)
-//                        .withMaxResultSize(250 * 2, 170 * 2)
-                        .withOptions(options)
-                        .start(this);
-//                if (imageCallback != null) {
+
+                if (imageCallback != null) {
+//                    mCropImageUri = getCropUri("crop");
+//                    UCrop.Options options = new UCrop.Options();
+//                    int colorPrimary = ContextCompat.getColor(this, R.color.colorPrimary);
+//                    options.setToolbarColor(colorPrimary);
+//                    options.setActiveWidgetColor(colorPrimary);
+//                    options.setStatusBarColor(colorPrimary);
+//                    UCrop.of(mPhotoImageUri, mCropImageUri)
+//                            .withAspectRatio(1, 1)
+////                        .withMaxResultSize(250 * 2, 170 * 2)
+//                            .withOptions(options)
+//                            .start(this);
 //                    imageCallback.callback(mPhotoImageUri);
-//                }
+                }
+
+
+                if (imageCallback2 != null){
+                    imageCallback2.callback(outputImage.getAbsolutePath());
+                }
+
+
 
 
             } else if (requestCode == UCrop.REQUEST_CROP) {
@@ -268,7 +274,8 @@ public abstract class BaseActivity extends SwipeBackActivity
                 }
             } else if (requestCode == REQUEST_CODE_PICK) {
                 if (data != null && data.getData() != null) {
-                    mPickImageUri  =data.getData();
+                    if (imageCallback != null){
+                        mPickImageUri  =data.getData();
                     mCropImageUri = getCropUri("crop");
                     UCrop.Options options = new UCrop.Options();
                     int colorPrimary = ContextCompat.getColor(this, R.color.colorPrimary);
@@ -280,7 +287,15 @@ public abstract class BaseActivity extends SwipeBackActivity
 //                            .withMaxResultSize(250 * 2, 170 * 2)
                             .withOptions(options)
                             .start(this);
+                    }
 
+//
+
+                    if (imageCallback2 != null){
+                        String pickImagePath = getRealPathFromUri(this ,data.getData());
+                        imageCallback2.callback(pickImagePath);
+                    }
+//
                 }
             } else if (requestCode == REQUEST_BLE) {
                 if (isLocationEnable()) {
@@ -467,8 +482,48 @@ public abstract class BaseActivity extends SwipeBackActivity
         actionSheetDialog.show();
     }
 
+    ImageCallback2 imageCallback2 ;
+    public void getImage2(ImageCallback2 callback) {
+        imageCallback2 = callback;
+
+        if (actionSheetDialog == null) {
+            actionSheetDialog = new ActionSheetDialog(this)
+                    .builder()
+                    .setTitle("选择")
+                    .addSheetItem("相机", ActionSheetDialog.SheetItemColor.Orange,
+                            i -> rxPermissions.request(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
+                                    .subscribe(granted -> {
+                                        if (granted) {
+                                            takePhoto();
+                                        } else {
+                                            showMessage("没有相机权限");
+                                        }
+                                    }))
+                    .addSheetItem("相册", ActionSheetDialog.SheetItemColor.Orange,
+                            i -> rxPermissions.request(Manifest.permission.READ_EXTERNAL_STORAGE)
+                                    .subscribe(granted -> {
+                                        if (granted) {
+                                            selectPhoto();
+                                        } else {
+                                            showMessage("没有SD卡权限");
+                                        }
+                                    }));
+        }
+        actionSheetDialog.setOnCancalListener(dialog -> {
+            if (emptyImageCallback != null) {
+                emptyImageCallback.callback();
+            }
+        });
+        actionSheetDialog.show();
+    }
+
     public interface ImageCallback {
         void callback(Uri imageUri);
+    }
+
+
+    public interface ImageCallback2{
+        void callback(String imagePath);
     }
 
 

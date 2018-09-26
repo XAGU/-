@@ -68,7 +68,6 @@ public class PublishLostAndFoundPresenter<V extends IPublishLostAndFoundView>
     public void uploadImage(Context activity, String imagePath, int position, OssFileType type) {
         currentImagePosition = position;
         currentType = type;
-        Log.d(TAG ,imagePath);
         uploadImage(activity,imagePath);
     }
 
@@ -101,6 +100,7 @@ public class PublishLostAndFoundPresenter<V extends IPublishLostAndFoundView>
     }
 
     private void uploadImage(Context context, String filePath) {
+        Log.d(TAG ,filePath);
         ossDataManager.getOssModel()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

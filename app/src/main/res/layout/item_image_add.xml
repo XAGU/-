@@ -10,6 +10,5 @@
         android:background="@drawable/dotted_box"
         android:layout_gravity="center_vertical"
         android:scaleType="centerInside"
-        android:src="@drawable/image_add"
         />
 </LinearLayout>
