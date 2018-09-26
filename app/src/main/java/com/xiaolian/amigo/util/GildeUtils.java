@@ -17,6 +17,7 @@ public class GildeUtils {
                 .asBitmap()
                 .placeholder(R.drawable.ic_picture_error)
                 .error(R.drawable.ic_picture_error)
+                .skipMemoryCache(true)
                 .into(view);
     }
 

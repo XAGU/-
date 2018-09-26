@@ -79,6 +79,7 @@ public class AlbumViewPager extends ViewPager {
             View imageLayout = inflate(getContext(), R.layout.item_album_pager, null);
 
             View loading = imageLayout.findViewById(R.id.progressBar);
+
             viewGroup.addView(imageLayout);
             assert imageLayout != null;
             PhotoView imageView = (PhotoView) imageLayout.findViewById(R.id.matrix_imageview);
@@ -89,10 +90,11 @@ public class AlbumViewPager extends ViewPager {
             });
             final TextView mTvProgress = (TextView) imageLayout.findViewById(R.id.album_textview_progress);
             String path = paths.get(position);
+            loading.setTag(path);
             imageLayout.setTag(path);
 
-            ImageHelper.loadAlbum(getContext(), imageView, path);
-//            ImageHelper.displayImage(getContext() ,new CustomImageSizeModelImp(path) ,imageView ,loading);
+//            ImageHelper.loadAlbum(getContext(), imageView, path);
+            ImageHelper.displayImage(getContext() ,new CustomImageSizeModelImp(path) ,imageView ,loading);
             /*mTvProgress.setText(FileUtils.FormetFileSize(current)+
 					"/"+
 					FileUtils.FormetFileSize(total)+

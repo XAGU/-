@@ -48,37 +48,56 @@ public class ImageHelper {
     }
 
     public static void displayImage(Context context, final CustomImageSizeModel model, final ImageView imageView, final View loading) {
-    DrawableRequestBuilder thumbnailBuilder = Glide
-            .with(imageView.getContext())
-            .load(new CustomImageSizeModelImp(model
-                    .getBaseUrl())
-                    .requestCustomSizeUrl(100, 50))
-            .skipMemoryCache(true)
-            .diskCacheStrategy(DiskCacheStrategy.NONE);
+        loading.setVisibility(View.VISIBLE);
+//    DrawableRequestBuilder thumbnailBuilder = Glide
+//            .with(imageView.getContext())
+//            .load(new CustomImageSizeModelImp(model
+//                    .getBaseUrl())
+//                    .requestCustomSizeUrl(100, 50))
+//            .skipMemoryCache(true)
+//            .diskCacheStrategy(DiskCacheStrategy.NONE);
 
             Glide.with(context)
-            .using(new CustomImageModelLoader(imageView.getContext()))
-            .load(model)
-//                    .load(model.getBaseUrl())
-//                .centerCrop()
-                    .listener(new RequestListener<CustomImageSizeModel, GlideDrawable>() {
-        @Override
-        public boolean onException(Exception e, CustomImageSizeModel model, Target<GlideDrawable> target, boolean isFirstResource) {
-            return false;
-        }
+//            .using(new CustomImageModelLoader(imageView.getContext()))
+//            .load(model)
+////                    .load(model.getBaseUrl())
+////                .centerCrop()
+                    .load(model.getBaseUrl())
+                    .listener(new RequestListener<String, GlideDrawable>() {
+                        @Override
+                        public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                            return false;
+                        }
 
-        @Override
-        public boolean onResourceReady(GlideDrawable resource, CustomImageSizeModel model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-            loading.setVisibility(View.GONE);
-            PhotoViewAttacher attacher = new PhotoViewAttacher(imageView);
-//                            mAttacher.update();
-            return false;
-        }
-    })
-            .thumbnail(thumbnailBuilder)
-                    .skipMemoryCache(true)
+                        @Override
+                        public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                            loading.setVisibility(View.GONE);
+                            PhotoViewAttacher attacher = new PhotoViewAttacher(imageView);
+                            return false;
+                        }
+                    }).skipMemoryCache(true)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .into(imageView);
+
+
+
+
+//                    .listener(new RequestListener<CustomImageSizeModel, GlideDrawable>() {
+//        @Override
+//        public boolean onException(Exception e, CustomImageSizeModel model, Target<GlideDrawable> target, boolean isFirstResource) {
+//            return false;
+//        }
+//
+//        @Override
+//        public boolean onResourceReady(GlideDrawable resource, CustomImageSizeModel model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+//            loading.setVisibility(View.GONE);
+//            PhotoViewAttacher attacher = new PhotoViewAttacher(imageView);
+////                            mAttacher.update();
+//            return false;
+//        }
+//    })
+//            .thumbnail(thumbnailBuilder)
+
 }
 
 

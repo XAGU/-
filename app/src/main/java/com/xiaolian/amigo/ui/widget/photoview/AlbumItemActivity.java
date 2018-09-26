@@ -178,7 +178,7 @@ public class AlbumItemActivity extends AppCompatActivity implements View.OnClick
             return;
         }
         mViewPager.setAdapter(mViewPager.new ViewPagerAdapter(mPaths));
-        mViewPager.setOnPageChangeListener(pageChangeListener);
+        mViewPager.addOnPageChangeListener(pageChangeListener);
         mViewPager.setCurrentItem(mCurrent);
         mCountView.setText((mCurrent + 1) + "/" + mPaths.size());
     }

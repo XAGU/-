@@ -22,7 +22,9 @@
         android:layout_gravity="center"
         android:scrollbarStyle="insideInset"
         android:visibility="gone"
-        tools:visibility="visible"/>
+        tools:visibility="visible"
+        android:indeterminateTintMode="src_atop"
+        android:indeterminateTint="@color/white"/>
     <TextView
         android:id="@+id/album_textview_progress"
         android:layout_width="wrap_content"
