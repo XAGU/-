@@ -243,18 +243,18 @@ public abstract class BaseActivity extends SwipeBackActivity
             if (requestCode == REQUEST_CODE_CAMERA) {
 
                 if (imageCallback != null) {
-//                    mCropImageUri = getCropUri("crop");
-//                    UCrop.Options options = new UCrop.Options();
-//                    int colorPrimary = ContextCompat.getColor(this, R.color.colorPrimary);
-//                    options.setToolbarColor(colorPrimary);
-//                    options.setActiveWidgetColor(colorPrimary);
-//                    options.setStatusBarColor(colorPrimary);
-//                    UCrop.of(mPhotoImageUri, mCropImageUri)
-//                            .withAspectRatio(1, 1)
-////                        .withMaxResultSize(250 * 2, 170 * 2)
-//                            .withOptions(options)
-//                            .start(this);
-//                    imageCallback.callback(mPhotoImageUri);
+                    mCropImageUri = getCropUri("crop");
+                    UCrop.Options options = new UCrop.Options();
+                    int colorPrimary = ContextCompat.getColor(this, R.color.colorPrimary);
+                    options.setToolbarColor(colorPrimary);
+                    options.setActiveWidgetColor(colorPrimary);
+                    options.setStatusBarColor(colorPrimary);
+                    UCrop.of(mPhotoImageUri, mCropImageUri)
+                            .withAspectRatio(1, 1)
+//                        .withMaxResultSize(250 * 2, 170 * 2)
+                            .withOptions(options)
+                            .start(this);
+                    imageCallback.callback(mPhotoImageUri);
                 }
 
 
