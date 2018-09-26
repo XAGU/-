@@ -13,8 +13,8 @@
 
         <com.xiaolian.amigo.ui.widget.photoview.AlbumViewPager
             android:id="@+id/albumviewpager"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <include
             android:id="@+id/album_item_header_bar"

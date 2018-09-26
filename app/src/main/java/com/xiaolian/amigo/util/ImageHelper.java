@@ -72,7 +72,7 @@ public class ImageHelper {
                         @Override
                         public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
                             loading.setVisibility(View.GONE);
-                            PhotoViewAttacher attacher = new PhotoViewAttacher(imageView);
+//                            PhotoViewAttacher attacher = new PhotoViewAttacher(imageView);
                             return false;
                         }
                     }).skipMemoryCache(true)
