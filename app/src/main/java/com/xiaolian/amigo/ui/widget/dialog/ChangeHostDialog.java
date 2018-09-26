@@ -35,7 +35,7 @@ import lombok.Data;
 
 public class ChangeHostDialog extends Dialog {
 
-    private static final String QA1 = "http://116.62.236.67:";
+    private static final String QA1 = "http://116.62.236.67";
     private static final String QA2 = "http://39.108.97.229";
     private static final String QA3= "http://39.108.74.164";
     private static final String QA4 = "http://47.107.47.24";
@@ -43,9 +43,9 @@ public class ChangeHostDialog extends Dialog {
     private static final String BATH2 ="http://120.77.214.212";
     private static final String BATH1 = "http://39.108.85.163";
 
-    private static final String HOST1 = "5081/";
-    private static final String HOST2 = "5082/";
-    private static final String HOST3 = "5097/";
+    private static final String HOST1 = ":5081/";
+    private static final String HOST2 = ":5082/";
+    private static final String HOST3 = ":5097/";
 
     private TextView tvOk;
     private TextView tvCancel;

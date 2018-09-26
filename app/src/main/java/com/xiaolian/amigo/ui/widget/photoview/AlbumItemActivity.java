@@ -254,6 +254,7 @@ public class AlbumItemActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onBackPressed() {
+
         super.onBackPressed();
         /*Intent intent = new Intent();
         intent.putStringArrayListExtra("deletePaths", (ArrayList<String>) deletePaths);
@@ -261,4 +262,11 @@ public class AlbumItemActivity extends AppCompatActivity implements View.OnClick
 		this.finish();*/
     }
 
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0, R.anim.photo_activity_out);
+
+    }
 }

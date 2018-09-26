@@ -16,6 +16,19 @@
         <item name="toolbarStyle" tools:ignore="NewApi">@style/MyToolBar</item>
     </style>
 
+
+    <style name="photoTheme" parent="AppTheme.NoActionBar">
+        <item name="android:windowAnimationStyle">@style/FeelyouWindowAnimTheme</item>
+    </style>
+    
+    
+    <style name="FeelyouWindowAnimTheme" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/photo_activity_in</item>
+        <item name="android:activityOpenExitAnimation">@anim/photo_activity_out</item>
+        <item name="android:activityCloseEnterAnimation">@anim/photo_activity_in</item>
+        <item name="android:activityCloseExitAnimation">@anim/photo_activity_out</item>
+    </style>
+
     <style name="MyToolBar" parent="Widget.AppCompat.Toolbar">
         <!--左边边距-->
         <item name="contentInsetStart">0dp</item>

@@ -22,6 +22,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.ui.lostandfound.adapter.SocialImgAdapter;
 import com.xiaolian.amigo.util.SoftInputUtils;
 
 import butterknife.BindView;
@@ -56,6 +57,7 @@ public class SearchDialog2 extends Dialog implements TextWatcher {
 //    RelativeLayout llContainer;
 
     private OnSearchListener listener;
+
 
     Context context;
 
@@ -176,6 +178,7 @@ public class SearchDialog2 extends Dialog implements TextWatcher {
     public void setSearchListener(OnSearchListener listener) {
         this.listener = listener;
     }
+
 
     public interface OnSearchListener {
         void onSearch(String searchStr);

@@ -43,7 +43,7 @@ import butterknife.OnTextChanged;
  * @author zcd
  * @date 17/9/21
  */
-
+@Deprecated
 public class PublishLostAndFoundActivity extends LostAndFoundBaseActivity implements IPublishLostAndFoundView {
     private static final int REQUEST_IMAGE = 0x3302;
     private static final int IMAGE_COUNT = 3;

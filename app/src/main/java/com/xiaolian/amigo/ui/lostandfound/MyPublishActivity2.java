@@ -17,11 +17,13 @@ import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundAdaptor2;
 import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundDetailContentDelegate;
 import com.xiaolian.amigo.ui.lostandfound.adapter.SocalContentAdapter;
 import com.xiaolian.amigo.ui.lostandfound.adapter.SocalContentAdapter2;
+import com.xiaolian.amigo.ui.lostandfound.adapter.SocialImgAdapter;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundPresenter2;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundView2;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutFooter;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutHeader;
+import com.xiaolian.amigo.ui.widget.photoview.AlbumItemActivity;
 import com.xiaolian.amigo.util.ScreenUtils;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
@@ -34,6 +36,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.xiaolian.amigo.ui.lostandfound.LostAndFoundDetailActivity2.KEY_ID;
+import static com.xiaolian.amigo.ui.lostandfound.SocalFragment.REQUEST_CODE_PHOTO;
 
 /**
  * 我的发布
@@ -101,6 +104,15 @@ public class MyPublishActivity2 extends LostAndFoundBaseActivity implements ILos
                     }
                 }
             });
+        publicAdapter.setPhotoClickListener(new SocialImgAdapter.PhotoClickListener() {
+            @Override
+            public void photoClick(int position, ArrayList<String> datas) {
+                Intent intent = new Intent(MyPublishActivity2.this, AlbumItemActivity.class);
+                intent.putExtra(AlbumItemActivity.EXTRA_CURRENT, position);
+                intent.putStringArrayListExtra(AlbumItemActivity.EXTRA_TYPE_LIST, (ArrayList<String>) datas);
+                startActivityForResult(intent, REQUEST_CODE_PHOTO);
+            }
+        });
         publicAdapter.setPresenter(presenter);
         recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 21)));
         recyclerView.setAdapter(publicAdapter);

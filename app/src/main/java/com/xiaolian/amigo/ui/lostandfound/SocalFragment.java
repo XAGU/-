@@ -590,6 +590,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
             searchDialog.setSearchListener(searchStr -> {
                 presenter.getLostList("", 1, searchStr, 0);
             });
+
             searchDialog.setCanceledOnTouchOutside(true);
             searchDialog.setCancelable(true);
             searchDialog.setOnDismissListener(dialog -> {
@@ -807,6 +808,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
                     }
                 }
             });
+            searchAdaptor.setPhotoClickListener(this);
             searchRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
             searchRecyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(mActivity, 21)));
             searchRecyclerView.setAdapter(searchAdaptor);

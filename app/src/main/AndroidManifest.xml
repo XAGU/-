@@ -409,7 +409,7 @@
         <activity
             android:name=".ui.widget.photoview.AlbumItemActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/photoTheme" />
 
 
         <activity android:name=".ui.device.bathroom.BathOrderActivity"

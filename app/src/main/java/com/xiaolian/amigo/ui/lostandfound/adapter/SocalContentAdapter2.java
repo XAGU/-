@@ -34,6 +34,7 @@ public class SocalContentAdapter2 extends CommonAdapter<LostAndFoundDTO> {
     private boolean animating  =false ;
     private OnItemClickListener onItemClickListener ;
     private LostAndFoundDetailContentDelegate.OnLikeClickListener likeClickListener ;
+    private SocialImgAdapter.PhotoClickListener photoClickListener ;
     /**
      * 是否本人点赞
      */
@@ -47,6 +48,11 @@ public class SocalContentAdapter2 extends CommonAdapter<LostAndFoundDTO> {
         this.context = context ;
         this.onItemClickListener = onItemClickListener ;
         this.likeClickListener = likeClickListener ;
+    }
+
+
+    public void setPhotoClickListener(SocialImgAdapter.PhotoClickListener photoClickListener) {
+        this.photoClickListener = photoClickListener;
     }
 
     public void setPresenter(ILostAndFoundPresenter2<ILostAndFoundView2> presenter) {
@@ -141,6 +147,7 @@ public class SocalContentAdapter2 extends CommonAdapter<LostAndFoundDTO> {
         RecyclerView recyclerView = holder.getView(R.id.images);
         SocialImgAdapter socialImgAdapter = new SocialImgAdapter(context ,R.layout.item_social_img , imgs);
         LinearLayoutManager    linearLayoutManager = new LinearLayoutManager(context);
+        socialImgAdapter.setPhotoClickListener(photoClickListener);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(linearLayoutManager);
 //        recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(context ,9)));
