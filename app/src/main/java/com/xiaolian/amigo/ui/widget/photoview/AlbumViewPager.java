@@ -92,7 +92,7 @@ public class AlbumViewPager extends ViewPager {
             imageLayout.setTag(path);
 
             ImageHelper.loadAlbum(getContext(), imageView, path);
-            ImageHelper.displayImage(getContext() ,new CustomImageSizeModelImp(path) ,imageView ,loading);
+//            ImageHelper.displayImage(getContext() ,new CustomImageSizeModelImp(path) ,imageView ,loading);
             /*mTvProgress.setText(FileUtils.FormetFileSize(current)+
 					"/"+
 					FileUtils.FormetFileSize(total)+
