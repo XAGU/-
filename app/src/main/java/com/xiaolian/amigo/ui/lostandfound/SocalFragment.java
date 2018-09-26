@@ -488,7 +488,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
                     }
                     mDatas.get(currentHotPosition).setCommentsCount(commentCount);
 
-                    socalContentAdapter.notifyItemChanged(currentHotPosition);
+                    socalContentAdapter.notifyItemChanged(currentHotPosition , "aa");
 
                 }
                 currentHotPosition = -1;
@@ -518,7 +518,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
                 }
                 mNewContents.get(currentChoosePosition).setCommentsCount(commentCount);
 
-                socalNewContentAdapter.notifyItemChanged(currentChoosePosition);
+                socalNewContentAdapter.notifyItemChanged(currentChoosePosition,"bb");
                 currentChoosePosition = -1;
             }
         }
@@ -533,8 +533,8 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         initScreen();
         socialNew.setNestedScrollingEnabled(false);
         socialRecy.setNestedScrollingEnabled(false);
-        ((SimpleItemAnimator) socialRecy.getItemAnimator()).setSupportsChangeAnimations(false);
-        ((SimpleItemAnimator) socialNew.getItemAnimator()).setSupportsChangeAnimations(false);
+        ((DefaultItemAnimator) socialRecy.getItemAnimator()).setSupportsChangeAnimations(false);
+        ((DefaultItemAnimator) socialNew.getItemAnimator()).setSupportsChangeAnimations(false);
         mSocialTagDatas.add(new BbsTopicListTradeRespDTO.TopicListBean());
         adapter = new SocalTagsAdapter(mActivity, mSocialTagDatas, socialTags, new OnItemClickListener() {
             @Override
@@ -830,7 +830,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     @Override
     public void notifyAdapter(int position, boolean b, boolean b1) {
         if (searchAdaptor != null) {
-            searchAdaptor.notifyItemChanged(position);
+            searchAdaptor.notifyItemChanged(position,"aaa");
         }
     }
 
@@ -983,11 +983,11 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     @Override
     public void notifyAdapter(int position, boolean b) {
         if (socalNewContentAdapter != null) {
-            socalNewContentAdapter.notifyItemChanged(position);
+            socalNewContentAdapter.notifyItemChanged(position ,"bbb");
         }
 
         if (socalContentAdapter != null && position < 3) {
-            socalContentAdapter.notifyItemChanged(position);
+            socalContentAdapter.notifyItemChanged(position , "aaa");
         }
     }
 
