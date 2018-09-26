@@ -43,9 +43,9 @@ public class ChangeHostDialog extends Dialog {
     private static final String BATH2 ="http://120.77.214.212";
     private static final String BATH1 = "http://39.108.85.163";
 
-    private static final String HOST1 = ":5081/";
-    private static final String HOST2 = ":5082/";
-    private static final String HOST3 = ":5097/";
+    private static final String HOST1 = "5081/";
+    private static final String HOST2 = "5082/";
+    private static final String HOST3 = "5097/";
 
     private TextView tvOk;
     private TextView tvCancel;
