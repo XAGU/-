@@ -23,6 +23,12 @@ public class BbsTopicListTradeRespDTO {
              * topicName : string
              */
 
+
+            public TopicListBean(){}
+
+            public TopicListBean(int topicId){
+                this.topicId = topicId ;
+            }
             private String icon;
             private int topicId;
             private String topicName;

@@ -58,14 +58,14 @@ public class SocalPresenter <V extends ISocalView> extends BasePresenter<V>
 
                 }else{
                     getMvpView().onError(result.getError().getDisplayMessage());
-                    getMvpView().onErrorView();
+//                    getMvpView().onErrorView();
                 }
             }
 
             @Override
             public void onError(Throwable e) {
                 super.onError(e);
-                getMvpView().onErrorView();
+//                getMvpView().onErrorView();
             }
         });
     }
@@ -97,74 +97,22 @@ public class SocalPresenter <V extends ISocalView> extends BasePresenter<V>
 
             @Override
             public void onReady(ApiResult<QueryLostAndFoundListRespDTO> result) {
-                getMvpView().setReferComplete();
-
-                if (!TextUtils.isEmpty(selectKey)) {
-                    if (result.getData().getPosts() == null || result.getData().getPosts().size() == 0) {
-                        getMvpView().showNoSearchResult(selectKey);
-                    } else {
-                        getMvpView().showSearchResult(result.getData().getPosts());
-                    }
-                }else {
-                    if (result.getError() == null) {
-                        commentEnable = result.getData().getCommentEnable();
-                        lostAndFoundDataManager.setCommentEnable(commentEnable);
-                        fetchNoticeCount();
-                        if (commentEnable) {
-                            getMvpView().showCommentView();
+                if (result.getError() == null) {
+                    commentEnable = result.getData().getCommentEnable() ;
+                    if (!TextUtils.isEmpty(selectKey)) {
+                        if (result.getData().getPosts() == null || result.getData().getPosts().size() == 0) {
+                            getMvpView().showNoSearchResult(selectKey);
                         } else {
-                            getMvpView().hideCommentView();
+                            getMvpView().showSearchResult(result.getData().getPosts());
                         }
-
-                        if (!TextUtils.isEmpty(selectKey)) {
-                            if (result.getData().getPosts() == null || result.getData().getPosts().size() == 0) {
-                                getMvpView().showNoSearchResult(selectKey);
-                            } else {
-                                getMvpView().showSearchResult(result.getData().getPosts());
-                            }
-                        } else {
-                            if (page == 1) {
-                                if (result.getData().getPosts() == null && result.getData().getHotPosts() == null || (result.getData().getPosts().size() == 0 &&
-                                        result.getData().getHotPosts().size() == 0)) {
-                                    getMvpView().onEmpty();
-                                    return;
-                                } else {
-                                    if (result.getData().getPosts() != null && result.getData().getPosts().size() != 0) {
-                                        getMvpView().referPost(result.getData().getPosts());
-                                    } else {
-                                        getMvpView().postEmpty();
-                                    }
-
-                                    if (result.getData().getHotPosts() != null && result.getData().getHotPosts().size() != 0) {
-                                        getMvpView().referHotPost(result.getData().getHotPosts());
-                                    } else {
-                                        getMvpView().hostPostsEmpty();
-                                    }
-
-                                }
-
-                            } else {
-                                if (result.getData().getPosts() == null || result.getData().getPosts().size() == 0) {
-                                    getMvpView().reducePage();
-                                    return;
-                                }
-                                getMvpView().loadMore(result.getData());
-                            }
-                        }
-                    } else {
-                        getMvpView().reducePage();
-                        getMvpView().onError(result.getError().getDisplayMessage());
-                        getMvpView().onErrorView();
                     }
+                }else{
+                    getMvpView().onError(result.getError().getDisplayMessage());
                 }
             }
-
             @Override
             public void onError(Throwable e) {
                 super.onError(e);
-                getMvpView().setReferComplete();
-                getMvpView().reducePage();
-                getMvpView().onErrorView();
             }
         });
 
@@ -183,19 +131,11 @@ public class SocalPresenter <V extends ISocalView> extends BasePresenter<V>
                     @Override
                     public void onReady(ApiResult<CommonRespDTO> result) {
                         if (null == result.getError()) {
-                            if (comment) {
-                                if (like) {
-                                    getMvpView().notifyAdapter(position, true);
-                                } else {
-                                    getMvpView().notifyAdapter(position, false);
-                                }
-                            }else{
                                if (like){
                                    getMvpView().notifyAdapter(position , true , true);
                                }else{
                                    getMvpView().notifyAdapter(position , false , true );
                                }
-                            }
                         } else {
                             getMvpView().onError(result.getError().getDisplayMessage());
                         }
@@ -234,7 +174,6 @@ public class SocalPresenter <V extends ISocalView> extends BasePresenter<V>
     public int getNoticeCount() {
         return noticeCount;
     }
-
 
     @Override
     public void fetchNoticeCount() {

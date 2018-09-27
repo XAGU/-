@@ -446,7 +446,7 @@ public class ScanActivity extends WasherBaseActivity
         Log.e(TAG, "onDestroy: "  );
         if (availabilityDialog != null) availabilityDialog.dismiss();
 
-        if (scanDialog != null) availabilityDialog.dismiss();
+        if (scanDialog != null) scanDialog.dismiss();
     }
 
     @Override

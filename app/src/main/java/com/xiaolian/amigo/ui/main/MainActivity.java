@@ -129,8 +129,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Inject
     IMainPresenter<IMainView> presenter;
-//    @BindView(R.id.vg_fragment)
-//    ViewPagerSlide vgFragment;
     @BindView(R.id.home_image)
     ImageView homeImage;
     @BindView(R.id.home_rl)
@@ -299,7 +297,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                      transaction.add(R.id.fragment, fragment, HomeFragment2.class.getSimpleName());
                      transaction.commit();
                  }else{
-                     transaction.hide(fragments[lastFragment]);
+                     if (fragments[lastFragment]!= null) transaction.hide(fragments[lastFragment]);
                      transaction.add(R.id.fragment, fragment, HomeFragment2.class.getSimpleName());
                      transaction.commit();
                  }
@@ -309,9 +307,10 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                fragment = fm.findFragmentByTag(HomeFragment2.class.getSimpleName());
                if (lastFragment != -1) {
                    if (fragment.isAdded()) {
-                       transaction.hide(fragments[lastFragment]).show(fragment).commit();
+                       if (fragments[lastFragment] != null) transaction.hide(fragments[lastFragment]);
+                       transaction.show(fragment).commit();
                    }else{
-                       transaction.hide(fragments[lastFragment]);
+
                        transaction.add(R.id.fragment, fragment, HomeFragment2.class.getSimpleName());
                        transaction.commit();
                    }
@@ -327,7 +326,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                     transaction.add(R.id.fragment, socalFragment, SocalFragment.class.getSimpleName());
                     transaction.commit();
                 }else{
-                    transaction.hide(fragments[lastFragment]);
+                    if (fragments[lastFragment] != null) transaction.hide(fragments[lastFragment]);
                     transaction.add(R.id.fragment, socalFragment, SocalFragment.class.getSimpleName());
                     transaction.commit();
                 }
@@ -337,10 +336,10 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 fragment = fm.findFragmentByTag(SocalFragment.class.getSimpleName());
                 socalFragment = (SocalFragment) fragment;
                 if (lastFragment != -1) {
+                    if (fragments[lastFragment] != null) transaction.hide(fragments[lastFragment]);
                     if (fragment.isAdded()) {
-                        transaction.hide(fragments[lastFragment]).show(fragment).commit();
+                        transaction.show(fragment).commit();
                     }else{
-                        transaction.hide(fragments[lastFragment]);
                         transaction.add(R.id.fragment, fragment, SocalFragment.class.getSimpleName());
                         transaction.commit();
                     }
@@ -357,6 +356,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                     transaction.add(R.id.fragment, fragment, ProfileFragment2.class.getSimpleName());
                     transaction.commit();
                 }else{
+                    if (fragments[lastFragment] != null)
                     transaction.hide(fragments[lastFragment]);
                     transaction.add(R.id.fragment, fragment, ProfileFragment2.class.getSimpleName());
                     transaction.commit();
@@ -366,10 +366,12 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 transaction = fm.beginTransaction();
                 fragment = fm.findFragmentByTag(ProfileFragment2.class.getSimpleName());
                 if (lastFragment != -1) {
-                    if (fragment.isAdded()) {
-                        transaction.hide(fragments[lastFragment]).show(fragment).commit();
-                    }else{
+                    if (fragments[lastFragment] != null){
                         transaction.hide(fragments[lastFragment]);
+                    }
+                    if (fragment.isAdded()) {
+                        transaction.show(fragment).commit();
+                    }else{
                         transaction.add(R.id.fragment, fragment, ProfileFragment2.class.getSimpleName());
                         transaction.commit();
                     }
@@ -427,7 +429,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         lastFragment = savedInstanceState.getInt(KEY_LASTFRAGMENT);
-        initTable();
+//        initTable();
     }
 
     @OnClick({R.id.home_rl, R.id.social_rl, R.id.personal_rl})

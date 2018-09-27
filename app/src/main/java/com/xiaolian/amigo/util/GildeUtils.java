@@ -21,9 +21,11 @@ public class GildeUtils {
                 .into(view);
     }
 
-    public static void setNoErrorImage(Context context , ImageView view ,String url  , float height){
+    public static void setNoErrorImage(Context context , ImageView view ,String url  , float height , boolean isLast){
         Glide.with(context).load(Constant.IMAGE_PREFIX + url)
                 .asBitmap()
+                .skipMemoryCache(true)
+//                .into(view);
                 .into(new SimpleTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
@@ -33,11 +35,12 @@ public class GildeUtils {
                         int vw = (int) (resource.getWidth() * scale);
                         params.height = (int) height;
                         params.width = vw;
+                        if (!isLast)
                         params.setMarginEnd(ScreenUtils.dpToPxInt(context , 5));
                         view.setLayoutParams(params);
                         view.setImageBitmap(resource);
 //                        view.postInvalidate();
-                        Log.d("Glide" , resource.toString());
+
                     }
                 });
 //                .into(view);

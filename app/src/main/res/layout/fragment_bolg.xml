@@ -1,0 +1,135 @@
+<FrameLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:srlHeaderHeight="40dp"
+        app:srlFooterHeight="60dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <android.support.v4.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/scrollView"
+                android:scrollbars="vertical"
+                >
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:id="@+id/rl"
+                    android:descendantFocusability="blocksDescendants" >
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        tools:visibility="visible"
+                        >
+                        <RelativeLayout
+                            android:id="@+id/rl_empty"
+                            android:layout_width="match_parent"
+                            android:visibility="gone"
+                            android:background="@color/white"
+                            android:layout_height="516dp">
+                            <TextView
+                                android:id="@+id/tv_empty_tip"
+                                android:textSize="14sp"
+                                android:text="@string/empty_tip"
+                                android:textColor="@color/colorDark2"
+                                android:layout_centerInParent="true"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                            <ImageView
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginBottom="14dp"
+                                android:layout_above="@id/tv_empty_tip"
+                                android:src="@drawable/ic_empty_box"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                        </RelativeLayout>
+                        <RelativeLayout
+                            android:id="@+id/rl_error"
+                            android:layout_width="match_parent"
+                            android:visibility="gone"
+                            android:background="@color/white"
+                            android:layout_height="516dp">
+                            <TextView
+                                android:id="@+id/tv_error_tip"
+                                android:textSize="14sp"
+                                android:text="@string/network_available_error_tip"
+                                android:textColor="@color/colorDark2"
+                                android:layout_centerInParent="true"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                            <ImageView
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginBottom="14dp"
+                                android:layout_above="@id/tv_error_tip"
+                                android:src="@drawable/ic_error_ballon"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                        </RelativeLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            tools:visibility="visible"
+                            android:layout_marginLeft="@dimen/mainMarginLeftRight"
+                            android:layout_marginRight="@dimen/mainMarginLeftRight"
+                            android:id="@+id/rl_content">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="21dp"
+                                android:text="热门联子"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:visibility="gone"
+                                android:id="@+id/hot_pot_title"
+                                android:textColor="@color/colorDark2"
+                                />
+
+                            <android.support.v7.widget.RecyclerView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="15dp"
+                                android:id="@+id/hot_pots"
+                                android:overScrollMode="never"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="28dp"
+                                android:text="最新联子"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:visibility="gone"
+                                android:id="@+id/pot_title"
+                                android:textColor="@color/colorDark2"
+                                />
+
+                            <android.support.v7.widget.RecyclerView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="15dp"
+                                android:id="@+id/pots"
+                                android:overScrollMode="never"/>
+                        </LinearLayout>
+                    </FrameLayout>
+                </RelativeLayout>
+            </android.support.v4.widget.NestedScrollView>
+
+
+        </RelativeLayout>
+
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+</FrameLayout>

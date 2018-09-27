@@ -4,6 +4,7 @@ package com.xiaolian.amigo.di.module;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
+import com.xiaolian.amigo.data.enumeration.annotation.LostAndFound;
 import com.xiaolian.amigo.data.manager.LostAndFoundDataManager;
 import com.xiaolian.amigo.data.manager.OssDataManager;
 import com.xiaolian.amigo.data.manager.UserDataManager;
@@ -11,6 +12,7 @@ import com.xiaolian.amigo.data.manager.intf.ILostAndFoundDataManager;
 import com.xiaolian.amigo.data.manager.intf.IOssDataManager;
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.di.LostAndFoundActivityContext;
+import com.xiaolian.amigo.ui.lostandfound.BlogPresenter;
 import com.xiaolian.amigo.ui.lostandfound.LostAndFoundDetailPresenter;
 import com.xiaolian.amigo.ui.lostandfound.LostAndFoundDetailPresenter2;
 import com.xiaolian.amigo.ui.lostandfound.LostAndFoundNoticePresenter;
@@ -21,6 +23,8 @@ import com.xiaolian.amigo.ui.lostandfound.MyCollectPresenter;
 import com.xiaolian.amigo.ui.lostandfound.PublishLostAndFoundPresenter;
 import com.xiaolian.amigo.ui.lostandfound.PublishLostPresenter;
 import com.xiaolian.amigo.ui.lostandfound.SocalPresenter;
+import com.xiaolian.amigo.ui.lostandfound.intf.IBlogPresenter;
+import com.xiaolian.amigo.ui.lostandfound.intf.IBlogView;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundDetailPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundDetailPresenter2;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundDetailView;
@@ -147,6 +151,12 @@ public class LostAndFoundActivityModule {
     ISocalPresenter<ISocalView> provideSocalPresenter(
             SocalPresenter<ISocalView> presenter) {
         return presenter;
+    }
+
+    @Provides
+    @LostAndFoundActivityContext
+    IBlogPresenter<IBlogView> provideBlogPresenter(BlogPresenter<IBlogView> presenter){
+        return presenter ;
     }
 
 }

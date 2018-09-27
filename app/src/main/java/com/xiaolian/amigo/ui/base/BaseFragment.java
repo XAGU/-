@@ -65,14 +65,13 @@ import static android.app.Activity.RESULT_OK;
  */
 public abstract class BaseFragment extends Fragment  implements IBaseView{
 
-
     protected View mRootView;
 
     protected AppCompatActivity mActivity ;
 
     protected  boolean isCreated  ;
 
-    private final String TAG = this.getClass().getSimpleName();
+    protected final String TAG = this.getClass().getSimpleName();
 
     private static final int REQUEST_CODE_CAMERA = 0x1103;
     private static final int REQUEST_CODE_PICK = 0x1104;
@@ -109,7 +108,6 @@ public abstract class BaseFragment extends Fragment  implements IBaseView{
 
     @Override
     public void onHiddenChanged(boolean hidden) {
-        Log.d(TAG ,hidden +"");
         super.onHiddenChanged(hidden);
         if (!hidden){
             initView();

@@ -150,7 +150,6 @@ public class SearchDialog2 extends Dialog implements TextWatcher {
         lp.width = LinearLayout.LayoutParams.WRAP_CONTENT;
         etSearchContent.setLayoutParams(lp);
         tvCancel.setVisibility(View.GONE);
-
         super.dismiss();
     }
 

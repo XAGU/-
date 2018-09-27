@@ -127,18 +127,6 @@ public class WriteLZActivity extends LostAndFoundBaseActivity implements IPublis
         addListView();
     }
 
-    public void moveAnim(float moveY){
-        ValueAnimator valueAnimator = ValueAnimator.ofFloat(moveY , 0);
-        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                float currentValue = (float) animation.getAnimatedValue();
-                scroll.scrollTo(0 , (int) currentValue);
-            }
-        });
-        valueAnimator.setDuration(100);
-        valueAnimator.start();
-    }
 
     /**
      * 禁止EditText输入空格和换行符

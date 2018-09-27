@@ -16,7 +16,9 @@ import android.widget.Toast;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.lostandfound.BbsTopicListTradeRespDTO;
 import com.xiaolian.amigo.intf.OnItemClickListener;
+import com.xiaolian.amigo.ui.widget.SpaceBottomItemDecoration;
 import com.xiaolian.amigo.util.GildeUtils;
+import com.xiaolian.amigo.util.Log;
 import com.xiaolian.amigo.util.ScreenUtils;
 
 import java.util.ArrayList;
@@ -35,7 +37,6 @@ public class SocalTagsAdapter extends RecyclerView.Adapter<SocalTagsAdapter.Item
     private boolean move;
     private int index;
     private Context context ;
-    private Bitmap normalDrawable ;
     private OnItemClickListener onItemClickListener ;
 
 
@@ -43,7 +44,6 @@ public class SocalTagsAdapter extends RecyclerView.Adapter<SocalTagsAdapter.Item
     public SocalTagsAdapter(Context context, List<BbsTopicListTradeRespDTO.TopicListBean> list, RecyclerView recyclerView
             ,OnItemClickListener onItemClickListener) {
         this.context = context ;
-        normalDrawable = BitmapFactory.decodeResource(context.getResources(),R.drawable.shishi);
         inflater = LayoutInflater.from(context);
         if (list == null) {
             list = new ArrayList<>();
@@ -85,15 +85,19 @@ public class SocalTagsAdapter extends RecyclerView.Adapter<SocalTagsAdapter.Item
     @Override
     public void onBindViewHolder(ItemViewHolder holder, int position) {
         ImageView imageView = holder.img;
+        boolean isLast = false ;
         if (position ==0) {
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) imageView.getLayoutParams();
             params.setMarginEnd(ScreenUtils.dpToPxInt(context , 5));
             imageView.setLayoutParams(params);
             imageView.setBackground(context.getResources().getDrawable(R.drawable.shishi));
         }else {
-//            holder.img.setBackgroundResource(R.drawable.shishi);
+//
             String imgUrl = list.get(position).getIcon();
-            GildeUtils.setNoErrorImage(context ,imageView,imgUrl , ScreenUtils.dpToPx(context ,50));
+            if (position == list.size() -1) {
+                isLast = true;
+            }
+            GildeUtils.setNoErrorImage(context ,imageView,imgUrl , ScreenUtils.dpToPx(context ,50) , isLast);
         }
         holder.img.setOnClickListener(new View.OnClickListener() {
             @Override
