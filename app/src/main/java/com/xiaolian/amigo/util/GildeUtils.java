@@ -3,6 +3,7 @@ package com.xiaolian.amigo.util;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
@@ -30,7 +31,7 @@ public class GildeUtils {
                     @Override
                     public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                         if (view == null) return  ;
-                        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) view.getLayoutParams();
+                        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) view.getLayoutParams();
                         float scale = height /resource.getHeight();
                         int vw = (int) (resource.getWidth() * scale);
                         params.height = (int) height;
