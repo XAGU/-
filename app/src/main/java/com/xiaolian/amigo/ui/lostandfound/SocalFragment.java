@@ -174,7 +174,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         initRecycler();
         initViewPager();
         getSocialTagHeight();
-//        initScroll();
+        presenter.getTopicList();
         return rootView;
     }
 
@@ -274,13 +274,11 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
     @Override
     protected void initView() {
-        presenter.getTopicList();
         mainPresenter.getNoticeAmount();
         presenter.getLostList("" ,1 ,"" ,0);
         presenter.fetchNoticeCount();
     }
 
-    int unDonePosition = - 1 ;
 
     private List<ImageView> tags = new ArrayList<>() ;
     public void moveCursor(int position) {
@@ -325,6 +323,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         if (backMove) {
             AnimatorSet animatorSet = new AnimatorSet();
             ValueAnimator widthAnim = ValueAnimator.ofInt(oldWidth, maxWidth);
+            widthAnim.setDuration(100);
             widthAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
@@ -336,7 +335,10 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
                     titleBorder.setLayoutParams(layoutParams);
                 }
             });
+
+            widthAnim.start();
             ValueAnimator widthAnim2 = ValueAnimator.ofInt(maxWidth, oldWidth);
+            widthAnim2.setDuration(100);
             widthAnim2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 int initMarginStart = ((LinearLayout.LayoutParams) titleBorder.getLayoutParams()).getMarginStart();
 
@@ -351,10 +353,28 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
                     titleBorder.setLayoutParams(layoutParams);
                 }
             });
-            animatorSet.addListener(moveListener);
-            animatorSet.playSequentially(widthAnim, widthAnim2);
-            animatorSet.setDuration(200);
-            animatorSet.start();
+
+            widthAnim.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    widthAnim2.start();
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+
+                }
+            });
         } else {
             AnimatorSet animatorSet = new AnimatorSet();
             ValueAnimator widthAnim = ValueAnimator.ofInt(oldWidth, maxWidth);
@@ -417,7 +437,6 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
         mSocialTagDatas.add(new BbsTopicListTradeRespDTO.TopicListBean());
         titleBorder =new View(mActivity);
-
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT , ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.width = ScreenUtils.dpToPxInt(mActivity , 8);
         layoutParams.height = ScreenUtils.dpToPxInt(mActivity , 2 );
@@ -648,7 +667,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         if (linearLayout == null) {
              linearLayout = new LinearLayout(mActivity);
             linearLayout.setOrientation(LinearLayout.HORIZONTAL);
-
+            linearLayout.setBackgroundResource(R.color.white);
             linearLayout.setLayoutParams(layoutParams);
         }
         if (linearLayout1 == null) {
