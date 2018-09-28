@@ -416,7 +416,7 @@ public abstract class BaseActivity extends SwipeBackActivity
                 null, null);
         Cursor cursor = loader.loadInBackground();
 
-        if (cursor != null && cursor.getCount() > 1) {
+        if (cursor != null && cursor.getCount() >= 1) {
             cursor.moveToFirst();
             filePath = cursor.getString(cursor.getColumnIndex(projection[0]));
             cursor.close();

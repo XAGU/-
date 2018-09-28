@@ -32,6 +32,7 @@ import com.xiaolian.amigo.ui.lostandfound.adapter.SocalContentAdapter;
 import com.xiaolian.amigo.ui.lostandfound.adapter.SocialImgAdapter;
 import com.xiaolian.amigo.ui.lostandfound.intf.IBlogPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.IBlogView;
+import com.xiaolian.amigo.ui.widget.HideSmartLayout;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutFooter;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutHeader;
@@ -94,7 +95,7 @@ public class BlogFragment extends BaseFragment implements IBlogView  , SocialImg
     @BindView(R.id.scrollView)
     NestedScrollView scrollView;
     @BindView(R.id.refreshLayout)
-    SmartRefreshLayout refreshLayout;
+    HideSmartLayout refreshLayout;
 
 
     private LostAndFoundActivityComponent mActivityComponent;
@@ -102,6 +103,8 @@ public class BlogFragment extends BaseFragment implements IBlogView  , SocialImg
 
     Unbinder unbinder;
 
+
+    private  RefreshLayoutHeader header ;
     /**
      * 刷新数据
      */
@@ -180,12 +183,18 @@ public class BlogFragment extends BaseFragment implements IBlogView  , SocialImg
     }
 
     private void initScroll(){
+         scrollView.post(new Runnable() {
+             @Override
+             public void run() {
+                 scrollView.scrollBy(0 , ScreenUtils.dpToPxInt(mActivity , 64));
+             }
+         });
          scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-
              @Override
              public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                    Log.d(TAG ,scrollY +"  :   " + oldScrollY);
+
                     int onScrollDistance = scrollY - oldScrollY ;
+                 Log.d(TAG ,"  " + onScrollDistance);
                         if (onScrollDistance > 0){  // 往下滑 ，tag标签往上走隐藏
                             scrollListener.onUpMove(onScrollDistance);
                         }else{   // 往上滑， 标签往下走， 显示
@@ -257,6 +266,7 @@ public class BlogFragment extends BaseFragment implements IBlogView  , SocialImg
 
 
     private void initRecyclerView() {
+        header = new RefreshLayoutHeader(mActivity);
         hotPots.setNestedScrollingEnabled(false);
         pots.setNestedScrollingEnabled(false);
         ((DefaultItemAnimator) hotPots.getItemAnimator()).setSupportsChangeAnimations(false);
@@ -330,12 +340,14 @@ public class BlogFragment extends BaseFragment implements IBlogView  , SocialImg
                 onLoadMoreContent();
             }
 
+            @SuppressLint("RestrictedApi")
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 onRefreshContent();
             }
         });
-        refreshLayout.setRefreshHeader(new RefreshLayoutHeader(mActivity));
+        refreshLayout.setRefreshHeader(header);
+        header.getView().setVisibility(View.GONE);
         refreshLayout.setRefreshFooter(new RefreshLayoutFooter(mActivity));
         refreshLayout.setReboundDuration(200);
     }
@@ -517,6 +529,7 @@ public class BlogFragment extends BaseFragment implements IBlogView  , SocialImg
         }
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     public void setReferComplete() {
         if (refreshLayout != null) {

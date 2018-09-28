@@ -3,30 +3,33 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+    <com.xiaolian.amigo.ui.widget.HideSmartLayout
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:srlHeaderHeight="40dp"
         app:srlFooterHeight="60dp"
+        app:srlHeaderInsetStart="64dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         >
-
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            >
             <android.support.v4.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:id="@+id/scrollView"
                 android:scrollbars="vertical"
+                android:background="@color/black"
                 >
-
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:id="@+id/rl"
+                    android:paddingTop="64dp"
+                    android:background="@color/white"
                     android:descendantFocusability="blocksDescendants" >
                     <FrameLayout
                         android:layout_width="match_parent"
@@ -131,5 +134,5 @@
 
         </RelativeLayout>
 
-    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+    </com.xiaolian.amigo.ui.widget.HideSmartLayout>
 </FrameLayout>

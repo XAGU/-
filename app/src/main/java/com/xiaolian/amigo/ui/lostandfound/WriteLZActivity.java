@@ -1,20 +1,12 @@
 package com.xiaolian.amigo.ui.lostandfound;
 
-import android.animation.ValueAnimator;
-import android.annotation.TargetApi;
-import android.content.ContentUris;
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.DocumentsContract;
-import android.provider.MediaStore;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextUtils;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;

@@ -99,6 +99,7 @@ public class SocalPresenter <V extends ISocalView> extends BasePresenter<V>
             public void onReady(ApiResult<QueryLostAndFoundListRespDTO> result) {
                 if (result.getError() == null) {
                     commentEnable = result.getData().getCommentEnable() ;
+                    fetchNoticeCount();
                     if (!TextUtils.isEmpty(selectKey)) {
                         if (result.getData().getPosts() == null || result.getData().getPosts().size() == 0) {
                             getMvpView().showNoSearchResult(selectKey);

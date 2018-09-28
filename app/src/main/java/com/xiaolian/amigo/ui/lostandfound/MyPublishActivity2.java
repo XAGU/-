@@ -79,6 +79,16 @@ public class MyPublishActivity2 extends LostAndFoundBaseActivity implements ILos
         initRecyclerView();
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!refreshFlag ){
+            presenter.resetPage();
+            presenter.getMyList();
+        }
+    }
+
     private void initRecyclerView() {
         lostAndFounds = new ArrayList<>();
         publicAdapter = new SocalContentAdapter2(this, R.layout.item_socal2, lostAndFounds, new MultiItemTypeAdapter.OnItemClickListener() {
@@ -182,6 +192,7 @@ public class MyPublishActivity2 extends LostAndFoundBaseActivity implements ILos
     @Override
     public void showEmptyView() {
         rlEmpty.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
     }
 
 
@@ -191,6 +202,8 @@ public class MyPublishActivity2 extends LostAndFoundBaseActivity implements ILos
             refreshFlag = false;
             lostAndFounds.clear();
         }
+        rlEmpty.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
         lostAndFounds.addAll(wrappers);
         publicAdapter.notifyDataSetChanged();
     }

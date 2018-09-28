@@ -68,7 +68,6 @@ public class BlogPresenter<V extends IBlogView>  extends BasePresenter<V> implem
             public void onStart() {
 
             }
-
             @Override
             public void onReady(ApiResult<QueryLostAndFoundListRespDTO> result) {
                 getMvpView().setReferComplete();

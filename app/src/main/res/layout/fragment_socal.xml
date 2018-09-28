@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:id="@+id/social_normal_rl"
         android:layout_height="43dp"
+        android:background="@color/colorBackgroundGray"
         >
         <ImageView
             android:layout_width="wrap_content"
@@ -62,6 +63,12 @@
         android:background="@color/white">
 
 
+        <android.support.v4.view.ViewPager
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/vp_blog_content" />
+
+
         <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -81,6 +88,7 @@
             <!--android:id="@+id/social_tags"/>-->
 
 
+
     </RelativeLayout>
 
     <!--<com.xiaolian.amigo.ui.widget.LazyViewPager-->
@@ -88,8 +96,5 @@
         <!--android:layout_height="match_parent"-->
         <!--android:id="@+id/vp_blog_content" />-->
 
-    <android.support.v4.view.ViewPager
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/vp_blog_content" />
+
 </LinearLayout>

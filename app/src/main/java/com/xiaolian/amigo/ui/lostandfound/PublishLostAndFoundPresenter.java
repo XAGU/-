@@ -66,6 +66,7 @@ public class PublishLostAndFoundPresenter<V extends IPublishLostAndFoundView>
 
     @Override
     public void uploadImage(Context activity, String imagePath, int position, OssFileType type) {
+        Log.d(TAG ," " + imagePath);
         currentImagePosition = position;
         currentType = type;
         uploadImage(activity,imagePath);
@@ -100,7 +101,6 @@ public class PublishLostAndFoundPresenter<V extends IPublishLostAndFoundView>
     }
 
     private void uploadImage(Context context, String filePath) {
-        Log.d(TAG ,filePath);
         ossDataManager.getOssModel()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

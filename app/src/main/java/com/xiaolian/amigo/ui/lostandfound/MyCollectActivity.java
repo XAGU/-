@@ -67,15 +67,25 @@ public class MyCollectActivity extends LostAndFoundBaseActivity implements IMyCo
 
     List<LostAndFoundDTO> lostAndFounds = new ArrayList<>();
 
-    private volatile boolean refreshFlag;
+    private volatile boolean refreshFlag = false ;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lost_and_found_my_collect);
         setUnBinder(ButterKnife.bind(this));
-
         initRecyclerView();
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!refreshFlag) {
+            presenter.resetPage();
+            presenter.getMyCollects();
+        }
     }
 
     private void initRecyclerView() {
@@ -174,6 +184,7 @@ public class MyCollectActivity extends LostAndFoundBaseActivity implements IMyCo
     @Override
     public void showEmptyView() {
         rlEmpty.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
     }
 
     @Override
@@ -182,6 +193,8 @@ public class MyCollectActivity extends LostAndFoundBaseActivity implements IMyCo
             refreshFlag = false;
             lostAndFounds.clear();
         }
+        recyclerView.setVisibility(View.VISIBLE);
+        rlEmpty.setVisibility(View.GONE);
         lostAndFounds.addAll(wrappers);
         adaptor.notifyDataSetChanged();
     }

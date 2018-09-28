@@ -174,7 +174,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         initRecycler();
         initViewPager();
         getSocialTagHeight();
-        presenter.getTopicList();
+
         return rootView;
     }
 
@@ -183,12 +183,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
      * @return
      */
     public void getSocialTagHeight() {
-        socialTags.post(new Runnable() {
-            @Override
-            public void run() {
-                socialTagHeight = socialTags.getHeight() + ScreenUtils.dpToPxInt(mActivity ,8);
-            }
-        });
+                socialTagHeight = ScreenUtils.dpToPxInt(mActivity ,54)+ ScreenUtils.dpToPxInt(mActivity ,10);
     }
 
     int screenWidth  ;
@@ -211,6 +206,8 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
             @Override
             public void onPageSelected(int position) {
                 moveCursor(position);
+                showTags();
+
             }
 
             @Override
@@ -219,7 +216,6 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
                 if (state == SCROLL_STATE_SETTLING) {
                     scrollRight = lastPosition < vpBlogContent.getCurrentItem();
 
-                    android.util.Log.d(TAG ,scrollRight +"");
                     lastPosition = vpBlogContent.getCurrentItem();
                     if (lastPosition + 1 < tags.size() && lastPosition - 1 >= 0) {
                         tags.get(scrollRight ? lastPosition + 1 : lastPosition - 1).getLocationOnScreen(location);
@@ -235,6 +231,22 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         });
     }
 
+    private void showTags(){
+
+        ValueAnimator animator = ValueAnimator.ofInt(moveDistance , 0);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                int currentValue = (int) animation.getAnimatedValue();
+                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) socialTags.getLayoutParams();
+                layoutParams.setMargins(0 ,-currentValue ,0 , 0);
+                socialTags.setLayoutParams(layoutParams);
+                moveDistance = currentValue ;
+            }
+        });
+        animator.setDuration(100);
+        animator.start();
+    }
 
 
 
@@ -274,16 +286,16 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
     @Override
     protected void initView() {
+        if (mSocialTagDatas ==null || mSocialTagDatas.size() == 0) presenter.getTopicList();
         mainPresenter.getNoticeAmount();
         presenter.getLostList("" ,1 ,"" ,0);
-        presenter.fetchNoticeCount();
+
     }
 
 
     private List<ImageView> tags = new ArrayList<>() ;
     public void moveCursor(int position) {
         isCanMove = false;
-
         try {
             if (tags == null || tags.size() == 0 || tags.get(position)== null) return;
             ImageView imageView = tags.get(position);
@@ -321,14 +333,12 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
             return;
         }
         if (backMove) {
-            AnimatorSet animatorSet = new AnimatorSet();
             ValueAnimator widthAnim = ValueAnimator.ofInt(oldWidth, maxWidth);
             widthAnim.setDuration(100);
             widthAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
                     int currentValue = (int) animation.getAnimatedValue();
-                    Log.d(TAG ,currentValue +"  currentValue2") ;
                     LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) titleBorder.getLayoutParams();
                     layoutParams.width = currentValue;
                     layoutParams.height = titleBorder.getHeight();
@@ -345,7 +355,6 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
                     int currentValue = (int) animation.getAnimatedValue();
-                    Log.d(TAG ,currentValue +"  currentValue1") ;
                     LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) titleBorder.getLayoutParams();
                     layoutParams.setMarginStart(initMarginStart + (maxWidth - currentValue));
                     layoutParams.width = currentValue;
@@ -435,7 +444,6 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
      */
     private void initRecycler() {
 
-        mSocialTagDatas.add(new BbsTopicListTradeRespDTO.TopicListBean());
         titleBorder =new View(mActivity);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT , ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.width = ScreenUtils.dpToPxInt(mActivity , 8);
@@ -634,14 +642,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
             this.mSocialTagDatas.addAll(data.getTopicList());
         }
         initTAG(mSocialTagDatas);
-//        adapter.notifyDataSetChanged();
-        RxHelper.delay(200 ,TimeUnit.MILLISECONDS)
-                .subscribe(new Action1<Integer>() {
-                    @Override
-                    public void call(Integer integer) {
-                        referFragment(mSocialTagDatas);
-                    }
-                });
+        referFragment(mSocialTagDatas);
     }
 
     LinearLayout linearLayout ;
@@ -678,14 +679,19 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
         if (linearLayout.getChildCount() > 0)
         linearLayout.removeAllViews();
-        for (BbsTopicListTradeRespDTO.TopicListBean topicListBean : mSocialTagDatas){
-            ImageView imageView  =  new ImageView(mActivity);
-            if (TextUtils.isEmpty(topicListBean.getIcon())){
+        for (int i = 0 ; i < mSocialTagDatas.size() ; i ++) {
+            BbsTopicListTradeRespDTO.TopicListBean topicListBean = mSocialTagDatas.get(i);
+            ImageView imageView = new ImageView(mActivity);
+            if (TextUtils.isEmpty(topicListBean.getIcon())) {
                 imageView.setBackgroundResource(R.drawable.shishi);
-                layoutParams.setMargins(0 , 0 ,ScreenUtils.dpToPxInt(mActivity ,5) ,0);
+                layoutParams.setMargins(ScreenUtils.dpToPxInt(mActivity, 5), 0, ScreenUtils.dpToPxInt(mActivity, 5), 0);
                 imageView.setLayoutParams(layoutParams);
-            }else{
-                GildeUtils.setNoErrorImage(mActivity ,imageView ,topicListBean.getIcon() ,ScreenUtils.dpToPx(mActivity ,50),false);
+            } else {
+                if (i == mSocialTagDatas.size() - 1 ){
+                    GildeUtils.setNoErrorImage(mActivity, imageView, topicListBean.getIcon(), ScreenUtils.dpToPx(mActivity, 50), true);
+                }else{
+                    GildeUtils.setNoErrorImage(mActivity, imageView, topicListBean.getIcon(), ScreenUtils.dpToPx(mActivity, 50), false);
+                }
             }
             imageView.setTag(topicListBean.getTopicId());
             imageView.setOnClickListener(new View.OnClickListener() {
@@ -838,18 +844,21 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
               RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) socialTags.getLayoutParams();
               layoutParams.setMargins(0 ,-moveDistance ,0 , 0);
               socialTags.setLayoutParams(layoutParams);
+//              moveVP(moveDistance);
             }else{
                 moveDistance = socialTagHeight ;
                 RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) socialTags.getLayoutParams();
                 layoutParams.setMargins(0 ,-moveDistance ,0 , 0);
                 socialTags.setLayoutParams(layoutParams);
+//                moveVP(moveDistance);
             }
         }
     }
 
     @Override
     public void onDownMove(int height) {
-        if (socialTags == null || height > -3) return ;
+
+        if (socialTags == null || Math.abs(height) < 3) return ;
 
         if (moveDistance > 0){
             moveDistance += height ;

@@ -38,6 +38,9 @@ public class GildeUtils {
                         params.width = vw;
                         if (!isLast)
                         params.setMarginEnd(ScreenUtils.dpToPxInt(context , 5));
+                        else{
+                            params.setMarginEnd(ScreenUtils.dpToPxInt(context , 15));
+                        }
                         view.setLayoutParams(params);
                         view.setImageBitmap(resource);
 //                        view.postInvalidate();

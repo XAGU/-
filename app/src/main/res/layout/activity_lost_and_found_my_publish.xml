@@ -50,6 +50,7 @@
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refreshLayout"
+        android:background="@color/colorBackgroundGray"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:srlHeaderHeight="40dp"
