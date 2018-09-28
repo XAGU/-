@@ -440,11 +440,11 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
                 super.onScrolled(recyclerView, dx, dy);
 
                 if (dx != 0) {
-//                    RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) titleBorder.getLayoutParams();
-//                    layoutParams.setMarginStart(layoutParams.getMarginStart() - dx);
-//                    titleBorder.setLayoutParams(layoutParams);
-//                    Log.d(TAG ,"   "  + unDonePosition);
-                    moveCursor(unDonePosition);
+                    RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) titleBorder.getLayoutParams();
+                    layoutParams.setMarginStart(layoutParams.getMarginStart() + dx);
+                    titleBorder.setLayoutParams(layoutParams);
+////                    Log.d(TAG ,"   "  + unDonePosition);
+//                    moveCursor(unDonePosition);
                 }
             }
         });
