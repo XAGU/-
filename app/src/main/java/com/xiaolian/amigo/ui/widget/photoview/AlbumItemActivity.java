@@ -50,6 +50,11 @@ public class AlbumItemActivity extends AppCompatActivity implements View.OnClick
      */
     public static final String EXTRA_CURRENT = "current";
 
+    /**
+     *
+     */
+    public static final String EXTRA_TYPE_LOCAL = "local";
+
 
     private AlbumViewPager mViewPager;//显示大图
     private ImageView mBackView;
@@ -135,6 +140,12 @@ public class AlbumItemActivity extends AppCompatActivity implements View.OnClick
             action = getIntent().getIntExtra(INTENT_ACTION, ACTION_NORMAL);
             mPaths.clear();
             mCurrent = getIntent().getIntExtra(EXTRA_CURRENT, 0);
+
+
+            String pathLocal = getIntent().getStringExtra(EXTRA_TYPE_LOCAL);
+            if (pathLocal != null ){
+                mPaths.add(pathLocal);
+            }
             String pathSingle = getIntent().getStringExtra(EXTRA_TYPE_SINGLE);
             if (pathSingle != null) {
                 mPaths.add(Constant.IMAGE_PREFIX + pathSingle);
@@ -162,6 +173,8 @@ public class AlbumItemActivity extends AppCompatActivity implements View.OnClick
                 }
                 return;
             }
+
+
         } catch (Exception e) {
 
         }

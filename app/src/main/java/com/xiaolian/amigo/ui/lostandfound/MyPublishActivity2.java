@@ -149,7 +149,7 @@ public class MyPublishActivity2 extends LostAndFoundBaseActivity implements ILos
 
     private void onRefresh() {
         presenter.resetPage();
-        refreshFlag = true;
+        refreshFlag = false;
         presenter.getMyList();
     }
 
@@ -194,6 +194,7 @@ public class MyPublishActivity2 extends LostAndFoundBaseActivity implements ILos
         rlEmpty.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.GONE);
     }
+
 
 
     @Override
@@ -263,6 +264,15 @@ public class MyPublishActivity2 extends LostAndFoundBaseActivity implements ILos
             Log.e(TAG ,e.getMessage());
         }
 
+    }
+
+    @Override
+    public void refer(List<LostAndFoundDTO> wrappers) {
+        lostAndFounds.clear();
+        rlEmpty.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
+        lostAndFounds.addAll(wrappers);
+        publicAdapter.notifyDataSetChanged();
     }
 
 }

@@ -543,13 +543,21 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
     @OnClick({R.id.iv_back})
     @Override
     public void finishView() {
+        Log.wtf(TAG ,"finishView");
+        finish();
+    }
+
+
+    @Override
+    public void finish() {
+        Log.wtf(TAG ,"finish");
         Intent intent = new Intent();
         intent.putExtra(LostAndFoundActivity2.KEY_COMMENT_COUNT, content == null ?
                 0 : content.getCommentCount());
         intent.putExtra(KEY_LIKE ,likeed);
         intent.putExtra(KEY_DELETE ,isDelete);
         setResult(RESULT_OK ,intent);
-        finish();
+        super.finish();
     }
 
     @Override
@@ -646,6 +654,7 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
 
     @Override
     public void onBackPressed() {
+        Log.wtf(TAG ,"onBackGround");
         Intent intent = new Intent();
         intent.putExtra(LostAndFoundActivity2.KEY_COMMENT_COUNT, content == null ?
                 0 : content.getCommentCount());

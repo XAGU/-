@@ -8,6 +8,7 @@
         android:layout_width="77dp"
         android:layout_height="77dp"
         android:background="@drawable/dotted_box"
+        android:src="@drawable/image_add"
         android:layout_gravity="center_vertical"
         android:scaleType="centerInside"
         />

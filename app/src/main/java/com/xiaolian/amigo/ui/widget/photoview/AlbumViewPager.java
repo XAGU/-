@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.model.CustomImageSizeModelImp;
 import com.xiaolian.amigo.util.ImageHelper;
+import com.xiaolian.amigo.util.Log;
 
 import java.text.NumberFormat;
 import java.util.List;
@@ -92,7 +93,7 @@ public class AlbumViewPager extends ViewPager {
             String path = paths.get(position);
             loading.setTag(path);
             imageLayout.setTag(path);
-
+            Log.d(TAG , path +"");
 //            ImageHelper.loadAlbum(getContext(), imageView, path);
             ImageHelper.displayImage(getContext() ,new CustomImageSizeModelImp(path) ,imageView ,loading);
             /*mTvProgress.setText(FileUtils.FormetFileSize(current)+

@@ -133,9 +133,14 @@ public class LostAndFoundPresenter2<V extends ILostAndFoundView2> extends BasePr
                                     getMvpView().showEmptyView();
                                     return;
                                 }
-                                getMvpView().hideEmptyView();
+
+                                if (page == Constant.PAGE_START_NUM){
+                                    getMvpView().refer(wrappers);
+                                }else {
+                                    getMvpView().addMore(wrappers);
+                                }
                                 page ++;
-                                getMvpView().addMore(wrappers);
+                                getMvpView().hideEmptyView();
                             }
 
                         } else {

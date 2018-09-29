@@ -328,6 +328,13 @@ public class LostAndFoundActivity2 extends LostAndFoundBaseActivity implements I
 
     }
 
+    @Override
+    public void refer(List<LostAndFoundDTO> wrappers) {
+//            lostAndFounds.clear();
+//        lostAndFounds.addAll(wrappers);
+//        adaptor.notifyDataSetChanged();
+    }
+
     private void onLoadMore() {
         presenter.getList(false, null);
     }

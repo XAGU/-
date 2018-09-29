@@ -40,4 +40,6 @@ public interface ILostAndFoundView2 extends IBaseView {
     void notifyAdapter(int position, boolean b);
 
     void delete(int position);
+
+    void refer(List<LostAndFoundDTO> wrappers);
 }

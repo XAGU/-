@@ -36,7 +36,7 @@ public class ImageAddAdapter extends CommonAdapter<ImageAddAdapter.ImageItem> {
     public ImageAddAdapter(Context context, int layoutId, List<ImageItem> datas) {
         super(context, layoutId, datas);
         this.context = context;
-        this.imageSize = ScreenUtils.dpToPxInt(context, 57);
+        this.imageSize = ScreenUtils.dpToPxInt(context, 77);
     }
 
 
@@ -70,16 +70,16 @@ public class ImageAddAdapter extends CommonAdapter<ImageAddAdapter.ImageItem> {
             ((ImageView) holder.getView(R.id.iv_image)).setScaleType(ImageView.ScaleType.CENTER_INSIDE);
             holder.setImageResource(R.id.iv_image, DEFAULT_RES);
         } else {
-            Glide.with(context).load(Constant.IMAGE_PREFIX + imageItem.getImageUrl()
-                    + String.format(Locale.getDefault(), Constant.OSS_IMAGE_RESIZE,
-                    imageSize))
+//            Glide.with(context).load(Constant.IMAGE_PREFIX + imageItem.getImageUrl()
+//                    + String.format(Locale.getDefault(), Constant.OSS_IMAGE_RESIZE,
+//                    imageSize))
+//                    .asBitmap()
+            Glide.with(context).load(imageItem.getImageUrl())
                     .asBitmap()
                 .skipMemoryCache(true)
-                    .error(R.drawable.ic_picture_error)
-                    .placeholder(R.drawable.ic_picture_error)
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .into((ImageView) holder.getView(R.id.iv_image));
-            ((ImageView) holder.getView(R.id.iv_image)).setScaleType(ImageView.ScaleType.FIT_XY);
+            ((ImageView) holder.getView(R.id.iv_image)).setScaleType(ImageView.ScaleType.CENTER_CROP);
         }
     }
 

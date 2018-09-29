@@ -49,6 +49,7 @@ public class ImageHelper {
 
     public static void displayImage(Context context, final CustomImageSizeModel model, final ImageView imageView, final View loading) {
         loading.setVisibility(View.VISIBLE);
+        Log.wtf(TAG ,"" + model.getBaseUrl());
 //    DrawableRequestBuilder thumbnailBuilder = Glide
 //            .with(imageView.getContext())
 //            .load(new CustomImageSizeModelImp(model

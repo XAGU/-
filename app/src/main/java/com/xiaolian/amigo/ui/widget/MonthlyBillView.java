@@ -306,7 +306,7 @@ public class MonthlyBillView extends View {
         for (RectF rectF : descRectes) {
             if (rectF.intersect(descRectF)) {
                 if (descRectF.top > rect.top) {
-                    float num = 1;
+                    float num = 2;
                     lineEndX   =   barWidth/2   +   (radius+ distance*num*1f+descRectF.height())   *  (float) Math.cos(lineAngle *   3.14   /180 );
                     lineEndY   =   (barHeight-lengedHeight)/2   +   (radius+ distance*num*1f+descRectF.height())  *   (float) Math.sin(lineAngle   *   3.14   /180);
                 } else {

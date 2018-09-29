@@ -284,24 +284,30 @@ public class HomeFragment2 extends BaseFragment {
 
     private void resetItem() {
         items.clear();
-        if (dryer.isActive()) {
-            items.add(dryer);
-        }
+
         if (shower.isActive()) {
             items.add(shower);
         }
-        if (washer.isActive()) {
-            items.add(washer);
-        }
+
         if (water.isActive()) {
             items.add(water);
         }
-        if (gate.isActive()) {
-            items.add(gate);
+        if (dryer.isActive()) {
+            items.add(dryer);
         }
+
+        if (washer.isActive()) {
+            items.add(washer);
+        }
+
         if (dryer1.isActive()){
             items.add(dryer1);
         }
+
+        if (gate.isActive()) {
+            items.add(gate);
+        }
+
 //        if (lost.isActive()) {
 //            items.add(lost);
 //        }

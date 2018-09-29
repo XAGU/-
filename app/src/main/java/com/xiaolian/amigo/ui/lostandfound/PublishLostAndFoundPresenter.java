@@ -133,7 +133,7 @@ public class PublishLostAndFoundPresenter<V extends IPublishLostAndFoundView>
                     @Override
                     public void onSuccess(PutObjectRequest request, PutObjectResult result) {
                         getMvpView().post(() -> getMvpView().hideLoading());
-                        getMvpView().post(() -> getMvpView().addImage(request.getObjectKey(), currentImagePosition));
+                        getMvpView().post(() -> getMvpView().addImage(filePath, currentImagePosition));  //request.getObjectKey()
                         Log.d("PutObject", "UploadSuccess " + request.getObjectKey());
                     }
 

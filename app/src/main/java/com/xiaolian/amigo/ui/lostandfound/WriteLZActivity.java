@@ -14,8 +14,6 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.OssFileType;
 import com.xiaolian.amigo.data.network.model.lostandfound.BbsTopicListTradeRespDTO;
@@ -207,7 +205,7 @@ public class WriteLZActivity extends LostAndFoundBaseActivity implements IPublis
                 } else {
                     Intent intent = new Intent(WriteLZActivity.this, AlbumItemActivity.class);
                     intent.putExtra(AlbumItemActivity.INTENT_POSITION, position);
-                    intent.putExtra(AlbumItemActivity.EXTRA_TYPE_SINGLE, images.get(position));
+                    intent.putExtra(AlbumItemActivity.EXTRA_TYPE_LOCAL, images.get(position));
                     intent.putExtra(AlbumItemActivity.INTENT_ACTION, AlbumItemActivity.ACTION_DELETEABLE);
                     startActivityForResult(intent, REQUEST_IMAGE);
                 }
@@ -316,14 +314,12 @@ public class WriteLZActivity extends LostAndFoundBaseActivity implements IPublis
 //                });
 
                 getImage2(imagePath -> {
-                    Glide.with(this).load(imagePath)
-                            .asBitmap()
-                            .placeholder(R.drawable.ic_picture_error)
-                            .error(R.drawable.ic_picture_error)
-                            .skipMemoryCache(true)
-                            .diskCacheStrategy(DiskCacheStrategy.NONE)
-                            .into(ivFirst);
-                    ivFirst.setScaleType(ImageView.ScaleType.FIT_XY);
+//                    Glide.with(this).load(imagePath)
+//                            .asBitmap()
+//                            .skipMemoryCache(true)
+//                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+//                            .into(ivFirst);
+//                    ivFirst.setScaleType(ImageView.ScaleType.CENTER_CROP);
                     ivSecond.setVisibility(View.VISIBLE);
                     presenter.uploadImage(WriteLZActivity.this,
                             imagePath, 0, OssFileType.FOUND);
@@ -346,14 +342,12 @@ public class WriteLZActivity extends LostAndFoundBaseActivity implements IPublis
 //                });
 
                 getImage2(imagePath -> {
-                                        Glide.with(this).load(imagePath)
-                            .asBitmap()
-                            .placeholder(R.drawable.ic_picture_error)
-                            .error(R.drawable.ic_picture_error)
-                            .skipMemoryCache(true)
-                            .diskCacheStrategy(DiskCacheStrategy.NONE)
-                            .into(ivSecond);
-                    ivSecond.setScaleType(ImageView.ScaleType.FIT_XY);
+//                                        Glide.with(this).load(imagePath)
+//                            .asBitmap()
+//                            .skipMemoryCache(true)
+//                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+//                            .into(ivSecond);
+//                    ivSecond.setScaleType(ImageView.ScaleType.CENTER_CROP);
                     ivThird.setVisibility(View.VISIBLE);
                     presenter.uploadImage(WriteLZActivity.this,
                             imagePath, 1, OssFileType.FOUND);
@@ -376,14 +370,14 @@ public class WriteLZActivity extends LostAndFoundBaseActivity implements IPublis
 //                });
 
                 getImage2(imagePath -> {
-                    Glide.with(this).load(imagePath)
-                            .asBitmap()
-                            .placeholder(R.drawable.ic_picture_error)
-                            .error(R.drawable.ic_picture_error)
-                            .skipMemoryCache(true)
-                            .diskCacheStrategy(DiskCacheStrategy.NONE)
-                            .into(ivThird);
-                    ivThird.setScaleType(ImageView.ScaleType.FIT_XY);
+//                    Glide.with(this).load(imagePath)
+//                            .asBitmap()
+//                            .placeholder(R.drawable.ic_picture_error)
+//                            .error(R.drawable.ic_picture_error)
+//                            .skipMemoryCache(true)
+//                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+//                            .into(ivThird);
+//                    ivThird.setScaleType(ImageView.ScaleType.CENTER_CROP);
                     presenter.uploadImage(WriteLZActivity.this,
                             imagePath, 2, OssFileType.FOUND);
                 });

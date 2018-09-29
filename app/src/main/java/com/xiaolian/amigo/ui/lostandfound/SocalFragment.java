@@ -6,19 +6,27 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -33,7 +41,6 @@ import com.xiaolian.amigo.data.network.model.lostandfound.LostAndFoundDTO;
 import com.xiaolian.amigo.di.componet.DaggerLostAndFoundActivityComponent;
 import com.xiaolian.amigo.di.componet.LostAndFoundActivityComponent;
 import com.xiaolian.amigo.di.module.LostAndFoundActivityModule;
-import com.xiaolian.amigo.intf.OnItemClickListener;
 import com.xiaolian.amigo.ui.base.BaseFragment;
 import com.xiaolian.amigo.ui.base.RxBus;
 import com.xiaolian.amigo.ui.lostandfound.adapter.BlogAdapter;
@@ -50,21 +57,20 @@ import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.ui.widget.photoview.AlbumItemActivity;
 import com.xiaolian.amigo.util.GildeUtils;
 import com.xiaolian.amigo.util.Log;
-import com.xiaolian.amigo.util.RxHelper;
 import com.xiaolian.amigo.util.ScreenUtils;
+import com.xiaolian.amigo.util.SoftInputUtils;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnEditorAction;
 import butterknife.Unbinder;
-import rx.functions.Action1;
 
 import static android.support.v4.view.ViewPager.SCROLL_STATE_SETTLING;
 import static com.xiaolian.amigo.ui.lostandfound.LostAndFoundDetailActivity2.KEY_ID;
@@ -73,7 +79,7 @@ import static com.xiaolian.amigo.ui.lostandfound.LostAndFoundDetailActivity2.KEY
  * @author wcm
  * 2018/09/04
  */
-public class SocalFragment extends BaseFragment implements View.OnClickListener, ISocalView, SocialImgAdapter.PhotoClickListener , BlogFragment.ScrollListener {
+public class SocalFragment extends BaseFragment implements View.OnClickListener, ISocalView, SocialImgAdapter.PhotoClickListener, BlogFragment.ScrollListener {
 
     public static final int REQUEST_CODE_DETAIL = 0x02;
     public static final int REQUEST_CODE_PHOTO = 0x03;
@@ -81,12 +87,22 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     private static final String TAG = SocalFragment.class.getSimpleName();
     @BindView(R.id.iv_remaind)
     ImageView ivRemaind;
-//    @BindView(R.id.title_border)
+    //    @BindView(R.id.title_border)
     View titleBorder;
     @BindView(R.id.tag_rl)
     RelativeLayout tagRl;
     @BindView(R.id.vp_blog_content)
     ViewPager vpBlogContent;
+    @BindView(R.id.et_search_content)
+    EditText etSearchContent;
+    @BindView(R.id.tv_cancel)
+    TextView tvCancel;
+    @BindView(R.id.search_rl)
+    RelativeLayout searchRl;
+    @BindView(R.id.fl_result_contain)
+    FrameLayout flResultContain;
+    @BindView(R.id.rl_result)
+    RelativeLayout rlResult;
 
     private LostAndFoundActivityComponent mActivityComponent;
 
@@ -104,7 +120,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
 
     @BindView(R.id.social_tags)
-    HorizontalScrollView socialTags ;
+    HorizontalScrollView socialTags;
     Unbinder unbinder;
 
     private RelativeLayout rlNotice;
@@ -122,7 +138,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     @Inject
     ISocalPresenter<ISocalView> presenter;
 
-    private SearchDialog2 searchDialog;
+//    private SearchDialog2 searchDialog;
 
 
     private String slectkey;
@@ -145,10 +161,10 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     boolean isCanMove = true;
 
     List<BaseFragment> blogFragments;
-    BlogAdapter blogAdapter ;
-    FragmentManager fm ;
+    BlogAdapter blogAdapter;
+    FragmentManager fm;
 
-    private int socialTagHeight ;
+    private int socialTagHeight;
 
     @SuppressLint("ValidFragment")
     public SocalFragment(IMainPresenter<IMainView> mainPresenter) {
@@ -180,24 +196,27 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
     /**
      * 获取socialTags的高度
+     *
      * @return
      */
     public void getSocialTagHeight() {
-                socialTagHeight = ScreenUtils.dpToPxInt(mActivity ,54)+ ScreenUtils.dpToPxInt(mActivity ,10);
+        socialTagHeight = ScreenUtils.dpToPxInt(mActivity, 56) + ScreenUtils.dpToPxInt(mActivity, 10);
     }
 
-    int screenWidth  ;
-    private void initViewPager(){
+    int screenWidth;
+
+    private void initViewPager() {
         if (fm == null) fm = getChildFragmentManager();
         blogFragments = new ArrayList<>();
-        blogAdapter = new BlogAdapter(fm ,blogFragments);
+        blogAdapter = new BlogAdapter(fm, blogFragments);
         vpBlogContent.setAdapter(blogAdapter);
         screenWidth = ScreenUtils.getScreenWidth(mActivity);
         vpBlogContent.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
-            boolean scrollRight ;
-            int lastPosition ;
-            int[] location = new int[2] ;
+            boolean scrollRight;
+            int lastPosition;
+            int[] location = new int[2];
+
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -231,23 +250,79 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         });
     }
 
-    private void showTags(){
+    /**   search  ***/
+    /**
+     * s
+     *
+     * @param v
+     * @param actionId
+     * @param event
+     * @return
+     */
+    @OnEditorAction(R.id.et_search_content)
+    boolean search(TextView v, int actionId, KeyEvent event) {
+        // 判断如果用户输入的是搜索键
+        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+//            this.dismiss();
+            InputMethodManager imm = (InputMethodManager) mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+            presenter.getLostList("", 1, etSearchContent.getText().toString().trim(), 0);
+            return true;
+        }
+        return false;
+    }
 
-        ValueAnimator animator = ValueAnimator.ofInt(moveDistance , 0);
+
+    @OnClick(R.id.tv_cancel)
+    void cancelSearch() {
+        etSearchContent.setText("");
+        searchRl.setVisibility(View.GONE);
+        rlResult.setVisibility(View.GONE);
+        socialNormalRl.setVisibility(View.VISIBLE);
+        flResultContain.setVisibility(View.GONE);
+        vpBlogContent.setVisibility(View.VISIBLE);
+        SoftInputUtils.hideSoftInputFromWindow( mActivity, etSearchContent);
+    }
+
+    public void showSearch() {
+        Animation animation = AnimationUtils.loadAnimation(mActivity, R.anim.dialog_search);
+        searchRl.startAnimation(animation);
+    }
+
+    public void showNoResult(String selectKey) {
+        flResultContain.setVisibility(View.GONE);
+        rlResult.setVisibility(View.VISIBLE);
+    }
+
+    public void showResult(View view) {
+        rlResult.setVisibility(View.GONE);
+        if (flResultContain.getChildCount() > 0) {
+            flResultContain.removeAllViews();
+        }
+        flResultContain.setVisibility(View.VISIBLE);
+        flResultContain.addView(view);
+    }
+
+
+    /**
+     * search
+     ***/
+    private void showTags() {
+
+        ValueAnimator animator = ValueAnimator.ofInt(moveDistance, 0);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 int currentValue = (int) animation.getAnimatedValue();
                 RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) socialTags.getLayoutParams();
-                layoutParams.setMargins(0 ,-currentValue ,0 , 0);
+                layoutParams.setMargins(0, -currentValue, 0, 0);
                 socialTags.setLayoutParams(layoutParams);
-                moveDistance = currentValue ;
+                moveDistance = currentValue;
             }
         });
         animator.setDuration(100);
         animator.start();
     }
-
 
 
     private void getInitSocialTagHeight() {
@@ -262,10 +337,11 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
 
     public void setReferTop(boolean referTop) {
-        if (blogFragments == null || blogFragments.size() <= 0 || blogFragments.get(0) == null ) return ;
+        if (blogFragments == null || blogFragments.size() <= 0 || blogFragments.get(0) == null)
+            return;
         moveCursor(0);
         vpBlogContent.setCurrentItem(0);
-        ((BlogFragment)blogFragments.get(0)).setReferTop(true);
+        ((BlogFragment) blogFragments.get(0)).setReferTop(true);
     }
 
     @Override
@@ -286,20 +362,21 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
     @Override
     protected void initView() {
-        if (mSocialTagDatas ==null || mSocialTagDatas.size() == 0) presenter.getTopicList();
+        if (mSocialTagDatas == null || mSocialTagDatas.size() == 0) presenter.getTopicList();
         mainPresenter.getNoticeAmount();
-        presenter.getLostList("" ,1 ,"" ,0);
+        presenter.getLostList("", 1, "", 0);
 
     }
 
 
-    private List<ImageView> tags = new ArrayList<>() ;
+    private List<ImageView> tags = new ArrayList<>();
+
     public void moveCursor(int position) {
         isCanMove = false;
         try {
-            if (tags == null || tags.size() == 0 || tags.get(position)== null) return;
+            if (tags == null || tags.size() == 0 || tags.get(position) == null) return;
             ImageView imageView = tags.get(position);
-             int middle = (imageView.getLeft() + imageView.getRight()) / 2 ;
+            int middle = (imageView.getLeft() + imageView.getRight()) / 2;
             animWidthMove(middle);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
@@ -419,8 +496,6 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     }
 
 
-
-
     @OnClick(R.id.search)
     public void showSearchRl() {
         search();
@@ -444,41 +519,46 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
      */
     private void initRecycler() {
 
-        titleBorder =new View(mActivity);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT , ViewGroup.LayoutParams.WRAP_CONTENT);
-        layoutParams.width = ScreenUtils.dpToPxInt(mActivity , 8);
-        layoutParams.height = ScreenUtils.dpToPxInt(mActivity , 2 );
-        layoutParams.setMargins(ScreenUtils.dpToPxInt(mActivity ,32) ,ScreenUtils.dpToPxInt(mActivity , 6)
-        ,0 , 0);
+        titleBorder = new View(mActivity);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutParams.width = ScreenUtils.dpToPxInt(mActivity, 8);
+        layoutParams.height = ScreenUtils.dpToPxInt(mActivity, 2);
+        layoutParams.setMargins(ScreenUtils.dpToPxInt(mActivity, 45), ScreenUtils.dpToPxInt(mActivity, 6)
+                , 0, 0);
         titleBorder.setLayoutParams(layoutParams);
         titleBorder.setBackgroundResource(R.drawable.red_cursor);
     }
 
     void search() {
-        if (searchDialog == null) {
-            searchDialog = new SearchDialog2(mActivity);
-            searchDialog.setSearchListener(searchStr -> {
-                presenter.getLostList("", 1, searchStr, 0);
-            });
+//        if (searchDialog == null) {
+//            searchDialog = new SearchDialog2(mActivity);
+//            searchDialog.setSearchListener(searchStr -> {
+//                presenter.getLostList("", 1, searchStr, 0);
+//            });
+//
+//            searchDialog.setCanceledOnTouchOutside(true);
+//            searchDialog.setCancelable(true);
+//            searchDialog.setOnDismissListener(dialog -> {
+//                if (searchData != null && searchData.size() > 0)
+//                    searchData.clear();
+//            });
+//        }
+//        searchDialog.show();
 
-            searchDialog.setCanceledOnTouchOutside(true);
-            searchDialog.setCancelable(true);
-            searchDialog.setOnDismissListener(dialog -> {
-                if (searchData != null && searchData.size() > 0)
-                    searchData.clear();
-            });
-        }
-        searchDialog.show();
+        searchRl.setVisibility(View.VISIBLE);
+        showSearch();
+        socialNormalRl.setVisibility(View.GONE);
+        SoftInputUtils.showSoftInputFromWindow(getActivity() ,etSearchContent);
     }
 
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (searchDialog != null) {
-            if (searchDialog.isShowing()) searchDialog.dismiss();
-            searchDialog = null;
-        }
+//        if (searchDialog != null) {
+//            if (searchDialog.isShowing()) searchDialog.dismiss();
+//            searchDialog = null;
+//        }
 
         if (mPopupWindow != null) {
 
@@ -555,6 +635,8 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
     @Override
     public void showSearchResult(List<LostAndFoundDTO> wappers) {
+        flResultContain.setVisibility(View.VISIBLE);
+        vpBlogContent.setVisibility(View.GONE);
         if (searchData == null) searchData = new ArrayList<>();
         if (searchRecyclerView == null) {
             searchRecyclerView = new RecyclerView(mActivity);
@@ -591,12 +673,12 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         }
         searchData.addAll(wappers);
         searchAdaptor.notifyDataSetChanged();
-        searchDialog.showResult(searchRecyclerView);
+        showResult(searchRecyclerView);
     }
 
     @Override
     public void showNoSearchResult(String selectKey) {
-        searchDialog.showNoResult(selectKey);
+        showNoResult(selectKey);
     }
 
     @Override
@@ -645,41 +727,41 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         referFragment(mSocialTagDatas);
     }
 
-    LinearLayout linearLayout ;
+    LinearLayout linearLayout;
 
-    LinearLayout linearLayout1 ;
+    LinearLayout linearLayout1;
 
-    LinearLayout.LayoutParams layoutParams ;
+    LinearLayout.LayoutParams layoutParams;
 
     LinearLayout.LayoutParams layoutParams1;
 
-    private void initTAG(List<BbsTopicListTradeRespDTO.TopicListBean> mSocialTagDatas){
-        if (socialTags == null) return ;
-        if (socialTags.getChildCount()> 0 ) socialTags.removeAllViews();
+    private void initTAG(List<BbsTopicListTradeRespDTO.TopicListBean> mSocialTagDatas) {
+        if (socialTags == null) return;
+        if (socialTags.getChildCount() > 0) socialTags.removeAllViews();
 
-        if (layoutParams == null){
-            layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT , ViewGroup.LayoutParams.WRAP_CONTENT);
+        if (layoutParams == null) {
+            layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         }
 
-        if (layoutParams1 == null){
-            layoutParams1 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT ,ScreenUtils.dpToPxInt(mActivity ,50));
+        if (layoutParams1 == null) {
+            layoutParams1 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ScreenUtils.dpToPxInt(mActivity, 50));
         }
 
         if (linearLayout == null) {
-             linearLayout = new LinearLayout(mActivity);
+            linearLayout = new LinearLayout(mActivity);
             linearLayout.setOrientation(LinearLayout.HORIZONTAL);
             linearLayout.setBackgroundResource(R.color.white);
             linearLayout.setLayoutParams(layoutParams);
         }
         if (linearLayout1 == null) {
-             linearLayout1 = new LinearLayout(mActivity);
+            linearLayout1 = new LinearLayout(mActivity);
             linearLayout1.setOrientation(LinearLayout.VERTICAL);
             linearLayout1.setLayoutParams(layoutParams);
         }
 
         if (linearLayout.getChildCount() > 0)
-        linearLayout.removeAllViews();
-        for (int i = 0 ; i < mSocialTagDatas.size() ; i ++) {
+            linearLayout.removeAllViews();
+        for (int i = 0; i < mSocialTagDatas.size(); i++) {
             BbsTopicListTradeRespDTO.TopicListBean topicListBean = mSocialTagDatas.get(i);
             ImageView imageView = new ImageView(mActivity);
             if (TextUtils.isEmpty(topicListBean.getIcon())) {
@@ -687,9 +769,9 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
                 layoutParams.setMargins(ScreenUtils.dpToPxInt(mActivity, 5), 0, ScreenUtils.dpToPxInt(mActivity, 5), 0);
                 imageView.setLayoutParams(layoutParams);
             } else {
-                if (i == mSocialTagDatas.size() - 1 ){
+                if (i == mSocialTagDatas.size() - 1) {
                     GildeUtils.setNoErrorImage(mActivity, imageView, topicListBean.getIcon(), ScreenUtils.dpToPx(mActivity, 50), true);
-                }else{
+                } else {
                     GildeUtils.setNoErrorImage(mActivity, imageView, topicListBean.getIcon(), ScreenUtils.dpToPx(mActivity, 50), false);
                 }
             }
@@ -705,7 +787,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
             tags.add(imageView);
         }
         if (linearLayout1.getChildCount() > 0)
-        linearLayout1.removeAllViews();
+            linearLayout1.removeAllViews();
 
         linearLayout1.addView(linearLayout);
         linearLayout1.addView(titleBorder);
@@ -716,18 +798,16 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     /**
      * 根据标签添加Fragment
      */
-    public void referFragment(List<BbsTopicListTradeRespDTO.TopicListBean> data){
-        if (blogFragments == null && blogAdapter == null) return ;
+    public void referFragment(List<BbsTopicListTradeRespDTO.TopicListBean> data) {
+        if (blogFragments == null && blogAdapter == null) return;
         if (blogFragments.size() > 0) blogFragments.clear();
 
-        for (BbsTopicListTradeRespDTO.TopicListBean topicListBean : data){
-            blogFragments.add(new BlogFragment(topicListBean.getTopicId() , this));
+        for (BbsTopicListTradeRespDTO.TopicListBean topicListBean : data) {
+            blogFragments.add(new BlogFragment(topicListBean.getTopicId(), this));
         }
         blogAdapter.notifyDataSetChanged();
 
     }
-
-
 
 
     @Override
@@ -829,26 +909,31 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     }
 
 
-    /**   滚动参数*/
-    int  moveDistance = 0 ;
-    /** 滚动参数**/
+    /**
+     * 滚动参数
+     */
+    int moveDistance = 0;
+
+    /**
+     * 滚动参数
+     **/
 
     @Override
     public void onUpMove(int height) {
-        if (socialTags == null || height < 3) return ;
+        if (socialTags == null || height < 3) return;
 
-        if (moveDistance < socialTagHeight ){
-            moveDistance  += height ;
+        if (moveDistance < socialTagHeight) {
+            moveDistance += height;
 
-            if (moveDistance < socialTagHeight){
-              RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) socialTags.getLayoutParams();
-              layoutParams.setMargins(0 ,-moveDistance ,0 , 0);
-              socialTags.setLayoutParams(layoutParams);
-//              moveVP(moveDistance);
-            }else{
-                moveDistance = socialTagHeight ;
+            if (moveDistance < socialTagHeight) {
                 RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) socialTags.getLayoutParams();
-                layoutParams.setMargins(0 ,-moveDistance ,0 , 0);
+                layoutParams.setMargins(0, -moveDistance, 0, 0);
+                socialTags.setLayoutParams(layoutParams);
+//              moveVP(moveDistance);
+            } else {
+                moveDistance = socialTagHeight;
+                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) socialTags.getLayoutParams();
+                layoutParams.setMargins(0, -moveDistance, 0, 0);
                 socialTags.setLayoutParams(layoutParams);
 //                moveVP(moveDistance);
             }
@@ -858,19 +943,19 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     @Override
     public void onDownMove(int height) {
 
-        if (socialTags == null || Math.abs(height) < 3) return ;
+        if (socialTags == null || Math.abs(height) < 3) return;
 
-        if (moveDistance > 0){
-            moveDistance += height ;
+        if (moveDistance > 0) {
+            moveDistance += height;
 
-            if (moveDistance > 0){
+            if (moveDistance > 0) {
                 RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) socialTags.getLayoutParams();
-                layoutParams.setMargins(0 ,-moveDistance ,0 , 0);
+                layoutParams.setMargins(0, -moveDistance, 0, 0);
                 socialTags.setLayoutParams(layoutParams);
-            }else{
-                moveDistance = 0 ;
+            } else {
+                moveDistance = 0;
                 RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) socialTags.getLayoutParams();
-                layoutParams.setMargins(0 ,-moveDistance ,0 , 0);
+                layoutParams.setMargins(0, -moveDistance, 0, 0);
                 socialTags.setLayoutParams(layoutParams);
             }
 

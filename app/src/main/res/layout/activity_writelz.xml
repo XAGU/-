@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/white"
     android:layout_height="match_parent">
     <Button
@@ -138,6 +139,7 @@
 
                     <LinearLayout
                         android:visibility="gone"
+                        tools:visibility="visible"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal">
@@ -149,6 +151,7 @@
                             android:background="@drawable/dotted_box"
                             android:src="@drawable/image_add"
                             android:scaleType="centerInside"
+                            tools:visibility="visible"
                             android:layout_gravity="center_vertical"/>
 
                         <ImageView
@@ -160,7 +163,8 @@
                             android:scaleType="centerInside"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="10dp"
-                            android:visibility="gone"/>
+                            android:visibility="gone"
+                            tools:visiblity="visible"/>
 
                         <ImageView
                             android:id="@+id/iv_third"
@@ -171,7 +175,8 @@
                             android:scaleType="centerInside"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="10dp"
-                            android:visibility="gone"/>
+                            android:visibility="gone"
+                            tools:visibility="visible"/>
 
                     </LinearLayout>
                 </LinearLayout>
