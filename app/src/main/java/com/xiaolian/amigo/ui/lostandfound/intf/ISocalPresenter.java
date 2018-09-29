@@ -27,4 +27,7 @@ public interface ISocalPresenter <V extends ISocalView> extends IBasePresenter<V
     void fetchNoticeCount();
 
 
+    boolean getIsFirstAfterLogin();
+
+    void setIsFirstAfterLogin(boolean b);
 }

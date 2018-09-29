@@ -206,4 +206,8 @@ public interface IMainPresenter<V extends IMainView> extends IBasePresenter<V> {
      * @return
      */
     boolean getIsShowRepair();
+
+    boolean getIsFirstAfterLogin();
+
+    void setIsFirstAfterLogin(boolean b);
 }

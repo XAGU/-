@@ -96,9 +96,34 @@ public class PublishLostAndFoundPresenter<V extends IPublishLostAndFoundView>
     }
 
     @Override
-    public List<BbsTopicListTradeRespDTO.TopicListBean> getTopicList() {
-        return lostAndFoundManager.getTopic();
+    public void getTopicList() {
+        addObserver(lostAndFoundManager.getTopicList(), new NetworkObserver<ApiResult<BbsTopicListTradeRespDTO>>() {
+            @Override
+            public void onStart() {
+            }
+
+            @Override
+            public void onReady(ApiResult<BbsTopicListTradeRespDTO> result) {
+                if (result.getError() == null) {
+                    if (result.getData().getTopicList() != null && result.getData().getTopicList().size() > 0) {
+                        lostAndFoundManager.setTopic(result.getData().getTopicList());
+                        getMvpView().referTopic(result.getData());
+                    }
+
+                } else {
+                    getMvpView().onError(result.getError().getDisplayMessage());
+//                    getMvpView().onErrorView();
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+//                getMvpView().onErrorView();
+            }
+        });
     }
+
 
     private void uploadImage(Context context, String filePath) {
         ossDataManager.getOssModel()
@@ -122,12 +147,73 @@ public class PublishLostAndFoundPresenter<V extends IPublishLostAndFoundView>
                 });
     }
 
+    private void uploadImage(Context context, String filePath , byte[] imageBytes) {
+        ossDataManager.getOssModel()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<ApiResult<OssModel>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        onHttpError(e);
+                    }
+
+                    @Override
+                    public void onNext(ApiResult<OssModel> result) {
+                        uploadImage(OssClientHolder.getClient(context ,result.getData()) , result.getData() ,imageBytes ,filePath);
+                    }
+                });
+    }
+
+    private void uploadImage(OSSClient client ,OssModel model  , byte[] bytes , String filePath){
+        getMvpView().post(() -> getMvpView().showLoading());
+        PutObjectRequest put = new PutObjectRequest(model.getBucket(),
+                generateObjectKey(String.valueOf(System.currentTimeMillis())),
+                bytes);
+
+        OSSAsyncTask task = client.asyncPutObject(put,
+                new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
+                    @Override
+                    public void onSuccess(PutObjectRequest request, PutObjectResult result) {
+                        getMvpView().post(() -> getMvpView().hideLoading());
+                        getMvpView().post(() -> getMvpView().addImage(filePath, currentImagePosition));  //request.getObjectKey()
+                        Log.d("PutObject", "UploadSuccess " + request.getObjectKey());
+                    }
+
+                    @Override
+                    public void onFailure(PutObjectRequest request, ClientException clientExcepion, ServiceException serviceException) {
+                        getMvpView().post(() -> getMvpView().hideLoading());
+                        // Request exception
+                        if (clientExcepion != null) {
+                            // Local exception, such as a network exception
+                            clientExcepion.printStackTrace();
+                        }
+                        if (serviceException != null) {
+                            // Service exception
+                            Log.e("ErrorCode", serviceException.getErrorCode());
+                            Log.e("RequestId", serviceException.getRequestId());
+                            Log.e("HostId", serviceException.getHostId());
+                            Log.e("RawMessage", serviceException.getRawMessage());
+                        }
+                        getMvpView().post(() ->
+                                getMvpView().onError("图片上传失败，请重试"));
+                    }
+                });
+
+    }
+
+
     @SuppressWarnings("unused")
     private void uploadImage(OSSClient client, OssModel model, String filePath) {
         getMvpView().post(() -> getMvpView().showLoading());
         PutObjectRequest put = new PutObjectRequest(model.getBucket(),
                 generateObjectKey(String.valueOf(System.currentTimeMillis())),
                 filePath);
+        Log.wtf( TAG ,put.getObjectKey()+"");
         OSSAsyncTask task = client.asyncPutObject(put,
                 new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
                     @Override

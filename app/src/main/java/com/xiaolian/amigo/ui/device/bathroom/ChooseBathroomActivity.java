@@ -496,16 +496,21 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
 
     }
 
+    boolean isQueen  ;
+
 
     @Override
     public void refreshBathroom(BathBuildingRespDTO respDTO) {
         boolean isPublicBathroom = false;
+        isQueen = false ;
         viewLine.setVisibility(View.VISIBLE);
         idContent.setVisibility(View.VISIBLE);
         rlError.setVisibility(View.GONE);
         if (respDTO.getMethods() != null && respDTO.getMethods().size() > 0) {
             for (Integer method : respDTO.getMethods()) {
                 if (method == 1) isPublicBathroom = true;
+
+                if (method == 3) isQueen = true ;
             }
         }
 
@@ -522,6 +527,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
             }
         autoBathroom.setData(floorsBeans , residenceId);
         autoBathroom.setIsSelect(isPublicBathroom);
+        if (pop != null) pop.setQueen(isQueen);
     }
 
 

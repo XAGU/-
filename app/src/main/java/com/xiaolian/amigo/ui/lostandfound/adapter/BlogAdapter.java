@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.view.ViewGroup;
 
 import com.xiaolian.amigo.ui.base.BaseFragment;
+import com.xiaolian.amigo.ui.lostandfound.BlogFragment;
 
 import java.util.List;
 
@@ -14,10 +15,17 @@ public class BlogAdapter  extends FragmentPagerAdapter{
     private List<BaseFragment>  baseFragments ;
 
     private FragmentManager fm ;
+
+    boolean isReferData = false ;
     public BlogAdapter(FragmentManager fm , List<BaseFragment> baseFragments) {
         super(fm);
         this.fm = fm ;
         this.baseFragments = baseFragments ;
+    }
+
+    public void setReferData(boolean referData) {
+        this.isReferData = referData;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -32,8 +40,13 @@ public class BlogAdapter  extends FragmentPagerAdapter{
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        BaseFragment baseFragment = (BaseFragment) super.instantiateItem(container , position);
-        this.fm.beginTransaction().show(baseFragment).commit() ;
+        BlogFragment baseFragment = (BlogFragment) super.instantiateItem(container , position);
+        this.fm.beginTransaction().show(baseFragment).commit();
+//        if (this.isReferData) {
+//
+//        }else {
+//
+//        }
         return baseFragment ;
     }
 

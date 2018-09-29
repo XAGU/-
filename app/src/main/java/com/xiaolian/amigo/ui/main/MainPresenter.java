@@ -511,6 +511,16 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
         return isShowRepair;
     }
 
+    @Override
+    public boolean getIsFirstAfterLogin() {
+        return mainDataManager.getIsFirstAfterLogin();
+    }
+
+    @Override
+    public void setIsFirstAfterLogin(boolean b) {
+        mainDataManager.setIsFirstAfterLogin(b);
+    }
+
 
     @Override
     public void noticeCount() {

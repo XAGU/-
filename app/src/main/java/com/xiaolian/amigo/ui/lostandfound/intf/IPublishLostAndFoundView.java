@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.lostandfound.intf;
 
+import com.xiaolian.amigo.data.network.model.lostandfound.BbsTopicListTradeRespDTO;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 
 /**
@@ -11,4 +12,6 @@ public interface IPublishLostAndFoundView extends IBaseView {
     void finishView();
 
     void addImage(String url, int position);
+
+    void referTopic(BbsTopicListTradeRespDTO data);
 }

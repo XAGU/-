@@ -26,8 +26,8 @@ import com.xiaolian.amigo.data.network.model.lostandfound.QueryLostFoundRepliesR
 import com.xiaolian.amigo.data.network.model.lostandfound.SaveLostAndFoundDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.SaveLostAndFoundReportDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.SaveLostFoundCommentsRepliesDTO;
-import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
+import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.di.UserServer;
 
 import java.util.List;
@@ -154,6 +154,16 @@ public class LostAndFoundDataManager implements ILostAndFoundDataManager {
     @Override
     public void setCommentEnable(boolean commentEnable) {
          sharedPreferencesHelp.setCommentEnable(commentEnable);
+    }
+
+    @Override
+    public boolean getIsFirstAfterLogin() {
+        return sharedPreferencesHelp.getIsFirstAfterLogin();
+    }
+
+    @Override
+    public void setIsFirstAfterLogin(boolean b) {
+        sharedPreferencesHelp.setIsFirstAfterLogin(b);
     }
 
     @Override

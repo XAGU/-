@@ -202,4 +202,8 @@ public interface ISharedPreferencesHelp {
     void setCommentEnable(boolean commentEnable);
 
     boolean getCommentEnable();
+
+    void setIsFirstAfterLogin(boolean isFisrstAfterLogin) ;
+
+    boolean getIsFirstAfterLogin();
 }

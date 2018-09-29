@@ -26,6 +26,7 @@ public class GildeUtils {
         Glide.with(context).load(Constant.IMAGE_PREFIX + url)
                 .asBitmap()
                 .skipMemoryCache(true)
+                .dontAnimate()
 //                .into(view);
                 .into(new SimpleTarget<Bitmap>() {
                     @Override

@@ -35,9 +35,16 @@ public class ChooseRoomAdapter extends RecyclerView.Adapter<ChooseRoomAdapter.Ro
     private ChooseBathroomPop.PopClickableListener popClickableListener ;
 
     private int  index ;
+
+    boolean isQueen ;
     public ChooseRoomAdapter(Context context , List<BuildingTrafficDTO.FloorsBean> floorsBeans){
         this.context =  context ;
         this.floorsBeans = floorsBeans ;
+    }
+
+    public void setQueen(boolean queen) {
+        this.isQueen = queen;
+        notifyDataSetChanged();
     }
 
     public void setPopClickableListener(ChooseBathroomPop.PopClickableListener popClickableListener) {
@@ -104,26 +111,29 @@ public class ChooseRoomAdapter extends RecyclerView.Adapter<ChooseRoomAdapter.Ro
             String content = "" ;
             holder.textView.setText(floorsBean.getName());
             if (floorsBean.getAvailableCount() > 0){
-                String  num = String.valueOf(floorsBean.getAvailableCount());
-                content = "[空闲："+floorsBean.getAvailableCount() + "间浴室]" ;
-                SpannableString spannable = new SpannableString(content);
-                spannable.setSpan(new StyleSpan(Typeface.NORMAL) ,0 ,3 ,SPAN_INCLUSIVE_INCLUSIVE);
-                spannable.setSpan(new StyleSpan(Typeface.BOLD) ,4 ,4 +num.length() ,SPAN_EXCLUSIVE_INCLUSIVE);
-                spannable.setSpan(new StyleSpan(Typeface.NORMAL) ,4 + num.length() ,content.length() ,SPAN_EXCLUSIVE_INCLUSIVE);
-                holder.bathroom_status.setText(spannable);
-                holder.bathroom_status.setTextColor(context.getResources().getColor(R.color.colorGreen));
-                holder.radioButton.setBackgroundResource(R.drawable.bathroom_radio_color_bg);
+                if (isQueen) {
+                    String num = String.valueOf(floorsBean.getAvailableCount());
+                    content = "[空闲：" + floorsBean.getAvailableCount() + "间浴室]";
+                    SpannableString spannable = new SpannableString(content);
+                    spannable.setSpan(new StyleSpan(Typeface.NORMAL), 0, 3, SPAN_INCLUSIVE_INCLUSIVE);
+                    spannable.setSpan(new StyleSpan(Typeface.BOLD), 4, 4 + num.length(), SPAN_EXCLUSIVE_INCLUSIVE);
+                    spannable.setSpan(new StyleSpan(Typeface.NORMAL), 4 + num.length(), content.length(), SPAN_EXCLUSIVE_INCLUSIVE);
+                    holder.bathroom_status.setText(spannable);
+                    holder.bathroom_status.setTextColor(context.getResources().getColor(R.color.colorGreen));
+                    holder.radioButton.setBackgroundResource(R.drawable.bathroom_radio_color_bg);
+                }
             }else if (floorsBean.getWaitCount() >= 0){
-
-                content = "[排队："+floorsBean.getWaitCount() + "人]" ;
-                String  num = String.valueOf(floorsBean.getWaitCount());
-                SpannableString spannable = new SpannableString(content);
-                spannable.setSpan(new StyleSpan(Typeface.NORMAL) ,0 ,3 ,SPAN_INCLUSIVE_INCLUSIVE);
-                spannable.setSpan(new StyleSpan(Typeface.BOLD) ,4 ,4 + num.length() ,SPAN_EXCLUSIVE_INCLUSIVE);
-                spannable.setSpan(new StyleSpan(Typeface.NORMAL) ,4 + num.length() ,content.length() ,SPAN_EXCLUSIVE_INCLUSIVE);
-                holder.bathroom_status.setText(spannable);
-                holder.bathroom_status.setTextColor(context.getResources().getColor(R.color.colorFullRed));
-                holder.radioButton.setBackgroundResource(R.drawable.bathroom_radio_color_bg);
+                if (isQueen) {
+                    content = "[排队：" + floorsBean.getWaitCount() + "人]";
+                    String num = String.valueOf(floorsBean.getWaitCount());
+                    SpannableString spannable = new SpannableString(content);
+                    spannable.setSpan(new StyleSpan(Typeface.NORMAL), 0, 3, SPAN_INCLUSIVE_INCLUSIVE);
+                    spannable.setSpan(new StyleSpan(Typeface.BOLD), 4, 4 + num.length(), SPAN_EXCLUSIVE_INCLUSIVE);
+                    spannable.setSpan(new StyleSpan(Typeface.NORMAL), 4 + num.length(), content.length(), SPAN_EXCLUSIVE_INCLUSIVE);
+                    holder.bathroom_status.setText(spannable);
+                    holder.bathroom_status.setTextColor(context.getResources().getColor(R.color.colorFullRed));
+                    holder.radioButton.setBackgroundResource(R.drawable.bathroom_radio_color_bg);
+                }
             }
 
 

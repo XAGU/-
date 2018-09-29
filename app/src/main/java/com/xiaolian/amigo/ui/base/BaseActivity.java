@@ -32,14 +32,12 @@ import android.os.CountDownTimer;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,19 +56,15 @@ import com.xiaolian.amigo.ui.main.HomeFragment2;
 import com.xiaolian.amigo.ui.main.MainActivity;
 import com.xiaolian.amigo.ui.widget.dialog.ActionSheetDialog;
 import com.xiaolian.amigo.ui.widget.dialog.LoadingDialog;
+import com.xiaolian.amigo.util.FileUtils;
 import com.xiaolian.amigo.util.Log;
 import com.xiaolian.amigo.util.NetworkUtil;
 import com.yalantis.ucrop.UCrop;
-import com.yalantis.ucrop.util.BitmapLoadUtils;
-import com.yalantis.ucrop.util.FileUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.Map;
 
@@ -196,6 +190,29 @@ public abstract class BaseActivity extends SwipeBackActivity
         return Uri.fromFile(outputImage);
     }
 
+    private File getCropFile(String fileName) {
+        String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xiaolian/";
+        File path = new File(filePath);
+        if (!path.exists() && !path.mkdirs()) {
+            onError(R.string.no_sd_card_premission);
+            return null;
+        }
+        File outputImage = new File(path, fileName + ".jpg");
+        try {
+            if (outputImage.exists() && !outputImage.delete()) {
+                onError(R.string.no_sd_card_premission);
+                return null;
+            }
+            if (!outputImage.createNewFile()) {
+                onError(R.string.no_sd_card_premission);
+                return null;
+            }
+        } catch (IOException e) {
+            Log.e(TAG, e.getMessage());
+        }
+        return outputImage;
+    }
+
     @TargetApi(19)
     private String handleImageOnKitKat(Intent data){
         String imagePath = null;
@@ -259,7 +276,18 @@ public abstract class BaseActivity extends SwipeBackActivity
 
 
                 if (imageCallback2 != null){
-                    imageCallback2.callback(outputImage.getAbsolutePath());
+//                    imageCallback2.callback(outputImage.getAbsolutePath());
+                    File cropFile = getCropFile("crop1");
+                    if (FileUtils.copyFile(outputImage.getAbsoluteFile(), cropFile, new FileUtils.OnReplaceListener() {
+                        @Override
+                        public boolean onReplace() {
+                            return true;
+                        }
+                    })){
+                        imageCallback2.callback(cropFile.getPath());
+                    }else{
+                        onError("上传失败");
+                    }
                 }
 
 

@@ -23,7 +23,7 @@ public interface IPublishLostAndFoundPresenter<V extends IPublishLostAndFoundVie
     void publishLostAndFound(String desc, List<String> images, String title, int type);
 
 
-    List<BbsTopicListTradeRespDTO.TopicListBean> getTopicList();
-
+//    List<BbsTopicListTradeRespDTO.TopicListBean> getTopicList();
+    void getTopicList();
 
 }

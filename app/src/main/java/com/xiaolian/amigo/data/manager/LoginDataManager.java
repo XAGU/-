@@ -92,6 +92,11 @@ public class LoginDataManager implements ILoginDataManager {
     }
 
     @Override
+    public void setIsFirstAfterLogin(boolean b) {
+        sharedPreferencesHelp.setIsFirstAfterLogin(b);
+    }
+
+    @Override
     public String getToken() {
         return sharedPreferencesHelp.getToken();
     }

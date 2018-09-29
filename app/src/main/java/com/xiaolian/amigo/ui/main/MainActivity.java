@@ -89,6 +89,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import lombok.Data;
 
+import static android.app.FragmentManager.POP_BACK_STACK_INCLUSIVE;
 import static android.widget.RelativeLayout.CENTER_IN_PARENT;
 import static com.xiaolian.amigo.data.enumeration.Device.DISPENSER;
 import static com.xiaolian.amigo.data.enumeration.Device.DRYER;
@@ -318,33 +319,41 @@ public class MainActivity extends MainBaseActivity implements IMainView {
            }
         }
         if (position == 1 ){
-            if (fm.findFragmentByTag(SocalFragment.class.getSimpleName()) == null){
-                transaction = fm.beginTransaction();
-                socalFragment = new SocalFragment(presenter);
-                fragments[1] = socalFragment;
-                if (lastFragment == -1){
-                    transaction.add(R.id.fragment, socalFragment, SocalFragment.class.getSimpleName());
-                    transaction.commit();
-                }else{
-                    if (fragments[lastFragment] != null) transaction.hide(fragments[lastFragment]);
-                    transaction.add(R.id.fragment, socalFragment, SocalFragment.class.getSimpleName());
-                    transaction.commit();
-                }
 
-            }else{
-                transaction = fm.beginTransaction();
-                fragment = fm.findFragmentByTag(SocalFragment.class.getSimpleName());
-                socalFragment = (SocalFragment) fragment;
-                if (lastFragment != -1) {
-                    if (fragments[lastFragment] != null) transaction.hide(fragments[lastFragment]);
-                    if (fragment.isAdded()) {
-                        transaction.show(fragment).commit();
-                    }else{
-                        transaction.add(R.id.fragment, fragment, SocalFragment.class.getSimpleName());
-                        transaction.commit();
-                    }
+            if (presenter.getIsFirstAfterLogin()){
+                if (fm.findFragmentByTag(SocalFragment.class.getSimpleName()) != null ){
+                    fm.popBackStack(SocalFragment.class.getSimpleName() ,POP_BACK_STACK_INCLUSIVE);
                 }
             }
+                if (fm.findFragmentByTag(SocalFragment.class.getSimpleName()) == null) {
+                    transaction = fm.beginTransaction();
+                    socalFragment = new SocalFragment(presenter);
+                    fragments[1] = socalFragment;
+                    if (lastFragment == -1) {
+                        transaction.add(R.id.fragment, socalFragment, SocalFragment.class.getSimpleName());
+                        transaction.commit();
+                    } else {
+                        if (fragments[lastFragment] != null)
+                            transaction.hide(fragments[lastFragment]);
+                        transaction.add(R.id.fragment, socalFragment, SocalFragment.class.getSimpleName());
+                        transaction.commit();
+                    }
+
+                } else {
+                    transaction = fm.beginTransaction();
+                    fragment = fm.findFragmentByTag(SocalFragment.class.getSimpleName());
+                    socalFragment = (SocalFragment) fragment;
+                    if (lastFragment != -1) {
+                        if (fragments[lastFragment] != null)
+                            transaction.hide(fragments[lastFragment]);
+                        if (fragment.isAdded()) {
+                            transaction.show(fragment).commit();
+                        } else {
+                            transaction.add(R.id.fragment, fragment, SocalFragment.class.getSimpleName());
+                            transaction.commit();
+                        }
+                    }
+                }
         }
 
         if (position == 2){
@@ -562,6 +571,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             presenter.getNoticeAmount();
             presenter.noticeCount();
             uploadDeviceInfo();
+            if (presenter.getIsFirstAfterLogin()) setDefalutItem(0);
         }
 
     }

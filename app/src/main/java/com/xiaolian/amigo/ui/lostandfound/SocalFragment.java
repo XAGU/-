@@ -6,7 +6,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -52,7 +51,6 @@ import com.xiaolian.amigo.ui.lostandfound.intf.ISocalPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.ISocalView;
 import com.xiaolian.amigo.ui.main.intf.IMainPresenter;
 import com.xiaolian.amigo.ui.main.intf.IMainView;
-import com.xiaolian.amigo.ui.widget.SearchDialog2;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.ui.widget.photoview.AlbumItemActivity;
 import com.xiaolian.amigo.util.GildeUtils;
@@ -71,7 +69,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnEditorAction;
 import butterknife.Unbinder;
-import butterknife.internal.ListenerClass;
 
 import static android.support.v4.view.ViewPager.SCROLL_STATE_SETTLING;
 import static android.view.View.OVER_SCROLL_NEVER;
@@ -364,9 +361,19 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
     @Override
     protected void initView() {
-        if (mSocialTagDatas == null || mSocialTagDatas.size() == 0) presenter.getTopicList();
+        if (mSocialTagDatas == null || mSocialTagDatas.size() == 0 ) presenter.getTopicList();
         mainPresenter.getNoticeAmount();
         presenter.getLostList("", 1, "", 0);
+        if (presenter.getIsFirstAfterLogin()){
+            if (vpBlogContent != null) {
+                vpBlogContent.setCurrentItem(0);
+                presenter.setIsFirstAfterLogin(false);
+                if (blogFragments!= null && blogFragments.size() > 0){
+                    ((BlogFragment)(blogFragments.get(0))).setReferData();
+                    socialTags.scrollTo(0 ,0);
+                }
+            }
+        }
 
     }
 
@@ -396,7 +403,12 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     private void animWidthMove(int moveLeft) {
 
         moveLeft = moveLeft - ScreenUtils.dpToPxInt(mActivity, 4);
-        int oldLeft = titleBorder.getLeft();
+        int oldLeft = titleBorder.getLeft() ;
+
+
+
+//        int oldLeft = (titleBorder.getLeft() + titleBorder.getRight()) / 2 ;
+
         int maxWidth;
         int oldWidth = ScreenUtils.dpToPxInt(mActivity, 8);
         boolean backMove = false;
@@ -405,7 +417,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
             maxWidth = moveLeft - oldLeft + oldWidth;
         } else {
             backMove = false;
-            maxWidth = oldLeft - moveLeft + oldWidth;
+            maxWidth = oldLeft - moveLeft  + oldWidth;
         }
         if (maxWidth < oldWidth) {
             isCanMove = true;
@@ -711,6 +723,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         }
         initTAG(mSocialTagDatas);
         referFragment(mSocialTagDatas);
+        presenter.setIsFirstAfterLogin(false);
     }
 
     LinearLayout linearLayout;
@@ -791,8 +804,8 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         for (BbsTopicListTradeRespDTO.TopicListBean topicListBean : data) {
             blogFragments.add(new BlogFragment(topicListBean.getTopicId(), this));
         }
+        blogAdapter.setReferData(true);
         blogAdapter.notifyDataSetChanged();
-
     }
 
 

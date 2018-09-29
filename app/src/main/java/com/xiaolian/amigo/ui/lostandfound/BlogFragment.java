@@ -130,6 +130,7 @@ public class BlogFragment extends BaseFragment implements IBlogView  , SocialImg
     private Subscription busSubscriber;
 
 
+
     ScrollListener scrollListener ;
 
      public static BlogFragment newInstance(int topicId) {
@@ -148,7 +149,13 @@ public class BlogFragment extends BaseFragment implements IBlogView  , SocialImg
     }
 
 
-
+    public void  setReferData(){
+         try {
+             requestNet();
+         }catch (Exception e){
+             Log.wtf(TAG ,e.getMessage());
+         }
+    }
 
     @SuppressLint("ValidFragment")
     public BlogFragment(int topicId , ScrollListener scrollListener) {

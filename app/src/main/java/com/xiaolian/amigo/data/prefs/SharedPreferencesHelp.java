@@ -103,6 +103,9 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
 
     public static final String PREF_KEY_COMMENTABLE = "PREF_KEY_COMMENTABLE";
 
+    public static final String PREF_KEY_ISFIRST_AFTER_LOGIN = "PREF_KEY_ISFIRST_AFTER_LOGIN";
+
+
     private String tokenHolder;
     private String deviceTokenHolder;
     private User userHolder;
@@ -623,12 +626,22 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
 
     @Override
     public void setCommentEnable(boolean commentEnable) {
-        mSharedPreferences.edit().putBoolean(PREF_KEY_COMMENTABLE ,commentEnable).commit();
+        mSharedPreferences.edit().putBoolean(PREF_KEY_COMMENTABLE ,commentEnable).apply();
     }
 
     @Override
     public boolean getCommentEnable() {
         return mSharedPreferences.getBoolean(PREF_KEY_COMMENTABLE ,true);
+    }
+
+    @Override
+    public void setIsFirstAfterLogin(boolean isFisrstAfterLogin) {
+        mSharedPreferences.edit().putBoolean(PREF_KEY_ISFIRST_AFTER_LOGIN ,isFisrstAfterLogin).apply();
+    }
+
+    @Override
+    public boolean getIsFirstAfterLogin() {
+        return mSharedPreferences.getBoolean(PREF_KEY_ISFIRST_AFTER_LOGIN ,false);
     }
 
 

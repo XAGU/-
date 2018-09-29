@@ -138,4 +138,7 @@ public interface ILostAndFoundDataManager {
 
     void setCommentEnable(boolean commentEnable);
 
+    boolean getIsFirstAfterLogin();
+
+    void setIsFirstAfterLogin(boolean b);
 }

@@ -118,6 +118,12 @@ public class WriteLZActivity extends LostAndFoundBaseActivity implements IPublis
     }
 
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        presenter.getTopicList();
+    }
+
     /**
      * 禁止EditText输入空格和换行符
      *
@@ -137,18 +143,15 @@ public class WriteLZActivity extends LostAndFoundBaseActivity implements IPublis
         editText.setFilters(new InputFilter[]{filter});
     }
 
+    CommonAdapter<LZTag> adapter ;
+
     private void initRecy() {
         topics = new ArrayList<>();
-        if (presenter.getTopicList() != null) {
-            for (BbsTopicListTradeRespDTO.TopicListBean topicListBean : presenter.getTopicList()) {
-                topics.add(new LZTag(topicListBean.getTopicName(), false, topicListBean.getTopicId()));
-            }
-        }
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         topic.setLayoutManager(linearLayoutManager);
         topic.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 10)));
-        topic.setAdapter(new CommonAdapter<LZTag>(this, R.layout.item_socail_top, topics) {
+        adapter = new CommonAdapter<LZTag>(this, R.layout.item_socail_top, topics) {
 
             @Override
             protected void convert(ViewHolder holder, LZTag lzTag, int position) {
@@ -177,7 +180,8 @@ public class WriteLZActivity extends LostAndFoundBaseActivity implements IPublis
 
                 });
             }
-        });
+        };
+        topic.setAdapter(adapter);
     }
 
 
@@ -280,6 +284,18 @@ public class WriteLZActivity extends LostAndFoundBaseActivity implements IPublis
             this.images.add(url);
         }
         refreshAddImage();
+    }
+    
+    @Override
+    public void referTopic(BbsTopicListTradeRespDTO data) {
+        if (adapter == null) return ;
+            if (topics != null && topics.size() ==0){
+            for (BbsTopicListTradeRespDTO.TopicListBean topicListBean : data.getTopicList()) {
+                topics.add(new LZTag(topicListBean.getTopicName(), false, topicListBean.getTopicId()));
+            }
+
+            adapter.notifyDataSetChanged();
+        }
     }
 
     private void refreshAddImage() {

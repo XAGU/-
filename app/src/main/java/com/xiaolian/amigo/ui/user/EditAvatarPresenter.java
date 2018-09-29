@@ -128,10 +128,13 @@ public class EditAvatarPresenter<V extends IEditAvatarView> extends BasePresente
     }
 
     private void uploadImage(OSSClient client, OssModel model, String filePath) {
+        Log.wtf(TAG ,"" + filePath);
         getMvpView().post(() -> getMvpView().showLoading());
         PutObjectRequest put = new PutObjectRequest(model.getBucket(),
                 generateObjectKey(String.valueOf(System.currentTimeMillis())),
                 filePath);
+
+        Log.wtf(TAG ,put.getObjectKey());
         OSSAsyncTask task = client.asyncPutObject(put,
                 new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
                     @Override

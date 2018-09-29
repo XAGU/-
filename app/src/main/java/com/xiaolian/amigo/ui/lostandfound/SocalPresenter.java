@@ -198,4 +198,14 @@ public class SocalPresenter <V extends ISocalView> extends BasePresenter<V>
                     }
                 });
     }
+
+    @Override
+    public boolean getIsFirstAfterLogin() {
+        return lostAndFoundDataManager.getIsFirstAfterLogin();
+    }
+
+    @Override
+    public void setIsFirstAfterLogin(boolean b) {
+         lostAndFoundDataManager.setIsFirstAfterLogin(b);
+    }
 }

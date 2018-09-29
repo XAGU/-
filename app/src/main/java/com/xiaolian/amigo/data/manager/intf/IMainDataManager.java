@@ -175,4 +175,8 @@ public interface IMainDataManager {
      * @return
      */
     boolean getCommentEnable();
+
+    boolean getIsFirstAfterLogin();
+
+    void setIsFirstAfterLogin(boolean b);
 }

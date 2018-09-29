@@ -306,4 +306,14 @@ public class MainDataManager implements IMainDataManager {
         return sharedPreferencesHelp.getCommentEnable();
     }
 
+    @Override
+    public boolean getIsFirstAfterLogin() {
+        return sharedPreferencesHelp.getIsFirstAfterLogin();
+    }
+
+    @Override
+    public void setIsFirstAfterLogin(boolean b) {
+        sharedPreferencesHelp.setIsFirstAfterLogin(b);
+    }
+
 }

@@ -16,6 +16,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.OssFileType;
 import com.xiaolian.amigo.data.enumeration.annotation.LostAndFound;
+import com.xiaolian.amigo.data.network.model.lostandfound.BbsTopicListTradeRespDTO;
 import com.xiaolian.amigo.ui.lostandfound.intf.IPublishLostAndFoundPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.IPublishLostAndFoundView;
 import com.xiaolian.amigo.ui.lostandfound.intf.IPublishLostPresenter;
@@ -205,6 +206,11 @@ public class PublishLostAndFoundActivity extends LostAndFoundBaseActivity implem
             this.images.add(url);
         }
         refreshAddImage();
+    }
+
+    @Override
+    public void referTopic(BbsTopicListTradeRespDTO data) {
+
     }
 
     private void refreshAddImage() {
