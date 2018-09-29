@@ -561,12 +561,10 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             presenter.getUser();
             presenter.getNoticeAmount();
             presenter.noticeCount();
+            uploadDeviceInfo();
         }
-        uploadDeviceInfo();
+
     }
-
-
-
 
     private void uploadDeviceInfo() {
         @SuppressLint("HardwareIds")

@@ -141,7 +141,7 @@ public class MyCollectActivity extends LostAndFoundBaseActivity implements IMyCo
 
     private void onRefresh() {
         presenter.resetPage();
-        refreshFlag = true;
+        refreshFlag = false;
         presenter.getMyCollects();
     }
 
@@ -208,6 +208,15 @@ public class MyCollectActivity extends LostAndFoundBaseActivity implements IMyCo
     @Override
     public void notifyAdapter(int position, boolean b) {
         adaptor.notifyItemChanged(position);
+    }
+
+    @Override
+    public void refer(List<LostAndFoundDTO> wrappers) {
+        lostAndFounds.clear();
+        recyclerView.setVisibility(View.VISIBLE);
+        rlEmpty.setVisibility(View.GONE);
+        lostAndFounds.addAll(wrappers);
+        adaptor.notifyDataSetChanged();
     }
 
     @Override

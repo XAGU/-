@@ -71,8 +71,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnEditorAction;
 import butterknife.Unbinder;
+import butterknife.internal.ListenerClass;
 
 import static android.support.v4.view.ViewPager.SCROLL_STATE_SETTLING;
+import static android.view.View.OVER_SCROLL_NEVER;
 import static com.xiaolian.amigo.ui.lostandfound.LostAndFoundDetailActivity2.KEY_ID;
 
 /**
@@ -200,7 +202,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
      * @return
      */
     public void getSocialTagHeight() {
-        socialTagHeight = ScreenUtils.dpToPxInt(mActivity, 56) + ScreenUtils.dpToPxInt(mActivity, 10);
+        socialTagHeight = ScreenUtils.dpToPxInt(mActivity, 54) + ScreenUtils.dpToPxInt(mActivity, 10);
     }
 
     int screenWidth;
@@ -530,21 +532,6 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     }
 
     void search() {
-//        if (searchDialog == null) {
-//            searchDialog = new SearchDialog2(mActivity);
-//            searchDialog.setSearchListener(searchStr -> {
-//                presenter.getLostList("", 1, searchStr, 0);
-//            });
-//
-//            searchDialog.setCanceledOnTouchOutside(true);
-//            searchDialog.setCancelable(true);
-//            searchDialog.setOnDismissListener(dialog -> {
-//                if (searchData != null && searchData.size() > 0)
-//                    searchData.clear();
-//            });
-//        }
-//        searchDialog.show();
-
         searchRl.setVisibility(View.VISIBLE);
         showSearch();
         socialNormalRl.setVisibility(View.GONE);
@@ -555,17 +542,14 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     @Override
     public void onDestroy() {
         super.onDestroy();
-//        if (searchDialog != null) {
-//            if (searchDialog.isShowing()) searchDialog.dismiss();
-//            searchDialog = null;
-//        }
-
         if (mPopupWindow != null) {
 
             if (mPopupWindow.isShowing()) mPopupWindow.dismiss();
 
             mPopupWindow = null;
         }
+
+        presenter.onDetach();
     }
 
 
@@ -640,6 +624,8 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         if (searchData == null) searchData = new ArrayList<>();
         if (searchRecyclerView == null) {
             searchRecyclerView = new RecyclerView(mActivity);
+
+            searchRecyclerView.setOverScrollMode(OVER_SCROLL_NEVER);
             searchAdaptor = new SocalContentAdapter(mActivity, R.layout.item_socal, searchData, new MultiItemTypeAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {

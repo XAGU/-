@@ -55,9 +55,15 @@ public class MyCollectPresenter<V extends IMyCollectView> extends BasePresenter<
                                     getMvpView().showEmptyView();
                                     return;
                                 }
+
+                                if (page ==Constant.PAGE_START_NUM){
+                                    getMvpView().refer(wrappers);
+                                }else{
+                                    getMvpView().addMore(wrappers);
+                                }
                                 getMvpView().hideEmptyView();
                                 page ++;
-                                getMvpView().addMore(wrappers);
+
                             }
                         } else {
                             getMvpView().onError(result.getError().getDisplayMessage());
