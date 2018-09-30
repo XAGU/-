@@ -32,14 +32,12 @@ import android.os.CountDownTimer;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,16 +59,11 @@ import com.xiaolian.amigo.ui.widget.dialog.LoadingDialog;
 import com.xiaolian.amigo.util.Log;
 import com.xiaolian.amigo.util.NetworkUtil;
 import com.yalantis.ucrop.UCrop;
-import com.yalantis.ucrop.util.BitmapLoadUtils;
-import com.yalantis.ucrop.util.FileUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.Map;
 
