@@ -485,7 +485,19 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                                             processCommandResult(result);
                                         }
                                     });
+//                afterBleConnected();
+//                bleDataManager.notify(currentMacAddress, UUID.fromString(supplier.getServiceUuid()),
+//                        UUID.fromString(supplier.getWriteUuid()), data -> {
+//                            if (null != data) {
+//                                String result = HexBytesUtils.bytesToHexString(data);
+//                                Log.i(TAG, "接收到设备数据" + result + " thread" + Thread.currentThread().getName());
+//                                processCommandResult(result);
+//                            }
+//                        });
+
+
                         });
+
             } else {
                 handleDisConnectError("辛纳设备设置notify失败");
             }

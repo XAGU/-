@@ -106,6 +106,7 @@ android {
 
             buildConfigField "String", "ENVIRONMENT", '"dev"'
 //            buildConfigField "String", "SERVER", "\"http://116.62.236.67:5081/\""
+
 //            buildConfigField "String", "SERVER", "\"http://39.108.97.229:5081/\""
 //            buildConfigField "String", "SERVER", "\"http://10.195.90.167:5081/\""
 //            buildConfigField "String", "SERVER", "\"http://10.195.90.167:5081/\""
@@ -118,10 +119,12 @@ android {
 //            buildConfigField "String", "SERVER", "\"http://47.107.45.109:5081/\"" //qa5
 //            buildConfigField "String", "SERVER_BATHROOM", "\"http://47.107.45.109:5082/\"" //qa5
 //            buildConfigField "String", "SERVER_BATHROOM", "\"http://39.108.74.164:5082/\""
+
 //            buildConfigField "String", "SERVER", "\"http://10.195.90.130:5081/\""
 //            buildConfigField "String", "SERVER", "\"http://10.195.90.187:8081\""
 //            buildConfigField "String", "SERVER", "\"http://10.0.0.4:5081/\""
 //            buildConfigField "String", "H5_SERVER", "\"http://116.62.236.67:5097/c\""
+
 //            buildConfigField "String", "H5_SERVER", "\"http://47.107.45.109:5097/c\"" //qa5
 //            buildConfigField "String", "H5_SERVER", "\"http://39.108.74.164:5097/c\""
 //            buildConfigField "String", "H5_SERVER", "\"http://10.195.90.130:5097/c\""

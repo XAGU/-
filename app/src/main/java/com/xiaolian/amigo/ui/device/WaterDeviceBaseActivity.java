@@ -1041,15 +1041,17 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             bsvWave.startAnim();
         }
     }
-
+    
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CHOOSE_BONUS_CODE) {
             if (resultCode == RESULT_CANCELED) {
-                bonusAmount = 0.0;
-                bonusDescription = getString(R.string.not_use_bonus);
-                refreshPrepayStatus();
+
+                /** 未选中代金券的时候，不修改任何数据**/
+//                bonusAmount = 0.0;
+//                bonusDescription = getString(R.string.not_use_bonus);
+//                refreshPrepayStatus();
             } else if (resultCode == RESULT_OK) {
                 choosedBonus = (BonusAdaptor.BonusWrapper) data.getSerializableExtra(BonusActivity.INTENT_KEY_BONUS_RESULT);
                 if (choosedBonus != null) {

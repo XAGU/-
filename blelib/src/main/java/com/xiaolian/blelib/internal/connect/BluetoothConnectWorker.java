@@ -338,7 +338,6 @@ public class BluetoothConnectWorker implements IBluetoothConnectWorker {
         if (characteristic == null) {
             return false;
         }
-
         return bluetoothGatt != null
                 && bluetoothGatt.setCharacteristicNotification(characteristic, enable);
 //        if (result) {
