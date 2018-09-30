@@ -271,24 +271,24 @@ public abstract class BaseActivity extends SwipeBackActivity
 //                        .withMaxResultSize(250 * 2, 170 * 2)
                             .withOptions(options)
                             .start(this);
-                    imageCallback.callback(mPhotoImageUri);
                 }
 
 
-                if (imageCallback2 != null){
-//                    imageCallback2.callback(outputImage.getAbsolutePath());
-                    File cropFile = getCropFile("crop");
-                    if (FileUtils.copyFile(outputImage.getAbsoluteFile(), cropFile, new FileUtils.OnReplaceListener() {
-                        @Override
-                        public boolean onReplace() {
-                            return true;
-                        }
-                    })){
-                        imageCallback2.callback(cropFile.getPath());
-                    }else{
-                        onError("上传失败");
-                    }
+                if (imageCallback2 != null) {
+                    imageCallback2.callback(outputImage.getAbsolutePath());
                 }
+//                    File cropFile = getCropFile("crop");
+
+//                    if (FileUtils.copyFile(outputImage.getAbsoluteFile(), cropFile, new FileUtils.OnReplaceListener() {
+//                        @Override
+//                        public boolean onReplace() {
+//                            return true;
+//                        }
+//                    })){
+//                        imageCallback2.callback(cropFile.getPath());
+//                    }else{
+//                        onError("上传失败");
+//                    }
 
 
 

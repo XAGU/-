@@ -114,8 +114,6 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     ImageView more;
     @BindView(R.id.social_normal_rl)
     RelativeLayout socialNormalRl;
-//    @BindView(R.id.social_tags)
-//    RecyclerView socialTags;
 
 
     @BindView(R.id.social_tags)
@@ -159,7 +157,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
     boolean isCanMove = true;
 
-    List<BaseFragment> blogFragments;
+    List<BlogFragment> blogFragments;
     BlogAdapter blogAdapter;
     FragmentManager fm;
 
@@ -338,9 +336,10 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     public void setReferTop(boolean referTop) {
         if (blogFragments == null || blogFragments.size() <= 0 || blogFragments.get(0) == null)
             return;
+        if (socialTags != null) socialTags.smoothScrollTo(0 ,0);
         moveCursor(0);
         vpBlogContent.setCurrentItem(0);
-        ((BlogFragment) blogFragments.get(0)).setReferTop(true);
+        blogFragments.get(0).setReferTop(true);
     }
 
     @Override
@@ -364,17 +363,6 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         if (mSocialTagDatas == null || mSocialTagDatas.size() == 0 ) presenter.getTopicList();
         mainPresenter.getNoticeAmount();
         presenter.getLostList("", 1, "", 0);
-        if (presenter.getIsFirstAfterLogin()){
-            if (vpBlogContent != null) {
-                vpBlogContent.setCurrentItem(0);
-                presenter.setIsFirstAfterLogin(false);
-                if (blogFragments!= null && blogFragments.size() > 0){
-                    ((BlogFragment)(blogFragments.get(0))).setReferData();
-                    socialTags.scrollTo(0 ,0);
-                    showTags();
-                }
-            }
-        }
 
     }
 
@@ -407,7 +395,6 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         int oldLeft = titleBorder.getLeft() ;
 
 
-
 //        int oldLeft = (titleBorder.getLeft() + titleBorder.getRight()) / 2 ;
 
         int maxWidth;
@@ -415,10 +402,10 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         boolean backMove = false;
         if (oldLeft < moveLeft) {
             backMove = true;
-            maxWidth = moveLeft - oldLeft + oldWidth;
+            maxWidth = moveLeft - oldLeft + oldWidth + ScreenUtils.dpToPxInt(mActivity , 4);
         } else {
             backMove = false;
-            maxWidth = oldLeft - moveLeft  + oldWidth;
+            maxWidth = oldLeft - moveLeft  + oldWidth - ScreenUtils.dpToPxInt(mActivity  , 4);
         }
         if (maxWidth < oldWidth) {
             isCanMove = true;
@@ -724,7 +711,6 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         }
         initTAG(mSocialTagDatas);
         referFragment(mSocialTagDatas);
-        presenter.setIsFirstAfterLogin(false);
     }
 
     LinearLayout linearLayout;
@@ -805,7 +791,6 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         for (BbsTopicListTradeRespDTO.TopicListBean topicListBean : data) {
             blogFragments.add(new BlogFragment(topicListBean.getTopicId(), this));
         }
-        blogAdapter.setReferData(true);
         blogAdapter.notifyDataSetChanged();
     }
 
@@ -920,7 +905,6 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
     @Override
     public void onUpMove(int height) {
-        if (socialTags == null || height < 3) return;
 
         if (moveDistance < socialTagHeight) {
             moveDistance += height;
@@ -943,7 +927,6 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     @Override
     public void onDownMove(int height) {
 
-        if (socialTags == null || Math.abs(height) < 3) return;
 
         if (moveDistance > 0) {
             moveDistance += height;

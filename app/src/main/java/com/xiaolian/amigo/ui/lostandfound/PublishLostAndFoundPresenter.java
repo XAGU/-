@@ -187,7 +187,7 @@ public class PublishLostAndFoundPresenter<V extends IPublishLostAndFoundView>
                     @Override
                     public void onSuccess(PutObjectRequest request, PutObjectResult result) {
                         getMvpView().post(() -> getMvpView().hideLoading());
-                        getMvpView().post(() -> getMvpView().addImage(filePath, currentImagePosition));  //request.getObjectKey()
+                        getMvpView().post(() -> getMvpView().addImage(filePath, currentImagePosition , request.getObjectKey()));  //request.getObjectKey()
                         Log.d("PutObject", "UploadSuccess " + request.getObjectKey());
                     }
 
@@ -225,7 +225,7 @@ public class PublishLostAndFoundPresenter<V extends IPublishLostAndFoundView>
                     @Override
                     public void onSuccess(PutObjectRequest request, PutObjectResult result) {
                         getMvpView().post(() -> getMvpView().hideLoading());
-                        getMvpView().post(() -> getMvpView().addImage(filePath, currentImagePosition));  //request.getObjectKey()
+                        getMvpView().post(() -> getMvpView().addImage(filePath, currentImagePosition , request.getObjectKey()));  //request.getObjectKey()
                         Log.d("PutObject", "UploadSuccess " + request.getObjectKey());
                     }
 

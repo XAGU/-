@@ -148,15 +148,6 @@ public class BlogFragment extends BaseFragment implements IBlogView  , SocialImg
         // Required empty public constructor
     }
 
-
-    public void  setReferData(){
-         try {
-             requestNet();
-         }catch (Exception e){
-             Log.wtf(TAG ,e.getMessage());
-         }
-    }
-
     @SuppressLint("ValidFragment")
     public BlogFragment(int topicId , ScrollListener scrollListener) {
 
@@ -189,6 +180,7 @@ public class BlogFragment extends BaseFragment implements IBlogView  , SocialImg
         return view;
     }
 
+
     private void initScroll(){
          scrollView.post(new Runnable() {
              @Override
@@ -210,6 +202,8 @@ public class BlogFragment extends BaseFragment implements IBlogView  , SocialImg
                     }
          });
     }
+
+
 
     private void initRxbus(){
         if (null == busSubscriber) {
@@ -374,7 +368,6 @@ public class BlogFragment extends BaseFragment implements IBlogView  , SocialImg
             mPotsData.clear();
             mPotsAdapter.notifyDataSetChanged();
         }
-
         potTitle.setVisibility(View.GONE);
         pots.setVisibility(View.GONE);
     }

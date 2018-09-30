@@ -268,8 +268,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
      */
     private void initTable() {
         if (fm == null) fm = getSupportFragmentManager();
-//        mTableFragmentAdapter = new TableFragmentPagerAdapter(fm, );
-//        vgFragment.setAdapter(mTableFragmentAdapter);
 
         if (presenter.isLogin()) {
             setDefalutItem(0);
@@ -287,14 +285,13 @@ public class MainActivity extends MainBaseActivity implements IMainView {
      * @param position
      */
     private void setDefalutItem(int position) {
-//        vgFragment.setCurrentItem(0);
 
         if (position == 0){
            if (fm.findFragmentByTag(HomeFragment2.class.getSimpleName()) == null){
                transaction = fm.beginTransaction();
                  fragment = new HomeFragment2(presenter ,isServerError);
                  fragments[0] = fragment ;
-                 if (lastFragment == -1){
+                 if (lastFragment == -1 && !fragment.isAdded()){
                      transaction.add(R.id.fragment, fragment, HomeFragment2.class.getSimpleName());
                      transaction.commit();
                  }else{
@@ -320,21 +317,17 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         }
         if (position == 1 ){
 
-            if (presenter.getIsFirstAfterLogin()){
-                if (fm.findFragmentByTag(SocalFragment.class.getSimpleName()) != null ){
-                    fm.popBackStack(SocalFragment.class.getSimpleName() ,POP_BACK_STACK_INCLUSIVE);
-                }
-            }
                 if (fm.findFragmentByTag(SocalFragment.class.getSimpleName()) == null) {
                     transaction = fm.beginTransaction();
                     socalFragment = new SocalFragment(presenter);
                     fragments[1] = socalFragment;
-                    if (lastFragment == -1) {
+                    if (lastFragment == -1 && !socalFragment.isAdded()) {
                         transaction.add(R.id.fragment, socalFragment, SocalFragment.class.getSimpleName());
                         transaction.commit();
                     } else {
                         if (fragments[lastFragment] != null)
                             transaction.hide(fragments[lastFragment]);
+                        if (!socalFragment.isAdded())
                         transaction.add(R.id.fragment, socalFragment, SocalFragment.class.getSimpleName());
                         transaction.commit();
                     }
@@ -361,12 +354,13 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 transaction = fm.beginTransaction();
                 fragment = new ProfileFragment2(presenter ,isServerError);
                 fragments[2] = fragment;
-                if (lastFragment == -1){
+                if (lastFragment == -1 && !fragment.isAdded()){
                     transaction.add(R.id.fragment, fragment, ProfileFragment2.class.getSimpleName());
                     transaction.commit();
                 }else{
                     if (fragments[lastFragment] != null)
                     transaction.hide(fragments[lastFragment]);
+                    if (!fragment.isAdded())
                     transaction.add(R.id.fragment, fragment, ProfileFragment2.class.getSimpleName());
                     transaction.commit();
                 }
@@ -438,7 +432,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         lastFragment = savedInstanceState.getInt(KEY_LASTFRAGMENT);
-//        initTable();
     }
 
     @OnClick({R.id.home_rl, R.id.social_rl, R.id.personal_rl})
@@ -571,7 +564,16 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             presenter.getNoticeAmount();
             presenter.noticeCount();
             uploadDeviceInfo();
-            if (presenter.getIsFirstAfterLogin()) setDefalutItem(0);
+            if (presenter.getIsFirstAfterLogin()) {
+                setDefalutItem(0);
+                if (fm == null) return ;
+                SocalFragment socalFragment = (SocalFragment) fm.findFragmentByTag(SocalFragment.class.getSimpleName());
+                if (socalFragment == null ) return ;
+                if (socalFragment.isAdded()) {
+                    fm.beginTransaction().remove(socalFragment).commit();
+                }
+                presenter.setIsFirstAfterLogin(false);
+            }
         }
 
     }

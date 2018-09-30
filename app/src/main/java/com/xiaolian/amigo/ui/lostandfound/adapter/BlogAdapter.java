@@ -12,21 +12,16 @@ import java.util.List;
 
 public class BlogAdapter  extends FragmentPagerAdapter{
 
-    private List<BaseFragment>  baseFragments ;
+    private List<BlogFragment>  baseFragments ;
 
     private FragmentManager fm ;
 
-    boolean isReferData = false ;
-    public BlogAdapter(FragmentManager fm , List<BaseFragment> baseFragments) {
+    public BlogAdapter(FragmentManager fm , List<BlogFragment> baseFragments) {
         super(fm);
         this.fm = fm ;
         this.baseFragments = baseFragments ;
     }
 
-    public void setReferData(boolean referData) {
-        this.isReferData = referData;
-        notifyDataSetChanged();
-    }
 
     @Override
     public Fragment getItem(int position) {
@@ -42,11 +37,6 @@ public class BlogAdapter  extends FragmentPagerAdapter{
     public Object instantiateItem(ViewGroup container, int position) {
         BlogFragment baseFragment = (BlogFragment) super.instantiateItem(container , position);
         this.fm.beginTransaction().show(baseFragment).commit();
-//        if (this.isReferData) {
-//
-//        }else {
-//
-//        }
         return baseFragment ;
     }
 
@@ -56,5 +46,6 @@ public class BlogAdapter  extends FragmentPagerAdapter{
                 baseFragments.get(position) == null && baseFragments.size() == position) return ;
         BaseFragment fragment = baseFragments.get(position);
         this.fm.beginTransaction().hide(fragment).commit();
+
     }
 }

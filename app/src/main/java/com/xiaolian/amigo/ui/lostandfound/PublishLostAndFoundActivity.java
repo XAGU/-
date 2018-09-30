@@ -169,6 +169,11 @@ public class PublishLostAndFoundActivity extends LostAndFoundBaseActivity implem
         finish();
     }
 
+    @Override
+    public void addImage(String url, int position, String localPath) {
+
+    }
+
 
     @OnTextChanged({R.id.et_desc,
             R.id.et_title})
@@ -197,7 +202,6 @@ public class PublishLostAndFoundActivity extends LostAndFoundBaseActivity implem
                 images, etTitle.getText().toString(), type);
     }
 
-    @Override
     public void addImage(String url, int position) {
         if (this.images.size() > position) {
             this.images.remove(position);

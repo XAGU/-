@@ -245,8 +245,8 @@ public class WriteLZActivity extends LostAndFoundBaseActivity implements IPublis
     }
 
     public void toggleBtnStatus() {
-        allValidated = !TextUtils.isEmpty(mainTitle.getText())
-                && (!TextUtils.isEmpty(mainContent.getText()) || images.size() > 0) && type != -1;
+        allValidated = (!TextUtils.isEmpty(mainTitle.getText())
+                && ((!TextUtils.isEmpty(mainContent.getText()) || images.size() > 0)) && type != -1);
         btSubmit.setBackgroundResource(allValidated ?
                 R.drawable.button_enable : R.drawable.button_disable);
     }
@@ -270,18 +270,26 @@ public class WriteLZActivity extends LostAndFoundBaseActivity implements IPublis
         }else {
 
             presenter.publishLostAndFound(mainContent.getText().toString(),
-                    images, mainTitle.getText().toString(), type);
+                    urls, mainTitle.getText().toString(), type);
         }
     }
 
+    List<String> urls = new ArrayList<>();
     @Override
-    public void addImage(String url, int position) {
+    public void addImage(String url, int position , String localPath) {
         Log.d(TAG ,url);
         if (this.images.size() > position) {
             this.images.remove(position);
             this.images.add(position, url);
         } else {
             this.images.add(url);
+        }
+
+        if (this.urls.size() > position){
+            this.urls.remove(position);
+            this.urls.add(position, localPath);
+        } else {
+            this.urls.add(localPath);
         }
         refreshAddImage();
     }
@@ -307,6 +315,7 @@ public class WriteLZActivity extends LostAndFoundBaseActivity implements IPublis
             addImages.add(new ImageAddAdapter.ImageItem());
         }
         imageAddAdapter.notifyDataSetChanged();
+        onTextChange();
     }
 
     @OnClick({R.id.iv_first, R.id.iv_second, R.id.iv_third})

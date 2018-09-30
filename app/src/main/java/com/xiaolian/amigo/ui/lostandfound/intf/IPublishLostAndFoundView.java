@@ -11,7 +11,7 @@ public interface IPublishLostAndFoundView extends IBaseView {
 
     void finishView();
 
-    void addImage(String url, int position);
+    void addImage(String url, int position , String localPath);
 
     void referTopic(BbsTopicListTradeRespDTO data);
 }
