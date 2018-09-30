@@ -26,6 +26,7 @@ import com.xiaolian.amigo.data.network.model.lostandfound.SaveLostAndFoundDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.IPublishLostAndFoundPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.IPublishLostAndFoundView;
+import com.xiaolian.blelib.internal.util.SystemVersion;
 
 import java.util.List;
 import java.util.Locale;
@@ -142,6 +143,11 @@ public class PublishLostAndFoundPresenter<V extends IPublishLostAndFoundView>
 
                     @Override
                     public void onNext(ApiResult<OssModel> result) {
+
+                        Log.wtf(TAG ,(" keyId:   "+result.getData().getAccessKeyId() )
+                                +'\n' + "endpoint:  "  + result.getData().getEndpoint() +'\n'
+                                +" accessKeySecret:   " + result.getData().getAccessKeySecret()
+                                +'\n' +"filePath :" + filePath);
                         uploadImage(OssClientHolder.getClient(context, result.getData()), result.getData(), filePath);
                     }
                 });
@@ -164,7 +170,8 @@ public class PublishLostAndFoundPresenter<V extends IPublishLostAndFoundView>
 
                     @Override
                     public void onNext(ApiResult<OssModel> result) {
-                        uploadImage(OssClientHolder.getClient(context ,result.getData()) , result.getData() ,imageBytes ,filePath);
+
+                          uploadImage(OssClientHolder.getClient(context ,result.getData()) , result.getData() ,imageBytes ,filePath);
                     }
                 });
     }
@@ -213,7 +220,6 @@ public class PublishLostAndFoundPresenter<V extends IPublishLostAndFoundView>
         PutObjectRequest put = new PutObjectRequest(model.getBucket(),
                 generateObjectKey(String.valueOf(System.currentTimeMillis())),
                 filePath);
-        Log.wtf( TAG ,put.getObjectKey()+"");
         OSSAsyncTask task = client.asyncPutObject(put,
                 new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
                     @Override
@@ -222,6 +228,7 @@ public class PublishLostAndFoundPresenter<V extends IPublishLostAndFoundView>
                         getMvpView().post(() -> getMvpView().addImage(filePath, currentImagePosition));  //request.getObjectKey()
                         Log.d("PutObject", "UploadSuccess " + request.getObjectKey());
                     }
+
 
                     @Override
                     public void onFailure(PutObjectRequest request, ClientException clientExcepion, ServiceException serviceException) {

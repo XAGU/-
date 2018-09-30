@@ -371,6 +371,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
                 if (blogFragments!= null && blogFragments.size() > 0){
                     ((BlogFragment)(blogFragments.get(0))).setReferData();
                     socialTags.scrollTo(0 ,0);
+                    showTags();
                 }
             }
         }

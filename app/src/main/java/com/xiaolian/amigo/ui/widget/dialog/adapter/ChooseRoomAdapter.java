@@ -121,6 +121,9 @@ public class ChooseRoomAdapter extends RecyclerView.Adapter<ChooseRoomAdapter.Ro
                     holder.bathroom_status.setText(spannable);
                     holder.bathroom_status.setTextColor(context.getResources().getColor(R.color.colorGreen));
                     holder.radioButton.setBackgroundResource(R.drawable.bathroom_radio_color_bg);
+                }else{
+                    holder.bathroom_status.setText("");
+                    holder.radioButton.setBackgroundResource(R.drawable.bathroom_radio_color_bg);
                 }
             }else if (floorsBean.getWaitCount() >= 0){
                 if (isQueen) {
@@ -132,6 +135,9 @@ public class ChooseRoomAdapter extends RecyclerView.Adapter<ChooseRoomAdapter.Ro
                     spannable.setSpan(new StyleSpan(Typeface.NORMAL), 4 + num.length(), content.length(), SPAN_EXCLUSIVE_INCLUSIVE);
                     holder.bathroom_status.setText(spannable);
                     holder.bathroom_status.setTextColor(context.getResources().getColor(R.color.colorFullRed));
+                    holder.radioButton.setBackgroundResource(R.drawable.bathroom_radio_color_bg);
+                }else{
+                    holder.bathroom_status.setText("");
                     holder.radioButton.setBackgroundResource(R.drawable.bathroom_radio_color_bg);
                 }
             }

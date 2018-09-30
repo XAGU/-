@@ -53,7 +53,7 @@ public class ChooseBathroomPop  extends PopupWindow {
 
     public void setQueen(boolean queen) {
         this.isQueen = queen;
-        if (adapter != null) adapter.setQueen(true);
+        if (adapter != null) adapter.setQueen(queen);
     }
 
     public void setPopButtonClickListener(PopButtonClickListener popButtonClickListener) {

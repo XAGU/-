@@ -277,7 +277,7 @@ public abstract class BaseActivity extends SwipeBackActivity
 
                 if (imageCallback2 != null){
 //                    imageCallback2.callback(outputImage.getAbsolutePath());
-                    File cropFile = getCropFile("crop1");
+                    File cropFile = getCropFile("crop");
                     if (FileUtils.copyFile(outputImage.getAbsoluteFile(), cropFile, new FileUtils.OnReplaceListener() {
                         @Override
                         public boolean onReplace() {
