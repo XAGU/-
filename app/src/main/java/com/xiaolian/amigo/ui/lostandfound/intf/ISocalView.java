@@ -33,4 +33,9 @@ public interface ISocalView extends IBaseView {
     void showBlogLoading();
 
     void hideBlogLoading();
+
+
+    void showErrorLayout();
+
+    void hideErrorLayout();
 }

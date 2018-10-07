@@ -50,6 +50,7 @@ public class SocalPresenter <V extends ISocalView> extends BasePresenter<V>
             public void onStart() {
                 Log.wtf(TAG ,"start");
                 getMvpView().showBlogLoading();
+                getMvpView().hideErrorLayout();
             }
 
             @Override
@@ -63,7 +64,6 @@ public class SocalPresenter <V extends ISocalView> extends BasePresenter<V>
 
                 }else{
                     getMvpView().onError(result.getError().getDisplayMessage());
-//                    getMvpView().onErrorView();
                 }
             }
 
@@ -71,7 +71,7 @@ public class SocalPresenter <V extends ISocalView> extends BasePresenter<V>
             public void onError(Throwable e) {
                 super.onError(e);
                 getMvpView().hideBlogLoading();
-//                getMvpView().onErrorView();
+                getMvpView().showErrorLayout();
             }
         });
     }

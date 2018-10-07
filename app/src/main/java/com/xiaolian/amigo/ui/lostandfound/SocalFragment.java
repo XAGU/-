@@ -51,6 +51,7 @@ import com.xiaolian.amigo.ui.lostandfound.intf.ISocalPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.ISocalView;
 import com.xiaolian.amigo.ui.main.intf.IMainPresenter;
 import com.xiaolian.amigo.ui.main.intf.IMainView;
+import com.xiaolian.amigo.ui.widget.ErrorLayout;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.ui.widget.photoview.AlbumItemActivity;
 import com.xiaolian.amigo.util.GildeUtils;
@@ -106,6 +107,8 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     ImageView ivLoading;
     @BindView(R.id.loading_rl)
     RelativeLayout loadingRl;
+    @BindView(R.id.error_net_layout)
+    ErrorLayout errorNetLayout;
 
     private LostAndFoundActivityComponent mActivityComponent;
 
@@ -192,9 +195,15 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         initViewPager();
         getSocialTagHeight();
         initLoadingAnim();
+        setErrorNetListener();
         return rootView;
     }
 
+
+    private void setErrorNetListener(){
+        if (errorNetLayout != null)
+            errorNetLayout.setReferListener(() -> initView());
+    }
 
 
 
@@ -556,13 +565,13 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
             mPopupWindow = null;
         }
 
-        if (loadingAnimator != null){
-            if (loadingAnimator.isRunning())  loadingAnimator.cancel();
+        if (loadingAnimator != null) {
+            if (loadingAnimator.isRunning()) loadingAnimator.cancel();
 
             loadingAnimator.end();
         }
 
-        loadingAnimator = null ;
+        loadingAnimator = null;
 
         presenter.onDetach();
     }
@@ -690,36 +699,36 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     }
 
 
-
-    ValueAnimator loadingAnimator ;
+    ValueAnimator loadingAnimator;
 
     int[] loadingRes = new int[]{
-            R.drawable.loading_one , R.drawable.loading_two ,
-            R.drawable.loading_three , R.drawable.loading_four
+            R.drawable.loading_one, R.drawable.loading_two,
+            R.drawable.loading_three, R.drawable.loading_four
     };
 
 
-    private void initLoadingAnim(){
-        loadingAnimator = ValueAnimator.ofInt(0  ,3 );
+    private void initLoadingAnim() {
+        loadingAnimator = ValueAnimator.ofInt(0, 3);
         loadingAnimator.setRepeatCount(ValueAnimator.INFINITE);
-        loadingAnimator.setDuration(200);
+        loadingAnimator.setDuration(500);
         loadingAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                 int currentValue = (int) animation.getAnimatedValue();
-                Log.wtf(TAG ,currentValue +"");
-                 ivLoading.setImageResource(loadingRes[currentValue]);
+                int currentValue = (int) animation.getAnimatedValue();
+                Log.wtf(TAG, currentValue + "");
+                if (ivLoading != null)
+                    ivLoading.setImageResource(loadingRes[currentValue]);
             }
         });
     }
 
     @Override
     public void showBlogLoading() {
-        Log.wtf(TAG ,"showBlogLoading");
+        Log.wtf(TAG, "showBlogLoading");
         loadingRl.setVisibility(View.VISIBLE);
-        if (loadingAnimator == null) return ;
+        if (loadingAnimator == null) return;
 
-        if (loadingAnimator.isRunning()){
+        if (loadingAnimator.isRunning()) {
             loadingAnimator.cancel();
         }
         loadingAnimator.start();
@@ -728,9 +737,23 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     @Override
     public void hideBlogLoading() {
 
-        if (loadingAnimator == null) return ;
+        if (loadingAnimator == null) return;
 
         if (loadingAnimator.isRunning()) loadingAnimator.cancel();
+
+        if (loadingRl != null) loadingRl.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showErrorLayout() {
+        if (errorNetLayout != null)
+        errorNetLayout.showErrorView();
+    }
+
+    @Override
+    public void hideErrorLayout() {
+        if (errorNetLayout != null)
+        errorNetLayout.hideErrorView();
     }
 
 
@@ -754,8 +777,6 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
                 break;
         }
     }
-
-
 
 
     @Override

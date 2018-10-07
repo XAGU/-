@@ -12,6 +12,10 @@ import com.scwang.smartrefresh.layout.constant.RefreshState;
 
 import static java.lang.System.currentTimeMillis;
 
+/**
+ * @author wcm
+ * 用来未显示时隐藏等待小点
+ */
 public class HideSmartLayout extends SmartRefreshLayout {
     public HideSmartLayout(Context context) {
         super(context);

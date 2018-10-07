@@ -132,6 +132,11 @@
                 android:textColor="@color/colorDark9"
                 android:layout_marginTop="17dp"/>
         </RelativeLayout>
+
+        <com.xiaolian.amigo.ui.widget.ErrorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/error_net_layout"/>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
