@@ -924,12 +924,18 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 saveDeviceResult(result, orderId);
             }
             String prefixAgrement2 = result.substring(2, 6);
-            if (TextUtils.equals("0804", prefixAgrement2)) {
+
+            if (TextUtils.equals("140804",prefixAgrement2)){
                 setStep(TradeStep.CLOSE_VALVE);
-            } else if (TextUtils.equals("0803", prefixAgrement2)) {
-                // 存储开阀设备响应结果
-                saveDeviceResult(result, orderId);
+            }else if (TextUtils.equals("140803",prefixAgrement2)){
+                saveDeviceResult(result ,orderId);
             }
+//            if (TextUtils.equals("0804", prefixAgrement2)) {
+//                setStep(TradeStep.CLOSE_VALVE);
+//            } else if (TextUtils.equals("0803", prefixAgrement2)) {
+//                // 存储开阀设备响应结果
+//                saveDeviceResult(result, orderId);
+//            }
         } catch (Exception e) {
             Log.wtf(TAG, "获取设备响应结果前缀失败");
             reportError(getStep().getStep(), ConnectErrorType.RESULT_INVALID.getType(),
