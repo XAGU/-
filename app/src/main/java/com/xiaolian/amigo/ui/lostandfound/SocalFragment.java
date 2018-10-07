@@ -102,6 +102,10 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     FrameLayout flResultContain;
     @BindView(R.id.rl_result)
     RelativeLayout rlResult;
+    @BindView(R.id.iv_loading)
+    ImageView ivLoading;
+    @BindView(R.id.loading_rl)
+    RelativeLayout loadingRl;
 
     private LostAndFoundActivityComponent mActivityComponent;
 
@@ -187,9 +191,12 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         initRecycler();
         initViewPager();
         getSocialTagHeight();
-
+        initLoadingAnim();
         return rootView;
     }
+
+
+
 
     /**
      * 获取socialTags的高度
@@ -278,7 +285,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         socialNormalRl.setVisibility(View.VISIBLE);
         flResultContain.setVisibility(View.GONE);
         vpBlogContent.setVisibility(View.VISIBLE);
-        SoftInputUtils.hideSoftInputFromWindow( mActivity, etSearchContent);
+        SoftInputUtils.hideSoftInputFromWindow(mActivity, etSearchContent);
     }
 
     public void showSearch() {
@@ -336,7 +343,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     public void setReferTop(boolean referTop) {
         if (blogFragments == null || blogFragments.size() <= 0 || blogFragments.get(0) == null)
             return;
-        if (socialTags != null) socialTags.smoothScrollTo(0 ,0);
+        if (socialTags != null) socialTags.smoothScrollTo(0, 0);
         moveCursor(0);
         vpBlogContent.setCurrentItem(0);
         blogFragments.get(0).setReferTop(true);
@@ -360,7 +367,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
     @Override
     protected void initView() {
-        if (mSocialTagDatas == null || mSocialTagDatas.size() == 0 ) presenter.getTopicList();
+        if (mSocialTagDatas == null || mSocialTagDatas.size() == 0) presenter.getTopicList();
         mainPresenter.getNoticeAmount();
         presenter.getLostList("", 1, "", 0);
 
@@ -392,7 +399,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     private void animWidthMove(int moveLeft) {
 
         moveLeft = moveLeft - ScreenUtils.dpToPxInt(mActivity, 4);
-        int oldLeft = titleBorder.getLeft() ;
+        int oldLeft = titleBorder.getLeft();
 
 
 //        int oldLeft = (titleBorder.getLeft() + titleBorder.getRight()) / 2 ;
@@ -402,10 +409,10 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         boolean backMove = false;
         if (oldLeft < moveLeft) {
             backMove = true;
-            maxWidth = moveLeft - oldLeft + oldWidth + ScreenUtils.dpToPxInt(mActivity , 4);
+            maxWidth = moveLeft - oldLeft + oldWidth + ScreenUtils.dpToPxInt(mActivity, 4);
         } else {
             backMove = false;
-            maxWidth = oldLeft - moveLeft  + oldWidth - ScreenUtils.dpToPxInt(mActivity  , 4);
+            maxWidth = oldLeft - moveLeft + oldWidth - ScreenUtils.dpToPxInt(mActivity, 4);
         }
         if (maxWidth < oldWidth) {
             isCanMove = true;
@@ -535,7 +542,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         searchRl.setVisibility(View.VISIBLE);
         showSearch();
         socialNormalRl.setVisibility(View.GONE);
-        SoftInputUtils.showSoftInputFromWindow(getActivity() ,etSearchContent);
+        SoftInputUtils.showSoftInputFromWindow(getActivity(), etSearchContent);
     }
 
 
@@ -548,6 +555,14 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
             mPopupWindow = null;
         }
+
+        if (loadingAnimator != null){
+            if (loadingAnimator.isRunning())  loadingAnimator.cancel();
+
+            loadingAnimator.end();
+        }
+
+        loadingAnimator = null ;
 
         presenter.onDetach();
     }
@@ -675,6 +690,50 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     }
 
 
+
+    ValueAnimator loadingAnimator ;
+
+    int[] loadingRes = new int[]{
+            R.drawable.loading_one , R.drawable.loading_two ,
+            R.drawable.loading_three , R.drawable.loading_four
+    };
+
+
+    private void initLoadingAnim(){
+        loadingAnimator = ValueAnimator.ofInt(0  ,3 );
+        loadingAnimator.setRepeatCount(ValueAnimator.INFINITE);
+        loadingAnimator.setDuration(200);
+        loadingAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                 int currentValue = (int) animation.getAnimatedValue();
+                Log.wtf(TAG ,currentValue +"");
+                 ivLoading.setImageResource(loadingRes[currentValue]);
+            }
+        });
+    }
+
+    @Override
+    public void showBlogLoading() {
+        Log.wtf(TAG ,"showBlogLoading");
+        loadingRl.setVisibility(View.VISIBLE);
+        if (loadingAnimator == null) return ;
+
+        if (loadingAnimator.isRunning()){
+            loadingAnimator.cancel();
+        }
+        loadingAnimator.start();
+    }
+
+    @Override
+    public void hideBlogLoading() {
+
+        if (loadingAnimator == null) return ;
+
+        if (loadingAnimator.isRunning()) loadingAnimator.cancel();
+    }
+
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -695,6 +754,9 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
                 break;
         }
     }
+
+
+
 
     @Override
     public void referTopic(BbsTopicListTradeRespDTO data) {

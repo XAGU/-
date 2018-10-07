@@ -16,6 +16,7 @@ import com.xiaolian.amigo.data.network.model.lostandfound.QueryLostFoundDetailRe
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.ISocalPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.ISocalView;
+import com.xiaolian.amigo.util.Log;
 
 import org.w3c.dom.Text;
 
@@ -26,6 +27,7 @@ import javax.inject.Inject;
 
 public class SocalPresenter <V extends ISocalView> extends BasePresenter<V>
         implements ISocalPresenter<V> {
+
 
     private ILostAndFoundDataManager lostAndFoundDataManager ;
 
@@ -46,10 +48,13 @@ public class SocalPresenter <V extends ISocalView> extends BasePresenter<V>
         addObserver(lostAndFoundDataManager.getTopicList(), new NetworkObserver<ApiResult<BbsTopicListTradeRespDTO>>(){
             @Override
             public void onStart() {
+                Log.wtf(TAG ,"start");
+                getMvpView().showBlogLoading();
             }
 
             @Override
             public void onReady(ApiResult<BbsTopicListTradeRespDTO> result) {
+                getMvpView().hideBlogLoading();
                 if (result.getError() == null){
                     if (result.getData().getTopicList() != null && result.getData().getTopicList().size() > 0) {
                         lostAndFoundDataManager.setTopic(result.getData().getTopicList());
@@ -65,6 +70,7 @@ public class SocalPresenter <V extends ISocalView> extends BasePresenter<V>
             @Override
             public void onError(Throwable e) {
                 super.onError(e);
+                getMvpView().hideBlogLoading();
 //                getMvpView().onErrorView();
             }
         });

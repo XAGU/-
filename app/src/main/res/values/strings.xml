@@ -365,4 +365,8 @@
 
     <!--社交-->
     <string name="social_search_hint">批阅一下感兴趣的联子 ~ </string>
+
+
+
+    <string name="loading">努力加载中 ...</string>
 </resources>

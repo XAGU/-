@@ -41,7 +41,7 @@ import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
-    private static final String TAG = BasePresenter.class.getSimpleName();
+    protected  final String TAG = this.getClass().getSimpleName();
 
     private static final int UNAUTHORIZED = 401;
     private static final int FORBIDDEN = 403;

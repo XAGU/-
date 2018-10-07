@@ -30,4 +30,7 @@ public interface ISocalView extends IBaseView {
 
     void notifyAdapter(int position, boolean b, boolean b1);
 
+    void showBlogLoading();
+
+    void hideBlogLoading();
 }
