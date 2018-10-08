@@ -12,7 +12,7 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.xiaolian.amigo.R;
 
 public class GildeUtils {
-
+    
     public static void setImage(Context context , ImageView view ,String url){
         Glide.with(context).load(Constant.IMAGE_PREFIX + url)
                 .asBitmap()
