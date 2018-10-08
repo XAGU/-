@@ -187,7 +187,6 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         initRecycler();
         initViewPager();
         getSocialTagHeight();
-
         return rootView;
     }
 
@@ -197,7 +196,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
      * @return
      */
     public void getSocialTagHeight() {
-        socialTagHeight = ScreenUtils.dpToPxInt(mActivity, 54) + ScreenUtils.dpToPxInt(mActivity, 10);
+        socialTagHeight = ScreenUtils.dpToPxInt(mActivity, 56) + ScreenUtils.dpToPxInt(mActivity, 10);
     }
 
     int screenWidth;

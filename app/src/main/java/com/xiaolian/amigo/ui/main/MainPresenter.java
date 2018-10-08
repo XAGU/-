@@ -370,6 +370,11 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
         addObserver(mainDataManager.uploadDeviceInfo(reqDTO), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
 
             @Override
+            public void onStart() {
+
+            }
+
+            @Override
             public void onReady(ApiResult<BooleanRespDTO> result) {
                 if (null == result.getError()) {
                     if (result.getData().isResult()) {
@@ -526,6 +531,12 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
     public void noticeCount() {
         addObserver(userDataManager.noticeCount(),
                 new NetworkObserver<ApiResult<NoticeCountDTO>>(false) {
+
+
+                    @Override
+                    public void onStart() {
+
+                    }
 
                     @Override
                     public void onReady(ApiResult<NoticeCountDTO> result) {

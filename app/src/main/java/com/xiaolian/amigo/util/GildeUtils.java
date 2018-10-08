@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
@@ -18,7 +17,6 @@ public class GildeUtils {
                 .asBitmap()
                 .placeholder(R.drawable.ic_picture_error)
                 .error(R.drawable.ic_picture_error)
-                .skipMemoryCache(true)
                 .into(view);
     }
 

@@ -15,7 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xiaolian.amigo.MvpApp;
@@ -196,6 +195,8 @@ public class BlogFragment extends BaseFragment implements IBlogView  , SocialImg
                  Log.d(TAG ,"  " + onScrollDistance);
                         if (onScrollDistance > 0){  // 往下滑 ，tag标签往上走隐藏
                             scrollListener.onUpMove(onScrollDistance);
+                            if (header != null)
+                            header.getView().setVisibility(View.GONE);
                         }else{   // 往上滑， 标签往下走， 显示
                             scrollListener.onDownMove(onScrollDistance);
                         }
