@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.xiaolian.amigo">
 
-    <!--权限声明-->
+    <!-- 权限声明 -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -14,15 +14,15 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!--<uses-permission android:name="android.permission.WRITE_SETTINGS" />-->
+    <!-- <uses-permission android:name="android.permission.WRITE_SETTINGS" /> -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <!--<uses-permission android:name="android.permission.READ_LOGS" />-->
+    <!-- <uses-permission android:name="android.permission.READ_LOGS" /> -->
 
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <application
-        android:name="com.xiaolian.amigo.MvpApp"
+        android:name=".MvpApp"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -30,12 +30,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup, android:label, android:icon">
-        <!--Glide配置-->
+
+        <!-- Glide配置 -->
         <meta-data
             android:name="com.xiaolian.amigo.ui.base.GlideConfiguration"
             android:value="GlideModule" />
 
-        <!--友盟统计-->
+        <!-- 友盟统计 -->
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="5a08f933f43e4847900000f0" />
@@ -43,200 +44,199 @@
             android:name="UMENG_CHANNEL"
             android:value="${UMENG_CHANNEL_VALUE}" />
 
-        <!--订单列表-->
+        <!-- 订单列表 -->
         <activity
             android:name=".ui.order.OrderActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--消费账单-->
+        <!-- 消费账单 -->
         <activity
             android:name=".ui.order.NormalOrderActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--退款账单-->
+        <!-- 退款账单 -->
         <activity
             android:name=".ui.order.RefundOrderActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--订单详情-->
+        <!-- 订单详情 -->
         <activity
             android:name=".ui.order.OrderDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--我收藏的设备-->
+        <!-- 我收藏的设备 -->
         <activity
             android:name=".ui.favorite.FavoriteActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--设备报修-->
+        <!-- 设备报修 -->
         <activity
             android:name=".ui.repair.RepairActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--设备报修nav-->
+        <!-- 设备报修nav -->
         <activity
             android:name=".ui.repair.RepairNavActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--报修详情-->
+        <!-- 报修详情 -->
         <activity
             android:name=".ui.repair.RepairDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--报修申请-->
+        <!-- 报修申请 -->
         <activity
             android:name=".ui.repair.RepairApplyActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--web页面-->
+        <!-- web页面 -->
         <activity
             android:name=".ui.base.WebActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--编辑个人信息页面-->
+        <!-- 编辑个人信息页面 -->
         <activity
             android:name=".ui.user.EditProfileActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--编辑昵称页面-->
+        <!-- 编辑昵称页面 -->
         <activity
             android:name=".ui.user.EditNickNameActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--修改手机号-->
+        <!-- 修改手机号 -->
         <activity
             android:name=".ui.user.EditMobileActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--修改账户密码-->
+        <!-- 修改账户密码 -->
         <activity
             android:name=".ui.user.EditPasswordActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--列表选择页面-->
+        <!-- 列表选择页面 -->
         <activity
             android:name=".ui.user.ListChooseActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--代金券页面-->
+        <!-- 代金券页面 -->
         <activity
             android:name=".ui.bonus.BonusActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--兑换代金券-->
+        <!-- 兑换代金券 -->
         <activity
             android:name=".ui.bonus.BonusExchangeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--过期代金券-->
+        <!-- 过期代金券 -->
         <activity
             android:name=".ui.bonus.ExpiredBonusActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--我的钱包-->
+        <!-- 我的钱包 -->
         <activity
             android:name=".ui.wallet.WalletActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--月账单-->
-        <activity android:name=".ui.wallet.MonthlyBillActivity"
+        <!-- 月账单 -->
+        <activity
+            android:name=".ui.wallet.MonthlyBillActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
+            android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--余额说明-->
+        <!-- 余额说明 -->
         <activity
             android:name=".ui.wallet.BalanceExplainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
+            android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--失物招领-->
+        <!-- 失物招领 -->
         <activity
             android:name=".ui.lostandfound.LostAndFoundActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--失物招领我的收藏-->
-        <activity android:name=".ui.lostandfound.MyCollectActivity"
+        <!-- 失物招领我的收藏 -->
+        <activity
+            android:name=".ui.lostandfound.MyCollectActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <!-- 失物招领通知 -->
+        <activity
+            android:name=".ui.lostandfound.LostAndFoundNoticeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <!-- 失物招领2 -->
+        <activity
+            android:name=".ui.lostandfound.LostAndFoundActivity2"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <!-- 失物招领详情2 -->
+        <activity
+            android:name=".ui.lostandfound.LostAndFoundDetailActivity2"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            />
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
 
-        <!--失物招领通知-->
-        <activity android:name=".ui.lostandfound.LostAndFoundNoticeActivity"
+        <!-- 失物招领回复详情 -->
+        <activity
+            android:name=".ui.lostandfound.LostAndFoundReplyDetailActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
+            android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--失物招领2-->
-        <activity android:name=".ui.lostandfound.LostAndFoundActivity2"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
-
-        <!--失物招领详情2-->
-        <activity android:name=".ui.lostandfound.LostAndFoundDetailActivity2"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
-            />
-
-        <!--失物招领回复详情-->
-        <activity android:name=".ui.lostandfound.LostAndFoundReplyDetailActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
-
-        <!--剪裁页面-->
+        <!-- 剪裁页面 -->
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
-        <!--洗澡地址列表-->
+        <!-- 洗澡地址列表 -->
         <activity
             android:name=".ui.user.EditDormitoryActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--找回密码步骤一-->
+        <!-- 找回密码步骤一 -->
         <activity
             android:name=".ui.login.PasswordRetrievalStep1Activity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--找回密码步骤二-->
+        <!-- 找回密码步骤二 -->
         <activity
             android:name=".ui.login.PasswordRetrievalStep2Activity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--登录页面-->
+        <!-- 登录页面 -->
         <activity
             android:name=".ui.login.LoginActivity"
             android:launchMode="singleTask"
@@ -244,331 +244,333 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateVisible|adjustResize" />
 
-        <!--热水器设备页-->
+        <!-- 热水器设备页 -->
         <activity
             android:name=".ui.device.heater.HeaterActivity"
-            android:screenOrientation="portrait"
             android:launchMode="singleTop"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--选择饮水机页面-->
+        <!-- 选择饮水机页面 -->
         <activity
             android:name=".ui.device.dispenser.ChooseDispenserActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--饮水机页面-->
+        <!-- 饮水机页面 -->
         <activity
             android:name=".ui.device.dispenser.DispenserActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--吹风机页面-->
+        <!-- 吹风机页面 -->
         <activity
             android:name=".ui.device.dryer.DryerActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--烘干机页面-->
+        <!-- 烘干机页面 -->
         <activity
             android:name=".ui.device.washer.WasherActivity2"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--设置浴室密码-->
-        <activity android:name=".ui.device.bathroom.EditBathroomPasswordActivity"
+        <!-- 设置浴室密码 -->
+        <activity
+            android:name=".ui.device.bathroom.EditBathroomPasswordActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
+            android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--公共澡堂使用-->
-        <activity android:name=".ui.device.bathroom.BathroomActivity"
+        <!-- 公共澡堂使用 -->
+        <activity
+            android:name=".ui.device.bathroom.BathroomActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
+            android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--公共澡堂预约-->
-        <activity android:name=".ui.device.bathroom.BookingActivity"
+        <!-- 公共澡堂预约 -->
+        <activity
+            android:name=".ui.device.bathroom.BookingActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
+            android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--公共澡堂预约记录-->
-        <activity android:name=".ui.device.bathroom.BookingRecordActivity"
+        <!-- 公共澡堂预约记录 -->
+        <activity
+            android:name=".ui.device.bathroom.BookingRecordActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
+            android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--公共澡堂购买编码-->
-        <activity android:name=".ui.device.bathroom.BuyCodeActivity"
+        <!-- 公共澡堂购买编码 -->
+        <activity
+            android:name=".ui.device.bathroom.BuyCodeActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
+            android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--公共澡堂扫码使用-->
-        <activity android:name=".ui.device.bathroom.ScanUseActivity"
+        <!-- 公共澡堂扫码使用 -->
+        <activity
+            android:name=".ui.device.bathroom.ScanUseActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
+            android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--公共澡堂购买记录-->
-        <activity android:name=".ui.device.bathroom.BuyRecordActivity"
+        <!-- 公共澡堂购买记录 -->
+        <activity
+            android:name=".ui.device.bathroom.BuyRecordActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
+            android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--公共澡堂付费使用-->
-        <activity android:name=".ui.device.bathroom.PayUseActivity"
+        <!-- 公共澡堂付费使用 -->
+        <activity
+            android:name=".ui.device.bathroom.PayUseActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
+            android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--公共澡堂选择浴室-->
-        <activity android:name=".ui.device.bathroom.ChooseBathroomActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
+        <!-- 公共澡堂选择浴室 -->
+        <activity
+            android:name=".ui.device.bathroom.ChooseBathroomActivity"
             android:launchMode="singleTop"
-            >
-        </activity>
-
-        <!--公共澡堂扫一扫使用-->
-        <activity android:name=".ui.device.bathroom.BathroomScanActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
-        <!--洗澡地址-->
-        <activity android:name=".ui.device.bathroom.ShowerAddressActivity"
+        <!-- 公共澡堂扫一扫使用 -->
+        <activity
+            android:name=".ui.device.bathroom.BathroomScanActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
+            android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--选择设置洗澡地址-->
-        <activity android:name=".ui.device.bathroom.ChooseShowerAddressActivity"
+        <!-- 洗澡地址 -->
+        <activity
+            android:name=".ui.device.bathroom.ShowerAddressActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
+            android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--充值金额页面-->
+        <!-- 选择设置洗澡地址 -->
+        <activity
+            android:name=".ui.device.bathroom.ChooseShowerAddressActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <!-- 充值金额页面 -->
         <activity
             android:name=".ui.wallet.RechargeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--失物招领详情-->
+        <!-- 失物招领详情 -->
         <activity
             android:name=".ui.lostandfound.LostAndFoundDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--我的发布-->
+        <!-- 我的发布 -->
         <activity
             android:name=".ui.lostandfound.MyPublishActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--我的发布2-->
-        <activity android:name=".ui.lostandfound.MyPublishActivity2"
+        <!-- 我的发布2 -->
+        <activity
+            android:name=".ui.lostandfound.MyPublishActivity2"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
+            android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--失物发布-->
+        <!-- 失物发布 -->
         <activity
             android:name=".ui.lostandfound.PublishLostActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--招领发布-->
+        <!-- 招领发布 -->
         <activity
             android:name=".ui.lostandfound.PublishFoundActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--失物招领发布-->
-        <activity android:name=".ui.lostandfound.PublishLostAndFoundActivity"
+        <!-- 失物招领发布 -->
+        <activity
+            android:name=".ui.lostandfound.PublishLostAndFoundActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan|stateHidden"
-            />
+            android:windowSoftInputMode="adjustPan|stateHidden" />
 
-        <!--写联子-->
-        <activity android:name=".ui.lostandfound.WriteLZActivity"
+        <!-- 写联子 -->
+        <activity
+            android:name=".ui.lostandfound.WriteLZActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan|stateHidden"
-            />
-        <!--报修评价-->
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <!-- 报修评价 -->
         <activity
             android:name=".ui.repair.RepairEvaluationActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--图片浏览-->
+        <!-- 图片浏览 -->
         <activity
             android:name=".ui.widget.photoview.AlbumItemActivity"
             android:screenOrientation="portrait"
             android:theme="@style/photoTheme" />
-
-
-        <activity android:name=".ui.device.bathroom.BathOrderActivity"
+        <activity
+            android:name=".ui.device.bathroom.BathOrderActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--蓝牙测试用-->
-        <!--<activity-->
-        <!--android:name=".ui.ble.BleActivity"-->
-        <!--android:launchMode="singleTask"-->
-        <!--android:screenOrientation="portrait"-->
-        <!--android:theme="@style/AppTheme.NoActionBar">-->
-        <!--<intent-filter>-->
-        <!--<action android:name="android.intent.action.MAIN" />-->
-        <!--<category android:name="android.intent.category.LAUNCHER" />-->
-        <!--</intent-filter>-->
-        <!--</activity>-->
+        <!-- 蓝牙测试用 -->
+        <!-- <activity -->
+        <!-- android:name=".ui.ble.BleActivity" -->
+        <!-- android:launchMode="singleTask" -->
+        <!-- android:screenOrientation="portrait" -->
+        <!-- android:theme="@style/AppTheme.NoActionBar"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.intent.action.MAIN" /> -->
+        <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+        <!-- </intent-filter> -->
+        <!-- </activity> -->
 
-        <!--<activity-->
-        <!--android:name=".ui.ble.BleInteractiveActivity"-->
-        <!--android:launchMode="singleTask"-->
-        <!--android:screenOrientation="portrait"-->
-        <!--android:theme="@style/AppTheme.NoActionBar" />-->
 
-        <!--通知中心-->
+        <!-- <activity -->
+        <!-- android:name=".ui.ble.BleInteractiveActivity" -->
+        <!-- android:launchMode="singleTask" -->
+        <!-- android:screenOrientation="portrait" -->
+        <!-- android:theme="@style/AppTheme.NoActionBar" /> -->
+
+
+        <!-- 通知中心 -->
         <activity
             android:name=".ui.notice.NoticeListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--通知详情-->
+        <!-- 通知详情 -->
         <activity
             android:name=".ui.notice.NoticeDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--更多-->
+        <!-- 更多 -->
         <activity
             android:name=".ui.more.MoreActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--关于我们-->
+        <!-- 关于我们 -->
         <activity
             android:name=".ui.more.AboutUsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--更换浴室密码-->
-        <activity android:name=".ui.user.ChangeBathroomPasswordActivity"
-            android:screenOrientation="portrait"
+        <!-- 更换浴室密码 -->
+        <activity
+            android:name=".ui.user.ChangeBathroomPasswordActivity"
             android:configChanges="keyboardHidden"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--找回浴室密码-->
-        <activity android:name=".ui.user.FindBathroomPasswordActivity"
-            android:screenOrientation="portrait"
+        <!-- 找回浴室密码 -->
+        <activity
+            android:name=".ui.user.FindBathroomPasswordActivity"
             android:configChanges="keyboardHidden"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--更换头像-->
+        <!-- 更换头像 -->
         <activity
             android:name=".ui.user.EditAvatarActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--校验密码-->
+        <!-- 校验密码 -->
         <activity
             android:name=".ui.user.CheckPasswordActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--设备账单-->
+        <!-- 设备账单 -->
         <activity
             android:name=".ui.device.DeviceOrderActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--提现-->
+        <!-- 提现 -->
         <activity
             android:name=".ui.wallet.WithdrawalActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--充值提现记录-->
+        <!-- 充值提现记录 -->
         <activity
             android:name=".ui.wallet.WithdrawalRecordActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--预付金额-->
+        <!-- 预付金额 -->
         <activity
             android:name=".ui.wallet.PrepayActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--待找零账单-->
+        <!-- 待找零账单 -->
         <activity
             android:name=".ui.wallet.PrepayOrderActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--宿舍列表-->
+        <!-- 宿舍列表 -->
         <activity
             android:name=".ui.user.ChooseDormitoryActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--主页-->
+        <!-- 主页 -->
         <activity
             android:name=".ui.main.MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan|stateHidden"/>
+            android:windowSoftInputMode="adjustPan|stateHidden" />
 
-        <!--选择提现账户-->
+        <!-- 选择提现账户 -->
         <activity
             android:name=".ui.wallet.ChooseWithdrawActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--添加提现账户-->
+        <!-- 添加提现账户 -->
         <activity
             android:name=".ui.wallet.AddAccountActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--充值详情-->
+        <!-- 充值详情 -->
         <activity
             android:name=".ui.wallet.RechargeDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--提现详情-->
+        <!-- 提现详情 -->
         <activity
             android:name=".ui.wallet.WithdrawalDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--洗衣机首页-->
+        <!-- 洗衣机首页 -->
         <activity
             android:name=".ui.device.washer.WasherActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--选择洗衣机模式页面-->
+        <!-- 选择洗衣机模式页面 -->
         <activity
             android:name=".ui.device.washer.ChooseWashModeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--洗衣机展示二维码页面-->
+        <!-- 洗衣机展示二维码页面 -->
         <activity
             android:name=".ui.device.washer.WasherQrCodeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--二维码扫描-->
+        <!-- 二维码扫描 -->
         <activity
             android:name=".ui.device.washer.ScanActivity"
             android:screenOrientation="portrait"
@@ -576,19 +578,19 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
 
-        <!--我的积分-->
-        <activity android:name=".ui.credits.CreditsActivity"
+        <!-- 我的积分 -->
+        <activity
+            android:name=".ui.credits.CreditsActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
+            android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--公共浴室的洗热水澡界面-->
-        <activity android:name=".ui.device.bathroom.BathroomHeaterActivity"
+        <!-- 公共浴室的洗热水澡界面 -->
+        <activity
+            android:name=".ui.device.bathroom.BathroomHeaterActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
-        <!--更新窗口-->
+        <!-- 更新窗口 -->
         <activity
             android:name=".ui.main.update.UpdateActivity"
             android:screenOrientation="portrait"
@@ -608,52 +610,59 @@
             android:screenOrientation="behind"
             android:windowSoftInputMode="adjustResize|stateHidden" />
 
-        <!--微信支付-->
+        <!-- 微信支付 -->
         <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
             android:launchMode="singleTop"
-            android:theme="@android:style/Theme.Translucent"
-            />
+            android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:exported="true"
             android:launchMode="singleTop"
-            android:theme="@android:style/Theme.Translucent"
-            />
+            android:theme="@android:style/Theme.Translucent" />
 
-        <!--公共浴室洗澡页面-->
-        <activity android:name=".ui.device.bathroom.BathIngActivity"
+        <!-- 公共浴室洗澡页面 -->
+        <activity
+            android:name=".ui.device.bathroom.BathIngActivity"
             android:exported="true"
             android:launchMode="singleTop"
-            android:theme="@android:style/Theme.Translucent"/>
+            android:theme="@android:style/Theme.Translucent" />
 
-        <!--闪屏页-->
+        <!-- 闪屏页 -->
         <activity
             android:name=".ui.main.SplashActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
-        <!--完善资料-->
-        <activity android:name=".ui.user.CompleteInfoActivity"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTask"
-            android:theme="@style/AppTheme.NoActionBar">
-
             <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.MAIN" />-->
-            <!--<category android:name="android.intent.category.LAUNCHER" />-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
         </activity>
 
-        <!--选择设备类型-->
+        <!-- 完善资料 -->
+        <activity
+            android:name=".ui.user.CompleteInfoActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <!--学生认证-->
+
+        <activity android:name=".ui.user.UserCertificationActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+             <intent-filter>
+             <action android:name="android.intent.action.MAIN" />
+             <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
+        </activity>
+
+        <!-- 选择设备类型 -->
         <activity
             android:name=".ui.repair.ChooseRepairActivity"
             android:screenOrientation="portrait"
@@ -661,7 +670,7 @@
 
         <service android:name=".ui.main.update.DownLoadService" />
 
-        <!--ACRA-->
+        <!-- ACRA -->
         <activity
             android:name=".util.crash.acra.dialog.CrashReportDialog"
             android:excludeFromRecents="true"
@@ -670,24 +679,26 @@
             android:process=":acra"
             android:theme="@android:style/Theme.Dialog" />
 
-        <!--测试activity-->
+        <!-- 测试activity -->
 
         <service
             android:name=".util.crash.acra.sender.SenderService"
             android:exported="false"
             android:process=":acra" />
 
-        <receiver android:name="com.xiaolian.amigo.ui.notice.MessageReceiver"
+        <receiver
+            android:name=".ui.notice.MessageReceiver"
             android:exported="true">
-          <intent-filter>
-              <!-- 接收消息透传 -->
-              <action android:name="com.tencent.android.tpush.action.PUSH_MESSAGE" />
-              <!-- 监听注册、反注册、设置/删除标签、通知被点击等处理结果 -->
-              <action android:name="com.tencent.android.tpush.action.FEEDBACK" />
-          </intent-filter>
+            <intent-filter>
+
+                <!-- 接收消息透传 -->
+                <action android:name="com.tencent.android.tpush.action.PUSH_MESSAGE" />
+                <!-- 监听注册、反注册、设置/删除标签、通知被点击等处理结果 -->
+                <action android:name="com.tencent.android.tpush.action.FEEDBACK" />
+            </intent-filter>
         </receiver>
 
-        <!--兼容API24的provider-->
+        <!-- 兼容API24的provider -->
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="${FILE_PROVIDER_AUTHORITIES}"
@@ -697,8 +708,8 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
+
+
     </application>
-
-
 
 </manifest>

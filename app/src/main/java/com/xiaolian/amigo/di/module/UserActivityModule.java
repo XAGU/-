@@ -20,6 +20,7 @@ import com.xiaolian.amigo.ui.user.EditPasswordPresenter;
 import com.xiaolian.amigo.ui.user.EditProfilePresenter;
 import com.xiaolian.amigo.ui.user.FindBathroomPasswordPresenter;
 import com.xiaolian.amigo.ui.user.ListChoosePresenter;
+import com.xiaolian.amigo.ui.user.UserCertificationPresenter;
 import com.xiaolian.amigo.ui.user.intf.IChangeBathroomPasswordPresenter;
 import com.xiaolian.amigo.ui.user.intf.IChangeBathroomPasswordView;
 import com.xiaolian.amigo.ui.user.intf.ICheckPasswordPresenter;
@@ -44,6 +45,8 @@ import com.xiaolian.amigo.ui.user.intf.IFindBathroomPasswordPresenter;
 import com.xiaolian.amigo.ui.user.intf.IFindBathroomPasswordView;
 import com.xiaolian.amigo.ui.user.intf.IListChoosePresenter;
 import com.xiaolian.amigo.ui.user.intf.IListChooseView;
+import com.xiaolian.amigo.ui.user.intf.IUserCertificationPresenter;
+import com.xiaolian.amigo.ui.user.intf.IUserCertificationView;
 
 import dagger.Module;
 import dagger.Provides;
@@ -167,6 +170,14 @@ public class UserActivityModule {
     @UserActivityContext
     ICompleteInfoPresenter<ICompleteInfoView> provideCompleteInfoPresenter(
             CompleteInfoPresenter<ICompleteInfoView> presenter){
+        return presenter ;
+    }
+
+
+    @Provides
+    @UserActivityContext
+    IUserCertificationPresenter<IUserCertificationView> provideUserCertificationPresenter(
+            UserCertificationPresenter<IUserCertificationView> presenter){
         return presenter ;
     }
 }

@@ -48,7 +48,6 @@ public class SocalPresenter <V extends ISocalView> extends BasePresenter<V>
         addObserver(lostAndFoundDataManager.getTopicList(), new NetworkObserver<ApiResult<BbsTopicListTradeRespDTO>>(){
             @Override
             public void onStart() {
-                Log.wtf(TAG ,"start");
                 getMvpView().showBlogLoading();
                 getMvpView().hideErrorLayout();
                 getMvpView().hideTagLayout();
@@ -72,9 +71,9 @@ public class SocalPresenter <V extends ISocalView> extends BasePresenter<V>
             @Override
             public void onError(Throwable e) {
                 super.onError(e);
-//                getMvpView().hideBlogLoading();
+                getMvpView().hideBlogLoading();
                 getMvpView().hideTagLayout();
-//                getMvpView().showErrorLayout();
+                getMvpView().showErrorLayout();
             }
         });
     }

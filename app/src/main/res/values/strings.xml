@@ -361,13 +361,13 @@
     <string name="book_dialog_tip">取消预约后，无法在浴室内洗澡哦</string>
 
 
-
-
     <!--社交-->
     <string name="social_search_hint">批阅一下感兴趣的联子 ~ </string>
 
 
-
     <string name="loading">努力加载中 ...</string>
     <string name="network_error">小绿网已迷失方向 ...</string>
+
+    <!--学生认证-->
+    <string name="user_certification_title">学生认证</string>
 </resources>

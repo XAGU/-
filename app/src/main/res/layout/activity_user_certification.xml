@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v4.widget.NestedScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.xiaolian.amigo.ui.user.UserCertificationActivity">
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:id="@+id/line"
+        android:background="@color/colorDarke" />
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/certification_ry"
+        android:layout_below="@id/line"
+        android:layout_marginBottom="50dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="@color/colorDark2"
+        android:text="上传学生证照片"
+        android:layout_below="@id/certification_ry"
+        android:id="@+id/submit_card_txt"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="* 照片内个人信息必须清晰可见"
+        android:layout_alignBottom="@id/submit_card_txt"
+        android:layout_toRightOf="@id/submit_card_txt"
+        android:textSize="12sp"
+        android:textColor="@color/colorFullRed"
+        android:layout_marginLeft="10dp"
+        />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="21dp"
+        android:layout_marginBottom="21dp"
+        android:id="@+id/student_card_ll"
+        android:layout_below="@id/submit_card_txt">
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/rv_image"
+        android:overScrollMode="never"
+        android:layout_width="wrap_content"
+        android:layout_height="94dp"
+        android:paddingLeft="@dimen/mainMarginLeftRight"
+        android:paddingRight="@dimen/mainMarginLeftRight"/>
+
+    <LinearLayout
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        >
+
+        <ImageView
+            android:id="@+id/iv_first"
+            android:layout_width="94dp"
+            android:layout_height="94dp"
+            android:background="@drawable/dotted_box"
+            android:src="@drawable/image_add"
+            android:scaleType="centerInside"
+            tools:visibility="visible"
+            android:layout_gravity="center_vertical"/>
+
+        <ImageView
+            android:id="@+id/iv_second"
+            android:layout_width="94dp"
+            android:layout_height="94dp"
+            android:background="@drawable/dotted_box"
+            android:src="@drawable/image_add"
+            android:scaleType="centerInside"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:visibility="gone"
+            tools:visiblity="visible"/>
+
+        <ImageView
+            android:id="@+id/iv_third"
+            android:layout_width="94dp"
+            android:layout_height="94dp"
+            android:background="@drawable/dotted_box"
+            android:src="@drawable/image_add"
+            android:scaleType="centerInside"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+
+    </LinearLayout>
+
+    </LinearLayout>
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:text="上传身份证照片"
+        android:id="@+id/card_txt"
+        android:textColor="@color/colorDark2"
+        android:layout_below="@id/student_card_ll"
+        android:layout_marginBottom="21dp"/>
+
+    <RelativeLayout
+        android:layout_width="94dp"
+        android:layout_height="94dp"
+        android:id="@+id/front_card_rl"
+        android:layout_below="@id/card_txt"
+        android:background="@drawable/dotted_box"
+        android:layout_marginBottom="90dp">
+
+        <ImageView
+            android:id="@+id/iv_front_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/image_add"
+            android:scaleType="centerInside"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="26dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:text="正面"
+            android:id="@+id/tv_front_card"
+            android:textColor="@color/colorDark9"
+            android:layout_marginTop="54dp"
+            android:layout_centerHorizontal="true"/>
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="94dp"
+        android:layout_height="94dp"
+        android:id="@+id/back_card_rl"
+        android:layout_below="@id/card_txt"
+        android:layout_toEndOf="@id/front_card_rl"
+        android:background="@drawable/dotted_box"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="90dp">
+
+        <ImageView
+            android:id="@+id/iv_back_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/image_add"
+            android:scaleType="centerInside"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="26dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:text="反面"
+            android:id="@+id/tv_back_card"
+            android:textColor="@color/colorDark9"
+            android:layout_marginTop="54dp"
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>
+    
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/button_rect_red"
+        android:text="提交认证"
+        android:textSize="17sp"
+        android:textColor="@color/white"
+        android:layout_alignParentBottom="true"
+        />
+</RelativeLayout>
+</android.support.v4.widget.NestedScrollView>
