@@ -51,11 +51,13 @@ public class SocalPresenter <V extends ISocalView> extends BasePresenter<V>
                 Log.wtf(TAG ,"start");
                 getMvpView().showBlogLoading();
                 getMvpView().hideErrorLayout();
+                getMvpView().hideTagLayout();
             }
 
             @Override
             public void onReady(ApiResult<BbsTopicListTradeRespDTO> result) {
                 getMvpView().hideBlogLoading();
+                getMvpView().showTagLayout();
                 if (result.getError() == null){
                     if (result.getData().getTopicList() != null && result.getData().getTopicList().size() > 0) {
                         lostAndFoundDataManager.setTopic(result.getData().getTopicList());
@@ -70,8 +72,9 @@ public class SocalPresenter <V extends ISocalView> extends BasePresenter<V>
             @Override
             public void onError(Throwable e) {
                 super.onError(e);
-                getMvpView().hideBlogLoading();
-                getMvpView().showErrorLayout();
+//                getMvpView().hideBlogLoading();
+                getMvpView().hideTagLayout();
+//                getMvpView().showErrorLayout();
             }
         });
     }

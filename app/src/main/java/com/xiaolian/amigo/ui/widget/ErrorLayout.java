@@ -2,6 +2,7 @@ package com.xiaolian.amigo.ui.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -37,7 +38,8 @@ public class ErrorLayout extends RelativeLayout {
 
     private void initView(Context context) {
         this.context = context;
-        inflate(context ,R.layout.layout_error ,null);
+        LayoutInflater.from(context).inflate(R.layout.layout_error ,this ,true);
+//        inflate(context ,R.layout.layout_error ,null);
         rlError = findViewById(R.id.rl_error);
         refer = findViewById(R.id.refer);
         refer.setOnClickListener(v -> {
@@ -49,19 +51,6 @@ public class ErrorLayout extends RelativeLayout {
     public void setReferListener(ReferListener referListener) {
         this.referListener = referListener;
     }
-
-    public void showErrorView(){
-        if (rlError != null && rlError.getVisibility() == GONE) {
-            rlError.setVisibility(VISIBLE);
-        }
-    }
-
-    public void hideErrorView(){
-        if (rlError != null && rlError.getVisibility() == VISIBLE){
-            rlError.setVisibility(GONE);
-        }
-    }
-
 
     public interface ReferListener{
         void referData();

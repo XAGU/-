@@ -369,5 +369,5 @@
 
 
     <string name="loading">努力加载中 ...</string>
-    <string name="network_error">小绿网已迷失方向</string>
+    <string name="network_error">小绿网已迷失方向 ...</string>
 </resources>

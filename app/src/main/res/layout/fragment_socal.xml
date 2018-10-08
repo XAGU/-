@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tool="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/colorWhite"
     tools:context="com.xiaolian.amigo.ui.lostandfound.SocalFragment">
@@ -111,12 +112,12 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/loading_rl">
+            android:id="@+id/loading_rl"
+            tools:visibility="gone">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/loading_one"
                 android:layout_marginTop="140dp"
                 android:id="@+id/iv_loading"
                 android:layout_centerHorizontal="true"
@@ -135,8 +136,10 @@
 
         <com.xiaolian.amigo.ui.widget.ErrorLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/error_net_layout"/>
+            android:layout_height="577dp"
+            android:id="@+id/error_net_layout"
+            android:visibility="gone"
+            tools:visibility="visible"/>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

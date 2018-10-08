@@ -38,4 +38,8 @@ public interface ISocalView extends IBaseView {
     void showErrorLayout();
 
     void hideErrorLayout();
+
+    void showTagLayout();
+
+    void hideTagLayout();
 }

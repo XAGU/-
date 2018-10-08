@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -77,7 +78,8 @@ import static com.xiaolian.amigo.ui.lostandfound.LostAndFoundDetailActivity2.KEY
 
 /**
  * @author wcm
- * 2018/09/04
+ * @data 18/9/4
+ * 社交模块界面
  */
 public class SocalFragment extends BaseFragment implements View.OnClickListener, ISocalView, SocialImgAdapter.PhotoClickListener, BlogFragment.ScrollListener {
 
@@ -556,6 +558,16 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
 
     @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (hidden){
+            if (loadingAnimator !=null){
+                if (loadingAnimator.isRunning()) loadingAnimator.cancel();
+            }
+        }
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         if (mPopupWindow != null) {
@@ -708,9 +720,10 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
 
     private void initLoadingAnim() {
-        loadingAnimator = ValueAnimator.ofInt(0, 3);
+        loadingAnimator = ValueAnimator.ofInt(0, 3, 0);
         loadingAnimator.setRepeatCount(ValueAnimator.INFINITE);
-        loadingAnimator.setDuration(500);
+        loadingAnimator.setDuration(1000);
+        loadingAnimator.setInterpolator(new LinearInterpolator());
         loadingAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
@@ -724,7 +737,6 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
     @Override
     public void showBlogLoading() {
-        Log.wtf(TAG, "showBlogLoading");
         loadingRl.setVisibility(View.VISIBLE);
         if (loadingAnimator == null) return;
 
@@ -747,13 +759,25 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     @Override
     public void showErrorLayout() {
         if (errorNetLayout != null)
-        errorNetLayout.showErrorView();
+        errorNetLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideErrorLayout() {
         if (errorNetLayout != null)
-        errorNetLayout.hideErrorView();
+        errorNetLayout.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showTagLayout() {
+        if (tagRl != null)
+        tagRl.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideTagLayout() {
+        if (tagRl != null)
+        tagRl.setVisibility(View.GONE);
     }
 
 
