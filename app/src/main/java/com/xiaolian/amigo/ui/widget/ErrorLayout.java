@@ -7,8 +7,6 @@ import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 
-import butterknife.Unbinder;
-
 /**
  * @author wcm
  * @data 07/10/2018
@@ -22,7 +20,7 @@ public class ErrorLayout extends RelativeLayout {
     private Context context;
 
 
-    Unbinder unbinder ;
+
     public ErrorLayout(Context context) {
         this(context , null);
     }
@@ -51,9 +49,6 @@ public class ErrorLayout extends RelativeLayout {
     public void setReferListener(ReferListener referListener) {
         this.referListener = referListener;
     }
-
-
-
 
     public void showErrorView(){
         if (rlError != null && rlError.getVisibility() == GONE) {
