@@ -260,6 +260,7 @@ public class MyPublishActivity2 extends LostAndFoundBaseActivity implements ILos
             lostAndFounds.remove(position);
             publicAdapter.notifyItemRemoved(position);
             publicAdapter.notifyItemRangeChanged(position ,lostAndFounds.size());
+            if (lostAndFounds.size() == 0) showEmptyView();
         }catch (Exception e){
             Log.e(TAG ,e.getMessage());
         }

@@ -201,6 +201,11 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
         addObserver(mainDataManager.readUrgentNotify(reqDTO), new NetworkObserver<ApiResult<BooleanRespDTO>>(false) {
 
             @Override
+            public void onStart() {
+
+            }
+
+            @Override
             public void onReady(ApiResult<BooleanRespDTO> result) {
                 if (null == result.getError()) {
                     if (result.getData().isResult()) {
@@ -258,6 +263,11 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
             addObserver(mainDataManager.getSchoolBizList(), new NetworkObserver<ApiResult<QuerySchoolBizListRespDTO>>(false) {
 
                 @Override
+                public void onStart() {
+
+                }
+
+                @Override
                 public void onReady(ApiResult<QuerySchoolBizListRespDTO> result) {
                     if (null == result.getError()) {
                         mainDataManager.setSchoolBiz(result.getData().getBusinesses());
@@ -282,6 +292,12 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
         DeviceCheckReqDTO reqDTO = new DeviceCheckReqDTO();
         reqDTO.setDeviceType(type);
         addObserver(mainDataManager.checkDeviceUseage(reqDTO), new NetworkObserver<ApiResult<DeviceCheckRespDTO>>() {
+
+
+            @Override
+            public void onStart() {
+
+            }
 
             @Override
             public void onReady(ApiResult<DeviceCheckRespDTO> result) {
@@ -309,6 +325,12 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
         reqDTO.setVersionNo(versionNo);
         addObserver(mainDataManager.checkUpdate(reqDTO),
                 new NetworkObserver<ApiResult<CheckVersionUpdateRespDTO>>(false) {
+
+
+                    @Override
+                    public void onStart() {
+
+                    }
 
                     @Override
                     public void onReady(ApiResult<CheckVersionUpdateRespDTO> result) {
@@ -370,7 +392,13 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
         addObserver(mainDataManager.uploadDeviceInfo(reqDTO), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
 
             @Override
+            public void onStart() {
+
+            }
+
+            @Override
             public void onReady(ApiResult<BooleanRespDTO> result) {
+
                 if (null == result.getError()) {
                     if (result.getData().isResult()) {
                         mainDataManager.saveUploadedUserDeviceInfo(reqDTO);
@@ -526,6 +554,12 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
     public void noticeCount() {
         addObserver(userDataManager.noticeCount(),
                 new NetworkObserver<ApiResult<NoticeCountDTO>>(false) {
+
+
+                    @Override
+                    public void onStart() {
+
+                    }
 
                     @Override
                     public void onReady(ApiResult<NoticeCountDTO> result) {

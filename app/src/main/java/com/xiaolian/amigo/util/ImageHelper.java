@@ -76,8 +76,7 @@ public class ImageHelper {
 //                            PhotoViewAttacher attacher = new PhotoViewAttacher(imageView);
                             return false;
                         }
-                    }).skipMemoryCache(true)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    })
                     .into(imageView);
 
 
