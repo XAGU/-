@@ -551,7 +551,6 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
     @Override
     public void startOrderInfo(BathOrderCurrentRespDTO dto) {
 
-
         String userMethod = "";
         if (dto.getLocation().equals("任意空浴室")) {
             userMethod = "预约任意空浴室";

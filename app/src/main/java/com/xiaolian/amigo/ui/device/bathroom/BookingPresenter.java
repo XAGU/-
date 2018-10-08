@@ -260,9 +260,10 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
                         .subscribe(new Subscriber<Integer>() {
                             @Override
                             public void onCompleted() {
-
-                                getMvpView().countTimeLeft("0:00");
-                                getMvpView().appointMentTimeOut(false);
+                                if (!isOnPause) {
+                                    getMvpView().countTimeLeft("0:00");
+                                    getMvpView().appointMentTimeOut(false);
+                                }
                             }
 
                             @Override
