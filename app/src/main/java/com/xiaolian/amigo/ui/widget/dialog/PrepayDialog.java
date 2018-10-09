@@ -27,7 +27,7 @@ public class PrepayDialog extends Dialog {
     private OnOkClickListener okClickListener;
     private OnCancelClickListener cancelClickListener;
 
-    public PrepayDialog(@NonNull Context context) {
+    public PrepayDialog(@NonNull Context context ) {
         super(context, R.style.AlertDialogStyle);
         Window window = this.getWindow();
         window.requestFeature(Window.FEATURE_NO_TITLE);

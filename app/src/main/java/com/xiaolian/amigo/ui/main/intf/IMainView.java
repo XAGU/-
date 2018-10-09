@@ -1,6 +1,8 @@
 package com.xiaolian.amigo.ui.main.intf;
 
 import com.xiaolian.amigo.data.enumeration.Device;
+import com.xiaolian.amigo.data.network.model.bathroom.BathRouteRespDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.CurrentBathOrderRespDTO;
 import com.xiaolian.amigo.data.network.model.system.BannerDTO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.user.PersonalExtraInfoDTO;
@@ -81,10 +83,10 @@ public interface IMainView extends IBaseView {
      */
     void showDeviceUsageDialog(int type, DeviceCheckRespDTO data);
 
-    /**
-     * 显示绑定宿舍对话框
-     */
-    void showBindDormitoryDialog();
+//    /**
+//     * 显示绑定宿舍对话框
+//     */
+//    void showBindDormitoryDialog();
 
     /**
      * 打开定位服务
@@ -133,4 +135,37 @@ public interface IMainView extends IBaseView {
      * 隐藏校Ok帐号迁移
      */
     void hideXOkMigrate();
+
+    /**
+     * 路由到宿舍
+     */
+    void routeToRoomShower(BathRouteRespDTO dto);
+
+    /**
+     * 路由到公共浴室
+     */
+    void routeToBathroomShower(BathRouteRespDTO dto);
+
+
+    /**
+     * 洗澡地址为空时,选择洗澡地址
+     */
+    @Deprecated
+    void choseBathroomAddress();
+
+    /**
+     * 洗澡地址为空时，跳转到配置用户性别、宿舍洗澡地址信息页面
+     */
+    void gotoCompleteInfoActivity(BathRouteRespDTO dto);
+
+
+    /**
+     * 显示上一洗澡订单状态
+     */
+    void currentOrder(CurrentBathOrderRespDTO dto);
+
+
+    void showNoticeRemind();
+
+    void hideNoticeRemind();
 }

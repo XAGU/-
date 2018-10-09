@@ -15,7 +15,6 @@
 
 package com.xiaolian.amigo.ui.base;
 
-
 import android.os.Handler;
 import android.os.HandlerThread;
 
@@ -81,11 +80,12 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
     @Override
     public void onRemoteInvocationError(Throwable e) {
         if (!getMvpView().isNetworkAvailable()) {
-            getMvpView().onError(R.string.network_available_error_tip);
+            getMvpView().onError(R.string.network_not_available);
+//            getMvpView().onError(R.string.network_available_error_tip);
         } else if (e instanceof ConnectException) {
-            getMvpView().onError(R.string.server_available_error_tip);
+//            getMvpView().onError("服务器开小差了>_<");
         } else if (e instanceof SocketTimeoutException) {
-            getMvpView().onError(R.string.server_available_error_tip);
+//            getMvpView().onError("服务器开小差了>_<");
         } else {
             if (e instanceof HttpException) {
                 switch (((HttpException) e).code()) {
@@ -97,11 +97,11 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
                         // ignore
                         break;
                     default:
-                        getMvpView().onError(R.string.server_available_error_tip);
+//                        getMvpView().onError("服务器开小差了>_<");
                         break;
                 }
             } else if (e instanceof IOException) {
-                getMvpView().onError(R.string.network_available_error_tip);
+//                getMvpView().onError(R.string.network_available_error_tip);
             } else {
                 Log.wtf(TAG, "sorry，程序上出现错误", e);
                 if (e instanceof NullPointerException
@@ -124,8 +124,8 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
             getMvpView().onError(CommonError.PERMISSION_DENIED.getDesc());
             getMvpView().redirectToLogin();
         } else if (errorCode == CommonError.SERVER_SYSTEM_ERROR.getCode()) {
-            Log.w(TAG, "服务器错误");
-            getMvpView().onError("服务器飞走啦，努力修复中");
+//            Log.w(TAG, "服务器错误");
+//            getMvpView().onError("服务器开小差了>_<");
         } else if (errorCode == CommonError.CLIENT_PARAM_ERROR.getCode()) {
             Log.w(TAG, "参数异常");
         } else if (errorCode == CommonError.NO_ACCESS.getCode()) {
@@ -305,7 +305,7 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
         public void onStart() {
             super.onStart();
             if (renderView) {
-                view.showLoading();
+                if (view != null) view.showLoading();
             }
         }
 

@@ -23,6 +23,8 @@ import com.xiaolian.amigo.data.base.LogInterceptor;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.data.prefs.SharedPreferencesHelp;
 import com.xiaolian.amigo.di.ApplicationContext;
+import com.xiaolian.amigo.di.BathroomServer;
+import com.xiaolian.amigo.di.UserServer;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.blelib.BluetoothClient;
 import com.xiaolian.blelib.IBluetoothClient;
@@ -34,6 +36,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -61,15 +64,36 @@ public class ApplicationModule {
 
     @Singleton
     @Provides
+    @UserServer
     Retrofit provideRetrofit(LogInterceptor logInterceptor) {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .addInterceptor(logInterceptor)
                 .connectTimeout(Constant.DEFAULT_TIMEOUT, TimeUnit.SECONDS)
                 .writeTimeout(Constant.DEFAULT_TIMEOUT, TimeUnit.SECONDS)
                 .readTimeout(Constant.DEFAULT_TIMEOUT, TimeUnit.SECONDS)
+                .addNetworkInterceptor(new HttpLoggingInterceptor())
                 .build();
         return new Retrofit.Builder()
                 .baseUrl(Constant.SERVER)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .client(client)
+                .build();
+    }
+
+    @Singleton
+    @Provides
+    @BathroomServer
+    Retrofit provideBathroomRetrofit(LogInterceptor logInterceptor) {
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .addInterceptor(logInterceptor)
+                .connectTimeout(Constant.DEFAULT_TIMEOUT, TimeUnit.SECONDS)
+                .writeTimeout(Constant.DEFAULT_TIMEOUT, TimeUnit.SECONDS)
+                .readTimeout(Constant.DEFAULT_TIMEOUT, TimeUnit.SECONDS)
+                .addNetworkInterceptor(new HttpLoggingInterceptor())
+                .build();
+        return new Retrofit.Builder()
+                .baseUrl(Constant.SERVER_BATHROOM)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .client(client)

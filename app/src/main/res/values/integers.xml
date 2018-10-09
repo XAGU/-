@@ -21,4 +21,7 @@
     <integer name="first">0</integer>
     <integer name="second">1</integer>
     <integer name="third">2</integer>
+    <integer name="mobile_num">11</integer>
+    <integer name="max_length_for_six">6</integer>
+    <integer name="config_pop_duration">500</integer>
 </resources>

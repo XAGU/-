@@ -16,6 +16,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.OssFileType;
 import com.xiaolian.amigo.data.enumeration.annotation.LostAndFound;
+import com.xiaolian.amigo.data.network.model.lostandfound.BbsTopicListTradeRespDTO;
 import com.xiaolian.amigo.ui.lostandfound.intf.IPublishLostAndFoundPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.IPublishLostAndFoundView;
 import com.xiaolian.amigo.ui.lostandfound.intf.IPublishLostPresenter;
@@ -43,7 +44,7 @@ import butterknife.OnTextChanged;
  * @author zcd
  * @date 17/9/21
  */
-
+@Deprecated
 public class PublishLostAndFoundActivity extends LostAndFoundBaseActivity implements IPublishLostAndFoundView {
     private static final int REQUEST_IMAGE = 0x3302;
     private static final int IMAGE_COUNT = 3;
@@ -168,6 +169,11 @@ public class PublishLostAndFoundActivity extends LostAndFoundBaseActivity implem
         finish();
     }
 
+    @Override
+    public void addImage(String url, int position, String localPath) {
+
+    }
+
 
     @OnTextChanged({R.id.et_desc,
             R.id.et_title})
@@ -196,7 +202,6 @@ public class PublishLostAndFoundActivity extends LostAndFoundBaseActivity implem
                 images, etTitle.getText().toString(), type);
     }
 
-    @Override
     public void addImage(String url, int position) {
         if (this.images.size() > position) {
             this.images.remove(position);
@@ -205,6 +210,11 @@ public class PublishLostAndFoundActivity extends LostAndFoundBaseActivity implem
             this.images.add(url);
         }
         refreshAddImage();
+    }
+
+    @Override
+    public void referTopic(BbsTopicListTradeRespDTO data) {
+
     }
 
     private void refreshAddImage() {

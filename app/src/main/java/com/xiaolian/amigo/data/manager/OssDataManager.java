@@ -4,6 +4,7 @@ import com.xiaolian.amigo.data.manager.intf.IOssDataManager;
 import com.xiaolian.amigo.data.network.IOssApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.file.OssModel;
+import com.xiaolian.amigo.di.UserServer;
 
 import javax.inject.Inject;
 
@@ -22,7 +23,7 @@ public class OssDataManager implements IOssDataManager {
     private IOssApi ossApi;
 
     @Inject
-    public OssDataManager(Retrofit retrofit) {
+    public OssDataManager(@UserServer Retrofit retrofit) {
         this.ossApi = retrofit.create(IOssApi.class);
     }
 

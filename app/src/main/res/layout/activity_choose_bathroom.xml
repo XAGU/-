@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/colorBackgroundGray"
+    android:id="@+id/root">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:background="@color/white"
+        app:layout_collapseMode="pin">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingBottom="10dp"
+                android:paddingEnd="20dp"
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
+                android:src="@drawable/back" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:layout_centerInParent="true"
+                android:drawableEnd="@drawable/arrow_down"
+                android:drawablePadding="6dp"
+                tools:text="123公寓4栋"
+                android:textColor="#222"
+                android:textSize="@dimen/sp15"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/iv_help"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/mainMarginLeftRight"
+                android:src="@drawable/ic_help_bathroom" />
+
+            <View
+                android:id="@+id/view_line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="@dimen/mainMarginLeftRight"
+                android:layout_marginStart="@dimen/mainMarginLeftRight"
+                android:background="@color/colorDarke"
+                android:visibility="visible" />
+        </RelativeLayout>
+
+    </android.support.v7.widget.Toolbar>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tool_bar">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/id_content"
+            android:visibility="visible">
+
+
+            <LinearLayout
+                android:id="@+id/ll_top"
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:paddingEnd="@dimen/mainMarginLeftRight"
+                android:paddingStart="@dimen/mainMarginLeftRight">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="13dp"
+                        android:layout_height="13dp"
+                        android:background="@drawable/bg_bathroom_item_available" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:gravity="center"
+                        android:text="可选"
+                        android:textColor="@color/colorDark9"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="13dp"
+                        android:layout_height="13dp"
+                        android:background="@drawable/bg_bathroom_item_using" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:gravity="center"
+                        android:text="使用中"
+                        android:textColor="@color/colorDark9"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="13dp"
+                        android:layout_height="13dp"
+                        android:background="@drawable/bg_bathroom_item_booked" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:gravity="center"
+                        android:text="已预约"
+                        android:textColor="@color/colorDark9"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:id="@+id/ll_selected">
+
+                    <View
+                        android:layout_width="13dp"
+                        android:layout_height="13dp"
+                        android:background="@color/colorGreenBathroom" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:gravity="center"
+                        android:text="选中"
+                        android:textColor="@color/colorDark9"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/pre_bathroom1"
+                android:textAllCaps="false"
+                android:layout_marginBottom="21dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:layout_marginStart="@dimen/mainMarginLeftRight"
+                android:layout_marginEnd="@dimen/mainMarginLeftRight"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/button_enable"
+                android:textStyle="bold"
+                android:stateListAnimator="@null"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@id/pre_bathroom1"
+                android:layout_below="@id/ll_top"
+                android:gravity="center"
+                >
+
+                <com.xiaolian.amigo.ui.widget.AutoBathroom
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/auto_bathroom" />
+            </LinearLayout>
+
+            <!--<Button-->
+                <!--android:id="@+id/pre_bathroom2"-->
+                <!--android:textAllCaps="false"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginBottom="21dp"-->
+                <!--android:gravity="center"-->
+                <!--android:textColor="@color/white"-->
+                <!--android:background="@drawable/button_enable"-->
+                <!--android:textStyle="bold"-->
+                <!--android:stateListAnimator="@null"-->
+                <!--android:layout_marginStart="@dimen/mainMarginLeftRight"-->
+                <!--android:layout_marginEnd="@dimen/mainMarginLeftRight"-->
+                <!--android:layout_alignParentBottom="true"-->
+                <!--android:visibility="gone"-->
+                <!--/>-->
+
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/rl_error"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/rl_error"
+                android:id="@+id/net_error"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="125dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="小绿网已迷失方向"
+                android:layout_marginTop="19dp"
+                android:id="@+id/text"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/net_error"
+                android:textSize="@dimen/sp12"
+                android:textColor="#99999999"
+                />
+
+            <TextView
+                android:layout_width="86dp"
+                android:layout_height="26dp"
+                android:text="刷新重试"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/text"
+                android:layout_marginTop="14dp"
+                android:textSize="14sp"
+                android:background="@drawable/red_radio_button"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:id="@+id/refer"
+
+                />
+        </RelativeLayout>
+    </FrameLayout>
+
+
+</RelativeLayout>

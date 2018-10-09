@@ -1,6 +1,5 @@
 package com.xiaolian.amigo.ui.notice;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.support.v4.util.ObjectsCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,11 +12,8 @@ import com.xiaolian.amigo.data.enumeration.NoticeReadStatus;
 import com.xiaolian.amigo.ui.notice.adaptor.NoticeAdaptor;
 import com.xiaolian.amigo.ui.notice.intf.INoticePresenter;
 import com.xiaolian.amigo.ui.notice.intf.INoticeView;
-import com.xiaolian.amigo.ui.widget.RecycleViewDivider;
-import com.xiaolian.amigo.ui.widget.SpaceBottomItemDecoration;
 import com.xiaolian.amigo.ui.widget.dialog.NoticeAlertDialog;
 import com.xiaolian.amigo.util.Constant;
-import com.xiaolian.amigo.util.ScreenUtils;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import java.util.ArrayList;
@@ -103,12 +99,9 @@ public class NoticeListActivity extends NoticeBaseListActivity implements INotic
     public void showUrgentNotify(String content, Long id) {
         NoticeAlertDialog dialog = new NoticeAlertDialog(this);
         dialog.setContent(content);
-        dialog.setOnOkClickListener(new NoticeAlertDialog.OnOkClickListener() {
-            @Override
-            public void onOkClick(Dialog dialog, boolean isNotReminder) {
-                if (isNotReminder) {
-                    presenter.readUrgentNotify(id);
-                }
+        dialog.setOnOkClickListener((dialog1, isNotReminder) -> {
+            if (isNotReminder) {
+                presenter.readUrgentNotify(id);
             }
         });
         dialog.show();

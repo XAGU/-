@@ -3,6 +3,7 @@ package com.xiaolian.amigo.ui.user;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -24,6 +25,8 @@ import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import lombok.Data;
 
+import static com.xiaolian.amigo.util.Constant.USER_INFO_ACTIVITY_SRC;
+
 /**
  * 编辑个人信息Activity
  *
@@ -32,7 +35,7 @@ import lombok.Data;
  */
 
 public class EditProfileActivity extends UserBaseActivity implements IEditProfileView {
-
+    private static final String TAG = EditProfileActivity.class.getSimpleName();
     private static final int REQUEST_CODE_CHECK_PASSWORD = 0x0101;
     private static final int REQUEST_CODE_EDIT_NICKNAME = 0x0102;
     private static final int REQUEST_CODE_EDIT_SCHOOL = 0x0103;
@@ -74,6 +77,15 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
 
     @BindView(R.id.iv_avatar)
     CircleImageView ivAvatar;
+
+    /**
+     * 浴室密码提示
+     */
+    @BindView(R.id.tv_bathroom_tip)
+    TextView tvBathroomTip;
+
+    @BindView(R.id.rel_edit_bathroom_password)
+    RelativeLayout relEditBathroomPassword;
 
     private String avatarUrl;
 
@@ -148,26 +160,41 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
                 intent.putExtra("nickName", "");
                 startActivityForResult(intent, 1);
                 break;
+            case R.id.rel_edit_bathroom_password:
+                intent = new Intent(this, FindBathroomPasswordActivity.class);
+                intent.putExtra(Constant.EXTRA_KEY, presenter.isHadSetBathPassword());
+                startActivityForResult(intent, 1);
+                break;
             case R.id.rel_edit_school:
                 presenter.checkChangeSchool();
                 break;
             case R.id.rel_edit_room:
                 isNeedRefresh = true;
-                if (TextUtils.isEmpty(tvResidence.getText())) {
-                    intent = new Intent(this, EditDormitoryActivity.class);
-                    intent.putExtra(Constant.EXTRA_KEY, false);
-                    startActivityForResult(intent, REQUEST_CODE_EDIT_DORMITORY);
-                    intent = new Intent(this, ListChooseActivity.class);
-                    intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
-                    intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION,
-                            ListChooseActivity.ACTION_LIST_BUILDING);
-                    intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_SRC_ACTIVITY, Constant.EDIT_PROFILE_ACTIVITY_SRC);
-                    intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_DEVICE_TYPE, Device.HEATER.getType());
-                    startActivity(intent);
-                } else {
-                    intent = new Intent(this, EditDormitoryActivity.class);
-                    startActivityForResult(intent, REQUEST_CODE_EDIT_DORMITORY);
-                }
+//                if (TextUtils.isEmpty(tvResidence.getText())) {
+//                    intent = new Intent(this, EditDormitoryActivity.class);
+//                    intent.putExtra(Constant.EXTRA_KEY, false);
+//                    startActivityForResult(intent, REQUEST_CODE_EDIT_DORMITORY);
+//                    intent = new Intent(this, ListChooseActivity.class);
+//                    intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
+//                    intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION,
+//                            ListChooseActivity.ACTION_LIST_BUILDING);
+//                    intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_SRC_ACTIVITY, Constant.EDIT_PROFILE_ACTIVITY_SRC);
+//                    intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_DEVICE_TYPE, Device.HEATER.getType());
+//                    startActivity(intent);
+//                } else {
+//                    intent = new Intent(this, EditDormitoryActivity.class);
+//                    startActivityForResult(intent, REQUEST_CODE_EDIT_DORMITORY);
+//                }
+
+//                intent = new Intent(this, EditDormitoryActivity.class);
+//                startActivityForResult(intent, REQUEST_CODE_EDIT_DORMITORY);
+                intent = new Intent(this, ListChooseActivity.class);
+                intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
+                intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION,
+                        ListChooseActivity.ACTION_LIST_BUILDING);
+                intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_SRC_ACTIVITY, USER_INFO_ACTIVITY_SRC);
+                intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_DEVICE_TYPE, Device.HEATER.getType());
+                startActivity(intent);
                 break;
             default:
                 break;
@@ -192,6 +219,16 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
             startActivityForResult(intent, REQUEST_CODE_EDIT_SCHOOL);
         });
         availabilityDialog.show();
+    }
+
+    @Override
+    public void showBathroomPassword(boolean isExistBathroomBiz, boolean hadSetBathPassword) {
+        if (!isExistBathroomBiz) {
+            relEditBathroomPassword.setVisibility(View.GONE);
+            return;
+        }
+        relEditBathroomPassword.setVisibility(View.VISIBLE);
+        tvBathroomTip.setText(hadSetBathPassword ? "修改密码" : "未设置");
     }
 
     @Override

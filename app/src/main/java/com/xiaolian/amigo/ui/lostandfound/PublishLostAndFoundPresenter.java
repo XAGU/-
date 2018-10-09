@@ -21,10 +21,12 @@ import com.xiaolian.amigo.data.manager.intf.IOssDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
 import com.xiaolian.amigo.data.network.model.file.OssModel;
+import com.xiaolian.amigo.data.network.model.lostandfound.BbsTopicListTradeRespDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.SaveLostAndFoundDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.IPublishLostAndFoundPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.IPublishLostAndFoundView;
+import com.xiaolian.blelib.internal.util.SystemVersion;
 
 import java.util.List;
 import java.util.Locale;
@@ -64,12 +66,22 @@ public class PublishLostAndFoundPresenter<V extends IPublishLostAndFoundView>
     }
 
     @Override
+    public void uploadImage(Context activity, String imagePath, int position, OssFileType type) {
+        Log.d(TAG ," " + imagePath);
+        currentImagePosition = position;
+        currentType = type;
+        uploadImage(activity,imagePath);
+    }
+
+
+    @Override
     public void publishLostAndFound(String desc, List<String> images, String title, int type) {
         SaveLostAndFoundDTO dto = new SaveLostAndFoundDTO();
         dto.setDescription(desc);
         dto.setImages(images);
         dto.setTitle(title);
-        dto.setType(type);
+        dto.setType(1);
+        dto.setTopicId(type);
         addObserver(lostAndFoundManager.saveLostAndFounds(dto), new NetworkObserver<ApiResult<SimpleRespDTO>>() {
 
             @Override
@@ -83,6 +95,36 @@ public class PublishLostAndFoundPresenter<V extends IPublishLostAndFoundView>
             }
         });
     }
+
+    @Override
+    public void getTopicList() {
+        addObserver(lostAndFoundManager.getTopicList(), new NetworkObserver<ApiResult<BbsTopicListTradeRespDTO>>() {
+            @Override
+            public void onStart() {
+            }
+
+            @Override
+            public void onReady(ApiResult<BbsTopicListTradeRespDTO> result) {
+                if (result.getError() == null) {
+                    if (result.getData().getTopicList() != null && result.getData().getTopicList().size() > 0) {
+                        lostAndFoundManager.setTopic(result.getData().getTopicList());
+                        getMvpView().referTopic(result.getData());
+                    }
+
+                } else {
+                    getMvpView().onError(result.getError().getDisplayMessage());
+//                    getMvpView().onErrorView();
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+//                getMvpView().onErrorView();
+            }
+        });
+    }
+
 
     private void uploadImage(Context context, String filePath) {
         ossDataManager.getOssModel()
@@ -101,10 +143,76 @@ public class PublishLostAndFoundPresenter<V extends IPublishLostAndFoundView>
 
                     @Override
                     public void onNext(ApiResult<OssModel> result) {
+
+                        Log.wtf(TAG ,(" keyId:   "+result.getData().getAccessKeyId() )
+                                +'\n' + "endpoint:  "  + result.getData().getEndpoint() +'\n'
+                                +" accessKeySecret:   " + result.getData().getAccessKeySecret()
+                                +'\n' +"filePath :" + filePath);
                         uploadImage(OssClientHolder.getClient(context, result.getData()), result.getData(), filePath);
                     }
                 });
     }
+
+    private void uploadImage(Context context, String filePath , byte[] imageBytes) {
+        ossDataManager.getOssModel()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<ApiResult<OssModel>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        onHttpError(e);
+                    }
+
+                    @Override
+                    public void onNext(ApiResult<OssModel> result) {
+
+                          uploadImage(OssClientHolder.getClient(context ,result.getData()) , result.getData() ,imageBytes ,filePath);
+                    }
+                });
+    }
+
+    private void uploadImage(OSSClient client ,OssModel model  , byte[] bytes , String filePath){
+        getMvpView().post(() -> getMvpView().showLoading());
+        PutObjectRequest put = new PutObjectRequest(model.getBucket(),
+                generateObjectKey(String.valueOf(System.currentTimeMillis())),
+                bytes);
+
+        OSSAsyncTask task = client.asyncPutObject(put,
+                new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
+                    @Override
+                    public void onSuccess(PutObjectRequest request, PutObjectResult result) {
+                        getMvpView().post(() -> getMvpView().hideLoading());
+                        getMvpView().post(() -> getMvpView().addImage(filePath, currentImagePosition , request.getObjectKey()));  //request.getObjectKey()
+                        Log.d("PutObject", "UploadSuccess " + request.getObjectKey());
+                    }
+
+                    @Override
+                    public void onFailure(PutObjectRequest request, ClientException clientExcepion, ServiceException serviceException) {
+                        getMvpView().post(() -> getMvpView().hideLoading());
+                        // Request exception
+                        if (clientExcepion != null) {
+                            // Local exception, such as a network exception
+                            clientExcepion.printStackTrace();
+                        }
+                        if (serviceException != null) {
+                            // Service exception
+                            Log.e("ErrorCode", serviceException.getErrorCode());
+                            Log.e("RequestId", serviceException.getRequestId());
+                            Log.e("HostId", serviceException.getHostId());
+                            Log.e("RawMessage", serviceException.getRawMessage());
+                        }
+                        getMvpView().post(() ->
+                                getMvpView().onError("图片上传失败，请重试"));
+                    }
+                });
+
+    }
+
 
     @SuppressWarnings("unused")
     private void uploadImage(OSSClient client, OssModel model, String filePath) {
@@ -117,9 +225,10 @@ public class PublishLostAndFoundPresenter<V extends IPublishLostAndFoundView>
                     @Override
                     public void onSuccess(PutObjectRequest request, PutObjectResult result) {
                         getMvpView().post(() -> getMvpView().hideLoading());
-                        getMvpView().post(() -> getMvpView().addImage(request.getObjectKey(), currentImagePosition));
+                        getMvpView().post(() -> getMvpView().addImage(filePath, currentImagePosition , request.getObjectKey()));  //request.getObjectKey()
                         Log.d("PutObject", "UploadSuccess " + request.getObjectKey());
                     }
+
 
                     @Override
                     public void onFailure(PutObjectRequest request, ClientException clientExcepion, ServiceException serviceException) {

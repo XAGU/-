@@ -26,6 +26,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import static com.xiaolian.amigo.ui.device.washer.WasherContent.KEY_TYPE;
+import static com.xiaolian.amigo.util.Constant.WASH_DRYER;
+
 /**
  * 选择洗衣机模式
  *
@@ -59,6 +62,7 @@ public class ChooseWashModeActivity extends WasherBaseActivity implements IChoos
     private String chosenModeDesc;
     private Integer chosenMode;
     private Double balance;
+    private int type ;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,7 +74,11 @@ public class ChooseWashModeActivity extends WasherBaseActivity implements IChoos
         bindView();
         initAdapter();
         initRecyclerView();
-        presenter.getWasherMode();
+        if (type == Constant.WASH_DRYER) {
+            presenter.getWasherMode();
+        }else {
+            presenter.getDryerMode();
+        }
     }
 
     private void initAdapter() {
@@ -121,6 +129,11 @@ public class ChooseWashModeActivity extends WasherBaseActivity implements IChoos
             chosenBonusId = defaultBonusId;
             chosenBonusAmount = defaultBonusAmount;
             chosenBonusDescription = defaultBonusDescription;
+        }
+        if (type == WASH_DRYER){
+            dialog.setTvTitle("*请勿与其他人同时扫描支付相同的洗衣机");
+        }else{
+            dialog.setTvTitle("*请勿与其他人同时扫描支付相同的烘干机");
         }
         if (!ObjectsCompat.equals(chosenBonusId, Constant.INVALID_ID) && !TextUtils.isEmpty(chosenBonusDescription)) {
             // 有红包
@@ -232,9 +245,11 @@ public class ChooseWashModeActivity extends WasherBaseActivity implements IChoos
             String mode = items.get(adapter.getLastChoosePosition()).getName();
             startActivity(new Intent(this, WasherQrCodeActivity.class)
                     .putExtra(WasherContent.KEY_MODE_DESC, mode)
-                    .putExtra(WasherContent.KEY_PRICE, price));
+                    .putExtra(WasherContent.KEY_PRICE, price)
+                    .putExtra(KEY_TYPE ,type));
         }
     }
+
 
     @Override
     protected void setUp() {
@@ -244,6 +259,7 @@ public class ChooseWashModeActivity extends WasherBaseActivity implements IChoos
             defaultBonusAmount = getIntent().getDoubleExtra(WasherContent.KEY_BONUS_AMOUNT, 0.0);
             defaultBonusDescription = getIntent().getStringExtra(WasherContent.KEY_BONUS_DESC);
             balance = getIntent().getDoubleExtra(WasherContent.KEY_BALANCE, -1.0);
+            type = getIntent().getIntExtra(KEY_TYPE ,1);
         }
         if (balance == null || balance < 0) {
             balance = presenter.getLocalBalance();
@@ -301,7 +317,8 @@ public class ChooseWashModeActivity extends WasherBaseActivity implements IChoos
         startActivity(new Intent(this, WasherQrCodeActivity.class)
                 .putExtra(WasherContent.KEY_PRICE, String.valueOf(chosenOriginalPirce))
                 .putExtra(WasherContent.KEY_MODE_DESC, modeDesc)
-                .putExtra(WasherContent.KEY_QR_CODE_URL, data));
+                .putExtra(WasherContent.KEY_QR_CODE_URL, data)
+                .putExtra(KEY_TYPE , type));
     }
 
     @Override

@@ -1,9 +1,17 @@
 package com.xiaolian.amigo.util;
 
+import android.text.TextUtils;
+import android.util.Log;
+
+import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
+import com.xiaolian.blelib.internal.util.SystemVersion;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * 日期时间相关工具类
@@ -13,6 +21,7 @@ import java.util.Locale;
  */
 
 public class TimeUtils {
+    private static final String TAG = TimeUtils.class.getSimpleName();
 
     private static final DateFormat DEFAULT_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
     public static final DateFormat MY_DATE_FORMAT = new SimpleDateFormat("MM-dd", Locale.getDefault());
@@ -20,7 +29,8 @@ public class TimeUtils {
     public static final DateFormat MY_DATE_FORMAT3 = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
     public static final DateFormat MY_DATE_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
     public static final DateFormat MY_TIME_FORMAT = new SimpleDateFormat("HH:mm", Locale.getDefault());
-
+    public static final DateFormat MY_DATE_MONTH = new SimpleDateFormat("MM/dd" ,Locale.getDefault());
+    public static final int SIXTY = 60 ;
 
     /**
      * 将时间戳转为时间字符串
@@ -94,17 +104,89 @@ public class TimeUtils {
     public static String orderTimestampFormat(long timeStamp) {
         String result = "";
         long curTime = System.currentTimeMillis() / (long) 1000;
-        long time = curTime - timeStamp / 1000;
-        if (time >= 0 && time < 3600 * 24) {
+        long  toDayZero = getStartTimeOfDay(System.currentTimeMillis() ,"") / 1000;
+//        long time = curTime - timeStamp / 1000;
+        long time = timeStamp / 1000  - toDayZero ;
+        if (time >= 0 ) {
             result += "今天";
-        } else if (time >= 3600 * 24 && time < 3600 * 24 * 2) {
+        } else if (time < 0 && Math.abs(time) < 3600 * 24) {
             result += "昨天";
         } else if (time >= 3600 * 24 * 2 && time < 3600 * 24 * 365) {
-            result += millis2String(timeStamp, MY_DATE_FORMAT) + " ";
+            result += millis2String(timeStamp, MY_DATE_MONTH) + " ";
         } else {
-            result += millis2String(timeStamp, MY_DATE_FORMAT2) + " ";
+            result += millis2String(timeStamp, MY_DATE_FORMAT3) + " ";
         }
         return result + millis2String(timeStamp, MY_TIME_FORMAT);
+    }
+
+
+    public static String orderTimestampFormatSocial(long timeStamp) {
+        String result = "";
+        long curTime = System.currentTimeMillis() / (long) 1000;
+        long  toDayZero = getStartTimeOfDay(System.currentTimeMillis() ,"") / 1000;
+//        long time = curTime - timeStamp / 1000;
+        long time = timeStamp / 1000  - toDayZero ;
+        if (time >= 0 ) {
+            result += "今天";
+        } else if (time < 0 && Math.abs(time) < 3600 * 24) {
+            result += "昨天";
+        } else  {
+            result += millis2String(timeStamp, MY_DATE_MONTH) + " ";
+        }
+        return result + millis2String(timeStamp, MY_TIME_FORMAT);
+    }
+
+
+    //获取当天（按当前传入的时区）00:00:00所对应时刻的long型值
+    public static long getStartTimeOfDay(long now, String timeZone) {
+        String tz = TextUtils.isEmpty(timeZone) ? "GMT+8" : timeZone;
+        TimeZone curTimeZone = TimeZone.getTimeZone(tz);
+        Calendar calendar = Calendar.getInstance(curTimeZone);
+        calendar.setTimeInMillis(now);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTimeInMillis();
+    }
+
+    /**
+     * 计算剩余时间
+     * @param expiredTime  preString 时间前缀
+     * @return
+     */
+    public static String orderBathroomLastTime(long expiredTime , String preString){
+
+        long curTime = System.currentTimeMillis() / (long)1000 ;
+        long time = expiredTime / 1000 - curTime ;
+        if (time > 0){
+
+            /**  分少于2位数加0  */
+            if (time / SIXTY < 10){
+                preString += "0" + time/SIXTY ;
+            }else{
+                preString += time / SIXTY ;
+            }
+
+
+            /**   秒少于2位数加0   */
+            if (time % SIXTY < 10){
+                preString += ":0" +time % SIXTY ;
+            }else{
+                preString += ":" + time % SIXTY ;
+            }
+
+        }
+        return  preString ;
+    }
+
+    /**
+     * 过期时间与自己时间相比，倒计时的时间
+     * @param expiredTime
+     * @return
+     */
+    public static final int intervalTime(long expiredTime){
+        return (((expiredTime - System.currentTimeMillis()) / 1000) -1) > 0 ? (int) (((expiredTime - System.currentTimeMillis()) / 1000) - 1) : 0;
     }
 
     public static String lostAndFoundTimestampFormat(long timeStamp) {
@@ -170,6 +252,23 @@ public class TimeUtils {
         return result + millis2String(timeStamp, MY_TIME_FORMAT);
     }
 
+
+
+//    public static String longToString(long time){
+//        return time / 60 +"分钟" ;
+//    }
+
+    /**
+     * long 转化成String
+     * @param time
+     * @return
+     */
+    public static String covertTimeToString(long time){
+
+        Date date = new Date(time);
+        return MY_TIME_FORMAT.format(date);
+    }
+
     /**
      * 将Date类型转为时间戳
      *
@@ -202,4 +301,6 @@ public class TimeUtils {
     public static String date2String(final Date date, final DateFormat format) {
         return format.format(date);
     }
+
+
 }

@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.ParcelUuid;
 import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.util.ObjectsCompat;
 import android.text.TextUtils;
 
@@ -36,6 +37,8 @@ import com.xiaolian.amigo.data.network.model.trade.CmdResultReqDTO;
 import com.xiaolian.amigo.data.network.model.trade.CmdResultRespDTO;
 import com.xiaolian.amigo.data.network.model.trade.ConnectCommandReqDTO;
 import com.xiaolian.amigo.data.network.model.trade.ConnectCommandRespDTO;
+import com.xiaolian.amigo.data.network.model.trade.UpdateDeviceRateCommandReqDTO;
+import com.xiaolian.amigo.data.network.model.trade.UpdateDeviceRateCommandRespDTO;
 import com.xiaolian.amigo.data.network.model.trade.PayReqDTO;
 import com.xiaolian.amigo.data.network.model.trade.PayRespDTO;
 import com.xiaolian.amigo.data.vo.DeviceCategory;
@@ -108,7 +111,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     private volatile boolean precheckFlag = false;
     // 订单id
     private volatile long orderId;
-    // 订单状态
+    // 订单状态，这个订单表明是自己的订单
     private UnsettledOrderStatusCheckRespDTO orderStatus;
     // 订单状态信号量
     private final byte[] orderStatusLock = new byte[0];
@@ -134,6 +137,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     private PublishSubject<Void> closeTriggerSubject = PublishSubject.create();
     // 扫描方式
     private int scanType = BluetoothConstants.SCAN_TYPE_BLE;
+
+
 
     DeviceBasePresenter(IBleDataManager bleDataManager, IDeviceDataManager deviceDataManager) {
         super();
@@ -188,6 +193,10 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         step = null;
     }
 
+    /**
+     * 不同地方跳转，显示不同页面
+     * @param homePageJump 是否是从首页跳转而来
+     */
     @Override
     public void setHomePageJump(boolean homePageJump) {
         this.homePageJump = homePageJump;
@@ -200,9 +209,47 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         }
     }
 
+
+    /**
+     * 连接间隔为5s
+     * @param macAddress 设备mac地址
+     */
     @Override
     public void onPreConnect(@NonNull String macAddress) {
 
+        // 校验macAddress
+        if (TextUtils.isEmpty(macAddress)) {
+            if (getMvpView() != null) {
+                getMvpView().post(() -> getMvpView().onError(TradeError.DEVICE_BROKEN_2));
+                getMvpView().post(() -> getMvpView().hideLoading());
+            }
+            Log.wtf(TAG, "macAddress为空!");
+            reportError(getStep().getStep(), ConnectErrorType.BLE_CONNECT_ERROR.getType(),
+                    DisplayErrorType.CONNECT_ERROR.getType(), "macAddress为空!", "");
+            return;
+        }
+
+        Long lastConnectTime = TimeHolder.get().getLastConnectTime();
+        if (null != lastConnectTime) {
+            Long diff = System.currentTimeMillis() - lastConnectTime;
+            if (diff < 5000) {
+                new Handler().postDelayed(() -> onConnect(macAddress), 5000 - diff);
+            } else {
+                onConnect(macAddress);
+            }
+        } else {
+            onConnect(macAddress);
+        }
+
+    }
+
+
+    /**
+     * 连接间隔为5s
+     * @param macAddress 设备mac地址
+     */
+    @Override
+    public void onPreConnect(@NonNull String macAddress  , boolean isScan) {
         // 校验macAddress
         if (TextUtils.isEmpty(macAddress)) {
             if (getMvpView() != null) {
@@ -268,18 +315,20 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         Log.i(TAG, "启动15s定时器......");
         timer.start();
 
+        //  macAddress是服务器返回的deviceNo  ,currentMacAddress是全局变量，是正确的蓝牙设备mac地址
         // 设备连接上存储mac地址供后续读写数据使用
-        // 查询是否存在改deviceNo的macAddress
+        // 查询是否存在该deviceNo的macAddress
         if (deviceDataManager.getMacAddressByDeviceNo(macAddress) != null) {
-            Log.i(TAG, "缓存中存在macAddress，不需要扫描");
+
             currentMacAddress = deviceDataManager.getMacAddressByDeviceNo(macAddress);
+            Log.i(TAG, "缓存中存在macAddress，不需要扫描" + currentMacAddress);
             realConnect(macAddress);
             return;
         }
 
         // 扫描macAddress
         Log.i(TAG, "开始扫描macAddress");
-        bleDataManager.scan(BluetoothConstants.SCAN_TYPE_BLE, new BluetoothScanResponse() {
+        bleDataManager.scan(scanType, new BluetoothScanResponse() {
             boolean savedScanType = false;
             @Override
             public void onScanStarted() {
@@ -396,7 +445,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
         // 4、连接设备
         safeWait(300);
-        Log.d(TAG, "开始连接设备 thread " + Thread.currentThread().getName());
+        Log.d(TAG, "开始连接设备 thread " + Thread.currentThread().getName()  + "    id  >>>> " + supplier.getAgreement());
         switch (AgreementVersion.getAgreement(supplier.getAgreement())) {
             case HAONIANHUA:
                 connectHaoNianHaoDevice();
@@ -417,6 +466,25 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             if (bleDataManager.setNotify(currentMacAddress, UUID.fromString(supplier.getServiceUuid()),
                     UUID.fromString(supplier.getNotifyUuid()), true)) {
                 Log.i(TAG, "辛纳设备设置notify成功 " + Thread.currentThread().getName());
+                bleDataManager.writeDescriptor(currentMacAddress,
+                        UUID.fromString(supplier.getServiceUuid()),
+                        UUID.fromString(supplier.getNotifyUuid()),
+                        BluetoothConstants.CLIENT_CHARACTERISTIC_CONFIG,
+                        BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE, code1 -> {
+                            Log.d(TAG, "写入ENABLE_NOTIFICATION_VALUE code" + code1 + " thread " + Thread.currentThread().getName());
+                            if (code1 != BluetoothConstants.GATT_SUCCESS) {
+                                handleDisConnectError("辛纳设备写入ENABLE_NOTIFICATION_VALUE失败 code:" + code1);
+                                return;
+                            }
+                            afterBleConnected();
+                            bleDataManager.notify(currentMacAddress, UUID.fromString(supplier.getServiceUuid()),
+                                    UUID.fromString(supplier.getWriteUuid()), data -> {
+                                        if (null != data) {
+                                            String result = HexBytesUtils.bytesToHexString(data);
+                                            Log.i(TAG, "接收到设备数据" + result + " thread" + Thread.currentThread().getName());
+                                            processCommandResult(result);
+                                        }
+                                    });
 //                afterBleConnected();
 //                bleDataManager.notify(currentMacAddress, UUID.fromString(supplier.getServiceUuid()),
 //                        UUID.fromString(supplier.getWriteUuid()), data -> {
@@ -428,24 +496,6 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 //                        });
 
 
-                bleDataManager.writeDescriptor(currentMacAddress,
-                                               UUID.fromString(supplier.getServiceUuid()),
-                        UUID.fromString(supplier.getNotifyUuid()),
-                                               BluetoothConstants.CLIENT_CHARACTERISTIC_CONFIG,
-                                               BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE, code1 -> {
-                                                        Log.d(TAG, "写入ENABLE_NOTIFICATION_VALUE code" + code1 + " thread " + Thread.currentThread().getName());
-                                                        if (code1 != BluetoothConstants.GATT_SUCCESS) {
-                                                               handleDisConnectError("辛纳设备写入ENABLE_NOTIFICATION_VALUE失败 code:" + code1);
-                                                                return;
-                            }
-                                                     afterBleConnected();
-                                                        bleDataManager.notify(currentMacAddress, UUID.fromString(supplier.getServiceUuid()),
-                                                                       UUID.fromString(supplier.getWriteUuid()), data -> {
-                                                                              if (null != data) {
-                                                                                      String result = HexBytesUtils.bytesToHexString(data);Log.i(TAG, "接收到设备数据" + result + " thread" + Thread.currentThread().getName());
-                                                                                      processCommandResult(result);
-                                                                                   }
-                                                        });
                         });
 
             } else {
@@ -454,12 +504,14 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         });
     }
 
+
     private void afterBleConnected() {
         if (reconnect) {
             Log.i(TAG, "当前为重连状态");
             if (null == getStep()) {
                 Log.i(TAG, "首次连接就连接不上，需要重新下发握手指令:" + connectCmd);
                 waitConnectCmdResult();
+                Log.wtf(TAG , "   afterBleConnected 首次连接 >>>>>>>>>>  " +currentMacAddress);
                 onWrite(connectCmd);
                 reconnect = false; // 重置重连标志
             } else if (TradeStep.PAY == getStep()) { // 支付页面重连
@@ -468,6 +520,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 // getMvpView().post(() -> getMvpView().onReconnectSuccess());
                 // 最新修改，支付页面重连，继续下发握手指令，否则单纯物理连接上会被设备踢掉
                 waitConnectCmdResult();
+                Log.wtf(TAG , "   afterBleConnected  支付页面重连 >>>>>>>>>>  " +currentMacAddress);
                 onWrite(connectCmd);
                 reconnect = false; // 重置重连标志
             } else { // 结算页面重连
@@ -556,7 +609,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 if (characteristic.getProperties() == BluetoothGattCharacteristic.PROPERTY_NOTIFY) {
                     if (bleDataManager.setNotify(currentMacAddress, UUID.fromString(supplier.getServiceUuid()),
                             characteristic.getUuid(), true)) {
-                        Log.d(TAG, "设置notify成功 thread " + Thread.currentThread().getName());
+                        Log.d(TAG, "设置notify成功 thread " + Thread.currentThread().getName()  + " serviceUUID>>>> " + supplier.getServiceUuid() +"  characteristic>>>>>" + characteristic.getUuid());
                         bleDataManager.writeDescriptor(currentMacAddress, UUID.fromString(supplier.getServiceUuid()),
                                 characteristic.getUuid(), UUID.fromString(supplier.getNotifyUuid()),
                                 BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE, code1 -> {
@@ -603,6 +656,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
     @Override
     public void onWrite(@NonNull String command) {
+        Log.wtf(TAG , "   onWrite >>>>>>>>>>  " +currentMacAddress);
         if (bleDataManager.getConnectStatus(currentMacAddress) != BluetoothConstants.STATE_CONNECTED) {
             reportError(getStep().getStep(), ConnectErrorType.BLE_CONNECT_ERROR.getType(),
                     DisplayErrorType.CONNECT_ERROR.getType(), "发送指令时设备未连接，command:" + command,
@@ -729,6 +783,33 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         }
     }
 
+    // 网络请求获取下发费率指令，若存在则直接先对设备进行费率更新
+    @Override
+    public void onUpdateDeviceRate(@Nullable String macAddress) {
+        UpdateDeviceRateCommandReqDTO reqDTO = new UpdateDeviceRateCommandReqDTO();
+        reqDTO.setMacAddress(macAddress);
+        addObserver(deviceDataManager.getUpdateDeviceRateCommand(reqDTO), new NetworkObserver<ApiResult<UpdateDeviceRateCommandRespDTO>>(false) {
+            @Override
+            public void onReady(ApiResult<UpdateDeviceRateCommandRespDTO> result) {
+                if (null == result.getError()) /*获取更新费率指令*/{
+                    String updateDeviceRateCmd = result.getData().getConfigCommand();
+                    if (!TextUtils.isEmpty(updateDeviceRateCmd)) /*指令存在，需要进行费率更新*/{
+                        onWrite(updateDeviceRateCmd);
+                    } else /*指令不存在，直接进行预支付开阀使用*/{
+                        getMvpView().realPay();
+                    }
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                //异常情况处理，容错处理，进行握手
+                getMvpView().realPay();
+            }
+        }, Schedulers.io());
+    }
+
     // 网络请求获取握手连接指令
     private void getConnectCommand(String macAddress) {
         ConnectCommandReqDTO reqDTO = new ConnectCommandReqDTO();
@@ -748,6 +829,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         Log.i(TAG, "获取握手指令成功。command:" + connectCmd);
                         connectCmdLock.notifyAll();
                     }
+
                 } else {
                     if (result.getError().getCode() == BizError.DEVICE_BREAKDOWN.getCode()) {
                         reportError(getStep().getStep(), ConnectErrorType.SERVER_ERROR.getType(),
@@ -841,6 +923,13 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 // 存储设备响应结果
                 saveDeviceResult(result, orderId);
             }
+            String prefixAgrement2 = result.substring(2, 6);
+            if (TextUtils.equals("140804", prefixAgrement2)) {
+                setStep(TradeStep.CLOSE_VALVE);
+            } else if (TextUtils.equals("140803", prefixAgrement2)) {
+                // 存储开阀设备响应结果
+                saveDeviceResult(result, orderId);
+            }
         } catch (Exception e) {
             Log.wtf(TAG, "获取设备响应结果前缀失败");
             reportError(getStep().getStep(), ConnectErrorType.RESULT_INVALID.getType(),
@@ -850,7 +939,15 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 getMvpView().onError(TradeError.CONNECT_ERROR_4);
             }
         }
+        Log.wtf(TAG , "processCommandResult>>>>>" + result  + "   " + deviceNo);
         CmdResultReqDTO reqDTO = new CmdResultReqDTO();
+//        if (result.startsWith("a805")) {
+//            reqDTO.setData("a80502af");
+//        } else if (result.startsWith("140810")) {
+//            reqDTO.setData("14081071360862C12F906D54993C4ED0643C48F5");
+//        } else {
+//            reqDTO.setData(result);
+//        }
         reqDTO.setData(result);
         reqDTO.setMacAddress(deviceNo);
         addObserver(deviceDataManager.processCmdResult(reqDTO), new NetworkObserver<ApiResult<CmdResultRespDTO>>(false) {
@@ -863,7 +960,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     Log.i(TAG, "收到deviceToken：" + result.getData().getDeviceToken());
                 }
                 Log.i(TAG, "通知主线程更新数据。" + result.getData());
-                RxBus.getDefault().post(result);
+//                RxBus.getDefault().post(result);
+                handleResult(result);
             }
 
             @Override
@@ -879,10 +977,11 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_3));
                 }
             }
-        }, Schedulers.io());
+        }, AndroidSchedulers.mainThread());
     }
 
     private void handleResult(ApiResult<CmdResultRespDTO> result) {
+
         Log.i(TAG, "主线程开始处理指令响应结果");
         if (null == result.getError()) {
             // 下一步执行指令
@@ -899,8 +998,12 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 return;
             }
             switch (Command.getCommand(result.getData().getSrcCommandType())) {
+                case UPDATE_DEVICE_RATE:
+                    getMvpView().realPay();
+                    break;
                 case CONNECT:
                     // 如果用户本人在三小时之内再次连接该设备，需要进入第二步账单结算页面
+                    // 表明用户是正在使用状态
                     if (!reconnect && null != orderStatus && null != orderStatus.getStatus() && OrderStatus.getOrderStatus(orderStatus.getStatus()) == OrderStatus.USING) {
                         // 记录预结账指令，此时阀门已经被长按关闭，但是订单没有被其它用户带回
                         Log.i(TAG, "用户在该设备上存在未结账订单，直接跳转至结算页面，获取到预结账指令。command:" + nextCommand);
@@ -913,18 +1016,23 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         } else {
                             Log.i(TAG, "未结算订单已经超出指定时间范围，继续下发预结账指令，走正常流程");
                             precheckCmd = nextCommand;
+                            Log.w(TAG , "CONNECT  未结账订单超过时间>>>>>>>"+currentMacAddress);
                             onWrite(precheckCmd);
                         }
                         return;
                     }
+                    // 存在未结账订单，直接后台预结账处理
                     // 如果存在未结账订单，需要先结算旧账单
-                    if (null != result.getData().getNextCommand()) {
+                    if (null != result.getData().getNextCommand()) {  //  != null   表明存在未结账订单
                         precheckCmd = nextCommand;
                         if (!reconnect) { // 正常流程
                             // 下发预结账指令
                             Log.i(TAG, "正常流程，设备上存在未结账订单，获取到预结账指令。command:" + nextCommand);
+
+                            Log.w(TAG , "CONNECT  正常流程，存在未结账订单>>>>>>>"+currentMacAddress);
                             onWrite(precheckCmd);
                         } else {
+                            //  自己的未结账订单，显示未结账状态
                             Log.i(TAG, "用户在结算页面重新连接成功，设备上存在未结账订单，获取到预结账指令。command:" + nextCommand);
                             if (getMvpView() != null) {
                                 getMvpView().onReconnectSuccess(orderStatus);
@@ -951,6 +1059,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     Log.i(TAG, "正常流程，获取到结账指令。command:" + nextCommand);
                     checkoutCmd = nextCommand;
                     // 下发结账指令
+
+                    Log.w(TAG , "CLOSE_VALVE >>>>>>>"+currentMacAddress);
                     onWrite(checkoutCmd);
                     break;
                 case CHECK_OUT:
@@ -976,6 +1086,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                                 Log.i(TAG, "orderStatus不为空，说明是给自己超过2小时的订单结账，需要重置orderStatus的状态。");
                                 orderStatus = null;
                             }
+                            Log.wtf(TAG ,"CHECK_OUT  >>>>>>>>>>"+currentMacAddress);
                             onWrite(connectCmd);
                         }
                     } else {
@@ -987,11 +1098,13 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     }
                     break;
                 case PRE_CHECK:
+                    Log.wtf(TAG ,"PRE_CHECK  >>>>>>>>>>"+currentMacAddress);
                     Log.i(TAG, "正常流程，获取到结账指令。command:" + nextCommand);
                     checkoutCmd = nextCommand;
                     // 标识当前状态为预结账状态
                     precheckFlag = true;
                     // 下发结账指令
+                    Log.wtf(TAG ,"PRE_CHECK  >>>>>>>>>>"+currentMacAddress);
                     onWrite(checkoutCmd);
                     break;
                 case UNKNOWN:
@@ -1000,7 +1113,17 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             }
         } else {
             Log.e(TAG, String.format("处理异常返回结果。code:%s, msg:%s", result.getError().getCode(), result.getError().getDisplayMessage()));
-            // 如果在结账时服务器返回异常则状态改为SETTLE
+            Integer rateCmdType = result.getError().getBleCmdType();
+            if (null != rateCmdType) {
+                //
+                if (Command.UPDATE_DEVICE_RATE == Command.getCommand(rateCmdType)) {
+                    //更新费率的时候异常直接跳过该流程
+                    getMvpView().realPay();
+                    return;
+                }
+            }
+
+                    // 如果在结账时服务器返回异常则状态改为SETTLE
             if (getStep() == TradeStep.CLOSE_VALVE) {
                 setStep(TradeStep.SETTLE);
             }
@@ -1092,7 +1215,12 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         }
     }
 
-    // 检测关阀指令
+
+    /**
+     * 检测管阀指令 ， 若管阀指令为空，先在缓存中获取指令，获取到将管阀指令赋值给closeCmd ，若获取不到，再从服务器获取管阀指令，
+     * 若服务器获取不到管阀指令，则提示用户手动管阀。
+     * @return
+     */
     private boolean checkCloseCmd() {
         if (TextUtils.isEmpty(closeCmd)) {
             Log.e(TAG, "重连状态关阀指令为空, 从缓存中获取关阀指令");
@@ -1100,7 +1228,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             if (TextUtils.isEmpty(savedCloseCmd)) {
                 Log.e(TAG, "从缓存中获取关阀指令为空，获取上次设备响应重新向服务器请求关阀指令");
                 String savedDeviceResult = getDeviceResult(orderId);
-                if (TextUtils.isEmpty(savedCloseCmd)) {
+                if (TextUtils.isEmpty(savedDeviceResult)) {
                     Log.e(TAG, "从缓存中获取设备响应为空");
                     if (getMvpView() != null) {
                         getMvpView().onError(TradeError.CONNECT_ERROR_2);
@@ -1200,6 +1328,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     // 向设备下发开阀指令
                     openCmd = result.getData().getOpenValveCommand();
                     Log.i(TAG, "开始下发开阀指令。command：" + openCmd);
+
                     onWrite(openCmd);
                 } else {
                     Log.wtf(TAG, "支付创建订单失败。");

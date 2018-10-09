@@ -30,6 +30,7 @@ import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.repair.adaptor.RepairProgressAdaptor;
 import com.xiaolian.amigo.ui.repair.intf.IRepairDetailPresenter;
 import com.xiaolian.amigo.ui.repair.intf.IRepairDetailView;
+import com.xiaolian.amigo.util.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -103,6 +104,19 @@ public class RepairDetailPresenter<V extends IRepairDetailView> extends BasePres
     }
 
     @Override
+    public void notShowRemindAlert() {
+        repairDataManager.setRepairGuide(Constant.REMIND_ALERT_COUNT);
+    }
+
+    @Override
+    public void showGuide(Integer credits) {
+        if (!repairDataManager.isRepairGuideDone()) {
+            repairDataManager.doneRepairGuide();
+            getMvpView().showGuide(credits);
+        }
+    }
+
+    @Override
     public Device getDevice() {
         return device;
     }
@@ -125,5 +139,10 @@ public class RepairDetailPresenter<V extends IRepairDetailView> extends BasePres
                 }
             }
         });
+    }
+
+    @Override
+    public void getToken() {
+
     }
 }

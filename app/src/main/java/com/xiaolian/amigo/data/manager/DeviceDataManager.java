@@ -30,14 +30,18 @@ import com.xiaolian.amigo.data.network.model.trade.ConnectCommandReqDTO;
 import com.xiaolian.amigo.data.network.model.trade.ConnectCommandRespDTO;
 import com.xiaolian.amigo.data.network.model.trade.PayReqDTO;
 import com.xiaolian.amigo.data.network.model.trade.PayRespDTO;
+import com.xiaolian.amigo.data.network.model.trade.UpdateDeviceRateCommandReqDTO;
+import com.xiaolian.amigo.data.network.model.trade.UpdateDeviceRateCommandRespDTO;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.data.vo.DeviceCategory;
+import com.xiaolian.amigo.di.UserServer;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
 import retrofit2.Retrofit;
+import retrofit2.http.Body;
 import rx.Observable;
 
 /**
@@ -59,7 +63,7 @@ public class DeviceDataManager implements IDeviceDataManager {
     private IDeviceConnectErrorApi connectErrorApi;
 
     @Inject
-    public DeviceDataManager(Retrofit retrofit, ISharedPreferencesHelp sharedPreferencesHelp) {
+    public DeviceDataManager(@UserServer Retrofit retrofit, ISharedPreferencesHelp sharedPreferencesHelp) {
         this.sharedPreferencesHelp = sharedPreferencesHelp;
         tradeApi = retrofit.create(ITradeApi.class);
         orderApi = retrofit.create(IOrderApi.class);
@@ -99,6 +103,13 @@ public class DeviceDataManager implements IDeviceDataManager {
         sharedPreferencesHelp.setCurrentDeviceToken(sharedPreferencesHelp.getDeviceToken(reqDTO.getMacAddress()));
         return tradeApi.getConnectCommand(reqDTO);
     }
+
+    @Override
+    public Observable<ApiResult<UpdateDeviceRateCommandRespDTO>> getUpdateDeviceRateCommand(UpdateDeviceRateCommandReqDTO reqDTO) {
+        sharedPreferencesHelp.setCurrentDeviceToken(sharedPreferencesHelp.getDeviceToken(reqDTO.getMacAddress()));
+        return tradeApi.getUpdateDeviceRateCommand(reqDTO);
+    }
+
 
     @Override
     public Observable<ApiResult<CmdResultRespDTO>> processCmdResult(CmdResultReqDTO reqDTO) {

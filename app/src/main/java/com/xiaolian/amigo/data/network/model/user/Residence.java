@@ -14,4 +14,5 @@ public class Residence {
     private String name;
     private String fullName;
     private String macAddress;
+    private String groupId ;
 }

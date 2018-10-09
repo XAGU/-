@@ -24,12 +24,12 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 
 /**
- * 选择宿舍
+ * 新的地址界面
  *
  * @author zcd
  * @date 17/10/11
  */
-
+@Deprecated
 public class ChooseDormitoryActivity extends UserBaseListActivity implements IChooseDormitoryView {
 
     private static final int REQUEST_CODE_EDIT_DORMITORY = 0x1020;
@@ -47,12 +47,12 @@ public class ChooseDormitoryActivity extends UserBaseListActivity implements ICh
     protected void onRefresh() {
         page = Constant.PAGE_START_NUM;
         items.clear();
-        presenter.queryDormitoryList(page, Constant.PAGE_SIZE);
+//        presenter.queryDormitoryList(page, Constant.PAGE_SIZE);
     }
 
     @Override
     protected void onLoadMore() {
-        presenter.queryDormitoryList(page, Constant.PAGE_SIZE);
+//        presenter.queryDormitoryList(page, Constant.PAGE_SIZE);
     }
 
     @Override
@@ -62,10 +62,10 @@ public class ChooseDormitoryActivity extends UserBaseListActivity implements ICh
         adaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                backToDevice(items.get(position).getResidenceId(),
-                        items.get(position).getMacAddress(),
-                        items.get(position).getSupplierId(),
-                        items.get(position).getResidenceName());
+//                backToDevice(items.get(position).getResidenceId(),
+//                        items.get(position).getMacAddress(),
+//                        items.get(position).getSupplierId(),
+//                        items.get(position).getResidenceName());
             }
 
             @Override

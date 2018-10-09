@@ -61,6 +61,7 @@ public abstract class BaseToolBarActivity extends BaseActivity {
         });
     }
 
+
     protected View getMainLayout() {
         return llMainContent;
     }

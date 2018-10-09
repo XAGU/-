@@ -69,19 +69,6 @@ public class ListChooseAdaptor extends RecyclerView.Adapter<ListChooseAdaptor.Vi
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.itemView.setOnClickListener(v -> {
-            try {
-                mOnItemClickListener.onItemClick(v, holder.getAdapterPosition());
-                if (lastTickPostion != -1) {
-                    datas.get(lastTickPostion).tick = false;
-                }
-                datas.get(holder.getAdapterPosition()).tick = true;
-                lastTickPostion = holder.getAdapterPosition();
-                notifyDataSetChanged();
-            } catch (Exception e) {
-                Log.w(TAG, e);
-            }
-        });
         holder.tvContent.setText(datas.get(holder.getAdapterPosition()).content);
         if (datas.get(holder.getAdapterPosition()).tick) {
             holder.ivTick.setVisibility(View.VISIBLE);
@@ -92,10 +79,33 @@ public class ListChooseAdaptor extends RecyclerView.Adapter<ListChooseAdaptor.Vi
         if (checkDeviceExist) {
             if (datas.get(holder.getAdapterPosition()).isDeviceExist()) {
                 holder.tvDeviceExist.setVisibility(View.GONE);
+                onItemClick(holder);
             } else {
                 holder.tvDeviceExist.setVisibility(View.VISIBLE);
             }
+        }else{
+            onItemClick(holder);
         }
+    }
+
+    /**
+     * 设置click 事件，如果没有设备，不能点击
+     * @param holder
+     */
+    private void onItemClick(ViewHolder holder) {
+        holder.itemView.setOnClickListener(v -> {
+            try {
+                    mOnItemClickListener.onItemClick(v, holder.getAdapterPosition());
+                if (lastTickPostion != -1) {
+                    datas.get(lastTickPostion).tick = false;
+                }
+                datas.get(holder.getAdapterPosition()).tick = true;
+                lastTickPostion = holder.getAdapterPosition();
+                notifyDataSetChanged();
+            } catch (Exception e) {
+                Log.w(TAG, e);
+            }
+        });
     }
 
     @Override
@@ -125,6 +135,8 @@ public class ListChooseAdaptor extends RecyclerView.Adapter<ListChooseAdaptor.Vi
         String extra;
         int deviceType;
         boolean deviceExist = true;
+        String groupId ;
+        String mac ;
 
         public Item(String content, boolean tick, Long id) {
             this(content, tick);
@@ -147,12 +159,14 @@ public class ListChooseAdaptor extends RecyclerView.Adapter<ListChooseAdaptor.Vi
             this.tick = tick;
         }
 
-        public Item(Residence residence) {
+        public Item(Residence residence ) {
             this.content = residence.getName();
             this.extra = residence.getFullName();
             this.id = residence.getId();
             this.tick = false;
             this.deviceExist = !TextUtils.isEmpty(residence.getMacAddress());
+            this.groupId = residence.getGroupId();
+            this.mac = residence.getMacAddress() ;
         }
 
 
@@ -168,6 +182,7 @@ public class ListChooseAdaptor extends RecyclerView.Adapter<ListChooseAdaptor.Vi
             dest.writeValue(this.id);
             dest.writeString(this.extra);
             dest.writeByte(this.deviceExist ? (byte) 1 : (byte) 0);
+            dest.writeString(this.groupId);
         }
 
         protected Item(Parcel in) {
@@ -176,6 +191,7 @@ public class ListChooseAdaptor extends RecyclerView.Adapter<ListChooseAdaptor.Vi
             this.id = (Long) in.readValue(Long.class.getClassLoader());
             this.extra = in.readString();
             this.deviceExist = in.readByte() != 0;
+            this.groupId = in.readString();
         }
 
         public static final Parcelable.Creator<Item> CREATOR = new Parcelable.Creator<Item>() {

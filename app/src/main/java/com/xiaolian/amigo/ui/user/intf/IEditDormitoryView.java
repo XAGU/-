@@ -1,10 +1,15 @@
 package com.xiaolian.amigo.ui.user.intf;
 
+import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.user.QueryUserResidenceListRespDTO;
 import com.xiaolian.amigo.data.network.model.user.UserResidenceDTO;
+import com.xiaolian.amigo.data.network.model.user.UserResidenceInListDTO;
 import com.xiaolian.amigo.ui.base.intf.IBaseListView;
 import com.xiaolian.amigo.ui.user.adaptor.EditDormitoryAdaptor;
 
 import java.util.List;
+
+import rx.Observable;
 
 /**
  * 编辑宿舍
@@ -41,4 +46,35 @@ public interface IEditDormitoryView extends IBaseListView {
      * @param position 列表位置
      */
     void editDormitory(Long id, UserResidenceDTO data, int position);
+
+
+    /**
+     * 选择完洗澡地址，直接进入公共浴室界面
+     * @param dto
+     */
+    void startBathroom(UserResidenceInListDTO dto);
+
+    /**
+     * 选择完洗澡地址， 直接进入热水澡界面
+     * @param dto
+     */
+    void startShower(UserResidenceInListDTO dto);
+
+    /**
+     * 设置上一个默认的洗澡地址
+     * @param position
+     */
+    void setLastNormalPosition(int position);
+
+    /**
+     * 更新adapter
+     * @param currentPosition
+     */
+    void notifyAdapter( EditDormitoryAdaptor.UserResidenceWrapper wrapper ,int currentPosition);
+
+    /**
+     * 删除洗澡记录
+     * @param position
+     */
+    void delateBathroomRecord(int position);
 }

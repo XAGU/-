@@ -191,6 +191,42 @@
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/rel_edit_bathroom_password"
+        android:visibility="gone"
+        android:onClick="onclick"
+        style="@style/ListItemRel">
+
+        <TextView
+            android:id="@+id/tv_bathroom_password"
+            style="@style/ListItemMainText"
+            android:layout_marginLeft="10dp"
+            android:text="浴室密码" />
+
+
+        <ImageView
+            android:id="@+id/imageView05"
+            style="@style/ListItemImage"
+            android:layout_alignParentRight="true"
+
+            android:src="@drawable/arrow_right" />
+
+        <TextView
+            android:id="@+id/tv_bathroom_tip"
+            style="@style/ListItemSubText"
+            android:layout_toLeftOf="@id/imageView05"
+            android:text="修改密码"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:layout_alignParentBottom="true"
+            android:layout_centerVertical="true"
+            android:background="#eee" />
+
+    </RelativeLayout>
+
 
     <RelativeLayout
         android:id="@+id/rel_edit_school"

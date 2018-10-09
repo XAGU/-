@@ -20,6 +20,7 @@ public class SaveLostAndFoundDTO {
     private String mobile;
     private String title;
     private Integer type;
+    private Integer topicId ;
     private List<String> images;
 
 }

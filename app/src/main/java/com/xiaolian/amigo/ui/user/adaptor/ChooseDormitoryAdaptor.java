@@ -36,11 +36,11 @@ public class ChooseDormitoryAdaptor extends CommonAdapter<EditDormitoryAdaptor.U
             holder.getView(R.id.iv_tick).setVisibility(View.GONE);
         }
         holder.setText(R.id.tv_dormitory_name, userResidenceWrapper.getResidenceName());
-        if (userResidenceWrapper.isDefault()) {
-            holder.getView(R.id.tv_default_dormitory).setVisibility(View.VISIBLE);
-        } else {
-            holder.getView(R.id.tv_default_dormitory).setVisibility(View.GONE);
-        }
+//        if (userResidenceWrapper.isDefault()) {
+////            holder.getView(R.id.tv_default_dormitory).setVisibility(View.VISIBLE);
+//        } else {
+//            holder.getView(R.id.tv_default_dormitory).setVisibility(View.GONE);
+//        }
         // 是否存在设备
         if (userResidenceWrapper.isExist()) {
             holder.getView(R.id.tv_device_exist).setVisibility(View.GONE);

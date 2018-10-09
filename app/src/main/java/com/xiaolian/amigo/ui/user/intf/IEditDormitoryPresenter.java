@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.user.intf;
 
 import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
+import com.xiaolian.amigo.ui.user.adaptor.EditDormitoryAdaptor;
 
 /**
  * 编辑宿舍
@@ -11,11 +12,12 @@ import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 
 public interface IEditDormitoryPresenter<V extends IEditDormitoryView> extends IBasePresenter<V> {
     /**
-     * 获取宿舍列表
+     * 获取洗澡地址列表
      *
      * @param page 页数
      * @param size 每页个数
      */
+    @Deprecated
     void queryDormitoryList(int page, int size);
 
     /**
@@ -23,6 +25,7 @@ public interface IEditDormitoryPresenter<V extends IEditDormitoryView> extends I
      *
      * @param residenceId 位置id
      */
+    @Deprecated
     void deleteDormitory(Long residenceId);
 
     /**
@@ -30,6 +33,7 @@ public interface IEditDormitoryPresenter<V extends IEditDormitoryView> extends I
      *
      * @param residenceId 位置id
      */
+    @Deprecated
     void updateResidenceId(Long residenceId);
 
     /**
@@ -46,4 +50,22 @@ public interface IEditDormitoryPresenter<V extends IEditDormitoryView> extends I
      * @param position 列表位置
      */
     void queryDormitoryDetail(Long id, int position);
+
+    /**
+     * 获取浴室洗澡地址列表
+     */
+    void queryBathList();
+
+    /**
+     * 删除洗澡地址记录
+     * @param id
+     */
+    void deleteBathroomRecord(long id , int position , boolean isDefault);
+
+    /**
+     * 更新默认洗澡地址
+     * @param
+     */
+    void updateNormalBathroom(EditDormitoryAdaptor.UserResidenceWrapper userResidenceWrapper  , int  currentPosition);
+
 }

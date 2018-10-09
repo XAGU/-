@@ -1,69 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="86dp">
+    android:layout_height="86dp"
+    xmlns:tool="http://schemas.android.com/tools"
+    >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/content_border"
         android:layout_marginBottom="14dp">
 
+        <ImageView
+            android:id="@+id/iv_left"
+            android:src="@drawable/bg_bonus_left_expired"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
         <TextView
+            android:layout_marginStart="-1px"
+            android:layout_toEndOf="@id/iv_left"
+            android:background="@drawable/bg_bonus_expired"
             android:id="@+id/tv_amount"
             android:layout_width="86dp"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="￥10"
-            android:textColor="#bbb"
+            tool:text="￥10"
+            android:textColor="@color/white"
             android:textSize="28sp"
             android:textStyle="bold" />
 
+        <View
+            android:layout_marginStart="-8dp"
+            android:layout_toEndOf="@id/tv_amount"
+            android:layout_centerVertical="true"
+            android:background="@drawable/bg_bonus_circle"
+            android:layout_width="15dp"
+            android:layout_height="15dp"/>
+
         <RelativeLayout
+            android:background="@color/white"
+            android:paddingStart="0dp"
+            android:paddingEnd="14dp"
+            android:gravity="center_vertical"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@id/tv_amount">
 
             <TextView
                 android:id="@+id/tv_type"
                 style="@style/ContentText_title"
+                android:layout_alignParentEnd="true"
+                android:textColor="@color/colorDark2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#bbb"
-                />
+                tool:text="代金券" />
 
             <TextView
                 android:id="@+id/tv_time_end"
+                android:layout_alignParentEnd="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_type"
-                android:layout_marginTop="4dp"
-                android:text="2018-01-01到期"
-                android:textColor="#bbb"
+                android:layout_marginTop="6dp"
+                tool:text="2018-01-01到期"
+                android:textColor="#999"
                 android:textSize="9sp" />
 
             <TextView
                 android:id="@+id/tv_desc"
+                android:layout_alignParentEnd="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_time_end"
-                android:layout_marginTop="1dp"
-                android:text="约一吨水/限热水器一次性使用"
-                android:textColor="#bbb"
+                android:layout_marginTop="4dp"
+                tool:text="约一吨水/限热水器一次性使用"
+                android:textColor="#999"
                 android:textSize="9sp" />
 
 
         </RelativeLayout>
 
-        <ImageView
-            android:id="@+id/iv_expired"
+        <RelativeLayout
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/bonus_expired"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="14dp"/>
+            android:layout_marginRight="14dp">
+
+
+            <TextView
+                android:id="@+id/tv_time_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="4dp"
+                android:text="剩2日"
+                android:textColor="@color/colorFullRed"
+                android:textSize="10sp" />
+
+            <Button
+                android:visibility="gone"
+                style="?android:attr/borderlessButtonStyle"
+                android:id="@+id/bt_bonus_use"
+                android:layout_width="38dp"
+                android:layout_height="17dp"
+                android:layout_below="@id/tv_time_left"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/button_bonus_use"
+                android:text="立即使用"
+                android:textColor="@color/colorFullRed"
+                android:textSize="9sp" />
+        </RelativeLayout>
 
     </RelativeLayout>
 </RelativeLayout>

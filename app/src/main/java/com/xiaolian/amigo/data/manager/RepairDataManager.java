@@ -20,6 +20,7 @@ import com.xiaolian.amigo.data.network.model.repair.RepairRespDTO;
 import com.xiaolian.amigo.data.network.model.file.OssModel;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.data.vo.User;
+import com.xiaolian.amigo.di.UserServer;
 
 import javax.inject.Inject;
 
@@ -43,7 +44,7 @@ public class RepairDataManager implements IRepairDataManager {
     private ISharedPreferencesHelp sharedPreferencesHelp;
 
     @Inject
-    public RepairDataManager(Retrofit retrofit, ISharedPreferencesHelp sharedPreferencesHelp) {
+    public RepairDataManager(@UserServer Retrofit retrofit, ISharedPreferencesHelp sharedPreferencesHelp) {
         repairApi = retrofit.create(IRepairApi.class);
         csApi = retrofit.create(ICsApi.class);
         ossApi = retrofit.create(IOssApi.class);
@@ -93,6 +94,22 @@ public class RepairDataManager implements IRepairDataManager {
     @Override
     public void setLastRepairTime(long l) {
         sharedPreferencesHelp.setLastRepairTime(l);
+    }
+
+    @Override
+    public void setRepairGuide(Integer guideTime) {
+        sharedPreferencesHelp.setRepairGuide(guideTime);
+    }
+
+    @Override
+    public boolean isRepairGuideDone() {
+        return !(sharedPreferencesHelp.getRepairGuide() != null
+                && sharedPreferencesHelp.getRepairGuide() < 3);
+    }
+
+    @Override
+    public void doneRepairGuide() {
+        sharedPreferencesHelp.setRepairGuide(sharedPreferencesHelp.getRepairGuide() + 1);
     }
 
     @Override

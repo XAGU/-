@@ -19,6 +19,8 @@ package com.xiaolian.amigo.di.componet;
 import com.xiaolian.amigo.di.DeviceActivityContext;
 import com.xiaolian.amigo.di.module.DeviceActivityModule;
 import com.xiaolian.amigo.ui.device.DeviceOrderActivity;
+import com.xiaolian.amigo.ui.device.bathroom.BathIngActivity;
+import com.xiaolian.amigo.ui.device.bathroom.BathOrderActivity;
 import com.xiaolian.amigo.ui.device.dispenser.ChooseDispenserActivity;
 import com.xiaolian.amigo.ui.device.dispenser.DispenserActivity;
 import com.xiaolian.amigo.ui.device.dryer.DryerActivity;
@@ -40,5 +42,9 @@ public interface DeviceActivityComponent {
     void inject(ChooseDispenserActivity activity);
 
     void inject(DryerActivity activity);
+
+    void inject(BathIngActivity activity);
+
+    void inject(BathOrderActivity activity);
 
 }

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/profileButton">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="157dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@color/white"
+        >
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:id="@+id/man"
+            >
+
+            <ImageView
+                android:layout_width="77dp"
+                android:layout_height="77dp"
+                android:src="@drawable/boy"/>
+
+            <RadioButton
+                android:layout_marginTop="12dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                style="@style/info_radio_style_man"
+                android:checked="false"
+                android:enabled="true"
+                android:layout_gravity="center_horizontal"
+                android:text="糙汉"
+                android:id="@+id/radio_man"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:id="@+id/woman"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="77dp"
+                android:layout_height="77dp"
+                android:src="@drawable/girl"/>
+
+            <RadioButton
+                android:layout_marginTop="12dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                style="@style/info_radio_style_woman"
+                android:checked="false"
+                android:enabled="true"
+                android:layout_gravity="center_horizontal"
+                android:text="软妹"
+                android:id="@+id/radio_woman"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:visibility="gone"
+        android:id="@+id/tv_add_dormitory"
+        android:layout_marginTop="14dp"
+        android:background="@color/white"
+        >
+
+        <TextView
+            android:id="@+id/dormitory_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="14dp"
+            android:layout_centerVertical="true"
+            android:textColor="@color/colorDark2"
+            android:text="@string/tv_add_dormitory"/>
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="14dp"
+            android:src="@drawable/arrow_right"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"/>
+
+    </RelativeLayout>
+
+    <Button
+        android:enabled="true"
+        android:id="@+id/choose_bathroom"
+        android:layout_marginTop="42dp"
+        android:textAllCaps="false"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/button_shape"
+        android:gravity="center"
+        android:visibility="visible"
+        android:text="@string/choose_bathroom"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:stateListAnimator="@null"
+        />
+</LinearLayout>

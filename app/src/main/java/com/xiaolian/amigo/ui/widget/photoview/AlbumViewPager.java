@@ -10,7 +10,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.ui.model.CustomImageSizeModelImp;
 import com.xiaolian.amigo.util.ImageHelper;
+import com.xiaolian.amigo.util.Log;
 
 import java.text.NumberFormat;
 import java.util.List;
@@ -76,6 +78,9 @@ public class AlbumViewPager extends ViewPager {
             //注意，这里不可以加inflate的时候直接添加到viewGroup下，而需要用addView重新添加
             //因为直接加到viewGroup下会导致返回的view为viewGroup
             View imageLayout = inflate(getContext(), R.layout.item_album_pager, null);
+
+            View loading = imageLayout.findViewById(R.id.progressBar);
+
             viewGroup.addView(imageLayout);
             assert imageLayout != null;
             PhotoView imageView = (PhotoView) imageLayout.findViewById(R.id.matrix_imageview);
@@ -86,9 +91,11 @@ public class AlbumViewPager extends ViewPager {
             });
             final TextView mTvProgress = (TextView) imageLayout.findViewById(R.id.album_textview_progress);
             String path = paths.get(position);
+            loading.setTag(path);
             imageLayout.setTag(path);
-
-            ImageHelper.loadAlbum(getContext(), imageView, path);
+            Log.d(TAG , path +"");
+//            ImageHelper.loadAlbum(getContext(), imageView, path);
+            ImageHelper.displayImage(getContext() ,new CustomImageSizeModelImp(path) ,imageView ,loading);
             /*mTvProgress.setText(FileUtils.FormetFileSize(current)+
 					"/"+
 					FileUtils.FormetFileSize(total)+

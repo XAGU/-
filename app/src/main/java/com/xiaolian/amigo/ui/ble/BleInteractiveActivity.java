@@ -44,8 +44,8 @@ public class BleInteractiveActivity extends BleBaseActivity implements IBleInter
 
     @Override
     protected void setUp() {
-        Intent intent = getIntent();
-        mac = intent.getStringExtra(Constant.MAC);
+//        Intent intent = getIntent();
+//        mac = intent.getStringExtra(Constant.MAC);
     }
 
     @Override

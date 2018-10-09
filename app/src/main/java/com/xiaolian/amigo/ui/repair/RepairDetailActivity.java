@@ -2,11 +2,11 @@ package com.xiaolian.amigo.ui.repair;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.text.Html;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -26,6 +26,7 @@ import com.xiaolian.amigo.ui.repair.intf.IRepairDetailPresenter;
 import com.xiaolian.amigo.ui.repair.intf.IRepairDetailView;
 import com.xiaolian.amigo.ui.widget.RecycleViewDivider;
 import com.xiaolian.amigo.ui.widget.dialog.IOSAlertDialog;
+import com.xiaolian.amigo.ui.widget.dialog.NoticeAlertDialog;
 import com.xiaolian.amigo.ui.widget.photoview.AlbumItemActivity;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
@@ -46,9 +47,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.xiaolian.amigo.data.enumeration.RepairStatus.AUDIT_FAIL;
+import static com.xiaolian.amigo.data.enumeration.RepairStatus.REPAIR_DONE;
+
 /**
  * 报修详情
- *
  * @author caidong
  * @date 17/9/18
  */
@@ -75,10 +78,8 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
     ImageView ivSecond;
     @BindView(R.id.iv_third)
     ImageView ivThird;
-    @BindView(R.id.left_oper)
-    TextView leftOper;
-    @BindView(R.id.right_oper)
-    TextView rightOper;
+    @BindView(R.id.gotoEvaluationButton)
+    Button gotoEvaluationButton;
     @BindView(R.id.ll_extra)
     LinearLayout llExtra;
     @BindView(R.id.tv_extra_title)
@@ -89,12 +90,26 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
     TextView tvExtraContent2;
     @BindView(R.id.ll_bottom)
     LinearLayout llBottom;
+    @BindView(R.id.left_oper)
+    TextView leftOper;
+    @BindView(R.id.right_oper)
+    TextView rightOper;
+    @BindView(R.id.ll_bottom_2)
+    LinearLayout llBottom2;
+
+    /*温馨提示dialog*/
+    private NoticeAlertDialog noticeAlertDialog;
+
+    /*维修评价详情数据*/
+    RepairDetailRespDTO repairDetailRespDTO;
 
     List<RepairProgressAdaptor.ProgressWrapper> progresses = new ArrayList<>();
     Long detailId;
 
     RepairProgressAdaptor adapter;
     RecyclerView.LayoutManager manager;
+
+    private boolean isCreate = false  ;
 
     private ArrayList<String> images = new ArrayList<>();
 
@@ -108,19 +123,24 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
         adapter = new RepairProgressAdaptor(progresses);
         adapter.setOnCancelRepairListener(() ->
                 new IOSAlertDialog(this).builder()
-                .setMsg("确认取消报修？")
-                .setPositiveButton("确认", v -> presenter.cancelRepair())
-                .setNegativeClickListener("取消", IOSAlertDialog::dismiss).show());
+                        .setMsg("确认取消报修？")
+                        .setPositiveButton("确认", v -> presenter.cancelRepair())
+                        .setNegativeClickListener("取消", IOSAlertDialog::dismiss).show());
         rvRepairProgresses.addItemDecoration(new RecycleViewDivider(this, RecycleViewDivider.VERTICAL_LIST, "deductLast"));
         manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rvRepairProgresses.setLayoutManager(manager);
         rvRepairProgresses.setAdapter(adapter);
-
+        isCreate = true ;
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        initData();
+
+    }
+
+    private void initData() {
         if (detailId == null) {
             //this必须为点击消息要跳转到页面的上下文。
             XGPushClickedResult clickedResult = XGPushManager.onActivityStarted(this);
@@ -159,6 +179,28 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
     }
 
     @Override
+    public void showGuide(Integer credits) {
+        showAlertNotice(credits, (dialog, isNotRemind) -> {
+            noticeAlertDialog.dismiss();
+            if (isNotRemind) {
+                presenter.notShowRemindAlert();
+            }
+            if (repairDetailRespDTO != null) {
+                //跳转到评价页面
+                Intent intent = new Intent(RepairDetailActivity.this, RepairEvaluationActivity.class);
+                intent.putExtra(RepairEvaluationActivity.INTENT_KEY_REPAIR_EVALUATION_ID, repairDetailRespDTO.getId());
+                intent.putExtra(RepairEvaluationActivity.INTENT_KEY_REPAIR_EVALUATION_REPAIR_MAN_NAME, repairDetailRespDTO.getRepairmanName());
+                intent.putExtra(RepairEvaluationActivity.INTENT_KEY_REPAIR_EVALUATION_DEVICE_LOCATION, repairDetailRespDTO.getLocation());
+                intent.putExtra(RepairEvaluationActivity.INTENT_KEY_REPAIR_EVALUATION_DEVICE_TYPE, repairDetailRespDTO.getDeviceType());
+                intent.putExtra(RepairEvaluationActivity.INTENT_KEY_REPAIR_EVALUATION_TIME, CommonUtil.stampToDate(repairDetailRespDTO.getSteps().get(0).getTime()));
+                intent.putExtra(RepairEvaluationActivity.INTENT_KEY_REPAIR_CREDITS, repairDetailRespDTO.getCredits());
+                startActivity(intent);
+            }
+        });
+        isCreate = false ;
+    }
+
+    @Override
     public void addMoreProgresses(List<RepairProgressAdaptor.ProgressWrapper> progresses) {
         Collections.reverse(progresses);
         this.progresses.clear();
@@ -168,6 +210,7 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
 
     @Override
     public void render(RepairDetailRespDTO detail) {
+        repairDetailRespDTO = detail;
         llBottom.setVisibility(View.VISIBLE);
         images.clear();
         tvType.setText(Device.getDevice(detail.getDeviceType()).getDesc());
@@ -219,10 +262,96 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
 
         // 设置操作按钮中的显示文案
         RepairStatus status = RepairStatus.getStatus(detail.getSteps().get(detail.getSteps().size() - 1).getStatus());
+
+        //  显示
+
+        if (status == REPAIR_DONE ){
+            showBottom1(detail , status);
+        }else{
+            showBottom2(detail , status);
+        }
+
+        if (EvaluateStatus.getStatus(detail.getRated()) == EvaluateStatus.EVALUATE_DONE) {
+            gotoEvaluationButton.setVisibility(View.GONE);
+            llExtra.setVisibility(View.VISIBLE);
+            tvExtraTitle.setText(getString(R.string.evaluation_info));
+            tvExtraContent1.setVisibility(View.VISIBLE);
+            tvExtraContent1.setText(getString(R.string.score, detail.getScore()));
+            tvExtraContent2.setText(detail.getComment());
+        }
+        if (status == AUDIT_FAIL) {
+            llExtra.setVisibility(View.VISIBLE);
+            tvExtraTitle.setText(getString(R.string.customer_response));
+            tvExtraContent2.setText(detail.getReply());
+        }
+    }
+
+
+
+    private void showBottom1(RepairDetailRespDTO detail  ,RepairStatus status ){
         if (status == RepairStatus.REPAIR_CANCEL) {
             llBottom.setVisibility(View.GONE);
+            llBottom2.setVisibility(View.GONE);
         } else {
             llBottom.setVisibility(View.VISIBLE);
+            llBottom2.setVisibility(View.GONE);
+        }
+        String[] opers = status.getNextOperations();
+
+        gotoEvaluationButton.setText(opers[0]);
+        /////积分提示
+        Integer credits = detail.getCredits();
+
+        //  有积分，并且是onCreate进入，并且是未评价的，并且是弹窗次数小于3才会出现弹窗
+        if (credits != null && isCreate  &&
+                EvaluateStatus.getStatus(detail.getRated()) == EvaluateStatus.EVALUATE_PENDING) /*有积分时候弹出彩蛋，并且底部的按钮样式也要同步修改*/ {
+            String repairDoneText = "前往评价，获得" + credits.toString() + "积分";
+            gotoEvaluationButton.setText(repairDoneText);
+            presenter.showGuide(credits);
+        }
+        gotoEvaluationButton.setOnClickListener(v -> {
+            switch (status) {
+                case REPAIR_DONE:
+                    Intent intent = new Intent(RepairDetailActivity.this, RepairEvaluationActivity.class);
+                    intent.putExtra(RepairEvaluationActivity.INTENT_KEY_REPAIR_EVALUATION_ID, repairDetailRespDTO.getId());
+                    intent.putExtra(RepairEvaluationActivity.INTENT_KEY_REPAIR_EVALUATION_REPAIR_MAN_NAME, repairDetailRespDTO.getRepairmanName());
+                    intent.putExtra(RepairEvaluationActivity.INTENT_KEY_REPAIR_EVALUATION_DEVICE_LOCATION, repairDetailRespDTO.getLocation());
+                    intent.putExtra(RepairEvaluationActivity.INTENT_KEY_REPAIR_EVALUATION_DEVICE_TYPE, repairDetailRespDTO.getDeviceType());
+                    intent.putExtra(RepairEvaluationActivity.INTENT_KEY_REPAIR_EVALUATION_TIME, CommonUtil.stampToDate(repairDetailRespDTO.getSteps().get(0).getTime()));
+                    intent.putExtra(RepairEvaluationActivity.INTENT_KEY_REPAIR_CREDITS, repairDetailRespDTO.getCredits());
+//                    intent.putExtra(RepairEvaluationActivity.INTENT_KEY_REPAIR_EVALUATION_ID, detail.getId());
+//                    intent.putExtra(RepairEvaluationActivity.INTENT_KEY_REPAIR_EVALUATION_REPAIR_MAN_NAME, detail.getRepairmanName());
+//                    intent.putExtra(RepairEvaluationActivity.INTENT_KEY_REPAIR_EVALUATION_DEVICE_LOCATION, detail.getLocation());
+//                    intent.putExtra(RepairEvaluationActivity.INTENT_KEY_REPAIR_EVALUATION_DEVICE_TYPE, detail.getDeviceType());
+//                    intent.putExtra(RepairEvaluationActivity.INTENT_KEY_REPAIR_EVALUATION_TIME, CommonUtil.stampToDate(detail.getSteps().get(0).getTime()));
+                    startActivity(intent);
+                    break;
+                case AUDIT_FAIL:
+                    startActivity(new Intent(RepairDetailActivity.this, WebActivity.class)
+                            .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_HELP));
+                    break;
+                case AUDIT_PENDING:
+                case REPAIR_PENDING:
+                case REPAIRING:
+                    presenter.remind(detail.getId());
+                    break;
+                default:
+                    break;
+            }
+        });
+    }
+
+    /**
+     * 显示第二种按钮
+     */
+    private void showBottom2(RepairDetailRespDTO detail  ,RepairStatus status ){
+
+        if (status == RepairStatus.REPAIR_CANCEL) {
+            llBottom.setVisibility(View.GONE);
+            llBottom2.setVisibility(View.GONE);
+        } else {
+            llBottom2.setVisibility(View.VISIBLE);
+            llBottom.setVisibility(View.GONE);
         }
         String[] opers = status.getNextOperations();
         leftOper.setText(opers[0]);
@@ -267,20 +396,24 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
                     break;
             }
         });
-        if (EvaluateStatus.getStatus(detail.getRated()) == EvaluateStatus.EVALUATE_DONE) {
-            leftOper.setEnabled(false);
-            leftOper.setTextColor(ContextCompat.getColor(this, R.color.colorDark9));
-            llExtra.setVisibility(View.VISIBLE);
-            tvExtraTitle.setText(getString(R.string.evaluation_info));
-            tvExtraContent1.setVisibility(View.VISIBLE);
-            tvExtraContent1.setText(getString(R.string.score, detail.getScore()));
-            tvExtraContent2.setText(detail.getComment());
+    }
+
+    /**
+     * 显示温馨提现
+     *
+     * @param listener 点击事件
+     */
+    protected void showAlertNotice(Integer credits, NoticeAlertDialog.OnOkClickListener listener) {
+
+        if (noticeAlertDialog == null) {
+            noticeAlertDialog = new NoticeAlertDialog(this);
         }
-        if (status == RepairStatus.AUDIT_FAIL) {
-            llExtra.setVisibility(View.VISIBLE);
-            tvExtraTitle.setText(getString(R.string.customer_response));
-            tvExtraContent2.setText(detail.getReply());
-        }
+        noticeAlertDialog.setContent(Html.fromHtml(getString(R.string.repair_evaluate_tips_content, credits)));
+        noticeAlertDialog.setTitle(R.string.repair_evaluate_tips);
+        noticeAlertDialog.hideNoticeSymbol();
+        noticeAlertDialog.setOkButtonTitle("成为土豪");
+        noticeAlertDialog.setOnOkClickListener(listener);
+        noticeAlertDialog.show();
     }
 
     @Override
@@ -336,4 +469,10 @@ public class RepairDetailActivity extends RepairBaseActivity implements IRepairD
         }
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
 }

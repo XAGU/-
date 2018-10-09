@@ -80,18 +80,15 @@ public class LostAndFoundReplyDetailFollowDelegate
         authorSpan.setSpan(new AbsoluteSizeSpan(
                         DimentionUtils.convertSpToPixels(12, context)), 0, authorSpan.length(),
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        authorSpan.setSpan(new ForegroundColorSpan(Color.parseColor("#499bff")), 0, authorSpan.length(),
+        authorSpan.setSpan(new ForegroundColorSpan(Color.parseColor("#3969ad")), 0, authorSpan.length(),
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         builder.append(authorSpan);
         spanLength += spanPaint.measureText(authorSpan.toString());
 
         if (ObjectsCompat.equals(ownerId, replyWrapper.getAuthorId())) {
             builder.append(" ");
-            SpannableString ownerSpan = new SpannableString(
-                    ObjectsCompat.equals(lostFoundType, LostAndFound.LOST) ? "失主" : "拾主");
-            ImageSpan imageSpan = new ImageSpan(context,
-                    ObjectsCompat.equals(lostFoundType, LostAndFound.LOST) ?
-                            R.drawable.ic_lost_owner : R.drawable.ic_found_owner) {
+            SpannableString ownerSpan = new SpannableString("联主");
+            ImageSpan imageSpan = new ImageSpan(context,R.drawable.blog){
                 @Override
                 public void draw(Canvas canvas, CharSequence text, int start, int end, float x, int top, int y, int bottom, Paint paint) {
                     Drawable b = getDrawable();
@@ -130,26 +127,22 @@ public class LostAndFoundReplyDetailFollowDelegate
             commentUserSpan.setSpan(new AbsoluteSizeSpan(
                             DimentionUtils.convertSpToPixels(12, context)), 0, commentUserSpan.length(),
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            commentUserSpan.setSpan(new ForegroundColorSpan(Color.parseColor("#499bff")),
+            commentUserSpan.setSpan(new ForegroundColorSpan(Color.parseColor("#3969ad")),
                     0, commentUserSpan.length(),
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             builder.append(commentUserSpan);
 
             spanLength += spanPaint.measureText(commentUserSpan.toString());
 
-
             if (ObjectsCompat.equals(ownerId, replyWrapper.getReplyToUserId())) {
                 builder.append(" ");
-                SpannableString ownerSpan = new SpannableString(
-                        ObjectsCompat.equals(lostFoundType, LostAndFound.LOST) ? "失主" : "拾主");
-                ImageSpan imageSpan = new ImageSpan(context,
-                        ObjectsCompat.equals(lostFoundType, LostAndFound.LOST) ?
-                        R.drawable.ic_lost_owner : R.drawable.ic_found_owner) {
+                SpannableString ownerSpan = new SpannableString("联主");
+                ImageSpan imageSpan = new ImageSpan(context, R.drawable.blog) {
                     @Override
                     public void draw(Canvas canvas, CharSequence text, int start, int end, float x, int top, int y, int bottom, Paint paint) {
                         Drawable b = getDrawable();
                         canvas.save();
-                        int extra;
+                        int extra = 0;
                         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1) {
                             extra = textView.getLineCount() > 1 ? (int) textView.getLineSpacingExtra() : 0;
                         } else {
@@ -203,9 +196,8 @@ public class LostAndFoundReplyDetailFollowDelegate
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             timeSpan.setSpan(new CustomVerticalCenterSpan(10, context), 0,
                     timeSpan.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            timeSpan.setSpan(new ForegroundColorSpan(Color.parseColor("#999999")), 0, timeSpan.length(),
+            timeSpan.setSpan(new ForegroundColorSpan(Color.parseColor("#BBBBBB")), 0, timeSpan.length(),
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
             builder.append(timeSpan);
         } else {
             SpannableString timeSpan = new SpannableString(TimeUtils.lostAndFoundTimestampFormat(replyWrapper.getTime()));
@@ -214,7 +206,7 @@ public class LostAndFoundReplyDetailFollowDelegate
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             timeSpan.setSpan(new CustomVerticalCenterSpan(10, context), 0,
                     timeSpan.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            timeSpan.setSpan(new ForegroundColorSpan(Color.parseColor("#999999")), 0, timeSpan.length(),
+            timeSpan.setSpan(new ForegroundColorSpan(Color.parseColor("#BBBBBB")), 0, timeSpan.length(),
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
             builder.append(timeSpan);

@@ -1,5 +1,7 @@
 package com.xiaolian.amigo.data.base;
 
+import android.util.Log;
+
 /**
  * time holder
  *
@@ -33,4 +35,5 @@ public class TimeHolder {
     public void setLastConnectTime(Long lastConnectTime) {
         this.lastConnectTime = lastConnectTime;
     }
+
 }

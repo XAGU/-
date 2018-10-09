@@ -1,71 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tool="http://schemas.android.com/tools"
     android:background="#ffffff"
     android:id="@+id/rl_main"
-    android:orientation="vertical"
-    >
-    <ScrollView
-        android:scrollbars="none"
-        android:overScrollMode="never"
-        android:id="@+id/sv_main"
+    android:orientation="vertical">
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:descendantFocusability="blocksDescendants"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:id="@+id/fragment"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="47dp"
+        android:background="@color/color_bg_main_table"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:id="@+id/home_rl"
             android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/tab_home_nor"
+                android:id="@+id/home_image"
+                android:layout_centerInParent="true"/>
+        </RelativeLayout>
 
-            <include
-                android:id="@+id/ll_header"
-                layout="@layout/activity_main_top"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:id="@+id/social_rl">
+            <RelativeLayout
+                android:layout_width="26dp"
+                android:layout_height="27dp"
+                android:layout_centerInParent="true"
+                android:gravity="center">
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/tab_social_nor"
+                android:id="@+id/social_image"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                />
 
-            <LinearLayout
-                android:id="@+id/fm_container"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-            </LinearLayout>
-        </LinearLayout>
+            <ImageView
+                android:layout_width="8.5dp"
+                android:layout_height="8.5dp"
+                android:id="@+id/social_red"
+                android:background="@drawable/red_soild_circle"
+                android:layout_alignParentRight="true"
+                android:visibility="gone"
+                tool:visibility="visible"/>
+            </RelativeLayout>
+            
+            <RelativeLayout
+                android:layout_width="65dp"
+                android:layout_height="29dp"
+                android:layout_centerInParent="true"
+                android:id="@+id/social_sel_rl"
+                android:visibility="gone"
+                tool:visibility="visible"
+                android:background="@drawable/table_social_sel">
+                
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="19dp"
+                    android:src="@drawable/add"
+                    android:visibility="visible"
+                    android:layout_centerInParent="true"/>
+            </RelativeLayout>
+        </RelativeLayout>
 
-    </ScrollView>
-    <RelativeLayout
-        android:id="@+id/rl_notice"
-        android:layout_alignParentBottom="true"
-        android:layout_marginRight="14dp"
-        android:layout_marginEnd="14dp"
-        android:layout_marginBottom="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:id="@+id/iv_notice"
-            android:src="@drawable/ic_notice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:id="@+id/tv_notice_count"
-            android:visibility="gone"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="3dp"
-            android:layout_marginRight="4dp"
-            android:textSize="10sp"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:paddingLeft="3dp"
-            android:paddingRight="3dp"
-            android:paddingBottom="1dp"
-            android:gravity="center"
-            android:background="@drawable/bg_rect_red_corner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </RelativeLayout>
 
-</RelativeLayout>
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:id="@+id/personal_rl">
+
+            <RelativeLayout
+                android:layout_width="25dp"
+                android:layout_height="26dp"
+                android:layout_centerInParent="true">
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/tab_personal_nor"
+                android:id="@+id/personal_image"
+                android:layout_alignParentLeft="true"
+                />
+
+            <ImageView
+                android:layout_width="8.5dp"
+                android:layout_height="8.5dp"
+                android:background="@drawable/red_soild_circle"
+                android:layout_alignParentRight="true"
+                android:id="@+id/personal_red"
+                android:visibility="gone"
+                tool:visibility="visible"/>
+            </RelativeLayout>
+        </RelativeLayout>
+
+
+    </LinearLayout>
+</LinearLayout>

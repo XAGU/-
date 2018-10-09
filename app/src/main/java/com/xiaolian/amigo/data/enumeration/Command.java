@@ -13,7 +13,8 @@ public enum Command {
     PRE_CHECK(2, "预结账", "a808"),
     CHECK_OUT(3, "结账", "a807"),
     OPEN_VALVE(4, "开阀", "a802"),
-    CLOSE_VALVE(5, "关阀", "a804");
+    CLOSE_VALVE(5, "关阀", "a804"),
+    UPDATE_DEVICE_RATE(7, "下发费率", "a805");
 
     // 指令类型
     private int type;

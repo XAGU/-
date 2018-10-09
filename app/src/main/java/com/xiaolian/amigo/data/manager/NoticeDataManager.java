@@ -3,10 +3,13 @@ package com.xiaolian.amigo.data.manager;
 import com.xiaolian.amigo.data.manager.intf.INoticeDataManager;
 import com.xiaolian.amigo.data.network.INotifyApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
+import com.xiaolian.amigo.data.network.model.notify.NotifyDTO;
 import com.xiaolian.amigo.data.network.model.notify.QueryNotifyListReqDTO;
 import com.xiaolian.amigo.data.network.model.notify.ReadNotifyReqDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.notify.QueryNotifyListRespDTO;
+import com.xiaolian.amigo.di.UserServer;
 
 import javax.inject.Inject;
 
@@ -28,7 +31,7 @@ public class NoticeDataManager implements INoticeDataManager {
     private INotifyApi notifyApi;
 
     @Inject
-    public NoticeDataManager(Retrofit retrofit) {
+    public NoticeDataManager(@UserServer Retrofit retrofit) {
         notifyApi = retrofit.create(INotifyApi.class);
     }
 
@@ -40,5 +43,10 @@ public class NoticeDataManager implements INoticeDataManager {
     @Override
     public Observable<ApiResult<BooleanRespDTO>> readUrgentNotify(@Body ReadNotifyReqDTO reqDTO) {
         return notifyApi.readUrgentNotify(reqDTO);
+    }
+
+    @Override
+    public Observable<ApiResult<NotifyDTO>> getNotice(SimpleReqDTO reqDTO) {
+        return notifyApi.getNotice(reqDTO);
     }
 }

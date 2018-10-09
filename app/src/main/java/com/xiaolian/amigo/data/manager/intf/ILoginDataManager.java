@@ -79,4 +79,6 @@ public interface ILoginDataManager {
     String getPushTag();
 
     void setPushTag(String pushTag);
+
+    void setIsFirstAfterLogin(boolean b);
 }

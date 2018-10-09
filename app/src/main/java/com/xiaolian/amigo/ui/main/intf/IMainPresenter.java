@@ -163,12 +163,14 @@ public interface IMainPresenter<V extends IMainView> extends IBasePresenter<V> {
 
     /**
      * 缓存积分
+     *
      * @param credits 积分
      */
     void setCredits(Integer credits);
 
     /**
      * 获取缓存中的积分
+     *
      * @return 积分
      */
     Integer getCredits();
@@ -178,4 +180,34 @@ public interface IMainPresenter<V extends IMainView> extends IBasePresenter<V> {
     String getPushToken();
 
     void setPushToken(String pushToken);
+
+    void routeHeaterOrBathroom();
+
+    /**
+     * 存储room信息
+     */
+    void saveRoomInfo(Long residenceId);
+
+    /**
+     * 获取上一个订单状态
+     */
+    void currentOrder();
+
+    void getUser();
+
+    void noticeCount();
+
+    int getNoticeCount();
+
+    boolean getCommentEnable();
+
+    /**
+     * 返回是否显示设备保修
+     * @return
+     */
+    boolean getIsShowRepair();
+
+    boolean getIsFirstAfterLogin();
+
+    void setIsFirstAfterLogin(boolean b);
 }

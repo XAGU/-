@@ -1,6 +1,13 @@
 package com.xiaolian.amigo.util;
 
 import android.annotation.SuppressLint;
+import android.content.ContentUris;
+import android.content.Context;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -14,6 +21,12 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.yalantis.ucrop.util.FileUtils.getDataColumn;
+import static com.yalantis.ucrop.util.FileUtils.isDownloadsDocument;
+import static com.yalantis.ucrop.util.FileUtils.isExternalStorageDocument;
+import static com.yalantis.ucrop.util.FileUtils.isGooglePhotosUri;
+import static com.yalantis.ucrop.util.FileUtils.isMediaDocument;
 
 /**
  * 文件操作工具类
@@ -1095,4 +1108,6 @@ public final class FileUtils {
     public interface OnReplaceListener {
         boolean onReplace();
     }
+
+
 }

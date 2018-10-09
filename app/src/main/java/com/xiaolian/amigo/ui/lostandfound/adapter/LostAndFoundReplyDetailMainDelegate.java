@@ -44,9 +44,7 @@ public class LostAndFoundReplyDetailMainDelegate
         holder.setText(R.id.tv_content, lostAndFoundReplyDetailWrapper.getContent());
         holder.getView(R.id.iv_owner).setVisibility(lostAndFoundReplyDetailWrapper.isOwner() ? View.VISIBLE : View.GONE);
         holder.setText(R.id.tv_time, TimeUtils.lostAndFoundTimestampFormat(lostAndFoundReplyDetailWrapper.getTime()));
-        holder.setImageResource(R.id.iv_owner,
-                ObjectsCompat.equals(lostFoundType, LostAndFound.LOST) ?
-                        R.drawable.ic_lost_owner : R.drawable.ic_found_owner);
+        holder.setImageResource(R.id.iv_owner, lostAndFoundReplyDetailWrapper.isOwner() ? R.drawable.blog :0);
         Glide.with(context).load(Constant.IMAGE_PREFIX + lostAndFoundReplyDetailWrapper.getImage())
                 .asBitmap()
                 .placeholder(R.drawable.ic_picture_error)

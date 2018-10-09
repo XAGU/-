@@ -16,7 +16,6 @@
 
 package com.journeyapps.barcodescanner;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -25,6 +24,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import com.google.zxing.ResultPoint;
@@ -71,7 +71,7 @@ public class ViewfinderView extends View {
         // Initialize these once for performance rather than calling them every time in onDraw().
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
-        Resources resources = getResources();
+        Resources resources = context.getResources();
 
         // Get setted attributes on view
         TypedArray attributes = getContext().obtainStyledAttributes(attrs, R.styleable.zxing_finder);
@@ -82,6 +82,7 @@ public class ViewfinderView extends View {
                 resources.getColor(R.color.zxing_result_view));
         this.laserColor = attributes.getColor(R.styleable.zxing_finder_zxing_viewfinder_laser,
                 resources.getColor(R.color.zxing_viewfinder_laser));
+
         this.resultPointColor = attributes.getColor(R.styleable.zxing_finder_zxing_possible_result_points,
                 resources.getColor(R.color.zxing_possible_result_points));
 
@@ -93,6 +94,7 @@ public class ViewfinderView extends View {
     }
 
     public void setCameraPreview(CameraPreview view) {
+        Log.e(TAG, "setCameraPreview: " );
         this.cameraPreview = view;
         view.addStateListener(new CameraPreview.StateListener() {
             @Override
@@ -137,6 +139,7 @@ public class ViewfinderView extends View {
 
     @Override
     public void onDraw(Canvas canvas) {
+        Log.e(TAG, "onDraw: "  );
         refreshSizes();
         if (framingRect == null || previewFramingRect == null) {
             return;

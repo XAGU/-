@@ -6,10 +6,16 @@
         android:layout_height="match_parent"
         android:id="@+id/zxing_barcode_surface"/>
 
-    <com.journeyapps.barcodescanner.ViewfinderView
+    <!--<com.journeyapps.barcodescanner.ViewfinderView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:id="@+id/zxing_viewfinder_view"/>-->
+
+    <com.journeyapps.barcodescanner.CustomViewfinderView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/zxing_viewfinder_view"/>
+
 
     <TextView android:id="@+id/zxing_status_view"
               android:layout_width="wrap_content"

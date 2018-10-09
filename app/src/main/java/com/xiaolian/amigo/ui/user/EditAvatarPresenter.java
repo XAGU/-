@@ -122,22 +122,30 @@ public class EditAvatarPresenter<V extends IEditAvatarView> extends BasePresente
 
                     @Override
                     public void onNext(ApiResult<OssModel> result) {
+                        Log.wtf(TAG ," keyId:   "+result.getData().getAccessKeyId()
+                                +'\n' + "endpoint:  "  + result.getData().getEndpoint() +'\n'
+                                +" accessKeySecret:   " + result.getData().getAccessKeySecret()
+                        +'\n' + "  filePath :" + filePath);
                         uploadImage(OssClientHolder.getClient(context, result.getData()), result.getData(), filePath);
                     }
                 });
     }
 
     private void uploadImage(OSSClient client, OssModel model, String filePath) {
+
         getMvpView().post(() -> getMvpView().showLoading());
         PutObjectRequest put = new PutObjectRequest(model.getBucket(),
                 generateObjectKey(String.valueOf(System.currentTimeMillis())),
                 filePath);
+
+        Log.wtf(TAG ,put.getObjectKey());
         OSSAsyncTask task = client.asyncPutObject(put,
                 new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
                     @Override
                     public void onSuccess(PutObjectRequest request, PutObjectResult result) {
                         getMvpView().post(() -> getMvpView().hideLoading());
                         getMvpView().post(() -> getMvpView().setAvatar(request.getObjectKey()));
+                        userDataManager.getUser().setPictureUrl(request.getObjectKey());
                         Log.d("PutObject", "UploadSuccess " + request.getObjectKey());
                     }
 

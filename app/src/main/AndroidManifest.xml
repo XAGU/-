@@ -14,9 +14,9 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <!--<uses-permission android:name="android.permission.WRITE_SETTINGS" />-->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.READ_LOGS" />
+    <!--<uses-permission android:name="android.permission.READ_LOGS" />-->
 
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
@@ -202,6 +202,7 @@
         <activity android:name=".ui.lostandfound.LostAndFoundDetailActivity2"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
             />
 
         <!--失物招领回复详情-->
@@ -216,7 +217,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
-        <!--宿舍列表-->
+        <!--洗澡地址列表-->
         <activity
             android:name=".ui.user.EditDormitoryActivity"
             android:launchMode="singleTask"
@@ -247,6 +248,7 @@
         <activity
             android:name=".ui.device.heater.HeaterActivity"
             android:screenOrientation="portrait"
+            android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <!--选择饮水机页面-->
@@ -267,6 +269,86 @@
             android:name=".ui.device.dryer.DryerActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <!--烘干机页面-->
+        <activity
+            android:name=".ui.device.washer.WasherActivity2"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <!--设置浴室密码-->
+        <activity android:name=".ui.device.bathroom.EditBathroomPasswordActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+
+        <!--公共澡堂使用-->
+        <activity android:name=".ui.device.bathroom.BathroomActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+
+        <!--公共澡堂预约-->
+        <activity android:name=".ui.device.bathroom.BookingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+
+        <!--公共澡堂预约记录-->
+        <activity android:name=".ui.device.bathroom.BookingRecordActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+
+        <!--公共澡堂购买编码-->
+        <activity android:name=".ui.device.bathroom.BuyCodeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+
+        <!--公共澡堂扫码使用-->
+        <activity android:name=".ui.device.bathroom.ScanUseActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+
+        <!--公共澡堂购买记录-->
+        <activity android:name=".ui.device.bathroom.BuyRecordActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+
+        <!--公共澡堂付费使用-->
+        <activity android:name=".ui.device.bathroom.PayUseActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+
+        <!--公共澡堂选择浴室-->
+        <activity android:name=".ui.device.bathroom.ChooseBathroomActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTop"
+            >
+        </activity>
+
+        <!--公共澡堂扫一扫使用-->
+        <activity android:name=".ui.device.bathroom.BathroomScanActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+
+        <!--洗澡地址-->
+        <activity android:name=".ui.device.bathroom.ShowerAddressActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+
+        <!--选择设置洗澡地址-->
+        <activity android:name=".ui.device.bathroom.ChooseShowerAddressActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
 
         <!--充值金额页面-->
         <activity
@@ -311,6 +393,12 @@
             android:windowSoftInputMode="adjustPan|stateHidden"
             />
 
+        <!--写联子-->
+        <activity android:name=".ui.lostandfound.WriteLZActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan|stateHidden"
+            />
         <!--报修评价-->
         <activity
             android:name=".ui.repair.RepairEvaluationActivity"
@@ -320,6 +408,11 @@
         <!--图片浏览-->
         <activity
             android:name=".ui.widget.photoview.AlbumItemActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/photoTheme" />
+
+
+        <activity android:name=".ui.device.bathroom.BathOrderActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
@@ -363,6 +456,18 @@
         <activity
             android:name=".ui.more.AboutUsActivity"
             android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <!--更换浴室密码-->
+        <activity android:name=".ui.user.ChangeBathroomPasswordActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <!--找回浴室密码-->
+        <activity android:name=".ui.user.FindBathroomPasswordActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <!--更换头像-->
@@ -418,7 +523,8 @@
             android:name=".ui.main.MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
 
         <!--选择提现账户-->
         <activity
@@ -476,6 +582,12 @@
             android:theme="@style/AppTheme.NoActionBar"
             />
 
+        <!--公共浴室的洗热水澡界面-->
+        <activity android:name=".ui.device.bathroom.BathroomHeaterActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
         <!--更新窗口-->
         <activity
             android:name=".ui.main.update.UpdateActivity"
@@ -510,6 +622,12 @@
             android:theme="@android:style/Theme.Translucent"
             />
 
+        <!--公共浴室洗澡页面-->
+        <activity android:name=".ui.device.bathroom.BathIngActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.Translucent"/>
+
         <!--闪屏页-->
         <activity
             android:name=".ui.main.SplashActivity"
@@ -520,6 +638,19 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <!--完善资料-->
+        <activity android:name=".ui.user.CompleteInfoActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"
+            android:theme="@style/AppTheme.NoActionBar">
+
+            <!--<intent-filter>-->
+            <!--<action android:name="android.intent.action.MAIN" />-->
+            <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
         </activity>
 
         <!--选择设备类型-->
@@ -538,6 +669,8 @@
             android:launchMode="singleInstance"
             android:process=":acra"
             android:theme="@android:style/Theme.Dialog" />
+
+        <!--测试activity-->
 
         <service
             android:name=".util.crash.acra.sender.SenderService"
@@ -565,5 +698,7 @@
                 android:resource="@xml/provider_paths" />
         </provider>
     </application>
+
+
 
 </manifest>

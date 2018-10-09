@@ -18,6 +18,7 @@ package com.xiaolian.amigo.di.componet;
 
 import com.xiaolian.amigo.di.LostAndFoundActivityContext;
 import com.xiaolian.amigo.di.module.LostAndFoundActivityModule;
+import com.xiaolian.amigo.ui.lostandfound.BlogFragment;
 import com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity;
 import com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity2;
 import com.xiaolian.amigo.ui.lostandfound.LostAndFoundDetailActivity;
@@ -30,6 +31,8 @@ import com.xiaolian.amigo.ui.lostandfound.MyPublishActivity2;
 import com.xiaolian.amigo.ui.lostandfound.PublishFoundActivity;
 import com.xiaolian.amigo.ui.lostandfound.PublishLostActivity;
 import com.xiaolian.amigo.ui.lostandfound.PublishLostAndFoundActivity;
+import com.xiaolian.amigo.ui.lostandfound.SocalFragment;
+import com.xiaolian.amigo.ui.lostandfound.WriteLZActivity;
 
 import dagger.Component;
 
@@ -61,4 +64,10 @@ public interface LostAndFoundActivityComponent {
     void inject(LostAndFoundNoticeActivity activity);
 
     void inject(MyCollectActivity activity);
+
+    void inject(WriteLZActivity activity);
+
+    void inject(SocalFragment socalFragment);
+
+    void inject(BlogFragment blogFragment);
 }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                xmlns:tool="http://schemas.android.com/tools">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
     <ImageView
         android:id="@+id/iv_back"
         android:layout_centerVertical="true"
@@ -17,23 +17,39 @@
         android:layout_width="80dp"
         android:layout_height="match_parent"/>
 
-    <TextView
-        android:id="@+id/tv_device_title"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_centerHorizontal="true"
-        android:text="3栋－5楼－510"
-        android:lines="1"
-        android:ellipsize="end"
         android:layout_centerVertical="true"
-        style="@style/Device_ToolBar_Text"
         android:gravity="center"
-        android:layout_marginStart="80dp"
-        android:layout_marginEnd="80dp"
+        android:id="@+id/ll_device_title"
         android:layout_width="match_parent"
-        android:paddingBottom="5dp"
-        />
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_device_title"
+            style="@style/Device_ToolBar_Text"
+            android:layout_width="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:drawableEnd="@drawable/white_down"
+            android:ellipsize="end"
+            android:drawablePadding="6dp"
+            android:gravity="center"
+            android:lines="1"
+            android:paddingLeft="6dp"
+            tools:text="3栋－5"
+            android:textStyle="bold" />
+        <ImageView
+            android:layout_marginStart="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+    </LinearLayout>
 
     <View
-        android:layout_below="@id/tv_device_title"
+        android:visibility="gone"
+        android:layout_below="@id/ll_device_title"
         android:background="@color/white"
         android:layout_centerHorizontal="true"
         android:layout_width="103dp"

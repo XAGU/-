@@ -12,6 +12,7 @@ import android.util.AttributeSet;
 import com.google.zxing.ResultPoint;
 import com.journeyapps.barcodescanner.ViewfinderView;
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.DimentionUtils;
 import com.xiaolian.amigo.util.Log;
 
@@ -30,6 +31,11 @@ public class CustomViewfinderView extends ViewfinderView {
     public float[] position = new float[]{0f, 0.5f, 1f};
     //    public int[] colors=new int[]{0x00ffffff,0xffffffff,0x00ffffff};
     public int[] colors = new int[]{0x00baacff, 0xffbaacff, 0x00baacff};
+
+    public int[] colorsScan = new int[]{0x00ff5555 , 0xffff5555 , 0x00ff5555} ;
+
+
+    private int[] linearColor = colors ;
     public LinearGradient linearGradient;
     //    private Rect frame;
     private String scannerTipText;
@@ -39,6 +45,14 @@ public class CustomViewfinderView extends ViewfinderView {
     }
 
 
+    public void setColors(int  type){
+        if (type == Constant.COLOR_SCAN){
+            linearColor = colorsScan ;
+        }else{
+            linearColor = colors ;
+        }
+        invalidate();
+    }
     /**
      * 重写draw方法绘制自己的扫描框
      *
@@ -99,7 +113,7 @@ public class CustomViewfinderView extends ViewfinderView {
             }
             if (linearGradient == null) {
                 linearGradient = new LinearGradient(frame.left + 1, frame.top + laserLinePosition,
-                        frame.right - 1, frame.top + 10 + laserLinePosition, colors, position, Shader.TileMode.CLAMP);
+                        frame.right - 1, frame.top + 10 + laserLinePosition, linearColor, position, Shader.TileMode.CLAMP);
             }
             // Draw a red "laser scanner" line through the middle to show decoding is active
 

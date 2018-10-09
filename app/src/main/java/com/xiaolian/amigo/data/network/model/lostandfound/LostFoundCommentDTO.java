@@ -23,6 +23,9 @@ public class LostFoundCommentDTO {
      * 点赞数量
      */
     private Integer likeCount;
+
+
+    private String topicName;
     /**
      * 本人是否点赞 1 本人已点赞 2 本人未点赞
      */

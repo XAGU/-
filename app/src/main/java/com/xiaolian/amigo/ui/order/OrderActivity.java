@@ -103,7 +103,7 @@ public class OrderActivity extends OrderBaseListActivity implements IOrderView {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adaptor = new OrderAdaptor(orders);
         adaptor.setOrderDetailClickListener((order) -> {
-            if (Device.getDevice(order.getDeviceType()) == Device.WASHER) {
+            if (Device.getDevice(order.getDeviceType()) == Device.WASHER || Device.getDevice(order.getDeviceType())==Device.DRYER2) {
                 startActivity(new Intent(OrderActivity.this, NormalOrderActivity.class)
                         .putExtra(OrderConstant.KEY_ORDER_ID, order.getId()));
             } else {

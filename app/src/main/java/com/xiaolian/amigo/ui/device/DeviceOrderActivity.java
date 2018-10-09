@@ -43,6 +43,8 @@ import butterknife.OnClick;
 public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOrderView {
 
     private static final String TAG = DeviceOrderActivity.class.getSimpleName();
+
+    public static final String KEY_USER_STYLE = "KEY_USER_STYLE"; // 使用方式
     private static final int ERROR_ORDER_STATUS = 3;
     /**
      * 账单标题
@@ -142,6 +144,12 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
     @BindView(R.id.v_bottom_line2)
     View vBottomLine2;
 
+    @BindView(R.id.tv_method)
+    TextView tvMethod;
+    @BindView(R.id.rl_user_style)
+    RelativeLayout rlUserStyle;
+
+    private String tv_user_style;
     @Inject
     IDeviceOrderPresenter<IDeviceOrderView> presenter;
     private String orderNo;
@@ -156,11 +164,18 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
         getActivityComponent().inject(this);
 
         presenter.onAttach(this);
-
-        Intent intent = getIntent();
-        orderId = intent.getLongExtra(Constant.BUNDLE_ID, 0L);
+        setUp();
         if (orderId != 0L) {
             presenter.onLoad(orderId);
+        }
+    }
+
+    @Override
+    protected void setUp() {
+        if (getIntent() != null) {
+            Intent intent = getIntent();
+            orderId = intent.getLongExtra(Constant.BUNDLE_ID, 0L);
+            tv_user_style = intent.getStringExtra(KEY_USER_STYLE);
         }
     }
 
@@ -173,6 +188,13 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
         if (Device.getDevice(respDTO.getDeviceType()) == Device.DRYER) {
             rlUsedTime.setVisibility(View.VISIBLE);
             tvUsedTime.setText(respDTO.getUseTime());
+        }
+
+        if (!TextUtils.isEmpty(tv_user_style)) {
+            rlUserStyle.setVisibility(View.VISIBLE);
+            tvMethod.setText(tv_user_style);
+        }else{
+            rlUserStyle.setVisibility(View.GONE);
         }
 
         vBottomLine1.setBackgroundColor(Color.parseColor(OrderDetailActivity.getLineColorByDeviceType(respDTO.getDeviceType())));
@@ -235,6 +257,8 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
                     tvBonusRemark.setText(getString(R.string.minus, respDTO.getBonus()));
                 }
             }
+
+
             tvConsume.setText(respDTO.getConsume());
             tvPrepay.setText(respDTO.getPrepay());
             tvOdd.setText(respDTO.getOdd());

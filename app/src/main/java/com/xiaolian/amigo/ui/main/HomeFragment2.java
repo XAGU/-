@@ -1,10 +1,12 @@
 package com.xiaolian.amigo.ui.main;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.util.ObjectsCompat;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -12,18 +14,29 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.DecodeHintType;
+import com.google.zxing.integration.android.IntentIntegrator;
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.network.model.bathroom.CurrentBathOrderRespDTO;
 import com.xiaolian.amigo.data.network.model.system.BannerDTO;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
+import com.xiaolian.amigo.ui.base.BaseFragment;
+import com.xiaolian.amigo.ui.device.washer.ScanActivity;
+import com.xiaolian.amigo.ui.login.LoginActivity;
 import com.xiaolian.amigo.ui.main.adaptor.HomeAdaptor;
 import com.xiaolian.amigo.ui.main.adaptor.HomeBannerDelegate;
 import com.xiaolian.amigo.ui.main.adaptor.HomeNormalDelegate;
 import com.xiaolian.amigo.ui.main.adaptor.HomeSmallDelegate;
+import com.xiaolian.amigo.ui.main.intf.IMainPresenter;
+import com.xiaolian.amigo.ui.main.intf.IMainView;
 import com.xiaolian.amigo.ui.widget.RecyclerItemClickListener;
+import com.xiaolian.amigo.util.AppUtils;
 import com.xiaolian.amigo.util.Log;
 
 import org.greenrobot.eventbus.EventBus;
@@ -35,7 +48,12 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 import lombok.Data;
+
+import static com.xiaolian.amigo.ui.device.washer.ScanActivity.IS_SACN;
+import static com.xiaolian.amigo.ui.device.washer.ScanActivity.SCAN_TYPE;
 
 /**
  * 主页
@@ -44,7 +62,18 @@ import lombok.Data;
  * @date 17/9/5
  */
 
-public class HomeFragment2 extends Fragment {
+public class HomeFragment2 extends BaseFragment {
+    private IMainPresenter<IMainView> presenter ;
+    private boolean isServerError ;
+
+    @SuppressLint("ValidFragment")
+    public HomeFragment2(IMainPresenter<IMainView> presenter , boolean isServerError){
+        this.presenter = presenter ;
+        this.isServerError = isServerError ;
+    }
+
+    public HomeFragment2(){}
+
     private static final int SMALL_LIST_FORMAT_MIN_SIZE = 3;
 
     private static final String TAG = HomeFragment2.class.getSimpleName();
@@ -63,15 +92,18 @@ public class HomeFragment2 extends Fragment {
     HomeAdaptor.ItemWrapper gate = new HomeAdaptor.ItemWrapper(HomeAdaptor.SMALL_TYPE,
             null, "门禁卡", "ACCESS CONTROL",
             R.drawable.gate, R.drawable.small_gate);
-    HomeAdaptor.ItemWrapper lost = new HomeAdaptor.ItemWrapper(HomeAdaptor.SMALL_TYPE,
-            null, "失物招领", "LOST AND FOUND",
-            R.drawable.lost, R.drawable.small_lost);
+    HomeAdaptor.ItemWrapper dryer1 = new HomeAdaptor.ItemWrapper(HomeAdaptor.SMALL_TYPE ,
+            null ,"烘干机","DRYER" ,
+            R.drawable.hongganji_long , R.drawable.hongganji_short);
+//    HomeAdaptor.ItemWrapper lost = new HomeAdaptor.ItemWrapper(HomeAdaptor.SMALL_TYPE,
+//            null, "失物招领", "LOST AND FOUND",
+//            R.drawable.lost, R.drawable.small_lost);
 
     List<HomeAdaptor.ItemWrapper> items = new ArrayList<HomeAdaptor.ItemWrapper>() {
         {
 //            add(shower);
 //            add(water);
-            add(lost);
+//            add(lost);
         }
     };
 
@@ -79,6 +111,10 @@ public class HomeFragment2 extends Fragment {
     RecyclerView recyclerView;
 
     HomeAdaptor adaptor;
+    @BindView(R.id.school_name)
+    TextView schoolName;
+    @BindView(R.id.scan)
+    ImageView scan;
     /**
      * 未找零账单个数
      */
@@ -95,12 +131,16 @@ public class HomeFragment2 extends Fragment {
     private HomeAdaptor.ItemWrapper banner;
     private GridLayoutManager gridLayoutManager;
 
+    private Unbinder unbinder ;
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View homeView = inflater.inflate(R.layout.fragment_home, container, false);
-        ButterKnife.bind(this, homeView);
+        unbinder = ButterKnife.bind(this, homeView);
+        initView();
         return homeView;
     }
 
@@ -113,10 +153,6 @@ public class HomeFragment2 extends Fragment {
         adaptor.addItemViewDelegate(new HomeSmallDelegate(getActivity()));
         adaptor.addItemViewDelegate(new HomeBannerDelegate(getActivity()));
         recyclerView.setLayoutManager(gridLayoutManager);
-        ((DefaultItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
-        LayoutAnimationController animation = AnimationUtils
-                .loadLayoutAnimation(getContext(), R.anim.layout_animation_home_slide_left_to_right);
-        recyclerView.setLayoutAnimation(animation);
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), recyclerView,
                 new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
@@ -144,6 +180,8 @@ public class HomeFragment2 extends Fragment {
                                     EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_WASHER));
                                 } else if (items.get(position).getRes() == R.drawable.gate) {
                                     EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_GATE));
+                                }else if (items.get(position).getRes() == R.drawable.hongganji_long){
+                                    EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_DRAYER2));
                                 }
                             }
                         } catch (ArrayIndexOutOfBoundsException ex) {
@@ -160,12 +198,53 @@ public class HomeFragment2 extends Fragment {
                 }));
     }
 
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (!hidden) {
-            recyclerView.scheduleLayoutAnimation();
+
+
+    /**
+     * 请求网络数据
+     */
+    public void requestData(){
+        if (presenter == null )  return ;
+        if (!isNetworkAvailable()) {
+//            onError(R.string.network_available_error_tip);
+            if (presenter.isLogin()) {
+                presenter.getSchoolBusiness();
+                // 设置学校
+                if (schoolName != null) {
+                    if (!presenter.getUserInfo().getSchoolName().equals(schoolName.getText().toString()))
+                        schoolName.setText(presenter.getUserInfo().getSchoolName());
+                }
+                // 设置学校业务
+                return;
+            }
+            initSchoolBiz();
+            return;
         }
+        if (!presenter.isLogin()) {
+            initSchoolBiz();
+            Log.d(TAG, "onResume: not login");
+        } else {
+            if (isServerError) {
+                initSchoolBiz();
+            }
+            // 请求通知
+            presenter.getSchoolBusiness();
+            presenter.getNoticeAmount();
+            presenter.noticeCount();
+            if (schoolName != null) {
+                if (!presenter.getUserInfo().getSchoolName().equals(schoolName.getText().toString()))
+                    schoolName.setText(presenter.getUserInfo().getSchoolName());
+            }
+            // 设置昵称
+        }
+    }
+
+
+    private void initSchoolBiz(){
+
+        onEvent(new HomeFragment2.Event(HomeFragment2.Event.EventType.INIT_BIZ,
+                null));
+
     }
 
     @Override
@@ -174,6 +253,7 @@ public class HomeFragment2 extends Fragment {
     }
 
     public void onBannerEvent(List<BannerDTO> banners) {
+        if (items.size() == 0) return ;
         if (items.get(items.size() - 1).getType() == HomeAdaptor.NORMAL_TYPE ||
                 items.get(items.size() - 1).getType() == HomeAdaptor.SMALL_TYPE) {
             banner = new HomeAdaptor.ItemWrapper(HomeAdaptor.BANNER_TYPE, banners, null, null, 0, 0);
@@ -189,16 +269,13 @@ public class HomeFragment2 extends Fragment {
         }
     }
 
+
     private void notifyAdaptor() {
+        if (recyclerView == null) return ;
         if (recyclerView.getAdapter() == null) {
             resetItem();
             recyclerView.setAdapter(adaptor);
             recyclerView.setVisibility(View.VISIBLE);
-            LayoutAnimationController animation = AnimationUtils
-                    .loadLayoutAnimation(getContext(), R.anim.layout_animation_home_slide_left_to_right);
-            AlphaAnimation anim = new AlphaAnimation(0.0f, 1.0f);
-            anim.setDuration(500);
-            recyclerView.startAnimation(animation.getAnimation());
         } else {
             resetItem();
             adaptor.notifyDataSetChanged();
@@ -207,28 +284,40 @@ public class HomeFragment2 extends Fragment {
 
     private void resetItem() {
         items.clear();
-        if (dryer.isActive()) {
-            items.add(dryer);
-        }
+
         if (shower.isActive()) {
             items.add(shower);
         }
-        if (washer.isActive()) {
-            items.add(washer);
-        }
+
         if (water.isActive()) {
             items.add(water);
         }
+        if (dryer.isActive()) {
+            items.add(dryer);
+        }
+
+        if (washer.isActive()) {
+            items.add(washer);
+        }
+
+        if (dryer1.isActive()){
+            items.add(dryer1);
+        }
+
         if (gate.isActive()) {
             items.add(gate);
         }
-        if (lost.isActive()) {
-            items.add(lost);
-        }
+
+//        if (lost.isActive()) {
+//            items.add(lost);
+//        }
+//        items.add(lost);
         if (banner != null) {
             items.add(banner);
         }
+
     }
+
 
     public void onSchoolBizEvent(List<BriefSchoolBusiness> businesses) {
         int currentPrepayOrderSize = 0;
@@ -240,6 +329,8 @@ public class HomeFragment2 extends Fragment {
         water.setActive(false);
         washer.setActive(false);
         gate.setActive(false);
+        dryer1.setActive(false);
+//        lost.setActive(true);
         /// business为空则不显示shower和water
         if (businesses == null || businesses.isEmpty()) {
             notifyAdaptor();
@@ -251,26 +342,42 @@ public class HomeFragment2 extends Fragment {
             }
             if (business.getBusinessId() == 2) {
                 water.setActive(true);
+                shower.setExistOrder(false);
                 water.setPrepaySize(business.getPrepayOrder());
                 water.setUsing(business.getUsing());
                 currentPrepayOrderSize += business.getPrepayOrder();
                 currentBusinessSize += 1;
             } else if (business.getBusinessId() == 1) {
                 shower.setActive(true);
+                shower.setExistOrder(false);
                 shower.setPrepaySize(business.getPrepayOrder());
                 shower.setUsing(business.getUsing());
+                shower.setStatus(0);
                 currentPrepayOrderSize += business.getPrepayOrder();
                 currentBusinessSize += 1;
+                if (shower.isExistOrder()){
+                    needNotify = true ;
+                    shower.setExistOrder(false);
+                }
             } else if (business.getBusinessId() == 3) {
                 dryer.setActive(true);
+                shower.setExistOrder(false);
                 dryer.setPrepaySize(business.getPrepayOrder());
                 dryer.setUsing(business.getUsing());
                 currentPrepayOrderSize += business.getPrepayOrder();
                 currentBusinessSize += 1;
             } else if (business.getBusinessId() == 4) {
                 washer.setActive(true);
+                shower.setExistOrder(false);
                 washer.setPrepaySize(business.getPrepayOrder());
                 washer.setUsing(business.getUsing());
+                currentPrepayOrderSize += business.getPrepayOrder();
+                currentBusinessSize += 1;
+            }else if (business.getBusinessId() == 6){
+                dryer1.setActive(true);
+                shower.setExistOrder(false);
+                dryer1.setPrepaySize(business.getPrepayOrder());
+                dryer1.setUsing(business.getUsing());
                 currentPrepayOrderSize += business.getPrepayOrder();
                 currentBusinessSize += 1;
             } else if (business.getBusinessId() == 101) {
@@ -298,6 +405,7 @@ public class HomeFragment2 extends Fragment {
             usingAmount = currentUsingAmount;
             needNotify = true;
         }
+
         if (needNotify) {
             Log.d(TAG, "onSchoolBizEvent notify");
             notifyAdaptor();
@@ -311,7 +419,8 @@ public class HomeFragment2 extends Fragment {
         water.setType(HomeAdaptor.NORMAL_TYPE);
         washer.setType(HomeAdaptor.NORMAL_TYPE);
         gate.setType(HomeAdaptor.NORMAL_TYPE);
-        lost.setType(HomeAdaptor.NORMAL_TYPE);
+        dryer1.setType(HomeAdaptor.NORMAL_TYPE);
+//        lost.setType(HomeAdaptor.NORMAL_TYPE);
     }
 
     private void switchSmallLayout() {
@@ -321,8 +430,11 @@ public class HomeFragment2 extends Fragment {
         water.setType(HomeAdaptor.SMALL_TYPE);
         washer.setType(HomeAdaptor.SMALL_TYPE);
         gate.setType(HomeAdaptor.SMALL_TYPE);
-        lost.setType(HomeAdaptor.SMALL_TYPE);
+        dryer1.setType(HomeAdaptor.SMALL_TYPE);
+//        lost.setType(HomeAdaptor.SMALL_TYPE);
     }
+
+
 
     private void onPrepayOrderEvent(HomeAdaptor.ItemWrapper itemWrapper) {
         boolean needNotify = false;
@@ -368,6 +480,30 @@ public class HomeFragment2 extends Fragment {
         }
     }
 
+    @SuppressWarnings("unchecked")
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void OrderEvent(CurrentBathOrderRespDTO event) {
+        checkTitleTip(event);
+    }
+
+    /**
+     * 显示主页面是否有上一订单
+     *
+     * @param event
+     */
+    private void checkTitleTip(CurrentBathOrderRespDTO event) {
+        shower.setExistOrder(true);
+        shower.setStatus(event.getStatus());
+        if (shower.getStatus() == 1) {
+            shower.setUsing(false);
+        } else {
+            shower.setUsing(true);
+        }
+        Log.e(TAG, "checkTitleTip预约订单" + event.getStatus());
+        notifyAdaptor();
+    }
+
+
     private void changeAnimation(int animationRes) {
         LayoutAnimationController animation = AnimationUtils
                 .loadLayoutAnimation(getContext(), animationRes);
@@ -388,6 +524,23 @@ public class HomeFragment2 extends Fragment {
             }
         }
         return true;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
+
+    @Override
+    protected void initData() {
+
+        }
+
+    @Override
+    protected void initView() {
+        requestData();
     }
 
     @Data
@@ -445,5 +598,38 @@ public class HomeFragment2 extends Fragment {
     public void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
+    }
+
+
+    /**
+     * 扫一扫
+     */
+    @OnClick(R.id.scan)
+    public void scan() {
+        if (presenter.isLogin()) {
+            scanQRCode();
+        } else {
+            startActivity(new Intent(mActivity, LoginActivity.class));
+        }
+    }
+
+    private void scanQRCode() {
+//        startActivity(new Intent(this, CaptureActivity.class));
+        IntentIntegrator integrator = new IntentIntegrator(mActivity);
+        //底部的提示文字，设为""可以置空
+        integrator.setPrompt("");
+        //前置或者后置摄像头
+        integrator.setCameraId(0);
+        //扫描成功的「哔哔」声，默认开启
+        integrator.setBeepEnabled(false);
+        integrator.setCaptureActivity(ScanActivity.class);
+        integrator.setOrientationLocked(true);
+        integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
+        integrator.addExtra(DecodeHintType.CHARACTER_SET.name(), "utf-8");
+        integrator.addExtra(DecodeHintType.TRY_HARDER.name(), Boolean.TRUE);
+        integrator.addExtra(DecodeHintType.POSSIBLE_FORMATS.name(), BarcodeFormat.QR_CODE);
+        integrator.addExtra(SCAN_TYPE, 2);
+        integrator.addExtra(IS_SACN, true);
+        integrator.initiateScan();
     }
 }

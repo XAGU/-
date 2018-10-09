@@ -50,6 +50,11 @@ public class AlbumItemActivity extends AppCompatActivity implements View.OnClick
      */
     public static final String EXTRA_CURRENT = "current";
 
+    /**
+     *
+     */
+    public static final String EXTRA_TYPE_LOCAL = "local";
+
 
     private AlbumViewPager mViewPager;//显示大图
     private ImageView mBackView;
@@ -135,6 +140,12 @@ public class AlbumItemActivity extends AppCompatActivity implements View.OnClick
             action = getIntent().getIntExtra(INTENT_ACTION, ACTION_NORMAL);
             mPaths.clear();
             mCurrent = getIntent().getIntExtra(EXTRA_CURRENT, 0);
+
+
+            String pathLocal = getIntent().getStringExtra(EXTRA_TYPE_LOCAL);
+            if (pathLocal != null ){
+                mPaths.add(pathLocal);
+            }
             String pathSingle = getIntent().getStringExtra(EXTRA_TYPE_SINGLE);
             if (pathSingle != null) {
                 mPaths.add(Constant.IMAGE_PREFIX + pathSingle);
@@ -162,6 +173,8 @@ public class AlbumItemActivity extends AppCompatActivity implements View.OnClick
                 }
                 return;
             }
+
+
         } catch (Exception e) {
 
         }
@@ -178,7 +191,7 @@ public class AlbumItemActivity extends AppCompatActivity implements View.OnClick
             return;
         }
         mViewPager.setAdapter(mViewPager.new ViewPagerAdapter(mPaths));
-        mViewPager.setOnPageChangeListener(pageChangeListener);
+        mViewPager.addOnPageChangeListener(pageChangeListener);
         mViewPager.setCurrentItem(mCurrent);
         mCountView.setText((mCurrent + 1) + "/" + mPaths.size());
     }
@@ -254,6 +267,7 @@ public class AlbumItemActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onBackPressed() {
+
         super.onBackPressed();
         /*Intent intent = new Intent();
         intent.putStringArrayListExtra("deletePaths", (ArrayList<String>) deletePaths);
@@ -261,4 +275,11 @@ public class AlbumItemActivity extends AppCompatActivity implements View.OnClick
 		this.finish();*/
     }
 
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0, R.anim.photo_activity_out);
+
+    }
 }

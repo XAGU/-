@@ -18,7 +18,6 @@ package com.xiaolian.amigo;
 import android.app.Application;
 import android.content.Context;
 
-import com.umeng.analytics.MobclickAgent;
 import com.xiaolian.amigo.di.componet.ApplicationComponent;
 import com.xiaolian.amigo.di.componet.DaggerApplicationComponent;
 import com.xiaolian.amigo.di.module.ApplicationModule;
@@ -88,7 +87,7 @@ public class MvpApp extends Application {
         super.onCreate();
         Log.setContext(this.getApplicationContext());
         registerActivityLifecycleCallbacks(ActivityLifecycleHelper.build());
-
+//        android.util.Log.e("test", "onCreate: " + System.currentTimeMillis() );
 //        CrashHandler.getInstance().init(this, BuildConfig.DEBUG, true, 0, SplashActivity.class);
 
         mApplicationComponent = DaggerApplicationComponent.builder()

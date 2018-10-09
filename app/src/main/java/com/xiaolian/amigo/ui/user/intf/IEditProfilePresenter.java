@@ -19,4 +19,8 @@ public interface IEditProfilePresenter<V extends IEditProfileView> extends IBase
      * 修改学校校验
      */
     void checkChangeSchool();
+    /**
+     * 是否已经设置浴室密码
+     */
+    boolean isHadSetBathPassword();
 }

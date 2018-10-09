@@ -36,6 +36,7 @@ import com.xiaolian.amigo.ui.device.intf.IWaterDeviceBaseView;
 import com.xiaolian.amigo.ui.main.MainActivity;
 import com.xiaolian.amigo.ui.repair.RepairApplyActivity;
 import com.xiaolian.amigo.ui.user.ChooseDormitoryActivity;
+import com.xiaolian.amigo.ui.user.EditDormitoryActivity;
 import com.xiaolian.amigo.ui.wallet.RechargeActivity;
 import com.xiaolian.amigo.ui.widget.BezierWaveView;
 import com.xiaolian.amigo.ui.widget.DotFlashView;
@@ -67,6 +68,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     public static final String INTENT_HOME_PAGE_JUMP = "intent_home_page_jump";
     public static final String INTENT_RECOVER = "intent_recover";
     public static final String INTENT_PREPAY_INFO = "intent_prepay_info";
+    public static final String CONN_TYPE = "CONN_TYPE" ;  // 连接方式， 是否是扫一扫， 是为true; 否 为false
 
     private static final String TAG = WaterDeviceBaseActivity.class.getSimpleName();
     /**
@@ -195,7 +197,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
      * 设备标题
      */
     @BindView(R.id.tv_device_title)
-    TextView tvDeviceTitle;
+    protected  TextView tvDeviceTitle;
     /**
      * 显示加载动画
      */
@@ -257,11 +259,11 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     /**
      * 设备位置
      */
-    private String location;
+    protected String location;
     /**
      * 设备位置id
      */
-    private Long residenceId;
+    public  Long residenceId;
     private boolean homePageJump;
     /**
      * 供应商id
@@ -271,6 +273,8 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
      * 标记是否为恢复用水
      */
     private boolean recorvery;
+
+
     private CountDownTimer timer;
     private volatile boolean userWater = false;
     private boolean needRecharge;
@@ -279,6 +283,8 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     private OrderPreInfoDTO orderPreInfo;
     protected boolean bleError = false;
 
+    private  boolean isScan ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -286,7 +292,6 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         setUnBinder(ButterKnife.bind(this));
         initInject();
         initPresenter();
-        initView();
 
 
         // 连接蓝牙设备
@@ -294,12 +299,24 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         if (recorvery || !homePageJump) {
             presenter.setStep(TradeStep.SETTLE);
         }
-        presenter.onPreConnect(macAddress);
-        if (prepay == null) {
-            presenter.queryPrepayOption(deviceType);
-        } else {
-            refreshPrepayStatus();
-        }
+
+        setBleCallback(() -> {
+            initView();
+            if (isScan){
+                android.util.Log.e(TAG, "onCreate: " );
+                presenter.onPreConnect(macAddress , true);
+            }else {
+                android.util.Log.e(TAG, "onCreate: " );
+                presenter.onPreConnect(macAddress);
+            }
+
+            if (prepay == null) {
+                presenter.queryPrepayOption(deviceType);
+            } else {
+                refreshPrepayStatus();
+            }
+        });
+        getBlePermission();
     }
 
     @Override
@@ -309,15 +326,16 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
     @Override
     protected void setUp() {
-        super.setUp();
         if (getIntent() != null) {
             macAddress = getIntent().getStringExtra(MainActivity.INTENT_KEY_MAC_ADDRESS);
+            android.util.Log.e(TAG, "setUp: " + getIntent().getStringExtra(MainActivity.INTENT_KEY_MAC_ADDRESS) );
             deviceType = getIntent().getIntExtra(MainActivity.INTENT_KEY_DEVICE_TYPE, 1);
             location = getIntent().getStringExtra(MainActivity.INTENT_KEY_LOCATION);
             residenceId = getIntent().getLongExtra(MainActivity.INTENT_KEY_RESIDENCE_ID, -1L);
             supplierId = getIntent().getLongExtra(MainActivity.INTENT_KEY_SUPPLIER_ID, -1L);
             homePageJump = getIntent().getBooleanExtra(INTENT_HOME_PAGE_JUMP, true);
             recorvery = getIntent().getBooleanExtra(MainActivity.INTENT_KEY_RECOVERY, false);
+            isScan = getIntent().getBooleanExtra(CONN_TYPE , false);
             orderPreInfo = getIntent().getParcelableExtra(INTENT_PREPAY_INFO);
             if (orderPreInfo != null) {
                 price = orderPreInfo.getPrice();
@@ -340,7 +358,10 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                 }
             }
         }
+
+        android.util.Log.e(TAG, "setUp: " + macAddress );
     }
+
 
     /**
      * 初始化注入
@@ -390,6 +411,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         // 默认显示连接中状态
         showConnecting();
         initSlideView();
+
     }
 
     private void initSlideView() {
@@ -627,6 +649,10 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
     }
 
+    public  void setDvTitleNull(){
+        tvDeviceTitle.setCompoundDrawables(null , null , null , null);
+    }
+
     /**
      * 滑动按钮文字 比如 热水澡显示为"开始洗澡" 饮水机显示为 "开始接水"
      *
@@ -837,20 +863,9 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
      */
     @OnClick(R.id.bt_pay)
     void pay(Button button) {
-        // 需要充值
-        if (needRecharge) {
-            startActivityForResult(new Intent(this, RechargeActivity.class),
-                    REQUEST_CODE_RECHARGE);
-        } else {
-            if (prepayAmount == null || prepayAmount < 0) {
-                prepayAmount = 0.0;
-            }
-            if (prepayAmount <= 0 && bonusId == null) {
-                onError("预付金额不能为0");
-                return;
-            }
-            realPay();
-        }
+        //先查询是否存在费率更新操作
+        presenter.onUpdateDeviceRate(this.macAddress);
+//        realPay();
     }
 
     /**
@@ -878,7 +893,22 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         noticeAlertDialog.show();
     }
 
-    private void realPay() {
+    @Override
+    public void realPay() {
+        // 需要充值
+        if (needRecharge) {
+            startActivityForResult(new Intent(this, RechargeActivity.class),
+                    REQUEST_CODE_RECHARGE);
+            return;
+        } else {
+            if (prepayAmount == null || prepayAmount < 0) {
+                prepayAmount = 0.0;
+            }
+            if (prepayAmount <= 0 && bonusId == null) {
+                onError("预付金额不能为0");
+                return;
+            }
+        }
         userWater = true;
         // 点击支付操作时蓝牙必须为开启状态
         setBleCallback(() -> {
@@ -1166,10 +1196,10 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
     public void changeDormitory() {
         // 只有在step为SETILE时才不能更换宿舍
-        if (!recorvery && presenter.getStep() != TradeStep.SETTLE) {
+            if (!recorvery && presenter.getStep() != TradeStep.SETTLE) {   //  residenceId  != -1L
             startActivityForResult(
-                    new Intent(this, ChooseDormitoryActivity.class)
-                            .putExtra(ChooseDormitoryActivity.INTENT_KEY_LAST_DORMITORY, residenceId),
+                    new Intent(this, EditDormitoryActivity.class)
+                            .putExtra(EditDormitoryActivity.INTENT_KEY_LAST_DORMITORY, residenceId),
                     CHOOSE_DORMITORY_CODE);
         }
     }
@@ -1203,11 +1233,17 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         back2Main();
     }
 
-//    @Override
-//    public void onBackPressed() {
-//        back2Main();
-//    }
+    @Override
+    public void onBackPressed() {
+        back2Main();
+    }
 
+
+    @Override
+    public void finish() {
+//        back2Main();
+        super.finish();
+    }
 
     @Override
     public boolean isBleError() {

@@ -7,12 +7,15 @@ import com.xiaolian.amigo.data.network.model.trade.CmdResultReqDTO;
 import com.xiaolian.amigo.data.network.model.trade.CmdResultRespDTO;
 import com.xiaolian.amigo.data.network.model.trade.ConnectCommandReqDTO;
 import com.xiaolian.amigo.data.network.model.trade.ConnectCommandRespDTO;
+import com.xiaolian.amigo.data.network.model.trade.DryerModeRespDTO;
 import com.xiaolian.amigo.data.network.model.trade.PayReqDTO;
 import com.xiaolian.amigo.data.network.model.trade.PayRespDTO;
 import com.xiaolian.amigo.data.network.model.trade.QrCodeGenerateRespDTO;
 import com.xiaolian.amigo.data.network.model.trade.QrCodeScanReqDTO;
 import com.xiaolian.amigo.data.network.model.trade.QrCodeScanRespDTO;
 import com.xiaolian.amigo.data.network.model.trade.WashingModeRespDTO;
+import com.xiaolian.amigo.data.network.model.trade.UpdateDeviceRateCommandReqDTO;
+import com.xiaolian.amigo.data.network.model.trade.UpdateDeviceRateCommandRespDTO;
 
 import retrofit2.http.Body;
 import retrofit2.http.POST;
@@ -39,6 +42,12 @@ public interface ITradeApi {
     Observable<ApiResult<CmdResultRespDTO>> processCmdResult(@Body CmdResultReqDTO reqDTO);
 
     /**
+     * 请求更新设备费率
+     */
+    @POST("device/rate/send")
+    Observable<ApiResult<UpdateDeviceRateCommandRespDTO>> getUpdateDeviceRateCommand(@Body UpdateDeviceRateCommandReqDTO reqDTO);
+
+    /**
      * 网络支付，创建用水订单
      */
     @POST("trade/pay")
@@ -61,4 +70,11 @@ public interface ITradeApi {
      */
     @POST("trade/device/washing/mode")
     Observable<ApiResult<WashingModeRespDTO>> getWasherMode();
+
+
+    /**
+     * 请求烘干机模式
+     */
+    @POST("trade/device/dryer/mode")
+    Observable<ApiResult<DryerModeRespDTO>> getDryerMode();
 }

@@ -14,6 +14,8 @@ import com.xiaolian.amigo.ui.device.washer.intf.IWasherView;
 
 import javax.inject.Inject;
 
+import static com.xiaolian.amigo.ui.device.washer.ScanActivity.KEY_TYPE;
+
 /**
  * 洗衣机首页
  *
@@ -58,6 +60,7 @@ public class WasherActivity extends WasherBaseActivity implements IWasherView {
         integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
         integrator.addExtra(DecodeHintType.CHARACTER_SET.name(), "utf-8");
         integrator.addExtra(DecodeHintType.TRY_HARDER.name(), Boolean.TRUE);
+        integrator.addExtra(KEY_TYPE ,4);
         integrator.addExtra(DecodeHintType.POSSIBLE_FORMATS.name(), BarcodeFormat.QR_CODE);
         integrator.initiateScan();
     }

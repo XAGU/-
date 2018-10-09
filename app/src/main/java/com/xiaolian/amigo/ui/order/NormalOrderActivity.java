@@ -38,6 +38,8 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
+import static com.xiaolian.amigo.ui.device.washer.ScanActivity.KEY_TYPE;
+
 /**
  * 消费账单
  *
@@ -53,6 +55,8 @@ public class NormalOrderActivity extends OrderBaseActivity implements INormalOrd
     private List<WithdrawRechargeDetailAdapter.Item> items = new ArrayList<>();
 
     private WithdrawRechargeDetailAdapter adapter;
+
+    private OrderDetailRespDTO data ;
 
     private RecyclerView recyclerView;
     private LinearLayout llBottom;
@@ -128,6 +132,7 @@ public class NormalOrderActivity extends OrderBaseActivity implements INormalOrd
                 .putExtra(WasherContent.KEY_PRICE, presenter.getOrder().getConsume())
                 .putExtra(WasherContent.KEY_MODE_DESC, presenter.getOrder().getModeDesc())
                 .putExtra(WasherContent.KEY_QR_CODE_URL, presenter.getOrder().getQrCode())
+                .putExtra(KEY_TYPE ,data.getDeviceType())
                 .setAction("normalOrder"));
     }
 
@@ -139,6 +144,7 @@ public class NormalOrderActivity extends OrderBaseActivity implements INormalOrd
 
     @Override
     public void renderView(OrderDetailRespDTO data) {
+        this.data = data ;
         items.add(new WithdrawRechargeDetailAdapter.Item("使用时间：",
                 TimeUtils.millis2String(data.getCreateTime()), WithdrawRechargeDetailAdapter.TITLE_CONTENT_TYPE));
         items.add(new WithdrawRechargeDetailAdapter.Item("设备信息：",
@@ -188,7 +194,7 @@ public class NormalOrderActivity extends OrderBaseActivity implements INormalOrd
         vBottomLine2.setVisibility(View.VISIBLE);
 
         // 洗衣机
-        if (Device.getDevice(data.getDeviceType()) == Device.WASHER) {
+        if (Device.getDevice(data.getDeviceType()) == Device.WASHER || Device.getDevice(data.getDeviceType()) == Device.DRYER2 ) {
             if (ObjectsCompat.equals(data.getStatus(), ORDER_ERROR_STATUS)) {
                 // 异常订单
                 tvBottomTip.setVisibility(View.VISIBLE);

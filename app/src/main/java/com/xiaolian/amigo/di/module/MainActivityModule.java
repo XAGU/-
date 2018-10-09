@@ -19,7 +19,9 @@ import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
 import com.xiaolian.amigo.data.manager.MainDataManager;
+import com.xiaolian.amigo.data.manager.UserDataManager;
 import com.xiaolian.amigo.data.manager.intf.IMainDataManager;
+import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.di.MainActivityContext;
 import com.xiaolian.amigo.ui.main.MainPresenter;
 import com.xiaolian.amigo.ui.main.SplashPresenter;
@@ -68,5 +70,10 @@ public class MainActivityModule {
     IMainDataManager provideMainDataManager(MainDataManager manager) {
         return manager;
     }
+
+    @Provides
+    IUserDataManager provideUserDataManager(UserDataManager manager){return manager;}
+
+
 
 }

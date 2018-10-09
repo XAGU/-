@@ -1,0 +1,195 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorWhite"
+    tools:context="com.xiaolian.amigo.ui.lostandfound.SocalFragment">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorBackgroundGray">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/social_normal_rl"
+        android:layout_height="43dp"
+        android:background="@color/colorBackgroundGray"
+        >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="21dp"
+            android:paddingEnd="20dp"
+            android:src="@drawable/icon_search"
+            android:id="@+id/search"
+            android:layout_centerVertical="true"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="笑联"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"
+            android:layout_centerInParent="true"
+            android:id="@+id/title"
+            android:gravity="center"/>
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_more"
+            android:id="@+id/more"
+            android:layout_marginEnd="21dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"/>
+
+
+        <ImageView
+            android:layout_width="8.5dp"
+            android:layout_height="8.5dp"
+            android:background="@drawable/red_soild_circle"
+            android:id="@+id/iv_remaind"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:layout_marginTop="9dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="15dp"
+            />
+    </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="43dp"
+            android:id="@+id/search_rl"
+            tools:visibility="visible"
+            android:visibility="gone"
+            android:layout_marginStart="21dp"
+            android:background="@color/colorBackgroundGray">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="29dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="9dp"
+                android:background="@drawable/social_search_tv_bg"
+                android:paddingLeft="14dp"
+                android:textSize="13sp"
+                android:id="@+id/et_search_content"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:layout_marginEnd="63dp"
+                android:gravity="center_vertical"
+                android:textColorHint="@color/colorDarkB"
+                android:textColor="@color/colorDark2"
+                android:hint="@string/social_search_hint"
+                android:layout_centerVertical="true"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:gravity="center_vertical"
+                android:text="@string/cancel"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:textSize="13sp"
+                android:id="@+id/tv_cancel"
+                android:paddingStart="14dp"
+                android:paddingEnd="21dp"
+                android:textColor="@color/colorDark2"/>
+        </RelativeLayout>
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tag_rl"
+        android:background="@color/white">
+
+        <android.support.v4.view.ViewPager
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/vp_blog_content"
+            android:overScrollMode="never"/>
+
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none"
+            android:background="@color/white"
+            android:layout_gravity="center"
+            android:paddingTop="6dp"
+            android:id="@+id/social_tags"
+            android:overScrollMode="never"
+             />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/social_tags"
+            >
+            <FrameLayout
+                android:id="@+id/fl_result_contain"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="10dp"
+                android:paddingStart="21dp"
+                android:paddingEnd="21dp"
+                android:visibility="gone"
+                android:background="@color/white">
+
+            </FrameLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_result"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:background="@color/colorBackgroundGray"
+                android:visibility="gone">
+                <ImageView
+                    android:id="@+id/iv_empty"
+                    android:src="@drawable/ic_empty_box"
+                    android:layout_centerHorizontal="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/tv_no_result_tip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no_search_result"
+                    android:textSize="14sp"
+                    android:layout_centerHorizontal="true"
+                    android:textColor="@color/colorDark2"
+                    android:layout_below="@id/iv_empty"
+                    android:layout_marginTop="14dp"/>
+            </RelativeLayout>
+        </RelativeLayout>
+        <!--<android.support.v7.widget.RecyclerView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:scrollbars="none"-->
+            <!--android:background="@color/white"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:paddingTop="6dp"-->
+            <!--android:id="@+id/social_tags"/>-->
+
+
+
+    </RelativeLayout>
+
+    <!--<com.xiaolian.amigo.ui.widget.LazyViewPager-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:id="@+id/vp_blog_content" />-->
+
+    </FrameLayout>
+</LinearLayout>

@@ -29,7 +29,8 @@ import java.util.Set;
  */
 public class DecoratedBarcodeView extends FrameLayout {
     private BarcodeView barcodeView;
-    private ViewfinderView viewFinder;
+//    private ViewfinderView viewFinder;
+    private CustomViewfinderView viewFinder ;
     private TextView statusView;
 
     /**
@@ -73,6 +74,13 @@ public class DecoratedBarcodeView extends FrameLayout {
         initialize(attrs);
     }
 
+
+    public void setType(int type){
+       if (viewFinder != null){
+           viewFinder.setColors(type);
+       }
+    }
+
     /**
      * Initialize the view with the xml configuration based on styleable attributes.
      *
@@ -101,8 +109,7 @@ public class DecoratedBarcodeView extends FrameLayout {
         barcodeView.initializeAttributes(attrs);
 
 
-        viewFinder = (ViewfinderView) findViewById(R.id.zxing_viewfinder_view);
-
+        viewFinder = findViewById(R.id.zxing_viewfinder_view);
         if (viewFinder == null) {
             throw new IllegalArgumentException(
                 "There is no a com.journeyapps.barcodescanner.ViewfinderView on provided layout " +
@@ -190,7 +197,7 @@ public class DecoratedBarcodeView extends FrameLayout {
         return (BarcodeView) findViewById(R.id.zxing_barcode_surface);
     }
 
-    public ViewfinderView getViewFinder() {
+    public CustomViewfinderView getViewFinder() {
         return viewFinder;
     }
 

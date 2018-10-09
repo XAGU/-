@@ -6,13 +6,16 @@ import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.xiaolian.amigo.data.network.model.lostandfound.BbsTopicListTradeRespDTO;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
 import com.xiaolian.amigo.data.network.model.user.UploadUserDeviceInfoReqDTO;
 import com.xiaolian.amigo.data.vo.DeviceCategory;
+import com.xiaolian.amigo.data.vo.NormalBathroom;
 import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.di.ApplicationContext;
 import com.xiaolian.blelib.BluetoothConstants;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -39,6 +42,9 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     private static final String PREF_KEY_UID = "PREF_KEY_UID";
     private static final String PREF_KEY_MOBILE = "PREF_KEY_MOBILE";
     private static final String PREF_KEY_PICTURE_URL = "PREF_KEY_PICTURE_URL";
+    private static final String PREF_KEY_BUILD_ID = "PREF_KEY_BUILD_ID";
+    private static final String PREF_KEY_SEX = "PREF_KEY_SEX" ;
+    private static final String PREF_KEY_ROOMID = "PREF_KEY_ROOMID" ;
     private static final String PREF_CMD_CONNECT_PREFIX = "PREF_CMD_CONNECT_";
     private static final String PREF_CMD_CLOSE_PREFIX = "PREF_CMD_CLOSE_";
     private static final String PREF_ORDER_ID_PREFIX = "PREF_ORDER_ID_PREFIX";
@@ -68,12 +74,37 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     private static final String PREF_ALERT_HEATER = "PREF_ALERT_HEATER";
     private static final String PREF_ALERT_DISPENSER = "PREF_ALERT_DISPENSER";
     private static final String PREF_ALERT_DRYER = "PREF_ALERT_DRYER";
+    private static final String PREF_ALERT_REPAIR = "PREF_ALERT_REPAIR";
     /************* 记住手机号 ******************/
     private static final String PREF_REMEMBER_MOBILE = "PREF_REMEMBER_MOBILE";
     /**
      * 扫描方式
      */
     private static final String PREF_KEY_SCAN_TYPE = "PREF_KEY_SCAN_TYPE";
+
+    /**
+     * 浴室密码说明
+     */
+    private static final String PREF_KEY_BATH_ROOM_PASSWORD_DESC = "PREF_KEY_BATH_ROOM_PASSWORD_DESC";
+
+
+    /**
+     * 浴室密码
+     */
+    private static final String PREF_KEY_BATH_ROOM_PASSWORD = "PREF_KEY_BATH_ROOM_PASSWORD";
+
+    private static final String PREF_KEY_BOOK_METHOD ="PREF_KEY_BOOK_METHOD";
+
+
+    /**
+     * 社交标签
+     */
+    public static final String PREF_KEY_SOCAL_TAG = "PREF_KEY_SOCAL_TAG";
+
+    public static final String PREF_KEY_COMMENTABLE = "PREF_KEY_COMMENTABLE";
+
+    public static final String PREF_KEY_ISFIRST_AFTER_LOGIN = "PREF_KEY_ISFIRST_AFTER_LOGIN";
+
 
     private String tokenHolder;
     private String deviceTokenHolder;
@@ -90,6 +121,7 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     private boolean transfer;
     // 推送token
     private String pushToken;
+
 
     @Inject
     public SharedPreferencesHelp(@ApplicationContext Context context, Gson gson) {
@@ -110,7 +142,7 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     @Override
     public void setToken(String token) {
         tokenHolder = token;
-        mSharedPreferences.edit().putString(PREF_KEY_TOKEN, token).apply();
+        mSharedPreferences.edit().putString(PREF_KEY_TOKEN, token).commit();
     }
 
     @Override
@@ -152,15 +184,18 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
             userHolder = new User();
         }
         userHolder.setId(mSharedPreferences.getLong(PREF_KEY_UID, -1));
-        userHolder.setResidenceId(mSharedPreferences.getLong(PREF_KEY_RESIDENCE_ID, -1));
-        userHolder.setResidenceName(mSharedPreferences.getString(PREF_KEY_RESIDENCE_NAME, null));
+        userHolder.setResidenceId(mSharedPreferences.getLong(PREF_KEY_RESIDENCE_ID, -1L));
+        userHolder.setResidenceName(mSharedPreferences.getString(PREF_KEY_RESIDENCE_NAME, ""));
         userHolder.setMacAddress(mSharedPreferences.getString(PREF_KEY_MAC_ADDRESS, null));
-        userHolder.setSchoolId(mSharedPreferences.getLong(PREF_KEY_SCHOOL_ID, -1));
+        userHolder.setSchoolId(mSharedPreferences.getLong(PREF_KEY_SCHOOL_ID, -1L));
         userHolder.setSchoolName(mSharedPreferences.getString(PREF_KEY_SCHOOL_NAME, null));
         userHolder.setNickName(mSharedPreferences.getString(PREF_KEY_NICKNAME, null));
         userHolder.setMobile(mSharedPreferences.getString(PREF_KEY_MOBILE, null));
         userHolder.setPictureUrl(mSharedPreferences.getString(PREF_KEY_PICTURE_URL, null));
-        userHolder.setCreateTime(mSharedPreferences.getLong(PREF_KEY_USER_CREATE_TIME, 0));
+        userHolder.setCreateTime(mSharedPreferences.getLong(PREF_KEY_USER_CREATE_TIME, 0L));
+        userHolder.setBuildingId(mSharedPreferences.getLong(PREF_KEY_BUILD_ID, -1L));
+        userHolder.setSex(mSharedPreferences.getInt(PREF_KEY_SEX , -1));
+        userHolder.setRoomId(mSharedPreferences.getLong(PREF_KEY_ROOMID ,-1l));
         return userHolder;
     }
 
@@ -202,7 +237,20 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
             mSharedPreferences.edit().putLong(PREF_KEY_USER_CREATE_TIME,
                     user.getCreateTime()).apply();
         }
+        if (null != user.getBuildingId()) {
+            mSharedPreferences.edit().putLong(PREF_KEY_BUILD_ID,
+                    user.getBuildingId()).apply();
+        }
+
+        if (null != user.getSex()){
+            mSharedPreferences.edit().putInt(PREF_KEY_SEX,
+                    user.getSex()).apply();
+        }
+
     }
+
+
+
 
     @Override
     public boolean isShowUrgencyNotify() {
@@ -336,6 +384,16 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     public void setLastRepairTime(Long time) {
         Long id = getUserInfo().getId();
         mUnclearSharedPreferences.edit().putLong(PREF_LAST_VIEW_REPAIR_PREFIX + id, time).apply();
+    }
+
+    @Override
+    public void setRepairGuide(Integer guideTime) {
+        mUnclearSharedPreferences.edit().putInt(PREF_ALERT_REPAIR, guideTime).apply();
+    }
+
+    @Override
+    public Integer getRepairGuide() {
+        return mUnclearSharedPreferences.getInt(PREF_ALERT_REPAIR, 0);
     }
 
     @Override
@@ -479,6 +537,113 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     public String getPushTag() {
         return mSharedPreferences.getString(PREF_KEY_PUSH_TAG, "");
     }
+
+    @Override
+    public void setBathPasswordDescription(ArrayList<String> bathPasswordDescription) {
+        String schoolBizStr = mGson.toJson(bathPasswordDescription);
+        mUnclearSharedPreferences
+                .edit()
+                .putString(PREF_KEY_BATH_ROOM_PASSWORD_DESC, schoolBizStr)
+                .apply();
+    }
+
+    @Override
+    public List<String> getBathPasswordDescription() {
+        String schoolBizStr = mUnclearSharedPreferences.getString(PREF_KEY_BATH_ROOM_PASSWORD_DESC, null);
+        if (null != schoolBizStr) {
+            return mGson.fromJson(schoolBizStr,
+                    new TypeToken<List<String>>() {
+                    }.getType());
+        }
+        return null;
+    }
+
+    @Override
+    public void setNormalBathroom(NormalBathroom normalBathroom) {
+
+    }
+
+    @Override
+    public NormalBathroom getNormalBathroom() {
+        return null;
+    }
+
+    @Override
+    public void setBathroomPassword(String password) {
+        mSharedPreferences
+                .edit()
+                .putString(PREF_KEY_BATH_ROOM_PASSWORD, password)
+                .apply();
+    }
+
+    @Override
+    public String getBathroomPassword() {
+        return mSharedPreferences.getString(PREF_KEY_BATH_ROOM_PASSWORD ,"");
+    }
+
+    @Override
+    public void setRoomId(Long id) {
+        if (id != null){
+            mSharedPreferences.edit().putLong(PREF_KEY_ROOMID , id).apply();
+        }
+    }
+
+    @Override
+    public Long getRoomId() {
+        Long roomId = mSharedPreferences.getLong(PREF_KEY_ROOMID , -1L);
+        return roomId ;
+    }
+
+    @Override
+    public void setBookMethod(int bookMethod) {
+        mSharedPreferences
+                .edit()
+                .putInt(PREF_KEY_BOOK_METHOD, bookMethod)
+                .apply();
+    }
+
+    @Override
+    public int getBookMethrod() {
+        return mSharedPreferences.getInt(PREF_KEY_BOOK_METHOD , -1);
+    }
+
+    @Override
+    public void setTopic(List<BbsTopicListTradeRespDTO.TopicListBean> topicListBeans) {
+        String topic = mGson.toJson(topicListBeans);
+        mSharedPreferences.edit().putString(PREF_KEY_SOCAL_TAG ,topic)
+                .apply();
+    }
+
+    @Override
+    public List<BbsTopicListTradeRespDTO.TopicListBean> getTopic() {
+        String topic = mSharedPreferences.getString(PREF_KEY_SOCAL_TAG ,"");
+        if (topic != null){
+            return mGson.fromJson(topic ,new TypeToken<List<BbsTopicListTradeRespDTO.TopicListBean>>(){}.getType());
+        }else {
+            return null;
+        }
+    }
+
+    @Override
+    public void setCommentEnable(boolean commentEnable) {
+        mSharedPreferences.edit().putBoolean(PREF_KEY_COMMENTABLE ,commentEnable).apply();
+    }
+
+    @Override
+    public boolean getCommentEnable() {
+        return mSharedPreferences.getBoolean(PREF_KEY_COMMENTABLE ,true);
+    }
+
+    @Override
+    public void setIsFirstAfterLogin(boolean isFisrstAfterLogin) {
+        mSharedPreferences.edit().putBoolean(PREF_KEY_ISFIRST_AFTER_LOGIN ,isFisrstAfterLogin).apply();
+    }
+
+    @Override
+    public boolean getIsFirstAfterLogin() {
+        return mSharedPreferences.getBoolean(PREF_KEY_ISFIRST_AFTER_LOGIN ,false);
+    }
+
 
     @Override
     public void logout() {

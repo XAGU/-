@@ -20,13 +20,17 @@ import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.enumeration.IntentAction;
 import com.xiaolian.amigo.data.enumeration.WithdrawWay;
 import com.xiaolian.amigo.data.network.model.user.UserResidenceDTO;
+import com.xiaolian.amigo.data.network.model.user.UserResidenceInListDTO;
 import com.xiaolian.amigo.di.componet.DaggerUserActivityComponent;
 import com.xiaolian.amigo.di.componet.UserActivityComponent;
 import com.xiaolian.amigo.di.module.UserActivityModule;
 import com.xiaolian.amigo.ui.base.BaseActivity;
+import com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity;
+import com.xiaolian.amigo.ui.device.heater.HeaterActivity;
 import com.xiaolian.amigo.ui.main.MainActivity;
 import com.xiaolian.amigo.ui.repair.RepairApplyActivity;
 import com.xiaolian.amigo.ui.user.adaptor.ListChooseAdaptor;
+import com.xiaolian.amigo.ui.user.CompleteInfoActivity;
 import com.xiaolian.amigo.ui.user.intf.IListChoosePresenter;
 import com.xiaolian.amigo.ui.user.intf.IListChooseView;
 import com.xiaolian.amigo.ui.wallet.WithdrawalActivity;
@@ -42,6 +46,15 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity.KEY_BUILDING_ID;
+import static com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity.KEY_ID;
+import static com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity.KEY_RESIDENCE_ID;
+import static com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity.KEY_RESIDENCE_NAME;
+import static com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity.KEY_RESIDENCE_TYPE;
+import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_LOCATION;
+import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_MAC_ADDRESS;
+import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_SUPPLIER_ID;
 
 /**
  * 列表选择页面
@@ -143,6 +156,7 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
 
         setUnBinder(ButterKnife.bind(this));
 
+
         getActivityComponent().inject(this);
 
         presenter.onAttach(ListChooseActivity.this);
@@ -200,29 +214,37 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                 case ACTION_LIST_BUILDING:
                     tvTitle.setText("选择楼栋");
                     if (getIntent() != null) {
-                        isEditDormitory = getIntent().getBooleanExtra(INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
-                        residenceBindId = getIntent().getLongExtra(INTENT_KEY_LIST_CHOOSE_RESIDENCE_BIND_ID, -1);
+                        isEditDormitory = getIntent().getBooleanExtra(INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);    //  是否是编辑页面进入
+                        residenceBindId = getIntent().getLongExtra(INTENT_KEY_LIST_CHOOSE_RESIDENCE_BIND_ID, -1);   //  type 表示是什么类型， 楼栋 ， 宿舍
                         deviceType = getIntent().getIntExtra(INTENT_KEY_LIST_DEVICE_TYPE, Device.UNKNOWN.getType());
                         activitySrc = getIntent().getStringExtra(INTENT_KEY_LIST_SRC_ACTIVITY);
                         residenceDetail = (UserResidenceDTO) getIntent().getSerializableExtra(INTENT_KEY_LIST_RESIDENCE_DETAIL);
                     }
                     // page size 为null 加载全部
-                    presenter.getBuildList(null, null, deviceType);
+                    if (Constant.MAIN_ACTIVITY_BATHROOM_SRC.equals(activitySrc)
+                           || Constant.ADD_BATHROOM_SRC.equals(activitySrc)
+                            || Constant.HEATER_TO_BATHROOM.equals(activitySrc)){
+                        presenter.queryBathResidenceList(null ,null , deviceType);
+                    }else {
+                        presenter.getBuildList(null, null, deviceType);
+                    }
                     adapter.setOnItemClickListener((view, position) -> {
                         try {
-                            Intent intent = new Intent(ListChooseActivity.this, ListChooseActivity.class);
-                            intent.putExtra(INTENT_KEY_LIST_CHOOSE_ACTION, ACTION_LIST_FLOOR);
-                            intent.putExtra(INTENT_KEY_LIST_CHOOSE_PARENT_ID, items.get(position).getId());
-                            intent.putExtra(INTENT_KEY_LIST_CHOOSE_IS_EDIT, isEditDormitory);
-                            intent.putExtra(INTENT_KEY_LIST_CHOOSE_RESIDENCE_BIND_ID, residenceBindId);
-                            intent.putExtra(INTENT_KEY_LIST_DEVICE_TYPE, deviceType);
-                            intent.putExtra(INTENT_KEY_LIST_SRC_ACTIVITY, activitySrc);
-                            intent.putExtra(INTENT_KEY_LIST_RESIDENCE_DETAIL, residenceDetail);
-                            startActivity(intent);
+                            if (presenter.isStartBathroom(this.items.get(position))) {
+                                Intent intent = new Intent(ListChooseActivity.this, ListChooseActivity.class);
+                                intent.putExtra(INTENT_KEY_LIST_CHOOSE_ACTION, ACTION_LIST_FLOOR);
+                                intent.putExtra(INTENT_KEY_LIST_CHOOSE_PARENT_ID, items.get(position).getId());
+                                intent.putExtra(INTENT_KEY_LIST_CHOOSE_IS_EDIT, isEditDormitory);
+                                intent.putExtra(INTENT_KEY_LIST_CHOOSE_RESIDENCE_BIND_ID, residenceBindId);
+                                intent.putExtra(INTENT_KEY_LIST_DEVICE_TYPE, deviceType);
+                                intent.putExtra(INTENT_KEY_LIST_SRC_ACTIVITY, activitySrc);
+                                intent.putExtra(INTENT_KEY_LIST_RESIDENCE_DETAIL, residenceDetail);
+                                startActivity(intent);
+                            }
                         } catch (ArrayIndexOutOfBoundsException e) {
                             Log.e(TAG, "数组越界");
                         } catch (Exception e) {
-                            Log.wtf(TAG, e);
+                            Log.e(TAG , e.getMessage());
                         }
                     });
                     break;
@@ -237,20 +259,26 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                         Long parentId = getIntent().getLongExtra(INTENT_KEY_LIST_CHOOSE_PARENT_ID, -1);
                         if (parentId != -1) {
                             // page size 为null 加载全部
-                            presenter.getFloorList(null, null, deviceType, parentId);
+                            if (Constant.USER_INFO_ACTIVITY_SRC.equals(activitySrc)) {
+                                presenter.getFloorList(null, null, deviceType, parentId);
+                            }else{
+                                presenter.getBathFloorList(null , null , deviceType , parentId);
+                            }
                         }
                     }
                     adapter.setOnItemClickListener((view, position) -> {
                         try {
-                            Intent intent = new Intent(ListChooseActivity.this, ListChooseActivity.class);
-                            intent.putExtra(INTENT_KEY_LIST_CHOOSE_ACTION, ACTION_LIST_DORMITOR);
-                            intent.putExtra(INTENT_KEY_LIST_CHOOSE_PARENT_ID, items.get(position).getId());
-                            intent.putExtra(INTENT_KEY_LIST_CHOOSE_IS_EDIT, isEditDormitory);
-                            intent.putExtra(INTENT_KEY_LIST_CHOOSE_RESIDENCE_BIND_ID, residenceBindId);
-                            intent.putExtra(INTENT_KEY_LIST_DEVICE_TYPE, deviceType);
-                            intent.putExtra(INTENT_KEY_LIST_SRC_ACTIVITY, activitySrc);
-                            intent.putExtra(INTENT_KEY_LIST_RESIDENCE_DETAIL, residenceDetail);
-                            startActivity(intent);
+                            if (presenter.isStartBathroom(this.items.get(position))) {
+                                Intent intent = new Intent(ListChooseActivity.this, ListChooseActivity.class);
+                                intent.putExtra(INTENT_KEY_LIST_CHOOSE_ACTION, ACTION_LIST_DORMITOR);
+                                intent.putExtra(INTENT_KEY_LIST_CHOOSE_PARENT_ID, items.get(position).getId());
+                                intent.putExtra(INTENT_KEY_LIST_CHOOSE_IS_EDIT, isEditDormitory);
+                                intent.putExtra(INTENT_KEY_LIST_CHOOSE_RESIDENCE_BIND_ID, residenceBindId);
+                                intent.putExtra(INTENT_KEY_LIST_DEVICE_TYPE, deviceType);
+                                intent.putExtra(INTENT_KEY_LIST_SRC_ACTIVITY, activitySrc);
+                                intent.putExtra(INTENT_KEY_LIST_RESIDENCE_DETAIL, residenceDetail);
+                                startActivity(intent);
+                            }
                         } catch (ArrayIndexOutOfBoundsException e) {
                             Log.e(TAG, "数组越界");
                         } catch (Exception e) {
@@ -265,12 +293,17 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                         deviceType = getIntent().getIntExtra(INTENT_KEY_LIST_DEVICE_TYPE, Device.UNKNOWN.getType());
                         activitySrc = getIntent().getStringExtra(INTENT_KEY_LIST_SRC_ACTIVITY);
                         residenceDetail = (UserResidenceDTO) getIntent().getSerializableExtra(INTENT_KEY_LIST_RESIDENCE_DETAIL);
-                        if (deviceType == Device.HEATER.getType()) {
-                            tvTitle.setText("选择宿舍");
-                        } else {
-                            tvTitle.setText("选择位置");
+                        if (TextUtils.equals(activitySrc, Constant.USER_INFO_ACTIVITY_SRC) || TextUtils.equals(activitySrc, Constant.COMPLETE_INFO_ACTIVITY_SRC)){
+                                tvTitle.setText("选择宿舍");
+                            adapter = new ListChooseAdaptor(items, false);
+                        }else {
+                            adapter = new ListChooseAdaptor(items, true);
+                            if (deviceType == Device.HEATER.getType()) {
+                                tvTitle.setText("选择洗澡房间");
+                            } else {
+                                tvTitle.setText("选择位置");
+                            }
                         }
-                        adapter = new ListChooseAdaptor(items, true);
                         recyclerView.setAdapter(adapter);
                         Long parentId = getIntent().getLongExtra(INTENT_KEY_LIST_CHOOSE_PARENT_ID, -1);
                         if (parentId != -1) {
@@ -283,25 +316,51 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                                 presenter.getDormitoryList(null, null, deviceType, parentId, false);
                             } else if (TextUtils.equals(activitySrc, Constant.MAIN_ACTIVITY_SRC)) {
                                 presenter.getDormitoryList(null, null, deviceType, parentId, false);
+                            } else if (TextUtils.equals(activitySrc ,Constant.USER_INFO_ACTIVITY_SRC)){
+                                presenter.getDormitoryList(null, null, deviceType, parentId, false);
+                            } else if (TextUtils.equals(activitySrc ,Constant.COMPLETE_INFO_ACTIVITY_SRC)) {
+                                presenter.getDormitoryList(null, null, deviceType, parentId, false);
+                            }else if (TextUtils.equals(activitySrc ,Constant.MAIN_ACTIVITY_BATHROOM_SRC)){
+                                presenter.getBathroomList(null, null, deviceType, parentId, false);
+                            }else if (TextUtils.equals(activitySrc ,Constant.ADD_BATHROOM_SRC)){
+                                presenter.getBathroomList(null, null, deviceType, parentId, false);
+                            }else if (TextUtils.equals(activitySrc ,Constant.HEATER_TO_BATHROOM)){
+                                presenter.getBathroomList(null, null, deviceType, parentId, false);
                             }
                         }
                     }
 
                     adapter.setOnItemClickListener((view, position) -> {
                         try {
-                            if (Constant.REPAIR_APPLY_ACTIVITY_SRC.equals(activitySrc)) {
-                                ListChooseAdaptor.Item item = items.get(position);
-                                Intent intent = new Intent(ListChooseActivity.this, RepairApplyActivity.class);
-                                intent.putExtra(Constant.LOCATION_ID, (long) item.getId());
-                                intent.putExtra(Constant.DEVICE_TYPE, deviceType);
-                                intent.putExtra(Constant.LOCATION, Device.getDevice(deviceType).getDesc() + Constant.CHINEASE_COLON + item.getExtra());
-                                startActivity(intent);
-                            } else if (Constant.EDIT_PROFILE_ACTIVITY_SRC.equals(activitySrc)) {
-                                presenter.bindDormitory(residenceBindId, items.get(position).getId(), isEditDormitory, activitySrc);
-                            } else if (Constant.MAIN_ACTIVITY_SRC.equals(activitySrc)) {
-                                presenter.bindDormitory(residenceBindId, items.get(position).getId(), isEditDormitory, activitySrc);
-                            } else {
-                                presenter.bindDormitory(residenceBindId, items.get(position).getId(), isEditDormitory);
+                            if (presenter.isStartBathroom(this.items.get(position))) {
+                                int bathType = -1;
+                                if (TextUtils.isEmpty(items.get(position).getGroupId())) bathType = 1;
+                                else bathType = 2;
+                                if (Constant.REPAIR_APPLY_ACTIVITY_SRC.equals(activitySrc)) {
+                                    ListChooseAdaptor.Item item = items.get(position);
+                                    Intent intent = new Intent(ListChooseActivity.this, RepairApplyActivity.class);
+                                    intent.putExtra(Constant.LOCATION_ID, (long) item.getId());
+                                    intent.putExtra(Constant.DEVICE_TYPE, deviceType);
+                                    intent.putExtra(Constant.LOCATION, Device.getDevice(deviceType).getDesc() + Constant.CHINEASE_COLON + item.getExtra());
+                                    startActivity(intent);
+
+                                } else if (Constant.EDIT_PROFILE_ACTIVITY_SRC.equals(activitySrc)) {
+//                                presenter.bindDormitory(residenceBindId, items.get(position).getId(), isEditDormitory, activitySrc);
+                                } else if (Constant.MAIN_ACTIVITY_SRC.equals(activitySrc)) {
+//                                presenter.bindDormitory(residenceBindId, items.get(position).getId(), isEditDormitory, activitySrc);
+                                } else if (Constant.USER_INFO_ACTIVITY_SRC.equals(activitySrc)) {
+                                    presenter.updateUser(items.get(position).getId(), activitySrc);
+                                } else if (Constant.COMPLETE_INFO_ACTIVITY_SRC.equals(activitySrc)) {
+                                    presenter.updateUser(items.get(position).getId(), activitySrc);
+                                } else if (Constant.MAIN_ACTIVITY_BATHROOM_SRC.equals(activitySrc)) {
+                                    presenter.recordBath(items.get(position).getId(), bathType, null , items.get(position).getMac());
+                                } else if (Constant.ADD_BATHROOM_SRC.equals(activitySrc)) {
+                                    presenter.recordBath(items.get(position).getId(), bathType, null , items.get(position).getMac());
+                                } else if (Constant.HEATER_TO_BATHROOM.equals(activitySrc)) {
+                                    presenter.recordBath(items.get(position).getId(), bathType, null , items.get(position).getMac());
+                                } else {
+//                                presenter.bindDormitory(residenceBindId, items.get(position).getId(), isEditDormitory);
+                                }
                             }
                         } catch (ArrayIndexOutOfBoundsException e) {
                             Log.e(TAG, "数组越界");
@@ -486,6 +545,37 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
     public void hideEmptyView() {
         rlEmpty.setVisibility(View.GONE);
         vDivideTop.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void backToEditProfileActivity(String residenceName) {
+        startActivity(this ,EditProfileActivity.class);
+        this.finish();
+    }
+
+    public void backToCompeteInfoActivity(String residenceName) {
+        startActivity(this ,CompleteInfoActivity.class);
+        this.finish();
+    }
+
+    @Override
+    public void startBathroom(UserResidenceInListDTO dto) {
+        startActivity(new Intent(this , ChooseBathroomActivity.class)
+        .putExtra(KEY_ID , dto.getId())
+        .putExtra(KEY_BUILDING_ID ,dto.getBuildingId())
+        .putExtra(KEY_RESIDENCE_ID , dto.getResidenceId())
+        .putExtra(KEY_RESIDENCE_TYPE , dto.getResidenceType())
+        .putExtra(KEY_RESIDENCE_NAME , dto.getResidenceName()));
+        this.finish();
+    }
+
+    @Override
+    public void startShower(String residenceName ,String macAddress , long supplierId ) {
+        startActivity(new Intent(this , HeaterActivity.class)
+                .putExtra(INTENT_KEY_LOCATION ,residenceName)
+                .putExtra(INTENT_KEY_MAC_ADDRESS ,macAddress)
+                .putExtra(INTENT_KEY_SUPPLIER_ID , supplierId));
+        this.finish();
     }
 
     @Override

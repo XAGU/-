@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v4.util.ObjectsCompat;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -22,6 +23,7 @@ import com.xiaolian.amigo.ui.main.adaptor.HomeAdaptor;
 import com.xiaolian.amigo.ui.widget.photoview.AlbumItemActivity;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
+import com.xiaolian.amigo.util.ScreenUtils;
 import com.xiaolian.amigo.util.TimeUtils;
 import com.youth.banner.Banner;
 import com.youth.banner.loader.ImageLoader;
@@ -80,11 +82,10 @@ public class LostAndFoundDetailContentDelegate
                 .placeholder(R.drawable.ic_picture_error)
                 .error(R.drawable.ic_picture_error)
                 .into((ImageView) holder.getView(R.id.iv_avatar));
-        holder.setText(R.id.tv_content_author, lostAndFoundDetailWrapper.getContentAuthor());
+        holder.setText(R.id.tv_content_author, lostAndFoundDetailWrapper.getNickName());
 
-        holder.setImageResource(R.id.iv_owner,
-                ObjectsCompat.equals(lostAndFoundDetailWrapper.getType(), LostAndFound.LOST) ?
-                        R.drawable.ic_lost_owner : R.drawable.ic_found_owner);
+        holder.setText(R.id.tag ,lostAndFoundDetailWrapper.getTopicName());
+        holder.setText(R.id.iv_owner ,"联主");
 
         holder.getView(R.id.iv_like).setVisibility(lostAndFoundDetailWrapper.isCommentEnable() ?
                 View.VISIBLE : View.GONE);
@@ -93,50 +94,16 @@ public class LostAndFoundDetailContentDelegate
         holder.setText(R.id.tv_like_count, String.valueOf(lostAndFoundDetailWrapper.getLikeCount()));
         holder.setImageResource(R.id.iv_like,
                 lostAndFoundDetailWrapper.isLiked() ?
-                        R.drawable.ic_like : R.drawable.ic_unlike);
+                        R.drawable.icon_praise_sel : R.drawable.ic_unlike);
         holder.getView(R.id.iv_like).setOnClickListener(v -> {
-            if (animating) {
-                return;
-            }
-            if (likeClickListener != null) {
-                Integer likeCount = lostAndFoundDetailWrapper.getLikeCount();
-                if (lostAndFoundDetailWrapper.isLiked()) {
-                    lostAndFoundDetailWrapper.setLiked(false);
-                    lostAndFoundDetailWrapper.setLikeCount(likeCount - 1);
-                    holder.setImageResource(R.id.iv_like, R.drawable.ic_unlike);
-                    holder.setText(R.id.tv_like_count,
-                            String.valueOf(lostAndFoundDetailWrapper.getLikeCount()));
-                    likeClickListener.onLikeClick(position, lostAndFoundDetailWrapper.getId(), true);
-                } else {
-                    lostAndFoundDetailWrapper.setLiked(true);
-                    lostAndFoundDetailWrapper.setLikeCount(likeCount + 1);
-                    holder.setImageResource(R.id.iv_like, R.drawable.ic_like);
-                    holder.setText(R.id.tv_like_count,
-                            String.valueOf(lostAndFoundDetailWrapper.getLikeCount()));
-                    likeClickListener.onLikeClick(position, lostAndFoundDetailWrapper.getId(), false);
-                    if (animation == null) {
-                        animation = AnimationUtils.loadAnimation(context, R.anim.lost_found_like);
-                        animation.setAnimationListener(new Animation.AnimationListener() {
-                            @Override
-                            public void onAnimationStart(Animation animation) {
-                                animating = true;
-                            }
-
-                            @Override
-                            public void onAnimationEnd(Animation animation) {
-                                animating = false;
-                            }
-
-                            @Override
-                            public void onAnimationRepeat(Animation animation) {
-
-                            }
-                        });
-                    }
-                    holder.getView(R.id.iv_like).startAnimation(animation);
-                }
-            }
+            like(holder, lostAndFoundDetailWrapper, position);
         });
+
+        holder.getView(R.id.tv_like_count).setOnClickListener(v -> {
+            like(holder, lostAndFoundDetailWrapper, position);
+        });
+
+
 
         holder.setText(R.id.tv_content_title, lostAndFoundDetailWrapper.getContentTitle());
         holder.setText(R.id.tv_content_desc, lostAndFoundDetailWrapper.getContent());
@@ -160,16 +127,36 @@ public class LostAndFoundDetailContentDelegate
             if (num > FIRST_IMAGE_INDEX) {
                 llImages.setVisibility(View.VISIBLE);
                 ivFirst.setVisibility(View.VISIBLE);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT
+                        , ViewGroup.LayoutParams.WRAP_CONTENT);
+                int width = measureImageWidth();
+                params.width = width ;
+                params.height = width ;
+                params.rightMargin = ScreenUtils.dpToPxInt(context , 10);
+                ivFirst.setLayoutParams(params);
                 manager.load(Constant.IMAGE_PREFIX + images.get(0)).into(ivFirst);
             }
             // 渲染第二张图
             if (num > SECOND_IMAGE_INDEX) {
                 ivSecond.setVisibility(View.VISIBLE);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT
+                        , ViewGroup.LayoutParams.WRAP_CONTENT);
+                int width = measureImageWidth();
+                params.width = width ;
+                params.height = width ;
+                params.rightMargin = ScreenUtils.dpToPxInt(context , 10);
+                ivSecond.setLayoutParams(params);
                 manager.load(Constant.IMAGE_PREFIX + images.get(1)).into(ivSecond);
             }
             // 渲染第三张图
             if (num > THIRD_IMAGE_INDEX) {
                 ivThird.setVisibility(View.VISIBLE);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT
+                        , ViewGroup.LayoutParams.WRAP_CONTENT);
+                int width = measureImageWidth();
+                params.width = width ;
+                params.height = width ;
+                ivThird.setLayoutParams(params);
                 manager.load(Constant.IMAGE_PREFIX + images.get(2)).into(ivThird);
             }
 
@@ -202,6 +189,50 @@ public class LostAndFoundDetailContentDelegate
         }
     }
 
+    private void like(ViewHolder holder, LostAndFoundDetailAdapter.LostAndFoundDetailWrapper lostAndFoundDetailWrapper, int position) {
+        if (animating) {
+            return;
+        }
+        if (likeClickListener != null) {
+            Integer likeCount = lostAndFoundDetailWrapper.getLikeCount();
+            if (lostAndFoundDetailWrapper.isLiked()) {
+                lostAndFoundDetailWrapper.setLiked(false);
+                lostAndFoundDetailWrapper.setLikeCount(likeCount - 1);
+                holder.setImageResource(R.id.iv_like, R.drawable.ic_unlike);
+                holder.setText(R.id.tv_like_count,
+                        String.valueOf(lostAndFoundDetailWrapper.getLikeCount()));
+                likeClickListener.onLikeClick(position, lostAndFoundDetailWrapper.getId(), true);
+            } else {
+                lostAndFoundDetailWrapper.setLiked(true);
+                lostAndFoundDetailWrapper.setLikeCount(likeCount + 1);
+                holder.setImageResource(R.id.iv_like, R.drawable.icon_praise_sel);
+                holder.setText(R.id.tv_like_count,
+                        String.valueOf(lostAndFoundDetailWrapper.getLikeCount()));
+                likeClickListener.onLikeClick(position, lostAndFoundDetailWrapper.getId(), false);
+                if (animation == null) {
+                    animation = AnimationUtils.loadAnimation(context, R.anim.lost_found_like);
+                    animation.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+                            animating = true;
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            animating = false;
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+
+                        }
+                    });
+                }
+                holder.getView(R.id.iv_like).startAnimation(animation);
+            }
+        }
+    }
+
     private void setStat(TextView textView, Integer viewCount, Integer commentCount, boolean commentEnable) {
         if (commentEnable) {
             textView.setText(String.format(Locale.getDefault(), "%d查看·%d回复", viewCount, commentCount));
@@ -230,5 +261,16 @@ public class LostAndFoundDetailContentDelegate
             }
         }
 
+    }
+
+
+    /**
+     * 动态设置的图片的宽高，图片宽度为3分之一
+     * @return
+     */
+    private int measureImageWidth(){
+        int screenWidth = ScreenUtils.getScreenWidth(context);
+        int imageWidth = screenWidth - ScreenUtils.dpToPxInt(context ,61);
+        return imageWidth / 3 ;
     }
 }

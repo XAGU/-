@@ -28,4 +28,35 @@ public class PayReqDTO {
 
     private Integer mode;
 
+    public String getMacAddress() {
+        return macAddress;
+    }
+
+    public void setMacAddress(String macAddress) {
+        this.macAddress = macAddress;
+    }
+
+    public Double getPrepay() {
+        return prepay;
+    }
+
+    public void setPrepay(Double prepay) {
+        this.prepay = prepay;
+    }
+
+    public Long getBonusId() {
+        return bonusId;
+    }
+
+    public void setBonusId(Long bonusId) {
+        this.bonusId = bonusId;
+    }
+
+    public Integer getMode() {
+        return mode;
+    }
+
+    public void setMode(Integer mode) {
+        this.mode = mode;
+    }
 }

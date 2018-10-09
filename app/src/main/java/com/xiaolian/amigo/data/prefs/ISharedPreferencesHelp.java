@@ -1,10 +1,13 @@
 package com.xiaolian.amigo.data.prefs;
 
+import com.xiaolian.amigo.data.network.model.lostandfound.BbsTopicListTradeRespDTO;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
 import com.xiaolian.amigo.data.network.model.user.UploadUserDeviceInfoReqDTO;
 import com.xiaolian.amigo.data.vo.DeviceCategory;
+import com.xiaolian.amigo.data.vo.NormalBathroom;
 import com.xiaolian.amigo.data.vo.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -111,7 +114,11 @@ public interface ISharedPreferencesHelp {
 
     void setLastRepairTime(Long time);
 
-    Long getLastRepairTime();
+    void setRepairGuide(Integer guideTime);
+
+    Integer getRepairGuide();
+
+        Long getLastRepairTime();
 
     void setRememberMobile(String mobile);
 
@@ -157,4 +164,46 @@ public interface ISharedPreferencesHelp {
     void setPushTag(String pushTag);
 
     String getPushTag();
+
+    void setBathPasswordDescription(ArrayList<String> bathPasswordDescription);
+
+    List<String> getBathPasswordDescription();
+
+    /**
+     * 缓存默认浴室地址
+     * @param normalBathroom
+     */
+    void setNormalBathroom(NormalBathroom normalBathroom);
+
+    /**
+     * 得到默认浴室地址
+     * @return
+     */
+    NormalBathroom getNormalBathroom();
+
+    void setBathroomPassword(String password);
+
+    String getBathroomPassword();
+
+    void setRoomId(Long id);
+
+    Long getRoomId();
+
+    void setBookMethod(int bookMethod) ;
+
+    int getBookMethrod();
+
+
+    void setTopic(List<BbsTopicListTradeRespDTO.TopicListBean> topicListBeans);
+
+
+    List<BbsTopicListTradeRespDTO.TopicListBean> getTopic();
+
+    void setCommentEnable(boolean commentEnable);
+
+    boolean getCommentEnable();
+
+    void setIsFirstAfterLogin(boolean isFisrstAfterLogin) ;
+
+    boolean getIsFirstAfterLogin();
 }

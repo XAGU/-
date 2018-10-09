@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.device.dryer;
 
+import android.os.Bundle;
 import android.view.View;
 
 import com.xiaolian.amigo.R;
@@ -22,6 +23,7 @@ public class DryerActivity extends WaterDeviceBaseActivity<IDryerPresenter> impl
     private boolean isFavor;
     private Long id;
 
+
     @Inject
     IDryerPresenter<IDryerView> presenter;
 
@@ -31,6 +33,7 @@ public class DryerActivity extends WaterDeviceBaseActivity<IDryerPresenter> impl
         if (getIntent() != null) {
             isFavor = getIntent().getBooleanExtra(DispenserActivity.INTENT_KEY_FAVOR, false);
             id = getIntent().getLongExtra(DispenserActivity.INTENT_KEY_ID, -1);
+
         }
     }
 
@@ -125,5 +128,12 @@ public class DryerActivity extends WaterDeviceBaseActivity<IDryerPresenter> impl
     @Override
     public void onBackPressed() {
         back2Main();
+    }
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setDvTitleNull();
     }
 }

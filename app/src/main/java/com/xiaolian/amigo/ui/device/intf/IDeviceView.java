@@ -41,6 +41,11 @@ public interface IDeviceView extends IBaseView {
     void onStatusError();
 
     /**
+     * 预付进行使用
+     */
+    void realPay();
+
+    /**
      * 设备开阀成功
      */
     void onOpen();

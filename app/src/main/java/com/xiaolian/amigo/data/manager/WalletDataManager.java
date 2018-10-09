@@ -42,6 +42,7 @@ import com.xiaolian.amigo.data.network.model.wxpay.WxpayTradeAppPayResultParseRe
 import com.xiaolian.amigo.data.network.model.wxpay.WxpayTradeAppPayResultParseRespDTO;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.data.vo.User;
+import com.xiaolian.amigo.di.UserServer;
 
 import javax.inject.Inject;
 
@@ -71,7 +72,7 @@ public class WalletDataManager implements IWalletDataManager {
     private IUserBillApi userBillApi;
 
     @Inject
-    public WalletDataManager(Retrofit retrofit, ISharedPreferencesHelp sharedPreferencesHelp) {
+    public WalletDataManager(@UserServer Retrofit retrofit, ISharedPreferencesHelp sharedPreferencesHelp) {
         alipayApi = retrofit.create(IAlipayApi.class);
         wxpayApi = retrofit.create(IWxpayApi.class);
         csApi = retrofit.create(ICsApi.class);

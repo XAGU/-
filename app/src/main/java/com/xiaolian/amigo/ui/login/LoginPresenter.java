@@ -71,6 +71,7 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
                     loginDataManager.setUserInfo(result.getData().getUser().transform());
                     loginDataManager.setToken(result.getData().getToken());
                     loginDataManager.setRememberMobile(mobile);
+                    loginDataManager.setIsFirstAfterLogin(true);
                     getMvpView().onSuccess(R.string.login_success);
                     getMvpView().gotoMainView();
                 } else {

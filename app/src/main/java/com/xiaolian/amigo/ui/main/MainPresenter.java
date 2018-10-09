@@ -6,10 +6,15 @@ import android.text.TextUtils;
 import com.xiaolian.amigo.data.base.LogInterceptor;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.manager.intf.IMainDataManager;
+import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.bathroom.BathRouteRespDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.CurrentBathOrderRespDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCheckRespDTO;
+import com.xiaolian.amigo.data.network.model.login.EntireUserDTO;
+import com.xiaolian.amigo.data.network.model.lostandfound.NoticeCountDTO;
 import com.xiaolian.amigo.data.network.model.notify.ReadNotifyReqDTO;
 import com.xiaolian.amigo.data.network.model.school.QuerySchoolBizListRespDTO;
 import com.xiaolian.amigo.data.network.model.system.BannerDTO;
@@ -23,6 +28,7 @@ import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.main.intf.IMainPresenter;
 import com.xiaolian.amigo.ui.main.intf.IMainView;
 import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.data.prefs.SharedPreferencesHelp;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -43,13 +49,18 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
     private static final int GUIDE_REMIND_MAX_TIME = 3;
     private static final String TAG = MainPresenter.class.getSimpleName();
     private IMainDataManager mainDataManager;
+    private IUserDataManager userDataManager ;
     private Integer guideTime;
     private LogInterceptor interceptor;
 
+    int noticeCount  ;
+
+    private boolean isShowRepair = false ;
     @Inject
-    MainPresenter(IMainDataManager mainDataManager, LogInterceptor interceptor) {
+    MainPresenter(IMainDataManager mainDataManager,IUserDataManager userDataManager ,LogInterceptor interceptor) {
         this.mainDataManager = mainDataManager;
         this.interceptor = interceptor;
+        this.userDataManager = userDataManager ;
     }
 
     @Override
@@ -57,6 +68,9 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
         super.onAttach(view);
         setUpInterceptor();
     }
+
+
+
 
     private void setUpInterceptor() {
         String androidId = getMvpView().getAndroidId();
@@ -96,6 +110,11 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
         addObserver(mainDataManager.getExtraInfo(), new NetworkObserver<ApiResult<PersonalExtraInfoDTO>>(false) {
 
             @Override
+            public void onStart() {
+
+            }
+
+            @Override
             public void onReady(ApiResult<PersonalExtraInfoDTO> result) {
                 if (null == result.getError()) {
                     if (!TextUtils.isEmpty(result.getData().getPreFileUrl())) {
@@ -121,7 +140,9 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
                     PersonalExtraInfoDTO dto = result.getData();
                     if (dto.getLastRepairTime() != null && mainDataManager.getLastRepairTime() < dto.getLastRepairTime()) {
                         dto.setNeedShowDot(true);
+                        isShowRepair = true ;
                     } else {
+                        isShowRepair = false ;
                         dto.setNeedShowDot(false);
                         dto.setLastRepairTime(null);
                     }
@@ -133,7 +154,11 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
                         getMvpView().hideXOkMigrate();
                     }
                     getMvpView().refreshProfile(dto);
-                    getMvpView().showNoticeAmount(result.getData().getNotifyAmount());
+                    if (result.getData().getNotifyAmount() != null) {
+                        getMvpView().showNoticeAmount(result.getData().getNotifyAmount());
+                    }else{
+                        getMvpView().showNoticeAmount(0);
+                    }
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }
@@ -188,6 +213,7 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
         });
     }
 
+
     @Override
     public boolean isShowUrgencyNotify() {
         return mainDataManager.isShowUrgencyNotify();
@@ -202,12 +228,12 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
     public void gotoHeaterDevice(String defaultAddress, Long defaultSupplierId,
                                  String location, Long residenceId) {
         if (TextUtils.isEmpty(defaultAddress)) {
-            if (mainDataManager.getUserInfo().getResidenceId() == null
-                    || mainDataManager.getUserInfo().getResidenceId() == -1) {
-                getMvpView().showBindDormitoryDialog();
-            } else {
+//            if (mainDataManager.getUserInfo().getResidenceId() == null
+//                    || mainDataManager.getUserInfo().getResidenceId() == -1) {
+//                getMvpView().showBindDormitoryDialog();
+//            } else {
                 getMvpView().showNoDeviceDialog();
-            }
+//            }
         } else {
             getMvpView().gotoDevice(Device.HEATER, defaultAddress, defaultSupplierId,
                     location, residenceId, false);
@@ -344,6 +370,11 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
         addObserver(mainDataManager.uploadDeviceInfo(reqDTO), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
 
             @Override
+            public void onStart() {
+
+            }
+
+            @Override
             public void onReady(ApiResult<BooleanRespDTO> result) {
                 if (null == result.getError()) {
                     if (result.getData().isResult()) {
@@ -386,6 +417,139 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
     @Override
     public void setPushToken(String pushToken) {
         mainDataManager.setPushToken(pushToken);
+    }
+
+    @Override
+    public void routeHeaterOrBathroom() {
+        addObserver(mainDataManager.route(), new NetworkObserver<ApiResult<BathRouteRespDTO>>() {
+
+            @Override
+            public void onReady(ApiResult<BathRouteRespDTO> result) {
+                if (null == result.getError()) {
+                    if (!result.getData().isExistHistory()) {
+                        //没有设置过洗澡地址，直接跳转到CompleteInfoActivity页面进行配置
+                            getMvpView().gotoCompleteInfoActivity(result.getData());
+//                        getMvpView().startToBathroomShower();
+                    }else {
+                        saveRoomInfo(result.getData().getResidenceId());
+                        if (result.getData().isIsPubBath()) {
+                            //设置了洗澡地址并且是公共浴室，判断是否设置了用户性别和宿舍信息
+//                            没有设置用户性别
+                            boolean isSetSex =  (userDataManager.getUser().getSex()!=null && (userDataManager.getUser().getSex()==1 || userDataManager.getUser().getSex()==2));
+//                            boolean isSetDormitoryAddress = !TextUtils.isEmpty(userDataManager.getUser().getResidenceName());
+
+                            if (!isSetSex ) /*没有设置性别或是宿舍信息*/{
+                                getMvpView().gotoCompleteInfoActivity(result.getData());
+                            } else  {
+                                getMvpView().routeToBathroomShower(result.getData());
+                            }
+                        } else {
+
+                            boolean isSetSex =  (userDataManager.getUser().getSex()!=null && (userDataManager.getUser().getSex()==1 || userDataManager.getUser().getSex()==2));
+//                            boolean isSetDormitoryAddress = !TextUtils.isEmpty(userDataManager.getUser().getResidenceName());
+
+                            if (!isSetSex ) /*没有设置性别或是宿舍信息*/{
+                                getMvpView().gotoCompleteInfoActivity(result.getData());
+                            } else  {
+                                getMvpView().routeToRoomShower(result.getData());
+                            }
+
+//
+                        }
+                    }
+                } else {
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+        });
+    }
+
+    @Override
+    public void saveRoomInfo(Long residenceId) {
+        userDataManager.setRoomId(residenceId);
+    }
+
+    @Override
+    public void currentOrder() {
+        addObserver(mainDataManager.currentOrder() ,new NetworkObserver<ApiResult<CurrentBathOrderRespDTO>>(){
+
+            @Override
+            public void onReady(ApiResult<CurrentBathOrderRespDTO> result) {
+                if (result.getError() == null){
+                    getMvpView().currentOrder(result.getData());
+                }else{
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+        });
+    }
+
+    @Override
+    public void getUser() {
+        addObserver(userDataManager.getUserInfo(), new NetworkObserver<ApiResult<EntireUserDTO>>() {
+
+            @Override
+            public void onReady(ApiResult<EntireUserDTO> result) {
+                if (null == result.getError()) {
+                    User user = new User(result.getData());
+                    userDataManager.setUser(user);
+                } else {
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+        });
+    }
+
+
+    @Override
+    public int getNoticeCount() {
+        return noticeCount;
+    }
+
+    @Override
+    public boolean getCommentEnable() {
+        return mainDataManager.getCommentEnable();
+    }
+
+    @Override
+    public boolean getIsShowRepair() {
+        return isShowRepair;
+    }
+
+    @Override
+    public boolean getIsFirstAfterLogin() {
+        return mainDataManager.getIsFirstAfterLogin();
+    }
+
+    @Override
+    public void setIsFirstAfterLogin(boolean b) {
+        mainDataManager.setIsFirstAfterLogin(b);
+    }
+
+
+    @Override
+    public void noticeCount() {
+        addObserver(userDataManager.noticeCount(),
+                new NetworkObserver<ApiResult<NoticeCountDTO>>(false) {
+
+
+                    @Override
+                    public void onStart() {
+
+                    }
+
+                    @Override
+                    public void onReady(ApiResult<NoticeCountDTO> result) {
+                        if (null == result.getError()) {
+                            noticeCount =  result.getData().getNoticeCount();
+                            if (result.getData().getNoticeCount() != 0) {
+                                getMvpView().showNoticeRemind();
+                            } else {
+                                getMvpView().hideNoticeRemind();
+                            }
+                        }
+                    }
+                });
     }
 
     private boolean isDeviceInfoUploaded(UploadUserDeviceInfoReqDTO newReq,

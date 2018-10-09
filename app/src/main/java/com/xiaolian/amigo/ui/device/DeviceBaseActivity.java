@@ -1,6 +1,5 @@
 package com.xiaolian.amigo.ui.device;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
@@ -11,7 +10,6 @@ import com.xiaolian.amigo.di.componet.DeviceActivityComponent;
 import com.xiaolian.amigo.di.module.DeviceActivityModule;
 import com.xiaolian.amigo.ui.base.BaseActivity;
 import com.xiaolian.amigo.ui.device.intf.IDeviceView;
-import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
 
 
@@ -41,6 +39,8 @@ public abstract class DeviceBaseActivity extends BaseActivity implements IDevice
 
     }
 
+
+
     public DeviceActivityComponent getActivityComponent() {
         return mActivityComponent;
     }
@@ -60,10 +60,10 @@ public abstract class DeviceBaseActivity extends BaseActivity implements IDevice
         Log.e(TAG, "onStatusError");
     }
 
+
     @Override
     protected void setUp() {
-        Intent intent = getIntent();
-        macAddress = intent.getStringExtra(Constant.MAC);
+
     }
 
     @Override
@@ -88,6 +88,11 @@ public abstract class DeviceBaseActivity extends BaseActivity implements IDevice
 
     @Override
     public void onReconnectSuccess(Object... extra) {
+
+    }
+
+    @Override
+    public void realPay() {
 
     }
 }

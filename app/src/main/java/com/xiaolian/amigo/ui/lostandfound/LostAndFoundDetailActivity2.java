@@ -2,12 +2,15 @@ package com.xiaolian.amigo.ui.lostandfound;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
-import android.support.v4.util.ObjectsCompat;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -26,12 +29,17 @@ import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundDetailPresenter2;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundDetailView2;
 import com.xiaolian.amigo.ui.widget.CustomLinearLayoutManager;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
+import com.xiaolian.amigo.ui.widget.dialog.BookingCancelDialog;
 import com.xiaolian.amigo.ui.widget.dialog.LostAndFoundBottomDialog;
 import com.xiaolian.amigo.ui.widget.dialog.LostAndFoundCommentDialog;
 import com.xiaolian.amigo.ui.widget.dialog.LostAndFoundReplyDialog;
+import com.xiaolian.amigo.ui.widget.dialog.PrepayDialog;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutFooter;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutHeader;
+import com.xiaolian.amigo.util.KeyboardStatusDetector;
+import com.xiaolian.amigo.util.Log;
 import com.xiaolian.amigo.util.ScreenUtils;
+import com.xiaolian.amigo.util.SoftInputUtils;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import java.util.List;
@@ -42,27 +50,41 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnTextChanged;
+
+import static com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity2.KEY_LIKE;
 
 /**
- * 失物招领详情
+ * 联子详情
  *
  * @author zcd
  * @date 17/9/21
  */
 
-public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implements ILostAndFoundDetailView2 {
+public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implements ILostAndFoundDetailView2  ,KeyboardStatusDetector.KeyboardVisibilityListener {
     public static final String KEY_TYPE = "LostAndFoundDetailType";
     public static final String KEY_ID = "LostAndFoundDetailId";
+
+    public static final String KEY_DELETE = "LostAndFoundDelete";
+    private static final  String TAG = LostAndFoundDetailActivity2.class.getSimpleName();
     private static final int REQUEST_CODE_REPLY_DETAIL = 0x0119;
+
+    private boolean isDelete ;
+    @BindView(R.id.et_reply)
+    EditText etReply;
+    @BindView(R.id.reply)
+    TextView reply;
+    @BindView(R.id.v_more_hold_1)
+    ImageView vMoreHold1;
     private LostAndFoundDetailAdapter adapter;
     private List<LostAndFoundDetailAdapter.LostAndFoundDetailWrapper> items = new Vector<>();
     private LostAndFoundDetailAdapter.LostAndFoundDetailWrapper content;
     private LostAndFoundDetailAdapter.LostAndFoundDetailWrapper hotTitle =
             new LostAndFoundDetailAdapter.LostAndFoundDetailWrapper(LostAndFoundDetailAdapter.LostAndFoundDetailItemType.TITLE,
-                    "热门评论");
+                    "热门回复");
     private LostAndFoundDetailAdapter.LostAndFoundDetailWrapper normalTitle =
             new LostAndFoundDetailAdapter.LostAndFoundDetailWrapper(LostAndFoundDetailAdapter.LostAndFoundDetailItemType.TITLE,
-                    "全部评论");
+                    "全部回复");
 
 
     @BindView(R.id.recyclerView)
@@ -81,7 +103,7 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
     LinearLayout llHeader;
 
     @BindView(R.id.ll_footer)
-    LinearLayout llFooter;
+    RelativeLayout llFooter;
 
     @BindView(R.id.view_line)
     View viewLine;
@@ -106,9 +128,20 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
     private LostAndFoundBottomDialog bottomDialog;
     private volatile boolean refreshFlag = false;
 
+
+    private boolean isReplyName = false;
+
+    private long replyToId;
+    private long replyToUserId;
+
+    /**
+     * 记录是否like
+     */
+    private int likeed ;
     @Inject
     ILostAndFoundDetailPresenter2<ILostAndFoundDetailView2> presenter;
 
+    private BookingCancelDialog deleteDialog ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,17 +169,69 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
                 vMoreHold.setVisibility(View.GONE);
             }
         });
-
-        if (getIntent() != null) {
-            if (ObjectsCompat.equals(getIntent().getIntExtra(KEY_TYPE, 1), com.xiaolian.amigo.data.enumeration.annotation.LostAndFound.LOST)) {
-                presenter.setType(com.xiaolian.amigo.data.enumeration.annotation.LostAndFound.LOST);
-                showLostDetail();
-            } else {
-                presenter.setType(com.xiaolian.amigo.data.enumeration.annotation.LostAndFound.FOUND);
-                showFoundDetail();
+        keyboardListener();
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
             }
-//            presenter.getDetail(getIntent().getLongExtra(KEY_ID, -1));
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy != 0) SoftInputUtils.hideSoftInputFromWindow(LostAndFoundDetailActivity2.this ,etReply);
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        isDelete = false ;
+    }
+
+    public void init(){
+        if (presenter == null  || vMoreHold == null
+                || vMoreHold1 == null) return ;
+        if (presenter.isCommentEnable()) {
+            vMoreHold.setVisibility(View.VISIBLE);
+            vMoreHold1.setVisibility(View.VISIBLE);
+            if (content.isCollected()) {
+                vMoreHold1.setBackgroundResource(R.drawable.college);
+                vMoreHold.setBackgroundResource(R.drawable.college);
+            } else {
+                vMoreHold1.setBackgroundResource(R.drawable.uncollege);
+                vMoreHold.setBackgroundResource(R.drawable.uncollege);
+            }
+        } else {
+            vMoreHold.setVisibility(View.GONE);
+            vMoreHold1.setVisibility(View.GONE);
         }
+    }
+
+
+    private void showDialog(){
+        if (deleteDialog == null){
+            deleteDialog = new BookingCancelDialog(this);
+            deleteDialog.setTvTitle("确认删除此条联子吗？");
+            deleteDialog.setTvTip("确认后词条联子的内容都将被删除");
+            deleteDialog.setOnCancelClickListener(new PrepayDialog.OnCancelClickListener() {
+                @Override
+                public void onCancelClick(Dialog dialog) {
+                    isDelete = true ;
+                    presenter.reportOrDelete();
+                }
+            });
+            deleteDialog.setOnOkClickListener(new PrepayDialog.OnOkClickListener() {
+                @Override
+                public void onOkClick(Dialog dialog) {
+                    dialog.cancel();
+                }
+            });
+        }
+
+        deleteDialog.show();
+
     }
 
     private void initRecyclerView() {
@@ -166,8 +251,10 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
             @Override
             public void onLikeClick(int position, long id, boolean like) {
                 if (like) {
+                    likeed =2 ;
                     presenter.unLikeContent(position, id);
                 } else {
+                    likeed = 1 ;
                     presenter.likeContent(position, id);
                 }
             }
@@ -177,6 +264,7 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
         adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+
             }
 
             @Override
@@ -184,6 +272,7 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
                 return false;
             }
         });
+
         recyclerView.setItemAnimator(null);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new CustomLinearLayoutManager(this));
@@ -210,23 +299,24 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
                            boolean owner, Long ownerId, Long time,
                            String avatar) {
         startActivityForResult(new Intent(this, LostAndFoundReplyDetailActivity.class)
-                .putExtra(LostAndFoundReplyDetailActivity.KEY_COMMENT_ID, commentId)
-                .putExtra(LostAndFoundReplyDetailActivity.KEY_COMMENT_CONTENT, commentContent)
-                .putExtra(LostAndFoundReplyDetailActivity.KEY_COMMENT_AUTHOR_ID, commentAuthorId)
-                .putExtra(LostAndFoundReplyDetailActivity.KEY_COMMENT_AUTHOR, commentAuthor)
-                .putExtra(LostAndFoundReplyDetailActivity.KEY_OWNER, owner)
-                .putExtra(LostAndFoundReplyDetailActivity.KEY_OWNER_ID, ownerId)
-                .putExtra(LostAndFoundReplyDetailActivity.KEY_TIME, time)
-                .putExtra(LostAndFoundReplyDetailActivity.KEY_AVATAR, avatar)
-                .putExtra(LostAndFoundReplyDetailActivity.KEY_LOST_FOUND_ID, presenter.getLostAndFound().getId())
-                .putExtra(LostAndFoundReplyDetailActivity.KEY_LOST_FOUND_TYPE,
-                        presenter.getLostAndFound().getType())
-                .putExtra(LostAndFoundReplyDetailActivity.KEY_COMMENT_ENABLE, presenter.isCommentEnable()),
+                        .putExtra(LostAndFoundReplyDetailActivity.KEY_COMMENT_ID, commentId)
+                        .putExtra(LostAndFoundReplyDetailActivity.KEY_COMMENT_CONTENT, commentContent)
+                        .putExtra(LostAndFoundReplyDetailActivity.KEY_COMMENT_AUTHOR_ID, commentAuthorId)
+                        .putExtra(LostAndFoundReplyDetailActivity.KEY_COMMENT_AUTHOR, commentAuthor)
+                        .putExtra(LostAndFoundReplyDetailActivity.KEY_OWNER, owner)
+                        .putExtra(LostAndFoundReplyDetailActivity.KEY_OWNER_ID, ownerId)
+                        .putExtra(LostAndFoundReplyDetailActivity.KEY_TIME, time)
+                        .putExtra(LostAndFoundReplyDetailActivity.KEY_AVATAR, avatar)
+                        .putExtra(LostAndFoundReplyDetailActivity.KEY_LOST_FOUND_ID, presenter.getLostAndFound().getId())
+                        .putExtra(LostAndFoundReplyDetailActivity.KEY_LOST_FOUND_TYPE,
+                                presenter.getLostAndFound().getType())
+                        .putExtra(LostAndFoundReplyDetailActivity.KEY_COMMENT_ENABLE, presenter.isCommentEnable()),
                 REQUEST_CODE_REPLY_DETAIL);
     }
 
     @Override
     public void onRefresh() {
+        init();
         if (content == null) {
             presenter.getDetail(getIntent().getLongExtra(KEY_ID, -1));
         } else {
@@ -240,14 +330,38 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
         presenter.getComments();
     }
 
-    private void showFoundDetail() {
-        tvToolbarTitle.setText("招领详情");
-        tvTitle.setText("招领详情");
+    @OnTextChanged({R.id.et_reply})
+    void etTextChange() {
+        if (TextUtils.isEmpty(etReply.getText().toString())) {
+            reply.setEnabled(false);
+        } else {
+            reply.setEnabled(true);
+        }
     }
 
-    private void showLostDetail() {
-        tvToolbarTitle.setText("失物详情");
-        tvTitle.setText("失物详情");
+
+    @OnClick({R.id.et_reply})
+    public void etReply() {
+        isReplyName = false;
+    }
+
+    @OnClick({R.id.reply})
+    public void reply() {
+        Log.d(TAG ,"clickReply");
+        String commentContent = etReply.getText().toString().trim();
+        if (isReplyName) {
+            presenter.publishReply(replyToId, replyToUserId, commentContent);
+            etReply.setText("");
+            SoftInputUtils.hideSoftInputFromWindow(this ,etReply);
+
+            isReplyName = false ;
+        } else {
+            presenter.publishComment(commentContent);
+            etReply.setText("");
+            SoftInputUtils.hideSoftInputFromWindow(this ,etReply);
+            isReplyName = false ;
+        }
+
     }
 
     @Override
@@ -256,6 +370,12 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
 
     @Override
     public void render(LostAndFound lostAndFound) {
+        if (presenter == null ) return ;
+        if (presenter.isCommentEnable()){
+            showComment();
+        }else{
+            hideComment();
+        }
         if (content == null) {
             content = new LostAndFoundDetailAdapter.LostAndFoundDetailWrapper(lostAndFound);
             try {
@@ -277,11 +397,14 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
             content.setViewCount(lostAndFound.getViewCount());
             content.setLikeCount(lostAndFound.getLikeCount());
         }
-        presenter.getComments();
+        if (presenter.isCommentEnable()) {
+            presenter.getComments();
+        }
     }
 
-    @OnClick({R.id.iv_three_dot, R.id.v_more_hold,
-            R.id.iv_three_dot2, R.id.v_more_hold_1})
+
+    @OnClick({R.id.iv_three_dot,
+            R.id.iv_three_dot2})
     public void onMoreClick() {
         if (content == null) {
             return;
@@ -291,57 +414,49 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
         }
         bottomDialog.setOkText(presenter.isOwner() ? "删除" : "举报");
         bottomDialog.setOkTextColor(R.color.colorDark6);
-        bottomDialog.setOnOkClickListener(dialog -> presenter.reportOrDelete());
-        if (presenter.isCommentEnable()) {
-            bottomDialog.setOtherText(content.isCollected() ? "取消收藏" : "收藏");
-            bottomDialog.setOtherTextColor(R.color.colorDark2);
-            bottomDialog.setOnOtherClickListener(dialog -> {
-                if (content.isCollected()) {
-                    presenter.unCollect();
-                } else {
-                    presenter.collect();
+        bottomDialog.setOnOkClickListener(dialog ->{
+                    if (presenter.isOwner()){
+                        showDialog();
+                    }else {
+                        presenter.reportOrDelete();
+                    }
                 }
-            });
-        } else {
-            bottomDialog.hideOtherText();
-        }
+                );
         bottomDialog.show();
     }
 
-    @OnClick(R.id.ll_footer)
-    public void publishComment() {
-        if (!presenter.isCommentEnable()) {
-            return;
-        }
-        if (commentDialog == null) {
-            commentDialog = new LostAndFoundCommentDialog(this);
-        }
-        commentDialog.setPublishClickListener((dialog, comment) -> {
-            if (TextUtils.isEmpty(comment)) {
-                onError("内容为空");
-                return;
+
+
+    @OnClick({R.id.v_more_hold, R.id.v_more_hold_1})
+    public void collect() {
+        if (presenter.isCommentEnable()) {
+            vMoreHold.setVisibility(View.VISIBLE);
+            vMoreHold1.setVisibility(View.VISIBLE);
+            if (content.isCollected()) {
+                presenter.unCollect();
+            } else {
+                presenter.collect();
             }
-            presenter.publishComment(comment);
-        });
-        commentDialog.show();
+        } else {
+            vMoreHold.setVisibility(View.GONE);
+            vMoreHold1.setVisibility(View.GONE);
+        }
     }
+
+
 
     private void publishReply(Long replyToId, Long replyToUserId, String replyToUserName) {
         if (!presenter.isCommentEnable()) {
             return;
         }
-        if (replyDialog == null) {
-            replyDialog = new LostAndFoundReplyDialog(this);
-        }
-        replyDialog.setReplyUser(replyToUserName);
-        replyDialog.setPublishClickListener((dialog, reply) -> {
-            if (TextUtils.isEmpty(reply)) {
-                onError("内容为空");
-                return;
-            }
-            presenter.publishReply(replyToId, replyToUserId, reply);
-        });
-        replyDialog.show();
+
+        etReply.setText("");
+        etReply.setHint("回复：" + replyToUserName);
+        SoftInputUtils.showSoftInputFromWindow(this, etReply);
+        isReplyName = true;
+        this.replyToId = replyToId;
+        this.replyToUserId = replyToUserId;
+
     }
 
 
@@ -357,17 +472,17 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
 
     @Override
     public void showErrorView() {
-//        rlError.setVisibility(View.VISIBLE);
+        rlError.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideEmptyView() {
-//        rlEmpty.setVisibility(View.GONE);
+        rlEmpty.setVisibility(View.GONE);
     }
 
     @Override
     public void hideErrorView() {
-//        rlError.setVisibility(View.GONE);
+        rlError.setVisibility(View.GONE);
     }
 
     @Override
@@ -425,20 +540,45 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
         }
     }
 
+    @OnClick({R.id.iv_back})
     @Override
     public void finishView() {
-        setResult(RESULT_OK);
+        Log.wtf(TAG ,"finishView");
         finish();
     }
 
+
     @Override
-    public void showFootView() {
-        llFooter.setVisibility(View.VISIBLE);
+    public void finish() {
+        Log.wtf(TAG ,"finish");
+        Intent intent = new Intent();
+        intent.putExtra(LostAndFoundActivity2.KEY_COMMENT_COUNT, content == null ?
+                0 : content.getCommentCount());
+        intent.putExtra(KEY_LIKE ,likeed);
+        intent.putExtra(KEY_DELETE ,isDelete);
+        setResult(RESULT_OK ,intent);
+        super.finish();
+    }
+
+    @Override
+    public void showFootView(boolean isCollege) {
+        vMoreHold1.setVisibility(View.VISIBLE);
+        vMoreHold.setVisibility(View.VISIBLE);
+        if (isCollege){
+            vMoreHold.setBackgroundResource(R.drawable.college);
+            vMoreHold1.setBackgroundResource(R.drawable.college);
+        }else{
+
+            vMoreHold.setBackgroundResource(R.drawable.uncollege);
+            vMoreHold1.setBackgroundResource(R.drawable.uncollege);
+        }
+
     }
 
     @Override
     public void hideFootView() {
-        llFooter.setVisibility(View.GONE);
+        vMoreHold1.setVisibility(View.GONE);
+        vMoreHold.setVisibility(View.GONE);
     }
 
     @Override
@@ -447,14 +587,39 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
         if (content != null) {
             content.setCollected(true);
         }
+        vMoreHold1.setBackground(null);
+        vMoreHold.setBackground(null);
+        vMoreHold1.setBackgroundResource(R.drawable.college);
+        vMoreHold.setBackgroundResource(R.drawable.college);
     }
 
     @Override
     public void unCollectSuccess() {
-        onSuccess("取消收藏成功");
         if (content != null) {
             content.setCollected(false);
         }
+
+        vMoreHold1.setBackgroundResource(R.drawable.uncollege);
+        vMoreHold.setBackgroundResource(R.drawable.uncollege);
+    }
+
+    /**
+     * 软键盘显示与隐藏的监听
+     */
+    public void keyboardListener(){
+        int keyHeight = ScreenUtils.getScreenHeight(this) / 3 ;
+        llFooter.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                if (oldBottom != 0 && bottom != 0 && (oldBottom - bottom > keyHeight)) {
+                    reply.setVisibility(View.VISIBLE);
+                } else if (oldBottom != 0 && bottom != 0 && (bottom - oldBottom > keyHeight)) {
+                    reply.setVisibility(View.GONE);
+                }
+            }
+        });
+
+
     }
 
     @Override
@@ -467,16 +632,34 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
     }
 
     @Override
+    public void showComment() {
+        if (llFooter != null) llFooter.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideComment() {
+        if (llFooter != null) llFooter.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showContent() {
+        recyclerView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideContent() {
+        recyclerView.setVisibility(View.GONE);
+    }
+
+
+    @Override
     public void onBackPressed() {
-//        if (presenter.needRefresh()) {
-//            finishView();
-//        } else {
-//        }
+        Log.wtf(TAG ,"onBackGround");
         Intent intent = new Intent();
-        intent.putExtra(LostAndFoundActivity2.KEY_VIEW_COUNT, content == null ?
-                0 : content.getViewCount() + 1);
         intent.putExtra(LostAndFoundActivity2.KEY_COMMENT_COUNT, content == null ?
                 0 : content.getCommentCount());
+        intent.putExtra(KEY_LIKE ,likeed);
+        intent.putExtra(KEY_DELETE ,isDelete);
         setResult(RESULT_OK, intent);
         super.onBackPressed();
     }
@@ -485,5 +668,16 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
     protected void onDestroy() {
         presenter.onDetach();
         super.onDestroy();
+
+        if (deleteDialog != null){
+            if (deleteDialog.isShowing()) deleteDialog.cancel();
+
+            deleteDialog = null ;
+        }
+    }
+
+    @Override
+    public void onVisibilityChanged(boolean keyboardVisible) {
+
     }
 }

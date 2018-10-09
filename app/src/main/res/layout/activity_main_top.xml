@@ -77,5 +77,41 @@
         android:src="@drawable/ic_xok_migrate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="21dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:id="@+id/notice"
+        android:src="@drawable/notice"/>
+
+
+    <TextView
+        android:id="@+id/tv_notice_count"
+        android:visibility="gone"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="45dp"
+        android:layout_marginRight="20dp"
+        android:textSize="10sp"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+        android:paddingBottom="1dp"
+        android:gravity="center"
+        android:background="@drawable/bg_rect_red_corner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="21dp"
+        android:layout_marginRight="21dp"
+        android:background="@color/white_10" />
 </RelativeLayout>
 

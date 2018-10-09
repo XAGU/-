@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:id="@+id/cl_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackgroundGray">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:elevation="0dp">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <LinearLayout
+                android:id="@+id/ll_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorBackgroundGray"
+                android:orientation="vertical"
+                android:paddingTop="8dp"
+                android:visibility="visible">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/toolBarMarginBottom"
+                    android:layout_marginLeft="@dimen/mainMarginLeftRight"
+                    android:layout_marginRight="@dimen/mainMarginLeftRight"
+                    android:layout_marginTop="42dp">
+
+                    <TextView
+                        android:id="@+id/tv_toolbar_title"
+                        style="@style/ToolBarTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        tool:text="预约洗澡" />
+
+
+                    <TextView
+                        android:id="@+id/tv_toolbar_sub_title"
+                        tool:visibility="visible"
+                        style="@style/ContentText_main"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        tool:text="预约记录" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/tool_bar"
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                android:background="@color/colorBackgroundGray"
+                app:layout_collapseMode="pin">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/iv_back"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:paddingBottom="10dp"
+                        android:paddingEnd="20dp"
+                        android:paddingStart="20dp"
+                        android:paddingTop="10dp"
+                        android:src="@drawable/back" />
+
+                    <TextView
+                        android:id="@+id/tv_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:textColor="#222"
+                        android:textSize="@dimen/sp15"
+                        android:textStyle="bold"
+                        tool:text="预约洗澡" />
+
+                    <TextView
+                        android:id="@+id/tv_sub_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/mainMarginLeftRight"
+                        android:textColor="#222"
+                        android:textSize="@dimen/sp12"
+                        tool:text="预约记录" />
+
+                    <View
+                        android:id="@+id/view_line"
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:layout_alignParentBottom="true"
+                        android:background="#d6d6d6"
+                        android:visibility="gone" />
+                </RelativeLayout>
+
+            </android.support.v7.widget.Toolbar>
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/ll_main_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/mainMarginLeftRight"
+            android:layout_marginRight="@dimen/mainMarginLeftRight"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_booking_tip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tool:text="每月失约3次将无法预约，已失约2次"
+                android:textColor="@color/colorDark6"
+                tool:visibility="visible"
+                android:visibility="gone"
+                android:textSize="12sp"
+                android:layout_marginBottom="21dp"/>
+
+            <com.xiaolian.amigo.ui.widget.BathroomOperationStatusView
+                android:id="@+id/statusView"
+                android:layout_width="match_parent"
+                android:layout_height="71dp"
+                android:layout_marginBottom="21dp"
+                />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:enabled="true"
+                android:id="@+id/bt_start_to_use"
+                android:layout_marginTop="21dp"
+                android:textAllCaps="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="21dp"
+                android:background="@drawable/button_shape"
+                android:gravity="center"
+                android:visibility="gone"
+                android:textColor="@color/white"
+                android:textSize="19sp"
+                android:textStyle="bold"
+                android:stateListAnimator="@null"
+                />
+
+            <LinearLayout
+                android:id="@+id/ll_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="21dp"
+                android:visibility="gone"
+                android:background="@color/colorBackgroundWhite"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/left_oper"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/consumer_bill"
+                    android:textColor="#45b0ff"
+                    android:visibility="gone"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:visibility="gone"
+                    android:background="#eee" />
+
+                <TextView
+                    android:id="@+id/right_oper"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/repurchase"
+                    android:textColor="#45b0ff"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_tip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="14dp"
+                android:layout_marginTop="@dimen/mainMarginLeftRight">
+
+                <TextView
+                    android:id="@+id/tv_tip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:textSize="@dimen/sp12"
+                    android:textColor="@color/colorDark6"
+                    android:text="预约使用说明" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="29dp"
+                    android:layout_toStartOf="@id/tv_tip"
+                    android:background="#e9e9e9" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="29dp"
+                    android:layout_toEndOf="@id/tv_tip"
+                    android:background="#e9e9e9" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_tip1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="7dp"
+                android:lineSpacingExtra="3dp"
+                style="@style/content_tip"
+                tool:text="@string/booking_use_tip1" />
+
+            <TextView
+                style="@style/content_tip"
+                android:id="@+id/tv_tip2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="7dp"
+                android:lineSpacingExtra="3dp"
+                tool:text="@string/booking_use_tip2" />
+
+            <TextView
+                style="@style/content_tip"
+                android:id="@+id/tv_tip3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="7dp"
+                android:lineSpacingExtra="3dp"
+                tool:text="@string/booking_use_tip3" />
+
+            <TextView
+                style="@style/content_tip"
+                android:id="@+id/tv_tip4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="3dp"
+                tool:text="@string/booking_use_tip4" />
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+
+</android.support.design.widget.CoordinatorLayout>

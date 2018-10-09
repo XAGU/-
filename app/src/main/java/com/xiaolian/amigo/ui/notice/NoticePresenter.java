@@ -61,10 +61,10 @@ public class NoticePresenter<V extends INoticeView> extends BasePresenter<V>
                         getMvpView().addPage();
                     } else {
                         getMvpView().addMore(new ArrayList<>());
-                        getMvpView().showEmptyView(R.string.empty_tip, R.color.colorBackgroundWhite);
+                        getMvpView().showEmptyView(R.string.empty_tip, R.color.colorBackgroundGray);
                     }
                 } else {
-                    getMvpView().showErrorView(R.color.colorBackgroundWhite);
+                    getMvpView().showErrorView(R.color.colorBackgroundGray);
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }
             }
@@ -74,7 +74,7 @@ public class NoticePresenter<V extends INoticeView> extends BasePresenter<V>
                 super.onError(e);
                 getMvpView().setLoadMoreComplete();
                 getMvpView().setRefreshComplete();
-                getMvpView().showErrorView(R.color.colorBackgroundWhite);
+                getMvpView().showErrorView(R.color.colorBackgroundGray);
             }
         });
     }

@@ -49,9 +49,16 @@
     <string name="please_enter_verify_code">请输入收到的验证码</string>
     <string name="password_invalid">密码不对，登录失败，请重试！</string>
     <string name="edit_password">修改账户密码</string>
+    <string name="edit_bathroom_password">修改浴室密码</string>
     <string name="please_enter_old_password">请输入原密码</string>
     <string name="please_enter_new_password">请输入新密码</string>
     <string name="please_enter_new_password_again">请再次输入新密码</string>
+    <string name="find_password">找回密码</string>
+    <string name="please_enter_new_six_pure_number_password">请输入新的6位纯数字密码</string>
+    <string name="save">保存</string>
+    <string name="bathroom_password_find">浴室密码找回</string>
+    <string name="get_verification_code">获取验证码</string>
+    <string name="description_bathroom_password">浴室密码说明</string>
     <string name="choose_bonus">挑选代金券</string>
 
     <string name="shower_process">以预付%1$d元，请尽快放水洗澡(%2$ds)</string>
@@ -82,7 +89,7 @@
     <string name="lost">失物</string>
     <string name="my_publish">我的发布</string>
     <string name="repair_record">报修记录</string>
-    <string name="edit_dormitory">宿舍列表</string>
+    <string name="edit_dormitory">洗澡地址</string>
     <string name="search">搜索</string>
     <string name="found">招领</string>
     <string name="expried_bonus">过期代金券</string>
@@ -94,7 +101,7 @@
     <string name="bind_success">绑定成功</string>
     <string name="login_success">登录成功</string>
     <string name="register_success">注册成功</string>
-    <string name="add_dormitory">添加宿舍</string>
+    <string name="add_dormitory">新的地址</string>
     <string name="change_avatar">更换头像</string>
     <string name="please_login">请重新登录</string>
     <string name="please_enter_password">请输入密码</string>
@@ -106,9 +113,10 @@
     <string name="prepay_money">预付金额</string>
     <string name="prepay_money_colon">预付金额：</string>
     <string name="withdrawal">提现</string>
-    <string name="network_available_error_tip">当前网络质量较差</string>
+    <string name="network_available_error_tip">当前网络质量较差 ಠ_ಠ</string>
+    <string name="network_not_available">当前网络不可用，检查网络</string>
     <string name="please_enter_password_to_verify">请输入登录密码进行验证</string>
-    <string name="manage_dormitory">管理宿舍</string>
+    <string name="manage_dormitory">新的地址</string>
     <string name="notice_center">通知中心</string>
     <string name="prepay_order">待找零订单</string>
     <string name="balance_trade_tip">100s内未打开放水阀门，系统将自动停止本次服务\n消费金额以实际用水量为准\n用水结束后请务必点击下方"结束找零"按钮</string>
@@ -212,6 +220,7 @@
     <string name="prepaid">已预付%1$s元</string>
     <string name="settlement_and_change">结算找零</string>
     <string name="use_time_colon">使用时间：</string>
+    <string name="user_style">使用方式：</string>
     <string name="device_location_colon">设备位置：</string>
     <string name="order_number_colon">订单号：</string>
     <string name="back_bonus_colon">退还代金券：</string>
@@ -247,14 +256,13 @@
     <string name="cancel_withdraw_success">取消提现成功</string>
     <string name="withdraw_amount_error_tip">提现金额不能低于10元</string>
     <string name="complaint_error">你已经投诉过该订单</string>
-    <string name="choose_dormitory">选择宿舍</string>
+    <string name="choose_dormitory">洗澡地址</string>
     <string name="content_description">content_description</string>
     <string name="no_sd_card_premission">没有SD卡权限</string>
     <string name="loading_error">加载失败</string>
     <string name="cancel_repair">取消报修</string>
     <string name="cancel_repair_success">取消报修成功</string>
     <string name="crash_toast_text">很抱歉,程序出现异常,即将退出.</string>
-    <string name="server_available_error_tip">服务器飞走啦，努力修复中</string>
     <string name="device_broken_tip_3">当前设备出现了故障，维修员正在赶来维修\n给您带来的不便敬请谅解！</string>
     <string name="device_broken_btn_3">切换宿舍</string>
     <string name="order_no_use_tip">
@@ -267,10 +275,13 @@
     <string name="heater_notice_content">1.热水澡最低消费&lt;font color=&quot;#ff5555&quot;&gt;%1$d分钱&lt;/font&gt;，请确认需要用水再点击“开始洗澡”按钮；&lt;br&gt;&lt;br&gt;2.洗澡时手机不用带进浴室哦，可通过水阀门暂停用水。最终消费由水表根据用水量而定，与使用时间无关。</string>
     <string name="dispenser_notice_content">1.饮水机最低消费&lt;font color=&quot;#ff5555&quot;&gt;%1$d分钱&lt;/font&gt;，请确认需要用水再点击“开始接水”按钮；&lt;br&gt;&lt;br&gt;2.最终消费由水表根据用水量而定，与使用时间无关。</string>
     <string name="dryer_notice_content">1.吹风机最低消费&lt;font color=&quot;#ff5555&quot;&gt;%1$d分钱&lt;/font&gt;，请确认需要使用再点击“开始使用”按钮；&lt;br&gt;&lt;br&gt;2.最终消费根据使用时间而定。</string>
+    <string name="repair_evaluate_tips_content">每评价一次就可以获得&lt;font color=&quot;#ff5555&quot;&gt;%1$d&lt;/font&gt;积分，想成为积分土豪红包土豪就快来评价吧～</string>
     <string name="water_use_notice_title">温馨提示</string>
+    <string name="repair_evaluate_tips">评价彩蛋</string>
     <string name="hair_dryer">吹风机</string>
     <string name="used_time_colon">使用时长：</string>
     <string name="washer">洗衣机</string>
+    <string name="dryer">烘干机</string>
     <string name="washer_index_tip">触摸设备上的开关\n扫描屏幕里的二维码</string>
     <string name="choose_washer_mode">请确认使用时再购买</string>
     <string name="washer_qr_code_top_bar_tip">已成功支付%1$s元(%2$s)</string>
@@ -290,8 +301,68 @@
     <string name="present_rule_colon">赠送规则：</string>
     <string name="use_period_colon">使用期限：</string>
     <string name="washer_tip">1.请触摸设备上的开关，将屏幕切换为拍摄模式\n2.然后将二维码对准设备上的二维码扫描区</string>
+    <string name="code_pay_tip2">2.第二步：将手机上的二维码对准设备上的二维码扫描区。</string>
     <string name="lost_and_found">失物招领</string>
     <string name="bill_detail">账单明细</string>
     <string name="credit_exchange">积分兑换</string>
     <string name="my_collection">我的收藏</string>
+
+    <!--公共浴室相关文案-->
+    <string name="booking_use_tip1">1.预约使用时，需要先预约10元，若有红包，可选择红包进行抵扣；</string>
+    <string name="booking_use_tip2">2.预约成功后，指定浴室房间将会保留15分钟，设备上会显示你的笑联手机账号，输入对应的密码即可使用；</string>
+    <string name="booking_use_tip3">3.洗浴结束后，消费金额将以实际用水量为准，系统会自动找零；</string>
+    <string name="booking_use_tip4">4.若未在预约时间内使用，系统将会自动退回预付金额。</string>
+
+    <string name="booking_user_common_tip">2.请确保你的可用余额在预约成功后，大于页面中的提示金额，否则将无法使用设备。</string>
+    <string name="booking_user_empty">1.预约成功后，请在预留时间内任意前往一间空浴室，在设备上输入你的笑联手机号和浴室密码，即可使用；</string>
+    <string name="booking_user_this">1.预约成功后，请在预留时间内前往指定的浴室，在设备上输入你的笑联手机号和浴室密码，即可使用；</string>
+    <string name="booking_queue_tip_1">1.当前排位号为0时，系统将自动预约成功；</string>
+    <string name="booking_queue_tip_2">2.预约成功后，请在预留时间内任意前往一间空浴室，在设备上输入你的笑联手机号和浴室密码，即可使用；</string>
+    <string name="booking_queue_tip_3">3.请确保你的可用余额在预约成功后，大于页面中的提示金额，否则将无法使用设备。</string>
+
+
+    <string name="buy_code_tip1">1.购买编码时，需要先预付10元，若有红包，可选择红包进行抵扣；</string>
+    <string name="buy_code_tip2">2.购买成功后，编码有效时间为60分钟，前往任意可以使用的空浴室房间，在设备上输入编码或者购买编码时对应的笑联手机号和登录密码即可使用；</string>
+    <string name="buy_code_tip3">3.洗浴结束后，消费金额将以实际用水量为准，系统会自动找零；</string>
+    <string name="buy_code_tip4">4.若编码在有效期内未使用，系统将会自动退回预付金额。</string>
+
+    <string name="shower_address">洗澡地址</string>
+    <string name="new_shower_address">新的地址</string>
+    <string name="choose_building">选择楼栋</string>
+    <string name="choose_floor">选择楼层</string>
+    <string name="choose_room">选择洗澡房间</string>
+    <string name="choose_bathroom">选择洗澡地址</string>
+
+    <string name="bathroom_password_tip1">1.请设置你的6位数字浴室密码，设置完成后可前往"个人中心"——"编辑个人信息"里进行修改或找回；</string>
+    <string name="bathroom_password_tip2">2.浴室密码的作用：在浴室房间里的设备上输入手机号＋浴室密码，便可开阀洗澡。</string>
+    <string name="set_bathroom_password">设置浴室密码</string>
+    <string name="successful_appointments_this_month">本月成功预约次数：</string>
+    <string name="reservation_tip">提示:每月失约3次将无法预约，你已失约<font color="#ff5555">%1$s</font>次</string>
+    <string name="consumer_bill">消费账单</string>
+    <string name="repurchase">重新预约</string>
+    <string name="preBookTimeOut">预约超时</string>
+    <string name="retry">重试</string>
+    <string name="preBathWithAnyEmptyBath">预约洗澡<font>(任意空浴室)</font></string>
+    <string name="InsufficientBalance">余额不足，请前往充值</string>
+    <string name="atLeastInTheWallet">请确保你的钱包中可用余额大于%1$s元</string>
+    <string name="tip">用水结束后，请务必滑动下方按钮，进行结算找零\n消费金额以实际用水量为准</string>
+    <string name="tip_timeout">已失约，请重新预约</string>
+    <string name="preBookingWait">预约排队</string>
+    <string name="preBookingWaitTip">预约排队中，请耐心等候</string>
+    <string name="tv_add_dormitory">添加宿舍</string>
+    <string name="complete_info">完善资料</string>
+
+    <!--排队 -->
+    <string name="queue_dialog_title">确认取消排队吗?</string>
+    <string name="queue_dialog_tip">取消排队后，下次进入需重新排队哦</string>
+
+
+    <string name="book_dialog_title">确认取消预约吗?</string>
+    <string name="book_dialog_tip">取消预约后，无法在浴室内洗澡哦</string>
+
+
+
+
+    <!--社交-->
+    <string name="social_search_hint">批阅一下感兴趣的联子 ~ </string>
 </resources>

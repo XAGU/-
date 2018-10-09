@@ -12,7 +12,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
@@ -43,6 +45,10 @@ public class LogInterceptor implements Interceptor {
      * 该链接不上传deviceToken
      */
     private final static String ANTI_TRADE_PREFIX = "trade/qrCode/scan";
+    /**
+     * 该链接上传deviceToken
+     */
+    private final static String UPDAT_RATE_PREFIX = "device/rate/send";
     private long lastTime = 0;
     private Request lastRequest;
     private final static long NETWORK_INTERVAL = 500;
@@ -61,7 +67,9 @@ public class LogInterceptor implements Interceptor {
     private String uniqueId;
     private static final String system = "2";
     private String server;
+    private String bathServer;
     private final String oldServer = BuildConfig.SERVER;
+    private final String oldBathServer = BuildConfig.SERVER_BATHROOM;
 
     private ISharedPreferencesHelp sharedPreferencesHelp;
 
@@ -77,6 +85,10 @@ public class LogInterceptor implements Interceptor {
         Constant.H5_SERVER = h5Server;
     }
 
+    public void setBathServer(String bathServer) {
+        this.bathServer = bathServer;
+    }
+
     @Override
     public Response intercept(@NonNull Chain chain) throws IOException {
         Request request = chain.request();
@@ -86,15 +98,18 @@ public class LogInterceptor implements Interceptor {
             token = "";
         }
 
-        if (request.url().url().getPath().startsWith(TRADE_PREFIX)
-                && !request.url().url().getPath().contains(ANTI_TRADE_PREFIX)) {
+        if ((request.url().url().getPath().contains(TRADE_PREFIX)
+                && (!request.url().url().getPath().contains(ANTI_TRADE_PREFIX))) || request.url().url().getPath().contains(UPDAT_RATE_PREFIX)) {
             String deviceToken = sharedPreferencesHelp.getCurrentDeviceToken();
             if (deviceToken == null) {
                 deviceToken = "";
             }
 
-            if (isDev && !TextUtils.isEmpty(server)) {
-                String newUrl = request.url().toString().replace(oldServer, server);
+            if (isDev && (!TextUtils.isEmpty(bathServer) || !TextUtils.isEmpty(server))) {
+                String newUrl = request.url().toString().replace(oldBathServer, bathServer);
+                Log.d(TAG, newUrl);
+                newUrl = newUrl.replace(oldServer, server);
+                Log.d(TAG, newUrl);
                 newRequest = request.newBuilder()
                         // 添加token
                         .url(newUrl)
@@ -110,8 +125,9 @@ public class LogInterceptor implements Interceptor {
             }
 
         } else {
-            if (isDev && !TextUtils.isEmpty(server)) {
+            if (isDev && (!TextUtils.isEmpty(server) || !TextUtils.isEmpty(bathServer))) {
                 String newUrl = request.url().toString().replace(oldServer, server);
+                newUrl = newUrl.replace(oldBathServer, bathServer);
                 newRequest = request.newBuilder()
                         // 添加token
                         .url(newUrl)
@@ -286,4 +302,6 @@ public class LogInterceptor implements Interceptor {
     public void setUniqueId(String uniqueId) {
         this.uniqueId = uniqueId;
     }
+
+
 }

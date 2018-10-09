@@ -16,6 +16,19 @@
         <item name="toolbarStyle" tools:ignore="NewApi">@style/MyToolBar</item>
     </style>
 
+
+    <style name="photoTheme" parent="AppTheme.NoActionBar">
+        <item name="android:windowAnimationStyle">@style/FeelyouWindowAnimTheme</item>
+    </style>
+    
+    
+    <style name="FeelyouWindowAnimTheme" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/photo_activity_in</item>
+        <item name="android:activityOpenExitAnimation">@anim/photo_activity_out</item>
+        <item name="android:activityCloseEnterAnimation">@anim/photo_activity_in</item>
+        <item name="android:activityCloseExitAnimation">@anim/photo_activity_out</item>
+    </style>
+
     <style name="MyToolBar" parent="Widget.AppCompat.Toolbar">
         <!--左边边距-->
         <item name="contentInsetStart">0dp</item>
@@ -343,7 +356,7 @@
         <item name="android:windowIsFloating">true</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowNoTitle">true</item>
-        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowBackground">@color/white</item>
         <item name="android:background">@color/transparent</item>
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:backgroundDimAmount">0.4</item>
@@ -396,4 +409,53 @@
         <item name="android:textSize">@dimen/login_edit_text_size</item>
     </style>
 
+
+    <!--提示内容的item样式-->
+    <style name="TextTipItem">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">9dp</item>
+        <item name="android:lineSpacingExtra">3dp</item>
+    </style>
+
+    <style name="ChooseBathroomDialog" parent="@android:style/Animation.Dialog">
+        <item name="android:windowAnimationStyle">@style/DialogAnimation</item>
+    </style>
+
+    <!--底部滑动动画-->
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/dialog_slide_up</item>
+        <item name="android:windowExitAnimation">@anim/dialog_slide_down</item>
+    </style>
+
+    <!--完善资料radiobtn样式-->
+    <style name="info_radio_style">
+    <item name="android:layout_gravity"> center_vertical</item>
+    <item name="android:button">@null</item>
+    <item name="android:background">@null</item>
+    <item name="android:drawablePadding">10dp</item>
+    <item name="android:textSize">12sp</item>
+    </style>
+
+    <!--男生radiobtn样式-->
+    <style name="info_radio_style_man" parent="info_radio_style">
+        <item name="android:drawableLeft">@drawable/radio_man</item>
+    </style>
+
+
+    <style name="info_radio_style_woman" parent="info_radio_style">
+        <item name="android:drawableLeft">@drawable/radio_woman</item>
+    </style>
+
+    <style name="content_tip">
+        <item name="android:textColor">@color/colorDark9</item>
+        <item name="android:textSize">@dimen/sp11</item>
+    </style>
+
+
+
+    <style name="pop_add">
+        <item name="android:windowEnterAnimation">@anim/pop_add_show</item>
+        <item name="android:windowExitAnimation">@anim/pop_add_hide</item>
+    </style>
 </resources>

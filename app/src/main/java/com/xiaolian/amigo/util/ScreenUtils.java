@@ -38,6 +38,11 @@ public class ScreenUtils {
         return (int) (pxToDp(context, px) + 0.5f);
     }
 
+    public static int sp2px(Context context, int spVal) {
+        final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
+        return (int) (spVal * fontScale + 0.5f);
+    }
+
     public static int getScreenWidth(Context context) {
         return getScreenWidth(context, false);
     }

@@ -12,12 +12,18 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.network.model.lostandfound.LostAndFoundDTO;
 import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundAdaptor2;
+import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundDetailContentDelegate;
+import com.xiaolian.amigo.ui.lostandfound.adapter.SocalContentAdapter;
+import com.xiaolian.amigo.ui.lostandfound.adapter.SocalContentAdapter2;
+import com.xiaolian.amigo.ui.lostandfound.adapter.SocialImgAdapter;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundPresenter2;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundView2;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutFooter;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutHeader;
+import com.xiaolian.amigo.ui.widget.photoview.AlbumItemActivity;
 import com.xiaolian.amigo.util.ScreenUtils;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
@@ -28,6 +34,9 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.xiaolian.amigo.ui.lostandfound.LostAndFoundDetailActivity2.KEY_ID;
+import static com.xiaolian.amigo.ui.lostandfound.SocalFragment.REQUEST_CODE_PHOTO;
 
 /**
  * 我的发布
@@ -52,47 +61,71 @@ public class MyPublishActivity2 extends LostAndFoundBaseActivity implements ILos
     @BindView(R.id.rl_error)
     RelativeLayout rlError;
 
-    private LostAndFoundAdaptor2 adaptor;
+//    private LostAndFoundAdaptor2 adaptor;
 
-    List<LostAndFoundAdaptor2.LostAndFoundWrapper> lostAndFounds = new ArrayList<>();
+//    List<LostAndFoundAdaptor2.LostAndFoundWrapper> lostAndFounds = new ArrayList<>();
+
+    List<LostAndFoundDTO> lostAndFounds = new ArrayList<>();
 
     private volatile boolean refreshFlag;
+
+    private SocalContentAdapter2 publicAdapter ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lost_and_found_my_publish);
         setUnBinder(ButterKnife.bind(this));
-
         initRecyclerView();
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!refreshFlag ){
+            presenter.resetPage();
+            presenter.getMyList();
+        }
+    }
+
     private void initRecyclerView() {
-        adaptor = new LostAndFoundAdaptor2(this, R.layout.item_lost_and_found2, lostAndFounds, true);
-//        recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 10)));
-        adaptor.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                try {
+        lostAndFounds = new ArrayList<>();
+        publicAdapter = new SocalContentAdapter2(this, R.layout.item_socal2, lostAndFounds, new MultiItemTypeAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                     Intent intent = new Intent(MyPublishActivity2.this, LostAndFoundDetailActivity2.class);
-                    intent.putExtra(LostAndFoundDetailActivity2.KEY_TYPE,
-                            lostAndFounds.get(position).getType());
-                    intent.putExtra(LostAndFoundDetailActivity2.KEY_ID, lostAndFounds.get(position).getId());
+                    intent.putExtra(KEY_ID ,lostAndFounds.get(position).getId());
                     startActivity(intent);
-
-                } catch (ArrayIndexOutOfBoundsException e) {
-                    Log.wtf(TAG, "数组越界", e);
-                } catch (Exception e) {
-                    Log.wtf(TAG, e);
                 }
-            }
 
+                @Override
+                public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                    onError("请左滑删除");
+                    return false;
+                }
+            }, new LostAndFoundDetailContentDelegate.OnLikeClickListener() {
+                @Override
+                public void onLikeClick(int position, long id, boolean like) {
+                    if (like) {
+                        presenter.unLikeComment(position, id);
+                    } else {
+                        presenter.likeComment(position, id);
+                    }
+                }
+            });
+        publicAdapter.setPhotoClickListener(new SocialImgAdapter.PhotoClickListener() {
             @Override
-            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
-                return false;
+            public void photoClick(int position, ArrayList<String> datas) {
+                Intent intent = new Intent(MyPublishActivity2.this, AlbumItemActivity.class);
+                intent.putExtra(AlbumItemActivity.EXTRA_CURRENT, position);
+                intent.putStringArrayListExtra(AlbumItemActivity.EXTRA_TYPE_LIST, (ArrayList<String>) datas);
+                startActivityForResult(intent, REQUEST_CODE_PHOTO);
             }
         });
-        recyclerView.setAdapter(adaptor);
+        publicAdapter.setPresenter(presenter);
+        recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 21)));
+        recyclerView.setAdapter(publicAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         refreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
@@ -116,7 +149,7 @@ public class MyPublishActivity2 extends LostAndFoundBaseActivity implements ILos
 
     private void onRefresh() {
         presenter.resetPage();
-        refreshFlag = true;
+        refreshFlag = false;
         presenter.getMyList();
     }
 
@@ -159,16 +192,21 @@ public class MyPublishActivity2 extends LostAndFoundBaseActivity implements ILos
     @Override
     public void showEmptyView() {
         rlEmpty.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
     }
 
+
+
     @Override
-    public void addMore(List<LostAndFoundAdaptor2.LostAndFoundWrapper> wrappers) {
+    public void addMore(List<LostAndFoundDTO> wrappers) {
         if (refreshFlag) {
             refreshFlag = false;
             lostAndFounds.clear();
         }
+        rlEmpty.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
         lostAndFounds.addAll(wrappers);
-        adaptor.notifyDataSetChanged();
+        publicAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -176,8 +214,9 @@ public class MyPublishActivity2 extends LostAndFoundBaseActivity implements ILos
 
     }
 
+
     @Override
-    public void showSearchResult(List<LostAndFoundAdaptor2.LostAndFoundWrapper> wrappers) {
+    public void showSearchResult(List<LostAndFoundDTO> wrappers) {
 
     }
 
@@ -206,4 +245,36 @@ public class MyPublishActivity2 extends LostAndFoundBaseActivity implements ILos
         presenter.onDetach();
         super.onDestroy();
     }
+
+    @Override
+    public void notifyAdapter(int position, boolean b) {
+        if (publicAdapter != null) {
+            publicAdapter.notifyItemChanged(position);
+        }
+
+    }
+
+    @Override
+    public void delete(int position) {
+        try {
+            lostAndFounds.remove(position);
+            publicAdapter.notifyItemRemoved(position);
+            publicAdapter.notifyItemRangeChanged(position ,lostAndFounds.size());
+
+            if (lostAndFounds.size() == 0) showEmptyView();
+        }catch (Exception e){
+            Log.e(TAG ,e.getMessage());
+        }
+
+    }
+
+    @Override
+    public void refer(List<LostAndFoundDTO> wrappers) {
+        lostAndFounds.clear();
+        rlEmpty.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
+        lostAndFounds.addAll(wrappers);
+        publicAdapter.notifyDataSetChanged();
+    }
+
 }

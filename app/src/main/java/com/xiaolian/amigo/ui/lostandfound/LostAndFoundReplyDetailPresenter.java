@@ -121,13 +121,19 @@ public class LostAndFoundReplyDetailPresenter<V extends ILostAndFoundReplyDetail
     public void publishReply(Long replyToId, Long replyToUserId, String reply) {
         SaveLostFoundCommentsRepliesDTO reqDTO = new SaveLostFoundCommentsRepliesDTO();
         reqDTO.setContent(reply);
+
         reqDTO.setReplyToId(replyToId);
         reqDTO.setReplyToUserId(replyToUserId);
         reqDTO.setLostFoundId(lostFoundId);
         /**
          * 评论1 回复2
          */
-        reqDTO.setType(2);
+        if (replyToId != null){
+            reqDTO.setType(2);
+        }else{
+            reqDTO.setType(3);
+        }
+
         addObserver(lostAndFoundManager.publishCommentOrReply(reqDTO),
                 new NetworkObserver<ApiResult<SimpleRespDTO>>(false, true) {
 
@@ -164,7 +170,7 @@ public class LostAndFoundReplyDetailPresenter<V extends ILostAndFoundReplyDetail
         if (isPublisher()) {
             DeleteLostFoundItemReqDTO reqDTO = new DeleteLostFoundItemReqDTO();
             reqDTO.setId(commentId);
-            reqDTO.setType(3);
+            reqDTO.setType(2);
             addObserver(lostAndFoundManager.delete(reqDTO),
                     new NetworkObserver<ApiResult<BooleanRespDTO>>() {
 
@@ -210,7 +216,7 @@ public class LostAndFoundReplyDetailPresenter<V extends ILostAndFoundReplyDetail
     public void deleteReply(Long id) {
         DeleteLostFoundItemReqDTO reqDTO = new DeleteLostFoundItemReqDTO();
         reqDTO.setId(id);
-        reqDTO.setType(4);
+        reqDTO.setType(3);
         addObserver(lostAndFoundManager.delete(reqDTO),
                 new NetworkObserver<ApiResult<BooleanRespDTO>>() {
 
@@ -234,7 +240,7 @@ public class LostAndFoundReplyDetailPresenter<V extends ILostAndFoundReplyDetail
     public void reportReply(Long id) {
         SaveLostAndFoundReportDTO reqDTO = new SaveLostAndFoundReportDTO();
         reqDTO.setId(id);
-        reqDTO.setType(4);
+        reqDTO.setType(3);
         addObserver(lostAndFoundManager.report(reqDTO),
                 new NetworkObserver<ApiResult<SimpleRespDTO>>(){
 

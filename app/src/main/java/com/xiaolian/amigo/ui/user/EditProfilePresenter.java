@@ -23,6 +23,7 @@ public class EditProfilePresenter<V extends IEditProfileView> extends BasePresen
     @SuppressWarnings("unused")
     private static final String TAG = EditProfilePresenter.class.getSimpleName();
     private IUserDataManager userDataManager;
+    private boolean isHadSetBathPassword;
 
     @Inject
     EditProfilePresenter(IUserDataManager userDataManager) {
@@ -42,6 +43,9 @@ public class EditProfilePresenter<V extends IEditProfileView> extends BasePresen
                     getMvpView().setNickName(result.getData().getNickName());
                     getMvpView().setSchoolName(result.getData().getSchoolName());
                     getMvpView().setResidenceName(result.getData().getResidenceName());
+                    getMvpView().showBathroomPassword(userDataManager.isExistBathroomBiz(), result.getData().isHadSetBathPassword());
+                    isHadSetBathPassword = result.getData().isHadSetBathPassword();
+                    userDataManager.setBathroomPassword();
                     if (result.getData().getSex() != null) {
                         getMvpView().setSex(result.getData().getSex());
                     }
@@ -67,6 +71,11 @@ public class EditProfilePresenter<V extends IEditProfileView> extends BasePresen
                 }
             }
         });
+    }
+
+    @Override
+    public boolean isHadSetBathPassword() {
+        return isHadSetBathPassword;
     }
 
 }

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@drawable/bg_rect_corner_dialog_inset"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:gravity="center"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:layout_marginTop="26dp"
+        android:layout_marginBottom="26dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:text="确认取消预约吗？"
+            android:textSize="17sp"
+            android:textColor="@color/colorFullRed"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_marginTop="13dp"
+            android:id="@+id/tv_tip"
+            android:text="取消预约后，无法在浴室内洗澡哦"
+            android:textColor="@color/colorDark2"
+            android:textSize="12sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <View
+        android:background="@color/colorDarke"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="48dp">
+        <TextView
+            android:id="@+id/tv_ok"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:textColor="@color/colorBlue"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:text="取消"
+            android:layout_height="match_parent" />
+        <View
+            android:background="@color/colorDarke"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"/>
+        <TextView
+            android:id="@+id/tv_cancel"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:textColor="@color/colorBlue"
+            android:text="确定"
+            android:textStyle="bold"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+</LinearLayout>

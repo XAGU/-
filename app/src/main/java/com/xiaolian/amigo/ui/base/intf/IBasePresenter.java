@@ -62,4 +62,7 @@ public interface IBasePresenter<V extends IBaseView> {
      * 清空观察者列表
      */
     void clearObservers();
+
+
+
 }

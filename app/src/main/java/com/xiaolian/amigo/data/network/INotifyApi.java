@@ -1,6 +1,8 @@
 package com.xiaolian.amigo.data.network;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
+import com.xiaolian.amigo.data.network.model.notify.NotifyDTO;
 import com.xiaolian.amigo.data.network.model.notify.QueryNotifyListReqDTO;
 import com.xiaolian.amigo.data.network.model.notify.ReadNotifyReqDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
@@ -29,4 +31,10 @@ public interface INotifyApi {
      */
     @POST("notify/read")
     Observable<ApiResult<BooleanRespDTO>> readUrgentNotify(@Body ReadNotifyReqDTO reqDTO);
+
+    /**
+     * 通知公共详情
+     */
+    @POST("notify/one")
+    Observable<ApiResult<NotifyDTO>> getNotice(@Body SimpleReqDTO reqDTO);
 }

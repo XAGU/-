@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:id="@+id/linear">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="28dp">
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/iv_avatar"
+        android:layout_width="@dimen/verification_height"
+        android:layout_height="@dimen/verification_height"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_picture_error" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/verification_height"
+        android:layout_toRightOf="@id/iv_avatar"
+        android:layout_marginStart="9dp"
+        tools:text="佩琪琪"
+        android:gravity="center"
+        android:textSize="@dimen/sp12"
+        android:id="@+id/name"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:layout_marginEnd="80dp"
+        android:textColor="@color/colorDark2"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="22dp"
+        android:paddingBottom="1dp"
+        android:paddingStart="7dp"
+        android:paddingEnd="7dp"
+        android:layout_alignParentRight="true"
+        tools:text="学习"
+        android:text="学习"
+        android:id="@+id/type"
+        android:textColor="@color/colorDark9"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:textSize="@dimen/sp12"
+        android:background="@drawable/cir_rad10_gray"
+        />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:maxLines="1"
+        android:textSize="14sp"
+        android:textColor="@color/colorDark2"
+        tools:text="真让人头大啊"
+        android:textStyle="bold"
+        android:id="@+id/title"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/colorDark6"
+        android:textSize="12sp"
+        android:maxLines="2"
+        android:ellipsize="end"
+        tools:text="55，在食堂2楼丢了我的小猪佩奇扇子～ 捡到的好心人请与我保持密切的联系，必有重谢，嘻嘻嘻"
+        android:id="@+id/content"
+        android:lineSpacingMultiplier="1.4"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/images"
+        android:layout_marginTop="14dp"
+        android:visibility="visible"
+        />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:textSize="@dimen/sp12"
+            android:textColor="@color/colorDarkB"
+            tools:text="今天23:15发布"
+            android:id="@+id/time"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:textSize="@dimen/sp12"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:textColor="@color/colorDark6"
+            android:layout_alignParentRight="true"
+            android:id="@+id/praise_num"
+            tools:text="999"
+            android:text="350"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:id="@+id/praise"
+            android:paddingRight="6dp"
+            android:src="@drawable/icon_praise_nor"
+            android:layout_toLeftOf="@id/praise_num"
+            android:layout_centerVertical="true"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:id="@+id/message_num"
+            android:textColor="@color/colorDark6"
+            android:layout_toLeftOf="@id/praise"
+            android:layout_marginRight="14dp"
+            android:layout_centerVertical="true"
+            tools:text="350"
+            android:text="350"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/reply"
+            android:layout_toLeftOf="@id/message_num"
+            android:id="@+id/message"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="6dp"/>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="6dp"
+        android:background="@color/colorDarke" />
+</LinearLayout>

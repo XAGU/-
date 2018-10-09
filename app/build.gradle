@@ -11,6 +11,7 @@ static def releaseTime() {
     return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
 }
 
+
 android {
     compileSdkVersion versions.compileSdk
     buildToolsVersion versions.buildTools
@@ -18,18 +19,19 @@ android {
         applicationId "com.xiaolian.amigo"
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
-        versionCode 20
-        versionName "1.1.60"
+        versionCode 31
+        versionName "1.1.92"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
-
         resConfigs "en"
 
         ndk {
-            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a'
+            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'x86'
         }
     }
+
+
     signingConfigs {
         config {
             keyAlias 'android_amigo'
@@ -60,12 +62,47 @@ android {
             }
         }
     }
+
     flavorDimensions "default"
     productFlavors {
         dev {
             // 测试
             applicationId "com.xiaolian.amigo_dev"
             resValue "string", "app_name", "笑联测试版"
+
+//              测试连接正式服
+
+//            buildConfigField "String", "SERVER", "\"https://api.xiaolian365.com/c/\""
+//            buildConfigField "String", "SERVER_BATHROOM", "\"https://api.xiaolian365.com/b/\""
+//            buildConfigField "String", "H5_SERVER", "\"https://h5.xiaolian365.com/c\""
+
+//             预发环境
+
+//            buildConfigField "String", "SERVER", "\"http://47.106.62.186/c/\""
+//            buildConfigField "String", "SERVER_BATHROOM", "\"http://47.106.62.186/b/\""
+//            buildConfigField "String", "H5_SERVER", "\"http://47.106.62.186:5097/\""
+
+            //  连接测试服
+//////
+//            buildConfigField "String", "SERVER", "\"http://47.107.45.109:5081/\"" // qa5
+//            buildConfigField "String", "SERVER", "\"http://10.195.90.132:5081/\"" // qa3
+//            buildConfigField "String", "SERVER_BATHROOM", "\"http://10.195.90.132:5082/\"" //qa5
+//////            buildConfigField "String", "SERVER", "\"http://47.107.45.109:5081/\"" //
+////////            buildConfigField "String", "SERVER", "\"http://10.195.90.167:5081/\"" //
+////            buildConfigField "String", "SERVER_BATHROOM", "\"http://47.107.45.109:5082/\"" //qa5
+//////            buildConfigField "String", "SERVER_BATHROOM", "\"http://10.195.90.167:5082/\"" //qa5
+//            buildConfigField "String", "H5_SERVER", "\"http://47.107.45.109:5097/c\"" //qa5
+
+
+//            buildConfigField "String", "SERVER", "\"http://39.108.97.229:5081/\"" // qa2
+//            buildConfigField "String", "SERVER_BATHROOM", "\"http://39.108.97.229:5082/\"" //qa2
+//            buildConfigField "String", "H5_SERVER", "\"http://39.108.97.229:5097/c\"" //qa2
+
+//            buildConfigField "String", "SERVER", "\"http://47.107.47.24:5081/\"" //qa4
+////            buildConfigField "String", "SERVER_BATHROOM", "\"http://47.107.47.24:5082/\"" //qa5
+//            buildConfigField "String", "SERVER_BATHROOM", "\"http://10.195.90.250:5082/\"" //qa4
+//            buildConfigField "String", "H5_SERVER", "\"http://47.107.47.24:5097/c\"" //qa4
+
             buildConfigField "String", "ENVIRONMENT", '"dev"'
             buildConfigField "String", "SERVER", "\"http://47.107.45.109:5081/\"" //qa5
 //            buildConfigField "String", "SERVER_BATHROOM", "\"http://47.107.45.109:5082/\"" //qa5
@@ -77,6 +114,26 @@ android {
 ////            buildConfigField "String", "SERVER", "\"http://10.195.90.187:8081\""
 ////            buildConfigField "String", "SERVER", "\"http://10.0.0.4:5081/\""
 ////            buildConfigField "String", "H5_SERVER", "\"http://116.62.236.67:5097/c\""
+
+//            buildConfigField "String", "SERVER", "\"http://39.108.97.229:5081/\""
+//            buildConfigField "String", "SERVER", "\"http://10.195.90.167:5081/\""
+//            buildConfigField "String", "SERVER", "\"http://10.195.90.167:5081/\""
+//            buildConfigField "String", "SERVER", "\"http://10.195.90.167:5081/\""
+//            buildConfigField "String", "SERVER", "\"http://47.107.45.109:5081/\"" //qa5
+//            buildConfigField "String", "SERVER", "\"http://39.108.74.164:5081/\""
+//            buildConfigField "String", "SERVER", "\"http://192.168.43.213:5081/\""
+//            buildConfigField "String", "SERVER_BATHROOM", "\"http://192.168.43.213:5082/\""   //大帝的服务器
+//            buildConfigField "String", "SERVER_BATHROOM", "\"http://10.195.90.250:5082/\""
+//            buildConfigField "String", "SERVER", "\"http://47.107.45.109:5081/\"" //qa5
+//            buildConfigField "String", "SERVER_BATHROOM", "\"http://47.107.45.109:5082/\"" //qa5
+//            buildConfigField "String", "SERVER_BATHROOM", "\"http://39.108.74.164:5082/\""
+
+//            buildConfigField "String", "SERVER", "\"http://10.195.90.130:5081/\""
+//            buildConfigField "String", "SERVER", "\"http://10.195.90.187:8081\""
+//            buildConfigField "String", "SERVER", "\"http://10.0.0.4:5081/\""
+//            buildConfigField "String", "H5_SERVER", "\"http://116.62.236.67:5097/c\""
+
+//            buildConfigField "String", "H5_SERVER", "\"http://47.107.45.109:5097/c\"" //qa5
 //            buildConfigField "String", "H5_SERVER", "\"http://39.108.74.164:5097/c\""
 //            buildConfigField "String", "H5_SERVER", "\"http://10.195.90.130:5097/c\""
 //            buildConfigField "String", "H5_SERVER", "\"http://10.0.0.5:5000/c\""
@@ -85,16 +142,17 @@ android {
             // 修改 AndroidManifest.xml 里渠道变量
             manifestPlaceholders = [UMENG_CHANNEL_VALUE      : "dev",
                                     FILE_PROVIDER_AUTHORITIES: applicationId + ".fileprovider",
-                                    XG_ACCESS_ID : "2100294839",
-                                    XG_ACCESS_KEY : "A37FU75FK6KC",
+                                    XG_ACCESS_ID             : "2100294839",
+                                    XG_ACCESS_KEY            : "A37FU75FK6KC",
             ]
 
-            // 预发
+//            // 预发
 //            applicationId "com.xiaolian.amigo_pre"
 //            resValue "string", "app_name", "笑联预发版"
 //            buildConfigField "String", "ENVIRONMENT", '"dev"'
+//            buildConfigField "String", "SERVER_BATHROOM", "\"http://47.106.62.186/b/\""
 //            buildConfigField "String", "SERVER", "\"http://47.106.62.186/c/\""
-//            buildConfigField "String", "H5_SERVER", "\"http://47.106.62.186/c\""
+//            buildConfigField "String", "H5_SERVER", "\"http://47.106.62.186:5097/c\""
 //            buildConfigField "String", "FILE_PREFIX", "\"https://s.xiaolian365.com/\""
 //            buildConfigField "String", "TRADE_PREFIX", "\"/c/trade\""
 //            // 修改 AndroidManifest.xml 里渠道变量
@@ -110,19 +168,23 @@ android {
             resValue "string", "app_name", "笑联"
 
             buildConfigField "String", "ENVIRONMENT", '"prod"'
-//            buildConfigField "String", "SERVER", "\"https://c.api.xiaolian365.com/\""
-//            buildConfigField "String", "H5_SERVER", "\"https://c.h5.xiaolian365.com/\""
-//            buildConfigField "String", "FILE_PREFIX", "\"https://s.xiaolian365.com/\""
+            //  测试
+//            buildConfigField "String", "SERVER", "\"http://47.107.45.109:5081/\"" //qa5
+////            buildConfigField "String", "SERVER_BATHROOM", "\"http://47.107.45.109:5082/\"" //qa5
+//            buildConfigField "String", "SERVER_BATHROOM", "\"http://10.195.90.250:5082/\"" //qa5
+//            buildConfigField "String", "H5_SERVER", "\"http://47.107.45.109:5097/c\"" //qa5
+
 
             buildConfigField "String", "SERVER", "\"https://api.xiaolian365.com/c/\""
+            buildConfigField "String", "SERVER_BATHROOM", "\"https://api.xiaolian365.com/b/\""
             buildConfigField "String", "H5_SERVER", "\"https://h5.xiaolian365.com/c\""
             buildConfigField "String", "FILE_PREFIX", "\"https://s.xiaolian365.com/\""
             buildConfigField "String", "TRADE_PREFIX", "\"/c/trade\""
 
             manifestPlaceholders = [UMENG_CHANNEL_VALUE      : "prod",
                                     FILE_PROVIDER_AUTHORITIES: applicationId + ".fileprovider",
-                                    XG_ACCESS_ID : "2100293839",
-                                    XG_ACCESS_KEY : "A684X2HPE9GZ",
+                                    XG_ACCESS_ID             : "2100293839",
+                                    XG_ACCESS_KEY            : "A684X2HPE9GZ",
             ]
         }
     }
@@ -168,6 +230,7 @@ dependencies {
     implementation deps.okhttp.logger
     implementation deps.okio
     implementation deps.dagger2.runtime
+    implementation 'com.android.support:support-v4:26.1.0'
     annotationProcessor deps.dagger2.compiler
     testAnnotationProcessor deps.dagger2.compiler
     androidTestAnnotationProcessor deps.dagger2.compiler
@@ -186,14 +249,13 @@ dependencies {
     implementation project(':zxing-android-embedded')
     implementation deps.wechatSDKWithMta
     implementation project(':blelib')
-
-
     //信鸽jar
     implementation 'com.tencent.xinge:xinge:3.2.3-release'
     //wup包
     implementation 'com.tencent.wup:wup:1.0.0.E-release'
     //mid包
     implementation 'com.tencent.mid:mid:4.0.6-release'
+
 }
 
 configurations.all {

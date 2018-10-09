@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.user.intf;
 
+import com.xiaolian.amigo.data.network.model.user.UserResidenceInListDTO;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 import com.xiaolian.amigo.ui.user.adaptor.ListChooseAdaptor;
 
@@ -17,6 +18,7 @@ public interface IListChooseView extends IBaseView {
      * 结束页面
      */
     void finishView();
+
 
     /**
      * 返回到宿舍列表
@@ -68,4 +70,33 @@ public interface IListChooseView extends IBaseView {
      * 隐藏空列表
      */
     void hideEmptyView();
+
+    /**
+     * 返回个人信息
+     */
+    void backToEditProfileActivity(String residenceName);
+
+    /**
+     * 返回完善资料
+     */
+    void backToCompeteInfoActivity(String residenceName);
+
+        /**
+         * 选择完洗澡地址，直接进入公共浴室界面
+         * @param dto
+         */
+    void startBathroom(UserResidenceInListDTO dto);
+
+    /**
+     * 选择完洗澡地址， 直接进入热水澡界面
+     * @param dto
+     *  .putExtra(INTENT_KEY_LOCATION ,dto.getResidenceName())  strign
+    .putExtra(INTENT_KEY_MAC_ADDRESS ,dto.getMacAddress())   string
+    .putExtra(INTENT_KEY_SUPPLIER_ID , dto.getSupplierId()));  long
+     */
+
+
+    void startShower(String residenceName ,String macAddress , long supplierId );
+
+
 }

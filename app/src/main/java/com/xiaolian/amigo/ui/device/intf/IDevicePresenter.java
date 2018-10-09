@@ -4,8 +4,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.xiaolian.amigo.data.enumeration.TradeStep;
-import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.trade.CmdResultRespDTO;
 import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 
@@ -23,6 +21,13 @@ public interface IDevicePresenter<V extends IBaseView> extends IBasePresenter<V>
      * @param macAddress 设备mac地址
      */
     void onPreConnect(@NonNull String macAddress);
+
+    /**
+     * 扫一扫的连接设备前准备
+     * @param macAddress
+     * @param isScan
+     */
+    void onPreConnect(@NonNull String macAddress  , boolean isScan);
 
     /**
      * 连接设备
@@ -60,6 +65,13 @@ public interface IDevicePresenter<V extends IBaseView> extends IBasePresenter<V>
      * @param bonusId 红包id
      */
     void onPay(@Nullable Double prepay, @Nullable Long bonusId);
+
+    /**
+     * 更新费率
+     *
+     * @param macAddress  设备地址
+     */
+    void onUpdateDeviceRate(@Nullable String macAddress);
 
     /**
      * 点击结束用水

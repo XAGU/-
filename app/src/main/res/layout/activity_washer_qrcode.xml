@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -23,61 +23,99 @@
             android:textSize="15sp"
             android:textStyle="bold"
             android:gravity="center"
+            android:id="@+id/tv_title"
             android:textColor="@color/colorDark2"
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </FrameLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:orientation="vertical">
+
+
+
     <ImageView
         android:id="@+id/iv_qr_code"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp"
-        android:layout_width="210dp"
-        android:layout_height="210dp" />
+        android:layout_width="182dp"
+        android:layout_height="182dp" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="54dp">
 
-    <View
-        android:layout_marginTop="30dp"
-        android:layout_marginStart="21dp"
-        android:layout_marginEnd="21dp"
-        android:background="@color/colorBackgroundGray"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"/>
-
+        <ImageView
+            android:layout_width="29dp"
+            android:layout_height="29dp"
+            android:src="@drawable/green_right"
+            android:layout_marginEnd="16dp"/>
     <TextView
-        android:layout_marginTop="25dp"
         android:id="@+id/tv_top_bar"
-        android:layout_marginStart="@dimen/mainMarginLeftRight"
-        android:layout_marginEnd="@dimen/mainMarginLeftRight"
-        android:background="@drawable/bg_washer_qrcode_top_bar"
         tools:text="已成功支付4元(两洗两漂一脱水)"
         android:gravity="center"
-        android:textColor="@color/white"
+        android:layout_gravity="center_vertical"
+        android:textColor="@color/colorFullRed"
         android:textStyle="bold"
         android:textSize="17sp"
         android:layout_width="match_parent"
-        android:layout_height="48dp" />
-    <ImageView
-        android:layout_gravity="center_horizontal"
-        android:src="@drawable/ic_washer_qrcode_top_bar_arrow"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="21dp"
+        android:layout_marginEnd="21dp"
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal">
+        
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0.5dp"
+            android:background="@color/dryer_line"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="29dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="烘干机使用说明"
+            android:textSize="12sp"
+            android:id="@+id/tip"
+            android:textColor="@color/colorDark6"
+            />
 
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0.5dp"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:background="@color/dryer_line"
+            android:layout_marginStart="29dp"
+            android:layout_marginEnd="29dp"/>
+    </LinearLayout>
     <TextView
-        android:layout_marginTop="23dp"
+        android:layout_marginTop="14dp"
         android:gravity="center"
-        android:text="温馨提示"
-        android:textColor="@color/colorDark2"
-        android:textSize="14sp"
+        android:text="1.第一步：请触摸设备上的开关，将屏幕切换为拍摄模式;"
+        android:textColor="@color/colorDark9"
+        android:textSize="12sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <TextView
-        android:layout_gravity="center_horizontal"
-        android:gravity="start"
-        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:layout_marginTop="12dp"
         android:textSize="12sp"
-        android:textColor="@color/colorDark2"
-        android:text="@string/washer_tip"
-        android:layout_width="wrap_content"
+        android:textColor="@color/colorDark9"
+        android:text="@string/code_pay_tip2"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-</LinearLayout>
+
+    </LinearLayout>
+</RelativeLayout>

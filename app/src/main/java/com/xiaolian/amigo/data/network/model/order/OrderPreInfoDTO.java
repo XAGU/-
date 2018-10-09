@@ -13,7 +13,6 @@ import lombok.Data;
  * @author zcd
  * @date 17/10/13
  */
-@Data
 public class OrderPreInfoDTO implements Parcelable {
     /**
      * 代金券
@@ -78,4 +77,56 @@ public class OrderPreInfoDTO implements Parcelable {
             return new OrderPreInfoDTO[size];
         }
     };
+
+    public Bonus getBonus() {
+        return bonus;
+    }
+
+    public void setBonus(Bonus bonus) {
+        this.bonus = bonus;
+    }
+
+    public Double getPrepay() {
+        return prepay;
+    }
+
+    public void setPrepay(Double prepay) {
+        this.prepay = prepay;
+    }
+
+    public Double getMinPrepay() {
+        return minPrepay;
+    }
+
+    public void setMinPrepay(Double minPrepay) {
+        this.minPrepay = minPrepay;
+    }
+
+    public Double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(Double balance) {
+        this.balance = balance;
+    }
+
+    public String getCsMobile() {
+        return csMobile;
+    }
+
+    public void setCsMobile(String csMobile) {
+        this.csMobile = csMobile;
+    }
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
+    }
+
+    public static Creator<OrderPreInfoDTO> getCREATOR() {
+        return CREATOR;
+    }
 }

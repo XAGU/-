@@ -19,19 +19,23 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.bluetooth.BluetoothAdapter;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.CursorLoader;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
@@ -52,6 +56,7 @@ import com.xiaolian.amigo.ui.main.HomeFragment2;
 import com.xiaolian.amigo.ui.main.MainActivity;
 import com.xiaolian.amigo.ui.widget.dialog.ActionSheetDialog;
 import com.xiaolian.amigo.ui.widget.dialog.LoadingDialog;
+import com.xiaolian.amigo.util.FileUtils;
 import com.xiaolian.amigo.util.Log;
 import com.xiaolian.amigo.util.NetworkUtil;
 import com.yalantis.ucrop.UCrop;
@@ -93,7 +98,6 @@ public abstract class BaseActivity extends SwipeBackActivity
     ActionSheetDialog actionSheetDialog;
     // 申请蓝牙访问权限后的回调
     private Callback blePermissonCallback;
-
     @Inject
     ISharedPreferencesHelp sharedPreferencesHelp;
     private Toast toast;
@@ -119,10 +123,13 @@ public abstract class BaseActivity extends SwipeBackActivity
         mPhotoImageUri = getImageUri("photo");
         //调用相机
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, mPhotoImageUri);
         startActivityForResult(intent, REQUEST_CODE_CAMERA);
     }
 
+
+    File outputImage ;
 
     private Uri getImageUri(String fileName) {
         String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xiaolian/";
@@ -135,7 +142,7 @@ public abstract class BaseActivity extends SwipeBackActivity
             }
         }
         Uri imageUri;
-        File outputImage = new File(path, fileName + ".jpg");
+        outputImage = new File(path, fileName + ".jpg");
         try {
             if (outputImage.exists()) {
                 boolean isDeleteSuccess = outputImage.delete();
@@ -152,10 +159,11 @@ public abstract class BaseActivity extends SwipeBackActivity
             Log.e(TAG, e.getMessage());
         }
         if (Build.VERSION.SDK_INT >= 24) {
-            imageUri = FileProvider.getUriForFile(this, getPackageName() + ".fileprovider", outputImage);
+            imageUri = FileProvider.getUriForFile(this, getPackageName() + ".fileprovider"  , outputImage);
         } else {
             imageUri = Uri.fromFile(outputImage);
         }
+        Log.d(TAG ,imageUri.getPath());
         return imageUri;
     }
 
@@ -182,23 +190,108 @@ public abstract class BaseActivity extends SwipeBackActivity
         return Uri.fromFile(outputImage);
     }
 
+    private File getCropFile(String fileName) {
+        String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xiaolian/";
+        File path = new File(filePath);
+        if (!path.exists() && !path.mkdirs()) {
+            onError(R.string.no_sd_card_premission);
+            return null;
+        }
+        File outputImage = new File(path, fileName + ".jpg");
+        try {
+            if (outputImage.exists() && !outputImage.delete()) {
+                onError(R.string.no_sd_card_premission);
+                return null;
+            }
+            if (!outputImage.createNewFile()) {
+                onError(R.string.no_sd_card_premission);
+                return null;
+            }
+        } catch (IOException e) {
+            Log.e(TAG, e.getMessage());
+        }
+        return outputImage;
+    }
+
+    @TargetApi(19)
+    private String handleImageOnKitKat(Intent data){
+        String imagePath = null;
+        Uri uri = data.getData();
+        if (DocumentsContract.isDocumentUri(this,uri)){
+            //如果是document类型的Uri,则通过document id处理
+            String docId = DocumentsContract.getDocumentId(uri);
+            if ("com.android.providers.media.documents".equals(uri.getAuthority())){
+                String id = docId.split(":")[1];//解析出数字格式的id
+                String selection = MediaStore.Images.Media._ID + "=" + id;
+                imagePath = getImagePath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,selection);
+            }else if ("com.android.providers.downloads.documents".equals(uri.getAuthority())){
+                Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"),Long.valueOf(docId));
+                imagePath = getImagePath(contentUri,null);
+            }
+        }else if ("content".equalsIgnoreCase(uri.getScheme())){
+            //如果是content类型的Uri，则使用普通方式处理
+            imagePath = getImagePath(uri,null);
+        }else if ("file".equalsIgnoreCase(uri.getScheme())){
+            //如果是file类型的Uri，直接获取图片路径即可
+            imagePath = uri.getPath();
+        }
+
+        return imagePath ;
+    }
+
+
+    private String getImagePath(Uri uri,String selection){
+        String path = null;
+        //通过Uri和selection来获取真实的图片路径
+        Cursor cursor = getContentResolver().query(uri,null,selection,null,null);
+        if (cursor != null){
+            if (cursor.moveToFirst()){
+                path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+            }
+            cursor.close();
+        }
+        return path;
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_CODE_CAMERA) {
-                mCropImageUri = getCropUri("crop");
-                UCrop.Options options = new UCrop.Options();
-                int colorPrimary = ContextCompat.getColor(this, R.color.colorPrimary);
-                options.setToolbarColor(colorPrimary);
-                options.setActiveWidgetColor(colorPrimary);
-                options.setStatusBarColor(colorPrimary);
-                UCrop.of(mPhotoImageUri, mCropImageUri)
-                        .withAspectRatio(1, 1)
+
+                if (imageCallback != null) {
+                    mCropImageUri = getCropUri("crop");
+                    UCrop.Options options = new UCrop.Options();
+                    int colorPrimary = ContextCompat.getColor(this, R.color.colorPrimary);
+                    options.setToolbarColor(colorPrimary);
+                    options.setActiveWidgetColor(colorPrimary);
+                    options.setStatusBarColor(colorPrimary);
+                    UCrop.of(mPhotoImageUri, mCropImageUri)
+                            .withAspectRatio(1, 1)
 //                        .withMaxResultSize(250 * 2, 170 * 2)
-                        .withOptions(options)
-                        .start(this);
+                            .withOptions(options)
+                            .start(this);
+                }
+
+
+                if (imageCallback2 != null) {
+                    imageCallback2.callback(outputImage.getAbsolutePath());
+                }
+//                    File cropFile = getCropFile("crop");
+
+//                    if (FileUtils.copyFile(outputImage.getAbsoluteFile(), cropFile, new FileUtils.OnReplaceListener() {
+//                        @Override
+//                        public boolean onReplace() {
+//                            return true;
+//                        }
+//                    })){
+//                        imageCallback2.callback(cropFile.getPath());
+//                    }else{
+//                        onError("上传失败");
+//                    }
+
+
+
 
             } else if (requestCode == UCrop.REQUEST_CROP) {
 //                mImage.setImageDrawable(null);
@@ -209,7 +302,8 @@ public abstract class BaseActivity extends SwipeBackActivity
                 }
             } else if (requestCode == REQUEST_CODE_PICK) {
                 if (data != null && data.getData() != null) {
-                    mPickImageUri = data.getData();
+                    if (imageCallback != null){
+                        mPickImageUri  =data.getData();
                     mCropImageUri = getCropUri("crop");
                     UCrop.Options options = new UCrop.Options();
                     int colorPrimary = ContextCompat.getColor(this, R.color.colorPrimary);
@@ -221,6 +315,15 @@ public abstract class BaseActivity extends SwipeBackActivity
 //                            .withMaxResultSize(250 * 2, 170 * 2)
                             .withOptions(options)
                             .start(this);
+                    }
+
+//
+
+                    if (imageCallback2 != null){
+                        String pickImagePath = getRealPathFromUri(this ,data.getData());
+                        imageCallback2.callback(pickImagePath);
+                    }
+//
                 }
             } else if (requestCode == REQUEST_BLE) {
                 if (isLocationEnable()) {
@@ -261,6 +364,115 @@ public abstract class BaseActivity extends SwipeBackActivity
         }
     }
 
+    /**
+     * 测试
+     */
+
+
+    /**
+     * 根据图片的Uri获取图片的绝对路径。@uri 图片的uri
+     * @return 如果Uri对应的图片存在,那么返回该图片的绝对路径,否则返回null
+     */
+    public static String getRealPathFromUri(Context context, Uri uri) {
+        if(context == null || uri == null) {
+            return null;
+        }
+        if("file".equalsIgnoreCase(uri.getScheme())) {
+            return getRealPathFromUri_Byfile(context,uri);
+        } else if("content".equalsIgnoreCase(uri.getScheme())) {
+            return getRealPathFromUri_Api11To18(context,uri);
+        }
+//        int sdkVersion = Build.VERSION.SDK_INT;
+//        if (sdkVersion < 11) {
+//            // SDK < Api11
+//            return getRealPathFromUri_BelowApi11(context, uri);
+//        }
+////        if (sdkVersion < 19) {
+////             SDK > 11 && SDK < 19
+////            return getRealPathFromUri_Api11To18(context, uri);
+//            return getRealPathFromUri_ByXiaomi(context, uri);
+////        }
+//        // SDK > 19
+        return getRealPathFromUri_AboveApi19(context, uri);//没用到
+    }
+
+    //针对图片URI格式为Uri:: file:///storage/emulated/0/DCIM/Camera/IMG_20170613_132837.jpg
+    private static String getRealPathFromUri_Byfile(Context context,Uri uri){
+        String uri2Str = uri.toString();
+        String filePath = uri2Str.substring(uri2Str.indexOf(":") + 3);
+        return filePath;
+    }
+
+    /**
+     * 适配api19以上,根据uri获取图片的绝对路径
+     */
+    @SuppressLint("NewApi")
+    private static String getRealPathFromUri_AboveApi19(Context context, Uri uri) {
+        String filePath = null;
+        String wholeID = null;
+
+        wholeID = DocumentsContract.getDocumentId(uri);
+
+        // 使用':'分割
+        String id = wholeID.split(":")[1];
+
+        String[] projection = { MediaStore.Images.Media.DATA };
+        String selection = MediaStore.Images.Media._ID + "=?";
+        String[] selectionArgs = { id };
+
+        Cursor cursor = context.getContentResolver().query(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection,
+                selection, selectionArgs, null);
+        int columnIndex = cursor.getColumnIndex(projection[0]);
+
+        if (cursor.moveToFirst()) {
+            filePath = cursor.getString(columnIndex);
+        }
+        cursor.close();
+        return filePath;
+    }
+
+    /**
+     * //适配api11-api18,根据uri获取图片的绝对路径。
+     * 针对图片URI格式为Uri:: content://media/external/images/media/1028
+     */
+    private static String getRealPathFromUri_Api11To18(Context context, Uri uri) {
+        String filePath = null;
+        String[] projection = { MediaStore.Images.Media.DATA };
+
+        CursorLoader loader = new CursorLoader(context, uri, projection, null,
+                null, null);
+        Cursor cursor = loader.loadInBackground();
+
+        if (cursor != null && cursor.getCount() >= 1) {
+            cursor.moveToFirst();
+            filePath = cursor.getString(cursor.getColumnIndex(projection[0]));
+            cursor.close();
+        }
+        return filePath;
+    }
+
+    /**
+     * 适配api11以下(不包括api11),根据uri获取图片的绝对路径
+     */
+    private static String getRealPathFromUri_BelowApi11(Context context, Uri uri) {
+        String filePath = null;
+        String[] projection = { MediaStore.Images.Media.DATA };
+        Cursor cursor = context.getContentResolver().query(uri, projection,
+                null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+            filePath = cursor.getString(cursor.getColumnIndex(projection[0]));
+            cursor.close();
+        }
+        return filePath;
+    }
+
+
+    /**
+     * 测试
+     */
+
     private ImageCallback imageCallback;
     protected EmptyImageCallback emptyImageCallback;
 
@@ -298,9 +510,51 @@ public abstract class BaseActivity extends SwipeBackActivity
         actionSheetDialog.show();
     }
 
+    ImageCallback2 imageCallback2 ;
+    public void getImage2(ImageCallback2 callback) {
+        imageCallback2 = callback;
+
+        if (actionSheetDialog == null) {
+            actionSheetDialog = new ActionSheetDialog(this)
+                    .builder()
+                    .setTitle("选择")
+                    .addSheetItem("相机", ActionSheetDialog.SheetItemColor.Orange,
+                            i -> rxPermissions.request(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
+                                    .subscribe(granted -> {
+                                        if (granted) {
+                                            takePhoto();
+                                        } else {
+                                            showMessage("没有相机权限");
+                                        }
+                                    }))
+                    .addSheetItem("相册", ActionSheetDialog.SheetItemColor.Orange,
+                            i -> rxPermissions.request(Manifest.permission.READ_EXTERNAL_STORAGE)
+                                    .subscribe(granted -> {
+                                        if (granted) {
+                                            selectPhoto();
+                                        } else {
+                                            showMessage("没有SD卡权限");
+                                        }
+                                    }));
+        }
+        actionSheetDialog.setOnCancalListener(dialog -> {
+            if (emptyImageCallback != null) {
+                emptyImageCallback.callback();
+            }
+        });
+        actionSheetDialog.show();
+    }
+
     public interface ImageCallback {
         void callback(Uri imageUri);
     }
+
+
+    public interface ImageCallback2{
+        void callback(String imagePath);
+    }
+
+
 
     public interface EmptyImageCallback {
         void callback();
@@ -345,6 +599,8 @@ public abstract class BaseActivity extends SwipeBackActivity
             Log.wtf(TAG, "hideLoading出错", e);
         }
     }
+
+
 
     private void showSuccessToast(String message) {
         if (toast == null) {
@@ -498,6 +754,9 @@ public abstract class BaseActivity extends SwipeBackActivity
         super.onDestroy();
     }
 
+    /**
+     * 获取startActivity中传递的值
+     */
     protected abstract void setUp();
 
     /**

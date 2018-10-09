@@ -1,8 +1,12 @@
 package com.xiaolian.amigo.data.manager.intf;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.bathroom.BathRouteRespDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.CurrentBathOrderRespDTO;
+import com.xiaolian.amigo.data.network.model.bathroom.ShowerRoomRouterRespDTO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCategoryBO;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
+import com.xiaolian.amigo.data.network.model.user.QueryUserResidenceListRespDTO;
 import com.xiaolian.amigo.data.network.model.version.CheckVersionUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.timerange.QueryTimeValidReqDTO;
@@ -20,6 +24,7 @@ import com.xiaolian.amigo.data.network.model.user.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.data.network.model.user.UploadUserDeviceInfoReqDTO;
 import com.xiaolian.amigo.data.vo.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.http.Body;
@@ -151,4 +156,27 @@ public interface IMainDataManager {
     String getPushToken();
 
     void setPushToken(String pushToken);
+
+    /**
+     * 根据当前登录用户所在学校配置，以及用户上次洗澡的习惯，决定路由到"宿舍热水澡模块"、还是"公共浴室模块"
+     */
+    Observable<ApiResult<BathRouteRespDTO>> route();
+
+    void setBathroomPasswordDesc(ArrayList<String> bathPasswordDescription);
+
+    /**
+     * 主页上显示是否有上一次订单
+     * @return
+     */
+    Observable<ApiResult<CurrentBathOrderRespDTO>> currentOrder();
+
+    /**
+     * 获取评论是否开启
+     * @return
+     */
+    boolean getCommentEnable();
+
+    boolean getIsFirstAfterLogin();
+
+    void setIsFirstAfterLogin(boolean b);
 }

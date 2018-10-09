@@ -23,6 +23,8 @@ import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.data.base.LogInterceptor;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.di.ApplicationContext;
+import com.xiaolian.amigo.di.BathroomServer;
+import com.xiaolian.amigo.di.UserServer;
 import com.xiaolian.amigo.di.module.ApplicationModule;
 import com.xiaolian.blelib.IBluetoothClient;
 
@@ -41,7 +43,11 @@ public interface ApplicationComponent {
 
     Application application();
 
+    @UserServer
     Retrofit retrofit();
+
+    @BathroomServer
+    Retrofit retrofit2();
 
     IBluetoothClient bluetoothClient();
 

@@ -1,8 +1,11 @@
 package com.xiaolian.amigo.ui.device.washer;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import com.google.zxing.WriterException;
+import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.manager.intf.IWasherDataManager;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.device.washer.intf.IWasherQrCodePresenter;
@@ -29,9 +32,10 @@ public class WasherQrCodePresenter<V extends IWasherQrCodeView> extends BasePres
     }
 
     @Override
-    public void generateQRCode(String data, int dimension) {
+    public void generateQRCode(String data, int dimension , Context context) {
         try {
-            Bitmap bitmap = QRCodeEncoder.encodeAsBitmap(data, dimension);
+            Bitmap log = BitmapFactory.decodeResource(context.getResources() , R.drawable.icon_qrlogo);
+            Bitmap bitmap = QRCodeEncoder.createQRCodeWithLogo(data, dimension,log);
             getMvpView().renderQRCode(bitmap);
         } catch (WriterException e) {
             e.printStackTrace();

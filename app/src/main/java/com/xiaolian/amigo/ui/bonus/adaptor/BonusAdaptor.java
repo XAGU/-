@@ -62,7 +62,7 @@ public class BonusAdaptor extends CommonAdapter<BonusAdaptor.BonusWrapper> {
         }
     }
 
-    @Data
+
     public static class BonusWrapper implements Serializable {
         /**
          * 代金券类型
@@ -113,6 +113,86 @@ public class BonusAdaptor extends CommonAdapter<BonusAdaptor.BonusWrapper> {
             this.name = bonus.getName();
             this.remark = bonus.getRemarks();
             this.description = bonus.getDescription();
+        }
+
+        public Integer getType() {
+            return type;
+        }
+
+        public void setType(Integer type) {
+            this.type = type;
+        }
+
+        public Double getAmount() {
+            return amount;
+        }
+
+        public void setAmount(Double amount) {
+            this.amount = amount;
+        }
+
+        public Long getTimeEnd() {
+            return timeEnd;
+        }
+
+        public void setTimeEnd(Long timeEnd) {
+            this.timeEnd = timeEnd;
+        }
+
+        public Long getStartTime() {
+            return startTime;
+        }
+
+        public void setStartTime(Long startTime) {
+            this.startTime = startTime;
+        }
+
+        public String getDesc() {
+            return desc;
+        }
+
+        public void setDesc(String desc) {
+            this.desc = desc;
+        }
+
+        public Long getTimeLeft() {
+            return timeLeft;
+        }
+
+        public void setTimeLeft(Long timeLeft) {
+            this.timeLeft = timeLeft;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public Long getId() {
+            return id;
+        }
+
+        public void setId(Long id) {
+            this.id = id;
+        }
+
+        public String getRemark() {
+            return remark;
+        }
+
+        public void setRemark(String remark) {
+            this.remark = remark;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
         }
     }
 

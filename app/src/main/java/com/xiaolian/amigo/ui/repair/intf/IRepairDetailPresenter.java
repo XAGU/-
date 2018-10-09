@@ -54,4 +54,20 @@ public interface IRepairDetailPresenter<V extends IRepairDetailView> extends IBa
      * 取消报修
      */
     void cancelRepair();
-}
+
+    /**
+     * 获取Token
+     */
+    void getToken();
+
+
+    /**
+     * 弹框提示
+     */
+    public void notShowRemindAlert();
+
+    /**
+     * 显示温馨提示
+     */
+    void showGuide(Integer credits);
+    }

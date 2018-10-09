@@ -12,14 +12,7 @@ import lombok.Data;
 public class QueryLostAndFoundListReqDTO {
     private Integer page;
     private Integer size;
-    private Long schoolId;
+    private Long topicId;
     private String selectKey;
-    /**
-     * 1 表示失物 2 表示招领
-     */
-    private Integer type;
-    /**
-     * 必传1
-     */
-    private Integer status = 1;
+    private String hotPostIds;
 }

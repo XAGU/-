@@ -78,19 +78,25 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
         appBarLayout.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
             //Log.d("STATE", appBarLayout.getTotalScrollRange() +"//"+ verticalOffset+"//"+tv_toolbar_title.getHeight());
             if (verticalOffset < -(tv_toolbar_title.getHeight() + llHeader.getPaddingTop())) {
-                tvTitle.setVisibility(View.VISIBLE);
-                tvTitleSecond.setVisibility(View.VISIBLE);
-                tvTitleThird.setVisibility(View.VISIBLE);
-                viewLine.setVisibility(View.VISIBLE);
+                setTitleVisiable(View.VISIBLE);
             } else {
-                tvTitle.setVisibility(View.GONE);
-                tvTitleSecond.setVisibility(View.GONE);
-                tvTitleThird.setVisibility(View.GONE);
-                viewLine.setVisibility(View.GONE);
+                setTitleVisiable(View.GONE);
             }
         });
 
     }
+
+    /**
+     * 设置title是否显示
+     * @param visiable
+     */
+    private void setTitleVisiable(int visiable){
+        tvTitle.setVisibility(visiable);
+        tvTitleSecond.setVisibility(visiable);
+        tvTitleThird.setVisibility(visiable);
+        viewLine.setVisibility(visiable);
+    }
+
 
     private void initRecyclerView() {
         setRecyclerView(recyclerView);
@@ -264,13 +270,14 @@ public abstract class BaseToolBarListActivity extends BaseActivity implements IB
 
     @Override
     public void setLoadMoreComplete() {
-        refreshLayout.finishLoadmore();
+        refreshLayout.finishLoadMore();
     }
 
     @Override
     public void setRefreshComplete() {
         refreshLayout.finishRefresh(300);
     }
+
 
     @Override
     protected void setUp() {

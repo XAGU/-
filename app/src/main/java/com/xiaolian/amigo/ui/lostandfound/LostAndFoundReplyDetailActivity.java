@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -17,17 +18,21 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.enumeration.annotation.LostAndFound;
 import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundReplyDetailAdapter;
 import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundReplyDetailFollowDelegate;
 import com.xiaolian.amigo.ui.lostandfound.adapter.LostAndFoundReplyDetailMainDelegate;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundReplyDetailPresenter;
 import com.xiaolian.amigo.ui.lostandfound.intf.ILostAndFoundReplyDetailView;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
+import com.xiaolian.amigo.ui.widget.dialog.BookingCancelDialog;
 import com.xiaolian.amigo.ui.widget.dialog.LostAndFoundBottomDialog;
-import com.xiaolian.amigo.ui.widget.dialog.LostAndFoundReplyDialog;
+import com.xiaolian.amigo.ui.widget.dialog.PrepayDialog;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutFooter;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutHeader;
+import com.xiaolian.amigo.util.Log;
 import com.xiaolian.amigo.util.ScreenUtils;
+import com.xiaolian.amigo.util.SoftInputUtils;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import java.util.ArrayList;
@@ -38,6 +43,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnTextChanged;
 
 /**
  * 失物招领详情
@@ -94,10 +100,24 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
     RelativeLayout rlError;
 
     @BindView(R.id.ll_footer)
-    LinearLayout llFooter;
+    RelativeLayout llFooter;
+    @BindView(R.id.et_reply)
+    EditText etReply;
+    @BindView(R.id.reply)
+    TextView reply;
 
     private LostAndFoundBottomDialog bottomDialog;
-    private LostAndFoundReplyDialog replyDialog;
+//    private LostAndFoundReplyDialog replyDialog;
+
+
+    private  boolean isReplyName = false  ;
+
+    private long replyToId ;
+    private long replyToUserId ;
+
+    private BookingCancelDialog deleteDialog ;
+
+    private BookingCancelDialog deleteReplyDialog ;
 
     @Inject
     ILostAndFoundReplyDetailPresenter<ILostAndFoundReplyDetailView> presenter;
@@ -113,6 +133,8 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
     private Integer lostFoundType;
 
     private volatile boolean refreshFlag;
+
+    private int lastVertivaloffSet = - 1 ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,7 +152,7 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
             commentAuthor = getIntent().getStringExtra(KEY_COMMENT_AUTHOR);
             commentAuthorId = getIntent().getLongExtra(KEY_COMMENT_AUTHOR_ID, -1);
             presenter.setCommentAuthorId(commentAuthorId);
-            lostFoundType = getIntent().getIntExtra(KEY_LOST_FOUND_TYPE, com.xiaolian.amigo.data.enumeration.annotation.LostAndFound.LOST);
+            lostFoundType = getIntent().getIntExtra(KEY_LOST_FOUND_TYPE, LostAndFound.LOST);
             presenter.setLostFoundId(getIntent().getLongExtra(KEY_LOST_FOUND_ID, -1));
             presenter.setCommentId(commentId);
             presenter.setOwnerId(getIntent().getLongExtra(KEY_OWNER_ID, -1));
@@ -163,6 +185,32 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
             }
         });
         presenter.getReplies();
+
+        keyboardListener();
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy != 0) SoftInputUtils.hideSoftInputFromWindow(LostAndFoundReplyDetailActivity.this ,etReply);
+            }
+        });
+
+        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                Log.d(TAG ,verticalOffset +" ");
+                if (verticalOffset != 0 && verticalOffset != lastVertivaloffSet) SoftInputUtils.hideSoftInputFromWindow(LostAndFoundReplyDetailActivity.this ,etReply);
+                lastVertivaloffSet = verticalOffset ;
+            }
+        });
+
+
     }
 
     private void initRecyclerView() {
@@ -186,9 +234,9 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
                             }
                             bottomDialog.setOnOtherClickListener(dialog ->
                                     publishReply(commentId, followRelays.get(position).getAuthorId(),
-                                    followRelays.get(position).getAuthor()));
+                                            followRelays.get(position).getAuthor()));
                             bottomDialog.setOnOkClickListener(dialog ->
-                                    presenter.deleteReply(followRelays.get(position).getId()));
+                                    showDeleteReplyDialog(followRelays.get(position).getId()));
                             bottomDialog.show();
                         } else {
                             if (bottomDialog == null) {
@@ -207,7 +255,7 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
                         }
                     }
                 } catch (Exception e) {
-                    // do nothing
+                    Log.e(TAG, e.getMessage());
                 }
             }
 
@@ -243,28 +291,143 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
             bottomDialog = new LostAndFoundBottomDialog(this);
         }
         bottomDialog.setOkText(presenter.isPublisher() ? "删除" : "举报");
-        bottomDialog.setOnOkClickListener(dialog -> presenter.reportOrDelete());
+        bottomDialog.setOnOkClickListener(dialog ->
+                {
+                    if (presenter.isPublisher()){
+                        showDialog();
+                    }else{
+                        presenter.reportOrDelete();
+                    }
+
+                });
+
         bottomDialog.show();
     }
 
-    @OnClick(R.id.ll_footer)
-    public void publishReply() {
-        publishReply(commentId, null, commentAuthor);
+
+
+
+    /**
+     * 软键盘显示与隐藏的监听
+     */
+    public void keyboardListener(){
+        int keyHeight = ScreenUtils.getScreenHeight(this) / 3 ;
+        llFooter.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                if (oldBottom != 0 && bottom != 0 && (oldBottom - bottom > keyHeight)) {
+                    reply.setVisibility(View.VISIBLE);
+                } else if (oldBottom != 0 && bottom != 0 && (bottom - oldBottom > keyHeight)) {
+                    reply.setVisibility(View.GONE);
+                }
+            }
+        });
+
+
     }
 
-    private void publishReply(Long replyToId, Long replyToUserId, String replyToUserName) {
-        if (replyDialog == null) {
-            replyDialog = new LostAndFoundReplyDialog(this);
+    /**
+     * 显示弹窗
+     */
+    public void showDialog(){
+        if (deleteDialog == null){
+            deleteDialog = new BookingCancelDialog(this);
+            deleteDialog.setTvTitle("确认删除此条评论吗？");
+            deleteDialog.setTvTip("确认后词条评论的内容都将被删除");
+            deleteDialog.setOnCancelClickListener(new PrepayDialog.OnCancelClickListener() {
+                @Override
+                public void onCancelClick(Dialog dialog) {
+                    presenter.reportOrDelete();
+                }
+            });
+            deleteDialog.setOnOkClickListener(new PrepayDialog.OnOkClickListener() {
+                @Override
+                public void onOkClick(Dialog dialog) {
+                    dialog.cancel();
+                }
+            });
         }
-        replyDialog.setReplyUser(replyToUserName);
-        replyDialog.setPublishClickListener((dialog, reply) -> {
-            if (TextUtils.isEmpty(reply)) {
-                onError("内容为空");
-                return;
-            }
-            presenter.publishReply(replyToId, replyToUserId, reply);
-        });
-        replyDialog.show();
+
+        deleteDialog.show();
+    }
+
+
+    public void showDeleteReplyDialog(Long  id){
+        if (deleteReplyDialog == null){
+            deleteReplyDialog = new BookingCancelDialog(this);
+            deleteReplyDialog.setTvTitle("确认删除此条回复吗？");
+            deleteReplyDialog.setTvTip("确认后词条回复的内容都将被删除");
+            deleteReplyDialog.setOnCancelClickListener(new PrepayDialog.OnCancelClickListener() {
+                @Override
+                public void onCancelClick(Dialog dialog) {
+                    presenter.deleteReply(id);
+                }
+            });
+            deleteReplyDialog.setOnOkClickListener(new PrepayDialog.OnOkClickListener() {
+                @Override
+                public void onOkClick(Dialog dialog) {
+                    dialog.cancel();
+                }
+            });
+        }
+
+        deleteReplyDialog.show();
+    }
+
+
+    @OnClick({R.id.et_reply})
+    public void etReply(){
+        isReplyName = false ;
+    }
+
+    @OnTextChanged({R.id.et_reply})
+    void etTextChange(){
+        if (TextUtils.isEmpty(etReply.getText().toString())){
+            reply.setEnabled(false);
+        }else{
+            reply.setEnabled(true);
+        }
+    }
+
+    @OnClick({R.id.reply})
+    public void reply(){
+        String commentContent = etReply.getText().toString().trim();
+        if (isReplyName){
+            presenter.publishReply(replyToId ,replyToUserId ,commentContent);
+        }else{
+            presenter.publishReply(commentId, null, commentContent);
+        }
+
+        etReply.setText("");
+        SoftInputUtils.hideSoftInputFromWindow(this ,etReply);
+
+    }
+
+//    @OnClick(R.id.ll_footer)
+//    public void publishReply() {
+//        publishReply(commentId, null, commentAuthor);
+//    }
+
+    private void publishReply(Long replyToId, Long replyToUserId, String replyToUserName) {
+//        if (replyDialog == null) {
+//            replyDialog = new LostAndFoundReplyDialog(this);
+//        }
+//        replyDialog.setReplyUser(replyToUserName);
+//        replyDialog.setPublishClickListener((dialog, reply) -> {
+//            if (TextUtils.isEmpty(reply)) {
+//                onError("内容为空");
+//                return;
+//            }
+//            presenter.publishReply(replyToId, replyToUserId, reply);
+//        });
+//        replyDialog.show();
+
+        isReplyName = true ;
+        this.replyToId = replyToId ;
+        if (replyToUserId != null)  this.replyToUserId = replyToUserId ;
+        etReply.setText("");
+        etReply.setHint("回复：" + replyToUserName);
+        SoftInputUtils.showSoftInputFromWindow(this ,etReply);
     }
 
     @Override
@@ -327,11 +490,11 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
 
     @Override
     public void closePublishDialog() {
-        if (replyDialog != null
-                && replyDialog.isShowing()) {
-            replyDialog.clearInput();
-            replyDialog.dismiss();
-        }
+//        if (replyDialog != null
+//                && replyDialog.isShowing()) {
+//            replyDialog.clearInput();
+//            replyDialog.dismiss();
+//        }
     }
 
     @Override
@@ -349,5 +512,24 @@ public class LostAndFoundReplyDetailActivity extends LostAndFoundBaseActivity im
     protected void onDestroy() {
         presenter.onDetach();
         super.onDestroy();
+
+        if (bottomDialog != null){
+            if (bottomDialog.isShowing()) bottomDialog.cancel();
+
+            bottomDialog = null ;
+        }
+
+
+        if (deleteDialog != null){
+            if (deleteDialog.isShowing()) deleteDialog.cancel();
+
+            deleteDialog = null ;
+        }
+
+        if (deleteReplyDialog != null){
+            if (deleteReplyDialog.isShowing()) deleteReplyDialog.cancel();
+
+            deleteReplyDialog = null ;
+        }
     }
 }

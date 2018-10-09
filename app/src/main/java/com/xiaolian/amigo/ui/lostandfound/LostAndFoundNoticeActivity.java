@@ -184,6 +184,8 @@ public class LostAndFoundNoticeActivity extends LostAndFoundBaseActivity
     }
 
     private void changeItemToReply() {
+        hideEmptyView();
+        hideErrorView();
         tvToolbarTitle.setTextColor(ContextCompat.getColor(this, R.color.colorDark2));
         tvToolbarTitle2.setTextColor(ContextCompat.getColor(this, R.color.colorDarkB));
         tvTitle.setTextColor(ContextCompat.getColor(this, R.color.colorDark2));
@@ -198,6 +200,8 @@ public class LostAndFoundNoticeActivity extends LostAndFoundBaseActivity
     }
 
     private void changeItemToLike() {
+        hideEmptyView();
+        hideEmptyView();
         tvToolbarTitle.setTextColor(ContextCompat.getColor(this, R.color.colorDarkB));
         tvToolbarTitle2.setTextColor(ContextCompat.getColor(this, R.color.colorDark2));
         tvTitle.setTextColor(ContextCompat.getColor(this, R.color.colorDarkB));
@@ -252,7 +256,6 @@ public class LostAndFoundNoticeActivity extends LostAndFoundBaseActivity
     public void setRefreshComplete() {
         refreshLayout.finishLoadMore(300);
     }
-
     @Override
     public void showEmptyView() {
         rlEmpty.setVisibility(View.VISIBLE);
@@ -275,6 +278,7 @@ public class LostAndFoundNoticeActivity extends LostAndFoundBaseActivity
 
     @Override
     public void addMoreReply(List<LostAndFoundNoticeAdapter.NoticeWrapper> wrappers) {
+        showContent();
         if (refreshFlag) {
             refreshFlag = false;
             replies.clear();
@@ -285,8 +289,17 @@ public class LostAndFoundNoticeActivity extends LostAndFoundBaseActivity
         adapter.notifyDataSetChanged();
     }
 
+    /**
+     * 显示内容布局，隐藏其他布局
+     */
+    public void showContent(){
+        rlEmpty.setVisibility(View.GONE);
+        rlEmpty.setVisibility(View.GONE);
+    }
+
     @Override
     public void addMoreLike(List<LostAndFoundNoticeAdapter.NoticeWrapper> wrappers) {
+        showContent();
         if (refreshFlag) {
             refreshFlag = false;
             likes.clear();
@@ -295,6 +308,7 @@ public class LostAndFoundNoticeActivity extends LostAndFoundBaseActivity
         likes.addAll(wrappers);
         items.addAll(likes);
         adapter.notifyDataSetChanged();
+
     }
 
     @Override

@@ -7,6 +7,7 @@ import com.xiaolian.amigo.data.network.model.bonus.QueryUserBonusReqDTO;
 import com.xiaolian.amigo.data.network.model.bonus.RedeemBonusReqDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.bonus.QueryUserBonusListRespDTO;
+import com.xiaolian.amigo.di.UserServer;
 
 import javax.inject.Inject;
 
@@ -29,7 +30,7 @@ public class BonusDataManager implements IBonusDataManager {
     private IBonusApi bonusApi;
 
     @Inject
-    public BonusDataManager(Retrofit retrofit) {
+    public BonusDataManager(@UserServer Retrofit retrofit) {
         bonusApi = retrofit.create(IBonusApi.class);
     }
 
