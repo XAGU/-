@@ -12,7 +12,7 @@ public class UserCertificationPresenter <v extends IUserCertificationView> exten
 
     private IUserDataManager userDataManager ;
 
-    
+
     @Inject
     public UserCertificationPresenter(IUserDataManager userDataManager ){
         super();
