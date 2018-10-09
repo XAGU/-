@@ -192,8 +192,8 @@ public class LostAndFoundPresenter2<V extends ILostAndFoundView2> extends BasePr
         reqDTO.setItemId(id);
         // 是否是点赞，1 点赞 2 取消点赞
         reqDTO.setLike(like ? 1 : 2);
-        // 被点赞/取消点赞的类型，1 失物招领 2 评论
-        reqDTO.setType(comment ? 2 : 1);
+        // 被点赞/取消点赞的类型，1 联子 2 评论  3 回复
+        reqDTO.setType(1);
         addObserver(lostAndFoundDataManager.like(reqDTO),
                 new NetworkObserver<ApiResult<CommonRespDTO>>(false) {
 

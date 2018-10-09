@@ -4,6 +4,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
+import com.xiaolian.blelib.internal.util.SystemVersion;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -185,7 +186,7 @@ public class TimeUtils {
      * @return
      */
     public static final int intervalTime(long expiredTime){
-        return (int) ((expiredTime - System.currentTimeMillis()) / 1000);
+        return (((expiredTime - System.currentTimeMillis()) / 1000) -1) > 0 ? (int) (((expiredTime - System.currentTimeMillis()) / 1000) - 1) : 0;
     }
 
     public static String lostAndFoundTimestampFormat(long timeStamp) {

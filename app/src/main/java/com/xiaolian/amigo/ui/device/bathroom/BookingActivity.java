@@ -504,7 +504,7 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
         this.finish();
     }
 
-
+    
     @Override
     public void appointMentTimeOut(BathBookingRespDTO respDTO) {
         isTimeOut = true  ;
@@ -551,7 +551,6 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
     @Override
     public void startOrderInfo(BathOrderCurrentRespDTO dto) {
 
-
         String userMethod = "";
         if (dto.getLocation().equals("任意空浴室")) {
             userMethod = "预约任意空浴室";
@@ -560,7 +559,7 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
         }
                 Intent intent = new Intent(this, BathOrderActivity.class);
                 intent.putExtra(Constant.BUNDLE_ID, dto.getTradeOrderId());
-                intent.putExtra(KEY_USER_STYLE, dto.getLocation());
+                intent.putExtra(KEY_USER_STYLE, userMethod);
                 startActivity(intent);
 
 

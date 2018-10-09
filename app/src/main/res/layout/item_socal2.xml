@@ -55,6 +55,9 @@
         tools:text="佩琪琪"
         android:gravity="center"
         android:textSize="@dimen/sp12"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:layout_marginEnd="80dp"
         android:id="@+id/name"
         android:textColor="@color/colorDark2"
         />
@@ -74,6 +77,8 @@
         android:layout_centerVertical="true"
         android:gravity="center"
         android:textSize="@dimen/sp12"
+        android:maxLines="2"
+        android:ellipsize="end"
         android:background="@drawable/cir_rad10_gray"
         />
     </RelativeLayout>

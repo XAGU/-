@@ -260,9 +260,10 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
                         .subscribe(new Subscriber<Integer>() {
                             @Override
                             public void onCompleted() {
-
-                                getMvpView().countTimeLeft("0:00");
-                                getMvpView().appointMentTimeOut(false);
+                                if (!isOnPause) {
+                                    getMvpView().countTimeLeft("0:00");
+                                    getMvpView().appointMentTimeOut(false);
+                                }
                             }
 
                             @Override
@@ -276,7 +277,12 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
                                 getMvpView().countTimeLeft(TimeUtils.orderBathroomLastTime(expiredTime, ""));
                             }
                         });
+            }else{
+            if (!isOnPause) {
+                getMvpView().countTimeLeft("0:00");
+                getMvpView().appointMentTimeOut(false);
             }
+        }
             if (this.subscriptions != null && !subscriptions.isUnsubscribed() && subscription != null ) {
                 this.subscriptions.add(subscription);
             }
