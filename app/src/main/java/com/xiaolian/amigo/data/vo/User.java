@@ -29,6 +29,27 @@ public class User {
     private Long buildingId;
     private boolean hadSetBathPassword ;
 
+
+    /***  身份验证    ***/
+     // 院系
+    private String  department ;
+
+    // 专业
+    private String profession ;
+
+    // 年级
+    private String grade ;
+
+    // 班级
+    private String calsses ;
+
+    // 学号
+    private String studentId ;
+
+    // 宿舍
+    private String dormitory ;
+
+
     public User() {
     }
 

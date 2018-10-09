@@ -99,11 +99,31 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     /**
      * 社交标签
      */
-    public static final String PREF_KEY_SOCAL_TAG = "PREF_KEY_SOCAL_TAG";
+    private static final String PREF_KEY_SOCAL_TAG = "PREF_KEY_SOCAL_TAG";
 
-    public static final String PREF_KEY_COMMENTABLE = "PREF_KEY_COMMENTABLE";
+    private static final String PREF_KEY_COMMENTABLE = "PREF_KEY_COMMENTABLE";
 
-    public static final String PREF_KEY_ISFIRST_AFTER_LOGIN = "PREF_KEY_ISFIRST_AFTER_LOGIN";
+    private static final String PREF_KEY_ISFIRST_AFTER_LOGIN = "PREF_KEY_ISFIRST_AFTER_LOGIN";
+
+
+    /**
+     * 身份认证
+     */
+    private static final String PREF_KEY_DEPARTMENT = "PREF_KEY_DEPARTMENT";  //院系
+
+    private static final String PREF_KEY_PROFESSION = "PREF_KEY_PROFESSION";  //专业
+
+    private static final String PREF_KEY_GRADE = "PREF_KEY_GRADE";  //年级
+
+    private static final String PREF_KEY_CALSS = "PREF_KEY_CLASS";  //班级
+
+    private static final String PREF_KEY_STUDENT_ID = "PREF_KEY_STUDENT_ID"; // 学号
+
+    private static final String PREF_KEY_DORMITORY = "PREF_KEY_DORMITORY";  //宿舍
+
+
+
+
 
 
     private String tokenHolder;
@@ -196,6 +216,12 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
         userHolder.setBuildingId(mSharedPreferences.getLong(PREF_KEY_BUILD_ID, -1L));
         userHolder.setSex(mSharedPreferences.getInt(PREF_KEY_SEX , -1));
         userHolder.setRoomId(mSharedPreferences.getLong(PREF_KEY_ROOMID ,-1l));
+        userHolder.setDepartment(mSharedPreferences.getString(PREF_KEY_DEPARTMENT ,""));
+        userHolder.setProfession(mSharedPreferences.getString(PREF_KEY_PROFESSION , ""));
+        userHolder.setGrade(mSharedPreferences.getString(PREF_KEY_GRADE , ""));
+        userHolder.setCalsses(mSharedPreferences.getString(PREF_KEY_CALSS , ""));
+        userHolder.setStudentId(mSharedPreferences.getString(PREF_KEY_STUDENT_ID , ""));
+        userHolder.setDormitory(mSharedPreferences.getString(PREF_KEY_DORMITORY , ""));
         return userHolder;
     }
 
@@ -245,6 +271,30 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
         if (null != user.getSex()){
             mSharedPreferences.edit().putInt(PREF_KEY_SEX,
                     user.getSex()).apply();
+        }
+
+        if (null != user.getDepartment()) {
+            mSharedPreferences.edit().putString(PREF_KEY_DEPARTMENT, user.getDepartment()).apply();
+        }
+
+        if (null != user.getProfession()) {
+            mSharedPreferences.edit().putString(PREF_KEY_PROFESSION, user.getProfession()).apply();
+        }
+
+        if (null != user.getGrade()) {
+            mSharedPreferences.edit().putString(PREF_KEY_GRADE, user.getGrade()).apply();
+        }
+
+        if (null != user.getCalsses()) {
+            mSharedPreferences.edit().putString(PREF_KEY_CALSS, user.getCalsses()).apply();
+        }
+
+        if (null != user.getStudentId()) {
+            mSharedPreferences.edit().putString(PREF_KEY_STUDENT_ID, user.getStudentId()).apply();
+        }
+
+        if (null != user.getDormitory()) {
+            mSharedPreferences.edit().putString(PREF_KEY_DORMITORY, user.getDormitory()).apply();
         }
 
     }
