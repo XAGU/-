@@ -420,6 +420,7 @@ public class WriteLZActivity extends LostAndFoundBaseActivity implements IPublis
             int position = data.getIntExtra(AlbumItemActivity.INTENT_POSITION, -1);
             if (position != -1) {
                 images.remove(position);
+                urls.remove(position);
                 refreshAddImage();
             }
         }
