@@ -335,4 +335,19 @@ public final class Constant {
     public static final int DRYER = 6 ;  //  烘干机
 
 
+    /**
+     * 学生认证
+     */
+
+    public static final int DEPARTMENT = 1  ;  // 院系
+
+    public static final int PROFESSION = 2 ;  // 专业
+
+    public static final int CLASS = 3 ; // 班级
+
+    public static final int STUDENT_ID  = 4 ;  // 学号
+
+
+
+
 }

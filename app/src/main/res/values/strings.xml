@@ -370,4 +370,9 @@
 
     <!--学生认证-->
     <string name="user_certification_title">学生认证</string>
+    <string name="edit_department">编辑院系</string>
+    <string name="edit_profession">编辑专业</string>
+    <string name="edit_class">编辑班级</string>
+    <string name="edit_student_id">编辑学号</string>
+
 </resources>

@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.enumeration.OssFileType;
 import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.di.componet.DaggerUserActivityComponent;
@@ -24,6 +25,7 @@ import com.xiaolian.amigo.ui.repair.adaptor.ImageAddAdapter;
 import com.xiaolian.amigo.ui.user.intf.IUserCertificationPresenter;
 import com.xiaolian.amigo.ui.user.intf.IUserCertificationView;
 import com.xiaolian.amigo.ui.widget.GridSpacesItemDecoration;
+import com.xiaolian.amigo.ui.widget.dialog.ActionSheetDialog;
 import com.xiaolian.amigo.ui.widget.photoview.AlbumItemActivity;
 import com.xiaolian.amigo.util.GildeUtils;
 import com.xiaolian.amigo.util.Log;
@@ -39,6 +41,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.xiaolian.amigo.ui.user.EditUserInfoActivity.KEY_BACK_DATA;
+import static com.xiaolian.amigo.ui.user.EditUserInfoActivity.KEY_DATA;
+import static com.xiaolian.amigo.ui.user.EditUserInfoActivity.KEY_TYPE;
+import static com.xiaolian.amigo.util.Constant.CLASS;
+import static com.xiaolian.amigo.util.Constant.DEPARTMENT;
+import static com.xiaolian.amigo.util.Constant.PROFESSION;
+import static com.xiaolian.amigo.util.Constant.STUDENT_ID;
+import static com.xiaolian.amigo.util.Constant.USER_INFO_ACTIVITY_SRC;
+
 public class UserCertificationActivity extends BaseActivity implements IUserCertificationView {
 
     private static final int REQUEST_IMAGE = 0x3302;
@@ -46,6 +57,8 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
     private static final int REQUEST_BACK_CARD_IMAGE= 0x2201 ;
 
     private static final int REQUEST_FRONT_CARD_IMAGE = 0x2202 ;
+
+    private static final int REQUEST_EDIT_USERINFO = 0x2200 ;
     private static final int IMAGE_COUNT = 3;
     @Inject
     IUserCertificationPresenter<IUserCertificationView> presenter;
@@ -139,6 +152,9 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
     private String ivBackUrl ; //  背面照片Url
 
 
+    private boolean isNeedRefresh = false ;
+
+    private ActionSheetDialog actionSheetDialog ; // 年级选择器底部弹窗
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -155,13 +171,94 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
         mActivityComponent.inject(this);
         presenter.onAttach(this);
         initImageAdd();
+        initChooseGrade();
+        user = presenter.getUserInfo();
+        if (user != null) referStatus(user);
     }
 
+    @OnClick({R.id.rel_edit_grade , R.id.rel_edit_department , R.id.rel_edit_profession
+    , R.id.rel_edit_class , R.id.rel_edit_studentId})
+    public void editUserInfo(View view ){
+        switch (view.getId()){
+            case R.id.rel_edit_department:
+                editUserInfo(DEPARTMENT);
+                break;
+            case R.id.rel_edit_profession:
+                editUserInfo(PROFESSION);
+                break;
+            case R.id.rel_edit_class:
+                editUserInfo(CLASS);
+                break;
+            case R.id.rel_edit_studentId:
+                editUserInfo(STUDENT_ID);
+                break;
+            default:
+                break;
+        }
+
+    }
+
+
+    public void editUserInfo(int type){
+        String data ="" ;
+        switch (type){
+            case DEPARTMENT:
+                data = tvDepartment.getText().toString().trim();
+                break;
+            case PROFESSION:
+                data = tvProfession.getText().toString().trim();
+                break;
+            case CLASS:
+                data = tvClass.getText().toString().trim();
+                break;
+            case STUDENT_ID:
+                data = tvStudentId.getText().toString().trim();
+                break;
+        }
+        Intent intent = new Intent(this ,EditUserInfoActivity.class);
+        intent.putExtra(KEY_TYPE ,type);
+        intent.putExtra(KEY_DATA , data);
+        startActivityForResult( intent,REQUEST_EDIT_USERINFO );
+    }
+
+
+    private void initChooseGrade(){
+        if (actionSheetDialog == null) {
+            actionSheetDialog = new ActionSheetDialog(this)
+                    .builder()
+                    .setTitle("请选择年级")
+                    .addSheetItem("2018", ActionSheetDialog.SheetItemColor.Orange, i -> {
+                        tvGrade.setText("2018");
+                    })
+                    .addSheetItem("2017", ActionSheetDialog.SheetItemColor.Orange, i -> {
+                        tvGrade.setText("2017");
+                    })
+                    .addSheetItem("2016", ActionSheetDialog.SheetItemColor.Orange, i -> {
+                        tvGrade.setText("2016");
+                    })
+                    .addSheetItem("2015", ActionSheetDialog.SheetItemColor.Orange, i -> {
+                        tvGrade.setText("2015");
+                    });
+
+        }
+
+    }
+
+
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (actionSheetDialog != null && actionSheetDialog.getDialog() != null) actionSheetDialog.getDialog().dismiss();
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (user != null) referStatus(user);
+        if (isNeedRefresh) {
+            presenter.getDormitory();
+        }
     }
 
     private void referStatus(User user) {
@@ -174,11 +271,35 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
         tvDormitory.setText(user.getDormitory());
     }
 
+    @OnClick(R.id.rel_edit_grade)
+    public void choseGraed(){
+        if (actionSheetDialog != null && actionSheetDialog.getDialog() != null){
+            actionSheetDialog.show();
+        }
+    }
+
+
+    @OnClick(R.id.rel_edit_dormitory)
+    public void setRelEditDormitory(){
+        isNeedRefresh = true;
+        Intent intent ;
+        intent = new Intent(this, ListChooseActivity.class);
+        intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
+        intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION,
+                ListChooseActivity.ACTION_LIST_BUILDING);
+        intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_SRC_ACTIVITY, USER_INFO_ACTIVITY_SRC);
+        intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_DEVICE_TYPE, Device.HEATER.getType());
+        startActivity(intent);
+    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         presenter.onDetach();
+        if (actionSheetDialog != null && actionSheetDialog.getDialog() != null){
+            actionSheetDialog.getDialog().dismiss();
+        }
+        actionSheetDialog = null ;
     }
 
 
@@ -250,13 +371,6 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
         if (iv.getId() == R.id.iv_front_card){
             ivFrontPath = filePath ;
             ivFrontUrl = objectKey ;
-        }
-    }
-
-
-    private void referImageView(){
-        if (ivBackCard.getDrawable() != null){
-
         }
     }
 
@@ -357,6 +471,31 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
             ivBackCard.setImageDrawable(null);
             ivBackPath = "" ;
             ivBackUrl = "" ;
+        }
+
+        if (requestCode == REQUEST_EDIT_USERINFO && resultCode == RESULT_OK) {
+            int type = data.getIntExtra(KEY_TYPE , -1);
+            String content = data.getStringExtra(KEY_BACK_DATA);
+            onActivityResultForSetUserInfo(type ,content);
+        }
+    }
+
+    private void onActivityResultForSetUserInfo(int type , String data){
+        switch (type){
+            case DEPARTMENT:
+                tvDepartment.setText(data);
+                break;
+            case PROFESSION:
+                tvProfession.setText(data);
+                break;
+            case CLASS:
+                tvClass.setText(data);
+                break;
+            case STUDENT_ID:
+                tvStudentId.setText(data);
+                break;
+                default:
+                    break;
         }
     }
     @Override

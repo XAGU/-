@@ -281,6 +281,7 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
                     EntireUserDTO entireUserDTO = result.getData();
                     user.setResidenceId(entireUserDTO.getResidenceId());
                     user.setResidenceName(entireUserDTO.getResidenceName());
+                    user.setDormitory(entireUserDTO.getResidenceName());
                     userDataManager.setUser(user);
                     if (Constant.COMPLETE_INFO_ACTIVITY_SRC.equals(activitySrc)) /*跳转回完善资料页面*/{
                         getMvpView().backToCompeteInfoActivity(entireUserDTO.getResidenceName());

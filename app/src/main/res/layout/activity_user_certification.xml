@@ -71,6 +71,8 @@
                     <TextView
                         android:id="@+id/tv_department"
                         style="@style/ListItemSubText"
+                        android:layout_width="250dp"
+                        tool:text="范德萨发发发"
                         android:layout_toLeftOf="@id/imageView2"
                         />
 
@@ -99,12 +101,12 @@
                         android:id="@+id/imageView3"
                         style="@style/ListItemImage"
                         android:layout_alignParentRight="true"
-
                         android:src="@drawable/arrow_right" />
 
                     <TextView
                         android:id="@+id/tv_profession"
                         style="@style/ListItemSubText"
+                        android:layout_width="250dp"
                         android:layout_toLeftOf="@id/imageView3"
                         />
 
@@ -133,12 +135,12 @@
                         android:id="@+id/imageView4"
                         style="@style/ListItemImage"
                         android:layout_alignParentRight="true"
-
                         android:src="@drawable/arrow_right" />
 
                     <TextView
                         android:id="@+id/tv_grade"
                         style="@style/ListItemSubText"
+                        android:layout_width="250dp"
                         android:layout_toLeftOf="@id/imageView4"
                         />
 
@@ -167,12 +169,12 @@
                         android:id="@+id/imageView5"
                         style="@style/ListItemImage"
                         android:layout_alignParentRight="true"
-
                         android:src="@drawable/arrow_right" />
 
                     <TextView
                         android:id="@+id/tv_class"
                         style="@style/ListItemSubText"
+                        android:layout_width="250dp"
                         android:layout_toLeftOf="@id/imageView5"
                         />
 
@@ -206,6 +208,7 @@
                     <TextView
                         android:id="@+id/tv_studentId"
                         style="@style/ListItemSubText"
+                        android:layout_width="250dp"
                         android:layout_toLeftOf="@id/imageView6"
                         />
 
@@ -241,6 +244,7 @@
                     <TextView
                         android:id="@+id/tv_dormitory"
                         style="@style/ListItemSubText"
+                        android:layout_width="250dp"
                         android:layout_toLeftOf="@id/imageView7"
                         />
 
@@ -357,8 +361,6 @@
                     android:background="@drawable/dotted_box"
                     android:layout_marginBottom="21dp"
                     >
-
-
 
                     <ImageView
 

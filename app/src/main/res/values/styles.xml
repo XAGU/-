@@ -128,6 +128,9 @@
         <item name="android:textColor">@color/colorDarkB</item>
         <item name="android:textColorHint">@color/colorDarkB</item>
         <item name="android:textSize">@dimen/itemMainText</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:gravity">end</item>
 
     </style>
 

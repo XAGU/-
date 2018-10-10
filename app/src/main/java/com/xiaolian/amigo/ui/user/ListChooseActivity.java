@@ -549,7 +549,7 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
 
     @Override
     public void backToEditProfileActivity(String residenceName) {
-        startActivity(this ,EditProfileActivity.class);
+        startActivity(this ,UserCertificationActivity.class);
         this.finish();
     }
 

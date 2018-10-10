@@ -76,6 +76,16 @@ public class UserCertificationPresenter <v extends IUserCertificationView> exten
         uploadImage(activity ,imagePath);
     }
 
+    @Override
+    public String getDormitory() {
+        User user = userDataManager.getUser();
+        if (user != null){
+            return user.getDormitory();
+        }else{
+            return "";
+        }
+    }
+
 
     private void uploadImage(Context context, String filePath) {
         ossDataManager.getOssModel()

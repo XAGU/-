@@ -659,6 +659,10 @@
 
         </activity>
 
+        <activity android:name=".ui.user.EditUserInfoActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
         <!-- 选择设备类型 -->
         <activity
             android:name=".ui.repair.ChooseRepairActivity"

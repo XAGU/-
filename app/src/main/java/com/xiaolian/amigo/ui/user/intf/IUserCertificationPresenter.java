@@ -16,4 +16,6 @@ public interface IUserCertificationPresenter <v extends IUserCertificationView> 
     void uploadImage(Context activity , String imagePath , int position , OssFileType found );
 
     void uploadImage(Context activity, String imagePath, OssFileType found , ImageView iv);
+
+    String getDormitory();
 }
