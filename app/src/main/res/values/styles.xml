@@ -20,8 +20,8 @@
     <style name="photoTheme" parent="AppTheme.NoActionBar">
         <item name="android:windowAnimationStyle">@style/FeelyouWindowAnimTheme</item>
     </style>
-    
-    
+
+
     <style name="FeelyouWindowAnimTheme" parent="@android:style/Animation.Activity">
         <item name="android:activityOpenEnterAnimation">@anim/photo_activity_in</item>
         <item name="android:activityOpenExitAnimation">@anim/photo_activity_out</item>
@@ -181,7 +181,7 @@
         <item name="android:textStyle">bold</item>
         <item name="android:background">@drawable/button_shape</item>
     </style>
-    
+
     <style name="ContentText_main">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -217,7 +217,7 @@
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">#999</item>
     </style>
-    
+
     <style name="Money_Upper">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -461,4 +461,22 @@
         <item name="android:windowEnterAnimation">@anim/pop_add_show</item>
         <item name="android:windowExitAnimation">@anim/pop_add_hide</item>
     </style>
+
+    <style name="wrap">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="user_certification_ll">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+
+    <style name="user_certification_txt" parent="wrap">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/colorDark6</item>
+    </style>
+
 </resources>
