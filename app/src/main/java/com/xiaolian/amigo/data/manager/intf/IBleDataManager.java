@@ -16,7 +16,7 @@ import java.util.UUID;
  * @date 17/9/22
  */
 public interface IBleDataManager {
-    void scan(int scanType, BluetoothScanResponse response);
+    void scan(BluetoothScanResponse response);
 
     void stopScan();
 

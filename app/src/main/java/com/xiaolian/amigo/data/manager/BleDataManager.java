@@ -1,6 +1,10 @@
 package com.xiaolian.amigo.data.manager;
 
+import android.util.Log;
+
 import com.xiaolian.amigo.data.manager.intf.IBleDataManager;
+import com.xiaolian.blelib.BluetoothClient;
+import com.xiaolian.blelib.BluetoothConstants;
 import com.xiaolian.blelib.IBluetoothClient;
 import com.xiaolian.blelib.connect.BluetoothCharacteristicNotifyCallback;
 import com.xiaolian.blelib.connect.BluetoothConnectCallback;
@@ -26,20 +30,24 @@ public class BleDataManager implements IBleDataManager {
     public static final String WRITE_CHARACTERISTIC_UUID = "d44bc439-abfd-45a2-b575-925416129600";
     public static final String NOTIFY_DESCRIPTOR_UUID = "00002902-0000-1000-8000-00805f9b34fb";
     private IBluetoothClient bluetoothClient;
+    private IBluetoothClient bluetoothClientClassicScan;
 
     @Inject
-    public BleDataManager(IBluetoothClient bluetoothClient) {
+    public BleDataManager(IBluetoothClient bluetoothClient, IBluetoothClient bluetoothClientScan) {
         this.bluetoothClient = bluetoothClient;
+        this.bluetoothClientClassicScan = bluetoothClientScan;
     }
 
     @Override
-    public void scan(int scanType, BluetoothScanResponse response) {
-        bluetoothClient.scan(scanType, response);
+    public void scan(BluetoothScanResponse response) {
+        bluetoothClient.scan(BluetoothConstants.SCAN_TYPE_BLE, response);
+        bluetoothClientClassicScan.scan(BluetoothConstants.SCAN_TYPE_CLASSIC, response);
     }
 
     @Override
     public void stopScan() {
         bluetoothClient.stopScan();
+        bluetoothClientClassicScan.stopScan();
     }
 
     @Override

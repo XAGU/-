@@ -135,16 +135,12 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     private Supplier supplier;
     // 页面关闭触发器
     private PublishSubject<Void> closeTriggerSubject = PublishSubject.create();
-    // 扫描方式
-    private int scanType = BluetoothConstants.SCAN_TYPE_BLE;
-
 
 
     DeviceBasePresenter(IBleDataManager bleDataManager, IDeviceDataManager deviceDataManager) {
         super();
         this.bleDataManager = bleDataManager;
         this.deviceDataManager = deviceDataManager;
-        this.scanType = deviceDataManager.getScanType();
     }
 
     @Override
@@ -328,8 +324,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
         // 扫描macAddress
         Log.i(TAG, "开始扫描macAddress");
-        bleDataManager.scan(scanType, new BluetoothScanResponse() {
-            boolean savedScanType = false;
+        bleDataManager.scan(new BluetoothScanResponse() {
             @Override
             public void onScanStarted() {
                 Log.d(TAG, "onScanStarted thread" + Thread.currentThread().getName());
@@ -337,12 +332,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
             @Override
             public void onDeviceFounded(BluetoothScanResult result) {
-                if (!savedScanType) {
-                    Log.d(TAG, "扫描到设备，缓存当前扫描方式" + scanType);
-                    savedScanType = true;
-                    deviceDataManager.saveScanType(scanType);
-                }
                 Log.d(TAG, "onDeviceFounded thread" + Thread.currentThread().getName());
+
                 boolean validDevice = isValidDevice(result, macAddress);
                 if (!validDevice) {
                     return;
@@ -371,14 +362,12 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 Log.d(TAG, "onScanCanceled thread" + Thread.currentThread().getName());
             }
         });
+
     }
 
     private boolean isValidDevice(BluetoothScanResult result, String deviceNo) {
         if (!TextUtils.equals(deviceNo, result.getName())) {
             return false;
-        }
-        if (scanType == BluetoothConstants.SCAN_TYPE_CLASSIC) {
-            return true;
         }
         boolean validDevice = false;
         ScanRecord scanRecord = ScanRecord.parseFromBytes(result.getScanRecord());
@@ -391,17 +380,6 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             }
         }
         return validDevice;
-    }
-
-    @Override
-    public void toggleScanType() {
-        if (scanType == BluetoothConstants.SCAN_TYPE_CLASSIC) {
-            scanType = BluetoothConstants.SCAN_TYPE_BLE;
-        } else if (scanType == BluetoothConstants.SCAN_TYPE_BLE) {
-            scanType = BluetoothConstants.SCAN_TYPE_CLASSIC;
-        } else {
-            scanType = BluetoothConstants.SCAN_TYPE_BLE;
-        }
     }
 
     private void realConnect(String macAddress) {
@@ -434,9 +412,11 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     Log.d(TAG, "[ConnectStatusListener]蓝牙正在连接");
                     break;
                 case BluetoothConstants.STATE_DISCONNECTED:
+//                    getMvpView().showMessage("蓝牙已经断开连接...");
                     handleDisConnectError("[ConnectStatusListener]蓝牙已经断开连接");
                     break;
                 case BluetoothConstants.STATE_DISCONNECTING:
+//                    getMvpView().showMessage("蓝牙正在断开连接...");
                     Log.d(TAG, "[ConnectStatusListener]蓝牙正在断开连接");
                     break;
             }
@@ -1012,7 +992,20 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     // 存在未结账订单，直接后台预结账处理
                     // 如果存在未结账订单，需要先结算旧账单
                     if (null != result.getData().getNextCommand()) {  //  != null   表明存在未结账订单
-                        precheckCmd = nextCommand;
+                        if (result.getData().getNextCommandType() == Command.CLOSE_VALVE.getType()) {
+                            //当前人的关阀指令恢复
+                            precheckFlag = false;
+                            closeCmd = nextCommand;
+                        }
+                        else if (result.getData().getNextCommandType() == Command.OTHER_CLOSE_VALVE.getType()) {
+                            //他人主动对当前用户进行关阀结账
+                            precheckFlag = true;
+                            closeCmd = nextCommand;
+                            onWrite(closeCmd);
+                            break;
+                        } else {
+                            precheckCmd = nextCommand;
+                        }
                         if (!reconnect) { // 正常流程
                             // 下发预结账指令
                             Log.i(TAG, "正常流程，设备上存在未结账订单，获取到预结账指令。command:" + nextCommand);
@@ -1095,9 +1088,13 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     Log.wtf(TAG ,"PRE_CHECK  >>>>>>>>>>"+currentMacAddress);
                     onWrite(checkoutCmd);
                     break;
+                case OTHER_CLOSE_VALVE:
+                    Log.wtf(TAG, "其他人的关阀指令");
+                    break;
                 case UNKNOWN:
                     Log.wtf(TAG, "服务器返回未知指令");
                     break;
+
             }
         } else {
             Log.e(TAG, String.format("处理异常返回结果。code:%s, msg:%s", result.getError().getCode(), result.getError().getDisplayMessage()));
@@ -1352,7 +1349,13 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         if (reconnect) {
             // 重连状态下指令有两种 1 - 关阀 2 - 预结账
             Log.i(TAG, "重连状态，开始关阀" + reconnectNextCmd);
-            onWrite(reconnectNextCmd);
+            if (reconnectNextCmd != null) {
+                onWrite(reconnectNextCmd);
+            } else if (closeCmd != null) {
+                onWrite(closeCmd);
+            } else if (precheckCmd != null) {
+                onWrite(precheckCmd);
+            }
         } else {
             Log.i(TAG, "非重连状态，开始关阀");
             if (purelyCheckoutFlag) { // 直接跳转至第二步结算

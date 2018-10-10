@@ -13,6 +13,7 @@ import android.os.Looper;
 import android.support.annotation.RestrictTo;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.xiaolian.blelib.BluetoothConstants;
 import com.xiaolian.blelib.BluetoothHelp;
@@ -54,6 +55,7 @@ public class BluetoothConnectWorker implements IBluetoothConnectWorker {
                     + '\n' + "newState: " + newState
                     + '\n' + "currentThread: " + Thread.currentThread().getId()
                     + "name:" + Thread.currentThread().getName());
+
 
             handler.post(() -> {
                 if (bluetoothConnectStatusListener != null) {

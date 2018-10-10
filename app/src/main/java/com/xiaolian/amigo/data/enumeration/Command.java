@@ -14,7 +14,8 @@ public enum Command {
     CHECK_OUT(3, "结账", "a807"),
     OPEN_VALVE(4, "开阀", "a802"),
     CLOSE_VALVE(5, "关阀", "a804"),
-    UPDATE_DEVICE_RATE(7, "下发费率", "a805");
+    UPDATE_DEVICE_RATE(7, "下发费率", "a805"),
+    OTHER_CLOSE_VALVE(10, "关阀", "a804");
 
     // 指令类型
     private int type;
