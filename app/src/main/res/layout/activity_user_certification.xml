@@ -7,7 +7,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <ScrollView
+    <com.xiaolian.amigo.ui.widget.ReboundsScrollView
         android:id="@+id/sv_main_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -418,7 +418,7 @@
 
         </LinearLayout>
 
-    </ScrollView>
+    </com.xiaolian.amigo.ui.widget.ReboundsScrollView>
 
         <Button
             android:layout_width="match_parent"

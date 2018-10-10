@@ -606,6 +606,8 @@ public class HomeFragment2 extends BaseFragment {
      */
     @OnClick(R.id.scan)
     public void scan() {
+        if (presenter == null ) return ;
+
         if (presenter.isLogin()) {
             scanQRCode();
         } else {

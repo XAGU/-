@@ -386,7 +386,6 @@ public class BlogFragment extends BaseFragment implements IBlogView  , SocialImg
     @Override
     public void referPost(List<LostAndFoundDTO> posts) {
         rlEmpty.setVisibility(View.GONE);
-        rlEmpty.setVisibility(View.GONE);
         rlContent.setVisibility(View.VISIBLE);
         potTitle.setVisibility(View.VISIBLE);
         pots.setVisibility(View.VISIBLE);
@@ -518,8 +517,12 @@ public class BlogFragment extends BaseFragment implements IBlogView  , SocialImg
 
     @Override
     public void onEmpty() {
+        if (rlEmpty != null)
         rlEmpty.setVisibility(View.VISIBLE);
+        if (rlEmpty != null)
         rlError.setVisibility(View.GONE);
+
+        if (rlContent != null)
         rlContent.setVisibility(View.GONE);
     }
 
