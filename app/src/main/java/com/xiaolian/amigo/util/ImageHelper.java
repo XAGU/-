@@ -1,10 +1,20 @@
 package com.xiaolian.amigo.util;
 
 import android.content.Context;
+import android.view.View;
 import android.widget.ImageView;
 
+import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.ui.model.CustomImageModelLoader;
+import com.xiaolian.amigo.ui.model.CustomImageSizeModel;
+import com.xiaolian.amigo.ui.model.CustomImageSizeModelImp;
+import com.xiaolian.amigo.ui.widget.photoview.PhotoViewAttacher;
 
 /**
  * ImageHelper
@@ -36,5 +46,40 @@ public class ImageHelper {
                 .error(R.drawable.ic_picture_error)
                 .into(imageView);
     }
+
+    public static void displayImage(Context context, final CustomImageSizeModel model, final ImageView imageView, final View loading) {
+    DrawableRequestBuilder thumbnailBuilder = Glide
+            .with(imageView.getContext())
+            .load(new CustomImageSizeModelImp(model
+                    .getBaseUrl())
+                    .requestCustomSizeUrl(100, 50))
+            .skipMemoryCache(true)
+            .diskCacheStrategy(DiskCacheStrategy.NONE);
+
+            Glide.with(context)
+            .using(new CustomImageModelLoader(imageView.getContext()))
+            .load(model)
+//                    .load(model.getBaseUrl())
+//                .centerCrop()
+                    .listener(new RequestListener<CustomImageSizeModel, GlideDrawable>() {
+        @Override
+        public boolean onException(Exception e, CustomImageSizeModel model, Target<GlideDrawable> target, boolean isFirstResource) {
+            return false;
+        }
+
+        @Override
+        public boolean onResourceReady(GlideDrawable resource, CustomImageSizeModel model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+            loading.setVisibility(View.GONE);
+            PhotoViewAttacher attacher = new PhotoViewAttacher(imageView);
+//                            mAttacher.update();
+            return false;
+        }
+    })
+            .thumbnail(thumbnailBuilder)
+                    .skipMemoryCache(true)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .into(imageView);
+}
+
 
 }

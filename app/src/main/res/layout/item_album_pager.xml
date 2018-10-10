@@ -2,7 +2,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@android:color/black" >
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@android:color/black">
 
     <!-- <com.wzeiri.nfclock.ui.camera.MatrixImageView
         android:id="@+id/matrix_imageview"
@@ -13,6 +14,15 @@
         android:id="@+id/matrix_imageview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:scrollbarStyle="insideInset"
+        android:visibility="gone"
+        tools:visibility="visible"/>
     <TextView
         android:id="@+id/album_textview_progress"
         android:layout_width="wrap_content"

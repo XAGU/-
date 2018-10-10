@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -76,7 +77,7 @@ public class MyCollectActivity extends LostAndFoundBaseActivity implements IMyCo
 
     private void initRecyclerView() {
 
-
+        ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
 
         lostAndFounds = new ArrayList<>();
         adaptor = new SocalContentAdapter(this, R.layout.item_socal, lostAndFounds, new MultiItemTypeAdapter.OnItemClickListener() {

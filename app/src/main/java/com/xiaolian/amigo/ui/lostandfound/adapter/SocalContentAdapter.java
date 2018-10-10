@@ -64,43 +64,17 @@ public class SocalContentAdapter extends CommonAdapter<LostAndFoundDTO> {
             @Override
             public void onClick(View v) {
 
-                if (likeClickListener != null) {
-                    Integer likeCount = dto.getLikeCount();
-                    if (dto.getLiked() == 1) {
-                        dto.setLiked(2);
-                        dto.setLikeCount(likeCount- 1);
-                        holder.setImageResource(R.id.praise, R.drawable.ic_unlike);
-                        likeClickListener.onLikeClick(position, dto.getId(), true);
-                    } else {
-                        dto.setLiked(1);
-                        dto.setLikeCount(likeCount + 1);
-                        holder.setImageResource(R.id.praise, R.drawable.icon_praise_sel);
-                        likeClickListener.onLikeClick(position, dto.getId(), false);
-                        if (animation == null) {
-                            animation = AnimationUtils.loadAnimation(context, R.anim.lost_found_like);
-                            animation.setAnimationListener(new Animation.AnimationListener() {
-                                @Override
-                                public void onAnimationStart(Animation animation) {
-                                    animating = true;
-                                }
-
-                                @Override
-                                public void onAnimationEnd(Animation animation) {
-                                    animating = false;
-                                }
-
-                                @Override
-                                public void onAnimationRepeat(Animation animation) {
-
-                                }
-                            });
-                        }
-                        holder.getView(R.id.praise).startAnimation(animation);
-                    }
-                }
+                like(dto, holder, position);
             }
         });
 
+        holder.getView(R.id.praise_num).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                like(dto, holder, position);
+            }
+        });
         CircleImageView avator = holder.getView(R.id.iv_avatar);
         GildeUtils.setImage(context ,avator ,dto.getPictureUrl());
         holder.setText(R.id.name , dto.getUser());
@@ -128,6 +102,43 @@ public class SocalContentAdapter extends CommonAdapter<LostAndFoundDTO> {
                 if (onItemClickListener != null) onItemClickListener.onItemClick(v , holder ,position );
             }
         });
+    }
+
+    private void like(LostAndFoundDTO dto, ViewHolder holder, int position) {
+        if (likeClickListener != null) {
+            Integer likeCount = dto.getLikeCount();
+            if (dto.getLiked() == 1) {
+                dto.setLiked(2);
+                dto.setLikeCount(likeCount- 1);
+                holder.setImageResource(R.id.praise, R.drawable.ic_unlike);
+                likeClickListener.onLikeClick(position, dto.getId(), true);
+            } else {
+                dto.setLiked(1);
+                dto.setLikeCount(likeCount + 1);
+                holder.setImageResource(R.id.praise, R.drawable.icon_praise_sel);
+                likeClickListener.onLikeClick(position, dto.getId(), false);
+                if (animation == null) {
+                    animation = AnimationUtils.loadAnimation(context, R.anim.lost_found_like);
+                    animation.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+                            animating = true;
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            animating = false;
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+
+                        }
+                    });
+                }
+                holder.getView(R.id.praise).startAnimation(animation);
+            }
+        }
     }
 
     private void setImage(ViewHolder holder ,List<String> imgs){

@@ -1,6 +1,10 @@
 package com.xiaolian.amigo.ui.lostandfound;
 
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -49,12 +53,14 @@ import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutFooter;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutHeader;
 import com.xiaolian.amigo.ui.widget.photoview.AlbumItemActivity;
 import com.xiaolian.amigo.util.Log;
+import com.xiaolian.amigo.util.RxHelper;
 import com.xiaolian.amigo.util.ScreenUtils;
 import com.xiaolian.amigo.util.SoftInputUtils;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -62,6 +68,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import rx.functions.Action1;
 
 import static com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity2.KEY_COMMENT_COUNT;
 import static com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity2.KEY_LIKE;
@@ -94,6 +101,10 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     NestedScrollView scrollView;
     @BindView(R.id.title_border)
     View titleBorder;
+    @BindView(R.id.rl)
+    RelativeLayout rl;
+    @BindView(R.id.tag_rl)
+    RelativeLayout tagRl;
 
     private LostAndFoundActivityComponent mActivityComponent;
 
@@ -180,6 +191,14 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
     private IMainPresenter<IMainView> mainPresenter;
 
+    int scrollHeight = 0;  // 滚动的距离
+
+    int tagRlHeight;
+
+    int[] tagLocations = new int[2];
+
+    boolean isCanMove = true ;
+
     @SuppressLint("ValidFragment")
     public SocalFragment(IMainPresenter<IMainView> mainPresenter) {
         this.mainPresenter = mainPresenter;
@@ -201,8 +220,20 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         presenter.onAttach(this);
         scrollView.setVerticalScrollBarEnabled(true);
         initPop();
+        getInitSocialTagHeight();
         initRecycler();
+//        initScroll();
         return rootView;
+    }
+
+    private void getInitSocialTagHeight() {
+        tagRl.post(new Runnable() {
+            @Override
+            public void run() {
+                tagRlHeight = tagRl.getHeight();
+                tagRl.getLocationInWindow(tagLocations);
+            }
+        });
     }
 
     public void setReferTop(boolean referTop) {
@@ -215,9 +246,62 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
     }
 
+    /**
+     * 滑动监听
+     */
+    private AnimatorSet.AnimatorListener moveListener = new AnimatorListenerAdapter() {
+        @Override
+        public void onAnimationEnd(Animator animation) {
+            super.onAnimationEnd(animation);
+            isCanMove = true ;
+        }
+    };
+    /**
+     * 向上滚动时，tag跟着滚动
+     * 向下滚动时，tag显示
+     */
+    private void initScroll() {
+
+        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+
+            int locationY = 0;
+
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+
+                int scrollDistence = scrollY - oldScrollY;
+                scrollHeight += scrollDistence;
+
+                if (scrollY > oldScrollY) {
+                    //  向下滚动
+                    if (scrollHeight > tagRlHeight) {
+                        tagRl.setVisibility(View.VISIBLE);
+                        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) tagRl.getLayoutParams();
+                        params.setMargins(0, scrollHeight - tagRlHeight, 0, 0);
+                        tagRl.setLayoutParams(params);
+                        locationY = scrollHeight;
+                    }
+                } else {
+                    Log.d(TAG, scrollHeight + "    " + socialTags.getTop());
+                    // 向上滚动
+
+                    if (locationY - scrollHeight > tagRlHeight) {
+                        tagRl.setVisibility(View.GONE);
+                        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) tagRl.getLayoutParams();
+                        params.setMargins(0 ,scrollHeight  , 0,0);
+                        tagRl.setLayoutParams(params);
+
+
+                    }
+                }
+
+
+            }
+        });
+    }
+
     @Override
     protected void initView() {
-        Log.d(TAG, "initView");
         if (isActivityResult) {
             isActivityResult = false;
             return;
@@ -233,40 +317,133 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
         if (socialTags != null) socialTags.smoothScrollToPosition(0);
 
-
-        moveCursor(0);
+        if (isCanMove) moveCursor(0);
 
     }
 
-
-
     public void moveCursor(int position) {
+        isCanMove = false ;
         try {
             if (socialTags != null && socialTags.getLayoutManager() != null) {
                 LinearLayoutManager layoutManager = (LinearLayoutManager) socialTags.getLayoutManager();
                 int firstItem = layoutManager.findFirstVisibleItemPosition();
+                if (firstItem == -1) {
+                    isCanMove = true ;
+                    return;
+                }
                 if (firstItem == position) {
                     int left = socialTags.getChildAt(position).getLeft();
                     int right = socialTags.getChildAt(position).getRight();
                     int middle = (left + right) / 2;
-                    LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) titleBorder.getLayoutParams();
-                    layoutParams.setMarginStart(middle - ScreenUtils.dpToPxInt(mActivity, 4));
-                    titleBorder.setLayoutParams(layoutParams);
+                    animWidthMove(middle);
                 } else {
                     int left = socialTags.getChildAt(position - firstItem).getLeft();
                     int right = socialTags.getChildAt(position - firstItem).getRight();
+
                     int middle = (left + right) / 2;
-                    LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) titleBorder.getLayoutParams();
-                    layoutParams.setMarginStart(middle - ScreenUtils.dpToPxInt(mActivity, 4));
-                    titleBorder.setLayoutParams(layoutParams);
+                    animWidthMove(middle);
                 }
             }
-        }catch (Exception e){
-            Log.e(TAG ,e.getMessage());
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+    }
+
+    /**
+     * 动画第一步  ，  将View变宽
+     * @param moveLeft
+     */
+    private void animWidthMove(int moveLeft) {
+        moveLeft = moveLeft - ScreenUtils.dpToPxInt(mActivity , 4);
+        int oldLeft = titleBorder.getLeft();
+        int maxWidth;
+        int oldWidth = ScreenUtils.dpToPxInt(mActivity ,8);
+        boolean backMove = false;
+        if (oldLeft < moveLeft) {
+            backMove = true;
+            maxWidth = moveLeft - oldLeft + oldWidth;
+        } else {
+            backMove = false;
+            maxWidth = oldLeft - moveLeft + oldWidth ;
+        }
+        if (maxWidth < oldWidth) {
+            isCanMove = true ;
+            return;
+        }
+        if (backMove) {
+            AnimatorSet animatorSet = new AnimatorSet();
+            ValueAnimator widthAnim = ValueAnimator.ofInt(oldWidth, maxWidth);
+            widthAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    int currentValue = (int) animation.getAnimatedValue();
+                    RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) titleBorder.getLayoutParams();
+                    layoutParams.width = currentValue;
+                    layoutParams.height = titleBorder.getHeight();
+                    titleBorder.setLayoutParams(layoutParams);
+                }
+            });
+            ValueAnimator widthAnim2 = ValueAnimator.ofInt(maxWidth, oldWidth);
+            widthAnim2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                int initMarginStart = ((RelativeLayout.LayoutParams) titleBorder.getLayoutParams()).getMarginStart();
+
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    int currentValue = (int) animation.getAnimatedValue();
+                    RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) titleBorder.getLayoutParams();
+                    layoutParams.setMarginStart(initMarginStart + (maxWidth - currentValue));
+                    layoutParams.width = currentValue;
+                    layoutParams.height = titleBorder.getHeight();
+                    titleBorder.setLayoutParams(layoutParams);
+                }
+            });
+            animatorSet.addListener(moveListener);
+            animatorSet.playSequentially(widthAnim, widthAnim2);
+            animatorSet.setDuration(200);
+            animatorSet.start();
+        } else {
+            AnimatorSet animatorSet = new AnimatorSet();
+            ValueAnimator widthAnim = ValueAnimator.ofInt(oldWidth, maxWidth);
+            widthAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                int initMarginStart = ((RelativeLayout.LayoutParams) titleBorder.getLayoutParams()).getMarginStart();
+
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    int currentValue = (int) animation.getAnimatedValue();
+                    RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) titleBorder.getLayoutParams();
+                    layoutParams.setMarginStart(initMarginStart - currentValue + oldWidth);
+                    layoutParams.width = currentValue;
+                    layoutParams.height = titleBorder.getHeight();
+                    titleBorder.setLayoutParams(layoutParams);
+                }
+            });
+            ValueAnimator widthAnim2 = ValueAnimator.ofInt(maxWidth, oldWidth);
+            widthAnim2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    int currentValue = (int) animation.getAnimatedValue();
+                    RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) titleBorder.getLayoutParams();
+                    layoutParams.width = currentValue;
+                    layoutParams.height = titleBorder.getHeight();
+                    titleBorder.setLayoutParams(layoutParams);
+                }
+            });
+            animatorSet.addListener(moveListener);
+            animatorSet.setDuration(200);
+            animatorSet.playSequentially(widthAnim, widthAnim2);
+            animatorSet.start();
         }
     }
 
 
+    /**
+     * 动画第二步， 将view变小并移动
+     *
+     * @param
+     */
+    private void animMove(int oldWidth, int maxWidth) {
+
+    }
 
 
     @OnClick(R.id.cancel_search)
@@ -286,18 +463,15 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         super.onActivityResult(requestCode, resultCode, data);
         isActivityResult = true;
         Log.d(TAG, "onActivityResult");
-//            if (requestCode == REQUEST_CODE_PUBLISH) {
-////                refreshLostAndFound();
-//                onRefresh();
         if (requestCode == REQUEST_CODE_DETAIL) {
             if (data != null && currentHotPosition != -1) {
                 int commentCount = data.getIntExtra(KEY_COMMENT_COUNT, 0);
-                boolean isDelete = data.getBooleanExtra(KEY_DELETE ,false);
-                if (isDelete){
+                boolean isDelete = data.getBooleanExtra(KEY_DELETE, false);
+                if (isDelete) {
                     mDatas.remove(currentHotPosition);
                     socalContentAdapter.notifyItemRemoved(currentHotPosition);
-                    socalContentAdapter.notifyItemRangeChanged(currentChoosePosition ,mDatas.size());
-                }else {
+                    socalContentAdapter.notifyItemRangeChanged(currentChoosePosition, mDatas.size());
+                } else {
                     int liked = data.getIntExtra(KEY_LIKE, 0);
                     int oldLiked = mDatas.get(currentHotPosition).getLiked();
                     int likeCount;
@@ -323,11 +497,11 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
             if (data != null && currentChoosePosition != -1) {
                 int commentCount = data.getIntExtra(KEY_COMMENT_COUNT, 0);
                 int liked = data.getIntExtra(KEY_LIKE, 0);
-                boolean isDelete = data.getBooleanExtra(KEY_DELETE ,false);
-                if (isDelete){
+                boolean isDelete = data.getBooleanExtra(KEY_DELETE, false);
+                if (isDelete) {
                     mNewContents.remove(currentChoosePosition);
                     socalNewContentAdapter.notifyItemRemoved(currentChoosePosition);
-                    socalNewContentAdapter.notifyItemRangeChanged(currentChoosePosition ,mNewContents.size());
+                    socalNewContentAdapter.notifyItemRangeChanged(currentChoosePosition, mNewContents.size());
                 }
                 int oldLiked = mNewContents.get(currentChoosePosition).getLiked();
                 int likeCount;
@@ -350,7 +524,8 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         }
     }
 
-    SocalTagsAdapter adapter ;
+    SocalTagsAdapter adapter;
+
     /**
      * 初始化横向滚动的tag
      */
@@ -358,12 +533,14 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         initScreen();
         socialNew.setNestedScrollingEnabled(false);
         socialRecy.setNestedScrollingEnabled(false);
-        ((SimpleItemAnimator)socialRecy.getItemAnimator()).setSupportsChangeAnimations(false);
-        ((SimpleItemAnimator)socialNew.getItemAnimator()).setSupportsChangeAnimations(false);
+        ((SimpleItemAnimator) socialRecy.getItemAnimator()).setSupportsChangeAnimations(false);
+        ((SimpleItemAnimator) socialNew.getItemAnimator()).setSupportsChangeAnimations(false);
         mSocialTagDatas.add(new BbsTopicListTradeRespDTO.TopicListBean());
         adapter = new SocalTagsAdapter(mActivity, mSocialTagDatas, socialTags, new OnItemClickListener() {
             @Override
             public void click(int poisition) {
+                Log.d(TAG ,isCanMove + " ");
+                if (!isCanMove) return ;
                 if (poisition == 0) {
                     page = 1;
                     slectkey = "";
@@ -380,7 +557,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
             }
         });
         adapter.setHasStableIds(true);
-        ((DefaultItemAnimator)socialTags.getItemAnimator()).setSupportsChangeAnimations(false);
+        ((DefaultItemAnimator) socialTags.getItemAnimator()).setSupportsChangeAnimations(false);
         socialTags.setAdapter(adapter);
 
         socialTags.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -392,8 +569,8 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if (dx  != 0){
-                    LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) titleBorder.getLayoutParams();
+                if (dx != 0) {
+                    RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) titleBorder.getLayoutParams();
                     layoutParams.setMarginStart(layoutParams.getMarginStart() - dx);
                     titleBorder.setLayoutParams(layoutParams);
                 }
@@ -548,7 +725,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         // 设置pop透明效果
         mPopupWindow.setBackgroundDrawable(new ColorDrawable(0xffffff));
         // 设置pop出入动画
-        mPopupWindow.setAnimationStyle(R.style.pop_add);
+//        mPopupWindow.setAnimationStyle(R.style.pop_add);
         // 设置pop获取焦点，如果为false点击返回按钮会退出当前Activity，如果pop中有Editor的话，focusable必须要为true
         mPopupWindow.setFocusable(true);
         // 设置pop可点击，为false点击事件无效，默认为true
@@ -671,7 +848,6 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
             socalContentAdapter.notifyDataSetChanged();
         }
         hotBlog.setVisibility(View.GONE);
-
     }
 
     @Override
@@ -680,26 +856,31 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         rlEmpty.setVisibility(View.GONE);
         rlContent.setVisibility(View.VISIBLE);
         newBlog.setVisibility(View.VISIBLE);
-        if (mNewContents != null && socalNewContentAdapter != null) {
-            mNewContents.clear();
-            mNewContents.addAll(posts);
-            socalNewContentAdapter.notifyDataSetChanged();
-        }
 
-        if (isReferTop) {
-            socialRecy.post(new Runnable() {
-                @Override
-                public void run() {
-                    if (scrollView == null) return;
-                    int scrollHeight = socialRecy.getHeight() + socialTags.getHeight() + titleBorder.getHeight() +
-                            hotBlog.getHeight() + ScreenUtils.dpToPxInt(mActivity, 43);
-                    scrollView.scrollTo(0, scrollHeight);
-                    socialNew.smoothScrollToPosition(0);
-                    isReferTop = false;
+        RxHelper.delay(100, TimeUnit.MILLISECONDS).subscribe(new Action1<Integer>() {
+            @Override
+            public void call(Integer integer) {
+                if (mNewContents != null && socalNewContentAdapter != null) {
+                    mNewContents.clear();
+                    mNewContents.addAll(posts);
+                    socalNewContentAdapter.notifyDataSetChanged();
                 }
-            });
-        }
 
+                if (isReferTop) {
+                    socialRecy.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (scrollView == null) return;
+                            int scrollHeight = socialRecy.getHeight() + socialTags.getHeight() + titleBorder.getHeight() +
+                                    hotBlog.getHeight() + ScreenUtils.dpToPxInt(mActivity, 43);
+                            scrollView.scrollTo(0, scrollHeight);
+                            socialNew.smoothScrollToPosition(0);
+                            isReferTop = false;
+                        }
+                    });
+                }
+            }
+        });
     }
 
     @Override

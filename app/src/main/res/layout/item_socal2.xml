@@ -106,11 +106,9 @@
         android:layout_marginTop="14dp"
         android:visibility="visible"
         />
-
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:layout_marginTop="14dp">
+        android:layout_height="48dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -127,6 +125,8 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:textSize="@dimen/sp12"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
             android:textColor="@color/colorDark6"
             android:layout_alignParentRight="true"
             android:id="@+id/praise_num"
@@ -137,10 +137,13 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
             android:id="@+id/praise"
-            android:layout_marginRight="6dp"
+            android:paddingRight="6dp"
             android:src="@drawable/icon_praise_nor"
             android:layout_toLeftOf="@id/praise_num"
+            android:layout_centerVertical="true"
             />
 
         <TextView
@@ -151,6 +154,7 @@
             android:textColor="@color/colorDark6"
             android:layout_toLeftOf="@id/praise"
             android:layout_marginRight="14dp"
+            android:layout_centerVertical="true"
             tools:text="350"
             android:text="350"
             />
@@ -161,13 +165,14 @@
             android:src="@drawable/reply"
             android:layout_toLeftOf="@id/message_num"
             android:id="@+id/message"
+            android:layout_centerVertical="true"
             android:layout_marginRight="6dp"/>
     </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="6dp"
         android:background="@color/colorDarke" />
 </LinearLayout>
 </com.daimajia.swipe.SwipeLayout>

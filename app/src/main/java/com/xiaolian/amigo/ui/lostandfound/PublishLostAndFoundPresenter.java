@@ -65,6 +65,15 @@ public class PublishLostAndFoundPresenter<V extends IPublishLostAndFoundView>
     }
 
     @Override
+    public void uploadImage(Context activity, String imagePath, int position, OssFileType type) {
+        currentImagePosition = position;
+        currentType = type;
+        Log.d(TAG ,imagePath);
+        uploadImage(activity,imagePath);
+    }
+
+
+    @Override
     public void publishLostAndFound(String desc, List<String> images, String title, int type) {
         SaveLostAndFoundDTO dto = new SaveLostAndFoundDTO();
         dto.setDescription(desc);

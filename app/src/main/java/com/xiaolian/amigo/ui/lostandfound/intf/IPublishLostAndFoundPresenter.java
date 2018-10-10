@@ -18,6 +18,8 @@ public interface IPublishLostAndFoundPresenter<V extends IPublishLostAndFoundVie
     extends IBasePresenter<V> {
     void uploadImage(Context activity, Uri imageUri, int position, OssFileType found);
 
+    void uploadImage(Context activity , String imagePath , int position , OssFileType found);
+
     void publishLostAndFound(String desc, List<String> images, String title, int type);
 
 

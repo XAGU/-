@@ -25,5 +25,5 @@ public interface IMyCollectView extends IBaseView {
 
     void addMore(List<LostAndFoundDTO> wrappers);
 
-    public void notifyAdapter(int position, boolean b);
+    void notifyAdapter(int position, boolean b);
 }

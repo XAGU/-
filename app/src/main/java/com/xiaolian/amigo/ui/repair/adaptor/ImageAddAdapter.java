@@ -74,8 +74,6 @@ public class ImageAddAdapter extends CommonAdapter<ImageAddAdapter.ImageItem> {
                     + String.format(Locale.getDefault(), Constant.OSS_IMAGE_RESIZE,
                     imageSize))
 //                    .asBitmap()
-                    .placeholder(R.drawable.ic_picture_error)
-                    .error(R.drawable.ic_picture_error)
 //                .skipMemoryCache(true)
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .into((ImageView) holder.getView(R.id.iv_image));

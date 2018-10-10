@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.xiaolian.amigo.R;
@@ -83,9 +84,11 @@ public class SocalTagsAdapter extends RecyclerView.Adapter<SocalTagsAdapter.Item
 
     @Override
     public void onBindViewHolder(ItemViewHolder holder, int position) {
-
         ImageView imageView = holder.img;
         if (position ==0) {
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) imageView.getLayoutParams();
+            params.setMarginEnd(ScreenUtils.dpToPxInt(context , 5));
+            imageView.setLayoutParams(params);
             imageView.setBackground(context.getResources().getDrawable(R.drawable.shishi));
         }else {
 //            holder.img.setBackgroundResource(R.drawable.shishi);
