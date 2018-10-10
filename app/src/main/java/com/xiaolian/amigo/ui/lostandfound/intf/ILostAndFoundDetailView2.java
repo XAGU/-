@@ -29,8 +29,6 @@ public interface ILostAndFoundDetailView2 extends IBaseView {
 
     void showErrorView();
 
-    void hideEmptyView();
-
     void hideErrorView();
 
     void showEmptyView();
@@ -59,4 +57,8 @@ public interface ILostAndFoundDetailView2 extends IBaseView {
     void showContent();
 
     void hideContent();
+
+    void showBlogLoading();
+
+    void hideBlogLoading();
 }

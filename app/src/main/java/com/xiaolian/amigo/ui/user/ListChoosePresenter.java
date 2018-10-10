@@ -39,6 +39,7 @@ import javax.inject.Inject;
 
 import static com.xiaolian.amigo.data.enumeration.Device.HEATER;
 
+
 /**
  * 列表选择
  *

@@ -15,6 +15,7 @@ import com.xiaolian.amigo.ui.user.FindBathroomPasswordActivity;
 import com.xiaolian.amigo.ui.user.ListChooseActivity;
 import com.xiaolian.amigo.ui.user.CompleteInfoActivity;
 import com.xiaolian.amigo.ui.user.UserCertificationActivity;
+import com.xiaolian.amigo.ui.user.UserCertificationStatusActivity;
 
 import dagger.Component;
 
@@ -52,4 +53,6 @@ public interface UserActivityComponent {
     void inject(CompleteInfoActivity activity);
 
     void inject(UserCertificationActivity activity);
+
+    void inject(UserCertificationStatusActivity activity);
 }

@@ -75,12 +75,14 @@ public class LostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView2>
                 new NetworkObserver<ApiResult<LostAndFoundDTO>>(false, true) {
 
                     @Override
+                    public void onStart() {
+                        getMvpView().showBlogLoading();
+                        getMvpView().hideErrorView();
+                    }
+
+                    @Override
                     public void onReady(ApiResult<LostAndFoundDTO> result) {
-                        getMvpView().setRefreshComplete();
-                        getMvpView().hideEmptyView();
                         if (null == result.getError()) {
-                            getMvpView().hideErrorView();
-                            getMvpView().showContent();
                             if (result.getData().getCommentEnable() != null
                                     && result.getData().getCommentEnable()) {
                                 commentEnable = true;
@@ -88,6 +90,8 @@ public class LostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView2>
                             } else {
                                 commentEnable = false;
                                 getMvpView().hideFootView();
+                                getMvpView().showContent();
+                                getMvpView().hideBlogLoading();
                             }
                             lostAndFound = result.getData().transform();
                             preViewCount = lostAndFound.getViewCount();
@@ -102,9 +106,7 @@ public class LostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView2>
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
-                        getMvpView().setRefreshComplete();
-                        getMvpView().setLoadMoreComplete();
-                        getMvpView().hideEmptyView();
+                        getMvpView().hideErrorView();
                         getMvpView().hideContent();
                         getMvpView().showErrorView();
                     }
@@ -120,13 +122,18 @@ public class LostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView2>
                 new NetworkObserver<ApiResult<LostAndFoundDTO>>(false, true) {
 
                     @Override
+                    public void onStart() {
+                        super.onStart();
+                        getMvpView().hideErrorView();
+                        getMvpView().hideBlogLoading();
+                    }
+
+                    @Override
                     public void onReady(ApiResult<LostAndFoundDTO> result) {
                         getMvpView().setRefreshComplete();
                         getMvpView().setLoadMoreComplete();
-                        getMvpView().hideEmptyView();
                         if (null == result.getError()) {
                             getMvpView().showContent();
-                            getMvpView().hideErrorView();
                             if (result.getData().getCommentEnable() != null
                                     && result.getData().getCommentEnable()) {
                                 commentEnable = true;
@@ -134,6 +141,7 @@ public class LostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView2>
                             } else {
                                 commentEnable = false;
                                 getMvpView().hideFootView();
+
                             }
                             lostAndFound = result.getData().transform();
                             preViewCount = lostAndFound.getViewCount();
@@ -153,7 +161,7 @@ public class LostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView2>
                         getMvpView().setRefreshComplete();
                         getMvpView().setLoadMoreComplete();
                         getMvpView().hideContent();
-                        getMvpView().hideEmptyView();
+                        getMvpView().hideBlogLoading();
                         getMvpView().showErrorView();
                     }
                 });
@@ -179,8 +187,8 @@ public class LostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView2>
                     public void onReady(ApiResult<LostFoundCommentsListDTO> result) {
                         getMvpView().setRefreshComplete();
                         getMvpView().setLoadMoreComplete();
-                        getMvpView().hideEmptyView();
                         getMvpView().showContent();
+                        getMvpView().hideBlogLoading();
                         if (null == result.getError()) {
                             if (null != result.getData()) {
                                 if ((result.getData().getCommentsSize() <= 0
@@ -202,13 +210,13 @@ public class LostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView2>
                                             ObjectsCompat.equals(comment.getUserId(), lostAndFound.getUserId()),
                                             lostAndFound.getUserId(), type, commentEnable));
                                 }
-                                getMvpView().hideEmptyView();
                                 page ++;
                                 getMvpView().post(() ->
                                         getMvpView().addMore(wrappers, hots));
                             }
                         } else {
                             getMvpView().hideErrorView();
+                            getMvpView().hideBlogLoading();
                             getMvpView().onError(result.getError().getDisplayMessage());
                         }
                     }
@@ -218,9 +226,9 @@ public class LostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView2>
                         super.onError(e);
                         getMvpView().setRefreshComplete();
                         getMvpView().setLoadMoreComplete();
-//                        getMvpView().showErrorView();
+                        getMvpView().hideBlogLoading();
                         getMvpView().hideContent();
-                        getMvpView().hideEmptyView();
+                        getMvpView().showErrorView();
                     }
                 });
     }
@@ -329,12 +337,6 @@ public class LostAndFoundDetailPresenter2<V extends ILostAndFoundDetailView2>
                         }
                     });
         }
-    }
-
-    @Override
-    public boolean needRefresh() {
-        return lostAndFound != null
-                && (!ObjectsCompat.equals(preReplyCount, lostAndFound.getCommentsCount()) || !ObjectsCompat.equals(preViewCount, lostAndFound.getViewCount()));
     }
 
     @Override

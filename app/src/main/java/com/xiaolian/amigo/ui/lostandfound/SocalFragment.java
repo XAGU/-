@@ -197,6 +197,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         initViewPager();
         getSocialTagHeight();
         initLoadingAnim();
+        showBlogLoading();
         setErrorNetListener();
         return rootView;
     }
