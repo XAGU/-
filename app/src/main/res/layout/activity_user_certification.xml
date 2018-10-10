@@ -15,7 +15,7 @@
         android:fillViewport="true"
         android:overScrollMode="never"
         android:scrollbars="none"
-        android:layout_marginBottom="69dp">
+        android:layout_marginBottom="90dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -201,7 +201,6 @@
                         android:id="@+id/imageView6"
                         style="@style/ListItemImage"
                         android:layout_alignParentRight="true"
-
                         android:src="@drawable/arrow_right" />
 
                     <TextView
@@ -289,9 +288,8 @@
                         android:id="@+id/rv_image"
                         android:overScrollMode="never"
                         android:layout_width="wrap_content"
-                        android:layout_height="94dp"
-                        android:paddingLeft="@dimen/mainMarginLeftRight"
-                        android:paddingRight="@dimen/mainMarginLeftRight"/>
+                        android:layout_height="wrap_content"
+                        />
 
                     <LinearLayout
                         android:visibility="gone"
@@ -357,10 +355,13 @@
                     android:id="@+id/front_card_rl"
                     android:layout_below="@id/card_txt"
                     android:background="@drawable/dotted_box"
+                    android:layout_marginBottom="21dp"
                     >
 
+
+
                     <ImageView
-                        android:id="@+id/iv_front_card"
+
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/image_add"
@@ -378,6 +379,12 @@
                         android:textColor="@color/colorDark9"
                         android:layout_marginTop="54dp"
                         android:layout_centerHorizontal="true"/>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/iv_front_card"
+                        android:scaleType="centerInside"/>
                 </RelativeLayout>
 
 
@@ -389,10 +396,13 @@
                     android:layout_toEndOf="@id/front_card_rl"
                     android:background="@drawable/dotted_box"
                     android:layout_marginLeft="10dp"
+                    android:layout_marginBottom="21dp"
                     >
 
+
+
                     <ImageView
-                        android:id="@+id/iv_back_card"
+
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/image_add"
@@ -410,6 +420,12 @@
                         android:textColor="@color/colorDark9"
                         android:layout_marginTop="54dp"
                         android:layout_centerHorizontal="true" />
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/iv_back_card"
+                        android:scaleType="centerInside"/>
                 </RelativeLayout>
 
 

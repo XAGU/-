@@ -46,6 +46,7 @@ public class ImageAddAdapter extends CommonAdapter<ImageAddAdapter.ImageItem> {
     }
 
 
+
     @Override
     protected void convert(ViewHolder holder, ImageItem imageItem, int position) {
         if (viewWidth != 0){
@@ -58,26 +59,12 @@ public class ImageAddAdapter extends CommonAdapter<ImageAddAdapter.ImageItem> {
             }
         }
         if (TextUtils.isEmpty(imageItem.getImageUrl())) {
-//            Glide.with(context).load(defaultRes)
-//                    .asBitmap()
-//                    .placeholder(R.drawable.ic_picture_error)
-//                    .error(R.drawable.ic_picture_error)
-////                .skipMemoryCache(true)
-////                .diskCacheStrategy(DiskCacheStrategy.NONE)
-//                    .into((ImageView)holder.getView(R.id.iv_image));
-
             ((ImageView) holder.getView(R.id.iv_image)).setImageDrawable(null);
             ((ImageView) holder.getView(R.id.iv_image)).setScaleType(ImageView.ScaleType.CENTER_INSIDE);
             holder.setImageResource(R.id.iv_image, DEFAULT_RES);
         } else {
-//            Glide.with(context).load(Constant.IMAGE_PREFIX + imageItem.getImageUrl()
-//                    + String.format(Locale.getDefault(), Constant.OSS_IMAGE_RESIZE,
-//                    imageSize))
-//                    .asBitmap()
             Glide.with(context).load(imageItem.getImageUrl())
                     .asBitmap()
-                .skipMemoryCache(true)
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .into((ImageView) holder.getView(R.id.iv_image));
             ((ImageView) holder.getView(R.id.iv_image)).setScaleType(ImageView.ScaleType.CENTER_CROP);
         }

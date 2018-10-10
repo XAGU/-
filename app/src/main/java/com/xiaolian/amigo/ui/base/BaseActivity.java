@@ -77,7 +77,7 @@ import butterknife.Unbinder;
 public abstract class BaseActivity extends SwipeBackActivity
         implements IBaseView {
 
-    private final String TAG = this.getClass().getSimpleName();
+    protected final String TAG = this.getClass().getSimpleName();
 
     private static final int REQUEST_CODE_CAMERA = 0x1103;
     private static final int REQUEST_CODE_PICK = 0x1104;
