@@ -1,35 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/white"
-    xmlns:android="http://schemas.android.com/apk/res/android" >
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="29dp"
-        android:id="@+id/search"
-        android:paddingLeft="16dp"
-        android:hint="@string/hint_search"
-        android:textSize="13sp"
-        android:gravity="center_vertical"
-        android:drawablePadding="2dp"
-        android:imeOptions="actionSearch"
-        android:textColor="@color/colorDarkB"
-        android:drawableLeft="@drawable/icon_school_search"
-        android:background="@drawable/bg_search"/>
-
-<RelativeLayout
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="21dp">
+    android:background="@color/white"
+    android:id="@+id/cl_main"
+    xmlns:tool="http://schemas.android.com/tools">
+<android.support.design.widget.AppBarLayout
+    android:fitsSystemWindows="true"
+    android:id="@+id/app_bar_layout"
+    app:elevation="0dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:theme="@style/AppTheme.AppBarOverlay">
 
-    <android.support.v7.widget.RecyclerView
+    <android.support.design.widget.CollapsingToolbarLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="none"
-        android:overScrollMode="never"
-        android:id="@+id/school_ry"/>
+        android:layout_height="wrap_content"
+        app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-</RelativeLayout>
-</LinearLayout>
+        <LinearLayout
+            android:visibility="visible"
+            android:background="@color/white"
+            android:id="@+id/ll_header"
+            android:paddingTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="42dp"
+                android:layout_marginLeft="@dimen/mainMarginLeftRight"
+                android:layout_marginRight="@dimen/mainMarginLeftRight"
+                android:layout_marginBottom="@dimen/toolBarMarginBottom">
+
+                <TextView
+                    android:id="@+id/tv_toolbar_title"
+                    style="@style/ToolBarTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="选择学校" />
+
+            </RelativeLayout>
+        </LinearLayout>
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/tool_bar"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:background="@color/white"
+            app:layout_collapseMode="pin">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/iv_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:src="@drawable/back" />
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:textSize="@dimen/sp15"
+                    android:textStyle="bold"
+                    android:textColor="#222"
+                    android:text="@string/choose_school_title" />
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.CollapsingToolbarLayout>
+
+</android.support.design.widget.AppBarLayout>
+
+
+
+                <com.scwang.smartrefresh.layout.SmartRefreshLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="21dp"
+                    android:layout_marginEnd="21dp"
+                    app:srlHeaderHeight="40dp"
+                    app:srlFooterHeight="0dp"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                    android:id="@+id/smart_layout">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="29dp"
+                            android:id="@+id/search"
+                            android:paddingLeft="16dp"
+                            android:hint="@string/hint_search"
+                            android:textSize="13sp"
+                            android:gravity="center_vertical"
+                            android:drawablePadding="2dp"
+                            android:imeOptions="actionSearch"
+                            tool:visibility="visible"
+                            android:textColor="@color/colorDarkB"
+                            android:drawableLeft="@drawable/icon_school_search"
+                            android:background="@drawable/bg_search"/>
+
+
+                    <android.support.v7.widget.RecyclerView
+                        android:layout_marginTop="21dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scrollbars="none"
+                        android:overScrollMode="never"
+                        android:id="@+id/school_ry"/>
+
+                    </LinearLayout>
+                        <com.xiaolian.amigo.ui.widget.school.IndexBar.widget.IndexBar
+                            android:id="@+id/indexBar"
+                            android:layout_width="20dp"
+                            android:layout_height="match_parent"
+                            app:indexBarPressBackground="@color/white"
+                            app:indexBarTextSize="8sp"
+                            android:layout_gravity="end"
+                            />
+                    </FrameLayout>
+                </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+</android.support.design.widget.CoordinatorLayout>

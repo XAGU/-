@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.ui.user.ChooseSchoolActivity;
 import com.xiaolian.amigo.ui.user.ListChooseActivity;
 import com.xiaolian.amigo.ui.user.adaptor.ListChooseAdaptor;
 import com.xiaolian.amigo.util.ViewUtil;
@@ -58,8 +59,8 @@ public class RegisterStep2Fragment extends Fragment {
 
     @OnClick(R.id.tv_school)
     void chooseSchool() {
-        Intent intent = new Intent(getActivity(), ListChooseActivity.class);
-        intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION, ListChooseActivity.ACTION_LIST_SCHOOL_RESULT);
+        Intent intent = new Intent(getActivity(), ChooseSchoolActivity.class);
+//        intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION, ListChooseActivity.ACTION_LIST_SCHOOL_RESULT);
         startActivityForResult(intent, REQUEST_CODE_CHOOSE_SCHOOL);
     }
 

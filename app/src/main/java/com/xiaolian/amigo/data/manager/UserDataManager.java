@@ -43,6 +43,7 @@ import com.xiaolian.amigo.data.network.model.user.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.data.network.model.user.PersonalUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.user.QueryAvatarDTO;
 import com.xiaolian.amigo.data.network.model.user.QueryUserResidenceListRespDTO;
+import com.xiaolian.amigo.data.network.model.user.SchoolNameListRespDTO;
 import com.xiaolian.amigo.data.network.model.user.UserResidenceDTO;
 import com.xiaolian.amigo.data.network.model.user.UserResidenceInListDTO;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
@@ -295,6 +296,11 @@ public class UserDataManager implements IUserDataManager {
     }
 
     @Override
+    public Observable<ApiResult<SchoolNameListRespDTO>> getSchoolNameList() {
+        return schoolApi.getSchoolNameList();
+    }
+
+    @Override
     public Observable<ApiResult<String>> uploadFile(@Part("file") RequestBody images) {
 
         return fileApi.uploadFile(images);
@@ -314,4 +320,6 @@ public class UserDataManager implements IUserDataManager {
     public void logout() {
         sharedPreferencesHelp.logout();
     }
+
+
 }

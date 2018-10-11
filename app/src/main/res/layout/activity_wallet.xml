@@ -143,7 +143,7 @@
             style="@style/ContentText_main"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:text="我要提现" />
+            android:text="退款申请" />
 
         <View
             android:layout_alignParentBottom="true"

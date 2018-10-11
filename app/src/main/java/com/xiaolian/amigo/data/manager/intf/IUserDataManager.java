@@ -30,6 +30,7 @@ import com.xiaolian.amigo.data.network.model.user.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.data.network.model.user.PersonalUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.user.QueryAvatarDTO;
 import com.xiaolian.amigo.data.network.model.user.QueryUserResidenceListRespDTO;
+import com.xiaolian.amigo.data.network.model.user.SchoolNameListRespDTO;
 import com.xiaolian.amigo.data.network.model.user.UserResidenceDTO;
 import com.xiaolian.amigo.data.network.model.user.UserResidenceInListDTO;
 import com.xiaolian.amigo.data.vo.User;
@@ -241,5 +242,12 @@ public interface IUserDataManager {
     public void setBathroomPassword(String password);
 
     public String getBathroomPassword();
+
+
+    /**
+     * 获取学校列表
+     * @return
+     */
+    Observable<ApiResult<SchoolNameListRespDTO>> getSchoolNameList ();
 
 }

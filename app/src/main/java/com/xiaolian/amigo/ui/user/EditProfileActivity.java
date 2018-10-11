@@ -213,9 +213,12 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
         availabilityDialog.setTitle("更换学校");
         availabilityDialog.setTip(getString(R.string.change_school_tip));
         availabilityDialog.setOnOkClickListener(dialog1 -> {
-            Intent intent = new Intent(this, ListChooseActivity.class);
-            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION,
-                    ListChooseActivity.ACTION_LIST_SCHOOL);
+//            Intent intent = new Intent(this, ListChooseActivity.class);
+//            intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION,
+//                    ListChooseActivity.ACTION_LIST_SCHOOL);
+//            startActivityForResult(intent, REQUEST_CODE_EDIT_SCHOOL);
+
+            Intent intent = new Intent(this, ChooseSchoolActivity.class);
             startActivityForResult(intent, REQUEST_CODE_EDIT_SCHOOL);
         });
         availabilityDialog.show();
