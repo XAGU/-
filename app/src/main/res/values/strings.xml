@@ -375,4 +375,8 @@
     <string name="edit_class">编辑班级</string>
     <string name="edit_student_id">编辑学号</string>
 
+
+    <!--选择学校-->
+    <string name="choose_school_title">选择学校</string>
+    <string name="hint_search">搜索您所在的学校 ～</string>
 </resources>

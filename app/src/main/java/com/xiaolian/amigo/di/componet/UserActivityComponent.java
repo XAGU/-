@@ -5,6 +5,7 @@ import com.xiaolian.amigo.di.module.UserActivityModule;
 import com.xiaolian.amigo.ui.user.ChangeBathroomPasswordActivity;
 import com.xiaolian.amigo.ui.user.CheckPasswordActivity;
 import com.xiaolian.amigo.ui.user.ChooseDormitoryActivity;
+import com.xiaolian.amigo.ui.user.ChooseSchoolActivity;
 import com.xiaolian.amigo.ui.user.EditAvatarActivity;
 import com.xiaolian.amigo.ui.user.EditDormitoryActivity;
 import com.xiaolian.amigo.ui.user.EditMobileActivity;
@@ -55,4 +56,6 @@ public interface UserActivityComponent {
     void inject(UserCertificationActivity activity);
 
     void inject(UserCertificationStatusActivity activity);
+
+    void inject(ChooseSchoolActivity activity);
 }

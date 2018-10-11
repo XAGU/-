@@ -62,6 +62,15 @@ public abstract class BaseToolBarActivity extends BaseActivity {
     }
 
 
+    protected RelativeLayout getRlToolBar() {
+        return rlToolBar;
+    }
+
+
+    protected ScrollView getSvMainContainer() {
+        return svMainContainer;
+    }
+
     protected View getMainLayout() {
         return llMainContent;
     }

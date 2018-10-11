@@ -588,7 +588,7 @@
         <activity
             android:name=".ui.device.bathroom.BathroomHeaterActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- 更新窗口 -->
         <activity
@@ -663,16 +663,22 @@
         <activity android:name=".ui.user.UserCertificationStatusActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <activity android:name=".ui.user.EditUserInfoActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <!--切换学校-->
+        <activity android:name=".ui.user.ChooseSchoolActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".ui.user.EditUserInfoActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
 
         <!-- 选择设备类型 -->
         <activity
