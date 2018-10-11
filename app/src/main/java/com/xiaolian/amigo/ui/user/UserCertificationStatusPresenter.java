@@ -18,4 +18,7 @@ public class UserCertificationStatusPresenter<v extends IUserCertificationStatus
     public UserCertificationStatusPresenter(IUserDataManager userDataManager){
         this.userDataManager = userDataManager ;
     }
+
+
+
 }

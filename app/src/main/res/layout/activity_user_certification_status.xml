@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tool="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white">
 
     <ScrollView xmlns:tool="http://schemas.android.com/tools"
@@ -13,7 +12,8 @@
         android:paddingTop="42dp"
         android:fillViewport="true"
         android:overScrollMode="never"
-        android:scrollbars="none">
+        android:scrollbars="none"
+        android:layout_marginBottom="91dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -64,26 +64,43 @@
                     />
             </RelativeLayout>
 
-
-            <android.support.v4.widget.NestedScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scrollbars="none"
-
-                app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="21dp"
                     android:layout_marginEnd="21dp"
                     android:orientation="vertical"
+                    android:id="@+id/main_content"
                     >
+
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:id="@+id/line"
+                        android:background="@color/colorDarke"
+                        android:layout_marginBottom="21dp"/>
+
+                    <LinearLayout
+                        style="@style/user_certification_ll"
+                        android:layout_marginBottom="14dp"
+                        android:id="@+id/reason_ll"
+                        >
+                        <TextView
+
+                            style="@style/user_certification_txt"
+                            android:text="原因："
+                            />
+
+                        <TextView
+                            style="@style/user_certification_txt"
+                            tool:text="动物医学学院范德萨发阿发发啊是是的达发打湿大大安市"
+                            android:id="@+id/tv_reason"/>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
                         android:background="@color/colorDarke"
                         android:layout_marginBottom="21dp"/>
 
@@ -225,15 +242,29 @@
 
                     </android.support.v7.widget.RecyclerView>
                 </LinearLayout>
-            </android.support.v4.widget.NestedScrollView>
         </LinearLayout>
 
     </ScrollView>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/button_rect_red"
+        android:text="重新认证"
+        android:id="@+id/certification"
+        android:textSize="17sp"
+        android:layout_marginBottom="21dp"
+        android:layout_marginStart="21dp"
+        android:layout_marginEnd="21dp"
+        android:textColor="@color/white"
+        android:layout_gravity="bottom"
+        />
+
     <RelativeLayout
         android:id="@+id/rl_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="42dp">
+        android:layout_height="42dp"
+        android:background="@color/white">
 
         <ImageView
             android:id="@+id/iv_back"
@@ -254,7 +285,7 @@
             android:textSize="@dimen/sp15"
             android:textStyle="bold"
             android:textColor="#222"
-            tool:text="@string/user_certification_title" />
+            android:text="@string/user_certification_title" />
 
 
         <View

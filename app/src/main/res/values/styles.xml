@@ -477,6 +477,7 @@
     <style name="user_certification_txt" parent="wrap">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/colorDark6</item>
+        <item name="android:lineSpacingExtra">5dp</item>
     </style>
 
 </resources>
