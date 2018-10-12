@@ -17,6 +17,8 @@ import com.xiaolian.amigo.data.network.model.user.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.data.network.model.user.QueryAvatarDTO;
 import com.xiaolian.amigo.data.network.model.user.QueryUserResidenceListRespDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
+import com.xiaolian.amigo.data.network.model.user.UserAuthCertifyReqDTO;
+import com.xiaolian.amigo.data.network.model.user.UserGradeInfoRespDTO;
 import com.xiaolian.amigo.data.network.model.user.UserResidenceDTO;
 import com.xiaolian.amigo.data.network.model.user.UserResidenceInListDTO;
 import com.xiaolian.amigo.data.network.model.user.UploadUserDeviceInfoReqDTO;
@@ -141,5 +143,22 @@ public interface IUserApi {
      */
     @POST("user/residence/bath/record/default/update")
     Observable<ApiResult<BooleanRespDTO>>  updateNormalBathroom(@Body SimpleReqDTO dto);
+
+
+    /**
+     * 学生认证
+     * @param dto
+     * @return
+     */
+    @POST("user/auth/certify")
+    Observable<ApiResult<BooleanRespDTO>> certify(@Body UserAuthCertifyReqDTO dto);
+
+
+    /**
+     * 年级信息
+     * @return
+     */
+    @POST("user/grade/info")
+    Observable<ApiResult<UserGradeInfoRespDTO>> gradeInfo();
 
 }

@@ -44,6 +44,8 @@ import com.xiaolian.amigo.data.network.model.user.PersonalUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.user.QueryAvatarDTO;
 import com.xiaolian.amigo.data.network.model.user.QueryUserResidenceListRespDTO;
 import com.xiaolian.amigo.data.network.model.user.SchoolNameListRespDTO;
+import com.xiaolian.amigo.data.network.model.user.UserAuthCertifyReqDTO;
+import com.xiaolian.amigo.data.network.model.user.UserGradeInfoRespDTO;
 import com.xiaolian.amigo.data.network.model.user.UserResidenceDTO;
 import com.xiaolian.amigo.data.network.model.user.UserResidenceInListDTO;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
@@ -298,6 +300,16 @@ public class UserDataManager implements IUserDataManager {
     @Override
     public Observable<ApiResult<SchoolNameListRespDTO>> getSchoolNameList() {
         return schoolApi.getSchoolNameList();
+    }
+
+    @Override
+    public Observable<ApiResult<BooleanRespDTO>> certify(UserAuthCertifyReqDTO dto) {
+        return userApi.certify(dto);
+    }
+
+    @Override
+    public Observable<ApiResult<UserGradeInfoRespDTO>> gradeInfo() {
+        return userApi.gradeInfo();
     }
 
     @Override

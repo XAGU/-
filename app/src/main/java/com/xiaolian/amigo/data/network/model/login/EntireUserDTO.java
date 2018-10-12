@@ -33,6 +33,7 @@ public class EntireUserDTO implements Mapper<User> {
     private Long buildingId;
     private boolean hadSetBathPassword ;   //  是否已经设置浴室密码
 
+
     @Override
     public User transform() {
         User user = new User(this);

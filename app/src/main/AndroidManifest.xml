@@ -655,7 +655,8 @@
 
         <activity android:name=".ui.user.UserCertificationActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask">
 
         </activity>
 

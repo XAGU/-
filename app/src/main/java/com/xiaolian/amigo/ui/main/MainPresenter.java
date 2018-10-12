@@ -159,6 +159,11 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
                     }else{
                         getMvpView().showNoticeAmount(0);
                     }
+
+                    if (result.getData() != null){
+                        getMvpView().setCertificationStatus(result.getData());
+                    }
+
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }

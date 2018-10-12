@@ -60,4 +60,7 @@ public class PersonalExtraInfoDTO {
      * 是否显示提现入口
      */
     private Boolean showWithdraw;
+
+    private Integer studentAuth ;
+
 }

@@ -348,6 +348,16 @@ public final class Constant {
     public static final int STUDENT_ID  = 4 ;  // 学号
 
 
+    /**
+     * 学生认证状态
+     */
 
+    public static final int CERTIFICATION_NONE = 0 ;  // 未认证
+
+    public static final int CERTIFICATION_REVIEWING = 1 ;  // 审核中
+
+    public static final int CERTIFICATION_PASS = 2  ;  // 认证通过
+
+    public static final int CERTIFICATION_FAILURE = 3  ;  //认证失败
 
 }

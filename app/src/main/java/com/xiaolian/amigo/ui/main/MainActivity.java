@@ -39,6 +39,7 @@ import com.xiaolian.amigo.data.network.model.order.OrderPreInfoDTO;
 import com.xiaolian.amigo.data.network.model.system.BannerDTO;
 import com.xiaolian.amigo.data.network.model.user.BriefSchoolBusiness;
 import com.xiaolian.amigo.data.network.model.user.PersonalExtraInfoDTO;
+import com.xiaolian.amigo.ui.base.RxBus;
 import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.ui.device.DeviceConstant;
 import com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity;
@@ -1094,6 +1095,11 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @Override
     public void hideNoticeRemind() {
         socialRed.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void setCertificationStatus(PersonalExtraInfoDTO personalExtraInfoDTO) {
+        RxBus.getDefault().post(personalExtraInfoDTO);
     }
 
 

@@ -31,6 +31,8 @@ import com.xiaolian.amigo.data.network.model.user.PersonalUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.user.QueryAvatarDTO;
 import com.xiaolian.amigo.data.network.model.user.QueryUserResidenceListRespDTO;
 import com.xiaolian.amigo.data.network.model.user.SchoolNameListRespDTO;
+import com.xiaolian.amigo.data.network.model.user.UserAuthCertifyReqDTO;
+import com.xiaolian.amigo.data.network.model.user.UserGradeInfoRespDTO;
 import com.xiaolian.amigo.data.network.model.user.UserResidenceDTO;
 import com.xiaolian.amigo.data.network.model.user.UserResidenceInListDTO;
 import com.xiaolian.amigo.data.vo.User;
@@ -249,5 +251,12 @@ public interface IUserDataManager {
      * @return
      */
     Observable<ApiResult<SchoolNameListRespDTO>> getSchoolNameList ();
+
+
+
+    Observable<ApiResult<BooleanRespDTO>> certify(@Body UserAuthCertifyReqDTO dto);
+
+
+    Observable<ApiResult<UserGradeInfoRespDTO>> gradeInfo();
 
 }

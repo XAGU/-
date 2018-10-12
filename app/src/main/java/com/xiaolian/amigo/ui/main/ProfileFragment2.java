@@ -10,7 +10,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -50,6 +49,11 @@ import butterknife.Unbinder;
 import de.hdodenhof.circleimageview.CircleImageView;
 import lombok.Data;
 
+import static com.xiaolian.amigo.util.Constant.CERTIFICATION_FAILURE;
+import static com.xiaolian.amigo.util.Constant.CERTIFICATION_NONE;
+import static com.xiaolian.amigo.util.Constant.CERTIFICATION_PASS;
+import static com.xiaolian.amigo.util.Constant.CERTIFICATION_REVIEWING;
+
 /**
  * 个人中心
  *
@@ -58,13 +62,18 @@ import lombok.Data;
  */
 
 public class ProfileFragment2 extends BaseFragment {
+    private static final String CERTIFICATION_NONE_TXT = "未认证" ;
+    private static final String CERTIFICATION_REVIEWING_TXT = "审核中";
+    private static final String CERTIFICATION_PASS_TXT = "已认证" ;
+    private static final String CERTIFICATION_FAILURE_TXT = "认证失败";
+
     public static final int START_EDIT_PROFILE = 01;
     private static final String TAG = ProfileFragment2.class.getSimpleName();
     ProfileAdaptor.Item wallet = new ProfileAdaptor.Item(R.drawable.profile_wallet, "我的钱包", WalletActivity.class);
     ProfileAdaptor.Item credits = new ProfileAdaptor.Item(R.drawable.profile_credits, "积分兑换", CreditsActivity.class);
     ProfileAdaptor.Item bonus = new ProfileAdaptor.Item(R.drawable.profile_luck, "我的代金券", BonusActivity.class);
     ProfileAdaptor.Item repair = new ProfileAdaptor.Item(R.drawable.profile_repair, "设备报修", RepairNavActivity.class);
-    ProfileAdaptor.Item legalize = new ProfileAdaptor.Item(R.drawable.profile_certification, "学生认证", UserCertificationActivity.class,"未认证");
+    ProfileAdaptor.Item legalize = new ProfileAdaptor.Item(R.drawable.profile_certification, "学生认证", UserCertificationActivity.class,"");
     List<ProfileAdaptor.Item> items = new ArrayList<ProfileAdaptor.Item>() {
         {
             add(new ProfileAdaptor.Item(R.drawable.profile_edit, "编辑个人信息", EditProfileActivity.class));
@@ -83,6 +92,7 @@ public class ProfileFragment2 extends BaseFragment {
     TextView tvSchoolName;
     @BindView(R.id.tv_notice_count)
     TextView tvNoticeCount;
+
 
     public ProfileFragment2() {
     }
@@ -107,6 +117,8 @@ public class ProfileFragment2 extends BaseFragment {
     private Unbinder unbinder;
 
     private String avatarUrl;  //  图片url
+
+
 
     @Nullable
     @Override
@@ -229,6 +241,9 @@ public class ProfileFragment2 extends BaseFragment {
             } else {
                 credits.setBonusAmount(data.getCredits());
             }
+
+            legalize.setVerifiedStatus(getCertificationStatus(data.getStudentAuth()));
+
         } catch (Exception e) {
             MobclickAgent.reportError(getContext(), "customReport tag: " + TAG + e.getMessage());
             wallet.setBalance(String.valueOf(data.getAllBalance()));
@@ -257,6 +272,30 @@ public class ProfileFragment2 extends BaseFragment {
             adaptor.notifyDataSetChanged();
         }
 
+    }
+
+
+    private String getCertificationStatus(int statusType){
+        String status ;
+        switch (statusType){
+            case CERTIFICATION_NONE:
+                status = CERTIFICATION_NONE_TXT ;
+                break;
+            case CERTIFICATION_FAILURE:
+                status = CERTIFICATION_FAILURE_TXT ;
+                break;
+            case CERTIFICATION_PASS:
+                status = CERTIFICATION_PASS_TXT ;
+                break;
+            case CERTIFICATION_REVIEWING:
+                status = CERTIFICATION_REVIEWING_TXT;
+                break;
+                default:
+                    status ="";
+                    break;
+
+        }
+        return status ;
     }
 
 

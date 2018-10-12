@@ -6,11 +6,19 @@ import android.text.TextUtils;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 
+import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.di.componet.DaggerUserActivityComponent;
+import com.xiaolian.amigo.di.componet.UserActivityComponent;
+import com.xiaolian.amigo.di.module.UserActivityModule;
 import com.xiaolian.amigo.ui.base.BaseToolBarActivity;
+import com.xiaolian.amigo.ui.user.intf.IEditUserInfoPresenter;
+import com.xiaolian.amigo.ui.user.intf.IEditUserInfoView;
 import com.xiaolian.amigo.ui.widget.ClearableEditText;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.ViewUtil;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,7 +29,7 @@ import static com.xiaolian.amigo.util.Constant.DEPARTMENT;
 import static com.xiaolian.amigo.util.Constant.PROFESSION;
 import static com.xiaolian.amigo.util.Constant.STUDENT_ID;
 
-public class EditUserInfoActivity extends BaseToolBarActivity {
+public class EditUserInfoActivity extends BaseToolBarActivity implements IEditUserInfoView {
 
     public static final String KEY_TYPE = "KEY_TYPE" ;  // 编辑的type
     public static final String KEY_DATA = "KET_DATA" ;  // 传输过来的数据
@@ -36,6 +44,10 @@ public class EditUserInfoActivity extends BaseToolBarActivity {
 
     public static final String HINT_STUDENT_ID = "请输入学号" ;
 
+    @Inject
+    IEditUserInfoPresenter<IEditUserInfoView> presenter ;
+
+
     @BindView(R.id.edit_nickname)
     ClearableEditText editNickname;
     @BindView(R.id.bt_submit)
@@ -44,6 +56,8 @@ public class EditUserInfoActivity extends BaseToolBarActivity {
     private int type ;
     private String data ;
 
+
+    private UserActivityComponent mActivityComponent;
     @Override
     protected void setUp() {
         super.setUp();
@@ -55,12 +69,17 @@ public class EditUserInfoActivity extends BaseToolBarActivity {
 
     @Override
     protected void initInject() {
-
+        mActivityComponent = DaggerUserActivityComponent.builder()
+                .userActivityModule(new UserActivityModule(this))
+                .applicationComponent(((MvpApp) getApplication()).getComponent())
+                .build();
     }
 
     @Override
     protected void initView() {
         setUnBinder(ButterKnife.bind(this));
+        mActivityComponent.inject(this);
+        presenter.onAttach(this);
         setMainBackground(R.color.colorBackgroundGray);
         editNickname.setFilters(new InputFilter[]{new InputFilter.LengthFilter(20)});
         editNickname.setHint(setHint());
@@ -69,6 +88,7 @@ public class EditUserInfoActivity extends BaseToolBarActivity {
             editNickname.setSelection(editNickname.getText().length());
             btSubmit.setEnabled(true);
         }
+
         ViewUtil.setEditPasswordInputFilter(editNickname);
         CommonUtil.showSoftInput(this, editNickname);
     }
@@ -112,6 +132,7 @@ public class EditUserInfoActivity extends BaseToolBarActivity {
 
     @OnClick(R.id.bt_submit)
     public void submit(){
+        saveUserInfo();
         Intent intent = getIntent();
         intent.putExtra(KEY_BACK_DATA ,editNickname.getText().toString().trim());
         intent.putExtra(KEY_TYPE ,type);
@@ -120,6 +141,32 @@ public class EditUserInfoActivity extends BaseToolBarActivity {
     }
 
 
+    private void saveUserInfo(){
+        String content = editNickname.getText().toString().trim();
+        switch (type){
+            case DEPARTMENT:
+                 presenter.saveDepartment(content);
+                 break;
+            case PROFESSION:
+                presenter.saveProfession(content);
+                break;
+            case CLASS:
+                presenter.saveClass(content);
+                break;
+            case STUDENT_ID:
+                presenter.saveStudentId(content);
+                break ;
+            default:
+                break;
+        }
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.onDetach();
+    }
 
     @Override
     public void finish() {

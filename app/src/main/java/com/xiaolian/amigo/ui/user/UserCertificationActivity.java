@@ -5,17 +5,19 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.enumeration.OssFileType;
+import com.xiaolian.amigo.data.network.model.user.UserGradeInfoRespDTO;
 import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.di.componet.DaggerUserActivityComponent;
 import com.xiaolian.amigo.di.componet.UserActivityComponent;
@@ -40,6 +42,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnTextChanged;
 
 import static com.xiaolian.amigo.ui.user.EditUserInfoActivity.KEY_BACK_DATA;
 import static com.xiaolian.amigo.ui.user.EditUserInfoActivity.KEY_DATA;
@@ -54,11 +57,11 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
 
     private static final int REQUEST_IMAGE = 0x3302;
 
-    private static final int REQUEST_BACK_CARD_IMAGE= 0x2201 ;
+    private static final int REQUEST_BACK_CARD_IMAGE = 0x2201;
 
-    private static final int REQUEST_FRONT_CARD_IMAGE = 0x2202 ;
+    private static final int REQUEST_FRONT_CARD_IMAGE = 0x2202;
 
-    private static final int REQUEST_EDIT_USERINFO = 0x2200 ;
+    private static final int REQUEST_EDIT_USERINFO = 0x2200;
     private static final int IMAGE_COUNT = 3;
     @Inject
     IUserCertificationPresenter<IUserCertificationView> presenter;
@@ -126,6 +129,8 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
     TextView tvBackCard;
     @BindView(R.id.back_card_rl)
     RelativeLayout backCardRl;
+    @BindView(R.id.certify)
+    Button certify;
 
     private User user;
 
@@ -143,18 +148,23 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
     private int imageWidth;
 
 
-    private String ivFrontPath ;  // 正面照图片地址
+    private String ivFrontPath;  // 正面照图片地址
 
-    private String ivBackPath ;  // 背面照图片地址
+    private String ivBackPath;  // 背面照图片地址
 
-    private String ivFrontUrl ;  // 正面照片Url
+    private String ivFrontUrl;  // 正面照片Url
 
-    private String ivBackUrl ; //  背面照片Url
+    private String ivBackUrl; //  背面照片Url
 
 
-    private boolean isNeedRefresh = false ;
+    private boolean isNeedRefresh = false;
 
-    private ActionSheetDialog actionSheetDialog ; // 年级选择器底部弹窗
+    private ActionSheetDialog actionSheetDialog; // 年级选择器底部弹窗
+
+    private List<Integer> gradeList = new ArrayList<>();
+
+    private Integer grade = 0;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -174,12 +184,15 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
         initChooseGrade();
         user = presenter.getUserInfo();
         if (user != null) referStatus(user);
+
+        presenter.getGradeInfo();
+
     }
 
-    @OnClick({R.id.rel_edit_grade , R.id.rel_edit_department , R.id.rel_edit_profession
-    , R.id.rel_edit_class , R.id.rel_edit_studentId})
-    public void editUserInfo(View view ){
-        switch (view.getId()){
+    @OnClick({R.id.rel_edit_grade, R.id.rel_edit_department, R.id.rel_edit_profession
+            , R.id.rel_edit_class, R.id.rel_edit_studentId})
+    public void editUserInfo(View view) {
+        switch (view.getId()) {
             case R.id.rel_edit_department:
                 editUserInfo(DEPARTMENT);
                 break;
@@ -199,9 +212,9 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
     }
 
 
-    public void editUserInfo(int type){
-        String data ="" ;
-        switch (type){
+    public void editUserInfo(int type) {
+        String data = "";
+        switch (type) {
             case DEPARTMENT:
                 data = tvDepartment.getText().toString().trim();
                 break;
@@ -215,50 +228,37 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
                 data = tvStudentId.getText().toString().trim();
                 break;
         }
-        Intent intent = new Intent(this ,EditUserInfoActivity.class);
-        intent.putExtra(KEY_TYPE ,type);
-        intent.putExtra(KEY_DATA , data);
-        startActivityForResult( intent,REQUEST_EDIT_USERINFO );
+        Intent intent = new Intent(this, EditUserInfoActivity.class);
+        intent.putExtra(KEY_TYPE, type);
+        intent.putExtra(KEY_DATA, data);
+        startActivityForResult(intent, REQUEST_EDIT_USERINFO);
     }
 
 
-    private void initChooseGrade(){
+    private void initChooseGrade() {
         if (actionSheetDialog == null) {
             actionSheetDialog = new ActionSheetDialog(this)
                     .builder()
-                    .setTitle("请选择年级")
-                    .addSheetItem("2018", ActionSheetDialog.SheetItemColor.Orange, i -> {
-                        tvGrade.setText("2018");
-                    })
-                    .addSheetItem("2017", ActionSheetDialog.SheetItemColor.Orange, i -> {
-                        tvGrade.setText("2017");
-                    })
-                    .addSheetItem("2016", ActionSheetDialog.SheetItemColor.Orange, i -> {
-                        tvGrade.setText("2016");
-                    })
-                    .addSheetItem("2015", ActionSheetDialog.SheetItemColor.Orange, i -> {
-                        tvGrade.setText("2015");
-                    });
+                    .setTitle("请选择年级");
 
         }
-
     }
-
-
 
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (actionSheetDialog != null && actionSheetDialog.getDialog() != null) actionSheetDialog.getDialog().dismiss();
+        if (actionSheetDialog != null && actionSheetDialog.getDialog() != null)
+            actionSheetDialog.getDialog().dismiss();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         if (isNeedRefresh) {
-            presenter.getDormitory();
+            tvDormitory.setText(presenter.getDormitory());
         }
+        toggleBtnStatus();
     }
 
     private void referStatus(User user) {
@@ -272,17 +272,18 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
     }
 
     @OnClick(R.id.rel_edit_grade)
-    public void choseGraed(){
-        if (actionSheetDialog != null && actionSheetDialog.getDialog() != null){
+    public void choseGraed() {
+        if (actionSheetDialog != null && actionSheetDialog.getDialog() != null) {
+            if (gradeList != null && gradeList.size() == 0) presenter.getGradeInfo();
             actionSheetDialog.show();
         }
     }
 
 
     @OnClick(R.id.rel_edit_dormitory)
-    public void setRelEditDormitory(){
+    public void setRelEditDormitory() {
         isNeedRefresh = true;
-        Intent intent ;
+        Intent intent;
         intent = new Intent(this, ListChooseActivity.class);
         intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
         intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION,
@@ -296,10 +297,10 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
     protected void onDestroy() {
         super.onDestroy();
         presenter.onDetach();
-        if (actionSheetDialog != null && actionSheetDialog.getDialog() != null){
+        if (actionSheetDialog != null && actionSheetDialog.getDialog() != null) {
             actionSheetDialog.getDialog().dismiss();
         }
-        actionSheetDialog = null ;
+        actionSheetDialog = null;
     }
 
 
@@ -313,7 +314,7 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 if (images.isEmpty() || (images.size() < IMAGE_COUNT && position == images.size())) {
                     getImage2(imagePath -> {
-                                presenter.uploadImage(UserCertificationActivity.this, imagePath, position, OssFileType.FOUND);
+                                presenter.uploadImage(UserCertificationActivity.this, imagePath, position, OssFileType.CERTIFICAITON);
 
                             }
                     );
@@ -339,9 +340,10 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
 
 
     List<String> urls = new ArrayList<>();
+
     @Override
-    public void addImage(String url, int position , String localPath) {
-        Log.d(TAG ,url);
+    public void addImage(String url, int position, String localPath) {
+        Log.d(TAG, url);
         if (this.images.size() > position) {
             this.images.remove(position);
             this.images.add(position, url);
@@ -349,28 +351,86 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
             this.images.add(url);
         }
 
-        if (this.urls.size() > position){
+        if (this.urls.size() > position) {
             this.urls.remove(position);
             this.urls.add(position, localPath);
         } else {
             this.urls.add(localPath);
         }
         refreshAddImage();
+        toggleBtnStatus();
     }
 
     @Override
     public void setCardImage(ImageView iv, String filePath, String objectKey) {
-        if (iv == null) return ;
+        if (iv == null) return;
         iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        GildeUtils.setPathImage(this ,iv ,filePath);
-        if (iv.getId() == R.id.iv_back_card){
+        GildeUtils.setPathImage(this, iv, filePath);
+        if (iv.getId() == R.id.iv_back_card) {
             ivBackPath = filePath;
-            ivBackUrl = objectKey ;
+            ivBackUrl = objectKey;
 
         }
-        if (iv.getId() == R.id.iv_front_card){
-            ivFrontPath = filePath ;
-            ivFrontUrl = objectKey ;
+        if (iv.getId() == R.id.iv_front_card) {
+            ivFrontPath = filePath;
+            ivFrontUrl = objectKey;
+        }
+        toggleBtnStatus();
+    }
+
+    @OnTextChanged({R.id.tv_department ,R.id.tv_profession ,R.id.tv_grade ,R.id.tv_class ,
+       R.id.tv_studentId , R.id.tv_dormitory})
+    void onTextChange() {
+        toggleBtnStatus();
+    }
+
+    boolean allValidated = false ;
+
+    public void toggleBtnStatus() {
+        allValidated = (!TextUtils.isEmpty(tvDepartment.getText())&&!TextUtils.isEmpty(tvProfession.getText())&&
+        !TextUtils.isEmpty(tvGrade.getText())&&!TextUtils.isEmpty(tvClass.getText())&&!TextUtils.isEmpty(tvStudentId.getText())
+                &&!TextUtils.isEmpty(tvDormitory.getText())
+                && !TextUtils.isEmpty(ivBackUrl) && !TextUtils.isEmpty(ivFrontUrl)&& urls.size() > 0) ;
+        certify.setBackgroundResource(allValidated ?
+                R.drawable.button_enable : R.drawable.button_disable);
+    }
+
+    @OnClick(R.id.certify)
+    public void certify(){
+
+        Integer stuNum = 0 ;
+        try {
+             grade = Integer.parseInt(tvGrade.getText().toString());
+             stuNum = Integer.parseInt(tvStudentId.getText().toString());
+        }catch (Exception e){
+            Log.wtf(TAG ,e.getMessage());
+        }
+      presenter.certify(tvClass.getText().toString() ,tvDepartment.getText().toString() ,
+                grade ,ivBackUrl ,ivFrontUrl ,tvProfession.getText().toString() ,stuNum ,urls);
+    }
+
+    @Override
+    public void setGradeInfo(UserGradeInfoRespDTO dto) {
+        if (gradeList.size() > 0) gradeList.clear();
+        gradeList.addAll(dto.getGradeList());
+        setGradeList(gradeList);
+
+    }
+
+    @Override
+    public void certifySuccess() {
+        finish();
+    }
+
+    private void setGradeList(List<Integer> gradeList) {
+        if (actionSheetDialog == null) return;
+        if (gradeList != null && gradeList.size() > 0) {
+            for (Integer grad : gradeList) {
+                actionSheetDialog.addSheetItem(grad + "", ActionSheetDialog.SheetItemColor.Orange, i -> {
+                    tvGrade.setText(grad + "");
+                });
+            }
+
         }
     }
 
@@ -386,15 +446,15 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
     }
 
 
-    @OnClick({R.id.iv_first, R.id.iv_second, R.id.iv_third , R.id.front_card_rl ,R.id.back_card_rl})
+    @OnClick({R.id.iv_first, R.id.iv_second, R.id.iv_third, R.id.front_card_rl, R.id.back_card_rl})
     void chooseImage(View view) {
-        Log.d(TAG ,"click");
+        Log.d(TAG, "click");
         switch (view.getId()) {
             case R.id.iv_first: {
                 getImage2(imagePath -> {
                     ivSecond.setVisibility(View.VISIBLE);
                     presenter.uploadImage(UserCertificationActivity.this,
-                            imagePath, 0, OssFileType.FOUND);
+                            imagePath, 0, OssFileType.CERTIFICAITON);
                 });
                 break;
             }
@@ -404,7 +464,7 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
 
                     ivThird.setVisibility(View.VISIBLE);
                     presenter.uploadImage(UserCertificationActivity.this,
-                            imagePath, 1, OssFileType.FOUND);
+                            imagePath, 1, OssFileType.CERTIFICAITON);
                 });
 
                 break;
@@ -413,34 +473,35 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
 
                 getImage2(imagePath -> {
                     presenter.uploadImage(UserCertificationActivity.this,
-                            imagePath, 2, OssFileType.FOUND);
+                            imagePath, 2, OssFileType.CERTIFICAITON);
                 });
                 break;
             }
             case R.id.front_card_rl:
-                if (ivFrontCard.getDrawable() != null){
+                if (ivFrontCard.getDrawable() != null) {
                     Intent intent = new Intent(UserCertificationActivity.this, AlbumItemActivity.class);
                     intent.putExtra(AlbumItemActivity.INTENT_POSITION, 1);
                     intent.putExtra(AlbumItemActivity.EXTRA_TYPE_LOCAL, ivFrontPath);
                     intent.putExtra(AlbumItemActivity.INTENT_ACTION, AlbumItemActivity.ACTION_DELETEABLE);
                     startActivityForResult(intent, REQUEST_FRONT_CARD_IMAGE);
-                }else{
-                getImage2(imagePath -> {
-                    presenter.uploadImage(this ,imagePath  , OssFileType.FOUND , ivFrontCard);
+                } else {
+                    getImage2(imagePath -> {
+                        presenter.uploadImage(this, imagePath, OssFileType.CERTIFICAITON, ivFrontCard);
 
-                });}
+                    });
+                }
                 break;
 
             case R.id.back_card_rl:
-                if (ivBackCard.getDrawable() !=null){
+                if (ivBackCard.getDrawable() != null) {
                     Intent intent = new Intent(UserCertificationActivity.this, AlbumItemActivity.class);
                     intent.putExtra(AlbumItemActivity.INTENT_POSITION, 1);
                     intent.putExtra(AlbumItemActivity.EXTRA_TYPE_LOCAL, ivBackPath);
                     intent.putExtra(AlbumItemActivity.INTENT_ACTION, AlbumItemActivity.ACTION_DELETEABLE);
                     startActivityForResult(intent, REQUEST_BACK_CARD_IMAGE);
-                }else {
+                } else {
                     getImage2(imagePath -> {
-                        presenter.uploadImage(this, imagePath, OssFileType.FOUND, ivBackCard);
+                        presenter.uploadImage(this, imagePath, OssFileType.CERTIFICAITON, ivBackCard);
                     });
                 }
                 break;
@@ -469,19 +530,26 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
 
         if (requestCode == REQUEST_BACK_CARD_IMAGE && resultCode == RESULT_OK) {
             ivBackCard.setImageDrawable(null);
-            ivBackPath = "" ;
-            ivBackUrl = "" ;
+            ivBackPath = "";
+            ivBackUrl = "";
         }
 
         if (requestCode == REQUEST_EDIT_USERINFO && resultCode == RESULT_OK) {
-            int type = data.getIntExtra(KEY_TYPE , -1);
+            int type = data.getIntExtra(KEY_TYPE, -1);
             String content = data.getStringExtra(KEY_BACK_DATA);
-            onActivityResultForSetUserInfo(type ,content);
+            onActivityResultForSetUserInfo(type, content);
         }
     }
 
-    private void onActivityResultForSetUserInfo(int type , String data){
-        switch (type){
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+    }
+
+    private void onActivityResultForSetUserInfo(int type, String data) {
+        switch (type) {
             case DEPARTMENT:
                 tvDepartment.setText(data);
                 break;
@@ -494,10 +562,11 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
             case STUDENT_ID:
                 tvStudentId.setText(data);
                 break;
-                default:
-                    break;
+            default:
+                break;
         }
     }
+
     @Override
     protected void setUp() {
 

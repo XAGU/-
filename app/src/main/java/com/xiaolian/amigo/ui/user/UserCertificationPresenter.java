@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.user;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -17,12 +18,16 @@ import com.xiaolian.amigo.data.enumeration.OssFileType;
 import com.xiaolian.amigo.data.manager.intf.IOssDataManager;
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.file.OssModel;
+import com.xiaolian.amigo.data.network.model.user.UserAuthCertifyReqDTO;
+import com.xiaolian.amigo.data.network.model.user.UserGradeInfoRespDTO;
 import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.user.intf.IUserCertificationPresenter;
 import com.xiaolian.amigo.ui.user.intf.IUserCertificationView;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
@@ -84,6 +89,53 @@ public class UserCertificationPresenter <v extends IUserCertificationView> exten
         }else{
             return "";
         }
+    }
+
+    @Override
+    public void getGradeInfo() {
+        addObserver(userDataManager.gradeInfo() ,new NetworkObserver<ApiResult<UserGradeInfoRespDTO>>(){
+
+            @Override
+            public void onReady(ApiResult<UserGradeInfoRespDTO> result) {
+                if (result.getError() == null){
+                    getMvpView().setGradeInfo(result.getData());
+                }else{
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+        });
+    }
+
+    @Override
+    public void certify(String className, String faculty, Integer grade, String idCardBehind, String idCardFront, String major, Integer stuNum, List<String> stuPictureUrls) {
+        UserAuthCertifyReqDTO userAuthCertifyReqDTO = new UserAuthCertifyReqDTO();
+
+        userAuthCertifyReqDTO.setClassName(className);
+        userAuthCertifyReqDTO.setFaculty(faculty);
+        userAuthCertifyReqDTO.setGrade(grade);
+        userAuthCertifyReqDTO.setIdCardBehind(idCardBehind);
+        userAuthCertifyReqDTO.setIdCardFront(idCardFront);
+        userAuthCertifyReqDTO.setMajor(major);
+        userAuthCertifyReqDTO.setStuNum(stuNum);
+        userAuthCertifyReqDTO.setStuPictureUrls(stuPictureUrls);
+
+
+        addObserver(userDataManager.certify(userAuthCertifyReqDTO) ,new NetworkObserver<ApiResult<BooleanRespDTO>>(){
+
+            @Override
+            public void onReady(ApiResult<BooleanRespDTO> result) {
+                 if (result.getError() == null){
+                     if (result.getData().isResult()){
+                         getMvpView().onSuccess("认证成功");
+                         getMvpView().certifySuccess();
+                     }else{
+                         getMvpView().onSuccess("认证失败");
+                     }
+                 }else{
+                     getMvpView().onError(result.getError().getDisplayMessage());
+                 }
+            }
+        });
     }
 
 

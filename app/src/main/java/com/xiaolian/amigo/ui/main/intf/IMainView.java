@@ -168,4 +168,6 @@ public interface IMainView extends IBaseView {
     void showNoticeRemind();
 
     void hideNoticeRemind();
+
+    void setCertificationStatus( PersonalExtraInfoDTO personalExtraInfoDTO);
 }

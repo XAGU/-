@@ -275,7 +275,7 @@ public abstract class BaseActivity extends SwipeBackActivity
 
 
                 if (imageCallback2 != null) {
-                    imageCallback2.callback(outputImage.getAbsolutePath());
+                    imageCallback2.callback(mPhotoImageUri.getPath());
                 }
 //                    File cropFile = getCropFile("crop");
 

@@ -31,7 +31,12 @@ public enum OssFileType {
     /**
      * 招领
      */
-    FOUND(6, "found");
+    FOUND(6, "found"),
+    /**
+     * 认证
+     */
+    CERTIFICAITON(7 ,"certification")
+    ;
 
     OssFileType(int type, String desc) {
         this.type = type;
