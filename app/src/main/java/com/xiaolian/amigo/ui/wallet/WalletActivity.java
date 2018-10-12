@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.network.model.funds.WithdrawExplanationRespDTO;
 import com.xiaolian.amigo.ui.order.OrderActivity;
 import com.xiaolian.amigo.ui.wallet.intf.IWalletPresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IWalletView;
@@ -28,6 +29,9 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.xiaolian.amigo.ui.wallet.WithDrawActivity.KEY_WITHDRAW_DATA;
+import static com.xiaolian.amigo.ui.wallet.WithDrawActivity.KEY_WITHDRAW_TIME;
 
 /**
  * 我的钱包
@@ -136,7 +140,9 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
      */
     @OnClick(R.id.rl_withdrawal)
     void withdrawal() {
-        presenter.queryWithdrawTimeValid();
+//        presenter.queryWithdrawTimeValid();
+
+          presenter.queryWithDraw();
     }
 
     /**
@@ -262,6 +268,18 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
     @Override
     public void hideWithDraw() {
         rlWithdrawal.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void startFunds() {
+
+    }
+
+    @Override
+    public void startWithDraw(WithdrawExplanationRespDTO data) {
+        Intent intent = new Intent(this ,WithDrawActivity.class);
+        intent.putExtra(KEY_WITHDRAW_DATA  ,data);
+        startActivity(intent);
     }
 
     @Override

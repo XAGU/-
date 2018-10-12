@@ -122,7 +122,7 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     private static final String PREF_KEY_DORMITORY = "PREF_KEY_DORMITORY";  //宿舍
 
 
-
+    private static final String PREF_KEY_CERTIFY_STATUS = "PREF_KEY_CERTIFY_STATUS";
 
 
 
@@ -692,6 +692,16 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     @Override
     public boolean getIsFirstAfterLogin() {
         return mSharedPreferences.getBoolean(PREF_KEY_ISFIRST_AFTER_LOGIN ,false);
+    }
+
+    @Override
+    public void setCertifyStauts(int certifyStauts) {
+        mSharedPreferences.edit().putInt(PREF_KEY_CERTIFY_STATUS ,-1).apply();
+    }
+
+    @Override
+    public int getCertifyStatus() {
+        return mSharedPreferences.getInt(PREF_KEY_CERTIFY_STATUS ,-1);
     }
 
 

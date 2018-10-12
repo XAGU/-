@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.util.GildeUtils;
 import com.xiaolian.amigo.util.ScreenUtils;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -33,10 +34,19 @@ public class ImageAddAdapter extends CommonAdapter<ImageAddAdapter.ImageItem> {
     private Context context;
     private int imageSize;
     private int viewWidth ;
+
+    private boolean isNetImage ;
     public ImageAddAdapter(Context context, int layoutId, List<ImageItem> datas) {
         super(context, layoutId, datas);
         this.context = context;
         this.imageSize = ScreenUtils.dpToPxInt(context, 77);
+    }
+
+    public ImageAddAdapter(Context context, int layoutId, List<ImageItem> datas , boolean isNetImage) {
+        super(context, layoutId, datas);
+        this.context = context;
+        this.imageSize = ScreenUtils.dpToPxInt(context, 77);
+        this.isNetImage = isNetImage ;
     }
 
 
@@ -63,10 +73,15 @@ public class ImageAddAdapter extends CommonAdapter<ImageAddAdapter.ImageItem> {
             ((ImageView) holder.getView(R.id.iv_image)).setScaleType(ImageView.ScaleType.CENTER_INSIDE);
             holder.setImageResource(R.id.iv_image, DEFAULT_RES);
         } else {
-            Glide.with(context).load(imageItem.getImageUrl())
-                    .asBitmap()
-                    .into((ImageView) holder.getView(R.id.iv_image));
-            ((ImageView) holder.getView(R.id.iv_image)).setScaleType(ImageView.ScaleType.CENTER_CROP);
+            if (isNetImage){
+                GildeUtils.setImage(context ,((ImageView)holder.getView(R.id.iv_image)) ,imageItem.getImageUrl());
+                ((ImageView) holder.getView(R.id.iv_image)).setScaleType(ImageView.ScaleType.CENTER_CROP);
+            }else {
+                Glide.with(context).load(imageItem.getImageUrl())
+                        .asBitmap()
+                        .into((ImageView) holder.getView(R.id.iv_image));
+                ((ImageView) holder.getView(R.id.iv_image)).setScaleType(ImageView.ScaleType.CENTER_CROP);
+            }
         }
     }
 

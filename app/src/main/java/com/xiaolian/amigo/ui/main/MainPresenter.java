@@ -554,6 +554,11 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
         mainDataManager.setIsFirstAfterLogin(b);
     }
 
+    @Override
+    public void setCertifyStatus(int statusType) {
+        userDataManager.setCertifyStatus(statusType);
+    }
+
 
     @Override
     public void noticeCount() {

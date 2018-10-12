@@ -30,4 +30,6 @@ public interface IWalletPresenter<V extends IWalletView> extends IBasePresenter<
     Double getChargeBalance();
 
     Double getGivingBalance();
+
+    void queryWithDraw();
 }

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+    <TextView
+        style="@style/user_certification_txt"
+        android:id="@+id/time"
+        tools:text="退款时间：2019/06/30 ～ 2019/09/01"
+        android:layout_marginTop="29dp"/>
+
+    <TextView
+        style="@style/user_certification_txt"
+        android:id="@+id/object"
+        android:layout_below="@id/time"
+        tools:text="退款对象：2020届、2021届学生"
+        android:layout_marginTop="21dp"/>
+
+    <TextView
+        style="@style/user_certification_txt"
+        android:id="@+id/description"
+        android:layout_marginTop="21dp"
+        android:layout_below="@id/object"
+        tools:text="退款说明：一百字以内的文字描述，长长的大概要占位八至九行的位置，百字以内的文字描述，长长的大概要占位八至九行的位置，百字以内的文字描述，长长的大概要占位八至九行的位置，百字以内的文字描述，长长的大概要占位八至九行的位置，百字以内的文字描述，长长的大概要占位八至九行的位置。"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="22dp"
+        android:id="@+id/bottom"
+        android:layout_alignParentBottom="true"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="朕知道了"
+        android:textSize="17sp"
+        android:textColor="@color/white"
+        android:id="@+id/btn_submit"
+        android:background="@drawable/button_rect_red"
+        android:layout_above="@id/bottom"
+        android:layout_marginBottom="22dp"/>
+
+</RelativeLayout>

@@ -35,7 +35,7 @@ public class GildeUtils {
      * @param url
      */
     public static void setImage(Context context , ImageView view ,String url){
-        int imageSize = ScreenUtils.dpToPxInt(context, 57);
+        int imageSize = ScreenUtils.dpToPxInt(context, 77);
         Glide.with(context).load(Constant.IMAGE_PREFIX + url
                 + String.format(Locale.getDefault(), Constant.OSS_IMAGE_RESIZE,
                 imageSize))

@@ -3,6 +3,7 @@ package com.xiaolian.amigo.ui.wallet;
 import com.xiaolian.amigo.data.manager.intf.IWalletDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.funds.PersonalWalletDTO;
+import com.xiaolian.amigo.data.network.model.funds.WithdrawExplanationRespDTO;
 import com.xiaolian.amigo.data.network.model.timerange.QueryTimeValidRespDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IWalletPresenter;
@@ -125,5 +126,24 @@ public class WalletPresenter<V extends IWalletView> extends BasePresenter<V>
     @Override
     public Double getGivingBalance() {
         return givingBalance;
+    }
+
+    @Override
+    public void queryWithDraw() {
+        addObserver(manager.withDrawExplanation() ,new NetworkObserver<ApiResult<WithdrawExplanationRespDTO>>(){
+
+            @Override
+            public void onReady(ApiResult<WithdrawExplanationRespDTO> result) {
+                if (result.getError() == null){
+                        if (result.getData().isMatch()){
+                            getMvpView().gotoWithDraw();
+                        }else{
+                            getMvpView().startWithDraw(result.getData());
+                        }
+                }else{
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+        });
     }
 }

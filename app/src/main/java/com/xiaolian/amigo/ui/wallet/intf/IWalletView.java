@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.wallet.intf;
 
+import com.xiaolian.amigo.data.network.model.funds.WithdrawExplanationRespDTO;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 
 /**
@@ -61,4 +62,7 @@ public interface IWalletView extends IBaseView {
 
     void hideWithDraw();
 
+    void startFunds();
+
+    void startWithDraw(WithdrawExplanationRespDTO data);
 }

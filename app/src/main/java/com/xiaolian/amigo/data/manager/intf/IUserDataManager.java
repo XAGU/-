@@ -32,6 +32,7 @@ import com.xiaolian.amigo.data.network.model.user.QueryAvatarDTO;
 import com.xiaolian.amigo.data.network.model.user.QueryUserResidenceListRespDTO;
 import com.xiaolian.amigo.data.network.model.user.SchoolNameListRespDTO;
 import com.xiaolian.amigo.data.network.model.user.UserAuthCertifyReqDTO;
+import com.xiaolian.amigo.data.network.model.user.UserCertifyInfoRespDTO;
 import com.xiaolian.amigo.data.network.model.user.UserGradeInfoRespDTO;
 import com.xiaolian.amigo.data.network.model.user.UserResidenceDTO;
 import com.xiaolian.amigo.data.network.model.user.UserResidenceInListDTO;
@@ -258,5 +259,14 @@ public interface IUserDataManager {
 
 
     Observable<ApiResult<UserGradeInfoRespDTO>> gradeInfo();
+
+    /**
+     * 查询认证信息
+     * @return
+     */
+    Observable<ApiResult<UserCertifyInfoRespDTO>> certifyInfo();
+
+
+    void setCertifyStatus(int certifyStatus);
 
 }

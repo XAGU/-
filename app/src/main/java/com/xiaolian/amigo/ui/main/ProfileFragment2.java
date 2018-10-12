@@ -29,6 +29,7 @@ import com.xiaolian.amigo.ui.notice.NoticeListActivity;
 import com.xiaolian.amigo.ui.repair.RepairNavActivity;
 import com.xiaolian.amigo.ui.user.EditProfileActivity;
 import com.xiaolian.amigo.ui.user.UserCertificationActivity;
+import com.xiaolian.amigo.ui.user.UserCertificationStatusActivity;
 import com.xiaolian.amigo.ui.wallet.WalletActivity;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
@@ -73,7 +74,7 @@ public class ProfileFragment2 extends BaseFragment {
     ProfileAdaptor.Item credits = new ProfileAdaptor.Item(R.drawable.profile_credits, "积分兑换", CreditsActivity.class);
     ProfileAdaptor.Item bonus = new ProfileAdaptor.Item(R.drawable.profile_luck, "我的代金券", BonusActivity.class);
     ProfileAdaptor.Item repair = new ProfileAdaptor.Item(R.drawable.profile_repair, "设备报修", RepairNavActivity.class);
-    ProfileAdaptor.Item legalize = new ProfileAdaptor.Item(R.drawable.profile_certification, "学生认证", UserCertificationActivity.class,"");
+    ProfileAdaptor.Item legalize = new ProfileAdaptor.Item(R.drawable.profile_certification, "学生认证", null,"");
     List<ProfileAdaptor.Item> items = new ArrayList<ProfileAdaptor.Item>() {
         {
             add(new ProfileAdaptor.Item(R.drawable.profile_edit, "编辑个人信息", EditProfileActivity.class));
@@ -153,8 +154,8 @@ public class ProfileFragment2 extends BaseFragment {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 try {
-                    EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.START_ACTIVITY,
-                            items.get(position).getActivityClazz()));
+                        EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.START_ACTIVITY,
+                                items.get(position).getActivityClazz()));
                 } catch (ArrayIndexOutOfBoundsException e) {
                     Log.wtf(TAG, "数组越界", e);
                 } catch (Exception e) {
@@ -242,7 +243,7 @@ public class ProfileFragment2 extends BaseFragment {
                 credits.setBonusAmount(data.getCredits());
             }
 
-            legalize.setVerifiedStatus(getCertificationStatus(data.getStudentAuth()));
+            getCertificationStatus(data.getStudentAuth());
 
         } catch (Exception e) {
             MobclickAgent.reportError(getContext(), "customReport tag: " + TAG + e.getMessage());
@@ -273,29 +274,37 @@ public class ProfileFragment2 extends BaseFragment {
         }
 
     }
+    int certifyStatusType = -1  ;
 
-
-    private String getCertificationStatus(int statusType){
+    private void getCertificationStatus(int statusType){
+        presenter.setCertifyStatus(statusType);
         String status ;
+        certifyStatusType = statusType ;
         switch (statusType){
             case CERTIFICATION_NONE:
                 status = CERTIFICATION_NONE_TXT ;
+                legalize.setVerifiedStatus(status);
+                legalize.setActivityClazz(UserCertificationActivity.class);
                 break;
             case CERTIFICATION_FAILURE:
                 status = CERTIFICATION_FAILURE_TXT ;
+                legalize.setVerifiedStatus(status);
+                legalize.setActivityClazz(UserCertificationStatusActivity.class);
                 break;
             case CERTIFICATION_PASS:
                 status = CERTIFICATION_PASS_TXT ;
+                legalize.setVerifiedStatus(status);
+                legalize.setActivityClazz(UserCertificationStatusActivity.class);
                 break;
             case CERTIFICATION_REVIEWING:
                 status = CERTIFICATION_REVIEWING_TXT;
+                legalize.setVerifiedStatus(status);
+                legalize.setActivityClazz(UserCertificationStatusActivity.class);
                 break;
                 default:
-                    status ="";
                     break;
 
         }
-        return status ;
     }
 
 

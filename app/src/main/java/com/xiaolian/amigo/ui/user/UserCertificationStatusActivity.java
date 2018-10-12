@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
+import com.xiaolian.amigo.data.network.model.user.UserCertifyInfoRespDTO;
 import com.xiaolian.amigo.di.componet.DaggerUserActivityComponent;
 import com.xiaolian.amigo.di.componet.UserActivityComponent;
 import com.xiaolian.amigo.di.module.UserActivityModule;
@@ -39,15 +41,32 @@ import butterknife.Unbinder;
 import me.everything.android.ui.overscroll.IOverScrollDecor;
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
+import static com.xiaolian.amigo.util.Constant.CERTIFICATION_FAILURE;
+import static com.xiaolian.amigo.util.Constant.CERTIFICATION_PASS;
+import static com.xiaolian.amigo.util.Constant.CERTIFICATION_REVIEWING;
 import static com.xiaolian.amigo.util.Constant.USER_INFO_ACTIVITY_SRC;
 
 public class UserCertificationStatusActivity extends BaseActivity implements IUserCertificationStatusView {
+
+    private static final String CERTIFICATION_FILURE = "（认证未通过）";
+
+    private static final String CERTIFICATIONINT = "(审核中，请稍等...)";
+
+    public static final String KEY_CERTIFICATION_TYPE = "KEY_CERTIFICATION_TYPE";
+    @BindView(R.id.certification)
+    Button certification;
+    @BindView(R.id.tv_reason)
+    TextView tvReason;
+    @BindView(R.id.reason_ll)
+    LinearLayout reasonLl;
+    @BindView(R.id.reason_line)
+    View reasonLine;
 
 
     private UserActivityComponent mActivityComponent;
 
     @Inject
-    IUserCerticifationStatusPresenter<IUserCertificationStatusView> presenter ;
+    IUserCerticifationStatusPresenter<IUserCertificationStatusView> presenter;
 
     @BindView(R.id.tv_toolbar_title)
     TextView tvToolbarTitle;
@@ -93,12 +112,15 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
     List<ImageAddAdapter.ImageItem> studentIdImages = new ArrayList<>();
 
 
-    private ImageAddAdapter cardIdAdapter ;  // 身份证
+    private ImageAddAdapter cardIdAdapter;  // 身份证
     List<ImageAddAdapter.ImageItem> cardIdImages = new ArrayList<>();
+
 
     @Override
     protected void setUp() {
-
+//        if (getIntent() != null) {
+//            type = getIntent().getIntExtra(KEY_CERTIFICATION_TYPE, -1);
+//        }
     }
 
 
@@ -112,13 +134,50 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
         initView();
         initImageAdd();
 
+        presenter.getCertifyInfo();
+
+        presenter.getDormitory();
     }
 
-    private void initView(){
+    /**
+     * 根据传过来的现不同页面
+     */
+    private void setStatus(int type) {
+        if (type == CERTIFICATION_FAILURE) {
+            showBarTxt();
+            tvToolbarText.setText(CERTIFICATION_FILURE);
+        } else if (type == CERTIFICATION_REVIEWING) {
+            showBarTxt();
+            tvToolbarText.setText(CERTIFICATIONINT);
+        } else if (type == CERTIFICATION_PASS) {
+            showBarIv();
+        } else {
+
+        }
+    }
+
+
+    private void showBarTxt() {
+        tvToolbarText.setVisibility(View.VISIBLE);
+        tvToolbarIv.setVisibility(View.GONE);
+        certification.setVisibility(View.GONE);
+    }
+
+    private void showBarIv() {
+        tvToolbarIv.setVisibility(View.VISIBLE);
+        tvToolbarText.setVisibility(View.GONE);
+        certification.setVisibility(View.VISIBLE);
+    }
+
+    private void initView() {
         presenter.onAttach(this);
     }
 
 
+    @OnClick(R.id.certification)
+    public void startCertification() {
+        startActivity(new Intent(this, UserCertificationActivity.class));
+    }
 
     /**
      * 滑动响应
@@ -135,7 +194,7 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
 
     }
 
-    private void initJect(){
+    private void initJect() {
         mActivityComponent = DaggerUserActivityComponent.builder()
                 .userActivityModule(new UserActivityModule(this))
                 .applicationComponent(((MvpApp) getApplication()).getComponent())
@@ -158,13 +217,13 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
 
 
     @OnClick(R.id.certification)
-    public void certification(){
-        startActivity(this ,UserCertificationActivity.class);
+    public void certification() {
+        startActivity(this, UserCertificationActivity.class);
     }
 
     @OnClick(R.id.change_dormitory)
-    public void changeDormitory(){
-        Intent intent ;
+    public void changeDormitory() {
+        Intent intent;
         intent = new Intent(this, ListChooseActivity.class);
         intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
         intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION,
@@ -176,16 +235,16 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
 
 
     private void initImageAdd() {
-        cardIdAdapter = new ImageAddAdapter(this, R.layout.item_image_add, cardIdImages);
+        cardIdAdapter = new ImageAddAdapter(this, R.layout.item_image_add, cardIdImages , true);
         cardIdAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                    Intent intent = new Intent(UserCertificationStatusActivity.this, AlbumItemActivity.class);
-                    intent.putExtra(AlbumItemActivity.INTENT_POSITION, position);
-                    intent.putExtra(AlbumItemActivity.EXTRA_TYPE_SINGLE, cardIdImages.get(position).getImageUrl());
-                    intent.putExtra(AlbumItemActivity.INTENT_ACTION, AlbumItemActivity.ACTION_NORMAL);
-                    startActivity(intent);
-                }
+                Intent intent = new Intent(UserCertificationStatusActivity.this, AlbumItemActivity.class);
+                intent.putExtra(AlbumItemActivity.INTENT_POSITION, position);
+                intent.putExtra(AlbumItemActivity.EXTRA_TYPE_SINGLE, cardIdImages.get(position).getImageUrl());
+                intent.putExtra(AlbumItemActivity.INTENT_ACTION, AlbumItemActivity.ACTION_NORMAL);
+                startActivity(intent);
+            }
 
             @Override
             public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
@@ -197,7 +256,7 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
         cardId.setAdapter(cardIdAdapter);
 
 
-        studentIdAdapter = new ImageAddAdapter(this, R.layout.item_image_add, studentIdImages);
+        studentIdAdapter = new ImageAddAdapter(this, R.layout.item_image_add, studentIdImages , true);
         studentIdAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
@@ -219,6 +278,37 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
     }
 
 
+    @Override
+    public void setInfo(UserCertifyInfoRespDTO data) {
+        setStatus(data.getStatus());
+        if (data.getStatus() == CERTIFICATION_FAILURE) {
+            tvReason.setText(data.getFailReason());
+            reasonLl.setVisibility(View.VISIBLE);
+            reasonLine.setVisibility(View.VISIBLE);
+        } else {
+            reasonLl.setVisibility(View.GONE);
+            reasonLine.setVisibility(View.GONE);
+        }
 
+        tvDepartment.setText(data.getFaculty());
+        tvProfession.setText(data.getMajor());
+        tvGrade.setText(data.getGrade()+"");
+        tvClass.setText(data.getClassName());
+        tvStudentId.setText(data.getStuNum()+"");
+        tvDormitory.setText(presenter.getDormInfo());
+        for (String url : data.getStuPictureUrls()) {
+            studentIdImages.add(new ImageAddAdapter.ImageItem(url));
+        }
+        if (studentIdAdapter != null) studentIdAdapter.notifyDataSetChanged();
 
+        if (cardIdImages != null ){
+            cardIdImages.clear();
+
+            cardIdImages.add(new ImageAddAdapter.ImageItem(data.getIdCardBehind()));
+
+            cardIdImages.add(new ImageAddAdapter.ImageItem(data.getIdCardFront()));
+        }
+
+        cardIdAdapter.notifyDataSetChanged();
+    }
 }

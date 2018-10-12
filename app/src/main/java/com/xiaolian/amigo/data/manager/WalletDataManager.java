@@ -13,6 +13,7 @@ import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.complaint.CheckComplaintReqDTO;
 import com.xiaolian.amigo.data.network.model.funds.QueryRechargeTypesRespDTO;
+import com.xiaolian.amigo.data.network.model.funds.WithdrawExplanationRespDTO;
 import com.xiaolian.amigo.data.network.model.order.OrderRespDTO;
 import com.xiaolian.amigo.data.network.model.userbill.QueryMonthlyBillReqDTO;
 import com.xiaolian.amigo.data.network.model.userbill.QueryPersonalMaxConsumeOrderListReqDTO;
@@ -192,6 +193,11 @@ public class WalletDataManager implements IWalletDataManager {
     @Override
     public User getUser() {
         return sharedPreferencesHelp.getUserInfo();
+    }
+
+    @Override
+    public Observable<ApiResult<WithdrawExplanationRespDTO>> withDrawExplanation() {
+        return fundsApi.withDrawExplanation();
     }
 
     @Override

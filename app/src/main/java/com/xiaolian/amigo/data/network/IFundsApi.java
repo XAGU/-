@@ -7,6 +7,7 @@ import com.xiaolian.amigo.data.network.model.funds.QueryRechargeTypesRespDTO;
 import com.xiaolian.amigo.data.network.model.funds.RechargeReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleQueryReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
+import com.xiaolian.amigo.data.network.model.funds.WithdrawExplanationRespDTO;
 import com.xiaolian.amigo.data.network.model.funds.WithdrawReqDTO;
 import com.xiaolian.amigo.data.network.model.funds.FundsDTO;
 import com.xiaolian.amigo.data.network.model.funds.PersonalWalletDTO;
@@ -74,5 +75,12 @@ public interface IFundsApi {
      */
     @POST("funds/withdraw/cancel")
     Observable<ApiResult<BooleanRespDTO>> cancelWithdraw(@Body SimpleReqDTO reqDTO);
+
+    /**
+     * 退款说明
+     * @return
+     */
+    @POST("funds/withdraw/explanation")
+    Observable<ApiResult<WithdrawExplanationRespDTO>> withDrawExplanation();
 
 }

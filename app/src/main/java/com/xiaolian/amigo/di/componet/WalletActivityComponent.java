@@ -26,6 +26,7 @@ import com.xiaolian.amigo.ui.wallet.PrepayOrderActivity;
 import com.xiaolian.amigo.ui.wallet.RechargeActivity;
 import com.xiaolian.amigo.ui.wallet.RechargeDetailActivity;
 import com.xiaolian.amigo.ui.wallet.WalletActivity;
+import com.xiaolian.amigo.ui.wallet.WithDrawActivity;
 import com.xiaolian.amigo.ui.wallet.WithdrawalActivity;
 import com.xiaolian.amigo.ui.wallet.WithdrawalDetailActivity;
 import com.xiaolian.amigo.ui.wallet.WithdrawalRecordActivity;
@@ -58,4 +59,6 @@ public interface WalletActivityComponent {
     void inject(WithdrawalDetailActivity activity);
 
     void inject(MonthlyBillActivity activity);
+
+    void inject(WithDrawActivity activity);
 }

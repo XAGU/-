@@ -206,4 +206,9 @@ public interface ISharedPreferencesHelp {
     void setIsFirstAfterLogin(boolean isFisrstAfterLogin) ;
 
     boolean getIsFirstAfterLogin();
+
+    void setCertifyStauts(int certifyStauts);
+
+    int getCertifyStatus();
+
 }

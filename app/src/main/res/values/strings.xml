@@ -379,4 +379,8 @@
     <!--选择学校-->
     <string name="choose_school_title">选择学校</string>
     <string name="hint_search">搜索您所在的学校 ～</string>
+
+
+
+    <string name="with_draw_title">退款说明</string>
 </resources>

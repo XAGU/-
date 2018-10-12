@@ -162,6 +162,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <!--退款说明-->
+        <activity android:name=".ui.wallet.WithDrawActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <!-- 月账单 -->
         <activity
             android:name=".ui.wallet.MonthlyBillActivity"
@@ -666,6 +671,7 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
+        <!--编辑认证信息-->
         <activity android:name=".ui.user.EditUserInfoActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>

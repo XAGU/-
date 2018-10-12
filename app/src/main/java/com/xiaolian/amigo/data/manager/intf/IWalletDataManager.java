@@ -4,6 +4,7 @@ import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.complaint.CheckComplaintReqDTO;
 import com.xiaolian.amigo.data.network.model.funds.QueryRechargeTypesRespDTO;
+import com.xiaolian.amigo.data.network.model.funds.WithdrawExplanationRespDTO;
 import com.xiaolian.amigo.data.network.model.order.OrderRespDTO;
 import com.xiaolian.amigo.data.network.model.userbill.QueryMonthlyBillReqDTO;
 import com.xiaolian.amigo.data.network.model.userbill.QueryPersonalMaxConsumeOrderListReqDTO;
@@ -34,6 +35,7 @@ import com.xiaolian.amigo.data.network.model.wxpay.WxpayTradeAppPayResultParseRe
 import com.xiaolian.amigo.data.vo.User;
 
 import retrofit2.http.Body;
+import retrofit2.http.POST;
 import rx.Observable;
 
 /**
@@ -159,4 +161,11 @@ public interface IWalletDataManager {
     Observable<ApiResult<OrderRespDTO>> getMonthlyMaxBill(@Body QueryPersonalMaxConsumeOrderListReqDTO reqDTO);
 
     User getUser();
+
+
+    /**
+     * 退款说明
+     * @return
+     */
+    Observable<ApiResult<WithdrawExplanationRespDTO>> withDrawExplanation();
 }

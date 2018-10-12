@@ -47,7 +47,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_toRightOf="@id/tv_toolbar_title"
                     android:layout_marginTop="2dp"
-                    tool:visibility="gone"
+                    tool:visibility="visible"
                     android:visibility="gone"
                     />
 
@@ -58,7 +58,7 @@
                     android:id="@+id/tv_toolbar_iv"
                     android:layout_marginLeft="10dp"
                     android:layout_toRightOf="@id/tv_toolbar_title"
-                    tool:visibility="visible"
+                    tool:visibility="gone"
                     android:visibility="gone"
                     android:layout_marginTop="2dp"
                     />
@@ -85,6 +85,7 @@
                         style="@style/user_certification_ll"
                         android:layout_marginBottom="14dp"
                         android:id="@+id/reason_ll"
+                        android:visibility="gone"
                         >
                         <TextView
 
@@ -101,6 +102,8 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
+                        android:id="@+id/reason_line"
+                        android:visibility="gone"
                         android:background="@color/colorDarke"
                         android:layout_marginBottom="21dp"/>
 
@@ -258,6 +261,7 @@
         android:layout_marginEnd="21dp"
         android:textColor="@color/white"
         android:layout_gravity="bottom"
+        android:visibility="gone"
         />
 
     <RelativeLayout

@@ -129,8 +129,6 @@ public abstract class BaseActivity extends SwipeBackActivity
     }
 
 
-    File outputImage ;
-
     private Uri getImageUri(String fileName) {
         String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xiaolian/";
         File path = new File(filePath);
@@ -142,7 +140,7 @@ public abstract class BaseActivity extends SwipeBackActivity
             }
         }
         Uri imageUri;
-        outputImage = new File(path, fileName + ".jpg");
+        File outputImage = new File(path, fileName + ".jpg");
         try {
             if (outputImage.exists()) {
                 boolean isDeleteSuccess = outputImage.delete();
@@ -159,11 +157,10 @@ public abstract class BaseActivity extends SwipeBackActivity
             Log.e(TAG, e.getMessage());
         }
         if (Build.VERSION.SDK_INT >= 24) {
-            imageUri = FileProvider.getUriForFile(this, getPackageName() + ".fileprovider"  , outputImage);
+            imageUri = FileProvider.getUriForFile(this, getPackageName() + ".fileprovider", outputImage);
         } else {
             imageUri = Uri.fromFile(outputImage);
         }
-        Log.d(TAG ,imageUri.getPath());
         return imageUri;
     }
 

@@ -25,12 +25,14 @@ import com.xiaolian.amigo.data.manager.intf.IWalletDataManager;
 import com.xiaolian.amigo.di.WalletActivityContext;
 import com.xiaolian.amigo.ui.wallet.AddAccountPresenter;
 import com.xiaolian.amigo.ui.wallet.ChooseWithdrawPresenter;
+import com.xiaolian.amigo.ui.wallet.IWithDrawPresenter;
 import com.xiaolian.amigo.ui.wallet.MonthlyBillPresenter;
 import com.xiaolian.amigo.ui.wallet.PrepayOrderPresenter;
 import com.xiaolian.amigo.ui.wallet.PrepayPresenter;
 import com.xiaolian.amigo.ui.wallet.RechargeDetailPresenter;
 import com.xiaolian.amigo.ui.wallet.RechargePresenter;
 import com.xiaolian.amigo.ui.wallet.WalletPresenter;
+import com.xiaolian.amigo.ui.wallet.WithDrawPresenter;
 import com.xiaolian.amigo.ui.wallet.WithdrawalDetailPresenter;
 import com.xiaolian.amigo.ui.wallet.WithdrawalPresenter;
 import com.xiaolian.amigo.ui.wallet.WithdrawalRecordPresenter;
@@ -50,6 +52,7 @@ import com.xiaolian.amigo.ui.wallet.intf.IRechargePresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IRechargeView;
 import com.xiaolian.amigo.ui.wallet.intf.IWalletPresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IWalletView;
+import com.xiaolian.amigo.ui.wallet.intf.IWithDrawView;
 import com.xiaolian.amigo.ui.wallet.intf.IWithdrawRecordPresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IWithdrawalDetailPresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IWithdrawalDetailView;
@@ -164,5 +167,13 @@ public class WalletActivityModule {
     @Provides
     IWalletDataManager provideWalletDataManager(WalletDataManager manager) {
         return manager;
+    }
+
+
+    @Provides
+    @WalletActivityContext
+    IWithDrawPresenter<IWithDrawView> provideWithDrawExplainPresenter(
+            WithDrawPresenter<IWithDrawView> presenter){
+        return  presenter ;
     }
 }

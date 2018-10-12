@@ -61,6 +61,7 @@ import com.xiaolian.amigo.ui.repair.RepairActivity;
 import com.xiaolian.amigo.ui.user.CompleteInfoActivity;
 import com.xiaolian.amigo.ui.user.EditDormitoryActivity;
 import com.xiaolian.amigo.ui.user.ListChooseActivity;
+import com.xiaolian.amigo.ui.user.UserCertificationStatusActivity;
 import com.xiaolian.amigo.ui.user.adaptor.TableFragmentPagerAdapter;
 import com.xiaolian.amigo.ui.wallet.PrepayActivity;
 import com.xiaolian.amigo.ui.widget.dialog.AvailabilityDialog;
@@ -99,6 +100,7 @@ import static com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity.KEY_B
 import static com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity.KEY_RESIDENCE_ID;
 import static com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity.KEY_RESIDENCE_NAME;
 import static com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity.KEY_RESIDENCE_TYPE;
+import static com.xiaolian.amigo.ui.user.UserCertificationStatusActivity.KEY_CERTIFICATION_TYPE;
 import static com.xiaolian.amigo.util.Log.getContext;
 
 /**
@@ -1186,7 +1188,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(Event event) {
-        Log.d(TAG, "onEvent: " + event.getType());
         switch (event.getType()) {
             case GOTO_HEATER:
                 if (checkLogin()) {
@@ -1234,6 +1235,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             case REFRESH_NOTICE:
                 refreshProfile();
                 break;
+
             default:
                 break;
         }
@@ -1258,6 +1260,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     public static class Event {
         EventType type;
         Object object;
+        Integer certificationType ;
 
         public Event(EventType type, Object object) {
             this.type = type;
@@ -1267,6 +1270,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         public Event(EventType type) {
             this.type = type;
         }
+
+
 
         public enum EventType {
             /**
@@ -1309,6 +1314,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
              * 退出登录
              */
             LOGOUT()
+
+
         }
     }
 
