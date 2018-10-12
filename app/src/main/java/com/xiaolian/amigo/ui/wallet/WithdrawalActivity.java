@@ -1,12 +1,14 @@
 package com.xiaolian.amigo.ui.wallet;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.util.ObjectsCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -68,6 +70,16 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
      */
     @BindView(R.id.tv_withdraw_available)
     TextView tvWithdrawAvailable;
+    @BindView(R.id.ll_main)
+    LinearLayout llMain;
+    @BindView(R.id.time)
+    TextView time;
+    @BindView(R.id.object)
+    TextView object;
+    @BindView(R.id.description)
+    TextView description;
+    @BindView(R.id.ll_refund_instruction)
+    RelativeLayout llRefundInstruction;
 
     private Long withdrawId;
     private String balance;
@@ -283,4 +295,7 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
         super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
+
+
+
 }

@@ -112,7 +112,7 @@
     <string name="not_use_bonus">不使用代金券</string>
     <string name="prepay_money">预付金额</string>
     <string name="prepay_money_colon">预付金额：</string>
-    <string name="withdrawal">提现</string>
+    <string name="withdrawal">退款申请</string>
     <string name="network_available_error_tip">当前网络质量较差 ಠ_ಠ</string>
     <string name="network_not_available">当前网络不可用，检查网络</string>
     <string name="please_enter_password_to_verify">请输入登录密码进行验证</string>

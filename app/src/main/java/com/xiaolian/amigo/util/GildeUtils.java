@@ -10,6 +10,8 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.xiaolian.amigo.R;
 
+import java.util.Locale;
+
 public class GildeUtils {
 
 
@@ -33,7 +35,10 @@ public class GildeUtils {
      * @param url
      */
     public static void setImage(Context context , ImageView view ,String url){
-        Glide.with(context).load(Constant.IMAGE_PREFIX + url)
+        int imageSize = ScreenUtils.dpToPxInt(context, 57);
+        Glide.with(context).load(Constant.IMAGE_PREFIX + url
+                + String.format(Locale.getDefault(), Constant.OSS_IMAGE_RESIZE,
+                imageSize))
                 .asBitmap()
                 .placeholder(R.drawable.ic_picture_error)
                 .error(R.drawable.ic_picture_error)

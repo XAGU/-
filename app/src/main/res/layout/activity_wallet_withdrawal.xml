@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<FrameLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackgroundGray"
     android:orientation="vertical"
+    android:id="@+id/ll_main"
+    android:visibility="gone"
     >
 
     <LinearLayout
@@ -185,3 +192,52 @@
         android:enabled="false"
         android:text="确认提现" />
 </LinearLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/ll_refund_instruction">
+
+        <TextView
+            style="@style/user_certification_txt"
+            tools:text="退款时间：2019/06/30 ～ 2019/09/01"
+            android:id="@+id/time"
+            />
+
+        <TextView
+            style="@style/user_certification_txt"
+            tools:text="退款时间：2019/06/30 ～ 2019/09/01"
+            android:id="@+id/object"
+            android:layout_below="@id/time"
+            android:layout_marginTop="21dp"
+            />
+
+
+        <TextView
+            style="@style/user_certification_txt"
+            tools:text="退款时间：2019/06/30 ～ 2019/09/01"
+            android:layout_marginTop="21dp"
+            android:layout_below="@id/object"
+            android:id="@+id/description"
+            />
+
+        <View
+            android:id="@+id/v_bottom"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="21dp"/>
+
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@drawable/button_rect_red"
+            android:text="前往认证"
+            android:id="@+id/bottom_button"
+            android:textSize="17sp"
+            android:layout_above="@id/v_bottom"
+            android:textColor="@color/white"
+            />
+    </RelativeLayout>
+</FrameLayout>
