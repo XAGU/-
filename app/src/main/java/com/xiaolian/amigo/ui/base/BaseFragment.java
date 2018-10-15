@@ -558,7 +558,7 @@ public abstract class BaseFragment extends Fragment  implements IBaseView{
     @Override
     public void getBlePermission() {
         RxPermissions rxPermissions = RxPermissions.getInstance(mActivity);
-        rxPermissions.request(Manifest.permission.BLUETOOTH, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
+        rxPermissions.request(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
                 .subscribe(granted -> {
                     if (granted) {
                         Intent bleIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
