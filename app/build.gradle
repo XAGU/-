@@ -12,6 +12,8 @@ static def releaseTime() {
 }
 
 
+
+
 android {
     compileSdkVersion versions.compileSdk
     buildToolsVersion versions.buildTools
@@ -19,8 +21,8 @@ android {
         applicationId "com.xiaolian.amigo"
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
-        versionCode 31
-        versionName "1.1.92"
+        versionCode 28
+        versionName "1.1.91"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
@@ -31,7 +33,7 @@ android {
         }
     }
 
-
+    
     signingConfigs {
         config {
             keyAlias 'android_amigo'
@@ -82,21 +84,18 @@ android {
 //            buildConfigField "String", "SERVER_BATHROOM", "\"http://47.106.62.186/b/\""
 //            buildConfigField "String", "H5_SERVER", "\"http://47.106.62.186:5097/\""
 
+
             //  连接测试服
-//////
-//            buildConfigField "String", "SERVER", "\"http://47.107.45.109:5081/\"" // qa5
-//            buildConfigField "String", "SERVER", "\"http://10.195.90.132:5081/\"" // qa3
-//            buildConfigField "String", "SERVER_BATHROOM", "\"http://10.195.90.132:5082/\"" //qa5
-//////            buildConfigField "String", "SERVER", "\"http://47.107.45.109:5081/\"" //
-////////            buildConfigField "String", "SERVER", "\"http://10.195.90.167:5081/\"" //
-////            buildConfigField "String", "SERVER_BATHROOM", "\"http://47.107.45.109:5082/\"" //qa5
-//////            buildConfigField "String", "SERVER_BATHROOM", "\"http://10.195.90.167:5082/\"" //qa5
-//            buildConfigField "String", "H5_SERVER", "\"http://47.107.45.109:5097/c\"" //qa5
+//
+            buildConfigField "String", "SERVER", "\"http://47.107.45.109:5081/\"" // qa5
+////            buildConfigField "String", "SERVER", "\"http://10.195.90.132:5081/\"" // qa3
+////            buildConfigField "String", "SERVER_BATHROOM", "\"http://10.195.90.132:5082/\"" //qa5
+////            buildConfigField "String", "SERVER", "\"http://47.107.45.109:5081/\"" //
+////            buildConfigField "String", "SERVER", "\"http://10.195.90.167:5081/\"" //
+            buildConfigField "String", "SERVER_BATHROOM", "\"http://47.107.45.109:5082/\"" //qa5
+//            buildConfigField "String", "SERVER_BATHROOM", "\"http://10.195.90.167:5082/\"" //qa5
+            buildConfigField "String", "H5_SERVER", "\"http://47.107.45.109:5097/c\"" //qa5
 
-
-            buildConfigField "String", "SERVER", "\"http://39.108.97.229:5081/\"" // qa2
-            buildConfigField "String", "SERVER_BATHROOM", "\"http://39.108.97.229:5082/\"" //qa2
-            buildConfigField "String", "H5_SERVER", "\"http://39.108.97.229:5097/c\"" //qa2
 
 //            buildConfigField "String", "SERVER", "\"http://47.107.47.24:5081/\"" //qa4
 ////            buildConfigField "String", "SERVER_BATHROOM", "\"http://47.107.47.24:5082/\"" //qa5
@@ -106,7 +105,6 @@ android {
 
             buildConfigField "String", "ENVIRONMENT", '"dev"'
 //            buildConfigField "String", "SERVER", "\"http://116.62.236.67:5081/\""
-
 //            buildConfigField "String", "SERVER", "\"http://39.108.97.229:5081/\""
 //            buildConfigField "String", "SERVER", "\"http://10.195.90.167:5081/\""
 //            buildConfigField "String", "SERVER", "\"http://10.195.90.167:5081/\""
@@ -119,12 +117,10 @@ android {
 //            buildConfigField "String", "SERVER", "\"http://47.107.45.109:5081/\"" //qa5
 //            buildConfigField "String", "SERVER_BATHROOM", "\"http://47.107.45.109:5082/\"" //qa5
 //            buildConfigField "String", "SERVER_BATHROOM", "\"http://39.108.74.164:5082/\""
-
 //            buildConfigField "String", "SERVER", "\"http://10.195.90.130:5081/\""
 //            buildConfigField "String", "SERVER", "\"http://10.195.90.187:8081\""
 //            buildConfigField "String", "SERVER", "\"http://10.0.0.4:5081/\""
 //            buildConfigField "String", "H5_SERVER", "\"http://116.62.236.67:5097/c\""
-
 //            buildConfigField "String", "H5_SERVER", "\"http://47.107.45.109:5097/c\"" //qa5
 //            buildConfigField "String", "H5_SERVER", "\"http://39.108.74.164:5097/c\""
 //            buildConfigField "String", "H5_SERVER", "\"http://10.195.90.130:5097/c\""

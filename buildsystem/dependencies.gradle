@@ -70,8 +70,7 @@ ext.deps = [
                 'android'              : 'io.reactivex:rxandroid:1.2.1',
                 'preferences'          : 'com.f2prateek.rx.preferences:rx-preferences:1.0.2',
                 'rxlifecycle'          : 'com.trello:rxlifecycle:1.0',
-                'rxlifecycleComponents': 'com.trello:rxlifecycle-components:1.0',
-                'rxandroidble'         : 'com.polidea.rxandroidble:rxandroidble:1.4.3',
+                'rxlifecycleComponents': 'com.trello:rxlifecycle-components:1.0'
         ],
         'threeTenAbp'            : 'com.jakewharton.threetenabp:threetenabp:1.0.5',
         'telescope'              : 'com.mattprecious.telescope:telescope:2.1.0',
