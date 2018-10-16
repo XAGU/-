@@ -160,6 +160,7 @@ public interface IWalletDataManager {
      */
     Observable<ApiResult<OrderRespDTO>> getMonthlyMaxBill(@Body QueryPersonalMaxConsumeOrderListReqDTO reqDTO);
 
+
     User getUser();
 
 
@@ -168,4 +169,8 @@ public interface IWalletDataManager {
      * @return
      */
     Observable<ApiResult<WithdrawExplanationRespDTO>> withDrawExplanation();
+
+    boolean isShowWithDrawDialog();
+
+    void setIsShowWithDrawDialog(boolean b);
 }

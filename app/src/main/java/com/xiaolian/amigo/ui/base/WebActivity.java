@@ -144,7 +144,7 @@ public class WebActivity extends BaseActivity {
         webView.setWebChromeClient(new MyWebChromeClient());
         webView.addJavascriptInterface(new WebAppInterface(), "WebViewInterface");
         webSettings.setJavaScriptEnabled(true);
-        if (url != null) {
+        if (url != null && !TextUtils.isEmpty(url)) {
             url = url.replace(BuildConfig.H5_SERVER, Constant.H5_SERVER);
             webView.loadUrl(url);
         }

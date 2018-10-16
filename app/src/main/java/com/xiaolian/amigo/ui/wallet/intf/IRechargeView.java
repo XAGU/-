@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.wallet.intf;
 
+import com.xiaolian.amigo.data.network.model.funds.WithdrawExplanationRespDTO;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 import com.xiaolian.amigo.ui.wallet.adaptor.RechargeAdaptor;
 import com.xiaolian.amigo.ui.wallet.adaptor.RechargeTypeAdaptor;
@@ -49,4 +50,6 @@ public interface IRechargeView extends IBaseView {
      * 充值按钮可点击
      */
     void enableRecharge();
+
+    void showWithDrawDialog(WithdrawExplanationRespDTO dto);
 }

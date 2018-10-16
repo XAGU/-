@@ -106,13 +106,15 @@ public class WithdrawalRecordActivity extends WalletBaseListActivity implements 
                     .concat("月");
         }
 
-        if (fundsType != null
-                && fundsType != INVALID_INT) {
-            title = title.concat(WithdrawOperationType.getOperationType(fundsType).getDesc());
-        } else {
-            title = title.concat("充值提现");
-        }
-        setToolBarTitle(title.concat("记录"));
+//        if (fundsType != null
+//                && fundsType != INVALID_INT) {
+//            title = title.concat(WithdrawOperationType.getOperationType(fundsType).getDesc());
+//        } else {
+//            title = title.concat("充值提现");
+//        }
+//        setToolBarTitle(title.concat("记录"));
+
+        setToolBarTitle(getString(R.string.withdrawal_record));
     }
 
     @Override

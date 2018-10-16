@@ -1,0 +1,61 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_marginLeft="19dp"
+    android:layout_marginRight="19dp"
+    android:background="@drawable/bg_rect_corner_dialog_inset"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_marginTop="22dp"
+        android:text="@string/with_draw_tip"
+        android:gravity="center_horizontal"
+        android:textColor="@color/colorDark2"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <View
+        android:layout_marginTop="10dp"
+        android:background="#f3f3f3"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="32dp"
+        android:layout_height="4dp"/>
+
+    <TextView
+        style="@style/with_drw_tip_txt"
+        android:id="@+id/time"
+        android:layout_marginTop="16dp"
+        tools:text="退款时间：2019/06/30 ～ 2019/09/01" />
+
+    <TextView
+        style="@style/with_drw_tip_txt"
+        android:id="@+id/object"
+        android:layout_marginTop="10dp"
+        tools:text="退款对象：2020届、2021届学生" />
+
+
+
+    <TextView
+        style="@style/with_drw_tip_txt"
+        android:id="@+id/explain"
+        android:layout_marginTop="10dp"
+        tools:text="退款说明：一百字以内的文字描述，长长的大概要占位八至九行的位置，百字以内的文字描述，长长的大概要占位八至九行的位置，百字以内的文字描述，长长的大概要占位八至九行的位置，百字以内的文字描述，长长的大概要占位八至九行的位置，百字以内的文字描述，长长的大概要占位八至九行的位置。" />
+
+
+    <Button
+        android:id="@+id/bt_ok"
+        android:text="@string/i_know"
+        android:background="@drawable/button_oval_red"
+        android:layout_marginBottom="29dp"
+        android:textColor="#fff"
+        android:textSize="14sp"
+        android:elevation="2dp"
+        android:layout_marginTop="22dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="144dp"
+        android:layout_height="34dp" />
+
+</LinearLayout>

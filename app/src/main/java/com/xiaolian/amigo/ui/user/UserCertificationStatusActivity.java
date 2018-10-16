@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.user;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -61,6 +63,8 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
     LinearLayout reasonLl;
     @BindView(R.id.reason_line)
     View reasonLine;
+    @BindView(R.id.rl_toolbar)
+    RelativeLayout rlToolbar;
 
 
     private UserActivityComponent mActivityComponent;
@@ -98,8 +102,6 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
     ImageView ivBack;
     @BindView(R.id.tv_title)
     TextView tvTitle;
-    @BindView(R.id.rl_toolbar)
-    RelativeLayout rlToolbar;
     @BindView(R.id.view_line)
     View viewLine;
 
@@ -116,19 +118,29 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
     List<ImageAddAdapter.ImageItem> cardIdImages = new ArrayList<>();
 
 
+    private int rlToolBarHeight ;
+
     @Override
     protected void setUp() {
-//        if (getIntent() != null) {
-//            type = getIntent().getIntExtra(KEY_CERTIFICATION_TYPE, -1);
-//        }
+
     }
 
 
+    @SuppressLint("NewApi")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_certification_status);
         unbinder = ButterKnife.bind(this);
+        svMainContainer.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            if (scrollY > rlToolBarHeight){
+                setTitleVisiable(View.VISIBLE);
+            }else{
+                setTitleVisiable(View.GONE);
+            }
+        });
+
+
         initJect();
         initScrollView();
         initView();
@@ -161,16 +173,31 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
         tvToolbarText.setVisibility(View.VISIBLE);
         tvToolbarIv.setVisibility(View.GONE);
         certification.setVisibility(View.GONE);
+        setMarginBottom(ScreenUtils.dpToPxInt(this ,20));
+    }
+
+
+    /**
+     * 设置margin
+     */
+    private void setMarginBottom(int marginBottom){
+        FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) svMainContainer.getLayoutParams();
+        layoutParams.setMargins(0 , 0 ,  0  , marginBottom);
+        svMainContainer.setLayoutParams(layoutParams);
     }
 
     private void showBarIv() {
         tvToolbarIv.setVisibility(View.VISIBLE);
         tvToolbarText.setVisibility(View.GONE);
         certification.setVisibility(View.VISIBLE);
+        setMarginBottom(ScreenUtils.dpToPxInt(this ,91));
     }
 
     private void initView() {
         presenter.onAttach(this);
+        rlToolbar.post(() -> {
+            rlToolBarHeight = rlToolbar.getHeight();
+        });
     }
 
 
@@ -235,7 +262,7 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
 
 
     private void initImageAdd() {
-        cardIdAdapter = new ImageAddAdapter(this, R.layout.item_image_add, cardIdImages , true);
+        cardIdAdapter = new ImageAddAdapter(this, R.layout.item_image_add, cardIdImages, true);
         cardIdAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
@@ -256,7 +283,7 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
         cardId.setAdapter(cardIdAdapter);
 
 
-        studentIdAdapter = new ImageAddAdapter(this, R.layout.item_image_add, studentIdImages , true);
+        studentIdAdapter = new ImageAddAdapter(this, R.layout.item_image_add, studentIdImages, true);
         studentIdAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
@@ -292,16 +319,16 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
 
         tvDepartment.setText(data.getFaculty());
         tvProfession.setText(data.getMajor());
-        tvGrade.setText(data.getGrade()+"");
+        tvGrade.setText(data.getGrade() + "");
         tvClass.setText(data.getClassName());
-        tvStudentId.setText(data.getStuNum()+"");
+        tvStudentId.setText(data.getStuNum() + "");
         tvDormitory.setText(presenter.getDormInfo());
         for (String url : data.getStuPictureUrls()) {
             studentIdImages.add(new ImageAddAdapter.ImageItem(url));
         }
         if (studentIdAdapter != null) studentIdAdapter.notifyDataSetChanged();
 
-        if (cardIdImages != null ){
+        if (cardIdImages != null) {
             cardIdImages.clear();
 
             cardIdImages.add(new ImageAddAdapter.ImageItem(data.getIdCardBehind()));

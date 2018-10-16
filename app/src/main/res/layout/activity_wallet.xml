@@ -196,7 +196,7 @@
             style="@style/ContentText_main"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:text="充值提现记录" />
+            android:text="充值明细" />
 
     </RelativeLayout>
 

@@ -1,8 +1,11 @@
 package com.xiaolian.amigo.ui.user;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -11,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.MvpApp;
@@ -43,6 +47,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
+import me.everything.android.ui.overscroll.IOverScrollDecor;
+import me.everything.android.ui.overscroll.IOverScrollUpdateListener;
+import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
 import static com.xiaolian.amigo.ui.user.EditUserInfoActivity.KEY_BACK_DATA;
 import static com.xiaolian.amigo.ui.user.EditUserInfoActivity.KEY_DATA;
@@ -131,6 +138,18 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
     RelativeLayout backCardRl;
     @BindView(R.id.certify)
     Button certify;
+    @BindView(R.id.sv_main_container)
+    ScrollView svMainContainer;
+    @BindView(R.id.tv_toolbar_title)
+    TextView tvToolbarTitle;
+    @BindView(R.id.iv_back)
+    ImageView ivBack;
+    @BindView(R.id.tv_title)
+    TextView tvTitle;
+    @BindView(R.id.view_line)
+    View viewLine;
+    @BindView(R.id.rl_toolbar)
+    RelativeLayout rlToolbar;
 
     private User user;
 
@@ -165,12 +184,39 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
 
     private Integer grade = 0;
 
+
+    private int rlToolBarHeight ;
+
+    @SuppressLint("NewApi")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_certification);
         ButterKnife.bind(this);
+        IOverScrollDecor iOverScrollDecor = OverScrollDecoratorHelper.setUpOverScroll(svMainContainer);
+        iOverScrollDecor.setOverScrollUpdateListener(new IOverScrollUpdateListener() {
+            @Override
+            public void onOverScrollUpdate(IOverScrollDecor decor, int state, float offset) {
+
+            }
+        });
+        svMainContainer.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (scrollY > rlToolBarHeight){
+                    setTitleVisiable(View.VISIBLE);
+                }else{
+                    setTitleVisiable(View.GONE);
+                }
+            }
+        });
         initView();
+    }
+
+
+    private void setTitleVisiable(int visiable){
+        tvTitle.setVisibility(visiable);
+        viewLine.setVisibility(visiable);
     }
 
     protected void initView() {
@@ -184,8 +230,10 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
         initChooseGrade();
         user = presenter.getUserInfo();
         if (user != null) referStatus(user);
-
         presenter.getGradeInfo();
+        rlToolbar.post(() -> {
+            rlToolBarHeight = rlToolbar.getHeight();
+        });
 
     }
 
@@ -378,35 +426,35 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
         toggleBtnStatus();
     }
 
-    @OnTextChanged({R.id.tv_department ,R.id.tv_profession ,R.id.tv_grade ,R.id.tv_class ,
-       R.id.tv_studentId , R.id.tv_dormitory})
+    @OnTextChanged({R.id.tv_department, R.id.tv_profession, R.id.tv_grade, R.id.tv_class,
+            R.id.tv_studentId, R.id.tv_dormitory})
     void onTextChange() {
         toggleBtnStatus();
     }
 
-    boolean allValidated = false ;
+    boolean allValidated = false;
 
     public void toggleBtnStatus() {
-        allValidated = (!TextUtils.isEmpty(tvDepartment.getText())&&!TextUtils.isEmpty(tvProfession.getText())&&
-        !TextUtils.isEmpty(tvGrade.getText())&&!TextUtils.isEmpty(tvClass.getText())&&!TextUtils.isEmpty(tvStudentId.getText())
-                &&!TextUtils.isEmpty(tvDormitory.getText())
-                && !TextUtils.isEmpty(ivBackUrl) && !TextUtils.isEmpty(ivFrontUrl)&& urls.size() > 0) ;
+        allValidated = (!TextUtils.isEmpty(tvDepartment.getText()) && !TextUtils.isEmpty(tvProfession.getText()) &&
+                !TextUtils.isEmpty(tvGrade.getText()) && !TextUtils.isEmpty(tvClass.getText()) && !TextUtils.isEmpty(tvStudentId.getText())
+                && !TextUtils.isEmpty(tvDormitory.getText())
+                && !TextUtils.isEmpty(ivBackUrl) && !TextUtils.isEmpty(ivFrontUrl) && urls.size() > 0);
         certify.setBackgroundResource(allValidated ?
                 R.drawable.button_enable : R.drawable.button_disable);
     }
 
     @OnClick(R.id.certify)
-    public void certify(){
+    public void certify() {
 
-        Integer stuNum = 0 ;
+        Integer stuNum = 0;
         try {
-             grade = Integer.parseInt(tvGrade.getText().toString());
-             stuNum = Integer.parseInt(tvStudentId.getText().toString());
-        }catch (Exception e){
-            Log.wtf(TAG ,e.getMessage());
+            grade = Integer.parseInt(tvGrade.getText().toString());
+            stuNum = Integer.parseInt(tvStudentId.getText().toString());
+        } catch (Exception e) {
+            Log.wtf(TAG, e.getMessage());
         }
-      presenter.certify(tvClass.getText().toString() ,tvDepartment.getText().toString() ,
-                grade ,ivBackUrl ,ivFrontUrl ,tvProfession.getText().toString() ,stuNum ,urls);
+        presenter.certify(tvClass.getText().toString(), tvDepartment.getText().toString(),
+                grade, ivBackUrl, ivFrontUrl, tvProfession.getText().toString(), stuNum, urls);
     }
 
     @Override

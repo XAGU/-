@@ -16,6 +16,7 @@ import com.xiaolian.amigo.data.network.model.alipay.AlipayTradeAppPayArgsRespDTO
 import com.xiaolian.amigo.data.network.model.alipay.AlipayTradeAppPayResultParseRespDTO;
 import com.xiaolian.amigo.data.network.model.funds.QueryRechargeAmountsRespDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
+import com.xiaolian.amigo.data.network.model.funds.WithdrawExplanationRespDTO;
 import com.xiaolian.amigo.data.network.model.wallet.RechargeDenominations;
 import com.xiaolian.amigo.data.network.model.wxpay.WxpayTradeAppPayArgsReqDTO;
 import com.xiaolian.amigo.data.network.model.wxpay.WxpayTradeAppPayArgsRespDTO;
@@ -234,5 +235,30 @@ public class RechargePresenter<V extends IRechargeView> extends BasePresenter<V>
                 getMvpView().hideLoading();
             }
         });
+    }
+
+    @Override
+    public void getWithDrawExplain() {
+        addObserver(manager.withDrawExplanation() ,new NetworkObserver<ApiResult<WithdrawExplanationRespDTO>>(){
+
+            @Override
+            public void onReady(ApiResult<WithdrawExplanationRespDTO> result) {
+                if (result.getError() == null){
+                    getMvpView().showWithDrawDialog(result.getData());
+                }else{
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+        });
+    }
+
+    @Override
+    public boolean IsShowWithDrawDialog() {
+        return manager.isShowWithDrawDialog();
+    }
+
+    @Override
+    public void setIsShowWithDrawDialog(boolean b) {
+        manager.setIsShowWithDrawDialog(b);
     }
 }

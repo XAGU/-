@@ -326,7 +326,8 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                                 presenter.getBathroomList(null, null, deviceType, parentId, false);
                             }else if (TextUtils.equals(activitySrc ,Constant.HEATER_TO_BATHROOM)){
                                 presenter.getBathroomList(null, null, deviceType, parentId, false);
-                            }
+                            }else{}
+
                         }
                     }
 

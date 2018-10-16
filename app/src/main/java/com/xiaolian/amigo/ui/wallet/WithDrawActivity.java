@@ -1,6 +1,5 @@
 package com.xiaolian.amigo.ui.wallet;
 
-import android.os.Bundle;
 import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
@@ -11,6 +10,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class WithDrawActivity extends WalletBaseActivity implements IWithDrawView {
 
@@ -88,10 +88,10 @@ public class WithDrawActivity extends WalletBaseActivity implements IWithDrawVie
         presenter.onDetach();
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
+
+    @OnClick({R.id.btn_submit})
+    public void btnSubmit(){
+        this.finish();
     }
+
 }

@@ -211,4 +211,9 @@ public interface ISharedPreferencesHelp {
 
     int getCertifyStatus();
 
+
+    void setIsShowWithDrawDialog(boolean isShowWithDrawDialog);
+
+    boolean isShowWithDrawDialog();
+
 }

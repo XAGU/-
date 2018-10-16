@@ -201,6 +201,16 @@ public class WalletDataManager implements IWalletDataManager {
     }
 
     @Override
+    public boolean isShowWithDrawDialog() {
+        return sharedPreferencesHelp.isShowWithDrawDialog();
+    }
+
+    @Override
+    public void setIsShowWithDrawDialog(boolean b) {
+        sharedPreferencesHelp.setIsShowWithDrawDialog(b);
+    }
+
+    @Override
     public void setLastWithdrawId(Long id) {
         sharedPreferencesHelp.setLastWithdrawId(id);
     }

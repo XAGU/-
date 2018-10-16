@@ -19,6 +19,7 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.widget.school.IndexBar.bean.BaseIndexPinyinBean;
 import com.xiaolian.amigo.ui.widget.school.IndexBar.helper.IIndexBarDataHelper;
 import com.xiaolian.amigo.ui.widget.school.IndexBar.helper.IndexBarDataHelperImpl;
+import com.xiaolian.amigo.util.ScreenUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -66,6 +67,16 @@ public class IndexBar extends View {
     private List<? extends BaseIndexPinyinBean> mSourceDatas;//Adapter的数据源
     private LinearLayoutManager mLayoutManager;
     private int mHeaderViewCount = 0;
+
+    private int normalTextSize  ;
+
+    private int pressTextSize ;
+
+    private int itemPaddingBottom ;
+
+    private int normalColor ;
+
+    private int pressColor ;
 
     public IndexBar(Context context) {
         this(context, null);
@@ -142,13 +153,16 @@ public class IndexBar extends View {
         }
         typedArray.recycle();
 
+        normalTextSize = ScreenUtils.dpToPxInt(context ,8);
+        pressTextSize = ScreenUtils.dpToPxInt(context , 12);
+        itemPaddingBottom = ScreenUtils.dpToPxInt(context , 5 );
+        normalColor = context.getResources().getColor(R.color.colorDarkB);
+        pressColor = context.getResources().getColor(R.color.colorDark2);
         initIndexDatas();
 
 
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
-        mPaint.setTextSize(textSize);
-        mPaint.setColor(Color.BLACK);
 
         //设置index触摸监听器
         setmOnIndexPressedListener(new onIndexPressedListener() {
@@ -223,6 +237,8 @@ public class IndexBar extends View {
 
         setMeasuredDimension(measureWidth, measureHeight);
     }
+
+
 
 
     @Override

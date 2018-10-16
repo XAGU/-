@@ -38,4 +38,10 @@ public interface IRechargePresenter<V extends IRechargeView> extends IBasePresen
     void getRechargeTypeList();
 
     void parseWxpayResult(Integer wxResult);
+
+    void getWithDrawExplain();
+
+    boolean IsShowWithDrawDialog();
+
+    void setIsShowWithDrawDialog(boolean b);
 }

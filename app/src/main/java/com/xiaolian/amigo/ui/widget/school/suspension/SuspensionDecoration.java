@@ -12,6 +12,8 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.xiaolian.amigo.util.ScreenUtils;
+
 import java.util.List;
 
 /**
@@ -36,14 +38,17 @@ public class SuspensionDecoration extends RecyclerView.ItemDecoration {
 
     private int mHeaderViewCount = 0;
 
+    private int paddingTop ;
+
 
     public SuspensionDecoration(Context context, List<? extends ISuspensionInterface> datas) {
         super();
         mDatas = datas;
         mPaint = new Paint();
         mBounds = new Rect();
-        mTitleHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 30, context.getResources().getDisplayMetrics());
-        mTitleFontSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 16, context.getResources().getDisplayMetrics());
+        mTitleHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 12, context.getResources().getDisplayMetrics());
+        mTitleFontSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 12, context.getResources().getDisplayMetrics());
+        paddingTop = ScreenUtils.dpToPxInt(context ,29);
         mPaint.setTextSize(mTitleFontSize);
         mPaint.setAntiAlias(true);
         mInflater = LayoutInflater.from(context);
@@ -157,7 +162,7 @@ public class SuspensionDecoration extends RecyclerView.ItemDecoration {
         if ((pos + 1) < mDatas.size()) {//防止数组越界（一般情况不会出现）
             if (null != tag && !tag.equals(mDatas.get(pos + 1).getSuspensionTag())) {//当前第一个可见的Item的tag，不等于其后一个item的tag，说明悬浮的View要切换了
                 Log.d("zxt", "onDrawOver() called with: c = [" + child.getTop());//当getTop开始变负，它的绝对值，是第一个可见的Item移出屏幕的距离，
-                if (child.getHeight() + child.getTop() < mTitleHeight) {//当第一个可见的item在屏幕中还剩的高度小于title区域的高度时，我们也该开始做悬浮Title的“交换动画”
+                if (child.getHeight() + child.getTop() < mTitleHeight + paddingTop) {//当第一个可见的item在屏幕中还剩的高度小于title区域的高度时，我们也该开始做悬浮Title的“交换动画”
                     c.save();//每次绘制前 保存当前Canvas状态，
                     flag = true;
 
@@ -167,7 +172,7 @@ public class SuspensionDecoration extends RecyclerView.ItemDecoration {
 
                     //类似饿了么点餐时,商品列表的悬停头部切换“动画效果”
                     //上滑时，将canvas上移 （y为负数） ,所以后面canvas 画出来的Rect和Text都上移了，有种切换的“动画”感觉
-                    c.translate(0, child.getHeight() + child.getTop() - mTitleHeight);
+                    c.translate(0, child.getHeight() + child.getTop() + paddingTop - mTitleHeight);
                 }
             }
         }
@@ -176,7 +181,7 @@ public class SuspensionDecoration extends RecyclerView.ItemDecoration {
         mPaint.setColor(COLOR_TITLE_FONT);
         mPaint.getTextBounds(tag, 0, tag.length(), mBounds);
         c.drawText(tag, child.getPaddingLeft(),
-                parent.getPaddingTop() + mTitleHeight - (mTitleHeight / 2 - mBounds.height() / 2),
+                parent.getPaddingTop() + mTitleHeight - (mTitleHeight / 2 - mBounds.height() / 2) ,
                 mPaint);
         if (flag)
             c.restore();//恢复画布到之前保存的状态
@@ -200,11 +205,11 @@ public class SuspensionDecoration extends RecyclerView.ItemDecoration {
             // 2016 11 10 add 通过接口里的isShowSuspension() 方法，先过滤掉不想显示悬停的item
             if (titleCategoryInterface.isShowSuspension()) {
                 if (position == 0) {
-                    outRect.set(0, mTitleHeight, 0, 0);
+                    outRect.set(0, mTitleHeight  + paddingTop, 0, 0);
                 } else {//其他的通过判断
                     if (null != titleCategoryInterface.getSuspensionTag() && !titleCategoryInterface.getSuspensionTag().equals(mDatas.get(position - 1).getSuspensionTag())) {
                         //不为空 且跟前一个tag不一样了，说明是新的分类，也要title
-                        outRect.set(0, mTitleHeight, 0, 0);
+                        outRect.set(0, mTitleHeight  + paddingTop, 0, 0);
                     }
                 }
             }

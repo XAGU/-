@@ -28,7 +28,7 @@
         <u>设备使用结束，长时间未找零？</u>
     </string>
     <string name="withdrawal_total_tip">
-        <u>全部提现</u>
+        <u>全部退款</u>
     </string>
     <string name="query_expired_bonus_tip">
         <u>查看过期代金券</u>
@@ -71,7 +71,7 @@
     <string name="keep_use_cold_water">使用冷水</string>
     <string name="emergency_notice">紧急通知</string>
     <string name="do_not_remind">不再提示</string>
-    <string name="withdraw_tip">提现时间为：\n每周二12:00~每周四12:00</string>
+    <string name="withdraw_tip">退款时间为：\n每周二12:00~每周四12:00</string>
     <string name="repair_detail">报修详情</string>
     <string name="edit_profile">编辑个人信息</string>
     <string name="edit_nickname">编辑昵称</string>
@@ -156,16 +156,16 @@
     <string name="add_dormitory_success">宿舍添加成功</string>
     <string name="bonus_exchange_success">代金券兑换成功</string>
     <string name="change_school_success">学校更换成功，请重新登录</string>
-    <string name="withdrawal_record">充值提现记录</string>
+    <string name="withdrawal_record">充值明细</string>
     <string name="unselected">未选择</string>
     <string name="choose_alipay_account">选择支付宝账号</string>
     <string name="add_alipay_account">添加支付宝账号</string>
     <string name="please_enter_alipay_account">请输入支付宝账户</string>
     <string name="please_enter_real_name">请输入真实姓名</string>
-    <string name="add_alipay_account_tip">温馨提示：请输入该支付宝账户已实名认证的姓名，否则会导致提现失败</string>
+    <string name="add_alipay_account_tip">温馨提示：请输入该支付宝账户已实名认证的姓名，否则会导致退款失败</string>
     <string name="recharge_detail">充值详情</string>
-    <string name="withdraw_detail">提现详情</string>
-    <string name="withdraw_available">可提现金额%1$s，</string>
+    <string name="withdraw_detail">退款详情</string>
+    <string name="withdraw_available">可退款金额%1$s，</string>
     <string name="unknown">未知</string>
     <string name="unbind">未绑定</string>
     <string name="confirm_recharge">确认充值</string>
@@ -248,13 +248,13 @@
     <string name="money_format">¥%1$s</string>
     <string name="rmb_symbol">¥</string>
     <string name="unpass_reason">未通过原因</string>
-    <string name="withdraw_way_colon">提现方式：</string>
-    <string name="withdraw_account_colon">提现账号：</string>
-    <string name="withdraw_time_colon">提现时间：</string>
+    <string name="withdraw_way_colon">退款方式：</string>
+    <string name="withdraw_account_colon">退款账号：</string>
+    <string name="withdraw_time_colon">退款时间：</string>
     <string name="serial_number_colon">流水号：</string>
-    <string name="cancel_withdraw">取消提现</string>
-    <string name="cancel_withdraw_success">取消提现成功</string>
-    <string name="withdraw_amount_error_tip">提现金额不能低于10元</string>
+    <string name="cancel_withdraw">取消退款</string>
+    <string name="cancel_withdraw_success">取消退款成功</string>
+    <string name="withdraw_amount_error_tip">退款金额不能低于10元</string>
     <string name="complaint_error">你已经投诉过该订单</string>
     <string name="choose_dormitory">洗澡地址</string>
     <string name="content_description">content_description</string>
@@ -295,7 +295,7 @@
     <string name="credits_tip">消费额每满0.1元即获得1积分</string>
     <string name="balance_explain">余额说明</string>
     <string name="present_balance_colon">赠送的余额：</string>
-    <string name="withdraw_available_colon">可提现余额：</string>
+    <string name="withdraw_available_colon">可退款余额：</string>
     <string name="balance_available_colon">可用余额：</string>
     <string name="balance_present_colon">赠送的余额：</string>
     <string name="present_rule_colon">赠送规则：</string>
@@ -383,4 +383,5 @@
 
 
     <string name="with_draw_title">退款说明</string>
+    <string name="with_draw_tip">温馨提示</string>
 </resources>

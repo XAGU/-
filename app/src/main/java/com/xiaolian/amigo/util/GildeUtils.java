@@ -26,6 +26,7 @@ public class GildeUtils {
                 .load(path)
                 .asBitmap()
                 .into(iv);
+
     }
 
     /**

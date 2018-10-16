@@ -203,7 +203,6 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
         tvTime.setText(CommonUtil.stampToDate(order.getCreateTime()));
         tvDeviceLocation.setText(String.format("%s %s",
                 Device.getDevice(order.getDeviceType()).getDesc(), order.getLocation()));
-
         vBottomLine1.setBackgroundColor(Color.parseColor(getLineColorByDeviceType(order.getDeviceType())));
         vBottomLine1.setVisibility(View.VISIBLE);
         vBottomLine2.setBackgroundColor(Color.parseColor(getLineColorByDeviceType(order.getDeviceType())));

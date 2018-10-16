@@ -13,17 +13,19 @@ import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.PayWay;
-import com.xiaolian.amigo.ui.wallet.adaptor.RechargeTypeAdaptor;
-import com.xiaolian.amigo.util.Constant;
-import com.xiaolian.amigo.util.PayUtil;
-import com.xiaolian.amigo.util.ScreenUtils;
+import com.xiaolian.amigo.data.network.model.funds.WithdrawExplanationRespDTO;
 import com.xiaolian.amigo.ui.wallet.adaptor.BonusItemDelegate;
 import com.xiaolian.amigo.ui.wallet.adaptor.DiscountItemDelegate;
 import com.xiaolian.amigo.ui.wallet.adaptor.NormalItemDelegate;
 import com.xiaolian.amigo.ui.wallet.adaptor.RechargeAdaptor;
+import com.xiaolian.amigo.ui.wallet.adaptor.RechargeTypeAdaptor;
 import com.xiaolian.amigo.ui.wallet.intf.IRechargePresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IRechargeView;
 import com.xiaolian.amigo.ui.widget.GridSpacesItemDecoration;
+import com.xiaolian.amigo.ui.widget.dialog.WithDrawExplainAlertDialog;
+import com.xiaolian.amigo.util.Constant;
+import com.xiaolian.amigo.util.PayUtil;
+import com.xiaolian.amigo.util.ScreenUtils;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import org.greenrobot.eventbus.EventBus;
@@ -77,12 +79,15 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
     private int rechargeTypeSelectedPosition = 0;
 
 
+    private WithDrawExplainAlertDialog withDrawExplainAlertDialog ;
+
+
     @Override
     protected void initView() {
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
         setMainBackground(R.color.colorBackgroundGray);
-
+        initDialog();
         adaptor = new RechargeAdaptor(this, recharges);
         adaptor.addItemViewDelegate(new NormalItemDelegate());
         adaptor.addItemViewDelegate(new BonusItemDelegate());
@@ -136,8 +141,19 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
         recyclerView1.setAdapter(typeAdaptor);
 
         presenter.onAttach(RechargeActivity.this);
+        if (presenter.IsShowWithDrawDialog())
+        presenter.getWithDrawExplain();
         presenter.getRechargeList();
         presenter.getRechargeTypeList();
+    }
+
+
+    private void initDialog(){
+        withDrawExplainAlertDialog = new WithDrawExplainAlertDialog(this);
+        withDrawExplainAlertDialog.setOnOkClickListener(dialog -> {
+            dialog.dismiss();
+            presenter.setIsShowWithDrawDialog(false);
+        });
     }
 
     @Override
@@ -230,6 +246,16 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
     @Override
     public void enableRecharge() {
         btSubmit.setEnabled(true);
+    }
+
+    @Override
+    public void showWithDrawDialog(WithdrawExplanationRespDTO dto) {
+        if (withDrawExplainAlertDialog != null){
+            withDrawExplainAlertDialog.setExplain("退款说明：" +dto.getExplanation());
+            withDrawExplainAlertDialog.setObject("退款对象：" + dto.getRefundUser());
+            withDrawExplainAlertDialog.setTime("退款时间：" + dto.getTimeRange());
+            withDrawExplainAlertDialog.show();
+        }
     }
 
     @Override

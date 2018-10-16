@@ -125,6 +125,10 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     private static final String PREF_KEY_CERTIFY_STATUS = "PREF_KEY_CERTIFY_STATUS";
 
 
+    /**
+     * 是否需要弹出退费说明
+     */
+    private static final String PREF_KEY_WITHDRAW = "PREF_KEY_WITHDRAW";
 
     private String tokenHolder;
     private String deviceTokenHolder;
@@ -141,6 +145,8 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
     private boolean transfer;
     // 推送token
     private String pushToken;
+
+
 
 
     @Inject
@@ -704,6 +710,16 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
         return mSharedPreferences.getInt(PREF_KEY_CERTIFY_STATUS ,-1);
     }
 
+    @Override
+    public void setIsShowWithDrawDialog(boolean isShowWithDrawDialog ) {
+         mSharedPreferences.edit().putBoolean(PREF_KEY_WITHDRAW  , isShowWithDrawDialog).apply();
+    }
+
+    @Override
+    public boolean isShowWithDrawDialog() {
+        return mSharedPreferences.getBoolean(PREF_KEY_WITHDRAW ,true);
+    }
+
 
     @Override
     public void logout() {
@@ -720,7 +736,8 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
         if (userHolder != null) {
             if (userHolder.getNickName() != null
                     && userHolder.getSchoolName() != null
-                    && userHolder.getMobile() != null) {
+                    && userHolder.getMobile() != null
+                    && userHolder.getDormitory() != null) {
                 return false;
             }
         }

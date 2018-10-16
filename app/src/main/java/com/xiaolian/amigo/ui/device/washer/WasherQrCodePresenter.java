@@ -34,6 +34,10 @@ public class WasherQrCodePresenter<V extends IWasherQrCodeView> extends BasePres
     @Override
     public void generateQRCode(String data, int dimension , Context context) {
         try {
+            if (data == null){
+                getMvpView().onError("生成二维码失败");
+                return ;
+            }
             Bitmap log = BitmapFactory.decodeResource(context.getResources() , R.drawable.icon_qrlogo);
             Bitmap bitmap = QRCodeEncoder.createQRCodeWithLogo(data, dimension,log);
             getMvpView().renderQRCode(bitmap);

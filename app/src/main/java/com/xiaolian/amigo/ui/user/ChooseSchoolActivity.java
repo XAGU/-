@@ -21,13 +21,12 @@ import com.xiaolian.amigo.di.module.UserActivityModule;
 import com.xiaolian.amigo.ui.base.BaseActivity;
 import com.xiaolian.amigo.ui.user.intf.IChooseSchoolPresenter;
 import com.xiaolian.amigo.ui.user.intf.IChooseSchoolView;
-import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutHeader;
 import com.xiaolian.amigo.ui.widget.school.IndexBar.widget.IndexBar;
 import com.xiaolian.amigo.ui.widget.school.mode.CityBean;
 import com.xiaolian.amigo.ui.widget.school.suspension.SuspensionDecoration;
-import com.xiaolian.amigo.util.ScreenUtils;
 import com.zhy.adapter.recyclerview.CommonAdapter;
+import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.ArrayList;
@@ -116,13 +115,29 @@ public class ChooseSchoolActivity extends BaseActivity implements IChooseSchoolV
 
         manager = new LinearLayoutManager(this);
         schoolRy.addItemDecoration(mDecoration = new SuspensionDecoration(this, cityBeans));
-        schoolRy.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 29)));
+//        schoolRy.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 17)));
         mDecoration.setmDatas(cityBeans);
         schoolRy.setAdapter(commonAdapter = new CommonAdapter<CityBean>(this, R.layout.item_school_name, cityBeans) {
 
             @Override
             protected void convert(ViewHolder holder, CityBean cityBean, int position) {
                 holder.setText(R.id.school_name, cityBean.getCity());
+                if (cityBean.getCity().length() == 1){
+                    holder.getView(R.id.line).setVisibility(View.GONE);
+                }else{
+                    holder.getView(R.id.line).setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        commonAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
             }
         });
         schoolRy.setLayoutManager(manager);
