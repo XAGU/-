@@ -138,14 +138,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
     private Handler handler = new Handler();
 
-    private String connectAddress;
-
-    Runnable connectTask = new Runnable() {
-        @Override
-        public void run() {
-            onConnect(connectAddress);
-        }
-    };
+    private Runnable connectTask;
 
 
     DeviceBasePresenter(IBleDataManager bleDataManager, IDeviceDataManager deviceDataManager) {
@@ -240,7 +233,14 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         if (null != lastConnectTime) {
             Long diff = System.currentTimeMillis() - lastConnectTime;
             if (diff < 5000) {
-                connectAddress = macAddress;
+                if (connectTask == null) {
+                    connectTask = new Runnable() {
+                        @Override
+                        public void run() {
+                            onConnect(macAddress);
+                        }
+                    };
+                }
                 handler.postDelayed(connectTask,5000 - diff);
             } else {
                 onConnect(macAddress);
@@ -274,7 +274,14 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         if (null != lastConnectTime) {
             Long diff = System.currentTimeMillis() - lastConnectTime;
             if (diff < 5000) {
-               connectAddress = macAddress;
+                if (connectTask == null) {
+                    connectTask = new Runnable() {
+                        @Override
+                        public void run() {
+                            onConnect(macAddress);
+                        }
+                    };
+                }
                handler.postDelayed(connectTask,5000 - diff);
             } else {
                 onConnect(macAddress);
@@ -751,7 +758,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     @Override
     public void onDisConnect() {
         Log.d(TAG, "onDisConnect");
-        handler.removeCallbacks(connectTask);
+        if (connectTask != null) {
+            handler.removeCallbacks(connectTask);
+        }
         if (null != busSubscriber) {
             busSubscriber.unsubscribe();
         }
