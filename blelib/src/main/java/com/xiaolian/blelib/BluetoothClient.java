@@ -48,6 +48,7 @@ public class BluetoothClient implements IBluetoothClient {
     public void stopScan() {
         if (bluetoothScanner != null) {
             bluetoothScanner.stopScanBluetooth();
+            bluetoothScanner = null;
         }
     }
 
