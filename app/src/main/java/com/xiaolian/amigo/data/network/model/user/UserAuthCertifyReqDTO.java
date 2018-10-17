@@ -2,6 +2,8 @@ package com.xiaolian.amigo.data.network.model.user;
 
 import java.util.List;
 
+import okhttp3.RequestBody;
+
 public class UserAuthCertifyReqDTO {
 
 
@@ -19,11 +21,11 @@ public class UserAuthCertifyReqDTO {
     private String className;
     private String faculty;
     private int grade;
-    private String idCardBehind;
-    private String idCardFront;
+    private RequestBody idCardBehind;
+    private RequestBody idCardFront;
     private String major;
     private int stuNum;
-    private List<String> stuPictureUrls;
+    private List<RequestBody> stuPictureUrls;
 
     public String getClassName() {
         return className;
@@ -49,19 +51,19 @@ public class UserAuthCertifyReqDTO {
         this.grade = grade;
     }
 
-    public String getIdCardBehind() {
+    public RequestBody getIdCardBehind() {
         return idCardBehind;
     }
 
-    public void setIdCardBehind(String idCardBehind) {
+    public void setIdCardBehind(RequestBody idCardBehind) {
         this.idCardBehind = idCardBehind;
     }
 
-    public String getIdCardFront() {
+    public RequestBody getIdCardFront() {
         return idCardFront;
     }
 
-    public void setIdCardFront(String idCardFront) {
+    public void setIdCardFront(RequestBody idCardFront) {
         this.idCardFront = idCardFront;
     }
 
@@ -81,11 +83,11 @@ public class UserAuthCertifyReqDTO {
         this.stuNum = stuNum;
     }
 
-    public List<String> getStuPictureUrls() {
+    public List<RequestBody> getStuPictureUrls() {
         return stuPictureUrls;
     }
 
-    public void setStuPictureUrls(List<String> stuPictureUrls) {
+    public void setStuPictureUrls(List<RequestBody> stuPictureUrls) {
         this.stuPictureUrls = stuPictureUrls;
     }
 }

@@ -27,13 +27,18 @@ import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.user.intf.IUserCertificationPresenter;
 import com.xiaolian.amigo.ui.user.intf.IUserCertificationView;
 
+import java.io.File;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
 import javax.inject.Inject;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.HttpException;
+import retrofit2.http.Multipart;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -68,17 +73,30 @@ public class UserCertificationPresenter <v extends IUserCertificationView> exten
 
     @Override
     public void uploadImage(Context activity, String imagePath, int position, OssFileType type) {
-        Log.d(TAG ," " + imagePath);
-        currentImagePosition = position;
-        currentType = type;
-        uploadImage(activity,imagePath);
+//        Log.d(TAG ," " + imagePath);
+//        currentImagePosition = position;
+//        currentType = type;
+//        uploadImage(activity,imagePath);
+
+        getMvpView().post(() -> getMvpView().addImage(imagePath ,position ,""));
+
+
+
     }
 
     @Override
     public void uploadImage(Context activity, String imagePath, OssFileType found, ImageView iv) {
-        this.iv = iv ;
-        this.currentType = found ;
-        uploadImage(activity ,imagePath);
+//        this.iv = iv ;
+//        this.currentType = found ;
+//        uploadImage(activity ,imagePath);
+
+//        if (iv  != null){
+//            getMvpView().post(() -> {getMvpView().setCardImage(iv ,filePath , request.getObjectKey());
+//                iv = null ;
+//
+//            });
+
+        getMvpView().post(() -> getMvpView().setCardImage(iv ,imagePath ,""));
     }
 
     @Override
@@ -106,21 +124,40 @@ public class UserCertificationPresenter <v extends IUserCertificationView> exten
         });
     }
 
+
     @Override
-    public void certify(String className, String faculty, Integer grade, String idCardBehind, String idCardFront, String major, Integer stuNum, List<String> stuPictureUrls) {
+    public void certify(String className, String faculty, Integer grade, File idCardBehind, File idCardFront, String major, Integer stuNum, List<File> stuPictureUrls) {
         UserAuthCertifyReqDTO userAuthCertifyReqDTO = new UserAuthCertifyReqDTO();
+//
+//        userAuthCertifyReqDTO.setClassName(className);
+//        userAuthCertifyReqDTO.setFaculty(faculty);
+//        userAuthCertifyReqDTO.setGrade(grade);
+//
+////        userAuthCertifyReqDTO.setIdCardBehind(idCardBehind);
+////        userAuthCertifyReqDTO.setIdCardFront(idCardFront);
+//        userAuthCertifyReqDTO.setMajor(major);
+//        userAuthCertifyReqDTO.setStuNum(stuNum);
+//        userAuthCertifyReqDTO.setStuPictureUrls(stuPictureUrls);
 
-        userAuthCertifyReqDTO.setClassName(className);
-        userAuthCertifyReqDTO.setFaculty(faculty);
-        userAuthCertifyReqDTO.setGrade(grade);
-        userAuthCertifyReqDTO.setIdCardBehind(idCardBehind);
-        userAuthCertifyReqDTO.setIdCardFront(idCardFront);
-        userAuthCertifyReqDTO.setMajor(major);
-        userAuthCertifyReqDTO.setStuNum(stuNum);
-        userAuthCertifyReqDTO.setStuPictureUrls(stuPictureUrls);
+        RequestBody requestBody ;
+        MultipartBody.Builder builder ;
 
+        builder= new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("className" ,className)
+                .addFormDataPart("faculty" ,faculty)
+                .addFormDataPart("grade" ,grade+"")
+                .addFormDataPart("major" , major)
+                .addFormDataPart("stuNum" , stuNum+"")
+                .addFormDataPart("idCardBehind" ,idCardBehind.getName() ,RequestBody.create(MediaType.parse("image/*") , idCardBehind))
+                .addFormDataPart("idCardFront" ,idCardFront.getName() , RequestBody.create(MediaType.parse("image/*") ,idCardFront));
 
-        addObserver(userDataManager.certify(userAuthCertifyReqDTO) ,new NetworkObserver<ApiResult<BooleanRespDTO>>(){
+        for (File file : stuPictureUrls){
+            if (file.exists())
+                builder.addFormDataPart("stuPictureUrls",file.getName() ,RequestBody.create(MediaType.parse("image/*") ,file));
+        }
+        requestBody = builder.build();
+
+        addObserver(userDataManager.certify(requestBody) ,new NetworkObserver<ApiResult<BooleanRespDTO>>(){
 
             @Override
             public void onReady(ApiResult<BooleanRespDTO> result) {

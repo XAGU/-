@@ -128,7 +128,7 @@ public abstract class BaseActivity extends SwipeBackActivity
         startActivityForResult(intent, REQUEST_CODE_CAMERA);
     }
 
-
+    File outputImage ;
     private Uri getImageUri(String fileName) {
         String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xiaolian/";
         File path = new File(filePath);
@@ -140,7 +140,7 @@ public abstract class BaseActivity extends SwipeBackActivity
             }
         }
         Uri imageUri;
-        File outputImage = new File(path, fileName + ".jpg");
+         outputImage = new File(path, fileName +System.currentTimeMillis()+ ".jpg");
         try {
             if (outputImage.exists()) {
                 boolean isDeleteSuccess = outputImage.delete();
@@ -255,7 +255,6 @@ public abstract class BaseActivity extends SwipeBackActivity
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_CODE_CAMERA) {
-
                 if (imageCallback != null) {
                     mCropImageUri = getCropUri("crop");
                     UCrop.Options options = new UCrop.Options();
@@ -272,7 +271,7 @@ public abstract class BaseActivity extends SwipeBackActivity
 
 
                 if (imageCallback2 != null) {
-                    imageCallback2.callback(mPhotoImageUri.getPath());
+                    imageCallback2.callback(outputImage.getAbsolutePath());
                 }
 //                    File cropFile = getCropFile("crop");
 
@@ -539,6 +538,7 @@ public abstract class BaseActivity extends SwipeBackActivity
                 emptyImageCallback.callback();
             }
         });
+
         actionSheetDialog.show();
     }
 

@@ -255,7 +255,9 @@ public interface IUserDataManager {
 
 
 
-    Observable<ApiResult<BooleanRespDTO>> certify(@Body UserAuthCertifyReqDTO dto);
+//    Observable<ApiResult<BooleanRespDTO>> certify(@Body UserAuthCertifyReqDTO dto);
+
+    Observable<ApiResult<BooleanRespDTO>> certify(@Body RequestBody body);
 
 
     Observable<ApiResult<UserGradeInfoRespDTO>> gradeInfo();

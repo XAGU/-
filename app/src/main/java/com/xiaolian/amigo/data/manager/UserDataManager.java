@@ -303,8 +303,13 @@ public class UserDataManager implements IUserDataManager {
         return schoolApi.getSchoolNameList();
     }
 
+//    @Override
+//    public Observable<ApiResult<BooleanRespDTO>> certify(UserAuthCertifyReqDTO dto) {
+//        return userApi.certify(dto);
+//    }
+
     @Override
-    public Observable<ApiResult<BooleanRespDTO>> certify(UserAuthCertifyReqDTO dto) {
+    public Observable<ApiResult<BooleanRespDTO>> certify(RequestBody dto) {
         return userApi.certify(dto);
     }
 

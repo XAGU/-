@@ -8,6 +8,7 @@ import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 import com.xiaolian.amigo.ui.user.UserCertificationActivity;
 
+import java.io.File;
 import java.util.List;
 
 public interface IUserCertificationPresenter <v extends IUserCertificationView> extends IBasePresenter<v> {
@@ -23,6 +24,6 @@ public interface IUserCertificationPresenter <v extends IUserCertificationView> 
 
     void getGradeInfo();
 
-    void certify(String className , String faculty , Integer grade , String idCardBehind ,
-                 String idCardFront , String major , Integer stuNum , List<String> stuPictureUrls);
+    void certify(String className , String faculty , Integer grade , File idCardBehind ,
+                 File idCardFront , String major , Integer stuNum , List<File> stuPictureUrls);
 }

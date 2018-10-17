@@ -38,6 +38,7 @@ import com.xiaolian.amigo.util.Log;
 import com.xiaolian.amigo.util.ScreenUtils;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -176,6 +177,11 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
     private String ivBackUrl; //  背面照片Url
 
 
+    private File ivBackFile ;
+
+    private File ivFrontFile ;
+
+    private List<File> imageFile = new ArrayList<>();
     private boolean isNeedRefresh = false;
 
     private ActionSheetDialog actionSheetDialog; // 年级选择器底部弹窗
@@ -453,8 +459,25 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
         } catch (Exception e) {
             Log.wtf(TAG, e.getMessage());
         }
+        ivBackFile = getFile(ivBackPath);
+        ivFrontFile = getFile(ivFrontPath);
+        if (imageFile == null ) imageFile = new ArrayList<>();
+
+        if (imageFile.size() > 0) imageFile.clear();
+        for (String imagePath : images){
+            imageFile.add(getFile(imagePath));
+        }
+
         presenter.certify(tvClass.getText().toString(), tvDepartment.getText().toString(),
-                grade, ivBackUrl, ivFrontUrl, tvProfession.getText().toString(), stuNum, urls);
+                grade, ivBackFile, ivFrontFile, tvProfession.getText().toString(), stuNum, imageFile);
+    }
+
+    private File getFile(String filePath){
+        File file  = new File(filePath);
+        if (file.exists())
+            return file ;
+            else return null ;
+
     }
 
     @Override

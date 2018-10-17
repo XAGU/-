@@ -24,7 +24,9 @@ import com.xiaolian.amigo.data.network.model.user.UserResidenceDTO;
 import com.xiaolian.amigo.data.network.model.user.UserResidenceInListDTO;
 import com.xiaolian.amigo.data.network.model.user.UploadUserDeviceInfoReqDTO;
 
+import okhttp3.RequestBody;
 import retrofit2.http.Body;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import rx.Observable;
 
@@ -151,8 +153,10 @@ public interface IUserApi {
      * @param dto
      * @return
      */
+    @Multipart
     @POST("user/auth/certify")
-    Observable<ApiResult<BooleanRespDTO>> certify(@Body UserAuthCertifyReqDTO dto);
+//    Observable<ApiResult<BooleanRespDTO>> certify(@Body UserAuthCertifyReqDTO dto);
+    Observable<ApiResult<BooleanRespDTO>> certify(@Body RequestBody body);
 
 
     /**
