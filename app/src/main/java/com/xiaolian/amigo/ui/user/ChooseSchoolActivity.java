@@ -2,14 +2,17 @@ package com.xiaolian.amigo.ui.user;
 
 import android.animation.ValueAnimator;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -17,6 +20,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.network.model.user.School;
 import com.xiaolian.amigo.data.network.model.user.SchoolNameListRespDTO;
 import com.xiaolian.amigo.di.componet.DaggerUserActivityComponent;
 import com.xiaolian.amigo.di.componet.UserActivityComponent;
@@ -37,6 +41,7 @@ import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -78,6 +83,12 @@ public class ChooseSchoolActivity extends BaseActivity implements IChooseSchoolV
     RecyclerView searchCy;
     @BindView(R.id.cancle)
     TextView cancle;
+    @BindView(R.id.online_school)
+    RecyclerView onlineSchool;
+    @BindView(R.id.right_rl)
+    RelativeLayout rightRl;
+    @BindView(R.id.school)
+    LinearLayout school;
 
     private SuspensionDecoration mDecoration;
 
@@ -112,9 +123,15 @@ public class ChooseSchoolActivity extends BaseActivity implements IChooseSchoolV
     private int cancelWidth;
 
 
-    private ValueAnimator translateAnimator ;
+    private ValueAnimator translateAnimator;
 
-    private LinearLayout.LayoutParams  searchLayoutParams ;
+    private LinearLayout.LayoutParams searchLayoutParams;
+
+
+    private List<CityBean> onLineSchools;
+
+    private CommonAdapter<CityBean> onLineAdapter;
+
 
     protected void initView() {
         setUnBinder(ButterKnife.bind(this));
@@ -139,7 +156,7 @@ public class ChooseSchoolActivity extends BaseActivity implements IChooseSchoolV
         search.post(() -> searchWidth = search.getWidth());
 
 //        cancle.post(() -> cancelWidth = cancle.getWidth());
-        cancelWidth = ScreenUtils.dpToPxInt(this ,50);
+        cancelWidth = ScreenUtils.dpToPxInt(this, 50);
         search.setCursorVisible(false);
         searchLayoutParams = (LinearLayout.LayoutParams) search.getLayoutParams();
         initSchoolRy();
@@ -159,6 +176,7 @@ public class ChooseSchoolActivity extends BaseActivity implements IChooseSchoolV
 
     private void initSchoolRy() {
         searchSchools = new ArrayList<>();
+        onLineSchools = new ArrayList<>();
         manager = new LinearLayoutManager(this);
         schoolRy.addItemDecoration(mDecoration = new SuspensionDecoration(this, cityBeans));
         mDecoration.setmDatas(cityBeans);
@@ -240,12 +258,33 @@ public class ChooseSchoolActivity extends BaseActivity implements IChooseSchoolV
             }
         });
         searchCy.setLayoutManager(new LinearLayoutManager(this));
-        schoolRy.setLayoutManager(manager);
+
+
+        onlineSchool.setAdapter(onLineAdapter = new CommonAdapter<CityBean>(this, R.layout.item_school_name, onLineSchools) {
+
+            @Override
+            protected void convert(ViewHolder holder, CityBean school, int position) {
+                holder.setText(R.id.school_name, school.getCity());
+                holder.getView(R.id.line).setVisibility(View.VISIBLE);
+//
+            }
+        });
+        onLineAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                presenter.updataSchool(onLineSchools.get(position).getId());
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
+        onlineSchool.setLayoutManager(new LinearLayoutManager(this));
 
 //        indexBar.setNeedRealIndex(true)//设置需要真实的索引
 //                .setmLayoutManager(manager)
 //                .setmSourceDatas(cityBeans);
-
 
     }
 
@@ -292,17 +331,17 @@ public class ChooseSchoolActivity extends BaseActivity implements IChooseSchoolV
         titleRight.setVisibility(View.GONE);
         searchCy.setVisibility(View.VISIBLE);
         schoolRy.setVisibility(View.GONE);
-        translte(searchWidth , searchWidth - cancelWidth);
+        translte(searchWidth, searchWidth - cancelWidth);
 
     }
 
 
-    private void translte(int startValue , int endValue){
-        translateAnimator =  ValueAnimator.ofInt(startValue , endValue);
+    private void translte(int startValue, int endValue) {
+        translateAnimator = ValueAnimator.ofInt(startValue, endValue);
         translateAnimator.addUpdateListener(animation -> {
 
-            int currentValue  = (int) animation.getAnimatedValue();
-            Log.wtf(TAG ,currentValue +"");
+            int currentValue = (int) animation.getAnimatedValue();
+            Log.wtf(TAG, currentValue + "");
             searchLayoutParams.width = currentValue;
             search.setLayoutParams(searchLayoutParams);
         });
@@ -311,10 +350,10 @@ public class ChooseSchoolActivity extends BaseActivity implements IChooseSchoolV
     }
 
     @OnClick(R.id.cancle)
-    public void cancelSearch(){
-        isClickSearch  =  false ;
+    public void cancelSearch() {
+        isClickSearch = false;
         hideSearcy();
-        SoftInputUtils.hideSoftInputFromWindow(this ,search);
+        SoftInputUtils.hideSoftInputFromWindow(this, search);
         search.setText("");
         search.setCursorVisible(false);
     }
@@ -323,7 +362,7 @@ public class ChooseSchoolActivity extends BaseActivity implements IChooseSchoolV
         titleRight.setVisibility(View.VISIBLE);
         searchCy.setVisibility(View.GONE);
         schoolRy.setVisibility(View.VISIBLE);
-        translte(searchWidth - cancelWidth , searchWidth);
+        translte(searchWidth - cancelWidth, searchWidth);
 //        cancle.setVisibility(View.GONE);
     }
 
@@ -374,9 +413,9 @@ public class ChooseSchoolActivity extends BaseActivity implements IChooseSchoolV
 //        showSearch();
         String text = search.getText().toString().trim();
         searchSchools.clear();
-        if ("".equals(text)){
+        if ("".equals(text)) {
 
-        }else {
+        } else {
             for (CityBean cityBean : cityBeans) {
                 if (cityBean.getCity().indexOf(text) != -1) {
                     searchSchools.add(cityBean);
@@ -386,13 +425,13 @@ public class ChooseSchoolActivity extends BaseActivity implements IChooseSchoolV
         searchAdapter.notifyDataSetChanged();
     }
 
-    boolean isClickSearch = false ;
+    boolean isClickSearch = false;
 
     @OnClick(R.id.search)
     public void search() {
         if (!isClickSearch)
-        showSearch();
-        isClickSearch = true ;
+            showSearch();
+        isClickSearch = true;
 
         search.setCursorVisible(true);
     }
@@ -459,6 +498,23 @@ public class ChooseSchoolActivity extends BaseActivity implements IChooseSchoolV
         this.finish();
     }
 
+    @Override
+    public void showOnLineSchool(List<School> schools) {
+        if (onLineSchools == null || onLineAdapter == null) return;
+        refreshLayout.setVisibility(View.VISIBLE);
+        school.setVisibility(View.GONE);
+        titleRight.setVisibility(View.GONE);
+        rightRl.setVisibility(View.GONE);
+        onlineSchool.setVisibility(View.VISIBLE);
+        onLineSchools.clear();
+        for (School school : schools) {
+            onLineSchools.add(new CityBean(school.getSchoolName(), school.getId()));
+        }
+
+        onLineAdapter.notifyDataSetChanged();
+
+    }
+
 
     /**
      * 根据传入的pos返回tag
@@ -479,5 +535,45 @@ public class ChooseSchoolActivity extends BaseActivity implements IChooseSchoolV
             }
         }
         return -1;
+    }
+
+
+    private int mTouchRepeat = 0;
+    private boolean mPoint2Down = false;
+    private boolean mThreePointDown = false;
+    long[] mHits = new long[4];
+    private boolean online = true;
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+
+        switch (ev.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                mPoint2Down = false;
+                mThreePointDown = false;
+                mTouchRepeat = 0;
+                break;
+            case MotionEvent.ACTION_MOVE:
+                mTouchRepeat++;
+                break;
+            case MotionEvent.ACTION_POINTER_2_DOWN:
+                mPoint2Down = true;
+                break;
+            case MotionEvent.ACTION_POINTER_3_DOWN:
+                mThreePointDown = true;
+                break;
+            case MotionEvent.ACTION_POINTER_UP:
+                if (mPoint2Down && mTouchRepeat < 10 && !mThreePointDown) {
+                    System.arraycopy(mHits, 1, mHits, 0, mHits.length - 1);
+                    mHits[mHits.length - 1] = SystemClock.uptimeMillis();
+                    if (mHits[0] >= (SystemClock.uptimeMillis() - 3000)) {
+                        online = !online;
+                        Arrays.fill(mHits, 0);
+                        presenter.getSchoolList(null, null, online);
+                    }
+                }
+                break;
+        }
+        return super.dispatchTouchEvent(ev);
     }
 }

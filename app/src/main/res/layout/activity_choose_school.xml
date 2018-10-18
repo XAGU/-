@@ -88,7 +88,6 @@
 </android.support.design.widget.AppBarLayout>
 
 
-
                 <com.scwang.smartrefresh.layout.SmartRefreshLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -105,7 +104,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginEnd="21dp"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:id="@+id/school"
+                        tool:visibility="gone">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -171,13 +172,24 @@
                             android:layout_height="match_parent"
                             android:layout_gravity="right"
                             android:paddingEnd="10dp"
-                            android:gravity="center">
+                            android:gravity="center"
+                            android:id="@+id/right_rl"
+                            tool:visibility="gone">
                         <android.support.v7.widget.RecyclerView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:id="@+id/title_right"/>
                         </RelativeLayout>
+
+                        <android.support.v7.widget.RecyclerView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/online_school"
+                            tool:visibility="visible"
+                            android:visibility="gone"/>
                     </FrameLayout>
                 </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+
 
 </android.support.design.widget.CoordinatorLayout>

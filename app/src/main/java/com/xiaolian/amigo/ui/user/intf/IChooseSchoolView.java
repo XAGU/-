@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.user.intf;
 
+import com.xiaolian.amigo.data.network.model.user.School;
 import com.xiaolian.amigo.data.network.model.user.SchoolNameListRespDTO;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 
@@ -11,4 +12,6 @@ public interface IChooseSchoolView  extends IBaseView{
     void setreferComplete();
 
     void backToProfile();
+
+    void showOnLineSchool(List<School> schools);
 }

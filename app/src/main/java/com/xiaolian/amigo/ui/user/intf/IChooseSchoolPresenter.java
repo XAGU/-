@@ -8,4 +8,12 @@ public interface IChooseSchoolPresenter<v extends IChooseSchoolView> extends IBa
 
 
     void updataSchool(Long id);
+
+    /**
+     * 获取学校列表
+     *
+     * @param page 页数
+     * @param size 每页个数
+     */
+    void getSchoolList(Integer page, Integer size, Boolean online);
 }
