@@ -250,6 +250,11 @@ dependencies {
 
     implementation 'com.github.promeg:tinypinyin:1.0.0' // ~80KB
 
+    implementation 'com.github.nanchen2251:CompressHelper:1.0.5'
+
+
+
+
 }
 
 configurations.all {

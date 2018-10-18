@@ -153,7 +153,6 @@ public interface IUserApi {
      * @param dto
      * @return
      */
-    @Multipart
     @POST("user/auth/certify")
 //    Observable<ApiResult<BooleanRespDTO>> certify(@Body UserAuthCertifyReqDTO dto);
     Observable<ApiResult<BooleanRespDTO>> certify(@Body RequestBody body);

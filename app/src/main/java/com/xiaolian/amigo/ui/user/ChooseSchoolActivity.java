@@ -1,9 +1,12 @@
 package com.xiaolian.amigo.ui.user;
 
+import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -22,9 +25,13 @@ import com.xiaolian.amigo.ui.base.BaseActivity;
 import com.xiaolian.amigo.ui.user.intf.IChooseSchoolPresenter;
 import com.xiaolian.amigo.ui.user.intf.IChooseSchoolView;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutHeader;
-import com.xiaolian.amigo.ui.widget.school.IndexBar.widget.IndexBar;
+import com.xiaolian.amigo.ui.widget.school.IndexBar.helper.IIndexBarDataHelper;
+import com.xiaolian.amigo.ui.widget.school.IndexBar.helper.IndexBarDataHelperImpl;
 import com.xiaolian.amigo.ui.widget.school.mode.CityBean;
 import com.xiaolian.amigo.ui.widget.school.suspension.SuspensionDecoration;
+import com.xiaolian.amigo.util.Log;
+import com.xiaolian.amigo.util.ScreenUtils;
+import com.xiaolian.amigo.util.SoftInputUtils;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -36,6 +43,8 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.OnTextChanged;
 import butterknife.Unbinder;
 
 /**
@@ -44,14 +53,15 @@ import butterknife.Unbinder;
  */
 public class ChooseSchoolActivity extends BaseActivity implements IChooseSchoolView {
 
+
     @Inject
     IChooseSchoolPresenter<IChooseSchoolView> presenter;
     @BindView(R.id.school_ry)
     RecyclerView schoolRy;
     @BindView(R.id.search)
     EditText search;
-    @BindView(R.id.indexBar)
-    IndexBar indexBar;
+    //    @BindView(R.id.indexBar)
+//    IndexBar indexBar;
     @BindView(R.id.smart_layout)
     SmartRefreshLayout refreshLayout;
     @BindView(R.id.app_bar_layout)
@@ -62,6 +72,12 @@ public class ChooseSchoolActivity extends BaseActivity implements IChooseSchoolV
     LinearLayout llHeader;
     @BindView(R.id.tv_title)
     TextView tvTitle;
+    @BindView(R.id.title_right)
+    RecyclerView titleRight;
+    @BindView(R.id.search_cy)
+    RecyclerView searchCy;
+    @BindView(R.id.cancle)
+    TextView cancle;
 
     private SuspensionDecoration mDecoration;
 
@@ -77,6 +93,28 @@ public class ChooseSchoolActivity extends BaseActivity implements IChooseSchoolV
 
 
     private UserActivityComponent mActivityComponent;
+
+    private CommonAdapter<String> titleRightAdapter;
+
+    private List<String> rightTitles;
+
+    private IIndexBarDataHelper mDataHelper;
+
+    private int lastSelectPosition = 0;
+
+    private CommonAdapter<CityBean> searchAdapter;
+
+    private List<CityBean> searchSchools;
+
+
+    private int searchWidth;
+
+    private int cancelWidth;
+
+
+    private ValueAnimator translateAnimator ;
+
+    private LinearLayout.LayoutParams  searchLayoutParams ;
 
     protected void initView() {
         setUnBinder(ButterKnife.bind(this));
@@ -96,6 +134,14 @@ public class ChooseSchoolActivity extends BaseActivity implements IChooseSchoolV
                 setTitleVisiable(View.GONE);
             }
         });
+        mDataHelper = new IndexBarDataHelperImpl();
+
+        search.post(() -> searchWidth = search.getWidth());
+
+//        cancle.post(() -> cancelWidth = cancle.getWidth());
+        cancelWidth = ScreenUtils.dpToPxInt(this ,50);
+        search.setCursorVisible(false);
+        searchLayoutParams = (LinearLayout.LayoutParams) search.getLayoutParams();
         initSchoolRy();
     }
 
@@ -112,20 +158,39 @@ public class ChooseSchoolActivity extends BaseActivity implements IChooseSchoolV
     }
 
     private void initSchoolRy() {
-
+        searchSchools = new ArrayList<>();
         manager = new LinearLayoutManager(this);
         schoolRy.addItemDecoration(mDecoration = new SuspensionDecoration(this, cityBeans));
-//        schoolRy.addItemDecoration(new SpaceItemDecoration(ScreenUtils.dpToPxInt(this, 17)));
         mDecoration.setmDatas(cityBeans);
         schoolRy.setAdapter(commonAdapter = new CommonAdapter<CityBean>(this, R.layout.item_school_name, cityBeans) {
 
             @Override
             protected void convert(ViewHolder holder, CityBean cityBean, int position) {
                 holder.setText(R.id.school_name, cityBean.getCity());
-                if (cityBean.getCity().length() == 1){
+                if (cityBean.getCity().length() == 1) {
                     holder.getView(R.id.line).setVisibility(View.GONE);
-                }else{
+                } else {
                     holder.getView(R.id.line).setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        schoolRy.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                int firstVisibleItem = linearLayoutManager.findFirstVisibleItemPosition();
+                String tag = mDataHelper.getIndexTag(cityBeans.get(firstVisibleItem));
+                try {
+                    int index = rightTitles.indexOf(tag);
+                    if (index != -1) {
+                        if (titleRightAdapter != null) {
+                            lastSelectPosition = index;
+                            titleRightAdapter.notifyDataSetChanged();
+                        }
+                    }
+                } catch (Exception e) {
+                    Log.wtf(TAG, e.getMessage());
                 }
             }
         });
@@ -141,10 +206,50 @@ public class ChooseSchoolActivity extends BaseActivity implements IChooseSchoolV
             }
         });
         schoolRy.setLayoutManager(manager);
-        indexBar.setNeedRealIndex(true)//设置需要真实的索引
-                .setmLayoutManager(manager)
-                .setmSourceDatas(cityBeans);
 
+
+        searchCy.setAdapter(searchAdapter = new CommonAdapter<CityBean>(this, R.layout.item_school_name, searchSchools) {
+
+            @Override
+            protected void convert(ViewHolder holder, CityBean school, int position) {
+                holder.setText(R.id.school_name, school.getCity());
+                holder.getView(R.id.line).setVisibility(View.VISIBLE);
+//
+            }
+        });
+        searchAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
+        searchCy.setLayoutManager(new LinearLayoutManager(this));
+        schoolRy.setLayoutManager(manager);
+
+//        indexBar.setNeedRealIndex(true)//设置需要真实的索引
+//                .setmLayoutManager(manager)
+//                .setmSourceDatas(cityBeans);
+
+
+    }
+
+    /**
+     * 将拿出的学校转成字母
+     */
+    private void covert() {
+
+        if (cityBeans == null || cityBeans.isEmpty()) {
+            return;
+        }
+
+        mDataHelper.convert(cityBeans);
+        mDataHelper.fillInexTag(cityBeans);
+        mDataHelper.getSortedIndexDatas(cityBeans, rightTitles);
 
     }
 
@@ -169,6 +274,109 @@ public class ChooseSchoolActivity extends BaseActivity implements IChooseSchoolV
         initInject();
         initView();
         initSmartRecyclerLayout();
+        initTitleRightRecyclerView();
+    }
+
+    private void showSearch() {
+        titleRight.setVisibility(View.GONE);
+        searchCy.setVisibility(View.VISIBLE);
+        schoolRy.setVisibility(View.GONE);
+        translte(searchWidth , searchWidth - cancelWidth);
+
+    }
+
+
+    private void translte(int startValue , int endValue){
+        translateAnimator =  ValueAnimator.ofInt(startValue , endValue);
+        translateAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                int currentValue  = (int) animation.getAnimatedValue();
+                searchLayoutParams.width = currentValue;
+                search.setLayoutParams(searchLayoutParams);
+            }
+        });
+        translateAnimator.setDuration(300);
+        translateAnimator.start();
+    }
+
+    @OnClick(R.id.cancle)
+    public void cancelSearch(){
+        hideSearcy();
+        SoftInputUtils.hideSoftInputFromWindow(this ,search);
+        search.setText("");
+    }
+
+
+
+
+    private void hideSearcy() {
+        titleRight.setVisibility(View.VISIBLE);
+        searchCy.setVisibility(View.GONE);
+        schoolRy.setVisibility(View.VISIBLE);
+        translte(searchWidth - cancelWidth , searchWidth);
+    }
+
+    private void initTitleRightRecyclerView() {
+        rightTitles = new ArrayList<>();
+        titleRight.setLayoutManager(new LinearLayoutManager(this));
+        titleRight.setAdapter(titleRightAdapter = new CommonAdapter<String>(this, R.layout.item_school_title, rightTitles) {
+
+            @Override
+            public long getItemId(int position) {
+                return position;
+            }
+
+            @Override
+            protected void convert(ViewHolder holder, String s, int position) {
+                TextView tv = holder.getView(R.id.school_title);
+                tv.setText(rightTitles.get(position));
+                if (position == lastSelectPosition) {
+                    tv.setTextColor(ChooseSchoolActivity.this.getResources().getColor(R.color.colorDark2));
+                    tv.setTextSize(14);
+                } else {
+                    tv.setTextColor(ChooseSchoolActivity.this.getResources().getColor(R.color.colorDarkB));
+                    tv.setTextSize(10);
+                }
+
+                holder.setText(R.id.school_title, rightTitles.get(position));
+                holder.setOnClickListener(R.id.school_title, v -> {
+                    titleRightAdapter.notifyDataSetChanged();
+                    lastSelectPosition = position;
+                    if (manager != null) {
+                        int selectPosition = getPosByTag(rightTitles.get(position));
+                        if (selectPosition != -1) {
+                            manager.scrollToPositionWithOffset(selectPosition, 0);
+                        }
+                    }
+                });
+            }
+        });
+        titleRight.setAnimation(null);
+        ((SimpleItemAnimator) titleRight.getItemAnimator()).setSupportsChangeAnimations(false);
+//        titleRightAdapter.setHasStableIds(true);
+    }
+
+
+    @OnTextChanged(R.id.search)
+    public void searchSchool() {
+        if (searchSchools == null || searchAdapter == null) return;
+        showSearch();
+        String text = search.getText().toString().trim();
+        searchSchools.clear();
+        for (CityBean cityBean : cityBeans) {
+            if (cityBean.getCity().indexOf(text) != -1) {
+                searchSchools.add(cityBean);
+            }
+        }
+        searchAdapter.notifyDataSetChanged();
+    }
+
+
+    @OnClick(R.id.search)
+    public void search() {
+        showSearch();
+        search.setCursorVisible(true);
     }
 
 
@@ -200,10 +408,9 @@ public class ChooseSchoolActivity extends BaseActivity implements IChooseSchoolV
     }
 
 
-
     @Override
     public void referSchoolList(List<SchoolNameListRespDTO.SchoolNameListBean> schoolNameList) {
-        if (indexBar == null || commonAdapter == null) return;
+//        if (indexBar == null || commonAdapter == null) return;
         if (schoolNameList == null || schoolNameList.size() == 0 || cityBeans == null) return;
 
         if (cityBeans.size() > 0) cityBeans.clear();
@@ -214,14 +421,40 @@ public class ChooseSchoolActivity extends BaseActivity implements IChooseSchoolV
                 cityBeans.add(new CityBean(schoolListBean.getSchoolName(), schoolListBean.getId()));
             }
         }
-        indexBar.setmSourceDatas(cityBeans)
-                .invalidate();
+//        indexBar.setmSourceDatas(cityBeans)
+//                .invalidate();
         commonAdapter.notifyDataSetChanged();
+
+        covert();
+
+        titleRightAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void setreferComplete() {
         if (refreshLayout != null)
-        refreshLayout.finishRefresh();
+            refreshLayout.finishRefresh();
+    }
+
+
+    /**
+     * 根据传入的pos返回tag
+     *
+     * @param tag
+     * @return
+     */
+    private int getPosByTag(String tag) {
+        if (null == cityBeans || cityBeans.isEmpty()) {
+            return -1;
+        }
+        if (TextUtils.isEmpty(tag)) {
+            return -1;
+        }
+        for (int i = 0; i < cityBeans.size(); i++) {
+            if (tag.equals(cityBeans.get(i).getBaseIndexTag())) {
+                return i;
+            }
+        }
+        return -1;
     }
 }

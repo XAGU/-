@@ -27,7 +27,7 @@ import javax.inject.Inject;
  * @author zcd
  * @date 17/9/15
  */
-public class SharedPreferencesHelp implements ISharedPreferencesHelp {
+public class    SharedPreferencesHelp implements ISharedPreferencesHelp {
     private static final String PREF_FILE_NAME = "amigo";
     private static final String PREF_KEY_TOKEN = "PREF_KEY_TOKEN";
     private static final String PREF_DEVICE_TOKEN_PREFIX = "PREF_DEVICE_TOKEN_";
@@ -279,27 +279,27 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
                     user.getSex()).apply();
         }
 
-        if (null != user.getDepartment()) {
+        if (!TextUtils.isEmpty(user.getDepartment())) {
             mSharedPreferences.edit().putString(PREF_KEY_DEPARTMENT, user.getDepartment()).apply();
         }
 
-        if (null != user.getProfession()) {
+        if (!TextUtils.isEmpty(user.getProfession())) {
             mSharedPreferences.edit().putString(PREF_KEY_PROFESSION, user.getProfession()).apply();
         }
 
-        if (null != user.getGrade()) {
+        if (!TextUtils.isEmpty(user.getGrade())) {
             mSharedPreferences.edit().putString(PREF_KEY_GRADE, user.getGrade()).apply();
         }
 
-        if (null != user.getCalsses()) {
+        if (!TextUtils.isEmpty(user.getCalsses())) {
             mSharedPreferences.edit().putString(PREF_KEY_CALSS, user.getCalsses()).apply();
         }
 
-        if (null != user.getStudentId()) {
+        if (!TextUtils.isEmpty(user.getStudentId())) {
             mSharedPreferences.edit().putString(PREF_KEY_STUDENT_ID, user.getStudentId()).apply();
         }
 
-        if (null != user.getDormitory()) {
+        if (!TextUtils.isEmpty(user.getDormitory())) {
             mSharedPreferences.edit().putString(PREF_KEY_DORMITORY, user.getDormitory()).apply();
         }
 
@@ -737,7 +737,7 @@ public class SharedPreferencesHelp implements ISharedPreferencesHelp {
             if (userHolder.getNickName() != null
                     && userHolder.getSchoolName() != null
                     && userHolder.getMobile() != null
-                    && userHolder.getDormitory() != null) {
+                    && !TextUtils.isEmpty(userHolder.getDormitory())) {
                 return false;
             }
         }

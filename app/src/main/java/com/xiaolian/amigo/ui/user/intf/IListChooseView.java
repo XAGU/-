@@ -99,4 +99,5 @@ public interface IListChooseView extends IBaseView {
     void startShower(String residenceName ,String macAddress , long supplierId );
 
 
+    void backToUserCertification(String residenceName);
 }

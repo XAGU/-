@@ -14,19 +14,19 @@ public class UserCertifyInfoRespDTO {
          * major : string
          * status : 0
          * stuNum : 0
-         * stuPictureUrls : ["string"]
+         * stuPictureU : ["string"]
          */
 
         private String className;
         private String faculty;
         private String failReason;
         private int grade;
-        private String idCardBehind;
-        private String idCardFront;
+        private String idCardBehindData;
+        private String idCardFrontData;
         private String major;
         private int status;
         private int stuNum;
-        private java.util.List<String> stuPictureUrls;
+        private java.util.List<String> stuPicturesData;
 
         public String getClassName() {
             return className;
@@ -61,20 +61,9 @@ public class UserCertifyInfoRespDTO {
         }
 
         public String getIdCardBehind() {
-            return idCardBehind;
+            return idCardBehindData;
         }
 
-        public void setIdCardBehind(String idCardBehind) {
-            this.idCardBehind = idCardBehind;
-        }
-
-        public String getIdCardFront() {
-            return idCardFront;
-        }
-
-        public void setIdCardFront(String idCardFront) {
-            this.idCardFront = idCardFront;
-        }
 
         public String getMajor() {
             return major;
@@ -100,11 +89,27 @@ public class UserCertifyInfoRespDTO {
             this.stuNum = stuNum;
         }
 
-        public List<String> getStuPictureUrls() {
-            return stuPictureUrls;
-        }
-
-        public void setStuPictureUrls(List<String> stuPictureUrls) {
-            this.stuPictureUrls = stuPictureUrls;
-        }
+    public String getIdCardBehindData() {
+        return idCardBehindData;
     }
+
+    public void setIdCardBehindData(String idCardBehindData) {
+        this.idCardBehindData = idCardBehindData;
+    }
+
+    public String getIdCardFrontData() {
+        return idCardFrontData;
+    }
+
+    public void setIdCardFrontData(String idCardFrontData) {
+        this.idCardFrontData = idCardFrontData;
+    }
+
+    public List<String> getStuPicturesData() {
+        return stuPicturesData;
+    }
+
+    public void setStuPicturesData(List<String> stuPicturesData) {
+        this.stuPicturesData = stuPicturesData;
+    }
+}

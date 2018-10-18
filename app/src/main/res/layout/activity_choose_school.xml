@@ -93,7 +93,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="21dp"
-                    android:layout_marginEnd="21dp"
                     app:srlHeaderHeight="40dp"
                     app:srlFooterHeight="0dp"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -105,9 +104,13 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_marginEnd="21dp"
                         android:orientation="vertical">
 
-
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
                         <EditText
                             android:layout_width="match_parent"
                             android:layout_height="29dp"
@@ -124,23 +127,55 @@
                             android:background="@drawable/bg_search"/>
 
 
-                    <android.support.v7.widget.RecyclerView
-                        android:layout_marginTop="21dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scrollbars="none"
-                        android:overScrollMode="never"
-                        android:id="@+id/school_ry"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/cancle"
+                                android:text="取消"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginEnd="10dp"
+                                android:maxLines="1"
+                                android:layout_centerVertical="true"/>
+                        </LinearLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+                            <android.support.v7.widget.RecyclerView
+                                 android:layout_width="match_parent"
+                                 android:layout_height="match_parent"
+                                 android:scrollbars="none"
+                                 android:overScrollMode="never"
+                                 android:id="@+id/school_ry"/>
+
+                            <android.support.v7.widget.RecyclerView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:id="@+id/search_cy" />
+
+                        </RelativeLayout>
 
                     </LinearLayout>
-                        <com.xiaolian.amigo.ui.widget.school.IndexBar.widget.IndexBar
-                            android:id="@+id/indexBar"
-                            android:layout_width="20dp"
+                        <!--<com.xiaolian.amigo.ui.widget.school.IndexBar.widget.IndexBar-->
+                            <!--android:id="@+id/indexBar"-->
+                            <!--android:layout_width="30dp"-->
+                            <!--android:layout_height="match_parent"-->
+                            <!--app:indexBarPressBackground="@color/white"-->
+                            <!--app:indexBarTextSize="8sp"-->
+                            <!--android:layout_gravity="center_horizontal"-->
+                            <!--android:visibility="gone"-->
+                            <!--/>-->
+                        <RelativeLayout
+                            android:layout_width="30dp"
                             android:layout_height="match_parent"
-                            app:indexBarPressBackground="@color/white"
-                            app:indexBarTextSize="8sp"
-                            android:layout_gravity="end"
-                            />
+                            android:layout_gravity="right"
+                            android:paddingEnd="10dp"
+                            android:gravity="center">
+                        <android.support.v7.widget.RecyclerView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/title_right"/>
+                        </RelativeLayout>
                     </FrameLayout>
                 </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 

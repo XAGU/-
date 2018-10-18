@@ -1,6 +1,8 @@
 package com.xiaolian.amigo.ui.repair.adaptor;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -13,6 +15,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.GildeUtils;
+import com.xiaolian.amigo.util.Log;
 import com.xiaolian.amigo.util.ScreenUtils;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -31,6 +34,8 @@ import lombok.Data;
 
 public class ImageAddAdapter extends CommonAdapter<ImageAddAdapter.ImageItem> {
     private static final int DEFAULT_RES = R.drawable.image_add;
+
+    private static final String TAG = ImageAddAdapter.class.getSimpleName();
     private Context context;
     private int imageSize;
     private int viewWidth ;
@@ -55,8 +60,6 @@ public class ImageAddAdapter extends CommonAdapter<ImageAddAdapter.ImageItem> {
         notifyDataSetChanged();
     }
 
-
-
     @Override
     protected void convert(ViewHolder holder, ImageItem imageItem, int position) {
         if (viewWidth != 0){
@@ -68,7 +71,8 @@ public class ImageAddAdapter extends CommonAdapter<ImageAddAdapter.ImageItem> {
                 imageView.setLayoutParams(params);
             }
         }
-        if (TextUtils.isEmpty(imageItem.getImageUrl())) {
+        if (TextUtils.isEmpty(imageItem.getImageUrl()) && (imageItem.getImageBase64Byte() == null
+                  || imageItem.getImageBase64Byte().length == 0)) {
             ((ImageView) holder.getView(R.id.iv_image)).setImageDrawable(null);
             ((ImageView) holder.getView(R.id.iv_image)).setScaleType(ImageView.ScaleType.CENTER_INSIDE);
             holder.setImageResource(R.id.iv_image, DEFAULT_RES);
@@ -77,10 +81,27 @@ public class ImageAddAdapter extends CommonAdapter<ImageAddAdapter.ImageItem> {
                 GildeUtils.setImage(context ,((ImageView)holder.getView(R.id.iv_image)) ,imageItem.getImageUrl());
                 ((ImageView) holder.getView(R.id.iv_image)).setScaleType(ImageView.ScaleType.CENTER_CROP);
             }else {
-                Glide.with(context).load(imageItem.getImageUrl())
-                        .asBitmap()
-                        .into((ImageView) holder.getView(R.id.iv_image));
-                ((ImageView) holder.getView(R.id.iv_image)).setScaleType(ImageView.ScaleType.CENTER_CROP);
+                if (!TextUtils.isEmpty(imageItem.getImageUrl())) {
+                    Glide.with(context).load(imageItem.getImageUrl())
+                            .asBitmap()
+                            .into((ImageView) holder.getView(R.id.iv_image));
+                    ((ImageView) holder.getView(R.id.iv_image)).setScaleType(ImageView.ScaleType.CENTER_CROP);
+                }
+
+                if (imageItem.getImageBase64Byte() != null && imageItem.getImageBase64Byte().length > 0){
+                    Glide.with(context).load(generateImage(imageItem.getImageBase64Byte()))
+                            .asBitmap()
+                            .into((ImageView) holder.getView(R.id.iv_image));
+                    ((ImageView) holder.getView(R.id.iv_image)).setScaleType(ImageView.ScaleType.CENTER_CROP);
+//                    try{
+//                      Bitmap  bitmap = BitmapFactory.decodeByteArray(generateImage(imageItem.getImageBase64Byte()), 0, imageItem.getImageBase64Byte().length);
+//                        ((ImageView) holder.getView(R.id.iv_image)).setScaleType(ImageView.ScaleType.CENTER_CROP);
+//                        holder.setImageBitmap(R.id.iv_image ,bitmap);
+//                    }catch (Exception e){
+//                        Log.wtf(TAG ,e.getMessage());
+//                    }
+
+                }
             }
         }
     }
@@ -89,11 +110,40 @@ public class ImageAddAdapter extends CommonAdapter<ImageAddAdapter.ImageItem> {
     public static class ImageItem {
         private String imageUrl;
 
+        private byte[] imageBase64Byte ;
+
+
+        public ImageItem(byte[] imageBase64Byte){
+            this.imageBase64Byte = imageBase64Byte ;
+        }
+
         public ImageItem() {
         }
 
         public ImageItem(String imageUrl) {
             this.imageUrl = imageUrl;
+        }
+    }
+
+
+    //base64字符串转化成图片
+    public  byte[] generateImage(byte[] b)
+    {
+        try
+        {
+            for(int i=0;i<b.length;++i)
+            {
+                if(b[i]<0)
+                {//调整异常数据
+                    b[i]+=256;
+                }
+            }
+
+            return b ;
+        }
+        catch (Exception e)
+        {
+            return b;
         }
     }
 }

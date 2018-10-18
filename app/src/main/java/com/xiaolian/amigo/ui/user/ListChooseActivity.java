@@ -259,7 +259,7 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                         Long parentId = getIntent().getLongExtra(INTENT_KEY_LIST_CHOOSE_PARENT_ID, -1);
                         if (parentId != -1) {
                             // page size 为null 加载全部
-                            if (Constant.USER_INFO_ACTIVITY_SRC.equals(activitySrc)) {
+                            if (Constant.USER_INFO_ACTIVITY_SRC.equals(activitySrc) || Constant.USER_CERTIFICATION_STATUS_ACTIVITY_SRC.equalsIgnoreCase(activitySrc)) {
                                 presenter.getFloorList(null, null, deviceType, parentId);
                             }else{
                                 presenter.getBathFloorList(null , null , deviceType , parentId);
@@ -293,7 +293,8 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                         deviceType = getIntent().getIntExtra(INTENT_KEY_LIST_DEVICE_TYPE, Device.UNKNOWN.getType());
                         activitySrc = getIntent().getStringExtra(INTENT_KEY_LIST_SRC_ACTIVITY);
                         residenceDetail = (UserResidenceDTO) getIntent().getSerializableExtra(INTENT_KEY_LIST_RESIDENCE_DETAIL);
-                        if (TextUtils.equals(activitySrc, Constant.USER_INFO_ACTIVITY_SRC) || TextUtils.equals(activitySrc, Constant.COMPLETE_INFO_ACTIVITY_SRC)){
+                        if (TextUtils.equals(activitySrc, Constant.USER_INFO_ACTIVITY_SRC) || TextUtils.equals(activitySrc, Constant.COMPLETE_INFO_ACTIVITY_SRC)
+                                || TextUtils.equals(activitySrc ,Constant.USER_CERTIFICATION_STATUS_ACTIVITY_SRC)){
                                 tvTitle.setText("选择宿舍");
                             adapter = new ListChooseAdaptor(items, false);
                         }else {
@@ -316,7 +317,7 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                                 presenter.getDormitoryList(null, null, deviceType, parentId, false);
                             } else if (TextUtils.equals(activitySrc, Constant.MAIN_ACTIVITY_SRC)) {
                                 presenter.getDormitoryList(null, null, deviceType, parentId, false);
-                            } else if (TextUtils.equals(activitySrc ,Constant.USER_INFO_ACTIVITY_SRC)){
+                            } else if (TextUtils.equals(activitySrc ,Constant.USER_INFO_ACTIVITY_SRC) || TextUtils.equals(activitySrc ,Constant.USER_CERTIFICATION_STATUS_ACTIVITY_SRC)){
                                 presenter.getDormitoryList(null, null, deviceType, parentId, false);
                             } else if (TextUtils.equals(activitySrc ,Constant.COMPLETE_INFO_ACTIVITY_SRC)) {
                                 presenter.getDormitoryList(null, null, deviceType, parentId, false);
@@ -359,7 +360,8 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                                     presenter.recordBath(items.get(position).getId(), bathType, null , items.get(position).getMac());
                                 } else if (Constant.HEATER_TO_BATHROOM.equals(activitySrc)) {
                                     presenter.recordBath(items.get(position).getId(), bathType, null , items.get(position).getMac());
-                                } else {
+                                } else if (Constant.USER_CERTIFICATION_STATUS_ACTIVITY_SRC.equals(activitySrc)){
+                                    presenter.updateUser(items.get(position).getId(), activitySrc);
 //                                presenter.bindDormitory(residenceBindId, items.get(position).getId(), isEditDormitory);
                                 }
                             }
@@ -577,6 +579,11 @@ public class ListChooseActivity extends BaseActivity implements IListChooseView 
                 .putExtra(INTENT_KEY_MAC_ADDRESS ,macAddress)
                 .putExtra(INTENT_KEY_SUPPLIER_ID , supplierId));
         this.finish();
+    }
+
+    @Override
+    public void backToUserCertification(String residenceName) {
+        startActivity(this ,UserCertificationStatusActivity.class);
     }
 
     @Override

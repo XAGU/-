@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.nanchen.compresshelper.CompressHelper;
 import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
@@ -33,8 +34,10 @@ import com.xiaolian.amigo.ui.user.intf.IUserCertificationView;
 import com.xiaolian.amigo.ui.widget.GridSpacesItemDecoration;
 import com.xiaolian.amigo.ui.widget.dialog.ActionSheetDialog;
 import com.xiaolian.amigo.ui.widget.photoview.AlbumItemActivity;
+import com.xiaolian.amigo.util.FileUtils;
 import com.xiaolian.amigo.util.GildeUtils;
 import com.xiaolian.amigo.util.Log;
+import com.xiaolian.amigo.util.PictureUtil;
 import com.xiaolian.amigo.util.ScreenUtils;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
@@ -444,14 +447,17 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
         allValidated = (!TextUtils.isEmpty(tvDepartment.getText()) && !TextUtils.isEmpty(tvProfession.getText()) &&
                 !TextUtils.isEmpty(tvGrade.getText()) && !TextUtils.isEmpty(tvClass.getText()) && !TextUtils.isEmpty(tvStudentId.getText())
                 && !TextUtils.isEmpty(tvDormitory.getText())
-                && !TextUtils.isEmpty(ivBackUrl) && !TextUtils.isEmpty(ivFrontUrl) && urls.size() > 0);
+                && !TextUtils.isEmpty(ivBackPath) && !TextUtils.isEmpty(ivFrontPath) && images.size() > 0);
         certify.setBackgroundResource(allValidated ?
                 R.drawable.button_enable : R.drawable.button_disable);
     }
 
+    File ivCompressFileBackFile  ,ivCompressFileFrontFile ;
+
+    List<File> compressImageFile ;
+
     @OnClick(R.id.certify)
     public void certify() {
-
         Integer stuNum = 0;
         try {
             grade = Integer.parseInt(tvGrade.getText().toString());
@@ -461,15 +467,26 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
         }
         ivBackFile = getFile(ivBackPath);
         ivFrontFile = getFile(ivFrontPath);
+
+        ivCompressFileBackFile = CompressHelper.getDefault(this).compressToFile(ivBackFile);
+
+        ivCompressFileFrontFile = CompressHelper.getDefault(this).compressToFile(ivFrontFile);
+
         if (imageFile == null ) imageFile = new ArrayList<>();
 
+        if (compressImageFile == null) compressImageFile = new ArrayList<>();
+
         if (imageFile.size() > 0) imageFile.clear();
+
+        if (compressImageFile.size() > 0) compressImageFile.clear();
         for (String imagePath : images){
             imageFile.add(getFile(imagePath));
+            compressImageFile.add(CompressHelper.getDefault(this).compressToFile(getFile(imagePath)));
         }
 
+
         presenter.certify(tvClass.getText().toString(), tvDepartment.getText().toString(),
-                grade, ivBackFile, ivFrontFile, tvProfession.getText().toString(), stuNum, imageFile);
+                grade, ivCompressFileBackFile, ivCompressFileFrontFile, tvProfession.getText().toString(), stuNum, compressImageFile);
     }
 
     private File getFile(String filePath){

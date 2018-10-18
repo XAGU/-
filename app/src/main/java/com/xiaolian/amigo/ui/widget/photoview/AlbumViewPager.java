@@ -64,13 +64,29 @@ public class AlbumViewPager extends ViewPager {
     public class ViewPagerAdapter extends PagerAdapter {
         private List<String> paths;//大图地址 如果为网络图片 则为大图url
 
+        private List<byte[]> bytes ;
+
+        private boolean isBase64 ;
+
         public ViewPagerAdapter(List<String> paths) {
             this.paths = paths;
         }
 
+        public ViewPagerAdapter(List<byte[]> bytes , boolean isBase64){
+            this.bytes = bytes ;
+            this.isBase64 = isBase64 ;
+        }
+
         @Override
         public int getCount() {
-            return paths.size();
+            if (paths != null && paths.size() > 0) {
+                return paths.size();
+            }else if (bytes != null && bytes.size() > 0){
+
+              return bytes.size();
+            }else{
+                return 0 ;
+            }
         }
 
         @Override
@@ -90,12 +106,29 @@ public class AlbumViewPager extends ViewPager {
                 }
             });
             final TextView mTvProgress = (TextView) imageLayout.findViewById(R.id.album_textview_progress);
-            String path = paths.get(position);
-            loading.setTag(path);
-            imageLayout.setTag(path);
-            Log.d(TAG , path +"");
+            String path ;
+            byte[] b ;
+            if (paths != null && paths.size() > 0) {
+                 path = paths.get(position);
+                loading.setTag(path);
+                imageLayout.setTag(path);
+                Log.d(TAG , path +"");
+                ImageHelper.displayImage(getContext(), new CustomImageSizeModelImp(path), imageView, loading);
+            }else if (bytes != null && bytes.size() > 0){
+                b = bytes.get(position);
+                loading.setTag(position);
+                imageLayout.setTag(position);
+                ImageHelper.displayImage(getContext() ,b ,imageView ,loading);
+            }
+
+
+
 //            ImageHelper.loadAlbum(getContext(), imageView, path);
-            ImageHelper.displayImage(getContext() ,new CustomImageSizeModelImp(path) ,imageView ,loading);
+//            if (!isBase64) {
+//
+//            }else{
+//
+//            }
             /*mTvProgress.setText(FileUtils.FormetFileSize(current)+
 					"/"+
 					FileUtils.FormetFileSize(total)+

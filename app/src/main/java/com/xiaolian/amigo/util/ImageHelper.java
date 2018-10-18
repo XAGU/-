@@ -101,4 +101,13 @@ public class ImageHelper {
 }
 
 
+    public static void displayImage(Context context, byte[] bytes, final ImageView imageView, final View loading) {
+        loading.setVisibility(View.GONE);
+        Glide.with(context)
+                .load(bytes)
+                .asBitmap()
+                .into(imageView);
+    }
+
+
 }

@@ -265,7 +265,8 @@
     <RelativeLayout
         android:id="@+id/rel_edit_room"
         android:onClick="onclick"
-        style="@style/ListItemRel">
+        style="@style/ListItemRel"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/text_room"

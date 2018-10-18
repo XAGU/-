@@ -135,6 +135,7 @@ public final class Constant {
     public static final String EDIT_PROFILE_ACTIVITY_SRC = "edit_profile";
     public static final String MAIN_ACTIVITY_SRC = "main_activity";
     public static final String USER_INFO_ACTIVITY_SRC = "user_info";
+    public static final String USER_CERTIFICATION_STATUS_ACTIVITY_SRC = "user_certification_status";  // 用户认证
     public static final String COMPLETE_INFO_ACTIVITY_SRC = "complete_info"; //新增编辑个人信息方式
     public static final String MAIN_ACTIVITY_BATHROOM_SRC = "main_activity_bathroom_src";  //  公共浴室方式
     public static final String ADD_BATHROOM_SRC = "add_bathroom_src" ;  //  新增公共浴室
@@ -356,8 +357,8 @@ public final class Constant {
 
     public static final int CERTIFICATION_REVIEWING = 1 ;  // 审核中
 
-    public static final int CERTIFICATION_PASS = 2  ;  // 认证通过
+    public static final int CERTIFICATION_PASS = 3  ;  // 认证通过
 
-    public static final int CERTIFICATION_FAILURE = 3  ;  //认证失败
+    public static final int CERTIFICATION_FAILURE = 2  ;  //认证失败
 
 }

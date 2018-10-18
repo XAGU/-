@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.widget.school.IndexBar.helper;
 
 
+import com.xiaolian.amigo.ui.widget.school.IndexBar.bean.BaseIndexBean;
 import com.xiaolian.amigo.ui.widget.school.IndexBar.bean.BaseIndexPinyinBean;
 
 import java.util.List;
@@ -29,4 +30,7 @@ public interface IIndexBarDataHelper {
 
     //对IndexBar的数据源进行排序(右侧栏),在 sortSourceDatas 方法后调用
     IIndexBarDataHelper getSortedIndexDatas(List<? extends BaseIndexPinyinBean> sourceDatas, List<String> datas);
+
+
+    String getIndexTag(BaseIndexPinyinBean data);
 }

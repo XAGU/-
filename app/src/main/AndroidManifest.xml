@@ -668,6 +668,7 @@
         <!--学生认证状态-->
         <activity android:name=".ui.user.UserCertificationStatusActivity"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 

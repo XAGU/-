@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.widget.school.IndexBar.helper;
 
 import com.github.promeg.pinyinhelper.Pinyin;
+import com.xiaolian.amigo.ui.widget.school.IndexBar.bean.BaseIndexBean;
 import com.xiaolian.amigo.ui.widget.school.IndexBar.bean.BaseIndexPinyinBean;
 
 import java.util.Collections;
@@ -81,6 +82,8 @@ public class IndexBarDataHelperImpl implements IIndexBarDataHelper {
         return this;
     }
 
+
+
     @Override
     public IIndexBarDataHelper sortSourceDatas(List<? extends BaseIndexPinyinBean> datas) {
         if (null == datas || datas.isEmpty()) {
@@ -123,5 +126,13 @@ public class IndexBarDataHelperImpl implements IIndexBarDataHelper {
             }
         }
         return this;
+    }
+
+
+    @Override
+    public String getIndexTag(BaseIndexPinyinBean data) {
+
+        String tag = data.getBaseIndexPinyin().toString().substring(0  ,1);
+        return tag ;
     }
 }

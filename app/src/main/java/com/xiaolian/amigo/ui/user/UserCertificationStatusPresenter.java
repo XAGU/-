@@ -8,6 +8,8 @@ import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.user.intf.IUserCerticifationStatusPresenter;
 import com.xiaolian.amigo.ui.user.intf.IUserCertificationStatusView;
 
+import java.util.Base64;
+
 import javax.inject.Inject;
 
 public class UserCertificationStatusPresenter<v extends IUserCertificationStatusView> extends BasePresenter<v>
@@ -37,7 +39,10 @@ public class UserCertificationStatusPresenter<v extends IUserCertificationStatus
                 }
             }
         });
+
+
     }
+
 
     @Override
     public void  getDormitory() {

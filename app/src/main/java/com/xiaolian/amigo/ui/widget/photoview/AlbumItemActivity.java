@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -45,6 +46,8 @@ public class AlbumItemActivity extends AppCompatActivity implements View.OnClick
      * <b>String("url,url,url")</b><br/>
      */
     public static final String EXTRA_TYPE_SEPARATOR = "Separator";
+
+    public static final String EXTRA_TYPE_BASE64 = "base64";
     /**
      * 当前位置
      */
@@ -78,6 +81,12 @@ public class AlbumItemActivity extends AppCompatActivity implements View.OnClick
      * 图片地址
      */
     private List<String> mPaths = new ArrayList<String>();
+
+
+    private List<byte[]> bytes  = new ArrayList<>();
+
+
+    private List<String> base64Bytes = new ArrayList<>();
 
     private List<String> deletePaths;
     private int position;
@@ -165,6 +174,17 @@ public class AlbumItemActivity extends AppCompatActivity implements View.OnClick
                 }
                 return;
             }
+
+            List<String> stringBytes = getIntent().getStringArrayListExtra(EXTRA_TYPE_BASE64);
+            if (bytes != null && stringBytes != null && stringBytes.size() > 0){
+                bytes.clear();
+
+                for (String url : stringBytes){
+                    bytes.add(Base64.decode(url ,Base64.DEFAULT));
+                }
+
+            }
+
             String pathSeparator = getIntent().getStringExtra(EXTRA_TYPE_SEPARATOR);
             if (pathSeparator != null) {
                 String urls[] = pathSeparator.split(",");
@@ -173,7 +193,6 @@ public class AlbumItemActivity extends AppCompatActivity implements View.OnClick
                 }
                 return;
             }
-
 
         } catch (Exception e) {
 
@@ -187,13 +206,24 @@ public class AlbumItemActivity extends AppCompatActivity implements View.OnClick
      *
      */
     public void loadAlbum() {
-        if (mPaths == null || mPaths.size() == 0) {
+        if ((mPaths == null || mPaths.size() == 0) && (bytes == null || bytes.size() == 0) ) {
             return;
         }
-        mViewPager.setAdapter(mViewPager.new ViewPagerAdapter(mPaths));
+
+        if (bytes != null && bytes.size() > 0){
+            mViewPager.setAdapter(mViewPager.new ViewPagerAdapter(bytes , true));
+        }else {
+            mViewPager.setAdapter(mViewPager.new ViewPagerAdapter(mPaths));
+        }
         mViewPager.addOnPageChangeListener(pageChangeListener);
         mViewPager.setCurrentItem(mCurrent);
-        mCountView.setText((mCurrent + 1) + "/" + mPaths.size());
+        if (mPaths != null && mPaths.size() > 0) {
+            mCountView.setText((mCurrent + 1) + "/" + mPaths.size());
+        }else if (bytes != null && bytes.size() > 0){
+            mCountView.setText((mCurrent + 1) + "/" + bytes.size());
+        }else{
+            mCountView.setText((mCurrent + 1) + "/" +1);
+        }
     }
 
 

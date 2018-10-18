@@ -128,7 +128,7 @@ public class UserCertificationPresenter <v extends IUserCertificationView> exten
     @Override
     public void certify(String className, String faculty, Integer grade, File idCardBehind, File idCardFront, String major, Integer stuNum, List<File> stuPictureUrls) {
         UserAuthCertifyReqDTO userAuthCertifyReqDTO = new UserAuthCertifyReqDTO();
-//
+
 //        userAuthCertifyReqDTO.setClassName(className);
 //        userAuthCertifyReqDTO.setFaculty(faculty);
 //        userAuthCertifyReqDTO.setGrade(grade);
@@ -148,12 +148,12 @@ public class UserCertificationPresenter <v extends IUserCertificationView> exten
                 .addFormDataPart("grade" ,grade+"")
                 .addFormDataPart("major" , major)
                 .addFormDataPart("stuNum" , stuNum+"")
-                .addFormDataPart("idCardBehind" ,idCardBehind.getName() ,RequestBody.create(MediaType.parse("image/*") , idCardBehind))
-                .addFormDataPart("idCardFront" ,idCardFront.getName() , RequestBody.create(MediaType.parse("image/*") ,idCardFront));
+                .addFormDataPart("idCardBehindPicture" ,idCardBehind.getName() ,RequestBody.create(MediaType.parse("image/*") , idCardBehind))
+                .addFormDataPart("idCardFrontPicture" ,idCardFront.getName() , RequestBody.create(MediaType.parse("image/*") ,idCardFront));
 
         for (File file : stuPictureUrls){
             if (file.exists())
-                builder.addFormDataPart("stuPictureUrls",file.getName() ,RequestBody.create(MediaType.parse("image/*") ,file));
+                builder.addFormDataPart("stuPictures",file.getName() ,RequestBody.create(MediaType.parse("image/*") ,file));
         }
         requestBody = builder.build();
 

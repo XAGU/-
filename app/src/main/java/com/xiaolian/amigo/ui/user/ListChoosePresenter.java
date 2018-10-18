@@ -250,6 +250,7 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
                     getMvpView().onSuccess(R.string.add_dormitory_success);
                     User user = userDataManager.getUser();
                     user.setResidenceName(result.getData().getResidenceName());
+                    user.setDormitory(result.getData().getResidenceName());
                     user.setResidenceId(result.getData().getResidenceId());
                     userDataManager.setUser(user);
                     if (TextUtils.equals(activitySrc, Constant.EDIT_PROFILE_ACTIVITY_SRC)) {
@@ -288,6 +289,8 @@ public class ListChoosePresenter<V extends IListChooseView> extends BasePresente
                         getMvpView().backToCompeteInfoActivity(entireUserDTO.getResidenceName());
                     } else if (Constant.USER_INFO_ACTIVITY_SRC.equals(activitySrc)) /*跳转到编辑个人信息页面*/{
                         getMvpView().backToEditProfileActivity(entireUserDTO.getResidenceName());
+                    }else if (Constant.USER_CERTIFICATION_STATUS_ACTIVITY_SRC.equals(activitySrc)){
+                        getMvpView().backToUserCertification(entireUserDTO.getResidenceName());
                     }
                 }else{
                     getMvpView().onError(result.getError().getDisplayMessage());
