@@ -174,6 +174,17 @@ public class ChooseSchoolActivity extends BaseActivity implements IChooseSchoolV
                 }
             }
         });
+        commonAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                presenter.updataSchool(cityBeans.get(position).getId());
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
         schoolRy.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -197,7 +208,7 @@ public class ChooseSchoolActivity extends BaseActivity implements IChooseSchoolV
         commonAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-
+                presenter.updataSchool(cityBeans.get(position).getId());
             }
 
             @Override
@@ -220,7 +231,7 @@ public class ChooseSchoolActivity extends BaseActivity implements IChooseSchoolV
         searchAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-
+                presenter.updataSchool(searchSchools.get(position).getId());
             }
 
             @Override
@@ -288,13 +299,12 @@ public class ChooseSchoolActivity extends BaseActivity implements IChooseSchoolV
 
     private void translte(int startValue , int endValue){
         translateAnimator =  ValueAnimator.ofInt(startValue , endValue);
-        translateAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                int currentValue  = (int) animation.getAnimatedValue();
-                searchLayoutParams.width = currentValue;
-                search.setLayoutParams(searchLayoutParams);
-            }
+        translateAnimator.addUpdateListener(animation -> {
+
+            int currentValue  = (int) animation.getAnimatedValue();
+            Log.wtf(TAG ,currentValue +"");
+            searchLayoutParams.width = currentValue;
+            search.setLayoutParams(searchLayoutParams);
         });
         translateAnimator.setDuration(300);
         translateAnimator.start();
@@ -302,19 +312,19 @@ public class ChooseSchoolActivity extends BaseActivity implements IChooseSchoolV
 
     @OnClick(R.id.cancle)
     public void cancelSearch(){
+        isClickSearch  =  false ;
         hideSearcy();
         SoftInputUtils.hideSoftInputFromWindow(this ,search);
         search.setText("");
+        search.setCursorVisible(false);
     }
-
-
-
 
     private void hideSearcy() {
         titleRight.setVisibility(View.VISIBLE);
         searchCy.setVisibility(View.GONE);
         schoolRy.setVisibility(View.VISIBLE);
         translte(searchWidth - cancelWidth , searchWidth);
+//        cancle.setVisibility(View.GONE);
     }
 
     private void initTitleRightRecyclerView() {
@@ -361,21 +371,29 @@ public class ChooseSchoolActivity extends BaseActivity implements IChooseSchoolV
     @OnTextChanged(R.id.search)
     public void searchSchool() {
         if (searchSchools == null || searchAdapter == null) return;
-        showSearch();
+//        showSearch();
         String text = search.getText().toString().trim();
         searchSchools.clear();
-        for (CityBean cityBean : cityBeans) {
-            if (cityBean.getCity().indexOf(text) != -1) {
-                searchSchools.add(cityBean);
+        if ("".equals(text)){
+
+        }else {
+            for (CityBean cityBean : cityBeans) {
+                if (cityBean.getCity().indexOf(text) != -1) {
+                    searchSchools.add(cityBean);
+                }
             }
         }
         searchAdapter.notifyDataSetChanged();
     }
 
+    boolean isClickSearch = false ;
 
     @OnClick(R.id.search)
     public void search() {
+        if (!isClickSearch)
         showSearch();
+        isClickSearch = true ;
+
         search.setCursorVisible(true);
     }
 
@@ -434,6 +452,11 @@ public class ChooseSchoolActivity extends BaseActivity implements IChooseSchoolV
     public void setreferComplete() {
         if (refreshLayout != null)
             refreshLayout.finishRefresh();
+    }
+
+    @Override
+    public void backToProfile() {
+        this.finish();
     }
 
 

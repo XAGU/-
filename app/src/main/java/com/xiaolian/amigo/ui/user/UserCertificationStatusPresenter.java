@@ -39,15 +39,12 @@ public class UserCertificationStatusPresenter<v extends IUserCertificationStatus
                 }
             }
         });
-
-
     }
-
 
     @Override
     public void  getDormitory() {
         User user =userDataManager.getUser();
-        dormitory = user.getDormitory() ;
+        dormitory = user.getResidenceName() ;
     }
 
     @Override

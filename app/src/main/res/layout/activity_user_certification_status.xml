@@ -215,6 +215,7 @@
                             android:shadowColor="#80999999"
                             android:shadowDx="0"
                             android:shadowDy= "3"
+                            android:visibility="gone"
                             android:gravity="center"
                             android:background="@drawable/bg_change_dormitory_txt"
                             />

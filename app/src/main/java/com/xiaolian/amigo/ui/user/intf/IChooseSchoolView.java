@@ -9,4 +9,6 @@ public interface IChooseSchoolView  extends IBaseView{
     void referSchoolList(List<SchoolNameListRespDTO.SchoolNameListBean> schoolNameList);
 
     void setreferComplete();
+
+    void backToProfile();
 }

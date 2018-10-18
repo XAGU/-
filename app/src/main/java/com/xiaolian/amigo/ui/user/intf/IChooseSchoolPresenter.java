@@ -6,4 +6,6 @@ public interface IChooseSchoolPresenter<v extends IChooseSchoolView> extends IBa
 
     void getSchoolNameList();
 
+
+    void updataSchool(Long id);
 }

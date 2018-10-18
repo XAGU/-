@@ -14,20 +14,20 @@ public class CityBean extends BaseIndexPinyinBean {
     private boolean isTop;//是否是最上面的 不需要被转化成拼音的
 
 
-    private int id ;
+    private Long id ;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
     public CityBean() {
     }
 
-    public CityBean(String city , int id) {
+    public CityBean(String city , Long id) {
         this.city = city;
         this.id = id ;
     }

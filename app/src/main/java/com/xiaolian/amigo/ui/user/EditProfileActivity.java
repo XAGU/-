@@ -166,6 +166,7 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
                 startActivityForResult(intent, 1);
                 break;
             case R.id.rel_edit_school:
+                isNeedRefresh  = true ;
                 presenter.checkChangeSchool();
                 break;
             case R.id.rel_edit_room:

@@ -57,7 +57,22 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
 
     public static final String KEY_CERTIFICATION_TYPE = "KEY_CERTIFICATION_TYPE";
 
-    private static final String BASE64_HEAD = "data:image/jpg;base64,";
+    public static final String KEY_DEPARTMENT = "KEY_DEPARTMENT";
+
+    public static final String KEY_PROFESSION = "KEY_PROFESSION";
+
+    public static final String KEY_GRADE = "KEY_GRADE";
+
+    public static final String KEY_CLASS = "KEY_CLASS";
+
+    public static final String KEY_STUDENT_ID = "KEY_STUDENT_ID";
+
+    public static final String KEY_STUENDT_IAMGES = "KEY_STUENDT_IAMGES";
+
+    public static final String KEY_BACK_IMAGE = "KEY_BACK_IMAGE";
+
+    public static final String KEY_FRONT_IMAGE = "KEY_FRONT_IMAGE" ;
+
     @BindView(R.id.certification)
     Button certification;
     @BindView(R.id.tv_reason)
@@ -164,7 +179,7 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
      */
     private void setStatus(int type) {
         if (type == CERTIFICATION_FAILURE) {
-            showBarTxt();
+            showFail();
             tvToolbarText.setText(CERTIFICATION_FILURE);
         } else if (type == CERTIFICATION_REVIEWING) {
             showBarTxt();
@@ -176,6 +191,13 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
         }
     }
 
+    private void showFail(){
+        tvToolbarText.setVisibility(View.VISIBLE);
+        tvToolbarIv.setVisibility(View.GONE);
+        certification.setVisibility(View.VISIBLE);
+        changeDormitory.setVisibility(View.GONE);
+        setMarginBottom(ScreenUtils.dpToPxInt(this, 91));
+    }
 
     private void showBarTxt() {
         tvToolbarText.setVisibility(View.VISIBLE);
@@ -183,7 +205,6 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
         certification.setVisibility(View.GONE);
         changeDormitory.setVisibility(View.GONE);
         setMarginBottom(ScreenUtils.dpToPxInt(this, 20));
-
     }
 
 
@@ -214,7 +235,21 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
 
     @OnClick(R.id.certification)
     public void startCertification() {
-        startActivity(new Intent(this, UserCertificationActivity.class));
+
+        Intent intent = new Intent(this ,UserCertificationActivity.class);
+        intent.putExtra(KEY_DEPARTMENT ,tvDepartment.getText().toString().trim());
+        intent.putExtra(KEY_PROFESSION , tvProfession.getText().toString().trim());
+        intent.putExtra(KEY_CLASS ,tvClass.getText().toString().trim());
+        intent.putExtra(KEY_GRADE , tvGrade.getText().toString().trim());
+        intent.putExtra(KEY_STUDENT_ID ,tvStudentId.getText().toString().trim());
+        intent.putStringArrayListExtra(KEY_STUDENT_ID , (ArrayList<String>) studentUrlImages);
+        if (cardIdUrlImages != null && cardIdUrlImages.size() > 0) {
+            intent.putExtra(KEY_FRONT_IMAGE ,cardIdUrlImages.get(0));
+            intent.putExtra(KEY_BACK_IMAGE, cardIdUrlImages.get(1));
+
+        }
+        startActivity(intent);
+        this.finish();
     }
 
     /**
@@ -366,13 +401,15 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
         if (cardIdImages != null) {
             cardIdImages.clear();
 
-            cardIdImages.add(new ImageAddAdapter.ImageItem(Base64.decode(data.getIdCardFrontData(), Base64.DEFAULT)));
 
+            cardIdImages.add(new ImageAddAdapter.ImageItem(Base64.decode(data.getIdCardFrontData(), Base64.DEFAULT)));
             cardIdImages.add(new ImageAddAdapter.ImageItem(Base64.decode(data.getIdCardBehindData(), Base64.DEFAULT)));
 
-            cardIdUrlImages.add(data.getIdCardBehindData());
 
             cardIdUrlImages.add(data.getIdCardFrontData());
+            cardIdUrlImages.add(data.getIdCardBehindData());
+
+
         }
 
         cardIdAdapter.notifyDataSetChanged();

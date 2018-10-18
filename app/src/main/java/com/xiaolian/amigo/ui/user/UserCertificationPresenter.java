@@ -73,29 +73,11 @@ public class UserCertificationPresenter <v extends IUserCertificationView> exten
 
     @Override
     public void uploadImage(Context activity, String imagePath, int position, OssFileType type) {
-//        Log.d(TAG ," " + imagePath);
-//        currentImagePosition = position;
-//        currentType = type;
-//        uploadImage(activity,imagePath);
-
         getMvpView().post(() -> getMvpView().addImage(imagePath ,position ,""));
-
-
-
     }
 
     @Override
     public void uploadImage(Context activity, String imagePath, OssFileType found, ImageView iv) {
-//        this.iv = iv ;
-//        this.currentType = found ;
-//        uploadImage(activity ,imagePath);
-
-//        if (iv  != null){
-//            getMvpView().post(() -> {getMvpView().setCardImage(iv ,filePath , request.getObjectKey());
-//                iv = null ;
-//
-//            });
-
         getMvpView().post(() -> getMvpView().setCardImage(iv ,imagePath ,""));
     }
 
@@ -103,7 +85,7 @@ public class UserCertificationPresenter <v extends IUserCertificationView> exten
     public String getDormitory() {
         User user = userDataManager.getUser();
         if (user != null){
-            return user.getDormitory();
+            return user.getResidenceName();
         }else{
             return "";
         }

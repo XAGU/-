@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -82,10 +83,18 @@ public class ImageAddAdapter extends CommonAdapter<ImageAddAdapter.ImageItem> {
                 ((ImageView) holder.getView(R.id.iv_image)).setScaleType(ImageView.ScaleType.CENTER_CROP);
             }else {
                 if (!TextUtils.isEmpty(imageItem.getImageUrl())) {
-                    Glide.with(context).load(imageItem.getImageUrl())
-                            .asBitmap()
-                            .into((ImageView) holder.getView(R.id.iv_image));
-                    ((ImageView) holder.getView(R.id.iv_image)).setScaleType(ImageView.ScaleType.CENTER_CROP);
+
+                    if (!imageItem.imageBase64Url) {
+                        Glide.with(context).load(imageItem.getImageUrl())
+                                .asBitmap()
+                                .into((ImageView) holder.getView(R.id.iv_image));
+                        ((ImageView) holder.getView(R.id.iv_image)).setScaleType(ImageView.ScaleType.CENTER_CROP);
+                    }else{
+                        Glide.with(context).load(generateImage(Base64.decode(imageItem.imageUrl , Base64.DEFAULT)))
+                                .asBitmap()
+                                .into((ImageView) holder.getView(R.id.iv_image));
+                        ((ImageView) holder.getView(R.id.iv_image)).setScaleType(ImageView.ScaleType.CENTER_CROP);
+                    }
                 }
 
                 if (imageItem.getImageBase64Byte() != null && imageItem.getImageBase64Byte().length > 0){
@@ -113,6 +122,8 @@ public class ImageAddAdapter extends CommonAdapter<ImageAddAdapter.ImageItem> {
         private byte[] imageBase64Byte ;
 
 
+        private boolean imageBase64Url ;
+
         public ImageItem(byte[] imageBase64Byte){
             this.imageBase64Byte = imageBase64Byte ;
         }
@@ -120,8 +131,14 @@ public class ImageAddAdapter extends CommonAdapter<ImageAddAdapter.ImageItem> {
         public ImageItem() {
         }
 
-        public ImageItem(String imageUrl) {
+        public ImageItem(String imageUrl  ) {
             this.imageUrl = imageUrl;
+            this.imageBase64Url = imageBase64Url ;
+        }
+
+        public ImageItem(String imageUrl , boolean imageBase64Url){
+            this.imageUrl = imageUrl ;
+            this.imageBase64Url = imageBase64Url ;
         }
     }
 

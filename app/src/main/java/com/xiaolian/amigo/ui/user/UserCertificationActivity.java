@@ -58,6 +58,14 @@ import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 import static com.xiaolian.amigo.ui.user.EditUserInfoActivity.KEY_BACK_DATA;
 import static com.xiaolian.amigo.ui.user.EditUserInfoActivity.KEY_DATA;
 import static com.xiaolian.amigo.ui.user.EditUserInfoActivity.KEY_TYPE;
+import static com.xiaolian.amigo.ui.user.UserCertificationStatusActivity.KEY_BACK_IMAGE;
+import static com.xiaolian.amigo.ui.user.UserCertificationStatusActivity.KEY_CLASS;
+import static com.xiaolian.amigo.ui.user.UserCertificationStatusActivity.KEY_DEPARTMENT;
+import static com.xiaolian.amigo.ui.user.UserCertificationStatusActivity.KEY_FRONT_IMAGE;
+import static com.xiaolian.amigo.ui.user.UserCertificationStatusActivity.KEY_GRADE;
+import static com.xiaolian.amigo.ui.user.UserCertificationStatusActivity.KEY_PROFESSION;
+import static com.xiaolian.amigo.ui.user.UserCertificationStatusActivity.KEY_STUDENT_ID;
+import static com.xiaolian.amigo.ui.user.UserCertificationStatusActivity.KEY_STUENDT_IAMGES;
 import static com.xiaolian.amigo.util.Constant.CLASS;
 import static com.xiaolian.amigo.util.Constant.DEPARTMENT;
 import static com.xiaolian.amigo.util.Constant.PROFESSION;
@@ -196,12 +204,30 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
 
     private int rlToolBarHeight ;
 
+
+    private String department ;
+
+    private String profession ;
+
+    private String gradestr ;
+
+    private String classstr ;
+
+    private String studentIdstr ;
+
+    private List<String> studentImageBase64 ;
+
+    private String frontImageBase64 ;
+
+    private String backImageBase64 ;
+
     @SuppressLint("NewApi")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_certification);
         ButterKnife.bind(this);
+        setUp();
         IOverScrollDecor iOverScrollDecor = OverScrollDecoratorHelper.setUpOverScroll(svMainContainer);
         iOverScrollDecor.setOverScrollUpdateListener(new IOverScrollUpdateListener() {
             @Override
@@ -221,6 +247,7 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
         });
         initView();
     }
+
 
 
     private void setTitleVisiable(int visiable){
@@ -314,6 +341,13 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
         super.onResume();
         if (isNeedRefresh) {
             tvDormitory.setText(presenter.getDormitory());
+            tvDepartment.setText(department);
+            tvProfession.setText(profession);
+            tvGrade.setText(gradestr);
+            tvClass.setText(classstr);
+            tvStudentId.setText(studentIdstr);
+
+            isNeedRefresh = false ;
         }
         toggleBtnStatus();
     }
@@ -502,7 +536,6 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
         if (gradeList.size() > 0) gradeList.clear();
         gradeList.addAll(dto.getGradeList());
         setGradeList(gradeList);
-
     }
 
     @Override
@@ -532,6 +565,8 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
         }
         imageAddAdapter.notifyDataSetChanged();
     }
+
+
 
 
     @OnClick({R.id.iv_first, R.id.iv_second, R.id.iv_third, R.id.front_card_rl, R.id.back_card_rl})
@@ -657,6 +692,16 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
 
     @Override
     protected void setUp() {
-
+        if (getIntent() != null){
+            department = getIntent().getStringExtra(KEY_DEPARTMENT);
+            profession = getIntent().getStringExtra(KEY_PROFESSION);
+            gradestr = getIntent().getStringExtra(KEY_GRADE);
+            classstr = getIntent().getStringExtra(KEY_CLASS);
+            studentIdstr = getIntent().getStringExtra(KEY_STUDENT_ID);
+            studentImageBase64 = getIntent().getStringArrayListExtra(KEY_STUENDT_IAMGES);
+            frontImageBase64 = getIntent().getStringExtra(KEY_FRONT_IMAGE);
+            backImageBase64 = getIntent().getStringExtra(KEY_BACK_IMAGE);
+            isNeedRefresh = true ;
+        }
     }
 }
