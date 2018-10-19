@@ -1,6 +1,7 @@
 package com.xiaolian.blelib.scan;
 
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.support.annotation.CallSuper;
 
 import com.xiaolian.blelib.BluetoothConstants;
@@ -68,4 +69,11 @@ public class BluetoothScanner {
             bluetoothScanResponse.onScanCanceled();
         }
     }
+
+    protected final BluetoothAdapter.LeScanCallback leScanCallback = new BluetoothAdapter.LeScanCallback() {
+        @Override
+        public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
+            notifyDeviceFounded(new BluetoothScanResult(device, rssi, scanRecord));
+        }
+    };
 }

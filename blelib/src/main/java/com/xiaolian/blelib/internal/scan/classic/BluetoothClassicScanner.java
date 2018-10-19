@@ -51,6 +51,11 @@ public class BluetoothClassicScanner extends BluetoothScanner {
         if (bluetoothAdapter.isDiscovering()) {
             bluetoothAdapter.cancelDiscovery();
         }
+        try {
+            bluetoothAdapter.stopLeScan(leScanCallback);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         super.stopScanBluetooth();
     }
 
@@ -60,6 +65,7 @@ public class BluetoothClassicScanner extends BluetoothScanner {
         if (bluetoothAdapter.isDiscovering()) {
             bluetoothAdapter.cancelDiscovery();
         }
+        bluetoothAdapter.stopLeScan(leScanCallback);
         super.cancelScanBluetooth();
     }
 
