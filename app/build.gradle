@@ -94,15 +94,15 @@ android {
 
             //   龙杰服务器
 
-            buildConfigField "String", "SERVER", "\"http://10.0.0.44:5081/\"" //
-            buildConfigField "String", "SERVER_BATHROOM", "\"http://10.0.0.44:5082/\"" //
-            buildConfigField "String", "H5_SERVER", "\"http://10.0.0.44:5097/c\"" //
+//            buildConfigField "String", "SERVER", "\"http://10.0.0.44:5081/\"" //
+//            buildConfigField "String", "SERVER_BATHROOM", "\"http://10.0.0.44:5082/\"" //
+//            buildConfigField "String", "H5_SERVER", "\"http://10.0.0.44:5097/c\"" //
 
 
             // qa3
-//            buildConfigField "String", "SERVER", "\"http://39.108.74.164:5081/\"" //
-//            buildConfigField "String", "SERVER_BATHROOM", "\"http://39.108.74.164:5082/\"" //
-//            buildConfigField "String", "H5_SERVER", "\"http://39.108.74.164:5097/c\"" //
+            buildConfigField "String", "SERVER", "\"http://39.108.74.164:5081/\"" //
+            buildConfigField "String", "SERVER_BATHROOM", "\"http://39.108.74.164:5082/\"" //
+            buildConfigField "String", "H5_SERVER", "\"http://39.108.74.164:5097/c\"" //
 
 
 //            buildConfigField "String", "SERVER", "\"http://47.107.47.24:5081/\"" //qa4

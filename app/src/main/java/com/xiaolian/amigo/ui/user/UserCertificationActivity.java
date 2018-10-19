@@ -33,6 +33,7 @@ import com.xiaolian.amigo.ui.user.intf.IUserCertificationPresenter;
 import com.xiaolian.amigo.ui.user.intf.IUserCertificationView;
 import com.xiaolian.amigo.ui.widget.GridSpacesItemDecoration;
 import com.xiaolian.amigo.ui.widget.dialog.ActionSheetDialog;
+import com.xiaolian.amigo.ui.widget.dialog.BathroomBookingDialog;
 import com.xiaolian.amigo.ui.widget.photoview.AlbumItemActivity;
 import com.xiaolian.amigo.util.FileUtils;
 import com.xiaolian.amigo.util.GildeUtils;
@@ -220,6 +221,9 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
     private String frontImageBase64 ;
 
     private String backImageBase64 ;
+
+
+    private BathroomBookingDialog bathroomBookingDialog;
 
     @SuppressLint("NewApi")
     @Override
