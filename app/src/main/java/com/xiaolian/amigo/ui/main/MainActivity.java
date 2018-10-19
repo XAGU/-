@@ -567,12 +567,13 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             if (presenter.getIsFirstAfterLogin()) {
                 setDefalutItem(0);
                 if (fm == null) return ;
+                presenter.setIsFirstAfterLogin(false);
                 SocalFragment socalFragment = (SocalFragment) fm.findFragmentByTag(SocalFragment.class.getSimpleName());
                 if (socalFragment == null ) return ;
                 if (socalFragment.isAdded()) {
                     fm.beginTransaction().remove(socalFragment).commit();
                 }
-                presenter.setIsFirstAfterLogin(false);
+
             }
         }
 
