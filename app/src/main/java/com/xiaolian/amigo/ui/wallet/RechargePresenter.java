@@ -244,7 +244,9 @@ public class RechargePresenter<V extends IRechargeView> extends BasePresenter<V>
             @Override
             public void onReady(ApiResult<WithdrawExplanationRespDTO> result) {
                 if (result.getError() == null){
-                    getMvpView().showWithDrawDialog(result.getData());
+                    if (result.getData().isSetExplanation()) {
+                        getMvpView().showWithDrawDialog(result.getData());
+                    }
                 }else{
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }

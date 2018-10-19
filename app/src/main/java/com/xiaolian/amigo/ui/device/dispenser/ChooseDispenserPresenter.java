@@ -117,7 +117,7 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
         closeBleConnection();
         resetSubscriptions();
         Log.d(TAG, "开始扫描设备");
-        bleDataManager.scan(scanType, new BluetoothScanResponse() {
+        bleDataManager.scan(new BluetoothScanResponse() {
             // 已经上报的mac地址的集合
             List<String> existDevices = new ArrayList<>();
             // 新扫描到的mac地址的集合
@@ -254,16 +254,6 @@ public class ChooseDispenserPresenter<V extends IChooseDispenerView> extends Bas
         getMvpView().gotoDispenser(macAddress, supplierId, favor, residenceId, usefor, location);
     }
 
-    @Override
-    public void toggleScanType() {
-        if (scanType == BluetoothConstants.SCAN_TYPE_CLASSIC) {
-            scanType = BluetoothConstants.SCAN_TYPE_BLE;
-        } else if (scanType == BluetoothConstants.SCAN_TYPE_BLE) {
-            scanType = BluetoothConstants.SCAN_TYPE_CLASSIC;
-        } else {
-            scanType = BluetoothConstants.SCAN_TYPE_BLE;
-        }
-    }
 
     @Override
     public void gotoDryer(String deviceNo, Long supplierId, Boolean isFavor, Long residenceId, String location) {

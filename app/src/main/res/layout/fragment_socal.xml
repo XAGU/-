@@ -134,6 +134,7 @@
                 android:layout_marginTop="17dp"/>
         </RelativeLayout>
 
+
         <com.xiaolian.amigo.ui.widget.ErrorLayout
             android:layout_width="match_parent"
             android:layout_height="577dp"

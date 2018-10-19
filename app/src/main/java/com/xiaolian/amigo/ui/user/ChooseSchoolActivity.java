@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.user;
 
 import android.animation.ValueAnimator;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.design.widget.AppBarLayout;
@@ -51,6 +52,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
 import butterknife.Unbinder;
+
+import static com.xiaolian.amigo.ui.user.ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION;
+import static com.xiaolian.amigo.ui.user.ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ITEM_RESULT;
 
 /**
  * @author wcm
@@ -133,6 +137,7 @@ public class ChooseSchoolActivity extends BaseActivity implements IChooseSchoolV
     private CommonAdapter<CityBean> onLineAdapter;
 
 
+    private  int action ;
     protected void initView() {
         setUnBinder(ButterKnife.bind(this));
         mActivityComponent.inject(this);
@@ -195,7 +200,7 @@ public class ChooseSchoolActivity extends BaseActivity implements IChooseSchoolV
         commonAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                presenter.updataSchool(cityBeans.get(position).getId());
+                presenter.updataSchool(cityBeans.get(position));
             }
 
             @Override
@@ -226,7 +231,7 @@ public class ChooseSchoolActivity extends BaseActivity implements IChooseSchoolV
         commonAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                presenter.updataSchool(cityBeans.get(position).getId());
+                presenter.updataSchool(cityBeans.get(position));
             }
 
             @Override
@@ -249,7 +254,7 @@ public class ChooseSchoolActivity extends BaseActivity implements IChooseSchoolV
         searchAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                presenter.updataSchool(searchSchools.get(position).getId());
+                presenter.updataSchool(searchSchools.get(position));
             }
 
             @Override
@@ -272,7 +277,7 @@ public class ChooseSchoolActivity extends BaseActivity implements IChooseSchoolV
         onLineAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                presenter.updataSchool(onLineSchools.get(position).getId());
+                presenter.updataSchool(onLineSchools.get(position));
             }
 
             @Override
@@ -313,7 +318,10 @@ public class ChooseSchoolActivity extends BaseActivity implements IChooseSchoolV
 
     @Override
     protected void setUp() {
-
+        if (getIntent() != null) {
+            action = getIntent().getIntExtra(INTENT_KEY_LIST_CHOOSE_ACTION , -1);
+            if (presenter != null) presenter.setActionId(action);
+        }
     }
 
     @Override
@@ -323,6 +331,7 @@ public class ChooseSchoolActivity extends BaseActivity implements IChooseSchoolV
         unbinder = ButterKnife.bind(this);
         initInject();
         initView();
+        setUp();
         initSmartRecyclerLayout();
         initTitleRightRecyclerView();
     }
@@ -513,6 +522,14 @@ public class ChooseSchoolActivity extends BaseActivity implements IChooseSchoolV
 
         onLineAdapter.notifyDataSetChanged();
 
+    }
+
+    @Override
+    public void finishResult(CityBean cityBean) {
+        Intent intent = new Intent();
+        intent.putExtra(INTENT_KEY_LIST_CHOOSE_ITEM_RESULT, cityBean);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
 

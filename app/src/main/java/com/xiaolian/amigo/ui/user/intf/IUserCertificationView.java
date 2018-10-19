@@ -14,4 +14,10 @@ public interface IUserCertificationView  extends IBaseView {
     void setGradeInfo(UserGradeInfoRespDTO dto);
 
     void certifySuccess();
+
+    void showUpDialog();
+
+    void hideSuccessDialog();
+
+    void hideFailureDialgo();
 }

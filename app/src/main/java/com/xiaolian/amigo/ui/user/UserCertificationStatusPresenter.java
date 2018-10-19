@@ -29,14 +29,29 @@ public class UserCertificationStatusPresenter<v extends IUserCertificationStatus
     @Override
     public void getCertifyInfo() {
         addObserver(userDataManager.certifyInfo() ,new NetworkObserver<ApiResult<UserCertifyInfoRespDTO>>(){
+            @Override
+            public void onStart() {
+                getMvpView().showAnimaLoading();
+                getMvpView().hideErrorLayout();
+                getMvpView().hideContent();
+            }
 
             @Override
             public void onReady(ApiResult<UserCertifyInfoRespDTO> result) {
+                getMvpView().hideAnimaLoading();
                 if (result.getError() == null){
                     getMvpView().setInfo(result.getData());
                 }else{
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                getMvpView().hideAnimaLoading();
+                getMvpView().hideContent();
+                getMvpView().showErrorLayout();
             }
         });
     }

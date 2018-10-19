@@ -31,6 +31,7 @@ import com.xiaolian.amigo.ui.base.BaseActivity;
 import com.xiaolian.amigo.ui.repair.adaptor.ImageAddAdapter;
 import com.xiaolian.amigo.ui.user.intf.IUserCertificationPresenter;
 import com.xiaolian.amigo.ui.user.intf.IUserCertificationView;
+import com.xiaolian.amigo.ui.widget.CircleProgressView;
 import com.xiaolian.amigo.ui.widget.GridSpacesItemDecoration;
 import com.xiaolian.amigo.ui.widget.dialog.ActionSheetDialog;
 import com.xiaolian.amigo.ui.widget.dialog.BathroomBookingDialog;
@@ -73,7 +74,8 @@ import static com.xiaolian.amigo.util.Constant.PROFESSION;
 import static com.xiaolian.amigo.util.Constant.STUDENT_ID;
 import static com.xiaolian.amigo.util.Constant.USER_INFO_ACTIVITY_SRC;
 
-public class UserCertificationActivity extends BaseActivity implements IUserCertificationView {
+public class UserCertificationActivity extends BaseActivity implements IUserCertificationView
+         ,CircleProgressView.FinishListener {
 
     private static final int REQUEST_IMAGE = 0x3302;
 
@@ -196,6 +198,8 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
     private List<File> imageFile = new ArrayList<>();
     private boolean isNeedRefresh = false;
 
+    private boolean isNeedRefreshInfo= false ;  // 重新认证刷新
+
     private ActionSheetDialog actionSheetDialog; // 年级选择器底部弹窗
 
     private List<Integer> gradeList = new ArrayList<>();
@@ -250,7 +254,16 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
             }
         });
         initView();
+        initdialog();
     }
+
+
+    private void initdialog(){
+        bathroomBookingDialog = new BathroomBookingDialog(this);
+        bathroomBookingDialog.setTitleContent(getString(R.string.dialog_upload_content));
+
+    }
+
 
 
 
@@ -338,21 +351,35 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
         super.onPause();
         if (actionSheetDialog != null && actionSheetDialog.getDialog() != null)
             actionSheetDialog.getDialog().dismiss();
+
+        if (bathroomBookingDialog != null && bathroomBookingDialog.isShowing()){
+            bathroomBookingDialog.dismiss();
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (isNeedRefresh) {
+        if (isNeedRefresh || isNeedRefreshInfo ) {
             tvDormitory.setText(presenter.getDormitory());
-            tvDepartment.setText(department);
-            tvProfession.setText(profession);
-            tvGrade.setText(gradestr);
-            tvClass.setText(classstr);
-            tvStudentId.setText(studentIdstr);
 
-            isNeedRefresh = false ;
         }
+
+        if (isNeedRefreshInfo){
+            if (!TextUtils.isEmpty(department))
+                tvDepartment.setText(department);
+            if (!TextUtils.isEmpty(profession))
+                tvProfession.setText(profession);
+            if (!TextUtils.isEmpty(gradestr))
+                tvGrade.setText(gradestr);
+            if (!TextUtils.isEmpty(classstr))
+                tvClass.setText(classstr);
+            if (!TextUtils.isEmpty(studentIdstr))
+                tvStudentId.setText(studentIdstr);
+        }
+
+        isNeedRefresh = false ;
+        isNeedRefreshInfo = false ;
         toggleBtnStatus();
     }
 
@@ -396,6 +423,11 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
             actionSheetDialog.getDialog().dismiss();
         }
         actionSheetDialog = null;
+
+        if (bathroomBookingDialog != null) {
+            bathroomBookingDialog.onDettechView();
+        }
+        bathroomBookingDialog = null ;
     }
 
 
@@ -545,6 +577,31 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
     @Override
     public void certifySuccess() {
         finish();
+    }
+
+    @Override
+    public void showUpDialog() {
+        if (bathroomBookingDialog == null) {
+            bathroomBookingDialog = new BathroomBookingDialog(this);
+        }
+        bathroomBookingDialog.circleProgressView.setFinishListener(this);
+        bathroomBookingDialog.setTitleContent(getString(R.string.dialog_upload_content));
+        bathroomBookingDialog.show();
+    }
+
+    @Override
+    public void hideSuccessDialog() {
+        if (bathroomBookingDialog != null && bathroomBookingDialog.isShowing()) {
+            bathroomBookingDialog.setFinish();
+        }
+    }
+
+    @Override
+    public void hideFailureDialgo() {
+        if (bathroomBookingDialog != null && bathroomBookingDialog.isShowing()) {
+            bathroomBookingDialog.dismiss();
+        }
+        onSuccess("上传失败");
     }
 
     private void setGradeList(List<Integer> gradeList) {
@@ -705,7 +762,13 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
             studentImageBase64 = getIntent().getStringArrayListExtra(KEY_STUENDT_IAMGES);
             frontImageBase64 = getIntent().getStringExtra(KEY_FRONT_IMAGE);
             backImageBase64 = getIntent().getStringExtra(KEY_BACK_IMAGE);
-            isNeedRefresh = true ;
+            isNeedRefreshInfo = true ;
         }
+    }
+
+    @Override
+    public void finishDialog() {
+        onSuccess("上传成功");
+        certifySuccess();
     }
 }

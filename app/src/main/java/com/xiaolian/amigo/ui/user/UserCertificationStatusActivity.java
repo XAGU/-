@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.user;
 
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -27,8 +29,10 @@ import com.xiaolian.amigo.ui.base.BaseActivity;
 import com.xiaolian.amigo.ui.repair.adaptor.ImageAddAdapter;
 import com.xiaolian.amigo.ui.user.intf.IUserCerticifationStatusPresenter;
 import com.xiaolian.amigo.ui.user.intf.IUserCertificationStatusView;
+import com.xiaolian.amigo.ui.widget.ErrorLayout;
 import com.xiaolian.amigo.ui.widget.GridSpacesItemDecoration;
 import com.xiaolian.amigo.ui.widget.photoview.AlbumItemActivity;
+import com.xiaolian.amigo.util.Log;
 import com.xiaolian.amigo.util.ScreenUtils;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
@@ -71,7 +75,7 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
 
     public static final String KEY_BACK_IMAGE = "KEY_BACK_IMAGE";
 
-    public static final String KEY_FRONT_IMAGE = "KEY_FRONT_IMAGE" ;
+    public static final String KEY_FRONT_IMAGE = "KEY_FRONT_IMAGE";
 
     @BindView(R.id.certification)
     Button certification;
@@ -85,6 +89,12 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
     RelativeLayout rlToolbar;
     @BindView(R.id.change_dormitory)
     TextView changeDormitory;
+    @BindView(R.id.iv_loading)
+    ImageView ivLoading;
+    @BindView(R.id.loading_rl)
+    RelativeLayout loadingRl;
+    @BindView(R.id.error_net_layout)
+    ErrorLayout errorNetLayout;
 
 
     private UserActivityComponent mActivityComponent;
@@ -145,6 +155,12 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
 
     private int rlToolBarHeight;
 
+    private ValueAnimator loadingAnimator ;
+
+    int[] loadingRes = new int[]{
+            R.drawable.loading_one, R.drawable.loading_two,
+            R.drawable.loading_three, R.drawable.loading_four
+    };
     @Override
     protected void setUp() {
 
@@ -157,6 +173,7 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_certification_status);
         unbinder = ButterKnife.bind(this);
+        setTitleVisiable(View.GONE);
         svMainContainer.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
             if (scrollY > rlToolBarHeight) {
                 setTitleVisiable(View.VISIBLE);
@@ -165,7 +182,6 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
             }
         });
 
-
         initJect();
         initScrollView();
         initView();
@@ -173,6 +189,7 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
         presenter.getCertifyInfo();
         presenter.getDormitory();
     }
+
 
     /**
      * 根据传过来的现不同页面
@@ -191,7 +208,7 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
         }
     }
 
-    private void showFail(){
+    private void showFail() {
         tvToolbarText.setVisibility(View.VISIBLE);
         tvToolbarIv.setVisibility(View.GONE);
         certification.setVisibility(View.VISIBLE);
@@ -212,7 +229,7 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
      * 设置margin
      */
     private void setMarginBottom(int marginBottom) {
-        FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) svMainContainer.getLayoutParams();
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) svMainContainer.getLayoutParams();
         layoutParams.setMargins(0, 0, 0, marginBottom);
         svMainContainer.setLayoutParams(layoutParams);
     }
@@ -230,21 +247,23 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
         rlToolbar.post(() -> {
             rlToolBarHeight = rlToolbar.getHeight();
         });
+        setErrorNetListener();
+        initLoadingAnim();
     }
 
 
     @OnClick(R.id.certification)
     public void startCertification() {
 
-        Intent intent = new Intent(this ,UserCertificationActivity.class);
-        intent.putExtra(KEY_DEPARTMENT ,tvDepartment.getText().toString().trim());
-        intent.putExtra(KEY_PROFESSION , tvProfession.getText().toString().trim());
-        intent.putExtra(KEY_CLASS ,tvClass.getText().toString().trim());
-        intent.putExtra(KEY_GRADE , tvGrade.getText().toString().trim());
-        intent.putExtra(KEY_STUDENT_ID ,tvStudentId.getText().toString().trim());
-        intent.putStringArrayListExtra(KEY_STUDENT_ID , (ArrayList<String>) studentUrlImages);
+        Intent intent = new Intent(this, UserCertificationActivity.class);
+        intent.putExtra(KEY_DEPARTMENT, tvDepartment.getText().toString().trim());
+        intent.putExtra(KEY_PROFESSION, tvProfession.getText().toString().trim());
+        intent.putExtra(KEY_CLASS, tvClass.getText().toString().trim());
+        intent.putExtra(KEY_GRADE, tvGrade.getText().toString().trim());
+        intent.putExtra(KEY_STUDENT_ID, tvStudentId.getText().toString().trim());
+        intent.putStringArrayListExtra(KEY_STUDENT_ID, (ArrayList<String>) studentUrlImages);
         if (cardIdUrlImages != null && cardIdUrlImages.size() > 0) {
-            intent.putExtra(KEY_FRONT_IMAGE ,cardIdUrlImages.get(0));
+            intent.putExtra(KEY_FRONT_IMAGE, cardIdUrlImages.get(0));
             intent.putExtra(KEY_BACK_IMAGE, cardIdUrlImages.get(1));
 
         }
@@ -257,13 +276,13 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
      */
     private void initScrollView() {
         IOverScrollDecor iOverScrollDecor = OverScrollDecoratorHelper.setUpOverScroll(svMainContainer);
-        iOverScrollDecor.setOverScrollUpdateListener((decor, state, offset) -> {
-            if (offset < -(tvToolbarTitle.getHeight()) + tvToolbarTitle.getPaddingTop()) {
-                setTitleVisiable(View.VISIBLE);
-            } else {
-                setTitleVisiable(View.GONE);
-            }
-        });
+//        iOverScrollDecor.setOverScrollUpdateListener((decor, state, offset) -> {
+//            if (offset < -(tvToolbarTitle.getHeight()) + tvToolbarTitle.getPaddingTop()) {
+//                setTitleVisiable(View.VISIBLE);
+//            } else {
+//                setTitleVisiable(View.GONE);
+//            }
+//        });
 
     }
 
@@ -288,6 +307,22 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
         presenter.onDetach();
     }
 
+
+    private void initLoadingAnim() {
+        loadingAnimator = ValueAnimator.ofInt(0, 3, 0);
+        loadingAnimator.setRepeatCount(ValueAnimator.INFINITE);
+        loadingAnimator.setDuration(1000);
+        loadingAnimator.setInterpolator(new LinearInterpolator());
+        loadingAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                int currentValue = (int) animation.getAnimatedValue();
+                Log.wtf(TAG, currentValue + "");
+                if (ivLoading != null)
+                    ivLoading.setImageResource(loadingRes[currentValue]);
+            }
+        });
+    }
 
     @OnClick(R.id.certification)
     public void certification() {
@@ -366,6 +401,8 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
 
     @Override
     public void setInfo(UserCertifyInfoRespDTO data) {
+
+        svMainContainer.setVisibility(View.VISIBLE);
         setStatus(data.getStatus());
         if (data.getStatus() == CERTIFICATION_FAILURE) {
             tvReason.setText(data.getFailReason());
@@ -413,5 +450,48 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
         }
 
         cardIdAdapter.notifyDataSetChanged();
+    }
+
+
+    @Override
+    public void showAnimaLoading() {
+        loadingRl.setVisibility(View.VISIBLE);
+        if (loadingAnimator == null) return;
+
+        if (loadingAnimator.isRunning()) {
+            loadingAnimator.cancel();
+        }
+        loadingAnimator.start();
+    }
+
+    private void setErrorNetListener(){
+        if (errorNetLayout != null)
+            errorNetLayout.setReferListener(() -> {
+                    if(presenter != null) {
+                        presenter.getCertifyInfo();
+                    }});
+    }
+
+    @Override
+    public void showErrorLayout() {
+        errorNetLayout.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideContent() {
+        svMainContainer.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void hideErrorLayout() {
+        errorNetLayout.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void hideAnimaLoading() {
+        loadingRl.setVisibility(View.GONE);
+        if (loadingAnimator == null) return;
+
+        if (loadingAnimator.isRunning()) loadingAnimator.cancel();
     }
 }

@@ -203,6 +203,9 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     }
 
 
+
+
+
     private void setErrorNetListener(){
         if (errorNetLayout != null)
             errorNetLayout.setReferListener(() -> initView());

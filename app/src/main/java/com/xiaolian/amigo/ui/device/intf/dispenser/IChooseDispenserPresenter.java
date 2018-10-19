@@ -94,5 +94,4 @@ public interface IChooseDispenserPresenter<V extends IChooseDispenerView> extend
     void gotoDispenser(String macAddress, Long supplierId, boolean favor,
                        Long residenceId, String usefor, String location);
 
-    void toggleScanType();
 }

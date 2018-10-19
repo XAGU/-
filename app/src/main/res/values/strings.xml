@@ -384,4 +384,7 @@
 
     <string name="with_draw_title">退款说明</string>
     <string name="with_draw_tip">温馨提示</string>
+
+    <!--上传-->
+    <string name="dialog_upload_content">系统君正在提交，请稍等...</string>
 </resources>

@@ -1,30 +1,34 @@
 package com.xiaolian.amigo.ui.user;
 
-import android.support.v4.util.ObjectsCompat;
-
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.login.EntireUserDTO;
 import com.xiaolian.amigo.data.network.model.school.QueryBriefSchoolListRespDTO;
 import com.xiaolian.amigo.data.network.model.school.QuerySchoolListReqDTO;
 import com.xiaolian.amigo.data.network.model.user.PersonalUpdateReqDTO;
-import com.xiaolian.amigo.data.network.model.user.School;
 import com.xiaolian.amigo.data.network.model.user.SchoolNameListRespDTO;
 import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.ui.base.BasePresenter;
-import com.xiaolian.amigo.ui.user.adaptor.ListChooseAdaptor;
 import com.xiaolian.amigo.ui.user.intf.IChooseSchoolPresenter;
 import com.xiaolian.amigo.ui.user.intf.IChooseSchoolView;
-
-import java.util.ArrayList;
+import com.xiaolian.amigo.ui.widget.school.mode.CityBean;
 
 import javax.inject.Inject;
+
+import static com.xiaolian.amigo.ui.user.ListChooseActivity.ACTION_LIST_SCHOOL_RESULT;
 
 public class ChooseSchoolPresenter<v extends IChooseSchoolView> extends BasePresenter<v>
      implements IChooseSchoolPresenter<v>{
 
 
     private IUserDataManager userDataManager ;
+
+    private  int actionId ;
+
+
+    public void setActionId(int actionId) {
+        this.actionId = actionId;
+    }
 
     @Inject
     public ChooseSchoolPresenter(IUserDataManager userDataManager){
@@ -54,22 +58,26 @@ public class ChooseSchoolPresenter<v extends IChooseSchoolView> extends BasePres
     }
 
     @Override
-    public void updataSchool(Long id) {
-        PersonalUpdateReqDTO personalUpdateReqDTO = new PersonalUpdateReqDTO();
-        personalUpdateReqDTO.setSchoolId(id);
-        addObserver(userDataManager.updateUserInfo(personalUpdateReqDTO) ,new NetworkObserver<ApiResult<EntireUserDTO>>(){
+    public void updataSchool(CityBean cityBean) {
+        if (actionId == ACTION_LIST_SCHOOL_RESULT){
+            getMvpView().finishResult(cityBean);
+        }else {
+            PersonalUpdateReqDTO personalUpdateReqDTO = new PersonalUpdateReqDTO();
+            personalUpdateReqDTO.setSchoolId(cityBean.getId());
+            addObserver(userDataManager.updateUserInfo(personalUpdateReqDTO), new NetworkObserver<ApiResult<EntireUserDTO>>() {
 
-            @Override
-            public void onReady(ApiResult<EntireUserDTO> result) {
-                if (result.getError() == null){
-                    User user = new User(result.getData());
-                    userDataManager.setUser(user);
-                    getMvpView().backToProfile();
-                }else{
-                    getMvpView().onError(result.getError().getDisplayMessage());
+                @Override
+                public void onReady(ApiResult<EntireUserDTO> result) {
+                    if (result.getError() == null) {
+                        User user = new User(result.getData());
+                        userDataManager.setUser(user);
+                        getMvpView().backToProfile();
+                    } else {
+                        getMvpView().onError(result.getError().getDisplayMessage());
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     @Override

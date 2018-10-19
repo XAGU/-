@@ -19,12 +19,14 @@ public class WithdrawExplanationRespDTO  implements Parcelable{
         private boolean match;
         private String refundUser;
         private String timeRange;
+        private boolean isSetExplanation ;
 
     protected WithdrawExplanationRespDTO(Parcel in) {
         explanation = in.readString();
         match = in.readByte() != 0;
         refundUser = in.readString();
         timeRange = in.readString();
+        isSetExplanation = in.readByte() != 0 ;
     }
 
     public static final Creator<WithdrawExplanationRespDTO> CREATOR = new Creator<WithdrawExplanationRespDTO>() {
@@ -71,6 +73,14 @@ public class WithdrawExplanationRespDTO  implements Parcelable{
             this.timeRange = timeRange;
         }
 
+    public boolean isSetExplanation() {
+        return isSetExplanation;
+    }
+
+    public void setSetExplanation(boolean setExplanation) {
+        isSetExplanation = setExplanation;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -82,5 +92,6 @@ public class WithdrawExplanationRespDTO  implements Parcelable{
         dest.writeByte((byte) (match ? 1 : 0));
         dest.writeString(refundUser);
         dest.writeString(timeRange);
+        dest.writeByte((byte) (isSetExplanation ? 1: 0));
     }
 }

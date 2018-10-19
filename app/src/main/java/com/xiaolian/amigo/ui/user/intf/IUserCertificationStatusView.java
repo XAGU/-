@@ -5,4 +5,14 @@ import com.xiaolian.amigo.ui.base.intf.IBaseView;
 
 public interface IUserCertificationStatusView extends IBaseView {
     void setInfo(UserCertifyInfoRespDTO data);
+
+    void showAnimaLoading();
+
+    void showErrorLayout();
+
+    void hideContent();
+
+    void hideErrorLayout();
+
+    void hideAnimaLoading();
 }

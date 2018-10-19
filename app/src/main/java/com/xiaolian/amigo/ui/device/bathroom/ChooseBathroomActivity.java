@@ -422,6 +422,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         if (bathroomBookingDialog != null) {
             bathroomBookingDialog.onDettechView();
         }
+        bathroomBookingDialog = null ;
         presenter.clearTime();
         isNeedSwipe = true ;
     }

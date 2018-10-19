@@ -197,7 +197,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/ll_refund_instruction">
+        android:id="@+id/ll_refund_instruction"
+        tools:visibility="visible">
 
         <TextView
             style="@style/user_certification_txt"

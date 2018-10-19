@@ -251,7 +251,7 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
     @Override
     public void showWithDrawDialog(WithdrawExplanationRespDTO dto) {
         if (withDrawExplainAlertDialog != null){
-            withDrawExplainAlertDialog.setExplain("退款说明：" +dto.getExplanation());
+            withDrawExplainAlertDialog.setExplain("退款说明：" +dto.getExplanation() );
             withDrawExplainAlertDialog.setObject("退款对象：" + dto.getRefundUser());
             withDrawExplainAlertDialog.setTime("退款时间：" + dto.getTimeRange());
             withDrawExplainAlertDialog.show();

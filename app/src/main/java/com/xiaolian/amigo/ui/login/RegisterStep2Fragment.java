@@ -18,6 +18,7 @@ import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.user.ChooseSchoolActivity;
 import com.xiaolian.amigo.ui.user.ListChooseActivity;
 import com.xiaolian.amigo.ui.user.adaptor.ListChooseAdaptor;
+import com.xiaolian.amigo.ui.widget.school.mode.CityBean;
 import com.xiaolian.amigo.util.ViewUtil;
 
 import butterknife.BindView;
@@ -60,7 +61,7 @@ public class RegisterStep2Fragment extends Fragment {
     @OnClick(R.id.tv_school)
     void chooseSchool() {
         Intent intent = new Intent(getActivity(), ChooseSchoolActivity.class);
-//        intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION, ListChooseActivity.ACTION_LIST_SCHOOL_RESULT);
+        intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION, ListChooseActivity.ACTION_LIST_SCHOOL_RESULT);
         startActivityForResult(intent, REQUEST_CODE_CHOOSE_SCHOOL);
     }
 
@@ -87,9 +88,9 @@ public class RegisterStep2Fragment extends Fragment {
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_CODE_CHOOSE_SCHOOL) {
                 if (data.getExtras() != null) {
-                    ListChooseAdaptor.Item item = data.getExtras().getParcelable(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ITEM_RESULT);
+                    CityBean item = data.getExtras().getParcelable(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ITEM_RESULT);
                     if (item != null) {
-                        tvSchool.setText(item.getContent());
+                        tvSchool.setText(item.getCity());
                         schoolId = item.getId();
                     }
                 }

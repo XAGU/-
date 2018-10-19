@@ -737,7 +737,8 @@ public class    SharedPreferencesHelp implements ISharedPreferencesHelp {
             if (userHolder.getNickName() != null
                     && userHolder.getSchoolName() != null
                     && userHolder.getMobile() != null
-                    && !TextUtils.isEmpty(userHolder.getDormitory())) {
+                    && userHolder.getResidenceName() != null
+                    && !TextUtils.isEmpty(userHolder.getResidenceName())) {
                 return false;
             }
         }

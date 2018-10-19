@@ -136,5 +136,4 @@ public interface IDevicePresenter<V extends IBaseView> extends IBasePresenter<V>
      */
     void setSupplierId(Long supplierId);
 
-    void toggleScanType();
 }

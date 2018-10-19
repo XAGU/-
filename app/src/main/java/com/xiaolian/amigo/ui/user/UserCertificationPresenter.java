@@ -109,18 +109,6 @@ public class UserCertificationPresenter <v extends IUserCertificationView> exten
 
     @Override
     public void certify(String className, String faculty, Integer grade, File idCardBehind, File idCardFront, String major, Integer stuNum, List<File> stuPictureUrls) {
-        UserAuthCertifyReqDTO userAuthCertifyReqDTO = new UserAuthCertifyReqDTO();
-
-//        userAuthCertifyReqDTO.setClassName(className);
-//        userAuthCertifyReqDTO.setFaculty(faculty);
-//        userAuthCertifyReqDTO.setGrade(grade);
-//
-////        userAuthCertifyReqDTO.setIdCardBehind(idCardBehind);
-////        userAuthCertifyReqDTO.setIdCardFront(idCardFront);
-//        userAuthCertifyReqDTO.setMajor(major);
-//        userAuthCertifyReqDTO.setStuNum(stuNum);
-//        userAuthCertifyReqDTO.setStuPictureUrls(stuPictureUrls);
-
         RequestBody requestBody ;
         MultipartBody.Builder builder ;
 
@@ -142,17 +130,33 @@ public class UserCertificationPresenter <v extends IUserCertificationView> exten
         addObserver(userDataManager.certify(requestBody) ,new NetworkObserver<ApiResult<BooleanRespDTO>>(){
 
             @Override
+            public void onStart() {
+                getMvpView().showUpDialog();
+            }
+
+            @Override
             public void onReady(ApiResult<BooleanRespDTO> result) {
+
+
                  if (result.getError() == null){
                      if (result.getData().isResult()){
-                         getMvpView().onSuccess("认证成功");
-                         getMvpView().certifySuccess();
+//                         getMvpView().onSuccess("认证成功");
+//                         getMvpView().certifySuccess();
+                         getMvpView().hideSuccessDialog();
                      }else{
-                         getMvpView().onSuccess("认证失败");
+//                         getMvpView().onSuccess("认证失败");
+                         getMvpView().hideFailureDialgo();
                      }
                  }else{
                      getMvpView().onError(result.getError().getDisplayMessage());
+                     getMvpView().hideFailureDialgo();
                  }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                getMvpView().hideFailureDialgo();
             }
         });
     }

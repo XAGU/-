@@ -12,6 +12,8 @@ static def releaseTime() {
 }
 
 
+
+
 android {
     compileSdkVersion versions.compileSdk
     buildToolsVersion versions.buildTools
@@ -19,8 +21,8 @@ android {
         applicationId "com.xiaolian.amigo"
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
-        versionCode 31
-        versionName "1.1.92"
+        versionCode 30
+        versionName "1.1.93"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
@@ -31,7 +33,7 @@ android {
         }
     }
 
-
+    
     signingConfigs {
         config {
             keyAlias 'android_amigo'
@@ -105,11 +107,15 @@ android {
             buildConfigField "String", "H5_SERVER", "\"http://39.108.74.164:5097/c\"" //
 
 
+
 //            buildConfigField "String", "SERVER", "\"http://47.107.47.24:5081/\"" //qa4
 ////            buildConfigField "String", "SERVER_BATHROOM", "\"http://47.107.47.24:5082/\"" //qa5
 //            buildConfigField "String", "SERVER_BATHROOM", "\"http://10.195.90.250:5082/\"" //qa4
 //            buildConfigField "String", "H5_SERVER", "\"http://47.107.47.24:5097/c\"" //qa4
 
+
+
+              //  qa5
 
 //            buildConfigField "String", "SERVER", "\"http://47.107.45.109:5081/\"" //qa5
 ////            buildConfigField "String", "SERVER_BATHROOM", "\"http://47.107.45.109:5082/\"" //qa5
