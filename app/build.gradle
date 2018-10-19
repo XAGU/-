@@ -11,9 +11,6 @@ static def releaseTime() {
     return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
 }
 
-
-
-
 android {
     compileSdkVersion versions.compileSdk
     buildToolsVersion versions.buildTools
