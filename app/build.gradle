@@ -33,7 +33,7 @@ android {
         }
     }
 
-    
+
     signingConfigs {
         config {
             keyAlias 'android_amigo'
