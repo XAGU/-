@@ -30,24 +30,24 @@ public class BleDataManager implements IBleDataManager {
     public static final String WRITE_CHARACTERISTIC_UUID = "d44bc439-abfd-45a2-b575-925416129600";
     public static final String NOTIFY_DESCRIPTOR_UUID = "00002902-0000-1000-8000-00805f9b34fb";
     private IBluetoothClient bluetoothClient;
-    private IBluetoothClient bluetoothClientClassicScan;
+//    private IBluetoothClient bluetoothClientClassicScan;
 
     @Inject
-    public BleDataManager(IBluetoothClient bluetoothClient, IBluetoothClient bluetoothClientScan) {
+    public BleDataManager(IBluetoothClient bluetoothClient) {
         this.bluetoothClient = bluetoothClient;
-        this.bluetoothClientClassicScan = bluetoothClientScan;
+//        this.bluetoothClientClassicScan = bluetoothClientScan;
     }
 
     @Override
     public void scan(BluetoothScanResponse response) {
         bluetoothClient.scan(BluetoothConstants.SCAN_TYPE_BLE, response);
-        bluetoothClientClassicScan.scan(BluetoothConstants.SCAN_TYPE_CLASSIC, response);
+//        bluetoothClientClassicScan.scan(BluetoothConstants.SCAN_TYPE_CLASSIC, response);
     }
 
     @Override
     public void stopScan() {
         bluetoothClient.stopScan();
-        bluetoothClientClassicScan.stopScan();
+//        bluetoothClientClassicScan.stopScan();
     }
 
     @Override
