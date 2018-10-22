@@ -558,7 +558,6 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
     }
 
 
-    List<String> urls = new ArrayList<>();
 
     @Override
     public void addImage(String url, int position, String localPath) {
@@ -570,12 +569,6 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
             this.images.add(url);
         }
 
-        if (this.urls.size() > position) {
-            this.urls.remove(position);
-            this.urls.add(position, localPath);
-        } else {
-            this.urls.add(localPath);
-        }
         refreshAddImage();
         toggleBtnStatus();
     }
@@ -788,7 +781,6 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
             int position = data.getIntExtra(AlbumItemActivity.INTENT_POSITION, -1);
             if (position != -1) {
                 images.remove(position);
-                urls.remove(position);
                 refreshAddImage();
             }
         }
