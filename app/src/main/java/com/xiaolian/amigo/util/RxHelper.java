@@ -1,6 +1,11 @@
 package com.xiaolian.amigo.util;
 
 
+import android.widget.ImageView;
+
+import org.greenrobot.eventbus.Subscribe;
+
+import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
@@ -53,4 +58,6 @@ public class RxHelper {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
+
+
 }

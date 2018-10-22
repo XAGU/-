@@ -72,14 +72,6 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
     TextView tvWithdrawAvailable;
     @BindView(R.id.ll_main)
     LinearLayout llMain;
-    @BindView(R.id.time)
-    TextView time;
-    @BindView(R.id.object)
-    TextView object;
-    @BindView(R.id.description)
-    TextView description;
-    @BindView(R.id.ll_refund_instruction)
-    RelativeLayout llRefundInstruction;
 
     private Long withdrawId;
     private String balance;

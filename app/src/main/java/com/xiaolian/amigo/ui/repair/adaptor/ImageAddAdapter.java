@@ -133,7 +133,7 @@ public class ImageAddAdapter extends CommonAdapter<ImageAddAdapter.ImageItem> {
 
         public ImageItem(String imageUrl  ) {
             this.imageUrl = imageUrl;
-            this.imageBase64Url = imageBase64Url ;
+            this.imageBase64Url  = false  ;
         }
 
         public ImageItem(String imageUrl , boolean imageBase64Url){

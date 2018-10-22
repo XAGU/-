@@ -29,6 +29,20 @@ public class GildeUtils {
 
     }
 
+
+    /**
+     * 加载本地图片
+     * @param context
+     * @param iv
+     * @param path
+     */
+    public static void setPathImage(Context context , ImageView iv ,byte[] path){
+        Glide.with(context)
+                .load(path)
+                .asBitmap()
+                .into(iv);
+
+    }
     /**
      * 加载网络图片
      * @param context

@@ -83,7 +83,6 @@ android {
 //            buildConfigField "String", "H5_SERVER", "\"http://47.106.62.186:5097/\""
 
 
-
             // qa2
 
 //            buildConfigField "String", "SERVER", "\"http://39.108.97.229:5081/\"" // qa2

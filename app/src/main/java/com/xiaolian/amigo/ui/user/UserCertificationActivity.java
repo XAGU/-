@@ -2,13 +2,13 @@ package com.xiaolian.amigo.ui.user;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -36,14 +36,14 @@ import com.xiaolian.amigo.ui.widget.GridSpacesItemDecoration;
 import com.xiaolian.amigo.ui.widget.dialog.ActionSheetDialog;
 import com.xiaolian.amigo.ui.widget.dialog.BathroomBookingDialog;
 import com.xiaolian.amigo.ui.widget.photoview.AlbumItemActivity;
-import com.xiaolian.amigo.util.FileUtils;
+import com.xiaolian.amigo.util.FileIOUtils;
 import com.xiaolian.amigo.util.GildeUtils;
 import com.xiaolian.amigo.util.Log;
-import com.xiaolian.amigo.util.PictureUtil;
 import com.xiaolian.amigo.util.ScreenUtils;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,6 +56,11 @@ import butterknife.OnTextChanged;
 import me.everything.android.ui.overscroll.IOverScrollDecor;
 import me.everything.android.ui.overscroll.IOverScrollUpdateListener;
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 import static com.xiaolian.amigo.ui.user.EditUserInfoActivity.KEY_BACK_DATA;
 import static com.xiaolian.amigo.ui.user.EditUserInfoActivity.KEY_DATA;
@@ -85,6 +90,10 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
 
     private static final int REQUEST_EDIT_USERINFO = 0x2200;
     private static final int IMAGE_COUNT = 3;
+
+    private static final int BACK_TYPE = 1 ;
+
+    private static final int FRONT_TYPE = 2 ;
     @Inject
     IUserCertificationPresenter<IUserCertificationView> presenter;
     @BindView(R.id.tv_department)
@@ -376,11 +385,96 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
                 tvClass.setText(classstr);
             if (!TextUtils.isEmpty(studentIdstr))
                 tvStudentId.setText(studentIdstr);
-        }
+            if (!TextUtils.isEmpty(frontImageBase64)) {
+                ivFrontCard.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                rxjavaByteConverFile("ivFrontImage", frontImageBase64, file -> {
+                    if (file != null && file.exists()){
+                        ivFrontPath =  file.getAbsolutePath();
+                        GildeUtils.setPathImage(UserCertificationActivity.this, ivFrontCard, ivFrontPath);
+                    }
+                });
 
+            }
+
+            if (!TextUtils.isEmpty(backImageBase64)){
+                ivBackCard.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                rxjavaByteConverFile("ivBackImage", backImageBase64, file -> {
+                    if (file != null && file.exists()) {
+                        ivBackPath = file.getAbsolutePath();
+                        GildeUtils.setPathImage(UserCertificationActivity.this, ivBackCard, ivBackPath);
+                    }
+                });
+            }
+
+            if (studentImageBase64 != null && studentImageBase64.size() > 0){
+                if (addImages == null || imageAddAdapter == null) return ;
+                addImages.clear();
+                if (images == null) images = new ArrayList<>();
+                images.clear();
+                for (String imageBase64 : studentImageBase64){
+                    rxjavaByteConverFile("images", imageBase64, file -> {
+                        if (file != null && file.exists()){
+                            String imagePath  = file.getAbsolutePath();
+                            images.add(imagePath);
+                            addImages.add(new ImageAddAdapter.ImageItem(imagePath));
+                            if (images.size() == studentImageBase64.size()){
+                                if (addImages.size() < IMAGE_COUNT) {
+                                    addImages.add( addImages.size(),new ImageAddAdapter.ImageItem());
+                                }
+                                imageAddAdapter.notifyDataSetChanged();
+                                toggleBtnStatus();
+                            }
+                        }
+                    });
+                }
+            }
+        }
         isNeedRefresh = false ;
         isNeedRefreshInfo = false ;
         toggleBtnStatus();
+    }
+
+
+    private void rxjavaByteConverFile(String name ,String imageBase64 , Action1<File> action1){
+        Observable.just(imageBase64)
+                .subscribeOn(Schedulers.io())
+                .map(s -> Base64.decode(s ,Base64.DEFAULT)).subscribeOn(Schedulers.io())
+                .map(bytes -> createFileFromBytes(name ,bytes)).observeOn(AndroidSchedulers.mainThread())
+        .subscribe(action1);
+    }
+
+
+    public File createFileFromBytes(String name ,byte[] bytes){
+
+        if (bytes == null || bytes.length == 0) return null ;
+        String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xiaolian/";
+
+
+        File path = new File(filePath);
+        if (!path.exists() && !path.mkdirs()) {
+//            onError(R.string.no_sd_card_premission);
+            return null;
+        }
+
+        File outputImage = new File(filePath ,name+System.currentTimeMillis()+".jpg");
+
+        try {
+            if (outputImage.exists() && !outputImage.delete()) {
+//                onError(R.string.no_sd_card_premission);
+                return null ;
+            }
+            if (!outputImage.createNewFile()) {
+//                onError(R.string.no_sd_card_premission);
+                return null;
+            }
+        } catch (IOException e) {
+            Log.e(TAG, e.getMessage());
+        }
+
+        boolean b = FileIOUtils.writeFileFromBytesByStream(outputImage ,bytes);
+        if (b)
+            return outputImage ;
+        else return null ;
     }
 
     private void referStatus(User user) {
@@ -439,10 +533,9 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
         imageAddAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                if (images.isEmpty() || (images.size() < IMAGE_COUNT && position == images.size())) {
+                if (images.isEmpty() || (images.size() < IMAGE_COUNT && (position == images.size()))) {
                     getImage2(imagePath -> {
                                 presenter.uploadImage(UserCertificationActivity.this, imagePath, position, OssFileType.CERTIFICAITON);
-
                             }
                     );
                 } else {
@@ -554,7 +647,6 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
             compressImageFile.add(CompressHelper.getDefault(this).compressToFile(getFile(imagePath)));
         }
 
-
         presenter.certify(tvClass.getText().toString(), tvDepartment.getText().toString(),
                 grade, ivCompressFileBackFile, ivCompressFileFrontFile, tvProfession.getText().toString(), stuNum, compressImageFile);
     }
@@ -627,12 +719,8 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
         imageAddAdapter.notifyDataSetChanged();
     }
 
-
-
-
     @OnClick({R.id.iv_first, R.id.iv_second, R.id.iv_third, R.id.front_card_rl, R.id.back_card_rl})
     void chooseImage(View view) {
-        Log.d(TAG, "click");
         switch (view.getId()) {
             case R.id.iv_first: {
                 getImage2(imagePath -> {
@@ -710,12 +798,14 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
             ivFrontCard.setImageDrawable(null);
             ivFrontPath = "";
             ivFrontUrl = "";
+            backImageBase64 = "";
         }
 
         if (requestCode == REQUEST_BACK_CARD_IMAGE && resultCode == RESULT_OK) {
             ivBackCard.setImageDrawable(null);
             ivBackPath = "";
             ivBackUrl = "";
+            frontImageBase64="";
         }
 
         if (requestCode == REQUEST_EDIT_USERINFO && resultCode == RESULT_OK) {
@@ -770,5 +860,26 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
     public void finishDialog() {
         onSuccess("上传成功");
         certifySuccess();
+    }
+
+    //base64字符串转化成图片
+    public  byte[] generateImage(byte[] b)
+    {
+        try
+        {
+            for(int i=0;i<b.length;++i)
+            {
+                if(b[i]<0)
+                {//调整异常数据
+                    b[i]+=256;
+                }
+            }
+
+            return b ;
+        }
+        catch (Exception e)
+        {
+            return b;
+        }
     }
 }

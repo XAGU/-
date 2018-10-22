@@ -238,8 +238,8 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
         tvToolbarIv.setVisibility(View.VISIBLE);
         tvToolbarText.setVisibility(View.GONE);
         certification.setVisibility(View.GONE);
+        setMarginBottom(ScreenUtils.dpToPxInt(this ,20));
         changeDormitory.setVisibility(View.VISIBLE);
-        setMarginBottom(ScreenUtils.dpToPxInt(this, 91));
     }
 
     private void initView() {

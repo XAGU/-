@@ -87,6 +87,10 @@ public class ChooseSchoolPresenter<v extends IChooseSchoolView> extends BasePres
         dto.setSize(size);
         dto.setOnline(online);
         addObserver(userDataManager.getSchoolList(dto), new NetworkObserver<ApiResult<QueryBriefSchoolListRespDTO>>() {
+            @Override
+            public void onStart() {
+
+            }
 
             @Override
             public void onReady(ApiResult<QueryBriefSchoolListRespDTO> result) {
