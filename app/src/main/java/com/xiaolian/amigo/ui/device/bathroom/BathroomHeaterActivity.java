@@ -137,25 +137,17 @@ public class BathroomHeaterActivity extends BathroomBaseActivity implements IBat
 
     private void initData() {
         tvDeviceTitle.setText(bathOrderRespDTO.getLocation());
-        ivTopRightIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), WebActivity.class)
-                        .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_HELP));
-            }
-        });
+        ivTopRightIcon.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), WebActivity.class)
+                .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_HELP)));
         if (bsvWave != null && !bsvWave.isRunning()) {
             bsvWave.startAnim();
         }
 
         tvShowerPayed.setText("已预付" + bathOrderRespDTO.getPrepayAmount() + "元");
         tradeTip.setText(getString(R.string.tip));
-        slideView.setOnUnLockListener(new SlideUnlockView.OnUnLockListener() {
-            @Override
-            public void setUnLocked(boolean lock) {
-                if (lock) {
-                    presenter.askSettle(bathOrderRespDTO.getId());
-                }
+        slideView.setOnUnLockListener(lock -> {
+            if (lock) {
+                presenter.askSettle(bathOrderRespDTO.getId());
             }
         });
     }

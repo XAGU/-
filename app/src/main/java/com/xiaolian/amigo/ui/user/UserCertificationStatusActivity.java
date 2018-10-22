@@ -11,7 +11,6 @@ import android.util.Base64;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -22,6 +21,7 @@ import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.network.model.user.UserCertifyInfoRespDTO;
+import com.xiaolian.amigo.data.vo.UserCertificationStatus;
 import com.xiaolian.amigo.di.componet.DaggerUserActivityComponent;
 import com.xiaolian.amigo.di.componet.UserActivityComponent;
 import com.xiaolian.amigo.di.module.UserActivityModule;
@@ -35,6 +35,8 @@ import com.xiaolian.amigo.ui.widget.photoview.AlbumItemActivity;
 import com.xiaolian.amigo.util.Log;
 import com.xiaolian.amigo.util.ScreenUtils;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,22 +62,6 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
     private static final String CERTIFICATIONINT = "(审核中，请稍等...)";
 
     public static final String KEY_CERTIFICATION_TYPE = "KEY_CERTIFICATION_TYPE";
-
-    public static final String KEY_DEPARTMENT = "KEY_DEPARTMENT";
-
-    public static final String KEY_PROFESSION = "KEY_PROFESSION";
-
-    public static final String KEY_GRADE = "KEY_GRADE";
-
-    public static final String KEY_CLASS = "KEY_CLASS";
-
-    public static final String KEY_STUDENT_ID = "KEY_STUDENT_ID";
-
-    public static final String KEY_STUENDT_IAMGES = "KEY_STUENDT_IAMGES";
-
-    public static final String KEY_BACK_IMAGE = "KEY_BACK_IMAGE";
-
-    public static final String KEY_FRONT_IMAGE = "KEY_FRONT_IMAGE";
 
     @BindView(R.id.certification)
     Button certification;
@@ -256,17 +242,16 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
     public void startCertification() {
 
         Intent intent = new Intent(this, UserCertificationActivity.class);
-        intent.putExtra(KEY_DEPARTMENT, tvDepartment.getText().toString().trim());
-        intent.putExtra(KEY_PROFESSION, tvProfession.getText().toString().trim());
-        intent.putExtra(KEY_CLASS, tvClass.getText().toString().trim());
-        intent.putExtra(KEY_GRADE, tvGrade.getText().toString().trim());
-        intent.putExtra(KEY_STUDENT_ID, tvStudentId.getText().toString().trim());
-        intent.putStringArrayListExtra(KEY_STUENDT_IAMGES, (ArrayList<String>) studentUrlImages);
-        if (cardIdUrlImages != null && cardIdUrlImages.size() > 0) {
-            intent.putExtra(KEY_FRONT_IMAGE, cardIdUrlImages.get(0));
-            intent.putExtra(KEY_BACK_IMAGE, cardIdUrlImages.get(1));
-
+        UserCertificationStatus userCertificationStatus = new UserCertificationStatus(
+           tvDepartment.getText().toString().trim() ,tvProfession.getText().toString().trim() ,
+           tvGrade.getText().toString().trim() ,tvClass.getText().toString().trim(),
+           tvStudentId.getText().toString().trim() ,studentUrlImages);
+        if (cardIdUrlImages != null && cardIdUrlImages.size() > 1){
+            userCertificationStatus.setFrontImageBase64(cardIdUrlImages.get(0));
+            userCertificationStatus.setBackImageBase64(cardIdUrlImages.get(1));
         }
+
+        EventBus.getDefault().postSticky(userCertificationStatus);
         startActivity(intent);
         this.finish();
     }
@@ -276,13 +261,6 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
      */
     private void initScrollView() {
         IOverScrollDecor iOverScrollDecor = OverScrollDecoratorHelper.setUpOverScroll(svMainContainer);
-//        iOverScrollDecor.setOverScrollUpdateListener((decor, state, offset) -> {
-//            if (offset < -(tvToolbarTitle.getHeight()) + tvToolbarTitle.getPaddingTop()) {
-//                setTitleVisiable(View.VISIBLE);
-//            } else {
-//                setTitleVisiable(View.GONE);
-//            }
-//        });
 
     }
 
@@ -494,4 +472,6 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
 
         if (loadingAnimator.isRunning()) loadingAnimator.cancel();
     }
+
+
 }
