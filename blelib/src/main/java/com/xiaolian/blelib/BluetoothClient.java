@@ -27,6 +27,7 @@ import java.util.UUID;
 public class BluetoothClient implements IBluetoothClient {
     private static final String TAG = BluetoothClient.class.getSimpleName();
     private BluetoothScanner bluetoothScanner;
+    private BluetoothScanner bluetoothScannerClassic;
     private IBluetoothConnectWorker bluetoothConnectWorker;
     private Handler handler;
 
@@ -40,8 +41,11 @@ public class BluetoothClient implements IBluetoothClient {
 
     @Override
     public void scan(int scanType, BluetoothScanResponse response) {
-        bluetoothScanner = BluetoothScanner.newInstance(scanType);
+        bluetoothScanner = BluetoothScanner.newInstance(BluetoothConstants.SCAN_TYPE_BLE);
         bluetoothScanner.startScanBluetooth(response);
+
+        bluetoothScannerClassic = BluetoothScanner.newInstance(BluetoothConstants.SCAN_TYPE_CLASSIC);
+        bluetoothScannerClassic.startScanBluetooth(response);
     }
 
     @Override
@@ -49,6 +53,11 @@ public class BluetoothClient implements IBluetoothClient {
         if (bluetoothScanner != null) {
             bluetoothScanner.stopScanBluetooth();
             bluetoothScanner = null;
+        }
+
+        if (bluetoothScannerClassic != null) {
+            bluetoothScannerClassic.stopScanBluetooth();
+            bluetoothScannerClassic = null;
         }
     }
 
