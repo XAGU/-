@@ -216,4 +216,6 @@ public interface ISharedPreferencesHelp {
 
     boolean isShowWithDrawDialog();
 
+
+
 }

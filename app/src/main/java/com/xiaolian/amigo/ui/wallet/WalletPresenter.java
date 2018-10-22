@@ -45,6 +45,8 @@ public class WalletPresenter<V extends IWalletView> extends BasePresenter<V>
      */
     private String useLimit;
 
+    private int certificationStatus ;
+
     @Inject
     WalletPresenter(IWalletDataManager manager) {
         super();
@@ -138,7 +140,7 @@ public class WalletPresenter<V extends IWalletView> extends BasePresenter<V>
                         if (result.getData().isMatch()){
                             getMvpView().gotoWithDraw();
                         }else{
-                            getMvpView().startWithDraw(result.getData());
+                            getMvpView().startWithDraw(result.getData() , getUserCertificationStatus());
                         }
                 }else{
                     getMvpView().onError(result.getError().getDisplayMessage());
@@ -146,4 +148,9 @@ public class WalletPresenter<V extends IWalletView> extends BasePresenter<V>
             }
         });
     }
+
+    public int getUserCertificationStatus() {
+        return manager.getUserCertification();
+    }
+
 }

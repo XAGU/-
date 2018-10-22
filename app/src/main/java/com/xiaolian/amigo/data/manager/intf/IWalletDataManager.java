@@ -173,4 +173,6 @@ public interface IWalletDataManager {
     boolean isShowWithDrawDialog();
 
     void setIsShowWithDrawDialog(boolean b);
+
+    int getUserCertification();
 }

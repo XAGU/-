@@ -30,8 +30,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.xiaolian.amigo.ui.wallet.WithDrawActivity.KEY_CERTIFICATION_STATUS;
 import static com.xiaolian.amigo.ui.wallet.WithDrawActivity.KEY_WITHDRAW_DATA;
-import static com.xiaolian.amigo.ui.wallet.WithDrawActivity.KEY_WITHDRAW_TIME;
 
 /**
  * 我的钱包
@@ -221,15 +221,11 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
 
     @Override
     public void hideGivingBalance() {
-//        vQuestion.setVisibility(View.GONE);
-//        ivQuestion.setVisibility(View.GONE);
         rlGivingBalance.setVisibility(View.GONE);
     }
 
     @Override
     public void showGivingBalance() {
-//        vQuestion.setVisibility(View.VISIBLE);
-//        ivQuestion.setVisibility(View.VISIBLE);
         rlGivingBalance.setVisibility(View.VISIBLE);
     }
 
@@ -276,9 +272,11 @@ public class WalletActivity extends WalletBaseActivity implements IWalletView {
     }
 
     @Override
-    public void startWithDraw(WithdrawExplanationRespDTO data) {
+    public void startWithDraw(WithdrawExplanationRespDTO data , int status) {
+
         Intent intent = new Intent(this ,WithDrawActivity.class);
         intent.putExtra(KEY_WITHDRAW_DATA  ,data);
+        intent.putExtra(KEY_CERTIFICATION_STATUS , status);
         startActivity(intent);
     }
 

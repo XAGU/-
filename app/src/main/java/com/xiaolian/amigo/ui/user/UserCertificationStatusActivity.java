@@ -237,7 +237,7 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
     private void showBarIv() {
         tvToolbarIv.setVisibility(View.VISIBLE);
         tvToolbarText.setVisibility(View.GONE);
-        certification.setVisibility(View.VISIBLE);
+        certification.setVisibility(View.GONE);
         changeDormitory.setVisibility(View.VISIBLE);
         setMarginBottom(ScreenUtils.dpToPxInt(this, 91));
     }
@@ -261,7 +261,7 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
         intent.putExtra(KEY_CLASS, tvClass.getText().toString().trim());
         intent.putExtra(KEY_GRADE, tvGrade.getText().toString().trim());
         intent.putExtra(KEY_STUDENT_ID, tvStudentId.getText().toString().trim());
-        intent.putStringArrayListExtra(KEY_STUDENT_ID, (ArrayList<String>) studentUrlImages);
+        intent.putStringArrayListExtra(KEY_STUENDT_IAMGES, (ArrayList<String>) studentUrlImages);
         if (cardIdUrlImages != null && cardIdUrlImages.size() > 0) {
             intent.putExtra(KEY_FRONT_IMAGE, cardIdUrlImages.get(0));
             intent.putExtra(KEY_BACK_IMAGE, cardIdUrlImages.get(1));

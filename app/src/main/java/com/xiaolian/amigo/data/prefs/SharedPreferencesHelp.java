@@ -702,7 +702,7 @@ public class    SharedPreferencesHelp implements ISharedPreferencesHelp {
 
     @Override
     public void setCertifyStauts(int certifyStauts) {
-        mSharedPreferences.edit().putInt(PREF_KEY_CERTIFY_STATUS ,-1).apply();
+        mSharedPreferences.edit().putInt(PREF_KEY_CERTIFY_STATUS ,certifyStauts).apply();
     }
 
     @Override
@@ -719,7 +719,6 @@ public class    SharedPreferencesHelp implements ISharedPreferencesHelp {
     public boolean isShowWithDrawDialog() {
         return mSharedPreferences.getBoolean(PREF_KEY_WITHDRAW ,true);
     }
-
 
     @Override
     public void logout() {

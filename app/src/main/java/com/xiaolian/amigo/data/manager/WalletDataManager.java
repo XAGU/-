@@ -211,6 +211,11 @@ public class WalletDataManager implements IWalletDataManager {
     }
 
     @Override
+    public int getUserCertification() {
+        return sharedPreferencesHelp.getCertifyStatus();
+    }
+
+    @Override
     public void setLastWithdrawId(Long id) {
         sharedPreferencesHelp.setLastWithdrawId(id);
     }

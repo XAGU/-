@@ -1,9 +1,6 @@
 package com.xiaolian.amigo.data.manager;
 
-import android.util.Log;
-
 import com.xiaolian.amigo.data.manager.intf.IBleDataManager;
-import com.xiaolian.blelib.BluetoothClient;
 import com.xiaolian.blelib.BluetoothConstants;
 import com.xiaolian.blelib.IBluetoothClient;
 import com.xiaolian.blelib.connect.BluetoothCharacteristicNotifyCallback;

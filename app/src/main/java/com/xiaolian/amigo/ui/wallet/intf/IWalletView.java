@@ -64,5 +64,5 @@ public interface IWalletView extends IBaseView {
 
     void startFunds();
 
-    void startWithDraw(WithdrawExplanationRespDTO data);
+    void startWithDraw(WithdrawExplanationRespDTO data , int status);
 }

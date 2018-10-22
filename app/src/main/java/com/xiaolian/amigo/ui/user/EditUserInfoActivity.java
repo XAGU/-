@@ -94,6 +94,8 @@ public class EditUserInfoActivity extends BaseToolBarActivity implements IEditUs
     }
 
 
+
+
     /**
      * 设置EditText 的hint
      */
