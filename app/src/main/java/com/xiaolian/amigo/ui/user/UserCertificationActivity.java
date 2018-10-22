@@ -59,7 +59,6 @@ import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 import static com.xiaolian.amigo.ui.user.EditUserInfoActivity.KEY_BACK_DATA;
@@ -862,24 +861,4 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
         certifySuccess();
     }
 
-    //base64字符串转化成图片
-    public  byte[] generateImage(byte[] b)
-    {
-        try
-        {
-            for(int i=0;i<b.length;++i)
-            {
-                if(b[i]<0)
-                {//调整异常数据
-                    b[i]+=256;
-                }
-            }
-
-            return b ;
-        }
-        catch (Exception e)
-        {
-            return b;
-        }
-    }
 }
