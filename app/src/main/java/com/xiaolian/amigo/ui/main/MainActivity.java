@@ -218,7 +218,19 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         fragments = new Fragment[3];
         initTable();
 
+        rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .subscribe(granted -> {
+                    if (granted) {
+
+                    } else {
+                        showMessage("没有SD卡权限");
+                    }
+                });
     }
+
+
+
+
 
 
 

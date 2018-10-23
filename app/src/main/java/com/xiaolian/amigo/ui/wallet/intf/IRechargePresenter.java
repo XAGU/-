@@ -41,7 +41,6 @@ public interface IRechargePresenter<V extends IRechargeView> extends IBasePresen
 
     void getWithDrawExplain();
 
-    boolean IsShowWithDrawDialog();
 
     void setIsShowWithDrawDialog(boolean b);
 }

@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.user;
 
+import android.Manifest;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -155,6 +156,10 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
             R.drawable.loading_one, R.drawable.loading_two,
             R.drawable.loading_three, R.drawable.loading_four
     };
+
+    private UserCertifyInfoRespDTO dto ;
+
+
     @Override
     protected void setUp() {
 
@@ -174,8 +179,14 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
                 setTitleVisiable(View.GONE);
             }
         });
-
-
+        rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .subscribe(granted -> {
+                    if (granted) {
+                        if (dto != null ) writeImageToFile(dto);
+                    } else {
+                        showMessage("没有SD卡权限");
+                    }
+                });
         initJect();
         initView();
         initImageAdd();
@@ -438,7 +449,11 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
         tvClass.setText(data.getClassName());
         tvStudentId.setText(data.getStuNum() + "");
         tvDormitory.setText(presenter.getDormInfo());
+        this.dto = data ;
+        writeImageToFile(data);
+    }
 
+    private void writeImageToFile(UserCertifyInfoRespDTO data) {
         if (cardIdUrlImages.size() > 0) cardIdUrlImages.clear();
 
         if (studentUrlImages.size() > 0) studentUrlImages.clear();

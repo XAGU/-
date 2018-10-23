@@ -141,7 +141,6 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
         recyclerView1.setAdapter(typeAdaptor);
 
         presenter.onAttach(RechargeActivity.this);
-        if (presenter.IsShowWithDrawDialog())
         presenter.getWithDrawExplain();
         presenter.getRechargeList();
         presenter.getRechargeTypeList();
@@ -152,7 +151,6 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
         withDrawExplainAlertDialog = new WithDrawExplainAlertDialog(this);
         withDrawExplainAlertDialog.setOnOkClickListener(dialog -> {
             dialog.dismiss();
-            presenter.setIsShowWithDrawDialog(false);
         });
     }
 
