@@ -254,13 +254,4 @@ public class RechargePresenter<V extends IRechargeView> extends BasePresenter<V>
         });
     }
 
-    @Override
-    public boolean IsShowWithDrawDialog() {
-        return manager.isShowWithDrawDialog();
-    }
-
-    @Override
-    public void setIsShowWithDrawDialog(boolean b) {
-        manager.setIsShowWithDrawDialog(b);
-    }
 }
