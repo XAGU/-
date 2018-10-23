@@ -3,12 +3,10 @@ package com.xiaolian.amigo.ui.user;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -37,7 +35,6 @@ import com.xiaolian.amigo.ui.widget.GridSpacesItemDecoration;
 import com.xiaolian.amigo.ui.widget.dialog.ActionSheetDialog;
 import com.xiaolian.amigo.ui.widget.dialog.BathroomBookingDialog;
 import com.xiaolian.amigo.ui.widget.photoview.AlbumItemActivity;
-import com.xiaolian.amigo.util.FileIOUtils;
 import com.xiaolian.amigo.util.GildeUtils;
 import com.xiaolian.amigo.util.Log;
 import com.xiaolian.amigo.util.ScreenUtils;
@@ -48,7 +45,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,10 +57,6 @@ import butterknife.OnTextChanged;
 import me.everything.android.ui.overscroll.IOverScrollDecor;
 import me.everything.android.ui.overscroll.IOverScrollUpdateListener;
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
 
 import static com.xiaolian.amigo.ui.user.EditUserInfoActivity.KEY_BACK_DATA;
 import static com.xiaolian.amigo.ui.user.EditUserInfoActivity.KEY_DATA;
@@ -225,12 +217,6 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
 
     private String studentIdstr ;
 
-    private List<String> studentImageBase64 ;
-
-    private String frontImageBase64 ;
-
-    private String backImageBase64 ;
-
 
     private BathroomBookingDialog bathroomBookingDialog;
 
@@ -376,48 +362,6 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
     }
 
 
-    private void rxjavaByteConverFile(String name ,String imageBase64 , Action1<File> action1){
-        Observable.just(imageBase64)
-                .subscribeOn(Schedulers.io())
-                .map(s -> Base64.decode(s ,Base64.DEFAULT)).subscribeOn(Schedulers.io())
-                .map(bytes -> createFileFromBytes(name ,bytes)).observeOn(AndroidSchedulers.mainThread())
-        .subscribe(action1);
-    }
-
-
-    public File createFileFromBytes(String name ,byte[] bytes){
-
-        if (bytes == null || bytes.length == 0) return null ;
-        String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xiaolian/";
-
-
-        File path = new File(filePath);
-        if (!path.exists() && !path.mkdirs()) {
-//            onError(R.string.no_sd_card_premission);
-            return null;
-        }
-        int random = (int)(Math.random()*100+1) ;
-        File outputImage = new File(filePath ,name +random+System.currentTimeMillis()+".jpg");
-
-        try {
-            if (outputImage.exists() && !outputImage.delete()) {
-//                onError(R.string.no_sd_card_premission);
-                return null ;
-            }
-            if (!outputImage.createNewFile()) {
-//                onError(R.string.no_sd_card_premission);
-                return null;
-            }
-        } catch (IOException e) {
-            Log.e(TAG, e.getMessage());
-        }
-
-        boolean b = FileIOUtils.writeFileFromBytesByStream(outputImage ,bytes);
-        if (b)
-            return outputImage ;
-        else return null ;
-    }
-
     private void referStatus(User user) {
 
         tvDepartment.setText(user.getDepartment());
@@ -478,9 +422,12 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
         gradestr = userCertificationStatus.getGradeStr();
         classstr = userCertificationStatus.getClassStr();
         studentIdstr = userCertificationStatus.getStudentIdStr();
-        studentImageBase64 = userCertificationStatus.getStudentImageBase64();
-        frontImageBase64 = userCertificationStatus.getFrontImageBase64();
-        backImageBase64 = userCertificationStatus.getBackImageBase64() ;
+        if (images != null ){
+            images.clear();
+            images.addAll(userCertificationStatus.getStudentImageBase64());
+        }
+        ivFrontPath = userCertificationStatus.getFrontImageBase64();
+        ivBackPath = userCertificationStatus.getBackImageBase64() ;
             if (!TextUtils.isEmpty(department))
                 tvDepartment.setText(department);
             if (!TextUtils.isEmpty(profession))
@@ -491,50 +438,26 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
                 tvClass.setText(classstr);
             if (!TextUtils.isEmpty(studentIdstr))
                 tvStudentId.setText(studentIdstr);
-            if (!TextUtils.isEmpty(frontImageBase64)) {
+            if (!TextUtils.isEmpty(ivFrontPath)) {
                 ivFrontCard.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                rxjavaByteConverFile("ivFrontImage", frontImageBase64, file -> {
-                    if (file != null && file.exists()){
-                        ivFrontPath =  file.getAbsolutePath();
-                        GildeUtils.setPathImage(UserCertificationActivity.this, ivFrontCard, ivFrontPath);
-                    }
-                });
-
+                GildeUtils.setPathImage(this, ivFrontCard, ivFrontPath);
             }
 
-            if (!TextUtils.isEmpty(backImageBase64)){
+            if (!TextUtils.isEmpty(ivBackPath)){
                 ivBackCard.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                rxjavaByteConverFile("ivBackImage", backImageBase64, file -> {
-                    if (file != null && file.exists()) {
-                        ivBackPath = file.getAbsolutePath();
-                        GildeUtils.setPathImage(UserCertificationActivity.this, ivBackCard, ivBackPath);
-                    }
-                });
+                GildeUtils.setPathImage(this, ivBackCard, ivBackPath);
             }
 
-            if (studentImageBase64 != null && studentImageBase64.size() > 0){
+            if (images != null && images.size() > 0){
                 if (addImages == null || imageAddAdapter == null) return ;
                 addImages.clear();
-                if (images == null) images = new ArrayList<>();
-                images.clear();
-                int position ;
-                for (String imageBase64 : studentImageBase64){
-
-                    rxjavaByteConverFile("images", imageBase64, file -> {
-                        if (file != null && file.exists()){
-                            String imagePath  = file.getAbsolutePath();
-                            images.add(imagePath);
-                            addImages.add(new ImageAddAdapter.ImageItem(imagePath));
-                            if (images.size() == studentImageBase64.size()){
-                                if (addImages.size() < IMAGE_COUNT) {
-                                    addImages.add( addImages.size(),new ImageAddAdapter.ImageItem());
-                                }
-                                imageAddAdapter.notifyDataSetChanged();
-                                toggleBtnStatus();
-                            }
-                        }
-                    });
+                for (String imagePath : images){
+                    addImages.add(new ImageAddAdapter.ImageItem(imagePath));
                 }
+                if (addImages.size() < IMAGE_COUNT){
+                    addImages.add(new ImageAddAdapter.ImageItem());
+                }
+                imageAddAdapter.notifyDataSetChanged();
             }
             tvDormitory.setText(presenter.getDormitory());
             toggleBtnStatus();
@@ -807,14 +730,12 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
             ivFrontCard.setImageDrawable(null);
             ivFrontPath = "";
             ivFrontUrl = "";
-            backImageBase64 = "";
         }
 
         if (requestCode == REQUEST_BACK_CARD_IMAGE && resultCode == RESULT_OK) {
             ivBackCard.setImageDrawable(null);
             ivBackPath = "";
             ivBackUrl = "";
-            frontImageBase64="";
         }
 
         if (requestCode == REQUEST_EDIT_USERINFO && resultCode == RESULT_OK) {

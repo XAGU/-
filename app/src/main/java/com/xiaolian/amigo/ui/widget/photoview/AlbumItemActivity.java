@@ -137,6 +137,10 @@ public class AlbumItemActivity extends AppCompatActivity implements View.OnClick
         loadAlbum();
     }
 
+
+
+
+
     /**
      * 设置图片路径
      */

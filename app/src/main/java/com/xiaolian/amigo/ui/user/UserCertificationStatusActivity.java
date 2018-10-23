@@ -4,6 +4,7 @@ import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,12 +33,15 @@ import com.xiaolian.amigo.ui.user.intf.IUserCertificationStatusView;
 import com.xiaolian.amigo.ui.widget.ErrorLayout;
 import com.xiaolian.amigo.ui.widget.GridSpacesItemDecoration;
 import com.xiaolian.amigo.ui.widget.photoview.AlbumItemActivity;
+import com.xiaolian.amigo.util.FileIOUtils;
 import com.xiaolian.amigo.util.Log;
 import com.xiaolian.amigo.util.ScreenUtils;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +53,10 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import me.everything.android.ui.overscroll.IOverScrollDecor;
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 import static com.xiaolian.amigo.util.Constant.CERTIFICATION_FAILURE;
 import static com.xiaolian.amigo.util.Constant.CERTIFICATION_PASS;
@@ -152,7 +160,6 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
 
     }
 
-
     @SuppressLint("NewApi")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -168,8 +175,8 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
             }
         });
 
+
         initJect();
-        initScrollView();
         initView();
         initImageAdd();
         presenter.getCertifyInfo();
@@ -256,13 +263,6 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
         this.finish();
     }
 
-    /**
-     * 滑动响应
-     */
-    private void initScrollView() {
-        IOverScrollDecor iOverScrollDecor = OverScrollDecoratorHelper.setUpOverScroll(svMainContainer);
-
-    }
 
     private void initJect() {
         mActivityComponent = DaggerUserActivityComponent.builder()
@@ -277,6 +277,47 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
         viewLine.setVisibility(visiable);
     }
 
+
+    private void rxjavaByteConverFile(String name ,String imageBase64 , Action1<File> action1){
+        Observable.just(imageBase64)
+                .subscribeOn(Schedulers.io())
+                .map(s -> Base64.decode(s ,Base64.DEFAULT)).subscribeOn(Schedulers.io())
+                .map(bytes -> createFileFromBytes(name ,bytes)).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(action1);
+    }
+
+    public File createFileFromBytes(String name ,byte[] bytes){
+
+        if (bytes == null || bytes.length == 0) return null ;
+        String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xiaolian/";
+
+
+        File path = new File(filePath);
+        if (!path.exists() && !path.mkdirs()) {
+//            onError(R.string.no_sd_card_premission);
+            return null;
+        }
+        int random = (int)(Math.random()*100+1) ;
+        File outputImage = new File(filePath ,name +random+System.currentTimeMillis()+".jpg");
+
+        try {
+            if (outputImage.exists() && !outputImage.delete()) {
+//                onError(R.string.no_sd_card_premission);
+                return null ;
+            }
+            if (!outputImage.createNewFile()) {
+//                onError(R.string.no_sd_card_premission);
+                return null;
+            }
+        } catch (IOException e) {
+            Log.e(TAG, e.getMessage());
+        }
+
+        boolean b = FileIOUtils.writeFileFromBytesByStream(outputImage ,bytes);
+        if (b)
+            return outputImage ;
+        else return null ;
+    }
 
     @Override
     protected void onDestroy() {
@@ -403,30 +444,36 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
         if (studentUrlImages.size() > 0) studentUrlImages.clear();
 
 
-        studentUrlImages.addAll(data.getStuPicturesData());
         for (String url : data.getStuPicturesData()) {
-
-//            Log.wtf(TAG ,url);
-            studentIdImages.add(new ImageAddAdapter.ImageItem(Base64.decode(url, Base64.DEFAULT)));
-
-//            studentIdImages.add(new ImageAddAdapter.ImageItem(url));
+            rxjavaByteConverFile("images", url, file -> {
+                if (file != null && file.exists()){
+                    String imagePath  = file.getAbsolutePath();
+                    studentIdImages.add(new ImageAddAdapter.ImageItem(imagePath));
+                    studentUrlImages.add(imagePath);
+                }
+            });
         }
         if (studentIdAdapter != null) studentIdAdapter.notifyDataSetChanged();
 
         if (cardIdImages != null) {
             cardIdImages.clear();
 
+            rxjavaByteConverFile("ivFrontImage", data.getIdCardFrontData(), file -> {
+                if (file != null && file.exists()){
+                    String imagePath  = file.getAbsolutePath();
+                    cardIdImages.add(new ImageAddAdapter.ImageItem(imagePath));
+                    cardIdUrlImages.add(imagePath);
+                }
+            });
 
-            cardIdImages.add(new ImageAddAdapter.ImageItem(Base64.decode(data.getIdCardFrontData(), Base64.DEFAULT)));
-            cardIdImages.add(new ImageAddAdapter.ImageItem(Base64.decode(data.getIdCardBehindData(), Base64.DEFAULT)));
-
-
-            cardIdUrlImages.add(data.getIdCardFrontData());
-            cardIdUrlImages.add(data.getIdCardBehindData());
-
-
+            rxjavaByteConverFile("ivBackImage", data.getIdCardFrontData(), file -> {
+                if (file != null && file.exists()){
+                    String imagePath  = file.getAbsolutePath();
+                    cardIdImages.add(new ImageAddAdapter.ImageItem(imagePath));
+                    cardIdUrlImages.add(imagePath);
+                }
+            });
         }
-
         cardIdAdapter.notifyDataSetChanged();
     }
 
