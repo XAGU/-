@@ -179,7 +179,7 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
                 setTitleVisiable(View.GONE);
             }
         });
-        rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE ,Manifest.permission.READ_EXTERNAL_STORAGE)
                 .subscribe(granted -> {
                     if (granted) {
                         if (dto != null ) writeImageToFile(dto);
