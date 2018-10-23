@@ -5,6 +5,8 @@ import android.widget.ImageView;
 import com.xiaolian.amigo.data.network.model.user.UserGradeInfoRespDTO;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 
+import okhttp3.MediaType;
+
 public interface IUserCertificationView  extends IBaseView {
     void addImage(String filePath, int currentImagePosition, String objectKey);
 
@@ -16,7 +18,6 @@ public interface IUserCertificationView  extends IBaseView {
     void certifySuccess();
 
     void showUpDialog();
-
     void hideSuccessDialog();
 
     void hideFailureDialgo();

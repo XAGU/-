@@ -1,7 +1,5 @@
 package com.xiaolian.amigo.ui.device.bathroom;
 
-import android.util.Log;
-
 import com.xiaolian.amigo.data.enumeration.BathTradeType;
 import com.xiaolian.amigo.data.manager.intf.IBathroomDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;

@@ -54,9 +54,12 @@ public class AlbumItemActivity extends AppCompatActivity implements View.OnClick
     public static final String EXTRA_CURRENT = "current";
 
     /**
-     *
+     *  本地图片
      */
     public static final String EXTRA_TYPE_LOCAL = "local";
+
+    public static final String EXTTRA_TYPE_LOCAL_LIST = "local_list";
+
 
 
     private AlbumViewPager mViewPager;//显示大图
@@ -159,6 +162,13 @@ public class AlbumItemActivity extends AppCompatActivity implements View.OnClick
             if (pathLocal != null ){
                 mPaths.add(pathLocal);
             }
+
+
+            List<String> localPaths = getIntent().getStringArrayListExtra(EXTTRA_TYPE_LOCAL_LIST);
+            if (localPaths != null && localPaths.size() > 0 ){
+                mPaths.addAll(localPaths);
+            }
+
             String pathSingle = getIntent().getStringExtra(EXTRA_TYPE_SINGLE);
             if (pathSingle != null) {
                 mPaths.add(Constant.IMAGE_PREFIX + pathSingle);

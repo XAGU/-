@@ -87,7 +87,7 @@ public class WithDrawActivity extends WalletBaseActivity implements IWithDrawVie
         if (status == CERTIFICATION_PASS){
             btnSubmit.setText("朕知道了");
         }else{
-            btnSubmit.setText("前往认证");
+            btnSubmit.setText("前往学生认证");
         }
     }
 

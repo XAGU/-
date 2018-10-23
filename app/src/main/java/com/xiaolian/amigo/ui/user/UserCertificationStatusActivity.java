@@ -9,6 +9,7 @@ import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
@@ -52,8 +53,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import me.everything.android.ui.overscroll.IOverScrollDecor;
-import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -71,6 +70,28 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
     private static final String CERTIFICATIONINT = "(审核中，请稍等...)";
 
     public static final String KEY_CERTIFICATION_TYPE = "KEY_CERTIFICATION_TYPE";
+
+
+
+    public static final String KEY_DEPARTMENT = "KEY_DEPARTMENT";
+
+    public static final String KEY_PROFESSION = "KEY_PROFESSION" ;
+
+    public static final String KEY_GRADE = "KEY_GRADE";
+
+    public static final String KEY_CLASS = "KEY_CLASS" ;
+
+    public static final String KEY_STUDTENT_ID = "KEY_STUDTENT_ID" ;
+
+
+    public static final String KEY_STUDENT_IMAGE = "KEY_STUDENT_IMAGE";
+
+    public static final String KEY_FRONT_IMAGE = "KEY_FRONT_IMAGE" ;
+
+    public static final String KEY_BACK_IMAGE = "KEY_BACK_IMAGE" ;
+
+
+
 
     @BindView(R.id.certification)
     Button certification;
@@ -159,10 +180,44 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
 
     private UserCertifyInfoRespDTO dto ;
 
+    private String department ;
+
+    private String profession ;
+
+    private String grade ;
+
+    private String classstr ;
+
+    private String studentId ;
+
+    private String frontImage ;
+
+    private String backImage;
+
+    private boolean isNeedRefer = false ;
+
+    private int type ;
 
     @Override
     protected void setUp() {
-
+        if (getIntent() != null){
+            type = getIntent().getIntExtra(KEY_CERTIFICATION_TYPE , -1);
+            department= getIntent().getStringExtra(KEY_DEPARTMENT);
+            profession = getIntent().getStringExtra(KEY_PROFESSION);
+            grade = getIntent().getStringExtra(KEY_GRADE);
+            classstr = getIntent().getStringExtra(KEY_CLASS);
+            studentId = getIntent().getStringExtra(KEY_STUDTENT_ID);
+            if (cardIdUrlImages == null) cardIdUrlImages = new ArrayList<>();
+            if (studentUrlImages == null) studentUrlImages = new ArrayList<>();
+            if (cardIdUrlImages.size() > 0) cardIdUrlImages.clear();
+            if (studentUrlImages.size() > 0) studentUrlImages.clear();
+            studentUrlImages = getIntent().getStringArrayListExtra(KEY_STUDENT_IMAGE);
+            backImage = getIntent().getStringExtra(KEY_BACK_IMAGE);
+            frontImage = getIntent().getStringExtra(KEY_FRONT_IMAGE);
+            cardIdUrlImages.add(frontImage);
+            cardIdUrlImages.add(backImage);
+            isNeedRefer = true ;
+        }
     }
 
     @SuppressLint("NewApi")
@@ -190,8 +245,12 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
         initJect();
         initView();
         initImageAdd();
-        presenter.getCertifyInfo();
         presenter.getDormitory();
+        if (!isNeedRefer)
+        presenter.getCertifyInfo();
+
+
+        tvDormitory.setText(presenter.getDormInfo());
     }
 
 
@@ -340,14 +399,11 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
         loadingAnimator.setRepeatCount(ValueAnimator.INFINITE);
         loadingAnimator.setDuration(1000);
         loadingAnimator.setInterpolator(new LinearInterpolator());
-        loadingAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                int currentValue = (int) animation.getAnimatedValue();
-                Log.wtf(TAG, currentValue + "");
-                if (ivLoading != null)
-                    ivLoading.setImageResource(loadingRes[currentValue]);
-            }
+        loadingAnimator.addUpdateListener(animation -> {
+            int currentValue = (int) animation.getAnimatedValue();
+            Log.wtf(TAG, currentValue + "");
+            if (ivLoading != null)
+                ivLoading.setImageResource(loadingRes[currentValue]);
         });
     }
 
@@ -356,8 +412,10 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
         startActivity(this, UserCertificationActivity.class);
     }
 
+    boolean needReferDormitory = false ;
     @OnClick(R.id.change_dormitory)
     public void changeDormitory() {
+        needReferDormitory = true ;
         Intent intent;
         intent = new Intent(this, ListChooseActivity.class);
         intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
@@ -379,7 +437,7 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 Intent intent = new Intent(UserCertificationStatusActivity.this, AlbumItemActivity.class);
                 intent.putExtra(AlbumItemActivity.EXTRA_CURRENT, position);
-                intent.putStringArrayListExtra(AlbumItemActivity.EXTRA_TYPE_LOCAL, (ArrayList<String>) cardIdUrlImages);
+                intent.putStringArrayListExtra(AlbumItemActivity.EXTTRA_TYPE_LOCAL_LIST, (ArrayList<String>) cardIdUrlImages);
                 intent.putExtra(AlbumItemActivity.INTENT_ACTION, AlbumItemActivity.ACTION_NORMAL);
                 startActivity(intent);
             }
@@ -402,7 +460,7 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 Intent intent = new Intent(UserCertificationStatusActivity.this, AlbumItemActivity.class);
                 intent.putExtra(AlbumItemActivity.EXTRA_CURRENT, position);
-                intent.putStringArrayListExtra(AlbumItemActivity.EXTRA_TYPE_LOCAL, (ArrayList<String>) studentUrlImages);
+                intent.putStringArrayListExtra(AlbumItemActivity.EXTTRA_TYPE_LOCAL_LIST, (ArrayList<String>) studentUrlImages);
                 intent.putExtra(AlbumItemActivity.INTENT_ACTION, AlbumItemActivity.ACTION_NORMAL);
                 startActivity(intent);
             }
@@ -422,8 +480,39 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
     @Override
     protected void onResume() {
         super.onResume();
-        if (tvDormitory != null && presenter != null)
+        if (isNeedRefer || needReferDormitory) {
+            presenter.getDormitory();
             tvDormitory.setText(presenter.getDormInfo());
+        }
+
+        if (isNeedRefer){
+            if (!TextUtils.isEmpty(department))
+                tvDormitory.setText(department);
+
+            if (!TextUtils.isEmpty(profession))
+                tvProfession.setText(profession);
+
+            if (!TextUtils.isEmpty(grade))
+                tvGrade.setText(grade);
+
+            if (!TextUtils.isEmpty(classstr))
+                tvClass.setText(classstr);
+
+            if(studentUrlImages != null && studentUrlImages.size() > 0 && studentIdAdapter != null){
+                studentIdAdapter.notifyDataSetChanged();
+            }
+
+            if (cardIdUrlImages != null && cardIdUrlImages.size() > 0 && cardIdAdapter != null){
+                cardIdAdapter.notifyDataSetChanged();
+            }
+            if (type != -1){
+                setStatus(type);
+            }
+
+        }
+        isNeedRefer = false ;
+        needReferDormitory = false ;
+
     }
 
     @Override

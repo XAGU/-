@@ -61,6 +61,14 @@ import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 import static com.xiaolian.amigo.ui.user.EditUserInfoActivity.KEY_BACK_DATA;
 import static com.xiaolian.amigo.ui.user.EditUserInfoActivity.KEY_DATA;
 import static com.xiaolian.amigo.ui.user.EditUserInfoActivity.KEY_TYPE;
+import static com.xiaolian.amigo.ui.user.UserCertificationStatusActivity.KEY_BACK_IMAGE;
+import static com.xiaolian.amigo.ui.user.UserCertificationStatusActivity.KEY_CLASS;
+import static com.xiaolian.amigo.ui.user.UserCertificationStatusActivity.KEY_DEPARTMENT;
+import static com.xiaolian.amigo.ui.user.UserCertificationStatusActivity.KEY_FRONT_IMAGE;
+import static com.xiaolian.amigo.ui.user.UserCertificationStatusActivity.KEY_GRADE;
+import static com.xiaolian.amigo.ui.user.UserCertificationStatusActivity.KEY_PROFESSION;
+import static com.xiaolian.amigo.ui.user.UserCertificationStatusActivity.KEY_STUDENT_IMAGE;
+import static com.xiaolian.amigo.ui.user.UserCertificationStatusActivity.KEY_STUDTENT_ID;
 import static com.xiaolian.amigo.util.Constant.CLASS;
 import static com.xiaolian.amigo.util.Constant.DEPARTMENT;
 import static com.xiaolian.amigo.util.Constant.PROFESSION;
@@ -183,9 +191,6 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
 
     private String ivBackPath;  // 背面照图片地址
 
-    private String ivFrontUrl;  // 正面照片Url
-
-    private String ivBackUrl; //  背面照片Url
 
 
     private File ivBackFile ;
@@ -352,7 +357,6 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
         super.onResume();
         if (isNeedRefresh || isNeedRefreshInfo ) {
             tvDormitory.setText(presenter.getDormitory());
-
         }
         isNeedRefresh = false ;
         isNeedRefreshInfo = false ;
@@ -361,7 +365,6 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
 
 
     private void referStatus(User user) {
-
         tvDepartment.setText(user.getDepartment());
         tvProfession.setText(user.getProfession());
         tvGrade.setText(user.getGrade());
@@ -519,12 +522,10 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
         GildeUtils.setPathImage(this, iv, filePath);
         if (iv.getId() == R.id.iv_back_card) {
             ivBackPath = filePath;
-            ivBackUrl = objectKey;
 
         }
         if (iv.getId() == R.id.iv_front_card) {
             ivFrontPath = filePath;
-            ivFrontUrl = objectKey;
         }
         toggleBtnStatus();
     }
@@ -600,6 +601,16 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
     @Override
     public void certifySuccess() {
 
+        Intent intent = new Intent(this ,UserCertificationStatusActivity.class);
+        intent.putExtra(KEY_DEPARTMENT ,tvDepartment.getText().toString().trim());
+        intent.putExtra(KEY_PROFESSION ,tvProfession.getText().toString().trim());
+        intent.putExtra(KEY_GRADE ,tvGrade.getText().toString().trim());
+        intent.putExtra(KEY_CLASS ,tvClass.getText().toString().trim());
+        intent.putExtra(KEY_STUDTENT_ID , tvStudentId.getText().toString().trim());
+        intent.putStringArrayListExtra(KEY_STUDENT_IMAGE , (ArrayList<String>) images);
+        intent.putExtra(KEY_BACK_IMAGE ,ivBackPath);
+        intent.putExtra(KEY_FRONT_IMAGE ,ivFrontPath);
+        startActivity(intent);
         finish();
     }
 
@@ -728,13 +739,11 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
         if (requestCode == REQUEST_FRONT_CARD_IMAGE && resultCode == RESULT_OK) {
             ivFrontCard.setImageDrawable(null);
             ivFrontPath = "";
-            ivFrontUrl = "";
         }
 
         if (requestCode == REQUEST_BACK_CARD_IMAGE && resultCode == RESULT_OK) {
             ivBackCard.setImageDrawable(null);
             ivBackPath = "";
-            ivBackUrl = "";
         }
 
         if (requestCode == REQUEST_EDIT_USERINFO && resultCode == RESULT_OK) {

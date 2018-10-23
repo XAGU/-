@@ -21,6 +21,7 @@ import com.xiaolian.amigo.data.enumeration.IntentAction;
 import com.xiaolian.amigo.data.enumeration.WithdrawWay;
 import com.xiaolian.amigo.data.network.model.user.UserResidenceDTO;
 import com.xiaolian.amigo.data.network.model.user.UserResidenceInListDTO;
+import com.xiaolian.amigo.data.vo.UserCertificationStatus;
 import com.xiaolian.amigo.di.componet.DaggerUserActivityComponent;
 import com.xiaolian.amigo.di.componet.UserActivityComponent;
 import com.xiaolian.amigo.di.module.UserActivityModule;

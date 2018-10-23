@@ -201,21 +201,21 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
     public void initPop() {
         if (pop == null) {
             pop = new ChooseBathroomPop(this);
-            pop.setPopButtonClickListener(new ChooseBathroomPop.PopButtonClickListener() {
-                @Override
-                public void click(BuildingTrafficDTO.FloorsBean floorsBean) {
-                    Log.e(TAG, "click: "  );
-                    if (floorsBean != null) {
-                        if (needCharge){
-                            onError("余额不足，请前往充值");
-                            startActivity(new Intent(getApplicationContext(), RechargeActivity.class));
-                        }else {
-                            Log.e(TAG, "click: >>>>>>>>>> "  );
-                            if (!TextUtils.isEmpty(floorsBean.getDeviceNo())) {
+            pop.setPopButtonClickListener(floorsBean -> {
+                Log.e(TAG, "click: "  );
+                if (floorsBean != null) {
+                    if (needCharge){
+                        onError("余额不足，请前往充值");
+                        startActivity(new Intent(getApplicationContext(), RechargeActivity.class));
+                    }else {
+                        if (!TextUtils.isEmpty(floorsBean.getDeviceNo())) {
+                            if (  missedTimes < maxMissAbleTimes) {
                                 presenter.booking(Long.parseLong(floorsBean.getDeviceNo()), 0);
-                            } else {
-                                presenter.booking(0, floorsBean.getId());
+                            }else{
+                                onError("你已失约"+ maxMissAbleTimes+"次，本月将无法预约指定浴室");
                             }
+                        } else {
+                            presenter.booking(0, floorsBean.getId());
                         }
                     }
                 }
@@ -223,7 +223,6 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         }
 
     }
-
 
     private void bindView() {
         setBtnText("预约洗澡 (任意空浴室)", false);
@@ -602,18 +601,8 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
     public void startQueue(long id) {
         this.queueId = id;
         this.isFloor = false ;
-        Log.e(TAG, "startQueue: " + id);
         bathroomBookingDialog.setFinish();
         presenter.setBookMethod(1);
-//        if (isCanJump) {
-//            startActivityForResult(new Intent(this, BookingActivity.class)
-//                    .putExtra(KEY_BATHQUEUE_ID, id)
-//                    .putExtra(KEY_BALANCE, balance)
-//                    .putExtra(KEY_MIN_PREPAY, minPrepay)
-//                    .putExtra(KEY_PREPAY, prepay)
-//                    .putExtra(KEY_MISSED_TIMES, missedTimes)
-//                    .putExtra(KEY_MAX_MISSABLE_TIMES, maxMissAbleTimes), KEY_BOOKING_RESQCODE);
-//        }
     }
 
     boolean isFloor;
@@ -717,7 +706,6 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
 
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -736,18 +724,10 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
     private void autoChoseBathroom(Intent data) {
         isShowDialog = false;
         String deviceNo = data.getStringExtra(KEY_DEVICE_ACTIVITY_FOR_RESULT);
-//        if (TextUtils.isEmpty(deviceNo)) {
-//            showPop();
-//        } else {
-////            autoShowDevice(deviceNo);
-////            showPopForDevice();
-//        }
 
         if (presenter.getBookMehtod() == 1 ){
             showPop();
         } else {
-//            autoShowDevice(deviceNo);
-//            showPopForDevice();
         }
 
     }

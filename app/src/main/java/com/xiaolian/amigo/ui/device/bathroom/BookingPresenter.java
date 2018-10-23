@@ -247,16 +247,10 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
 
     @Override
     public void countDownexpiredTime(long expiredTime) {
-        Log.e(TAG, "countDownexpiredTime: " );
         int countTime = TimeUtils.intervalTime(expiredTime);
         if (countTime > 0) {
                 subscription = RxHelper.countDown(countTime)
-                        .doOnSubscribe(new Action0() {
-                            @Override
-                            public void call() {
-                                getMvpView().countTimeLeft(TimeUtils.orderBathroomLastTime(expiredTime, ""));
-                            }
-                        })
+                        .doOnSubscribe(() -> getMvpView().countTimeLeft(TimeUtils.orderBathroomLastTime(expiredTime, "")))
                         .subscribe(new Subscriber<Integer>() {
                             @Override
                             public void onCompleted() {
