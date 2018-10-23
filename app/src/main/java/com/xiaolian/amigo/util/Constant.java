@@ -259,10 +259,12 @@ public final class Constant {
     public static final int USING_STATUS = 4 ; //  正在洗浴
 
 
+
+
+
     /**
      * 预览图公共浴室状态
      */
-
     public static final int AVAILABLE =  1 ;   //  可用
 
     public static final int BATH_USING = 2 ;   // 正在使用

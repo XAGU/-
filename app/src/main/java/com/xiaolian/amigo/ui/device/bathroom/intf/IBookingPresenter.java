@@ -72,4 +72,7 @@ public interface IBookingPresenter<V extends IBookingView> extends IBasePresente
      */
     void queryTradeOrder(long bathOrderId);
 
+    int getBookingMethod();
+
+    void setAppointmentTimeOut();
 }

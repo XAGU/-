@@ -114,8 +114,6 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
         isOnCreate = true ;
     }
 
-
-
     /**
      * 初始化数据
      */
@@ -136,6 +134,7 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
         super.onResume();
         isCanJump = true ;
         presenter.onResume();
+        initTopTip();
         if (!isOnCreate) {
             if (expiredTime != 0) {
                 presenter.countDownexpiredTime(expiredTime);
@@ -158,13 +157,11 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
     }
 
 
-
-
     /**
      * 初始化失约提示,有失约记录时才显示失约提示
      */
     private void initTopTip(){
-        if (bookingId > 0 &&missedTimes >0  ){
+        if (presenter.getBookingMethod()  == Constant.BOOKING_DEVICE &&missedTimes >0  ){
             if (tvBookingTip != null) setTopTip();
         }else{
             if (tvBookingTip != null) tvBookingTip.setVisibility(GONE);
@@ -219,7 +216,6 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
             bathOrderPreconditionRespDTO = getIntent().getParcelableExtra(KEY_ORDER_PRECONDITION);
 
             //
-
             bookingId = getIntent().getLongExtra(KEY_BOOKING_ID , 0);
             bathQueueId = getIntent().getLongExtra(KEY_BATHQUEUE_ID , 0);
             isFloor = getIntent().getBooleanExtra(KEY_FLOOR ,false);
@@ -441,8 +437,11 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
         Log.e(TAG, "bookingSuccess: " );
         expiredTime = data.getExpiredTime();
         presenter.countDownexpiredTime(data.getExpiredTime());
+        initTopTip();
         presenter.query(data.getId()+"" ,true , 10 , true);
     }
+
+
 
 
     @Override
@@ -509,7 +508,8 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
     public void appointMentTimeOut(BathBookingRespDTO respDTO) {
         isTimeOut = true  ;
         missedTimes++  ;
-        setTopTip();
+        initTopTip();
+        presenter.setAppointmentTimeOut();
         deviceNo = respDTO.getDeviceNo()+"" ;
         if (statusView != null) {
             statusView.setLeftImageResource(IMG_RES_STATUS_FAIL);
@@ -528,6 +528,7 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
     public void appointMentTimeOut(boolean isServer) {
         if (!isServer) presenter.notifyExpired();
         isTimeOut = true ;
+        presenter.setAppointmentTimeOut();
         missedTimes++  ;
         setTopTip();
         if (statusView != null) {

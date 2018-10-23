@@ -156,7 +156,7 @@ public class BathroomHeaterActivity extends BathroomBaseActivity implements IBat
     public void goToOrderInfo(BathOrderCurrentRespDTO dto) {
         if (needToOrderInfo) {
             String userMethod = "";
-            if (dto.getLocation().equals("任意空浴室")) {
+            if (presenter.getBookingMethod() == Constant.BOOKING_FLOOR) {
                 userMethod = "预约任意空浴室";
             } else {
                 userMethod = "预约指定浴室";

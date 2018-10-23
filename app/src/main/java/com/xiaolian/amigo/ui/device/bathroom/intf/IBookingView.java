@@ -19,7 +19,6 @@ public interface IBookingView extends IBaseView {
      */
     void bookingSuccess(BathBookingRespDTO data);
 
-
     /**
      * 预约取消
      */

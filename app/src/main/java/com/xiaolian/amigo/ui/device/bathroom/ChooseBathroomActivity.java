@@ -39,6 +39,7 @@ import com.xiaolian.amigo.ui.widget.dialog.BathroomBookingDialog;
 import com.xiaolian.amigo.ui.widget.popWindow.ChooseBathroomPop;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.DimentionUtils;
+import com.xiaolian.amigo.util.RxHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +49,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.functions.Action1;
 
 import static com.xiaolian.amigo.ui.device.DeviceOrderActivity.KEY_USER_STYLE;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_BALANCE;
@@ -370,6 +372,8 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         this.deviceNo = deviceNo + "";
     }
 
+
+    boolean isBookingBack = false ;
     @Override
     protected void onResume() {
         super.onResume();
@@ -382,7 +386,12 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         presenter.onResume();
         presenter.setIsResume(true);
         presenter.getBathroomList(buildId);
-        presenter.precondition(isShowDialog , true);
+        if (isBookingBack) {
+            RxHelper.delay(2, aLong -> presenter.precondition(isShowDialog, true));
+            isBookingBack = false ;
+        }else{
+            presenter.precondition(isShowDialog, true);
+        }
         if (preBathroom != null) preBathroom.setEnabled(true);
     }
 
@@ -453,28 +462,22 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         /**
          * 消失时屏幕变亮
          */
-        pop.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
+        pop.setOnDismissListener(() -> {
+            WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
 
-                layoutParams.alpha = 1.0f;
+            layoutParams.alpha = 1.0f;
 
-                getWindow().setAttributes(layoutParams);
+            getWindow().setAttributes(layoutParams);
 
-//              root.setBackgroundResource(R.color.colorBackgroundGray);
-//              toolBar.setBackgroundResource(R.color.white);
-//              llTop.setBackgroundResource(R.color.white);
-                presenter.setIsResume(true);
-                deviceNo = "";
-                if (autoBathroom != null) {
-                    autoBathroom.setBathroomAvable();
-                    autoBathroom.invalidate();
-                }
-                Log.e(TAG, "onDismiss: ");
-                preBathroom.setEnabled(true);
-//                preBathroom.setVisibility(View.VISIBLE);
+            presenter.setIsResume(true);
+            deviceNo = "";
+            if (autoBathroom != null) {
+                autoBathroom.setBathroomAvable();
+                autoBathroom.invalidate();
             }
+            Log.e(TAG, "onDismiss: ");
+            preBathroom.setEnabled(true);
+
         });
     }
 
@@ -489,10 +492,6 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         layoutParams.alpha = 0.7f;
 
         getWindow().setAttributes(layoutParams);
-//        preBathroom.setBackgroundResource(R.drawable.thirty_red_bg);
-//        root.setBackgroundResource(R.color.colorBackgroundGray70);
-//        toolBar.setBackgroundResource(R.color.colorBackgroundGray100);
-//        llTop.setBackgroundResource(R.color.colorBackgroundGray100);
 
     }
 
@@ -577,19 +576,6 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
     @Override
     public void trafficInfo(List<BuildingTrafficDTO.FloorsBean> floorsBeans) {
         if (pop == null) {
-//            pop = new ChooseBathroomPop(this);
-//            pop.setPopButtonClickListener(new ChooseBathroomPop.PopButtonClickListener() {
-//                @Override
-//                public void click(BuildingTrafficDTO.FloorsBean floorsBean) {
-//                    if (floorsBean != null) {
-//                        if (!TextUtils.isEmpty(floorsBean.getDeviceNo())) {
-//                            presenter.booking(Long.parseLong(floorsBean.getDeviceNo()), 0);
-//                        } else {
-//                            presenter.booking(0, floorsBean.getId());
-//                        }
-//                    }
-//                }
-//            });
             return  ;
         }
         pop.setData(floorsBeans);
@@ -602,7 +588,6 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         this.queueId = id;
         this.isFloor = false ;
         bathroomBookingDialog.setFinish();
-        presenter.setBookMethod(1);
     }
 
     boolean isFloor;
@@ -712,6 +697,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         switch (requestCode) {
             case KEY_BOOKING_RESQCODE:
                 if (resultCode == KEY_BOOKING_RESULTCODE) {
+                    isBookingBack = true ;
                     autoChoseBathroom(data);
                 }
                 break;
@@ -723,9 +709,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
      */
     private void autoChoseBathroom(Intent data) {
         isShowDialog = false;
-        String deviceNo = data.getStringExtra(KEY_DEVICE_ACTIVITY_FOR_RESULT);
-
-        if (presenter.getBookMehtod() == 1 ){
+        if (presenter.getBookMehtod() == Constant.BOOKING_FLOOR ){
             showPop();
         } else {
         }
@@ -780,7 +764,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         } else if (bathOrderCurrentRespDTO != null) {
 
             String userMethod = "";
-            if (bathOrderCurrentRespDTO.getLocation().equals("任意空浴室")) {
+            if (presenter.getBookMehtod() == Constant.BOOKING_FLOOR) {
                 userMethod = "预约任意空浴室";
             } else {
                 userMethod = "预约指定浴室";

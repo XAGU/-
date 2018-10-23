@@ -30,12 +30,7 @@ public class RxHelper {
         return Observable.interval(0 , 1 , TimeUnit.SECONDS)
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .map(new Func1<Long, Integer>() {
-                    @Override
-                    public Integer call(Long aLong) {
-                        return countTime - aLong.intValue();
-                    }
-                }).take(countTime + 1);
+                .map(aLong -> countTime - aLong.intValue()).take(countTime + 1);
     }
 
     /**

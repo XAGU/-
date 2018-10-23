@@ -15,6 +15,7 @@ import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IChooseBathroomPresenter;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IChooseBathroomView;
+import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.RxHelper;
 
 import javax.inject.Inject;
@@ -226,17 +227,13 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
             if (floorId != 0) {
                 reqDTO.setFloorId(floorId);
                 reqDTO.setType(BathTradeType.BOOKING_WITHOUT_DEVICE.getCode());
-                isFloor = true;
+                setBookMethod(Constant.BOOKING_FLOOR);
             } else {
                 reqDTO.setDeviceNo(deviceNo);
                 reqDTO.setType(BathTradeType.BOOKING_DEVICE.getCode());
-                isFloor = false;
+                setBookMethod(Constant.BOOKING_DEVICE);
             }
 
-            boolean finalIsFloor = isFloor;
-
-            if (finalIsFloor) setBookMethod(1);
-            else setBookMethod(2);
             addObserver(bathroomDataManager.booking(reqDTO), new NetworkObserver<ApiResult<TryBookingResultRespDTO>>() {
 
                 @Override
@@ -257,7 +254,7 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
                         } else {
                             if (result.getData().getBookingInfo() != null) {
                                 if (result.getData().getBookingInfo().getStatus() == ACCEPTED) {
-                                    getMvpView().startBooking(result.getData().getBookingInfo().getId(), finalIsFloor);
+                                    getMvpView().startBooking(result.getData().getBookingInfo().getId(), false);
                                 } else if (result.getData().getBookingInfo().getStatus() == INIT) {
                                     queryBooking(result.getData().getBookingInfo().getId());
                                 }

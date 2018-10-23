@@ -50,10 +50,14 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
     private static int queryCancle = 0 ;  //  查询取消状态  ， 最多5次
 
     boolean isOnPause = false  ;
+
+    boolean timeOut = false ;
     @Inject
     public BookingPresenter(IBathroomDataManager bathroomDataManager) {
         this.bathroomDataManager = bathroomDataManager;
     }
+
+
 
         
     @Override
@@ -96,16 +100,13 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
 
     @Override
     public void onPause() {
-        Log.e(TAG, "onPause:>>>>>>>>presenter " );
         this.isOnPause = true ;
     }
 
     @Override
     public void onResume() {
         this.isOnPause = false ;
-
     }
-
 
     @Override
     public void cancelCountDown() {
@@ -126,8 +127,8 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
      */
     @Override
     public void query(String bathOrderId , boolean isToUsing , int time , boolean isShowDialog) {
-        Log.e(TAG, "query: " + isToUsing  + "     " +time  + "   " + isOnPause);
-        if (isOnPause )  return ;
+        Log.e(TAG, "timeOut: "  + "   " + timeOut);
+        if (isOnPause  || timeOut)  return ;
         BathBookingStatusReqDTO reqDTO = new BathBookingStatusReqDTO();
         reqDTO.setId(bathOrderId);
         addObserver(bathroomDataManager.query(reqDTO) , new NetworkObserver<ApiResult<BathBookingRespDTO>>(){
@@ -144,6 +145,7 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
 
             @Override
             public void onReady(ApiResult<BathBookingRespDTO> result) {
+                Log.e(TAG, "timeOut: "  + "   " + timeOut);
                 if (result.getError() == null) {
                     if (isToUsing) {
                         if (result.getData().getStatus() == OPENED) {
@@ -187,7 +189,7 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
      * @param
      */
     public void query(long bookingId ) {
-        if (isOnPause )  return ;
+        if (isOnPause   )  return ;
         BathBookingStatusReqDTO reqDTO = new BathBookingStatusReqDTO();
         reqDTO.setId(bookingId+"");
         addObserver(bathroomDataManager.query(reqDTO) , new NetworkObserver<ApiResult<BathBookingRespDTO>>() {
@@ -202,12 +204,9 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
                 if (result.getError() == null) {
                     if (result.getData().getStatus() == ACCEPTED){
                         if (queryCancle < 4) {
-                            delay(3, new Action1<Long>() {
-                                @Override
-                                public void call(Long aLong) {
-                                    queryCancle++;
-                                    query(bookingId);
-                                }
+                            delay(3, aLong -> {
+                                queryCancle++;
+                                query(bookingId);
                             });
                         }else{
                             queryCancle = 0 ;
@@ -248,6 +247,7 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
     @Override
     public void countDownexpiredTime(long expiredTime) {
         int countTime = TimeUtils.intervalTime(expiredTime);
+        Log.wtf(TAG , " time>>>>>>>>>>> " + countTime );
         if (countTime > 0) {
                 subscription = RxHelper.countDown(countTime)
                         .doOnSubscribe(() -> getMvpView().countTimeLeft(TimeUtils.orderBathroomLastTime(expiredTime, "")))
@@ -312,7 +312,6 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
                     if (result.getError() == null){
                         if (result.getData().getBathBookingId() == 0){
                             getMvpView().showQueue(result.getData());
-
                         }else {
                             query(result.getData().getBathBookingId()+"" ,false ,10 , false);
                         }
@@ -333,6 +332,7 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
             }
         });
     }
+
 
     @Override
     public void cancelQueue(long id) {
@@ -366,11 +366,14 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
                 if (result.getError() == null){
 
                 }else {
-                    getMvpView().onError(result.getError().getDisplayMessage());
+//                    getMvpView().onError(result.getError().getDisplayMessage());
                 }
             }
         });
     }
+
+
+
 
     @Override
     public void queryTradeOrder(long id) {
@@ -394,6 +397,16 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
                 }
             }
         });
+    }
+
+    @Override
+    public int getBookingMethod() {
+        return bathroomDataManager.getBookMethod();
+    }
+
+    @Override
+    public void setAppointmentTimeOut() {
+        timeOut = true ;
     }
 
 

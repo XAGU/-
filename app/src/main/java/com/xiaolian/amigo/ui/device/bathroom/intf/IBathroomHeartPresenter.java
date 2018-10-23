@@ -20,4 +20,6 @@ public interface IBathroomHeartPresenter<V extends IBathroomHeartView>  extends 
     void onPause() ;
 
     void onResume();
+
+    int getBookingMethod();
 }

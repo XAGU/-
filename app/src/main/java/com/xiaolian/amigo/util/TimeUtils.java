@@ -158,7 +158,7 @@ public class TimeUtils {
     public static String orderBathroomLastTime(long expiredTime , String preString){
 
         long curTime = System.currentTimeMillis() / (long)1000  ;
-        long time = expiredTime / 1000 - curTime  - 10 ;
+        long time = expiredTime / 1000 - curTime    ;
         if (time > 0){
 
             /**  分少于2位数加0  */
@@ -168,7 +168,6 @@ public class TimeUtils {
                 preString += time / SIXTY ;
             }
 
-
             /**   秒少于2位数加0   */
             if (time % SIXTY < 10){
                 preString += ":0" +time % SIXTY ;
@@ -176,6 +175,8 @@ public class TimeUtils {
                 preString += ":" + time % SIXTY ;
             }
 
+        }else{
+            preString = "0:00";
         }
         return  preString ;
     }
@@ -186,7 +187,7 @@ public class TimeUtils {
      * @return
      */
     public static final int intervalTime(long expiredTime){
-        return (((expiredTime - System.currentTimeMillis()) / 1000) -1) > 0 ? (int) (((expiredTime - System.currentTimeMillis()) / 1000) - 10) : 0;
+        return (((expiredTime - System.currentTimeMillis()) / 1000)) > 0 ? (int) (((expiredTime - System.currentTimeMillis()) / 1000)  ) : 0;
     }
 
     public static String lostAndFoundTimestampFormat(long timeStamp) {
