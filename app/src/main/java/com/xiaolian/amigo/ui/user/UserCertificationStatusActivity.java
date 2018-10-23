@@ -275,6 +275,7 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
     }
 
 
+
     private void initJect() {
         mActivityComponent = DaggerUserActivityComponent.builder()
                 .userActivityModule(new UserActivityModule(this))
@@ -312,22 +313,18 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
         File outputImage = new File(filePath ,name +random+System.currentTimeMillis()+".jpg");
 
         try {
-            if (outputImage.exists() && !outputImage.delete()) {
-//                onError(R.string.no_sd_card_premission);
-                return null ;
+
+            if (outputImage.exists() ){
+                outputImage.delete();
             }
-            if (!outputImage.createNewFile()) {
-//                onError(R.string.no_sd_card_premission);
-                return null;
-            }
+           boolean b =  outputImage.createNewFile();
+            if ( !b) return null ;
         } catch (IOException e) {
             Log.e(TAG, e.getMessage());
         }
 
-        boolean b = FileIOUtils.writeFileFromBytesByStream(outputImage ,bytes);
-        if (b)
-            return outputImage ;
-        else return null ;
+        FileIOUtils.writeFileFromBytesByStream(outputImage ,bytes);
+        return outputImage ;
     }
 
     @Override
@@ -382,7 +379,7 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 Intent intent = new Intent(UserCertificationStatusActivity.this, AlbumItemActivity.class);
                 intent.putExtra(AlbumItemActivity.EXTRA_CURRENT, position);
-                intent.putStringArrayListExtra(AlbumItemActivity.EXTRA_TYPE_BASE64, (ArrayList<String>) cardIdUrlImages);
+                intent.putStringArrayListExtra(AlbumItemActivity.EXTRA_TYPE_LOCAL, (ArrayList<String>) cardIdUrlImages);
                 intent.putExtra(AlbumItemActivity.INTENT_ACTION, AlbumItemActivity.ACTION_NORMAL);
                 startActivity(intent);
             }
@@ -405,7 +402,7 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 Intent intent = new Intent(UserCertificationStatusActivity.this, AlbumItemActivity.class);
                 intent.putExtra(AlbumItemActivity.EXTRA_CURRENT, position);
-                intent.putStringArrayListExtra(AlbumItemActivity.EXTRA_TYPE_BASE64, (ArrayList<String>) studentUrlImages);
+                intent.putStringArrayListExtra(AlbumItemActivity.EXTRA_TYPE_LOCAL, (ArrayList<String>) studentUrlImages);
                 intent.putExtra(AlbumItemActivity.INTENT_ACTION, AlbumItemActivity.ACTION_NORMAL);
                 startActivity(intent);
             }
@@ -465,10 +462,13 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
                     String imagePath  = file.getAbsolutePath();
                     studentIdImages.add(new ImageAddAdapter.ImageItem(imagePath));
                     studentUrlImages.add(imagePath);
+                    if (studentUrlImages.size() == data.getStuPicturesData().size()){
+                        if (studentIdAdapter != null) studentIdAdapter.notifyDataSetChanged();
+                    }
                 }
             });
         }
-        if (studentIdAdapter != null) studentIdAdapter.notifyDataSetChanged();
+
 
         if (cardIdImages != null) {
             cardIdImages.clear();
@@ -486,10 +486,11 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
                     String imagePath  = file.getAbsolutePath();
                     cardIdImages.add(new ImageAddAdapter.ImageItem(imagePath));
                     cardIdUrlImages.add(imagePath);
+                    cardIdAdapter.notifyDataSetChanged();
                 }
             });
         }
-        cardIdAdapter.notifyDataSetChanged();
+
     }
 
 

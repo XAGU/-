@@ -257,8 +257,6 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
     }
 
 
-
-
     private void setTitleVisiable(int visiable){
         tvTitle.setVisibility(visiable);
         viewLine.setVisibility(visiable);
@@ -601,6 +599,7 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
 
     @Override
     public void certifySuccess() {
+
         finish();
     }
 
