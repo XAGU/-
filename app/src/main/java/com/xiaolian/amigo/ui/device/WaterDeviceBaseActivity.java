@@ -1052,12 +1052,24 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 //                bonusDescription = getString(R.string.not_use_bonus);
 //                refreshPrepayStatus();
             } else if (resultCode == RESULT_OK) {
-                choosedBonus = (BonusAdaptor.BonusWrapper) data.getSerializableExtra(BonusActivity.INTENT_KEY_BONUS_RESULT);
-                if (choosedBonus != null) {
-                    bonusId = choosedBonus.getId();
-                    bonusAmount = choosedBonus.getAmount();
-                    bonusDescription = choosedBonus.getDescription();
+                if (data == null) {
+                    bonusId = null;
+                    bonusAmount = null;
+                    bonusDescription = "";
                     refreshPrepayStatus();
+                } else {
+                    choosedBonus = (BonusAdaptor.BonusWrapper) data.getSerializableExtra(BonusActivity.INTENT_KEY_BONUS_RESULT);
+                    if (choosedBonus != null) {
+                        bonusId = choosedBonus.getId();
+                        bonusAmount = choosedBonus.getAmount();
+                        bonusDescription = choosedBonus.getDescription();
+                        refreshPrepayStatus();
+                    } else {
+                        bonusId = null;
+                        bonusAmount = null;
+                        bonusDescription = "";
+                        refreshPrepayStatus();
+                    }
                 }
             }
         } else if (requestCode == CHOOSE_DORMITORY_CODE) {

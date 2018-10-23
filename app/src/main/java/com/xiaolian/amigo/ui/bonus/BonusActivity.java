@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.vo.Bonus;
 import com.xiaolian.amigo.ui.bonus.adaptor.BonusAdaptor;
 import com.xiaolian.amigo.ui.bonus.intf.IBonusPresenter;
 import com.xiaolian.amigo.ui.bonus.intf.IBonusView;
@@ -94,7 +95,8 @@ public class BonusActivity extends BonusBaseListActivity implements IBonusView {
             case ACTION_CHOOSE:
                 getSubTitle().setTextColor(ContextCompat.getColor(this, R.color.colorBlue));
                 getSubTitle().setOnClickListener(v -> {
-                    setResult(RESULT_CANCELED);
+                    Intent intent = new Intent(BonusActivity.this, HeaterActivity.class);
+                    setResult(RESULT_OK);
                     finish();
                 });
 
