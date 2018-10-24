@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.support.annotation.RestrictTo;
 import android.support.v4.util.ObjectsCompat;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.xiaolian.blelib.BluetoothHelp;
 import com.xiaolian.blelib.scan.BluetoothScanResponse;
@@ -66,13 +67,18 @@ public class BluetoothClassicScanner extends BluetoothScanner {
     private void registerReceiver() {
         if (receiver == null) {
             receiver = new BluetoothScanReceiver();
-            BluetoothHelp.registerReceiver(receiver,
-                    new IntentFilter(BluetoothDevice.ACTION_FOUND));
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(BluetoothDevice.ACTION_FOUND);
+            intentFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
+            intentFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+            intentFilter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
+            BluetoothHelp.registerReceiver(receiver, intentFilter);
         }
     }
 
     private void unregisterReceiver() {
         if (receiver != null) {
+            Log.d("BluetoothClassicScanner", "unregisterReceiver: ...");
             BluetoothHelp.unregisterReceiver(receiver);
             receiver = null;
         }
@@ -91,6 +97,8 @@ public class BluetoothClassicScanner extends BluetoothScanner {
                 BluetoothScanResult xmDevice = new BluetoothScanResult(device,
                         rssi, null);
                 notifyDeviceFounded(xmDevice);
+            } else  if (TextUtils.equals(intent.getAction(), BluetoothAdapter.ACTION_DISCOVERY_FINISHED)){
+                Log.d("BluetoothClassicScanner", "onReceive: ACTION_DISCOVERY_FINISHED");
             }
         }
     }

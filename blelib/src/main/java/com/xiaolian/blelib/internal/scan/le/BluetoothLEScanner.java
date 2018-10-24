@@ -51,10 +51,4 @@ public class BluetoothLEScanner extends BluetoothScanner {
         super.cancelScanBluetooth();
     }
 
-    private final BluetoothAdapter.LeScanCallback leScanCallback = new BluetoothAdapter.LeScanCallback() {
-        @Override
-        public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
-            notifyDeviceFounded(new BluetoothScanResult(device, rssi, scanRecord));
-        }
-    };
 }

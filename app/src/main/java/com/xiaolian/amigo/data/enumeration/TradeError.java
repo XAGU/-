@@ -10,15 +10,14 @@ import com.xiaolian.amigo.R;
  */
 public enum TradeError {
     CONNECT_ERROR_1(true, R.string.connect_error_title_1, R.string.connect_error_tip_1, R.string.connect_error_btn, ErrorTag.CONNECT_ERROR.getCode()),
-    CONNECT_ERROR_2(false, R.string.connect_error_title_2, R.string.connect_error_tip_2, R.string.connect_error_btn, ErrorTag.CONNECT_ERROR.getCode()),
+    CONNECT_ERROR_2(false, R.string.connect_error_title_2, R.string.connect_error_tip_2, R.string.i_know, ErrorTag.DEVICE_BUSY.getCode()),
     CONNECT_ERROR_3(true, R.string.connect_error_title_1, R.string.connect_error_tip_3, R.string.connect_error_btn, ErrorTag.CONNECT_ERROR.getCode()),
     CONNECT_ERROR_4(true, R.string.connect_error_title_1, R.string.connect_error_tip_4, R.string.connect_error_btn, ErrorTag.CONNECT_ERROR.getCode()),
-    CONNECT_ERROR_5(true, R.string.connect_error_title_1, R.string.connect_error_tip_5, R.string.connect_error_btn, ErrorTag.CONNECT_ERROR.getCode()),
-    DEVICE_BUSY(false, R.string.device_busy__title, R.string.device_busy_tip, R.string.connect_error_btn, ErrorTag.CONNECT_ERROR.getCode()),
-    DEVICE_BROKEN_1(false, R.string.device_broken_title, R.string.device_broken_tip_1, R.string.connect_error_btn, ErrorTag.CONNECT_ERROR.getCode()),
+    CONNECT_ERROR_5(true, R.string.connect_error_title_1, R.string.connect_error_tip_6, R.string.connect_error_btn, ErrorTag.CONNECT_ERROR.getCode()),
+    DEVICE_BUSY(false, R.string.device_busy__title, R.string.device_busy_tip, R.string.i_know, ErrorTag.DEVICE_BUSY.getCode()),
     DEVICE_BROKEN_2(false, R.string.device_broken_title, R.string.device_broken_tip_2, R.string.device_broken_btn_2, ErrorTag.REPAIR.getCode()),
-    DEVICE_BROKEN_3(false, R.string.device_broken_title, R.string.device_broken_tip_3, R.string.device_broken_btn_3, ErrorTag.CHANGE_DORMITORY.getCode()),
-    SYSTEM_ERROR(false, R.string.system_error_title, R.string.system_error_tip, R.string.device_broken_btn_2, ErrorTag.REPAIR.getCode());
+    DEVICE_BROKEN_3(false, R.string.device_broken_title, R.string.device_broken_tip_3, R.string.i_know, ErrorTag.DEVICE_BUSY.getCode()),
+    SYSTEM_ERROR(false, R.string.system_error_title, R.string.device_broken_tip_2, R.string.device_broken_btn_2, ErrorTag.REPAIR.getCode());
 
     // 是否现在加载小圆点
     private boolean showLoading;

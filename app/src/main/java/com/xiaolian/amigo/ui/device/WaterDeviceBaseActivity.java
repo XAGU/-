@@ -955,7 +955,9 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                 getBlePermission();
                 break;
             case DEVICE_BUSY:
-                startActivityForResult(new Intent(this, ChooseDormitoryActivity.class), CHOOSE_DORMITORY_CODE);
+                //朕知道了，结束当前页，然后返回首页
+                back2Main();
+//                startActivityForResult(new Intent(this, ChooseDormitoryActivity.class), CHOOSE_DORMITORY_CODE);
                 break;
             case REPAIR:
                 Intent intent = new Intent(this, RepairApplyActivity.class);
@@ -1052,12 +1054,24 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 //                bonusDescription = getString(R.string.not_use_bonus);
 //                refreshPrepayStatus();
             } else if (resultCode == RESULT_OK) {
-                choosedBonus = (BonusAdaptor.BonusWrapper) data.getSerializableExtra(BonusActivity.INTENT_KEY_BONUS_RESULT);
-                if (choosedBonus != null) {
-                    bonusId = choosedBonus.getId();
-                    bonusAmount = choosedBonus.getAmount();
-                    bonusDescription = choosedBonus.getDescription();
+                if (data == null) {
+                    bonusId = null;
+                    bonusAmount = null;
+                    bonusDescription = "";
                     refreshPrepayStatus();
+                } else {
+                    choosedBonus = (BonusAdaptor.BonusWrapper) data.getSerializableExtra(BonusActivity.INTENT_KEY_BONUS_RESULT);
+                    if (choosedBonus != null) {
+                        bonusId = choosedBonus.getId();
+                        bonusAmount = choosedBonus.getAmount();
+                        bonusDescription = choosedBonus.getDescription();
+                        refreshPrepayStatus();
+                    } else {
+                        bonusId = null;
+                        bonusAmount = null;
+                        bonusDescription = "";
+                        refreshPrepayStatus();
+                    }
                 }
             }
         } else if (requestCode == CHOOSE_DORMITORY_CODE) {
@@ -1168,18 +1182,26 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
             vLoading.setVisibility(tradeError.isShowLoading() ? View.VISIBLE : View.GONE);
             tvErrorTitle.setText(getString(tradeError.getErrorTitle()));
-            tvErrorTip.setText(getString(tradeError.getErrorTip()));
-
-            if (tradeError == TradeError.DEVICE_BROKEN_3 && deviceType == Device.DISPENSER.getType()) {
-                btErrorHandler.setText(getString(R.string.change_dispenser));
-                btErrorHandler.setTag(ErrorTag.CHANGE_DISPENSER.getCode());
-            } else if (tradeError == TradeError.DEVICE_BROKEN_3 && deviceType == Device.DRYER.getType()) {
-                btErrorHandler.setText(getString(R.string.change_dryer));
-                btErrorHandler.setTag(ErrorTag.CHANGE_DRYER.getCode());
+            if (tradeError == TradeError.DEVICE_BUSY &&macAddress.startsWith("KL")) /*凯路设备特别提示*/{
+                tvErrorTip.setText("上个用户还未结账，请稍后再来使用\n给你带来的不便敬请谅解！");
+            } else if (tradeError == TradeError.CONNECT_ERROR_2 &&macAddress.startsWith("KL")) {
+                tvErrorTip.setText("请回到首页或重启笑联app，然后重新连接\n给你带来的不便敬请谅解！");
             } else {
-                btErrorHandler.setText(getString(tradeError.getBtnText()));
-                btErrorHandler.setTag(tradeError.getBtnTag());
+                tvErrorTip.setText(getString(tradeError.getErrorTip()));
             }
+            btErrorHandler.setText(getString(tradeError.getBtnText()));
+            btErrorHandler.setTag(tradeError.getBtnTag());
+
+//            if (tradeError == TradeError.DEVICE_BROKEN_3 && deviceType == Device.DISPENSER.getType()) {
+//                btErrorHandler.setText(getString(R.string.change_dispenser));
+//                btErrorHandler.setTag(ErrorTag.CHANGE_DISPENSER.getCode());
+//            } else if (tradeError == TradeError.DEVICE_BROKEN_3 && deviceType == Device.DRYER.getType()) {
+//                btErrorHandler.setText(getString(R.string.change_dryer));
+//                btErrorHandler.setTag(ErrorTag.CHANGE_DRYER.getCode());
+//            } else {
+//                btErrorHandler.setText(getString(tradeError.getBtnText()));
+//                btErrorHandler.setTag(tradeError.getBtnTag());
+//            }
         }
     }
 

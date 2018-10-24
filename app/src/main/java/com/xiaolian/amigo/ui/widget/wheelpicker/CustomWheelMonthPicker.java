@@ -6,7 +6,6 @@ import android.util.AttributeSet;
 
 import com.aigestudio.wheelpicker.WheelPicker;
 import com.aigestudio.wheelpicker.widgets.IWheelMonthPicker;
-import com.aigestudio.wheelpicker.widgets.WheelMonthPicker;
 
 import java.util.ArrayList;
 import java.util.Calendar;
