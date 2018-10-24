@@ -1,11 +1,12 @@
 package com.xiaolian.amigo.util;
 
+import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 
-import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
-import com.xiaolian.blelib.internal.util.SystemVersion;
-
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -29,8 +30,8 @@ public class TimeUtils {
     public static final DateFormat MY_DATE_FORMAT3 = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
     public static final DateFormat MY_DATE_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
     public static final DateFormat MY_TIME_FORMAT = new SimpleDateFormat("HH:mm", Locale.getDefault());
-    public static final DateFormat MY_DATE_MONTH = new SimpleDateFormat("MM/dd" ,Locale.getDefault());
-    public static final int SIXTY = 60 ;
+    public static final DateFormat MY_DATE_MONTH = new SimpleDateFormat("MM/dd", Locale.getDefault());
+    public static final int SIXTY = 60;
 
     /**
      * 将时间戳转为时间字符串
@@ -104,10 +105,10 @@ public class TimeUtils {
     public static String orderTimestampFormat(long timeStamp) {
         String result = "";
         long curTime = System.currentTimeMillis() / (long) 1000;
-        long  toDayZero = getStartTimeOfDay(System.currentTimeMillis() ,"") / 1000;
+        long toDayZero = getStartTimeOfDay(System.currentTimeMillis(), "") / 1000;
 //        long time = curTime - timeStamp / 1000;
-        long time = timeStamp / 1000  - toDayZero ;
-        if (time >= 0 ) {
+        long time = timeStamp / 1000 - toDayZero;
+        if (time >= 0) {
             result += "今天";
         } else if (time < 0 && Math.abs(time) < 3600 * 24) {
             result += "昨天";
@@ -123,14 +124,14 @@ public class TimeUtils {
     public static String orderTimestampFormatSocial(long timeStamp) {
         String result = "";
         long curTime = System.currentTimeMillis() / (long) 1000;
-        long  toDayZero = getStartTimeOfDay(System.currentTimeMillis() ,"") / 1000;
+        long toDayZero = getStartTimeOfDay(System.currentTimeMillis(), "") / 1000;
 //        long time = curTime - timeStamp / 1000;
-        long time = timeStamp / 1000  - toDayZero ;
-        if (time >= 0 ) {
+        long time = timeStamp / 1000 - toDayZero;
+        if (time >= 0) {
             result += "今天";
         } else if (time < 0 && Math.abs(time) < 3600 * 24) {
             result += "昨天";
-        } else  {
+        } else {
             result += millis2String(timeStamp, MY_DATE_MONTH) + " ";
         }
         return result + millis2String(timeStamp, MY_TIME_FORMAT);
@@ -155,30 +156,30 @@ public class TimeUtils {
      * @param expiredTime  preString 时间前缀
      * @return
      */
-    public static String orderBathroomLastTime(long expiredTime , String preString){
+    public static String orderBathroomLastTime(long expiredTime, String preString) {
 
-        long curTime = System.currentTimeMillis() / (long)1000  ;
-        long time = expiredTime / 1000 - curTime    ;
-        if (time > 0){
+        long curTime = getCurrentNetTime() / (long) 1000;
+        long time = expiredTime / 1000 - curTime;
+        if (time > 0) {
 
             /**  分少于2位数加0  */
-            if (time / SIXTY < 10){
-                preString += "0" + time/SIXTY ;
-            }else{
-                preString += time / SIXTY ;
+            if (time / SIXTY < 10) {
+                preString += "0" + time / SIXTY;
+            } else {
+                preString += time / SIXTY;
             }
 
             /**   秒少于2位数加0   */
-            if (time % SIXTY < 10){
-                preString += ":0" +time % SIXTY ;
-            }else{
-                preString += ":" + time % SIXTY ;
+            if (time % SIXTY < 10) {
+                preString += ":0" + time % SIXTY;
+            } else {
+                preString += ":" + time % SIXTY;
             }
 
-        }else{
+        } else {
             preString = "0:00";
         }
-        return  preString ;
+        return preString;
     }
 
     /**
@@ -186,8 +187,8 @@ public class TimeUtils {
      * @param expiredTime
      * @return
      */
-    public static final int intervalTime(long expiredTime){
-        return (((expiredTime - System.currentTimeMillis()) / 1000)) > 0 ? (int) (((expiredTime - System.currentTimeMillis()) / 1000)  ) : 0;
+    public static final int intervalTime(long expiredTime ) {
+        return (((expiredTime - getCurrentNetTime()) / 1000)) > 0 ? (int) (((expiredTime - getCurrentNetTime()) / 1000)) : 0;
     }
 
     public static String lostAndFoundTimestampFormat(long timeStamp) {
@@ -254,7 +255,6 @@ public class TimeUtils {
     }
 
 
-
 //    public static String longToString(long time){
 //        return time / 60 +"分钟" ;
 //    }
@@ -264,7 +264,7 @@ public class TimeUtils {
      * @param time
      * @return
      */
-    public static String covertTimeToString(long time){
+    public static String covertTimeToString(long time) {
 
         Date date = new Date(time);
         return MY_TIME_FORMAT.format(date);
@@ -304,4 +304,19 @@ public class TimeUtils {
     }
 
 
+    public static long getCurrentNetTime(){
+        String webUrl = "http://www.ntsc.ac.cn";//中国科学院国家授时中心
+        try {
+            URL url = new URL(webUrl);// 取得资源对象
+            URLConnection uc = url.openConnection();// 生成连接对象
+            uc.connect();// 发出连接
+            long ld = uc.getDate();// 读取网站日期时间
+            return ld ;
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 }

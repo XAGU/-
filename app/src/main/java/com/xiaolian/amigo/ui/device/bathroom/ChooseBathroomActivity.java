@@ -1,7 +1,6 @@
 package com.xiaolian.amigo.ui.device.bathroom;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
@@ -16,7 +15,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -49,7 +47,6 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import rx.functions.Action1;
 
 import static com.xiaolian.amigo.ui.device.DeviceOrderActivity.KEY_USER_STYLE;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_BALANCE;
@@ -61,7 +58,6 @@ import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_PREPAY;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomHeaterActivity.KEY_BATH_ORDER_ID;
 import static com.xiaolian.amigo.ui.device.bathroom.BookingActivity.KEY_BATHQUEUE_ID;
 import static com.xiaolian.amigo.ui.device.bathroom.BookingActivity.KEY_BOOKING_ID;
-import static com.xiaolian.amigo.ui.device.bathroom.BookingActivity.KEY_DEVICE_ACTIVITY_FOR_RESULT;
 
 /**
  * 选择浴室
@@ -273,83 +269,6 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
     private void initRecyclerView() {
         if (autoBathroom != null && presenter != null)
             autoBathroom.setPresenter((ChooseBathroomPresenter<IChooseBathroomView>) presenter);
-//        test();
-    }
-
-    private void test() {
-        List<GroupsBean> groupsBeans = new ArrayList<>();
-
-        List<GroupsBean.BathRoomsBean> bathRoomsBeans = new ArrayList<>();
-
-        List<GroupsBean.BathRoomsBean> bathRoomsBeans1 = new ArrayList<>();
-
-        GroupsBean.BathRoomsBean bathRoomsBean1 = new GroupsBean.BathRoomsBean();
-        bathRoomsBean1.setId(11111);
-        bathRoomsBean1.setXaxis(1);
-        bathRoomsBean1.setYaxis(1);
-        bathRoomsBean1.setStatus(2);
-        bathRoomsBeans.add(bathRoomsBean1);
-
-        GroupsBean.BathRoomsBean bathRoomsBean2 = new GroupsBean.BathRoomsBean();
-        bathRoomsBean2.setId(2222);
-        bathRoomsBean2.setXaxis(1);
-        bathRoomsBean2.setYaxis(2);
-        bathRoomsBean2.setStatus(2);
-        bathRoomsBeans.add(bathRoomsBean2);
-
-        GroupsBean.BathRoomsBean bathRoomsBean7 = new GroupsBean.BathRoomsBean();
-        bathRoomsBean7.setId(2222);
-        bathRoomsBean7.setXaxis(1);
-        bathRoomsBean7.setYaxis(2);
-        bathRoomsBean7.setStatus(1);
-        bathRoomsBeans.add(bathRoomsBean7);
-
-        GroupsBean.BathRoomsBean bathRoomsBean4 = new GroupsBean.BathRoomsBean();
-        bathRoomsBean4.setId(33333);
-        bathRoomsBean4.setXaxis(2);
-        bathRoomsBean4.setYaxis(2);
-        bathRoomsBean4.setStatus(1);
-        bathRoomsBeans.add(bathRoomsBean4);
-
-
-        GroupsBean.BathRoomsBean bathRoomsBean3 = new GroupsBean.BathRoomsBean();
-        bathRoomsBean3.setId(2222);
-        bathRoomsBean3.setXaxis(1);
-        bathRoomsBean3.setYaxis(1);
-        bathRoomsBean3.setStatus(2);
-        bathRoomsBeans1.add(bathRoomsBean3);
-
-        GroupsBean.BathRoomsBean bathRoomsBean5 = new GroupsBean.BathRoomsBean();
-        bathRoomsBean5.setId(2222);
-        bathRoomsBean5.setXaxis(1);
-        bathRoomsBean5.setYaxis(5);
-        bathRoomsBean5.setStatus(1);
-        bathRoomsBeans1.add(bathRoomsBean5);
-
-        GroupsBean.BathRoomsBean bathRoomsBean6 = new GroupsBean.BathRoomsBean();
-        bathRoomsBean6.setId(2222);
-        bathRoomsBean6.setXaxis(5);
-        bathRoomsBean6.setYaxis(2);
-        bathRoomsBean6.setStatus(4);
-        bathRoomsBeans1.add(bathRoomsBean6);
-
-
-        GroupsBean groupsBean = new GroupsBean();
-        groupsBean.setBathRooms(bathRoomsBeans);
-        groupsBean.setDisplayName("A层1组101房间");
-        groupsBeans.add(groupsBean);
-
-
-        GroupsBean groupsBean1 = new GroupsBean();
-        groupsBean1.setBathRooms(bathRoomsBeans1);
-        groupsBean1.setDisplayName("A层2组102房间");
-        groupsBeans.add(groupsBean1);
-
-
-        BathBuildingRespDTO.FloorsBean floorsBean2 = new BathBuildingRespDTO.FloorsBean();
-        floorsBean2.setGroups(groupsBeans);
-        floorsBeans.add(floorsBean2);
-//        autoBathroom.setData(floorsBeans);
     }
 
 
@@ -386,12 +305,8 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         presenter.onResume();
         presenter.setIsResume(true);
         presenter.getBathroomList(buildId);
-        if (isBookingBack) {
-            RxHelper.delay(2, aLong -> presenter.precondition(isShowDialog, true));
-            isBookingBack = false ;
-        }else{
-            presenter.precondition(isShowDialog, true);
-        }
+        Log.wtf(TAG , "onResume" + isBookingBack) ;
+        presenter.precondition(isShowDialog, true);
         if (preBathroom != null) preBathroom.setEnabled(true);
     }
 
@@ -736,6 +651,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         if (bathroomBookingDialog != null && bathroomBookingDialog.isShowing())
             bathroomBookingDialog.dismiss();
         if (bookingId != 0) {
+            Log.e(TAG, "finishDialog:  bookingId >>>>>" + bookingId );
             startActivityForResult(new Intent(this, BookingActivity.class)
                     .putExtra(KEY_BOOKING_ID, bookingId)
                     .putExtra(KEY_BALANCE, balance)
@@ -747,6 +663,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
             );
         } else if (queueId != 0) {
             if (isCanJump) {
+                Log.e(TAG, "finishDialog: queueId >>>>>> " + queueId );
                 startActivityForResult(new Intent(this, BookingActivity.class)
                         .putExtra(KEY_BATHQUEUE_ID, queueId)
                         .putExtra(KEY_FLOOR ,this.isFloor)

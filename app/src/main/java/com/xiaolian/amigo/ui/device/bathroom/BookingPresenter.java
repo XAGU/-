@@ -410,6 +410,7 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
     }
 
 
+
     private void delay(int time ,  Action1<Long> action0 ){
         this.subscriptions.add(RxHelper.delay(time , action0));
     }

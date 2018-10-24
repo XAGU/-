@@ -3,6 +3,7 @@ package com.xiaolian.amigo.ui.device.bathroom;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -113,6 +114,7 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
         initData();
         isOnCreate = true ;
     }
+
 
     /**
      * 初始化数据
@@ -419,6 +421,7 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
 
     @Override
     public void bookingSuccess(BathBookingRespDTO data) {
+        isAppointTime = false ;
         status = BOOKING ;
         bookingId = data.getId();
         isTimeOut = false ;
@@ -434,7 +437,6 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
         successRecyclerView(data);
         statusView.getRightText().setText("取消");
         statusView.getRightText().setTextColor(getResources().getColor(R.color.colorDarkB ));
-        Log.e(TAG, "bookingSuccess: " );
         expiredTime = data.getExpiredTime();
         presenter.countDownexpiredTime(data.getExpiredTime());
         initTopTip();
@@ -446,7 +448,7 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
 
     @Override
     public void bookingCancel() {
-        Log.e(TAG, "bookingCancel: " );
+        if (isAppointTime) isAppointTime= false ;
         isTimeOut = true ;
         statusView.setLeftImageResource(IMG_RES_STATUS_CANCEL);
         statusView.setStatusText("取消预约");
@@ -503,9 +505,12 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
         this.finish();
     }
 
+    boolean isAppointTime = false ;  // 是否已经是超时状态
     
     @Override
     public void appointMentTimeOut(BathBookingRespDTO respDTO) {
+        if(isAppointTime)  return ;
+        isAppointTime = true ;
         isTimeOut = true  ;
         missedTimes++  ;
         initTopTip();
@@ -526,11 +531,15 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
 
     @Override
     public void appointMentTimeOut(boolean isServer) {
+        if (isAppointTime) return ;
+
+        isAppointTime = true ;
         if (!isServer) presenter.notifyExpired();
+
         isTimeOut = true ;
         presenter.setAppointmentTimeOut();
         missedTimes++  ;
-        setTopTip();
+        initTopTip();
         if (statusView != null) {
             statusView.setLeftImageResource(IMG_RES_STATUS_FAIL);
             statusView.setStatusText(getString(R.string.preBookTimeOut));
@@ -544,6 +553,7 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
 
     @Override
     public void showQueue(BookingQueueProgressDTO data) {
+        if (isAppointTime) isAppointTime = false ;
         initTopTip();
         getQueueInfo(data);
         setQueueTip();
@@ -551,7 +561,7 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
 
     @Override
     public void startOrderInfo(BathOrderCurrentRespDTO dto) {
-
+        if (isAppointTime) isAppointTime = false ;
         String userMethod = "";
         if (dto.getLocation().equals("任意空浴室")) {
             userMethod = "预约任意空浴室";

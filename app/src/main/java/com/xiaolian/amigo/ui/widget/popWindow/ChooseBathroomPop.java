@@ -70,12 +70,9 @@ public class ChooseBathroomPop  extends PopupWindow {
         button = contentView.findViewById(R.id.pre_bathroom) ;
         adapter = new ChooseRoomAdapter(context ,floorsBeans);
 
-        adapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void click(int poisition) {
-                if (floorsBeans != null && floorsBeans.size() > 0 && poisition < floorsBeans.size()) {
-                    floorsBean = floorsBeans.get(poisition);
-                }
+        adapter.setOnItemClickListener(poisition -> {
+            if (floorsBeans != null && floorsBeans.size() > 0 && poisition < floorsBeans.size()) {
+                floorsBean = floorsBeans.get(poisition);
             }
         });
 
