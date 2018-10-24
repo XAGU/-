@@ -11,7 +11,6 @@ import com.aigestudio.wheelpicker.IWheelPicker;
 import com.aigestudio.wheelpicker.WheelPicker;
 import com.aigestudio.wheelpicker.widgets.IWheelMonthPicker;
 import com.aigestudio.wheelpicker.widgets.IWheelYearPicker;
-import com.aigestudio.wheelpicker.widgets.WheelMonthPicker;
 import com.aigestudio.wheelpicker.widgets.WheelYearPicker;
 import com.xiaolian.amigo.R;
 
