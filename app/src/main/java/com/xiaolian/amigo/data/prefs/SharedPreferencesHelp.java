@@ -130,6 +130,9 @@ public class    SharedPreferencesHelp implements ISharedPreferencesHelp {
      */
     private static final String PREF_KEY_WITHDRAW = "PREF_KEY_WITHDRAW";
 
+
+    private static final String PREF_KEY_DIFF_TIME = "PREF_KEY_DIFF_TIME";
+
     private String tokenHolder;
     private String deviceTokenHolder;
     private User userHolder;
@@ -718,6 +721,16 @@ public class    SharedPreferencesHelp implements ISharedPreferencesHelp {
     @Override
     public boolean isShowWithDrawDialog() {
         return mSharedPreferences.getBoolean(PREF_KEY_WITHDRAW ,true);
+    }
+
+    @Override
+    public void setDiffTime(long diffTime) {
+         mSharedPreferences.edit().putLong(PREF_KEY_DIFF_TIME ,diffTime).apply();
+    }
+
+    @Override
+    public long getDiffTime() {
+        return mSharedPreferences.getLong(PREF_KEY_DIFF_TIME ,0);
     }
 
     @Override

@@ -11,6 +11,7 @@ import com.xiaolian.amigo.data.network.model.bathroom.BathRoomReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BookingQueueProgressDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
+import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IBookingPresenter;
 import com.xiaolian.amigo.ui.device.bathroom.intf.IBookingView;
@@ -21,6 +22,7 @@ import javax.inject.Inject;
 
 import rx.Subscriber;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action0;
 import rx.functions.Action1;
 
@@ -52,9 +54,14 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
     boolean isOnPause = false  ;
 
     boolean timeOut = false ;
+
+    private long diffTime ;  // 服务器时间与系统时间的差值
+
+    private ISharedPreferencesHelp iSharedPreferencesHelp ;
     @Inject
-    public BookingPresenter(IBathroomDataManager bathroomDataManager) {
+    public BookingPresenter(IBathroomDataManager bathroomDataManager , ISharedPreferencesHelp sharedPreferencesHelp) {
         this.bathroomDataManager = bathroomDataManager;
+        this.iSharedPreferencesHelp = sharedPreferencesHelp ;
     }
 
 
@@ -127,7 +134,6 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
      */
     @Override
     public void query(String bathOrderId , boolean isToUsing , int time , boolean isShowDialog) {
-        Log.e(TAG, "timeOut: "  + "   " + timeOut);
         if (isOnPause  || timeOut)  return ;
         BathBookingStatusReqDTO reqDTO = new BathBookingStatusReqDTO();
         reqDTO.setId(bathOrderId);
@@ -145,18 +151,14 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
 
             @Override
             public void onReady(ApiResult<BathBookingRespDTO> result) {
-                Log.e(TAG, "timeOut: "  + "   " + timeOut);
                 if (result.getError() == null) {
                     if (isToUsing) {
                         if (result.getData().getStatus() == OPENED) {
                             getMvpView().gotoUsing(result.getData().getBathOrderId());
                         } else if (result.getData().getStatus() == ACCEPTED) {
-                            delay(time, new Action1<Long>() {
-                                @Override
-                                public void call(Long aLong) {
-                                    Log.e(TAG, "queryBookign:  >>>> delay"   );
-                                    query(bathOrderId, true , time , false);
-                                }
+                            delay(time, aLong -> {
+                                Log.e(TAG, "queryBookign:  >>>> delay"   );
+                                query(bathOrderId, true , time , false);
                             });
 
                         } else if (result.getData().getStatus() == EXPIRED) {
@@ -245,12 +247,16 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
     }
 
     @Override
-    public void countDownexpiredTime(long expiredTime) {
-        int countTime = TimeUtils.intervalTime(expiredTime);
-        Log.wtf(TAG , " time>>>>>>>>>>> " + countTime );
+    public void countDownexpiredTime(long expiredTime ) {
+
+        int countTime = TimeUtils.intervalTime(expiredTime , getDiffTime());
         if (countTime > 0) {
+
+
                 subscription = RxHelper.countDown(countTime)
-                        .doOnSubscribe(() -> getMvpView().countTimeLeft(TimeUtils.orderBathroomLastTime(expiredTime, "")))
+                        .doOnSubscribe(() -> {
+                            getMvpView().countTimeLeft(TimeUtils.orderBathroomLastTime(expiredTime, "" ,getDiffTime()));
+                        })
                         .subscribe(new Subscriber<Integer>() {
                             @Override
                             public void onCompleted() {
@@ -268,7 +274,7 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
                             @Override
                             public void onNext(Integer integer) {
                                 Log.e(TAG, "onNext: " + integer);
-                                getMvpView().countTimeLeft(TimeUtils.orderBathroomLastTime(expiredTime, ""));
+                                getMvpView().countTimeLeft(TimeUtils.orderBathroomLastTime(expiredTime, ""  , getDiffTime()));
                             }
                         });
             }else{
@@ -281,6 +287,12 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
                 this.subscriptions.add(subscription);
             }
         }
+
+
+
+    public long getDiffTime() {
+        return iSharedPreferencesHelp.getDiffTime();
+    }
 
 
     @Override

@@ -1,11 +1,6 @@
 package com.xiaolian.amigo.util;
 
 
-import android.widget.ImageView;
-
-import org.greenrobot.eventbus.Subscribe;
-
-import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
@@ -32,6 +27,9 @@ public class RxHelper {
                 .observeOn(AndroidSchedulers.mainThread())
                 .map(aLong -> countTime - aLong.intValue()).take(countTime + 1);
     }
+
+
+
 
     /**
      * 延迟发送

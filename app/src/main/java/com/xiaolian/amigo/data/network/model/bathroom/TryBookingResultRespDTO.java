@@ -13,7 +13,17 @@ public class TryBookingResultRespDTO {
         private BookingInfo bookingInfo;
         private QueueInfo queueInfo;
 
-        public BookingInfo getBookingInfo() {
+        private Long now ;
+
+    public Long getNow() {
+        return now;
+    }
+
+    public void setNow(Long now) {
+        this.now = now;
+    }
+
+    public BookingInfo getBookingInfo() {
             return bookingInfo;
         }
 

@@ -151,4 +151,9 @@ public interface IBathroomDataManager {
 
     int getBookMethod();
 
+
+    void setDiffTime(long diffTime);
+
+    long getDiffTime();
+
 }

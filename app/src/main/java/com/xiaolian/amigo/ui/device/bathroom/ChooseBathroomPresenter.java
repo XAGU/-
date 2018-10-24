@@ -31,6 +31,7 @@ import static com.xiaolian.amigo.util.Constant.ORDER_SETTLE;
 import static com.xiaolian.amigo.util.Constant.ORDER_USING;
 import static com.xiaolian.amigo.util.Constant.PRE_USING;
 import static com.xiaolian.amigo.util.Constant.QUEUEING;
+import static com.xiaolian.amigo.util.Constant.SERVER;
 
 /**
  * @author zcd
@@ -49,10 +50,21 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
 
     private boolean isOnpause = false ;
 
+    private long diffTime ;
+
+
+
     @Inject
     public ChooseBathroomPresenter(IBathroomDataManager bathroomDataManager) {
         this.bathroomDataManager = bathroomDataManager;
     }
+
+
+    private void getDiffTime(long serviceTime){
+        diffTime = serviceTime - System.currentTimeMillis();
+        bathroomDataManager.setDiffTime(diffTime);
+    }
+
 
     @Override
     public void getBathroomList(long buildingId ) {
@@ -248,6 +260,9 @@ public class ChooseBathroomPresenter<V extends IChooseBathroomView> extends Base
                 @Override
                 public void onReady(ApiResult<TryBookingResultRespDTO> result) {
                     if (null == result.getError()) {
+                        if (result.getData().getNow() != null && result.getData().getNow() > 0){
+                            getDiffTime(result.getData().getNow());
+                        }
                         if (result.getData().getQueueInfo() != null) {
                             clearTime();
                             getMvpView().startQueue(result.getData().getQueueInfo().getId());

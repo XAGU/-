@@ -145,5 +145,15 @@ public class BathroomDataManager implements IBathroomDataManager {
         return iSharedPreferencesHelp.getBookMethrod();
     }
 
+    @Override
+    public void setDiffTime(long diffTime) {
+        iSharedPreferencesHelp.setDiffTime(diffTime);
+    }
+
+    @Override
+    public long getDiffTime() {
+        return iSharedPreferencesHelp.getDiffTime();
+    }
+
 
 }

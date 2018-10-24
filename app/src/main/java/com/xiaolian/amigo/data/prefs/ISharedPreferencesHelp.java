@@ -216,6 +216,10 @@ public interface ISharedPreferencesHelp {
 
     boolean isShowWithDrawDialog();
 
+    void setDiffTime(long diffTime);
+
+    long getDiffTime();
+
 
 
 }

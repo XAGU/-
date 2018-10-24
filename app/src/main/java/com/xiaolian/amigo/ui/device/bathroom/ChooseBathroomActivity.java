@@ -305,7 +305,6 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         presenter.onResume();
         presenter.setIsResume(true);
         presenter.getBathroomList(buildId);
-        Log.wtf(TAG , "onResume" + isBookingBack) ;
         presenter.precondition(isShowDialog, true);
         if (preBathroom != null) preBathroom.setEnabled(true);
     }

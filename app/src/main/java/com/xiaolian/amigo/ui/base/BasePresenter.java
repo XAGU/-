@@ -54,7 +54,7 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter<V> {
     private static final int IGNORE = 600;
 
     // 统一管理observer，防止内存泄露
-    protected CompositeSubscription subscriptions;
+    public CompositeSubscription subscriptions;
     private V view;
     private Handler handler;
 

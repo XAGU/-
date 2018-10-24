@@ -139,7 +139,7 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
         initTopTip();
         if (!isOnCreate) {
             if (expiredTime != 0) {
-                presenter.countDownexpiredTime(expiredTime);
+                presenter.countDownexpiredTime(expiredTime );
             }
 
             if (status == BOOKING && bookingId > 0) {

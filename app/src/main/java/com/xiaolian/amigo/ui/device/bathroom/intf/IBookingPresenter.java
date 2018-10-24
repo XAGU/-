@@ -42,11 +42,6 @@ public interface IBookingPresenter<V extends IBookingView> extends IBasePresente
     void unLock(String deviceNo);
 
 
-    /**
-     * 根据过期时间倒计时
-     */
-    void countDownexpiredTime(long expiredTime );
-
 
     void cancleDownExpiredTime();
     /**
@@ -75,4 +70,8 @@ public interface IBookingPresenter<V extends IBookingView> extends IBasePresente
     int getBookingMethod();
 
     void setAppointmentTimeOut();
+
+
+    void countDownexpiredTime(long expiredTime  );
+
 }

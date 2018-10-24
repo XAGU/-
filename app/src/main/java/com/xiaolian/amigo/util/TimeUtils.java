@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -13,6 +14,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
+import java.util.logging.Handler;
 
 /**
  * 日期时间相关工具类
@@ -151,15 +153,46 @@ public class TimeUtils {
         return calendar.getTimeInMillis();
     }
 
+
+
     /**
      * 计算剩余时间
      * @param expiredTime  preString 时间前缀
      * @return
      */
     public static String orderBathroomLastTime(long expiredTime, String preString) {
-
-        long curTime = getCurrentNetTime() / (long) 1000;
+        long curTime = System.currentTimeMillis() / (long) 1000;
         long time = expiredTime / 1000 - curTime;
+        if (time > 0) {
+
+            /**  分少于2位数加0  */
+            if (time / SIXTY < 10) {
+                preString += "0" + time / SIXTY;
+            } else {
+                preString += time / SIXTY;
+            }
+
+            /**   秒少于2位数加0   */
+            if (time % SIXTY < 10) {
+                preString += ":0" + time % SIXTY;
+            } else {
+                preString += ":" + time % SIXTY;
+            }
+
+        } else {
+            preString = "0:00";
+        }
+        return preString;
+    }
+
+
+    /**
+     * 计算剩余时间
+     * @param expiredTime  preString 时间前缀
+     * @return
+     */
+    public static String orderBathroomLastTime(long expiredTime, String preString , long diffTime) {
+        long time = (expiredTime  - System.currentTimeMillis() - diffTime) / 1000;
         if (time > 0) {
 
             /**  分少于2位数加0  */
@@ -188,7 +221,17 @@ public class TimeUtils {
      * @return
      */
     public static final int intervalTime(long expiredTime ) {
-        return (((expiredTime - getCurrentNetTime()) / 1000)) > 0 ? (int) (((expiredTime - getCurrentNetTime()) / 1000)) : 0;
+        return (((expiredTime - System.currentTimeMillis()) / 1000)) > 0 ? (int) (((expiredTime - System.currentTimeMillis()) / 1000)) : 0;
+    }
+
+
+    /**
+     * 过期时间与自己时间相比，倒计时的时间
+     * @param expiredTime
+     * @return
+     */
+    public static final int intervalTime(long expiredTime , long diffTime ) {
+        return (((expiredTime - System.currentTimeMillis() - diffTime) / 1000)) > 0 ? (int) (((expiredTime - System.currentTimeMillis() - diffTime) / 1000)) : 0;
     }
 
     public static String lostAndFoundTimestampFormat(long timeStamp) {
@@ -303,20 +346,4 @@ public class TimeUtils {
         return format.format(date);
     }
 
-
-    public static long getCurrentNetTime(){
-        String webUrl = "http://www.ntsc.ac.cn";//中国科学院国家授时中心
-        try {
-            URL url = new URL(webUrl);// 取得资源对象
-            URLConnection uc = url.openConnection();// 生成连接对象
-            uc.connect();// 发出连接
-            long ld = uc.getDate();// 读取网站日期时间
-            return ld ;
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
 }
