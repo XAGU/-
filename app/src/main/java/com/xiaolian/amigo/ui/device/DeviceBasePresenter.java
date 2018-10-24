@@ -693,7 +693,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         // 结算找零时写入设备失败
         if (TextUtils.equals(command, checkoutCmd)) {
             if (getMvpView() != null) {
-                getMvpView().post(() -> getMvpView().onError(TradeError.DEVICE_BROKEN_1));
+                getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_2));
             }
         } else {
             if (getMvpView() != null) {
@@ -1218,7 +1218,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     closeBleConnection();
                     // 结算时异常
                     if (getMvpView() != null) {
-                        getMvpView().onError(TradeError.DEVICE_BROKEN_1);
+                        getMvpView().onError(TradeError.CONNECT_ERROR_2);
                     }
                 }
             } else {
