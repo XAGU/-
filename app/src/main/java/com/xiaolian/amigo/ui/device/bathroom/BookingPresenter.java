@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.device.bathroom;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.xiaolian.amigo.data.manager.intf.IBathroomDataManager;
@@ -22,8 +23,6 @@ import javax.inject.Inject;
 
 import rx.Subscriber;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action0;
 import rx.functions.Action1;
 
 import static com.xiaolian.amigo.util.Constant.ACCEPTED;
@@ -31,8 +30,6 @@ import static com.xiaolian.amigo.util.Constant.CANCELED;
 import static com.xiaolian.amigo.util.Constant.EXPIRED;
 import static com.xiaolian.amigo.util.Constant.FINISHED;
 import static com.xiaolian.amigo.util.Constant.OPENED;
-import static com.xiaolian.amigo.util.Constant.ORDER_SETTLE;
-import static com.xiaolian.amigo.util.Constant.ORDER_USING;
 
 
 /**
@@ -58,6 +55,10 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
     private long diffTime ;  // 服务器时间与系统时间的差值
 
     private ISharedPreferencesHelp iSharedPreferencesHelp ;
+
+    private int notifyTime = 0 ;
+
+    private String bookId  ;
     @Inject
     public BookingPresenter(IBathroomDataManager bathroomDataManager , ISharedPreferencesHelp sharedPreferencesHelp) {
         this.bathroomDataManager = bathroomDataManager;
@@ -137,6 +138,7 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
         if (isOnPause  || timeOut)  return ;
         BathBookingStatusReqDTO reqDTO = new BathBookingStatusReqDTO();
         reqDTO.setId(bathOrderId);
+        this.bookId = bathOrderId ;
         addObserver(bathroomDataManager.query(reqDTO) , new NetworkObserver<ApiResult<BathBookingRespDTO>>(){
 
 
@@ -262,7 +264,8 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
                             public void onCompleted() {
                                 if (!isOnPause) {
                                     getMvpView().countTimeLeft("0:00");
-                                    getMvpView().appointMentTimeOut(false);
+                                    notifyExpired();
+
                                 }
                             }
 
@@ -280,7 +283,7 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
             }else{
             if (!isOnPause) {
                 getMvpView().countTimeLeft("0:00");
-                getMvpView().appointMentTimeOut(false);
+                notifyExpired();
             }
         }
             if (this.subscriptions != null && !subscriptions.isUnsubscribed() && subscription != null ) {
@@ -376,9 +379,27 @@ public class BookingPresenter<V extends IBookingView> extends BasePresenter<V>
             @Override
             public void onReady(ApiResult<BooleanRespDTO> result) {
                 if (result.getError() == null){
-
+                    getMvpView().appointMentTimeOut(false);
+                    notifyTime = 0 ;
                 }else {
-//                    getMvpView().onError(result.getError().getDisplayMessage());
+                    if (result.getError().getCode() == 1005 ) {
+                        getMvpView().appointMentTimeOut(false);
+                        notifyTime = 0;
+                    }else if (result.getError().getCode() == 10013){
+                        if (!TextUtils.isEmpty(bookId)){
+                           query(bookId , true , 0 , false);
+                        }
+                        notifyTime = 0 ;
+                    } else  if (result.getError().getCode() == 30113){
+                        if (notifyTime < 5) {
+                            RxHelper.delay(1, aLong -> notifyExpired());
+                            notifyTime++;
+                        }else{
+                            getMvpView().appointMentTimeOut(false);
+                            notifyTime = 0;
+                        }
+                    }
+
                 }
             }
         });

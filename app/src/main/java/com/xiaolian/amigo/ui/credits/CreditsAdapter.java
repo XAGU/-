@@ -52,9 +52,11 @@ public class CreditsAdapter extends CommonAdapter<CreditsAdapter.CreditsItem> {
         holder.setBackgroundRes(R.id.ll_credit_item, DeviceSupport.getDeviceCreditBg(creditsItem.getDeviceType()));
         holder.setText(R.id.tv_point_desc, String.format(Locale.getDefault(),
                 "%d积分兑换", creditsItem.getCreditsAmount()));
-        holder.setTextColor(R.id.tv_point_desc,
-                ContextCompat.getColor(context,
-                        DeviceSupport.getDeviceCreditExchangeColor(creditsItem.getDeviceType())));
+        if (DeviceSupport.getDeviceCreditExchangeColor(creditsItem.getDeviceType()) != 0){
+            holder.setTextColor(R.id.tv_point_desc,
+                    ContextCompat.getColor(context,
+                            DeviceSupport.getDeviceCreditExchangeColor(creditsItem.getDeviceType())));
+        }
         holder.getView(R.id.tv_point_desc).setOnClickListener(v -> {
             if (exchangeClickListener != null) {
                 exchangeClickListener.onExchangeClick(creditsItem.getBonusId(),
@@ -135,6 +137,8 @@ public class CreditsAdapter extends CommonAdapter<CreditsAdapter.CreditsItem> {
                     return R.color.credit_washer;
                 case DISPENSER:
                     return R.color.credit_dispenser;
+                case DRYER2:
+                    return R.color.device_dryer2;
             }
             return 0;
         }

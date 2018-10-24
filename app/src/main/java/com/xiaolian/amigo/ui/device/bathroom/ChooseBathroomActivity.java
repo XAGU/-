@@ -47,6 +47,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.functions.Action1;
 
 import static com.xiaolian.amigo.ui.device.DeviceOrderActivity.KEY_USER_STYLE;
 import static com.xiaolian.amigo.ui.device.bathroom.BathroomConstant.KEY_BALANCE;
@@ -307,6 +308,7 @@ public class ChooseBathroomActivity extends BathroomBaseActivity implements ICho
         presenter.getBathroomList(buildId);
         presenter.precondition(isShowDialog, true);
         if (preBathroom != null) preBathroom.setEnabled(true);
+        isBookingBack = false ;
     }
 
     @Override

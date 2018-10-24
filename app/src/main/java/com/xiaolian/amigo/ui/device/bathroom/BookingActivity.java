@@ -32,12 +32,16 @@ import com.xiaolian.amigo.ui.widget.dialog.BookingCancelDialog;
 import com.xiaolian.amigo.ui.widget.dialog.PrepayDialog;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.DimentionUtils;
+import com.xiaolian.amigo.util.RxHelper;
 import com.xiaolian.amigo.util.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
+
+import rx.functions.Action1;
 
 import static android.view.View.GONE;
 import static com.xiaolian.amigo.ui.device.DeviceOrderActivity.KEY_USER_STYLE;
@@ -102,7 +106,6 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
     private int status ;  //  状态， 屏幕息屏后，rxJava的倒计时会没有， 用这个来表示当前状态
 
     private boolean isOnCreate = true ;  //  判断是否是onCreate ;
-
 
 
     @Override
@@ -470,7 +473,6 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
                 adapter.notifyDataSetChanged();
             }
         }
-        Log.e(TAG, "CancelBookingView: " + items.size() );
         cancelBookingUi();
 
     }
@@ -482,10 +484,7 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
         if (btStartToUse != null) btStartToUse.setVisibility(View.GONE);
         llBottomVisible(true);
         if (rightOper != null) {
-            rightOper.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.e(TAG, "onClick: " + bathQueueId +"   " +  isFloor);
+            rightOper.setOnClickListener(v -> {
                     Intent intent = new Intent();
                     if (bathQueueId > 0 || isFloor) {
                         intent.putExtra(KEY_DEVICE_ACTIVITY_FOR_RESULT, "");
@@ -494,10 +493,11 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
                     }
                     BookingActivity.this.setResult(KEY_BOOKING_RESULTCODE, intent);
                     BookingActivity.this.finish();
-                }
             });
         }
     }
+
+
 
 
     @Override
@@ -534,7 +534,7 @@ public class BookingActivity extends UseWayActivity implements IBookingView ,Cir
         if (isAppointTime) return ;
 
         isAppointTime = true ;
-        if (!isServer) presenter.notifyExpired();
+
 
         isTimeOut = true ;
         presenter.setAppointmentTimeOut();
