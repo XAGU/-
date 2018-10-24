@@ -87,7 +87,7 @@ def login():
             print("Do not upload constant")
         fileName = package_name.format(version)
         filePath = package_path.format(version)
-        login_payload = {'mobile': mobile, 'password': password ,'appVersion':version,'system':2 }
+        login_payload = {'mobile': mobile, 'password': password ,'appVersion':version,'system':2, 'brand':0, 'model':0 }
         response = requests.post(login_url, data=json.dumps(login_payload), headers=headers)
         print(response.text)
         token = json.loads(response.text)['data']['token']
