@@ -2,6 +2,7 @@ package com.xiaolian.amigo.ui.user;
 
 import android.content.Intent;
 import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
@@ -17,6 +18,9 @@ import com.xiaolian.amigo.ui.user.intf.IEditUserInfoView;
 import com.xiaolian.amigo.ui.widget.ClearableEditText;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.ViewUtil;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 
@@ -58,6 +62,8 @@ public class EditUserInfoActivity extends BaseToolBarActivity implements IEditUs
 
 
     private UserActivityComponent mActivityComponent;
+
+    private InputFilter inputFilter ;  // 输入限制
     @Override
     protected void setUp() {
         super.setUp();
@@ -134,12 +140,21 @@ public class EditUserInfoActivity extends BaseToolBarActivity implements IEditUs
 
     @OnClick(R.id.bt_submit)
     public void submit(){
-        saveUserInfo();
-        Intent intent = getIntent();
-        intent.putExtra(KEY_BACK_DATA ,editNickname.getText().toString().trim());
-        intent.putExtra(KEY_TYPE ,type);
-        this.setResult(RESULT_OK ,intent);
-        this.finish();
+
+        String content = editNickname.getText().toString().trim();
+        Pattern pattern = Pattern.compile("[^a-zA-Z0-9\\u4E00-\\u9FA5_]");  // 输入检测
+        Matcher matcher=  pattern.matcher(content);
+        if(!matcher.find()){
+            saveUserInfo();
+            Intent intent = getIntent();
+            intent.putExtra(KEY_BACK_DATA ,editNickname.getText().toString().trim());
+            intent.putExtra(KEY_TYPE ,type);
+            this.setResult(RESULT_OK ,intent);
+            this.finish();
+        }else{
+            onError("只能输入汉字,英文，数字");
+        }
+
     }
 
 
@@ -176,10 +191,11 @@ public class EditUserInfoActivity extends BaseToolBarActivity implements IEditUs
     }
 
 
-
     @Override
     protected int setLayout() {
         return R.layout.activity_edit_nickname;
     }
+
+
 
 }

@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.user;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -34,6 +35,8 @@ import com.xiaolian.amigo.ui.widget.CircleProgressView;
 import com.xiaolian.amigo.ui.widget.GridSpacesItemDecoration;
 import com.xiaolian.amigo.ui.widget.dialog.ActionSheetDialog;
 import com.xiaolian.amigo.ui.widget.dialog.BathroomBookingDialog;
+import com.xiaolian.amigo.ui.widget.dialog.BookingCancelDialog;
+import com.xiaolian.amigo.ui.widget.dialog.PrepayDialog;
 import com.xiaolian.amigo.ui.widget.photoview.AlbumItemActivity;
 import com.xiaolian.amigo.util.GildeUtils;
 import com.xiaolian.amigo.util.Log;
@@ -90,6 +93,7 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
     private static final int BACK_TYPE = 1 ;
 
     private static final int FRONT_TYPE = 2 ;
+
     @Inject
     IUserCertificationPresenter<IUserCertificationView> presenter;
     @BindView(R.id.tv_department)
@@ -225,6 +229,9 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
 
     private BathroomBookingDialog bathroomBookingDialog;
 
+
+    private BookingCancelDialog dialog ;
+
     @SuppressLint("NewApi")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -233,20 +240,14 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
         ButterKnife.bind(this);
         setUp();
         IOverScrollDecor iOverScrollDecor = OverScrollDecoratorHelper.setUpOverScroll(svMainContainer);
-        iOverScrollDecor.setOverScrollUpdateListener(new IOverScrollUpdateListener() {
-            @Override
-            public void onOverScrollUpdate(IOverScrollDecor decor, int state, float offset) {
+        iOverScrollDecor.setOverScrollUpdateListener((decor, state, offset) -> {
 
-            }
         });
-        svMainContainer.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                if (scrollY > rlToolBarHeight){
-                    setTitleVisiable(View.VISIBLE);
-                }else{
-                    setTitleVisiable(View.GONE);
-                }
+        svMainContainer.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            if (scrollY > rlToolBarHeight){
+                setTitleVisiable(View.VISIBLE);
+            }else{
+                setTitleVisiable(View.GONE);
             }
         });
         initView();
@@ -259,7 +260,14 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
         bathroomBookingDialog = new BathroomBookingDialog(this);
         bathroomBookingDialog.setTitleContent(getString(R.string.dialog_upload_content));
 
+        dialog = new BookingCancelDialog(this);
+        dialog.setTvTitle("");
+        dialog.setTvTip(getString(R.string.dialog_upload_tip));
+        dialog.setOnOkClickListener(dialog -> dialog.dismiss());
+
+        dialog.setOnCancelClickListener(dialog -> certify());
     }
+
 
 
     private void setTitleVisiable(int visiable){
@@ -350,6 +358,10 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
         if (bathroomBookingDialog != null && bathroomBookingDialog.isShowing()){
             bathroomBookingDialog.dismiss();
         }
+
+        if (dialog != null && dialog.isShowing()){
+            dialog.dismiss();
+        }
     }
 
     @Override
@@ -408,6 +420,10 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
             bathroomBookingDialog.onDettechView();
         }
         bathroomBookingDialog = null ;
+
+        if (dialog != null){
+            dialog = null ;
+        }
         EventBus.getDefault().unregister(this);
     }
 
@@ -552,6 +568,19 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
     List<File> compressImageFile ;
 
     @OnClick(R.id.certify)
+    public void clickCertify(){
+        if (dialog == null){
+            dialog = new BookingCancelDialog(this);
+            dialog.setTvTitle("");
+            dialog.setTvTip(getString(R.string.dialog_upload_tip));
+            dialog.setOnOkClickListener(dialog -> dialog.dismiss());
+
+            dialog.setOnCancelClickListener(dialog -> certify());
+        }
+        dialog.show();
+    }
+
+
     public void certify() {
         Integer stuNum = 0;
         try {

@@ -387,4 +387,7 @@
 
     <!--上传-->
     <string name="dialog_upload_content">系统君正在提交，请稍等...</string>
+    <string name="dialog_upload_tip">提交认证后，不支持更改信息
+        认证资料一旦提交，后续都不支持更改</string>
+    <string name="upload_tip">* 信息仅用于学生身份认证，并由笑联妥善</string>
 </resources>

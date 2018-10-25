@@ -82,7 +82,7 @@ public class WithDrawActivity extends WalletBaseActivity implements IWithDrawVie
     private void setData() {
         if (dto == null) return;
         tvTime.setText("退款说明：" + dto.getTimeRange());
-        tvObject.setText("退款对象：" + dto.getRefundUser());
+        tvObject.setText("退款对象：" + dto.getRefundUser() +"(入学年份)");
         tvDescription.setText("退款说明：" + dto.getExplanation());
         if (status == CERTIFICATION_PASS){
             btnSubmit.setText("朕知道了");

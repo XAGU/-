@@ -3,7 +3,6 @@ package com.xiaolian.amigo.ui.device.bathroom;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -32,16 +31,12 @@ import com.xiaolian.amigo.ui.widget.dialog.BookingCancelDialog;
 import com.xiaolian.amigo.ui.widget.dialog.PrepayDialog;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.DimentionUtils;
-import com.xiaolian.amigo.util.RxHelper;
 import com.xiaolian.amigo.util.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
-
-import rx.functions.Action1;
 
 import static android.view.View.GONE;
 import static com.xiaolian.amigo.ui.device.DeviceOrderActivity.KEY_USER_STYLE;

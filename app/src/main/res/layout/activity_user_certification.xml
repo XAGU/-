@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tool="http://schemas.android.com/tools"
-    android:background="@color/colorBackgroundGray">
+    android:background="@color/white">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -239,7 +239,6 @@
                         android:id="@+id/imageView7"
                         style="@style/ListItemImage"
                         android:layout_alignParentRight="true"
-
                         android:src="@drawable/arrow_right" />
 
                     <TextView
@@ -435,6 +434,15 @@
             </RelativeLayout>
 
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:textColor="@color/colorDark9"
+                android:text="@string/upload_tip"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="19dp"
+                />
         </LinearLayout>
 
     </ScrollView>
@@ -458,7 +466,7 @@
         android:id="@+id/rl_toolbar"
         android:layout_width="match_parent"
         android:layout_height="42dp"
-        android:background="@color/colorBackgroundGray">
+        android:background="@color/white">
 
         <ImageView
             android:id="@+id/iv_back"

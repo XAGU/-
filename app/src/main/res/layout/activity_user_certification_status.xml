@@ -15,6 +15,7 @@
         android:overScrollMode="never"
         android:scrollbars="none"
         android:visibility="gone"
+        tool:visibility="visible"
         android:layout_marginBottom="91dp">
 
         <LinearLayout
@@ -226,25 +227,31 @@
                     <TextView
                         style="@style/user_certification_txt"
                         android:layout_marginTop="14dp"
-                        android:text="学生证:"/>
+                        android:text="学生证:"
+                        android:id="@+id/tv_student_image"
+                        android:visibility="gone"/>
 
                     <android.support.v7.widget.RecyclerView
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
                         android:layout_marginTop="14dp"
-                        android:id="@+id/student_card_id">
+                        android:id="@+id/student_card_id"
+                        android:visibility="gone">
                     </android.support.v7.widget.RecyclerView>
 
                     <TextView
                         style="@style/user_certification_txt"
                         android:layout_marginTop="14dp"
-                        android:text="身份证:"/>
+                        android:text="身份证:"
+                        android:id="@+id/tv_card_image"
+                        android:visibility="gone"/>
 
                     <android.support.v7.widget.RecyclerView
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
                         android:layout_marginTop="14dp"
-                        android:id="@+id/card_id">
+                        android:id="@+id/card_id"
+                        android:visibility="gone">
 
                     </android.support.v7.widget.RecyclerView>
                 </LinearLayout>
@@ -336,7 +343,7 @@
         android:id="@+id/error_net_layout"
         android:visibility="gone"
         android:layout_below="@id/rl_toolbar"
-        tool:visibility="visible"/>
+        tool:visibility="gone"/>
 
 
 

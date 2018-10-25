@@ -72,25 +72,22 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
     public static final String KEY_CERTIFICATION_TYPE = "KEY_CERTIFICATION_TYPE";
 
 
-
     public static final String KEY_DEPARTMENT = "KEY_DEPARTMENT";
 
-    public static final String KEY_PROFESSION = "KEY_PROFESSION" ;
+    public static final String KEY_PROFESSION = "KEY_PROFESSION";
 
     public static final String KEY_GRADE = "KEY_GRADE";
 
-    public static final String KEY_CLASS = "KEY_CLASS" ;
+    public static final String KEY_CLASS = "KEY_CLASS";
 
-    public static final String KEY_STUDTENT_ID = "KEY_STUDTENT_ID" ;
+    public static final String KEY_STUDTENT_ID = "KEY_STUDTENT_ID";
 
 
     public static final String KEY_STUDENT_IMAGE = "KEY_STUDENT_IMAGE";
 
-    public static final String KEY_FRONT_IMAGE = "KEY_FRONT_IMAGE" ;
+    public static final String KEY_FRONT_IMAGE = "KEY_FRONT_IMAGE";
 
-    public static final String KEY_BACK_IMAGE = "KEY_BACK_IMAGE" ;
-
-
+    public static final String KEY_BACK_IMAGE = "KEY_BACK_IMAGE";
 
 
     @BindView(R.id.certification)
@@ -111,6 +108,10 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
     RelativeLayout loadingRl;
     @BindView(R.id.error_net_layout)
     ErrorLayout errorNetLayout;
+    @BindView(R.id.tv_student_image)
+    TextView tvStudentImage;
+    @BindView(R.id.tv_card_image)
+    TextView tvCardImage;
 
 
     private UserActivityComponent mActivityComponent;
@@ -171,38 +172,38 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
 
     private int rlToolBarHeight;
 
-    private ValueAnimator loadingAnimator ;
+    private ValueAnimator loadingAnimator;
 
     int[] loadingRes = new int[]{
             R.drawable.loading_one, R.drawable.loading_two,
             R.drawable.loading_three, R.drawable.loading_four
     };
 
-    private UserCertifyInfoRespDTO dto ;
+    private UserCertifyInfoRespDTO dto;
 
-    private String department ;
+    private String department;
 
-    private String profession ;
+    private String profession;
 
-    private String grade ;
+    private String grade;
 
-    private String classstr ;
+    private String classstr;
 
-    private String studentId ;
+    private String studentId;
 
-    private String frontImage ;
+    private String frontImage;
 
     private String backImage;
 
-    private boolean isNeedRefer = false ;
+    private boolean isNeedRefer = false;
 
-    private int type ;
+    private int type;
 
     @Override
     protected void setUp() {
-        if (getIntent() != null){
-            type = getIntent().getIntExtra(KEY_CERTIFICATION_TYPE , -1);
-            department= getIntent().getStringExtra(KEY_DEPARTMENT);
+        if (getIntent() != null) {
+            type = getIntent().getIntExtra(KEY_CERTIFICATION_TYPE, -1);
+            department = getIntent().getStringExtra(KEY_DEPARTMENT);
             profession = getIntent().getStringExtra(KEY_PROFESSION);
             grade = getIntent().getStringExtra(KEY_GRADE);
             classstr = getIntent().getStringExtra(KEY_CLASS);
@@ -216,7 +217,7 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
             frontImage = getIntent().getStringExtra(KEY_FRONT_IMAGE);
             cardIdUrlImages.add(frontImage);
             cardIdUrlImages.add(backImage);
-            isNeedRefer = true ;
+            isNeedRefer = true;
         }
     }
 
@@ -234,10 +235,10 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
                 setTitleVisiable(View.GONE);
             }
         });
-        rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE ,Manifest.permission.READ_EXTERNAL_STORAGE)
+        rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
                 .subscribe(granted -> {
                     if (granted) {
-                        if (dto != null ) writeImageToFile(dto);
+                        if (dto != null) writeImageToFile(dto);
                     } else {
                         showMessage("没有SD卡权限");
                     }
@@ -247,7 +248,7 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
         initImageAdd();
         presenter.getDormitory();
         if (!isNeedRefer)
-        presenter.getCertifyInfo();
+            presenter.getCertifyInfo();
 
 
         tvDormitory.setText(presenter.getDormInfo());
@@ -260,15 +261,40 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
     private void setStatus(int type) {
         if (type == CERTIFICATION_FAILURE) {
             showFail();
+            showImage();
             tvToolbarText.setText(CERTIFICATION_FILURE);
         } else if (type == CERTIFICATION_REVIEWING) {
             showBarTxt();
+            showImage();
             tvToolbarText.setText(CERTIFICATIONINT);
         } else if (type == CERTIFICATION_PASS) {
+            hideImage();
             showBarIv();
         } else {
 
         }
+    }
+
+    /**
+     * 显示照片
+     */
+    private void showImage() {
+        tvCardImage.setVisibility(View.VISIBLE);
+        tvStudentImage.setVisibility(View.VISIBLE);
+        studentCardId.setVisibility(View.VISIBLE);
+        cardId.setVisibility(View.VISIBLE);
+
+    }
+
+    /**
+     * 隐藏照片
+     */
+    private void hideImage() {
+        tvCardImage.setVisibility(View.GONE);
+        tvStudentImage.setVisibility(View.GONE);
+        studentCardId.setVisibility(View.GONE);
+        cardId.setVisibility(View.GONE);
+
     }
 
     private void showFail() {
@@ -301,7 +327,7 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
         tvToolbarIv.setVisibility(View.VISIBLE);
         tvToolbarText.setVisibility(View.GONE);
         certification.setVisibility(View.GONE);
-        setMarginBottom(ScreenUtils.dpToPxInt(this ,20));
+        setMarginBottom(ScreenUtils.dpToPxInt(this, 20));
         changeDormitory.setVisibility(View.VISIBLE);
     }
 
@@ -320,10 +346,10 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
 
         Intent intent = new Intent(this, UserCertificationActivity.class);
         UserCertificationStatus userCertificationStatus = new UserCertificationStatus(
-           tvDepartment.getText().toString().trim() ,tvProfession.getText().toString().trim() ,
-           tvGrade.getText().toString().trim() ,tvClass.getText().toString().trim(),
-           tvStudentId.getText().toString().trim() ,studentUrlImages);
-        if (cardIdUrlImages != null && cardIdUrlImages.size() > 1){
+                tvDepartment.getText().toString().trim(), tvProfession.getText().toString().trim(),
+                tvGrade.getText().toString().trim(), tvClass.getText().toString().trim(),
+                tvStudentId.getText().toString().trim(), studentUrlImages);
+        if (cardIdUrlImages != null && cardIdUrlImages.size() > 1) {
             userCertificationStatus.setFrontImageBase64(cardIdUrlImages.get(0));
             userCertificationStatus.setBackImageBase64(cardIdUrlImages.get(1));
         }
@@ -332,7 +358,6 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
         startActivity(intent);
         this.finish();
     }
-
 
 
     private void initJect() {
@@ -349,17 +374,17 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
     }
 
 
-    private void rxjavaByteConverFile(String name ,String imageBase64 , Action1<File> action1){
+    private void rxjavaByteConverFile(String name, String imageBase64, Action1<File> action1) {
         Observable.just(imageBase64)
                 .subscribeOn(Schedulers.io())
-                .map(s -> Base64.decode(s ,Base64.DEFAULT)).subscribeOn(Schedulers.io())
-                .map(bytes -> createFileFromBytes(name ,bytes)).observeOn(AndroidSchedulers.mainThread())
+                .map(s -> Base64.decode(s, Base64.DEFAULT)).subscribeOn(Schedulers.io())
+                .map(bytes -> createFileFromBytes(name, bytes)).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(action1);
     }
 
-    public File createFileFromBytes(String name ,byte[] bytes){
+    public File createFileFromBytes(String name, byte[] bytes) {
 
-        if (bytes == null || bytes.length == 0) return null ;
+        if (bytes == null || bytes.length == 0) return null;
         String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xiaolian/";
 
 
@@ -368,22 +393,22 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
 //            onError(R.string.no_sd_card_premission);
             return null;
         }
-        int random = (int)(Math.random()*100+1) ;
-        File outputImage = new File(filePath ,name +random+System.currentTimeMillis()+".jpg");
+        int random = (int) (Math.random() * 100 + 1);
+        File outputImage = new File(filePath, name + random + System.currentTimeMillis() + ".jpg");
 
         try {
 
-            if (outputImage.exists() ){
+            if (outputImage.exists()) {
                 outputImage.delete();
             }
-           boolean b =  outputImage.createNewFile();
-            if ( !b) return null ;
+            boolean b = outputImage.createNewFile();
+            if (!b) return null;
         } catch (IOException e) {
             Log.e(TAG, e.getMessage());
         }
 
-        FileIOUtils.writeFileFromBytesByStream(outputImage ,bytes);
-        return outputImage ;
+        FileIOUtils.writeFileFromBytesByStream(outputImage, bytes);
+        return outputImage;
     }
 
     @Override
@@ -412,10 +437,11 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
         startActivity(this, UserCertificationActivity.class);
     }
 
-    boolean needReferDormitory = false ;
+    boolean needReferDormitory = false;
+
     @OnClick(R.id.change_dormitory)
     public void changeDormitory() {
-        needReferDormitory = true ;
+        needReferDormitory = true;
         Intent intent;
         intent = new Intent(this, ListChooseActivity.class);
         intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_CHOOSE_IS_EDIT, false);
@@ -485,7 +511,7 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
             tvDormitory.setText(presenter.getDormInfo());
         }
 
-        if (isNeedRefer){
+        if (isNeedRefer) {
             if (!TextUtils.isEmpty(department))
                 tvDormitory.setText(department);
 
@@ -498,20 +524,20 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
             if (!TextUtils.isEmpty(classstr))
                 tvClass.setText(classstr);
 
-            if(studentUrlImages != null && studentUrlImages.size() > 0 && studentIdAdapter != null){
+            if (studentUrlImages != null && studentUrlImages.size() > 0 && studentIdAdapter != null) {
                 studentIdAdapter.notifyDataSetChanged();
             }
 
-            if (cardIdUrlImages != null && cardIdUrlImages.size() > 0 && cardIdAdapter != null){
+            if (cardIdUrlImages != null && cardIdUrlImages.size() > 0 && cardIdAdapter != null) {
                 cardIdAdapter.notifyDataSetChanged();
             }
-            if (type != -1){
+            if (type != -1) {
                 setStatus(type);
             }
 
         }
-        isNeedRefer = false ;
-        needReferDormitory = false ;
+        isNeedRefer = false;
+        needReferDormitory = false;
 
     }
 
@@ -535,7 +561,7 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
         tvClass.setText(data.getClassName());
         tvStudentId.setText(data.getStuNum() + "");
         tvDormitory.setText(presenter.getDormInfo());
-        this.dto = data ;
+        this.dto = data;
         writeImageToFile(data);
     }
 
@@ -547,11 +573,11 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
 
         for (String url : data.getStuPicturesData()) {
             rxjavaByteConverFile("images", url, file -> {
-                if (file != null && file.exists()){
-                    String imagePath  = file.getAbsolutePath();
+                if (file != null && file.exists()) {
+                    String imagePath = file.getAbsolutePath();
                     studentIdImages.add(new ImageAddAdapter.ImageItem(imagePath));
                     studentUrlImages.add(imagePath);
-                    if (studentUrlImages.size() == data.getStuPicturesData().size()){
+                    if (studentUrlImages.size() == data.getStuPicturesData().size()) {
                         if (studentIdAdapter != null) studentIdAdapter.notifyDataSetChanged();
                     }
                 }
@@ -563,16 +589,16 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
             cardIdImages.clear();
 
             rxjavaByteConverFile("ivFrontImage", data.getIdCardFrontData(), file -> {
-                if (file != null && file.exists()){
-                    String imagePath  = file.getAbsolutePath();
+                if (file != null && file.exists()) {
+                    String imagePath = file.getAbsolutePath();
                     cardIdImages.add(new ImageAddAdapter.ImageItem(imagePath));
                     cardIdUrlImages.add(imagePath);
                 }
             });
 
             rxjavaByteConverFile("ivBackImage", data.getIdCardFrontData(), file -> {
-                if (file != null && file.exists()){
-                    String imagePath  = file.getAbsolutePath();
+                if (file != null && file.exists()) {
+                    String imagePath = file.getAbsolutePath();
                     cardIdImages.add(new ImageAddAdapter.ImageItem(imagePath));
                     cardIdUrlImages.add(imagePath);
                     cardIdAdapter.notifyDataSetChanged();
@@ -594,12 +620,13 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
         loadingAnimator.start();
     }
 
-    private void setErrorNetListener(){
+    private void setErrorNetListener() {
         if (errorNetLayout != null)
             errorNetLayout.setReferListener(() -> {
-                    if(presenter != null) {
-                        presenter.getCertifyInfo();
-                    }});
+                if (presenter != null) {
+                    presenter.getCertifyInfo();
+                }
+            });
     }
 
     @Override

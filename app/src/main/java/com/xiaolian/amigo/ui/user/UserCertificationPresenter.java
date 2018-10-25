@@ -58,7 +58,7 @@ public class UserCertificationPresenter <v extends IUserCertificationView> exten
 
 
     @Inject
-    public UserCertificationPresenter(IUserDataManager userDataManager ,IOssDataManager ossDataManager){
+    UserCertificationPresenter(IUserDataManager userDataManager ,IOssDataManager ossDataManager){
         super();
         this.userDataManager = userDataManager ;
         this.ossDataManager = ossDataManager ;
