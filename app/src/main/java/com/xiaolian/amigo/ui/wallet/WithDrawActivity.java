@@ -73,9 +73,6 @@ public class WithDrawActivity extends WalletBaseActivity implements IWithDrawVie
         getActivityComponent().inject(this);
         presenter.onAttach(this);
         setData();
-//        tvTime.setText(time);
-//        tvObject.setText(object);
-//        tvDescription.setText(description);
     }
 
 

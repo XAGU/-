@@ -261,14 +261,12 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
         bathroomBookingDialog.setTitleContent(getString(R.string.dialog_upload_content));
 
         dialog = new BookingCancelDialog(this);
-        dialog.setTvTitle("");
-        dialog.setTvTip(getString(R.string.dialog_upload_tip));
+        dialog.setTvTitle(getString(R.string.dialog_upload_tip_title));
+        dialog.setTvTip(getString(R.string.dialog_upload_tip_content));
         dialog.setOnOkClickListener(dialog -> dialog.dismiss());
 
         dialog.setOnCancelClickListener(dialog -> certify());
     }
-
-
 
     private void setTitleVisiable(int visiable){
         tvTitle.setVisibility(visiable);
@@ -571,8 +569,8 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
     public void clickCertify(){
         if (dialog == null){
             dialog = new BookingCancelDialog(this);
-            dialog.setTvTitle("");
-            dialog.setTvTip(getString(R.string.dialog_upload_tip));
+            dialog.setTvTitle(getString(R.string.dialog_upload_tip_title));
+            dialog.setTvTip(getString(R.string.dialog_upload_tip_content));
             dialog.setOnOkClickListener(dialog -> dialog.dismiss());
 
             dialog.setOnCancelClickListener(dialog -> certify());
