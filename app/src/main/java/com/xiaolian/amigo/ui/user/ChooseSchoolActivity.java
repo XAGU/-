@@ -287,10 +287,6 @@ public class ChooseSchoolActivity extends BaseActivity implements IChooseSchoolV
         });
         onlineSchool.setLayoutManager(new LinearLayoutManager(this));
 
-//        indexBar.setNeedRealIndex(true)//设置需要真实的索引
-//                .setmLayoutManager(manager)
-//                .setmSourceDatas(cityBeans);
-
     }
 
     /**

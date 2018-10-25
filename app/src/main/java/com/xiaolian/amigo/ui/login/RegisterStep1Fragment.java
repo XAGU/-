@@ -8,6 +8,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.ObjectsCompat;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -17,6 +19,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.base.WebActivity;
@@ -94,14 +97,31 @@ public class RegisterStep1Fragment extends Fragment {
     EditText etVerificationCode;
 
     CountDownButtonHelper cdb;
-    
+
+    InputFilter inputFilter ;  //空格监听
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.activity_registry_step1, container, false);
         ButterKnife.bind(this, view);
+        initInputFilter();
         return view;
+    }
+
+
+    private void initInputFilter(){
+        inputFilter = new InputFilter(){
+
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                if (source.equals(" ") || source.toString().contentEquals("\n")) {
+                    return "";
+                } else {
+                    return null;
+                }
+            }
+        };
     }
 
     @Override
@@ -109,7 +129,8 @@ public class RegisterStep1Fragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ViewUtil.setEditHintAndSize(getString(R.string.mobile_hint), 14, etMobile);
         ViewUtil.setEditHintAndSize(getString(R.string.verification_code_hint), 14, etVerificationCode);
-
+        etMobile.setFilters(new InputFilter[]{inputFilter , new InputFilter.LengthFilter(11)});
+        etVerificationCode.setFilters(new InputFilter[]{inputFilter , new InputFilter.LengthFilter(6)});
         cdb = new CountDownButtonHelper(btSendVerificationCode, GET_VERIFICATION_CODE,
                 Constant.VERIFY_CODE_TIME, 1);
         cdb.setOnFinishListener(() -> {

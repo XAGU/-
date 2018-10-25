@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -50,12 +52,25 @@ public class LoginFragment extends Fragment {
     @BindView(R.id.bt_submit)
     Button btSubmit;
 
+    private InputFilter inputFilter =  new InputFilter() {
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+            if (source.equals(" ") || source.toString().contentEquals("\n")) {
+                return "";
+            } else {
+                return null;
+            }
+        }
+    };
+
     @OnClick(R.id.bt_submit)
     void login() {
         if (getActivity() instanceof LoginActivity) {
             ((LoginActivity) getActivity()).login(etMobile.getText().toString(), etUserpwd.getText().toString());
         }
     }
+
+
 
     @Nullable
     @Override
@@ -72,6 +87,7 @@ public class LoginFragment extends Fragment {
         ViewUtil.setEditHintAndSize(getString(R.string.mobile_hint), 14, etMobile);
         ViewUtil.setEditHintAndSize(getString(R.string.password_hint), 14, etUserpwd);
         TextChange textChange = new TextChange();
+        etMobile.setFilters(new InputFilter[]{inputFilter ,new InputFilter.LengthFilter(11)});
         etMobile.addTextChangedListener(textChange);
         etUserpwd.addTextChangedListener(textChange);
         if (getActivity() instanceof LoginActivity) {

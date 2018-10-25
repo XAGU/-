@@ -287,7 +287,7 @@ public class ProfileFragment2 extends BaseFragment {
                 legalize.setActivityClazz(UserCertificationActivity.class);
                 break;
             case CERTIFICATION_FAILURE:
-                status = CERTIFICATION_FAILURE_TXT ;
+                status = CERTIFICATION_NONE_TXT ;
                 legalize.setVerifiedStatus(status);
                 legalize.setActivityClazz(UserCertificationStatusActivity.class);
                 break;
@@ -297,7 +297,7 @@ public class ProfileFragment2 extends BaseFragment {
                 legalize.setActivityClazz(UserCertificationStatusActivity.class);
                 break;
             case CERTIFICATION_REVIEWING:
-                status = CERTIFICATION_REVIEWING_TXT;
+                status = CERTIFICATION_NONE_TXT;
                 legalize.setVerifiedStatus(status);
                 legalize.setActivityClazz(UserCertificationStatusActivity.class);
                 break;

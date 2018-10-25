@@ -158,25 +158,15 @@
                         </RelativeLayout>
 
                     </LinearLayout>
-                        <!--<com.xiaolian.amigo.ui.widget.school.IndexBar.widget.IndexBar-->
-                            <!--android:id="@+id/indexBar"-->
-                            <!--android:layout_width="30dp"-->
-                            <!--android:layout_height="match_parent"-->
-                            <!--app:indexBarPressBackground="@color/white"-->
-                            <!--app:indexBarTextSize="8sp"-->
-                            <!--android:layout_gravity="center_horizontal"-->
-                            <!--android:visibility="gone"-->
-                            <!--/>-->
                         <RelativeLayout
-                            android:layout_width="30dp"
+                            android:layout_width="40dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="right"
-                            android:paddingEnd="10dp"
                             android:gravity="center"
                             android:id="@+id/right_rl"
                             tool:visibility="gone">
                         <android.support.v7.widget.RecyclerView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/title_right"/>
                         </RelativeLayout>
