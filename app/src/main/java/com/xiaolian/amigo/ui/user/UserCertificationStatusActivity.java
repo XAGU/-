@@ -24,6 +24,7 @@ import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.network.model.user.UserCertifyInfoRespDTO;
+import com.xiaolian.amigo.data.vo.CertificationStatusTypeEvent;
 import com.xiaolian.amigo.data.vo.UserCertificationStatus;
 import com.xiaolian.amigo.di.componet.DaggerUserActivityComponent;
 import com.xiaolian.amigo.di.componet.UserActivityComponent;
@@ -252,6 +253,7 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
 
 
         tvDormitory.setText(presenter.getDormInfo());
+
     }
 
 
@@ -596,7 +598,7 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
                 }
             });
 
-            rxjavaByteConverFile("ivBackImage", data.getIdCardFrontData(), file -> {
+            rxjavaByteConverFile("ivBackImage", data.getIdCardBehindData(), file -> {
                 if (file != null && file.exists()) {
                     String imagePath = file.getAbsolutePath();
                     cardIdImages.add(new ImageAddAdapter.ImageItem(imagePath));
@@ -650,6 +652,12 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
         if (loadingAnimator == null) return;
 
         if (loadingAnimator.isRunning()) loadingAnimator.cancel();
+    }
+
+    @Override
+    public void onBackPressed() {
+        EventBus.getDefault().postSticky(new CertificationStatusTypeEvent(type));
+        super.onBackPressed();
     }
 
 

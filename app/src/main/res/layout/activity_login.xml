@@ -24,7 +24,7 @@
         android:drawableBottom="@drawable/line"
         android:hint="@string/mobile_hint"
         android:imeOptions="actionNext"
-        android:inputType="text"
+        android:inputType="number"
         android:maxLength="@integer/phone_max_length"
         android:maxLines="1"
         android:gravity="center_vertical"

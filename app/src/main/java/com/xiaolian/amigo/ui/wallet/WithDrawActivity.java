@@ -5,9 +5,15 @@ import android.widget.TextView;
 
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.network.model.funds.WithdrawExplanationRespDTO;
+import com.xiaolian.amigo.data.vo.CertificationStatusTypeEvent;
+import com.xiaolian.amigo.data.vo.UserCertificationStatus;
 import com.xiaolian.amigo.ui.user.UserCertificationActivity;
 import com.xiaolian.amigo.ui.user.UserCertificationStatusActivity;
 import com.xiaolian.amigo.ui.wallet.intf.IWithDrawView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import javax.inject.Inject;
 
@@ -68,6 +74,7 @@ public class WithDrawActivity extends WalletBaseActivity implements IWithDrawVie
 
     @Override
     protected void initView() {
+        EventBus.getDefault().register(this);
         setUp();
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
@@ -102,9 +109,21 @@ public class WithDrawActivity extends WalletBaseActivity implements IWithDrawVie
     protected void onDestroy() {
         super.onDestroy();
         presenter.onDetach();
+        EventBus.getDefault().unregister(this);
     }
 
+    /**
+     * 学生认证状态改变
+     *
+     * @param
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    public void eventBusReceive(CertificationStatusTypeEvent certificationStatusTypeEvent) {
+        if (certificationStatusTypeEvent != null){
+            this.status = certificationStatusTypeEvent.getType();
+        }
 
+    }
     @OnClick({R.id.btn_submit})
     public void btnSubmit() {
         if (status ==CERTIFICATION_PASS) {
@@ -115,5 +134,8 @@ public class WithDrawActivity extends WalletBaseActivity implements IWithDrawVie
             startActivity(this , UserCertificationStatusActivity.class);
         }
     }
+
+
+
 
 }
