@@ -46,6 +46,7 @@ public class RegisterStep1Fragment extends Fragment {
     @BindView(R.id.bt_submit)
     Button btSubmit;
 
+
     @OnClick(R.id.bt_submit)
     void checkVerification() {
         if (getActivity() instanceof LoginActivity) {

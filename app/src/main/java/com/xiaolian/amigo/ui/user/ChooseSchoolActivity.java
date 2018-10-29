@@ -142,6 +142,7 @@ public class ChooseSchoolActivity extends BaseActivity implements IChooseSchoolV
         setUnBinder(ButterKnife.bind(this));
         mActivityComponent.inject(this);
         presenter.onAttach(this);
+        setUp();
 //        SoftInputUtils.showSoftInputFromWindow(this,  search);
         search.setOnEditorActionListener((v, actionId, event) -> {
                     onSuccess(search.getText().toString());
@@ -327,7 +328,6 @@ public class ChooseSchoolActivity extends BaseActivity implements IChooseSchoolV
         unbinder = ButterKnife.bind(this);
         initInject();
         initView();
-        setUp();
         initSmartRecyclerLayout();
         initTitleRightRecyclerView();
     }
