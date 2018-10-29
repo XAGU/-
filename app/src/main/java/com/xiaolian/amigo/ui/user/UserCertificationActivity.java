@@ -559,6 +559,12 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
                 && !TextUtils.isEmpty(ivBackPath) && !TextUtils.isEmpty(ivFrontPath) && images.size() > 0);
         certify.setBackgroundResource(allValidated ?
                 R.drawable.button_enable : R.drawable.button_disable);
+
+        if (allValidated){
+            certify.setEnabled(true);
+        }else{
+            certify.setEnabled(false);
+        }
     }
 
     File ivCompressFileBackFile  ,ivCompressFileFrontFile ;
@@ -589,9 +595,10 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
         }
         ivBackFile = getFile(ivBackPath);
         ivFrontFile = getFile(ivFrontPath);
-
+        if (ivBackFile != null)
         ivCompressFileBackFile = CompressHelper.getDefault(this).compressToFile(ivBackFile);
 
+        if (ivFrontFile != null)
         ivCompressFileFrontFile = CompressHelper.getDefault(this).compressToFile(ivFrontFile);
 
         if (imageFile == null ) imageFile = new ArrayList<>();
@@ -606,15 +613,25 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
             compressImageFile.add(CompressHelper.getDefault(this).compressToFile(getFile(imagePath)));
         }
 
+
         presenter.certify(tvClass.getText().toString(), tvDepartment.getText().toString(),
                 grade, ivCompressFileBackFile, ivCompressFileFrontFile, tvProfession.getText().toString(), stuNum, compressImageFile);
     }
 
     private File getFile(String filePath){
-        File file  = new File(filePath);
-        if (file.exists())
-            return file ;
-            else return null ;
+
+        // 防止String 为null 的异常
+
+        if (TextUtils.isEmpty(filePath)) return null ;
+        try {
+            File file = new File(filePath);
+            if (file.exists())
+                return file;
+            else return null;
+        }catch (Exception e) {
+            Log.wtf(TAG ,e.getMessage());
+            return null;
+        }
 
     }
 

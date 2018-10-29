@@ -595,17 +595,18 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
                     String imagePath = file.getAbsolutePath();
                     cardIdImages.add(new ImageAddAdapter.ImageItem(imagePath));
                     cardIdUrlImages.add(imagePath);
+                    rxjavaByteConverFile("ivBackImage", data.getIdCardBehindData(), file2 -> {
+                        if (file2 != null && file2.exists()) {
+                            String imagePath2 = file2.getAbsolutePath();
+                            cardIdImages.add(new ImageAddAdapter.ImageItem(imagePath2));
+                            cardIdUrlImages.add(imagePath2);
+                            cardIdAdapter.notifyDataSetChanged();
+                        }
+                    });
                 }
             });
 
-            rxjavaByteConverFile("ivBackImage", data.getIdCardBehindData(), file -> {
-                if (file != null && file.exists()) {
-                    String imagePath = file.getAbsolutePath();
-                    cardIdImages.add(new ImageAddAdapter.ImageItem(imagePath));
-                    cardIdUrlImages.add(imagePath);
-                    cardIdAdapter.notifyDataSetChanged();
-                }
-            });
+
         }
 
     }

@@ -6,7 +6,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,7 +17,6 @@ import android.text.TextUtils;
 import android.view.GestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -61,7 +59,6 @@ import com.xiaolian.amigo.ui.repair.RepairActivity;
 import com.xiaolian.amigo.ui.user.CompleteInfoActivity;
 import com.xiaolian.amigo.ui.user.EditDormitoryActivity;
 import com.xiaolian.amigo.ui.user.ListChooseActivity;
-import com.xiaolian.amigo.ui.user.UserCertificationStatusActivity;
 import com.xiaolian.amigo.ui.user.adaptor.TableFragmentPagerAdapter;
 import com.xiaolian.amigo.ui.wallet.PrepayActivity;
 import com.xiaolian.amigo.ui.widget.dialog.AvailabilityDialog;
@@ -91,7 +88,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import lombok.Data;
 
-import static android.app.FragmentManager.POP_BACK_STACK_INCLUSIVE;
 import static android.widget.RelativeLayout.CENTER_IN_PARENT;
 import static com.xiaolian.amigo.data.enumeration.Device.DISPENSER;
 import static com.xiaolian.amigo.data.enumeration.Device.DRYER;
@@ -100,7 +96,6 @@ import static com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity.KEY_B
 import static com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity.KEY_RESIDENCE_ID;
 import static com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity.KEY_RESIDENCE_NAME;
 import static com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity.KEY_RESIDENCE_TYPE;
-import static com.xiaolian.amigo.ui.user.UserCertificationStatusActivity.KEY_CERTIFICATION_TYPE;
 import static com.xiaolian.amigo.util.Log.getContext;
 
 /**
@@ -587,7 +582,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 presenter.setIsFirstAfterLogin(false);
                 if (socalFragment == null ) return ;
                 if (socalFragment.isAdded()) {
-                    fm.beginTransaction().remove(socalFragment).commit();
+
+                    // commit  方法在activity 的onSaveInstanceState()之后调用会报错 。 解决方法是吧commit 换成 commitAllowingStateLoss();
+                    fm.beginTransaction().remove(socalFragment).commitAllowingStateLoss();
                 }
 
             }
