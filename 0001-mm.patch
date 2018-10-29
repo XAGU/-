@@ -1,0 +1,57 @@
+From ecd5022b16c16bdddfcc52af8c86cdbbc85f3e63 Mon Sep 17 00:00:00 2001
+From: LiuGe <“liuge@xiaolian365.com”>
+Date: Mon, 29 Oct 2018 17:46:43 +0800
+Subject: [PATCH] mm
+
+---
+ .../user/UserCertificationStatusActivity.java | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
+
+diff --git a/app/src/main/java/com/xiaolian/amigo/ui/user/UserCertificationStatusActivity.java b/app/src/main/java/com/xiaolian/amigo/ui/user/UserCertificationStatusActivity.java
+index dff0e6db..52217c20 100644
+--- a/app/src/main/java/com/xiaolian/amigo/ui/user/UserCertificationStatusActivity.java
++++ b/app/src/main/java/com/xiaolian/amigo/ui/user/UserCertificationStatusActivity.java
+@@ -570,13 +570,14 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
+ 
+         if (studentUrlImages.size() > 0) studentUrlImages.clear();
+ 
+-
+-        for (String url : data.getStuPicturesData()) {
++        for(int i = 0 ; i < data.getStuPicturesData().size() ; i++){
++            String url = data.getStuPicturesData().get(i);
++            int finalI = i;
+             rxjavaByteConverFile("images", url, file -> {
+                 if (file != null && file.exists()) {
+                     String imagePath = file.getAbsolutePath();
+-                    studentIdImages.add(new ImageAddAdapter.ImageItem(imagePath));
+-                    studentUrlImages.add(imagePath);
++                    studentIdImages.add(finalI,new ImageAddAdapter.ImageItem(imagePath));
++                    studentUrlImages.add(finalI,imagePath);
+                     if (studentUrlImages.size() == data.getStuPicturesData().size()) {
+                         if (studentIdAdapter != null) studentIdAdapter.notifyDataSetChanged();
+                     }
+@@ -591,16 +592,16 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
+             rxjavaByteConverFile("ivFrontImage", data.getIdCardFrontData(), file -> {
+                 if (file != null && file.exists()) {
+                     String imagePath = file.getAbsolutePath();
+-                    cardIdImages.add(new ImageAddAdapter.ImageItem(imagePath));
+-                    cardIdUrlImages.add(imagePath);
++                    cardIdImages.add(0,new ImageAddAdapter.ImageItem(imagePath) );
++                    cardIdUrlImages.add(0 ,imagePath);
+                 }
+             });
+ 
+-            rxjavaByteConverFile("ivBackImage", data.getIdCardFrontData(), file -> {
++            rxjavaByteConverFile("ivBackImage", data.getIdCardBehindData(), file -> {
+                 if (file != null && file.exists()) {
+                     String imagePath = file.getAbsolutePath();
+-                    cardIdImages.add(new ImageAddAdapter.ImageItem(imagePath));
+-                    cardIdUrlImages.add(imagePath);
++                    cardIdImages.add(1,new ImageAddAdapter.ImageItem(imagePath));
++                    cardIdUrlImages.add(1 , imagePath);
+                     cardIdAdapter.notifyDataSetChanged();
+                 }
+             });
+-- 
+2.19.0
+
