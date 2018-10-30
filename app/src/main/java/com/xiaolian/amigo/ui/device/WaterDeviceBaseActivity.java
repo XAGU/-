@@ -303,10 +303,8 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         setBleCallback(() -> {
             initView();
             if (isScan){
-                android.util.Log.e(TAG, "onCreate: " );
                 presenter.onPreConnect(macAddress , true);
             }else {
-                android.util.Log.e(TAG, "onCreate: " );
                 presenter.onPreConnect(macAddress);
             }
 
@@ -359,7 +357,6 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             }
         }
 
-        android.util.Log.e(TAG, "setUp: " + macAddress );
     }
 
 
