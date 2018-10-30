@@ -144,7 +144,7 @@ public class UserCertificationPresenter <v extends IUserCertificationView> exten
 //                         getMvpView().certifySuccess();
                          getMvpView().hideSuccessDialog();
                      }else{
-//                         getMvpView().onSuccess("认证失败");
+                         getMvpView().onError(result.getError().getDisplayMessage());
                          getMvpView().hideFailureDialgo();
                      }
                  }else{

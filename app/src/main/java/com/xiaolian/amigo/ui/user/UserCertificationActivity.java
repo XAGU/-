@@ -613,7 +613,6 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
             compressImageFile.add(CompressHelper.getDefault(this).compressToFile(getFile(imagePath)));
         }
 
-
         presenter.certify(tvClass.getText().toString(), tvDepartment.getText().toString(),
                 grade, ivCompressFileBackFile, ivCompressFileFrontFile, tvProfession.getText().toString(), stuNum, compressImageFile);
     }
@@ -680,7 +679,6 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
         if (bathroomBookingDialog != null && bathroomBookingDialog.isShowing()) {
             bathroomBookingDialog.dismiss();
         }
-        onSuccess("上传失败");
     }
 
     private void setGradeList(List<Integer> gradeList) {

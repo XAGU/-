@@ -42,11 +42,13 @@ import com.xiaolian.amigo.util.ScreenUtils;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.inject.Inject;
 
@@ -55,6 +57,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import rx.Observable;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
@@ -254,6 +257,7 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
 
         tvDormitory.setText(presenter.getDormInfo());
 
+
     }
 
 
@@ -376,12 +380,12 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
     }
 
 
-    private void rxjavaByteConverFile(String name, String imageBase64, Action1<File> action1) {
+    private void rxjavaByteConverFile(String name, String imageBase64, Subscriber<File> fileSubscriber) {
         Observable.just(imageBase64)
                 .subscribeOn(Schedulers.io())
                 .map(s -> Base64.decode(s, Base64.DEFAULT)).subscribeOn(Schedulers.io())
                 .map(bytes -> createFileFromBytes(name, bytes)).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(action1);
+                .subscribe(fileSubscriber);
     }
 
     public File createFileFromBytes(String name, byte[] bytes) {
@@ -428,7 +432,6 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
         loadingAnimator.setInterpolator(new LinearInterpolator());
         loadingAnimator.addUpdateListener(animation -> {
             int currentValue = (int) animation.getAnimatedValue();
-            Log.wtf(TAG, currentValue + "");
             if (ivLoading != null)
                 ivLoading.setImageResource(loadingRes[currentValue]);
         });
@@ -572,39 +575,98 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
 
         if (studentUrlImages.size() > 0) studentUrlImages.clear();
 
-        for(int i = 0 ; i < data.getStuPicturesData().size() ; i++){
+        for (String url : data.getStuPicturesData()) {
+            studentIdImages.add(new ImageAddAdapter.ImageItem(url));
+            studentUrlImages.add(url);
+        }
+        final AtomicInteger atomicInteger = new AtomicInteger(0);
+        for (int i = 0; i < data.getStuPicturesData().size(); i++) {
+            final int finalI = i;
             String url = data.getStuPicturesData().get(i);
-            int finalI = i;
-            rxjavaByteConverFile("images", url, file -> {
-                if (file != null && file.exists()) {
-                    String imagePath = file.getAbsolutePath();
-                    studentIdImages.add(finalI,new ImageAddAdapter.ImageItem(imagePath));
-                    studentUrlImages.add(finalI,imagePath);
-                    if (studentUrlImages.size() == data.getStuPicturesData().size()) {
-                        if (studentIdAdapter != null) studentIdAdapter.notifyDataSetChanged();
+            rxjavaByteConverFile("images", url, new Subscriber<File>() {
+                @Override
+                public void onCompleted() {
+
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    UserCertificationStatusActivity.this.onError("图片获取失败");
+                    Log.wtf(TAG, e.getMessage() + "images");
+                }
+
+                @Override
+                public void onNext(File file) {
+                    if (file != null && file.exists()) {
+                        atomicInteger.incrementAndGet();
+                        String imagePath = file.getAbsolutePath();
+                        studentIdImages.set(finalI, new ImageAddAdapter.ImageItem(imagePath));
+                        studentUrlImages.set(finalI, imagePath);
+                        if (atomicInteger.get() == data.getStuPicturesData().size()) {
+                            if (studentIdAdapter != null) studentIdAdapter.notifyDataSetChanged();
+                        }
                     }
                 }
             });
         }
 
-
         if (cardIdImages != null) {
             cardIdImages.clear();
 
-            rxjavaByteConverFile("ivFrontImage", data.getIdCardFrontData(), file -> {
-                if (file != null && file.exists()) {
-                    String imagePath = file.getAbsolutePath();
-                    cardIdImages.add(0,new ImageAddAdapter.ImageItem(imagePath));
-                    cardIdUrlImages.add(0,imagePath);
+            cardIdImages.add(new ImageAddAdapter.ImageItem(""));
+            cardIdImages.add(new ImageAddAdapter.ImageItem(""));
+
+            cardIdUrlImages.add("");
+            cardIdUrlImages.add("");
+            final AtomicInteger atomicInteger1 = new AtomicInteger(0);
+            rxjavaByteConverFile("ivFrontImage", data.getIdCardFrontData(), new Subscriber<File>() {
+                @Override
+                public void onCompleted() {
+
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    UserCertificationStatusActivity.this.onError("图片获取失败");
+                    Log.wtf(TAG, e.getMessage() + "前面");
+                }
+
+                @Override
+                public void onNext(File file) {
+
+                    if (file != null && file.exists()) {
+                        atomicInteger1.incrementAndGet();
+                        String imagePath = file.getAbsolutePath();
+                        cardIdImages.set(0, new ImageAddAdapter.ImageItem(imagePath));
+                        cardIdUrlImages.set(0, imagePath);
+                        if (atomicInteger1.get() == 2)
+                        cardIdAdapter.notifyDataSetChanged();
+                    }
                 }
             });
 
-            rxjavaByteConverFile("ivBackImage", data.getIdCardBehindData(), file -> {
-                if (file != null && file.exists()) {
-                    String imagePath = file.getAbsolutePath();
-                    cardIdImages.add(1,new ImageAddAdapter.ImageItem(imagePath));
-                    cardIdUrlImages.add(1,imagePath);
-                    cardIdAdapter.notifyDataSetChanged();
+            rxjavaByteConverFile("ivBackImage", data.getIdCardBehindData(), new Subscriber<File>() {
+                @Override
+                public void onCompleted() {
+
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    UserCertificationStatusActivity.this.onError("图片获取失败");
+                    Log.wtf(TAG, e.getMessage() + "后面");
+                }
+
+                @Override
+                public void onNext(File file) {
+                    if (file != null && file.exists()) {
+                        atomicInteger1.incrementAndGet();
+                        String imagePath = file.getAbsolutePath();
+                        cardIdImages.set(1, new ImageAddAdapter.ImageItem(imagePath));
+                        cardIdUrlImages.set(1, imagePath);
+                        if (atomicInteger1.get() == 2)
+                        cardIdAdapter.notifyDataSetChanged();
+                    }
                 }
             });
         }
