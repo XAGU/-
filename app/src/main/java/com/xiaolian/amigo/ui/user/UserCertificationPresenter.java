@@ -108,7 +108,7 @@ public class UserCertificationPresenter <v extends IUserCertificationView> exten
 
 
     @Override
-    public void certify(String className, String faculty, Integer grade, File idCardBehind, File idCardFront, String major, Integer stuNum, List<File> stuPictureUrls) {
+    public void certify(String className, String faculty, Integer grade, File idCardBehind, File idCardFront, String major, Long stuNum, List<File> stuPictureUrls) {
         RequestBody requestBody ;
         MultipartBody.Builder builder ;
 

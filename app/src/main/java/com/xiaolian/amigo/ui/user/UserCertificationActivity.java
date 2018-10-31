@@ -586,10 +586,10 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
 
 
     public void certify() {
-        Integer stuNum = 0;
+        Long stuNum = 0L;
         try {
             grade = Integer.parseInt(tvGrade.getText().toString());
-            stuNum = Integer.parseInt(tvStudentId.getText().toString());
+            stuNum = Long.parseLong(tvStudentId.getText().toString());
         } catch (Exception e) {
             Log.wtf(TAG, e.getMessage());
         }

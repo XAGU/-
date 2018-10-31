@@ -85,7 +85,7 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
     public static final String KEY_CLASS = "KEY_CLASS";
 
     public static final String KEY_STUDTENT_ID = "KEY_STUDTENT_ID";
-
+    
 
     public static final String KEY_STUDENT_IMAGE = "KEY_STUDENT_IMAGE";
 
@@ -432,6 +432,7 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
         loadingAnimator.setInterpolator(new LinearInterpolator());
         loadingAnimator.addUpdateListener(animation -> {
             int currentValue = (int) animation.getAnimatedValue();
+            Log.wtf(TAG ,currentValue +"");
             if (ivLoading != null)
                 ivLoading.setImageResource(loadingRes[currentValue]);
         });
@@ -511,10 +512,8 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
     @Override
     protected void onResume() {
         super.onResume();
-        if (isNeedRefer || needReferDormitory) {
-            presenter.getDormitory();
-            tvDormitory.setText(presenter.getDormInfo());
-        }
+        presenter.getDormitory();
+        tvDormitory.setText(presenter.getDormInfo());
 
         if (isNeedRefer) {
             if (!TextUtils.isEmpty(department))
@@ -575,6 +574,9 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
 
         if (studentUrlImages.size() > 0) studentUrlImages.clear();
 
+
+        if (studentIdImages.size() > 0) studentIdImages.clear();
+
         for (String url : data.getStuPicturesData()) {
             studentIdImages.add(new ImageAddAdapter.ImageItem(url));
             studentUrlImages.add(url);
@@ -600,10 +602,13 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
                     if (file != null && file.exists()) {
                         atomicInteger.incrementAndGet();
                         String imagePath = file.getAbsolutePath();
-                        studentIdImages.set(finalI, new ImageAddAdapter.ImageItem(imagePath));
-                        studentUrlImages.set(finalI, imagePath);
-                        if (atomicInteger.get() == data.getStuPicturesData().size()) {
-                            if (studentIdAdapter != null) studentIdAdapter.notifyDataSetChanged();
+                        if (finalI < data.getStuPicturesData().size()) {
+                            studentIdImages.set(finalI, new ImageAddAdapter.ImageItem(imagePath));
+                            studentUrlImages.set(finalI, imagePath);
+                            if (atomicInteger.get() == data.getStuPicturesData().size()) {
+                                if (studentIdAdapter != null)
+                                    studentIdAdapter.notifyDataSetChanged();
+                            }
                         }
                     }
                 }
@@ -677,7 +682,9 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
     @Override
     public void showAnimaLoading() {
         loadingRl.setVisibility(View.VISIBLE);
-        if (loadingAnimator == null) return;
+        if (loadingAnimator == null){
+            initLoadingAnim();
+        }
 
         if (loadingAnimator.isRunning()) {
             loadingAnimator.cancel();
@@ -715,6 +722,8 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
         if (loadingAnimator == null) return;
 
         if (loadingAnimator.isRunning()) loadingAnimator.cancel();
+
+        if (ivLoading != null) ivLoading.clearAnimation();
     }
 
     @Override
