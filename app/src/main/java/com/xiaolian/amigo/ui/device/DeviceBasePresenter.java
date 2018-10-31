@@ -1034,6 +1034,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                             //当前人的关阀指令恢复
                             precheckFlag = false;
                             closeCmd = nextCommand;
+                            saveCloseCmd(closeCmd, orderId);
                             writeLogFile("handleResult" ,"result : "  + result.getData().getMacAddress()  + " ， 原指令类型： connect "  ," 当前人的关阀指令恢复  ；  下一步指令 "   +  closeCmd  );
                         }
                         else if (result.getData().getNextCommandType() == Command.OTHER_CLOSE_VALVE.getType()) {
