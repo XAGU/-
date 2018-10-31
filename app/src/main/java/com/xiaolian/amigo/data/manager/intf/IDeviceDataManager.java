@@ -23,6 +23,7 @@ import com.xiaolian.amigo.data.network.model.trade.UpdateDeviceRateCommandRespDT
 import com.xiaolian.amigo.data.network.model.trade.PayReqDTO;
 import com.xiaolian.amigo.data.network.model.trade.PayRespDTO;
 import com.xiaolian.amigo.data.vo.DeviceCategory;
+import com.xiaolian.amigo.data.vo.User;
 
 import java.util.List;
 
@@ -144,5 +145,8 @@ public interface IDeviceDataManager {
     List<DeviceCategory> getDeviceCategory();
 
     Observable<ApiResult<BooleanRespDTO>> reportDeviceConnectError(@Body DeviceConnectErrorReqDTO reqDTO);
+
+
+    User getUser();
 
 }

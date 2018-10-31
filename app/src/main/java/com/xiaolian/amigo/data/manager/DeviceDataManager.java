@@ -34,6 +34,7 @@ import com.xiaolian.amigo.data.network.model.trade.UpdateDeviceRateCommandReqDTO
 import com.xiaolian.amigo.data.network.model.trade.UpdateDeviceRateCommandRespDTO;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.data.vo.DeviceCategory;
+import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.di.UserServer;
 
 import java.util.List;
@@ -249,5 +250,10 @@ public class DeviceDataManager implements IDeviceDataManager {
     @Override
     public Observable<ApiResult<BooleanRespDTO>> reportDeviceConnectError(DeviceConnectErrorReqDTO reqDTO) {
         return connectErrorApi.reportDeviceConnectError(reqDTO);
+    }
+
+    @Override
+    public User getUser() {
+        return sharedPreferencesHelp.getUserInfo();
     }
 }
