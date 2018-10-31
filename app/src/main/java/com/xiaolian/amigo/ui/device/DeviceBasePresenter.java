@@ -566,7 +566,6 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         writeLogFile("afterBleConnected" , "" ,"重连后发现订单已被结算，跳转至订单详情页！orderId:"+orderStatus.getOrderId());
                         if (getMvpView() != null) {
                             getMvpView().onFinish(orderStatus.getOrderId()); // 跳转订单详情页
-                            deleteLogFile();
                         }
                     } else { // 未结单
                         // 重连状态下继续下发握手指令
@@ -1096,7 +1095,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         Log.i(TAG, "结账完成");
                         if (getMvpView() != null) {
                             getMvpView().onFinish(orderId);
-                            deleteLogFile();
+
                         }
 
                     } else if (precheckFlag) {
@@ -1108,7 +1107,6 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                             writeLogFile("handleResult" ,"result : "  + result.getData().getMacAddress() + " ， 原指令类型： CHECK_OUT "    ,"当前为预结账状态 ,重连状态下，走预结账->结账流程时，是本人主动结账，跳转账单详情页"    );
                             if (getMvpView() != null) {
                                 getMvpView().onFinish(orderId);
-                                deleteLogFile();
                             }
                         } else {
                             // 非重连状态下，是主动帮别人结账，此时用户还未进入用水流程，需要再次握手，否则会报设备使用次数不对
@@ -1127,7 +1125,6 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         Log.i(TAG, "结账完成");
                         if (getMvpView() != null) {
                             getMvpView().onFinish(orderId);
-                            deleteLogFile();
                         }
                     }
                     break;
@@ -1567,7 +1564,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     /**
      * 删除log 文件
      */
-    private void deleteLogFile(){
+    public void deleteLogFile(){
         String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xiaolian/" + deviceDataManager.getUser().getId()+"/";
         File path = new File(filePath);
         if (!path.exists() && !path.mkdirs()) {

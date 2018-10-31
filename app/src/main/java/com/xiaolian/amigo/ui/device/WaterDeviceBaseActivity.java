@@ -807,6 +807,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
                 // 关闭蓝牙连接
                 presenter.closeBleConnection();
 
+
                 onError(TradeError.CONNECT_ERROR_1);
             }
         };
@@ -989,6 +990,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             return;
         }
         presenter.onDisConnect();
+        presenter.deleteLogFile();
         Intent intent = new Intent(this, DeviceOrderActivity.class);
         intent.putExtra(Constant.BUNDLE_ID, orderId);
         startActivity(intent);
