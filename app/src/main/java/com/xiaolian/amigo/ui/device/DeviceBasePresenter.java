@@ -49,6 +49,7 @@ import com.xiaolian.amigo.ui.device.intf.IDevicePresenter;
 import com.xiaolian.amigo.ui.device.intf.IDeviceView;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.FileIOUtils;
+import com.xiaolian.amigo.util.FileUtils;
 import com.xiaolian.amigo.util.Log;
 import com.xiaolian.amigo.util.TimeUtils;
 import com.xiaolian.amigo.util.ble.Agreement;
@@ -286,12 +287,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             Long diff = System.currentTimeMillis() - lastConnectTime;
             if (diff < 5000) {
                 if (connectTask == null) {
-                    connectTask = new Runnable() {
-                        @Override
-                        public void run() {
-                            onConnect(macAddress);
-                            writeLogFile("onPreConnect" ,"macAddress : "  + macAddress  +"  isScan :" + isScan,"低于5秒再次重连");
-                        }
+                    connectTask = () -> {
+                        onConnect(macAddress);
+                        writeLogFile("onPreConnect" ,"macAddress : "  + macAddress  +"  isScan :" + isScan,"低于5秒再次重连");
                     };
                 }
                handler.postDelayed(connectTask,5000 - diff);
@@ -568,6 +566,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         writeLogFile("afterBleConnected" , "" ,"重连后发现订单已被结算，跳转至订单详情页！orderId:"+orderStatus.getOrderId());
                         if (getMvpView() != null) {
                             getMvpView().onFinish(orderStatus.getOrderId()); // 跳转订单详情页
+                            deleteLogFile();
                         }
                     } else { // 未结单
                         // 重连状态下继续下发握手指令
@@ -1094,22 +1093,24 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 case CHECK_OUT:
                     if (purelyCheckoutFlag) {
                         // 纯结账操作，直接跳转至第二步结账，结账完毕跳转账单详情页面
+                        writeLogFile("handleResult" ,"result : "  + result.getData().getMacAddress() + " ， 原指令类型： CHECK_OUT "    ,"纯结账操作，直接跳转至第二步结账，结账完毕跳转账单详情页面"    );
                         Log.i(TAG, "结账完成");
                         if (getMvpView() != null) {
                             getMvpView().onFinish(orderId);
+                            deleteLogFile();
                         }
-                        writeLogFile("handleResult" ,"result : "  + result.getData().getMacAddress() + " ， 原指令类型： CHECK_OUT "    ,"纯结账操作，直接跳转至第二步结账，结账完毕跳转账单详情页面"    );
+
                     } else if (precheckFlag) {
                         // 当前为预结账状态，结账完毕后关闭更改标识
                         precheckFlag = false;
                         if (reconnect) {
                             // 重连状态下，走预结账->结账流程时，是本人主动结账，跳转账单详情页
                             Log.i(TAG, "结账完成");
+                            writeLogFile("handleResult" ,"result : "  + result.getData().getMacAddress() + " ， 原指令类型： CHECK_OUT "    ,"当前为预结账状态 ,重连状态下，走预结账->结账流程时，是本人主动结账，跳转账单详情页"    );
                             if (getMvpView() != null) {
                                 getMvpView().onFinish(orderId);
+                                deleteLogFile();
                             }
-
-                            writeLogFile("handleResult" ,"result : "  + result.getData().getMacAddress() + " ， 原指令类型： CHECK_OUT "    ,"当前为预结账状态 ,重连状态下，走预结账->结账流程时，是本人主动结账，跳转账单详情页"    );
                         } else {
                             // 非重连状态下，是主动帮别人结账，此时用户还未进入用水流程，需要再次握手，否则会报设备使用次数不对
                             Log.i(TAG, "结账完成,当前为主动帮别人结账，正常流程，继续下发握手指令。");
@@ -1123,11 +1124,12 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         }
                     } else {
                         // 当前为非预结账状态，结账完毕后跳转账单详情页
+                        writeLogFile("handleResult" ,"result : "  + result.getData().getMacAddress() + " ， 原指令类型： CHECK_OUT "    ,"当前为非预结账状态，结账完毕后跳转账单详情页"    );
                         Log.i(TAG, "结账完成");
                         if (getMvpView() != null) {
                             getMvpView().onFinish(orderId);
+                            deleteLogFile();
                         }
-                        writeLogFile("handleResult" ,"result : "  + result.getData().getMacAddress() + " ， 原指令类型： CHECK_OUT "    ,"当前为非预结账状态，结账完毕后跳转账单详情页"    );
                     }
                     break;
                 case PRE_CHECK:
@@ -1556,12 +1558,32 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             if (!outputImage.exists()) {
                 outputImage.createNewFile();
             }
-            FileIOUtils.writeFileFromString(outputImage, content);
+            FileIOUtils.writeFileFromString(outputImage, content , true);
         } catch (IOException e) {
             Log.e(TAG, e.getMessage());
         }
     }
 
 
+    /**
+     * 删除log 文件
+     */
+    private void deleteLogFile(){
+        String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xiaolian/" + deviceDataManager.getUser().getId()+"/";
+        File path = new File(filePath);
+        if (!path.exists() && !path.mkdirs()) {
+//            onError(R.string.no_sd_card_premission);
+            return ;
+        }
+
+        File outputImage = new File(filePath, DeviceLogFileName );
+        try {
+            if (!outputImage.exists()) {
+                FileUtils.deleteFile(outputImage);
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+    }
 
 }
