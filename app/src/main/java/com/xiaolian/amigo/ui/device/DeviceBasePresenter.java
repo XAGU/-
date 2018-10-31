@@ -157,6 +157,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             for (Supplier s : deviceCategory.getSuppliers()) {
                 if (ObjectsCompat.equals(s.getId(), supplierId)) {
                     this.supplier = s;
+                    writeLogFile("setSupplierId" ,"supplierId: "+supplierId , "从缓存设置供应商");
+                    break;
                 }
             }
         }
@@ -167,9 +169,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             supplier.setServiceUuid(BleDataManager.SERVICE_UUID);
             supplier.setNotifyUuid(BleDataManager.NOTIFY_DESCRIPTOR_UUID);
             supplier.setAgreement(AgreementVersion.HAONIANHUA.getType());
-            writeLogFile("setSupplierId" ,supplierId+"" , "设置供应商");
+            writeLogFile("setSupplierId" ,"supplierId: "+supplierId , "设置默认好年华供应商");
         }
-
     }
 
     /**
@@ -212,7 +213,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     public void cancelTimer() {
         if (null != timer) {
             timer.cancel();
-            writeLogFile("cancelTimer" ,"" ,"取消倒计时");
+            writeLogFile("cancelTimer" , "","取消倒计时");
+        } else {
+            writeLogFile("cancelTimer" , "","倒计时为空，不需要取消");
         }
     }
 
@@ -424,7 +427,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         // 1、网络请求获取握手指令
         if (null == connectCmd) {
             getConnectCommand(macAddress);
-            writeLogFile("realConnect" ,"macAddress : "  + macAddress   ,"connectCmd为空"  );
+            writeLogFile("realConnect" ,"macAddress : "  + macAddress   ,"connectCmd为空");
+        } else {
+            writeLogFile("realConnect" ,"macAddress : "  + macAddress   ,"connectCmd不为空:"+connectCmd);
         }
         // 检测当前用户对该设备订单使用状态
         checkOrderStatus(macAddress);
@@ -437,17 +442,21 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             // 处理蓝牙连接状态
             switch (status) {
                 case BluetoothConstants.STATE_CONNECTED:
+                    writeLogFile("ConnectStatusListener" ,"currentMacAddress : "  + currentMacAddress   ,"蓝牙已连接");
                     Log.d(TAG, "[ConnectStatusListener]蓝牙已连接");
                     break;
                 case BluetoothConstants.STATE_CONNECTING:
+                    writeLogFile("ConnectStatusListener" ,"currentMacAddress : "  + currentMacAddress   ,"蓝牙正在连接");
                     Log.d(TAG, "[ConnectStatusListener]蓝牙正在连接");
                     break;
                 case BluetoothConstants.STATE_DISCONNECTED:
 //                    getMvpView().showMessage("蓝牙已经断开连接...");
+                    writeLogFile("ConnectStatusListener" ,"currentMacAddress : "  + currentMacAddress   ,"蓝牙已经断开连接");
                     handleDisConnectError("[ConnectStatusListener]蓝牙已经断开连接");
                     break;
                 case BluetoothConstants.STATE_DISCONNECTING:
 //                    getMvpView().showMessage("蓝牙正在断开连接...");
+                    writeLogFile("ConnectStatusListener" ,"currentMacAddress : "  + currentMacAddress   ,"蓝牙正在断开连接");
                     Log.d(TAG, "[ConnectStatusListener]蓝牙正在断开连接");
                     break;
             }
@@ -459,9 +468,11 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         Log.d(TAG, "开始连接设备 thread " + Thread.currentThread().getName()  + "    id  >>>> " + supplier.getAgreement());
         switch (AgreementVersion.getAgreement(supplier.getAgreement())) {
             case HAONIANHUA:
+                writeLogFile("realConnect" , "" ,"开始连接好年华设备"+supplier.getId());
                 connectHaoNianHaoDevice();
                 break;
             case XINNA:
+                writeLogFile("realConnect" , "" ,"开始连接辛纳设备"+supplier.getId());
                 connectXinNaDevice();
                 break;
         }
@@ -471,6 +482,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         Log.i(TAG, "连接辛纳设备 thread " + Thread.currentThread().getName());
         bleDataManager.connect(currentMacAddress, (code, gatt) -> {
             if (code != BluetoothConstants.CONN_RESPONSE_SUCCESS) {
+                writeLogFile("connectXinNaDevice" , "" ,"连接失败currentMacAddress："+currentMacAddress+"  code:"+code);
                 handleDisConnectError("辛纳设备连接失败 code: " + code);
                 return;
             }
@@ -484,6 +496,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE, code1 -> {
                             Log.d(TAG, "写入ENABLE_NOTIFICATION_VALUE code" + code1 + " thread " + Thread.currentThread().getName());
                             if (code1 != BluetoothConstants.GATT_SUCCESS) {
+                                writeLogFile("connectXinNaDevice" , "" ,"辛纳写入失败currentMacAddress："+currentMacAddress+"  code:"+code1);
                                 handleDisConnectError("辛纳设备写入ENABLE_NOTIFICATION_VALUE失败 code:" + code1);
                                 return;
                             }
@@ -493,15 +506,16 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                                         if (null != data) {
                                             String result = HexBytesUtils.bytesToHexString(data);
                                             Log.i(TAG, "接收到设备数据" + result + " thread" + Thread.currentThread().getName());
+                                            writeLogFile("connectXinNaDevice" , "" ,"接收到设备数据"+result);
                                             processCommandResult(result);
+                                        } else {
+                                            writeLogFile("connectXinNaDevice" , "" ,"接收到设备数据为空");
                                         }
                                     });
-
-
-
-                        });
-
-            } else {
+                            });
+            }
+            else {
+                writeLogFile("connectXinNaDevice" , "" ,"辛纳设置notify失败currentMacAddress："+currentMacAddress);
                 handleDisConnectError("辛纳设备设置notify失败");
             }
         });
@@ -517,6 +531,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 Log.wtf(TAG , "   afterBleConnected 首次连接 >>>>>>>>>>  " +currentMacAddress);
                 onWrite(connectCmd);
                 reconnect = false; // 重置重连标志
+                writeLogFile("afterBleConnected" , "" ,"首次连接就连接不上，需要重新下发握手指令connectCmd："+connectCmd + "  currentMacAddress:"+currentMacAddress);
             } else if (TradeStep.PAY == getStep()) { // 支付页面重连
                 // 重新连接成功时不需要再次握手
                 // 最新修改，支付页面重连，继续下发握手指令，否则单纯物理连接上会被设备踢掉
@@ -524,16 +539,19 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 Log.wtf(TAG , "   afterBleConnected  支付页面重连 >>>>>>>>>>  " +currentMacAddress);
                 onWrite(connectCmd);
                 reconnect = false; // 重置重连标志
+                writeLogFile("afterBleConnected" , "" ,"支付页面重连connectCmd："+connectCmd + "  currentMacAddress:"+currentMacAddress);
             } else { // 结算页面重连
                 Log.i(TAG, "当前为结算页面重连");
                 waitOrderCheckResult();
                 // 如果查询订单时出现错误，显示连接错误并跳过之后的步骤
                 if (checkOrderErrorFlag) {
                     checkOrderErrorFlag = false;
+                    writeLogFile("afterBleConnected" , "" ,"查询订单时出现错误，显示连接错误并跳过之后的步骤");
                     return;
                 }
                 if (null == orderStatus || orderStatus.getStatus() == null) {
                     Log.wtf(TAG, "查不到对应的未结账订单，不应该发生此种状况！！！");
+                    writeLogFile("afterBleConnected" , "" ,"查不到对应的未结账订单，不应该发生此种状况！！orderId:"+orderId);
                     // 如果订单ID不为空，直接到订单详情页面
                     if (orderId != 0L) {
                         if (getMvpView() != null) {
@@ -547,6 +565,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 } else {
                     if (OrderStatus.getOrderStatus(orderStatus.getStatus()) == OrderStatus.FINISHED) { // 订单已结单
                         Log.i(TAG, "重连后发现订单已被结算，跳转至订单详情页。orderId:" + orderStatus.getOrderId());
+                        writeLogFile("afterBleConnected" , "" ,"重连后发现订单已被结算，跳转至订单详情页！orderId:"+orderStatus.getOrderId());
                         if (getMvpView() != null) {
                             getMvpView().onFinish(orderStatus.getOrderId()); // 跳转订单详情页
                         }
@@ -554,6 +573,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         // 重连状态下继续下发握手指令
                         // 1、如果设备没有长按结束用水按钮，握手会失败，但连接不会被设备中断，继续下发关阀指令走结账流程即可
                         // 2、如果设备已被长按结束用水按钮，握手会成功，此时需要走预结账->结账流程
+                        writeLogFile("afterBleConnected" , "" ,"未结单，重连状态下继续下发握手指令。connectCmd"+connectCmd+", orderId:"+orderStatus.getOrderId());
                         Log.i(TAG, String.format("重连后发现订单仍未被结算，继续下发握手指令。command:%s, orderId: %s", connectCmd, orderStatus.getOrderId()));
                         onWrite(connectCmd);
                     }
@@ -567,15 +587,18 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             // 如果查询订单时出现错误，显示连接错误并跳过之后的步骤
             if (checkOrderErrorFlag) {
                 checkOrderErrorFlag = false;
+                writeLogFile("afterBleConnected" , "" ,"正常连接状态，查询订单时出现错误，显示连接错误并跳过之后的步骤");
                 return;
             }
 
             if (null != orderStatus && null != orderStatus.getStatus() && OrderStatus.getOrderStatus(orderStatus.getStatus()) == OrderStatus.USING) {  // 有订单未计算拿上次连接的握手指令（这里待验证是否有影响）
                 if (homePageJump && !orderStatus.isExistsUnsettledOrder()) {
+                    writeLogFile("afterBleConnected" , "" ,"首页点击继续用水，且未结账订单已超出指定时间范围，走正常流程，继续下发握手指令。connectCmd："+connectCmd);
                     Log.i(TAG, "首页点击继续用水，且未结账订单已超出指定时间范围，走正常流程，继续下发握手指令。command:" + connectCmd);
                     waitConnectCmdResult();
                     onWrite(connectCmd);
                 } else {
+                    writeLogFile("afterBleConnected" , "" ,"正常连接发现有订单未被结算，继续下发握手指令。connectCmd："+connectCmd+ "， orderId："+orderStatus.getOrderId());
                     Log.i(TAG, String.format("正常连接发现有订单未被结算，继续下发握手指令。command: %s, orderId:%s", connectCmd, orderStatus.getOrderId()));
                     // orderId = orderStatus.getOrderId();
                     waitConnectCmdResult();
@@ -598,10 +621,12 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             Log.d(TAG, "ServiceUuid" + supplier.getServiceUuid() + "notifyUuid" + supplier.getNotifyUuid()
                     + "writeUuid" + supplier.getWriteUuid());
             if (code != BluetoothConstants.CONN_RESPONSE_SUCCESS) {
+                writeLogFile("connectHaoNianHaoDevice" , "" ,"连接失败currentMacAddress："+currentMacAddress+"  code:"+code);
                 handleDisConnectError("连接好年华设备失败 code:" + code);
                 return;
             }
             if (gatt == null || gatt.getService(UUID.fromString(supplier.getServiceUuid())) == null) {
+                writeLogFile("connectHaoNianHaoDevice" , "" ,"连接好年华设备失败 code:："+ code + "获取不到service uuid:" + supplier.getServiceUuid());
                 handleDisConnectError("连接好年华设备失败 code:" + code + "获取不到service uuid:" + supplier.getServiceUuid());
                 return;
             }
@@ -615,6 +640,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                                 BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE, code1 -> {
                                     Log.d(TAG, "写入ENABLE_NOTIFICATION_VALUE code" + code1 + " thread " + Thread.currentThread().getName());
                                     if (code1 != BluetoothConstants.GATT_SUCCESS) {
+                                        writeLogFile("connectHaoNianHaoDevice" , "" ,"辛纳写入失败currentMacAddress："+currentMacAddress+"  code:"+code1);
                                         handleDisConnectError("好年华设备写入ENABLE_NOTIFICATION_VALUE失败 code:" + code1);
                                         return;
                                     }
@@ -623,7 +649,10 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                                                 if (null != data) {
                                                     String result = HexBytesUtils.bytesToHexString(data);
                                                     Log.i(TAG, "接收到设备数据" + result + " thread " + Thread.currentThread().getName());
+                                                    writeLogFile("connectHaoNianHaoDevice" , "" ,"接收到设备数据"+result);
                                                     processCommandResult(result);
+                                                } else {
+                                                    writeLogFile("connectHaoNianHaoDevice" , "" ,"接收到设备数据为空");
                                                 }
 
                                             });
@@ -631,6 +660,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                                 });
                     } else {
                         Log.d(TAG, "设置notify失败 thread " + Thread.currentThread().getName());
+                        writeLogFile("connectHaoNianHaoDevice" , "" ,"辛纳好年华notify失败currentMacAddress："+currentMacAddress);
                         handleDisConnectError("设置notify失败");
                     }
                     return;
@@ -641,6 +671,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
     @Override
     public void onReconnect(@NonNull String macAddress) {
+        writeLogFile("onReconnect" , "macAddress：" + macAddress,"");
         // 重置蓝牙连接
         resetBleConnection();
 
@@ -658,6 +689,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     public void onWrite(@NonNull String command) {
         Log.wtf(TAG , "   onWrite >>>>>>>>>>  " +currentMacAddress);
         if (bleDataManager.getConnectStatus(currentMacAddress) != BluetoothConstants.STATE_CONNECTED) {
+            writeLogFile("onWrite" , "command：" + command,"蓝牙未连接status："+ bleDataManager.getConnectStatus(currentMacAddress));
+
             if (getMvpView() != null) {
                 getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
             }
@@ -665,6 +698,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         }
 
         if (TextUtils.isEmpty(command)) {
+            writeLogFile("onWrite" , "command：null","待指令为空");
             if (getMvpView() != null) {
                 getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_4));
             }
@@ -674,8 +708,10 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         bleDataManager.writeNoRsp(currentMacAddress, UUID.fromString(supplier.getServiceUuid()),
                 UUID.fromString(supplier.getWriteUuid()), commandBytes, code -> {
                     if (code == BluetoothConstants.GATT_OTHER_FAILURE) {
+                        writeLogFile("onWrite" , "command：" + command,"指令写入失败code："+code);
                         handleWriteError(command);
                     } else if (code == BluetoothConstants.GATT_SUCCESS) {
+                        writeLogFile("onWrite" , "command：" + command,"指令写入失败成功");
                         Log.d(TAG, "发送指令成功 command: " + command + " thread " + Thread.currentThread().getName());
                     }
                 });
@@ -728,6 +764,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     }
 
     private void handleDisConnectError(String disconnectReason) {
+        writeLogFile("handleDisConnectError" , "disconnectReason：" + disconnectReason,"");
         if (handleBleClose.compareAndSet(false, true)) {
             Log.d(TAG, disconnectReason + " thread " + Thread.currentThread().getName());
 
@@ -741,6 +778,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
     @Override
     public void onDisConnect() {
+        writeLogFile("onDisConnect" , "" ,"");
         Log.d(TAG, "onDisConnect");
         if (connectTask != null) {
             handler.removeCallbacks(connectTask);
@@ -774,9 +812,11 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 if (null == result.getError()) /*获取更新费率指令*/{
                     String updateDeviceRateCmd = result.getData().getConfigCommand();
                     if (!TextUtils.isEmpty(updateDeviceRateCmd)) /*指令存在，需要进行费率更新*/{
+                        writeLogFile("onUpdateDeviceRate" , "macAddress："+ macAddress ,"指令存在，需要进行费率更新");
                         onWrite(updateDeviceRateCmd);
                     } else /*指令不存在，直接进行预支付开阀使用*/{
                         getMvpView().realPay();
+                        writeLogFile("onUpdateDeviceRate" , "macAddress："+ macAddress ,"指令不存在，直接进行预支付开阀使用");
                     }
                 }
             }
@@ -785,6 +825,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             public void onError(Throwable e) {
                 super.onError(e);
                 //异常情况处理，容错处理，进行握手
+                writeLogFile("onUpdateDeviceRate" , "macAddress："+ macAddress ,"异常情况处理，容错处理，进行握手");
                 getMvpView().realPay();
             }
         }, Schedulers.io());
@@ -809,8 +850,10 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         Log.i(TAG, "获取握手指令成功。command:" + connectCmd);
                         connectCmdLock.notifyAll();
                     }
+                    writeLogFile("getConnectCommand" , "macAddress："+ macAddress ,"获取握手指令成功。command:"+ connectCmd);
 
                 } else {
+                    writeLogFile("getConnectCommand" , "macAddress："+ macAddress ,"服务器返回,获取指令失败code"+ result.getError().getCode());
                     if (result.getError().getCode() == BizError.DEVICE_BREAKDOWN.getCode()) {
                         if (getMvpView() != null) {
                             getMvpView().post(() -> getMvpView().onError(TradeError.DEVICE_BROKEN_3));
@@ -828,6 +871,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             public void onError(Throwable e) {
                 super.onError(e);
                 Log.wtf(TAG, "服务器未返回,获取开阀指令失败");
+                writeLogFile("getConnectCommand" , "macAddress："+ macAddress ,"服务器返回,获取指令失败");
                 if (getMvpView() != null) {
                     getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_3));
                 }
@@ -850,7 +894,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         }
                         Log.i(TAG, "获取订单状态成功。orderStatus:" + orderStatus);
                         orderStatusLock.notifyAll();
-                        writeLogFile("checkOrderStatus" ,"macAddress : "  + macAddress   ,"获取订单状态成功。orderStatus:" + orderStatus  );
+                        writeLogFile("checkOrderStatus" ,"macAddress : "  + macAddress   ,"获取订单状态成功。orderStatus:" + orderStatus.toString()  );
 
                     }
                 } else {
@@ -920,11 +964,10 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         && result.getData().getDeviceToken() != null) {
                     deviceDataManager.setDeviceToken(result.getData().getMacAddress(), result.getData().getDeviceToken());
                     Log.i(TAG, "收到deviceToken：" + result.getData().getDeviceToken());
-                    writeLogFile("processCommandResult" ,"result : "  + result   ,"收到deviceToken ：" + result.getData().getDeviceToken()   );
                 }
+                writeLogFile("processCommandResult" ,"result : "  + result   ,"通知主线程更新数据 ：" +  result.getData()   );
                 Log.i(TAG, "通知主线程更新数据。" + result.getData());
                 handleResult(result);
-                writeLogFile("processCommandResult" ,"result : "  + result   ,"通知主线程更新数据 ：" +  result.getData()   );
             }
 
             @Override
@@ -1002,6 +1045,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                             break;
                         } else {
                             precheckCmd = nextCommand;
+                            writeLogFile("handleResult" ,"result : "  + result.getData().getMacAddress()  + " ， 原指令类型： connect "  ,"nextCommand："+nextCommand);
                         }
                         if (!reconnect) { // 正常流程
                             // 下发预结账指令
@@ -1322,7 +1366,6 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                             && result.getData().getDeviceToken() != null) {
                         deviceDataManager.setDeviceToken(result.getData().getMacAddress(), result.getData().getDeviceToken());
                         Log.i(TAG, "收到deviceToken：" + result.getData().getDeviceToken());
-                        writeLogFile("pay" ,"prepay:  " + prepay   +",bonusId :" +bonusId  +",deviceNo:"  + deviceNo,"收到deviceToken：" + result.getData().getDeviceToken() );
                     }
                     // 初始化订单id
                     orderId = result.getData().getOrderId();
