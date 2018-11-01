@@ -795,6 +795,8 @@ public abstract class BaseActivity extends SwipeBackActivity
 //        finish();
     }
 
+
+
     @Override
     public void getBlePermission() {
         RxPermissions rxPermissions = RxPermissions.getInstance(this);

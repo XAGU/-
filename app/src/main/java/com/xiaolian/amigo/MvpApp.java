@@ -38,6 +38,8 @@ public class MvpApp extends Application {
 
     private ApplicationComponent mApplicationComponent;
 
+    private static Context context ;
+
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
@@ -85,6 +87,7 @@ public class MvpApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        context = this.getApplicationContext();
         Log.setContext(this.getApplicationContext());
         registerActivityLifecycleCallbacks(ActivityLifecycleHelper.build());
 //        android.util.Log.e("test", "onCreate: " + System.currentTimeMillis() );
@@ -94,6 +97,11 @@ public class MvpApp extends Application {
                 .applicationModule(new ApplicationModule(this)).build();
 
         mApplicationComponent.inject(this);
+    }
+
+
+    public static Context getContext(){
+        return context ;
     }
 
     public ApplicationComponent getComponent() {

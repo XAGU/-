@@ -315,6 +315,7 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             }
         });
         getBlePermission();
+
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.device.intf;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -137,5 +138,6 @@ public interface IDevicePresenter<V extends IBaseView> extends IBasePresenter<V>
     void setSupplierId(Long supplierId);
 
     void deleteLogFile();
+
 
 }

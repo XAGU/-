@@ -1,7 +1,10 @@
 package com.xiaolian.amigo.ui.device;
 
+import android.Manifest;
+import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
+import android.content.Context;
 import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.Handler;
@@ -12,9 +15,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.util.ObjectsCompat;
 import android.text.TextUtils;
 
+import com.tbruyelle.rxpermissions.RxPermissions;
 import com.trello.rxlifecycle.LifecycleTransformer;
 import com.trello.rxlifecycle.RxLifecycle;
 import com.trello.rxlifecycle.android.ActivityEvent;
+import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.data.base.TimeHolder;
 import com.xiaolian.amigo.data.enumeration.AgreementVersion;
 import com.xiaolian.amigo.data.enumeration.BizError;
@@ -142,6 +147,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     private Handler handler = new Handler();
 
     private Runnable connectTask;
+
+
+
 
 
     DeviceBasePresenter(IBleDataManager bleDataManager, IDeviceDataManager deviceDataManager) {
@@ -1516,6 +1524,23 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     }
 
 
+    protected boolean isBleOpen(){
+        // 确保蓝牙适配器处于打开状态
+        BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
+        return null != adapter && adapter.isEnabled();
+
+    }
+
+
+    protected boolean isOpenLocation(){
+       return  RxPermissions.getInstance(MvpApp.getContext()).isGranted(Manifest.permission.ACCESS_COARSE_LOCATION)||
+               RxPermissions.getInstance(MvpApp.getContext()).isGranted(Manifest.permission.ACCESS_FINE_LOCATION) ;
+    }
+
+
+
+
+
     private void writeLogFile(String method ,String params , String result ){
 
         StringBuffer  content = new StringBuffer();
@@ -1528,6 +1553,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         content.append('\t');
         content.append(params);
         content.append('\t');
+        content.append("蓝牙是否开启：" + isBleOpen() +'\t' + "定位是否开启:" + isOpenLocation() +'\t');
         content.append(result);
         content.append('\n');
         rx.Observable.just(content)
@@ -1582,5 +1608,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             Log.e(TAG, e.getMessage());
         }
     }
+
+
+
 
 }
