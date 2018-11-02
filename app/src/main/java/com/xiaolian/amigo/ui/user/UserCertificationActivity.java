@@ -1,8 +1,9 @@
 package com.xiaolian.amigo.ui.user;
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,7 +29,7 @@ import com.xiaolian.amigo.di.componet.DaggerUserActivityComponent;
 import com.xiaolian.amigo.di.componet.UserActivityComponent;
 import com.xiaolian.amigo.di.module.UserActivityModule;
 import com.xiaolian.amigo.ui.base.BaseActivity;
-import com.xiaolian.amigo.ui.repair.adaptor.ImageAddAdapter;
+import com.xiaolian.amigo.ui.repair.adaptor.ImageAddAdapter2;
 import com.xiaolian.amigo.ui.user.intf.IUserCertificationPresenter;
 import com.xiaolian.amigo.ui.user.intf.IUserCertificationView;
 import com.xiaolian.amigo.ui.widget.CircleProgressView;
@@ -36,7 +37,6 @@ import com.xiaolian.amigo.ui.widget.GridSpacesItemDecoration;
 import com.xiaolian.amigo.ui.widget.dialog.ActionSheetDialog;
 import com.xiaolian.amigo.ui.widget.dialog.BathroomBookingDialog;
 import com.xiaolian.amigo.ui.widget.dialog.BookingCancelDialog;
-import com.xiaolian.amigo.ui.widget.dialog.PrepayDialog;
 import com.xiaolian.amigo.ui.widget.photoview.AlbumItemActivity;
 import com.xiaolian.amigo.util.GildeUtils;
 import com.xiaolian.amigo.util.Log;
@@ -58,7 +58,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
 import me.everything.android.ui.overscroll.IOverScrollDecor;
-import me.everything.android.ui.overscroll.IOverScrollUpdateListener;
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
 import static com.xiaolian.amigo.ui.user.EditUserInfoActivity.KEY_BACK_DATA;
@@ -79,7 +78,7 @@ import static com.xiaolian.amigo.util.Constant.STUDENT_ID;
 import static com.xiaolian.amigo.util.Constant.USER_INFO_ACTIVITY_SRC;
 
 public class UserCertificationActivity extends BaseActivity implements IUserCertificationView
-         ,CircleProgressView.FinishListener {
+        , CircleProgressView.FinishListener {
 
     private static final int REQUEST_IMAGE = 0x3302;
 
@@ -90,9 +89,9 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
     private static final int REQUEST_EDIT_USERINFO = 0x2200;
     private static final int IMAGE_COUNT = 3;
 
-    private static final int BACK_TYPE = 1 ;
+    private static final int BACK_TYPE = 1;
 
-    private static final int FRONT_TYPE = 2 ;
+    private static final int FRONT_TYPE = 2;
 
     @Inject
     IUserCertificationPresenter<IUserCertificationView> presenter;
@@ -174,6 +173,10 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
     View viewLine;
     @BindView(R.id.rl_toolbar)
     RelativeLayout rlToolbar;
+    @BindView(R.id.id_card_front_tip)
+    ImageView idCardFrontTip;
+    @BindView(R.id.id_card_back_tip)
+    ImageView idCardBackTip;
 
     private User user;
 
@@ -181,14 +184,14 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
     private UserActivityComponent mActivityComponent;
 
 
-    private ImageAddAdapter imageAddAdapter;
-    List<ImageAddAdapter.ImageItem> addImages = new ArrayList<>();
+    private ImageAddAdapter2 imageAddAdapter;
+    List<ImageAddAdapter2.ImageItem> addImages = new ArrayList<>();
 
     List<String> images = new ArrayList<>();
 
 
     private int screenWidth;
-    private int imageWidth;
+    private float imageWidth;
 
 
     private String ivFrontPath;  // 正面照图片地址
@@ -196,15 +199,14 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
     private String ivBackPath;  // 背面照图片地址
 
 
+    private File ivBackFile;
 
-    private File ivBackFile ;
-
-    private File ivFrontFile ;
+    private File ivFrontFile;
 
     private List<File> imageFile = new ArrayList<>();
     private boolean isNeedRefresh = false;
 
-    private boolean isNeedRefreshInfo= false ;  // 重新认证刷新
+    private boolean isNeedRefreshInfo = false;  // 重新认证刷新
 
     private ActionSheetDialog actionSheetDialog; // 年级选择器底部弹窗
 
@@ -213,24 +215,24 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
     private Integer grade = 0;
 
 
-    private int rlToolBarHeight ;
+    private int rlToolBarHeight;
 
 
-    private String department ;
+    private String department;
 
-    private String profession ;
+    private String profession;
 
-    private String gradestr ;
+    private String gradestr;
 
-    private String classstr ;
+    private String classstr;
 
-    private String studentIdstr ;
+    private String studentIdstr;
 
 
     private BathroomBookingDialog bathroomBookingDialog;
 
 
-    private BookingCancelDialog dialog ;
+    private BookingCancelDialog dialog;
 
     @SuppressLint("NewApi")
     @Override
@@ -244,9 +246,9 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
 
         });
         svMainContainer.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-            if (scrollY > rlToolBarHeight){
+            if (scrollY > rlToolBarHeight) {
                 setTitleVisiable(View.VISIBLE);
-            }else{
+            } else {
                 setTitleVisiable(View.GONE);
             }
         });
@@ -256,7 +258,7 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
     }
 
 
-    private void initdialog(){
+    private void initdialog() {
         bathroomBookingDialog = new BathroomBookingDialog(this);
         bathroomBookingDialog.setTitleContent(getString(R.string.dialog_upload_content));
 
@@ -268,7 +270,7 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
         dialog.setOnCancelClickListener(dialog -> certify());
     }
 
-    private void setTitleVisiable(int visiable){
+    private void setTitleVisiable(int visiable) {
         tvTitle.setVisibility(visiable);
         viewLine.setVisibility(visiable);
     }
@@ -288,6 +290,54 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
         rlToolbar.post(() -> {
             rlToolBarHeight = rlToolbar.getHeight();
         });
+        initStudentImage();
+    }
+
+    /**
+     * 身份证照片图片大小是随屏幕大小而变化
+     * 每张照片为屏幕的3分之一
+     */
+    private void initStudentImage() {
+
+        frontCardRl.post(() -> {
+            int width = frontCardRl.getWidth() ;
+            int height = width;
+            frontCardRl.setLayoutParams(new LinearLayout.LayoutParams(width , height));
+            float imageFrontWidth = width - ScreenUtils.dpToPx(this ,11) * 2;
+            RelativeLayout.LayoutParams paramsFront = (RelativeLayout.LayoutParams) idCardFrontTip.getLayoutParams();
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources() ,R.drawable.id_card_front);
+            float scale = imageFrontWidth  /bitmap.getWidth();
+            paramsFront.width = (int) (bitmap.getWidth() * scale);
+            paramsFront.height = (int) (bitmap.getHeight() * scale);
+            paramsFront.setMargins(0 ,(height - paramsFront.height - tvFrontCard.getHeight() - ScreenUtils.dpToPxInt(this ,5)) / 8 * 5
+                    , 0 , 0);
+            idCardFrontTip.setLayoutParams(paramsFront);
+
+        });
+
+        if (imageWidth == 0) {
+            imageWidth = (ScreenUtils.getScreenWidth(this) - ScreenUtils.dpToPxInt(this, 62)) / 3;
+        }
+        backCardRl.post(() -> {
+            int width = backCardRl.getWidth();
+            int height = width ;
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width ,height);
+            params.setMargins(ScreenUtils.dpToPxInt(this ,10) , 0 , 0 ,ScreenUtils.dpToPxInt(this ,21));
+            backCardRl.setLayoutParams(params);
+            RelativeLayout.LayoutParams paramsBack = (RelativeLayout.LayoutParams) idCardBackTip.getLayoutParams();
+            float imageBackWidth = width - ScreenUtils.dpToPx(this ,11) * 2;
+            Bitmap bitmapBack = BitmapFactory.decodeResource(getResources() ,R.drawable.id_card_back);
+            float scaleBack = imageBackWidth  /bitmapBack.getWidth();
+            paramsBack.width = (int) (bitmapBack.getWidth() * scaleBack);
+            paramsBack.height = (int) (bitmapBack.getHeight() * scaleBack);
+            paramsBack.setMargins(0 ,(height - paramsBack.height - tvBackCard.getHeight() - ScreenUtils.dpToPxInt(this ,5)) / 8 * 5
+            , 0 , 0);
+            idCardBackTip.setLayoutParams(paramsBack);
+        });
+
+
+
+
 
     }
 
@@ -353,11 +403,11 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
         if (actionSheetDialog != null && actionSheetDialog.getDialog() != null)
             actionSheetDialog.getDialog().dismiss();
 
-        if (bathroomBookingDialog != null && bathroomBookingDialog.isShowing()){
+        if (bathroomBookingDialog != null && bathroomBookingDialog.isShowing()) {
             bathroomBookingDialog.dismiss();
         }
 
-        if (dialog != null && dialog.isShowing()){
+        if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
         }
     }
@@ -365,11 +415,11 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
     @Override
     protected void onResume() {
         super.onResume();
-        if (isNeedRefresh || isNeedRefreshInfo ) {
+        if (isNeedRefresh || isNeedRefreshInfo) {
             tvDormitory.setText(presenter.getDormitory());
         }
-        isNeedRefresh = false ;
-        isNeedRefreshInfo = false ;
+        isNeedRefresh = false;
+        isNeedRefreshInfo = false;
         toggleBtnStatus();
     }
 
@@ -417,10 +467,10 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
         if (bathroomBookingDialog != null) {
             bathroomBookingDialog.onDettechView();
         }
-        bathroomBookingDialog = null ;
+        bathroomBookingDialog = null;
 
-        if (dialog != null){
-            dialog = null ;
+        if (dialog != null) {
+            dialog = null;
         }
         EventBus.getDefault().unregister(this);
     }
@@ -437,54 +487,78 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
         gradestr = userCertificationStatus.getGradeStr();
         classstr = userCertificationStatus.getClassStr();
         studentIdstr = userCertificationStatus.getStudentIdStr();
-        if (images != null ){
+        if (images != null) {
             images.clear();
             images.addAll(userCertificationStatus.getStudentImageBase64());
         }
         ivFrontPath = userCertificationStatus.getFrontImageBase64();
-        ivBackPath = userCertificationStatus.getBackImageBase64() ;
-            if (!TextUtils.isEmpty(department))
-                tvDepartment.setText(department);
-            if (!TextUtils.isEmpty(profession))
-                tvProfession.setText(profession);
-            if (!TextUtils.isEmpty(gradestr))
-                tvGrade.setText(gradestr);
-            if (!TextUtils.isEmpty(classstr))
-                tvClass.setText(classstr);
-            if (!TextUtils.isEmpty(studentIdstr))
-                tvStudentId.setText(studentIdstr);
-            if (!TextUtils.isEmpty(ivFrontPath)) {
+        ivBackPath = userCertificationStatus.getBackImageBase64();
+        if (!TextUtils.isEmpty(department))
+            tvDepartment.setText(department);
+        if (!TextUtils.isEmpty(profession))
+            tvProfession.setText(profession);
+        if (!TextUtils.isEmpty(gradestr))
+            tvGrade.setText(gradestr);
+        if (!TextUtils.isEmpty(classstr))
+            tvClass.setText(classstr);
+        if (!TextUtils.isEmpty(studentIdstr))
+            tvStudentId.setText(studentIdstr);
+        if (!TextUtils.isEmpty(ivFrontPath)) {
+            if (imageWidth != 0) {
+//                Bitmap ivFront = BitmapFactory.decodeFile(ivFrontPath);
+                File ivFront = new File(ivFrontPath);
+                if (ivFront != null  ){
+                    CompressHelper.Builder builder =  new CompressHelper.Builder(this).setMaxWidth(imageWidth)
+                            .setMaxHeight(imageWidth);
+                    CompressHelper compressHelper =  builder.build();
+                 Bitmap image =    compressHelper.compressToBitmap(ivFront);
+                 ivFrontCard.setImageBitmap(image);
+                }
+            }else {
                 ivFrontCard.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 GildeUtils.setPathImage(this, ivFrontCard, ivFrontPath);
             }
+        }
 
-            if (!TextUtils.isEmpty(ivBackPath)){
+        if (!TextUtils.isEmpty(ivBackPath)) {
+
+            if (imageWidth != 0){
+                File ivFront = new File(ivBackPath);
+                if (ivFront != null  ){
+                    CompressHelper.Builder builder =  new CompressHelper.Builder(this).setMaxWidth(imageWidth)
+                            .setMaxHeight(imageWidth);
+                    CompressHelper compressHelper =  builder.build();
+                    Bitmap image =    compressHelper.compressToBitmap(ivFront);
+                    ivBackCard.setImageBitmap(image);
+                }
+            }else {
+
                 ivBackCard.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 GildeUtils.setPathImage(this, ivBackCard, ivBackPath);
             }
-
-            if (images != null && images.size() > 0){
-                if (addImages == null || imageAddAdapter == null) return ;
-                addImages.clear();
-                for (String imagePath : images){
-                    addImages.add(new ImageAddAdapter.ImageItem(imagePath));
-                }
-                if (addImages.size() < IMAGE_COUNT){
-                    addImages.add(new ImageAddAdapter.ImageItem());
-                }
-                imageAddAdapter.notifyDataSetChanged();
-            }
-            tvDormitory.setText(presenter.getDormitory());
-            toggleBtnStatus();
         }
 
+        if (images != null && images.size() > 0) {
+            if (addImages == null || imageAddAdapter == null) return;
+            addImages.clear();
+            for (String imagePath : images) {
+                addImages.add(new ImageAddAdapter2.ImageItem(imagePath));
+            }
+            if (addImages.size() < IMAGE_COUNT) {
+                addImages.add(new ImageAddAdapter2.ImageItem());
+            }
+            imageAddAdapter.notifyDataSetChanged();
+        }
+        tvDormitory.setText(presenter.getDormitory());
+        toggleBtnStatus();
+    }
 
 
     private void initImageAdd() {
         screenWidth = ScreenUtils.getScreenWidth(this);
         imageWidth = (screenWidth - ScreenUtils.dpToPxInt(this, 62)) / 3;
-        addImages.add(new ImageAddAdapter.ImageItem());
-        imageAddAdapter = new ImageAddAdapter(this, R.layout.item_image_add, addImages);
+        addImages.add(new ImageAddAdapter2.ImageItem());
+        imageAddAdapter = new ImageAddAdapter2(this, R.layout.item_add_photot, addImages);
         imageAddAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
@@ -507,12 +581,11 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
                 return false;
             }
         });
-        imageAddAdapter.setViewWidth(imageWidth);
+        imageAddAdapter.setViewWidth((int) imageWidth);
         rvImage.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         rvImage.addItemDecoration(new GridSpacesItemDecoration(3, ScreenUtils.dpToPxInt(this, 10), false));
         rvImage.setAdapter(imageAddAdapter);
     }
-
 
 
     @Override
@@ -560,20 +633,20 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
         certify.setBackgroundResource(allValidated ?
                 R.drawable.button_enable : R.drawable.button_disable);
 
-        if (allValidated){
+        if (allValidated) {
             certify.setEnabled(true);
-        }else{
+        } else {
             certify.setEnabled(false);
         }
     }
 
-    File ivCompressFileBackFile  ,ivCompressFileFrontFile ;
+    File ivCompressFileBackFile, ivCompressFileFrontFile;
 
-    List<File> compressImageFile ;
+    List<File> compressImageFile;
 
     @OnClick(R.id.certify)
-    public void clickCertify(){
-        if (dialog == null){
+    public void clickCertify() {
+        if (dialog == null) {
             dialog = new BookingCancelDialog(this);
             dialog.setTvTitle(getString(R.string.dialog_upload_tip_title));
             dialog.setTvTip(getString(R.string.dialog_upload_tip_content));
@@ -596,19 +669,19 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
         ivBackFile = getFile(ivBackPath);
         ivFrontFile = getFile(ivFrontPath);
         if (ivBackFile != null)
-        ivCompressFileBackFile = CompressHelper.getDefault(this).compressToFile(ivBackFile);
+            ivCompressFileBackFile = CompressHelper.getDefault(this).compressToFile(ivBackFile);
 
         if (ivFrontFile != null)
-        ivCompressFileFrontFile = CompressHelper.getDefault(this).compressToFile(ivFrontFile);
+            ivCompressFileFrontFile = CompressHelper.getDefault(this).compressToFile(ivFrontFile);
 
-        if (imageFile == null ) imageFile = new ArrayList<>();
+        if (imageFile == null) imageFile = new ArrayList<>();
 
         if (compressImageFile == null) compressImageFile = new ArrayList<>();
 
         if (imageFile.size() > 0) imageFile.clear();
 
         if (compressImageFile.size() > 0) compressImageFile.clear();
-        for (String imagePath : images){
+        for (String imagePath : images) {
             imageFile.add(getFile(imagePath));
             compressImageFile.add(CompressHelper.getDefault(this).compressToFile(getFile(imagePath)));
         }
@@ -617,18 +690,18 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
                 grade, ivCompressFileBackFile, ivCompressFileFrontFile, tvProfession.getText().toString(), stuNum, compressImageFile);
     }
 
-    private File getFile(String filePath){
+    private File getFile(String filePath) {
 
         // 防止String 为null 的异常
 
-        if (TextUtils.isEmpty(filePath)) return null ;
+        if (TextUtils.isEmpty(filePath)) return null;
         try {
             File file = new File(filePath);
             if (file.exists())
                 return file;
             else return null;
-        }catch (Exception e) {
-            Log.wtf(TAG ,e.getMessage());
+        } catch (Exception e) {
+            Log.wtf(TAG, e.getMessage());
             return null;
         }
 
@@ -644,15 +717,15 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
     @Override
     public void certifySuccess() {
 
-        Intent intent = new Intent(this ,UserCertificationStatusActivity.class);
-        intent.putExtra(KEY_DEPARTMENT ,tvDepartment.getText().toString().trim());
-        intent.putExtra(KEY_PROFESSION ,tvProfession.getText().toString().trim());
-        intent.putExtra(KEY_GRADE ,tvGrade.getText().toString().trim());
-        intent.putExtra(KEY_CLASS ,tvClass.getText().toString().trim());
-        intent.putExtra(KEY_STUDTENT_ID , tvStudentId.getText().toString().trim());
-        intent.putStringArrayListExtra(KEY_STUDENT_IMAGE , (ArrayList<String>) images);
-        intent.putExtra(KEY_BACK_IMAGE ,ivBackPath);
-        intent.putExtra(KEY_FRONT_IMAGE ,ivFrontPath);
+        Intent intent = new Intent(this, UserCertificationStatusActivity.class);
+        intent.putExtra(KEY_DEPARTMENT, tvDepartment.getText().toString().trim());
+        intent.putExtra(KEY_PROFESSION, tvProfession.getText().toString().trim());
+        intent.putExtra(KEY_GRADE, tvGrade.getText().toString().trim());
+        intent.putExtra(KEY_CLASS, tvClass.getText().toString().trim());
+        intent.putExtra(KEY_STUDTENT_ID, tvStudentId.getText().toString().trim());
+        intent.putStringArrayListExtra(KEY_STUDENT_IMAGE, (ArrayList<String>) images);
+        intent.putExtra(KEY_BACK_IMAGE, ivBackPath);
+        intent.putExtra(KEY_FRONT_IMAGE, ivFrontPath);
         startActivity(intent);
         finish();
     }
@@ -696,10 +769,10 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
     private void refreshAddImage() {
         addImages.clear();
         for (String image : images) {
-            addImages.add(new ImageAddAdapter.ImageItem(image));
+            addImages.add(new ImageAddAdapter2.ImageItem(image));
         }
         if (images.size() < IMAGE_COUNT) {
-            addImages.add(new ImageAddAdapter.ImageItem());
+            addImages.add(new ImageAddAdapter2.ImageItem());
         }
         imageAddAdapter.notifyDataSetChanged();
     }
@@ -707,33 +780,33 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
     @OnClick({R.id.iv_first, R.id.iv_second, R.id.iv_third, R.id.front_card_rl, R.id.back_card_rl})
     void chooseImage(View view) {
         switch (view.getId()) {
-            case R.id.iv_first: {
-                getImage2(imagePath -> {
-                    ivSecond.setVisibility(View.VISIBLE);
-                    presenter.uploadImage(UserCertificationActivity.this,
-                            imagePath, 0, OssFileType.CERTIFICAITON);
-                });
-                break;
-            }
-            case R.id.iv_second: {
-
-                getImage2(imagePath -> {
-
-                    ivThird.setVisibility(View.VISIBLE);
-                    presenter.uploadImage(UserCertificationActivity.this,
-                            imagePath, 1, OssFileType.CERTIFICAITON);
-                });
-
-                break;
-            }
-            case R.id.iv_third: {
-
-                getImage2(imagePath -> {
-                    presenter.uploadImage(UserCertificationActivity.this,
-                            imagePath, 2, OssFileType.CERTIFICAITON);
-                });
-                break;
-            }
+//            case R.id.iv_first: {
+//                getImage2(imagePath -> {
+//                    ivSecond.setVisibility(View.VISIBLE);
+//                    presenter.uploadImage(UserCertificationActivity.this,
+//                            imagePath, 0, OssFileType.CERTIFICAITON);
+//                });
+//                break;
+//            }
+//            case R.id.iv_second: {
+//
+//                getImage2(imagePath -> {
+//
+//                    ivThird.setVisibility(View.VISIBLE);
+//                    presenter.uploadImage(UserCertificationActivity.this,
+//                            imagePath, 1, OssFileType.CERTIFICAITON);
+//                });
+//
+//                break;
+//            }
+//            case R.id.iv_third: {
+//
+//                getImage2(imagePath -> {
+//                    presenter.uploadImage(UserCertificationActivity.this,
+//                            imagePath, 2, OssFileType.CERTIFICAITON);
+//                });
+//                break;
+//            }
             case R.id.front_card_rl:
                 if (ivFrontCard.getDrawable() != null) {
                     Intent intent = new Intent(UserCertificationActivity.this, AlbumItemActivity.class);

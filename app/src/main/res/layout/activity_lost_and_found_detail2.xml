@@ -231,6 +231,7 @@
         android:layout_height="match_parent"
         android:id="@+id/loading_rl"
         tool:visibility="visible"
+        android:background="@color/white"
         android:visibility="visible">
 
         <ImageView
