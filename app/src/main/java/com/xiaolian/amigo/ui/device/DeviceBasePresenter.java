@@ -4,29 +4,23 @@ import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
-import android.content.Context;
+import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.ParcelUuid;
-import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.util.ObjectsCompat;
 import android.text.TextUtils;
 
 import com.tbruyelle.rxpermissions.RxPermissions;
-import com.trello.rxlifecycle.LifecycleTransformer;
-import com.trello.rxlifecycle.RxLifecycle;
-import com.trello.rxlifecycle.android.ActivityEvent;
 import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.data.base.TimeHolder;
 import com.xiaolian.amigo.data.enumeration.AgreementVersion;
 import com.xiaolian.amigo.data.enumeration.BizError;
 import com.xiaolian.amigo.data.enumeration.BleErrorType;
 import com.xiaolian.amigo.data.enumeration.Command;
-import com.xiaolian.amigo.data.enumeration.ConnectErrorType;
-import com.xiaolian.amigo.data.enumeration.DisplayErrorType;
 import com.xiaolian.amigo.data.enumeration.OrderStatus;
 import com.xiaolian.amigo.data.enumeration.TradeError;
 import com.xiaolian.amigo.data.enumeration.TradeStep;
@@ -35,7 +29,6 @@ import com.xiaolian.amigo.data.manager.intf.IBleDataManager;
 import com.xiaolian.amigo.data.manager.intf.IDeviceDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
-import com.xiaolian.amigo.data.network.model.connecterror.DeviceConnectErrorReqDTO;
 import com.xiaolian.amigo.data.network.model.device.Supplier;
 import com.xiaolian.amigo.data.network.model.order.UnsettledOrderStatusCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.order.UnsettledOrderStatusCheckRespDTO;
@@ -43,13 +36,12 @@ import com.xiaolian.amigo.data.network.model.trade.CmdResultReqDTO;
 import com.xiaolian.amigo.data.network.model.trade.CmdResultRespDTO;
 import com.xiaolian.amigo.data.network.model.trade.ConnectCommandReqDTO;
 import com.xiaolian.amigo.data.network.model.trade.ConnectCommandRespDTO;
-import com.xiaolian.amigo.data.network.model.trade.UpdateDeviceRateCommandReqDTO;
-import com.xiaolian.amigo.data.network.model.trade.UpdateDeviceRateCommandRespDTO;
 import com.xiaolian.amigo.data.network.model.trade.PayReqDTO;
 import com.xiaolian.amigo.data.network.model.trade.PayRespDTO;
+import com.xiaolian.amigo.data.network.model.trade.UpdateDeviceRateCommandReqDTO;
+import com.xiaolian.amigo.data.network.model.trade.UpdateDeviceRateCommandRespDTO;
 import com.xiaolian.amigo.data.vo.DeviceCategory;
 import com.xiaolian.amigo.ui.base.BasePresenter;
-import com.xiaolian.amigo.ui.base.RxBus;
 import com.xiaolian.amigo.ui.device.intf.IDevicePresenter;
 import com.xiaolian.amigo.ui.device.intf.IDeviceView;
 import com.xiaolian.amigo.util.Constant;
@@ -57,7 +49,6 @@ import com.xiaolian.amigo.util.FileIOUtils;
 import com.xiaolian.amigo.util.FileUtils;
 import com.xiaolian.amigo.util.Log;
 import com.xiaolian.amigo.util.TimeUtils;
-import com.xiaolian.amigo.util.ble.Agreement;
 import com.xiaolian.amigo.util.ble.HexBytesUtils;
 import com.xiaolian.blelib.BluetoothConstants;
 import com.xiaolian.blelib.ScanRecord;
@@ -66,20 +57,16 @@ import com.xiaolian.blelib.scan.BluetoothScanResult;
 
 import java.io.File;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-import java.util.Observable;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import rx.Subscription;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
-import rx.subjects.BehaviorSubject;
-import rx.subjects.PublishSubject;
 
 /**
  * 设备BasePresenter
@@ -319,6 +306,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         writeLogFile("onConnect" ,"macAddress : "  + macAddress  +"  supplierId : " + supplierId ,"真正连接蓝牙");
     }
 
+    boolean scanDevice = false ;  // 是否扫描到设备
+
     @Override
     public void onConnect(@NonNull String macAddress) {
         deviceNo = macAddress;
@@ -346,6 +335,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 if (getMvpView() != null) {
                     getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_5));
                 }
+                if (!scanDevice){
+                    uploadLog();
+                }
             }
         };
         Log.i(TAG, "启动15s定时器......");
@@ -370,6 +362,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             public void onScanStarted() {
                 Log.d(TAG, "onScanStarted thread" + Thread.currentThread().getName());
                 writeLogFile("onConnect" ,"macAddress : "  + macAddress   ,"开始扫描macAddress");
+                scanDevice = false ;
             }
 
             @Override
@@ -385,9 +378,11 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     Log.i(TAG, "扫描获取macAddress在当前上下文已经存在，无需重复计算。macAddress:" + currentMacAddress);
                     writeLogFile("onConnect" ,"macAddress : "  + macAddress   ,"扫描获取macAddress在当前上下文已经存在，无需重复计算。macAddress:" + currentMacAddress);
                     bleDataManager.stopScan();
+                    scanDevice = true ;
                     return;
                 }
 
+                scanDevice = true ;
                 currentMacAddress = result.getAddress();
                 Log.i(TAG, "扫描获取macAddress成功。macAddress:" + currentMacAddress);
                 deviceDataManager.setDeviceNoAndMacAddress(macAddress, currentMacAddress);
@@ -777,6 +772,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             // 跳转至连接失败页面
             if (getMvpView() != null) {
                 getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
+                uploadLog();
             }
             handleBleClose.set(false);
         }
@@ -863,11 +859,13 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     if (result.getError().getCode() == BizError.DEVICE_BREAKDOWN.getCode()) {
                         if (getMvpView() != null) {
                             getMvpView().post(() -> getMvpView().onError(TradeError.DEVICE_BROKEN_3));
+                            uploadLog();
                         }
                     } else {
                         Log.wtf(TAG, "服务器返回,获取开阀指令失败");
                         if (getMvpView() != null) {
                             getMvpView().post(() -> getMvpView().onError(TradeError.SYSTEM_ERROR));
+                            uploadLog();
                         }
                     }
                 }
@@ -880,6 +878,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 writeLogFile("getConnectCommand" , "macAddress："+ macAddress ,"服务器返回,获取指令失败");
                 if (getMvpView() != null) {
                     getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_3));
+                    uploadLog();
                 }
             }
         }, Schedulers.io());
@@ -907,6 +906,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     Log.wtf(TAG, "服务器返回,获取订单状态失败");
                     if (getMvpView() != null) {
                         getMvpView().post(() -> getMvpView().onError(TradeError.SYSTEM_ERROR));
+                        uploadLog();
                     }
                     writeLogFile("checkOrderStatus" ,"macAddress : "  + macAddress   ,"获取订单状态失败" + result.getError().getDebugMessage()   );
                     synchronized (orderStatusLock) {
@@ -956,6 +956,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             writeLogFile("processCommandResult" ,"result : "  + result   ,"获取设备响应结果前缀失败"   );
             if (getMvpView() != null) {
                 getMvpView().onError(TradeError.CONNECT_ERROR_4);
+                uploadLog();
             }
         }
         Log.wtf(TAG , "processCommandResult>>>>>" + result  + "   " + deviceNo);
@@ -984,6 +985,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 }
                 if (getMvpView() != null) {
                     getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_3));
+                    uploadLog();
                 }
 
                 writeLogFile("processCommandResult" ,"result : "  + result   ," 获取指令失败 ："  + e.getMessage()    );
@@ -1002,6 +1004,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 closeBleConnection();
                 if (getMvpView() != null) {
                     getMvpView().onError(TradeError.SYSTEM_ERROR);
+                    uploadLog();
                 }
                 writeLogFile("handleResult" ,"result : "  + result.getData().getMacAddress()   ," 服务器未返回ScrCommandType"    );
                 return;
@@ -1217,12 +1220,14 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 closeBleConnection();
                 if (getMvpView() != null) {
                     getMvpView().onError(TradeError.DEVICE_BROKEN_2);
+                    uploadLog();
                 }
                 writeLogFile("handleResult" ,"result : "  + result.getData().getMacAddress() + " ， 服务器返回异常情况： "    ,"未知错误：" );
             } else if (result.getError().getCode() == BleErrorType.BLE_CMD_RESULT_ERROR.getCode()) {
                 Log.i(TAG, "设备未完全开启");
                 if (getMvpView() != null) {
                     getMvpView().onError(TradeError.CONNECT_ERROR_1);
+                    uploadLog();
                 }
             }
             Integer cmdType = result.getError().getBleCmdType();
@@ -1233,6 +1238,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     closeBleConnection();
                     if (getMvpView() != null) {
                         getMvpView().onError(TradeError.DEVICE_BROKEN_2);
+                        uploadLog();
                     }
                     writeLogFile("handleResult" ,"result : "  + result.getData().getMacAddress() + " ， 服务器返回异常情况： "    ,"设备开阀异常：" );
                 } else if (Command.CLOSE_VALVE == Command.getCommand(cmdType) || Command.PRE_CHECK == Command.getCommand(cmdType) || Command.CHECK_OUT == Command.getCommand(cmdType)) {
@@ -1241,6 +1247,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     // 结算时异常
                     if (getMvpView() != null) {
                         getMvpView().onError(TradeError.CONNECT_ERROR_2);
+                        uploadLog();
                     }
                     writeLogFile("handleResult" ,"result : "  + result.getData().getMacAddress() + " ， 服务器返回异常情况： "    ,"订单结算异常："  + orderId );
 
@@ -1251,6 +1258,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 closeBleConnection();
                 if (getMvpView() != null) {
                     getMvpView().onError(TradeError.SYSTEM_ERROR);
+
                 }
 
                 writeLogFile("handleResult" ,"result : "  + result.getData().getMacAddress() + " ， 服务器返回异常情况： "    ,"订单结算异常："  + orderId );
@@ -1278,6 +1286,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     Log.e(TAG, "从缓存中获取设备响应为空");
                     if (getMvpView() != null) {
                         getMvpView().onError(TradeError.CONNECT_ERROR_2);
+                        uploadLog();
                     }
                 } else {
                     writeLogFile("checkCloseCmd" ,""    ,"  网络请求：savedDeviceResult： "  + savedDeviceResult  );
@@ -1392,6 +1401,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     Log.wtf(TAG, "支付创建订单失败。");
                     if (getMvpView() != null) {
                         getMvpView().post(() -> getMvpView().onError(TradeError.DEVICE_BROKEN_2));
+                        uploadLog();
                     }
                     writeLogFile("pay" ,"prepay:  " + prepay   +",bonusId :" +bonusId  +",deviceNo:"  + deviceNo,"支付创建订单失败：" + result.getError().getDebugMessage());
                 }
@@ -1595,13 +1605,13 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xiaolian/" + deviceDataManager.getUser().getId()+"/";
         File path = new File(filePath);
         if (!path.exists() && !path.mkdirs()) {
-//            onError(R.string.no_sd_card_premission);
+
             return ;
         }
 
         File outputImage = new File(filePath, DeviceLogFileName );
         try {
-            if (!outputImage.exists()) {
+            if (outputImage.exists()) {
                 FileUtils.deleteFile(outputImage);
             }
         } catch (Exception e) {
@@ -1609,7 +1619,63 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         }
     }
 
+    /**
+     * 上传log 日志
+     */
+    protected  void uploadLog(){
+        String model = Build.MODEL;
+        String brand = Build.BRAND;
+        String appVersion = getMvpView().getAppVersion();
+        int systemVersion = Build.VERSION.SDK_INT;
+        String mobile =deviceDataManager.getUser().getMobile();
+        String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xiaolian/" + deviceDataManager.getUser().getId()+"/";
+        File path = new File(filePath);
+        if (!path.exists() && !path.mkdirs()) {
+            return ;
+        }
+        File logFile = new File(filePath, DeviceLogFileName );
+        uploadErrorLog(model ,brand ,systemVersion +"" ,appVersion ,mobile ,orderId +"" ,logFile);
+    }
 
 
+    /**
+     * 上传日志
+     * @param brand
+     * @param version
+     * @param appVersion
+     * @param mobile
+     * @param orderNo
+     * @param logFile
+     */
+    protected void uploadErrorLog(String model,String brand , String version , String appVersion ,String mobile ,String orderNo ,
+        File logFile  ){
+        if (logFile == null || !logFile.exists())  return ;
+        RequestBody requestBody ;
+        MultipartBody.Builder builder ;
+
+        builder= new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("model" ,model)
+                .addFormDataPart("brand" ,brand)
+                .addFormDataPart("version" ,version)
+                .addFormDataPart("appVersion" ,appVersion)
+                .addFormDataPart("mobile" , mobile)
+                .addFormDataPart("orderNo" , orderNo)
+                .addFormDataPart("logContent" ,logFile.getName() , RequestBody.create(MediaType.parse("multipart/form-data") ,logFile));
+
+        requestBody = builder.build();
+
+        addObserver(deviceDataManager.uploadLog(requestBody) ,new NetworkObserver<ApiResult<BooleanRespDTO>>(){
+
+
+            @Override
+            public void onReady(ApiResult<BooleanRespDTO> result) {
+                if (result.getError() == null){
+                    if(result.getData().isResult()){
+                        deleteLogFile();
+                    }
+                }
+            }
+        });
+    }
 
 }

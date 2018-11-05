@@ -1,5 +1,7 @@
 package com.xiaolian.amigo.data.manager.intf;
 
+import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.blelib.connect.BluetoothCharacteristicNotifyCallback;
 import com.xiaolian.blelib.connect.BluetoothConnectCallback;
 import com.xiaolian.blelib.connect.BluetoothConnectStatusListener;
@@ -8,6 +10,11 @@ import com.xiaolian.blelib.connect.BluetoothWriteDescriptorCallback;
 import com.xiaolian.blelib.scan.BluetoothScanResponse;
 
 import java.util.UUID;
+
+import okhttp3.RequestBody;
+import retrofit2.http.Body;
+import retrofit2.http.POST;
+import rx.Observable;
 
 /**
  * 蓝牙相关操作
@@ -38,4 +45,5 @@ public interface IBleDataManager {
     void notify(String mac, UUID service, UUID character, BluetoothCharacteristicNotifyCallback response);
 
     int getConnectStatus(String mac);
+
 }

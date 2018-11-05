@@ -72,4 +72,12 @@ public interface IDeviceView extends IBaseView {
      */
     void onReconnectSuccess(Object... extra);
 
+
+    /**
+     * 获取app版本
+     *
+     * @return app版本
+     */
+    String getAppVersion();
+
 }

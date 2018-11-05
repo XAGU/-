@@ -41,6 +41,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import okhttp3.RequestBody;
 import retrofit2.Retrofit;
 import retrofit2.http.Body;
 import rx.Observable;
@@ -255,5 +256,10 @@ public class DeviceDataManager implements IDeviceDataManager {
     @Override
     public User getUser() {
         return sharedPreferencesHelp.getUserInfo();
+    }
+
+    @Override
+    public Observable<ApiResult<BooleanRespDTO>> uploadLog(RequestBody body) {
+        return connectErrorApi.uploadLog(body);
     }
 }

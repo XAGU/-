@@ -9,6 +9,7 @@ import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity;
 import com.xiaolian.amigo.ui.device.intf.heator.IHeaterPresenter;
 import com.xiaolian.amigo.ui.device.intf.heator.IHeaterView;
+import com.xiaolian.amigo.util.AppUtils;
 import com.xiaolian.amigo.util.Constant;
 
 import javax.inject.Inject;
@@ -94,5 +95,10 @@ public class HeaterActivity extends WaterDeviceBaseActivity<IHeaterPresenter> im
                 presenter.notShowRemindAlert();
             }
         });
+    }
+
+    @Override
+    public String getAppVersion() {
+         return AppUtils.getVersionName(this);
     }
 }

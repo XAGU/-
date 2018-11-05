@@ -23,6 +23,7 @@ import com.xiaolian.amigo.ui.device.intf.IDeviceOrderPresenter;
 import com.xiaolian.amigo.ui.device.intf.IDeviceOrderView;
 import com.xiaolian.amigo.ui.main.MainActivity;
 import com.xiaolian.amigo.ui.order.OrderDetailActivity;
+import com.xiaolian.amigo.util.AppUtils;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
@@ -332,6 +333,11 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
     @Override
     public void onError(TradeError tradeError) {
 
+    }
+
+    @Override
+    public String getAppVersion() {
+        return AppUtils.getVersionName(this);
     }
 
     @Override

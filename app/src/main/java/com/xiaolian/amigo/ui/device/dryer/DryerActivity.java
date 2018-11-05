@@ -8,6 +8,7 @@ import com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity;
 import com.xiaolian.amigo.ui.device.dispenser.DispenserActivity;
 import com.xiaolian.amigo.ui.device.intf.dryer.IDryerPresenter;
 import com.xiaolian.amigo.ui.device.intf.dryer.IDryerView;
+import com.xiaolian.amigo.util.AppUtils;
 
 import javax.inject.Inject;
 
@@ -135,5 +136,10 @@ public class DryerActivity extends WaterDeviceBaseActivity<IDryerPresenter> impl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setDvTitleNull();
+    }
+
+    @Override
+    public String getAppVersion() {
+        return AppUtils.getVersionName(this);
     }
 }

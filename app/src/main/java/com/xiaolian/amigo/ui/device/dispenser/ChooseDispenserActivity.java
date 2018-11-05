@@ -31,6 +31,7 @@ import com.xiaolian.amigo.ui.main.MainActivity;
 import com.xiaolian.amigo.ui.widget.SpaceItemDecoration;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutFooter;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutHeader;
+import com.xiaolian.amigo.util.AppUtils;
 import com.xiaolian.amigo.util.Log;
 import com.xiaolian.amigo.util.ScreenUtils;
 
@@ -427,6 +428,11 @@ public class ChooseDispenserActivity extends DeviceBaseActivity implements IChoo
     @Override
     public void onError(TradeError tradeError) {
 
+    }
+
+    @Override
+    public String getAppVersion() {
+        return AppUtils.getVersionName(this);
     }
 
     @Override

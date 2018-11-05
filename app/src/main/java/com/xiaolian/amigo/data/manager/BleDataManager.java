@@ -1,6 +1,8 @@
 package com.xiaolian.amigo.data.manager;
 
 import com.xiaolian.amigo.data.manager.intf.IBleDataManager;
+import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.blelib.BluetoothConstants;
 import com.xiaolian.blelib.IBluetoothClient;
 import com.xiaolian.blelib.connect.BluetoothCharacteristicNotifyCallback;
@@ -13,6 +15,9 @@ import com.xiaolian.blelib.scan.BluetoothScanResponse;
 import java.util.UUID;
 
 import javax.inject.Inject;
+
+import okhttp3.RequestBody;
+import rx.Observable;
 
 /**
  * @author caidong
@@ -91,4 +96,5 @@ public class BleDataManager implements IBleDataManager {
     public int getConnectStatus(String mac) {
         return bluetoothClient.getConnectStatus(mac);
     }
+
 }

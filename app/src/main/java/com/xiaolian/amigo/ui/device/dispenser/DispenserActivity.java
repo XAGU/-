@@ -9,6 +9,7 @@ import com.xiaolian.amigo.data.enumeration.DispenserWater;
 import com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IDispenserPresenter;
 import com.xiaolian.amigo.ui.device.intf.dispenser.IDispenserView;
+import com.xiaolian.amigo.util.AppUtils;
 
 import javax.inject.Inject;
 
@@ -142,5 +143,10 @@ public class DispenserActivity extends WaterDeviceBaseActivity<IDispenserPresent
     @Override
     public void onBackPressed() {
         back2Main();
+    }
+
+    @Override
+    public String getAppVersion() {
+        return AppUtils.getVersionName(this);
     }
 }

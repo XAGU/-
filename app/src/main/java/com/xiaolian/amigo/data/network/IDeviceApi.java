@@ -62,4 +62,6 @@ public interface IDeviceApi {
     @POST("device/one")
     Observable<ApiResult<BriefDeviceDTO>>  getDeviceDetail(@Body GetDeviceDetailReqDTO reqDTO);
 
+    
+
 }
