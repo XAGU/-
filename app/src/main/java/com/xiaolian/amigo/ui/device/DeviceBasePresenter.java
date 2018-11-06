@@ -624,11 +624,13 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             if (code != BluetoothConstants.CONN_RESPONSE_SUCCESS) {
                 writeLogFile("connectHaoNianHaoDevice" , "" ,"连接失败currentMacAddress："+currentMacAddress+"  code:"+code);
                 handleDisConnectError("连接好年华设备失败 code:" + code);
+                uploadLog();
                 return;
             }
             if (gatt == null || gatt.getService(UUID.fromString(supplier.getServiceUuid())) == null) {
                 writeLogFile("connectHaoNianHaoDevice" , "" ,"连接好年华设备失败 code:："+ code + "获取不到service uuid:" + supplier.getServiceUuid());
                 handleDisConnectError("连接好年华设备失败 code:" + code + "获取不到service uuid:" + supplier.getServiceUuid());
+                uploadLog();
                 return;
             }
             for (BluetoothGattCharacteristic characteristic : gatt.getService(UUID.fromString(supplier.getServiceUuid())).getCharacteristics()) {
@@ -643,6 +645,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                                     if (code1 != BluetoothConstants.GATT_SUCCESS) {
                                         writeLogFile("connectHaoNianHaoDevice" , "" ,"辛纳写入失败currentMacAddress："+currentMacAddress+"  code:"+code1);
                                         handleDisConnectError("好年华设备写入ENABLE_NOTIFICATION_VALUE失败 code:" + code1);
+                                        uploadLog();
                                         return;
                                     }
                                     bleDataManager.notify(currentMacAddress, UUID.fromString(supplier.getServiceUuid()),
@@ -654,6 +657,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                                                     processCommandResult(result);
                                                 } else {
                                                     writeLogFile("connectHaoNianHaoDevice" , "" ,"接收到设备数据为空");
+                                                    uploadLog();
                                                 }
 
                                             });
@@ -663,6 +667,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         Log.d(TAG, "设置notify失败 thread " + Thread.currentThread().getName());
                         writeLogFile("connectHaoNianHaoDevice" , "" ,"辛纳好年华notify失败currentMacAddress："+currentMacAddress);
                         handleDisConnectError("设置notify失败");
+                        uploadLog();
                     }
                     return;
                 }
@@ -772,7 +777,6 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             // 跳转至连接失败页面
             if (getMvpView() != null) {
                 getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_1));
-                uploadLog();
             }
             handleBleClose.set(false);
         }
@@ -859,15 +863,14 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     if (result.getError().getCode() == BizError.DEVICE_BREAKDOWN.getCode()) {
                         if (getMvpView() != null) {
                             getMvpView().post(() -> getMvpView().onError(TradeError.DEVICE_BROKEN_3));
-                            uploadLog();
                         }
                     } else {
                         Log.wtf(TAG, "服务器返回,获取开阀指令失败");
                         if (getMvpView() != null) {
                             getMvpView().post(() -> getMvpView().onError(TradeError.SYSTEM_ERROR));
-                            uploadLog();
                         }
                     }
+                    uploadLog();
                 }
             }
 
@@ -878,8 +881,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 writeLogFile("getConnectCommand" , "macAddress："+ macAddress ,"服务器返回,获取指令失败");
                 if (getMvpView() != null) {
                     getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_3));
-                    uploadLog();
                 }
+                uploadLog();
             }
         }, Schedulers.io());
     }
@@ -900,15 +903,14 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         Log.i(TAG, "获取订单状态成功。orderStatus:" + orderStatus);
                         orderStatusLock.notifyAll();
                         writeLogFile("checkOrderStatus" ,"macAddress : "  + macAddress   ,"获取订单状态成功。orderStatus:" + orderStatus.toString()  );
-
                     }
                 } else {
                     Log.wtf(TAG, "服务器返回,获取订单状态失败");
                     if (getMvpView() != null) {
                         getMvpView().post(() -> getMvpView().onError(TradeError.SYSTEM_ERROR));
-                        uploadLog();
                     }
                     writeLogFile("checkOrderStatus" ,"macAddress : "  + macAddress   ,"获取订单状态失败" + result.getError().getDebugMessage()   );
+                    uploadLog();
                     synchronized (orderStatusLock) {
                         checkOrderErrorFlag = true;
                         orderStatusLock.notifyAll();
@@ -928,6 +930,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     checkOrderErrorFlag = true;
                     orderStatusLock.notifyAll();
                 }
+                uploadLog();
             }
         }, Schedulers.io());
     }
@@ -942,12 +945,12 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 // 存储设备响应结果
                 saveDeviceResult(result, orderId);
             }
-            String prefixAgrement2 = result.substring(2, 6);
+            String prefixAgrement2 = result.substring(0, 6);
 
             if (TextUtils.equals("140804",prefixAgrement2)){
                 setStep(TradeStep.CLOSE_VALVE);
 
-            }else if (TextUtils.equals("140803",prefixAgrement2)){
+            } else if (TextUtils.equals("140803",prefixAgrement2)){
                 saveDeviceResult(result ,orderId);
             }
             writeLogFile("processCommandResult" ,"result : "  + result   ,""   );
@@ -956,8 +959,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             writeLogFile("processCommandResult" ,"result : "  + result   ,"获取设备响应结果前缀失败"   );
             if (getMvpView() != null) {
                 getMvpView().onError(TradeError.CONNECT_ERROR_4);
-                uploadLog();
             }
+            uploadLog();
         }
         Log.wtf(TAG , "processCommandResult>>>>>" + result  + "   " + deviceNo);
         CmdResultReqDTO reqDTO = new CmdResultReqDTO();
@@ -985,10 +988,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 }
                 if (getMvpView() != null) {
                     getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_3));
-                    uploadLog();
                 }
-
                 writeLogFile("processCommandResult" ,"result : "  + result   ," 获取指令失败 ："  + e.getMessage()    );
+                uploadLog();
             }
         }, AndroidSchedulers.mainThread());
     }
@@ -1004,9 +1006,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 closeBleConnection();
                 if (getMvpView() != null) {
                     getMvpView().onError(TradeError.SYSTEM_ERROR);
-                    uploadLog();
                 }
                 writeLogFile("handleResult" ,"result : "  + result.getData().getMacAddress()   ," 服务器未返回ScrCommandType"    );
+                uploadLog();
                 return;
             }
             switch (Command.getCommand(result.getData().getSrcCommandType())) {
@@ -1220,15 +1222,15 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 closeBleConnection();
                 if (getMvpView() != null) {
                     getMvpView().onError(TradeError.DEVICE_BROKEN_2);
-                    uploadLog();
                 }
                 writeLogFile("handleResult" ,"result : "  + result.getData().getMacAddress() + " ， 服务器返回异常情况： "    ,"未知错误：" );
+                uploadLog();
             } else if (result.getError().getCode() == BleErrorType.BLE_CMD_RESULT_ERROR.getCode()) {
                 Log.i(TAG, "设备未完全开启");
                 if (getMvpView() != null) {
                     getMvpView().onError(TradeError.CONNECT_ERROR_1);
-                    uploadLog();
                 }
+                uploadLog();
             }
             Integer cmdType = result.getError().getBleCmdType();
             if (null != cmdType) {
@@ -1238,18 +1240,18 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     closeBleConnection();
                     if (getMvpView() != null) {
                         getMvpView().onError(TradeError.DEVICE_BROKEN_2);
-                        uploadLog();
                     }
                     writeLogFile("handleResult" ,"result : "  + result.getData().getMacAddress() + " ， 服务器返回异常情况： "    ,"设备开阀异常：" );
+                    uploadLog();
                 } else if (Command.CLOSE_VALVE == Command.getCommand(cmdType) || Command.PRE_CHECK == Command.getCommand(cmdType) || Command.CHECK_OUT == Command.getCommand(cmdType)) {
                     Log.wtf(TAG, "订单结算异常");
                     closeBleConnection();
                     // 结算时异常
                     if (getMvpView() != null) {
                         getMvpView().onError(TradeError.CONNECT_ERROR_2);
-                        uploadLog();
                     }
                     writeLogFile("handleResult" ,"result : "  + result.getData().getMacAddress() + " ， 服务器返回异常情况： "    ,"订单结算异常："  + orderId );
+                    uploadLog();
 
                 }
             } else {
@@ -1260,8 +1262,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     getMvpView().onError(TradeError.SYSTEM_ERROR);
 
                 }
-
                 writeLogFile("handleResult" ,"result : "  + result.getData().getMacAddress() + " ， 服务器返回异常情况： "    ,"订单结算异常："  + orderId );
+                uploadLog();
             }
         }
     }
@@ -1286,7 +1288,6 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     Log.e(TAG, "从缓存中获取设备响应为空");
                     if (getMvpView() != null) {
                         getMvpView().onError(TradeError.CONNECT_ERROR_2);
-                        uploadLog();
                     }
                 } else {
                     writeLogFile("checkCloseCmd" ,""    ,"  网络请求：savedDeviceResult： "  + savedDeviceResult  );
@@ -1401,9 +1402,9 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     Log.wtf(TAG, "支付创建订单失败。");
                     if (getMvpView() != null) {
                         getMvpView().post(() -> getMvpView().onError(TradeError.DEVICE_BROKEN_2));
-                        uploadLog();
                     }
                     writeLogFile("pay" ,"prepay:  " + prepay   +",bonusId :" +bonusId  +",deviceNo:"  + deviceNo,"支付创建订单失败：" + result.getError().getDebugMessage());
+                    uploadLog();
                 }
             }
 
@@ -1415,6 +1416,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 }
 
                 writeLogFile("pay" ,"prepay:  " + prepay   +",bonusId :" +bonusId  +",deviceNo:"  + deviceNo,"支付创建订单失败：" + e.getMessage());
+                uploadLog();
             }
         }, Schedulers.io());
     }
