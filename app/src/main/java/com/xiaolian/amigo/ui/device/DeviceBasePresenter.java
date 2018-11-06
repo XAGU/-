@@ -1666,6 +1666,10 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
         addObserver(deviceDataManager.uploadLog(requestBody) ,new NetworkObserver<ApiResult<BooleanRespDTO>>(){
 
+            @Override
+            public void onStart() {
+//                super.onStart();
+            }
 
             @Override
             public void onReady(ApiResult<BooleanRespDTO> result) {
