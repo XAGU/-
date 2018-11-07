@@ -1553,11 +1553,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
        return  RxPermissions.getInstance(MvpApp.getContext()).isGranted(Manifest.permission.ACCESS_COARSE_LOCATION)||
                RxPermissions.getInstance(MvpApp.getContext()).isGranted(Manifest.permission.ACCESS_FINE_LOCATION) ;
     }
-
-
-
-
-
+    
     private void writeLogFile(String method ,String params , String result ){
 
         StringBuffer  content = new StringBuffer();
@@ -1677,6 +1673,11 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 .observeOn(AndroidSchedulers.mainThread())
                 .takeUntil(closeTriggerSubject)
                 .subscribe(new NetworkObserver<ApiResult<BooleanRespDTO>>(false) {
+
+                    @Override
+                    public void onStart() {
+
+                    }
 
                     @Override
                     public void onReady(ApiResult<BooleanRespDTO> result) {
