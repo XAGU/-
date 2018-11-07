@@ -1665,6 +1665,10 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
         requestBody = builder.build();
 
+
+
+
+
         addObserver(deviceDataManager.uploadLog(requestBody) ,new NetworkObserver<ApiResult<BooleanRespDTO>>(){
 
             @Override
@@ -1679,6 +1683,12 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         deleteLogFile();
                     }
                 }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                Log.wtf(TAG ,e.getMessage());
             }
         });
     }

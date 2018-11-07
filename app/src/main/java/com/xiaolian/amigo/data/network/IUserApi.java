@@ -154,7 +154,6 @@ public interface IUserApi {
      * @return
      */
     @POST("user/auth/certify")
-//    Observable<ApiResult<BooleanRespDTO>> certify(@Body UserAuthCertifyReqDTO dto);
     Observable<ApiResult<BooleanRespDTO>> certify(@Body RequestBody body);
 
 
