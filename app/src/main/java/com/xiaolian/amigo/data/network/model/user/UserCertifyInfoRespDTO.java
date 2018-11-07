@@ -25,7 +25,7 @@ public class UserCertifyInfoRespDTO {
         private String idCardFrontData;
         private String major;
         private int status;
-        private int stuNum;
+        private Long stuNum;
         private java.util.List<String> stuPicturesData;
 
         public String getClassName() {
@@ -81,11 +81,11 @@ public class UserCertifyInfoRespDTO {
             this.status = status;
         }
 
-        public int getStuNum() {
+        public Long getStuNum() {
             return stuNum;
         }
 
-        public void setStuNum(int stuNum) {
+        public void setStuNum(Long stuNum) {
             this.stuNum = stuNum;
         }
 

@@ -108,7 +108,7 @@ public class UserCertificationPresenter <v extends IUserCertificationView> exten
 
 
     @Override
-    public void certify(String className, String faculty, Integer grade, File idCardBehind, File idCardFront, String major, Integer stuNum, List<File> stuPictureUrls) {
+    public void certify(String className, String faculty, Integer grade, File idCardBehind, File idCardFront, String major, Long stuNum, List<File> stuPictureUrls) {
         RequestBody requestBody ;
         MultipartBody.Builder builder ;
 
@@ -144,7 +144,7 @@ public class UserCertificationPresenter <v extends IUserCertificationView> exten
 //                         getMvpView().certifySuccess();
                          getMvpView().hideSuccessDialog();
                      }else{
-//                         getMvpView().onSuccess("认证失败");
+                         getMvpView().onError(result.getError().getDisplayMessage());
                          getMvpView().hideFailureDialgo();
                      }
                  }else{

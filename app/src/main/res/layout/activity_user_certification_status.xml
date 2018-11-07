@@ -317,6 +317,7 @@
         android:id="@+id/loading_rl"
         tool:visibility="gone"
         android:visibility="visible"
+        android:background="@color/white"
         android:layout_below="@id/rl_toolbar">
 
         <ImageView

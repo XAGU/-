@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="94dp"
+    android:layout_height="94dp"
+    android:id="@+id/back_card_rl"
+    android:background="@drawable/dotted_box"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ImageView
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/student_tip"
+        android:scaleType="centerCrop"
+        android:layout_marginTop="14dp"
+        android:layout_marginStart="11dp"
+        android:layout_marginEnd="11dp"
+        android:id="@+id/id_card_back_tip"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="10sp"
+        android:text="点击添加"
+        android:id="@+id/tv_back_card"
+        android:textColor="@color/colorDarkB"
+        android:layout_below="@id/id_card_back_tip"
+        android:layout_marginTop="5dp"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/iv_back_card"
+        android:scaleType="centerCrop"/>
+</RelativeLayout>
