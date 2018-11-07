@@ -6,6 +6,7 @@ import com.xiaolian.amigo.data.network.model.connecterror.DeviceConnectErrorReqD
 
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import rx.Observable;
 

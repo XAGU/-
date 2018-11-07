@@ -334,7 +334,7 @@
             android:name=".ui.device.bathroom.ChooseBathroomActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- 公共澡堂扫一扫使用 -->
         <activity

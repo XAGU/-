@@ -283,7 +283,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             setDefalutItem(0);
         }else{
             setDefalutItem(2);
-            redirectToLogin();
+//            redirectToLogin();
         }
     }
     FragmentTransaction transaction ;
@@ -575,17 +575,18 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             presenter.noticeCount();
             uploadDeviceInfo();
             if (presenter.getIsFirstAfterLogin()) {
-                setDefalutItem(0);
                 if (fm == null) return ;
                 presenter.setIsFirstAfterLogin(false);
                 SocalFragment socalFragment = (SocalFragment) fm.findFragmentByTag(SocalFragment.class.getSimpleName());
-                presenter.setIsFirstAfterLogin(false);
-                if (socalFragment == null ) return ;
+                if (socalFragment == null ) {
+                    setDefalutItem(0);
+                    return;
+                }
                 if (socalFragment.isAdded()) {
-
                     // commit  方法在activity 的onSaveInstanceState()之后调用会报错 。 解决方法是吧commit 换成 commitAllowingStateLoss();
                     fm.beginTransaction().remove(socalFragment).commitAllowingStateLoss();
                 }
+                setDefalutItem(0);
 
             }
         }
@@ -1329,6 +1330,5 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
         }
     }
-
 
 }
