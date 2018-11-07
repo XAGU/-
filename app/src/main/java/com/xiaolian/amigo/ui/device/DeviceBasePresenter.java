@@ -1667,6 +1667,23 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
 
 
+        deviceDataManager.uploadLog(requestBody)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .takeUntil(closeTriggerSubject)
+                .subscribe(new NetworkObserver<ApiResult<BooleanRespDTO>>(false) {
+
+                    @Override
+                    public void onReady(ApiResult<BooleanRespDTO> result) {
+                        // do nothing
+
+                        if (result.getError() == null){
+                            if (result.getData().isResult()){
+                                deleteLogFile();
+                            }
+                        }
+                    }
+                });
 
 
         addObserver(deviceDataManager.uploadLog(requestBody) ,new NetworkObserver<ApiResult<BooleanRespDTO>>(){
