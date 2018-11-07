@@ -1345,6 +1345,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         writeLogFile("saveCloseCmd" ,"closeCmd:  " + closeCmd   +",orderId :" +orderId  ,"" );
     }
 
+
+
     private String getCloseCmd(Long orderId) {
         String closeCmdTemp = deviceDataManager.getCloseCmd(deviceNo);
         Long savedOrderId;
@@ -1535,7 +1537,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     @Override
     public void onDetach() {
         super.onDetach();
-
+        closeTriggerSubject.onNext(null);
     }
 
 
