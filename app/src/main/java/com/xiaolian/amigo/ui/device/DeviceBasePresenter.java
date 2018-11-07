@@ -67,6 +67,7 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+import rx.subjects.PublishSubject;
 
 /**
  * 设备BasePresenter
@@ -136,6 +137,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     private Runnable connectTask;
 
 
+    // 页面关闭触发器
+    private PublishSubject<Void> closeTriggerSubject = PublishSubject.create();
 
 
 
