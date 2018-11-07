@@ -84,7 +84,7 @@ public enum Device {
         }
         @Override
         public int getDrawableRes() {
-            return R.drawable.washer;
+            return R.drawable.washer2;
         }
 
         @Override

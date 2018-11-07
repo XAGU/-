@@ -150,7 +150,7 @@ public interface IDeviceDataManager {
 
 
     User getUser();
-
+        
     /**
      * 上报错误日志
      */

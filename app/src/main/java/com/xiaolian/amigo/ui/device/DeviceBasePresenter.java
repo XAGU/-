@@ -1607,7 +1607,6 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xiaolian/" + deviceDataManager.getUser().getId()+"/";
         File path = new File(filePath);
         if (!path.exists() && !path.mkdirs()) {
-
             return ;
         }
 

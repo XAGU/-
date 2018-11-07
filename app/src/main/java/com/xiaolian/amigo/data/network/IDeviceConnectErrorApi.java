@@ -25,6 +25,6 @@ public interface IDeviceConnectErrorApi {
     /**
      * 上报错误日志
      */
-    @POST("/android/crash/upload/log")
+    @POST("android/crash/upload/log")
     Observable<ApiResult<BooleanRespDTO>> uploadLog(@Body RequestBody body);
 }
