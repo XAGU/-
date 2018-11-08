@@ -87,8 +87,10 @@ public class ChooseDispenserAdaptor extends RecyclerView.Adapter<ChooseDispenser
         holder.tvTitle.setTextColor(ContextCompat.getColor(context,
                 Device.getDevice(dispenserWrapper.getDeviceGroup().getType()).getColorRes()));
         holder.rlTop.setOnClickListener(v -> {
-            expandAble = DispenserCategory.getCategoryByType(mData.get(holder.getAdapterPosition()).getDeviceGroup().getCategory())
-                    != DispenserCategory.MULTI;
+            if (holder.getAdapterPosition() != -1 && holder.getAdapterPosition() < mData.size()) {
+                expandAble = DispenserCategory.getCategoryByType(mData.get(holder.getAdapterPosition()).getDeviceGroup().getCategory())
+                        != DispenserCategory.MULTI;
+            }
             if (deviceType == Device.DRYER) {
                 expandAble = false;
             }

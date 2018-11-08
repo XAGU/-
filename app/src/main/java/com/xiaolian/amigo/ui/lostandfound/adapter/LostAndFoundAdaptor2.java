@@ -129,8 +129,8 @@ public class LostAndFoundAdaptor2 extends CommonAdapter<LostAndFoundAdaptor2.Los
             lostAndFound.setCommentsCount(commentCount);
         }
 
-        public Integer getCommentCount() {
-            return lostAndFound.getCommentsCount() == null ? 0 : lostAndFound.getCommentsCount();
+        public int getCommentCount() {
+            return lostAndFound.getCommentsCount();
         }
 
         public String getTitle() {

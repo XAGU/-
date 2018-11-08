@@ -589,7 +589,7 @@ public class LostAndFoundDetailActivity2 extends LostAndFoundBaseActivity implem
     public void finish() {
         Log.wtf(TAG, "finish");
         Intent intent = new Intent();
-        intent.putExtra(LostAndFoundActivity2.KEY_COMMENT_COUNT, content == null ?
+        intent.putExtra(LostAndFoundActivity2.KEY_COMMENT_COUNT, null == content ?
                 0 : content.getCommentCount());
         intent.putExtra(KEY_LIKE, likeed);
         intent.putExtra(KEY_DELETE, isDelete);

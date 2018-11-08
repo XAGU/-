@@ -316,7 +316,12 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                if (lastFragment != -1) {
                    if (fragment.isAdded()) {
                        if (fragments[lastFragment] != null) transaction.hide(fragments[lastFragment]);
-                       transaction.show(fragment).commit();
+                       try {
+                           transaction.show(fragment).commit();
+                       }catch (Exception e){
+                           Log.wtf(TAG ,e.getMessage());
+                           transaction.show(fragment).commitAllowingStateLoss();
+                       }
                    }else{
 
                        transaction.add(R.id.fragment, fragment, HomeFragment2.class.getSimpleName());
@@ -430,19 +435,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         }
     }
 
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        outState.putInt(KEY_LASTFRAGMENT ,lastFragment);
-        super.onSaveInstanceState(outState);
-    }
-
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        lastFragment = savedInstanceState.getInt(KEY_LASTFRAGMENT);
-    }
 
     @OnClick({R.id.home_rl, R.id.social_rl, R.id.personal_rl})
     public void onTabItemSelect(View view) {
@@ -1047,6 +1039,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     public void routeToRoomShower(BathRouteRespDTO dto) {
         setBleCallback(() -> checkDeviceUsage(HEATER));
         getBlePermission();
+
     }
 
 

@@ -32,7 +32,7 @@ public class LostAndFound implements Serializable {
     private Long userId;
     private List<String> images;
 
-    private Integer commentsCount;
+    private int commentsCount;
     private Integer reportCount;
     private Integer viewCount;
 
@@ -177,11 +177,11 @@ public class LostAndFound implements Serializable {
         this.images = images;
     }
 
-    public Integer getCommentsCount() {
+    public int getCommentsCount() {
         return commentsCount;
     }
 
-    public void setCommentsCount(Integer commentsCount) {
+    public void setCommentsCount(int commentsCount) {
         this.commentsCount = commentsCount;
     }
 

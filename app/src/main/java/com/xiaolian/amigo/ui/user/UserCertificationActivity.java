@@ -57,6 +57,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
+import butterknife.Unbinder;
 import me.everything.android.ui.overscroll.IOverScrollDecor;
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
@@ -234,17 +235,16 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
 
     private BookingCancelDialog dialog;
 
+
+    private Unbinder unbinder ;
+
     @SuppressLint("NewApi")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_certification);
-        ButterKnife.bind(this);
+        unbinder = ButterKnife.bind(this);
         setUp();
-        IOverScrollDecor iOverScrollDecor = OverScrollDecoratorHelper.setUpOverScroll(svMainContainer);
-        iOverScrollDecor.setOverScrollUpdateListener((decor, state, offset) -> {
-
-        });
         svMainContainer.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
             if (scrollY > rlToolBarHeight) {
                 setTitleVisiable(View.VISIBLE);
@@ -256,6 +256,8 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
         initdialog();
         EventBus.getDefault().register(this);
     }
+
+
 
 
     private void initdialog() {
@@ -472,6 +474,7 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
         if (dialog != null) {
             dialog = null;
         }
+        unbinder.unbind();
         EventBus.getDefault().unregister(this);
     }
 

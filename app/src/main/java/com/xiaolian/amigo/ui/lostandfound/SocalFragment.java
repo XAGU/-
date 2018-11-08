@@ -383,7 +383,7 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     @Override
     protected void initView() {
         if (mSocialTagDatas == null || mSocialTagDatas.size() == 0) presenter.getTopicList();
-        mainPresenter.getNoticeAmount();
+         if (null != mainPresenter) mainPresenter.getNoticeAmount();
         presenter.getLostList("", 1, "", 0);
 
     }
