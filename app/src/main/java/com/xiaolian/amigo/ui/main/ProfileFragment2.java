@@ -188,7 +188,7 @@ public class ProfileFragment2 extends BaseFragment {
     }
 
     private boolean checkLogin() {
-        if (presenter.getToken() == null ||  TextUtils.isEmpty(presenter.getToken())) {
+        if (null == presenter.getToken() ||  TextUtils.isEmpty(presenter.getToken())) {
             redirectToLogin();
             return false;
         }

@@ -522,7 +522,7 @@ public class BlogFragment extends BaseFragment implements IBlogView  , SocialImg
     public void onEmpty() {
         if (rlEmpty != null)
         rlEmpty.setVisibility(View.VISIBLE);
-        if (rlEmpty != null)
+        if (rlError != null)
         rlError.setVisibility(View.GONE);
 
         if (rlContent != null)

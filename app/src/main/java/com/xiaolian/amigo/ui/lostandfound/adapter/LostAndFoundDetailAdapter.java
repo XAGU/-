@@ -54,7 +54,7 @@ public class LostAndFoundDetailAdapter extends MultiItemTypeAdapter<LostAndFound
         private String contentTitle;
         private String content;
         private Integer viewCount;
-        private Integer commentCount;
+        private int commentCount;
 
         /**
          * 评论

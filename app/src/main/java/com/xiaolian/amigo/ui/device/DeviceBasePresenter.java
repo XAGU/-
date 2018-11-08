@@ -289,6 +289,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         onConnect(macAddress);
                         writeLogFile("onPreConnect" ,"macAddress : "  + macAddress  +"  isScan :" + isScan,"低于5秒再次重连");
                     };
+
                 }
                handler.postDelayed(connectTask,5000 - diff);
             } else {
