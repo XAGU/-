@@ -65,6 +65,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subjects.PublishSubject;
@@ -470,7 +471,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
         // 4、连接设备
         safeWait(300);
-        Log.d(TAG, "开始连接设备 thread " + Thread.currentThread().getName()  + "    id  >>>> " + supplier.getAgreement());
+//        Log.d(TAG, "开始连接设备 thread " + Thread.currentThread().getName()  + "    id  >>>> " + supplier.getAgreement());
         switch (AgreementVersion.getAgreement(supplier.getAgreement())) {
             case HAONIANHUA:
                 writeLogFile("realConnect" , "" ,"开始连接好年华设备"+supplier.getId());
@@ -570,7 +571,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 } else {
                     if (OrderStatus.getOrderStatus(orderStatus.getStatus()) == OrderStatus.FINISHED) { // 订单已结单
                         Log.i(TAG, "重连后发现订单已被结算，跳转至订单详情页。orderId:" + orderStatus.getOrderId());
-                        writeLogFile("afterBleConnected" , "" ,"重连后发现订单已被结算，跳转至订单详情页！orderId:"+orderStatus.getOrderId());
+                        writeLogFile("afterBleConnected" , "" ,"重连后发现订单已被结算，跳转至订单详情页！orderId:"+ (orderStatus.getOrderId()== null ? -1 : orderStatus.getOrderId()));
                         if (getMvpView() != null) {
                             getMvpView().onFinish(orderStatus.getOrderId()); // 跳转订单详情页
                         }
@@ -578,7 +579,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         // 重连状态下继续下发握手指令
                         // 1、如果设备没有长按结束用水按钮，握手会失败，但连接不会被设备中断，继续下发关阀指令走结账流程即可
                         // 2、如果设备已被长按结束用水按钮，握手会成功，此时需要走预结账->结账流程
-                        writeLogFile("afterBleConnected" , "" ,"未结单，重连状态下继续下发握手指令。connectCmd"+connectCmd+", orderId:"+orderStatus.getOrderId());
+                        writeLogFile("afterBleConnected" , "" ,"未结单，重连状态下继续下发握手指令。connectCmd"+connectCmd+", orderId:"+ (orderStatus.getOrderId() == null ? -1 : orderStatus.getOrderId()));
                         Log.i(TAG, String.format("重连后发现订单仍未被结算，继续下发握手指令。command:%s, orderId: %s", connectCmd, orderStatus.getOrderId()));
                         onWrite(connectCmd);
                     }
@@ -603,7 +604,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     waitConnectCmdResult();
                     onWrite(connectCmd);
                 } else {
-                    writeLogFile("afterBleConnected" , "" ,"正常连接发现有订单未被结算，继续下发握手指令。connectCmd："+connectCmd+ "， orderId："+orderStatus.getOrderId());
+                    writeLogFile("afterBleConnected" , "" ,"正常连接发现有订单未被结算，继续下发握手指令。connectCmd："+connectCmd+ "， orderId："+(orderStatus.getOrderId() == null ? -1 : orderStatus.getOrderId()));
                     Log.i(TAG, String.format("正常连接发现有订单未被结算，继续下发握手指令。command: %s, orderId:%s", connectCmd, orderStatus.getOrderId()));
                     // orderId = orderStatus.getOrderId();
                     waitConnectCmdResult();
@@ -906,7 +907,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         }
                         Log.i(TAG, "获取订单状态成功。orderStatus:" + orderStatus);
                         orderStatusLock.notifyAll();
-                        writeLogFile("checkOrderStatus" ,"macAddress : "  + macAddress   ,"获取订单状态成功。orderStatus:" + orderStatus.toString()  );
+                        writeLogFile("checkOrderStatus" ,"macAddress : "  + macAddress   ,"获取订单状态成功。orderStatus:" + orderStatus  );
                     }
                 } else {
                     Log.wtf(TAG, "服务器返回,获取订单状态失败");
@@ -1397,7 +1398,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
                     // 向设备下发开阀指令
                     openCmd = result.getData().getOpenValveCommand();
-                    Log.i(TAG, "开始下发开阀指令。command：" + openCmd);
+                    Log.i(TAG, "开始下发开阀指令。command>>>>>>>>" + openCmd);
 
 
 
@@ -1554,7 +1555,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                RxPermissions.getInstance(MvpApp.getContext()).isGranted(Manifest.permission.ACCESS_FINE_LOCATION) ;
     }
     
-    private void writeLogFile(String method ,String params , String result ){
+    private void writeLogFile(String method ,String params , String result ) {
 
         StringBuffer  content = new StringBuffer();
 
@@ -1571,7 +1572,22 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         content.append('\n');
         rx.Observable.just(content)
                 .subscribeOn(Schedulers.io())
-                .subscribe(stringBuffer -> writeLogFile(stringBuffer.toString()));
+                .subscribe(new Subscriber<StringBuffer>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.wtf(TAG ,e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(StringBuffer stringBuffer) {
+                        writeLogFile(stringBuffer.toString());
+                    }
+                });
     }
 
 
