@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.hardware.Camera;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.math.MathUtils;
 import android.text.TextUtils;
@@ -23,6 +24,7 @@ import com.journeyapps.barcodescanner.CameraPreview;
 import com.journeyapps.barcodescanner.DecoderThread;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 import com.journeyapps.barcodescanner.camera.CameraThread;
+import com.xiaolian.amigo.BuildConfig;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.enumeration.DispenserCategory;
@@ -31,6 +33,7 @@ import com.xiaolian.amigo.data.network.model.device.BriefDeviceDTO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.order.OrderPreInfoDTO;
 import com.xiaolian.amigo.data.vo.Bonus;
+import com.xiaolian.amigo.ui.base.WebActivity;
 import com.xiaolian.amigo.ui.device.WaterDeviceBaseActivity;
 import com.xiaolian.amigo.ui.device.dispenser.DispenserActivity;
 import com.xiaolian.amigo.ui.device.dryer.DryerActivity;
@@ -53,7 +56,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.xiaolian.amigo.data.enumeration.Device.HEATER;
-import static com.xiaolian.amigo.ui.device.washer.WasherContent.KEY_TYPE;
 import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_DEVICE_TYPE;
 import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_LOCATION;
 import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_MAC_ADDRESS;
@@ -70,15 +72,16 @@ import static com.xiaolian.amigo.ui.main.MainActivity.INTENT_KEY_SUPPLIER_ID;
 public class ScanActivity extends WasherBaseActivity
         implements DecoratedBarcodeView.TorchListener, IScanView {
     private static final String TAG = ScanActivity.class.getSimpleName();
+    public static final String INTENT_URL_WASHER = "intent_url_washer";
     private static final int FRAMING_SIZE_DIVISOR = 4;
 
-    public static final String SCAN_TYPE= "SCAN_TYPE"  ;   // 扫描类型
+    public static final String SCAN_TYPE = "SCAN_TYPE";   // 扫描类型
 
-    public static final String IS_SACN = "IS_SCAN" ; // 是否是扫描
+    public static final String IS_SACN = "IS_SCAN"; // 是否是扫描
 
-    public static final String KEY_TYPE = "KEY_TYPE" ;  // 4 为洗衣机  6 为烘干机
+    public static final String KEY_TYPE = "KEY_TYPE";  // 4 为洗衣机  6 为烘干机
 
-    private OrderPreInfoDTO orderPreInfo ;
+    private OrderPreInfoDTO orderPreInfo;
     @Inject
     IScanPresenter<IScanView> presenter;
     @BindView(R.id.zxing_barcode_scanner)
@@ -98,20 +101,25 @@ public class ScanActivity extends WasherBaseActivity
 
 
     /*****  扫一扫中处理， 留做以后代码重构提取出来构造子类*****/
-    private int scanType ;
-    private boolean scan  = false ;
+    private int scanType;
+    private boolean scan = false;
     private AvailabilityDialog availabilityDialog;
 
     private int heaterOrderSize;
 
-    private ScanDialog scanDialog ;
+    private ScanDialog scanDialog;
 
-    private int ScanType2 ;
+    private int ScanType2;
+    private boolean h5Washer;
+
+    //扫码的时候可能会多次回调，造成多次跳转到洗衣机界面，用这个标志是否已经进入了h5洗衣机界面
+    private boolean isGotoWasher;
 
     /*****      ***/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.e(TAG, "onCreate: " );
         setContentView(R.layout.activity_scan);
         ButterKnife.bind(this);
         setUp();
@@ -131,11 +139,17 @@ public class ScanActivity extends WasherBaseActivity
                     if (result.getContents() == null) {
                         Log.d(TAG, "Cancelled");
                     } else {
-                        Log.d(TAG, "Scanned: " + result.getContents());
-                        if (scan){
+                        Log.d(TAG, "Scanned--: " + result.getContents());
+                        if (scan) {
                             handleScanContent(result.getContents());
-                        }else {
-                            presenter.scanCheckout(result.getContents() , ScanType2);
+                        } else if (h5Washer) {
+                            Intent it = new Intent();
+                            it.putExtra("data", result.getContents());
+                            setResult(RESULT_OK, it);
+                            ScanActivity.this.finish();
+                            return;
+                        } else {
+                            presenter.scanCheckout(result.getContents(), ScanType2);
                         }
                     }
                 }
@@ -191,39 +205,88 @@ public class ScanActivity extends WasherBaseActivity
     /**
      * 处理扫一扫进入的扫描内容 ； 内容格式为 （type , mac , siBle）
      */
-    private void handleScanContent(String scanContent){
+    private void handleScanContent(String scanContent) {
+        if (scanContent.startsWith("https://www.xiaolian365.com/net-washing")) {//在线洗衣机 supplierId=7&deviceType=4&deviceNo=CH9527
+            Uri uri = Uri.parse(scanContent);
+            Intent intent = new Intent(this, WebActivity.class);
+            String sid = uri.getQueryParameter("supplierId");
+            String deviceType = uri.getQueryParameter("deviceType");
+            String deviceNo = uri.getQueryParameter("deviceNo");
+
+            if (TextUtils.isEmpty(sid) || TextUtils.isEmpty(deviceNo) || TextUtils.isEmpty(deviceType)) {
+                Log.e(TAG, "handleScanContent: 解析在线洗衣机参数异常");
+                return;
+            }
+
+            String url = BuildConfig.H5_SERVER
+                    + "/washer" + "?token=" + presenter.getToken()
+                    + "&shcoolId=" + presenter.getUserInfo().getSchoolId()
+                    + "&supplierId=" + sid
+                    + "&deviceType=" + deviceType
+                    + "&deviceNo=" + deviceNo;
+            if (!isGotoWasher) {
+                intent.putExtra(WebActivity.INTENT_KEY_WASHER_URL, url);
+                startActivity(intent);
+                isGotoWasher = true;
+                finish();
+            }
+            return;
+
+        } else if (isDoubleWasher(scanContent)) {//是否是正反扫设备
+            presenter.scanCheckout(scanContent,-1);
+            return;
+        }
+
         String[] contents = scanContent.split(",");
-        int type = -1 ;
+        int type = -1;
         String mac = "";
-        boolean isBle = true ;
+        boolean isBle = true;
         if (contents.length == 3) {
             try {
                 mac = contents[1];
                 isBle = "1".equals(contents[2]) ? true : false;
                 type = Integer.parseInt(contents[0]);
-                capture.isCanPause = true ;
+                capture.isCanPause = true;
                 presenter.checkDeviceUseage(type, mac, isBle);
             } catch (Exception e) {
                 Log.d(TAG, "scanContent: " + scanContent);
-                capture.isCanPause = false ;
+                capture.isCanPause = false;
                 resumeScan();
             }
-        }else{
-            capture.isCanPause = false ;
+        } else {
+            capture.isCanPause = false;
             resumeScan();
         }
 
     }
 
-    private void init(){
+    private boolean isDoubleWasher(String url) {
+        Log.e(TAG, "isDoubleWasher: " + url );
+
+        if (TextUtils.isEmpty(url) || !url.startsWith("https"))
+            return false;
+        int index = url.lastIndexOf("/");
+        if (index != -1) {
+            String str = url.substring(index + 1, url.length());
+            Log.e(TAG, "isDoubleWasher: size = " + str.length()+ ","+ str );
+            if (str.length() != 72) {
+                return false;
+            }
+        } else {
+            return false;
+        }
+        return true;
+    }
+
+    private void init() {
         if (zxingBarcodeScanner != null) zxingBarcodeScanner.setType(scanType);
-        if (scanType == 1){
+        if (scanType == 1) {
             if (ScanType2 == 4) {
                 tvTitle.setText("洗衣机扫描");
-            }else{
+            } else {
                 tvTitle.setText("烘干机扫描");
             }
-        }else{
+        } else {
             tvTitle.setText("扫一扫");
         }
     }
@@ -443,7 +506,7 @@ public class ScanActivity extends WasherBaseActivity
     protected void onDestroy() {
         super.onDestroy();
         capture.onDestroy();
-        Log.e(TAG, "onDestroy: "  );
+        Log.e(TAG, "onDestroy: ");
         if (availabilityDialog != null) availabilityDialog.dismiss();
 
         if (scanDialog != null) scanDialog.dismiss();
@@ -451,10 +514,15 @@ public class ScanActivity extends WasherBaseActivity
 
     @Override
     protected void setUp() {
-        if (getIntent() != null){
-            scanType = getIntent().getIntExtra(SCAN_TYPE , 1);
-            scan = getIntent().getBooleanExtra(IS_SACN , false);
-            ScanType2 = getIntent().getIntExtra(KEY_TYPE ,4);
+        if (getIntent() != null) {
+            scanType = getIntent().getIntExtra(SCAN_TYPE, 1);
+            scan = getIntent().getBooleanExtra(IS_SACN, false);
+            ScanType2 = getIntent().getIntExtra(KEY_TYPE, 4);
+            h5Washer = getIntent().getBooleanExtra(INTENT_URL_WASHER, false);
+            if (h5Washer) {
+                scanType = 2;
+            }
+
         }
     }
 
@@ -487,12 +555,12 @@ public class ScanActivity extends WasherBaseActivity
     }
 
     @Override
-    public void gotoChooseModeView(Bonus bonus, Double balance, String deviceNo , int type) {
+    public void gotoChooseModeView(Bonus bonus, Double balance, String deviceNo, int type) {
         if (bonus == null) {
             startActivity(new Intent(ScanActivity.this, ChooseWashModeActivity.class)
                     .putExtra(WasherContent.KEY_DEVICE_NO, deviceNo)
                     .putExtra(WasherContent.KEY_BALANCE, balance)
-                    .putExtra(KEY_TYPE ,type)
+                    .putExtra(KEY_TYPE, type)
             );
         } else {
             startActivity(new Intent(ScanActivity.this, ChooseWashModeActivity.class)
@@ -501,7 +569,7 @@ public class ScanActivity extends WasherBaseActivity
                     .putExtra(WasherContent.KEY_BONUS_AMOUNT, bonus.getAmount())
                     .putExtra(WasherContent.KEY_BONUS_DESC, bonus.getDescription())
                     .putExtra(WasherContent.KEY_BALANCE, balance)
-                    .putExtra(KEY_TYPE , type)
+                    .putExtra(KEY_TYPE, type)
             );
         }
         finish();
@@ -514,50 +582,49 @@ public class ScanActivity extends WasherBaseActivity
     }
 
 
-
     /****     扫一扫中扫描设备地址的处理  ，留做以后代码重构后做成父类处理   *****/
     @Override
-    public void showDeviceUsageDialog(int deviceType, DeviceCheckRespDTO data ,String mac ,boolean isBle) {
-            Log.d(TAG, "showDeviceUsageDialog: " + deviceType);
-            if (data == null || data.getBalance() == null
-                    || data.getPrepay() == null || data.getMinPrepay() == null
-                    || data.getTimeValid() == null) {
-                onError("服务器飞走啦，努力修复中");
-                return;
-            }
-            if (orderPreInfo == null) {
-                orderPreInfo = new OrderPreInfoDTO();
-            }
-            orderPreInfo.setBalance(data.getBalance());
-            orderPreInfo.setBonus(data.getBonus());
-            orderPreInfo.setCsMobile(data.getCsMobile());
-            orderPreInfo.setMinPrepay(data.getMinPrepay());
-            orderPreInfo.setPrepay(data.getPrepay());
-            orderPreInfo.setPrice(data.getPrice());
-            // 2小时内存在未找零订单，弹窗提示需要结账
+    public void showDeviceUsageDialog(int deviceType, DeviceCheckRespDTO data, String mac, boolean isBle) {
+        Log.d(TAG, "showDeviceUsageDialog: " + deviceType);
+        if (data == null || data.getBalance() == null
+                || data.getPrepay() == null || data.getMinPrepay() == null
+                || data.getTimeValid() == null) {
+            onError("服务器飞走啦，努力修复中");
+            return;
+        }
+        if (orderPreInfo == null) {
+            orderPreInfo = new OrderPreInfoDTO();
+        }
+        orderPreInfo.setBalance(data.getBalance());
+        orderPreInfo.setBonus(data.getBonus());
+        orderPreInfo.setCsMobile(data.getCsMobile());
+        orderPreInfo.setMinPrepay(data.getMinPrepay());
+        orderPreInfo.setPrepay(data.getPrepay());
+        orderPreInfo.setPrice(data.getPrice());
+        // 2小时内存在未找零订单，弹窗提示需要结账
 
-            if (data.getExistsUnsettledOrder() != null && data.getExistsUnsettledOrder()) {
-                    showScanDialog(deviceType ,data ,orderPreInfo );
+        if (data.getExistsUnsettledOrder() != null && data.getExistsUnsettledOrder()) {
+            showScanDialog(deviceType, data, orderPreInfo);
+        } else {
+            // 调用one
+            if (!data.getTimeValid()) {
+                showTimeValidDialog(deviceType, data, mac);
             } else {
-                // 调用one
-                if (!data.getTimeValid()) {
-                    showTimeValidDialog(deviceType, data , mac);
-                } else {
-                    presenter.getDeviceDetail(false ,deviceType ,mac ,true);
-                    // 如果热水澡 检查默认宿舍
-                }
+                presenter.getDeviceDetail(false, deviceType, mac, true);
+                // 如果热水澡 检查默认宿舍
             }
+        }
     }
 
 
     @Override
-    public void showTimeValidDialog(int deviceType, DeviceCheckRespDTO data , String mac) {
+    public void showTimeValidDialog(int deviceType, DeviceCheckRespDTO data, String mac) {
         if (null == availabilityDialog) {
             availabilityDialog = new AvailabilityDialog(this);
             availabilityDialog.setCancelListener(new AvailabilityDialog.onCancelListener() {
                 @Override
                 public void onCancelLick() {
-                    capture.isCanPause = false ;
+                    capture.isCanPause = false;
                     resumeScan();
                 }
             });
@@ -575,7 +642,7 @@ public class ScanActivity extends WasherBaseActivity
         availabilityDialog.setTip(data.getRemark());
         availabilityDialog.setOnOkClickListener(dialog1 -> {
             if (deviceType == Device.HEATER.getType()) {
-                presenter.getDeviceDetail(false ,deviceType ,mac ,true);
+                presenter.getDeviceDetail(false, deviceType, mac, true);
             } else if (deviceType == Device.DISPENSER.getType()) {
                 gotoDispenser(data.getUnsettledMacAddress(), data.getUnsettledSupplierId(),
                         data.getLocation(), data.getResidenceId(),
@@ -597,7 +664,7 @@ public class ScanActivity extends WasherBaseActivity
     }
 
     @Override
-    public void showScanDialog(int type , DeviceCheckRespDTO data , OrderPreInfoDTO orderPreInfoDTO) {
+    public void showScanDialog(int type, DeviceCheckRespDTO data, OrderPreInfoDTO orderPreInfoDTO) {
         if (scanDialog == null) {
             scanDialog = new ScanDialog(this);
         }
@@ -626,8 +693,8 @@ public class ScanActivity extends WasherBaseActivity
                                 data.getLocation(), data.getResidenceId(),
                                 data.getFavor(), true);
                     }
-                }else{
-                    showTimeValidDialog(type, data , data.getUnsettledMacAddress());
+                } else {
+                    showTimeValidDialog(type, data, data.getUnsettledMacAddress());
                 }
             }
         });
@@ -642,30 +709,47 @@ public class ScanActivity extends WasherBaseActivity
     }
 
 
-
     @Override
     public void goToBleDevice(boolean isTimeValid, int type, String macAddress, BriefDeviceDTO data, boolean isBle) {
 
-            if (type == Device.HEATER.getType()) {
-                // 前往热水澡
-                gotoDevice(HEATER, macAddress,
-                        data.getSupplierId(), data.getLocation(),
-                        data.getResidenceId(), false);
-            } else if (type == Device.DISPENSER.getType()) {
-                // 进入饮水机
+        if (type == Device.HEATER.getType()) {
+            // 前往热水澡
+            gotoDevice(HEATER, macAddress,
+                    data.getSupplierId(), data.getLocation(),
+                    data.getResidenceId(), false);
+        } else if (type == Device.DISPENSER.getType()) {
+            // 进入饮水机
 
-                gotoDispenser(macAddress, data.getSupplierId(), data.getLocation(),
-                        data.getResidenceId(), data.isFavor(), 0, false);
+            gotoDispenser(macAddress, data.getSupplierId(), data.getLocation(),
+                    data.getResidenceId(), data.isFavor(), 0, false);
 //
-            } else if (type == Device.DRYER.getType()) {
-                // 进入吹风机
+        } else if (type == Device.DRYER.getType()) {
+            // 进入吹风机
 
-                gotoDryer(macAddress, data.getSupplierId(), data.getLocation(),
-                        data.getResidenceId(), data.isFavor(), false);
+            gotoDryer(macAddress, data.getSupplierId(), data.getLocation(),
+                    data.getResidenceId(), data.isFavor(), false);
 
-            }
+        }
 
 
+    }
+
+    @Override
+    public void goToWasher(String deviceToken, String macAddress, int deviceType) {
+        String url = BuildConfig.H5_SERVER
+                + "/washer" + "?token=" + presenter.getToken()
+                + "&shcoolId=" + presenter.getUserInfo().getSchoolId()
+                + "&deviceToken=" + deviceToken
+                + "&deviceType=" + deviceType
+                + "&macAddress=" + macAddress;
+
+        if(!isGotoWasher) {
+            isGotoWasher = true;
+            Intent intent = new Intent(this, WebActivity.class);
+            intent.putExtra(WebActivity.INTENT_KEY_WASHER_URL, url);
+            startActivity(intent);
+            finish();
+        }
     }
 
     public void gotoDevice(Device device, String macAddress, Long supplierId,

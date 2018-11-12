@@ -118,6 +118,11 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
     }
 
     @Override
+    public long getSchoolId() {
+        return mainDataManager.getUserInfo().getSchoolId();
+    }
+
+    @Override
     public void getNoticeAmount() {
         addObserver(mainDataManager.getExtraInfo(), new NetworkObserver<ApiResult<PersonalExtraInfoDTO>>(false) {
 

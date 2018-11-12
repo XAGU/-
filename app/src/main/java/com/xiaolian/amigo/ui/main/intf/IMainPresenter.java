@@ -37,6 +37,8 @@ public interface IMainPresenter<V extends IMainView> extends IBasePresenter<V> {
      */
     String getToken();
 
+    long getSchoolId();
+
     /**
      * 获取通知个数
      */

@@ -27,7 +27,7 @@ public class CustomViewfinderView extends ViewfinderView {
     //    public int[] colors=new int[]{0x00ffffff,0xffffffff,0x00ffffff};
     public int[] colors = new int[]{0x00baacff, 0xffbaacff, 0x00baacff};
 
-    public int[] colorsScan = new int[]{0x00ff5555 , 0xffff5555 , 0x00ff5555} ;
+    public int[] colorsScan = new int[]{0x00499BFF , 0xff499BFF , 0x00499BFF} ;
 
 
     private int[] linearColor = colors ;

@@ -26,6 +26,7 @@ import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushConfig;
 import com.tencent.android.tpush.XGPushManager;
 import com.umeng.analytics.MobclickAgent;
+import com.xiaolian.amigo.BuildConfig;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.enumeration.DispenserCategory;
@@ -1261,7 +1262,13 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     }
 
     private void gotoWasher() {
-        startActivity(new Intent(this, WasherActivity.class));
+        android.util.Log.e(TAG, "gotoWasher: -----" );
+       // startActivity(new Intent(this, WasherActivity.class));
+        Intent intent = new Intent(this,WebActivity.class);
+        String url = BuildConfig.H5_SERVER +"/washer" + "?token=" + presenter.getToken() + "&shcoolId=" + presenter.getSchoolId();
+        android.util.Log.e(TAG, "gotoWasher: url = " + url );
+        intent.putExtra(WebActivity.INTENT_KEY_WASHER_URL,url);
+        startActivity(intent);
     }
 
     private void gotoDryer2(){
