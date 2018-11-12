@@ -31,21 +31,19 @@ import com.google.gson.Gson;
 import com.xiaolian.amigo.BuildConfig;
 import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.R;
-<<<<<<< HEAD
 import com.xiaolian.amigo.di.componet.DaggerMainActivityComponent;
 import com.xiaolian.amigo.di.module.MainActivityModule;
 import com.xiaolian.amigo.util.AppUtils;
-=======
 import com.xiaolian.amigo.data.network.model.device.JsWasher;
 import com.xiaolian.amigo.ui.device.washer.ScanActivity;
 import com.xiaolian.amigo.ui.wallet.RechargeActivity;
->>>>>>> 7bcba167b9652a8e4f1c04aff2cfcdf05a9fb044
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.http.HEAD;
 
 /**
  * web页面
@@ -112,13 +110,10 @@ public class WebActivity extends BaseActivity {
                 .applicationComponent(((MvpApp) getApplication()).getComponent())
                 .build().inject(this);
         String url = getIntent().getStringExtra(INTENT_KEY_URL);
-<<<<<<< HEAD
         initLoadingAnim();
-=======
         if (url == null) {
             url = getIntent().getStringExtra(INTENT_KEY_WASHER_URL);
         }
->>>>>>> 7bcba167b9652a8e4f1c04aff2cfcdf05a9fb044
         WebSettings webSettings = webView.getSettings();
         webSettings.setAllowFileAccess(true);
         webSettings.setDefaultTextEncodingName("UTF-8");
