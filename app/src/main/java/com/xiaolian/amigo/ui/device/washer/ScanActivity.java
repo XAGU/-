@@ -219,8 +219,9 @@ public class ScanActivity extends WasherBaseActivity
             }
 
             String url = BuildConfig.H5_SERVER
-                    + "/washer" + "?token=" + presenter.getToken()
-                    + "&shcoolId=" + presenter.getUserInfo().getSchoolId()
+                    + "/washer"
+                    + "?token=" + presenter.getToken()
+                    + "&schoolId=" + presenter.getUserInfo().getSchoolId()
                     + "&supplierId=" + sid
                     + "&deviceType=" + deviceType
                     + "&deviceNo=" + deviceNo;
@@ -261,14 +262,12 @@ public class ScanActivity extends WasherBaseActivity
     }
 
     private boolean isDoubleWasher(String url) {
-        Log.e(TAG, "isDoubleWasher: " + url );
 
         if (TextUtils.isEmpty(url) || !url.startsWith("https"))
             return false;
         int index = url.lastIndexOf("/");
         if (index != -1) {
             String str = url.substring(index + 1, url.length());
-            Log.e(TAG, "isDoubleWasher: size = " + str.length()+ ","+ str );
             if (str.length() != 72) {
                 return false;
             }
