@@ -1262,11 +1262,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     }
 
     private void gotoWasher() {
-        android.util.Log.e(TAG, "gotoWasher: -----" );
        // startActivity(new Intent(this, WasherActivity.class));
         Intent intent = new Intent(this,WebActivity.class);
         String url = BuildConfig.H5_SERVER +"/washer" + "?token=" + presenter.getToken() + "&shcoolId=" + presenter.getSchoolId();
-        android.util.Log.e(TAG, "gotoWasher: url = " + url );
         intent.putExtra(WebActivity.INTENT_KEY_WASHER_URL,url);
         startActivity(intent);
     }
