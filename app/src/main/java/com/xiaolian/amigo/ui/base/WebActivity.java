@@ -1,14 +1,17 @@
 package com.xiaolian.amigo.ui.base;
 
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.net.http.SslError;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 import android.webkit.JavascriptInterface;
 import android.webkit.SslErrorHandler;
 import android.webkit.ValueCallback;
@@ -21,9 +24,14 @@ import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.xiaolian.amigo.BuildConfig;
+import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.di.componet.DaggerMainActivityComponent;
+import com.xiaolian.amigo.di.module.MainActivityModule;
+import com.xiaolian.amigo.util.AppUtils;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
@@ -66,8 +74,20 @@ public class WebActivity extends BaseActivity {
 
         }
     };
+    @BindView(R.id.iv_loading)
+    ImageView ivLoading;
+    @BindView(R.id.loading_rl)
+    RelativeLayout loadingRl;
     private boolean loadError;
     private LinearLayout ll_error_view;
+
+
+    ValueAnimator loadingAnimator;
+
+    int[] loadingRes = new int[]{
+            R.drawable.loading_one, R.drawable.loading_two,
+            R.drawable.loading_three, R.drawable.loading_four
+    };
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -75,7 +95,12 @@ public class WebActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web);
         ButterKnife.bind(this);
+        DaggerMainActivityComponent.builder()
+                .mainActivityModule(new MainActivityModule(this))
+                .applicationComponent(((MvpApp) getApplication()).getComponent())
+                .build().inject(this);
         String url = getIntent().getStringExtra(INTENT_KEY_URL);
+        initLoadingAnim();
         WebSettings webSettings = webView.getSettings();
         webSettings.setAllowFileAccess(true);
         webSettings.setDefaultTextEncodingName("UTF-8");
@@ -84,11 +109,12 @@ public class WebActivity extends BaseActivity {
         webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         webSettings.setTextZoom(100);
 //        webView.setWebChromeClient(new WebChromeClient());
+        url = addUrlSuffix(url);
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                hideLoading();
+                hideBlogLoading();
                 if (!isNetworkAvailable()) {
                     ll_error_view.setVisibility(View.VISIBLE);
                     return;
@@ -101,7 +127,7 @@ public class WebActivity extends BaseActivity {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
-                showLoading();
+                showBlogLoading();
             }
 
             @Override
@@ -127,7 +153,7 @@ public class WebActivity extends BaseActivity {
                 loadError = true;
             }
 
-            @TargetApi(android.os.Build.VERSION_CODES.M)
+            @TargetApi(Build.VERSION_CODES.M)
             @Override
             public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
                 super.onReceivedHttpError(view, request, errorResponse);
@@ -153,17 +179,68 @@ public class WebActivity extends BaseActivity {
         initErrorView();
     }
 
+
+    private void initLoadingAnim() {
+        loadingAnimator = ValueAnimator.ofInt(0, 3, 0);
+        loadingAnimator.setRepeatCount(ValueAnimator.INFINITE);
+        loadingAnimator.setDuration(1000);
+        loadingAnimator.setInterpolator(new LinearInterpolator());
+        loadingAnimator.addUpdateListener(animation -> {
+            int currentValue = (int) animation.getAnimatedValue();
+            if (ivLoading != null)
+                ivLoading.setImageResource(loadingRes[currentValue]);
+        });
+    }
+
     private void initErrorView() {
         ImageView iv_back = (ImageView) findViewById(R.id.iv_back);
         iv_back.setOnClickListener(v -> super.onBackPressed());
         ll_error_view = (LinearLayout) findViewById(R.id.ll_error_view);
     }
 
+    /**
+     * 添加url后缀
+     */
+    private String addUrlSuffix(String url) {
+        String newUrl = "";
+        String model = Build.MODEL;
+        String brand = Build.BRAND;
+        String appVersion = AppUtils.getVersionName(this);
+        int systemVersion = Build.VERSION.SDK_INT;
+        if (sharedPreferencesHelp.getUserInfo() != null) {
+            String mobile = sharedPreferencesHelp.getUserInfo().getMobile();
+            newUrl = url + "&model=" + model + "&brand=" + brand + "&appVersion=" + appVersion + "&systemVersion="
+                    + systemVersion + "&mobile=" + mobile;
+        }else{
+            newUrl = url ;
+        }
+        return newUrl;
+    }
+
+    public void showBlogLoading() {
+        loadingRl.setVisibility(View.VISIBLE);
+        if (loadingAnimator == null) return;
+
+        if (loadingAnimator.isRunning()) {
+            loadingAnimator.cancel();
+        }
+        loadingAnimator.start();
+    }
+
+    public void hideBlogLoading() {
+
+        if (loadingAnimator == null) return;
+
+        if (loadingAnimator.isRunning()) loadingAnimator.cancel();
+
+        if (loadingRl != null) loadingRl.setVisibility(View.GONE);
+    }
+
     private class MyWebChromeClient extends WebChromeClient {
 
         public boolean onShowFileChooser(
                 WebView webView, ValueCallback<Uri[]> filePathCallback,
-                WebChromeClient.FileChooserParams fileChooserParams) {
+                FileChooserParams fileChooserParams) {
             if (mFilePathCallback != null) {
                 return true;
             }

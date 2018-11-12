@@ -15,7 +15,6 @@
         android:fillViewport="true"
         android:overScrollMode="never"
         android:scrollbars="none"
-
         android:layout_marginBottom="90dp">
 
         <LinearLayout

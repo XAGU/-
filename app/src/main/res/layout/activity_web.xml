@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fl_root"
     android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android" >
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <com.xiaolian.amigo.ui.widget.MyWebView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/webview"
@@ -57,4 +58,32 @@
                 android:layout_height="wrap_content" />
         </RelativeLayout>
     </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/loading_rl"
+        tools:visibility="visible"
+        android:visibility="gone"
+        android:background="@color/white">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="140dp"
+            android:id="@+id/iv_loading"
+            android:layout_centerHorizontal="true"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_loading"
+            android:layout_centerHorizontal="true"
+            android:text="@string/loading"
+            android:textSize="@dimen/sp12"
+            android:textColor="@color/colorDark9"
+            android:layout_marginTop="17dp"/>
+    </RelativeLayout>
+
 </FrameLayout>
