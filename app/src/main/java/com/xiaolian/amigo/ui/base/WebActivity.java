@@ -28,6 +28,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.google.gson.Gson;
+import com.google.zxing.client.android.Intents;
 import com.xiaolian.amigo.BuildConfig;
 import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.R;
@@ -371,6 +372,8 @@ public class WebActivity extends BaseActivity {
     private void scan(){
         Intent intent = new Intent(WebActivity.this,ScanActivity.class);
         intent.putExtra(ScanActivity.INTENT_URL_WASHER,true);
+        //禁止扫码成功后的声音
+        intent.putExtra(Intents.Scan.BEEP_ENABLED,false);
         WebActivity.this.startActivityForResult(intent,0x11);
 
     }
