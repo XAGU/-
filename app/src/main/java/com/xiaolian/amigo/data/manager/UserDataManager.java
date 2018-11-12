@@ -329,6 +329,16 @@ public class UserDataManager implements IUserDataManager {
     }
 
     @Override
+    public long getLastDeleteTime() {
+        return sharedPreferencesHelp.getDeleteFileTime();
+    }
+
+    @Override
+    public void setDeleteFileTime(long l) {
+        sharedPreferencesHelp.saveDeleteFileTime(l);
+    }
+
+    @Override
     public Observable<ApiResult<String>> uploadFile(@Part("file") RequestBody images) {
 
         return fileApi.uploadFile(images);

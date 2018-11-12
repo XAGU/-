@@ -991,7 +991,6 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             return;
         }
         presenter.onDisConnect();
-        presenter.deleteLogFile();
         Intent intent = new Intent(this, DeviceOrderActivity.class);
         intent.putExtra(Constant.BUNDLE_ID, orderId);
         startActivity(intent);

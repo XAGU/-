@@ -106,8 +106,9 @@ public class WithdrawalDetailActivity extends WalletBaseActivity implements IWit
 
         if (id == null || id == -1) {
             onError("状态错误");
+        }else {
+            presenter.requestData(id);
         }
-        presenter.requestData(id);
     }
 
     @Override

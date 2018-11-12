@@ -101,8 +101,9 @@ public class RechargeDetailActivity extends WalletBaseActivity implements IRecha
 
         if (id == null || ObjectsCompat.equals(id, Constant.INVALID_ID)) {
             onError("状态错误");
+        }else {
+            presenter.requestData(id);
         }
-        presenter.requestData(id);
     }
 
     @Override

@@ -221,5 +221,7 @@ public interface ISharedPreferencesHelp {
     long getDiffTime();
 
 
+    void saveDeleteFileTime(long time);
 
+    long getDeleteFileTime();
 }

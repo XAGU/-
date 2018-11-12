@@ -212,4 +212,6 @@ public interface IMainPresenter<V extends IMainView> extends IBasePresenter<V> {
     void setIsFirstAfterLogin(boolean b);
 
     void setCertifyStatus(int statusType);
+
+    void deleteFile();
 }

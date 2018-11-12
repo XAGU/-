@@ -23,7 +23,6 @@ import android.support.annotation.RawRes;
 import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
 
-import com.xiaolian.amigo.util.Log;
 import com.xiaolian.amigo.util.crash.acra.ACRA;
 import com.xiaolian.amigo.util.crash.acra.ReportField;
 import com.xiaolian.amigo.util.crash.acra.ReportingInteractionMode;
@@ -37,10 +36,9 @@ import com.xiaolian.amigo.util.crash.acra.security.KeyStoreFactory;
 import com.xiaolian.amigo.util.crash.acra.security.NoKeyStoreFactory;
 import com.xiaolian.amigo.util.crash.acra.sender.DefaultReportSenderFactory;
 import com.xiaolian.amigo.util.crash.acra.sender.HttpSender;
-import com.xiaolian.amigo.util.crash.acra.sender.ReportSenderFactory;
-
 import com.xiaolian.amigo.util.crash.acra.sender.HttpSender.Method;
 import com.xiaolian.amigo.util.crash.acra.sender.HttpSender.Type;
+import com.xiaolian.amigo.util.crash.acra.sender.ReportSenderFactory;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Modifier;
@@ -57,25 +55,25 @@ import static com.xiaolian.amigo.util.crash.acra.ACRAConstants.DEFAULT_APPLICATI
 import static com.xiaolian.amigo.util.crash.acra.ACRAConstants.DEFAULT_CERTIFICATE_TYPE;
 import static com.xiaolian.amigo.util.crash.acra.ACRAConstants.DEFAULT_CONNECTION_TIMEOUT;
 import static com.xiaolian.amigo.util.crash.acra.ACRAConstants.DEFAULT_DELETE_OLD_UNSENT_REPORTS_ON_APPLICATION_START;
-import static  com.xiaolian.amigo.util.crash.acra.ACRAConstants.DEFAULT_DELETE_UNAPPROVED_REPORTS_ON_APPLICATION_START;
-import static  com.xiaolian.amigo.util.crash.acra.ACRAConstants.DEFAULT_DIALOG_ICON;
-import static  com.xiaolian.amigo.util.crash.acra.ACRAConstants.DEFAULT_DIALOG_NEGATIVE_BUTTON_TEXT;
-import static  com.xiaolian.amigo.util.crash.acra.ACRAConstants.DEFAULT_DIALOG_POSITIVE_BUTTON_TEXT;
-import static  com.xiaolian.amigo.util.crash.acra.ACRAConstants.DEFAULT_DROPBOX_COLLECTION_MINUTES;
-import static  com.xiaolian.amigo.util.crash.acra.ACRAConstants.DEFAULT_INCLUDE_DROPBOX_SYSTEM_TAGS;
-import static  com.xiaolian.amigo.util.crash.acra.ACRAConstants.DEFAULT_LOGCAT_FILTER_BY_PID;
-import static  com.xiaolian.amigo.util.crash.acra.ACRAConstants.DEFAULT_LOGCAT_LINES;
-import static  com.xiaolian.amigo.util.crash.acra.ACRAConstants.DEFAULT_MAIL_REPORT_FIELDS;
-import static  com.xiaolian.amigo.util.crash.acra.ACRAConstants.DEFAULT_NON_BLOCKING_READ_FOR_LOGCAT;
-import static  com.xiaolian.amigo.util.crash.acra.ACRAConstants.DEFAULT_NOTIFICATION_ICON;
-import static  com.xiaolian.amigo.util.crash.acra.ACRAConstants.DEFAULT_REPORT_FIELDS;
-import static  com.xiaolian.amigo.util.crash.acra.ACRAConstants.DEFAULT_REPORT_TO_ANDROID_FRAMEWORK;
-import static  com.xiaolian.amigo.util.crash.acra.ACRAConstants.DEFAULT_RES_VALUE;
-import static  com.xiaolian.amigo.util.crash.acra.ACRAConstants.DEFAULT_SEND_REPORTS_IN_DEV_MODE;
-import static  com.xiaolian.amigo.util.crash.acra.ACRAConstants.DEFAULT_SHARED_PREFERENCES_MODE;
-import static  com.xiaolian.amigo.util.crash.acra.ACRAConstants.DEFAULT_SOCKET_TIMEOUT;
-import static  com.xiaolian.amigo.util.crash.acra.ACRAConstants.DEFAULT_STRING_VALUE;
-import static  com.xiaolian.amigo.util.crash.acra.ACRAConstants.NULL_VALUE;
+import static com.xiaolian.amigo.util.crash.acra.ACRAConstants.DEFAULT_DELETE_UNAPPROVED_REPORTS_ON_APPLICATION_START;
+import static com.xiaolian.amigo.util.crash.acra.ACRAConstants.DEFAULT_DIALOG_ICON;
+import static com.xiaolian.amigo.util.crash.acra.ACRAConstants.DEFAULT_DIALOG_NEGATIVE_BUTTON_TEXT;
+import static com.xiaolian.amigo.util.crash.acra.ACRAConstants.DEFAULT_DIALOG_POSITIVE_BUTTON_TEXT;
+import static com.xiaolian.amigo.util.crash.acra.ACRAConstants.DEFAULT_DROPBOX_COLLECTION_MINUTES;
+import static com.xiaolian.amigo.util.crash.acra.ACRAConstants.DEFAULT_INCLUDE_DROPBOX_SYSTEM_TAGS;
+import static com.xiaolian.amigo.util.crash.acra.ACRAConstants.DEFAULT_LOGCAT_FILTER_BY_PID;
+import static com.xiaolian.amigo.util.crash.acra.ACRAConstants.DEFAULT_LOGCAT_LINES;
+import static com.xiaolian.amigo.util.crash.acra.ACRAConstants.DEFAULT_MAIL_REPORT_FIELDS;
+import static com.xiaolian.amigo.util.crash.acra.ACRAConstants.DEFAULT_NON_BLOCKING_READ_FOR_LOGCAT;
+import static com.xiaolian.amigo.util.crash.acra.ACRAConstants.DEFAULT_NOTIFICATION_ICON;
+import static com.xiaolian.amigo.util.crash.acra.ACRAConstants.DEFAULT_REPORT_FIELDS;
+import static com.xiaolian.amigo.util.crash.acra.ACRAConstants.DEFAULT_REPORT_TO_ANDROID_FRAMEWORK;
+import static com.xiaolian.amigo.util.crash.acra.ACRAConstants.DEFAULT_RES_VALUE;
+import static com.xiaolian.amigo.util.crash.acra.ACRAConstants.DEFAULT_SEND_REPORTS_IN_DEV_MODE;
+import static com.xiaolian.amigo.util.crash.acra.ACRAConstants.DEFAULT_SHARED_PREFERENCES_MODE;
+import static com.xiaolian.amigo.util.crash.acra.ACRAConstants.DEFAULT_SOCKET_TIMEOUT;
+import static com.xiaolian.amigo.util.crash.acra.ACRAConstants.DEFAULT_STRING_VALUE;
+import static com.xiaolian.amigo.util.crash.acra.ACRAConstants.NULL_VALUE;
 
 /**
  * Builder responsible for programmatic construction of an {@link ACRAConfiguration}.

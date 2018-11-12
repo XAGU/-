@@ -156,4 +156,5 @@ public interface IDeviceDataManager {
      */
     Observable<ApiResult<BooleanRespDTO>> uploadLog(@Body RequestBody body);
 
+    void saveDeleteFileTime(long l);
 }

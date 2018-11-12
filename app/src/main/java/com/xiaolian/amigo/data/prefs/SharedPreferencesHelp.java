@@ -133,6 +133,8 @@ public class    SharedPreferencesHelp implements ISharedPreferencesHelp {
 
     private static final String PREF_KEY_DIFF_TIME = "PREF_KEY_DIFF_TIME";
 
+    private static final  String PREF_KEY_DELETE_TIME = "PREF_KEY_DELETE_TIME";
+
     private String tokenHolder;
     private String deviceTokenHolder;
     private User userHolder;
@@ -148,7 +150,6 @@ public class    SharedPreferencesHelp implements ISharedPreferencesHelp {
     private boolean transfer;
     // 推送token
     private String pushToken;
-
 
 
 
@@ -731,6 +732,16 @@ public class    SharedPreferencesHelp implements ISharedPreferencesHelp {
     @Override
     public long getDiffTime() {
         return mSharedPreferences.getLong(PREF_KEY_DIFF_TIME ,0);
+    }
+
+    @Override
+    public void saveDeleteFileTime(long time) {
+        mSharedPreferences.edit().putLong(PREF_KEY_DELETE_TIME ,time).apply();
+    }
+
+    @Override
+    public long getDeleteFileTime() {
+        return mSharedPreferences.getLong(PREF_KEY_DELETE_TIME  , System.currentTimeMillis());
     }
 
     @Override

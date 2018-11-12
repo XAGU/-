@@ -262,4 +262,9 @@ public class DeviceDataManager implements IDeviceDataManager {
     public Observable<ApiResult<BooleanRespDTO>> uploadLog(RequestBody body) {
         return connectErrorApi.uploadLog(body);
     }
+
+    @Override
+    public void saveDeleteFileTime(long l) {
+        sharedPreferencesHelp.saveDeleteFileTime(l);
+    }
 }

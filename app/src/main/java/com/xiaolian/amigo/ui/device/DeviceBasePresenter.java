@@ -340,7 +340,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_5));
                 }
                 if (!scanDevice){
-                    uploadLog();
+//                    uploadLog();
                 }
             }
         };
@@ -628,13 +628,13 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             if (code != BluetoothConstants.CONN_RESPONSE_SUCCESS) {
                 writeLogFile("connectHaoNianHaoDevice" , "" ,"连接失败currentMacAddress："+currentMacAddress+"  code:"+code);
                 handleDisConnectError("连接好年华设备失败 code:" + code);
-                uploadLog();
+//                uploadLog();
                 return;
             }
             if (gatt == null || gatt.getService(UUID.fromString(supplier.getServiceUuid())) == null) {
                 writeLogFile("connectHaoNianHaoDevice" , "" ,"连接好年华设备失败 code:："+ code + "获取不到service uuid:" + supplier.getServiceUuid());
                 handleDisConnectError("连接好年华设备失败 code:" + code + "获取不到service uuid:" + supplier.getServiceUuid());
-                uploadLog();
+//                uploadLog();
                 return;
             }
             for (BluetoothGattCharacteristic characteristic : gatt.getService(UUID.fromString(supplier.getServiceUuid())).getCharacteristics()) {
@@ -649,7 +649,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                                     if (code1 != BluetoothConstants.GATT_SUCCESS) {
                                         writeLogFile("connectHaoNianHaoDevice" , "" ,"辛纳写入失败currentMacAddress："+currentMacAddress+"  code:"+code1);
                                         handleDisConnectError("好年华设备写入ENABLE_NOTIFICATION_VALUE失败 code:" + code1);
-                                        uploadLog();
+//                                        uploadLog();
                                         return;
                                     }
                                     bleDataManager.notify(currentMacAddress, UUID.fromString(supplier.getServiceUuid()),
@@ -661,7 +661,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                                                     processCommandResult(result);
                                                 } else {
                                                     writeLogFile("connectHaoNianHaoDevice" , "" ,"接收到设备数据为空");
-                                                    uploadLog();
+//                                                    uploadLog();
                                                 }
 
                                             });
@@ -671,7 +671,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         Log.d(TAG, "设置notify失败 thread " + Thread.currentThread().getName());
                         writeLogFile("connectHaoNianHaoDevice" , "" ,"辛纳好年华notify失败currentMacAddress："+currentMacAddress);
                         handleDisConnectError("设置notify失败");
-                        uploadLog();
+//                        uploadLog();
                     }
                     return;
                 }
@@ -718,10 +718,10 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         bleDataManager.writeNoRsp(currentMacAddress, UUID.fromString(supplier.getServiceUuid()),
                 UUID.fromString(supplier.getWriteUuid()), commandBytes, code -> {
                     if (code == BluetoothConstants.GATT_OTHER_FAILURE) {
-                        writeLogFile("onWrite" , "command：" + command,"指令写入失败code："+code);
+                        writeLogFile("onWrite" , "command：" + command,"指令写入失败  code："+code);
                         handleWriteError(command);
                     } else if (code == BluetoothConstants.GATT_SUCCESS) {
-                        writeLogFile("onWrite" , "command：" + command,"指令写入失败成功");
+                        writeLogFile("onWrite" , "command：" + command,"指令写入成功");
                         Log.d(TAG, "发送指令成功 command: " + command + " thread " + Thread.currentThread().getName());
                     }
                 });
@@ -874,7 +874,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                             getMvpView().post(() -> getMvpView().onError(TradeError.SYSTEM_ERROR));
                         }
                     }
-                    uploadLog();
+//                    uploadLog();
                 }
             }
 
@@ -886,7 +886,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 if (getMvpView() != null) {
                     getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_3));
                 }
-                uploadLog();
+//                uploadLog();
             }
         }, Schedulers.io());
     }
@@ -914,7 +914,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         getMvpView().post(() -> getMvpView().onError(TradeError.SYSTEM_ERROR));
                     }
                     writeLogFile("checkOrderStatus" ,"macAddress : "  + macAddress   ,"获取订单状态失败" + result.getError().getDebugMessage()   );
-                    uploadLog();
+//                    uploadLog();
                     synchronized (orderStatusLock) {
                         checkOrderErrorFlag = true;
                         orderStatusLock.notifyAll();
@@ -934,7 +934,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     checkOrderErrorFlag = true;
                     orderStatusLock.notifyAll();
                 }
-                uploadLog();
+//                uploadLog();
             }
         }, Schedulers.io());
     }
@@ -964,7 +964,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             if (getMvpView() != null) {
                 getMvpView().onError(TradeError.CONNECT_ERROR_4);
             }
-            uploadLog();
+//            uploadLog();
         }
         Log.wtf(TAG , "processCommandResult>>>>>" + result  + "   " + deviceNo);
         CmdResultReqDTO reqDTO = new CmdResultReqDTO();
@@ -972,16 +972,16 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         reqDTO.setMacAddress(deviceNo);
         addObserver(deviceDataManager.processCmdResult(reqDTO), new NetworkObserver<ApiResult<CmdResultRespDTO>>(false) {
             @Override
-            public void onReady(ApiResult<CmdResultRespDTO> result) {
+            public void onReady(ApiResult<CmdResultRespDTO> result1) {
                 // 存储deviceToken
-                if (result.getData() != null && result.getData().getMacAddress() != null
-                        && result.getData().getDeviceToken() != null) {
-                    deviceDataManager.setDeviceToken(result.getData().getMacAddress(), result.getData().getDeviceToken());
-                    Log.i(TAG, "收到deviceToken：" + result.getData().getDeviceToken());
+                if (result1.getData() != null && result1.getData().getMacAddress() != null
+                        && result1.getData().getDeviceToken() != null) {
+                    deviceDataManager.setDeviceToken(result1.getData().getMacAddress(), result1.getData().getDeviceToken());
+                    Log.i(TAG, "收到deviceToken：" + result1.getData().getDeviceToken());
                 }
-                writeLogFile("processCommandResult" ,"result : "  + result   ,"通知主线程更新数据 ：" +  result.getData()   );
-                Log.i(TAG, "通知主线程更新数据。" + result.getData());
-                handleResult(result);
+                writeLogFile("processCommandResult" ,"result : "  + result   ,"通知主线程更新数据 ：" +  result1.getData()   );
+                Log.i(TAG, "通知主线程更新数据。" + result1.getData());
+                handleResult(result1);
             }
 
             @Override
@@ -993,8 +993,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 if (getMvpView() != null) {
                     getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_3));
                 }
-                writeLogFile("processCommandResult" ,"result : "  + result   ," 获取指令失败 ："  + e.getMessage()    );
-                uploadLog();
+                writeLogFile("processCommandResult" ,"result : "  + result   ," 服务器获取指令失败 ："  + e.getMessage()    );
+//                uploadLog();
             }
         }, AndroidSchedulers.mainThread());
     }
@@ -1011,14 +1011,14 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 if (getMvpView() != null) {
                     getMvpView().onError(TradeError.SYSTEM_ERROR);
                 }
-                writeLogFile("handleResult" ,"result : "  + result.getData().getMacAddress()   ," 服务器未返回ScrCommandType"    );
-                uploadLog();
+                writeLogFile("handleResult" ,"result : "  + result.getData()   ," 服务器未返回ScrCommandType"    );
+//                uploadLog();
                 return;
             }
             switch (Command.getCommand(result.getData().getSrcCommandType())) {
                 case UPDATE_DEVICE_RATE:
                     getMvpView().realPay();
-                    writeLogFile("handleResult" ,"result : "  + result.getData().getMacAddress()   ," 更新费率"    );
+                    writeLogFile("handleResult" ,"result : "  + result.getData()   ," 更新费率"    );
                     break;
                 case CONNECT:
                     // 如果用户本人在三小时之内再次连接该设备，需要进入第二步账单结算页面
@@ -1032,13 +1032,13 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                             if (getMvpView() != null) {
                                 getMvpView().onConnectSuccess(TradeStep.SETTLE, orderStatus);
                             }
-                            writeLogFile("handleResult" ,"result : "  + result.getData().getMacAddress()   + " ， 原指令类型： connect "  ,"    未结算订单在指定时间范围内或者由未结账单页面跳转过来，显示结算页面  ；  下一步指令 "   +  reopenNextCmd  );
+                            writeLogFile("handleResult" ,"result : "  + result.getData()   + " ， 原指令类型： connect "  ,"    未结算订单在指定时间范围内或者由未结账单页面跳转过来，显示结算页面  ；  下一步指令 "   +  reopenNextCmd  );
                         } else {
                             Log.i(TAG, "未结算订单已经超出指定时间范围，继续下发预结账指令，走正常流程");
                             precheckCmd = nextCommand;
                             Log.w(TAG , "CONNECT  未结账订单超过时间>>>>>>>"+currentMacAddress);
                             onWrite(precheckCmd);
-                            writeLogFile("handleResult" ,"result : "  + result.getData().getMacAddress()  + " ， 原指令类型： connect "  ," 未结算订单已经超出指定时间范围，继续下发预结账指令，走正常流程  ；  下一步指令 "   +  precheckCmd  );
+                            writeLogFile("handleResult" ,"result : "  + result.getData() + " ， 原指令类型： connect "  ," 未结算订单已经超出指定时间范围，继续下发预结账指令，走正常流程  ；  下一步指令 "   +  precheckCmd  );
                         }
                         return;
                     }
@@ -1050,18 +1050,18 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                             precheckFlag = false;
                             closeCmd = nextCommand;
                             saveCloseCmd(closeCmd, orderId);
-                            writeLogFile("handleResult" ,"result : "  + result.getData().getMacAddress()  + " ， 原指令类型： connect "  ," 当前人的关阀指令恢复  ；  下一步指令 "   +  closeCmd  );
+                            writeLogFile("handleResult" ,"result : "  + result.getData()  + " ， 原指令类型： connect "  ," 当前人的关阀指令恢复  ；  下一步指令 "   +  closeCmd  );
                         }
                         else if (result.getData().getNextCommandType() == Command.OTHER_CLOSE_VALVE.getType()) {
                             //他人主动对当前用户进行关阀结账
                             precheckFlag = true;
                             closeCmd = nextCommand;
                             onWrite(closeCmd);
-                            writeLogFile("handleResult" ,"result : "  + result.getData().getMacAddress()  + " ， 原指令类型： connect "  ," 他人主动对当前用户进行关阀结账  ；  下一步指令 "   +  closeCmd  );
+                            writeLogFile("handleResult" ,"result : "  + result.getData()  + " ， 原指令类型： connect "  ," 他人主动对当前用户进行关阀结账  ；  下一步指令 "   +  closeCmd  );
                             break;
                         } else {
                             precheckCmd = nextCommand;
-                            writeLogFile("handleResult" ,"result : "  + result.getData().getMacAddress()  + " ， 原指令类型： connect "  ,"nextCommand："+nextCommand);
+                            writeLogFile("handleResult" ,"result : "  + result.getData()  + " ， 原指令类型： connect "  ,"nextCommand："+nextCommand);
                         }
                         if (!reconnect) { // 正常流程
                             // 下发预结账指令
@@ -1069,7 +1069,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
                             Log.w(TAG , "CONNECT  正常流程，存在未结账订单>>>>>>>"+currentMacAddress);
                             onWrite(precheckCmd);
-                            writeLogFile("handleResult" ,"result : "  + result.getData().getMacAddress()  + " ， 原指令类型： connect "  ,"正常流程，设备上存在未结账订单，获取到预结账指令。command:" + nextCommand   );
+                            writeLogFile("handleResult" ,"result : "  + result.getData()  + " ， 原指令类型： connect "  ,"正常流程，设备上存在未结账订单，获取到预结账指令。command:" + nextCommand   );
                         } else {
                             //  自己的未结账订单，显示未结账状态
                             Log.i(TAG, "用户在结算页面重新连接成功，设备上存在未结账订单，获取到预结账指令。command:" + nextCommand);
@@ -1077,7 +1077,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                                 getMvpView().onReconnectSuccess(orderStatus);
                             }
                             reconnectNextCmd = precheckCmd;
-                            writeLogFile("handleResult" ,"result : "  + result.getData().getMacAddress()   + " ， 原指令类型： connect " ,"自己的未结账订单，显示未结账状态。command:" + nextCommand   );
+                            writeLogFile("handleResult" ,"result : "  + result.getData()   + " ， 原指令类型： connect " ,"自己的未结账订单，显示未结账状态。command:" + nextCommand   );
                         }
                     } else {
                         // 握手连接成功，进入正常用水流程
@@ -1085,7 +1085,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         if (getMvpView() != null) {
                             getMvpView().onConnectSuccess(TradeStep.PAY);
                         }
-                        writeLogFile("handleResult" ,"result : "  + result.getData().getMacAddress()  + " ， 原指令类型： connect "  ,"握手连接成功，进入正常用水流程。command:" + nextCommand   );
+                        writeLogFile("handleResult" ,"result : "  + result.getData()  + " ， 原指令类型： connect "  ,"握手连接成功，进入正常用水流程。command:" + nextCommand   );
                     }
                     break;
                 case OPEN_VALVE:
@@ -1095,7 +1095,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     if (getMvpView() != null) {
                         getMvpView().onOpen();
                     }
-                    writeLogFile("handleResult" ,"result : "  + result.getData().getMacAddress() + " ， 原指令类型： OPEN_VALVE "    ,"正常流程，获取到关阀指令。command:" + nextCommand   );
+                    writeLogFile("handleResult" ,"result : "  + result.getData() + " ， 原指令类型： OPEN_VALVE "    ,"正常流程，获取到关阀指令。command:" + nextCommand   );
                     break;
                 case CLOSE_VALVE:
                     Log.i(TAG, "正常流程，获取到结账指令。command:" + nextCommand);
@@ -1104,12 +1104,12 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
                     Log.w(TAG , "CLOSE_VALVE >>>>>>>"+currentMacAddress);
                     onWrite(checkoutCmd);
-                    writeLogFile("handleResult" ,"result : "  + result.getData().getMacAddress() + " ， 原指令类型： CLOSE_VALVE "    ,"正常流程，获取到关阀指令。command:" + nextCommand   );
+                    writeLogFile("handleResult" ,"result : "  + result.getData() + " ， 原指令类型： CLOSE_VALVE "    ,"正常流程，获取到关阀指令。command:" + nextCommand   );
                     break;
                 case CHECK_OUT:
                     if (purelyCheckoutFlag) {
                         // 纯结账操作，直接跳转至第二步结账，结账完毕跳转账单详情页面
-                        writeLogFile("handleResult" ,"result : "  + result.getData().getMacAddress() + " ， 原指令类型： CHECK_OUT "    ,"纯结账操作，直接跳转至第二步结账，结账完毕跳转账单详情页面"    );
+                        writeLogFile("handleResult" ,"result : "  + result.getData() + " ， 原指令类型： CHECK_OUT "    ,"纯结账操作，直接跳转至第二步结账，结账完毕跳转账单详情页面"    );
                         Log.i(TAG, "结账完成");
                         if (getMvpView() != null) {
                             getMvpView().onFinish(orderId);
@@ -1122,7 +1122,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         if (reconnect) {
                             // 重连状态下，走预结账->结账流程时，是本人主动结账，跳转账单详情页
                             Log.i(TAG, "结账完成");
-                            writeLogFile("handleResult" ,"result : "  + result.getData().getMacAddress() + " ， 原指令类型： CHECK_OUT "    ,"当前为预结账状态 ,重连状态下，走预结账->结账流程时，是本人主动结账，跳转账单详情页"    );
+                            writeLogFile("handleResult" ,"result : "  + result.getData() + " ， 原指令类型： CHECK_OUT "    ,"当前为预结账状态 ,重连状态下，走预结账->结账流程时，是本人主动结账，跳转账单详情页"    );
                             if (getMvpView() != null) {
                                 getMvpView().onFinish(orderId);
                             }
@@ -1135,11 +1135,11 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                             }
                             Log.wtf(TAG ,"CHECK_OUT  >>>>>>>>>>"+currentMacAddress);
                             onWrite(connectCmd);
-                            writeLogFile("handleResult" ,"result : "  + result.getData().getMacAddress() + " ， 原指令类型： CHECK_OUT "    ,"非重连状态下，是主动帮别人结账，此时用户还未进入用水流程，需要再次握手，否则会报设备使用次数不对 .connectCmd : " + connectCmd   );
+                            writeLogFile("handleResult" ,"result : "  + result.getData() + " ， 原指令类型： CHECK_OUT "    ,"非重连状态下，是主动帮别人结账，此时用户还未进入用水流程，需要再次握手，否则会报设备使用次数不对 .connectCmd : " + connectCmd   );
                         }
                     } else {
                         // 当前为非预结账状态，结账完毕后跳转账单详情页
-                        writeLogFile("handleResult" ,"result : "  + result.getData().getMacAddress() + " ， 原指令类型： CHECK_OUT "    ,"当前为非预结账状态，结账完毕后跳转账单详情页"    );
+                        writeLogFile("handleResult" ,"result : "  + result.getData() + " ， 原指令类型： CHECK_OUT "    ,"当前为非预结账状态，结账完毕后跳转账单详情页"    );
                         Log.i(TAG, "结账完成");
                         if (getMvpView() != null) {
                             getMvpView().onFinish(orderId);
@@ -1155,15 +1155,15 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     // 下发结账指令
                     Log.wtf(TAG ,"PRE_CHECK  >>>>>>>>>>"+currentMacAddress);
                     onWrite(checkoutCmd);
-                    writeLogFile("handleResult" ,"result : "  + result.getData().getMacAddress() + " ， 原指令类型： PRE_CHECK "    ,"正常流程，获取到结账指令。command:" + nextCommand    );
+                    writeLogFile("handleResult" ,"result : "  + result.getData() + " ， 原指令类型： PRE_CHECK "    ,"正常流程，获取到结账指令。command:" + nextCommand    );
                     break;
                 case OTHER_CLOSE_VALVE:
                     Log.wtf(TAG, "其他人的关阀指令");
-                    writeLogFile("handleResult" ,"result : "  + result.getData().getMacAddress() + " ， 原指令类型： OTHER_CLOSE_VALVE "    ,"其他人的关阀指令"     );
+                    writeLogFile("handleResult" ,"result : "  + result.getData() + " ， 原指令类型： OTHER_CLOSE_VALVE "    ,"其他人的关阀指令"     );
                     break;
                 case UNKNOWN:
                     Log.wtf(TAG, "服务器返回未知指令");
-                    writeLogFile("handleResult" ,"result : "  + result.getData().getMacAddress() + " ， 原指令类型： UNKNOWN "    ,"服务器返回未知指令"     );
+                    writeLogFile("handleResult" ,"result : "  + result.getData() + " ， 原指令类型： UNKNOWN "    ,"服务器返回未知指令"     );
                     break;
 
             }
@@ -1175,7 +1175,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 if (Command.UPDATE_DEVICE_RATE == Command.getCommand(rateCmdType)) {
                     //更新费率的时候异常直接跳过该流程
                     getMvpView().realPay();
-                    writeLogFile("handleResult" ,"result : "  + result.getData().getMacAddress() + " ， 服务器返回异常情况： "    ,"更新费率的时候异常直接跳过该流程"     );
+                    writeLogFile("handleResult" ,"result : "  + result.getError() + " ， 服务器返回异常情况： "    ,"更新费率的时候异常直接跳过该流程"     );
                     return;
                 }
             }
@@ -1183,13 +1183,13 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     // 如果在结账时服务器返回异常则状态改为SETTLE
             if (getStep() == TradeStep.CLOSE_VALVE) {
                 setStep(TradeStep.SETTLE);
-                writeLogFile("handleResult" ,"result : "  + result.getData().getMacAddress() + " ， 服务器返回异常情况： "    ,"如果在结账时服务器返回异常状态  orderId : "  + orderId    );
+                writeLogFile("handleResult" ,"result : "  + result.getError() + " ， 服务器返回异常情况： "    ,"如果在结账时服务器返回异常状态  orderId : "  + orderId    );
             }
             if (result.getError().getCode() == BleErrorType.BLE_DEVICE_BUSY.getCode()) {
                 Log.e(TAG, "设备正在被使用");
                 // 如果是重连状态下，此时可以直接下发关阀指令
                 if (reconnect) {
-                    writeLogFile("handleResult" ,"result : "  + result.getData().getMacAddress() + " ， 服务器返回异常情况： "    ,"重连状态下，此时可以直接下发关阀指令 ");
+                    writeLogFile("handleResult" ,"result : "  + result.getError()+ " ， 服务器返回异常情况： "    ,"重连状态下，此时可以直接下发关阀指令 ");
                     // 显示重连成功
                     if (getMvpView() != null) {
                         getMvpView().onReconnectSuccess(orderStatus);
@@ -1197,7 +1197,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
                     if (checkCloseCmd()) {
                         reconnectNextCmd = closeCmd;
-                        writeLogFile("handleResult" ,"result : "  + result.getData().getMacAddress() + " ， 服务器返回异常情况： "    ,"获取管阀指令   reconnectNextCmd："  + reconnectNextCmd);
+                        writeLogFile("handleResult" ,"result : "  + result.getError() + " ， 服务器返回异常情况： "    ,"获取管阀指令   reconnectNextCmd："  + reconnectNextCmd);
                     }
                 } else { // 首次连接
                     if (null != orderStatus && null != orderStatus.getStatus() && OrderStatus.getOrderStatus(orderStatus.getStatus()) == OrderStatus.USING) { // 用户主动上来结账
@@ -1210,7 +1210,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                             reopenNextCmd = closeCmd;
                         }
 
-                        writeLogFile("handleResult" ,"result : "  + result.getData().getMacAddress() + " ， 服务器返回异常情况： "    ,"处理未结账订单，此时阀门处于打开状态，下发关阀指令即可："  + reconnectNextCmd);
+                        writeLogFile("handleResult" ,"result : "  + result.getError() + " ， 服务器返回异常情况： "    ,"处理未结账订单，此时阀门处于打开状态，下发关阀指令即可："  + reconnectNextCmd);
 
                     } else {
                         // 提示用户设备已被其它用户使用
@@ -1219,7 +1219,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                             getMvpView().onError(TradeError.DEVICE_BUSY);
                         }
 
-                        writeLogFile("handleResult" ,"result : "  + result.getData().getMacAddress() + " ， 服务器返回异常情况： "    ,"提示用户设备已被其它用户使用：" );
+                        writeLogFile("handleResult" ,"result : "  + result.getError() + " ， 服务器返回异常情况： "    ,"提示用户设备已被其它用户使用：" );
                     }
                 }
             } else if (result.getError().getCode() == BleErrorType.BLE_UNKNOWN_ERROR.getCode()) {
@@ -1227,14 +1227,14 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 if (getMvpView() != null) {
                     getMvpView().onError(TradeError.DEVICE_BROKEN_2);
                 }
-                writeLogFile("handleResult" ,"result : "  + result.getData().getMacAddress() + " ， 服务器返回异常情况： "    ,"未知错误：" );
-                uploadLog();
+                writeLogFile("handleResult" ,"result : "  + result.getError() + " ， 服务器返回异常情况： "    ,"未知错误：" );
+//                uploadLog();
             } else if (result.getError().getCode() == BleErrorType.BLE_CMD_RESULT_ERROR.getCode()) {
                 Log.i(TAG, "设备未完全开启");
                 if (getMvpView() != null) {
                     getMvpView().onError(TradeError.CONNECT_ERROR_1);
                 }
-                uploadLog();
+//                uploadLog();
             }
             Integer cmdType = result.getError().getBleCmdType();
             if (null != cmdType) {
@@ -1245,8 +1245,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     if (getMvpView() != null) {
                         getMvpView().onError(TradeError.DEVICE_BROKEN_2);
                     }
-                    writeLogFile("handleResult" ,"result : "  + result.getData().getMacAddress() + " ， 服务器返回异常情况： "    ,"设备开阀异常：" );
-                    uploadLog();
+                    writeLogFile("handleResult" ,"result : "  + result.getError() + " ， 服务器返回异常情况： "    ,"设备开阀异常：" );
+//                    uploadLog();
                 } else if (Command.CLOSE_VALVE == Command.getCommand(cmdType) || Command.PRE_CHECK == Command.getCommand(cmdType) || Command.CHECK_OUT == Command.getCommand(cmdType)) {
                     Log.wtf(TAG, "订单结算异常");
                     closeBleConnection();
@@ -1254,8 +1254,8 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     if (getMvpView() != null) {
                         getMvpView().onError(TradeError.CONNECT_ERROR_2);
                     }
-                    writeLogFile("handleResult" ,"result : "  + result.getData().getMacAddress() + " ， 服务器返回异常情况： "    ,"订单结算异常："  + orderId );
-                    uploadLog();
+                    writeLogFile("handleResult", "result : " + result.getError()+ " ， 服务器返回异常情况： ", "订单结算异常：" + orderId);
+
 
                 }
             } else {
@@ -1266,8 +1266,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     getMvpView().onError(TradeError.SYSTEM_ERROR);
 
                 }
-                writeLogFile("handleResult" ,"result : "  + result.getData().getMacAddress() + " ， 服务器返回异常情况： "    ,"订单结算异常："  + orderId );
-                uploadLog();
+                writeLogFile("handleResult", "result : " + result.getError() + " ， 服务器返回异常情况： ", "订单结算异常：" + orderId);
             }
         }
     }
@@ -1410,7 +1409,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         getMvpView().post(() -> getMvpView().onError(TradeError.DEVICE_BROKEN_2));
                     }
                     writeLogFile("pay" ,"prepay:  " + prepay   +",bonusId :" +bonusId  +",deviceNo:"  + deviceNo,"支付创建订单失败：" + result.getError().getDebugMessage());
-                    uploadLog();
+//                    uploadLog();
                 }
             }
 
@@ -1422,7 +1421,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 }
 
                 writeLogFile("pay" ,"prepay:  " + prepay   +",bonusId :" +bonusId  +",deviceNo:"  + deviceNo,"支付创建订单失败：" + e.getMessage());
-                uploadLog();
+//                uploadLog();
             }
         }, Schedulers.io());
     }
@@ -1563,11 +1562,11 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
         content.append(time );
         content.append('\t');
+        content.append("蓝牙是否开启：" + isBleOpen() +'\t' + "定位是否开启:" + isOpenLocation() +'\n');
         content.append(method);
         content.append('\t');
         content.append(params);
         content.append('\t');
-        content.append("蓝牙是否开启：" + isBleOpen() +'\t' + "定位是否开启:" + isOpenLocation() +'\t');
         content.append(result);
         content.append('\n');
         rx.Observable.just(content)
@@ -1594,6 +1593,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         try {
             if (!outputImage.exists()) {
                 outputImage.createNewFile();
+                deviceDataManager.saveDeleteFileTime(System.currentTimeMillis());
             }
             FileIOUtils.writeFileFromString(outputImage, content , true);
         } catch (IOException e) {
@@ -1602,119 +1602,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     }
 
 
-    /**
-     * 删除log 文件
-     */
-    public void deleteLogFile(){
-        String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xiaolian/" + deviceDataManager.getUser().getId()+"/";
-        File path = new File(filePath);
-        if (!path.exists() && !path.mkdirs()) {
-            return ;
-        }
-
-        File outputImage = new File(filePath, DeviceLogFileName );
-        try {
-            if (outputImage.exists()) {
-                FileUtils.deleteFile(outputImage);
-            }
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
-        }
-    }
-
-    /**
-     * 上传log 日志
-     */
-    protected  void uploadLog(){
-        String model = Build.MODEL;
-        String brand = Build.BRAND;
-        String appVersion = getMvpView().getAppVersion();
-        int systemVersion = Build.VERSION.SDK_INT;
-        String mobile =deviceDataManager.getUser().getMobile();
-        String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xiaolian/" + deviceDataManager.getUser().getId()+"/";
-        File path = new File(filePath);
-        if (!path.exists() && !path.mkdirs()) {
-            return ;
-        }
-        File logFile = new File(filePath, DeviceLogFileName );
-        uploadErrorLog(model ,brand ,systemVersion +"" ,appVersion ,mobile ,orderId +"" ,logFile);
-    }
 
 
-    /**
-     * 上传日志
-     * @param brand
-     * @param version
-     * @param appVersion
-     * @param mobile
-     * @param orderNo
-     * @param logFile
-     */
-    protected void uploadErrorLog(String model,String brand , String version , String appVersion ,String mobile ,String orderNo ,
-        File logFile  ){
-        if (logFile == null || !logFile.exists())  return ;
-        RequestBody requestBody ;
-        MultipartBody.Builder builder ;
-
-        builder= new MultipartBody.Builder().setType(MultipartBody.FORM)
-                .addFormDataPart("model" ,model)
-                .addFormDataPart("brand" ,brand)
-                .addFormDataPart("version" ,version)
-                .addFormDataPart("appVersion" ,appVersion)
-                .addFormDataPart("mobile" , mobile)
-                .addFormDataPart("orderNo" , orderNo)
-                .addFormDataPart("logContent" ,logFile.getName() , RequestBody.create(MediaType.parse("multipart/form-data") ,logFile));
-
-        requestBody = builder.build();
-
-
-
-        deviceDataManager.uploadLog(requestBody)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .takeUntil(closeTriggerSubject)
-                .subscribe(new NetworkObserver<ApiResult<BooleanRespDTO>>(false) {
-
-                    @Override
-                    public void onStart() {
-
-                    }
-
-                    @Override
-                    public void onReady(ApiResult<BooleanRespDTO> result) {
-                        // do nothing
-
-                        if (result.getError() == null){
-                            if (result.getData().isResult()){
-                                deleteLogFile();
-                            }
-                        }
-                    }
-                });
-
-
-        addObserver(deviceDataManager.uploadLog(requestBody) ,new NetworkObserver<ApiResult<BooleanRespDTO>>(){
-
-            @Override
-            public void onStart() {
-//                super.onStart();
-            }
-
-            @Override
-            public void onReady(ApiResult<BooleanRespDTO> result) {
-                if (result.getError() == null){
-                    if(result.getData().isResult()){
-                        deleteLogFile();
-                    }
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                super.onError(e);
-                Log.wtf(TAG ,e.getMessage());
-            }
-        });
-    }
 
 }

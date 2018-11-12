@@ -519,7 +519,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 new XGIOperateCallback() {
                     @Override
                     public void onSuccess(Object data, int flag) {
-//                        Log.w(Constants.LogTag, "+++ register push sucess. token:" + data + "flag" + flag);
+                        Log.wtf(TAG, "+++ register push sucess. token:" + data + "flag" + flag);
                         String pushSchoolTag = MD5Util.md5(presenter.getUserInfo().getSchoolId() + Constant.MD5_SCHOOL_STR);
                         Log.d(TAG, "注册学校tag: " + pushSchoolTag);
                         XGPushManager.setTag(getApplicationContext(), pushSchoolTag);
@@ -547,8 +547,12 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 });
 
         // 获取token
-        XGPushConfig.getToken(this);
+       String token  =  XGPushConfig.getToken(this);
+       Log.wtf(TAG , "Token :  " + token);
     }
+
+
+
 
 
     @Override
@@ -581,7 +585,11 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 setDefalutItem(0);
 
             }
+            presenter.deleteFile();
         }
+
+
+
 
     }
 

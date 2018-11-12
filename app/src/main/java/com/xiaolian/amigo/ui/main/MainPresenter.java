@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.main;
 
 import android.os.Build;
+import android.os.Environment;
 import android.text.TextUtils;
 
 import com.xiaolian.amigo.data.base.LogInterceptor;
@@ -29,12 +30,21 @@ import com.xiaolian.amigo.ui.main.intf.IMainPresenter;
 import com.xiaolian.amigo.ui.main.intf.IMainView;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.data.prefs.SharedPreferencesHelp;
+import com.xiaolian.amigo.util.FileUtils;
+import com.xiaolian.amigo.util.Log;
+import com.xiaolian.amigo.util.RxHelper;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.File;
 import java.util.List;
+import java.util.Observable;
 
 import javax.inject.Inject;
+
+import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 /**
  * 主页
@@ -45,6 +55,8 @@ import javax.inject.Inject;
 
 public class MainPresenter<V extends IMainView> extends BasePresenter<V>
         implements IMainPresenter<V> {
+
+    private static final String DeviceLogFileName ="DeviceLog.txt" ;
     private static final int UPDATE_REMIND_INTERVAL = 6 * 1000 * 60 * 60;
     private static final int GUIDE_REMIND_MAX_TIME = 3;
     private static final String TAG = MainPresenter.class.getSimpleName();
@@ -528,7 +540,6 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
         });
     }
 
-
     @Override
     public int getNoticeCount() {
         return noticeCount;
@@ -559,6 +570,47 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
         userDataManager.setCertifyStatus(statusType);
     }
 
+    @Override
+    public void deleteFile() {
+        rx.Observable.just(System.currentTimeMillis())
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.newThread())
+                .map(aLong -> {
+                    long lastDeleteTime = getLastDeleteTime();
+                    // 一周删除日志文件
+                    return aLong - lastDeleteTime > 24 * 60 * 60 * 1000 * 7;
+                    // 测试
+//                    return aLong - lastDeleteTime > 2 * 60;
+                }).subscribe(aBoolean -> {
+                    if (aBoolean){
+                        deleteLogFile();
+                        userDataManager.setDeleteFileTime(System.currentTimeMillis());
+                    }
+                });
+    }
+
+
+    private void deleteLogFile(){
+        String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xiaolian/" + getUserInfo().getId()+"/";
+        File path = new File(filePath);
+        if (!path.exists() && !path.mkdirs()) {
+            return ;
+        }
+
+        File outputImage = new File(filePath, DeviceLogFileName );
+        try {
+            if (outputImage.exists()) {
+                FileUtils.deleteFile(outputImage);
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+    }
+
+
+    public long getLastDeleteTime() {
+        return  userDataManager.getLastDeleteTime();
+    }
 
     @Override
     public void noticeCount() {
