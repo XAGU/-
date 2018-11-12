@@ -3,6 +3,7 @@ package com.xiaolian.amigo.ui.base;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.net.http.SslError;
@@ -26,12 +27,19 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.google.gson.Gson;
 import com.xiaolian.amigo.BuildConfig;
 import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.R;
+<<<<<<< HEAD
 import com.xiaolian.amigo.di.componet.DaggerMainActivityComponent;
 import com.xiaolian.amigo.di.module.MainActivityModule;
 import com.xiaolian.amigo.util.AppUtils;
+=======
+import com.xiaolian.amigo.data.network.model.device.JsWasher;
+import com.xiaolian.amigo.ui.device.washer.ScanActivity;
+import com.xiaolian.amigo.ui.wallet.RechargeActivity;
+>>>>>>> 7bcba167b9652a8e4f1c04aff2cfcdf05a9fb044
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
@@ -47,6 +55,7 @@ import butterknife.ButterKnife;
  */
 public class WebActivity extends BaseActivity {
     public static final String INTENT_KEY_URL = "intent_key_url";
+    public static final String INTENT_KEY_WASHER_URL = "intent_key_url_washer";
     private static final int FILECHOOSER_RESULTCODE = 0x0012;
     private static final String TAG = WebActivity.class.getSimpleName();
 
@@ -80,6 +89,9 @@ public class WebActivity extends BaseActivity {
     RelativeLayout loadingRl;
     private boolean loadError;
     private LinearLayout ll_error_view;
+    private String scanResult;
+    private String name;
+    private String type;
 
 
     ValueAnimator loadingAnimator;
@@ -100,11 +112,18 @@ public class WebActivity extends BaseActivity {
                 .applicationComponent(((MvpApp) getApplication()).getComponent())
                 .build().inject(this);
         String url = getIntent().getStringExtra(INTENT_KEY_URL);
+<<<<<<< HEAD
         initLoadingAnim();
+=======
+        if (url == null) {
+            url = getIntent().getStringExtra(INTENT_KEY_WASHER_URL);
+        }
+>>>>>>> 7bcba167b9652a8e4f1c04aff2cfcdf05a9fb044
         WebSettings webSettings = webView.getSettings();
         webSettings.setAllowFileAccess(true);
         webSettings.setDefaultTextEncodingName("UTF-8");
         webSettings.setUseWideViewPort(true);
+        webSettings.setDomStorageEnabled(true);
         webSettings.setLoadWithOverviewMode(true);
         webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         webSettings.setTextZoom(100);
@@ -312,6 +331,25 @@ public class WebActivity extends BaseActivity {
         public void backToNative() {
             finish();
         }
+
+        @JavascriptInterface
+        public void send(String str){
+            Gson gson = new Gson();
+            JsWasher waher = gson.fromJson(str,JsWasher.class);
+            name = waher.getData().getName();
+            type = waher.getData().getType();
+
+            if ("scan".equals(type)) {
+                scan();
+            }else if("recharge".equals(type)){
+                goToPayActivity();
+            }
+        }
+    }
+
+    private void goToPayActivity() {
+        Intent intent = new Intent(this,RechargeActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -333,6 +371,46 @@ public class WebActivity extends BaseActivity {
     @Override
     public boolean supportSlideBack() {
         return false;
+    }
+
+    private void scan(){
+        Intent intent = new Intent(WebActivity.this,ScanActivity.class);
+        intent.putExtra(ScanActivity.INTENT_URL_WASHER,true);
+        WebActivity.this.startActivityForResult(intent,0x11);
+
+    }
+
+    private void invokeJs(){
+        JsWasher.DataBean data = new JsWasher.DataBean();
+        data.setName(name);
+        data.setType(type);
+        data.setValue(scanResult);
+        Gson gson = new Gson();
+        String result = gson.toJson(data);
+        String method = "javascript:_nativeMsgCallback('" + result + "')";
+
+        webView.post(()->{
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                webView.evaluateJavascript(method, new ValueCallback<String>() {
+                    @Override
+                    public void onReceiveValue(String value) {
+
+                    }
+                });
+            }else{
+                webView.loadUrl(method);
+
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 0x11 && resultCode == RESULT_OK) {
+            scanResult = data.getStringExtra("data");
+            invokeJs();
+        }
     }
 }
 

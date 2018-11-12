@@ -91,4 +91,5 @@ public interface IScanView extends IBaseView {
     void goToBleDevice(boolean isTimeValid, int type, String macAddress, BriefDeviceDTO data, boolean isBle);
 
 
+    void goToWasher(String deviceToken,String macAddress,int deviceType);
 }

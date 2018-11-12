@@ -11,6 +11,7 @@ import com.xiaolian.amigo.data.network.model.device.DeviceCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.device.GetDeviceDetailReqDTO;
 import com.xiaolian.amigo.data.network.model.trade.QrCodeScanReqDTO;
 import com.xiaolian.amigo.data.network.model.trade.QrCodeScanRespDTO;
+import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.device.washer.intf.IScanPresenter;
 import com.xiaolian.amigo.ui.device.washer.intf.IScanView;
@@ -39,7 +40,9 @@ public class ScanPresenter<V extends IScanView> extends BasePresenter<V>
     @Override
     public void scanCheckout(String content , int type) {
         QrCodeScanReqDTO reqDTO = new QrCodeScanReqDTO();
-        reqDTO.setDeviceType(type);
+        if (type != -1) {
+            reqDTO.setDeviceType(type);
+        }
         reqDTO.setQrCodeData(content);
         // 1-绑定 2-扫描结账
         reqDTO.setPurpose(2);
@@ -49,10 +52,17 @@ public class ScanPresenter<V extends IScanView> extends BasePresenter<V>
                     @Override
                     public void onReady(ApiResult<QrCodeScanRespDTO> result) {
                         if (null == result.getError()) {
-                            washerDataManager.setDeviceToken(result.getData().getMacAddress(), result.getData().getDeviceToken());
-                            getMvpView().gotoChooseModeView(result.getData().getBonus(),
-                                    result.getData().getBalance(),
-                                    result.getData().getMacAddress() ,type);
+                            if (type != -1) {//兼容老设备，这个接口会返回设备类型
+                                washerDataManager.setDeviceToken(result.getData().getMacAddress(), result.getData().getDeviceToken());
+                                getMvpView().gotoChooseModeView(result.getData().getBonus(),
+                                        result.getData().getBalance(),
+                                        result.getData().getMacAddress(), type);
+                            }else{
+                                getMvpView().goToWasher(result.getData().getDeviceToken()
+                                ,result.getData().getMacAddress()
+                                ,result.getData().getDeviceType());
+
+                            }
                         } else {
                             getMvpView().onError(result.getError().getDisplayMessage());
                             getMvpView().resumeScan();
@@ -124,4 +134,12 @@ public class ScanPresenter<V extends IScanView> extends BasePresenter<V>
             }
         });
     }
+
+    @Override
+    public User getUserInfo() {
+        return washerDataManager.getUserInfo();
+    }
+
+    @Override
+    public String getToken(){return washerDataManager.getToken();}
 }

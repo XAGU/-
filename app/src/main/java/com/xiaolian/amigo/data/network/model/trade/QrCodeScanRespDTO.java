@@ -14,6 +14,8 @@ import lombok.Data;
 public class QrCodeScanRespDTO {
     private String deviceToken;
     private String macAddress;
+
+    private  int deviceType;
     /**
      * 红包
      */

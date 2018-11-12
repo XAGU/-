@@ -176,7 +176,7 @@ public class HomeFragment2 extends BaseFragment {
                                     EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_LOST_AND_FOUND));
                                 } else if (items.get(position).getRes() == R.drawable.dryer) {
                                     EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_DRYER));
-                                } else if (items.get(position).getRes() == R.drawable.washer) {
+                                } else if (items.get(position).getRes() == R.drawable.washer2) {
                                     EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_WASHER));
                                 } else if (items.get(position).getRes() == R.drawable.gate) {
                                     EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_GATE));

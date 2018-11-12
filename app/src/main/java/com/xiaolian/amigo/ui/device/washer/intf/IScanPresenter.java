@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.device.washer.intf;
 
+import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 
 /**
@@ -50,4 +51,9 @@ public interface IScanPresenter<V extends IScanView> extends IBasePresenter<V> {
      * @param isBle
      */
     void getDeviceDetail(boolean isTimeValid,int type,String macAddress , boolean isBle);
+
+
+    User getUserInfo();
+
+    String getToken();
 }
