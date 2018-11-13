@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.device;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -20,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.tbruyelle.rxpermissions.RxPermissions;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.base.TimeHolder;
 import com.xiaolian.amigo.data.enumeration.Device;
@@ -70,6 +72,10 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     public static final String INTENT_PREPAY_INFO = "intent_prepay_info";
     public static final String CONN_TYPE = "CONN_TYPE" ;  // 连接方式， 是否是扫一扫， 是为true; 否 为false
 
+    /**
+     * 跳转到蓝牙开启提示
+     */
+    public static final int REQUEST_BLE_OPEN = 0X013 ;
     private static final String TAG = WaterDeviceBaseActivity.class.getSimpleName();
     /**
      * 跳转到选择代金券页面的request code
@@ -937,6 +943,38 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
     }
 
+
+    @Override
+    public void getBlePermission() {
+//        super.getBlePermission();
+
+        RxPermissions rxPermissions = RxPermissions.getInstance(this);
+        if (rxPermissions.isGranted(Manifest.permission.BLUETOOTH)
+                &&rxPermissions.isGranted(Manifest.permission.ACCESS_COARSE_LOCATION)
+                && rxPermissions.isGranted(Manifest.permission.ACCESS_FINE_LOCATION)){
+            if (!isBleOpen()){
+                startBleTipActivity();
+            }else{
+                if (null != blePermissonCallback) {
+                    blePermissonCallback.execute();
+                }
+            }
+
+        }else{
+            startBleTipActivity();
+        }
+    }
+
+    /**
+     * 去蓝牙提示开启界面
+     */
+    private void startBleTipActivity(){
+        Intent intent = new Intent(this ,BleTipActivity.class);
+        startActivityForResult(intent ,REQUEST_BLE_OPEN);
+
+
+    }
+
     /**
      * 重新连接
      */
@@ -1106,6 +1144,14 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             }
         } else if (requestCode == REQUEST_CODE_RECHARGE) {
             presenter.queryPrepayOption(deviceType);
+        }else if (requestCode == REQUEST_BLE_OPEN){
+            if (isBleOpen()) {
+                if (null != blePermissonCallback) {
+                    blePermissonCallback.execute();
+                }
+            }else{
+//                getBlePermission();
+            }
         }
     }
 
@@ -1244,6 +1290,8 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         }
     }
 
+    
+    
     /**
      * 单击回退按钮返回 解决返回区域过小问题
      */

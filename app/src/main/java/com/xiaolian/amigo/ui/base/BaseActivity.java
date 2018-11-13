@@ -97,7 +97,7 @@ public abstract class BaseActivity extends SwipeBackActivity
 
     ActionSheetDialog actionSheetDialog;
     // 申请蓝牙访问权限后的回调
-    private Callback blePermissonCallback;
+    public Callback blePermissonCallback;
 
 
     @Inject
@@ -836,7 +836,7 @@ public abstract class BaseActivity extends SwipeBackActivity
         this.runOnUiThread(task);
     }
 
-    private boolean isLocationEnable() {
+    public boolean isLocationEnable() {
         LocationManager locationManager = (LocationManager) this.getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
         boolean networkProvider = false;
         boolean gpsProvider = false;

@@ -391,4 +391,10 @@
     <string name="dialog_upload_tip_content">认证资料一旦提交，后续都不支持更改</string>
 
     <string name="upload_tip">* 信息仅用于学生身份认证，并由笑联妥善保存</string>
+
+
+    <string name="hint_ble_tip">蓝牙及定位开启提示</string>
+    <string name="open_ble_and_gps_tip_title">请打开手机蓝牙及定位并保持开启状态</string>
+
+    <string name="open_ble_and_gps_tip_content">小主人，热水澡功能需开启手机蓝牙及定位，若已开启请关闭后再次打开手机蓝牙及定位 ～</string>
 </resources>
