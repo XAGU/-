@@ -9,6 +9,7 @@ import com.xiaolian.amigo.data.manager.intf.IOssDataManager;
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.di.UserActivityContext;
 import com.xiaolian.amigo.ui.user.ChangeBathroomPasswordPresenter;
+import com.xiaolian.amigo.ui.user.ChangeSchoolPresenter;
 import com.xiaolian.amigo.ui.user.CheckPasswordPresenter;
 import com.xiaolian.amigo.ui.user.ChooseDormitoryPresenter;
 import com.xiaolian.amigo.ui.user.ChooseSchoolPresenter;
@@ -26,6 +27,8 @@ import com.xiaolian.amigo.ui.user.UserCertificationPresenter;
 import com.xiaolian.amigo.ui.user.UserCertificationStatusPresenter;
 import com.xiaolian.amigo.ui.user.intf.IChangeBathroomPasswordPresenter;
 import com.xiaolian.amigo.ui.user.intf.IChangeBathroomPasswordView;
+import com.xiaolian.amigo.ui.user.intf.IChangeSchoolPresenter;
+import com.xiaolian.amigo.ui.user.intf.IChangeSchoolView;
 import com.xiaolian.amigo.ui.user.intf.ICheckPasswordPresenter;
 import com.xiaolian.amigo.ui.user.intf.ICheckPasswordView;
 import com.xiaolian.amigo.ui.user.intf.IChooseDormitoryPresenter;
@@ -210,5 +213,12 @@ public class UserActivityModule {
     IEditUserInfoPresenter<IEditUserInfoView> provideEditUserInfoPresenter(
             EditUserInfoPresenter<IEditUserInfoView> presenter){
         return presenter ;
+    }
+
+    @Provides
+    @UserActivityContext
+    IChangeSchoolPresenter<IChangeSchoolView> provideChangeSchoolPresenter(
+            ChangeSchoolPresenter<IChangeSchoolView> presenter){
+        return presenter;
     }
 }

@@ -2,7 +2,12 @@ package com.xiaolian.amigo.data.network;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.bathroom.RecordResidenceReqDTO;
+import com.xiaolian.amigo.data.network.model.common.ChangeSchoolResDTO;
+import com.xiaolian.amigo.data.network.model.common.CheckSchoolRespDTO;
+import com.xiaolian.amigo.data.network.model.common.CommitSchoolReqDTO;
 import com.xiaolian.amigo.data.network.model.common.EmptyRespDTO;
+import com.xiaolian.amigo.data.network.model.common.ApplySchoolCheckRespDTO;
+import com.xiaolian.amigo.data.network.model.login.ClearTokenReqDTO;
 import com.xiaolian.amigo.data.network.model.user.BindResidenceReq;
 import com.xiaolian.amigo.data.network.model.user.MobileUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.user.PasswordCheckReqDTO;
@@ -17,7 +22,6 @@ import com.xiaolian.amigo.data.network.model.user.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.data.network.model.user.QueryAvatarDTO;
 import com.xiaolian.amigo.data.network.model.user.QueryUserResidenceListRespDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
-import com.xiaolian.amigo.data.network.model.user.UserAuthCertifyReqDTO;
 import com.xiaolian.amigo.data.network.model.user.UserCertifyInfoRespDTO;
 import com.xiaolian.amigo.data.network.model.user.UserGradeInfoRespDTO;
 import com.xiaolian.amigo.data.network.model.user.UserResidenceDTO;
@@ -26,7 +30,6 @@ import com.xiaolian.amigo.data.network.model.user.UploadUserDeviceInfoReqDTO;
 
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
-import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import rx.Observable;
 
@@ -60,6 +63,9 @@ public interface IUserApi {
      */
     @POST("user/update")
     Observable<ApiResult<EntireUserDTO>> updateUserInfo(@Body PersonalUpdateReqDTO body);
+
+    @POST("user/changeSchool/update")
+    Observable<ApiResult<BooleanRespDTO>> clearToken(@Body ClearTokenReqDTO body);
 
     /**
      * 更新用户手机号
@@ -101,10 +107,31 @@ public interface IUserApi {
     Observable<ApiResult<BooleanRespDTO>> checkPasswordValid(@Body PasswordCheckReqDTO reqDTO);
 
     /**
-     * 用户密码校验
+     * 检查是否有申请过更换学校
      */
-    @POST("user/changeSchool/check")
-    Observable<ApiResult<BooleanRespDTO>> changeSchoolCheck();
+    @POST("user/change/school/info")
+    Observable<ApiResult<ApplySchoolCheckRespDTO>> applySchoolCheck();
+
+    /**
+     * 检查是否可以更换学校
+     */
+    @POST("user/changeSchool/check/new")
+    Observable<ApiResult<CheckSchoolRespDTO>> changeSchoolCheck();
+
+    /**
+     *提交审核前的预处理
+     */
+    @POST("user/change/school/check/precondition")
+    Observable<ApiResult<CheckSchoolRespDTO>>  PreApplySchoolCheck();
+
+    /**
+     *提交审核
+     */
+    @POST("user/change/school")
+    Observable<ApiResult<ChangeSchoolResDTO>>  applyChangeSchool(@Body CommitSchoolReqDTO reqDTO);
+
+    @POST("user/change/school/cancel")
+    Observable<ApiResult<CheckSchoolRespDTO>> cancelApplyChangeSchool(@Body SimpleReqDTO reqDTO);
 
     /**
      * 用户绑定宿舍详情

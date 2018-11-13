@@ -45,7 +45,7 @@ public class ChangeHostDialog extends Dialog {
 
     private static final String HOST1 = ":5081/";
     private static final String HOST2 = ":5082/";
-    private static final String HOST3 = ":5097/";
+    private static final String HOST3 = ":5097/c";
 
     private TextView tvOk;
     private TextView tvCancel;
@@ -93,7 +93,7 @@ public class ChangeHostDialog extends Dialog {
             add(new HostAddress("qa5" , QA5 + HOST3));
             add(new HostAddress("bath1" ,BATH1 + HOST3));
             add(new HostAddress("bath2" , BATH2 + HOST3));
-            add(new HostAddress("预发", "http://47.106.62.186:5097/"));
+            add(new HostAddress("预发", "http://47.106.62.186:5097/c"));
         }
     };
 

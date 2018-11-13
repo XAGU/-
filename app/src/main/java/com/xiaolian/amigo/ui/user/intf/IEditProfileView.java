@@ -1,5 +1,6 @@
 package com.xiaolian.amigo.ui.user.intf;
 
+import com.xiaolian.amigo.data.network.model.common.ApplySchoolCheckRespDTO;
 import com.xiaolian.amigo.ui.base.intf.IBaseView;
 
 /**
@@ -65,4 +66,8 @@ public interface IEditProfileView extends IBaseView {
      * 显示浴室密码
      */
     void showBathroomPassword(boolean isExistBathroomBiz, boolean hadSetBathPassword);
+
+    void gotoChooseSchool();
+
+    void gotoChangeSchool(ApplySchoolCheckRespDTO data);
 }

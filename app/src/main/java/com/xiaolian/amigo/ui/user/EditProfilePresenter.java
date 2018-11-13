@@ -1,8 +1,10 @@
 package com.xiaolian.amigo.ui.user;
 
+import android.util.Log;
+
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
+import com.xiaolian.amigo.data.network.model.common.ApplySchoolCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.login.EntireUserDTO;
 import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.ui.base.BasePresenter;
@@ -52,20 +54,35 @@ public class EditProfilePresenter<V extends IEditProfileView> extends BasePresen
                     User user = new User(result.getData());
                     userDataManager.setUser(user);
                 } else {
+                    Log.e(TAG, "onReady: --"+ result.getError().getDisplayMessage() );
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                Log.e(TAG, "onError: --"+ e.getMessage() );
             }
         });
     }
 
     @Override
     public void checkChangeSchool() {
-        addObserver(userDataManager.changeSchoolCheck(), new NetworkObserver<ApiResult<BooleanRespDTO>>() {
+        addObserver(userDataManager.applySchoolCheck(), new NetworkObserver<ApiResult<ApplySchoolCheckRespDTO>>() {
 
             @Override
-            public void onReady(ApiResult<BooleanRespDTO> result) {
+            public void onReady(ApiResult<ApplySchoolCheckRespDTO> result) {
                 if (null == result.getError()) {
-                    getMvpView().showChangeSchoolDialog();
+                    if (result.getData().isHasApply()) {
+                        //提交过学校审核，直接进入审核页面
+                        getMvpView().gotoChangeSchool(result.getData());
+
+                    } else {
+                        //没有提交过更改学校审核, 进入选择学校界面
+                        getMvpView().gotoChooseSchool();
+                    }
+
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }

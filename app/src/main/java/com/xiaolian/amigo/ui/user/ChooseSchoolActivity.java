@@ -29,6 +29,7 @@ import com.xiaolian.amigo.di.module.UserActivityModule;
 import com.xiaolian.amigo.ui.base.BaseActivity;
 import com.xiaolian.amigo.ui.user.intf.IChooseSchoolPresenter;
 import com.xiaolian.amigo.ui.user.intf.IChooseSchoolView;
+import com.xiaolian.amigo.ui.widget.dialog.AvailabilityDialog;
 import com.xiaolian.amigo.ui.widget.indicator.RefreshLayoutHeader;
 import com.xiaolian.amigo.ui.widget.school.IndexBar.helper.IIndexBarDataHelper;
 import com.xiaolian.amigo.ui.widget.school.IndexBar.helper.IndexBarDataHelperImpl;
@@ -41,6 +42,8 @@ import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -51,6 +54,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
+import butterknife.Optional;
 import butterknife.Unbinder;
 
 import static com.xiaolian.amigo.ui.user.ListChooseActivity.INTENT_KEY_LIST_CHOOSE_ACTION;
@@ -138,6 +142,14 @@ public class ChooseSchoolActivity extends BaseActivity implements IChooseSchoolV
 
 
     private  int action ;
+    private AvailabilityDialog availabilityDialog;
+    private CityBean currentCityBean;
+
+    private boolean isReChooseSchool;
+    private String changeReason;
+
+
+
     protected void initView() {
         setUnBinder(ButterKnife.bind(this));
         mActivityComponent.inject(this);
@@ -201,7 +213,10 @@ public class ChooseSchoolActivity extends BaseActivity implements IChooseSchoolV
         commonAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                presenter.updataSchool(cityBeans.get(position));
+                //presenter.updataSchool(cityBeans.get(position));
+                currentCityBean = cityBeans.get(position);
+                presenter.checkSchool(currentCityBean);
+                changeReason = "";
             }
 
             @Override
@@ -232,7 +247,13 @@ public class ChooseSchoolActivity extends BaseActivity implements IChooseSchoolV
         commonAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                presenter.updataSchool(cityBeans.get(position));
+                currentCityBean = cityBeans.get(position);
+                presenter.checkSchool(currentCityBean);
+                changeReason = "";
+               // presenter.updataSchool(cityBeans.get(position));
+//                Intent intent = new Intent(ChooseSchoolActivity.this,ChangeSchoolActivity.class);
+//                intent.putExtra("update",cityBeans.get(position));
+//                ChooseSchoolActivity.this.startActivity(intent);
             }
 
             @Override
@@ -255,7 +276,10 @@ public class ChooseSchoolActivity extends BaseActivity implements IChooseSchoolV
         searchAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                presenter.updataSchool(searchSchools.get(position));
+               // presenter.updataSchool(searchSchools.get(position));
+                currentCityBean = searchSchools.get(position);
+                presenter.checkSchool(currentCityBean);
+                changeReason = "";
             }
 
             @Override
@@ -278,7 +302,10 @@ public class ChooseSchoolActivity extends BaseActivity implements IChooseSchoolV
         onLineAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                presenter.updataSchool(onLineSchools.get(position));
+               // presenter.updataSchool(onLineSchools.get(position));
+                currentCityBean = onLineSchools.get(position);
+                presenter.checkSchool(currentCityBean);
+                changeReason = "";
             }
 
             @Override
@@ -479,7 +506,8 @@ public class ChooseSchoolActivity extends BaseActivity implements IChooseSchoolV
         for (SchoolNameListRespDTO.SchoolNameListBean schoolNameListBean : schoolNameList) {
             List<SchoolNameListRespDTO.SchoolNameListBean.SchoolListBean> schoolListBeans = schoolNameListBean.getSchoolList();
             for (SchoolNameListRespDTO.SchoolNameListBean.SchoolListBean schoolListBean : schoolListBeans) {
-
+                 if(presenter.getCurentSchoolId() == schoolListBean.getId())
+                     continue;
                 cityBeans.add(new CityBean(schoolListBean.getSchoolName(), schoolListBean.getId()));
             }
         }
@@ -588,5 +616,52 @@ public class ChooseSchoolActivity extends BaseActivity implements IChooseSchoolV
                 break;
         }
         return super.dispatchTouchEvent(ev);
+    }
+
+    @Override
+    public void showChangeSchoolDialog() {
+        if (null == availabilityDialog) {
+            availabilityDialog = new AvailabilityDialog(this);
+        }
+        if (availabilityDialog.isShowing()) {
+            return;
+        }
+        availabilityDialog.setOkText(getString(R.string.confirm));
+        availabilityDialog.setTitle("更换学校");
+        availabilityDialog.setTip(getString(R.string.change_school_tip));
+        availabilityDialog.setOnOkClickListener(dialog1 -> {
+            presenter.clearToken(currentCityBean);
+        });
+        availabilityDialog.show();
+    }
+
+    @Override
+    public void requestChangeShool() {
+       Intent intent = new Intent(ChooseSchoolActivity.this,ChangeSchoolActivity.class);
+       intent.putExtra("update",currentCityBean);
+       if(!TextUtils.isEmpty(changeReason)){
+           intent.putExtra("old_reason",changeReason);
+       }
+       ChooseSchoolActivity.this.startActivity(intent);
+    }
+
+    @OnClick({R.id.iv_back})
+    @Optional
+    void back() {
+        if(isReChooseSchool){
+            isReChooseSchool = false;
+            requestChangeShool();
+        }else{
+            super.onBackPressed();
+        }
+
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        isReChooseSchool = intent.getBooleanExtra("isReChooseSchool",false);
+        currentCityBean = intent.getParcelableExtra("old_city_bean");
+        changeReason = intent.getStringExtra("old_reason");
     }
 }
