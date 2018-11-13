@@ -148,7 +148,7 @@ public class MessageReceiver extends XGPushBaseReceiver {
         Gson gson = new Gson();
         sharedPreferencesHelp = new SharedPreferencesHelp(context, gson);
         CustomDTO customDTO = mGson.fromJson(customContent, CustomDTO.class);
-        Log.d(TAG, "++++++++++++++++透传消息");
+        Log.d(TAG, "++++++++++++++++透传消息"  + customContent);
         // APP自主处理消息的过程...
         if (customDTO == null){
             uploadLog();
@@ -171,7 +171,10 @@ public class MessageReceiver extends XGPushBaseReceiver {
                 CommonUtil.sendNotify(context.getApplicationContext(), (int) (Math.random() * 10000), message.getTitle(),
                         message.getTitle(), message.getContent(), RepairDetailActivity.class, bundle);
                 break;
-
+                // 透传消息，上传错误日志
+            case 11 :
+                uploadLog();
+                break;
             // 排队预约成功通知
 //            case 7:
 //                Bundle queueBundle = new Bundle();

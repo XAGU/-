@@ -284,7 +284,7 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
             case DISPENSER:
                 return "#3322D4CB";
             case WASHER:
-                return "#218E8EFF";
+                return "#21499BFF";
             case HEATER:
                 return "#21FF4E80";
             case DRYER:

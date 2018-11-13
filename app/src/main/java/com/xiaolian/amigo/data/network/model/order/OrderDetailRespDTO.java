@@ -32,6 +32,10 @@ public class OrderDetailRespDTO {
      */
     private Long createTime;
     /**
+     * 结束时间
+     */
+    private Long finishTime ;
+    /**
      * 预付金额
      */
     private String prepay;
@@ -81,6 +85,14 @@ public class OrderDetailRespDTO {
      * 零元消费额文案
      */
     private String zeroConsumeCopy;
+
+    public Long getFinishTime() {
+        return finishTime;
+    }
+
+    public void setFinishTime(Long finishTime) {
+        this.finishTime = finishTime;
+    }
 
     public Long getId() {
         return id;
