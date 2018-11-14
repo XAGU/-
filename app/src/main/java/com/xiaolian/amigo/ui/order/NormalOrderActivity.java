@@ -36,8 +36,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
-
 import static com.xiaolian.amigo.ui.device.washer.ScanActivity.KEY_TYPE;
 
 /**
@@ -211,9 +209,8 @@ public class NormalOrderActivity extends OrderBaseActivity implements INormalOrd
                 tvBottomTip.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
                 tvBottomTip.setTextColor(ContextCompat.getColor(this, R.color.colorFullRed));
             } else {
-                llBottom.setVisibility(View.VISIBLE);
                 if (data.isNetWashing()) {
-                    right_oper.setVisibility(View.GONE);
+                    llBottom.setVisibility(View.GONE);
                 }
             }
         } else {

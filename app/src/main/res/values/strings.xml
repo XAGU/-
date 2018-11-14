@@ -221,7 +221,8 @@
     <string name="connect_prepay_tip_6">（你当前预付总金额不足%1$s元,需预付全部余额）</string>
     <string name="prepaid">已预付%1$s元</string>
     <string name="settlement_and_change">结算找零</string>
-    <string name="use_time_colon">使用时间：</string>
+    <string name="use_time_colon">下单时间：</string>
+    <string name="user_time_end">结束时间：</string>
     <string name="user_style">使用方式：</string>
     <string name="device_location_colon">设备位置：</string>
     <string name="order_number_colon">订单号：</string>

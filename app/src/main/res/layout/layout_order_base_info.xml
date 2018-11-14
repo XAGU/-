@@ -70,6 +70,35 @@
     </RelativeLayout>
 
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="58dp">
+
+        <TextView
+            style="@style/ContentText_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:text="@string/user_time_end" />
+
+        <TextView
+            android:id="@+id/tv_time_end"
+            style="@style/ContentText_main"
+            android:textColor="#666"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:background="#eee"
+            android:layout_alignParentBottom="true"/>
+
+    </RelativeLayout>
+
 
     <RelativeLayout
         android:id="@+id/rl_used_time"
