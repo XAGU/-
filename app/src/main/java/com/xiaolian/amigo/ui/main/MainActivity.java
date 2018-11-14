@@ -14,7 +14,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.ObjectsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.view.GestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -46,7 +45,6 @@ import com.xiaolian.amigo.ui.device.bathroom.ChooseBathroomActivity;
 import com.xiaolian.amigo.ui.device.dispenser.ChooseDispenserActivity;
 import com.xiaolian.amigo.ui.device.dispenser.DispenserActivity;
 import com.xiaolian.amigo.ui.device.dryer.DryerActivity;
-import com.xiaolian.amigo.ui.device.washer.WasherActivity;
 import com.xiaolian.amigo.ui.device.washer.WasherActivity2;
 import com.xiaolian.amigo.ui.lostandfound.LostAndFoundActivity2;
 import com.xiaolian.amigo.ui.lostandfound.SocalFragment;
@@ -60,7 +58,6 @@ import com.xiaolian.amigo.ui.repair.RepairActivity;
 import com.xiaolian.amigo.ui.user.CompleteInfoActivity;
 import com.xiaolian.amigo.ui.user.EditDormitoryActivity;
 import com.xiaolian.amigo.ui.user.ListChooseActivity;
-import com.xiaolian.amigo.ui.user.adaptor.TableFragmentPagerAdapter;
 import com.xiaolian.amigo.ui.wallet.PrepayActivity;
 import com.xiaolian.amigo.ui.widget.dialog.AvailabilityDialog;
 import com.xiaolian.amigo.ui.widget.dialog.NoticeAlertDialog;
@@ -119,10 +116,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     public static final String INTENT_KEY_SWITCH_TO_HOME = "intent_key_switch_to_home";
     public static final String INTENT_KEY_SERVER_ERROR = "intent_key_server_error";
     public static final String INTENT_KEY_BANNERS = "intent_key_banners";
-    public static final String INTENT_KEY_SCAN = "intent_key_scan";
-    private static final String FRAGMENT_TAG_HOME = "home";
-    private static final String FRAGMENT_TAG_PROFILE = "profile";
-    private static final int GESTURE_DETECTOR_MIN_LENGHT = 200;
 
     // 保存上一个点击的fragment
     private static final String KEY_LASTFRAGMENT ="KEY_LAST_FRAGMENT" ;
@@ -150,7 +143,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @BindView(R.id.social_sel_rl)
     RelativeLayout socialSelRl;
 
-    private GestureDetector mGestureDetector;
 
     private DecimalFormat df = new DecimalFormat("###.##");
 
@@ -158,7 +150,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @BindView(R.id.fragment)
     FrameLayout frameLayout ;
 
-    int current = 0;
 
     private boolean isNotice = false;
     private boolean hasBanners;
@@ -174,20 +165,14 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     private OrderPreInfoDTO orderPreInfo;
     private ArrayList<BannerDTO> defaultBanners;
 
-
-    private TableFragmentPagerAdapter mTableFragmentAdapter;
     private FragmentManager fm;
 
-    private HomeFragment2 homeFragment ;
-    private ProfileFragment2 profileFragment2 ;
     private SocalFragment socalFragment ;
     private Fragment[] fragments ;
 
     private Fragment fragment ;
 
-
     private int lastFragment = -1  ;
-
 
     private int nowPosition = - 1 ;
     @Override
@@ -227,9 +212,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
 
 
-
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -249,23 +231,20 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         int normalHeight = ScreenUtils.dpToPxInt(this ,30);
         ValueAnimator animator2 = ValueAnimator.ofInt(ScreenUtils.dpToPxInt(this ,5),ScreenUtils.dpToPxInt(this ,30) , ScreenUtils.dpToPxInt(this ,65) , ScreenUtils.dpToPxInt(this ,80),ScreenUtils.dpToPxInt(this ,65)
                                                          ,ScreenUtils.dpToPxInt(this ,70) ,ScreenUtils.dpToPxInt(this ,65)    );
-        animator2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT);
-                int currentValue = (int) animation.getAnimatedValue();
-                params.addRule(CENTER_IN_PARENT);
+        animator2.addUpdateListener(animation -> {
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+            int currentValue = (int) animation.getAnimatedValue();
+            params.addRule(CENTER_IN_PARENT);
 
-                if (currentValue < normalHeight){
-                    params.height = currentValue ;
-                }else {
-                    params.height = (int) ScreenUtils.dpToPx(MainActivity.this, 30);
-                }
-                params.width = currentValue ;
-                view.setLayoutParams(params);
-                view.postInvalidate();
+            if (currentValue < normalHeight){
+                params.height = currentValue ;
+            }else {
+                params.height = (int) ScreenUtils.dpToPx(MainActivity.this, 30);
             }
+            params.width = currentValue ;
+            view.setLayoutParams(params);
+            view.postInvalidate();
         });
         animator2.setDuration(300);
         animator2.setInterpolator(new MyInterpolator());
@@ -296,7 +275,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
      * @param position
      */
     private void setDefalutItem(int position) {
-
+        if (position == -1 || position > 2) return ;
         if (position == 0){
            if (fm.findFragmentByTag(HomeFragment2.class.getSimpleName()) == null){
                transaction = fm.beginTransaction();
@@ -406,6 +385,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
      * @param position
      */
     private void tableBottomImageChange(int position) {
+        if (position == -1 || position > 2) return ;
         nowPosition = position ;
         if (position == 0) {
             homeImage.setImageResource(R.drawable.tab_home_sel);
@@ -514,13 +494,11 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         如果仅仅需要发推送消息调用这段代码即可
         */
         String pushAccount = MD5Util.md5(presenter.getUserInfo().getId() + Constant.MD5_UID_STR);
-        Log.d(TAG, "注册信鸽: " + pushAccount);
         XGPushManager.bindAccount(getApplicationContext(),
                 pushAccount,
                 new XGIOperateCallback() {
                     @Override
                     public void onSuccess(Object data, int flag) {
-                        Log.wtf(TAG, "+++ register push sucess. token:" + data + "flag" + flag);
                         String pushSchoolTag = MD5Util.md5(presenter.getUserInfo().getSchoolId() + Constant.MD5_SCHOOL_STR);
                         Log.d(TAG, "注册学校tag: " + pushSchoolTag);
                         XGPushManager.setTag(getApplicationContext(), pushSchoolTag);
@@ -548,8 +526,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 });
 
         // 获取token
-       String token  =  XGPushConfig.getToken(this);
-       Log.wtf(TAG , "Token :  " + token);
+//       String token  =  XGPushConfig.getToken(this);
     }
 
 
