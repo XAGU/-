@@ -16,7 +16,11 @@ import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.bathroom.BathPasswordUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.RecordResidenceReqDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
+import com.xiaolian.amigo.data.network.model.common.ChangeSchoolResDTO;
+import com.xiaolian.amigo.data.network.model.common.CheckSchoolRespDTO;
+import com.xiaolian.amigo.data.network.model.common.CommitSchoolReqDTO;
 import com.xiaolian.amigo.data.network.model.common.EmptyRespDTO;
+import com.xiaolian.amigo.data.network.model.common.ApplySchoolCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleQueryReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
@@ -24,6 +28,7 @@ import com.xiaolian.amigo.data.network.model.device.DeviceCategoryBO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.file.OssModel;
+import com.xiaolian.amigo.data.network.model.login.ClearTokenReqDTO;
 import com.xiaolian.amigo.data.network.model.login.EntireUserDTO;
 import com.xiaolian.amigo.data.network.model.login.VerificationCodeCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.login.VerificationCodeGetReqDTO;
@@ -44,7 +49,6 @@ import com.xiaolian.amigo.data.network.model.user.PersonalUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.user.QueryAvatarDTO;
 import com.xiaolian.amigo.data.network.model.user.QueryUserResidenceListRespDTO;
 import com.xiaolian.amigo.data.network.model.user.SchoolNameListRespDTO;
-import com.xiaolian.amigo.data.network.model.user.UserAuthCertifyReqDTO;
 import com.xiaolian.amigo.data.network.model.user.UserCertifyInfoRespDTO;
 import com.xiaolian.amigo.data.network.model.user.UserGradeInfoRespDTO;
 import com.xiaolian.amigo.data.network.model.user.UserResidenceDTO;
@@ -122,6 +126,12 @@ public class UserDataManager implements IUserDataManager {
     }
 
     @Override
+    public Observable<ApiResult<BooleanRespDTO>> clearToken(@Body ClearTokenReqDTO body) {
+        return userApi.clearToken(body);
+    }
+
+
+    @Override
     public Observable<ApiResult<EntireUserDTO>> updateMobile(@Body MobileUpdateReqDTO body) {
         return userApi.updateMobile(body);
     }
@@ -178,9 +188,32 @@ public class UserDataManager implements IUserDataManager {
     }
 
     @Override
-    public Observable<ApiResult<BooleanRespDTO>> changeSchoolCheck() {
+    public Observable<ApiResult<CheckSchoolRespDTO>> preApplySchoolCheck() {
+        return userApi.PreApplySchoolCheck();
+    }
+
+    @Override
+    public Observable<ApiResult<ApplySchoolCheckRespDTO>> applySchoolCheck() {
+        return userApi.applySchoolCheck();
+    }
+
+    @Override
+    public Observable<ApiResult<ChangeSchoolResDTO>> applyChangeSchool(CommitSchoolReqDTO reqDTO) {
+        return userApi.applyChangeSchool(reqDTO);
+    }
+
+
+    @Override
+    public Observable<ApiResult<CheckSchoolRespDTO>> changeSchoolCheck() {
         return userApi.changeSchoolCheck();
     }
+
+    @Override
+    public Observable<ApiResult<CheckSchoolRespDTO>> cancelApplyChangeSchool(SimpleReqDTO reqDTO) {
+        return userApi.cancelApplyChangeSchool(reqDTO);
+    }
+
+
 
     @Override
     public Observable<ApiResult<UserResidenceDTO>> queryResidenceDetail(SimpleReqDTO reqDTO) {
@@ -358,6 +391,4 @@ public class UserDataManager implements IUserDataManager {
     public void logout() {
         sharedPreferencesHelp.logout();
     }
-
-
 }

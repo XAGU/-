@@ -77,6 +77,11 @@ public class OrderDetailRespDTO {
      */
     private String qrCode;
 
+    /**
+     * 区分正反扫洗衣机
+     */
+    private boolean isNetWashing;
+
     private Boolean favor;
     private String macAddress;
     private Long residenceId;

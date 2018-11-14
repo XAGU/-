@@ -9,6 +9,8 @@ public interface IChooseSchoolPresenter<v extends IChooseSchoolView> extends IBa
 
 
     void updataSchool(CityBean cityBean);
+    void checkSchool(CityBean cityBean);
+    void clearToken(CityBean cityBean);
 
     /**
      * 获取学校列表
@@ -20,4 +22,6 @@ public interface IChooseSchoolPresenter<v extends IChooseSchoolView> extends IBa
 
 
     void setActionId(int actionId);
+
+    long getCurentSchoolId();
 }

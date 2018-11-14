@@ -4,14 +4,18 @@ import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.bathroom.BathPasswordUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.RecordResidenceReqDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
+import com.xiaolian.amigo.data.network.model.common.ChangeSchoolResDTO;
+import com.xiaolian.amigo.data.network.model.common.CheckSchoolRespDTO;
+import com.xiaolian.amigo.data.network.model.common.CommitSchoolReqDTO;
 import com.xiaolian.amigo.data.network.model.common.EmptyRespDTO;
-import com.xiaolian.amigo.data.network.model.common.SimpleQueryReqDTO;
+import com.xiaolian.amigo.data.network.model.common.ApplySchoolCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleReqDTO;
 import com.xiaolian.amigo.data.network.model.common.SimpleRespDTO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCategoryBO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.file.OssModel;
+import com.xiaolian.amigo.data.network.model.login.ClearTokenReqDTO;
 import com.xiaolian.amigo.data.network.model.login.EntireUserDTO;
 import com.xiaolian.amigo.data.network.model.login.VerificationCodeCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.login.VerificationCodeGetReqDTO;
@@ -31,7 +35,6 @@ import com.xiaolian.amigo.data.network.model.user.PersonalUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.user.QueryAvatarDTO;
 import com.xiaolian.amigo.data.network.model.user.QueryUserResidenceListRespDTO;
 import com.xiaolian.amigo.data.network.model.user.SchoolNameListRespDTO;
-import com.xiaolian.amigo.data.network.model.user.UserAuthCertifyReqDTO;
 import com.xiaolian.amigo.data.network.model.user.UserCertifyInfoRespDTO;
 import com.xiaolian.amigo.data.network.model.user.UserGradeInfoRespDTO;
 import com.xiaolian.amigo.data.network.model.user.UserResidenceDTO;
@@ -40,10 +43,8 @@ import com.xiaolian.amigo.data.vo.User;
 
 import java.util.List;
 
-import dagger.BindsOptionalOf;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
-import retrofit2.http.POST;
 import retrofit2.http.Part;
 import rx.Observable;
 
@@ -137,14 +138,41 @@ public interface IUserDataManager {
     Observable<ApiResult<BooleanRespDTO>> checkPasswordValid(@Body PasswordCheckReqDTO reqDTO);
 
     /**
-     * 用户密码校验
+     * 检查是否有申请过更换学校
      */
-    Observable<ApiResult<BooleanRespDTO>> changeSchoolCheck();
+    Observable<ApiResult<ApplySchoolCheckRespDTO>> applySchoolCheck();
+
+    /**
+     *检查是否满足切换学校条件
+     */
+
+    Observable<ApiResult<CheckSchoolRespDTO>> changeSchoolCheck();
+
+    /**
+     *取消申请学校
+     */
+
+    Observable<ApiResult<CheckSchoolRespDTO>> cancelApplyChangeSchool(SimpleReqDTO reqDTO);
+
+    /**
+     * 提交审核前的预处理
+     */
+    Observable<ApiResult<CheckSchoolRespDTO>> preApplySchoolCheck();
+
+    /**
+     * 提交审核
+     */
+    Observable<ApiResult<ChangeSchoolResDTO>> applyChangeSchool(CommitSchoolReqDTO reqDTO);
 
     /**
      * 用户绑定宿舍详情
      */
     Observable<ApiResult<UserResidenceDTO>> queryResidenceDetail(@Body SimpleReqDTO reqDTO);
+
+    /**
+     *清空token
+     */
+    Observable<ApiResult<BooleanRespDTO>> clearToken(@Body ClearTokenReqDTO body);
 
     /**
      * oss

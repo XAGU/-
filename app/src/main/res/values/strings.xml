@@ -180,6 +180,8 @@
     <string name="change_dryer">更换吹风机</string>
     <string name="current_temperature_colon">当前水温：%1$s</string>
     <string name="change_school_tip">更换学校后所有信息将清空，且需要重新登录</string>
+    <string name="cancel_apply_school_tip">取消后将不会处理更换学校申请</string>
+    <string name="commit_apply_school_tip">更换学校后，代金券和积分将会清零</string>
     <string name="please_enter_exchange_code">请输入兑换码</string>
     <string name="i_know">朕知道了</string>
     <string name="choose_school_tip">PS:当前仅支持可选学校，更多学校敬请期待</string>
@@ -351,6 +353,7 @@
     <string name="preBookingWaitTip">预约排队中，请耐心等候</string>
     <string name="tv_add_dormitory">添加宿舍</string>
     <string name="complete_info">完善资料</string>
+    <string name="request_change_school">申请更换学校</string>
 
     <!--排队 -->
     <string name="queue_dialog_title">确认取消排队吗?</string>
@@ -379,6 +382,19 @@
     <!--选择学校-->
     <string name="choose_school_title">选择学校</string>
     <string name="hint_search">搜索您所在的学校 ～</string>
+    <string name="hint_change_school_reason">请描述更换学校原因,最多100字</string>
+    <string name="update_school_introduce">更新学校说明</string>
+    <string name="update_school_introduce_item_one">
+        1.所有消费账单必须结算找零,且账户余额为0的情况下,才可更换学校;
+    </string>
+    <string name="update_school_introduce_item_two">
+        2.更换学校需描述原因,审核通过后,代金券和积分及其它所有信息将清空。
+    </string>
+    <string name="commit_change_school">提交审核</string>
+    <string name="dialog_upload_content_school">系统君正在处理，请稍等...</string>
+
+
+
 
 
 

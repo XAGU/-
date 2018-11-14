@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/rl_school"
+        style="@style/ListItemRel"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/text_school"
+            style="@style/ListItemMainText"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="14dp"
+            android:text="更换学校至：成都大学" />
+
+        <ImageView
+            android:id="@+id/iv_school"
+            style="@style/ListItemImage"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="14dp"
+            android:src="@drawable/arrow_right" />
+
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/et_school"
+        android:layout_width="match_parent"
+        android:layout_height="134dp"
+        android:layout_below="@+id/rl_school"
+        android:layout_marginTop="14dp"
+        android:background="@color/white"
+        android:gravity="left|top"
+        android:hint="@string/hint_change_school_reason"
+        android:maxLength="100"
+        android:paddingLeft="15dp"
+        android:paddingTop="17dp"
+        android:textColor="#222222"
+        android:textSize="14sp" />
+
+    <RelativeLayout
+        android:id="@+id/rl_explain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/et_school"
+        android:layout_marginTop="24dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dip"
+                android:layout_alignParentBottom="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="#eee" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/update_school_introduce"
+                android:textSize="12sp" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dip"
+                android:layout_alignParentBottom="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="#eee" />
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_explain1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rl_explain"
+        android:layout_marginTop="21dp"
+        android:text="@string/update_school_introduce_item_one"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/tv_explain2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_explain1"
+        android:layout_marginTop="21dp"
+        android:text="@string/update_school_introduce_item_two"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/bottom"
+        android:layout_width="match_parent"
+        android:layout_height="21dp"
+        android:layout_alignParentBottom="true" />
+
+    <Button
+        android:id="@+id/bt_commit"
+        style="@style/Button"
+        android:layout_above="@id/bottom"
+        android:enabled="true"
+        android:text="@string/commit_change_school" />
+
+</RelativeLayout>

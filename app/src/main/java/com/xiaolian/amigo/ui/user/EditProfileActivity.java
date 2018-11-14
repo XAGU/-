@@ -2,6 +2,7 @@ package com.xiaolian.amigo.ui.user;
 
 import android.content.Intent;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
+import com.xiaolian.amigo.data.network.model.common.ApplySchoolCheckRespDTO;
 import com.xiaolian.amigo.ui.user.intf.IEditProfilePresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditProfileView;
 import com.xiaolian.amigo.ui.widget.dialog.AvailabilityDialog;
@@ -90,6 +92,7 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
     private String avatarUrl;
 
     private boolean isNeedRefresh;
+
     private AvailabilityDialog availabilityDialog;
 
     @Override
@@ -118,8 +121,10 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
 
     @Override
     protected void onDestroy() {
-        presenter.onDetach();
         super.onDestroy();
+        presenter.onDetach();
+        EventBus.getDefault().unregister(this);
+
     }
 
 
@@ -166,7 +171,7 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
                 startActivityForResult(intent, 1);
                 break;
             case R.id.rel_edit_school:
-                isNeedRefresh  = true ;
+                isNeedRefresh = true ;
                 presenter.checkChangeSchool();
                 break;
             case R.id.rel_edit_room:
@@ -236,6 +241,22 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
     }
 
     @Override
+    public void gotoChooseSchool() {
+        Intent intent = new Intent(this,ChooseSchoolActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void gotoChangeSchool(ApplySchoolCheckRespDTO data) {
+        Intent intent = new Intent(this,ChangeSchoolActivity.class);
+        Log.e(TAG, "gotoChangeSchool: id ="+data.getId() );
+        intent.putExtra("id",Long.valueOf(data.getId()));
+        intent.putExtra("reason",data.getReason());
+        intent.putExtra("schoolName",data.getSchoolName());
+        startActivity(intent);
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
@@ -302,13 +323,16 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
     @Override
     protected void onStart() {
         super.onStart();
-        EventBus.getDefault().register(this);
+        if(!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
     }
+
 
     @Override
     protected void onStop() {
         super.onStop();
-        EventBus.getDefault().unregister(this);
+//        EventBus.getDefault().unregister(this);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -317,6 +341,9 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
             case REFRESH:
                 isNeedRefresh = true;
                 break;
+            case CANCELAPPLYOK:
+                onSuccess("已取消申请更换学校");
+
             default:
                 break;
         }
@@ -334,7 +361,8 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
             /**
              * 刷新
              */
-            REFRESH(1);
+            REFRESH(1),
+            CANCELAPPLYOK(2);
             int type;
 
             EventType(int type) {

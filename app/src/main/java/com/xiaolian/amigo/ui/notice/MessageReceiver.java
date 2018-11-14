@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.tencent.android.tpush.XGPushBaseReceiver;
 import com.tencent.android.tpush.XGPushClickedResult;
 import com.tencent.android.tpush.XGPushRegisterResult;
@@ -18,23 +20,23 @@ import com.xiaolian.amigo.data.base.LogInterceptor;
 import com.xiaolian.amigo.data.network.IDeviceConnectErrorApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
-import com.xiaolian.amigo.data.network.model.connecterror.DeviceConnectErrorReqDTO;
 import com.xiaolian.amigo.data.network.model.notify.CustomDTO;
 import com.xiaolian.amigo.data.prefs.SharedPreferencesHelp;
-import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.main.MainActivity;
 import com.xiaolian.amigo.ui.repair.RepairDetailActivity;
+import com.xiaolian.amigo.ui.user.ChangeSchoolActivity;
 import com.xiaolian.amigo.util.AppUtils;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.util.Observable;
 import java.util.concurrent.TimeUnit;
 
+import lombok.Data;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -45,7 +47,6 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
@@ -250,6 +251,18 @@ public class MessageReceiver extends XGPushBaseReceiver {
         if (context == null || notifiShowedRlt == null) {
             return;
         }
+        String content = notifiShowedRlt.getCustomContent();
+        Gson gson = new Gson();
+        if(!TextUtils.isEmpty(content)) {
+            try {
+                CustomContent cc = gson.fromJson(content, CustomContent.class);
+                if (null != cc.getMessageType() && 1 == cc.getMessageType()) {
+                    EventBus.getDefault().post(new ChangeSchoolActivity.ChangeSchoolMsg(2, null));
+                }
+            }catch (JsonSyntaxException e){
+                Log.e(TAG,"exception:" + e.getMessage());
+            }
+        }
 //        context.sendBroadcast(intent);
 //        show(context, "您有1条新消息, " + "通知被展示 ， " + notifiShowedRlt.toString());
         Log.d("LC", "+++++++++++++++++++++++++++++展示通知的回调");
@@ -361,5 +374,12 @@ public class MessageReceiver extends XGPushBaseReceiver {
                 .client(client)
                 .build();
     }
+
+    @Data
+    public static class CustomContent{
+        long targetId;
+        int action;
+        Integer messageType;
+     }
 
 }

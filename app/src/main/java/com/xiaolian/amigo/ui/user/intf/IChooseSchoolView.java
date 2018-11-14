@@ -17,4 +17,8 @@ public interface IChooseSchoolView  extends IBaseView{
     void showOnLineSchool(List<School> schools);
 
     void finishResult(CityBean cityBean);
+
+    void showChangeSchoolDialog();
+
+    void requestChangeShool();
 }
