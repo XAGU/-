@@ -65,6 +65,7 @@ public class NormalOrderActivity extends OrderBaseActivity implements INormalOrd
     /******************** 底部线条 **********************/
     View vBottomLine1;
     View vBottomLine2;
+    private TextView right_oper;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,6 +88,7 @@ public class NormalOrderActivity extends OrderBaseActivity implements INormalOrd
         recyclerView = findViewById(R.id.recyclerView);
         llBottom = findViewById(R.id.ll_bottom);
         tvBottomTip = findViewById(R.id.tv_bottom_tip);
+        right_oper = findViewById(R.id.right_oper);
     }
 
     private void complaint() {
@@ -210,6 +212,9 @@ public class NormalOrderActivity extends OrderBaseActivity implements INormalOrd
                 tvBottomTip.setTextColor(ContextCompat.getColor(this, R.color.colorFullRed));
             } else {
                 llBottom.setVisibility(View.VISIBLE);
+                if (data.isNetWashing()) {
+                    right_oper.setVisibility(View.GONE);
+                }
             }
         } else {
             if (ObjectsCompat.equals(data.getStatus(), ORDER_ERROR_STATUS)) {
