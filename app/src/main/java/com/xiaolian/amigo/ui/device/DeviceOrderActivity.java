@@ -116,6 +116,10 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
      */
     @BindView(R.id.tv_time)
     TextView tvTime;
+
+
+    @BindView(R.id.tv_time_end)
+    TextView tvTimeEnd ;
     /**
      * 使用时长
      */
@@ -186,6 +190,7 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
         orderType = ComplaintType.getComplaintTypeByDeviceType(
                 Device.getDevice(respDTO.getDeviceType())).getType();
         tvTime.setText(CommonUtil.stampToDate(respDTO.getCreateTime()));
+        tvTimeEnd.setText(CommonUtil.stampToDate(respDTO.getFinishTime()));
         if (Device.getDevice(respDTO.getDeviceType()) == Device.DRYER) {
             rlUsedTime.setVisibility(View.VISIBLE);
             tvUsedTime.setText(respDTO.getUseTime());
