@@ -35,6 +35,7 @@ import lombok.Data;
 
 
 public class ChangeSchoolActivity extends UserBaseActivity implements IChangeSchoolView {
+    private static final String TAG = "ChangeSchoolActivity";
 
     @BindView(R.id.text_school)
     TextView mSchooll;
@@ -94,24 +95,40 @@ public class ChangeSchoolActivity extends UserBaseActivity implements IChangeSch
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    Log.e(TAG, "onTextChanged: ---" );
+                    if(TextUtils.isEmpty(s.toString().trim())){
+                       commit.setEnabled(false);
+                       return;
+                    }
+                    String black = s.toString().replaceAll(" ", "");
+                    String str;
+                    str = black.replaceAll("\\n" ,"");
+                    if(str.length() > 0){
+                        commit.setEnabled(true);
+                    }else{
+                        commit.setEnabled(false);
+                    }
 
                 }
 
                 @Override
                 public void afterTextChanged(Editable s) {
-                    //判断用户输入的是否全是空格
-                    String str = s.toString().replaceAll(" ","");
-                    if(str.length() > 0){
-                        commit.setEnabled(true);
+                    if(TextUtils.isEmpty(s.toString().trim())){
+                        commit.setEnabled(false);
+                        return;
                     }
+                    //判断用户输入的是否全是空格
+//                    s.toString().replaceAll(" ", "");
+//                    String str;
+//                    str = s.toString().replaceAll("\\n" ,"");
+//                    if(str.length() > 0){
+//                        commit.setEnabled(true);
+//                    }else{
+//                        commit.setEnabled(false);
+//                    }
                 }
             });
         }
-
-
-
-
-
 
     }
 
@@ -215,7 +232,7 @@ public class ChangeSchoolActivity extends UserBaseActivity implements IChangeSch
         availabilityDialog.setOnOkClickListener(dialog1 -> {
             presenter.realChangeSchool(cityBean.getId(), editText.getText().toString().trim());
             appiedSchoolName = cityBean.getCity();
-            appliedReason = editText.getText().toString();
+            appliedReason = editText.getText().toString().trim();
             isAppied = true;
 
         });

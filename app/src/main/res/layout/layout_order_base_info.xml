@@ -72,7 +72,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="58dp">
+        android:layout_height="58dp"
+        android:id="@+id/finish_time_rl">
 
         <TextView
             style="@style/ContentText_main"

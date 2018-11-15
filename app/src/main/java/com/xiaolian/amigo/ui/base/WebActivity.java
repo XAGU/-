@@ -57,6 +57,7 @@ public class WebActivity extends BaseActivity {
     public static final String INTENT_KEY_WASHER_URL = "intent_key_url_washer";
     private static final int FILECHOOSER_RESULTCODE = 0x0012;
     private static final String TAG = WebActivity.class.getSimpleName();
+    private boolean isCharge = false;
 
     @BindView(R.id.webview)
     WebView webView;
@@ -344,8 +345,10 @@ public class WebActivity extends BaseActivity {
     }
 
     private void goToPayActivity() {
+        isCharge = true;
         Intent intent = new Intent(this,RechargeActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent,0x11);
+
     }
 
     @Override
@@ -385,6 +388,7 @@ public class WebActivity extends BaseActivity {
         data.setValue(scanResult);
         Gson gson = new Gson();
         String result = gson.toJson(data);
+        android.util.Log.e(TAG, "invokeJs: re=" + result );
         String method = "javascript:_nativeMsgCallback('" + result + "')";
 
         webView.post(()->{
@@ -405,6 +409,13 @@ public class WebActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 0x11 && isCharge){
+            invokeJs();
+            android.util.Log.e(TAG, "onActivityResult: ----"+isCharge );
+            isCharge = false;
+            return;
+        }
+
         if (requestCode == 0x11 && resultCode == RESULT_OK) {
             scanResult = data.getStringExtra("data");
             invokeJs();

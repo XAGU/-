@@ -119,7 +119,7 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
 
 
     @BindView(R.id.tv_time_end)
-    TextView tvTimeEnd ;
+    TextView tvTimeEnd;
     /**
      * 使用时长
      */
@@ -153,6 +153,8 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
     TextView tvMethod;
     @BindView(R.id.rl_user_style)
     RelativeLayout rlUserStyle;
+    @BindView(R.id.finish_time_rl)
+    RelativeLayout finishTimeRl;
 
     private String tv_user_style;
     @Inject
@@ -190,7 +192,13 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
         orderType = ComplaintType.getComplaintTypeByDeviceType(
                 Device.getDevice(respDTO.getDeviceType())).getType();
         tvTime.setText(CommonUtil.stampToDate(respDTO.getCreateTime()));
-        tvTimeEnd.setText(CommonUtil.stampToDate(respDTO.getFinishTime()));
+        if (respDTO.getFinishTime() == null) {
+            finishTimeRl.setVisibility(View.GONE);
+        } else {
+            finishTimeRl.setVisibility(View.VISIBLE);
+            tvTimeEnd.setText(CommonUtil.stampToDate(respDTO.getFinishTime()));
+        }
+
         if (Device.getDevice(respDTO.getDeviceType()) == Device.DRYER) {
             rlUsedTime.setVisibility(View.VISIBLE);
             tvUsedTime.setText(respDTO.getUseTime());
@@ -199,7 +207,7 @@ public class DeviceOrderActivity extends DeviceBaseActivity implements IDeviceOr
         if (!TextUtils.isEmpty(tv_user_style)) {
             rlUserStyle.setVisibility(View.VISIBLE);
             tvMethod.setText(tv_user_style);
-        }else{
+        } else {
             rlUserStyle.setVisibility(View.GONE);
         }
 

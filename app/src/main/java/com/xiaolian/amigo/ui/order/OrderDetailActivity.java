@@ -111,7 +111,7 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
      * 结束时间
      */
     @BindView(R.id.tv_time_end)
-    TextView tvTimeEnd ;
+    TextView tvTimeEnd;
     /**
      * 使用时长
      */
@@ -140,6 +140,8 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
     View vBottomLine1;
     @BindView(R.id.v_bottom_line2)
     View vBottomLine2;
+    @BindView(R.id.finish_time_rl)
+    RelativeLayout finishTimeRl;
 
     private Long orderId;
 
@@ -207,7 +209,12 @@ public class OrderDetailActivity extends OrderBaseActivity implements IOrderDeta
     public void renderView(OrderDetailRespDTO order) {
         // 设置基础信息
         tvTime.setText(CommonUtil.stampToDate(order.getCreateTime()));
-        tvTimeEnd.setText(CommonUtil.stampToDate(order.getFinishTime()));
+        if (order.getFinishTime() != null) {
+            tvTimeEnd.setText(CommonUtil.stampToDate(order.getFinishTime()));
+            finishTimeRl.setVisibility(View.VISIBLE);
+        }else{
+            finishTimeRl.setVisibility(View.GONE);
+        }
         tvDeviceLocation.setText(String.format("%s %s",
                 Device.getDevice(order.getDeviceType()).getDesc(), order.getLocation()));
         vBottomLine1.setBackgroundColor(Color.parseColor(getLineColorByDeviceType(order.getDeviceType())));

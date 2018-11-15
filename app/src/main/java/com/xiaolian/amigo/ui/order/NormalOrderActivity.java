@@ -147,8 +147,10 @@ public class NormalOrderActivity extends OrderBaseActivity implements INormalOrd
         this.data = data ;
         items.add(new WithdrawRechargeDetailAdapter.Item("下单时间：",
                 TimeUtils.millis2String(data.getCreateTime()), WithdrawRechargeDetailAdapter.TITLE_CONTENT_TYPE));
-        items.add(new WithdrawRechargeDetailAdapter.Item("结束时间：",
-                TimeUtils.millis2String(data.getFinishTime() == null ? 0 : data.getFinishTime()) ,WithdrawRechargeDetailAdapter.TITLE_CONTENT_TYPE));
+        if (data.getFinishTime() != null) {
+            items.add(new WithdrawRechargeDetailAdapter.Item("结束时间：",
+                    TimeUtils.millis2String(data.getFinishTime()), WithdrawRechargeDetailAdapter.TITLE_CONTENT_TYPE));
+        }
         items.add(new WithdrawRechargeDetailAdapter.Item("设备信息：",
                 String.format("%s %s",
                         Device.getDevice(data.getDeviceType()).getDesc(),
