@@ -105,4 +105,6 @@ public interface ILoginPresenter<V extends ILoginView> extends IBasePresenter<V>
     String getPushTag();
 
     void setPushTag(String pushTag);
+
+    void setIsFirstAfterLogin(boolean b);
 }

@@ -72,6 +72,7 @@ import static com.xiaolian.amigo.ui.user.UserCertificationStatusActivity.KEY_GRA
 import static com.xiaolian.amigo.ui.user.UserCertificationStatusActivity.KEY_PROFESSION;
 import static com.xiaolian.amigo.ui.user.UserCertificationStatusActivity.KEY_STUDENT_IMAGE;
 import static com.xiaolian.amigo.ui.user.UserCertificationStatusActivity.KEY_STUDTENT_ID;
+import static com.xiaolian.amigo.util.Constant.CERTIFICATION_REVIEWING;
 import static com.xiaolian.amigo.util.Constant.CLASS;
 import static com.xiaolian.amigo.util.Constant.DEPARTMENT;
 import static com.xiaolian.amigo.util.Constant.PROFESSION;
@@ -716,7 +717,7 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
 
     @Override
     public void certifySuccess() {
-
+        presenter.setCertifyStatus(CERTIFICATION_REVIEWING);
         Intent intent = new Intent(this, UserCertificationStatusActivity.class);
         intent.putExtra(KEY_DEPARTMENT, tvDepartment.getText().toString().trim());
         intent.putExtra(KEY_PROFESSION, tvProfession.getText().toString().trim());

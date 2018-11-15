@@ -201,6 +201,7 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
 
     @Override
     public void gotoMainView() {
+        presenter.setIsFirstAfterLogin(true);
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }

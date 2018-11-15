@@ -26,4 +26,6 @@ public interface IUserCertificationPresenter <v extends IUserCertificationView> 
 
     void certify(String className , String faculty , Integer grade , File idCardBehind ,
                  File idCardFront , String major , Long stuNum , List<File> stuPictureUrls);
+
+    void setCertifyStatus(int certificationReviewing);
 }

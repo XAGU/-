@@ -529,10 +529,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 //       String token  =  XGPushConfig.getToken(this);
     }
 
-
-
-
-
     @Override
     protected void onResume() {
         super.onResume();

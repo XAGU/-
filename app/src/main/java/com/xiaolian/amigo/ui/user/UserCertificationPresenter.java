@@ -161,6 +161,11 @@ public class UserCertificationPresenter <v extends IUserCertificationView> exten
         });
     }
 
+    @Override
+    public void setCertifyStatus(int certificationReviewing) {
+        userDataManager.setCertifyStatus(certificationReviewing);
+    }
+
 
     private void uploadImage(Context context, String filePath) {
         ossDataManager.getOssModel()

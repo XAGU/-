@@ -150,7 +150,6 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
         switch (statusType){
             case CERTIFICATION_NONE:
                 status = CERTIFICATION_NONE_TXT ;
-                textCertification.setText(status);
                 activityClazz = UserCertificationActivity.class ;
                 break;
             case CERTIFICATION_FAILURE:

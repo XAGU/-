@@ -93,9 +93,9 @@ android {
 
             //   龙杰服务器
 
-            buildConfigField "String", "SERVER", "\"http://10.0.0.19:5081/\"" //
-            buildConfigField "String", "SERVER_BATHROOM", "\"http://10.0.0.19:5082/\"" //
-            buildConfigField "String", "H5_SERVER", "\"http://10.0.0.19:5097/c\"" //
+//            buildConfigField "String", "SERVER", "\"http://10.0.0.19:5081/\"" //
+//            buildConfigField "String", "SERVER_BATHROOM", "\"http://10.0.0.19:5082/\"" //
+//            buildConfigField "String", "H5_SERVER", "\"http://10.0.0.19:5097/c\"" //
 
             // qa3
 //            buildConfigField "String", "SERVER", "\"http://39.108.74.164:5081/\"" //
@@ -126,20 +126,20 @@ android {
             ]
 
             // 预发
-            applicationId "com.xiaolian.amigo_pre"
-            resValue "string", "app_name", "笑联预发版"
-            buildConfigField "String", "ENVIRONMENT", '"dev"'
-            buildConfigField "String", "SERVER_BATHROOM", "\"http://47.106.62.186/b/\""
-            buildConfigField "String", "SERVER", "\"http://47.106.62.186/c/\""
-            buildConfigField "String", "H5_SERVER", "\"http://47.106.62.186:5097/c\""
-            buildConfigField "String", "FILE_PREFIX", "\"https://s.xiaolian365.com/\""
-            buildConfigField "String", "TRADE_PREFIX", "\"/c/trade\""
-            // 修改 AndroidManifest.xml 里渠道变量
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE      : "dev",
-                                    FILE_PROVIDER_AUTHORITIES: applicationId + ".fileprovider",
-                                    XG_ACCESS_ID : "2100293839",
-                                    XG_ACCESS_KEY : "A684X2HPE9GZ",
-            ]
+//            applicationId "com.xiaolian.amigo_pre"
+//            resValue "string", "app_name", "笑联预发版"
+//            buildConfigField "String", "ENVIRONMENT", '"dev"'
+//            buildConfigField "String", "SERVER_BATHROOM", "\"http://47.106.62.186/b/\""
+//            buildConfigField "String", "SERVER", "\"http://47.106.62.186/c/\""
+//            buildConfigField "String", "H5_SERVER", "\"http://47.106.62.186:5097/c\""
+//            buildConfigField "String", "FILE_PREFIX", "\"https://s.xiaolian365.com/\""
+//            buildConfigField "String", "TRADE_PREFIX", "\"/c/trade\""
+//            // 修改 AndroidManifest.xml 里渠道变量
+//            manifestPlaceholders = [UMENG_CHANNEL_VALUE      : "dev",
+//                                    FILE_PROVIDER_AUTHORITIES: applicationId + ".fileprovider",
+//                                    XG_ACCESS_ID : "2100293839",
+//                                    XG_ACCESS_KEY : "A684X2HPE9GZ",
+//            ]
         }
         prod {
             applicationId defaultConfig.applicationId

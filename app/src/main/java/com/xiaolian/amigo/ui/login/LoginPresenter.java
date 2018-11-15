@@ -182,7 +182,7 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
             }
         });
     }
-
+    
     @Override
     public void logout() {
         loginDataManager.logout();
@@ -211,5 +211,10 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
     @Override
     public void setPushTag(String pushTag) {
         loginDataManager.setPushTag(pushTag);
+    }
+
+    @Override
+    public void setIsFirstAfterLogin(boolean b) {
+        loginDataManager.setIsFirstAfterLogin(b);
     }
 }
