@@ -108,9 +108,7 @@ public class BlogFragment extends BaseFragment implements IBlogView  , SocialImg
      * 刷新数据
      */
     private int page = 1;
-    private int size = 10;
     private int topicId;
-    private String hotPosIds;
 
     //  是否滚动
     private boolean isReferTop = false;  //  ScrollView 定位到指定位置

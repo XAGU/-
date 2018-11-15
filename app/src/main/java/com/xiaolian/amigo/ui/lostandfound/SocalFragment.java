@@ -144,11 +144,6 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     @Inject
     ISocalPresenter<ISocalView> presenter;
 
-//    private SearchDialog2 searchDialog;
-
-
-    private String slectkey;
-
 
     private RecyclerView searchRecyclerView;
 
@@ -158,7 +153,6 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
     private IMainPresenter<IMainView> mainPresenter;
 
-    int scrollHeight = 0;  // 滚动的距离
 
     int tagRlHeight;
 
@@ -329,15 +323,12 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     private void showTags() {
 
         ValueAnimator animator = ValueAnimator.ofInt(moveDistance, 0);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                int currentValue = (int) animation.getAnimatedValue();
-                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) socialTags.getLayoutParams();
-                layoutParams.setMargins(0, -currentValue, 0, 0);
-                socialTags.setLayoutParams(layoutParams);
-                moveDistance = currentValue;
-            }
+        animator.addUpdateListener(animation -> {
+            int currentValue = (int) animation.getAnimatedValue();
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) socialTags.getLayoutParams();
+            layoutParams.setMargins(0, -currentValue, 0, 0);
+            socialTags.setLayoutParams(layoutParams);
+            moveDistance = currentValue;
         });
         animator.setDuration(100);
         animator.start();
@@ -345,12 +336,9 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
 
 
     private void getInitSocialTagHeight() {
-        tagRl.post(new Runnable() {
-            @Override
-            public void run() {
-                tagRlHeight = tagRl.getHeight();
-                tagRl.getLocationInWindow(tagLocations);
-            }
+        tagRl.post(() -> {
+            tagRlHeight = tagRl.getHeight();
+            tagRl.getLocationInWindow(tagLocations);
         });
     }
 
@@ -417,7 +405,6 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         int oldLeft = titleBorder.getLeft();
 
 
-//        int oldLeft = (titleBorder.getLeft() + titleBorder.getRight()) / 2 ;
 
         int maxWidth;
         int oldWidth = ScreenUtils.dpToPxInt(mActivity, 8);
@@ -436,15 +423,12 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
         if (backMove) {
             ValueAnimator widthAnim = ValueAnimator.ofInt(oldWidth, maxWidth);
             widthAnim.setDuration(100);
-            widthAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    int currentValue = (int) animation.getAnimatedValue();
-                    LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) titleBorder.getLayoutParams();
-                    layoutParams.width = currentValue;
-                    layoutParams.height = titleBorder.getHeight();
-                    titleBorder.setLayoutParams(layoutParams);
-                }
+            widthAnim.addUpdateListener(animation -> {
+                int currentValue = (int) animation.getAnimatedValue();
+                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) titleBorder.getLayoutParams();
+                layoutParams.width = currentValue;
+                layoutParams.height = titleBorder.getHeight();
+                titleBorder.setLayoutParams(layoutParams);
             });
 
             widthAnim.start();
@@ -502,15 +486,12 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
                 }
             });
             ValueAnimator widthAnim2 = ValueAnimator.ofInt(maxWidth, oldWidth);
-            widthAnim2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    int currentValue = (int) animation.getAnimatedValue();
-                    LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) titleBorder.getLayoutParams();
-                    layoutParams.width = currentValue;
-                    layoutParams.height = titleBorder.getHeight();
-                    titleBorder.setLayoutParams(layoutParams);
-                }
+            widthAnim2.addUpdateListener(animation -> {
+                int currentValue = (int) animation.getAnimatedValue();
+                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) titleBorder.getLayoutParams();
+                layoutParams.width = currentValue;
+                layoutParams.height = titleBorder.getHeight();
+                titleBorder.setLayoutParams(layoutParams);
             });
             animatorSet.addListener(moveListener);
             animatorSet.setDuration(200);
@@ -678,14 +659,11 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
                 public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
                     return false;
                 }
-            }, new LostAndFoundDetailContentDelegate.OnLikeClickListener() {
-                @Override
-                public void onLikeClick(int position, long id, boolean like) {
-                    if (like) {
-                        presenter.unLikeComment(position, id, true);
-                    } else {
-                        presenter.likeComment(position, id, true);
-                    }
+            }, (position, id, like) -> {
+                if (like) {
+                    presenter.unLikeComment(position, id, true);
+                } else {
+                    presenter.likeComment(position, id, true);
                 }
             });
             searchAdaptor.setPhotoClickListener(this);
@@ -1024,13 +1002,11 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
                 RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) socialTags.getLayoutParams();
                 layoutParams.setMargins(0, -moveDistance, 0, 0);
                 socialTags.setLayoutParams(layoutParams);
-//              moveVP(moveDistance);
             } else {
                 moveDistance = socialTagHeight;
                 RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) socialTags.getLayoutParams();
                 layoutParams.setMargins(0, -moveDistance, 0, 0);
                 socialTags.setLayoutParams(layoutParams);
-//                moveVP(moveDistance);
             }
         }
     }
