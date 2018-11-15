@@ -170,7 +170,7 @@ public class HomeFragment2 extends BaseFragment {
                                 } else if (items.get(position).getRes() == R.drawable.water) {
                                     EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_DISPENSER));
                                 } else if (items.get(position).getRes() == R.drawable.lost) {
-                                    EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_LOST_AND_FOUND));
+                                    EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_WASHER));
                                 } else if (items.get(position).getRes() == R.drawable.dryer) {
                                     EventBus.getDefault().post(new MainActivity.Event(MainActivity.Event.EventType.GOTO_DRYER));
                                 } else if (items.get(position).getRes() == R.drawable.washer2) {
