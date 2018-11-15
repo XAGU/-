@@ -11,4 +11,6 @@ public interface IUserCerticifationStatusPresenter <v extends IUserCertification
 
 
     String getDormInfo();
+
+    void setCertifyStatus(int certificationReviewing);
 }

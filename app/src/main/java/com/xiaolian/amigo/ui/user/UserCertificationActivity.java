@@ -335,10 +335,6 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
             idCardBackTip.setLayoutParams(paramsBack);
         });
 
-
-
-
-
     }
 
     @OnClick({R.id.rel_edit_grade, R.id.rel_edit_department, R.id.rel_edit_profession
@@ -902,7 +898,7 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
 
     @Override
     public void finishDialog() {
-        onSuccess("上传成功");
+        onSuccess("学生认证提交成功");
         certifySuccess();
     }
 

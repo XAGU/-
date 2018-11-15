@@ -547,7 +547,7 @@ public class UserCertificationStatusActivity extends BaseActivity implements IUs
 
     @Override
     public void setInfo(UserCertifyInfoRespDTO data) {
-
+        presenter.setCertifyStatus(CERTIFICATION_REVIEWING);
         svMainContainer.setVisibility(View.VISIBLE);
         setStatus(data.getStatus());
         if (data.getStatus() == CERTIFICATION_FAILURE) {

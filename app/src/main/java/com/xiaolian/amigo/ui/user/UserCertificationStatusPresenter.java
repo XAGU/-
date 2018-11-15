@@ -67,5 +67,10 @@ public class UserCertificationStatusPresenter<v extends IUserCertificationStatus
         return dormitory;
     }
 
+    @Override
+    public void setCertifyStatus(int certificationReviewing) {
+        userDataManager.setCertifyStatus(certificationReviewing);
+    }
+
 
 }
