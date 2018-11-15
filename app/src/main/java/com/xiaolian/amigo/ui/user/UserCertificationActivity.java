@@ -469,7 +469,18 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
             dialog = null;
         }
         unbinder.unbind();
+
+        //移除粘性事件
+        UserCertificationStatus stickyEvent = EventBus.getDefault().getStickyEvent(UserCertificationStatus.class);
+       // Better check that an event was actually posted before
+        if(stickyEvent != null) {
+      // "Consume" the sticky event
+            EventBus.getDefault().removeStickyEvent(stickyEvent);
+      // Now do something with it
+        }
         EventBus.getDefault().unregister(this);
+
+        android.util.Log.e(TAG, "onDestroy: " );
     }
 
     /**
@@ -895,6 +906,7 @@ public class UserCertificationActivity extends BaseActivity implements IUserCert
     protected void setUp() {
 
     }
+
 
     @Override
     public void finishDialog() {
