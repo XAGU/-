@@ -92,6 +92,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/rl_explain"
         android:layout_marginTop="21dp"
+        android:lineSpacingMultiplier="1.2"
         android:text="@string/update_school_introduce_item_one"
         android:textSize="12sp" />
 
@@ -101,6 +102,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_explain1"
         android:layout_marginTop="21dp"
+        android:lineSpacingMultiplier="1.2"
         android:text="@string/update_school_introduce_item_two"
         android:textSize="12sp" />
 
