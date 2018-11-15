@@ -302,4 +302,7 @@ public interface IUserDataManager {
     long getLastDeleteTime();
 
     void setDeleteFileTime(long l);
+
+
+    int getCertifyStatus();
 }

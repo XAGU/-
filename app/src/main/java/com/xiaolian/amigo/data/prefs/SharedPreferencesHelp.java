@@ -135,6 +135,12 @@ public class    SharedPreferencesHelp implements ISharedPreferencesHelp {
 
     private static final  String PREF_KEY_DELETE_TIME = "PREF_KEY_DELETE_TIME";
 
+
+    /**
+     * 学生验证状态
+     */
+    private static final String PREF_CERTIFICATION_STATUS = "PREF_CERTIFICATION_STATUS";
+
     private String tokenHolder;
     private String deviceTokenHolder;
     private User userHolder;
@@ -743,6 +749,7 @@ public class    SharedPreferencesHelp implements ISharedPreferencesHelp {
     public long getDeleteFileTime() {
         return mSharedPreferences.getLong(PREF_KEY_DELETE_TIME  , System.currentTimeMillis());
     }
+
 
     @Override
     public void logout() {

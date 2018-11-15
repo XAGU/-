@@ -372,6 +372,12 @@ public class UserDataManager implements IUserDataManager {
     }
 
     @Override
+    public int getCertifyStatus() {
+        return sharedPreferencesHelp.getCertifyStatus();
+    }
+
+
+    @Override
     public Observable<ApiResult<String>> uploadFile(@Part("file") RequestBody images) {
 
         return fileApi.uploadFile(images);

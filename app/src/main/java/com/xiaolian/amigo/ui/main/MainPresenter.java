@@ -595,6 +595,7 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
     }
 
 
+
     private void deleteLogFile(){
         String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xiaolian/" + getUserInfo().getId()+"/";
         File path = new File(filePath);

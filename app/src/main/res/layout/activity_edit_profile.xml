@@ -124,6 +124,40 @@
 
 
     <RelativeLayout
+        android:id="@+id/rel_edit_certification"
+        android:onClick="onclick"
+        style="@style/ListItemRel">
+
+        <TextView
+            android:id="@+id/text_certification"
+            style="@style/ListItemMainText"
+            android:layout_marginLeft="10dp"
+            android:text="学生认证" />
+
+
+        <ImageView
+            android:id="@+id/imageView9"
+            style="@style/ListItemImage"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/arrow_right" />
+
+        <TextView
+            android:gravity="end|center_vertical"
+            android:id="@+id/tv_certification"
+            style="@style/ListItemSubText"
+            android:layout_toLeftOf="@id/imageView9"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:layout_alignParentBottom="true"
+            android:layout_centerVertical="true"
+            android:background="#eee" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/rel_edit_mobile"
         android:onClick="onclick"
         style="@style/ListItemRel">

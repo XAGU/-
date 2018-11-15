@@ -95,4 +95,9 @@ public class EditProfilePresenter<V extends IEditProfileView> extends BasePresen
         return isHadSetBathPassword;
     }
 
+    @Override
+    public int getCertificationStatus() {
+       return  userDataManager.getCertifyStatus();
+    }
+
 }

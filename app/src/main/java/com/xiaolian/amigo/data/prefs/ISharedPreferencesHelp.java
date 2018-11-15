@@ -224,4 +224,5 @@ public interface ISharedPreferencesHelp {
     void saveDeleteFileTime(long time);
 
     long getDeleteFileTime();
+
 }

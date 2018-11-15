@@ -23,4 +23,6 @@ public interface IEditProfilePresenter<V extends IEditProfileView> extends IBase
      * 是否已经设置浴室密码
      */
     boolean isHadSetBathPassword();
+
+    int getCertificationStatus();
 }

@@ -216,4 +216,5 @@ public interface IMainPresenter<V extends IMainView> extends IBasePresenter<V> {
     void setCertifyStatus(int statusType);
 
     void deleteFile();
+
 }

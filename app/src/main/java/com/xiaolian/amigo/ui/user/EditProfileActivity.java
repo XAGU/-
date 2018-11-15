@@ -1,6 +1,8 @@
 package com.xiaolian.amigo.ui.user;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.network.model.common.ApplySchoolCheckRespDTO;
+import com.xiaolian.amigo.data.vo.UserCertificationStatus;
 import com.xiaolian.amigo.ui.user.intf.IEditProfilePresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditProfileView;
 import com.xiaolian.amigo.ui.widget.dialog.AvailabilityDialog;
@@ -27,6 +30,10 @@ import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import lombok.Data;
 
+import static com.xiaolian.amigo.util.Constant.CERTIFICATION_FAILURE;
+import static com.xiaolian.amigo.util.Constant.CERTIFICATION_NONE;
+import static com.xiaolian.amigo.util.Constant.CERTIFICATION_PASS;
+import static com.xiaolian.amigo.util.Constant.CERTIFICATION_REVIEWING;
 import static com.xiaolian.amigo.util.Constant.USER_INFO_ACTIVITY_SRC;
 
 /**
@@ -44,6 +51,12 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
     private static final int REQUEST_CODE_EDIT_DORMITORY = 0x0104;
     private static final int REQUEST_CODE_EDIT_SEX = 0x0105;
     private static final int REQUEST_CODE_EDIT_AVATAR = 0x0106;
+
+
+    private static final String CERTIFICATION_NONE_TXT = "未认证" ;
+    private static final String CERTIFICATION_REVIEWING_TXT = "审核中";
+    private static final String CERTIFICATION_PASS_TXT = "已认证" ;
+    private static final String CERTIFICATION_FAILURE_TXT = "认证失败";
     @Inject
     IEditProfilePresenter<IEditProfileView> presenter;
 
@@ -88,12 +101,21 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
 
     @BindView(R.id.rel_edit_bathroom_password)
     RelativeLayout relEditBathroomPassword;
+    @BindView(R.id.text_certification)
+    TextView textCertification;
+    @BindView(R.id.tv_certification)
+    TextView tvCertification;
+    @BindView(R.id.rel_edit_certification)
+    RelativeLayout relEditCertification;
 
     private String avatarUrl;
 
     private boolean isNeedRefresh;
 
     private AvailabilityDialog availabilityDialog;
+
+
+    private Class<? extends Activity> activityClazz ;
 
     @Override
     protected void setUp() {
@@ -109,6 +131,9 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
         setMainBackground(R.color.white);
     }
 
+
+
+
     @Override
     protected int setTitle() {
         return R.string.edit_profile;
@@ -118,6 +143,35 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
     protected int setLayout() {
         return R.layout.activity_edit_profile;
     }
+
+    private void getCertificationStatus(int statusType){
+        String status="" ;
+
+        switch (statusType){
+            case CERTIFICATION_NONE:
+                status = CERTIFICATION_NONE_TXT ;
+                textCertification.setText(status);
+                activityClazz = UserCertificationActivity.class ;
+                break;
+            case CERTIFICATION_FAILURE:
+                status = CERTIFICATION_NONE_TXT ;
+                activityClazz = UserCertificationStatusActivity.class ;
+                break;
+            case CERTIFICATION_PASS:
+                status = CERTIFICATION_PASS_TXT ;
+                activityClazz = UserCertificationStatusActivity.class;
+                break;
+            case CERTIFICATION_REVIEWING:
+                status = CERTIFICATION_NONE_TXT;
+                activityClazz = UserCertificationStatusActivity.class ;
+                break;
+            default:
+                break;
+
+        }
+        tvCertification.setText(status);
+    }
+
 
     @Override
     protected void onDestroy() {
@@ -171,7 +225,7 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
                 startActivityForResult(intent, 1);
                 break;
             case R.id.rel_edit_school:
-                isNeedRefresh = true ;
+                isNeedRefresh = true;
                 presenter.checkChangeSchool();
                 break;
             case R.id.rel_edit_room:
@@ -202,6 +256,8 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
                 intent.putExtra(ListChooseActivity.INTENT_KEY_LIST_DEVICE_TYPE, Device.HEATER.getType());
                 startActivity(intent);
                 break;
+            case R.id.rel_edit_certification:
+                if (activityClazz != null) startActivity(this ,activityClazz);
             default:
                 break;
         }
@@ -242,17 +298,17 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
 
     @Override
     public void gotoChooseSchool() {
-        Intent intent = new Intent(this,ChooseSchoolActivity.class);
+        Intent intent = new Intent(this, ChooseSchoolActivity.class);
         startActivity(intent);
     }
 
     @Override
     public void gotoChangeSchool(ApplySchoolCheckRespDTO data) {
-        Intent intent = new Intent(this,ChangeSchoolActivity.class);
-        Log.e(TAG, "gotoChangeSchool: id ="+data.getId() );
-        intent.putExtra("id",Long.valueOf(data.getId()));
-        intent.putExtra("reason",data.getReason());
-        intent.putExtra("schoolName",data.getSchoolName());
+        Intent intent = new Intent(this, ChangeSchoolActivity.class);
+        Log.e(TAG, "gotoChangeSchool: id =" + data.getId());
+        intent.putExtra("id", Long.valueOf(data.getId()));
+        intent.putExtra("reason", data.getReason());
+        intent.putExtra("schoolName", data.getSchoolName());
         startActivity(intent);
     }
 
@@ -271,6 +327,8 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
             presenter.getPersonProfile();
             isNeedRefresh = false;
         }
+
+        getCertificationStatus(presenter.getCertificationStatus());
     }
 
     @Override
@@ -323,7 +381,7 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
     @Override
     protected void onStart() {
         super.onStart();
-        if(!EventBus.getDefault().isRegistered(this)) {
+        if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
     }
@@ -347,6 +405,13 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
             default:
                 break;
         }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 
     @Data

@@ -2,9 +2,7 @@ package com.xiaolian.amigo.ui.main;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.util.ObjectsCompat;
 import android.support.v7.widget.GridLayoutManager;
@@ -36,7 +34,6 @@ import com.xiaolian.amigo.ui.main.adaptor.HomeSmallDelegate;
 import com.xiaolian.amigo.ui.main.intf.IMainPresenter;
 import com.xiaolian.amigo.ui.main.intf.IMainView;
 import com.xiaolian.amigo.ui.widget.RecyclerItemClickListener;
-import com.xiaolian.amigo.util.AppUtils;
 import com.xiaolian.amigo.util.Log;
 
 import org.greenrobot.eventbus.EventBus;

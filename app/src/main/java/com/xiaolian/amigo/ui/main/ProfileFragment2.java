@@ -63,10 +63,6 @@ import static com.xiaolian.amigo.util.Constant.CERTIFICATION_REVIEWING;
  */
 
 public class ProfileFragment2 extends BaseFragment {
-    private static final String CERTIFICATION_NONE_TXT = "未认证" ;
-    private static final String CERTIFICATION_REVIEWING_TXT = "审核中";
-    private static final String CERTIFICATION_PASS_TXT = "已认证" ;
-    private static final String CERTIFICATION_FAILURE_TXT = "认证失败";
 
     public static final int START_EDIT_PROFILE = 01;
     private static final String TAG = ProfileFragment2.class.getSimpleName();
@@ -74,11 +70,11 @@ public class ProfileFragment2 extends BaseFragment {
     ProfileAdaptor.Item credits = new ProfileAdaptor.Item(R.drawable.profile_credits, "积分兑换", CreditsActivity.class);
     ProfileAdaptor.Item bonus = new ProfileAdaptor.Item(R.drawable.profile_luck, "我的代金券", BonusActivity.class);
     ProfileAdaptor.Item repair = new ProfileAdaptor.Item(R.drawable.profile_repair, "设备报修", RepairNavActivity.class);
-    ProfileAdaptor.Item legalize = new ProfileAdaptor.Item(R.drawable.profile_certification, "学生认证", null,"");
+//    ProfileAdaptor.Item legalize = new ProfileAdaptor.Item(R.drawable.profile_certification, "学生认证", null,"");
     List<ProfileAdaptor.Item> items = new ArrayList<ProfileAdaptor.Item>() {
         {
             add(new ProfileAdaptor.Item(R.drawable.profile_edit, "编辑个人信息", EditProfileActivity.class));
-            add(legalize);
+//            add(legalize);
             add(wallet);
 //            add(new ProfileAdaptor.Item(R.drawable.profile_order, "消费记录", OrderActivity.class));
             add(bonus);
@@ -242,8 +238,7 @@ public class ProfileFragment2 extends BaseFragment {
             } else {
                 credits.setBonusAmount(data.getCredits());
             }
-
-            getCertificationStatus(data.getStudentAuth());
+            presenter.setCertifyStatus(data.getStudentAuth());
 
         } catch (Exception e) {
             MobclickAgent.reportError(getContext(), "customReport tag: " + TAG + e.getMessage());
@@ -274,38 +269,7 @@ public class ProfileFragment2 extends BaseFragment {
         }
 
     }
-    int certifyStatusType = -1  ;
 
-    private void getCertificationStatus(int statusType){
-        presenter.setCertifyStatus(statusType);
-        String status ;
-        certifyStatusType = statusType ;
-        switch (statusType){
-            case CERTIFICATION_NONE:
-                status = CERTIFICATION_NONE_TXT ;
-                legalize.setVerifiedStatus(status);
-                legalize.setActivityClazz(UserCertificationActivity.class);
-                break;
-            case CERTIFICATION_FAILURE:
-                status = CERTIFICATION_NONE_TXT ;
-                legalize.setVerifiedStatus(status);
-                legalize.setActivityClazz(UserCertificationStatusActivity.class);
-                break;
-            case CERTIFICATION_PASS:
-                status = CERTIFICATION_PASS_TXT ;
-                legalize.setVerifiedStatus(status);
-                legalize.setActivityClazz(UserCertificationStatusActivity.class);
-                break;
-            case CERTIFICATION_REVIEWING:
-                status = CERTIFICATION_NONE_TXT;
-                legalize.setVerifiedStatus(status);
-                legalize.setActivityClazz(UserCertificationStatusActivity.class);
-                break;
-                default:
-                    break;
-
-        }
-    }
 
 
     @Override
