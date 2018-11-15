@@ -82,7 +82,7 @@ public class HomeFragment2 extends BaseFragment {
             R.drawable.dryer, R.drawable.small_dryer);
     HomeAdaptor.ItemWrapper washer = new HomeAdaptor.ItemWrapper(HomeAdaptor.SMALL_TYPE,
             null, "洗衣机", "WASH CLOTHES",
-            R.drawable.washer2, R.drawable.small_washer2);
+            R.drawable.lost, R.drawable.small_lost);
     HomeAdaptor.ItemWrapper water = new HomeAdaptor.ItemWrapper(HomeAdaptor.SMALL_TYPE,
             null, "饮水机", "DRINK A WATER",
             R.drawable.water, R.drawable.small_water);
