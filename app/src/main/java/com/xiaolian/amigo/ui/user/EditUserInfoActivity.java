@@ -152,7 +152,7 @@ public class EditUserInfoActivity extends BaseToolBarActivity implements IEditUs
             this.setResult(RESULT_OK ,intent);
             this.finish();
         }else{
-            onError("只能输入汉字,英文，数字");
+            onError(getString(R.string.input_tip));
         }
 
     }

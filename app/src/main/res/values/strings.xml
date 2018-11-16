@@ -414,4 +414,6 @@
     <string name="open_ble_and_gps_tip_title">请打开手机蓝牙及定位并保持开启状态</string>
 
     <string name="open_ble_and_gps_tip_content">小主人，热水澡功能需开启手机蓝牙及定位，若已开启请关闭后再次打开手机蓝牙及定位 ～</string>
+
+    <string name="input_tip">只能输入汉字、英文、数字</string>
 </resources>
