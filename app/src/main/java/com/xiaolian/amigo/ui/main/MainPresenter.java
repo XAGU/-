@@ -139,8 +139,13 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
                     }
                     if (result.getData().getBanners() != null && result.getData().getBanners().size() > 0) {
                         for (BannerDTO banner : result.getData().getBanners()) {
-                            banner.setLink(banner.getLink() + "?token="
-                                    + mainDataManager.getToken());
+                            if (banner.getLink().contains("?")){
+                                banner.setLink(banner.getLink() + "&token="
+                                        + mainDataManager.getToken());
+                            }else{
+                                banner.setLink(banner.getLink() + "?token="
+                                        + mainDataManager.getToken());
+                            }
                         }
                         getMvpView().showBanners(result.getData().getBanners());
                     }

@@ -32,19 +32,22 @@ import com.google.zxing.client.android.Intents;
 import com.xiaolian.amigo.BuildConfig;
 import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.network.model.device.JsWasher;
 import com.xiaolian.amigo.di.componet.DaggerMainActivityComponent;
 import com.xiaolian.amigo.di.module.MainActivityModule;
-import com.xiaolian.amigo.util.AppUtils;
-import com.xiaolian.amigo.data.network.model.device.JsWasher;
 import com.xiaolian.amigo.ui.device.washer.ScanActivity;
 import com.xiaolian.amigo.ui.wallet.RechargeActivity;
+import com.xiaolian.amigo.util.AppUtils;
 import com.xiaolian.amigo.util.CommonUtil;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.http.HEAD;
 
 /**
  * web页面
@@ -219,16 +222,25 @@ public class WebActivity extends BaseActivity {
      */
     private String addUrlSuffix(String url) {
         String newUrl = "";
-        String model = Build.MODEL;
-        String brand = Build.BRAND;
-        String appVersion = AppUtils.getVersionName(this);
-        int systemVersion = Build.VERSION.SDK_INT;
-        if (sharedPreferencesHelp.getUserInfo() != null) {
+        try {
+            String model = Build.MODEL;
+            String brand = Build.BRAND;
+            String appVersion = AppUtils.getVersionName(this);
+            int systemVersion = Build.VERSION.SDK_INT;
             String mobile = sharedPreferencesHelp.getUserInfo().getMobile();
-            newUrl = url + "&model=" + model + "&brand=" + brand + "&appVersion=" + appVersion + "&systemVersion="
-                    + systemVersion + "&mobile=" + mobile;
-        }else{
-            newUrl = url ;
+            if (sharedPreferencesHelp.getUserInfo() != null) {
+                if (url.contains("?")) {
+                    newUrl = url + "&model=" + URLEncoder.encode(model, "UTF-8") + "&brand=" + brand + "&appVersion=" + appVersion + "&systemVersion="
+                            + systemVersion + "&mobile=" + mobile;
+                } else {
+                    newUrl = url + "?model=" + URLEncoder.encode(model, "UTF-8") + "&brand=" + brand + "&appVersion=" + appVersion + "&systemVersion="
+                            + systemVersion + "&mobile=" + mobile;
+                }
+            } else {
+                newUrl = url;
+            }
+        }catch (UnsupportedEncodingException e){
+            Log.e(TAG ,e.getMessage());
         }
         return newUrl;
     }

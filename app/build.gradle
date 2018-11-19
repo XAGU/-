@@ -11,7 +11,7 @@ static def releaseTime() {
     return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
 }
 
-
+//当前版本1.2.1 code 为34
 android {
     compileSdkVersion versions.compileSdk
     buildToolsVersion versions.buildTools
@@ -19,8 +19,8 @@ android {
         applicationId "com.xiaolian.amigo"
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
-        versionCode 33
-        versionName "1.2.2"
+        versionCode 34
+        versionName "1.2.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
