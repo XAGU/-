@@ -193,9 +193,10 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         // 友盟日志加密
         MobclickAgent.enableEncrypt(true);
         MobclickAgent.setCatchUncaughtExceptions(true);
-
-        presenter.checkUpdate(AppUtils.getAppVersionCode(this),
-                AppUtils.getVersionName(this));
+        if (presenter.isLogin()) {
+            presenter.checkUpdate(AppUtils.getAppVersionCode(this),
+                    AppUtils.getVersionName(this));
+        }
         fragments = new Fragment[3];
         initTable();
 
@@ -447,6 +448,11 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
+        if (presenter.isLogin()) {
+            presenter.checkUpdate(AppUtils.getAppVersionCode(this),
+                    AppUtils.getVersionName(this));
+        }
+
 //        if (intent != null) {
 //            boolean isSwitchToHome = intent.getBooleanExtra(INTENT_KEY_SWITCH_TO_HOME, false);
 //            if (isSwitchToHome) {
