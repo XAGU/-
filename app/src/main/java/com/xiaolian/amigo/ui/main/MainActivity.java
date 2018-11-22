@@ -546,8 +546,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             // 注册信鸽推送
             registerXGPush();
             Log.d(TAG ,"onResume");
-            presenter.getUser();
-            presenter.getNoticeAmount();
             presenter.noticeCount();
             uploadDeviceInfo();
             if (presenter.getIsFirstAfterLogin()) {
