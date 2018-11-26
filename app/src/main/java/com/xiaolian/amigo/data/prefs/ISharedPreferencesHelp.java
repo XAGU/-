@@ -19,9 +19,16 @@ import java.util.List;
 
 public interface ISharedPreferencesHelp {
     // 储存蓝牙地址和编号的映射关系
-    String getToken();
 
-    void setToken(String token);
+    //  存储AccessToken
+    void setAccessToken(String accessToken);
+
+    String getAccessToken();
+
+    // 存储ReferToken
+    void setReferToken(String referToken);
+
+    String getReferToken();
 
     User getUserInfo();
 

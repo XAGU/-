@@ -29,7 +29,10 @@ import javax.inject.Inject;
  */
 public class    SharedPreferencesHelp implements ISharedPreferencesHelp {
     private static final String PREF_FILE_NAME = "amigo";
-    private static final String PREF_KEY_TOKEN = "PREF_KEY_TOKEN";
+    private static final String PREF_KEY_ACCESS_TOKEN = "PREF_KEY_ACCESS_TOKEN";
+
+    private static final String PREF_KEY_REFERSH_TOKEN = "PREF_KEY_REFERSH_TOKEN";
+
     private static final String PREF_DEVICE_TOKEN_PREFIX = "PREF_DEVICE_TOKEN_";
     private static final String PREF_DEVICE_RESULT_PREFIX = "PREF_DEVICE_RESULT_PREFIX";
     private static final String PREF_CURRENT_DEVICE_TOKEN = "PREF_CURRENT_DEVICE_TOKEN";
@@ -141,8 +144,6 @@ public class    SharedPreferencesHelp implements ISharedPreferencesHelp {
      */
     private static final String PREF_CERTIFICATION_STATUS = "PREF_CERTIFICATION_STATUS";
 
-    private String tokenHolder;
-    private String deviceTokenHolder;
     private User userHolder;
 
     private boolean showUrgencyNotify = true;
@@ -167,18 +168,23 @@ public class    SharedPreferencesHelp implements ISharedPreferencesHelp {
     }
 
     @Override
-    public String getToken() {
-        if (tokenHolder != null) {
-            return tokenHolder;
-        }
-        tokenHolder = mSharedPreferences.getString(PREF_KEY_TOKEN, null);
-        return tokenHolder;
+    public void setAccessToken(String accessToken) {
+        mSharedPreferences.edit().putString(PREF_KEY_ACCESS_TOKEN ,accessToken).commit();
     }
 
     @Override
-    public void setToken(String token) {
-        tokenHolder = token;
-        mSharedPreferences.edit().putString(PREF_KEY_TOKEN, token).commit();
+    public String getAccessToken() {
+        return mSharedPreferences.getString(PREF_KEY_ACCESS_TOKEN , "");
+    }
+
+    @Override
+    public void setReferToken(String referToken) {
+        mSharedPreferences.edit().putString(PREF_KEY_REFERSH_TOKEN ,referToken);
+    }
+
+    @Override
+    public String getReferToken() {
+        return mSharedPreferences.getString(PREF_KEY_REFERSH_TOKEN , "");
     }
 
     @Override

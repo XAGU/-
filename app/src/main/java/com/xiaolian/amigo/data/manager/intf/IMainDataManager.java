@@ -41,8 +41,6 @@ public interface IMainDataManager {
 
     String getToken();
 
-    void setToken(String token);
-
     User getUserInfo();
 
     void setUserInfo(User user);

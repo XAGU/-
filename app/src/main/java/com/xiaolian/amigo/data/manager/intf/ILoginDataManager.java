@@ -20,17 +20,6 @@ import rx.Observable;
  * @date 17/9/14
  */
 public interface ILoginDataManager {
-    /**
-     * 获取token
-     */
-    String getToken();
-
-    /**
-     * 设置token
-     *
-     * @param token token
-     */
-    void setToken(String token);
 
     User getUserInfo();
 

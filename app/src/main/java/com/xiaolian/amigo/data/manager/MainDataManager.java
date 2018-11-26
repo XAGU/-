@@ -89,10 +89,6 @@ public class MainDataManager implements IMainDataManager {
         return sharedPreferencesHelp.getToken();
     }
 
-    @Override
-    public void setToken(String token) {
-        sharedPreferencesHelp.setToken(token);
-    }
 
     @Override
     public User getUserInfo() {
