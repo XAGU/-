@@ -67,6 +67,7 @@ import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
 import com.xiaolian.amigo.util.MD5Util;
 import com.xiaolian.amigo.util.MyInterpolator;
+import com.xiaolian.amigo.util.RxHelper;
 import com.xiaolian.amigo.util.ScreenUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -78,6 +79,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -85,6 +87,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import lombok.Data;
+import rx.functions.Action1;
 
 import static android.widget.RelativeLayout.CENTER_IN_PARENT;
 import static com.xiaolian.amigo.data.enumeration.Device.DISPENSER;
@@ -185,17 +188,16 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             lastFragment = savedInstanceState.getInt(KEY_LASTFRAGMENT);
         }
         presenter.onAttach(this);
-
         if (isNotice) {
             presenter.routeHeaterOrBathroom();
         }
+
 
         // 友盟日志加密
         MobclickAgent.enableEncrypt(true);
         MobclickAgent.setCatchUncaughtExceptions(true);
         if (presenter.isLogin()) {
-            presenter.checkUpdate(AppUtils.getAppVersionCode(this),
-                    AppUtils.getVersionName(this));
+            presenter.refreshToken();
         }
         fragments = new Fragment[3];
         initTable();
@@ -544,10 +546,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             checkLogin();
         }else {
             // 注册信鸽推送
+
             registerXGPush();
             Log.d(TAG ,"onResume");
-            presenter.getUser();
-            presenter.getNoticeAmount();
             presenter.noticeCount();
             uploadDeviceInfo();
             if (presenter.getIsFirstAfterLogin()) {
@@ -1097,6 +1098,16 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         RxBus.getDefault().post(personalExtraInfoDTO);
     }
 
+    @Override
+    public void startNet() {
+        RxHelper.delay(300 , TimeUnit.MILLISECONDS)
+                .subscribe(integer -> {
+                    presenter.checkUpdate(AppUtils.getAppVersionCode(this),
+                            AppUtils.getVersionName(this));
+                });
+
+    }
+
 
     /**
      * 点击进入饮水机页面
@@ -1149,7 +1160,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
 
     private boolean checkLogin() {
-        if (TextUtils.isEmpty(presenter.getToken())) {
+        if (TextUtils.isEmpty(presenter.getAccessToken()) || TextUtils.isEmpty(presenter.getRefreshToken())) {
             redirectToLogin();
             return false;
         }
@@ -1237,13 +1248,13 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     private void gotoGate() {
         startActivity(new Intent(this, WebActivity.class)
                 .putExtra(WebActivity.INTENT_KEY_URL, Constant.H5_GATE
-                        + "?token=" + presenter.getToken()));
+                        + "?accessToken=" + presenter.getAccessToken() +"&refreshToken" + presenter.getRefreshToken()));
     }
 
     private void gotoWasher() {
        // startActivity(new Intent(this, WasherActivity.class));
         Intent intent = new Intent(this,WebActivity.class);
-        String url = BuildConfig.H5_SERVER +"/washer" + "?token=" + presenter.getToken() + "&schoolId=" + presenter.getSchoolId();
+        String url = BuildConfig.H5_SERVER +"/washer" + "?=accessToken" + presenter.getAccessToken()+"&refreshToken=" +presenter.getRefreshToken() + "&schoolId=" + presenter.getSchoolId();
         intent.putExtra(WebActivity.INTENT_KEY_WASHER_URL,url);
         startActivity(intent);
     }

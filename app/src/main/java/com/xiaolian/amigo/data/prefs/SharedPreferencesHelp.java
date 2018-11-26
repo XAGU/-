@@ -179,7 +179,7 @@ public class    SharedPreferencesHelp implements ISharedPreferencesHelp {
 
     @Override
     public void setReferToken(String referToken) {
-        mSharedPreferences.edit().putString(PREF_KEY_REFERSH_TOKEN ,referToken);
+        mSharedPreferences.edit().putString(PREF_KEY_REFERSH_TOKEN ,referToken).commit();
     }
 
     @Override
@@ -760,7 +760,6 @@ public class    SharedPreferencesHelp implements ISharedPreferencesHelp {
     @Override
     public void logout() {
         mSharedPreferences.edit().clear().apply();
-        tokenHolder = null;
         userHolder = null;
         bonusAmount = 0;
         balance = "";

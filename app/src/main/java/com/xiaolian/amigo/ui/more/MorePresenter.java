@@ -2,7 +2,9 @@ package com.xiaolian.amigo.ui.more;
 
 import android.text.TextUtils;
 
+import com.xiaolian.amigo.data.manager.intf.IMainDataManager;
 import com.xiaolian.amigo.data.manager.intf.IMoreDataManager;
+import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.more.intf.IMorePresenter;
 import com.xiaolian.amigo.ui.more.intf.IMoreView;
@@ -22,10 +24,13 @@ public class MorePresenter<V extends IMoreView> extends BasePresenter<V>
     private static final String TAG = MorePresenter.class.getSimpleName();
     private IMoreDataManager moreDataManager;
 
+    private IMainDataManager mainDataManager ;
+
     @Inject
-    MorePresenter(IMoreDataManager moreDataManager) {
+    MorePresenter(IMoreDataManager moreDataManager , IMainDataManager mainDataManager) {
         super();
         this.moreDataManager = moreDataManager;
+        this.mainDataManager = mainDataManager ;
     }
 
     @Override
@@ -39,15 +44,28 @@ public class MorePresenter<V extends IMoreView> extends BasePresenter<V>
     @Override
     public void logout() {
         moreDataManager.logout();
+        addObserver(mainDataManager.revokeToken(), new NetworkObserver<ApiResult<Void>>() {
+
+            @Override
+            public void onReady(ApiResult<Void> voidApiResult) {
+
+            }
+        });
         getMvpView().onSuccess("退出登录成功");
         getMvpView().backToMain();
         getMvpView().redirectToLogin();
     }
 
     @Override
-    public String getToken() {
-        return moreDataManager.getToken();
+    public String getAccessToken() {
+        return moreDataManager.getAccessToken();
     }
+
+    @Override
+    public String getRefreshToken() {
+        return moreDataManager.getRefreshToken();
+    }
+
 
     @Override
     public Long getUserId() {

@@ -123,5 +123,12 @@ public class WasherDataManager implements IWasherDataManager {
     }
 
     @Override
-    public String getToken(){return sharedPreferencesHelp.getToken();}
+    public String getAccessToken() {
+        return sharedPreferencesHelp.getAccessToken();
+    }
+
+    @Override
+    public String getRefreshToken() {
+        return sharedPreferencesHelp.getReferToken();
+    }
 }

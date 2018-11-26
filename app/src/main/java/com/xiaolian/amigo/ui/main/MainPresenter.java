@@ -98,8 +98,34 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
     }
 
     @Override
+    public void refreshToken() {
+        addObserver(mainDataManager.refreshToken(), new NetworkObserver<ApiResult<Void>>() {
+
+            @Override
+            public void onReady(ApiResult<Void> result) {
+                if (result.getError() == null){
+                    getMvpView().startNet();
+                }else{
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+        });
+    }
+
+    @Override
+    public String getAccessToken() {
+        return mainDataManager.getAccessToken();
+    }
+
+    @Override
+    public String getRefreshToken() {
+        return mainDataManager.getRefreshToken();
+    }
+
+    @Override
     public boolean isLogin() {
-        return !TextUtils.isEmpty(mainDataManager.getToken());
+        return !TextUtils.isEmpty(mainDataManager.getAccessToken())
+                && !TextUtils.isEmpty(mainDataManager.getRefreshToken());
     }
 
     @Override
@@ -112,10 +138,6 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
         return mainDataManager.getUserInfo();
     }
 
-    @Override
-    public String getToken() {
-        return mainDataManager.getToken();
-    }
 
     @Override
     public long getSchoolId() {
@@ -140,11 +162,11 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
                     if (result.getData().getBanners() != null && result.getData().getBanners().size() > 0) {
                         for (BannerDTO banner : result.getData().getBanners()) {
                             if (banner.getLink().contains("?")){
-                                banner.setLink(banner.getLink() + "&token="
-                                        + mainDataManager.getToken());
+                                banner.setLink(banner.getLink() + "&accessToken="
+                                        + mainDataManager.getAccessToken() +"&refreshToken="+mainDataManager.getRefreshToken());
                             }else{
-                                banner.setLink(banner.getLink() + "?token="
-                                        + mainDataManager.getToken());
+                                banner.setLink(banner.getLink() + "?accessToken="
+                                        + mainDataManager.getAccessToken() +"&refreshToken="+mainDataManager.getRefreshToken());
                             }
                         }
                         getMvpView().showBanners(result.getData().getBanners());
@@ -220,7 +242,7 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
 
     @Override
     public void readUrgentNotify(Long id) {
-        if (TextUtils.isEmpty(mainDataManager.getToken())) {
+        if (TextUtils.isEmpty(mainDataManager.getAccessToken()) || TextUtils.isEmpty(mainDataManager.getRefreshToken())) {
             return;
         }
         ReadNotifyReqDTO reqDTO = new ReadNotifyReqDTO();

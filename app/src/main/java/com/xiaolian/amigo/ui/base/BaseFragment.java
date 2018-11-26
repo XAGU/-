@@ -105,6 +105,7 @@ public abstract class BaseFragment extends Fragment  implements IBaseView{
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
+        Log.e(TAG ,"hidden" + hidden);
         if (!hidden){
             initView();
         }

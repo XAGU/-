@@ -60,7 +60,10 @@ public interface IOrderDataManager {
      */
     Observable<ApiResult<BooleanRespDTO>> checkComplaint(@Body CheckComplaintReqDTO reqDTO);
 
-    String getToken();
 
     Observable<ApiResult<OrderRespDTO>> getMonthlyMaxBill(@Body QueryPersonalMaxConsumeOrderListReqDTO reqDTO);
+
+    String getAccessToken();
+
+    String getRefreshToken();
 }

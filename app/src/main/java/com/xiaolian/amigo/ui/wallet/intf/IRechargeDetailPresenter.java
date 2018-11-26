@@ -18,13 +18,6 @@ public interface IRechargeDetailPresenter<V extends IRechargeDetailView> extends
     void requestData(Long id);
 
     /**
-     * 获取token
-     *
-     * @return token
-     */
-    String getToken();
-
-    /**
      * 提醒
      *
      * @param id id
@@ -45,4 +38,8 @@ public interface IRechargeDetailPresenter<V extends IRechargeDetailView> extends
      * @return 手机号
      */
     String getMobile();
+
+    String getAccessToken();
+
+    String getRefreshToken();
 }

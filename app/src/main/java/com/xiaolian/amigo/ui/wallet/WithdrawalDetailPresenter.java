@@ -54,11 +54,6 @@ public class WithdrawalDetailPresenter<V extends IWithdrawalDetailView> extends 
     }
 
     @Override
-    public String getToken() {
-        return sharedPreferencesHelp.getToken();
-    }
-
-    @Override
     public void remind(Long sourceId) {
         RemindReqDTO reqDTO = new RemindReqDTO();
         reqDTO.setSourceId(sourceId);
@@ -119,5 +114,15 @@ public class WithdrawalDetailPresenter<V extends IWithdrawalDetailView> extends 
                 }
             }
         });
+    }
+
+    @Override
+    public String getAccessToken() {
+        return sharedPreferencesHelp.getAccessToken();
+    }
+
+    @Override
+    public String getRefreshToken() {
+        return sharedPreferencesHelp.getReferToken();
     }
 }

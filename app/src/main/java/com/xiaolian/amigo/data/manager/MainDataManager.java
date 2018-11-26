@@ -8,6 +8,7 @@ import com.xiaolian.amigo.data.network.IOrderApi;
 import com.xiaolian.amigo.data.network.ISchoolApi;
 import com.xiaolian.amigo.data.network.ISystemApi;
 import com.xiaolian.amigo.data.network.ITimeRangeApi;
+import com.xiaolian.amigo.data.network.ITokenApi;
 import com.xiaolian.amigo.data.network.IUserApi;
 import com.xiaolian.amigo.data.network.IVersionApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
@@ -46,6 +47,7 @@ import javax.inject.Inject;
 import retrofit2.Retrofit;
 import retrofit2.http.Body;
 import rx.Observable;
+import rx.Observer;
 
 /**
  * 主页
@@ -67,6 +69,7 @@ public class MainDataManager implements IMainDataManager {
     private ISchoolApi schoolApi;
     private IVersionApi versionApi;
     private IBathroomApi bathroomApi;
+    private ITokenApi tokenApi ;
 
     @Inject
     public MainDataManager(@BathroomServer Retrofit bathroomRetrofit,
@@ -81,13 +84,25 @@ public class MainDataManager implements IMainDataManager {
         this.notifyApi = retrofit.create(INotifyApi.class);
         this.schoolApi = retrofit.create(ISchoolApi.class);
         this.versionApi = retrofit.create(IVersionApi.class);
+        this.tokenApi = retrofit.create(ITokenApi.class);
         this.bathroomApi = bathroomRetrofit.create(IBathroomApi.class);
     }
 
     @Override
-    public String getToken() {
-        return sharedPreferencesHelp.getToken();
+    public Observable<ApiResult<Void>> refreshToken() {
+       return  tokenApi.refreshToken();
     }
+
+    @Override
+    public String getAccessToken() {
+        return sharedPreferencesHelp.getAccessToken();
+    }
+
+    @Override
+    public String getRefreshToken() {
+        return sharedPreferencesHelp.getReferToken();
+    }
+
 
 
     @Override
@@ -310,6 +325,11 @@ public class MainDataManager implements IMainDataManager {
     @Override
     public void setIsFirstAfterLogin(boolean b) {
         sharedPreferencesHelp.setIsFirstAfterLogin(b);
+    }
+
+    @Override
+    public Observable<ApiResult<Void>> revokeToken() {
+       return  tokenApi.revokeToken();
     }
 
 }

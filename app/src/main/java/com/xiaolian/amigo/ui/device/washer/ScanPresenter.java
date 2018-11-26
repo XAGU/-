@@ -103,10 +103,6 @@ public class ScanPresenter<V extends IScanView> extends BasePresenter<V>
         });
     }
 
-    @Override
-    public boolean checkDefaultDormitoryExist() {
-        return washerDataManager.getUserInfo().getResidenceId() != null;
-    }
 
     @Override
     public void gotoHeaterDevice(String defaultAddress, Long defaultSupplierId, String location ,long reseniceId) {
@@ -141,5 +137,12 @@ public class ScanPresenter<V extends IScanView> extends BasePresenter<V>
     }
 
     @Override
-    public String getToken(){return washerDataManager.getToken();}
+    public String getAccessToken() {
+        return washerDataManager.getAccessToken();
+    }
+
+    @Override
+    public String getRefreshToken() {
+        return washerDataManager.getRefreshToken();
+    }
 }

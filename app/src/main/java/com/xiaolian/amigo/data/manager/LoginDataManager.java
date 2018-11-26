@@ -96,6 +96,16 @@ public class LoginDataManager implements ILoginDataManager {
         sharedPreferencesHelp.setIsFirstAfterLogin(b);
     }
 
+    @Override
+    public void setAccessToken(String accessToken) {
+        sharedPreferencesHelp.setAccessToken(accessToken);
+    }
+
+    @Override
+    public void setRefreshToken(String refreshToken) {
+        sharedPreferencesHelp.setReferToken(refreshToken);
+    }
+
 
     @Override
     public User getUserInfo() {

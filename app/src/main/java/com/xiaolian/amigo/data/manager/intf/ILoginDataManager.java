@@ -70,4 +70,8 @@ public interface ILoginDataManager {
     void setPushTag(String pushTag);
 
     void setIsFirstAfterLogin(boolean b);
+
+    void setAccessToken(String accessToken);
+
+    void setRefreshToken(String refreshToken);
 }

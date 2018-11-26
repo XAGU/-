@@ -20,11 +20,4 @@ public interface IOrderPresenter<V extends IOrderView> extends IBasePresenter<V>
      */
     void requestOrders(int page, Integer deviceType,
                        Integer year, Integer month, Integer action);
-
-    /**
-     * 获取token
-     *
-     * @return token
-     */
-    String getToken();
 }

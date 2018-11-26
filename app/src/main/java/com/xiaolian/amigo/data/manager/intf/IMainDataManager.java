@@ -29,6 +29,7 @@ import java.util.List;
 
 import retrofit2.http.Body;
 import rx.Observable;
+import rx.Observer;
 
 /**
  * 主页
@@ -39,7 +40,12 @@ import rx.Observable;
 
 public interface IMainDataManager {
 
-    String getToken();
+    Observable<ApiResult<Void>> refreshToken();
+
+    String  getAccessToken() ;
+
+    String getRefreshToken();
+
 
     User getUserInfo();
 
@@ -177,4 +183,6 @@ public interface IMainDataManager {
     boolean getIsFirstAfterLogin();
 
     void setIsFirstAfterLogin(boolean b);
+
+    Observable<ApiResult<Void>> revokeToken();
 }

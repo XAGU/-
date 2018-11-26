@@ -25,12 +25,6 @@ public interface IScanPresenter<V extends IScanView> extends IBasePresenter<V> {
     void checkDeviceUseage(int type , String mac ,boolean isBle);
 
 
-    /**
-     * 检查默认宿舍是否存在
-     *
-     * @return 是否存在
-     */
-    boolean checkDefaultDormitoryExist();
 
 
 
@@ -55,5 +49,7 @@ public interface IScanPresenter<V extends IScanView> extends IBasePresenter<V> {
 
     User getUserInfo();
 
-    String getToken();
+    String getAccessToken();
+
+    String getRefreshToken();
 }

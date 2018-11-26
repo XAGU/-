@@ -18,13 +18,6 @@ public interface IWithdrawalDetailPresenter<V extends IWithdrawalDetailView> ext
     void requestData(Long id);
 
     /**
-     * 获取token
-     *
-     * @return token
-     */
-    String getToken();
-
-    /**
      * 提醒客服
      *
      * @param sourceId 账单id
@@ -45,4 +38,8 @@ public interface IWithdrawalDetailPresenter<V extends IWithdrawalDetailView> ext
      * @param type 投诉类型
      */
     void complaint(Long id, int type);
+
+    String getAccessToken();
+
+    String getRefreshToken();
 }

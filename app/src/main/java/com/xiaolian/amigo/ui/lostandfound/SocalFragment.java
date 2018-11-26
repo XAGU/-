@@ -371,7 +371,10 @@ public class SocalFragment extends BaseFragment implements View.OnClickListener,
     @Override
     protected void initView() {
         if (mSocialTagDatas == null || mSocialTagDatas.size() == 0) presenter.getTopicList();
-         if (null != mainPresenter) mainPresenter.getNoticeAmount();
+         if (null != mainPresenter) {
+             Log.e(TAG ,"profileFragment2>>>>>>>>  initView");
+             mainPresenter.getNoticeAmount();
+         }
         presenter.getLostList("", 1, "", 0);
 
     }

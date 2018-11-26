@@ -10,8 +10,6 @@ package com.xiaolian.amigo.data.manager.intf;
 public interface IMoreDataManager {
     void logout();
 
-    String getToken();
-
     boolean getTransfer();
 
     Long getUserId();
@@ -23,4 +21,8 @@ public interface IMoreDataManager {
     String getPushTag();
 
     void setPushTag(String pushTag);
+
+    String getAccessToken();
+
+    String getRefreshToken();
 }

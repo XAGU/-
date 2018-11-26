@@ -23,12 +23,6 @@ public interface IOrderDetailPresenter<V extends IOrderDetailView> extends IBase
      */
     void getOrder(Long orderId);
 
-    /**
-     * 获取token
-     *
-     * @return token
-     */
-    String getToken();
 
     /**
      * 获取账单
@@ -36,4 +30,8 @@ public interface IOrderDetailPresenter<V extends IOrderDetailView> extends IBase
      * @return 账单详情
      */
     OrderDetailRespDTO getOrder();
+
+    String getAccessToken();
+
+    String getRefreshToken();
 }

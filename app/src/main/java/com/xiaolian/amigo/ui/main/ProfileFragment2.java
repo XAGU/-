@@ -184,7 +184,7 @@ public class ProfileFragment2 extends BaseFragment {
     }
 
     private boolean checkLogin() {
-        if (null == presenter.getToken() ||  TextUtils.isEmpty(presenter.getToken())) {
+        if (null == presenter.getAccessToken() ||  TextUtils.isEmpty(presenter.getRefreshToken())) {
             redirectToLogin();
             return false;
         }
@@ -287,6 +287,7 @@ public class ProfileFragment2 extends BaseFragment {
     protected void initView() {
         if (presenter == null) return;
         if (presenter.isLogin()) {
+            Log.e(TAG ,"profileFragment2>>>>>>>>  initView");
             presenter.getNoticeAmount();
             User user = presenter.getUserInfo();
             setAvatar(user.getPictureUrl());

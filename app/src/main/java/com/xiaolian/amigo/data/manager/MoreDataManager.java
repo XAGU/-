@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.data.manager;
 
 import com.xiaolian.amigo.data.manager.intf.IMoreDataManager;
+import com.xiaolian.amigo.data.network.ITokenApi;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 
 import javax.inject.Inject;
@@ -16,6 +17,7 @@ public class MoreDataManager implements IMoreDataManager {
 
     private ISharedPreferencesHelp sharedPreferencesHelp;
 
+
     @Inject
     public MoreDataManager(ISharedPreferencesHelp sharedPreferencesHelp) {
         this.sharedPreferencesHelp = sharedPreferencesHelp;
@@ -26,10 +28,6 @@ public class MoreDataManager implements IMoreDataManager {
         sharedPreferencesHelp.logout();
     }
 
-    @Override
-    public String getToken() {
-        return sharedPreferencesHelp.getToken();
-    }
 
     @Override
     public boolean getTransfer() {
@@ -59,5 +57,15 @@ public class MoreDataManager implements IMoreDataManager {
     @Override
     public void setPushTag(String pushTag) {
 
+    }
+
+    @Override
+    public String getAccessToken() {
+        return sharedPreferencesHelp.getAccessToken();
+    }
+
+    @Override
+    public String getRefreshToken() {
+        return sharedPreferencesHelp.getReferToken();
     }
 }

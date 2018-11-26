@@ -9,6 +9,7 @@ import lombok.Data;
 @Data
 public class LoginRespDTO {
 
-    private String token;
+    private String accessToken;
+    private String refreshToken ;
     private EntireUserDTO user;
 }
