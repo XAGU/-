@@ -1,10 +1,18 @@
 package com.xiaolian.amigo.data.manager;
 
 import com.xiaolian.amigo.data.manager.intf.IMoreDataManager;
+import com.xiaolian.amigo.data.network.IDeviceConnectErrorApi;
 import com.xiaolian.amigo.data.network.ITokenApi;
+import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
+import com.xiaolian.amigo.di.UserServer;
 
 import javax.inject.Inject;
+
+import okhttp3.RequestBody;
+import retrofit2.Retrofit;
+import rx.Observable;
 
 /**
  * 更多
@@ -17,10 +25,11 @@ public class MoreDataManager implements IMoreDataManager {
 
     private ISharedPreferencesHelp sharedPreferencesHelp;
 
-
+    private IDeviceConnectErrorApi connectErrorApi ;
     @Inject
-    public MoreDataManager(ISharedPreferencesHelp sharedPreferencesHelp) {
+    public MoreDataManager(ISharedPreferencesHelp sharedPreferencesHelp , @UserServer Retrofit retrofit) {
         this.sharedPreferencesHelp = sharedPreferencesHelp;
+        this.connectErrorApi  = retrofit.create(IDeviceConnectErrorApi.class) ;
     }
 
     @Override
@@ -67,5 +76,15 @@ public class MoreDataManager implements IMoreDataManager {
     @Override
     public String getRefreshToken() {
         return sharedPreferencesHelp.getReferToken();
+    }
+
+    @Override
+    public String getMobile() {
+        return sharedPreferencesHelp.getUserInfo().getMobile();
+    }
+
+    @Override
+    public Observable<ApiResult<BooleanRespDTO>> uploadLog(RequestBody body) {
+        return connectErrorApi.uploadLog(body);
     }
 }

@@ -19,4 +19,6 @@ public interface IMoreView extends IBaseView {
      * 是否显示校OK迁移入口
      */
     void showTransfer();
+
+    String getVersionName();
 }

@@ -1,5 +1,12 @@
 package com.xiaolian.amigo.data.manager.intf;
 
+import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
+
+import okhttp3.RequestBody;
+import retrofit2.http.Body;
+import rx.Observable;
+
 /**
  * 更多
  *
@@ -25,4 +32,12 @@ public interface IMoreDataManager {
     String getAccessToken();
 
     String getRefreshToken();
+
+    String getMobile();
+
+
+    /**
+     * 上传错误日志
+     */
+    Observable<ApiResult<BooleanRespDTO>> uploadLog(@Body RequestBody body);
 }
