@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.xiaolian.amigo.BuildConfig;
 import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
+import com.xiaolian.amigo.data.prefs.SharedPreferencesHelp;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.Log;
 
@@ -99,7 +100,6 @@ public class LogInterceptor implements Interceptor {
 //        String token = sharedPreferencesHelp.getToken();
 
         String accessToken  =  sharedPreferencesHelp.getAccessToken() ;
-
         String refershToken = sharedPreferencesHelp.getReferToken() ;
 
         if ((request.url().url().getPath().contains(TRADE_PREFIX)
@@ -193,7 +193,7 @@ public class LogInterceptor implements Interceptor {
             sharedPreferencesHelp.setAccessToken(response.header(ACCESS_TOKEN));
         }
 
-        if (null != response.header(REFER_TOKEN) && TextUtils.isEmpty(response.header(REFER_TOKEN))){
+        if (null != response.header(REFER_TOKEN) && !TextUtils.isEmpty(response.header(REFER_TOKEN))){
             sharedPreferencesHelp.setReferToken(response.header(REFER_TOKEN));
         }
         String content;

@@ -1,6 +1,7 @@
 package com.xiaolian.amigo.ui.main;
 
 import android.Manifest;
+import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -191,13 +192,12 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         if (isNotice) {
             presenter.routeHeaterOrBathroom();
         }
-
-
         // 友盟日志加密
         MobclickAgent.enableEncrypt(true);
         MobclickAgent.setCatchUncaughtExceptions(true);
         if (presenter.isLogin()) {
-            presenter.refreshToken();
+            presenter.checkUpdate(AppUtils.getAppVersionCode(this),
+                    AppUtils.getVersionName(this));
         }
         fragments = new Fragment[3];
         initTable();
@@ -231,6 +231,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
      * 弹性动画
      */
     private void springAnimator(View view){
+        android.util.Log.e(TAG, "springAnimator: " );
         int normalHeight = ScreenUtils.dpToPxInt(this ,30);
         ValueAnimator animator2 = ValueAnimator.ofInt(ScreenUtils.dpToPxInt(this ,5),ScreenUtils.dpToPxInt(this ,30) , ScreenUtils.dpToPxInt(this ,65) , ScreenUtils.dpToPxInt(this ,80),ScreenUtils.dpToPxInt(this ,65)
                                                          ,ScreenUtils.dpToPxInt(this ,70) ,ScreenUtils.dpToPxInt(this ,65)    );
@@ -249,6 +250,35 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             view.setLayoutParams(params);
             view.postInvalidate();
         });
+
+        animator2.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                android.util.Log.e(TAG, "onAnimationEnd: " );
+                if (fm != null){
+                    if (fm.findFragmentByTag(SocalFragment.class.getSimpleName()) == null){
+
+                        android.util.Log.e(TAG, "onAnimationEnd:>>>>>>ScoalFragment 为空 " );
+                        setDefalutItem(1);
+                    }
+                }
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
         animator2.setDuration(300);
         animator2.setInterpolator(new MyInterpolator());
 
@@ -264,8 +294,10 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
         if (presenter.isLogin()) {
             setDefalutItem(0);
+            tableBottomImageChange(0);
         }else{
             setDefalutItem(2);
+            tableBottomImageChange(2);
 //            redirectToLogin();
         }
     }
@@ -380,7 +412,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             }
         }
         lastFragment = position ;
-        tableBottomImageChange(position);
     }
 
     /**
@@ -388,6 +419,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
      * @param position
      */
     private void tableBottomImageChange(int position) {
+        android.util.Log.e(TAG, "tableBottomImageChange: " + position );
         if (position == -1 || position > 2) return ;
         nowPosition = position ;
         if (position == 0) {
@@ -426,21 +458,21 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             case R.id.home_rl:
                 tableBottomImageChange(0);
                 setDefalutItem(0);
-//                vgFragment.setCurrentItem(0);
                 break;
             case R.id.social_rl:
                 if (socialSelRl.getVisibility() == View.VISIBLE){
                     startActivityForResult(new Intent(this , WriteLZActivity.class) ,WRITE_BLOG);
                 }else {
                     tableBottomImageChange(1);
-                    setDefalutItem(1);
-//                    vgFragment.setCurrentItem(1);
+                    if (fm.findFragmentByTag(SocalFragment.class.getSimpleName()) != null) {
+                        android.util.Log.e(TAG, "socalFragment 不为空: "  );
+                        setDefalutItem(1);
+                    }
                 }
                 break;
             case R.id.personal_rl:
                 tableBottomImageChange(2);
                 setDefalutItem(2);
-//                vgFragment.setCurrentItem(2);
                 break;
         }
     }
@@ -546,7 +578,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             checkLogin();
         }else {
             // 注册信鸽推送
-
             registerXGPush();
             Log.d(TAG ,"onResume");
             presenter.noticeCount();
@@ -557,6 +588,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 SocalFragment socalFragment = (SocalFragment) fm.findFragmentByTag(SocalFragment.class.getSimpleName());
                 if (socalFragment == null ) {
                     setDefalutItem(0);
+                    tableBottomImageChange(0);
                     return;
                 }
                 if (socalFragment.isAdded()) {
@@ -564,6 +596,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                     fm.beginTransaction().remove(socalFragment).commitAllowingStateLoss();
                 }
                 setDefalutItem(0);
+                tableBottomImageChange(0);
 
             }
             presenter.deleteFile();
