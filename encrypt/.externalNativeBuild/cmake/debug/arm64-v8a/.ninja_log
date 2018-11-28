@@ -1,0 +1,13 @@
+# ninja log v5
+4	323	0	CMakeFiles/algor.dir/src/main/cpp/src/trade_rule.c.o	9641e9446475016a
+2	324	0	CMakeFiles/algor.dir/src/main/cpp/src/des.c.o	15927ad5cb3fc054
+0	341	0	CMakeFiles/algor.dir/src/main/cpp/src/aes.c.o	e0d3367e512e5b66
+341	404	0	../../../../libs/arm64-v8a/libalgor.so	f023698e3a28c1d
+405	904	0	CMakeFiles/xiaolian-lib.dir/src/main/cpp/src/xiaolian-lib.cpp.o	d69c5c4cf0958359
+904	1055	0	../../../../libs/arm64-v8a/libxiaolian-lib.so	5835885dcb58b02
+1	112	0	CMakeFiles/algor.dir/src/main/cpp/src/des.c.o	15927ad5cb3fc054
+3	118	0	CMakeFiles/algor.dir/src/main/cpp/src/trade_rule.c.o	9641e9446475016a
+1	128	0	CMakeFiles/algor.dir/src/main/cpp/src/aes.c.o	e0d3367e512e5b66
+129	182	0	../../../../libs/arm64-v8a/libalgor.so	f023698e3a28c1d
+182	412	0	CMakeFiles/xiaolian-lib.dir/src/main/cpp/src/xiaolian-lib.cpp.o	d69c5c4cf0958359
+412	491	0	../../../../libs/arm64-v8a/libxiaolian-lib.so	5835885dcb58b02

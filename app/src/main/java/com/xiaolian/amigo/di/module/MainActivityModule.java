@@ -22,6 +22,8 @@ import com.xiaolian.amigo.data.manager.MainDataManager;
 import com.xiaolian.amigo.data.manager.UserDataManager;
 import com.xiaolian.amigo.data.manager.intf.IMainDataManager;
 import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
+import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
+import com.xiaolian.amigo.data.prefs.SharedPreferencesHelp;
 import com.xiaolian.amigo.di.MainActivityContext;
 import com.xiaolian.amigo.ui.main.MainPresenter;
 import com.xiaolian.amigo.ui.main.SplashPresenter;
@@ -52,6 +54,12 @@ public class MainActivityModule {
         return mActivity;
     }
 
+
+    @Provides
+    ISharedPreferencesHelp provideSharedPreferencesHelp(SharedPreferencesHelp sharedPreferencesHelp){
+        return sharedPreferencesHelp;
+    }
+
     @Provides
     @MainActivityContext
     IMainPresenter<IMainView> provideMainPresenter(
@@ -73,6 +81,8 @@ public class MainActivityModule {
 
     @Provides
     IUserDataManager provideUserDataManager(UserDataManager manager){return manager;}
+
+
 
 
 

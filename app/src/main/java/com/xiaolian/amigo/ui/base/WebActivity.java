@@ -32,7 +32,10 @@ import com.google.zxing.client.android.Intents;
 import com.xiaolian.amigo.BuildConfig;
 import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.R;
+import com.xiaolian.amigo.data.manager.intf.IMainDataManager;
+import com.xiaolian.amigo.data.manager.intf.IUserDataManager;
 import com.xiaolian.amigo.data.network.model.device.JsWasher;
+import com.xiaolian.amigo.data.prefs.ISharedPreferencesHelp;
 import com.xiaolian.amigo.di.componet.DaggerMainActivityComponent;
 import com.xiaolian.amigo.di.module.MainActivityModule;
 import com.xiaolian.amigo.ui.device.washer.ScanActivity;
@@ -45,6 +48,8 @@ import com.xiaolian.amigo.util.Log;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -103,6 +108,9 @@ public class WebActivity extends BaseActivity {
             R.drawable.loading_one, R.drawable.loading_two,
             R.drawable.loading_three, R.drawable.loading_four
     };
+
+    @Inject
+    ISharedPreferencesHelp sharedPreferencesHelp ;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -352,6 +360,13 @@ public class WebActivity extends BaseActivity {
                 scan();
             }else if("recharge".equals(type)){
                 goToPayActivity();
+            }else if ("tokenExchange".equals(type)){
+                String accessToken =waher.getData().getAccessToken();
+                String refreshToken = waher.getData().getRefreshToken();
+                
+                if (!TextUtils.isEmpty(accessToken)) sharedPreferencesHelp.setAccessToken(accessToken);
+
+                if (!TextUtils.isEmpty(refreshToken)) sharedPreferencesHelp.setReferToken(refreshToken);
             }
         }
     }
