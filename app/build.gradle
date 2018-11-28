@@ -105,7 +105,7 @@ android {
             // 袁臻
             buildConfigField "String", "SERVER", "\"http://10.0.0.37:5081/\"" //
             buildConfigField "String", "SERVER_BATHROOM", "\"http://10.0.0.37:5082/\"" //
-            buildConfigField "String", "H5_SERVER", "\"http://10.0.0.37:5097/c\"" //
+            buildConfigField "String", "H5_SERVER", "\"http://10.0.0.4:5000/c\"" //
 
 
             // qa3

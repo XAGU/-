@@ -237,11 +237,6 @@ public class BlogFragment extends BaseFragment implements IBlogView  , SocialImg
 
 
     @Override
-    protected void initData() {
-
-    }
-
-    @Override
     protected void initView() {
         if (mPotsData== null && mHotPotsData == null || mPotsData.size() == 0 && mHotPotsData.size() ==0)
             requestNet();

@@ -60,8 +60,12 @@ import static com.xiaolian.amigo.ui.device.washer.ScanActivity.SCAN_TYPE;
  */
 
 public class HomeFragment2 extends BaseFragment {
-    private IMainPresenter<IMainView> presenter ;
+    protected IMainPresenter<IMainView> presenter ;
     private boolean isServerError ;
+
+    public void setPresenter(IMainPresenter<IMainView> presenter) {
+        this.presenter = presenter;
+    }
 
     @SuppressLint("ValidFragment")
     public HomeFragment2(IMainPresenter<IMainView> presenter , boolean isServerError){
@@ -137,7 +141,7 @@ public class HomeFragment2 extends BaseFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View homeView = inflater.inflate(R.layout.fragment_home, container, false);
         unbinder = ButterKnife.bind(this, homeView);
-        initView();
+//        initView();
         return homeView;
     }
 
@@ -531,12 +535,8 @@ public class HomeFragment2 extends BaseFragment {
 
 
     @Override
-    protected void initData() {
-
-        }
-
-    @Override
     protected void initView() {
+        android.util.Log.e(TAG, "initView: " );
         requestData();
     }
 

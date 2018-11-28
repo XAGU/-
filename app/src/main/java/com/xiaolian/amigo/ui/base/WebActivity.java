@@ -363,7 +363,7 @@ public class WebActivity extends BaseActivity {
             }else if ("tokenExchange".equals(type)){
                 String accessToken =waher.getData().getAccessToken();
                 String refreshToken = waher.getData().getRefreshToken();
-                
+
                 if (!TextUtils.isEmpty(accessToken)) sharedPreferencesHelp.setAccessToken(accessToken);
 
                 if (!TextUtils.isEmpty(refreshToken)) sharedPreferencesHelp.setReferToken(refreshToken);

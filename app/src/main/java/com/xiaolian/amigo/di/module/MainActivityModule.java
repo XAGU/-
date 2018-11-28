@@ -54,12 +54,6 @@ public class MainActivityModule {
         return mActivity;
     }
 
-
-    @Provides
-    ISharedPreferencesHelp provideSharedPreferencesHelp(SharedPreferencesHelp sharedPreferencesHelp){
-        return sharedPreferencesHelp;
-    }
-
     @Provides
     @MainActivityContext
     IMainPresenter<IMainView> provideMainPresenter(

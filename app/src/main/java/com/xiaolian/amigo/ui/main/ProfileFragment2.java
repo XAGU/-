@@ -100,7 +100,12 @@ public class ProfileFragment2 extends BaseFragment {
         this.isServerError = isServerError;
     }
 
-    IMainPresenter<IMainView> presenter;
+
+    public void setPresenter(IMainPresenter<IMainView> presenter) {
+        this.presenter = presenter;
+    }
+
+    public  IMainPresenter<IMainView> presenter;
     boolean isServerError;
 
     ProfileAdaptor adaptor;
@@ -122,7 +127,7 @@ public class ProfileFragment2 extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         unbinder = ButterKnife.bind(this, view);
-        initView();
+//        initView();
         return view;
     }
 
@@ -279,12 +284,8 @@ public class ProfileFragment2 extends BaseFragment {
     }
 
     @Override
-    protected void initData() {
-
-    }
-
-    @Override
     protected void initView() {
+        android.util.Log.e(TAG, "initView: "  + (presenter == null));
         if (presenter == null) return;
         if (presenter.isLogin()) {
             Log.e(TAG ,"profileFragment2>>>>>>>>  initView");
@@ -292,6 +293,7 @@ public class ProfileFragment2 extends BaseFragment {
             User user = presenter.getUserInfo();
             setAvatar(user.getPictureUrl());
             if (tvNickName != null) {
+                android.util.Log.e(TAG, "initView: " + user.getNickName() );
                 if (!user.getNickName().equals(tvNickName.getText().toString()))
                     tvNickName.setText(user.getNickName());
             }
@@ -299,6 +301,7 @@ public class ProfileFragment2 extends BaseFragment {
             if (tvSchoolName != null)
                 tvSchoolName.setVisibility(View.GONE);
         } else {
+            android.util.Log.e(TAG, "initView:   未登录>>>>>>" + presenter.isLogin()  );
             setAvatar("");
             if (tvNickName != null)
                 tvNickName.setText("登录/注册");

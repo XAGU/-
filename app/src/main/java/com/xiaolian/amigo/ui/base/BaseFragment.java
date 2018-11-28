@@ -63,6 +63,8 @@ public abstract class BaseFragment extends Fragment  implements IBaseView{
 
     protected View mRootView;
 
+    protected boolean isInitView = false ;
+
     protected AppCompatActivity mActivity ;
 
     protected  boolean isCreated  ;
@@ -105,17 +107,33 @@ public abstract class BaseFragment extends Fragment  implements IBaseView{
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        Log.e(TAG ,"hidden" + hidden);
-        if (!hidden){
+        android.util.Log.e(TAG, "onHiddenChanged: >>>>> " + hidden  );
+        if (!hidden && !isInitView){
             initView();
         }
+        isInitView = false ;
     }
 
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        android.util.Log.e(TAG, "setUserVisibleHint: "   + isVisibleToUser);
+        super.setUserVisibleHint(isVisibleToUser);
 
-    protected abstract  void initData();
+    }
 
-    protected abstract  void initView() ;
+    @Override
+    public void onStart() {
+        super.onStart();
+        android.util.Log.e(TAG, "onStart: >>>>>>>  visibleHint "  +  getUserVisibleHint());
+        if (getUserVisibleHint()){
+            isInitView = true ;
+            initView();
+        }
+
+    }
+
+    protected abstract void initView();
 
     private void selectPhoto() {
         mPickImageUri = getImageUri("pick");

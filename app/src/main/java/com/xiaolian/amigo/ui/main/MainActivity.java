@@ -182,34 +182,35 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        android.util.Log.e(TAG, "onCreate: " );
         setContentView(R.layout.activity_main);
         setUnBinder(ButterKnife.bind(this));
         getActivityComponent().inject(this);
-        if (savedInstanceState != null){
-            lastFragment = savedInstanceState.getInt(KEY_LASTFRAGMENT);
-        }
         presenter.onAttach(this);
-        if (isNotice) {
-            presenter.routeHeaterOrBathroom();
-        }
-        // 友盟日志加密
-        MobclickAgent.enableEncrypt(true);
-        MobclickAgent.setCatchUncaughtExceptions(true);
-        if (presenter.isLogin()) {
-            presenter.checkUpdate(AppUtils.getAppVersionCode(this),
-                    AppUtils.getVersionName(this));
-        }
-        fragments = new Fragment[3];
-        initTable();
+            if (isNotice) {
+                presenter.routeHeaterOrBathroom();
+            }
+            // 友盟日志加密
+            MobclickAgent.enableEncrypt(true);
+            MobclickAgent.setCatchUncaughtExceptions(true);
+            if (presenter.isLogin()) {
+                presenter.checkUpdate(AppUtils.getAppVersionCode(this),
+                        AppUtils.getVersionName(this));
+            }
+            if (fragments == null)
+            fragments = new Fragment[3];
 
-        rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .subscribe(granted -> {
-                    if (granted) {
 
-                    } else {
-                        showMessage("没有SD卡权限");
-                    }
-                });
+            initTable(savedInstanceState);
+
+            rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    .subscribe(granted -> {
+                        if (granted) {
+
+                        } else {
+                            showMessage("没有SD卡权限");
+                        }
+                    });
     }
 
 
@@ -231,7 +232,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
      * 弹性动画
      */
     private void springAnimator(View view){
-        android.util.Log.e(TAG, "springAnimator: " );
         int normalHeight = ScreenUtils.dpToPxInt(this ,30);
         ValueAnimator animator2 = ValueAnimator.ofInt(ScreenUtils.dpToPxInt(this ,5),ScreenUtils.dpToPxInt(this ,30) , ScreenUtils.dpToPxInt(this ,65) , ScreenUtils.dpToPxInt(this ,80),ScreenUtils.dpToPxInt(this ,65)
                                                          ,ScreenUtils.dpToPxInt(this ,70) ,ScreenUtils.dpToPxInt(this ,65)    );
@@ -254,16 +254,12 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         animator2.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
-
             }
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                android.util.Log.e(TAG, "onAnimationEnd: " );
                 if (fm != null){
                     if (fm.findFragmentByTag(SocalFragment.class.getSimpleName()) == null){
-
-                        android.util.Log.e(TAG, "onAnimationEnd:>>>>>>ScoalFragment 为空 " );
                         setDefalutItem(1);
                     }
                 }
@@ -289,16 +285,30 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     /**
      * 初始化底部导航栏
      */
-    private void initTable() {
+    private void initTable(Bundle bundle) {
+
+        //  获取被内存杀死时的activity保存的上一个fragment
+        if (bundle != null){
+            try {
+                lastFragment = bundle.getInt(KEY_LASTFRAGMENT);
+            }catch (Exception e){
+                android.util.Log.e(TAG, "initTable: "  + e.getMessage()  + "   isLogin >>>>>" + presenter.isLogin());
+            }
+        }
         if (fm == null) fm = getSupportFragmentManager();
 
+        // 杀死界面重新进入
         if (presenter.isLogin()) {
-            setDefalutItem(0);
-            tableBottomImageChange(0);
+            if (lastFragment == -1) {
+                setDefalutItem(0);
+                tableBottomImageChange(0);
+            }else{
+                setDefalutItem(lastFragment);
+                tableBottomImageChange(lastFragment);
+            }
         }else{
             setDefalutItem(2);
             tableBottomImageChange(2);
-//            redirectToLogin();
         }
     }
     FragmentTransaction transaction ;
@@ -310,7 +320,9 @@ public class MainActivity extends MainBaseActivity implements IMainView {
      * @param position
      */
     private void setDefalutItem(int position) {
+        android.util.Log.e(TAG, "setDefalutItem: " + position );
         if (position == -1 || position > 2) return ;
+//        if (position == lastFragment) return ;
         if (position == 0){
            if (fm.findFragmentByTag(HomeFragment2.class.getSimpleName()) == null){
                transaction = fm.beginTransaction();
@@ -328,17 +340,23 @@ public class MainActivity extends MainBaseActivity implements IMainView {
            }else{
                transaction = fm.beginTransaction();
                fragment = fm.findFragmentByTag(HomeFragment2.class.getSimpleName());
+               if (fragment  instanceof  HomeFragment2){
+                   if (((HomeFragment2)fragment).presenter == null) {
+                       if (presenter != null) ((HomeFragment2)fragment).setPresenter(presenter);
+                   }
+               }
+               fragments[0] = fragment ;
                if (lastFragment != -1) {
                    if (fragment.isAdded()) {
                        if (fragments[lastFragment] != null) transaction.hide(fragments[lastFragment]);
                        try {
+                           if (fragment.isHidden())
                            transaction.show(fragment).commit();
                        }catch (Exception e){
                            Log.wtf(TAG ,e.getMessage());
                            transaction.show(fragment).commitAllowingStateLoss();
                        }
                    }else{
-
                        transaction.add(R.id.fragment, fragment, HomeFragment2.class.getSimpleName());
                        transaction.commit();
                    }
@@ -355,7 +373,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                         transaction.add(R.id.fragment, socalFragment, SocalFragment.class.getSimpleName());
                         transaction.commit();
                     } else {
-                        if (fragments[lastFragment] != null)
+                        if (fragments[lastFragment] != null )
                             transaction.hide(fragments[lastFragment]);
                         if (!socalFragment.isAdded())
                         transaction.add(R.id.fragment, socalFragment, SocalFragment.class.getSimpleName());
@@ -366,10 +384,15 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                     transaction = fm.beginTransaction();
                     fragment = fm.findFragmentByTag(SocalFragment.class.getSimpleName());
                     socalFragment = (SocalFragment) fragment;
+                    fragments[1] = socalFragment;
+                    if (socalFragment.mainPresenter == null){
+                        if (presenter != null) socalFragment.setPresenter(presenter);
+                    }
                     if (lastFragment != -1) {
                         if (fragments[lastFragment] != null)
                             transaction.hide(fragments[lastFragment]);
                         if (fragment.isAdded()) {
+                            if (fragment.isAdded() && fragment.isHidden())
                             transaction.show(fragment).commit();
                         } else {
                             transaction.add(R.id.fragment, fragment, SocalFragment.class.getSimpleName());
@@ -384,31 +407,36 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 transaction = fm.beginTransaction();
                 fragment = new ProfileFragment2(presenter ,isServerError);
                 fragments[2] = fragment;
-                if (lastFragment == -1 && !fragment.isAdded()){
-                    transaction.add(R.id.fragment, fragment, ProfileFragment2.class.getSimpleName());
-                    transaction.commit();
-                }else{
-                    if (fragments[lastFragment] != null)
+                android.util.Log.e(TAG, "setDefalutItem: " );
+                if (lastFragment != -1 && fragments[lastFragment] != null) {
                     transaction.hide(fragments[lastFragment]);
-                    if (!fragment.isAdded())
-                    transaction.add(R.id.fragment, fragment, ProfileFragment2.class.getSimpleName());
-                    transaction.commit();
                 }
-
+                if (!fragment.isAdded()){
+                    transaction.add(R.id.fragment, fragment, ProfileFragment2.class.getSimpleName());
+                }else{
+                    if (fragment.isHidden())
+                    transaction.show(fragment);
+                }
+                transaction.commit();
             }else{
                 transaction = fm.beginTransaction();
                 fragment = fm.findFragmentByTag(ProfileFragment2.class.getSimpleName());
-                if (lastFragment != -1) {
-                    if (fragments[lastFragment] != null){
-                        transaction.hide(fragments[lastFragment]);
-                    }
-                    if (fragment.isAdded()) {
-                        transaction.show(fragment).commit();
-                    }else{
-                        transaction.add(R.id.fragment, fragment, ProfileFragment2.class.getSimpleName());
-                        transaction.commit();
-                    }
+                fragments[2] = fragment;
+                if (fragment instanceof ProfileFragment2){
+                    if(((ProfileFragment2) fragment).presenter == null && presenter != null ) ((ProfileFragment2) fragment).setPresenter(presenter);
                 }
+                if (lastFragment != -1 && fragments[lastFragment] != null) {
+                    transaction.hide(fragments[lastFragment]);
+                }
+
+                if (fragment.isAdded()) {
+                    if (fragment.isHidden())
+                    transaction.show(fragment);
+                }else{
+                    transaction.add(R.id.fragment, fragment, ProfileFragment2.class.getSimpleName());
+
+                }
+                transaction.commit();
             }
         }
         lastFragment = position ;
@@ -465,7 +493,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 }else {
                     tableBottomImageChange(1);
                     if (fm.findFragmentByTag(SocalFragment.class.getSimpleName()) != null) {
-                        android.util.Log.e(TAG, "socalFragment 不为空: "  );
                         setDefalutItem(1);
                     }
                 }
@@ -486,25 +513,25 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             presenter.checkUpdate(AppUtils.getAppVersionCode(this),
                     AppUtils.getVersionName(this));
         }
-
-//        if (intent != null) {
-//            boolean isSwitchToHome = intent.getBooleanExtra(INTENT_KEY_SWITCH_TO_HOME, false);
-//            if (isSwitchToHome) {
-//                onSwitch(0);
-//            }
-//            int actionType = intent.getIntExtra(Constant.INTENT_ACTION, 0);
-//            if (IntentAction.getAction(actionType) == IntentAction.ACTION_GOTO_HEATER) {
-//                if (btSwitch != null) {
-//                    btSwitch.postDelayed(this::gotoHeater, 200);
-//                }
-//            }
-//            isNotice = intent.getBooleanExtra(Constant.BUNDLE_ID, false);
-//        }
-
-
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        android.util.Log.e(TAG, "onSaveInstanceState: " );
+        super.onSaveInstanceState(outState);
+        if (lastFragment != -1) {
+            lastFragment = 0 ;
+            outState.putInt(KEY_LASTFRAGMENT, lastFragment);
+        }
+    }
 
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+//        lastFragment = savedInstanceState.getInt(KEY_LASTFRAGMENT);
+//        android.util.Log.e(TAG, "onRestoreInstanceState: " + lastFragment );
+
+    }
 
     @Override
     protected void setUp() {
@@ -572,6 +599,16 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @Override
     protected void onResume() {
         super.onResume();
+        Log.e(TAG ,"onResume");
+        FragmentInit();
+
+
+    }
+
+    /**
+     * 首页界面初始化显示
+     */
+    private void FragmentInit() {
         if (!presenter.isLogin()){
             showNoticeAmount(0);
             initSchoolBiz();
@@ -579,32 +616,10 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         }else {
             // 注册信鸽推送
             registerXGPush();
-            Log.d(TAG ,"onResume");
             presenter.noticeCount();
             uploadDeviceInfo();
-            if (presenter.getIsFirstAfterLogin()) {
-                if (fm == null) return ;
-                presenter.setIsFirstAfterLogin(false);
-                SocalFragment socalFragment = (SocalFragment) fm.findFragmentByTag(SocalFragment.class.getSimpleName());
-                if (socalFragment == null ) {
-                    setDefalutItem(0);
-                    tableBottomImageChange(0);
-                    return;
-                }
-                if (socalFragment.isAdded()) {
-                    // commit  方法在activity 的onSaveInstanceState()之后调用会报错 。 解决方法是吧commit 换成 commitAllowingStateLoss();
-                    fm.beginTransaction().remove(socalFragment).commitAllowingStateLoss();
-                }
-                setDefalutItem(0);
-                tableBottomImageChange(0);
-
-            }
             presenter.deleteFile();
         }
-
-
-
-
     }
 
     private void uploadDeviceInfo() {
@@ -765,7 +780,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public void showBanners(List<BannerDTO> banners) {
-        android.util.Log.e(TAG, "showBanners: " + (defaultBanners == null));
         List<BannerDTO> settingBanners = new ArrayList<>();
         if (defaultBanners != null) {
             settingBanners.addAll(defaultBanners);
@@ -774,7 +788,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             settingBanners.addAll(banners);
         }
         if (!settingBanners.isEmpty()) {
-            Log.d(TAG, "showBanners");
             hasBanners = true;
             EventBus.getDefault().post(new HomeFragment2.Event(HomeFragment2.Event.EventType.BANNER,
                     settingBanners));
@@ -1287,7 +1300,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     private void gotoWasher() {
        // startActivity(new Intent(this, WasherActivity.class));
         Intent intent = new Intent(this,WebActivity.class);
-        String url = BuildConfig.H5_SERVER +"/washer" + "?=accessToken" + presenter.getAccessToken()+"&refreshToken=" +presenter.getRefreshToken() + "&schoolId=" + presenter.getSchoolId();
+        String url = BuildConfig.H5_SERVER +"/washer" + "?accessToken=" + presenter.getAccessToken()+"&refreshToken=" +presenter.getRefreshToken() + "&schoolId=" + presenter.getSchoolId();
         intent.putExtra(WebActivity.INTENT_KEY_WASHER_URL,url);
         startActivity(intent);
     }
