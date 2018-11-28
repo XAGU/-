@@ -118,7 +118,6 @@ public class ProfileFragment2 extends BaseFragment {
 
     private Unbinder unbinder;
 
-    private String avatarUrl;  //  图片url
 
 
 
@@ -135,7 +134,6 @@ public class ProfileFragment2 extends BaseFragment {
     public void setAvatar(String pictureUrl) {
         if (ivAvatar == null) return;
         if (!TextUtils.isEmpty(pictureUrl)) {
-            avatarUrl = pictureUrl;
             Glide.with(this).load(Constant.IMAGE_PREFIX + pictureUrl)
                     .asBitmap()
                     .placeholder(R.drawable.ic_picture_error)

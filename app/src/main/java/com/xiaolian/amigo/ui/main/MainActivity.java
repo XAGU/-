@@ -23,7 +23,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.tencent.android.tpush.XGIOperateCallback;
-import com.tencent.android.tpush.XGPushConfig;
 import com.tencent.android.tpush.XGPushManager;
 import com.umeng.analytics.MobclickAgent;
 import com.xiaolian.amigo.BuildConfig;
@@ -88,7 +87,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import lombok.Data;
-import rx.functions.Action1;
 
 import static android.widget.RelativeLayout.CENTER_IN_PARENT;
 import static com.xiaolian.amigo.data.enumeration.Device.DISPENSER;
@@ -286,31 +284,33 @@ public class MainActivity extends MainBaseActivity implements IMainView {
      * 初始化底部导航栏
      */
     private void initTable(Bundle bundle) {
-
         //  获取被内存杀死时的activity保存的上一个fragment
-        if (bundle != null){
+        if (fm == null) fm = getSupportFragmentManager() ;
+        if (bundle != null) {
             try {
                 lastFragment = bundle.getInt(KEY_LASTFRAGMENT);
-            }catch (Exception e){
-                android.util.Log.e(TAG, "initTable: "  + e.getMessage()  + "   isLogin >>>>>" + presenter.isLogin());
+                android.util.Log.e(TAG, "initTable: " + lastFragment );
+            } catch (Exception e) {
+                android.util.Log.e(TAG, "initTable: " + e.getMessage() + "   isLogin >>>>>" + presenter.isLogin());
             }
         }
-        if (fm == null) fm = getSupportFragmentManager();
-
-        // 杀死界面重新进入
-        if (presenter.isLogin()) {
-            if (lastFragment == -1) {
-                setDefalutItem(0);
-                tableBottomImageChange(0);
-            }else{
-                setDefalutItem(lastFragment);
-                tableBottomImageChange(lastFragment);
+            // 杀死界面重新进入
+            if (presenter.isLogin()) {
+                if (lastFragment == -1) {
+                    android.util.Log.e(TAG, "initTable:>>>>>    0 "  );
+                    setDefalutItem(0);
+                    tableBottomImageChange(0);
+                } else {
+                    android.util.Log.e(TAG, "initTable: >>>>>  " +lastFragment );
+                    setDefalutItem(lastFragment);
+                    tableBottomImageChange(lastFragment);
+                }
+            } else {
+                android.util.Log.e(TAG, "initTable: >>>>>>  2 "  );
+                setDefalutItem(2);
+                tableBottomImageChange(2);
             }
-        }else{
-            setDefalutItem(2);
-            tableBottomImageChange(2);
         }
-    }
     FragmentTransaction transaction ;
 
 
@@ -322,48 +322,83 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     private void setDefalutItem(int position) {
         android.util.Log.e(TAG, "setDefalutItem: " + position );
         if (position == -1 || position > 2) return ;
-//        if (position == lastFragment) return ;
-        if (position == 0){
-           if (fm.findFragmentByTag(HomeFragment2.class.getSimpleName()) == null){
-               transaction = fm.beginTransaction();
-                 fragment = new HomeFragment2(presenter ,isServerError);
-                 fragments[0] = fragment ;
-                 if (lastFragment == -1 && !fragment.isAdded()){
-                     transaction.add(R.id.fragment, fragment, HomeFragment2.class.getSimpleName());
-                     transaction.commit();
-                 }else{
-                     if (fragments[lastFragment]!= null) transaction.hide(fragments[lastFragment]);
-                     transaction.add(R.id.fragment, fragment, HomeFragment2.class.getSimpleName());
-                     transaction.commit();
-                 }
+        if (fm == null) fm =getSupportFragmentManager() ;
+        if (position == lastFragment){
+            Fragment fragment = null ;
+            switch (position){
+                case 0:
+                     fragment = fm.findFragmentByTag(HomeFragment2.class.getSimpleName());
+                     if (fragment != null){
+                         if (((HomeFragment2)fragment).presenter == null && presenter != null){
+                             ((HomeFragment2)fragment).setPresenter(presenter);
+                         }
+                     }
+                     break;
+                case 1:
+                    fragment = fm.findFragmentByTag(SocalFragment.class.getSimpleName());
+                    if (fragment != null){
+                        if (((SocalFragment)fragment).mainPresenter == null && presenter != null){
+                            ((SocalFragment)fragment).setPresenter(presenter);
+                        }
+                    }
+                    break;
+                case 2:
+                    fragment = fm.findFragmentByTag(ProfileFragment2.class.getSimpleName());
+                    if (fragment != null){
+                        if (((ProfileFragment2)fragment).presenter == null && presenter != null){
+                            ((ProfileFragment2)fragment).setPresenter(presenter);
+                        }
+                    }
+                    break;
+                    default:
+                        break;
+            }
 
-           }else{
-               transaction = fm.beginTransaction();
-               fragment = fm.findFragmentByTag(HomeFragment2.class.getSimpleName());
-               if (fragment  instanceof  HomeFragment2){
-                   if (((HomeFragment2)fragment).presenter == null) {
-                       if (presenter != null) ((HomeFragment2)fragment).setPresenter(presenter);
-                   }
-               }
-               fragments[0] = fragment ;
-               if (lastFragment != -1) {
-                   if (fragment.isAdded()) {
-                       if (fragments[lastFragment] != null) transaction.hide(fragments[lastFragment]);
-                       try {
-                           if (fragment.isHidden())
-                           transaction.show(fragment).commit();
-                       }catch (Exception e){
-                           Log.wtf(TAG ,e.getMessage());
-                           transaction.show(fragment).commitAllowingStateLoss();
-                       }
-                   }else{
-                       transaction.add(R.id.fragment, fragment, HomeFragment2.class.getSimpleName());
-                       transaction.commit();
-                   }
-               }
-           }
-        }
-        if (position == 1 ){
+        }else {
+            if (position == 0) {
+                if (fm.findFragmentByTag(HomeFragment2.class.getSimpleName()) == null) {
+                    transaction = fm.beginTransaction();
+                    fragment = new HomeFragment2(presenter, isServerError);
+                    fragments[0] = fragment;
+                    if (lastFragment == -1 && !fragment.isAdded()) {
+                        transaction.add(R.id.fragment, fragment, HomeFragment2.class.getSimpleName());
+                        transaction.commit();
+                    } else {
+                        if (fragments[lastFragment] != null)
+                            transaction.hide(fragments[lastFragment]);
+                        transaction.add(R.id.fragment, fragment, HomeFragment2.class.getSimpleName());
+                        transaction.commit();
+                    }
+
+                } else {
+                    transaction = fm.beginTransaction();
+                    fragment = fm.findFragmentByTag(HomeFragment2.class.getSimpleName());
+                    if (fragment instanceof HomeFragment2) {
+                        if (((HomeFragment2) fragment).presenter == null) {
+                            if (presenter != null)
+                                ((HomeFragment2) fragment).setPresenter(presenter);
+                        }
+                    }
+                    fragments[0] = fragment;
+                    if (lastFragment != -1) {
+                        if (fragment.isAdded()) {
+                            if (fragments[lastFragment] != null)
+                                transaction.hide(fragments[lastFragment]);
+                            try {
+                                if (fragment.isHidden())
+                                    transaction.show(fragment).commit();
+                            } catch (Exception e) {
+                                Log.wtf(TAG, e.getMessage());
+                                transaction.show(fragment).commitAllowingStateLoss();
+                            }
+                        } else {
+                            transaction.add(R.id.fragment, fragment, HomeFragment2.class.getSimpleName());
+                            transaction.commit();
+                        }
+                    }
+                }
+            }
+            if (position == 1) {
 
                 if (fm.findFragmentByTag(SocalFragment.class.getSimpleName()) == null) {
                     transaction = fm.beginTransaction();
@@ -373,10 +408,10 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                         transaction.add(R.id.fragment, socalFragment, SocalFragment.class.getSimpleName());
                         transaction.commit();
                     } else {
-                        if (fragments[lastFragment] != null )
+                        if (fragments[lastFragment] != null)
                             transaction.hide(fragments[lastFragment]);
                         if (!socalFragment.isAdded())
-                        transaction.add(R.id.fragment, socalFragment, SocalFragment.class.getSimpleName());
+                            transaction.add(R.id.fragment, socalFragment, SocalFragment.class.getSimpleName());
                         transaction.commit();
                     }
 
@@ -385,7 +420,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                     fragment = fm.findFragmentByTag(SocalFragment.class.getSimpleName());
                     socalFragment = (SocalFragment) fragment;
                     fragments[1] = socalFragment;
-                    if (socalFragment.mainPresenter == null){
+                    if (socalFragment.mainPresenter == null) {
                         if (presenter != null) socalFragment.setPresenter(presenter);
                     }
                     if (lastFragment != -1) {
@@ -393,53 +428,55 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                             transaction.hide(fragments[lastFragment]);
                         if (fragment.isAdded()) {
                             if (fragment.isAdded() && fragment.isHidden())
-                            transaction.show(fragment).commit();
+                                transaction.show(fragment).commit();
                         } else {
                             transaction.add(R.id.fragment, fragment, SocalFragment.class.getSimpleName());
                             transaction.commit();
                         }
                     }
                 }
-        }
-
-        if (position == 2){
-            if (fm.findFragmentByTag(ProfileFragment2.class.getSimpleName()) == null){
-                transaction = fm.beginTransaction();
-                fragment = new ProfileFragment2(presenter ,isServerError);
-                fragments[2] = fragment;
-                android.util.Log.e(TAG, "setDefalutItem: " );
-                if (lastFragment != -1 && fragments[lastFragment] != null) {
-                    transaction.hide(fragments[lastFragment]);
-                }
-                if (!fragment.isAdded()){
-                    transaction.add(R.id.fragment, fragment, ProfileFragment2.class.getSimpleName());
-                }else{
-                    if (fragment.isHidden())
-                    transaction.show(fragment);
-                }
-                transaction.commit();
-            }else{
-                transaction = fm.beginTransaction();
-                fragment = fm.findFragmentByTag(ProfileFragment2.class.getSimpleName());
-                fragments[2] = fragment;
-                if (fragment instanceof ProfileFragment2){
-                    if(((ProfileFragment2) fragment).presenter == null && presenter != null ) ((ProfileFragment2) fragment).setPresenter(presenter);
-                }
-                if (lastFragment != -1 && fragments[lastFragment] != null) {
-                    transaction.hide(fragments[lastFragment]);
-                }
-
-                if (fragment.isAdded()) {
-                    if (fragment.isHidden())
-                    transaction.show(fragment);
-                }else{
-                    transaction.add(R.id.fragment, fragment, ProfileFragment2.class.getSimpleName());
-
-                }
-                transaction.commit();
             }
+
+            if (position == 2) {
+                if (fm.findFragmentByTag(ProfileFragment2.class.getSimpleName()) == null) {
+                    transaction = fm.beginTransaction();
+                    fragment = new ProfileFragment2(presenter, isServerError);
+                    fragments[2] = fragment;
+                    android.util.Log.e(TAG, "setDefalutItem: " + lastFragment);
+                    if (lastFragment != -1 && fragments[lastFragment] != null) {
+                        transaction.hide(fragments[lastFragment]);
+                    }
+                    if (!fragment.isAdded()) {
+                        transaction.add(R.id.fragment, fragment, ProfileFragment2.class.getSimpleName());
+                    } else {
+                        if (fragment.isHidden())
+                            transaction.show(fragment);
+                    }
+                    transaction.commit();
+                } else {
+                    transaction = fm.beginTransaction();
+                    fragment = fm.findFragmentByTag(ProfileFragment2.class.getSimpleName());
+                    fragments[2] = fragment;
+                    if (fragment instanceof ProfileFragment2) {
+                        if (((ProfileFragment2) fragment).presenter == null && presenter != null)
+                            ((ProfileFragment2) fragment).setPresenter(presenter);
+                    }
+                    if (lastFragment != -1 && fragments[lastFragment] != null) {
+                        transaction.hide(fragments[lastFragment]);
+                    }
+
+                    if (fragment.isAdded()) {
+                        if (fragment.isHidden())
+                            transaction.show(fragment);
+                    } else {
+                        transaction.add(R.id.fragment, fragment, ProfileFragment2.class.getSimpleName());
+
+                    }
+                    transaction.commit();
+                }
+            }
+            lastFragment = position;
         }
-        lastFragment = position ;
     }
 
     /**
@@ -482,6 +519,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @OnClick({R.id.home_rl, R.id.social_rl, R.id.personal_rl})
     public void onTabItemSelect(View view) {
+
         switch (view.getId()) {
             case R.id.home_rl:
                 tableBottomImageChange(0);
@@ -513,7 +551,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                     AppUtils.getVersionName(this));
 
             if (presenter.getIsFirstAfterLogin()) {
-                if (fm == null) return ;
+                if (fm == null) fm = getSupportFragmentManager() ;
                 presenter.setIsFirstAfterLogin(false);
                 SocalFragment socalFragment = (SocalFragment) fm.findFragmentByTag(SocalFragment.class.getSimpleName());
                 if (socalFragment == null ) {
@@ -532,9 +570,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        android.util.Log.e(TAG, "onSaveInstanceState: " );
         super.onSaveInstanceState(outState);
-        if (lastFragment != -1) {
+        if (lastFragment != -1 && presenter != null && presenter.isLogin()) {
             outState.putInt(KEY_LASTFRAGMENT, lastFragment);
         }
     }
@@ -546,7 +583,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             isServerError = getIntent().getBooleanExtra(INTENT_KEY_SERVER_ERROR, false);
             defaultBanners = getIntent().getParcelableArrayListExtra(INTENT_KEY_BANNERS);
             isNotice = getIntent().getBooleanExtra(Constant.BUNDLE_ID, false);
-            android.util.Log.e(TAG, "setUp: " + (defaultBanners == null));
         }
     }
 
@@ -605,7 +641,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.e(TAG ,"onResume");
         FragmentInit();
 
 
@@ -661,7 +696,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public void showTimeValidDialog(int deviceType, DeviceCheckRespDTO data) {
-        Log.d(TAG, "showTimeValidDialog: " + data.getTitle() + "->" + data.getRemark() + "->" + deviceType);
         if (null == availabilityDialog) {
             availabilityDialog = new AvailabilityDialog(this);
         }
@@ -710,7 +744,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
     @Override
     public void gotoDevice(Device device, String macAddress, Long supplierId,
                            String location, Long residenceId, boolean recovery) {
-        Log.d(TAG, "gotoDevice: " + device.getDesc() + "->" + macAddress + "->" + supplierId + "->" + location + "->" + residenceId);
         if (TextUtils.isEmpty(macAddress)) {
             onError("设备macAddress不合法");
         } else {
@@ -768,7 +801,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public void showUrgentNotify(String content, Long id) {
-        Log.d(TAG, "showUrgentNotify: " + content + "->" + id);
         NoticeAlertDialog dialog = new NoticeAlertDialog(this);
         dialog.setContent(content);
         dialog.setOnOkClickListener((dialog1, isNotReminder) -> {
@@ -813,7 +845,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
             initSchoolBiz();
             return;
         }
-        Log.d(TAG, "showSchoolBiz");
         this.businesses = businesses;
         for (BriefSchoolBusiness business : businesses) {
             if (business.getBusinessId() == 1) {
@@ -839,7 +870,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public void showDeviceUsageDialog(int type, DeviceCheckRespDTO data) {
-        Log.d(TAG, "showDeviceUsageDialog: " + type);
         if (data == null || data.getBalance() == null
                 || data.getPrepay() == null || data.getMinPrepay() == null
                 || data.getTimeValid() == null) {
@@ -904,7 +934,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public void showOpenLocationDialog() {
-        Log.d(TAG, "showOpenLocationDialog");
         if (null == openLocationDialog) {
             openLocationDialog = new AvailabilityDialog(this);
         }
@@ -925,7 +954,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public void showNoDeviceDialog() {
-        Log.d(TAG, "showNoDeviceDialog");
         if (null == availabilityDialog) {
             availabilityDialog = new AvailabilityDialog(this);
         }
@@ -956,7 +984,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
 
     @Override
     public void showUpdateDialog(IVersionModel model) {
-        Log.i(TAG, "showUpdateDialog");
         rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .subscribe(granted -> {
                     if (granted) {

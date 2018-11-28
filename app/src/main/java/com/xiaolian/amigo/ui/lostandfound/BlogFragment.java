@@ -245,6 +245,7 @@ public class BlogFragment extends BaseFragment implements IBlogView  , SocialImg
      * 网络请求
      */
     protected void requestNet(){
+        if (presenter != null)
         presenter.getLostList("", page, "", topicId);
     }
 
