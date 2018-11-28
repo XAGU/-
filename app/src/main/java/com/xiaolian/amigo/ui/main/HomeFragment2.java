@@ -141,7 +141,7 @@ public class HomeFragment2 extends BaseFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View homeView = inflater.inflate(R.layout.fragment_home, container, false);
         unbinder = ButterKnife.bind(this, homeView);
-//        initView();
+        initView();
         return homeView;
     }
 

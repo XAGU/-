@@ -179,12 +179,7 @@ public class BlogFragment extends BaseFragment implements IBlogView  , SocialImg
 
 
     private void initScroll(){
-         scrollView.post(new Runnable() {
-             @Override
-             public void run() {
-                 scrollView.scrollBy(0 , ScreenUtils.dpToPxInt(mActivity , 64));
-             }
-         });
+         scrollView.post(() -> scrollView.scrollBy(0 , ScreenUtils.dpToPxInt(mActivity , 64)));
          scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
              @Override
              public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {

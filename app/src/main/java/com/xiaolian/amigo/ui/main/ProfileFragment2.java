@@ -127,7 +127,7 @@ public class ProfileFragment2 extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         unbinder = ButterKnife.bind(this, view);
-//        initView();
+        initView();
         return view;
     }
 

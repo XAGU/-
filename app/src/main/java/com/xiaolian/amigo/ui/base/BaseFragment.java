@@ -61,10 +61,6 @@ import static android.app.Activity.RESULT_OK;
  */
 public abstract class BaseFragment extends Fragment  implements IBaseView{
 
-    protected View mRootView;
-
-    protected boolean isInitView = false ;
-
     protected AppCompatActivity mActivity ;
 
     protected  boolean isCreated  ;
@@ -108,29 +104,9 @@ public abstract class BaseFragment extends Fragment  implements IBaseView{
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         android.util.Log.e(TAG, "onHiddenChanged: >>>>> " + hidden  );
-        if (!hidden && !isInitView){
+        if (!hidden){
             initView();
         }
-        isInitView = false ;
-    }
-
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        android.util.Log.e(TAG, "setUserVisibleHint: "   + isVisibleToUser);
-        super.setUserVisibleHint(isVisibleToUser);
-
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        android.util.Log.e(TAG, "onStart: >>>>>>>  visibleHint "  +  getUserVisibleHint());
-        if (getUserVisibleHint()){
-            isInitView = true ;
-            initView();
-        }
-
     }
 
     protected abstract void initView();

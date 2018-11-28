@@ -504,7 +504,6 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         }
     }
 
-
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
@@ -512,6 +511,22 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         if (presenter.isLogin()) {
             presenter.checkUpdate(AppUtils.getAppVersionCode(this),
                     AppUtils.getVersionName(this));
+
+            if (presenter.getIsFirstAfterLogin()) {
+                if (fm == null) return ;
+                presenter.setIsFirstAfterLogin(false);
+                SocalFragment socalFragment = (SocalFragment) fm.findFragmentByTag(SocalFragment.class.getSimpleName());
+                if (socalFragment == null ) {
+                    setDefalutItem(0);
+                    return;
+                }
+                if (socalFragment.isAdded()) {
+                    // commit  方法在activity 的onSaveInstanceState()之后调用会报错 。 解决方法是吧commit 换成 commitAllowingStateLoss();
+                    fm.beginTransaction().remove(socalFragment).commitAllowingStateLoss();
+                }
+                setDefalutItem(0);
+
+            }
         }
     }
 
@@ -520,17 +535,8 @@ public class MainActivity extends MainBaseActivity implements IMainView {
         android.util.Log.e(TAG, "onSaveInstanceState: " );
         super.onSaveInstanceState(outState);
         if (lastFragment != -1) {
-            lastFragment = 0 ;
             outState.putInt(KEY_LASTFRAGMENT, lastFragment);
         }
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-//        lastFragment = savedInstanceState.getInt(KEY_LASTFRAGMENT);
-//        android.util.Log.e(TAG, "onRestoreInstanceState: " + lastFragment );
-
     }
 
     @Override
