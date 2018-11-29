@@ -9,13 +9,6 @@ import rx.Observer;
 public interface ITokenApi {
 
     /**
-     * 刷新token
-     * @return
-     */
-    @POST("/token/refresh")
-    Observable<ApiResult<Void>> refreshToken();
-
-    /**
      * 移除token
      * @return
      */

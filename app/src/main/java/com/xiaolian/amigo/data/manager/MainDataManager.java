@@ -88,10 +88,7 @@ public class MainDataManager implements IMainDataManager {
         this.bathroomApi = bathroomRetrofit.create(IBathroomApi.class);
     }
 
-    @Override
-    public Observable<ApiResult<Void>> refreshToken() {
-       return  tokenApi.refreshToken();
-    }
+
 
     @Override
     public String getAccessToken() {

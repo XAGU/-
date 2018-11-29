@@ -97,20 +97,6 @@ public class MainPresenter<V extends IMainView> extends BasePresenter<V>
         interceptor.setSystemVersion(String.valueOf(systemVersion));
     }
 
-    @Override
-    public void refreshToken() {
-        addObserver(mainDataManager.refreshToken(), new NetworkObserver<ApiResult<Void>>() {
-
-            @Override
-            public void onReady(ApiResult<Void> result) {
-                if (result.getError() == null){
-                    getMvpView().startNet();
-                }else{
-                    getMvpView().onError(result.getError().getDisplayMessage());
-                }
-            }
-        });
-    }
 
     @Override
     public String getAccessToken() {

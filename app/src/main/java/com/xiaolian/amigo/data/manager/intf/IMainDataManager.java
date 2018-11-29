@@ -40,8 +40,6 @@ import rx.Observer;
 
 public interface IMainDataManager {
 
-    Observable<ApiResult<Void>> refreshToken();
-
     String  getAccessToken() ;
 
     String getRefreshToken();

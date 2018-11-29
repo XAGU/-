@@ -53,7 +53,7 @@ public class MorePresenter<V extends IMoreView> extends BasePresenter<V>
 
     @Override
     public void logout() {
-        moreDataManager.logout();
+
         addObserver(mainDataManager.revokeToken(), new NetworkObserver<ApiResult<Void>>() {
 
             @Override
@@ -61,6 +61,7 @@ public class MorePresenter<V extends IMoreView> extends BasePresenter<V>
 
             }
         });
+        moreDataManager.logout();
         getMvpView().onSuccess("退出登录成功");
         getMvpView().backToMain();
         getMvpView().redirectToLogin();
