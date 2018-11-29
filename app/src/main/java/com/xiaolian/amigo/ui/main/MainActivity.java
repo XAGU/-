@@ -404,7 +404,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                     transaction = fm.beginTransaction();
                     socalFragment = new SocalFragment(presenter);
                     fragments[1] = socalFragment;
-                    if (lastFragment == -1 && !socalFragment.isAdded()) {
+                    if (!socalFragment.isAdded()) {
                         transaction.add(R.id.fragment, socalFragment, SocalFragment.class.getSimpleName());
                         transaction.commit();
                     } else {

@@ -500,7 +500,6 @@ public class HomeFragment2 extends BaseFragment {
         } else {
             shower.setUsing(true);
         }
-        Log.e(TAG, "checkTitleTip预约订单" + event.getStatus());
         notifyAdaptor();
     }
 
