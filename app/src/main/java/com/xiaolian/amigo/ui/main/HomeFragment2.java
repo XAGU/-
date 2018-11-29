@@ -88,7 +88,7 @@ public class HomeFragment2 extends BaseFragment {
             null, "洗衣机", "WASH CLOTHES",
             R.drawable.lost, R.drawable.small_lost);
     HomeAdaptor.ItemWrapper water = new HomeAdaptor.ItemWrapper(HomeAdaptor.SMALL_TYPE,
-            null, "饮水机", "DRINK A WATER",
+            null, "饮水机", "DRINK WATER",
             R.drawable.water, R.drawable.small_water);
     HomeAdaptor.ItemWrapper gate = new HomeAdaptor.ItemWrapper(HomeAdaptor.SMALL_TYPE,
             null, "门禁卡", "ACCESS CONTROL",
@@ -391,7 +391,7 @@ public class HomeFragment2 extends BaseFragment {
         }
         if (currentBusinessSize != businessSize) {
             businessSize = currentBusinessSize;
-            if (businessSize >= SMALL_LIST_FORMAT_MIN_SIZE) {
+            if (businessSize > SMALL_LIST_FORMAT_MIN_SIZE) {
                 switchSmallLayout();
             } else {
                 switchLargeLayout();

@@ -341,10 +341,12 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     getMvpView().post(() -> getMvpView().onError(TradeError.CONNECT_ERROR_5));
                 }
                 if (!scanDevice){
-//                    uploadLog();
+
                 }
             }
         };
+
+
         Log.i(TAG, "启动15s定时器......");
         timer.start();
 
@@ -506,6 +508,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                                 handleDisConnectError("辛纳设备写入ENABLE_NOTIFICATION_VALUE失败 code:" + code1);
                                 return;
                             }
+
                             afterBleConnected();
                             bleDataManager.notify(currentMacAddress, UUID.fromString(supplier.getServiceUuid()),
                                     UUID.fromString(supplier.getWriteUuid()), data -> {
