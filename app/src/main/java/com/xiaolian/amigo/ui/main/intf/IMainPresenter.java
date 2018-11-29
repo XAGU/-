@@ -13,12 +13,6 @@ import com.xiaolian.amigo.ui.base.intf.IBasePresenter;
 public interface IMainPresenter<V extends IMainView> extends IBasePresenter<V> {
 
     /**
-     * 刷新token
-     * @return
-     */
-    void refreshToken();
-
-    /**
      * 获取accessToken
      * @return
      */

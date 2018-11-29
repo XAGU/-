@@ -556,6 +556,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                 SocalFragment socalFragment = (SocalFragment) fm.findFragmentByTag(SocalFragment.class.getSimpleName());
                 if (socalFragment == null ) {
                     setDefalutItem(0);
+                    tableBottomImageChange(0);
                     return;
                 }
                 if (socalFragment.isAdded()) {
@@ -563,6 +564,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                     fm.beginTransaction().remove(socalFragment).commitAllowingStateLoss();
                 }
                 setDefalutItem(0);
+                tableBottomImageChange(0);
 
             }
         }

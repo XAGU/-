@@ -355,7 +355,7 @@ public class WebActivity extends BaseActivity {
             JsWasher waher = gson.fromJson(str,JsWasher.class);
             name = waher.getData().getName();
             type = waher.getData().getType();
-
+            android.util.Log.e(TAG, "send: >>>>> accessToken " + str);
             if ("scan".equals(type)) {
                 scan();
             }else if("recharge".equals(type)){
