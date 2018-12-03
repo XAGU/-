@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.xiaolian.amigo.ui.widget.Formlayout
+        android:id="@+id/verify_password"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/colorBackgroundGray"
+        android:orientation="vertical">
+        <TextView
+            android:layout_marginBottom="10dp"
+            android:id="@+id/phone_title"
+            android:text="当前绑定手机号: 176****8888"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.xiaolian.amigo.ui.widget.PasswordEditText
+            android:id="@+id/et_old_password_pn"
+            style="@style/Profile_EditText"
+            android:imeOptions="actionDone"
+            android:inputType="textPassword"
+            android:hint="请输入登录密码"
+            android:maxLength="@integer/password_max_length" />
+
+        <Button
+            android:id="@+id/bt_submit"
+            style="@style/Button"
+            android:layout_marginTop="34dp"
+            android:enabled="false"
+            android:text="下一步" />
+
+
+    </com.xiaolian.amigo.ui.widget.Formlayout>
+
+</LinearLayout>

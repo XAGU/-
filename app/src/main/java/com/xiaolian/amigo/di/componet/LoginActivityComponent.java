@@ -21,6 +21,7 @@ import com.xiaolian.amigo.di.module.LoginActivityModule;
 import com.xiaolian.amigo.ui.login.LoginActivity;
 import com.xiaolian.amigo.ui.login.PasswordRetrievalStep1Activity;
 import com.xiaolian.amigo.ui.login.PasswordRetrievalStep2Activity;
+import com.xiaolian.amigo.ui.user.ThirdBindActivity;
 
 import dagger.Component;
 
@@ -34,4 +35,5 @@ public interface LoginActivityComponent {
     void inject(PasswordRetrievalStep1Activity activity);
 
     void inject(PasswordRetrievalStep2Activity activity);
+
 }

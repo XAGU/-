@@ -21,6 +21,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.xiaolian.amigo.data.manager.intf.ILoginDataManager;
 import com.xiaolian.amigo.data.manager.LoginDataManager;
 import com.xiaolian.amigo.di.LoginActivityContext;
+import com.xiaolian.amigo.di.UserActivityContext;
 import com.xiaolian.amigo.ui.login.PasswordRetrievalStep1Presenter;
 import com.xiaolian.amigo.ui.login.PasswordRetrievalStep2Presenter;
 import com.xiaolian.amigo.ui.login.intf.ILoginPresenter;
@@ -30,6 +31,9 @@ import com.xiaolian.amigo.ui.login.intf.IPasswordRetrievalStep1Presenter;
 import com.xiaolian.amigo.ui.login.intf.IPasswordRetrievalStep1View;
 import com.xiaolian.amigo.ui.login.intf.IPasswordRetrievalStep2Presenter;
 import com.xiaolian.amigo.ui.login.intf.IPasswordRetrievalStep2View;
+import com.xiaolian.amigo.ui.user.ThirdBindPresenter;
+import com.xiaolian.amigo.ui.user.intf.IThirdBindPresenter;
+import com.xiaolian.amigo.ui.user.intf.IThirdBindView;
 
 import dagger.Module;
 import dagger.Provides;
@@ -79,5 +83,6 @@ public class LoginActivityModule {
     ILoginDataManager provideLoginDataManager(LoginDataManager manager) {
         return manager;
     }
+
 
 }

@@ -37,6 +37,7 @@
             android:textStyle="bold" />
 
         <View
+            android:id="@+id/view_line"
             android:layout_gravity="center_vertical"
             android:layout_width="1dip"
             android:layout_height="15dp"
@@ -59,12 +60,81 @@
         android:paddingLeft="21dp"
         android:id="@+id/sv_container"
         android:scrollbars="none"
+        android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp">
         <LinearLayout
             android:id="@+id/ll_main"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/third_login"
+        android:paddingLeft="21dp"
+        android:layout_width="match_parent"
+        android:gravity="bottom"
+        android:layout_marginBottom="80dp"
+        android:layout_height="100dp">
+
+        <LinearLayout
+            android:id="@+id/ll_third"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dip"
+                android:layout_alignParentBottom="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="#eee" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="第三方登录"
+                android:textSize="14sp" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dip"
+                android:layout_alignParentBottom="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="#eee" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="17dp"
+            android:layout_below="@+id/ll_third"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/bt_apay_login"
+                android:layout_weight="1"
+                android:layout_width="48dp"
+                android:src="@drawable/zhifubao"
+                android:layout_height="48dp" />
+
+            <ImageView
+                android:id="@+id/bt_wechat"
+                android:layout_weight="1"
+                android:layout_width="48dp"
+                android:src="@drawable/weixin"
+                android:layout_height="48dp" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
 </LinearLayout>

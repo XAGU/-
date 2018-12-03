@@ -13,6 +13,9 @@ import com.xiaolian.amigo.data.network.IResidenceApi;
 import com.xiaolian.amigo.data.network.ISchoolApi;
 import com.xiaolian.amigo.data.network.IUserApi;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.alipay.AliPayBindInAppReq;
+import com.xiaolian.amigo.data.network.model.alipay.AliPayBindQueryReq;
+import com.xiaolian.amigo.data.network.model.alipay.AlipayAuthInfoRespDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.BathPasswordUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.bathroom.RecordResidenceReqDTO;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
@@ -28,10 +31,14 @@ import com.xiaolian.amigo.data.network.model.device.DeviceCategoryBO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.device.DeviceCheckRespDTO;
 import com.xiaolian.amigo.data.network.model.file.OssModel;
+import com.xiaolian.amigo.data.network.model.login.CancelBindReqDTO;
+import com.xiaolian.amigo.data.network.model.login.CancelThirdBindReqDTO;
 import com.xiaolian.amigo.data.network.model.login.ClearTokenReqDTO;
 import com.xiaolian.amigo.data.network.model.login.EntireUserDTO;
 import com.xiaolian.amigo.data.network.model.login.VerificationCodeCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.login.VerificationCodeGetReqDTO;
+import com.xiaolian.amigo.data.network.model.login.WeChatBindRespDTO;
+import com.xiaolian.amigo.data.network.model.login.WechatLoginReqDTO;
 import com.xiaolian.amigo.data.network.model.lostandfound.NoticeCountDTO;
 import com.xiaolian.amigo.data.network.model.residence.QueryResidenceListReqDTO;
 import com.xiaolian.amigo.data.network.model.residence.ResidenceListRespDTO;
@@ -44,6 +51,7 @@ import com.xiaolian.amigo.data.network.model.user.DeleteResidenceRespDTO;
 import com.xiaolian.amigo.data.network.model.user.MobileUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.user.PasswordCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.user.PasswordUpdateReqDTO;
+import com.xiaolian.amigo.data.network.model.user.PasswordVerifyRespDTO;
 import com.xiaolian.amigo.data.network.model.user.PersonalExtraInfoDTO;
 import com.xiaolian.amigo.data.network.model.user.PersonalUpdateReqDTO;
 import com.xiaolian.amigo.data.network.model.user.QueryAvatarDTO;
@@ -202,6 +210,20 @@ public class UserDataManager implements IUserDataManager {
         return userApi.applyChangeSchool(reqDTO);
     }
 
+    @Override
+    public Observable<ApiResult<User.AlipayBindBean>> bindAlipayInApp(AliPayBindInAppReq reqDTO) {
+        return userApi.bindAlipayInApp(reqDTO);
+    }
+
+    @Override
+    public Observable<ApiResult<WeChatBindRespDTO>> bindWechatInApp(WechatLoginReqDTO reqDTO) {
+        return userApi.bindWechatApp(reqDTO);
+    }
+
+    @Override
+    public Observable<ApiResult<AlipayAuthInfoRespDTO>> getApayAuth() {
+        return loginApi.getApayAuth();
+    }
 
     @Override
     public Observable<ApiResult<CheckSchoolRespDTO>> changeSchoolCheck() {
@@ -240,6 +262,16 @@ public class UserDataManager implements IUserDataManager {
     @Override
     public Observable<ApiResult<BooleanRespDTO>> getVerification(VerificationCodeGetReqDTO body) {
         return loginApi.getVerification(body);
+    }
+
+    @Override
+    public Observable<ApiResult<PasswordVerifyRespDTO>> verifyPassword(PasswordCheckReqDTO body) {
+        return loginApi.verifyPassword(body);
+    }
+
+    @Override
+    public Observable<ApiResult<EntireUserDTO>> checkChangePhoneVerification(VerificationCodeCheckReqDTO body) {
+        return loginApi.checkChangePhoneVerification(body);
     }
 
     @Override
@@ -395,5 +427,15 @@ public class UserDataManager implements IUserDataManager {
     @Override
     public void logout() {
         sharedPreferencesHelp.logout();
+    }
+
+    @Override
+    public Observable<ApiResult<CancelThirdBindReqDTO>> aplipayUnbind() {
+        return loginApi.aplipayUnbind();
+    }
+
+    @Override
+    public  Observable<ApiResult<CancelThirdBindReqDTO>> weChatUnbind(){
+        return loginApi.weChatUnbind();
     }
 }

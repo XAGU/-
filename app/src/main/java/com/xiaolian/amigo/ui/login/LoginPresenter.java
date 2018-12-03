@@ -16,9 +16,19 @@
 package com.xiaolian.amigo.ui.login;
 
 
+import android.app.Activity;
+import android.text.TextUtils;
+import android.util.Log;
+
+import com.alipay.sdk.app.AuthTask;
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
+import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.manager.intf.ILoginDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
+import com.xiaolian.amigo.data.network.model.alipay.AlipayAuthInfoRespDTO;
+import com.xiaolian.amigo.data.network.model.alipay.AlipayBindReq;
+import com.xiaolian.amigo.data.network.model.alipay.AuthResult;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.login.LoginReqDTO;
 import com.xiaolian.amigo.data.network.model.login.LoginRespDTO;
@@ -26,11 +36,21 @@ import com.xiaolian.amigo.data.network.model.login.PasswordResetReqDTO;
 import com.xiaolian.amigo.data.network.model.login.RegisterReqDTO;
 import com.xiaolian.amigo.data.network.model.login.VerificationCodeCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.login.VerificationCodeGetReqDTO;
+import com.xiaolian.amigo.data.network.model.login.WeChatBindPhoneReqDTO;
+import com.xiaolian.amigo.data.network.model.login.WeChatResiterReqDTO;
+import com.xiaolian.amigo.data.network.model.login.WechatLoginReqDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
 import com.xiaolian.amigo.ui.login.intf.ILoginPresenter;
 import com.xiaolian.amigo.ui.login.intf.ILoginView;
 
+import java.util.Map;
+
 import javax.inject.Inject;
+
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * 登录页presenter
@@ -42,6 +62,11 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
         implements ILoginPresenter<V> {
 
     private ILoginDataManager loginDataManager;
+    private long alipayUserId = -1;
+    private String moblie;
+    private String code;
+    private String weChatOpenId;
+    private String weChatUnionId;
 
     @Inject
     LoginPresenter(ILoginDataManager loginDataManager) {
@@ -68,16 +93,39 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
             @Override
             public void onReady(ApiResult<LoginRespDTO> result) {
                 if (null == result.getError()) {
-                    loginDataManager.setUserInfo(result.getData().getUser().transform());
-                    loginDataManager.setAccessToken(result.getData().getAccessToken());
-                    loginDataManager.setRefreshToken(result.getData().getRefreshToken());
-                    loginDataManager.setRememberMobile(mobile);
-                    loginDataManager.setIsFirstAfterLogin(true);
-                    getMvpView().onSuccess(R.string.login_success);
-                    getMvpView().gotoMainView();
+                    if(result.getData().getResult()) {
+                       loginDataManager.setUserInfo(result.getData().getUser().transform());
+                       loginDataManager.setAccessToken(result.getData().getAccessToken());
+                       loginDataManager.setRefreshToken(result.getData().getRefreshToken());
+                       loginDataManager.setRememberMobile(mobile);
+                       loginDataManager.setIsFirstAfterLogin(true);
+                       getMvpView().onSuccess(R.string.login_success);
+                       getMvpView().gotoMainView();
+                     }else if(!result.getData().getResult() && result.getData().getRemaining() != null){
+                        //检查密码错误剩余次数
+                        if (1 == result.getData().getRemaining()) {
+                            LoginActivity activity = (LoginActivity) getMvpView();
+                            getMvpView().showTipDialog(activity.getString(R.string.verify_password_only_one_titile),activity.getString(R.string.verify_password_tip));
+                        }
+                     }else if(!result.getData().getResult() && result.getData().getProtectInMinutes() != null) {
+                         //检查剩余分钟数
+                        LoginActivity activity = (LoginActivity) getMvpView();
+                        int rest = result.getData().getProtectInMinutes();
+                        getMvpView().onError(result.getData().getFailReason());
+                        String title =activity.getResources().getString(R.string.verify_password_failed_title,rest);
+                        getMvpView().showTipDialog(title,activity.getString(R.string.verify_password_failed_stop));
+                     }else{
+                        getMvpView().onError("请输入正确的登录密码");
+                    }
                 } else {
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                getMvpView().onError("网络错误");
             }
         });
     }
@@ -184,6 +232,46 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
     }
 
     @Override
+    public void checkAlipayPhoneBind(final String mobile, String code) {
+        this.moblie = mobile;
+        this.code = code;
+        AlipayBindReq req = new AlipayBindReq();
+        req.setMobile(mobile);
+        req.setCode(code);
+        req.setAlipayUserId(alipayUserId);
+        req.setEdition(1);
+        addObserver(loginDataManager.alipayCheckPhoneBind(req),new NetworkObserver<ApiResult<LoginRespDTO>>() {
+
+            @Override
+            public void onReady(ApiResult<LoginRespDTO> result) {
+                //手机注册过，绑定成功直接登录
+                if (result.getError() == null && result.getData().getResult()){
+                    loginDataManager.setUserInfo(result.getData().getUser().transform());
+                    loginDataManager.setAccessToken(result.getData().getAccessToken());
+                    loginDataManager.setRefreshToken(result.getData().getRefreshToken());
+                    loginDataManager.setRememberMobile(result.getData().getUser().getMobile());
+                    loginDataManager.setIsFirstAfterLogin(true);
+                    ((LoginActivity) getMvpView()).setThirdLogin(false);
+                    getMvpView().onSuccess(R.string.login_success);
+                    getMvpView().gotoMainView();
+                }else if(result.getError() == null && !result.getData().getResult()){
+                    //手机没有注册过，跳转到注册页面
+                    getMvpView().gotoRegisterStep2View();
+                }else{
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                getMvpView().onError("网络出错");
+            }
+        });
+
+    }
+
+    @Override
     public void logout() {
         loginDataManager.logout();
     }
@@ -216,5 +304,266 @@ public class LoginPresenter<V extends ILoginView> extends BasePresenter<V>
     @Override
     public void setIsFirstAfterLogin(boolean b) {
         loginDataManager.setIsFirstAfterLogin(b);
+    }
+
+    @Override
+    public String getAlipayAuthInfo() {
+       addObserver(loginDataManager.getApayAuth(), new NetworkObserver<ApiResult<AlipayAuthInfoRespDTO>>() {
+
+            @Override
+            public void onReady(ApiResult<AlipayAuthInfoRespDTO> result) {
+                if (result.getError() == null){
+                    alipayAuth(result.getData().getAuthInfo(),(LoginActivity)getMvpView());
+                }else{
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                getMvpView().onError("网络出错");
+            }
+        });
+
+        return null;
+    }
+
+    private void alipayAuth(final String authInfo, final Activity activity){
+        Log.e(TAG, "apayAuth: " + authInfo );
+        Observable.create(new Observable.OnSubscribe<AuthResult>(){
+
+            @Override
+            public void call(Subscriber<? super AuthResult> subscriber) {
+                AuthTask authTask = new AuthTask(activity);
+                // 调用授权接口，获取授权结果
+                Map<String, String> result = authTask.authV2(authInfo, true);
+                AuthResult authResult = new AuthResult(result, true);
+                subscriber.onNext(authResult);
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe((authResult) -> {
+                        String resultStatus = authResult.getResultStatus();
+                        // 判断resultStatus 为“9000”且result_code
+                        // 为“200”则代表授权成功，具体状态码代表含义可参考授权接口文档
+                        if (TextUtils.equals(resultStatus, "9000") && TextUtils.equals(authResult.getResultCode(), "200")) {
+                            String authCode = authResult.getAuthCode();
+                            //传递给服务端获取其他信息
+                            getMvpView().alipayLogin(authCode);
+
+                        }else if(TextUtils.equals(resultStatus, "6001") && null == authResult.getResultCode()){
+                            getMvpView().onError("已退出支付宝授权");
+                        } else {
+                            // 其他状态值则为授权失败
+                            getMvpView().onError("支付宝授权失败");
+
+                        }
+                    }
+                );
+    }
+
+    @Override
+    public void alipayLogin(String authCode , String androidId,
+                               String brand, String model,
+                               String systemVersion, String appVersion) {
+        AlipayBindReq req = new AlipayBindReq();
+        req.setAuthCode(authCode);
+        req.setEdition(1);
+
+        addObserver(loginDataManager.apayLogin(req), new NetworkObserver<ApiResult<LoginRespDTO>>() {
+
+            @Override
+            public void onReady(ApiResult<LoginRespDTO> result) {
+                if (null == result.getError() && result.getData().isBinding()) {
+                    //该支付宝账号之前已经绑定过，直接登录
+                    loginDataManager.setUserInfo(result.getData().getUser().transform());
+                    loginDataManager.setRefreshToken(result.getData().getRefreshToken());
+                    loginDataManager.setAccessToken(result.getData().getAccessToken());
+                    loginDataManager.setRememberMobile(result.getData().getUser().getMobile());
+                    loginDataManager.setIsFirstAfterLogin(true);
+                    getMvpView().onSuccess(R.string.login_success);
+                    getMvpView().gotoMainView();
+                } else if (null == result.getError() && !result.getData().isBinding()){
+                    //绑定手机号，支付宝没有绑定过，跳转到绑定手机页面
+                    ((LoginActivity) getMvpView()).setThirdLogin(true);
+                    alipayUserId = result.getData().getAlipayUserId();
+                    getMvpView().gotoRegisterStep1View();
+                }else{
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                getMvpView().onError("网络出错");
+            }
+        });
+    }
+
+    public void registerAlipay(String password,Long schoolId){
+        AlipayBindReq req = new AlipayBindReq();
+        req.setPassword(password);
+        req.setSchoolId(schoolId.intValue());
+        req.setMobile(moblie);
+        req.setCode(code);
+        req.setEdition(1);
+        req.setAlipayUserId(alipayUserId);
+        addObserver(loginDataManager.registerAlipay(req),new NetworkObserver<ApiResult<LoginRespDTO>>(){
+
+            @Override
+            public void onReady(ApiResult<LoginRespDTO> result) {
+                if (null == result.getError() && result.getData().isBinding()) {
+                    //该支付宝账号之前已经绑定过，直接登录
+                    loginDataManager.setUserInfo(result.getData().getUser().transform());
+                    loginDataManager.setAccessToken(result.getData().getAccessToken());
+                    loginDataManager.setRefreshToken(result.getData().getRefreshToken());
+                    loginDataManager.setRememberMobile(result.getData().getUser().getMobile());
+                    loginDataManager.setIsFirstAfterLogin(true);
+                    ((LoginActivity) getMvpView()).setThirdLogin(false);
+                    getMvpView().onSuccess(R.string.login_success);
+                    getMvpView().gotoMainView();
+                } else if (null == result.getError() && !result.getData().isBinding()){
+                    getMvpView().onError("注册失败请重试");
+                }else{
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                getMvpView().onError("网络出错");
+            }
+        });
+
+    }
+ //wechat login begin
+
+    @Override
+    public void getWeChatCode() {
+        new Thread(()->{
+            final SendAuth.Req req = new SendAuth.Req();
+            req.scope = "snsapi_userinfo";
+            req.state = "amigo_wx_login";
+            MvpApp.mWxApi.sendReq(req);
+        }).start();
+    }
+
+    @Override
+    public void weChatLogin(String code) {
+        WechatLoginReqDTO dto = new WechatLoginReqDTO();
+        dto.setCode(code);
+        dto.setAppSource(1);
+        dto.setEdition(1);
+
+        addObserver(loginDataManager.weChatLogin(dto),new NetworkObserver<ApiResult<LoginRespDTO>>() {
+
+            @Override
+            public void onReady(ApiResult<LoginRespDTO> result) {
+                Log.e(TAG, "onReady: result ===" + result.getData().toString() );
+                if(null == result.getError()){
+                    //微信和账号已经绑定过，直接登录
+                    if (result.getData().getBound()){
+                        loginDataManager.setUserInfo(result.getData().getUser().transform());
+                        loginDataManager.setAccessToken(result.getData().getAccessToken());
+                        loginDataManager.setRefreshToken(result.getData().getRefreshToken());
+                        loginDataManager.setRememberMobile(result.getData().getUser().getMobile());
+                        loginDataManager.setIsFirstAfterLogin(true);
+                        ((LoginActivity) getMvpView()).setThirdLogin(false);
+                        getMvpView().onSuccess(R.string.login_success);
+                        getMvpView().gotoMainView();
+                    }else{//否则绑定手机账号
+                        ((LoginActivity) getMvpView()).setThirdLogin(true);
+                        weChatOpenId = result.getData().getOpenId();
+                        weChatUnionId = result.getData().getUnionId();
+                        getMvpView().gotoRegisterStep1View();
+                    }
+                }else{
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+
+        } );
+    }
+
+
+ //we chat login end
+   public void checkWechatPhoneBind(String mobile,String code){
+       this.moblie = mobile;
+       this.code = code;
+
+       WeChatBindPhoneReqDTO dto = new WeChatBindPhoneReqDTO();
+       dto.setCode(code);
+       dto.setMobile(mobile);
+       dto.setOpenId(weChatOpenId);
+       dto.setUnionId(weChatUnionId);
+       dto.setAppSource(1);
+       dto.setEdition(1);
+
+       addObserver(loginDataManager.weChatCheckPhoneBind(dto),new NetworkObserver<ApiResult<LoginRespDTO>>() {
+
+           @Override
+           public void onReady(ApiResult<LoginRespDTO> result) {
+               if(null == result.getError()){
+                   //绑定电话成功直接登录
+                   if (null != result.getData().getResult() && result.getData().getResult()){
+                       loginDataManager.setUserInfo(result.getData().getUser().transform());
+                       loginDataManager.setAccessToken(result.getData().getAccessToken());
+                       loginDataManager.setRefreshToken(result.getData().getRefreshToken());
+                       loginDataManager.setRememberMobile(result.getData().getUser().getMobile());
+                       loginDataManager.setIsFirstAfterLogin(true);
+                       ((LoginActivity) getMvpView()).setThirdLogin(false);
+                       getMvpView().onSuccess(R.string.login_success);
+                       getMvpView().gotoMainView();
+
+                   }else {
+                       //验证码有效，但是电话号码没有注册，进入注册流程
+                       getMvpView().gotoRegisterStep2View();
+                   }
+
+               }else{
+                   getMvpView().onError(result.getError().getDisplayMessage());
+               }
+           }
+       });
+   }
+
+    @Override
+    public void registerWeChat(String password, Long schoolId) {
+        WeChatResiterReqDTO req = new WeChatResiterReqDTO();
+        req.setPassword(password);
+        req.setSchoolId(schoolId.intValue());
+        req.setMobile(moblie);
+        req.setCode(code);
+        req.setUnionId(weChatUnionId);
+        req.setOpenId(weChatOpenId);
+        req.setAppSource(1);
+        req.setEdition(1);
+
+        addObserver(loginDataManager.registerWeChat(req),new NetworkObserver<ApiResult<LoginRespDTO>>(){
+
+            @Override
+            public void onReady(ApiResult<LoginRespDTO> result) {
+                if (null == result.getError()){
+                    Log.e(TAG, "onReady: wechat registr::" + result.getData().toString() );
+                    if (result.getData().getWechatBound()){
+                        loginDataManager.setUserInfo(result.getData().getUser().transform());
+                        loginDataManager.setAccessToken(result.getData().getAccessToken());
+                        loginDataManager.setRefreshToken(result.getData().getRefreshToken());
+                        loginDataManager.setRememberMobile(result.getData().getUser().getMobile());
+                        loginDataManager.setIsFirstAfterLogin(true);
+                        ((LoginActivity) getMvpView()).setThirdLogin(false);
+                        getMvpView().onSuccess(R.string.login_success);
+                        getMvpView().gotoMainView();
+                    }else{
+                        getMvpView().onError("注册失败请重试");
+                    }
+                }else{
+                    getMvpView().onError(result.getError().getDisplayMessage());
+                }
+            }
+        });
     }
 }

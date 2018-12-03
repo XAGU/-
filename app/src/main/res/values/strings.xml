@@ -44,11 +44,20 @@
     <string name="please_enter_nickname">请输入昵称</string>
     <string name="nickname">昵称</string>
     <string name="edit_mobile">修改手机号</string>
+    <string name="two_mobile_equal">新手机号不能与老手机号一致</string>
+    <string name="change_mobile_equal">手机号修改成功</string>
+    <string name="verify_password_only_one_titile">还可进行1次密码验证</string>
+    <string name="verify_password_tip">连续失败5次,将进行2小时密码保护</string>
+    <string name="verify_password_failed_title">请%1$d分钟后再尝试验证密码</string>
+    <string name="verify_password_failed">因已连续失败5次,已进行密码保护</string>
+    <string name="verify_password_failed_stop">因已连续失败5次,该账号已被冻结</string>
     <string name="please_enter_least_six_password">请输入至少6位数的密码</string>
     <string name="please_enter_new_mobile">请输入新的手机号</string>
     <string name="please_enter_verify_code">请输入收到的验证码</string>
     <string name="password_invalid">密码不对，登录失败，请重试！</string>
     <string name="edit_password">修改账户密码</string>
+    <string name="change_phone_number">修改手机号</string>
+    <string name="password_verify">验证密码登录</string>
     <string name="edit_bathroom_password">修改浴室密码</string>
     <string name="please_enter_old_password">请输入原密码</string>
     <string name="please_enter_new_password">请输入新密码</string>
@@ -416,4 +425,7 @@
     <string name="open_ble_and_gps_tip_content">小主人，热水澡功能需开启手机蓝牙及定位，若已开启请关闭后再次打开手机蓝牙及定位 ～</string>
 
     <string name="input_tip">只能输入汉字、英文、数字</string>
+    <!--三方登录-->
+    <string name="wechat_bind">微信绑定</string>
+    <string name="alipay_bind">支付宝绑定</string>
 </resources>

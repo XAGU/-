@@ -137,7 +137,7 @@ public class WalletPresenter<V extends IWalletView> extends BasePresenter<V>
             @Override
             public void onReady(ApiResult<WithdrawExplanationRespDTO> result) {
                 if (result.getError() == null){
-                        if (result.getData().isMatch()){
+                        if (result.getData().isMatch() || result.getData().isAll()){
                             getMvpView().gotoWithDraw();
                         }else{
                             getMvpView().startWithDraw(result.getData() , getUserCertificationStatus());

@@ -28,6 +28,9 @@ public class User {
     private Long createTime;
     private Long buildingId;
     private boolean hadSetBathPassword ;
+    private AlipayBindBean alipayBind;
+    private WeChatBindBean weChatBind;
+
 
 
     /***  身份验证    ***/
@@ -217,5 +220,63 @@ public class User {
         this.createTime = entireUserDTO.getCreateTime();
         this.buildingId = entireUserDTO.getBuildingId();
         this.hadSetBathPassword = entireUserDTO.isHadSetBathPassword();
+        this.alipayBind = entireUserDTO.getAlipayBind();
+    }
+
+    public static class AlipayBindBean {
+        /**
+         * alipayNickName : string
+         * alipayUserId : 0
+         * isBinding : false
+         */
+
+        private String alipayNickName;
+        private Long alipayUserId;
+        private boolean isBinding;
+
+        public String getAlipayNickName() {
+            return alipayNickName;
+        }
+
+        public void setAlipayNickName(String alipayNickName) {
+            this.alipayNickName = alipayNickName;
+        }
+
+        public Long getAlipayUserId() {
+            return alipayUserId;
+        }
+
+        public void setAlipayUserId(Long alipayUserId) {
+            this.alipayUserId = alipayUserId;
+        }
+
+        public boolean isIsBinding() {
+            return isBinding;
+        }
+
+        public void setIsBinding(boolean isBinding) {
+            this.isBinding = isBinding;
+        }
+    }
+
+    public static class WeChatBindBean {
+         String nickname;
+         Boolean result;
+
+        public String getNickname() {
+            return nickname;
+        }
+
+        public void setNickname(String nickname) {
+            this.nickname = nickname;
+        }
+
+        public Boolean getResult() {
+            return result;
+        }
+
+        public void setResult(Boolean result) {
+            this.result = result;
+        }
     }
 }

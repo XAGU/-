@@ -20,6 +20,7 @@ public class WithdrawExplanationRespDTO  implements Parcelable{
         private String refundUser;
         private String timeRange;
         private boolean isSetExplanation ;
+        private boolean isAll;
 
     protected WithdrawExplanationRespDTO(Parcel in) {
         explanation = in.readString();

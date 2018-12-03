@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_marginTop="48dp"
+        android:id="@+id/iv_third"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/bangdingzhi"
+        android:layout_width="300dp"
+        android:layout_height="300dp" />
+
+    <TextView
+        android:layout_marginTop="15dp"
+        android:layout_below="@id/iv_third"
+        android:id="@+id/tv_nickName"
+        android:textSize="@dimen/sp15"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="已绑定微信号："
+       />
+
+    <TextView
+        android:id="@+id/bottom"
+        android:layout_width="match_parent"
+        android:layout_height="21dp"
+        android:layout_alignParentBottom="true" />
+
+    <RelativeLayout
+        android:layout_above="@id/bottom"
+        android:id="@+id/rel_unbind"
+        android:visibility="visible"
+        android:onClick="onclick"
+        android:gravity="center"
+        style="@style/ListItemRel">
+
+
+        <ImageView
+            android:id="@+id/imageView_apay"
+            style="@style/ListItemImage"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/arrow_right" />
+
+        <TextView
+            android:id="@+id/tv_apay_tip"
+            style="@style/ListItemSubText"
+            android:layout_toLeftOf="@id/imageView_apay"
+            android:text="解除绑定"
+            />
+
+    </RelativeLayout>
+
+</RelativeLayout>
