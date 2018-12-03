@@ -299,7 +299,6 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
         initInject();
         initPresenter();
 
-
         // 连接蓝牙设备
         presenter.setHomePageJump(homePageJump);
         if (recorvery || !homePageJump) {
@@ -308,6 +307,8 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
 
         setBleCallback(() -> {
             initView();
+            presenter.setDeviceType(deviceType);
+            presenter.setResidenceId(residenceId);
             if (isScan){
                 presenter.onPreConnect(macAddress , true);
             }else {
@@ -321,7 +322,6 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
             }
         });
         getBlePermission();
-
     }
 
     @Override
@@ -971,8 +971,6 @@ public abstract class WaterDeviceBaseActivity<P extends IWaterDeviceBasePresente
     private void startBleTipActivity(){
         Intent intent = new Intent(this ,BleTipActivity.class);
         startActivityForResult(intent ,REQUEST_BLE_OPEN);
-
-
     }
 
     /**

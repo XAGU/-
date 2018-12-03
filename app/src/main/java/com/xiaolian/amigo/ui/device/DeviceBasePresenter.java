@@ -4,7 +4,6 @@ import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
-import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.Handler;
@@ -31,7 +30,6 @@ import com.xiaolian.amigo.data.manager.BleDataManager;
 import com.xiaolian.amigo.data.manager.intf.IBleDataManager;
 import com.xiaolian.amigo.data.manager.intf.IDeviceDataManager;
 import com.xiaolian.amigo.data.network.model.ApiResult;
-import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
 import com.xiaolian.amigo.data.network.model.device.Supplier;
 import com.xiaolian.amigo.data.network.model.order.UnsettledOrderStatusCheckReqDTO;
 import com.xiaolian.amigo.data.network.model.order.UnsettledOrderStatusCheckRespDTO;
@@ -49,7 +47,6 @@ import com.xiaolian.amigo.ui.device.intf.IDevicePresenter;
 import com.xiaolian.amigo.ui.device.intf.IDeviceView;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.FileIOUtils;
-import com.xiaolian.amigo.util.FileUtils;
 import com.xiaolian.amigo.util.Log;
 import com.xiaolian.amigo.util.TimeUtils;
 import com.xiaolian.amigo.util.ble.HexBytesUtils;
@@ -62,18 +59,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
-import java.util.Observable;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
-import rx.Observer;
-import rx.Scheduler;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 import rx.subjects.PublishSubject;
 
@@ -89,7 +79,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
     private static final String DeviceLogFileName ="DeviceLog.txt" ;
 
-    private static final String COUNT_NAME = "TradeStatistics";
+    public static final String COUNT_NAME = "TradeStatistics";
 
     private IBleDataManager bleDataManager;
     private IDeviceDataManager deviceDataManager;
@@ -153,15 +143,36 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
     private long serviceTimeStamps ;  // 与服务器连接发启时间
 
 
+    private Type type ;
+
+
     // 页面关闭触发器
     private PublishSubject<Void> closeTriggerSubject = PublishSubject.create();
 
+    /**
+     * 正在使用的设备类型
+     */
+    private int  deviceType ;
 
+    /**
+     * 设备位置id
+     */
+    private long residenceId ;
 
     DeviceBasePresenter(IBleDataManager bleDataManager, IDeviceDataManager deviceDataManager) {
         super();
         this.bleDataManager = bleDataManager;
         this.deviceDataManager = deviceDataManager;
+    }
+
+
+    @Override
+    public void setDeviceType(int deviceType) {
+        this.deviceType = deviceType;
+    }
+
+    public void setResidenceId(long residenceId) {
+        this.residenceId = residenceId;
     }
 
     @Override
@@ -361,7 +372,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 //                    uploadLog();
                 }
 
-                recordUseNumber(Type.SCAN.getCode() , Target.DEVICE.getCode(),Result.FAILED.getCode() ,TimeUtils.diffTime(System.currentTimeMillis() ,timeStamps));
+                recordUseNumber(Type.SCAN , Target.DEVICE,Result.FAILED ,TimeUtils.diffTime(System.currentTimeMillis() ,timeStamps));
             }
         };
         Log.i(TAG, "启动15s定时器......");
@@ -377,7 +388,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
             currentMacAddress = deviceDataManager.getMacAddressByDeviceNo(macAddress);
             Log.i(TAG, "缓存中存在macAddress，不需要扫描" + currentMacAddress);
-            recordUseNumber(Type.SCAN.getCode() , Target.DEVICE.getCode(),Result.SUCCESS.getCode() ,TimeUtils.diffTime(System.currentTimeMillis() ,timeStamps));
+            recordUseNumber(Type.SCAN , Target.DEVICE,Result.SUCCESS ,TimeUtils.diffTime(System.currentTimeMillis() ,timeStamps));
             writeLogFile("onConnect" ,"macAddress : "  + macAddress   ,"缓存中存在macAddress，不需要扫描");
             realConnect(macAddress);
             return;
@@ -405,7 +416,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 if (currentMacAddress != null && currentMacAddress.equalsIgnoreCase(result.getAddress())) {
                     Log.i(TAG, "扫描获取macAddress在当前上下文已经存在，无需重复计算。macAddress:" + currentMacAddress);
                     writeLogFile("onConnect" ,"macAddress : "  + macAddress   ,"扫描获取macAddress在当前上下文已经存在，无需重复计算。macAddress:" + currentMacAddress);
-                    recordUseNumber(Type.SCAN.getCode() , Target.DEVICE.getCode(),Result.SUCCESS.getCode() ,TimeUtils.diffTime(System.currentTimeMillis() ,timeStamps));
+                    recordUseNumber(Type.SCAN , Target.DEVICE,Result.SUCCESS ,TimeUtils.diffTime(System.currentTimeMillis() ,timeStamps));
                     bleDataManager.stopScan();
                     scanDevice = true ;
                     return;
@@ -415,7 +426,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 currentMacAddress = result.getAddress();
                 Log.i(TAG, "扫描获取macAddress成功。macAddress:" + currentMacAddress);
                 deviceDataManager.setDeviceNoAndMacAddress(macAddress, currentMacAddress);
-                recordUseNumber(Type.SCAN.getCode() , Target.DEVICE.getCode(),Result.SUCCESS.getCode() ,TimeUtils.diffTime(System.currentTimeMillis() ,timeStamps));
+                recordUseNumber(Type.SCAN , Target.DEVICE,Result.SUCCESS ,TimeUtils.diffTime(System.currentTimeMillis() ,timeStamps));
                 realConnect(macAddress);
                 bleDataManager.stopScan();
                 writeLogFile("onConnect" ,"macAddress : "  + macAddress   ,"扫描获取macAddress成功。macAddress:" + currentMacAddress);
@@ -519,7 +530,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             if (code != BluetoothConstants.CONN_RESPONSE_SUCCESS) {
                 writeLogFile("connectXinNaDevice" , "" ,"连接失败currentMacAddress："+currentMacAddress+"  code:"+code);
                 handleDisConnectError("辛纳设备连接失败 code: " + code);
-                recordUseNumber(Type.CONNECT.getCode() , Target.DEVICE.getCode(),Result.FAILED.getCode() ,TimeUtils.diffTime(System.currentTimeMillis() ,timeStamps));
+                recordUseNumber(Type.CONNECT , Target.DEVICE,Result.FAILED ,TimeUtils.diffTime(System.currentTimeMillis() ,timeStamps));
                 return;
             }
             if (bleDataManager.setNotify(currentMacAddress, UUID.fromString(supplier.getServiceUuid()),
@@ -534,7 +545,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                             if (code1 != BluetoothConstants.GATT_SUCCESS) {
                                 writeLogFile("connectXinNaDevice" , "" ,"辛纳写入失败currentMacAddress："+currentMacAddress+"  code:"+code1);
                                 handleDisConnectError("辛纳设备写入ENABLE_NOTIFICATION_VALUE失败 code:" + code1);
-                                recordUseNumber(Type.CONNECT.getCode() , Target.DEVICE.getCode(),Result.FAILED.getCode() ,TimeUtils.diffTime(System.currentTimeMillis() ,timeStamps));
+                                recordUseNumber(Type.CONNECT , Target.DEVICE,Result.FAILED ,TimeUtils.diffTime(System.currentTimeMillis() ,timeStamps));
                                 return;
                             }
                             afterBleConnected();
@@ -554,14 +565,14 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             else {
                 writeLogFile("connectXinNaDevice" , "" ,"辛纳设置notify失败currentMacAddress："+currentMacAddress);
                 handleDisConnectError("辛纳设备设置notify失败");
-                recordUseNumber(Type.CONNECT.getCode() , Target.DEVICE.getCode(),Result.FAILED.getCode() ,TimeUtils.diffTime(System.currentTimeMillis() ,timeStamps));
+                recordUseNumber(Type.CONNECT , Target.DEVICE,Result.FAILED ,TimeUtils.diffTime(System.currentTimeMillis() ,timeStamps));
             }
         });
     }
 
 
     private void afterBleConnected() {
-        recordUseNumber(Type.CONNECT.getCode() , Target.DEVICE.getCode(),Result.SUCCESS.getCode() ,TimeUtils.diffTime(System.currentTimeMillis() ,timeStamps));
+        recordUseNumber(Type.CONNECT , Target.DEVICE,Result.SUCCESS ,TimeUtils.diffTime(System.currentTimeMillis() ,timeStamps));
         if (reconnect) {
             Log.i(TAG, "当前为重连状态");
             if (null == getStep()) {
@@ -672,7 +683,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             if (code != BluetoothConstants.CONN_RESPONSE_SUCCESS) {
                 writeLogFile("connectHaoNianHaoDevice" , "" ,"连接失败currentMacAddress："+currentMacAddress+"  code:"+code);
                 handleDisConnectError("连接好年华设备失败 code:" + code);
-                recordUseNumber(Type.CONNECT.getCode() , Target.DEVICE.getCode(),Result.FAILED.getCode() ,TimeUtils.diffTime(System.currentTimeMillis() ,timeStamps));
+                recordUseNumber(Type.CONNECT , Target.DEVICE,Result.FAILED ,TimeUtils.diffTime(System.currentTimeMillis() ,timeStamps));
 //                uploadLog();
                 return;
             }
@@ -680,7 +691,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 writeLogFile("connectHaoNianHaoDevice" , "" ,"连接好年华设备失败 code:："+ code + "获取不到service uuid:" + supplier.getServiceUuid());
                 handleDisConnectError("连接好年华设备失败 code:" + code + "获取不到service uuid:" + supplier.getServiceUuid());
 //                uploadLog();
-                recordUseNumber(Type.CONNECT.getCode() , Target.DEVICE.getCode(),Result.FAILED.getCode() ,TimeUtils.diffTime(System.currentTimeMillis() ,timeStamps));
+                recordUseNumber(Type.CONNECT , Target.DEVICE,Result.FAILED ,TimeUtils.diffTime(System.currentTimeMillis() ,timeStamps));
                 return;
             }
             for (BluetoothGattCharacteristic characteristic : gatt.getService(UUID.fromString(supplier.getServiceUuid())).getCharacteristics()) {
@@ -696,7 +707,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                                         writeLogFile("connectHaoNianHaoDevice" , "" ,"辛纳写入失败currentMacAddress："+currentMacAddress+"  code:"+code1);
                                         handleDisConnectError("好年华设备写入ENABLE_NOTIFICATION_VALUE失败 code:" + code1);
 //                                        uploadLog();
-                                        recordUseNumber(Type.CONNECT.getCode() , Target.DEVICE.getCode(),Result.FAILED.getCode() ,TimeUtils.diffTime(System.currentTimeMillis() ,timeStamps));
+                                        recordUseNumber(Type.CONNECT , Target.DEVICE,Result.FAILED ,TimeUtils.diffTime(System.currentTimeMillis() ,timeStamps));
                                         return;
                                     }
 
@@ -716,7 +727,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                                     afterBleConnected();
                                 });
                     } else {
-                        recordUseNumber(Type.CONNECT.getCode() , Target.DEVICE.getCode(),Result.FAILED.getCode() ,TimeUtils.diffTime(System.currentTimeMillis() ,timeStamps));
+                        recordUseNumber(Type.CONNECT , Target.DEVICE,Result.FAILED ,TimeUtils.diffTime(System.currentTimeMillis() ,timeStamps));
                         Log.d(TAG, "设置notify失败 thread " + Thread.currentThread().getName());
                         writeLogFile("connectHaoNianHaoDevice" , "" ,"辛纳好年华notify失败currentMacAddress："+currentMacAddress);
                         handleDisConnectError("设置notify失败");
@@ -907,7 +918,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                             && result.getData().getDeviceToken() != null) {
                         deviceDataManager.setDeviceToken(result.getData().getMacAddress(), result.getData().getDeviceToken());
                         Log.i(TAG, "收到deviceToken：" + result.getData().getDeviceToken());
-                        recordUseNumber(Type.SHAKE_HANDS_DEVICE.getCode() , Target.SERVER.getCode(),Result.SUCCESS.getCode() ,TimeUtils.diffTime(System.currentTimeMillis() ,serviceTimeStamps));
+                        recordUseNumber(Type.SHAKE_HANDS_DEVICE , Target.SERVER,Result.SUCCESS ,TimeUtils.diffTime(System.currentTimeMillis() ,serviceTimeStamps));
                     }
                     synchronized (connectCmdLock) {
                         connectCmd = result.getData().getConnectCmd();
@@ -930,7 +941,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         }
                     }
 
-                    recordUseNumber(Type.SHAKE_HANDS_DEVICE.getCode() , Target.SERVER.getCode(),Result.FAILED.getCode() ,TimeUtils.diffTime(System.currentTimeMillis() ,serviceTimeStamps));
+                    recordUseNumber(Type.SHAKE_HANDS_DEVICE , Target.SERVER,Result.FAILED ,TimeUtils.diffTime(System.currentTimeMillis() ,serviceTimeStamps));
 //                    uploadLog();
                 }
             }
@@ -945,7 +956,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 }
 //                uploadLog();
 
-                recordUseNumber(Type.SHAKE_HANDS_DEVICE.getCode() , Target.SERVER.getCode(),Result.FAILED.getCode() ,TimeUtils.diffTime(System.currentTimeMillis() ,serviceTimeStamps));
+                recordUseNumber(Type.SHAKE_HANDS_DEVICE , Target.SERVER,Result.FAILED ,TimeUtils.diffTime(System.currentTimeMillis() ,serviceTimeStamps));
             }
         }, Schedulers.io());
     }
@@ -998,8 +1009,40 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
         }, Schedulers.io());
     }
 
+    /**
+     * 记录设备返回数据的状态
+     * @param result
+     */
+    private void  recordCommandResult(String result){
+        if (TextUtils.isEmpty(result))  return ;
+        try{
+            String prefix = result.substring(0 , 4);
+            if (TextUtils.equals(Command.CONNECT.getRespPrefix() , prefix)){
+                type = Type.CONNECT ;
+            }else if (TextUtils.equals(Command.PRE_CHECK.getRespPrefix() ,prefix)){
+                type = Type.PRE_CHECK ;
+            }else if (TextUtils.equals(Command.CHECK_OUT.getRespPrefix() ,prefix)){
+                type = Type.CHECKOUT ;
+            }else if (TextUtils.equals(Command.OPEN_VALVE.getRespPrefix() , prefix)){
+                type = Type.OPEN ;
+            }else if (TextUtils.equals(Command.CLOSE_VALVE.getRespPrefix() , prefix)){
+                type = Type.CLOSE ;
+            }else if (TextUtils.equals(Command.UPDATE_DEVICE_RATE.getRespPrefix() ,prefix)){
+                type = Type.UPDATE_RATE ;
+            }
+            recordUseNumber(type,Target.DEVICE ,Result.SUCCESS ,TimeUtils.diffTime(System.currentTimeMillis() ,deviceTimeStamps));
+        }catch (Exception e){
+            android.util.Log.e(TAG, "recordCommandResult: " + e.getMessage() );
+        }
+
+
+    }
+
+
+
     // 网络请求处理设备响应结果
     private void processCommandResult(String result) {
+        recordCommandResult(result);
         try {
             String prefix = result.substring(0, 4);
             if (TextUtils.equals(Command.CLOSE_VALVE.getRespPrefix(), prefix)) {
@@ -1026,6 +1069,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             }
 //            uploadLog();
         }
+
         Log.wtf(TAG , "processCommandResult>>>>>" + result  + "   " + deviceNo);
         serviceTimeStamps = System.currentTimeMillis() ;
         CmdResultReqDTO reqDTO = new CmdResultReqDTO();
@@ -1056,6 +1100,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 }
                 writeLogFile("processCommandResult" ,"result : "  + result   ," 服务器获取指令失败 ："  + e.getMessage()    );
 //                uploadLog();
+                recordUseNumber(type, Target.SERVER ,Result.FAILED ,TimeUtils.diffTime(System.currentTimeMillis() , serviceTimeStamps));
             }
         }, AndroidSchedulers.mainThread());
     }
@@ -1080,12 +1125,12 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                 case UPDATE_DEVICE_RATE:
                     getMvpView().realPay();
                     writeLogFile("handleResult" ,"result : "  + result.getData()   ," 更新费率"    );
-                    recordUseNumber(Type.UPDATE_RATE.getCode() ,Target.SERVER.getCode() ,Result.SUCCESS.getCode() ,TimeUtils.diffTime(System.currentTimeMillis() ,serviceTimeStamps));
+                    recordUseNumber(Type.UPDATE_RATE ,Target.SERVER ,Result.SUCCESS ,TimeUtils.diffTime(System.currentTimeMillis() ,serviceTimeStamps));
                     break;
                 case CONNECT:
                     // 如果用户本人在三小时之内再次连接该设备，需要进入第二步账单结算页面
                     // 表明用户是正在使用状态
-                    recordUseNumber(Type.SHAKE_HANDS_DEVICE.getCode() ,Target.SERVER.getCode() ,Result.SUCCESS.getCode() ,TimeUtils.diffTime(System.currentTimeMillis() ,serviceTimeStamps));
+                    recordUseNumber(Type.SHAKE_HANDS_DEVICE,Target.SERVER ,Result.SUCCESS ,TimeUtils.diffTime(System.currentTimeMillis() ,serviceTimeStamps));
                     if (!reconnect && null != orderStatus && null != orderStatus.getStatus() && OrderStatus.getOrderStatus(orderStatus.getStatus()) == OrderStatus.USING) {
                         // 记录预结账指令，此时阀门已经被长按关闭，但是订单没有被其它用户带回
                         Log.i(TAG, "用户在该设备上存在未结账订单，直接跳转至结算页面，获取到预结账指令。command:" + nextCommand);
@@ -1159,7 +1204,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         getMvpView().onOpen();
                     }
                     writeLogFile("handleResult" ,"result : "  + result.getData() + " ， 原指令类型： OPEN_VALVE "    ,"正常流程，获取到关阀指令。command:" + nextCommand   );
-                    recordUseNumber(Type.OPEN.getCode() ,Target.SERVER.getCode() ,Result.SUCCESS.getCode() ,TimeUtils.diffTime(System.currentTimeMillis() ,serviceTimeStamps));
+                    recordUseNumber(Type.OPEN ,Target.SERVER,Result.SUCCESS ,TimeUtils.diffTime(System.currentTimeMillis() ,serviceTimeStamps));
                     break;
                 case CLOSE_VALVE:
                     Log.i(TAG, "正常流程，获取到结账指令。command:" + nextCommand);
@@ -1169,7 +1214,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     Log.w(TAG , "CLOSE_VALVE >>>>>>>"+currentMacAddress);
                     onWrite(checkoutCmd);
                     writeLogFile("handleResult" ,"result : "  + result.getData() + " ， 原指令类型： CLOSE_VALVE "    ,"正常流程，获取到关阀指令。command:" + nextCommand   );
-                    recordUseNumber(Type.CLOSE.getCode() ,Target.SERVER.getCode() ,Result.SUCCESS.getCode() ,TimeUtils.diffTime(System.currentTimeMillis() ,serviceTimeStamps));
+                    recordUseNumber(Type.CLOSE,Target.SERVER,Result.SUCCESS,TimeUtils.diffTime(System.currentTimeMillis() ,serviceTimeStamps));
                     break;
                 case CHECK_OUT:
                     if (purelyCheckoutFlag) {
@@ -1181,12 +1226,12 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
 
                         }
 
-                        recordUseNumber(Type.CHECKOUT.getCode() ,Target.SERVER.getCode() ,Result.SUCCESS.getCode() ,TimeUtils.diffTime(System.currentTimeMillis() ,serviceTimeStamps));
+                        recordUseNumber(Type.CHECKOUT,Target.SERVER,Result.SUCCESS ,TimeUtils.diffTime(System.currentTimeMillis() ,serviceTimeStamps));
 
                     } else if (precheckFlag) {
                         // 当前为预结账状态，结账完毕后关闭更改标识
 
-                        recordUseNumber(Type.PRE_CHECK.getCode() ,Target.SERVER.getCode() ,Result.SUCCESS.getCode() ,TimeUtils.diffTime(System.currentTimeMillis() ,serviceTimeStamps));
+                        recordUseNumber(Type.PRE_CHECK,Target.SERVER ,Result.SUCCESS,TimeUtils.diffTime(System.currentTimeMillis() ,serviceTimeStamps));
                         precheckFlag = false;
                         if (reconnect) {
                             // 重连状态下，走预结账->结账流程时，是本人主动结账，跳转账单详情页
@@ -1216,7 +1261,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                         if (getMvpView() != null) {
                             getMvpView().onFinish(orderId);
                         }
-                        recordUseNumber(Type.CHECKOUT.getCode() ,Target.SERVER.getCode() ,Result.SUCCESS.getCode() ,TimeUtils.diffTime(System.currentTimeMillis() ,serviceTimeStamps));
+                        recordUseNumber(Type.CHECKOUT,Target.SERVER ,Result.SUCCESS ,TimeUtils.diffTime(System.currentTimeMillis() ,serviceTimeStamps));
                     }
                     break;
                 case PRE_CHECK:
@@ -1229,7 +1274,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     Log.wtf(TAG ,"PRE_CHECK  >>>>>>>>>>"+currentMacAddress);
                     onWrite(checkoutCmd);
                     writeLogFile("handleResult" ,"result : "  + result.getData() + " ， 原指令类型： PRE_CHECK "    ,"正常流程，获取到结账指令。command:" + nextCommand    );
-                    recordUseNumber(Type.PRE_CHECK.getCode() ,Target.SERVER.getCode() ,Result.SUCCESS.getCode() ,TimeUtils.diffTime(System.currentTimeMillis() ,serviceTimeStamps));
+                    recordUseNumber(Type.PRE_CHECK ,Target.SERVER ,Result.SUCCESS ,TimeUtils.diffTime(System.currentTimeMillis() ,serviceTimeStamps));
                     break;
                 case OTHER_CLOSE_VALVE:
                     Log.wtf(TAG, "其他人的关阀指令");
@@ -1250,7 +1295,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
                     //更新费率的时候异常直接跳过该流程
                     getMvpView().realPay();
                     writeLogFile("handleResult" ,"result : "  + result.getError() + " ， 服务器返回异常情况： "    ,"更新费率的时候异常直接跳过该流程"     );
-                    recordUseNumber(Type.UPDATE_RATE.getCode() ,Target.SERVER.getCode() ,Result.SUCCESS.getCode() ,TimeUtils.diffTime(System.currentTimeMillis() ,serviceTimeStamps));
+                    recordUseNumber(Type.UPDATE_RATE ,Target.SERVER ,Result.SUCCESS ,TimeUtils.diffTime(System.currentTimeMillis() ,serviceTimeStamps));
                     return;
                 }
             }
@@ -1259,7 +1304,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             if (getStep() == TradeStep.CLOSE_VALVE) {
                 setStep(TradeStep.SETTLE);
                 writeLogFile("handleResult" ,"result : "  + result.getError() + " ， 服务器返回异常情况： "    ,"如果在结账时服务器返回异常状态  orderId : "  + orderId    );
-                recordUseNumber(Type.CLOSE.getCode() ,Target.SERVER.getCode() ,Result.SUCCESS.getCode() ,TimeUtils.diffTime(System.currentTimeMillis() ,serviceTimeStamps));
+                recordUseNumber(Type.CLOSE ,Target.SERVER ,Result.SUCCESS ,TimeUtils.diffTime(System.currentTimeMillis() ,serviceTimeStamps));
             }
             if (result.getError().getCode() == BleErrorType.BLE_DEVICE_BUSY.getCode()) {
                 Log.e(TAG, "设备正在被使用");
@@ -1346,6 +1391,7 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
             }
         }
     }
+
 
 
     /**
@@ -1736,24 +1782,41 @@ public abstract class DeviceBasePresenter<V extends IDeviceView> extends BasePre
      * @param time    耗时：
      *  String 格式为 type:SCAN、target:SERVER、result:success、time:120;
      */
-    private void recordUseNumber(int type , int target , int result , long time){
+    private void recordUseNumber(Type type , Target target , Result result , long time){
         StringBuffer recordString = new StringBuffer();
         recordString.append("type")
                 .append(Constant.TRADE_STATISTIC_CONTENT_SEPARATOR)
-                .append(type)
+                .append(type.getContent())
                 .append(Constant.TRADE_STATISTIC_PARAM_SEPARATOR)
                 .append("target")
                 .append(Constant.TRADE_STATISTIC_CONTENT_SEPARATOR)
-                .append(target)
+                .append(target.getContent())
                 .append(Constant.TRADE_STATISTIC_PARAM_SEPARATOR)
                 .append("result")
                 .append(Constant.TRADE_STATISTIC_CONTENT_SEPARATOR)
-                .append(result)
+                .append(result.getContent())
                 .append(Constant.TRADE_STATISTIC_PARAM_SEPARATOR)
                 .append("time")
                 .append(Constant.TRADE_STATISTIC_CONTENT_SEPARATOR)
                 .append(time)
-                .append(Constant.TRADE_STATISTIC_ITEM_SEPARATOR);
+                .append(Constant.TRADE_STATISTIC_ITEM_SEPARATOR)
+                .append("macAddress")
+                .append(Constant.TRADE_STATISTIC_CONTENT_SEPARATOR)
+                .append(currentMacAddress)
+                .append(Constant.TRADE_STATISTIC_ITEM_SEPARATOR)
+                .append("supplierId")
+                .append(Constant.TRADE_STATISTIC_CONTENT_SEPARATOR)
+                .append(supplier.getId())
+                .append(Constant.TRADE_STATISTIC_ITEM_SEPARATOR)
+                .append("deviceType")
+                .append(Constant.TRADE_STATISTIC_CONTENT_SEPARATOR)
+                .append(deviceType)
+                .append(Constant.TRADE_STATISTIC_ITEM_SEPARATOR)
+                .append("residenceId")
+                .append(Constant.TRADE_STATISTIC_CONTENT_SEPARATOR)
+                .append(residenceId)
+                .append(Constant.TRADE_STATISTIC_ITEM_SEPARATOR)
+                .append("'\n'");
 
         String fileName = "" + TimeUtils.getCountTimeStamp() + deviceDataManager.getUser().getId()+".txt" ;
         writeFile(fileName ,recordString.toString());

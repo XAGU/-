@@ -2,6 +2,7 @@ package com.xiaolian.amigo.data.network;
 
 import com.xiaolian.amigo.data.network.model.ApiResult;
 import com.xiaolian.amigo.data.network.model.common.BooleanRespDTO;
+import com.xiaolian.amigo.data.network.model.connecterror.AppTradeStatisticDataReqDTO;
 import com.xiaolian.amigo.data.network.model.connecterror.DeviceConnectErrorReqDTO;
 
 import okhttp3.RequestBody;
@@ -27,4 +28,8 @@ public interface IDeviceConnectErrorApi {
      */
     @POST("android/crash/upload/log")
     Observable<ApiResult<BooleanRespDTO>> uploadLog(@Body RequestBody body);
+
+
+    @POST("app/trade-statistic/upload")
+    Observable<ApiResult<BooleanRespDTO>> uploadTradSatistic(@Body AppTradeStatisticDataReqDTO reqDTO) ;
 }

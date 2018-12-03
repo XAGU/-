@@ -138,6 +138,14 @@ public interface IDevicePresenter<V extends IBaseView> extends IBasePresenter<V>
     void setSupplierId(Long supplierId);
 
 
+    /**
+     * 设置 deviceType
+     */
+    void setDeviceType(int deviceType ) ;
 
-
+    /**
+     * 设置ResidenceId
+     * @param residenceId
+     */
+    void setResidenceId(long residenceId);
 }
