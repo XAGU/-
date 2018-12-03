@@ -18,6 +18,8 @@ package com.xiaolian.amigo;
 import android.app.Application;
 import android.content.Context;
 
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.xiaolian.amigo.di.componet.ApplicationComponent;
 import com.xiaolian.amigo.di.componet.DaggerApplicationComponent;
 import com.xiaolian.amigo.di.module.ApplicationModule;
@@ -39,6 +41,7 @@ public class MvpApp extends Application {
     private ApplicationComponent mApplicationComponent;
 
     private static Context context ;
+    public static IWXAPI mWxApi;
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -97,6 +100,8 @@ public class MvpApp extends Application {
                 .applicationModule(new ApplicationModule(this)).build();
 
         mApplicationComponent.inject(this);
+
+        registToWX();
     }
 
 
@@ -110,5 +115,10 @@ public class MvpApp extends Application {
 
     public void setComponent(ApplicationComponent applicationComponent) {
         mApplicationComponent = applicationComponent;
+    }
+
+    private void registToWX() {
+        mWxApi = WXAPIFactory.createWXAPI(this, Constant.WECHAT_APP_ID, false);
+        mWxApi.registerApp(Constant.WECHAT_APP_ID);
     }
 }

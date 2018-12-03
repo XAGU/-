@@ -12,6 +12,7 @@ import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +50,13 @@ public class RegisterStep1Fragment extends Fragment {
 
     @OnClick(R.id.bt_submit)
     void checkVerification() {
+        //在第三方登录的时候验证电话号码是否被绑定
+        if (((LoginActivity) getActivity()).isThirdLogin()){
+            ((LoginActivity) getActivity()).ThirdLoginPhoneBind(etMobile.getText().toString(),
+                    etVerificationCode.getText().toString());
+            return;
+        }
+
         if (getActivity() instanceof LoginActivity) {
             ((LoginActivity) getActivity()).setMobileAndCode(etMobile.getText().toString(),
                     etVerificationCode.getText().toString());
@@ -107,6 +115,7 @@ public class RegisterStep1Fragment extends Fragment {
         View view = inflater.inflate(R.layout.activity_registry_step1, container, false);
         ButterKnife.bind(this, view);
         initInputFilter();
+        btSubmit.setEnabled(true);
         return view;
     }
 
@@ -213,6 +222,7 @@ public class RegisterStep1Fragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        ((LoginActivity) getActivity()).showThirdLoginView(false);
         if (etMobile != null) {
             etMobile.requestFocus();
             InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);

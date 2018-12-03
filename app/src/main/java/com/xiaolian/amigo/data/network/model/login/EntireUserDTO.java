@@ -32,6 +32,8 @@ public class EntireUserDTO implements Mapper<User> {
     private Long createTime;
     private Long buildingId;
     private boolean hadSetBathPassword ;   //  是否已经设置浴室密码
+    private User.AlipayBindBean alipayBind;
+    private User.WeChatBindBean wechatBind;
 
 
     @Override

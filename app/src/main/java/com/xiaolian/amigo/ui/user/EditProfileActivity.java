@@ -13,7 +13,8 @@ import com.bumptech.glide.Glide;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.Device;
 import com.xiaolian.amigo.data.network.model.common.ApplySchoolCheckRespDTO;
-import com.xiaolian.amigo.data.vo.UserCertificationStatus;
+import com.xiaolian.amigo.data.network.model.login.WeChatBindRespDTO;
+import com.xiaolian.amigo.data.vo.User;
 import com.xiaolian.amigo.ui.user.intf.IEditProfilePresenter;
 import com.xiaolian.amigo.ui.user.intf.IEditProfileView;
 import com.xiaolian.amigo.ui.widget.dialog.AvailabilityDialog;
@@ -57,6 +58,9 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
     private static final String CERTIFICATION_REVIEWING_TXT = "审核中";
     private static final String CERTIFICATION_PASS_TXT = "已认证" ;
     private static final String CERTIFICATION_FAILURE_TXT = "认证失败";
+
+    public static final int ALIPAY_BIND = 0;
+    public static final int WECHAT_BIND = 1;
     @Inject
     IEditProfilePresenter<IEditProfileView> presenter;
 
@@ -108,6 +112,18 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
     @BindView(R.id.rel_edit_certification)
     RelativeLayout relEditCertification;
 
+    @BindView(R.id.rel_wechat_bind)
+    RelativeLayout rl_wechat;
+
+    @BindView(R.id.rel_pay_bind)
+    RelativeLayout rl_alipay;
+
+    @BindView(R.id.tv_wechat_tip)
+    TextView tv_wechat;
+
+    @BindView(R.id.tv_apay_tip)
+    TextView tv_alipay;
+
     private String avatarUrl;
 
     private boolean isNeedRefresh;
@@ -116,6 +132,9 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
 
 
     private Class<? extends Activity> activityClazz ;
+
+    private String weChatNickName = null;
+    private String aliPayNickName = null;
 
     @Override
     protected void setUp() {
@@ -206,12 +225,11 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
                 startActivityForResult(intent, REQUEST_CODE_EDIT_SEX);
                 break;
             case R.id.rel_edit_mobile:
-                onError("暂不支持修改手机号");
-//                intent = new Intent(this, CheckPasswordActivity.class);
-//                startActivityForResult(intent, REQUEST_CODE_CHECK_PASSWORD);
-//                ChangeMobileDialog dialog = new ChangeMobileDialog(this);
-//                dialog.setOnOkClickListener((dialog1, password) -> presenter.checkPassword(password));
-//                dialog.show();
+                intent = new Intent(this, PasswordVerifyActivity.class);
+                intent.putExtra("phoneNumber",tvMobile.getText().toString().trim());
+                intent.putExtra("type",PasswordVerifyActivity.TYPE_CHANGE_PHONE);
+                startActivity(intent);
+
                 break;
             case R.id.rel_edit_password:
                 intent = new Intent(this, EditPasswordActivity.class);
@@ -257,9 +275,36 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
                 break;
             case R.id.rel_edit_certification:
                 if (activityClazz != null) startActivity(this ,activityClazz);
+                break;
+            case R.id.rel_wechat_bind:
+                if (!TextUtils.isEmpty(weChatNickName)) {
+                    gotoThirdLoginDetail(WECHAT_BIND, weChatNickName);
+                    isNeedRefresh = true;
+                }else {
+                    presenter.getWeChatCode();
+                }
+                break;
+            case R.id.rel_pay_bind:
+                if (!TextUtils.isEmpty(aliPayNickName)) {
+                    gotoThirdLoginDetail(ALIPAY_BIND, aliPayNickName);
+                    isNeedRefresh = true;
+                }else {
+                    presenter.getAlipayAuthInfo();
+                }
+                break;
+
             default:
                 break;
         }
+    }
+
+    @Override
+    public void gotoThirdLoginDetail(int type,String nickName) {
+        //0 是支付宝详情 1 是微信详情
+        Intent intent = new Intent(this,ThirdBindActivity.class);
+        intent.putExtra("third_login",type);
+        intent.putExtra("nick_name",nickName);
+        startActivity(intent);
     }
 
     @Override
@@ -309,6 +354,28 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
         intent.putExtra("reason", data.getReason());
         intent.putExtra("schoolName", data.getSchoolName());
         startActivity(intent);
+    }
+
+    @Override
+    public void showWechatBind(String nickName) {
+        if(!TextUtils.isEmpty(nickName)) {
+            tv_wechat.setText(nickName);
+            weChatNickName = nickName;
+        }else{
+            tv_wechat.setText("未绑定");
+            weChatNickName = null;
+        }
+    }
+
+    @Override
+    public void showAliPayBind(String nickName) {
+        if(!TextUtils.isEmpty(nickName)) {
+            tv_alipay.setText(nickName);
+            aliPayNickName = nickName;
+        }else{
+            tv_alipay.setText("未绑定");
+            aliPayNickName = null;
+        }
     }
 
     @Override
@@ -400,6 +467,32 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
                 break;
             case CANCELAPPLYOK:
                 onSuccess("已取消申请更换学校");
+                break;
+            case UNBIND_WECHAT:
+                onSuccess("解除微信绑定成功");
+                weChatNickName = null;
+                break;
+            case UNBIND_ALIPAY:
+                onSuccess("解除支付宝绑定成功");
+                tv_alipay.setText("未绑定");
+                aliPayNickName = null;
+                break;
+            case BIND_WECHAT:
+                onSuccess("微信绑定成功");
+                WeChatBindRespDTO bindBean = (WeChatBindRespDTO)event.msg;
+                weChatNickName = bindBean.getNickname();
+                tv_wechat.setText(weChatNickName);
+                break;
+            case BIND_ALIPAY:
+                onSuccess("支付宝绑定成功");
+                User.AlipayBindBean alipayBindBean = (User.AlipayBindBean)event.msg;
+                aliPayNickName = alipayBindBean.getAlipayNickName();
+                tv_alipay.setText(aliPayNickName);
+                break;
+            case WECHAT_CODE:
+                String weChatCode = (String)event.getMsg();
+                presenter.bindWeChat(weChatCode);
+                break;
 
             default:
                 break;
@@ -416,9 +509,14 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
     @Data
     public static class Event {
         EventType type;
+        Object msg;
 
-        Event(EventType type) {
+
+        public Event(EventType type) {
             this.type = type;
+        }
+        public void setMsg(Object msg) {
+            this.msg = msg;
         }
 
         public enum EventType {
@@ -426,7 +524,12 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
              * 刷新
              */
             REFRESH(1),
-            CANCELAPPLYOK(2);
+            CANCELAPPLYOK(2),
+            UNBIND_WECHAT(3),
+            UNBIND_ALIPAY(4),
+            BIND_WECHAT(5),
+            BIND_ALIPAY(6),
+            WECHAT_CODE(7);
             int type;
 
             EventType(int type) {

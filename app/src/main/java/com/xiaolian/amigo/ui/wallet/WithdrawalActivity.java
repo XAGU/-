@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.data.enumeration.PayWay;
 import com.xiaolian.amigo.ui.user.ListChooseActivity;
+import com.xiaolian.amigo.ui.user.PasswordVerifyActivity;
 import com.xiaolian.amigo.ui.wallet.adaptor.ChooseWithdrawAdapter;
 import com.xiaolian.amigo.ui.wallet.intf.IWithdrawalPresenter;
 import com.xiaolian.amigo.ui.wallet.intf.IWithdrawalView;
@@ -42,6 +43,8 @@ import butterknife.OnTextChanged;
 public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawalView {
     private static final int REQUEST_CODE_CHOOSE_WITHDRAW_WAY = 0x0121;
     private static final int REQUEST_CODE_CHOOSE_WITHDRAW_WAY2 = 0x0122;
+
+    private static final int REQUEST_CODE_PASSWORD_VERIFY = 0x0123;
     @Inject
     IWithdrawalPresenter<IWithdrawalView> presenter;
 
@@ -192,8 +195,11 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
                 return;
             }
         }
-        presenter.withdraw(etAmount.getText().toString().trim(), tvWithdrawWay2.getText().toString().trim(),
-                withdrawId);
+
+        //  进入密码验证
+        Intent intent = new Intent(this,PasswordVerifyActivity.class);
+        intent.putExtra("type",PasswordVerifyActivity.TYPE_MONEY_RETURN);
+        startActivityForResult(intent,REQUEST_CODE_PASSWORD_VERIFY);
     }
 
     @OnClick(R.id.tv_withdraw_all)
@@ -252,6 +258,9 @@ public class WithdrawalActivity extends WalletBaseActivity implements IWithdrawa
                         withdrawId = item.getId();
                     }
                     break;
+                case REQUEST_CODE_PASSWORD_VERIFY://密码验证成功后才能进入退款流程
+                    presenter.withdraw(etAmount.getText().toString().trim(), tvWithdrawWay2.getText().toString().trim(),
+                            withdrawId);
                 default:
                     break;
             }

@@ -25,4 +25,10 @@ public interface IEditProfilePresenter<V extends IEditProfileView> extends IBase
     boolean isHadSetBathPassword();
 
     int getCertificationStatus();
+
+    void getAlipayAuthInfo();
+
+    void getWeChatCode();
+
+    void bindWeChat(String weChatCode);
 }

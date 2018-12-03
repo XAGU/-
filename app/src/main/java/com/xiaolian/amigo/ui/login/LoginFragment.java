@@ -10,13 +10,17 @@ import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.xiaolian.amigo.MvpApp;
 import com.xiaolian.amigo.R;
 import com.xiaolian.amigo.ui.widget.PasswordEditText;
 import com.xiaolian.amigo.util.ViewUtil;
@@ -70,8 +74,6 @@ public class LoginFragment extends Fragment {
         }
     }
 
-
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -123,6 +125,13 @@ public class LoginFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        ((LoginActivity) getActivity()).showThirdLoginView(true);
+
+        if (!((LoginActivity)getActivity()).isChooseSchool()) {
+            ((LoginActivity) getActivity()).setThirdLogin(false);
+            ((LoginActivity) getActivity()).showLoginAndRegister();
+        }
+
         if (etMobile != null && etUserpwd != null) {
             if (!TextUtils.isEmpty(etMobile.getText())) {
                 etUserpwd.requestFocus();

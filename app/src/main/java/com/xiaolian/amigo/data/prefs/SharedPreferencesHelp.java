@@ -127,6 +127,12 @@ public class    SharedPreferencesHelp implements ISharedPreferencesHelp {
 
     private static final String PREF_KEY_CERTIFY_STATUS = "PREF_KEY_CERTIFY_STATUS";
 
+    private static final String PREF_KEY_APY_NICKNAME = "PREF_KEY_APY_NICKNAME";
+
+    private static final String PREF_KEY_APY_USER_ID= "PREF_KEY_APY_USER_ID";
+
+    private static final String PREF_KEY_APY_IS_BIND= "PREF_KEY_APY_IS_BIND";
+
 
     /**
      * 是否需要弹出退费说明
@@ -244,6 +250,15 @@ public class    SharedPreferencesHelp implements ISharedPreferencesHelp {
         userHolder.setCalsses(mSharedPreferences.getString(PREF_KEY_CALSS , ""));
         userHolder.setStudentId(mSharedPreferences.getString(PREF_KEY_STUDENT_ID , ""));
         userHolder.setDormitory(mSharedPreferences.getString(PREF_KEY_DORMITORY , ""));
+        if (mSharedPreferences.getBoolean(PREF_KEY_APY_IS_BIND,false)){
+            String apayNickName = mSharedPreferences.getString(PREF_KEY_NICKNAME,"");
+            long apayUserId = mSharedPreferences.getLong(PREF_KEY_APY_USER_ID,-1);
+            User.AlipayBindBean alipayBindBean = new User.AlipayBindBean();
+            alipayBindBean.setAlipayNickName(apayNickName);
+            alipayBindBean.setAlipayUserId(apayUserId);
+            alipayBindBean.setIsBinding(true);
+            userHolder.setAlipayBind(alipayBindBean);
+        }
         return userHolder;
     }
 
@@ -319,6 +334,11 @@ public class    SharedPreferencesHelp implements ISharedPreferencesHelp {
             mSharedPreferences.edit().putString(PREF_KEY_DORMITORY, user.getDormitory()).apply();
         }
 
+        if (null != user.getAlipayBind() && user.getAlipayBind().isIsBinding()){
+            mSharedPreferences.edit().putString(PREF_KEY_NICKNAME, user.getAlipayBind().getAlipayNickName()).apply();
+            mSharedPreferences.edit().putLong(PREF_KEY_APY_USER_ID, user.getAlipayBind().getAlipayUserId()).apply();
+            mSharedPreferences.edit().putBoolean(PREF_KEY_APY_IS_BIND, user.getAlipayBind().isIsBinding()).apply();
+        }
     }
 
 
