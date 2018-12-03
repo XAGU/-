@@ -223,6 +223,7 @@ public class User {
         this.alipayBind = entireUserDTO.getAlipayBind();
     }
 
+    @Data
     public static class AlipayBindBean {
         /**
          * alipayNickName : string

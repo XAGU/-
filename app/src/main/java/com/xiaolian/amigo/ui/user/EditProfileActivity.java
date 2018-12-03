@@ -135,6 +135,7 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
 
     private String weChatNickName = null;
     private String aliPayNickName = null;
+    private String userPhone = "";
 
     @Override
     protected void setUp() {
@@ -226,7 +227,7 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
                 break;
             case R.id.rel_edit_mobile:
                 intent = new Intent(this, PasswordVerifyActivity.class);
-                intent.putExtra("phoneNumber",tvMobile.getText().toString().trim());
+                intent.putExtra("phoneNumber",userPhone);
                 intent.putExtra("type",PasswordVerifyActivity.TYPE_CHANGE_PHONE);
                 startActivity(intent);
 
@@ -369,6 +370,7 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
 
     @Override
     public void showAliPayBind(String nickName) {
+        Log.e(TAG, "showAliPayBind: nickname =" +nickName );
         if(!TextUtils.isEmpty(nickName)) {
             tv_alipay.setText(nickName);
             aliPayNickName = nickName;
@@ -423,7 +425,7 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
 
     @Override
     public void setMobile(String mobile) {
-        tvMobile.setText(mobile);
+        showUserPhone(mobile);
     }
 
     @Override
@@ -541,6 +543,19 @@ public class EditProfileActivity extends UserBaseActivity implements IEditProfil
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+    }
+
+    private void showUserPhone(String str) {
+        // String sFinalAge=getResources().getString(R.string.alert,nAge);
+        if (!TextUtils.isEmpty(str)) {
+            userPhone = str;
+            String hide = "****";
+            StringBuilder sb = new StringBuilder(str);
+            sb.replace(3, 7, hide);
+
+            String num = sb.toString();
+            tvMobile.setText(num);
+        }
     }
 
 }

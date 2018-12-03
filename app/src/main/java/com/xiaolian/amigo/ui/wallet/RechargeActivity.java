@@ -6,6 +6,7 @@ import android.support.v4.util.ObjectsCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -250,7 +251,9 @@ public class RechargeActivity extends WalletBaseActivity implements IRechargeVie
     public void showWithDrawDialog(WithdrawExplanationRespDTO dto) {
         if (withDrawExplainAlertDialog != null){
             withDrawExplainAlertDialog.setExplain("退款说明：" +dto.getExplanation() );
-            if(!dto.isAll()){
+            if(dto.isAll()){
+                withDrawExplainAlertDialog.showObject(false);
+            }else{
                 withDrawExplainAlertDialog.setObject("退款对象：" + dto.getRefundUser());
             }
             withDrawExplainAlertDialog.setTime("退款时间：" + dto.getTimeRange());

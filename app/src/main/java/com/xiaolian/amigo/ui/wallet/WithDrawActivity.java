@@ -1,5 +1,7 @@
 package com.xiaolian.amigo.ui.wallet;
 
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -68,6 +70,7 @@ public class WithDrawActivity extends WalletBaseActivity implements IWithDrawVie
             description = getIntent().getStringExtra(KEY_WITHDRAW_DESCRIPTION);
             dto = getIntent().getParcelableExtra(KEY_WITHDRAW_DATA);
             status = getIntent().getIntExtra(KEY_CERTIFICATION_STATUS, -1);
+            Log.e(TAG, "setUp: status =" + status );
         }
     }
 
@@ -86,7 +89,13 @@ public class WithDrawActivity extends WalletBaseActivity implements IWithDrawVie
     private void setData() {
         if (dto == null) return;
         tvTime.setText("退款说明：" + dto.getTimeRange());
-        tvObject.setText("退款对象：" + dto.getRefundUser() +"(入学年份)");
+        if (dto != null && dto.isAll()) {
+            tvObject.setVisibility(View.GONE);
+            status = CERTIFICATION_PASS;
+
+        }else{
+            tvObject.setText("退款对象：" + dto.getRefundUser() + "(入学年份)");
+        }
         tvDescription.setText("退款说明：" + dto.getExplanation());
         if (status == CERTIFICATION_PASS){
             btnSubmit.setText("朕知道了");
@@ -126,7 +135,7 @@ public class WithDrawActivity extends WalletBaseActivity implements IWithDrawVie
     }
     @OnClick({R.id.btn_submit})
     public void btnSubmit() {
-        if (status ==CERTIFICATION_PASS) {
+        if (status == CERTIFICATION_PASS) {
             this.finish();
         }else if (status == CERTIFICATION_NONE){
             startActivity(this , UserCertificationActivity.class);

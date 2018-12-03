@@ -28,6 +28,7 @@ public class WithdrawExplanationRespDTO  implements Parcelable{
         refundUser = in.readString();
         timeRange = in.readString();
         isSetExplanation = in.readByte() != 0 ;
+        isAll = in.readByte() != 0;
     }
 
     public static final Creator<WithdrawExplanationRespDTO> CREATOR = new Creator<WithdrawExplanationRespDTO>() {
@@ -82,6 +83,13 @@ public class WithdrawExplanationRespDTO  implements Parcelable{
         isSetExplanation = setExplanation;
     }
 
+    public boolean isAll() {
+        return isAll;
+    }
+    public void setAll(boolean all) {
+        isAll = all;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -94,5 +102,6 @@ public class WithdrawExplanationRespDTO  implements Parcelable{
         dest.writeString(refundUser);
         dest.writeString(timeRange);
         dest.writeByte((byte) (isSetExplanation ? 1: 0));
+        dest.writeByte((byte) (isAll ? 1: 0));
     }
 }

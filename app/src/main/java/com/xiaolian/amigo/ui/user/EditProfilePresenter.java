@@ -60,7 +60,6 @@ public class EditProfilePresenter<V extends IEditProfileView> extends BasePresen
             @Override
             public void onReady(ApiResult<EntireUserDTO> result) {
                 if (null == result.getError()) {
-                    Log.e(TAG, "onReady: result--" + result.getData().toString() );
                     getMvpView().setAvatar(result.getData().getPictureUrl());
                     getMvpView().setMobile(result.getData().getMobile());
                     getMvpView().setNickName(result.getData().getNickName());
@@ -68,13 +67,27 @@ public class EditProfilePresenter<V extends IEditProfileView> extends BasePresen
                     getMvpView().setResidenceName(result.getData().getResidenceName());
                     getMvpView().showBathroomPassword(userDataManager.isExistBathroomBiz(), result.getData().isHadSetBathPassword());
                     if (result.getData().getAlipayBind() != null && result.getData().getAlipayBind().isIsBinding()){
-                        getMvpView().showAliPayBind(result.getData().getAlipayBind().getAlipayNickName());
+                        String nick_name = "";
+                        if (null == result.getData().getAlipayBind().getAlipayNickName()){
+                            nick_name = "未设置昵称";
+                        }else{
+                            nick_name = result.getData().getAlipayBind().getAlipayNickName();
+                        }
+                        getMvpView().showAliPayBind(nick_name);
+
                     }else{
                         getMvpView().showAliPayBind(null);
                     }
 
                     if(result.getData().getWechatBind() != null && result.getData().getWechatBind().getResult()) {
-                        getMvpView().showWechatBind(result.getData().getWechatBind().getNickname());
+                        String nick_name = "";
+                        if (null == result.getData().getWechatBind().getNickname()){
+                            nick_name = "未设置昵称";
+                        }else{
+                            nick_name = result.getData().getWechatBind().getNickname();
+                        }
+
+                        getMvpView().showWechatBind(nick_name);
                     }else{
                         getMvpView().showWechatBind(null);
                     }
@@ -87,7 +100,6 @@ public class EditProfilePresenter<V extends IEditProfileView> extends BasePresen
                     User user = new User(result.getData());
                     userDataManager.setUser(user);
                 } else {
-                    Log.e(TAG, "onReady: --"+ result.getError().getDisplayMessage() );
                     getMvpView().onError(result.getError().getDisplayMessage());
                 }
             }
@@ -95,7 +107,6 @@ public class EditProfilePresenter<V extends IEditProfileView> extends BasePresen
             @Override
             public void onError(Throwable e) {
                 super.onError(e);
-                Log.e(TAG, "onError: --"+ e.getMessage() );
             }
         });
     }
