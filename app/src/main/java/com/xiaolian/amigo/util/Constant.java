@@ -363,4 +363,14 @@ public final class Constant {
 
     public static final int CERTIFICATION_FAILURE = 2  ;  //认证失败
 
+
+    /**
+     * 统计
+     */
+    public static final String TRADE_STATISTIC_CONTENT_SEPARATOR = ":";  // 参数与内容的分隔符
+
+    public static final String TRADE_STATISTIC_PARAM_SEPARATOR = "、" ;  //  每个参数的分隔符
+
+    public static final String TRADE_STATISTIC_ITEM_SEPARATOR = ";" ;  // 每条记录的分隔符
+
 }

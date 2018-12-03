@@ -1,20 +1,15 @@
 package com.xiaolian.amigo.util;
 
-import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
-import java.util.logging.Handler;
 
 /**
  * 日期时间相关工具类
@@ -33,6 +28,7 @@ public class TimeUtils {
     public static final DateFormat MY_DATE_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
     public static final DateFormat MY_TIME_FORMAT = new SimpleDateFormat("HH:mm", Locale.getDefault());
     public static final DateFormat MY_DATE_MONTH = new SimpleDateFormat("MM/dd", Locale.getDefault());
+    public static final DateFormat MY_DATA_MINUTE = new SimpleDateFormat("mm" ,Locale.getDefault());
     public static final int SIXTY = 60;
 
     /**
@@ -298,9 +294,43 @@ public class TimeUtils {
     }
 
 
-//    public static String longToString(long time){
-//        return time / 60 +"分钟" ;
-//    }
+    /**
+     * 根据当前时间获取每5分钟时间戳
+     * 比如  09：01 -> 09：00
+     *      09：08 -> 09:05
+     *      09:58 -> 09:55
+     * @return
+     */
+    public static long getCountTimeStamp(){
+        long currentTime = System.currentTimeMillis();
+        Date currentDate = new Date(currentTime);
+        String time = MY_DATE_TIME_FORMAT.format(currentDate);
+        StringBuffer timeStringBuffer = new StringBuffer(time);
+        Log.e(TAG, "getCountTimeStamp: " + time );
+        int minute  = 0 ;
+        try {
+            minute = Integer.parseInt(time.substring(14 ,16));
+        }catch (NumberFormatException e){
+            Log.e(TAG, "getCountTimeStamp: " + e.getMessage() );
+        }
+        int residual = minute % 5 ;
+        minute =  minute - residual ;
+        timeStringBuffer.replace(14 ,16 , minute+"");
+        Log.e(TAG, "getCountTimeStamp: " + timeStringBuffer );
+
+        return covertStringTolong(timeStringBuffer.toString() ,MY_DATE_TIME_FORMAT) ;
+
+    }
+
+    private static long covertStringTolong(String timeString  , DateFormat dateFormat){
+        try {
+            return (dateFormat.parse(timeString)).getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return 0 ;
+    }
+
 
     /**
      * long 转化成String
@@ -344,6 +374,18 @@ public class TimeUtils {
      */
     public static String date2String(final Date date, final DateFormat format) {
         return format.format(date);
+    }
+
+    /**
+     * 计算两个时间的差值
+     * @param currentTime
+     * @param beforeTime
+     * @return
+     */
+    public static long  diffTime(long currentTime , long beforeTime){
+        if (beforeTime > currentTime) return 0 ;
+        long diffTime =  currentTime - beforeTime ;
+        return diffTime ;
     }
 
 }

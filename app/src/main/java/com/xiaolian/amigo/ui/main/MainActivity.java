@@ -68,6 +68,7 @@ import com.xiaolian.amigo.util.Log;
 import com.xiaolian.amigo.util.MD5Util;
 import com.xiaolian.amigo.util.MyInterpolator;
 import com.xiaolian.amigo.util.ScreenUtils;
+import com.xiaolian.amigo.util.TimeUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -208,6 +209,7 @@ public class MainActivity extends MainBaseActivity implements IMainView {
                         showMessage("没有SD卡权限");
                     }
                 });
+        android.util.Log.e(TAG, "onCreate: " +  TimeUtils.getCountTimeStamp());
     }
 
 
