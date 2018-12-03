@@ -1,17 +1,22 @@
 package com.xiaolian.amigo.ui;
 
+import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Environment;
 import android.os.IBinder;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.xiaolian.amigo.data.network.model.connecterror.AppTradeStatisticDataReqDTO;
 import com.xiaolian.amigo.ui.base.BasePresenter;
+import com.xiaolian.amigo.util.AppUtils;
 import com.xiaolian.amigo.util.Constant;
 import com.xiaolian.amigo.util.FileIOUtils;
 import com.xiaolian.amigo.util.Log;
+import com.xiaolian.amigo.util.NetworkUtil;
 import com.xiaolian.amigo.util.RxHelper;
 import com.xiaolian.amigo.util.TimeUtils;
 
@@ -29,6 +34,7 @@ import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 import static com.xiaolian.amigo.ui.device.DeviceBasePresenter.COUNT_NAME;
+import static com.xiaolian.amigo.util.Log.getContext;
 
 public class BleCountServer extends Service {
 
@@ -112,75 +118,155 @@ public class BleCountServer extends Service {
                                 */
                                for (String attribute : attributes){
 
-                                   String[] result = attribute.split(Constant.TRADE_STATISTIC_CONTENT_SEPARATOR);
-
-                                   if (result.length == 0) break;
+                                   AppTradeStatisticDataReqDTO.ItemsBean itemsBean = getItemsBean(attribute , time);
+                                   if (itemsBean == null) break;
                                    // 为每一个item 添加数据
                                    if (itemsBeans.size() == 0){
-                                      //  如果没有数据 直接存储
-                                       AppTradeStatisticDataReqDTO.ItemsBean itemsBean = new AppTradeStatisticDataReqDTO.ItemsBean();
-                                       if (TextUtils.equals(result[0] ,"macAddress")) itemsBean.setMacAddress(result[1]);
-                                       if (TextUtils.equals(result[0] , "time")) {
-                                           try {
-                                               itemsBean.setTime(Long.parseLong(result[1]));
-                                           }catch (NumberFormatException e){
-                                               android.util.Log.e(TAG, "parseLongTime: " + e.getMessage() );
-                                               itemsBean.setTime(0L);
-                                           }
-                                       }
-                                       if (TextUtils.equals(result[0] , "target")) itemsBean.setTarget(result[1]);
-                                       if (TextUtils.equals(result[0] , "result")) itemsBean.setResult(result[1]);
-                                       if (TextUtils.equals(result[0] , "type")) itemsBean.setType(result[1]);
-                                       if (TextUtils.equals(result[0] , "supplierId")) {
-                                           try {
-                                               itemsBean.setSupplierId(Integer.parseInt(result[1]));
-                                           }catch (NumberFormatException e){
-                                               android.util.Log.e(TAG, "parseLongSupplierId: " + e.getMessage() );
-                                               itemsBean.setTime(0);
-                                           }
-                                       }
-
-                                       if (TextUtils.equals(result[0] ,"deviceType")) itemsBean.setDeviceType(result[1]);
-                                       if (TextUtils.equals(result[0] , "residenceId")){
-
-                                           try {
-                                               itemsBean.setResidenceId(Integer.parseInt(result[1]));
-                                           }catch (NumberFormatException e){
-                                               android.util.Log.e(TAG, "parseLongResidenceId: " + e.getMessage() );
-                                               itemsBean.setResidenceId(0L);
-                                           }
-                                       }
-                                       itemsBean.setCount(1);
-                                       itemsBeans.add(itemsBean);
+                                       itemsBeans.add(itemsBean) ;
                                    }else{
-
                                        for (int i = 0 ; i < itemsBeans.size() ; i++){
-                                           AppTradeStatisticDataReqDTO.ItemsBean itemsBean = itemsBeans.get(i);
+                                           AppTradeStatisticDataReqDTO.ItemsBean item = itemsBeans.get(i);
                                            //  判断是否有存储macAddress 的数据
-                                            if (attribute.contains(itemsBean.getMacAddress())){
-                                                // 如果有，再判断是否有此交互行为
-                                                if (attribute.contains(itemsBean.getType())){
+                                            if (TextUtils.equals(item.getMacAddress() ,itemsBean.getMacAddress())){
+                                                // 如果有，再判断是否有此交互行为   比如 SCAN , OEPN
+                                                if (TextUtils.equals(item.getType() , itemsBean.getType())){
 
-                                                    String typeResult = attribute
+                                                    // 如果交互行为一致，再判断交互对象是否相同 比如 SERVER ,DEVICE
+                                                    if (TextUtils.equals(item.getTarget() , itemsBean.getTarget())) {
+
+                                                        // 如果交互对象相同， 再判断是结果是否一样  比如 SUCCESS ,FAILED
+
+                                                        if (TextUtils.equals(item.getResult(), itemsBean.getResult())) {
+
+                                                            //  如果 此Type 结果也一样，则Count + 1 ， 判断是否耗时最小 ， 耗时最大， 以及平均时间
+
+                                                            int count = item.getCount();
+                                                            int avgTime = item.getAvgTime();
+                                                            int minTime = item.getMinTime();
+                                                            int maxTime = item.getMaxTime();
+
+                                                            itemsBean.setCount(count + 1);
+                                                            avgTime = (count * avgTime + item.getAvgTime()) / (count + 1);
+                                                            item.setAvgTime(avgTime);
+                                                            minTime = Math.min(minTime, item.getMinTime());
+                                                            item.setAvgTime(minTime);
+                                                            maxTime = Math.max(maxTime, item.getMaxTime());
+                                                            item.setMaxTime(maxTime);
+                                                            break;
+                                                        } else {
+                                                            itemsBeans.add(itemsBean);
+                                                            break;
+                                                        }
+                                                    }else{
+                                                        itemsBeans.add(itemsBean);
+                                                        break;
+                                                    }
+                                                }else{
+                                                    itemsBeans.add(itemsBean);
+                                                    break;
                                                 }
-
-
-                                                break ;
+                                            }else{
+                                                itemsBeans.add(itemsBean);
+                                                break;
                                             }
 
                                        }
                                    }
 
                                }
-
-
-
                            }
-
                         }
+                        if (itemsBeans.size() > 0) reqDTO.setItems(itemsBeans);
+                        reqDTO.setTerminalInfo(getTerminalInfo());
                     }
                 })
                 );
+    }
+
+
+    private AppTradeStatisticDataReqDTO.TerminalInfoBean  getTerminalInfo(){
+        AppTradeStatisticDataReqDTO.TerminalInfoBean  terminalInfoBean = new AppTradeStatisticDataReqDTO.TerminalInfoBean();
+        String appVersion = AppUtils.getVersionName(this);
+        String brand = Build.BRAND;
+        String env = "USER" ;
+        String ip = NetworkUtil.getIPAddress(this);
+        String model = Build.MODEL ;
+        String os = "ANDROID" ;
+        int systemVersion = Build.VERSION.SDK_INT;
+        @SuppressLint("HardwareIds")
+        String androidId = Settings.Secure.getString(getContext().getContentResolver(),
+                Settings.Secure.ANDROID_ID);
+
+        terminalInfoBean.setAppVersion(appVersion);
+        terminalInfoBean.setBrand(brand);
+        terminalInfoBean.setEnv(env);
+        terminalInfoBean.setIp(ip);
+        terminalInfoBean.setModel(model);
+        terminalInfoBean.setOs(os);
+        terminalInfoBean.setSystemVersion(systemVersion +"");
+        terminalInfoBean.setUniqueId(androidId);
+        return terminalInfoBean ;
+    }
+
+
+    /**
+     * 设置属性值
+     * @param attribute
+     * @return
+     */
+    private AppTradeStatisticDataReqDTO.ItemsBean  getItemsBean(String attribute , String timeStamps){
+        AppTradeStatisticDataReqDTO.ItemsBean itemsBean = new AppTradeStatisticDataReqDTO.ItemsBean();
+        String[] result = attribute.split(Constant.TRADE_STATISTIC_CONTENT_SEPARATOR);
+        if (result.length == 0) return null;
+        //  如果没有数据 直接存储
+        AppTradeStatisticDataReqDTO.ItemsBean itemsBean = new AppTradeStatisticDataReqDTO.ItemsBean();
+        if (TextUtils.equals(result[0] ,"macAddress")) itemsBean.setMacAddress(result[1]);
+        if (TextUtils.equals(result[0] , "time")) {
+            try {
+                // 时间的Int型
+                int timeInt = Integer.parseInt(result[1]);
+                itemsBean.setAvgTime(timeInt);
+                itemsBean.setMinTime(timeInt);
+                itemsBean.setMaxTime(timeInt);
+            }catch (NumberFormatException e){
+                android.util.Log.e(TAG, "parseLongTime: " + e.getMessage() );
+//                itemsBean.setTime();
+                itemsBean.setAvgTime(0);
+                itemsBean.setMinTime(0);
+                itemsBean.setMaxTime(0);
+            }
+        }
+        if (TextUtils.equals(result[0] , "target")) itemsBean.setTarget(result[1]);
+        if (TextUtils.equals(result[0] , "result")) itemsBean.setResult(result[1]);
+        if (TextUtils.equals(result[0] , "type")) itemsBean.setType(result[1]);
+        if (TextUtils.equals(result[0] , "supplierId")) {
+            try {
+                itemsBean.setSupplierId(Integer.parseInt(result[1]));
+            }catch (NumberFormatException e){
+                android.util.Log.e(TAG, "parseLongSupplierId: " + e.getMessage() );
+                itemsBean.setSupplierId(0);
+            }
+        }
+
+        if (TextUtils.equals(result[0] ,"deviceType")) itemsBean.setDeviceType(result[1]);
+        if (TextUtils.equals(result[0] , "residenceId")){
+
+            try {
+                itemsBean.setResidenceId(Integer.parseInt(result[1]));
+            }catch (NumberFormatException e){
+                android.util.Log.e(TAG, "parseLongResidenceId: " + e.getMessage() );
+                itemsBean.setResidenceId(0L);
+            }
+        }
+        itemsBean.setCount(1);
+        try {
+            long time = Long.parseLong(timeStamps);
+            itemsBean.setTime(time);
+        }catch (NumberFormatException e){
+            android.util.Log.e(TAG, "getItemsBean: " + e.getMessage() );
+            itemsBean.setTime(0);
+        }
+        return itemsBean ;
     }
 
     /**

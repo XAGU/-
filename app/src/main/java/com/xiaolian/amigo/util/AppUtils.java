@@ -11,11 +11,14 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 
 import com.xiaolian.amigo.util.Log;
 
 import java.io.File;
+
+import static android.content.Context.TELEPHONY_SERVICE;
 
 /**
  * App相关工具
@@ -137,5 +140,20 @@ public class AppUtils {
             e.printStackTrace();
             return -1;
         }
+    }
+
+
+    /**
+     * The IMEI: 仅仅只对Android手机有效
+     * 采用此种方法，需要在AndroidManifest.xml中加入一个许可：android.permission.READ_PHONE_STATE，并且用
+     * 户应当允许安装此应用。作为手机来讲，IMEI是唯一的，它应该类似于 359881030314356（除非你有一个没有量产的手
+     * 机（水货）它可能有无效的IMEI，如：0000000000000）。
+     *
+     * @return imei
+     */
+    public String getIMEI(Context mContext) {
+        TelephonyManager TelephonyMgr = (TelephonyManager) mContext.getApplicationContext().getSystemService(TELEPHONY_SERVICE);
+        String szImei = TelephonyMgr.getDeviceId();
+        return szImei;
     }
 }
