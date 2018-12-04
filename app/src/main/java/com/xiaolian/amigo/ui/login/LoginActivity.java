@@ -61,7 +61,7 @@ public class LoginActivity extends LoginBaseActivity implements ILoginView {
 
     private static final int SDK_AUTH_FLAG = 2;
 
-    //
+    //记录第三方登录时候的状态，以便显示不同的标题
     private final int THIRD_STATUS_LOGIN = 0;
     private final int THIRD_STATUS_VERIFY_PHONE = 1;
     private final int THIRD_STATUS_REGISTER = 2;
