@@ -128,7 +128,7 @@ public class BleCountService extends Service {
         if (timer == null){
             Log.e(TAG, "onStartCommand: " );
 //            handleUploadTradSatistic(fileName);
-            timer = RxHelper.intervel(60, aLong ->
+            timer = RxHelper.intervel(300, aLong ->
                     handleUploadTradSatistic(fileName)
             );
         }
